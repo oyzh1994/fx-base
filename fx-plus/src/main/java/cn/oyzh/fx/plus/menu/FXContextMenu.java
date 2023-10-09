@@ -1,0 +1,68 @@
+package cn.oyzh.fx.plus.menu;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.plus.adapter.LayoutAdapter;
+import javafx.collections.ListChangeListener;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+
+/**
+ * @author oyzh
+ * @since 2023/3/7
+ */
+public class FXContextMenu extends ContextMenu implements LayoutAdapter {
+
+    {
+        this.setStyle("-fx-padding: 0 0 0 0;");
+        this.getItems().addListener((ListChangeListener<MenuItem>) c -> this.calcWidth());
+    }
+
+    public FXContextMenu() {
+        super();
+    }
+
+    public FXContextMenu(FXMenuItem... items) {
+        super();
+        this.getItems().addAll(items);
+    }
+
+    /**
+     * 计算菜单宽度
+     */
+    private void calcWidth() {
+        if (CollUtil.isNotEmpty(this.getItems())) {
+            double maxWidth = 0.d;
+            for (MenuItem item : this.getItems()) {
+                if (item instanceof FXMenuItem item1 && item1.getWidth() > maxWidth) {
+                    maxWidth = item1.getWidth();
+                }
+            }
+            // 设置宽度
+            this.setWidth(maxWidth);
+            //this.setMaxWidth(maxWidth);
+            //this.setMinWidth(maxWidth);
+            //this.setPrefWidth(maxWidth);
+            this.setWidthAll(maxWidth);
+        }
+    }
+
+    @Override
+    public double getRealWidth() {
+        return LayoutAdapter.super._getRealWidth();
+    }
+
+    @Override
+    public void setRealWidth(double width) {
+        LayoutAdapter.super._setRealWidth(width);
+    }
+
+    @Override
+    public double getRealHeight() {
+        return LayoutAdapter.super._getRealHeight();
+    }
+
+    @Override
+    public void setRealHeight(double height) {
+        LayoutAdapter.super._setRealHeight(height);
+    }
+}

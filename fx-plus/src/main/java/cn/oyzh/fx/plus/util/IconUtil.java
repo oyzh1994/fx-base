@@ -1,0 +1,81 @@
+package cn.oyzh.fx.plus.util;
+
+import cn.hutool.core.io.IoUtil;
+import javafx.scene.image.Image;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * 图标工具类
+ *
+ * @author oyzh
+ * @since 2023/4/4
+ */
+@Slf4j
+@UtilityClass
+public class IconUtil {
+
+    /**
+     * 图标缓存
+     */
+    private static final Map<String, WeakReference<byte[]>> ICON_CACHE = new ConcurrentHashMap<>();
+
+    /**
+     * 获取图标
+     *
+     * @param iconUrls 图标列表地址
+     * @return 图标列表
+     */
+    public static List<Image> getIcons(@NonNull String[] iconUrls) {
+        return getIcons(Arrays.asList(iconUrls));
+    }
+
+    /**
+     * 获取图标
+     *
+     * @param iconUrls 图标列表地址
+     * @return 图标列表
+     */
+    public static List<Image> getIcons(@NonNull List<String> iconUrls) {
+        List<Image> icons = new ArrayList<>(iconUrls.size());
+        for (String iconUrl : iconUrls) {
+            Image icon = getIcon(iconUrl);
+            if (icon != null) {
+                icons.add(icon);
+            }
+        }
+        return icons;
+    }
+
+    /**
+     * 获取图标
+     *
+     * @param iconUrl 图标地址
+     * @return 图标
+     */
+    public static Image getIcon(@NonNull String iconUrl) {
+        InputStream stream;
+        WeakReference<byte[]> reference = ICON_CACHE.get(iconUrl);
+        if (reference == null || reference.get() == null) {
+            stream = ResourceUtil.getResourceAsStream(iconUrl);
+            if (stream != null) {
+                byte[] bytes = IoUtil.readBytes(stream);
+                ICON_CACHE.put(iconUrl, new WeakReference<>(bytes));
+                stream = IoUtil.toStream(bytes);
+            }
+        } else {
+            stream = IoUtil.toStream(reference.get());
+            log.info("load icon form cache.");
+        }
+        return stream == null ? null : new Image(stream);
+    }
+}

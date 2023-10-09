@@ -1,0 +1,62 @@
+package cn.oyzh.fx.plus;
+
+/**
+ * fx样式文件常量对象
+ *
+ * @author oyzh
+ * @since 2023/4/4
+ */
+public class FXStyle {
+
+
+    /**
+     * bootstrapfx样式文件
+     */
+    public static final String BOOTSTRAP_FX = "/css/bootstrapfx/bootstrapfx.css";
+
+    /**
+     * jmetro基础样式文件
+     */
+    public static final String JMETRO_BASE = "/css/jmetro/base.css";
+
+    /**
+     * jmetro基础扩展样式文件
+     */
+    public static final String JMETRO_BASE_EXTRAS = "/css//jmetro/base_extras.css";
+
+    /**
+     * jmetro基础第三方类库样式文件
+     */
+    public static final String JMETRO_BASE_OTHER_LIBRARIES = "/css/jmetro/base_other_libraries.css";
+
+    /**
+     * jmetro明亮主题样式文件
+     */
+    public static final String JMETRO_LIGHT_THEME = "/css/jmetro/light_theme.css";
+
+    /**
+     * jmetro暗黑主题样式文件
+     */
+    public static final String JMETRO_DARK_THEME = "/css/jmetro/dark_theme.css";
+
+    /**
+     * jmetro完整样式文件
+     */
+    public static final String JMETRO = JMETRO_BASE + ";" + JMETRO_BASE_EXTRAS + ";" + JMETRO_BASE_OTHER_LIBRARIES ;
+
+    /**
+     * controlsfx切换按钮样式文件
+     */
+    public static final String CONTROL_FX_TOGGLE_SWITCH = "/controlsfx/css/toggleswitch.css";
+
+    /**
+     * controlsfx定制文本框样式文件
+     */
+    public static final String CONTROL_FX_CUSTOM_TEXT_FIELD = "/controlsfx/css/customtextfield.css";
+
+    /**
+     * controlsfx完整样式文件
+     */
+    public static final String CONTROL_FX = CONTROL_FX_TOGGLE_SWITCH + ";" + CONTROL_FX_CUSTOM_TEXT_FIELD;
+
+}

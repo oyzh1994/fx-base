@@ -1,0 +1,19 @@
+package cn.oyzh.fx.plus.controls;
+
+
+/**
+ * 取消按钮
+ *
+ * @author oyzh
+ * @since 2020/10/29
+ */
+public class SubmitButton extends IconButton {
+
+    {
+        this.setText("提交");
+        this.setPrefHeight(25);
+        this.getStyleClass().add("btn");
+        this.getStyleClass().add("btn-primary");
+        this.init("/font/check.svg", 0.7);
+    }
+}
