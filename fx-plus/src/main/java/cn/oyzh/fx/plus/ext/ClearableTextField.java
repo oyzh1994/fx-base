@@ -1,14 +1,14 @@
 package cn.oyzh.fx.plus.ext;
 
-import cn.oyzh.fx.plus.controls.BaseTextField;
+import cn.oyzh.fx.plus.controls.LimitTextField;
 
 /**
- * 范围文本域
+ * 可清除文本域
  *
  * @author oyzh
  * @since 2023/08/15
  */
-public class ClearableTextField extends BaseTextField {
+public class ClearableTextField extends LimitTextField {
 
     {
         this.setSkin(new ClearableTextFieldSkin(this));
