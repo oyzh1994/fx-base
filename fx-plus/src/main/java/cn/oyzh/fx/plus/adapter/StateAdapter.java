@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.adapter;
 
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.stage.Stage;
 import lombok.NonNull;
 
 /**
@@ -54,6 +56,11 @@ public interface StateAdapter {
             if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
                 tab.getContent().setVisible(true);
             }
+        } else if (this instanceof Stage stage) {
+            Scene scene = stage.getScene();
+            if (scene != null && scene.getRoot() != null && !scene.getRoot().visibleProperty().isBound()) {
+                scene.getRoot().setVisible(true);
+            }
         }
     }
 
@@ -72,6 +79,11 @@ public interface StateAdapter {
         } else if (this instanceof Tab tab) {
             if (!tab.disableProperty().isBound()) {
                 tab.setDisable(true);
+            }
+        } else if (this instanceof Stage stage) {
+            Scene scene = stage.getScene();
+            if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
+                scene.getRoot().setDisable(true);
             }
         }
     }
@@ -92,6 +104,11 @@ public interface StateAdapter {
             if (!tab.disableProperty().isBound()) {
                 tab.setDisable(false);
             }
+        } else if (this instanceof Stage stage) {
+            Scene scene = stage.getScene();
+            if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
+                scene.getRoot().setDisable(false);
+            }
         }
     }
 
@@ -101,6 +118,11 @@ public interface StateAdapter {
     default void managedBindVisible() {
         if (this instanceof Node node) {
             this.managedBindVisible(node);
+        } else if (this instanceof Stage stage) {
+            Scene scene = stage.getScene();
+            if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
+                this.managedBindVisible(scene.getRoot());
+            }
         }
     }
 

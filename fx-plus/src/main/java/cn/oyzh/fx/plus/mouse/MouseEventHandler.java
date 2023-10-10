@@ -69,10 +69,10 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
             return;
         }
         for (MouseHandler handler : this.handlers) {
-            if (event.getButton() != handler.button()) {
+            if (handler.button() != null && event.getButton() != handler.button()) {
                 continue;
             }
-            if (event.getClickCount() < handler.clickCount()) {
+            if (handler.clickCount() != null && event.getClickCount() < handler.clickCount()) {
                 continue;
             }
             if (handler.metaDown() && !event.isMetaDown()) {

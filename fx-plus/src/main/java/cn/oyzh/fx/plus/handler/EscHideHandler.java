@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.handler;
 
 import cn.oyzh.fx.plus.keyboard.KeyListener;
-import cn.oyzh.fx.plus.view.FXStage;
 import javafx.event.EventTarget;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -27,35 +26,39 @@ public class EscHideHandler {
     /**
      * 执行初始化
      *
-     * @param obj 对象
+     * @param stage 舞台
      * @return 处理器
      */
-    public static EscHideHandler init(Object obj) {
-        EscHideHandler handler = null;
-        if (obj instanceof FXStage stage) {
-            handler = new EscHideHandler(stage.getStage());
-            HANDLERS.put(stage.getStage(), handler);
-        } else if (obj instanceof Stage stage) {
-            handler = new EscHideHandler(stage);
-            HANDLERS.put(stage, handler);
-        }
+    public static EscHideHandler init(@NonNull Stage stage) {
+        EscHideHandler handler = new EscHideHandler(stage);
+        HANDLERS.put(stage, handler);
         return handler;
+    }
+
+    /**
+     * 是否存在处理器
+     *
+     * @param stage 舞台
+     * @return 结果
+     */
+    public static boolean exists(Stage stage) {
+        if (stage != null) {
+            return HANDLERS.containsKey(stage);
+        }
+        return false;
     }
 
     /**
      * 执行销毁
      *
-     * @param obj 对象
+     * @param stage 舞台
      */
-    public static void destroy(Object obj) {
-        EscHideHandler handler = null;
-        if (obj instanceof FXStage stage) {
-            handler = HANDLERS.remove(stage.getStage());
-        } else if (obj instanceof Stage stage) {
-            handler = HANDLERS.remove(stage);
-        }
-        if (handler != null) {
-            handler.destroy();
+    public static void destroy(Stage stage) {
+        if (stage != null) {
+            EscHideHandler handler = HANDLERS.remove(stage);
+            if (handler != null) {
+                handler.destroy();
+            }
         }
     }
 
@@ -73,14 +76,14 @@ public class EscHideHandler {
      * 初始化
      */
     private void init() {
-        KeyListener.listenKeyReleased(this.stage, KeyCode.ESCAPE, this::quit);
+        KeyListener.listenReleased(this.stage, KeyCode.ESCAPE, this::quit);
     }
 
     /**
      * 销毁
      */
     private void destroy() {
-        KeyListener.unListenKeyReleased(this.stage, KeyCode.ESCAPE);
+        KeyListener.unListenReleased(this.stage, KeyCode.ESCAPE);
     }
 
     /**

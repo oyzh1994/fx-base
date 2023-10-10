@@ -59,6 +59,8 @@ public class MouseHandler {
     private boolean controlDown;
 
     public void handle(MouseEvent event) {
-        this.handler.handle(event);
+        if (this.handler != null) {
+            this.handler.handle(event);
+        }
     }
 }

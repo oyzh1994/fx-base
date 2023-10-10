@@ -7,8 +7,6 @@ import javafx.scene.input.KeyEvent;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.function.Consumer;
-
 /**
  * 键盘按键处理器
  *
@@ -55,6 +53,8 @@ public class KeyHandler {
     private boolean controlDown;
 
     public void handle(KeyEvent event) {
-        this.handler.handle(event);
+        if (this.handler != null) {
+            this.handler.handle(event);
+        }
     }
 }

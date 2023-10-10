@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.view;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
+import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
@@ -31,11 +32,6 @@ public class FXStage implements PropAdapter {
      */
     @Getter
     private boolean used;
-
-    /**
-     * esc退出处理
-     */
-    private EscHideHandler escHideHandler;
 
     /**
      * 窗口引用
@@ -371,8 +367,8 @@ public class FXStage implements PropAdapter {
      * 设置按下eac时隐藏窗口
      */
     public void hideOnEscape() {
-        if (this.getStage() != null && this.escHideHandler == null) {
-            this.escHideHandler = EscHideHandler.init(this.getStage());
+        if (this.getStage() != null && !EscHideHandler.exists(this.getStage())) {
+            EscHideHandler.init(this.getStage());
         }
     }
 
@@ -380,10 +376,7 @@ public class FXStage implements PropAdapter {
      * 取消按下eac时隐藏窗口
      */
     public void unHideOnEscape() {
-        if (this.escHideHandler != null) {
-            EscHideHandler.destroy(this.getStage());
-            this.escHideHandler = null;
-        }
+        EscHideHandler.destroy(this.getStage());
     }
 
     /**
@@ -392,6 +385,31 @@ public class FXStage implements PropAdapter {
      * @return 结果
      */
     public boolean isHideOnEscape() {
-        return this.escHideHandler != null;
+        return EscHideHandler.exists(this.getStage());
+    }
+
+    /**
+     * 设置按下tab时切换组件
+     */
+    public void switchOnTab() {
+        if (this.getStage() != null && !TabSwitchHandler.exists(this.getStage())) {
+            TabSwitchHandler.init(this.getStage());
+        }
+    }
+
+    /**
+     * 取消按下tab时切换组件
+     */
+    public void unSwitchOnTab() {
+        TabSwitchHandler.destroy(this.getStage());
+    }
+
+    /**
+     * 是否按下tab时切换组件
+     *
+     * @return 结果
+     */
+    public boolean isSwitchOnTab() {
+        return TabSwitchHandler.exists(this.getStage());
     }
 }

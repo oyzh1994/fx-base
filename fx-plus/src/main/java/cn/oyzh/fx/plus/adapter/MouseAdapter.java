@@ -63,7 +63,8 @@ public interface MouseAdapter extends PropAdapter {
         MouseHandler mouseHandler = new MouseHandler();
         mouseHandler.type(MouseEvent.MOUSE_CLICKED)
                 .button(MouseButton.PRIMARY)
-                .clickCount(1);
+                .clickCount(1)
+                .handler(handler);
         this.getOnMouseEventHandler(true).addHandler(mouseHandler);
     }
 
@@ -93,7 +94,8 @@ public interface MouseAdapter extends PropAdapter {
         MouseHandler mouseHandler = new MouseHandler();
         mouseHandler.type(MouseEvent.MOUSE_CLICKED)
                 .button(MouseButton.SECONDARY)
-                .clickCount(1);
+                .clickCount(1)
+                .handler(handler);
         this.getOnMouseEventHandler(true).addHandler(mouseHandler);
     }
 }

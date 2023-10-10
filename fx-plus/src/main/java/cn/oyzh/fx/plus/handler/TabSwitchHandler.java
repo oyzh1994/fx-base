@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.handler;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
-import cn.oyzh.fx.plus.view.FXStage;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -36,20 +35,18 @@ public class TabSwitchHandler {
     /**
      * 执行初始化
      *
-     * @param obj 对象
+     * @param target 对写
      * @return 处理器
      */
-    public static TabSwitchHandler init(Object obj) {
+    public static TabSwitchHandler init(@NonNull EventTarget target) {
         TabSwitchHandler handler = null;
-        if (obj instanceof FXStage stage) {
-            handler = new TabSwitchHandler(stage.getStage());
-            HANDLERS.put(stage.getStage(), handler);
-        } else if (obj instanceof Stage stage) {
-            handler = new TabSwitchHandler(stage);
-            HANDLERS.put(stage, new TabSwitchHandler(stage));
-        } else if (obj instanceof Parent parent) {
+        if (target instanceof Parent parent) {
             handler = new TabSwitchHandler(parent);
-            HANDLERS.put(parent, new TabSwitchHandler(parent));
+            HANDLERS.put(target, new TabSwitchHandler(parent));
+            return handler;
+        } else if (target instanceof Stage stage) {
+            handler = new TabSwitchHandler(stage);
+            HANDLERS.put(target, new TabSwitchHandler(stage));
         }
         return handler;
     }
@@ -57,19 +54,14 @@ public class TabSwitchHandler {
     /**
      * 执行销毁
      *
-     * @param obj 对象
+     * @param target 对象
      */
-    public static void destroy(Object obj) {
-        TabSwitchHandler handler = null;
-        if (obj instanceof FXStage stage) {
-            handler = HANDLERS.remove(stage.getStage());
-        } else if (obj instanceof Stage stage) {
-            handler = HANDLERS.remove(stage);
-        } else if (obj instanceof Parent parent) {
-            handler = HANDLERS.remove(parent);
-        }
-        if (handler != null) {
-            handler.destroy();
+    public static void destroy(EventTarget target) {
+        if (target != null) {
+            TabSwitchHandler handler = HANDLERS.remove(target);
+            if (handler != null) {
+                handler.destroy();
+            }
         }
     }
 
@@ -92,17 +84,30 @@ public class TabSwitchHandler {
     }
 
     /**
+     * 是否存在处理器
+     *
+     * @param target 对象
+     * @return 结果
+     */
+    public static boolean exists(EventTarget target) {
+        if (target != null) {
+            return HANDLERS.containsKey(target);
+        }
+        return false;
+    }
+
+    /**
      * 初始化
      */
     private void init() {
-        KeyListener.listenKeyReleased(this.root, KeyCode.TAB, this::toNextNode);
+        KeyListener.listenReleased(this.root, KeyCode.TAB, this::toNextNode);
     }
 
     /**
      * 销毁
      */
     private void destroy() {
-        KeyListener.unListenKeyReleased(this.root, KeyCode.TAB);
+        KeyListener.unListenReleased(this.root, KeyCode.TAB);
     }
 
     /**
@@ -120,7 +125,7 @@ public class TabSwitchHandler {
                     nodeList.add(n);
                 }
                 if (n instanceof Parent p1) {
-                    findNodes(p1, nodeList);
+                    this.findNodes(p1, nodeList);
                 }
             }
         }
@@ -171,5 +176,4 @@ public class TabSwitchHandler {
             next.requestFocus();
         }
     }
-
 }
