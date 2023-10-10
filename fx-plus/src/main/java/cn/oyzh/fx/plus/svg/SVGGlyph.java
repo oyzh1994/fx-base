@@ -289,8 +289,10 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      *
      * @param size 大小
      */
-    public void setSize(@NonNull Number size) {
-        this.setSizeStr(size.toString());
+    public void setSize(Number size) {
+        if (size != null &&size.doubleValue() > 0){
+            this.setSizeStr(size.toString());
+        }
     }
 
     /**

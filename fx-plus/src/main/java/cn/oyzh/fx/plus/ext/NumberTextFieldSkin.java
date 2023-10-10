@@ -30,12 +30,12 @@ public class NumberTextFieldSkin extends TextFieldSkin {
     protected SVGGlyph decrButton;
 
     /**
-     * 监听器
+     * 文本监听器
      */
     private final InvalidationListener textChanged = observable -> this.updateButtonVisibility();
 
     /**
-     * 监听器
+     * 焦点监听器
      */
     private final InvalidationListener focusChanged = observable -> this.updateButtonVisibility();
 
@@ -53,19 +53,24 @@ public class NumberTextFieldSkin extends TextFieldSkin {
     public NumberTextFieldSkin(TextField textField, Runnable onIncr, Runnable onDecr) {
         super(textField);
 
+        double h = textField.getHeight() / 2.d - 1;
         // 初始化增加、减少按钮
         this.incrButton = new SVGGlyph("/font/arrow-up-filling.svg");
-        this.incrButton.setSize(8);
+        this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
         this.incrButton.setColor("#000000");
         this.incrButton.managedBindVisible();
+        this.incrButton.setEnableWaiting(false);
+        this.incrButton.setFocusTraversable(false);
         this.incrButton.setPadding(new Insets(0));
 
         this.decrButton = new SVGGlyph("/font/arrow-down-filling.svg");
-        this.decrButton.setSize(8);
+        this.decrButton.setSize(h);
         this.decrButton.setVisible(false);
         this.decrButton.setColor("#000000");
         this.decrButton.managedBindVisible();
+        this.decrButton.setEnableWaiting(false);
+        this.decrButton.setFocusTraversable(false);
         this.decrButton.setPadding(new Insets(0));
 
         if (onIncr != null) {
@@ -87,16 +92,21 @@ public class NumberTextFieldSkin extends TextFieldSkin {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 按钮大小
-        double size = this.decrButton.getMinWidth();
-        // 位移的x值
-        double x1 = w - size;
-        // 位移的y值
-        double y1 = h / 2 - size - 1;
-        double y2 = h / 2 + 1;
+        // 按钮大小，规则 (组件高/2-2)*0.9
+        double size = (this.textField.getHeight() / 2.0 - 2) * 0.9;
+        this.incrButton.setSize(size);
+        this.decrButton.setSize(size);
+        // 计算按钮实际大小
+        double btnSize = this.snapSizeX(size);
+        // 位移的areaX值，规则 组件宽+x-按钮实际大小
+        double areaX = w + x - btnSize;
+        // 位移的areaY1值，规则 组件高*0.1/2 +1
+        double areaY1 = h * 0.1 / 2 + 1;
+        // 位移的areaY2值，规则 组件高/2+areaY1+2
+        double areaY2 = h / 2 + areaY1 + 2;
         // 设置按钮位置
-        super.positionInArea(this.incrButton, w, y1, size, h, 0, HPos.CENTER, VPos.CENTER);
-        super.positionInArea(this.decrButton, w, y2, size, h, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
     }
 
     @Override

@@ -424,22 +424,49 @@ public class AppMain extends Application {
 
     private void test12(Stage stage) {
         ClearableTextField textField = new ClearableTextField();
+        ClearableTextField textField1 = new ClearableTextField();
         ClearableTextField textField2 = new ClearableTextField();
+        ClearableTextField textField3 = new ClearableTextField();
 
-        VBox hBox = new VBox(textField, textField2);
+        textField.setHeightAll(20);
+        textField1.setHeightAll(25);
+        textField2.setHeightAll(30);
+        textField3.setHeightAll(50);
+
+        VBox hBox = new VBox(textField, textField1, textField2, textField3);
         // // 设置HBox的间距
         hBox.setSpacing(10);
-        stage.setScene(new Scene(hBox, 300, 300));
+        stage.setScene(new Scene(hBox, 500, 500));
         stage.show();
     }
 
     private void test13(Stage stage) {
         NumberTextField textField = new NumberTextField();
-        DecimalTextField textField1 = new DecimalTextField();
-        VBox hBox = new VBox(textField, textField1);
+        NumberTextField textField1 = new NumberTextField();
+        NumberTextField textField2 = new NumberTextField();
+        NumberTextField textField3 = new NumberTextField();
+
+        DecimalTextField decimalTextField = new DecimalTextField();
+        DecimalTextField decimalTextField1 = new DecimalTextField();
+        DecimalTextField decimalTextField2 = new DecimalTextField();
+        DecimalTextField decimalTextField3 = new DecimalTextField();
+
+        textField.setHeightAll(20);
+        decimalTextField.setHeightAll(20);
+
+        textField1.setHeightAll(25);
+        decimalTextField1.setHeightAll(25);
+
+        textField2.setHeightAll(30);
+        decimalTextField2.setHeightAll(30);
+
+        textField3.setHeightAll(50);
+        decimalTextField3.setHeightAll(50);
+
+        VBox hBox = new VBox(textField, decimalTextField, textField1, decimalTextField1, textField2, decimalTextField2, textField3, decimalTextField3);
         // // 设置HBox的间距
         hBox.setSpacing(10);
-        stage.setScene(new Scene(hBox, 300, 300));
+        stage.setScene(new Scene(hBox, 500, 500));
         stage.show();
     }
 }
