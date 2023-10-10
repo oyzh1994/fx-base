@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.mouse;
 
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.NonNull;
@@ -29,9 +30,9 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
      * @param clickCount 点击次数
      * @return KeyHandler 按键处理器
      */
-    public MouseHandler getMouseHandler(@NonNull MouseButton button, int clickCount) {
+    public MouseHandler getMouseHandler(@NonNull EventType<MouseEvent> type, MouseButton button, Integer clickCount) {
         for (MouseHandler handler : this.handlers) {
-            if (handler.button() == button && handler.clickCount() == clickCount) {
+            if (handler.button() == button && type == handler.type() && Objects.equals(handler.clickCount(), clickCount)) {
                 return handler;
             }
         }
@@ -40,38 +41,10 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
 
     /**
      * 添加鼠标按键处理器
-     *
-     * @param button     鼠标按钮
-     * @param clickCount 点击次数
-     * @param handler    事件处理器
-     */
-    public void addHandler(@NonNull MouseButton button, int clickCount, @NonNull EventHandler<? super MouseEvent> handler) {
-        MouseHandler mouseHandler = this.getMouseHandler(button, clickCount);
-        if (mouseHandler == null) {
-            mouseHandler = new MouseHandler();
-            mouseHandler.button(button).clickCount(clickCount).handler(handler);
-        } else if (!Objects.equals(handler, mouseHandler.handler())) {
-            mouseHandler.handler(handler);
-        }
-        this.handlers.add(mouseHandler);
-    }
-
-    /**
-     * 添加鼠标按键处理器
      */
     public void addHandler(@NonNull MouseHandler mouseHandler) {
-        this.removeHandler(mouseHandler.button(), mouseHandler.clickCount());
+        this.removeHandler(mouseHandler);
         this.handlers.add(mouseHandler);
-    }
-
-    /**
-     * 移除按鼠标键处理器
-     *
-     * @param button     鼠标按钮
-     * @param clickCount 点击次数
-     */
-    public void removeHandler(@NonNull MouseButton button, int clickCount) {
-        this.removeHandler(this.getMouseHandler(button, clickCount));
     }
 
     /**
@@ -81,7 +54,12 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
      */
     public void removeHandler(MouseHandler handler) {
         if (handler != null) {
-            this.handlers.remove(handler);
+            if (!this.handlers.remove(handler)) {
+                handler = this.getMouseHandler(handler.type(), handler.button(), handler.clickCount());
+                if (handler != null) {
+                    this.handlers.remove(handler);
+                }
+            }
         }
     }
 

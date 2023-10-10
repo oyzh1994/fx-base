@@ -1,15 +1,11 @@
 package cn.oyzh.fx.plus.mouse;
 
-import cn.oyzh.fx.plus.keyboard.KeyHandler;
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
+import javafx.event.EventType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -28,6 +24,11 @@ public class MouseHandler {
     private MouseButton button;
 
     /**
+     * 按键类型
+     */
+    private EventType<MouseEvent> type;
+
+    /**
      * 事件处理器
      */
     private EventHandler<? super MouseEvent> handler;
@@ -35,7 +36,7 @@ public class MouseHandler {
     /**
      * 点击次数
      */
-    private int clickCount = 1;
+    private Integer clickCount;
 
     /**
      * 是否alt按下

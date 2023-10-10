@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.mouse.SimpleMouseEventHandler;
+import cn.oyzh.fx.plus.mouse.MouseEventHandler;
+import cn.oyzh.fx.plus.mouse.MouseHandler;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -19,14 +21,14 @@ public interface MouseAdapter extends PropAdapter {
      * @param initIfNull 如果为空，是否初始化
      * @return 鼠标事件处理器
      */
-    private SimpleMouseEventHandler getOnMouseEventHandler(boolean initIfNull) {
+    private MouseEventHandler getOnMouseEventHandler(boolean initIfNull) {
         if (this instanceof Node node) {
-            SimpleMouseEventHandler handler = null;
-            if (node.getOnMouseClicked() instanceof SimpleMouseEventHandler) {
-                handler = (SimpleMouseEventHandler) node.getOnMouseClicked();
+            MouseEventHandler handler = null;
+            if (node.getOnMouseClicked() instanceof MouseEventHandler) {
+                handler = (MouseEventHandler) node.getOnMouseClicked();
             }
             if (handler == null && initIfNull) {
-                handler = new SimpleMouseEventHandler();
+                handler = new MouseEventHandler();
                 node.setOnMouseClicked(handler);
             }
             return handler;
@@ -41,8 +43,15 @@ public interface MouseAdapter extends PropAdapter {
      * @return 事件处理器
      */
     default EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
-        SimpleMouseEventHandler handler = this.getOnMouseEventHandler(false);
-        return handler == null ? null : handler.primaryClicked();
+        MouseEventHandler handler = this.getOnMouseEventHandler(false);
+        if (handler == null) {
+            return null;
+        }
+        MouseHandler mouseHandler = handler.getMouseHandler(MouseEvent.MOUSE_CLICKED, MouseButton.PRIMARY, 1);
+        if (mouseHandler == null) {
+            return null;
+        }
+        return mouseHandler.handler();
     }
 
     /**
@@ -51,7 +60,11 @@ public interface MouseAdapter extends PropAdapter {
      * @param handler 事件处理器
      */
     default void setOnMousePrimaryClicked(EventHandler<? super MouseEvent> handler) {
-        this.getOnMouseEventHandler(true).primaryClicked(handler);
+        MouseHandler mouseHandler = new MouseHandler();
+        mouseHandler.type(MouseEvent.MOUSE_CLICKED)
+                .button(MouseButton.PRIMARY)
+                .clickCount(1);
+        this.getOnMouseEventHandler(true).addHandler(mouseHandler);
     }
 
     /**
@@ -60,8 +73,15 @@ public interface MouseAdapter extends PropAdapter {
      * @return 事件处理器
      */
     default EventHandler<? super MouseEvent> getOnMouseSecondClicked() {
-        SimpleMouseEventHandler handler = this.getOnMouseEventHandler(false);
-        return handler == null ? null : handler.secondClicked();
+        MouseEventHandler handler = this.getOnMouseEventHandler(false);
+        if (handler == null) {
+            return null;
+        }
+        MouseHandler mouseHandler = handler.getMouseHandler(MouseEvent.MOUSE_CLICKED, MouseButton.SECONDARY, 1);
+        if (mouseHandler == null) {
+            return null;
+        }
+        return mouseHandler.handler();
     }
 
     /**
@@ -70,6 +90,10 @@ public interface MouseAdapter extends PropAdapter {
      * @param handler 事件处理器
      */
     default void setOnMouseSecondClicked(EventHandler<? super MouseEvent> handler) {
-        this.getOnMouseEventHandler(true).secondClicked(handler);
+        MouseHandler mouseHandler = new MouseHandler();
+        mouseHandler.type(MouseEvent.MOUSE_CLICKED)
+                .button(MouseButton.SECONDARY)
+                .clickCount(1);
+        this.getOnMouseEventHandler(true).addHandler(mouseHandler);
     }
 }

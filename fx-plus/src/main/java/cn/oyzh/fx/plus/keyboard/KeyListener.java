@@ -29,8 +29,8 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    public static void listenKey(@NonNull Object target, @NonNull KeyHandler keyHandler) {
-        addKeyEventHandler(target, keyHandler);
+    public static void listen(@NonNull Object target, @NonNull KeyHandler keyHandler) {
+        addHandler(target, keyHandler);
     }
 
     /**
@@ -39,8 +39,8 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    public static void unListenKey(@NonNull EventTarget target, @NonNull KeyHandler keyHandler) {
-        removeKeyEventHandler(target, keyHandler);
+    public static void unListen(@NonNull EventTarget target, @NonNull KeyHandler keyHandler) {
+        addHandler(target, keyHandler);
     }
 
     /**
@@ -50,8 +50,8 @@ public class KeyListener {
      * @param keyCode 按键编码
      * @param handler 事件处理器
      */
-    public static void listenKeyReleased(@NonNull EventTarget target, @NonNull KeyCode keyCode, @NonNull EventHandler<? super KeyEvent> handler) {
-        addKeyEventHandler(target, KeyEvent.KEY_RELEASED, keyCode, handler);
+    public static void listenReleased(@NonNull EventTarget target, @NonNull KeyCode keyCode, @NonNull EventHandler<? super KeyEvent> handler) {
+        addHandler(target, new KeyHandler().keyType(KeyEvent.KEY_RELEASED).keyCode(keyCode).handler(handler));
     }
 
     /**
@@ -60,8 +60,8 @@ public class KeyListener {
      * @param target  事件目标
      * @param keyCode 按键编码
      */
-    public static void unListenKeyReleased(@NonNull EventTarget target, @NonNull KeyCode keyCode) {
-        removeKeyEventHandler(target, KeyEvent.KEY_RELEASED, keyCode);
+    public static void unListenReleased(@NonNull EventTarget target, @NonNull KeyCode keyCode) {
+        removeHandler(target, KeyEvent.KEY_RELEASED, keyCode);
     }
 
     /**
@@ -70,13 +70,13 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    private static void addKeyEventHandler(Object target, KeyHandler keyHandler) {
+    private static void addHandler(Object target, KeyHandler keyHandler) {
         if (target instanceof FXView view) {
             target = view.root();
         } else if (target instanceof Stage stage) {
             target = stage.getScene();
         }
-        KeyEventHandler eventHandler = getKeyEventHandler(target);
+        KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler == null) {
             if (target instanceof Scene scene) {
                 eventHandler = new KeyEventHandler();
@@ -99,29 +99,17 @@ public class KeyListener {
     }
 
     /**
-     * 添加事件处理器
-     *
-     * @param target  事件目标
-     * @param keyType 按键类型
-     * @param keyCode 按键编码
-     * @param handler 事件业务处理
-     */
-    private static void addKeyEventHandler(EventTarget target, EventType<KeyEvent> keyType, KeyCode keyCode, EventHandler<? super KeyEvent> handler) {
-        addKeyEventHandler(target, new KeyHandler().keyType(keyType).keyCode(keyCode).handler(handler));
-    }
-
-    /**
      * 移除事件处理器
      *
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    private static void removeKeyEventHandler(EventTarget target, KeyHandler keyHandler) {
-        KeyEventHandler eventHandler = getKeyEventHandler(target);
+    private static void removeHandler(EventTarget target, KeyHandler keyHandler) {
+        KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyHandler.keyCode(), keyHandler.keyType());
             if (log.isDebugEnabled()) {
-                log.debug("removeKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
+                log.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
             }
         }
     }
@@ -133,12 +121,12 @@ public class KeyListener {
      * @param keyType 按键类型
      * @param keyCode 按键编码
      */
-    private static void removeKeyEventHandler(EventTarget target, EventType<KeyEvent> keyType, KeyCode keyCode) {
-        KeyEventHandler eventHandler = getKeyEventHandler(target);
+    private static void removeHandler(EventTarget target, EventType<KeyEvent> keyType, KeyCode keyCode) {
+        KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyCode, keyType);
             if (log.isDebugEnabled()) {
-                log.debug("removeKeyEventHandler, keyType:{} keyCode:{}", keyType, keyCode);
+                log.debug("removeHandler, keyType:{} keyCode:{}", keyType, keyCode);
             }
         }
     }
@@ -149,7 +137,7 @@ public class KeyListener {
      * @param target 事件目标
      * @return 按键事件处理器
      */
-    private static KeyEventHandler getKeyEventHandler(Object target) {
+    private static KeyEventHandler getEventHandler(Object target) {
         KeyEventHandler eventHandler = null;
         if (target instanceof Scene scene) {
             if (scene.getOnKeyReleased() instanceof KeyEventHandler keyEventHandler) {
