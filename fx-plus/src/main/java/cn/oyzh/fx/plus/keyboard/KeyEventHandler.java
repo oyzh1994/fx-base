@@ -19,19 +19,10 @@ import java.util.function.Consumer;
  */
 public class KeyEventHandler implements EventHandler<KeyEvent> {
 
-    ///**
-    // * 事件目标对象
-    // */
-    //private final Object target;
-
     /**
      * 按键处理器
      */
-    private final List<cn.oyzh.fx.plus.keyboard.KeyHandler> handlers = new ArrayList<>();
-
-    //public KeyEventHandler(@NonNull Object target) {
-    //    this.target = target;
-    //}
+    private final List<KeyHandler> handlers = new ArrayList<>();
 
     /**
      * 获取按键处理器
@@ -40,8 +31,8 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
      * @param keyType 按键类型
      * @return KeyHandler 按键处理器
      */
-    public cn.oyzh.fx.plus.keyboard.KeyHandler getKeyHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType) {
-        for (cn.oyzh.fx.plus.keyboard.KeyHandler handler : this.handlers) {
+    public KeyHandler getKeyHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType) {
+        for (KeyHandler handler : this.handlers) {
             if (handler.keyCode() == keyCode && Objects.equals(keyType, handler.keyType())) {
                 return handler;
             }
@@ -56,10 +47,10 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
      * @param keyType 按键类型
      * @param handler 事件处理器
      */
-    public void addHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType, @NonNull Consumer<KeyEvent> handler) {
-        cn.oyzh.fx.plus.keyboard.KeyHandler keyHandler = this.getKeyHandler(keyCode, keyType);
+    public void addHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType, @NonNull EventHandler<? super KeyEvent> handler) {
+        KeyHandler keyHandler = this.getKeyHandler(keyCode, keyType);
         if (keyHandler == null) {
-            keyHandler = new cn.oyzh.fx.plus.keyboard.KeyHandler();
+            keyHandler = new KeyHandler();
             keyHandler.keyType(keyType).keyCode(keyCode).handler(handler);
         } else if (!Objects.equals(handler, keyHandler.handler())) {
             keyHandler.handler(handler);
@@ -70,11 +61,8 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
     /**
      * 添加按键处理器
      */
-    public void addHandler(@NonNull cn.oyzh.fx.plus.keyboard.KeyHandler keyHandler) {
-        cn.oyzh.fx.plus.keyboard.KeyHandler keyHandler1 = this.getKeyHandler(keyHandler.keyCode(), keyHandler.keyType());
-        if (keyHandler1 != null) {
-            this.removeHandler(keyHandler1);
-        }
+    public void addHandler(@NonNull KeyHandler keyHandler) {
+        this.removeHandler(keyHandler.keyCode(), keyHandler.keyType());
         this.handlers.add(keyHandler);
     }
 
@@ -85,10 +73,7 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
      * @param keyType 按键类型
      */
     public void removeHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType) {
-        cn.oyzh.fx.plus.keyboard.KeyHandler keyHandler = getKeyHandler(keyCode, keyType);
-        if (keyHandler != null) {
-            this.removeHandler(keyHandler);
-        }
+        this.removeHandler(this.getKeyHandler(keyCode, keyType));
     }
 
     /**
@@ -96,16 +81,14 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
      *
      * @param handler 按键处理器
      */
-    public void removeHandler(@NonNull cn.oyzh.fx.plus.keyboard.KeyHandler handler) {
-        this.handlers.remove(handler);
+    public void removeHandler(KeyHandler handler) {
+        if (handler != null) {
+            this.handlers.remove(handler);
+        }
     }
 
     @Override
     public void handle(KeyEvent event) {
-        //// 检查是否获得焦点
-        //if (this.target instanceof Window window && !window.isFocused()) {
-        //    return;
-        //}
         if (!this.handlers.isEmpty()) {
             for (KeyHandler handler : this.handlers) {
                 if (event.getCode() != handler.keyCode()) {
@@ -126,7 +109,7 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
                 if (handler.controlDown() && !event.isControlDown()) {
                     continue;
                 }
-                handler.handler().accept(event);
+                handler.handle(event);
             }
         }
     }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.handler;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.plus.keyboard.KeyboardListener;
+import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.view.FXStage;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -95,14 +95,14 @@ public class TabSwitchHandler {
      * 初始化
      */
     private void init() {
-        KeyboardListener.listenKeyReleased(this.root, KeyCode.TAB, this::toNextNode);
+        KeyListener.listenKeyReleased(this.root, KeyCode.TAB, this::toNextNode);
     }
 
     /**
      * 销毁
      */
     private void destroy() {
-        KeyboardListener.unListenKeyReleased(this.root, KeyCode.TAB);
+        KeyListener.unListenKeyReleased(this.root, KeyCode.TAB);
     }
 
     /**

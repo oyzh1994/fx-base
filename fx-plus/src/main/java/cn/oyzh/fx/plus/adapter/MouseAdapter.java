@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.handler.MouseEventHandler;
+import cn.oyzh.fx.plus.mouse.SimpleMouseEventHandler;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -19,14 +19,14 @@ public interface MouseAdapter extends PropAdapter {
      * @param initIfNull 如果为空，是否初始化
      * @return 鼠标事件处理器
      */
-    private MouseEventHandler getOnMouseEventHandler(boolean initIfNull) {
+    private SimpleMouseEventHandler getOnMouseEventHandler(boolean initIfNull) {
         if (this instanceof Node node) {
-            MouseEventHandler handler = null;
-            if (node.getOnMouseClicked() instanceof MouseEventHandler) {
-                handler = (MouseEventHandler) node.getOnMouseClicked();
+            SimpleMouseEventHandler handler = null;
+            if (node.getOnMouseClicked() instanceof SimpleMouseEventHandler) {
+                handler = (SimpleMouseEventHandler) node.getOnMouseClicked();
             }
             if (handler == null && initIfNull) {
-                handler = new MouseEventHandler();
+                handler = new SimpleMouseEventHandler();
                 node.setOnMouseClicked(handler);
             }
             return handler;
@@ -41,7 +41,7 @@ public interface MouseAdapter extends PropAdapter {
      * @return 事件处理器
      */
     default EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
-        MouseEventHandler handler = this.getOnMouseEventHandler(false);
+        SimpleMouseEventHandler handler = this.getOnMouseEventHandler(false);
         return handler == null ? null : handler.primaryClicked();
     }
 
@@ -60,7 +60,7 @@ public interface MouseAdapter extends PropAdapter {
      * @return 事件处理器
      */
     default EventHandler<? super MouseEvent> getOnMouseSecondClicked() {
-        MouseEventHandler handler = this.getOnMouseEventHandler(false);
+        SimpleMouseEventHandler handler = this.getOnMouseEventHandler(false);
         return handler == null ? null : handler.secondClicked();
     }
 

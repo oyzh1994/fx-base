@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.keyboard;
 
 import cn.oyzh.fx.plus.view.FXView;
+import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.scene.Node;
@@ -12,8 +13,6 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.function.Consumer;
-
 /**
  * 键盘按键事件
  *
@@ -22,7 +21,7 @@ import java.util.function.Consumer;
  */
 @Slf4j
 @UtilityClass
-public class KeyboardListener {
+public class KeyListener {
 
     /**
      * 监听按键
@@ -30,7 +29,7 @@ public class KeyboardListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    public static void listenKey(@NonNull Object target, @NonNull cn.oyzh.fx.plus.keyboard.KeyHandler keyHandler) {
+    public static void listenKey(@NonNull Object target, @NonNull KeyHandler keyHandler) {
         addKeyEventHandler(target, keyHandler);
     }
 
@@ -40,7 +39,7 @@ public class KeyboardListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    public static void unListenKey(@NonNull EventTarget target, @NonNull cn.oyzh.fx.plus.keyboard.KeyHandler keyHandler) {
+    public static void unListenKey(@NonNull EventTarget target, @NonNull KeyHandler keyHandler) {
         removeKeyEventHandler(target, keyHandler);
     }
 
@@ -51,7 +50,7 @@ public class KeyboardListener {
      * @param keyCode 按键编码
      * @param handler 事件处理器
      */
-    public static void listenKeyReleased(@NonNull EventTarget target, @NonNull KeyCode keyCode, @NonNull Consumer<KeyEvent> handler) {
+    public static void listenKeyReleased(@NonNull EventTarget target, @NonNull KeyCode keyCode, @NonNull EventHandler<? super KeyEvent> handler) {
         addKeyEventHandler(target, KeyEvent.KEY_RELEASED, keyCode, handler);
     }
 
@@ -65,49 +64,13 @@ public class KeyboardListener {
         removeKeyEventHandler(target, KeyEvent.KEY_RELEASED, keyCode);
     }
 
-    ///**
-    // * 监听tab按键
-    // *
-    // * @param view 页面
-    // */
-    //public static void listenTabKeyReleased(@NonNull FXView view) {
-    //    listenKeyReleased(view.getStage(), KeyCode.TAB, e -> FormUtil.toNext(view.getStage(), e));
-    //}
-    //
-    ///**
-    // * 取消监听esc按键
-    // *
-    // * @param view 页面
-    // */
-    //public static void unListenTabKeyReleased(@NonNull FXView view) {
-    //    unListenKeyReleased(view.getStage(), KeyCode.TAB);
-    //}
-
-    ///**
-    // * 监听esc按键
-    // *
-    // * @param fxStage 页面
-    // */
-    //public static void listenEscKeyReleased(@NonNull FXStage fxStage) {
-    //    listenKeyReleased(fxStage.getStage(), KeyCode.ESCAPE, event -> fxStage.close());
-    //}
-    //
-    ///**
-    // * 取消监听esc按键
-    // *
-    // * @param fxStage 页面
-    // */
-    //public static void unListenEscKeyReleased(@NonNull FXStage fxStage) {
-    //    unListenKeyReleased(fxStage.getStage(), KeyCode.ESCAPE);
-    //}
-
     /**
      * 添加事件处理器
      *
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    private static void addKeyEventHandler(Object target, cn.oyzh.fx.plus.keyboard.KeyHandler keyHandler) {
+    private static void addKeyEventHandler(Object target, KeyHandler keyHandler) {
         if (target instanceof FXView view) {
             target = view.root();
         } else if (target instanceof Stage stage) {
@@ -143,8 +106,8 @@ public class KeyboardListener {
      * @param keyCode 按键编码
      * @param handler 事件业务处理
      */
-    private static void addKeyEventHandler(EventTarget target, EventType<KeyEvent> keyType, KeyCode keyCode, Consumer<KeyEvent> handler) {
-        addKeyEventHandler(target, new cn.oyzh.fx.plus.keyboard.KeyHandler().keyType(keyType).keyCode(keyCode).handler(handler));
+    private static void addKeyEventHandler(EventTarget target, EventType<KeyEvent> keyType, KeyCode keyCode, EventHandler<? super KeyEvent> handler) {
+        addKeyEventHandler(target, new KeyHandler().keyType(keyType).keyCode(keyCode).handler(handler));
     }
 
     /**

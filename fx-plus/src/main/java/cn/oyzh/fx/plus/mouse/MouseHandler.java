@@ -1,38 +1,41 @@
-package cn.oyzh.fx.plus.keyboard;
+package cn.oyzh.fx.plus.mouse;
 
+import cn.oyzh.fx.plus.keyboard.KeyHandler;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * 键盘按键处理器
+ * 鼠标按键处理器
  *
  * @author oyzh
- * @since 2023/2/8
+ * @since 2023/10/10
  */
 @Data
 @Accessors(fluent = true, chain = true)
-public class KeyHandler {
+public class MouseHandler {
 
     /**
-     * 按键编码
+     * 鼠标按钮
      */
-    private KeyCode keyCode;
+    private MouseButton button;
 
     /**
      * 事件处理器
      */
-    private EventHandler<? super KeyEvent> handler;
+    private EventHandler<? super MouseEvent> handler;
 
     /**
-     * 按键类型
+     * 点击次数
      */
-    private EventType<KeyEvent> keyType;
+    private int clickCount = 1;
 
     /**
      * 是否alt按下
@@ -54,7 +57,7 @@ public class KeyHandler {
      */
     private boolean controlDown;
 
-    public void handle(KeyEvent event) {
+    public void handle(MouseEvent event) {
         this.handler.handle(event);
     }
 }

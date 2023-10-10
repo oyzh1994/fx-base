@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.handler;
 
-import cn.oyzh.fx.plus.keyboard.KeyboardListener;
+import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.view.FXStage;
 import javafx.event.EventTarget;
 import javafx.scene.input.KeyCode;
@@ -73,14 +73,14 @@ public class EscHideHandler {
      * 初始化
      */
     private void init() {
-        KeyboardListener.listenKeyReleased(this.stage, KeyCode.ESCAPE, this::quit);
+        KeyListener.listenKeyReleased(this.stage, KeyCode.ESCAPE, this::quit);
     }
 
     /**
      * 销毁
      */
     private void destroy() {
-        KeyboardListener.unListenKeyReleased(this.stage, KeyCode.ESCAPE);
+        KeyListener.unListenKeyReleased(this.stage, KeyCode.ESCAPE);
     }
 
     /**

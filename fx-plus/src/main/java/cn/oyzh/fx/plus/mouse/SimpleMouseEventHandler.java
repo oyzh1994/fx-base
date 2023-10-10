@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.handler;
+package cn.oyzh.fx.plus.mouse;
 
 import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.event.EventHandler;
@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/4/17
  */
-public class MouseEventHandler implements EventHandler<MouseEvent> {
+public class SimpleMouseEventHandler implements EventHandler<MouseEvent> {
 
     /**
      * 主按钮点击事件
