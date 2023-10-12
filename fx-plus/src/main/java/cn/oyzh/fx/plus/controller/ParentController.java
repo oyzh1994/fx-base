@@ -1,0 +1,102 @@
+package cn.oyzh.fx.plus.controller;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.plus.stage.StageWrapper;
+import javafx.stage.WindowEvent;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * 父控制器
+ *
+ * @author oyzh
+ * @since 2023/10/12
+ */
+@Slf4j
+public class ParentController extends Controller {
+
+    @Override
+    protected void setStage(@NonNull StageWrapper stage) {
+        super.setStage(stage);
+        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+            for (Controller controller : this.getSubControllers()) {
+                controller.setStage(stage);
+                if (controller instanceof SubController subController) {
+                    subController.parent(this);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onStageShowing(WindowEvent event) {
+        super.onStageShowing(event);
+        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+            for (Controller controller : this.getSubControllers()) {
+                controller.onStageShowing(event);
+            }
+        }
+    }
+
+    @Override
+    public void onStageShown(WindowEvent event) {
+        super.onStageShown(event);
+        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+            for (Controller controller : this.getSubControllers()) {
+                controller.onStageShown(event);
+            }
+        }
+    }
+
+    @Override
+    public void onStageCloseRequest(WindowEvent event) {
+        super.onStageCloseRequest(event);
+        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+            for (Controller controller : this.getSubControllers()) {
+                controller.onStageCloseRequest(event);
+            }
+        }
+    }
+
+    @Override
+    public void onStageHiding(WindowEvent event) {
+        super.onStageHiding(event);
+        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+            for (Controller controller : this.getSubControllers()) {
+                controller.onStageHiding(event);
+            }
+        }
+    }
+
+    @Override
+    public void onStageHidden(WindowEvent event) {
+        super.onStageHidden(event);
+        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+            for (Controller controller : this.getSubControllers()) {
+                controller.onStageHidden(event);
+            }
+        }
+    }
+
+    @Override
+    public void onSystemExit() {
+        super.onSystemExit();
+        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+            for (Controller controller : this.getSubControllers()) {
+                controller.onSystemExit();
+            }
+        }
+    }
+
+    /**
+     * 获取子控制器列表
+     *
+     * @return 子控制器列表
+     */
+    public List<? extends Controller> getSubControllers() {
+        return Collections.emptyList();
+    }
+}

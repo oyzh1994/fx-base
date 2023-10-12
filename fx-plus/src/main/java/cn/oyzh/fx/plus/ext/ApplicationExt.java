@@ -1,15 +1,11 @@
 package cn.oyzh.fx.plus.ext;
 
 import cn.oyzh.fx.plus.stage.StageUtil;
-import cn.oyzh.fx.plus.view.FXViewUtil;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  * fx 支持Spring启动的主入口
@@ -19,16 +15,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  */
 @Slf4j
 public abstract class ApplicationExt extends Application {
-
-    public static void launchSpring(@NonNull Class<? extends Application> appClass, String... args) {
-        try {
-            SpringApplicationBuilder builder = new SpringApplicationBuilder(appClass);
-            builder.web(WebApplicationType.NONE).headless(false).run(args);
-            launch(appClass, args);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
     @Override
     public void start(Stage primaryStage) {

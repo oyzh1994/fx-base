@@ -5,12 +5,9 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import lombok.experimental.Accessors;
 
-import java.io.File;
-import java.util.List;
-
 
 /**
- * 拖动增强
+ * 文件拖动处理
  *
  * @author oyzh
  * @since 2023/5/14
@@ -18,21 +15,80 @@ import java.util.List;
 @Accessors(chain = true, fluent = true)
 public class DrapFileHandler {
 
-    public boolean checkDragboard(Dragboard dragboard) {
+    /**
+     * 检查拖动板
+     *
+     * @param dragboard 拖动板
+     * @return 结果
+     */
+    protected boolean checkDragboard(Dragboard dragboard) {
         return true;
     }
 
-    public void onDragOver(DragEvent event) {
-        event.acceptTransferModes(TransferMode.ANY);
-        event.consume();
+    /**
+     * 拖动经过事件
+     *
+     * @param event 事件
+     */
+    public final void onDragOver(DragEvent event) {
+        if (this.checkDragboard(event.getDragboard())) {
+            event.acceptTransferModes(TransferMode.ANY);
+            event.consume();
+            this.dragOver(event);
+        }
     }
 
-    public void onDragExited(DragEvent event) {
-        event.consume();
+    /**
+     * 拖动经过事件，内部
+     *
+     * @param event 事件
+     */
+    protected void dragOver(DragEvent event) {
+
     }
 
-    public void onDragDropped(DragEvent event, List<File> files) {
-        event.setDropCompleted(true);
-        event.consume();
+    /**
+     * 拖动离开事件
+     *
+     * @param event 事件
+     */
+    public final void onDragExited(DragEvent event) {
+        if (this.checkDragboard(event.getDragboard())) {
+            event.consume();
+            this.dragExited(event);
+        }
+    }
+
+    /**
+     * 拖动离开事件，内部
+     *
+     * @param event 事件
+     */
+    protected void dragExited(DragEvent event) {
+
+    }
+
+    /**
+     * 拖动完成事件
+     *
+     * @param event 事件
+     */
+    public final void onDragDropped(DragEvent event) {
+        Dragboard dragboard = event.getDragboard();
+        if (this.checkDragboard(event.getDragboard())) {
+            this.dragDropped(event);
+        }
+    }
+
+    /**
+     * 拖动完成事件，离开
+     *
+     * @param event 事件
+     */
+    protected void dragDropped(DragEvent event) {
+        if (this.checkDragboard(event.getDragboard())) {
+            event.setDropCompleted(true);
+            event.consume();
+        }
     }
 }

@@ -107,24 +107,26 @@ public class DragUtil {
      * 初始化拖动文件功能
      *
      * @param handler 拖动处理器
-     * @param scene   舞台
+     * @param scene   场景
      */
     public static void initDragFile(DrapFileHandler handler, Scene scene) {
-        scene.setOnDragOver(event -> {
-            if (handler.checkDragboard(event.getDragboard())) {
-                handler.onDragOver(event);
-            }
-        });
-        scene.setOnDragExited(event -> {
-            if (handler.checkDragboard(event.getDragboard())) {
-                handler.onDragExited(event);
-            }
-        });
-        scene.setOnDragDropped(event -> {
-            Dragboard dragboard = event.getDragboard();
-            if (handler.checkDragboard(dragboard)) {
-                handler.onDragDropped(event, dragboard == null ? null : dragboard.getFiles());
-            }
-        });
+        scene.setOnDragOver(handler::onDragOver);
+        scene.setOnDragExited(handler::onDragExited);
+        scene.setOnDragDropped(handler::onDragDropped);
+        scene.getProperties().put("_drapFileHandler", handler);
+    }
+
+    /**
+     * 清除文件拖拽资源
+     *
+     * @param scene 场景
+     */
+    public static void clearDragFile(Scene scene) {
+        if (scene.getProperties().containsKey("_drapFileHandler")) {
+            scene.getProperties().remove("_drapFileHandler");
+            scene.setOnDragOver(null);
+            scene.setOnDragExited(null);
+            scene.setOnDragDropped(null);
+        }
     }
 }

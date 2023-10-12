@@ -4,6 +4,8 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.drag.DragUtil;
+import cn.oyzh.fx.plus.drag.DrapFileHandler;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
@@ -13,12 +15,19 @@ import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.JMetroStyleClass;
 import jfxtras.styles.jmetro.Style;
 import lombok.NonNull;
+
+import java.io.File;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * 舞台包装
@@ -402,5 +411,41 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
      */
     default boolean isSwitchOnTab() {
         return TabSwitchHandler.exists(this.stage());
+    }
+
+    /**
+     * 初始化文件拖拽事件
+     *
+     * @param dragboardContent 拖拽板内容
+     * @param onDragFile       文件拖入处理
+     */
+    default void initDragFile(@NonNull String dragboardContent, @NonNull Consumer<List<File>> onDragFile) {
+        // 文件拖拽初始化
+        DragUtil.initDragFile(new DrapFileHandler() {
+
+            @Override
+            public boolean checkDragboard(Dragboard dragboard) {
+                return dragboard == null || !Objects.equals(dragboard.getString(), dragboardContent);
+            }
+
+            @Override
+            protected void dragOver(DragEvent event) {
+                disable();
+                appendTitle("===松开鼠标以释放文件===");
+            }
+
+            @Override
+            public void dragExited(DragEvent event) {
+                enable();
+                restoreTitle();
+            }
+
+            @Override
+            public void dragDropped(DragEvent event) {
+                if (event.getDragboard() != null && event.getDragboard().getFiles() != null) {
+                    onDragFile.accept(event.getDragboard().getFiles());
+                }
+            }
+        }, this.scene());
     }
 }
