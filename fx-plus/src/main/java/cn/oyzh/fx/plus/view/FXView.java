@@ -4,6 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.util.SystemUtil;
+import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
@@ -28,6 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2021/8/19
  */
+@Deprecated
 @Slf4j
 @ToString
 public class FXView extends FXStage implements ThemeAdapter {

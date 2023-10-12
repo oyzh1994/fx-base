@@ -13,10 +13,10 @@ import java.lang.annotation.Target;
 
 
 /**
- * 窗口注解
+ * 舞台属性
  *
  * @author oyzh
- * @since 2022/1/27
+ * @since 2023/10/12
  */
 @Lazy
 @Component
@@ -81,11 +81,11 @@ public @interface StageAttribute {
      */
     StageStyle stageStyle() default StageStyle.DECORATED;
 
-    // /**
-    //  * 是否使用主要的stage
-    //  *
-    //  * @return 结果
-    //  */
-    // boolean usePrimary() default false;
+    /**
+     * 是否使用主要的stage
+     *
+     * @return 结果
+     */
+    boolean usePrimary() default false;
 
 }

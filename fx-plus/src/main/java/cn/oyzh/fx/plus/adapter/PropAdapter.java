@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.view.FXStage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -31,6 +33,8 @@ public interface PropAdapter {
             window.getProperties().put(key, val);
         } else if (this instanceof FXStage stage && stage.getStage() != null) {
             stage.getStage().getProperties().put(key, val);
+        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+            stage.stage().getProperties().put(key, val);
         }
     }
 
@@ -51,6 +55,8 @@ public interface PropAdapter {
             return (T) window.getProperties().get(key);
         } else if (this instanceof FXStage stage && stage.getStage() != null) {
             return (T) stage.getStage().getProperties().get(key);
+        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+            return (T) stage.stage().getProperties().get(key);
         }
         return null;
     }
@@ -72,6 +78,8 @@ public interface PropAdapter {
             return window.getProperties().containsKey(key);
         } else if (this instanceof FXStage stage && stage.getStage() != null) {
             return stage.getStage().getProperties().containsKey(key);
+        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+            return stage.stage().getProperties().containsKey(key);
         }
         return false;
     }
@@ -94,6 +102,8 @@ public interface PropAdapter {
             return (T) window.getProperties().remove(key);
         } else if (this instanceof FXStage stage && stage.getStage() != null) {
             return (T) stage.getStage().getProperties().remove(key);
+        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+            return (T) stage.stage().getProperties().remove(key);
         }
         return null;
     }
@@ -112,6 +122,8 @@ public interface PropAdapter {
             window.getProperties().clear();
         } else if (this instanceof FXStage stage && stage.getStage() != null) {
             stage.getStage().getProperties().clear();
+        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+            stage.stage().getProperties().clear();
         }
     }
 }

@@ -24,6 +24,7 @@ import java.lang.ref.WeakReference;
  * @author oyzh
  * @since 2023/3/2
  */
+@Deprecated
 @Slf4j
 public class FXStage implements PropAdapter {
 

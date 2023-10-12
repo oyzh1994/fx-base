@@ -18,6 +18,7 @@ import java.lang.annotation.Target;
  * @author oyzh
  * @since 2022/1/27
  */
+@Deprecated
 @Lazy
 @Component
 @Scope("prototype")

@@ -8,6 +8,7 @@ import javafx.stage.WindowEvent;
  * @author oyzh
  * @since 2023/3/13
  */
+@Deprecated
 public interface FXViewListener {
 
     /**

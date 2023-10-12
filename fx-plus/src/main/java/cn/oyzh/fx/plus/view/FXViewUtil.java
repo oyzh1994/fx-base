@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
  * @author oyzh
  * @since 2021/8/19
  */
+@Deprecated
 @Slf4j
 @UtilityClass
 public class FXViewUtil {

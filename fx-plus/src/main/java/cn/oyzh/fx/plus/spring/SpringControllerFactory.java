@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author oyzh
  * @since 2020/10/16
  */
-public class FXControllerFactory implements Callback<Class<?>, Object> {
+public class SpringControllerFactory implements Callback<Class<?>, Object> {
 
     @Override
     public Object call(Class<?> clazz) {

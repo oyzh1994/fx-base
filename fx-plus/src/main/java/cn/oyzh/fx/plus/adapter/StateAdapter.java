@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
@@ -34,6 +35,15 @@ public interface StateAdapter {
             if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
                 tab.getContent().setVisible(false);
             }
+        } else if (this instanceof Stage stage) {
+            Scene scene = stage.getScene();
+            if (scene != null && scene.getRoot() != null && !scene.getRoot().visibleProperty().isBound()) {
+                scene.getRoot().setVisible(true);
+            }
+        } else if (this instanceof StageWrapper stage) {
+            if (stage.root() != null && !stage.root().visibleProperty().isBound()) {
+                stage.root().setVisible(true);
+            }
         }
     }
 
@@ -61,6 +71,10 @@ public interface StateAdapter {
             if (scene != null && scene.getRoot() != null && !scene.getRoot().visibleProperty().isBound()) {
                 scene.getRoot().setVisible(true);
             }
+        } else if (this instanceof StageWrapper stage) {
+            if (stage.root() != null && !stage.root().visibleProperty().isBound()) {
+                stage.root().setVisible(true);
+            }
         }
     }
 
@@ -84,6 +98,10 @@ public interface StateAdapter {
             Scene scene = stage.getScene();
             if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
                 scene.getRoot().setDisable(true);
+            }
+        } else if (this instanceof StageWrapper stage) {
+            if (stage.root() != null && !stage.root().disableProperty().isBound()) {
+                stage.root().setDisable(true);
             }
         }
     }
@@ -109,6 +127,10 @@ public interface StateAdapter {
             if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
                 scene.getRoot().setDisable(false);
             }
+        } else if (this instanceof StageWrapper stage) {
+            if (stage.root() != null && !stage.root().disableProperty().isBound()) {
+                stage.root().setDisable(false);
+            }
         }
     }
 
@@ -122,6 +144,10 @@ public interface StateAdapter {
             Scene scene = stage.getScene();
             if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
                 this.managedBindVisible(scene.getRoot());
+            }
+        } else if (this instanceof StageWrapper stage) {
+            if (stage.root() != null && !stage.root().disableProperty().isBound()) {
+                this.managedBindVisible(stage.root());
             }
         }
     }

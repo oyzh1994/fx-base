@@ -10,6 +10,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/3/2
  */
+@Deprecated
 public class FXPrimaryStage extends FXStage {
 
     /**

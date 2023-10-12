@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.spring;
+package cn.oyzh.fx.plus.ext;
 
+import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.view.FXViewUtil;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
@@ -16,9 +17,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @author oyzh
  * @since 2021/8/19
  */
-@Deprecated
 @Slf4j
-public abstract class FXApplication extends Application {
+public abstract class ApplicationExt extends Application {
 
     public static void launchSpring(@NonNull Class<? extends Application> appClass, String... args) {
         try {
@@ -37,14 +37,14 @@ public abstract class FXApplication extends Application {
         } else {
             log.warn("3D加速不支持.");
         }
-        FXViewUtil.setPrimaryStage(primaryStage);
+        StageUtil.setPrimaryStage(primaryStage);
     }
 
     @Override
     public void stop() {
         try {
             super.stop();
-            FXViewUtil.closeWindows();
+            StageUtil.closeWindows();
             System.exit(0);
         } catch (Exception ex) {
             ex.printStackTrace();

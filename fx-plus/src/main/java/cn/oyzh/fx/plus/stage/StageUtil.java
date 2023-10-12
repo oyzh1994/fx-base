@@ -15,26 +15,26 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.NoSuchElementException;
 
 /**
- * fx页面工具类
+ * fx舞台工具类
  *
  * @author oyzh
- * @since 2021/8/19
+ * @since 2023/10/12
  */
 @Slf4j
 @UtilityClass
 public class StageUtil {
 
     /**
-     * 主要的stage
+     * 主舞台
      */
-    private static PrimaryStage Primary_Stage;
+    private static Stage Primary_Stage;
 
     /**
      * 退出系统
      */
     public static void exit() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageExt stageExt && stageExt.controller() instanceof StageListener listener) {
+            if (window instanceof StageWrapper wrapper && wrapper.controller() instanceof StageListener listener) {
                 try {
                     listener.onSystemExit();
                     if (log.isDebugEnabled()) {
@@ -53,12 +53,12 @@ public class StageUtil {
      * 获取舞台
      *
      * @param controllerClass controller类
-     * @return StageExt
+     * @return StageWrapper
      */
-    public static StageExt getStage(@NonNull Class<?> controllerClass) {
+    public static StageWrapper getStage(@NonNull Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageExt stageExt && stageExt.controllerClass() == controllerClass) {
-                return stageExt;
+            if (window instanceof StageWrapper wrapper && wrapper.controllerClass() == controllerClass) {
+                return wrapper;
             }
         }
         return null;
@@ -67,54 +67,68 @@ public class StageUtil {
     /**
      * 显示舞台
      *
-     * @param clazz 页面类
+     * @param clazz 舞台类
      */
     public static void showStage(@NonNull Class<?> clazz) {
-        showStage(clazz, null);
+        showStage(clazz, (Window) null);
     }
 
     /**
-     * 显示页面
+     * 显示舞台
      *
-     * @param clazz 页面类
+     * @param clazz   舞台类
+     * @param wrapper 舞台包装
+     */
+    public static void showStage(@NonNull Class<?> clazz, StageWrapper wrapper) {
+        showStage(clazz, wrapper == null ? null : wrapper.stage());
+    }
+
+    /**
+     * 显示舞台
+     *
+     * @param clazz 舞台类
      * @param owner 父窗口
      */
     public static void showStage(@NonNull Class<?> clazz, Window owner) {
-        StageExt stageExt = parseStage(clazz, owner);
-        stageExt.showStage();
+        StageWrapper wrapper = parseStage(clazz, owner);
+        wrapper.showExt();
     }
 
     /**
      * 解析舞台
      *
-     * @param clazz 页面类
-     * @return StageExt
+     * @param clazz 舞台类
+     * @return StageWrapper
      */
-    public static StageExt parseStage(@NonNull Class<?> clazz) {
+    public static StageWrapper parseStage(@NonNull Class<?> clazz) {
         return parseStage(clazz, null);
     }
 
     /**
-     * 解析页面
+     * 解析舞台
      *
-     * @param clazz 页面类
+     * @param clazz 舞台类
      * @param owner 父窗口
-     * @return FXView
+     * @return StageWrapper
      */
-    public static StageExt parseStage(@NonNull Class<?> clazz, Window owner) {
+    public static StageWrapper parseStage(@NonNull Class<?> clazz, Window owner) {
         StageAttribute attribute = clazz.getAnnotation(StageAttribute.class);
         if (attribute == null) {
-            throw new RuntimeException("can not find annotation " + StageAttribute.class.getSimpleName() + " from view class: " + clazz.getName());
+            throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
         }
-        // 获取页面
-        StageExt stage = getStage(clazz);
-        // 创建页面
+        // 获取舞台
+        StageWrapper stage = getStage(clazz);
+        // 创建舞台
         if (stage == null) {
-            stage = new StageExt(attribute, owner);
+            // 主舞台
+            if (attribute.usePrimary()) {
+                stage = new PrimaryStage(Primary_Stage, attribute, owner);
+            } else {// 一般舞台
+                stage = new StageExt(attribute, owner);
+            }
         }
         return stage;
     }
-
 
     /**
      * 关闭所有窗口
@@ -131,17 +145,22 @@ public class StageUtil {
         }
     }
 
-    public static PrimaryStage getPrimaryStage() {
+    /**
+     * 获取主舞台
+     *
+     * @return Stage 主舞台
+     */
+    public static Stage getPrimaryStage() {
         return Primary_Stage;
     }
 
     /**
-     * 设置主窗口
+     * 设置主舞台
      *
-     * @param primaryStage 主窗口
+     * @param primaryStage 主舞台
      */
-    public static void setPrimaryStage(@NonNull Stage primaryStage) {
-        Primary_Stage = new PrimaryStage(primaryStage);
+    public static void setPrimaryStage(Stage primaryStage) {
+        Primary_Stage = primaryStage;
     }
 
     /**
@@ -173,7 +192,7 @@ public class StageUtil {
     }
 
     /**
-     * 获取任务栏窗口
+     * 获取任务栏舞台
      *
      * @return Stage
      */

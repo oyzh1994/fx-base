@@ -1,26 +1,30 @@
 package cn.oyzh.fx.plus.stage;
 
-import cn.oyzh.fx.plus.view.FXStage;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 主窗口
+ * 主舞台
  *
  * @author oyzh
- * @since 2023/3/2
+ * @since 2023/10/12
  */
-public class PrimaryStage extends FXStage {
+@Slf4j
+public class PrimaryStage implements StageWrapper {
 
     /**
-     * 窗口，不使用弱引用，避免被回收
+     * 舞台
      */
     @Getter
+    @Accessors(fluent = true, chain = false)
     private final Stage stage;
 
-    public PrimaryStage(@NonNull Stage stage) {
-        super(stage);
-        this.stage = stage;
+    public PrimaryStage(@NonNull Stage primaryStage,@NonNull StageAttribute attribute, Window owner) {
+        this.stage = primaryStage;
+        this.init(attribute, owner);
     }
 }
