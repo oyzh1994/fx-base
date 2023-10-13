@@ -9,7 +9,7 @@ import javafx.event.EventTarget;
  * @author oyzh
  * @since 2023/3/15
  */
-public interface TipAdapter {
+public interface TipAdapter extends EventTarget {
 
     /**
      * 获取提示标题
@@ -23,11 +23,8 @@ public interface TipAdapter {
      *
      * @return 提示标题
      */
-    default String _getTipText() {
-        if (this instanceof EventTarget target) {
-            return ControlUtil.getTipTitle(target);
-        }
-        return null;
+    default String tipText() {
+        return ControlUtil.getTipTitle(this);
     }
 
     /**
@@ -42,9 +39,7 @@ public interface TipAdapter {
      *
      * @param tipText 提示标题
      */
-    default void _setTipText(String tipText) {
-        if (this instanceof EventTarget target) {
-            ControlUtil.setTipTitle(target, tipText);
-        }
+    default void tipText(String tipText) {
+        ControlUtil.setTipTitle(this, tipText);
     }
 }

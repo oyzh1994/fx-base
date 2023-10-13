@@ -60,51 +60,51 @@ public class FXLabel extends Label implements ThemeAdapter, MouseAdapter, TextAd
 
     @Override
     public void setTipText(String tipTitle) {
-        TipAdapter.super._setTipText(tipTitle);
+        TipAdapter.super.tipText(tipTitle);
     }
 
     @Override
     public String getTipText() {
-        return TipAdapter.super._getTipText();
+        return TipAdapter.super.tipText();
     }
 
     @Override
     public void setFontSize(double fontSize) {
-        FontAdapter.super._setFontSize(fontSize);
+        FontAdapter.super.fontSize(fontSize);
     }
 
     @Override
     public double getFontSize() {
-        return FontAdapter.super._getFontSize();
+        return FontAdapter.super.fontSize();
     }
 
     @Override
     public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super._setFontFamily(fontFamily);
+        FontAdapter.super.fontFamily(fontFamily);
     }
 
     @Override
     public String getFontFamily() {
-        return FontAdapter.super._getFontFamily();
+        return FontAdapter.super.fontFamily();
     }
 
     @Override
     public double getRealWidth() {
-        return LayoutAdapter.super._getRealWidth();
+        return LayoutAdapter.super.realWidth();
     }
 
     @Override
     public void setRealWidth(double width) {
-        LayoutAdapter.super._setRealWidth(width);
+        LayoutAdapter.super.realWidth(width);
     }
 
     @Override
     public double getRealHeight() {
-        return LayoutAdapter.super._getRealHeight();
+        return LayoutAdapter.super.realHeight();
     }
 
     @Override
     public void setRealHeight(double height) {
-        LayoutAdapter.super._setRealHeight(height);
+        LayoutAdapter.super.realHeight(height);
     }
 }

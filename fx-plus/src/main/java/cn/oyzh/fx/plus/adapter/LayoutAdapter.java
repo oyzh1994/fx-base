@@ -9,7 +9,7 @@ import javafx.event.EventTarget;
  * @author oyzh
  * @since 2023/4/11
  */
-public interface LayoutAdapter {
+public interface LayoutAdapter extends EventTarget {
 
     /**
      * 获取真实宽度
@@ -23,11 +23,8 @@ public interface LayoutAdapter {
      *
      * @return 真实宽度
      */
-    default double _getRealWidth() {
-        if (this instanceof EventTarget target) {
-            return NodeUtil.getWidth(target);
-        }
-        return Double.NaN;
+    default double realWidth() {
+        return NodeUtil.getWidth(this);
     }
 
     /**
@@ -42,10 +39,8 @@ public interface LayoutAdapter {
      *
      * @param width 真实宽度
      */
-    default void _setRealWidth(double width) {
-        if (this instanceof EventTarget target) {
-            NodeUtil.setWidth(target, width);
-        }
+    default void realWidth(double width) {
+        NodeUtil.setWidth(this, width);
     }
 
     /**
@@ -60,11 +55,8 @@ public interface LayoutAdapter {
      *
      * @return 真实高度
      */
-    default double _getRealHeight() {
-        if (this instanceof EventTarget target) {
-            return NodeUtil.getHeight(target);
-        }
-        return Double.NaN;
+    default double realHeight() {
+        return NodeUtil.getHeight(this);
     }
 
     /**
@@ -79,32 +71,8 @@ public interface LayoutAdapter {
      *
      * @param height 真实高度
      */
-    default void _setRealHeight(double height) {
-        if (this instanceof EventTarget target) {
-            NodeUtil.setHeight(target, height);
-        }
-    }
-
-    /**
-     * 设置宽，全部属性
-     *
-     * @param width 宽
-     */
-    default void setWidthAll(double width) {
-        if (this instanceof EventTarget target) {
-            NodeUtil.setWidth(target, width);
-        }
-    }
-
-    /**
-     * 设置高，全部属性
-     *
-     * @param height 高度
-     */
-    default void setHeightAll(double height) {
-        if (this instanceof EventTarget target) {
-            NodeUtil.setHeight(target, height);
-        }
+    default void realHeight(double height) {
+        NodeUtil.setHeight(this, height);
     }
 
     /**
@@ -112,9 +80,7 @@ public interface LayoutAdapter {
      *
      * @param layoutY layoutY
      */
-    default void setLayoutYAll(double layoutY) {
-        if (this instanceof EventTarget target) {
-            NodeUtil.setLayoutY(target, layoutY);
-        }
+    default void setLayoutY(double layoutY) {
+        NodeUtil.setLayoutY(this, layoutY);
     }
 }

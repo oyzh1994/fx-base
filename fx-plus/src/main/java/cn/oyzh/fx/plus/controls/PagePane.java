@@ -277,21 +277,21 @@ public class PagePane<T> extends Region implements LayoutAdapter {
 
     @Override
     public double getRealWidth() {
-        return LayoutAdapter.super._getRealWidth();
+        return LayoutAdapter.super.realWidth();
     }
 
     @Override
     public void setRealWidth(double width) {
-        LayoutAdapter.super._setRealWidth(width);
+        LayoutAdapter.super.realWidth(width);
     }
 
     @Override
     public double getRealHeight() {
-        return LayoutAdapter.super._getRealHeight();
+        return LayoutAdapter.super.realHeight();
     }
 
     @Override
     public void setRealHeight(double height) {
-        LayoutAdapter.super._setRealHeight(height);
+        LayoutAdapter.super.realHeight(height);
     }
 }

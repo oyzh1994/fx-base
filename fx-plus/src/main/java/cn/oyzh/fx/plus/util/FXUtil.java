@@ -172,7 +172,8 @@ public class FXUtil {
             try {
                 // 包装线程
                 Task task1 = TaskBuilder.newBuilder().onStart(task).onFinish(latch::countDown).build();
-                Platform.runLater(new RunTask(task1));
+                Platform.runLater(task1);
+                // Platform.runLater(new RunTask(task1));
                 if (timeout > 0) {
                     if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
                         log.warn("latch.await fail!");
@@ -195,8 +196,8 @@ public class FXUtil {
         if (Platform.isFxApplicationThread()) {
             task.run();
         } else {
-//            Platform.runLater(task);
-            Platform.runLater(new RunTask(task));
+           Platform.runLater(task);
+            // Platform.runLater(new RunTask(task));
         }
     }
 

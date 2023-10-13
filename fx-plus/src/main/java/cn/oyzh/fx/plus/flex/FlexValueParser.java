@@ -22,7 +22,6 @@ public class FlexValueParser implements Parser<String, FlexValue> {
             return null;
         }
         flexValue = flexValue.trim();
-        FlexValue config = new FlexValue();
         Double fixed = null;
         Double percent = null;
         Byte fixedOperator = null;
@@ -55,9 +54,6 @@ public class FlexValueParser implements Parser<String, FlexValue> {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        config.fixed(fixed);
-        config.percent(percent);
-        config.fixedOperator(fixedOperator);
-        return config;
+        return new FlexValue(fixed, percent, fixedOperator);
     }
 }

@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -32,8 +31,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @return 流式宽度值
      */
-    default String _getFlexWidth() {
-        return this.flexWidthProperty().get();
+    default String flexWidth() {
+        return this.getProp("flexWidth");
     }
 
     /**
@@ -48,22 +47,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @param flexWidth 流式宽度值
      */
-    default void _setFlexWidth(String flexWidth) {
-        this.flexWidthProperty().set(flexWidth);
-    }
-
-    /**
-     * 获取流式度值属性
-     *
-     * @return 流式度值属性
-     */
-    default SimpleStringProperty flexWidthProperty() {
-        SimpleStringProperty property = this.getProp("_flexW");
-        if (property == null) {
-            property = new SimpleStringProperty();
-            this.setProp("_flexW", property);
-        }
-        return property;
+    default void flexWidth(String flexWidth) {
+        this.setProp("flexWidth", flexWidth);
     }
 
     /**
@@ -78,8 +63,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @return 流式高度
      */
-    default String _getFlexHeight() {
-        return this.flexHeightProperty().get();
+    default String flexHeight() {
+        return this.getProp("flexHeight");
     }
 
     /**
@@ -94,22 +79,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @param flexHeight 流式高度值
      */
-    default void _setFlexHeight(String flexHeight) {
-        this.flexHeightProperty().set(flexHeight);
-    }
-
-    /**
-     * 获取流式高度属性
-     *
-     * @return 流式高度属性
-     */
-    default SimpleStringProperty flexHeightProperty() {
-        SimpleStringProperty property = this.getProp("_flexH");
-        if (property == null) {
-            property = new SimpleStringProperty();
-            this.setProp("_flexH", property);
-        }
-        return property;
+    default void flexHeight(String flexHeight) {
+        this.setProp("flexHeight", flexHeight);
     }
 
     /**
@@ -124,8 +95,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @return 流式x值
      */
-    default String _getFlexX() {
-        return this.flexXProperty().get();
+    default String flexX() {
+        return this.getProp("flexX");
     }
 
     /**
@@ -140,22 +111,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @param flexX 流式x值
      */
-    default void _setFlexX(String flexX) {
-        this.flexXProperty().set(flexX);
-    }
-
-    /**
-     * 获取流式x值属性
-     *
-     * @return 流式x值属性
-     */
-    default SimpleStringProperty flexXProperty() {
-        SimpleStringProperty property = this.getProp("_flexX");
-        if (property == null) {
-            property = new SimpleStringProperty();
-            this.setProp("_flexX", property);
-        }
-        return property;
+    default void flexX(String flexX) {
+        this.setProp("flexX", flexX);
     }
 
     /**
@@ -170,8 +127,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @return 流式y值
      */
-    default String _getFlexY() {
-        return this.flexYProperty().get();
+    default String flexY() {
+        return this.getProp("flexY");
     }
 
     /**
@@ -186,22 +143,8 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
      *
      * @param flexY 流式y值
      */
-    default void _setFlexY(String flexY) {
-        this.flexYProperty().set(flexY);
-    }
-
-    /**
-     * 获取流式y值属性
-     *
-     * @return 流式y值属性
-     */
-    default SimpleStringProperty flexYProperty() {
-        SimpleStringProperty property = this.getProp("_flexY");
-        if (property == null) {
-            property = new SimpleStringProperty();
-            this.setProp("_flexY", property);
-        }
-        return property;
+    default void flexY(String flexY) {
+        this.setProp("flexY", flexY);
     }
 
     /**
@@ -307,20 +250,20 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
     default void resizeNode(double width, double height) {
         // 处理宽度
         if (!Double.isNaN(width)) {
-            this.setWidthAll(width);
+            this.setRealWidth(width);
             // TableView处理
             if (this instanceof TableView<?> tableView) {
                 ObservableList<? extends TableColumn<?, ?>> columns = tableView.getVisibleLeafColumns();
                 for (TableColumn<?, ?> column : columns) {
                     if (column instanceof FlexAdapter flexNode) {
-                        flexNode.setWidthAll(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
+                        flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
                     }
                 }
             } else if (this instanceof TabPane tabPane) {// TabPane处理
                 ObservableList<Tab> tabs = tabPane.getTabs();
                 for (Tab tab : tabs) {
                     if (tab.getContent() instanceof FlexAdapter flexNode) {
-                        flexNode.setWidthAll(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
+                        flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
                     }
                 }
             }
@@ -328,18 +271,18 @@ public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, Lay
 
         // 处理高度，y轴
         if (!Double.isNaN(height)) {
-            this.setHeightAll(height);
+            this.setRealHeight(height);
             // TabPane处理
             if (this instanceof TabPane tabPane) {
                 ObservableList<Tab> tabs = tabPane.getTabs();
                 for (Tab tab : tabs) {
                     if (tab.getContent() instanceof FlexAdapter flexNode) {
-                        flexNode.setHeightAll(FlexUtil.computeFlexValue(flexNode.getFlexHeight(), height));
+                        flexNode.setRealHeight(FlexUtil.computeFlexValue(flexNode.getFlexHeight(), height));
                     }
                 }
             }
             if (StrUtil.isNotBlank(this.getFlexY())) {
-                this.setLayoutYAll(this.computeY());
+                this.setLayoutY(this.computeY());
             }
         }
     }

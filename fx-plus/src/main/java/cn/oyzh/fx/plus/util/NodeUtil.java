@@ -114,47 +114,53 @@ public class NodeUtil {
         if (Double.isNaN(width) || width <= 0) {
             return;
         }
-        if (target instanceof TableColumnBase<?, ?> columnBase) {
-            if (!columnBase.prefWidthProperty().isBound()) {
-                columnBase.setPrefWidth(width);
+        switch (target) {
+            case TableColumnBase<?, ?> columnBase -> {
+                if (!columnBase.prefWidthProperty().isBound()) {
+                    columnBase.setPrefWidth(width);
+                }
+                if (!columnBase.minWidthProperty().isBound()) {
+                    columnBase.setMinWidth(width);
+                }
+                if (!columnBase.maxWidthProperty().isBound()) {
+                    columnBase.setMaxWidth(width);
+                }
             }
-            if (!columnBase.minWidthProperty().isBound()) {
-                columnBase.setMinWidth(width);
+            case PopupControl control -> {
+                if (!control.prefWidthProperty().isBound()) {
+                    control.setPrefWidth(width);
+                }
+                if (!control.minWidthProperty().isBound()) {
+                    control.setMinWidth(width);
+                }
+                if (!control.maxWidthProperty().isBound()) {
+                    control.setMaxWidth(width);
+                }
             }
-            if (!columnBase.maxWidthProperty().isBound()) {
-                columnBase.setMaxWidth(width);
+            case Region region -> {
+                if (!region.prefWidthProperty().isBound()) {
+                    region.setPrefWidth(width);
+                }
+                if (!region.minWidthProperty().isBound()) {
+                    region.setMinWidth(width);
+                }
+                if (!region.maxWidthProperty().isBound()) {
+                    region.setMaxWidth(width);
+                }
             }
-        } else if (target instanceof PopupControl control) {
-            if (!control.prefWidthProperty().isBound()) {
-                control.setPrefWidth(width);
+            case Shape shape -> {
+                if (!shape.strokeWidthProperty().isBound()) {
+                    shape.setStrokeWidth(width);
+                }
             }
-            if (!control.minWidthProperty().isBound()) {
-                control.setMinWidth(width);
+            case Stage stage -> stage.setWidth(width);
+            case Window window -> window.setWidth(width);
+            case Scene scene -> {
+                if (scene.getWindow() != null) {
+                    scene.getWindow().setWidth(width);
+                }
             }
-            if (!control.maxWidthProperty().isBound()) {
-                control.setMaxWidth(width);
-            }
-        } else if (target instanceof Region region) {
-            if (!region.prefWidthProperty().isBound()) {
-                region.setPrefWidth(width);
-            }
-            if (!region.minWidthProperty().isBound()) {
-                region.setMinWidth(width);
-            }
-            if (!region.maxWidthProperty().isBound()) {
-                region.setMaxWidth(width);
-            }
-        } else if (target instanceof Shape shape) {
-            if (!shape.strokeWidthProperty().isBound()) {
-                shape.setStrokeWidth(width);
-            }
-        } else if (target instanceof Stage stage) {
-            stage.setWidth(width);
-        } else if (target instanceof Window window) {
-            window.setWidth(width);
-        } else if (target instanceof Scene scene) {
-            if (scene.getWindow() != null) {
-                scene.getWindow().setWidth(width);
+            default -> {
             }
         }
     }
@@ -165,37 +171,41 @@ public class NodeUtil {
      * @param target 对象
      * @param height 高度
      */
-    public static void setHeight(@NonNull EventTarget target, double height) {
+    public static void setHeight( EventTarget target, double height) {
         if (Double.isNaN(height) || height <= 0) {
             return;
         }
-        if (target instanceof Region region) {
-            if (!region.prefHeightProperty().isBound()) {
-                region.setPrefHeight(height);
+        switch (target) {
+            case Region region -> {
+                if (!region.prefHeightProperty().isBound()) {
+                    region.setPrefHeight(height);
+                }
+                if (!region.minHeightProperty().isBound()) {
+                    region.setMinHeight(height);
+                }
+                if (!region.maxHeightProperty().isBound()) {
+                    region.setMaxHeight(height);
+                }
             }
-            if (!region.minHeightProperty().isBound()) {
-                region.setMinHeight(height);
+            case PopupControl control -> {
+                if (!control.prefHeightProperty().isBound()) {
+                    control.setPrefHeight(height);
+                }
+                if (!control.minHeightProperty().isBound()) {
+                    control.setMinHeight(height);
+                }
+                if (!control.maxHeightProperty().isBound()) {
+                    control.setMaxHeight(height);
+                }
             }
-            if (!region.maxHeightProperty().isBound()) {
-                region.setMaxHeight(height);
+            case Stage stage -> stage.setHeight(height);
+            case Window window -> window.setHeight(height);
+            case Scene scene -> {
+                if (scene.getWindow() != null) {
+                    scene.getWindow().setHeight(height);
+                }
             }
-        } else if (target instanceof PopupControl control) {
-            if (!control.prefHeightProperty().isBound()) {
-                control.setPrefHeight(height);
-            }
-            if (!control.minHeightProperty().isBound()) {
-                control.setMinHeight(height);
-            }
-            if (!control.maxHeightProperty().isBound()) {
-                control.setMaxHeight(height);
-            }
-        } else if (target instanceof Stage stage) {
-                stage.setHeight(height);
-        } else if (target instanceof Window window) {
-                window.setHeight(height);
-        } else if (target instanceof Scene scene) {
-            if (scene.getWindow() != null ) {
-                scene.getWindow().setHeight(height);
+            default -> {
             }
         }
     }

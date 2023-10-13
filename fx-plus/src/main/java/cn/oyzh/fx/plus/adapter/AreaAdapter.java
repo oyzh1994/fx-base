@@ -6,7 +6,7 @@ package cn.oyzh.fx.plus.adapter;
  * @author oyzh
  * @since 2023/1/29
  */
-public interface AreaAdapter extends TextAdapter,FontAdapter{
+public interface AreaAdapter extends TextAdapter, FontAdapter {
 
     /**
      * 刷新光标

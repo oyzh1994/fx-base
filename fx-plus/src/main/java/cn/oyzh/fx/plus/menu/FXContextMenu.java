@@ -39,30 +39,27 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter {
             }
             // 设置宽度
             this.setWidth(maxWidth);
-            //this.setMaxWidth(maxWidth);
-            //this.setMinWidth(maxWidth);
-            //this.setPrefWidth(maxWidth);
-            this.setWidthAll(maxWidth);
+            this.setRealWidth(maxWidth);
         }
     }
 
     @Override
     public double getRealWidth() {
-        return LayoutAdapter.super._getRealWidth();
+        return LayoutAdapter.super.realWidth();
     }
 
     @Override
     public void setRealWidth(double width) {
-        LayoutAdapter.super._setRealWidth(width);
+        LayoutAdapter.super.realWidth(width);
     }
 
     @Override
     public double getRealHeight() {
-        return LayoutAdapter.super._getRealHeight();
+        return LayoutAdapter.super.realHeight();
     }
 
     @Override
     public void setRealHeight(double height) {
-        LayoutAdapter.super._setRealHeight(height);
+        LayoutAdapter.super.realHeight(height);
     }
 }

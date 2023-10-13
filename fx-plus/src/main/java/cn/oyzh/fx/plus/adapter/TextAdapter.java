@@ -19,7 +19,7 @@ public interface TextAdapter {
      *
      * @param listener 监听器
      */
-    default void removeTextChangedListener(ChangeListener<String> listener) {
+    default void removeTextChangeListener(ChangeListener<String> listener) {
         if (listener == null) {
             return;
         }
@@ -39,7 +39,7 @@ public interface TextAdapter {
      *
      * @param listener 监听器
      */
-    default void addTextChangedListener(ChangeListener<String> listener) {
+    default void addTextChangeListener(ChangeListener<String> listener) {
         if (listener == null) {
             return;
         }

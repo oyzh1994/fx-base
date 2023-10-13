@@ -24,31 +24,31 @@ public class FXRadioButton extends RadioButton implements ThemeAdapter, StateAda
 
     @Override
     public void setTipText(String tipTitle) {
-        TipAdapter.super._setTipText(tipTitle);
+        TipAdapter.super.tipText(tipTitle);
     }
 
     @Override
     public String getTipText() {
-        return TipAdapter.super._getTipText();
+        return TipAdapter.super.tipText();
     }
 
     @Override
     public double getRealWidth() {
-        return LayoutAdapter.super._getRealWidth();
+        return LayoutAdapter.super.realWidth();
     }
 
     @Override
     public void setRealWidth(double width) {
-        LayoutAdapter.super._setRealWidth(width);
+        LayoutAdapter.super.realWidth(width);
     }
 
     @Override
     public double getRealHeight() {
-        return LayoutAdapter.super._getRealHeight();
+        return LayoutAdapter.super.realHeight();
     }
 
     @Override
     public void setRealHeight(double height) {
-        LayoutAdapter.super._setRealHeight(height);
+        LayoutAdapter.super.realHeight(height);
     }
 }

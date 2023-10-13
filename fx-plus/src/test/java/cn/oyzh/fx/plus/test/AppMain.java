@@ -428,10 +428,10 @@ public class AppMain extends Application {
         ClearableTextField textField2 = new ClearableTextField();
         ClearableTextField textField3 = new ClearableTextField();
 
-        textField.setHeightAll(20);
-        textField1.setHeightAll(25);
-        textField2.setHeightAll(30);
-        textField3.setHeightAll(50);
+        textField.setRealHeight(20);
+        textField1.setRealHeight(25);
+        textField2.setRealHeight(30);
+        textField3.setRealHeight(50);
 
         VBox hBox = new VBox(textField, textField1, textField2, textField3);
         // // 设置HBox的间距
@@ -451,17 +451,17 @@ public class AppMain extends Application {
         DecimalTextField decimalTextField2 = new DecimalTextField();
         DecimalTextField decimalTextField3 = new DecimalTextField();
 
-        textField.setHeightAll(20);
-        decimalTextField.setHeightAll(20);
+        textField.setRealHeight(20);
+        decimalTextField.setRealHeight(20);
 
-        textField1.setHeightAll(25);
-        decimalTextField1.setHeightAll(25);
+        textField1.setRealHeight(25);
+        decimalTextField1.setRealHeight(25);
 
-        textField2.setHeightAll(30);
-        decimalTextField2.setHeightAll(30);
+        textField2.setRealHeight(30);
+        decimalTextField2.setRealHeight(30);
 
-        textField3.setHeightAll(50);
-        decimalTextField3.setHeightAll(50);
+        textField3.setRealHeight(50);
+        decimalTextField3.setRealHeight(50);
 
         VBox hBox = new VBox(textField, decimalTextField, textField1, decimalTextField1, textField2, decimalTextField2, textField3, decimalTextField3);
         // // 设置HBox的间距

@@ -84,7 +84,7 @@ public interface FontAdapter {
      *
      * @param fontSize 字体大小
      */
-    default void _setFontSize(double fontSize) {
+    default void fontSize(double fontSize) {
         if (fontSize != this.getFontSize()) {
             if (this instanceof Text text) {
                 text.setFont(Font.font(this.getFontFamily(), fontSize));
@@ -114,7 +114,7 @@ public interface FontAdapter {
      *
      * @return 字体大小
      */
-    default double _getFontSize() {
+    default double fontSize() {
         if (this instanceof Text text) {
             return text.getFont().getSize();
         }
@@ -155,7 +155,7 @@ public interface FontAdapter {
      *
      * @param fontFamily 字体类型
      */
-    default void _setFontFamily(@NonNull String fontFamily) {
+    default void fontFamily(@NonNull String fontFamily) {
         if (!FontUtil.isSameFamily(fontFamily, this.getFontFamily())) {
             if (this instanceof Text text) {
                 text.setFont(Font.font(fontFamily, text.getFont().getSize()));
@@ -185,7 +185,7 @@ public interface FontAdapter {
      *
      * @return 字体类型
      */
-    default String _getFontFamily() {
+    default String fontFamily() {
         if (this instanceof Text text) {
             return text.getFont().getFamily();
         }

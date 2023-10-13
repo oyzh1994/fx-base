@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
+import javafx.event.EventTarget;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -16,7 +17,7 @@ import javafx.scene.layout.Region;
  * @author oyzh
  * @since 2023/5/15
  */
-public interface NodeAdapter {
+public interface NodeAdapter extends EventTarget {
 
     /**
      * 获取父节点
@@ -116,18 +117,27 @@ public interface NodeAdapter {
         return Double.NaN;
     }
 
+    /**
+     * 添加子节点
+     *
+     * @param node 子节点
+     */
     default void addChild(Node node) {
         if (node != null) {
-            FXUtil.runWait(() -> {
-                if (this instanceof Pane pane) {
-                    pane.getChildren().add(node);
-                } else if (this instanceof Group group) {
-                    group.getChildren().add(node);
-                }
-            });
+            if (this instanceof Pane pane) {
+                FXUtil.runWait(() -> pane.getChildren().add(node));
+            } else if (this instanceof Group group) {
+                FXUtil.runWait(() -> group.getChildren().add(node));
+            }
         }
     }
 
+    /**
+     * 设置子节点
+     *
+     * @param index 索引
+     * @param node  子节点
+     */
     default void setChild(int index, Node node) {
         if (node != null && index >= 0) {
             FXUtil.runWait(() -> {
@@ -148,6 +158,12 @@ public interface NodeAdapter {
         }
     }
 
+    /**
+     * 获取子节点
+     *
+     * @param index 索引
+     * @return 子节点
+     */
     default Node getChild(int index) {
         if (index >= 0) {
             if (this instanceof Pane pane) {
@@ -165,31 +181,37 @@ public interface NodeAdapter {
         return null;
     }
 
+    /**
+     * 移除子节点
+     *
+     * @param index 索引
+     */
     default void removeChild(int index) {
         if (index >= 0) {
-            FXUtil.runWait(() -> {
-                if (this instanceof Pane pane) {
-                    if (pane.getChildren().size() >= index) {
-                        pane.getChildren().remove(index);
-                    }
-                } else if (this instanceof Group group) {
-                    if (group.getChildren().size() >= index) {
-                        group.getChildren().remove(index);
-                    }
+            if (this instanceof Pane pane) {
+                if (pane.getChildren().size() >= index) {
+                    FXUtil.runWait(() -> pane.getChildren().remove(index));
                 }
-            });
+            } else if (this instanceof Group group) {
+                if (group.getChildren().size() >= index) {
+                    FXUtil.runWait(() -> group.getChildren().remove(index));
+                }
+            }
         }
     }
 
+    /**
+     * 移除子节点
+     *
+     * @param child 子节点
+     */
     default void removeChild(Node child) {
         if (child != null) {
-            FXUtil.runWait(() -> {
-                if (this instanceof Pane pane) {
-                    pane.getChildren().remove(child);
-                } else if (this instanceof Group group) {
-                    group.getChildren().remove(child);
-                }
-            });
+            if (this instanceof Pane pane) {
+                FXUtil.runWait(() -> pane.getChildren().remove(child));
+            } else if (this instanceof Group group) {
+                FXUtil.runWait(() -> group.getChildren().remove(child));
+            }
         }
     }
 }
