@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2022/02/08
  */
+@Deprecated
 @UtilityClass
 public class FXAlertUtil {
 

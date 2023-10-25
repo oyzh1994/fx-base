@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import lombok.NonNull;
 
@@ -17,6 +18,14 @@ public class FlexVBox extends VBox implements ThemeAdapter, FlexAdapter, FontAda
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+    }
+
+    public FlexVBox() {
+        super();
+    }
+
+    public FlexVBox(Node... children) {
+        super(children);
     }
 
     @Override

@@ -65,7 +65,6 @@ public interface FontAdapter {
         if (this instanceof TextInputControl inputControl) {
             return inputControl.getFont();
         }
-
         if (this instanceof Node) {
             return Font.font(this.getFontFamily(), this.getFontSize());
         }

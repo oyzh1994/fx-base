@@ -298,22 +298,6 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
     }
 
     /**
-     * 显示，扩展
-     */
-    default void showExt() {
-        if (!this.stage().isShowing()) {
-            FXUtil.runWait(this.stage()::show);
-        }
-    }
-
-    /**
-     * 关闭舞台
-     */
-    default void close() {
-        FXUtil.runLater(this.stage()::close);
-    }
-
-    /**
      * 舞台前置
      */
     default void toFront() {

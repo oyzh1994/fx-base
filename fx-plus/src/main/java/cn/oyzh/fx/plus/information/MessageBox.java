@@ -1,0 +1,371 @@
+package cn.oyzh.fx.plus.information;
+
+import cn.oyzh.fx.common.Parser;
+import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.FontUtil;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Window;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
+/**
+ * 消息盒子
+ *
+ * @author oyzh
+ * @since 2023/10/24
+ */
+@UtilityClass
+public class MessageBox {
+
+    /**
+     * 异常解析器
+     */
+    private static Parser<Throwable, String> Exception_Parser;
+
+    /**
+     * 注册异常解析器
+     *
+     * @param exceptionParser 异常解析器
+     */
+    public static void registerExceptionParser(@NonNull Parser<Throwable, String> exceptionParser) {
+        Exception_Parser = exceptionParser;
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param content 文本信息
+     */
+    public static boolean confirm(String content) {
+        return confirm("提示信息", content);
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param title   标题信息
+     * @param content 文本信息
+     */
+    public static boolean confirm(@NonNull String title, String content) {
+        content = content == null ? "" : content;
+        ButtonType button1 = new ButtonType("确定");
+        ButtonType button2 = new ButtonType("取消");
+        AtomicReference<Alert> reference = new AtomicReference<>();
+        String finalContent = content;
+        FXUtil.runWait(() -> reference.set(new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2)));
+        reference.get().setTitle(title);
+        reference.get().setHeaderText(null);
+        Optional<ButtonType> optional = reference.get().showAndWait();
+        return optional.map(b -> b.equals(button1)).orElse(false);
+    }
+
+    /**
+     * 警告窗口
+     *
+     * @param content 文本信息
+     */
+    public static void warn(@NonNull String content) {
+        alert(Alert.AlertType.WARNING, "提示信息", null, content);
+    }
+
+    /**
+     * 异常窗口
+     *
+     * @param ex 异常信息
+     */
+    public static void exception(@NonNull Throwable ex) {
+        if (Exception_Parser != null) {
+            alert(Alert.AlertType.WARNING, "提示信息", null, Exception_Parser.parse(ex));
+        } else {
+            alert(Alert.AlertType.WARNING, "提示信息", null, ex.getMessage());
+        }
+    }
+
+    /**
+     * 信息窗口
+     *
+     * @param content 文本信息
+     */
+    public static void info(@NonNull String content) {
+        alert(Alert.AlertType.INFORMATION, "提示信息", null, content);
+    }
+
+    /**
+     * 错误窗口
+     *
+     * @param content 文本信息
+     */
+    public static void error(@NonNull String content) {
+        alert(Alert.AlertType.ERROR, "提示信息", null, content);
+    }
+
+    /**
+     * 默认窗口
+     *
+     * @param content 文本信息
+     */
+    public static void none(@NonNull String content) {
+        alert(Alert.AlertType.NONE, "提示信息", null, content);
+    }
+
+    /**
+     * 窗口控件
+     *
+     * @param type    类型
+     * @param title   标题
+     * @param header  提示头
+     * @param content 文本信息
+     */
+    public static void alert(@NonNull Alert.AlertType type, @NonNull String title, String header, String content) {
+        FXUtil.runLater(() -> {
+            Alert alert = new Alert(type);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+            alert.setContentText(content);
+            alert.show();
+        });
+    }
+
+    /**
+     * 窗口控件
+     *
+     * @param type        类型
+     * @param title       标题
+     * @param header      提示头
+     * @param content     文本信息
+     * @param buttonTypes 按钮
+     * @return 点击的按钮
+     */
+    public static ButtonType alert(@NonNull Alert.AlertType type, @NonNull String title, String header, String content, ButtonType... buttonTypes) {
+        Alert alert = new Alert(type, content, buttonTypes);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        Optional<ButtonType> optional = alert.showAndWait();
+        return optional.orElse(null);
+    }
+
+    /**
+     * 提示窗口
+     *
+     * @param content 文本信息
+     */
+    public static void dialog(String content) {
+        dialog("提示信息", content);
+    }
+
+    /**
+     * 提示窗口
+     *
+     * @param title   标题
+     * @param content 文本信息
+     */
+    public static void dialog(String title, String content) {
+        String finalTitle = title == null ? "" : title;
+        String finalContent = content == null ? "" : content;
+        FXUtil.runWait(() -> {
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle(finalTitle);
+            dialog.setContentText(finalContent);
+            dialog.show();
+        });
+    }
+
+    /**
+     * 输入窗口
+     *
+     * @param title 标题
+     */
+    public static String prompt(String title) {
+        return prompt(title, null);
+    }
+
+    /**
+     * 输入窗口
+     *
+     * @param title    标题
+     * @param initText 初始值
+     */
+    public static String prompt(String title, String initText) {
+        title = title == null ? "提示信息" : title;
+        initText = initText == null ? "" : initText;
+        TextInputDialog dialog = new TextInputDialog(initText);
+        dialog.setTitle(title);
+        dialog.setGraphic(null);
+        dialog.setHeaderText(null);
+        Optional<String> result = dialog.showAndWait();
+        return result.orElse(null);
+    }
+
+    /**
+     * 提示消息
+     *
+     * @param tipMsg 提示消息
+     * @param node   节点
+     * @return FXTooltip
+     */
+    public static TooltipExt tipMsg(String tipMsg, Node node) {
+        return tipMsg(tipMsg, node, 1500);
+    }
+
+    /**
+     * 提示消息
+     *
+     * @param tipMsg   提示消息
+     * @param node     节点
+     * @param liveTime 存活时间
+     * @return FXTooltip
+     */
+    public static TooltipExt tipMsg(@NonNull String tipMsg, @NonNull Node node, Integer liveTime) {
+        TooltipExt tooltip = new TooltipExt();
+        try {
+            // 隐藏旧工具条
+            TooltipExt old = (TooltipExt) node.getProperties().remove("tipTool");
+            if (old != null) {
+                old.hide();
+            }
+            // 设置标志位
+            node.getProperties().put("tipTool", tooltip);
+            // 获取字体
+            Font font = FontUtil.getFont(node);
+            // 初始化提示条
+            ControlUtil.initTooltip(tooltip);
+            // 安装提示条
+            Tooltip.install(node, tooltip);
+            // 设置消息内容
+            tooltip.setText(tipMsg);
+            // 设置字体
+            tooltip.setFont(font);
+            // 自动隐藏
+            if (liveTime != null) {
+                tooltip.setOnShown(e -> ExecutorUtil.start(tooltip::hide, liveTime));
+            }
+            // 提示条隐藏事件
+            tooltip.setOnHidden(windowEvent -> {
+                tooltip.hide();
+                node.getProperties().remove("tipTool");
+                Tooltip.uninstall(node, tooltip);
+            });
+            FXUtil.runLater(() -> {
+                // 使组件获取焦点
+                node.requestFocus();
+                // 显示提示条
+                tooltip.show(node);
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return tooltip;
+    }
+
+    /**
+     * ok提示
+     *
+     * @param msg 消息
+     */
+    public static void okToast(@NonNull String msg) {
+        okToast(msg, null);
+    }
+
+    /**
+     * ok提示
+     *
+     * @param msg   消息
+     * @param owner 父窗口
+     */
+    public static void okToast(@NonNull String msg, Window owner) {
+        showToast(msg, new SVGGlyph("/fx-plus/font/check-circle.svg", Color.GREEN), owner);
+    }
+
+    /**
+     * 警告提示
+     *
+     * @param msg 消息
+     */
+    public static void warnToast(@NonNull String msg) {
+        warnToast(msg, null);
+    }
+
+    /**
+     * 警告提示
+     *
+     * @param msg   消息
+     * @param owner 父窗口
+     */
+    public static void warnToast(@NonNull String msg, Window owner) {
+        showToast(msg, new SVGGlyph("/fx-plus/font/warning-circle.svg", Color.ORANGE), owner);
+    }
+
+    /**
+     * 异常提示
+     *
+     * @param ex 异常信息
+     */
+    public static void exceptionToast(@NonNull Throwable ex) {
+        if (Exception_Parser != null) {
+            warnToast(Exception_Parser.parse(ex), null);
+        } else {
+            warnToast(ex.getMessage(), null);
+        }
+    }
+
+    /**
+     * 询问提示
+     *
+     * @param msg 消息
+     */
+    public static void questionToast(@NonNull String msg) {
+        questionToast(msg, null);
+    }
+
+    /**
+     * 询问提示
+     *
+     * @param msg   消息
+     * @param owner 父窗口
+     */
+    public static void questionToast(@NonNull String msg, Window owner) {
+        showToast(msg, new SVGGlyph("/fx-plus/font/question-circle.svg", Color.ORANGE), owner);
+    }
+
+    /**
+     * 显示提示
+     *
+     * @param msg   消息
+     * @param icon  图标
+     * @param owner 父窗口
+     */
+    private static void showToast(String msg, SVGGlyph icon, Window owner) {
+        Toast toast = new Toast(msg);
+        // 边框
+        Border border = new Border(new BorderStroke(Color.valueOf("#CCCCCC"), BorderStrokeStyle.SOLID, new CornerRadii(3), BorderStroke.THIN));
+        // 背景
+        Background background = new Background(new BackgroundFill(Color.valueOf("#FFFAFA"), new CornerRadii(3), null));
+        // 设置参数
+        toast.icon(icon)
+                .border(border)
+                .textFill(Color.valueOf("#242424"))
+                .background(background);
+        // 显示组件
+        FXUtil.runLater(() -> toast.show(owner));
+    }
+}

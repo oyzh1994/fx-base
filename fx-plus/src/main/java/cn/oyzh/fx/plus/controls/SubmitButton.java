@@ -14,6 +14,6 @@ public class SubmitButton extends IconButton {
         this.setPrefHeight(25);
         this.getStyleClass().add("btn");
         this.getStyleClass().add("btn-primary");
-        this.init("/font/check.svg", 0.7);
+        this.init("/fx-plus/font/check.svg", 0.7);
     }
 }

@@ -31,6 +31,7 @@ import java.awt.*;
  * @author oyzh
  * @since 2020/10/19
  */
+@Deprecated
 @Slf4j
 @Accessors(fluent = true, chain = true)
 public class FXToast extends Stage {

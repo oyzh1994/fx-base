@@ -2,12 +2,21 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.scene.Node;
 
 /**
  * @author oyzh
  * @since 2022/1/19
  */
 public class FlexHBox extends FXHBox implements ThemeAdapter, FlexAdapter {
+
+    public FlexHBox() {
+        super();
+    }
+
+    public FlexHBox(Node... children) {
+        super(children);
+    }
 
     @Override
     public void resize(double width, double height) {

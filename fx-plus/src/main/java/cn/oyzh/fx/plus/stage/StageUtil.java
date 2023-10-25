@@ -91,7 +91,7 @@ public class StageUtil {
      */
     public static void showStage(@NonNull Class<?> clazz, Window owner) {
         StageWrapper wrapper = parseStage(clazz, owner);
-        wrapper.showExt();
+        wrapper.display();
     }
 
     /**

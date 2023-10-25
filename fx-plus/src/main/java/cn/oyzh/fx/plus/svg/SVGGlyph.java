@@ -16,10 +16,10 @@ import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -56,31 +56,35 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * svg鼠标样式
      */
     @Getter
-    private Cursor svgCursor = Cursor.HAND;
-
-    /**
-     * 加载器
-     */
-    @Setter
-    @Getter
-    private SVGLoader loader = SVGLoader.INSTANCE;
+    @Accessors(fluent = true, chain = false)
+    private Cursor cursor = Cursor.HAND;
 
     {
         this.setSize(16);
         this.setCache(true);
         this.setCacheShape(true);
         this.setPickOnBounds(true);
-        this.setCursor(this.svgCursor);
         this.setPadding(new Insets(0));
         this.setFocusTraversable(false);
         this.setCacheHint(CacheHint.QUALITY);
         this.disabledProperty().addListener((observableValue, aBoolean, t1) -> {
             if (t1) {
-                this.disable();
+                this.setBackground(ControlUtil.background(Color.GRAY));
             } else {
-                this.enable();
+                this.setBackground(ControlUtil.background(this.color));
             }
         });
+        this.backgroundProperty().addListener((observableValue, background, t1) -> {
+            if (t1 != null && t1.getFills() != null && !t1.isEmpty()) {
+                SVGPathExt svgPathExt = this.shape();
+                svgPathExt.setColor(t1.getFills().getFirst().getFill());
+            }
+        });
+        this.cursorProperty().addListener((observableValue, background, t1) -> {
+            SVGPathExt svgPathExt = this.shape();
+            svgPathExt.setCursor(t1);
+        });
+        this.cursor(this.cursor);
     }
 
     /**
@@ -90,7 +94,7 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      */
     public void setInitCursor(String cursor) {
         if (cursor != null) {
-            this.setSvgCursor(Cursor.cursor(cursor));
+            this.cursor(Cursor.cursor(cursor));
         }
     }
 
@@ -104,35 +108,13 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     }
 
     /**
-     * 设置svg鼠标
+     * 设置鼠标样式
      *
-     * @param svgCursor svg鼠标
+     * @param cursor 鼠标样式
      */
-    public void setSvgCursor(Cursor svgCursor) {
-        this.svgCursor = svgCursor;
-        if (!this.isDisable()) {
-            this.setCursor(svgCursor);
-            SVGPath svgPath = this.svgPath(false);
-            if (svgPath != null) {
-                svgPath.setCursor(svgCursor);
-            }
-        }
-    }
-
-    /**
-     * 初始化svg内容
-     *
-     * @param url 地址
-     */
-    private void initContent(String url) {
-        if (this.loader != null && url != null) {
-            String content = this.loader.load(url);
-            if (content != null) {
-                this.svgPath(true).setContent(content);
-                this.setCache(true);
-                this.setCacheShape(true);
-            }
-        }
+    public void cursor(Cursor cursor) {
+        this.cursor = cursor;
+        this.setCursor(cursor);
     }
 
     /**
@@ -140,11 +122,13 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      *
      * @return svg内容
      */
-    public SVGPath svgPath(boolean initIfNull) {
-        if (this.getShape() == null && initIfNull) {
-            this.setShape(new SVGPath());
+    public SVGPathExt shape() {
+        SVGPathExt svgPathExt = (SVGPathExt) this.getShape();
+        if (svgPathExt == null) {
+            svgPathExt = new SVGPathExt();
+            this.setShape(svgPathExt);
         }
-        return (SVGPath) this.getShape();
+        return svgPathExt;
     }
 
     @Override
@@ -201,7 +185,7 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         this.setSizeStr(size);
     }
 
-    public SVGGlyph(@NonNull String url, double size) {
+    public SVGGlyph(@NonNull String url, Number size) {
         this();
         this.setUrl(url);
         this.setSize(size);
@@ -212,9 +196,9 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      *
      * @param url svg地址
      */
-    public void setUrl(String url) {
-        this.setProp("_url", url.intern());
-        this.initContent(url);
+    public void setUrl(@NonNull String url) {
+        this.shape().setUrl(url);
+        this.shape().setColor(this.color);
     }
 
     /**
@@ -223,19 +207,18 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * @return svg地址
      */
     public String getUrl() {
-        return this.getProp("_url");
+        return this.shape().getUrl();
     }
 
     /**
      * 设置颜色
      *
-     * @param colorStr 颜色
+     * @param color 颜色
      */
-    public void setColor(String colorStr) {
+    public void setColor(String color) {
         try {
-            if (StrUtil.isNotBlank(colorStr)) {
-                Color color = Color.valueOf(colorStr.trim());
-                this.setColor(color);
+            if (StrUtil.isNotBlank(color)) {
+                this.setColor(Color.valueOf(color.trim()));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -251,72 +234,43 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         if (color == null) {
             color = Color.BLACK;
         }
-        if (this.color != color) {
-            this.color = color;
-            this.svgPath(true).setFill(color);
-            this.setBackground(ControlUtil.backgroundOfColor(color));
-        }
-    }
-
-    @Override
-    public void disable() {
-        if (!this.isDisabled()) {
-            this.setDisable(true);
-        }
-        SVGPath svgPath = this.svgPath(false);
-        if (svgPath != null) {
-            this.setCursor(Cursor.NONE);
-            svgPath.setFill(Color.GRAY);
-            this.setBackground(ControlUtil.backgroundOfColor(Color.GRAY));
-        }
-    }
-
-    @Override
-    public void enable() {
-        if (this.isDisabled()) {
-            this.setDisable(false);
-        }
-        SVGPath svgPath = this.svgPath(false);
-        if (svgPath != null) {
-            this.setCursor(this.svgCursor);
-            svgPath.setFill(this.color);
-            this.setBackground(ControlUtil.backgroundOfColor(this.color));
-        }
+        this.color = color;
+        this.setBackground(ControlUtil.background(color));
     }
 
     /**
-     * 设置svg大小
+     * 设置大小
      *
      * @param size 大小
      */
     public void setSize(Number size) {
-        if (size != null &&size.doubleValue() > 0){
+        if (size != null && size.doubleValue() > 0) {
             this.setSizeStr(size.toString());
         }
     }
 
     /**
-     * 获取svg大小
+     * 获取大小
      *
-     * @return svg大小
+     * @return 大小
      */
     public Number getSize() {
         return this.getWidth();
     }
 
     /**
-     * 获取svg大小
+     * 获取大小字符串形式
      *
-     * @return svg大小
+     * @return 大小字符串形式
      */
     public String getSizeStr() {
-        return null;
+        return ControlUtil.boundedWidth(this) + "," + ControlUtil.boundedHeight(this);
     }
 
     /**
-     * 设置svg大小
+     * 设置大小，符串形式
      *
-     * @param size 大小
+     * @param size 大小字符串形式
      */
     public void setSizeStr(String size) {
         if (StrUtil.isBlank(size)) {

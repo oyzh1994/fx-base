@@ -17,14 +17,14 @@ import java.util.List;
  * @author oyzh
  * @since 2023/5/15
  */
-public interface ContextMenuAdapter extends PropAdapter {
+public interface ContextMenuAdapter {
 
     /**
      * 获取操作面板
      *
      * @return ContextMenu
      */
-    private ContextMenu _getContextMenu() {
+    private ContextMenu contextMenu() {
         if (this instanceof Control control) {
             return control.getContextMenu();
         }
@@ -39,7 +39,7 @@ public interface ContextMenuAdapter extends PropAdapter {
      *
      * @param contextMenu 操作面板
      */
-    private void _setContextMenu(ContextMenu contextMenu) {
+    private void contextMenu(ContextMenu contextMenu) {
         if (this instanceof Control control) {
             control.setContextMenu(contextMenu);
         } else if (this instanceof Tab tab) {
@@ -65,15 +65,15 @@ public interface ContextMenuAdapter extends PropAdapter {
      */
     default ContextMenu initContextMenu(List<MenuItem> menuItems) {
         if (menuItems != null && !menuItems.isEmpty()) {
-            ContextMenu contextMenu = this._getContextMenu();
+            ContextMenu contextMenu = this.contextMenu();
             if (contextMenu == null) {
                 contextMenu = new ContextMenu();
-                this._setContextMenu(contextMenu);
+                this.contextMenu(contextMenu);
             }
             contextMenu.getItems().setAll(menuItems);
             return contextMenu;
         }
-        this._setContextMenu(null);
+        this.contextMenu(null);
         return null;
     }
 
@@ -99,7 +99,7 @@ public interface ContextMenuAdapter extends PropAdapter {
      * 隐藏操作面板
      */
     default void hideContextMenu() {
-        ContextMenu menu = this._getContextMenu();
+        ContextMenu menu = this.contextMenu();
         if (menu != null) {
             menu.hide();
         }
@@ -109,10 +109,10 @@ public interface ContextMenuAdapter extends PropAdapter {
      * 清除操作面板
      */
     default void clearContextMenu() {
-        ContextMenu menu = this._getContextMenu();
+        ContextMenu menu = this.contextMenu();
         if (menu != null) {
             menu.hide();
-            this._setContextMenu(null);
+            this.contextMenu(null);
         }
     }
 }

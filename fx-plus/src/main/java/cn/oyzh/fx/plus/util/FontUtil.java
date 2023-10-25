@@ -1,13 +1,20 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.util.StrUtil;
+import javafx.event.EventTarget;
+import javafx.scene.Node;
+import javafx.scene.control.Labeled;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 字符工具类
@@ -63,6 +70,21 @@ public class FontUtil {
             return 0;
         }
         FontMetrics fontMetrics = fontMetrics();
+        return fontMetrics.stringWidth(str);
+    }
+
+    /**
+     * 计算字符宽度
+     *
+     * @param str  字符串
+     * @param font 字符
+     * @return 字符宽度
+     */
+    public static double stringWidth(String str, javafx.scene.text.Font font) {
+        if (StrUtil.isBlank(str)) {
+            return 0;
+        }
+        FontMetrics fontMetrics = fontMetrics(font);
         return fontMetrics.stringWidth(str);
     }
 
@@ -125,9 +147,102 @@ public class FontUtil {
      * @param font 字体
      * @return FontMetrics
      */
-    public static FontMetrics fontMetrics(@NonNull javafx.scene.text.Font font) {
+    public static FontMetrics fontMetrics(javafx.scene.text.Font font) {
+        if (font == null) {
+            font = javafx.scene.text.Font.getDefault();
+        }
         return fontMetrics(font.getName(), (int) font.getSize());
     }
 
+    /**
+     * 获取字体
+     *
+     * @param target 目标
+     * @return 字体
+     */
+    public static javafx.scene.text.Font getFont(EventTarget target) {
+        if (target instanceof Text text) {
+            return text.getFont();
+        }
+        if (target instanceof Labeled labeled) {
+            return labeled.getFont();
+        }
+        if (target instanceof TextInputControl inputControl) {
+            return inputControl.getFont();
+        }
+        if (target instanceof Node) {
+            return javafx.scene.text.Font.font(getFontFamily(target), getFontSize(target));
+        }
+        return javafx.scene.text.Font.getDefault();
+    }
 
+    /**
+     * 获取字体大小
+     *
+     * @param target 目标
+     * @return 字体大小
+     */
+    public static double getFontSize(EventTarget target) {
+        if (target instanceof Text text) {
+            return text.getFont().getSize();
+        }
+        if (target instanceof Labeled labeled) {
+            return labeled.getFont().getSize();
+        }
+        if (target instanceof TextInputControl inputControl) {
+            return inputControl.getFont().getSize();
+        }
+        if (target instanceof Node node) {
+            try {
+                String style = node.getStyle();
+                if (StrUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-size")) {
+                    List<String> list = StrUtil.split(style, ";");
+                    Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-size")).findAny();
+                    if (fontSize.isPresent()) {
+                        String size = fontSize.get().toLowerCase().trim().replace("-fx-font-size", "");
+                        size = size.replace(":", "").trim();
+                        return Double.parseDouble(size);
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return javafx.scene.text.Font.getDefault().getSize();
+    }
+
+    /**
+     * 获取字体类型
+     *
+     * @param target 目标
+     * @return 字体类型
+     */
+    public static String getFontFamily(EventTarget target) {
+        if (target instanceof Text text) {
+            return text.getFont().getFamily();
+        }
+        if (target instanceof Labeled labeled) {
+            return labeled.getFont().getFamily();
+        }
+        if (target instanceof TextInputControl inputControl) {
+            return inputControl.getFont().getFamily();
+        }
+        if (target instanceof Node node) {
+            try {
+                String style = node.getStyle();
+                if (StrUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-family")) {
+                    List<String> list = StrUtil.split(style, ";");
+                    Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-family")).findAny();
+                    if (fontSize.isPresent()) {
+                        String family = fontSize.get().toLowerCase().trim().replace("-fx-font-family", "");
+                        family = family.replace(":", "").trim();
+                        return family;
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return javafx.scene.text.Font.getDefault().getFamily();
+    }
 }

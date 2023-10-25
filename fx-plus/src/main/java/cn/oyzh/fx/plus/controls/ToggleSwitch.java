@@ -65,12 +65,12 @@ public class ToggleSwitch extends FlexPane {
                     this.selectedBtn = ControlUtil.initSwitchButton(1);
                     this.getChildren().add(this.selectedBtn);
                 }
-                this.selectedBtn.showNode();
-                this.unselectedBtn.hideNode();
+                this.selectedBtn.display();
+                this.unselectedBtn.disappear();
                 this.setText(this.selectedText);
             } else {
-                this.selectedBtn.hideNode();
-                this.unselectedBtn.showNode();
+                this.selectedBtn.display();
+                this.unselectedBtn.disappear();
                 this.setText(this.unselectedText);
             }
         });

@@ -12,12 +12,7 @@ import javafx.scene.control.skin.TextFieldSkin;
  * @author oyzh
  * @since 2023/10/9
  */
-public class NumberTextFieldSkin extends TextFieldSkin {
-
-    /**
-     * 文本输入框
-     */
-    protected TextField textField;
+public class NumberTextFieldSkin extends TextFieldSkinExt {
 
     /**
      * 增加按钮
@@ -29,45 +24,36 @@ public class NumberTextFieldSkin extends TextFieldSkin {
      */
     protected SVGGlyph decrButton;
 
-    /**
-     * 文本监听器
-     */
-    private final InvalidationListener textChanged = observable -> this.updateButtonVisibility();
-
-    /**
-     * 焦点监听器
-     */
-    private final InvalidationListener focusChanged = observable -> this.updateButtonVisibility();
-
-    /**
-     * 修改按钮状态
-     */
-    private void updateButtonVisibility() {
-        boolean hasFocus = this.textField.isFocused();
-        boolean isEmpty = this.textField.getText() == null || this.textField.getText().isEmpty();
-        boolean shouldBeVisible = hasFocus && !isEmpty;
+    @Override
+    protected void updateButtonVisibility() {
+        boolean visible = this.getSkinnable().isVisible();
+        boolean disable = this.getSkinnable().isDisable();
+        boolean hasFocus = this.getSkinnable().isFocused();
+        boolean isEmpty = this.getSkinnable().getText() == null || this.getSkinnable().getText().isEmpty();
+        boolean shouldBeVisible = !disable && visible && hasFocus && !isEmpty;
         this.decrButton.setVisible(shouldBeVisible);
         this.incrButton.setVisible(shouldBeVisible);
     }
 
     public NumberTextFieldSkin(TextField textField, Runnable onIncr, Runnable onDecr) {
         super(textField);
-
         double h = textField.getHeight() / 2.d - 1;
         // 初始化增加、减少按钮
-        this.incrButton = new SVGGlyph("/font/arrow-up-filling.svg");
+        this.incrButton = new SVGGlyph("/fx-plus/font/arrow-up-filling.svg");
         this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
         this.incrButton.setColor("#000000");
+        this.incrButton.setTipText("增加值");
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);
         this.incrButton.setFocusTraversable(false);
         this.incrButton.setPadding(new Insets(0));
 
-        this.decrButton = new SVGGlyph("/font/arrow-down-filling.svg");
+        this.decrButton = new SVGGlyph("/fx-plus/font/arrow-down-filling.svg");
         this.decrButton.setSize(h);
         this.decrButton.setVisible(false);
         this.decrButton.setColor("#000000");
+        this.decrButton.setTipText("减少值");
         this.decrButton.managedBindVisible();
         this.decrButton.setEnableWaiting(false);
         this.decrButton.setFocusTraversable(false);
@@ -82,18 +68,13 @@ public class NumberTextFieldSkin extends TextFieldSkin {
 
         // 添加到组件
         this.getChildren().addAll(this.incrButton, this.decrButton);
-
-        // 初始化监听器
-        this.textField = textField;
-        this.textField.textProperty().addListener(this.textChanged);
-        this.textField.focusedProperty().addListener(this.focusChanged);
     }
 
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
         // 按钮大小，规则 (组件高/2-2)*0.9
-        double size = (this.textField.getHeight() / 2.0 - 2) * 0.9;
+        double size = (this.getSkinnable().getHeight() / 2.0 - 2) * 0.9;
         this.incrButton.setSize(size);
         this.decrButton.setSize(size);
         // 计算按钮实际大小
@@ -109,26 +90,30 @@ public class NumberTextFieldSkin extends TextFieldSkin {
         super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
     }
 
-    @Override
-    public void dispose() {
-        // 清除监听器
-        this.textField.textProperty().removeListener(this.textChanged);
-        this.textField.focusedProperty().removeListener(this.focusChanged);
-        super.dispose();
-    }
-
+    /**
+     * 禁用减少值按钮
+     */
     public void disableDecrButton() {
         this.decrButton.setDisable(true);
     }
 
+    /**
+     * 启用减少值按钮
+     */
     public void enableDecrButton() {
         this.decrButton.setDisable(false);
     }
 
+    /**
+     * 禁用增加值按钮
+     */
     public void disableIncrButton() {
         this.incrButton.setDisable(false);
     }
 
+    /**
+     * 启用增加值按钮
+     */
     public void enableIncrButton() {
         this.incrButton.setDisable(false);
     }

@@ -33,11 +33,24 @@ public class TaskManager {
         if (delayTask != null && !delayTask.isDone()) {
             ExecutorUtil.cancel(delayTask);
         }
-        Task task1 = TaskBuilder.newBuilder()
-                .onStart(task)
-                .onFinish(() -> DELAY_TASKS.remove(key))
-                .build();
-        delayTask = ExecutorUtil.start(task1, delay);
+        Task myTask;
+        if (task instanceof Task task1) {
+            myTask = TaskBuilder.newBuilder()
+                    .from(task1)
+                    .onFinish(() -> {
+                        DELAY_TASKS.remove(key);
+                        if (task1.getFinish() != null) {
+                            task1.getFinish().run();
+                        }
+                    })
+                    .build();
+        } else {
+            myTask = TaskBuilder.newBuilder()
+                    .onStart(task)
+                    .onFinish(() -> DELAY_TASKS.remove(key))
+                    .build();
+        }
+        delayTask = ExecutorUtil.start(myTask, delay);
         DELAY_TASKS.put(key, delayTask);
     }
 }

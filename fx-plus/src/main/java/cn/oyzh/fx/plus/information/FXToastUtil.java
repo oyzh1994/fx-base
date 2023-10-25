@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2023/01/04
  */
+@Deprecated
 @Slf4j
 @UtilityClass
 public class FXToastUtil {
@@ -45,7 +46,7 @@ public class FXToastUtil {
      */
     private static SVGGlyph okIcon() {
         if (OK == null) {
-            OK = new SVGGlyph("/font/check-circle.svg", Color.GREEN);
+            OK = new SVGGlyph("/fx-plus/font/check-circle.svg", Color.GREEN);
         }
         return OK;
     }
@@ -57,7 +58,7 @@ public class FXToastUtil {
      */
     private static SVGGlyph warnIcon() {
         if (WARN == null) {
-            WARN = new SVGGlyph("/font/warning-circle.svg", Color.ORANGE);
+            WARN = new SVGGlyph("/fx-plus/font/warning-circle.svg", Color.ORANGE);
         }
         return WARN;
     }
@@ -69,7 +70,7 @@ public class FXToastUtil {
      */
     private static SVGGlyph questionIcon() {
         if (QUESTION == null) {
-            QUESTION = new SVGGlyph("/font/question-circle.svg", Color.ORANGE);
+            QUESTION = new SVGGlyph("/fx-plus/font/question-circle.svg", Color.ORANGE);
         }
         return QUESTION;
     }

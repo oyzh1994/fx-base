@@ -1,11 +1,22 @@
 package cn.oyzh.fx.plus.test;
 
+import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.fx.common.thread.ThreadUtil;
+import cn.oyzh.fx.plus.controls.FlexHBox;
+import cn.oyzh.fx.plus.controls.FlexVBox;
 import cn.oyzh.fx.plus.controls.ToggleSwitch;
 import cn.oyzh.fx.plus.ext.ClearableTextField;
 import cn.oyzh.fx.plus.ext.DecimalTextField;
 import cn.oyzh.fx.plus.ext.NumberTextField;
+import cn.oyzh.fx.plus.ext.SearchHistoryPopup;
+import cn.oyzh.fx.plus.ext.SearchTextField;
+import cn.oyzh.fx.plus.information.MessageBox;
+import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.svg.SVGPathExt;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
@@ -16,6 +27,8 @@ import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +58,11 @@ public class AppMain extends Application {
         // test10(stage);
         // test11(stage);
         // test12(stage);
-        test13(stage);
+        // test13(stage);
+        // test14(stage);
+        // test15(stage);
+        // test16(stage);
+        test17(stage);
     }
 
     private void test1(Stage stage) {
@@ -468,5 +485,142 @@ public class AppMain extends Application {
         hBox.setSpacing(10);
         stage.setScene(new Scene(hBox, 500, 500));
         stage.show();
+    }
+
+    private void test14(Stage stage) throws InterruptedException {
+
+        Label label1 = new Label("测试内容");
+        SearchTextField textField1 = new SearchTextField();
+        textField1.setHistoryPopup(new SearchHistoryPopup() {
+            @Override
+            public List<String> getHistories() {
+                List<String> list = new ArrayList<>();
+                for (int i = 0; i < 50; i++) {
+                    list.add("test---------------------" + i);
+                }
+                return list;
+                // return List.of("首个", "1", "2", "最后一个");
+            }
+        });
+        textField1.setFlexWidth("80%");
+        textField1.setOnSearch(s -> System.out.println("xx:" + s));
+        textField1.setRealHeight(35);
+
+        Label label2 = new Label("测试内容");
+        SearchTextField textField2 = new SearchTextField();
+        textField2.setHistoryPopup(new SearchHistoryPopup() {
+            @Override
+            public List<String> getHistories() {
+                return List.of("3", "4");
+            }
+        });
+        textField2.setOnSearch(s -> System.out.println("xx:" + s));
+        textField2.setRealHeight(25);
+        textField2.setFlexWidth("80%");
+
+        FlexHBox hBox1 = new FlexHBox(label1, textField1);
+        FlexHBox hBox2 = new FlexHBox(label2, textField2);
+        hBox1.setFlexWidth("100%");
+        hBox2.setFlexWidth("100%");
+        hBox1.setSpacing(10);
+        hBox2.setSpacing(10);
+        // // 设置HBox的间距
+        FlexVBox vBox = new FlexVBox(hBox1, hBox2);
+        vBox.setFlexWidth("100%");
+        vBox.setFlexHeight("100%");
+
+
+        ThreadUtil.start(() -> {
+            for (int i = 0; i < 100; i++) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                int finalI = i;
+                FXUtil.runLater(() -> {
+                    textField1.setText("com_mysql_jdbc_Driver_" + finalI);
+                    textField2.setText("com.mysql.jdbc.Driver." + finalI);
+                });
+            }
+        });
+
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
+
+
+    }
+
+    private void test15(Stage stage) throws InterruptedException {
+
+        SearchTextField textField1 = new SearchTextField();
+        textField1.setHistoryPopup(new SearchHistoryPopup() {
+            @Override
+            public List<String> getHistories() {
+                List<String> list = new ArrayList<>();
+                for (int i = 0; i < 50; i++) {
+                    list.add("test---------------------" + i);
+                }
+                return list;
+                // return List.of("首个", "1", "2", "最后一个");
+            }
+        });
+
+        // // 设置HBox的间距
+        FlexVBox vBox = new FlexVBox(textField1);
+        vBox.setFlexWidth("100%");
+        vBox.setFlexHeight("100%");
+
+        ExecutorUtil.start(() -> {
+            MessageBox.tipMsg("测试消息1", textField1);
+        }, 1000);
+        ExecutorUtil.start(() -> {
+            MessageBox.tipMsg("测试消息2", textField1);
+        }, 2000);
+        ExecutorUtil.start(() -> {
+            MessageBox.tipMsg("测试消息3", textField1);
+        }, 3000);
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
+
+    }
+
+    private void test16(Stage stage) throws InterruptedException {
+        SVGPathExt SVGPathExt = new SVGPathExt("/fx-plus/font/check.svg");
+        // fxsvgPath.setScaleX(0.1);
+        // fxsvgPath.setScaleY(0.1);
+        SVGPathExt.setTranslateX(0.1);
+        SVGPathExt.setTranslateY(0.1);
+
+        // fxsvgPath.getTransforms().add(new Scale(2, 2));
+        ExecutorUtil.start(() -> {
+            System.out.println(SVGPathExt.maxWidth(-1));
+            System.out.println(SVGPathExt.maxHeight(-1));
+        }, 2000);
+
+        SVGGlyph glyph = new SVGGlyph("/fx-plus/font/check.svg");
+        // // 设置HBox的间距
+        FlexVBox vBox = new FlexVBox(glyph);
+        // FlexVBox vBox = new FlexVBox(fxsvgPath);
+        vBox.setFlexWidth("100%");
+        vBox.setFlexHeight("100%");
+
+
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
+
+    }
+
+    private void test17(Stage stage) throws InterruptedException {
+        MessageBox.okToast("测试1");
+        MessageBox.warnToast("测试2");
+        MessageBox.questionToast("测试3");
+        // ExecutorUtil.start(() -> {
+        //     MessageBox.warnToast("测试2");
+        // }, 2000);
+        // ExecutorUtil.start(() -> {
+        //     MessageBox.questionToast("测试3");
+        // }, 4000);
+
     }
 }

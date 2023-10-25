@@ -17,7 +17,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class BaseTextField extends TextField implements FlexAdapter, TextAdapter, TipAdapter, StateAdapter, ThemeAdapter {
+public class BaseTextField extends TextField implements FlexAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         this.setCache(true);

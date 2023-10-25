@@ -13,6 +13,7 @@ import java.util.Optional;
  * @author oyzh
  * @since 2020/10/28
  */
+@Deprecated
 @UtilityClass
 public class FXDialogUtil {
 

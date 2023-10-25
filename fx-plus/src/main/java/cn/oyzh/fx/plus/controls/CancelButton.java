@@ -12,7 +12,7 @@ public class CancelButton extends IconButton {
         this.setPrefHeight(25);
         this.getStyleClass().add("btn");
         this.getStyleClass().add("btn-warning");
-        this.init("/font/close.svg", 0.7);
+        this.init("/fx-plus/font/close.svg", 0.7);
         this.setOnAction(actionEvent -> this.getScene().getWindow().hide());
     }
 }

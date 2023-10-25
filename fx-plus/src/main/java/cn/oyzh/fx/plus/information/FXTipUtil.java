@@ -10,6 +10,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2023/01/04
  */
+@Deprecated
 @UtilityClass
 public class FXTipUtil {
 

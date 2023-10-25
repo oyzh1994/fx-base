@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
@@ -17,9 +18,9 @@ import lombok.NonNull;
 public interface StateAdapter {
 
     /**
-     * 隐藏节点
+     * 隐藏
      */
-    default void hideNode() {
+    default void disappear() {
         if (this instanceof Node node) {
             if (!node.visibleProperty().isBound()) {
                 node.setVisible(false);
@@ -36,21 +37,20 @@ public interface StateAdapter {
                 tab.getContent().setVisible(false);
             }
         } else if (this instanceof Stage stage) {
-            Scene scene = stage.getScene();
-            if (scene != null && scene.getRoot() != null && !scene.getRoot().visibleProperty().isBound()) {
-                scene.getRoot().setVisible(true);
+            if (stage.isShowing()) {
+                FXUtil.runWait(stage::close);
             }
         } else if (this instanceof StageWrapper stage) {
-            if (stage.root() != null && !stage.root().visibleProperty().isBound()) {
-                stage.root().setVisible(true);
+            if (stage.stage().isShowing()) {
+                FXUtil.runWait(stage.stage()::close);
             }
         }
     }
 
     /**
-     * 显示节点
+     * 显示
      */
-    default void showNode() {
+    default void display() {
         if (this instanceof Node node) {
             if (!node.visibleProperty().isBound()) {
                 node.setVisible(true);
@@ -67,13 +67,12 @@ public interface StateAdapter {
                 tab.getContent().setVisible(true);
             }
         } else if (this instanceof Stage stage) {
-            Scene scene = stage.getScene();
-            if (scene != null && scene.getRoot() != null && !scene.getRoot().visibleProperty().isBound()) {
-                scene.getRoot().setVisible(true);
+            if (!stage.isShowing()) {
+                FXUtil.runWait(stage::show);
             }
         } else if (this instanceof StageWrapper stage) {
-            if (stage.root() != null && !stage.root().visibleProperty().isBound()) {
-                stage.root().setVisible(true);
+            if (!stage.stage().isShowing()) {
+                FXUtil.runWait(stage.stage()::show);
             }
         }
     }

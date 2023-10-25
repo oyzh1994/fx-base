@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import lombok.NonNull;
 
@@ -18,6 +19,14 @@ public class FXHBox extends HBox implements ThemeAdapter, LayoutAdapter, FontAda
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+    }
+
+    public FXHBox() {
+        super();
+    }
+
+    public FXHBox(Node... children) {
+        super(children);
     }
 
     @Override

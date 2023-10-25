@@ -255,7 +255,5 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void setIgnoreChanged(boolean ignoreChanged) {
         this.setProp("_ignoreChanged", ignoreChanged);
     }
-
-
 }
 

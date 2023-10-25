@@ -74,7 +74,7 @@ public class Controller implements StageListener {
      */
     protected void closeStage() {
         if (this.stage != null) {
-            this.stage.close();
+            this.stage.disappear();
         }
     }
 

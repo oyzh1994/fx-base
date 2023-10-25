@@ -8,36 +8,35 @@ package cn.oyzh.fx.plus;
  */
 public class FXStyle {
 
-
     /**
      * bootstrapfx样式文件
      */
-    public static final String BOOTSTRAP_FX = "/css/bootstrapfx/bootstrapfx.css";
+    public static final String BOOTSTRAP_FX = "/bootstrapfx/css/bootstrapfx.css";
 
     /**
      * jmetro基础样式文件
      */
-    public static final String JMETRO_BASE = "/css/jmetro/base.css";
+    public static final String JMETRO_BASE = "/jmetro/css/base.css";
 
     /**
      * jmetro基础扩展样式文件
      */
-    public static final String JMETRO_BASE_EXTRAS = "/css//jmetro/base_extras.css";
+    public static final String JMETRO_BASE_EXTRAS = "/jmetro/css/base_extras.css";
 
     /**
      * jmetro基础第三方类库样式文件
      */
-    public static final String JMETRO_BASE_OTHER_LIBRARIES = "/css/jmetro/base_other_libraries.css";
+    public static final String JMETRO_BASE_OTHER_LIBRARIES = "/jmetro/css/base_other_libraries.css";
 
     /**
      * jmetro明亮主题样式文件
      */
-    public static final String JMETRO_LIGHT_THEME = "/css/jmetro/light_theme.css";
+    public static final String JMETRO_LIGHT_THEME = "/jmetro/css/light_theme.css";
 
     /**
      * jmetro暗黑主题样式文件
      */
-    public static final String JMETRO_DARK_THEME = "/css/jmetro/dark_theme.css";
+    public static final String JMETRO_DARK_THEME = "/jmetro/css/dark_theme.css";
 
     /**
      * jmetro完整样式文件

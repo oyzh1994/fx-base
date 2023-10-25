@@ -24,6 +24,7 @@ import java.awt.*;
  * @author oyzh
  * @since 2022/2/8
  */
+@Deprecated
 public class FXTip {
 
     /**
