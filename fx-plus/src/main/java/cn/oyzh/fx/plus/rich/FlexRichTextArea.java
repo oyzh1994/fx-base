@@ -20,7 +20,6 @@ public class FlexRichTextArea extends BaseRichTextArea implements FlexAdapter {
         this.resizeNode();
     }
 
-
     @Override
     public String getFlexWidth() {
         return FlexAdapter.super.flexWidth();

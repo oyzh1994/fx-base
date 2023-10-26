@@ -31,7 +31,6 @@ public class BaseRichTextField extends InlineCssTextField implements  TextAdapte
         return TipAdapter.super.tipText();
     }
 
-
     @Override
     public void setStateManager(StateManager manager) {
         StateAdapter.super.stateManager(manager);

@@ -48,6 +48,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      */
     default void flexWidth(String flexWidth) {
         this.setProp("flexWidth", flexWidth);
+        this.removeProp("_flexWidth");
     }
 
     /**
@@ -80,6 +81,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      */
     default void flexHeight(String flexHeight) {
         this.setProp("flexHeight", flexHeight);
+        this.removeProp("_flexHeight");
     }
 
     /**
@@ -173,17 +175,23 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         double parentWidth = this.parentWidth();
         Double computeWidth1 = this.computeWidth();
         Double width1 = this.getProp("_width");
+        boolean hasFlexWidth = this.hasProp("_flexWidth");
         Double parentWidth1 = this.getProp("_parentWidth");
-        if (parentWidth1 == null || computeWidth1 == null || width1 == null || parentWidth1 != parentWidth || width1 != width) {
+        if (parentWidth1 == null || computeWidth1 == null || width1 == null ||
+                parentWidth1 != parentWidth || width1 != width || !hasFlexWidth) {
+            String flexWidth = this.getFlexWidth();
             double computeWidth;
             // 计算宽度值
-            double flexValue = FlexUtil.computeFlexValue(this.getFlexWidth(), parentWidth);
+            double flexValue = FlexUtil.computeFlexValue(flexWidth, parentWidth);
             if (Double.isNaN(flexValue)) {
                 computeWidth = width;
             } else {
                 computeWidth = flexValue;
             }
             // 设置属性
+            if (!hasFlexWidth) {
+                this.setProp("_flexWidth", flexWidth);
+            }
             this.removeProp("_ignoreWidth");
             this.setProp("_width", width);
             this.setProp("_parentWidth", parentWidth);
@@ -197,27 +205,29 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         // 获取父高度
         double parentHeight = this.parentHeight();
         Double height1 = this.getProp("_height");
+        boolean hasFlexHeight = this.hasProp("_flexHeight");
         Double parentHeight1 = this.getProp("_parentHeight");
         Double computeHeight1 = this.computeHeight();
-        if (parentHeight1 == null || computeHeight1 == null || height1 == null || parentHeight1 != parentHeight || height1 != height) {
+        if (parentHeight1 == null || computeHeight1 == null || height1 == null
+                || parentHeight1 != parentHeight || height1 != height || !hasFlexHeight) {
+            String flexHeight = this.getFlexHeight();
             double computeHeight;
             // 计算高度值
-            double flexValue = FlexUtil.computeFlexValue(this.getFlexHeight(), parentHeight);
+            double flexValue = FlexUtil.computeFlexValue(flexHeight, parentHeight);
             if (Double.isNaN(flexValue)) {
                 computeHeight = height;
             } else {
                 computeHeight = flexValue;
             }
             // 设置属性
+            if (!hasFlexHeight) {
+                this.setProp("_flexHeight", flexHeight);
+            }
             this.removeProp("_ignoreHeight");
             this.setProp("_height", height);
             this.setProp("_parentHeight", parentHeight);
             this.setProp("_computeHeight", computeHeight);
             size[1] = computeHeight;
-            System.out.println("height=" + height + " height1=" + height1);
-            System.out.println("parentHeight=" + parentHeight + " parentHeight1=" + parentHeight1);
-            System.out.println("computeHeight=" + computeHeight + " computeHeight1=" + computeHeight1);
-            System.out.println("+++++++++++++++++++++");
         } else {
             this.setProp("_ignoreHeight", true);
             size[1] = computeHeight1;
