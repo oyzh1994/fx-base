@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.test;
 
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.ThreadUtil;
+import cn.oyzh.fx.plus.controls.FXButton;
+import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.FlexVBox;
 import cn.oyzh.fx.plus.controls.ToggleSwitch;
@@ -10,6 +12,7 @@ import cn.oyzh.fx.plus.ext.DecimalTextField;
 import cn.oyzh.fx.plus.ext.NumberTextField;
 import cn.oyzh.fx.plus.ext.SearchHistoryPopup;
 import cn.oyzh.fx.plus.ext.SearchTextField;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.fx.plus.svg.SVGGlyph;
 import cn.oyzh.fx.plus.svg.SVGPathExt;
@@ -62,7 +65,8 @@ public class AppMain extends Application {
         // test14(stage);
         // test15(stage);
         // test16(stage);
-        test17(stage);
+        // test17(stage);
+        test18(stage);
     }
 
     private void test1(Stage stage) {
@@ -622,5 +626,43 @@ public class AppMain extends Application {
         //     MessageBox.questionToast("测试3");
         // }, 4000);
 
+    }
+
+    private void test18(Stage stage) throws InterruptedException {
+
+        VBox vBox = new VBox();
+
+        StateManager stateManager = new StateManager();
+        stateManager.setManagedBindVisible(true);
+
+        FXButton btn1 = new FXButton("禁用");
+        FXButton btn2 = new FXButton("启用");
+        FXButton btn3 = new FXButton("隐藏");
+        FXButton btn4 = new FXButton("显示");
+        btn1.setOnAction(actionEvent -> stateManager.disable());
+        btn2.setOnAction(actionEvent -> stateManager.enable());
+        btn3.setOnAction(actionEvent -> stateManager.setVisible(false));
+        btn4.setOnAction(actionEvent -> stateManager.setVisible(true));
+
+        FXHBox box1 = new FXHBox();
+        box1.addChild(btn1);
+        box1.addChild(btn2);
+        box1.addChild(btn3);
+        box1.addChild(btn4);
+
+        FXButton button1 = new FXButton("测试1");
+        FXButton button2 = new FXButton("测试2");
+        button1.setStateManager(stateManager);
+        button2.setStateManager(stateManager);
+
+        FXHBox box2 = new FXHBox();
+        box2.addChild(button1);
+        box2.addChild(button2);
+
+        vBox.getChildren().add(box1);
+        vBox.getChildren().add(box2);
+
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
     }
 }

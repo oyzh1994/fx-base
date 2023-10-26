@@ -5,6 +5,7 @@ import lombok.Getter;
 
 /**
  * 状态管理器
+ *
  * @author oyzh
  * @since 2023/10/26
  */
@@ -18,6 +19,7 @@ public class StateManager {
 
     /**
      * 设置managed属性绑定visible属性
+     *
      * @param managedBindVisible managed属性绑定visible属性
      */
     public void setManagedBindVisible(boolean managedBindVisible) {
@@ -28,9 +30,6 @@ public class StateManager {
             } else if (this.isManaged() && !this.isManaged()) {
                 this.setManaged(true);
             }
-            this.managedProperty().bind(this.visibleProperty());
-        } else {
-            this.managedProperty().unbind();
         }
     }
 
@@ -52,6 +51,9 @@ public class StateManager {
 
     public void setVisible(boolean visible) {
         this.visibleProperty().set(visible);
+        if (this.managedBindVisible) {
+            this.setManaged(visible);
+        }
     }
 
     /**

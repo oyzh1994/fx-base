@@ -192,21 +192,23 @@ public interface StateAdapter extends PropAdapter {
         if (manager == null) {
             return;
         }
-        Node node = null;
+        Node node;
         if (this instanceof Node node1) {
             node = node1;
         } else if (this instanceof Tab tab) {
             node = tab.getContent();
+        } else {
+            node = null;
         }
         if (node != null) {
             if (!node.visibleProperty().isBound()) {
-                node.visibleProperty().bind(manager.visibleProperty());
+                manager.visibleProperty().addListener((observableValue, aBoolean, t1) -> node.setVisible(t1));
             }
             if (!node.managedProperty().isBound()) {
-                node.managedProperty().bind(manager.managedProperty());
+                manager.managedProperty().addListener((observableValue, aBoolean, t1) -> node.setManaged(t1));
             }
             if (!node.disableProperty().isBound()) {
-                node.disableProperty().bind(manager.disableProperty());
+                manager.disableProperty().addListener((observableValue, aBoolean, t1) -> node.setDisable(t1));
             }
         }
         this.setProp("_stateManager", manager);
