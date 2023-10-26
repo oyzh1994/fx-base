@@ -1,14 +1,11 @@
 package cn.oyzh.fx.plus.mouse;
 
-import cn.oyzh.fx.plus.keyboard.KeyHandler;
 import cn.oyzh.fx.plus.view.FXView;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;

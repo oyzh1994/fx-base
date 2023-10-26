@@ -86,7 +86,7 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         super(textField);
         // 初始化历史按钮
         this.historyButton = new SVGGlyph("/fx-plus/font/history.svg");
-        this.historyButton.setTipText("历史");
+        this.historyButton.setTipText("历史记录");
         this.historyButton.setColor("#696969");
         this.historyButton.setEnableWaiting(false);
         this.historyButton.setFocusTraversable(false);
@@ -137,16 +137,13 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         // 获取边距
         Insets padding = this.getSkinnable().getPadding();
         // 计算左边距
-        double paddingLeft = btnSize + 3 + h * .2;
+        double paddingLeft = btnSize + 8;
         // 设置左边距
-        if (padding == null) {
-            padding = new Insets(0, 0, 0, paddingLeft);
-            this.getSkinnable().setPadding(padding);
-        } else if (padding.getLeft() < paddingLeft) {
+        if (padding.getLeft() != paddingLeft) {
             padding = new Insets(padding.getTop(), padding.getRight(), padding.getBottom(), paddingLeft);
             this.getSkinnable().setPadding(padding);
         }
         // 设置组件位置
-        super.positionInArea(this.historyButton, 3, y - btnSize * .1, w, h, btnSize, HPos.LEFT, VPos.CENTER);
+        super.positionInArea(this.historyButton, 3, y * 0.9, w, h, btnSize, HPos.LEFT, VPos.CENTER);
     }
 }

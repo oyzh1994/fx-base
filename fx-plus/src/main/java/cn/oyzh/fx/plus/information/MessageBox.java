@@ -23,10 +23,8 @@ import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
-import javax.annotation.processing.Processor;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**

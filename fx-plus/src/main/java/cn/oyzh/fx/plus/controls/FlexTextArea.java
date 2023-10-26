@@ -161,9 +161,8 @@ public class FlexTextArea extends TextArea implements AreaAdapter, FlexAdapter, 
 
     @Override
     public void resize(double width, double height) {
-        double computeWidth = this.computeWidth(width);
-        double computeHeight = this.computeHeight(height);
-        super.resize(computeWidth, computeHeight);
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
     }
 
     @Override

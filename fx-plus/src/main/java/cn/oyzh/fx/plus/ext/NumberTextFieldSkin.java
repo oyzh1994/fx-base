@@ -1,12 +1,10 @@
 package cn.oyzh.fx.plus.ext;
 
 import cn.oyzh.fx.plus.svg.SVGGlyph;
-import javafx.beans.InvalidationListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
-import javafx.scene.control.skin.TextFieldSkin;
 
 /**
  * @author oyzh

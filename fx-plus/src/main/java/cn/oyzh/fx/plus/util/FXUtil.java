@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
-import cn.oyzh.fx.plus.task.RunTask;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;

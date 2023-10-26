@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.adapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.beans.value.WeakChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
@@ -202,13 +203,13 @@ public interface StateAdapter extends PropAdapter {
         }
         if (node != null) {
             if (!node.visibleProperty().isBound()) {
-                manager.visibleProperty().addListener((observableValue, aBoolean, t1) -> node.setVisible(t1));
+                manager.visibleProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setVisible(t1)));
             }
             if (!node.managedProperty().isBound()) {
-                manager.managedProperty().addListener((observableValue, aBoolean, t1) -> node.setManaged(t1));
+                manager.managedProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setManaged(t1)));
             }
             if (!node.disableProperty().isBound()) {
-                manager.disableProperty().addListener((observableValue, aBoolean, t1) -> node.setDisable(t1));
+                manager.disableProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setDisable(t1)));
             }
         }
         this.setProp("_stateManager", manager);

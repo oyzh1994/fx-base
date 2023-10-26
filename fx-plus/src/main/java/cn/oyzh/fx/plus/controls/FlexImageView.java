@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls;
 
-import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
@@ -80,9 +79,8 @@ public class FlexImageView extends ImageView implements FlexAdapter, TipAdapter 
 
     @Override
     public void resize(double width, double height) {
-        double computeWidth = this.computeWidth(width);
-        double computeHeight = this.computeHeight(height);
-        super.resize(computeWidth, computeHeight);
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
         this.resizeNode();
     }
 

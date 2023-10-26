@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.control.TreeItem;
@@ -91,9 +90,8 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
 
     @Override
     public void resize(double width, double height) {
-        double computeWidth = this.computeWidth(width);
-        double computeHeight = this.computeHeight(height);
-        super.resize(computeWidth, computeHeight);
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
     }
 
     @Override

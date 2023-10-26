@@ -20,11 +20,60 @@ public class FlexUtil {
      * @return 计算后的流式值
      */
     public static double computeFlexValue(String flexValue, double value) {
-        if (StrUtil.isBlank(flexValue) || Double.isNaN(value)) {
-            return Double.NaN;
+        if (StrUtil.isNotBlank(flexValue) && !Double.isNaN(value)) {
+            try {
+                flexValue = flexValue.trim();
+                Double fixed = null;
+                Double percent = null;
+                Byte fixedOperator = null;
+                // 包含百分比
+                if (flexValue.contains("%")) {
+                    String[] strArr = flexValue.split("%");
+                    // 百分比值
+                    percent = Double.parseDouble(strArr[0].trim()) * 0.01;
+                    // 固定值
+                    if (strArr.length > 1) {
+                        String str2 = strArr[1].trim();
+                        if (str2.contains("+")) {
+                            fixed = Double.parseDouble(str2.replace("+", "").trim());
+                            fixedOperator = 0;
+                        } else if (str2.contains("-")) {
+                            fixed = Double.parseDouble(str2.replace("-", "").trim());
+                            fixedOperator = 1;
+                        } else if (str2.contains("*")) {
+                            fixed = Double.parseDouble(str2.replace("*", "").trim());
+                            fixedOperator = 2;
+                        } else if (str2.contains("/")) {
+                            fixed = Double.parseDouble(str2.replace("/", "").trim());
+                            fixedOperator = 3;
+                        }
+                    }
+                } else {// 直接计算固定值
+                    fixed = Double.parseDouble(flexValue);
+                }
+                double val = Double.NaN;
+                if (percent != null) {
+                    val = value * percent;
+                }
+                if (fixed != null && fixedOperator != null) {
+                    if (fixedOperator == 0) {
+                        val += fixed;
+                    } else if (fixedOperator == 1) {
+                        val -= fixed;
+                    } else if (fixedOperator == 2) {
+                        val *= fixed;
+                    } else {
+                        val /= fixed;
+                    }
+                }
+                return val;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-        FlexValue config = FlexValueParser.INSTANCE.apply(flexValue);
-        return config == null ? Double.NaN : config.computeValue(value);
+        return Double.NaN;
+        // FlexValue val = FlexValueParser.INSTANCE.apply(flexValue);
+        // return val == null ? Double.NaN : val.computeValue(value);
     }
 //
 //    /**

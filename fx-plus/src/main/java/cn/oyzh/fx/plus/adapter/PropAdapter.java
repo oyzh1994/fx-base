@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.stage.StageWrapper;
-import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.view.FXStage;
 import javafx.scene.Node;
 import javafx.scene.Scene;

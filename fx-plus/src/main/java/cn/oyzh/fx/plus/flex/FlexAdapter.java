@@ -149,58 +149,137 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
     /**
      * 获取计算宽度值
      */
-    default double computeWidth() {
-        Double computeWidth = this.getProp("_computeW");
-        return computeWidth == null ? Double.NaN : computeWidth;
+    default Double computeWidth() {
+        return this.getProp("_computeWidth");
     }
 
     /**
      * 获取计算高度值
      */
-    default double computeHeight() {
-        Double computeHeight = this.getProp("_computeH");
-        return computeHeight == null ? Double.NaN : computeHeight;
+    default Double computeHeight() {
+        return this.getProp("_computeHeight");
     }
 
     /**
-     * 计算宽度值
+     * 计算大小
      *
-     * @param width 宽度
-     * @return 计算后的宽度
+     * @param width  宽度
+     * @param height 高度
+     * @return 计算后的大小值
      */
-    default double computeWidth(double width) {
+    default double[] computeSize(double width, double height) {
+        double[] size = new double[2];
         // 获取父宽度
         double parentWidth = this.parentWidth();
-        double computeWidth = width;
-        // 计算宽度值
-        double flexValue = FlexUtil.computeFlexValue(this.getFlexWidth(), parentWidth);
-        if (!Double.isNaN(flexValue)) {
-            computeWidth = flexValue;
+        Double computeWidth1 = this.computeWidth();
+        Double width1 = this.getProp("_width");
+        Double parentWidth1 = this.getProp("_parentWidth");
+        if (parentWidth1 == null || computeWidth1 == null || width1 == null || parentWidth1 != parentWidth || width1 != width) {
+            double computeWidth;
+            // 计算宽度值
+            double flexValue = FlexUtil.computeFlexValue(this.getFlexWidth(), parentWidth);
+            if (Double.isNaN(flexValue)) {
+                computeWidth = width;
+            } else {
+                computeWidth = flexValue;
+            }
+            // 设置属性
+            this.removeProp("_ignoreWidth");
+            this.setProp("_width", width);
+            this.setProp("_parentWidth", parentWidth);
+            this.setProp("_computeWidth", computeWidth);
+            size[0] = computeWidth;
+        } else {
+            size[0] = computeWidth1;
+            this.setProp("_ignoreWidth", true);
         }
-        // 设置属性
-        this.setProp("_computeW", computeWidth);
-        return computeWidth;
-    }
 
-    /**
-     * 计算高度值
-     *
-     * @param height 高度
-     * @return 计算后的高度
-     */
-    default double computeHeight(double height) {
         // 获取父高度
         double parentHeight = this.parentHeight();
-        double computeHeight = height;
-        // 计算高度值
-        double flexValue = FlexUtil.computeFlexValue(this.getFlexHeight(), parentHeight);
-        if (!Double.isNaN(flexValue)) {
-            computeHeight = flexValue;
+        Double height1 = this.getProp("_height");
+        Double parentHeight1 = this.getProp("_parentHeight");
+        Double computeHeight1 = this.computeHeight();
+        if (parentHeight1 == null || computeHeight1 == null || height1 == null || parentHeight1 != parentHeight || height1 != height) {
+            double computeHeight;
+            // 计算高度值
+            double flexValue = FlexUtil.computeFlexValue(this.getFlexHeight(), parentHeight);
+            if (Double.isNaN(flexValue)) {
+                computeHeight = height;
+            } else {
+                computeHeight = flexValue;
+            }
+            // 设置属性
+            this.removeProp("_ignoreHeight");
+            this.setProp("_height", height);
+            this.setProp("_parentHeight", parentHeight);
+            this.setProp("_computeHeight", computeHeight);
+            size[1] = computeHeight;
+            System.out.println("height=" + height + " height1=" + height1);
+            System.out.println("parentHeight=" + parentHeight + " parentHeight1=" + parentHeight1);
+            System.out.println("computeHeight=" + computeHeight + " computeHeight1=" + computeHeight1);
+            System.out.println("+++++++++++++++++++++");
+        } else {
+            this.setProp("_ignoreHeight", true);
+            size[1] = computeHeight1;
         }
-        // 设置属性
-        this.setProp("_computeH", computeHeight);
-        return computeHeight;
+        return size;
     }
+
+    // /**
+    //  * 计算宽度值
+    //  *
+    //  * @param width 宽度
+    //  * @return 计算后的宽度
+    //  */
+    // default double computeWidth(double width) {
+    //     // 获取父宽度
+    //     double parentWidth = this.parentWidth();
+    //     Double computeWidth1 = this.computeWidth();
+    //     Double parentWidth1 = this.getProp("_parentWidth");
+    //     if (parentWidth1 == null || computeWidth1 == null || parentWidth1 != parentWidth) {
+    //         double computeWidth = width;
+    //         // 计算宽度值
+    //         double flexValue = FlexUtil.computeFlexValue(this.getFlexWidth(), parentWidth);
+    //         if (!Double.isNaN(flexValue)) {
+    //             computeWidth = flexValue;
+    //         }
+    //         // 设置属性
+    //         this.removeProp("_ignoreWidth");
+    //         this.setProp("_parentWidth", parentWidth);
+    //         this.setProp("_computeWidth", computeWidth);
+    //         return computeWidth;
+    //     }
+    //     this.setProp("_ignoreWidth", true);
+    //     return computeWidth1;
+    // }
+    //
+    // /**
+    //  * 计算高度值
+    //  *
+    //  * @param height 高度
+    //  * @return 计算后的高度
+    //  */
+    // default double computeHeight(double height) {
+    //     // 获取父高度
+    //     double parentHeight = this.parentHeight();
+    //     Double parentHeight1 = this.getProp("_parentHeight");
+    //     Double computeHeight1 = this.computeHeight();
+    //     if (parentHeight1 == null || computeHeight1 == null || parentHeight1 != parentHeight) {
+    //         double computeHeight = height;
+    //         // 计算高度值
+    //         double flexValue = FlexUtil.computeFlexValue(this.getFlexHeight(), parentHeight);
+    //         if (!Double.isNaN(flexValue)) {
+    //             computeHeight = flexValue;
+    //         }
+    //         // 设置属性
+    //         this.removeProp("_ignoreHeight");
+    //         this.setProp("_parentHeight", parentHeight);
+    //         this.setProp("_computeHeight", computeHeight);
+    //         return computeHeight;
+    //     }
+    //     this.setProp("_ignoreHeight", true);
+    //     return computeHeight1;
+    // }
 
     /**
      * 计算 X
@@ -232,10 +311,19 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      * 重新拉伸节点，自动计算
      */
     default void resizeNode() {
-        // 计算的宽度
-        double computeWidth = this.computeWidth();
-        // 计算的高度
-        double computeHeight = this.computeHeight();
+        Double computeWidth;
+        if (this.hasProp("_ignoreWidth")) {
+            computeWidth = null;
+        } else {
+            computeWidth = this.computeWidth();
+        }
+        Double computeHeight;
+        if (this.hasProp("_ignoreHeight")) {
+            computeHeight = null;
+        } else {
+            computeHeight = this.computeHeight();
+        }
+        // System.out.println("computeWidth=" + computeWidth + " computeHeight=" + computeHeight);
         // 重新拉伸节点
         this.resizeNode(computeWidth, computeHeight);
     }
@@ -246,9 +334,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      * @param width  新宽度
      * @param height 新高度
      */
-    default void resizeNode(double width, double height) {
+    default void resizeNode(Double width, Double height) {
         // 处理宽度
-        if (!Double.isNaN(width)) {
+        if (width != null && !Double.isNaN(width)) {
             this.setRealWidth(width);
             // TableView处理
             if (this instanceof TableView<?> tableView) {
@@ -269,7 +357,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         }
 
         // 处理高度，y轴
-        if (!Double.isNaN(height)) {
+        if (height != null && !Double.isNaN(height)) {
             this.setRealHeight(height);
             // TabPane处理
             if (this instanceof TabPane tabPane) {

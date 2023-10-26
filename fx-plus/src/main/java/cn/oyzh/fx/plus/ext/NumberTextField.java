@@ -1,12 +1,5 @@
 package cn.oyzh.fx.plus.ext;
 
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
-import javafx.scene.control.TextFormatter;
-
-import java.security.InvalidParameterException;
-import java.util.function.UnaryOperator;
-
 /**
  * 整数文本域
  *

@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.flex;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2022/3/14
  */
+@Deprecated
 @Slf4j
 @Data
 @Accessors(fluent = true)

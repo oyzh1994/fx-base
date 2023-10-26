@@ -62,11 +62,11 @@ public class AppMain extends Application {
         // test11(stage);
         // test12(stage);
         // test13(stage);
-        // test14(stage);
+        test14(stage);
         // test15(stage);
         // test16(stage);
         // test17(stage);
-        test18(stage);
+        // test18(stage);
     }
 
     private void test1(Stage stage) {
@@ -507,6 +507,7 @@ public class AppMain extends Application {
             }
         });
         textField1.setFlexWidth("80%");
+        textField1.setFlexHeight("20%");
         textField1.setOnSearch(s -> System.out.println("xx:" + s));
         textField1.setRealHeight(35);
 
@@ -521,11 +522,14 @@ public class AppMain extends Application {
         textField2.setOnSearch(s -> System.out.println("xx:" + s));
         textField2.setRealHeight(25);
         textField2.setFlexWidth("80%");
+        textField2.setFlexHeight("20%");
 
         FlexHBox hBox1 = new FlexHBox(label1, textField1);
         FlexHBox hBox2 = new FlexHBox(label2, textField2);
         hBox1.setFlexWidth("100%");
+        hBox1.setFlexHeight("50%");
         hBox2.setFlexWidth("100%");
+        hBox2.setFlexHeight("50%");
         hBox1.setSpacing(10);
         hBox2.setSpacing(10);
         // // 设置HBox的间距
@@ -639,6 +643,7 @@ public class AppMain extends Application {
         FXButton btn2 = new FXButton("启用");
         FXButton btn3 = new FXButton("隐藏");
         FXButton btn4 = new FXButton("显示");
+
         btn1.setOnAction(actionEvent -> stateManager.disable());
         btn2.setOnAction(actionEvent -> stateManager.enable());
         btn3.setOnAction(actionEvent -> stateManager.setVisible(false));

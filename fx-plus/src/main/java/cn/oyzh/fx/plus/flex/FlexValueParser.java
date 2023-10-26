@@ -10,6 +10,7 @@ import java.util.function.Function;
  * @author oyzh
  * @since 2022/12/31
  */
+@Deprecated
 public class FlexValueParser implements Function<String, FlexValue> {
 
     /**

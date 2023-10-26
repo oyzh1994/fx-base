@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.event.EventHandler;
