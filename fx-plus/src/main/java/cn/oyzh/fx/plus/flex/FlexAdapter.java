@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.flex;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.NodeAdapter;
-import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
@@ -17,7 +16,7 @@ import javafx.scene.control.TableView;
  * @author oyzh
  * @since 2022/1/18
  */
-public interface FlexAdapter extends NodeAdapter, PropAdapter, StateAdapter, LayoutAdapter {
+public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
 
     /**
      * 获取流式宽度值

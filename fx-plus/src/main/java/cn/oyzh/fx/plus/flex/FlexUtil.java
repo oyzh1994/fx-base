@@ -23,7 +23,7 @@ public class FlexUtil {
         if (StrUtil.isBlank(flexValue) || Double.isNaN(value)) {
             return Double.NaN;
         }
-        FlexValue config = FlexValueParser.INSTANCE.parse(flexValue);
+        FlexValue config = FlexValueParser.INSTANCE.apply(flexValue);
         return config == null ? Double.NaN : config.computeValue(value);
     }
 //

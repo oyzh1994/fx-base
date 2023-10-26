@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.controls;
 
+import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
@@ -141,5 +143,15 @@ public class FlexImageView extends ImageView implements FlexAdapter, TipAdapter 
     @Override
     public void setRealHeight(double height) {
         FlexAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        FlexAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return FlexAdapter.super.stateManager();
     }
 }

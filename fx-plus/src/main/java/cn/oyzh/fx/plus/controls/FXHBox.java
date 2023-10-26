@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.controls;
 import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.NodeAdapter;
+import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -13,7 +15,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/19
  */
-public class FXHBox extends HBox implements ThemeAdapter, LayoutAdapter, FontAdapter, NodeAdapter {
+public class FXHBox extends HBox implements ThemeAdapter, LayoutAdapter, FontAdapter, NodeAdapter, StateAdapter {
 
     {
         this.setCache(true);
@@ -67,5 +69,15 @@ public class FXHBox extends HBox implements ThemeAdapter, LayoutAdapter, FontAda
     @Override
     public void setRealHeight(double height) {
         LayoutAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        StateAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return StateAdapter.super.stateManager();
     }
 }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import javafx.scene.control.TableColumn;
 
 /**
@@ -66,5 +67,15 @@ public class FlexTableColumn<S, T> extends TableColumn<S, T> implements FlexAdap
     @Override
     public void setRealHeight(double height) {
         FlexAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        FlexAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return FlexAdapter.super.stateManager();
     }
 }

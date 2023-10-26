@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls;
 import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.CacheHint;
@@ -63,6 +64,16 @@ public class FXCheckBox extends CheckBox implements ThemeAdapter, TipAdapter, St
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        StateAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return StateAdapter.super.stateManager();
     }
 
 }

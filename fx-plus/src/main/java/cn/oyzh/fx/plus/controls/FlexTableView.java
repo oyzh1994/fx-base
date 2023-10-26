@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.util.TableViewUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.control.TableView;
@@ -112,5 +113,15 @@ public class FlexTableView<S> extends TableView<S> implements FlexAdapter, Selec
     @Override
     public void setRealHeight(double height) {
         FlexAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        FlexAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return FlexAdapter.super.stateManager();
     }
 }

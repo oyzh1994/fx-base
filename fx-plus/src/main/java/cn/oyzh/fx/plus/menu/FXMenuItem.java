@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.svg.SVGGlyph;
 import cn.oyzh.fx.plus.svg.SVGLabel;
 import cn.oyzh.fx.plus.util.ControlUtil;
@@ -107,5 +108,15 @@ public class FXMenuItem extends MenuItem implements StateAdapter {
             item.setOnAction(e -> action.run());
         }
         return item;
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        StateAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return StateAdapter.super.stateManager();
     }
 }

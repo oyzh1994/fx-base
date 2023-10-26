@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -118,5 +119,15 @@ public class FlexVBox extends VBox implements ThemeAdapter, FlexAdapter, FontAda
     @Override
     public void setRealHeight(double height) {
         FlexAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        FlexAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return FlexAdapter.super.stateManager();
     }
 }

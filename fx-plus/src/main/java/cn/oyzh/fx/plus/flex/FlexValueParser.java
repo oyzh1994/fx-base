@@ -1,7 +1,8 @@
 package cn.oyzh.fx.plus.flex;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.common.Parser;
+
+import java.util.function.Function;
 
 /**
  * 流式布局值解析器
@@ -9,7 +10,7 @@ import cn.oyzh.fx.common.Parser;
  * @author oyzh
  * @since 2022/12/31
  */
-public class FlexValueParser implements Parser<String, FlexValue> {
+public class FlexValueParser implements Function<String, FlexValue> {
 
     /**
      * 当前实例
@@ -17,7 +18,7 @@ public class FlexValueParser implements Parser<String, FlexValue> {
     public static final FlexValueParser INSTANCE = new FlexValueParser();
 
     @Override
-    public FlexValue parse(String flexValue) {
+    public FlexValue apply(String flexValue) {
         if (StrUtil.isBlank(flexValue)) {
             return null;
         }

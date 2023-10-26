@@ -69,8 +69,8 @@ public class ToggleSwitch extends FlexPane {
                 this.unselectedBtn.disappear();
                 this.setText(this.selectedText);
             } else {
-                this.selectedBtn.display();
-                this.unselectedBtn.disappear();
+                this.selectedBtn.disappear();
+                this.unselectedBtn.display();
                 this.setText(this.unselectedText);
             }
         });

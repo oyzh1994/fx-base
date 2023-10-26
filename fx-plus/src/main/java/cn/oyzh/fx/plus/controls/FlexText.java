@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 
 /**
@@ -62,5 +63,15 @@ public class FlexText extends FXText implements ThemeAdapter, FlexAdapter {
     @Override
     public void setFlexY(String flexY) {
         FlexAdapter.super.flexY(flexY);
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        FlexAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return FlexAdapter.super.stateManager();
     }
 }

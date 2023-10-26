@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.information;
 
-import cn.oyzh.fx.common.Parser;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.svg.SVGGlyph;
 import cn.oyzh.fx.plus.util.ControlUtil;
@@ -24,8 +23,11 @@ import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import javax.annotation.processing.Processor;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 消息盒子
@@ -39,14 +41,14 @@ public class MessageBox {
     /**
      * 异常解析器
      */
-    private static Parser<Throwable, String> Exception_Parser;
+    private static Function<Throwable, String> Exception_Parser;
 
     /**
      * 注册异常解析器
      *
      * @param exceptionParser 异常解析器
      */
-    public static void registerExceptionParser(@NonNull Parser<Throwable, String> exceptionParser) {
+    public static void registerExceptionParser(@NonNull Function<Throwable, String> exceptionParser) {
         Exception_Parser = exceptionParser;
     }
 
@@ -93,11 +95,24 @@ public class MessageBox {
      * @param ex 异常信息
      */
     public static void exception(@NonNull Throwable ex) {
+        exception(ex, null);
+    }
+
+    /**
+     * 异常窗口
+     *
+     * @param ex    异常信息
+     * @param title 标题
+     */
+    public static void exception(@NonNull Throwable ex, String title) {
+        String err;
         if (Exception_Parser != null) {
-            alert(Alert.AlertType.WARNING, "提示信息", null, Exception_Parser.parse(ex));
+            err = Exception_Parser.apply(ex);
         } else {
-            alert(Alert.AlertType.WARNING, "提示信息", null, ex.getMessage());
+            err = ex.getMessage();
         }
+        title = title == null ? "提示信息" : title;
+        alert(Alert.AlertType.WARNING, title, null, err);
     }
 
     /**
@@ -313,19 +328,6 @@ public class MessageBox {
      */
     public static void warnToast(@NonNull String msg, Window owner) {
         showToast(msg, new SVGGlyph("/fx-plus/font/warning-circle.svg", Color.ORANGE), owner);
-    }
-
-    /**
-     * 异常提示
-     *
-     * @param ex 异常信息
-     */
-    public static void exceptionToast(@NonNull Throwable ex) {
-        if (Exception_Parser != null) {
-            warnToast(Exception_Parser.parse(ex), null);
-        } else {
-            warnToast(ex.getMessage(), null);
-        }
     }
 
     /**

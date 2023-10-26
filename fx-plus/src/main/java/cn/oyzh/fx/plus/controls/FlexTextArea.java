@@ -5,6 +5,7 @@ import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
@@ -234,5 +235,15 @@ public class FlexTextArea extends TextArea implements AreaAdapter, FlexAdapter, 
     public void flushCaret() {
         this.positionCaret(this.getCaretPosition());
         this.requestFocus();
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        FlexAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return FlexAdapter.super.stateManager();
     }
 }

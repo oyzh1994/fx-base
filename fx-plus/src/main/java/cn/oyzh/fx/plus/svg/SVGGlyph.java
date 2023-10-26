@@ -7,6 +7,7 @@ import cn.oyzh.fx.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.event.EventHandler;
@@ -336,5 +337,15 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     @Override
     public void onLightTheme() {
         this.setColor(Color.BLACK);
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        StateAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return StateAdapter.super.stateManager();
     }
 }

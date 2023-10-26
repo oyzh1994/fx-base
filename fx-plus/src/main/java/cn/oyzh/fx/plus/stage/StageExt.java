@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.stage;
 
+import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.NonNull;

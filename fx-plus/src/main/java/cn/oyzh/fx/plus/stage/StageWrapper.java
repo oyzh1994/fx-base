@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.drag.DrapFileHandler;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -431,5 +432,15 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
                 }
             }
         }, this.scene());
+    }
+
+    @Override
+    default void setStateManager(StateManager manager) {
+        StateAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    default StateManager getStateManager() {
+        return StateAdapter.super.stateManager();
     }
 }

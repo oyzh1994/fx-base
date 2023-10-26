@@ -69,4 +69,5 @@ public class FlexHBox extends FXHBox implements ThemeAdapter, FlexAdapter {
     public void setFlexY(String flexY) {
         FlexAdapter.super.flexY(flexY);
     }
+
 }

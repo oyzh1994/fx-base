@@ -6,6 +6,7 @@ package cn.oyzh.fx.common;
  * @author oyzh
  * @since 2022/6/2
  */
+@Deprecated
 @FunctionalInterface
 public interface Parser<T, R> {
 
