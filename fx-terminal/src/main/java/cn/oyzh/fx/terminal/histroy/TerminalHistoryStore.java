@@ -3,7 +3,7 @@ package cn.oyzh.fx.terminal.histroy;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.common.util.FileStore;
+import cn.oyzh.fx.common.store.ArrayFileStore;
 import com.alibaba.fastjson.JSON;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2023/5/29
  */
 @Slf4j
-public abstract class TerminalHistoryStore extends FileStore<TerminalHistory> {
+public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistory> {
 
     /**
      * 数据列表
@@ -38,7 +38,7 @@ public abstract class TerminalHistoryStore extends FileStore<TerminalHistory> {
     }
 
     @Override
-    public boolean add(@NonNull TerminalHistory history) {
+    public synchronized boolean add(@NonNull TerminalHistory history) {
         try {
             List<TerminalHistory> list = this.load();
             TerminalHistory last = CollUtil.getLast(list);
@@ -57,27 +57,9 @@ public abstract class TerminalHistoryStore extends FileStore<TerminalHistory> {
     }
 
     @Override
-    public boolean update(@NonNull TerminalHistory cmdHistory) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(@NonNull TerminalHistory cmdHistory) {
-        return false;
-    }
-
-    /**
-     * 清除数据
-     */
-    public void clear() {
-        try {
-            List<TerminalHistory> list = this.load();
-            // 更新数据
-            if (this.histories.removeAll(list)) {
-                this.save(this.histories);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public synchronized boolean clear() {
+        super.clear();
+        this.histories.clear();
+        return true;
     }
 }

@@ -12,11 +12,6 @@ public class FlexRichTextField extends BaseRichTextField implements FlexAdapter 
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
-    }
-
-    @Override
-    protected void layoutChildren() {
-        super.layoutChildren();
         this.resizeNode();
     }
 

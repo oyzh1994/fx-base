@@ -1,5 +1,6 @@
 package cn.oyzh.fx.terminal.histroy;
 
+import cn.oyzh.fx.common.util.ObjectComparator;
 import lombok.Data;
 
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.Objects;
  * @since 2023/5/29
  */
 @Data
-public class TerminalHistory {
+public class TerminalHistory implements ObjectComparator<TerminalHistory> {
 
     /**
      * 命令行
@@ -37,4 +38,8 @@ public class TerminalHistory {
         return false;
     }
 
+    @Override
+    public boolean compare(TerminalHistory obj) {
+        return this.equals(obj);
+    }
 }

@@ -28,12 +28,6 @@ public class FlexVirtualizedScrollPane<V extends Region & Virtualized> extends V
     }
 
     @Override
-    protected void layoutChildren() {
-        super.layoutChildren();
-        this.resizeNode();
-    }
-
-    @Override
     public String getFlexWidth() {
         return FlexAdapter.super.flexWidth();
     }

@@ -110,8 +110,8 @@ public class NodeUtil {
      * @param target 对象
      * @param width  宽度
      */
-    public static void setWidth(@NonNull EventTarget target, double width) {
-        if (Double.isNaN(width) || width <= 0) {
+    public static void setWidth(EventTarget target, double width) {
+        if (target == null || Double.isNaN(width) || width <= 0) {
             return;
         }
         switch (target) {
@@ -171,8 +171,8 @@ public class NodeUtil {
      * @param target 对象
      * @param height 高度
      */
-    public static void setHeight( EventTarget target, double height) {
-        if (Double.isNaN(height) || height <= 0) {
+    public static void setHeight(EventTarget target, double height) {
+        if (target == null || Double.isNaN(height) || height <= 0) {
             return;
         }
         switch (target) {

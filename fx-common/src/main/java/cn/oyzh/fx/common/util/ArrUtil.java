@@ -69,28 +69,4 @@ public class ArrUtil {
         }
         return null;
     }
-
-    /**
-     * 是否为空
-     *
-     * @param arr 数组
-     * @param <T> 数据类型
-     * @return 结果
-     */
-    @Deprecated
-    public static <T> boolean isEmpty(T[] arr) {
-        return arr == null || arr.length == 0;
-    }
-
-    /**
-     * 是否不为空
-     *
-     * @param arr 数组
-     * @param <T> 数据类型
-     * @return 结果
-     */
-    @Deprecated
-    public static <T> boolean isNotEmpty(T[] arr) {
-        return !isEmpty(arr);
-    }
 }

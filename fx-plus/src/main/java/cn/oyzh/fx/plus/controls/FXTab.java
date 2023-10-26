@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.Tab;
 
 /**
@@ -50,5 +51,14 @@ public class FXTab extends Tab implements ThemeAdapter, StateAdapter, TipAdapter
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    /**
+     * 关闭当前tab
+     */
+    public void closeTab() {
+        if (this.isClosable()) {
+            FXUtil.runLater(() -> this.getTabPane().getTabs().remove(this));
+        }
     }
 }

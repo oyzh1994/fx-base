@@ -92,11 +92,6 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
-    }
-
-    @Override
-    protected void layoutChildren() {
-        super.layoutChildren();
         this.resizeNode();
     }
 
