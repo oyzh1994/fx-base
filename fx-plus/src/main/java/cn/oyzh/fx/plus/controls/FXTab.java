@@ -61,4 +61,22 @@ public class FXTab extends Tab implements ThemeAdapter, StateAdapter, TipAdapter
             FXUtil.runLater(() -> this.getTabPane().getTabs().remove(this));
         }
     }
+
+    /**
+     * 刷新tab标题
+     */
+    public void flushTitle() {
+    }
+
+    /**
+     * 刷新tab图标
+     */
+    public void flushGraphic() {
+    }
+
+    /**
+     * 刷新tab图标颜色
+     */
+    public void flushGraphicColor() {
+    }
 }

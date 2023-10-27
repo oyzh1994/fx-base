@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.keyboard;
 
+import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.view.FXView;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
@@ -73,6 +74,8 @@ public class KeyListener {
     private static void addHandler(Object target, KeyHandler keyHandler) {
         if (target instanceof FXView view) {
             target = view.root();
+        } else if (target instanceof StageWrapper wrapper) {
+            target = wrapper.root();
         } else if (target instanceof Stage stage) {
             target = stage.getScene();
         }

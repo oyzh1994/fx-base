@@ -21,6 +21,7 @@ import javafx.util.Duration;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.fxmisc.richtext.StyledTextArea;
 
 import java.util.Objects;
 
@@ -306,6 +307,17 @@ public class ControlUtil {
     public static void deselect(TextInputControl control) {
         if (control != null) {
             control.deselect();
+        }
+    }
+
+    /**
+     * 取消选中
+     *
+     * @param textArea 组件
+     */
+    public static void deselect(StyledTextArea<?, ?> textArea) {
+        if (textArea != null) {
+            textArea.deselect();
         }
     }
 

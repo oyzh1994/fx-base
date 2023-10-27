@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TreeCell;
@@ -12,7 +12,7 @@ import javafx.scene.control.TreeCell;
  * @author oyzh
  * @since 2023/03/31
  */
-public abstract class FXTreeCell<T> extends TreeCell<T> implements ThemeAdapter, StateAdapter {
+public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter {
 
     {
         // this.cacheProperty().bind(this.visibleProperty());
@@ -49,5 +49,15 @@ public abstract class FXTreeCell<T> extends TreeCell<T> implements ThemeAdapter,
             }
             // this.showNode();
         }
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        StateAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return StateAdapter.super.stateManager();
     }
 }

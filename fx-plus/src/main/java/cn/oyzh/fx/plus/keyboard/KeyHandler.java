@@ -57,4 +57,20 @@ public class KeyHandler {
             this.handler.handle(event);
         }
     }
+
+    public static KeyHandler of(KeyCode keyCode) {
+        KeyHandler keyHandler = new KeyHandler();
+        keyHandler.keyCode = keyCode;
+        return keyHandler;
+    }
+
+    public static KeyHandler of(KeyCode keyCode, boolean altDown, boolean metaDown, boolean shiftDown, boolean controlDown) {
+        KeyHandler keyHandler = new KeyHandler();
+        keyHandler.keyCode = keyCode;
+        keyHandler.altDown = altDown;
+        keyHandler.metaDown = metaDown;
+        keyHandler.shiftDown = shiftDown;
+        keyHandler.controlDown = controlDown;
+        return keyHandler;
+    }
 }
