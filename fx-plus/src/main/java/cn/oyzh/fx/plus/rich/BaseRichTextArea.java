@@ -39,7 +39,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FontAdapter, 
         this.setFocusTraversable(false);
         this.setCacheHint(CacheHint.QUALITY);
         this.setAutoScrollOnDragDesired(true);
-        this.setPadding(new Insets(2, 5, 2, 5));
+        this.setPadding(new Insets(5, 5, 5, 5));
         BorderStroke stroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         this.setBorder(new Border(stroke));
     }
@@ -241,5 +241,15 @@ public class BaseRichTextArea extends InlineCssTextArea implements FontAdapter, 
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public void replaceSelection(String replacement) {
+        FXUtil.runWait(() -> super.replaceSelection(replacement));
+    }
+
+    @Override
+    public void selectRange(int anchor, int caretPosition) {
+        FXUtil.runWait(() -> super.selectRange(anchor, caretPosition));
     }
 }

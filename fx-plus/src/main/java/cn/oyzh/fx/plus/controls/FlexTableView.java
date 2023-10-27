@@ -2,9 +2,14 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.TableViewUtil;
+import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 /**
@@ -37,6 +42,17 @@ public class FlexTableView<S> extends TableView<S> implements FlexAdapter, Selec
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    public void resizeNode(Double width, Double height) {
+        FlexAdapter.super.resizeNode(width, height);
+        ObservableList<? extends TableColumn<?, ?>> columns = this.getVisibleLeafColumns();
+        for (TableColumn<?, ?> column : columns) {
+            if (column instanceof FlexAdapter flexNode) {
+                flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
+            }
+        }
     }
 
     @Override

@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -306,15 +305,6 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         // 处理宽度
         if (changeWidth) {
             this.setRealWidth(width);
-            // TableView处理
-            if (this instanceof TableView<?> tableView) {
-                ObservableList<? extends TableColumn<?, ?>> columns = tableView.getVisibleLeafColumns();
-                for (TableColumn<?, ?> column : columns) {
-                    if (column instanceof FlexAdapter flexNode) {
-                        flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
-                    }
-                }
-            }
         }
 
         // 处理高度，y轴
@@ -322,22 +312,6 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
             this.setRealHeight(height);
             if (StrUtil.isNotBlank(this.getFlexY())) {
                 this.setLayoutY(this.computeY());
-            }
-        }
-
-        if (changeWidth || changeHeight) {
-            // TabPane处理
-            if (this instanceof TabPane tabPane) {
-                ObservableList<Tab> tabs = tabPane.getTabs();
-                for (Tab tab : tabs) {
-                    Node content = tab.getContent();
-                    if (changeWidth) {
-                        NodeUtil.setWidth(content, width);
-                    }
-                    if (changeHeight) {
-                        NodeUtil.setHeight(content, height);
-                    }
-                }
             }
         }
     }

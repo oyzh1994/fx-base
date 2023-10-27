@@ -3,10 +3,13 @@ package cn.oyzh.fx.plus.controls;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -29,6 +32,20 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FlexAdapter, S
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    public void resizeNode(Double width, Double height) {
+        FlexAdapter.super.resizeNode(width, height);
+        for (Tab tab : this.getTabs()) {
+            if (tab.getContent() instanceof FlexAdapter flexNode) {
+                flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
+                flexNode.setRealHeight(FlexUtil.computeFlexValue(flexNode.getFlexHeight(), height));
+            } else {
+                NodeUtil.setWidth(tab.getContent(), width);
+                NodeUtil.setHeight(tab.getContent(), height);
+            }
+        }
     }
 
     @Override
