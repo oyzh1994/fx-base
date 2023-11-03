@@ -46,13 +46,13 @@ public class FlexTableView<S> extends TableView<S> implements FlexAdapter, Selec
 
     @Override
     public void resizeNode(Double width, Double height) {
-        FlexAdapter.super.resizeNode(width, height);
         ObservableList<? extends TableColumn<?, ?>> columns = this.getVisibleLeafColumns();
         for (TableColumn<?, ?> column : columns) {
             if (column instanceof FlexAdapter flexNode) {
                 flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
             }
         }
+        FlexAdapter.super.resizeNode(width, height);
     }
 
     @Override

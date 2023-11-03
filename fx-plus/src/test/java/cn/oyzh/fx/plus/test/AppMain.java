@@ -19,6 +19,7 @@ import cn.oyzh.fx.plus.svg.SVGPathExt;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
@@ -59,10 +60,10 @@ public class AppMain extends Application {
 //         test8(stage);
 //         test9(stage);
         // test10(stage);
-        // test11(stage);
+        test11(stage);
         // test12(stage);
         // test13(stage);
-        test14(stage);
+        // test14(stage);
         // test15(stage);
         // test16(stage);
         // test17(stage);
@@ -430,16 +431,31 @@ public class AppMain extends Application {
 
     private void test11(Stage stage) {
         ToggleSwitch toggleSwitch = new ToggleSwitch();
-        toggleSwitch.setPrefHeight(20);
-        toggleSwitch.setMaxHeight(20);
-        toggleSwitch.setPrefWidth(100);
+        toggleSwitch.setFontSize(15);
         toggleSwitch.setSelectedText("开启");
         toggleSwitch.setUnselectedText("关闭");
 
-        HBox hBox = new HBox(toggleSwitch);
-        // // 设置HBox的间距
-        hBox.setSpacing(10);
-        stage.setScene(new Scene(hBox, 300, 300));
+        ToggleSwitch toggleSwitch1 = new ToggleSwitch();
+        toggleSwitch1.setFontSize(12);
+        toggleSwitch1.setSelectedText("已打开");
+        toggleSwitch1.setUnselectedText("已关闭");
+
+        Button button = new Button("添加");
+
+        HBox hBox1 = new HBox(button);
+        HBox hBox2 = new HBox(toggleSwitch);
+        HBox hBox3 = new HBox(toggleSwitch1);
+        VBox vBox = new VBox(hBox1, hBox2, hBox3);
+        button.setOnAction(actionEvent -> {
+            ToggleSwitch toggleSwitch2 = new ToggleSwitch();
+            toggleSwitch2.setFontSize(12);
+            toggleSwitch2.setSelectedText("已打开");
+            toggleSwitch2.setUnselectedText("已关闭");
+
+            vBox.getChildren().add(new HBox(toggleSwitch2));
+        });
+
+        stage.setScene(new Scene(vBox, 800, 300));
         stage.show();
     }
 

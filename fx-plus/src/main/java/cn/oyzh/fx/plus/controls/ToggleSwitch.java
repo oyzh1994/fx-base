@@ -1,10 +1,12 @@
 package cn.oyzh.fx.plus.controls;
 
+import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.svg.SVGGlyph;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import lombok.Getter;
@@ -16,7 +18,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/08/29
  */
-public class ToggleSwitch extends FlexPane {
+public class ToggleSwitch extends FlexFlowPane implements FontAdapter {
 
     /**
      * 选中时显示的文字
@@ -38,7 +40,7 @@ public class ToggleSwitch extends FlexPane {
     /**
      * 选中图标
      */
-    private SVGGlyph selectedBtn;
+    private final SVGGlyph selectedBtn;
 
     /**
      * 未选中图标
@@ -56,15 +58,15 @@ public class ToggleSwitch extends FlexPane {
         this.setCursor(Cursor.HAND);
         this.setCacheHint(CacheHint.QUALITY);
         // 初始化按钮
+        this.selectedBtn = ControlUtil.initSwitchButton(1);
+        this.selectedBtn.disappear();
+        this.selectedBtn.setPadding(new Insets(1, 0, 0, 0));
         this.unselectedBtn = ControlUtil.initSwitchButton(2);
+        this.unselectedBtn.setPadding(new Insets(1, 0, 0, 0));
         // 选中变化事件
         this.selectedChanged((observable, oldValue, t1) -> {
             if (t1) {
                 // 初始化选中按钮
-                if (this.selectedBtn == null) {
-                    this.selectedBtn = ControlUtil.initSwitchButton(1);
-                    this.getChildren().add(this.selectedBtn);
-                }
                 this.selectedBtn.display();
                 this.unselectedBtn.disappear();
                 this.setText(this.selectedText);
@@ -75,11 +77,11 @@ public class ToggleSwitch extends FlexPane {
             }
         });
         // 鼠标点击事件
-        this.setOnMousePressed(mouseEvent -> this.reverseSelected());
+        this.setOnMousePressed(mouseEvent -> this.reverse());
         // 添加组件
-        this.getChildren().add(this.unselectedBtn);
+        this.getChildren().setAll(this.selectedBtn, this.unselectedBtn);
         // 设置基本高度
-        this.setRealHeight(20);
+        this.setRealHeight(18);
     }
 
     /**
@@ -87,19 +89,34 @@ public class ToggleSwitch extends FlexPane {
      *
      * @param text 文字
      */
-    private void setText(String text) {
+    protected void setText(String text) {
         if (this.label == null) {
             this.label = new FXLabel(text);
             this.getChildren().add(this.label);
         } else {
             this.label.setText(text);
         }
+        this.reCalcLabelPadding();
     }
 
     /**
-     * 反转选中状态
+     * 重新计算label的边距
      */
-    public void reverseSelected() {
+    protected void reCalcLabelPadding() {
+        if (this.label != null) {
+            double top = (this.getHeight() - this.label.getRealHeight()) / 2 + 1;
+            top = Math.min(0, top);
+            Insets insets = this.label.getInsets();
+            if (insets == null || insets.getTop() != top || insets.getLeft() != 5) {
+                this.label.setPadding(new Insets(top, 0, 0, 5));
+            }
+        }
+    }
+
+    /**
+     * 反转状态
+     */
+    public void reverse() {
         this.setSelected(!this.isSelected());
     }
 
@@ -135,24 +152,23 @@ public class ToggleSwitch extends FlexPane {
 
     @Override
     public void resize(double width, double height) {
-        super.resize(width, height);
         // 图标高度
         double h = height - 2;
         // 图标宽度是长度2.2倍
         double w = h * 2.2;
         // 设置图标大小
-        if (this.selectedBtn != null && this.selectedBtn.isVisible()) {
-            this.selectedBtn.setSizeStr(w + "," + height);
-            this.selectedBtn.relocate(0, 1);
+        if (this.selectedBtn.isVisible()) {
+            if (this.selectedBtn.getWidth() != w || this.selectedBtn.getHeight() != h) {
+                this.selectedBtn.setSizeStr(w + "," + height);
+            }
         } else if (this.unselectedBtn.isVisible()) {
-            this.unselectedBtn.setSizeStr(w + "," + height);
-            this.unselectedBtn.relocate(0, 1);
+            if (this.unselectedBtn.getWidth() != w || this.unselectedBtn.getHeight() != h) {
+                this.unselectedBtn.setSizeStr(w + "," + height);
+            }
         }
-        // 重新计算label位置
-        if (this.label != null) {
-            double y2 = (height - this.label.getRealHeight()) / 2 + 1;
-            this.label.relocate(w + 5, y2);
-        }
+        // 重新计算label边距
+        this.reCalcLabelPadding();
+        super.resize(width, height);
     }
 
     /**
@@ -186,5 +202,25 @@ public class ToggleSwitch extends FlexPane {
      */
     public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        FontAdapter.super.fontSize(fontSize);
+    }
+
+    @Override
+    public double getFontSize() {
+        return FontAdapter.super.fontSize();
+    }
+
+    @Override
+    public void setFontFamily(@NonNull String fontFamily) {
+        FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public String getFontFamily() {
+        return FontAdapter.super.fontFamily();
     }
 }

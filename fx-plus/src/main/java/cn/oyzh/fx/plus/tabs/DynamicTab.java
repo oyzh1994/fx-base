@@ -7,6 +7,8 @@ import cn.oyzh.fx.plus.svg.SVGLabel;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -101,5 +103,22 @@ public abstract class DynamicTab extends FXTab {
      */
     protected void graphic(Node graphic) {
         FXUtil.runWait(() -> this.setGraphic(graphic));
+    }
+
+    /**
+     * 设置颜色
+     *
+     * @param paint 颜色
+     */
+    protected void fill(Paint paint) {
+        FXUtil.runWait(() -> {
+            Node node = this.getGraphic();
+            if (node instanceof SVGGlyph glyph) {
+                glyph.setColor((Color) paint);
+            } else if (node instanceof SVGLabel label) {
+                label.setColor((Color) paint);
+                label.setTextFill(paint);
+            }
+        });
     }
 }
