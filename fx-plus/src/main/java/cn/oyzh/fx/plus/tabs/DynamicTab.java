@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.tabs;
 
 import cn.oyzh.fx.plus.controls.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
+import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.svg.SVGLabel;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -58,6 +60,12 @@ public abstract class DynamicTab extends FXTab {
     }
 
     /**
+     * 重载tab
+     */
+    public void reload() {
+    }
+
+    /**
      * 刷新tab
      */
     public void flush() {
@@ -66,5 +74,32 @@ public abstract class DynamicTab extends FXTab {
             this.flushGraphicColor();
             this.flushTitle();
         });
+    }
+
+    /**
+     * 设置标题
+     *
+     * @param title 标题
+     */
+    protected void title(String title) {
+        FXUtil.runWait(() -> {
+            this.setText(title);
+            this.setTipText(title);
+            Node node = this.getGraphic();
+            if (node instanceof SVGGlyph glyph) {
+                glyph.setTipText(title);
+            } else if (node instanceof SVGLabel label) {
+                label.setTipText(title);
+            }
+        });
+    }
+
+    /**
+     * 设置图标
+     *
+     * @param graphic 图标
+     */
+    protected void graphic(Node graphic) {
+        FXUtil.runWait(() -> this.setGraphic(graphic));
     }
 }
