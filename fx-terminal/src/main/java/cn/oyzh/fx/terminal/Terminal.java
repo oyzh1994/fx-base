@@ -330,6 +330,11 @@ public interface Terminal {
     int contentLength();
 
     /**
+     * 剪切内容
+     */
+    void cutContent();
+
+    /**
      * 粘贴内容
      */
     void pasteContent();

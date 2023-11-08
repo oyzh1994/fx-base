@@ -27,7 +27,7 @@ public interface TerminalMouseHandler<T extends Terminal> {
      * @throws Exception 异常
      */
     default boolean onSecondMousePressed(T terminal) throws Exception {
-        terminal.pasteContent();
+        // terminal.pasteContent();
         return true;
     }
 }

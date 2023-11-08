@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 
 /**
@@ -77,5 +78,14 @@ public class FlexTableColumn<S, T> extends TableColumn<S, T> implements FlexAdap
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    /**
+     * 设置列处理器
+     *
+     * @param cell 列处理器
+     */
+    public void setCell(TableCell<S, T> cell) {
+        this.setCellFactory((c) -> cell);
     }
 }

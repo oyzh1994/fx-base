@@ -339,10 +339,16 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
     }
 
     @Override
+    public void cutContent() {
+        if (!this.checkNop()) {
+            this.cut();
+        }
+    }
+
+    @Override
     public void pasteContent() {
-        if (this.checkNop()) {
+        if (this.getCaretPosition() >= this.NOP) {
             this.paste();
-            this.flushNOP();
         }
     }
 

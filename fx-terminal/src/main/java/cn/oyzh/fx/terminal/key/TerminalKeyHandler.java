@@ -1,6 +1,8 @@
 package cn.oyzh.fx.terminal.key;
 
 import cn.oyzh.fx.terminal.Terminal;
+import cn.oyzh.fx.terminal.help.TerminalHelpHandler;
+import cn.oyzh.fx.terminal.util.TerminalUtil;
 
 /**
  * @author oyzh
@@ -14,7 +16,7 @@ public interface TerminalKeyHandler<T extends Terminal> {
      * @return 结果
      * @throws Exception 异常
      */
-    default boolean onTabKeyPressed(T terminal ) throws Exception {
+    default boolean onTabKeyPressed(T terminal) throws Exception {
         if (terminal.completeHandler() != null) {
             terminal.completeHandler().completion(terminal.getInput(), terminal);
         }
@@ -28,7 +30,19 @@ public interface TerminalKeyHandler<T extends Terminal> {
      * @return 结果
      * @throws Exception 异常
      */
-    boolean onEnterKeyPressed(T terminal) throws Exception;
+    default boolean onEnterKeyPressed(T terminal) throws Exception {
+        String input = terminal.getInput();
+        if (TerminalUtil.hasHelp(input)) {
+            TerminalHelpHandler helpHandler = terminal.helpHandler();
+            if (helpHandler != null) {
+                helpHandler.help(input, terminal);
+            }
+        } else if (input != null) {
+            terminal.saveHistory(input);
+            terminal.onCommand(input);
+        }
+        return false;
+    }
 
     /**
      * 向上按键处理
@@ -94,6 +108,7 @@ public interface TerminalKeyHandler<T extends Terminal> {
      * @throws Exception 异常
      */
     default boolean onHomeKeyPressed(T terminal) throws Exception {
+        terminal.caretPosition(terminal.getNOP());
         return false;
     }
 
@@ -127,7 +142,8 @@ public interface TerminalKeyHandler<T extends Terminal> {
      * @throws Exception 异常
      */
     default boolean onCtrlAKeyPressed(T terminal) throws Exception {
-        terminal.caretPosition(terminal.getNOP());
+        // terminal.caretPosition(terminal.getNOP());
+        terminal.selectContent(terminal.getNOP(), terminal.contentLength());
         return false;
     }
 
@@ -173,6 +189,7 @@ public interface TerminalKeyHandler<T extends Terminal> {
      * @throws Exception 异常
      */
     default boolean onCtrlXKeyPressed(T terminal) throws Exception {
+        terminal.cutContent();
         return false;
     }
 
@@ -184,7 +201,8 @@ public interface TerminalKeyHandler<T extends Terminal> {
      * @throws Exception 异常
      */
     default boolean onCtrlVKeyPressed(T terminal) throws Exception {
-        return true;
+        terminal.pasteContent();
+        return false;
     }
 
     /**

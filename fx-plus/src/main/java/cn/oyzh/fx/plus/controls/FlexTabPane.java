@@ -36,6 +36,7 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FlexAdapter, S
 
     @Override
     public void resizeNode(Double width, Double height) {
+        FlexAdapter.super.resizeNode(width, height);
         for (Tab tab : this.getTabs()) {
             if (tab.getContent() instanceof FlexAdapter flexNode) {
                 flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
@@ -45,7 +46,6 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FlexAdapter, S
                 NodeUtil.setHeight(tab.getContent(), height);
             }
         }
-        FlexAdapter.super.resizeNode(width, height);
     }
 
     @Override

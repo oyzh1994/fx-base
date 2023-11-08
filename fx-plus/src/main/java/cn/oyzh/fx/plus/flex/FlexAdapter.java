@@ -4,12 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.util.NodeUtil;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 
 /**
  * 流式节点
@@ -176,10 +170,8 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         double parentWidth = this.parentWidth();
         Double computeWidth1 = this.computeWidth();
         Double width1 = this.getProp("_width");
-        boolean hasFlexWidth = this.hasProp("_flexWidth");
         Double parentWidth1 = this.getProp("_parentWidth");
-        if (parentWidth1 == null || computeWidth1 == null || width1 == null ||
-                parentWidth1 != parentWidth || width1 != width || !hasFlexWidth) {
+        if (parentWidth1 == null || computeWidth1 == null || width1 == null || parentWidth1 != parentWidth || width1 != width) {
             String flexWidth = this.getFlexWidth();
             double computeWidth;
             // 计算宽度值
@@ -190,31 +182,20 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
                 computeWidth = flexValue;
             }
             // 设置属性
-            if (!hasFlexWidth) {
-                this.setProp("_flexWidth", flexWidth);
-            }
-            if (computeWidth1 == null || computeWidth != computeWidth1) {
-                this.removeProp("_ignoreWidth");
-                this.setProp("_computeWidth", computeWidth);
-            } else {
-                this.setProp("_ignoreWidth", true);
-            }
             this.setProp("_width", width);
             this.setProp("_parentWidth", parentWidth);
+            this.setProp("_computeWidth", computeWidth);
             size[0] = computeWidth;
         } else {
             size[0] = computeWidth1;
-            this.setProp("_ignoreWidth", true);
         }
 
         // 获取父高度
         double parentHeight = this.parentHeight();
         Double height1 = this.getProp("_height");
-        boolean hasFlexHeight = this.hasProp("_flexHeight");
         Double parentHeight1 = this.getProp("_parentHeight");
         Double computeHeight1 = this.computeHeight();
-        if (parentHeight1 == null || computeHeight1 == null || height1 == null
-                || parentHeight1 != parentHeight || height1 != height || !hasFlexHeight) {
+        if (parentHeight1 == null || computeHeight1 == null || height1 == null || parentHeight1 != parentHeight || height1 != height) {
             String flexHeight = this.getFlexHeight();
             double computeHeight;
             // 计算高度值
@@ -225,20 +206,11 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
                 computeHeight = flexValue;
             }
             // 设置属性
-            if (!hasFlexHeight) {
-                this.setProp("_flexHeight", flexHeight);
-            }
-            if (computeHeight1 == null || computeHeight != computeHeight1) {
-                this.removeProp("_ignoreHeight");
-                this.setProp("_computeHeight", computeHeight);
-            } else {
-                this.setProp("_ignoreHeight", true);
-            }
             this.setProp("_height", height);
             this.setProp("_parentHeight", parentHeight);
+            this.setProp("_computeHeight", computeHeight);
             size[1] = computeHeight;
         } else {
-            this.setProp("_ignoreHeight", true);
             size[1] = computeHeight1;
         }
         return size;
@@ -274,23 +246,11 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      * 重新拉伸节点，自动计算
      */
     default void resizeNode() {
-        Double computeWidth;
-        if (this.hasProp("_ignoreWidth")) {
-            computeWidth = null;
-        } else {
-            computeWidth = this.computeWidth();
-        }
-        Double computeHeight;
-        if (this.hasProp("_ignoreHeight")) {
-            computeHeight = null;
-        } else {
-            computeHeight = this.computeHeight();
-        }
+        Double computeWidth = this.computeWidth();
+        Double computeHeight = this.computeHeight();
         // 重新拉伸节点
-        if (computeWidth != null || computeHeight != null) {
-            this.resizeNode(computeWidth, computeHeight);
-            System.out.println("computeWidth=" + computeWidth + " computeHeight=" + computeHeight + " node=" + this);
-        }
+        this.resizeNode(computeWidth, computeHeight);
+        System.out.println("computeWidth=" + computeWidth + " computeHeight=" + computeHeight + " node=" + this);
     }
 
     /**

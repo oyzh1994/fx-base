@@ -8,6 +8,7 @@ import cn.oyzh.fx.terminal.util.TerminalUtil;
  * @author oyzh
  * @since 2023/7/21
  */
+@Deprecated
 public class BaseTerminalKeyHandler<T extends Terminal> implements TerminalKeyHandler<T> {
 
     @Override
