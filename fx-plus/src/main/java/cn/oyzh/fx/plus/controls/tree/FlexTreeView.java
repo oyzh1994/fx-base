@@ -214,7 +214,12 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
      */
     public void flushLocal() {
         try {
-            TaskManager.startDelayTask("tree:flushLocal:" + this, () -> FXUtil.runLater(() -> this.localToScreen(this.getBoundsInLocal())), 100);
+            TaskManager.startDelayTask("tree:flushLocal:" + this, () -> {
+                FXUtil.runLater(() -> {
+                    this.layoutChildren();
+                    this.localToScreen(this.getBoundsInLocal());
+                });
+            }, 100);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

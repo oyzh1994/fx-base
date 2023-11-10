@@ -66,6 +66,7 @@ public class RichTreeView extends FlexTreeView {
         }
         // 重新选中此节点
         this.select(item);
+        this.flushLocal();
     }
 
     /**
@@ -80,6 +81,7 @@ public class RichTreeView extends FlexTreeView {
         }
         // 重新选中此节点
         this.select(item);
+        this.flushLocal();
     }
 
     /**
@@ -94,6 +96,7 @@ public class RichTreeView extends FlexTreeView {
         this.root().doFilter(this.itemFilter);
         // 选中并滚动节点
         this.selectAndScroll(item);
+        this.flushLocal();
     }
 
     /**
@@ -107,6 +110,7 @@ public class RichTreeView extends FlexTreeView {
         if (item != null) {
             this.select(item);
         }
+        this.flushLocal();
     }
 
     /**
@@ -120,6 +124,7 @@ public class RichTreeView extends FlexTreeView {
         if (item != null) {
             this.select(item);
         }
+        this.flushLocal();
     }
 
     /**
@@ -130,5 +135,6 @@ public class RichTreeView extends FlexTreeView {
         if (item instanceof RichTreeItem treeItem) {
             treeItem.reloadChild();
         }
+        this.flushLocal();
     }
 }
