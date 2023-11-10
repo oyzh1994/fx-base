@@ -1,6 +1,5 @@
-package cn.oyzh.fx.plus.controls.tabs;
+package cn.oyzh.fx.plus.controls.tab;
 
-import cn.oyzh.fx.plus.controls.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;

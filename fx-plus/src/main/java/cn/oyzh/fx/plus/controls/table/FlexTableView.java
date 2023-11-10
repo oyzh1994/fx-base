@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;

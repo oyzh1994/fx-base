@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.tab;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;

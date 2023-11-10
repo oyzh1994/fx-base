@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.tree;
+package cn.oyzh.fx.plus.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

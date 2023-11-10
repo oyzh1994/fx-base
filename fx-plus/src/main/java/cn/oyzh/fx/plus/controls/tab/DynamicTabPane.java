@@ -1,6 +1,5 @@
-package cn.oyzh.fx.plus.controls.tabs;
+package cn.oyzh.fx.plus.controls.tab;
 
-import cn.oyzh.fx.plus.controls.FlexTabPane;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Tab;
