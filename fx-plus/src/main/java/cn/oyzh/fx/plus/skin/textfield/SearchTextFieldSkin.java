@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.ext;
+package cn.oyzh.fx.plus.skin.textfield;
 
+import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.svg.SVGGlyph;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.textfield;
 
 /**
  * 禁用文本控件
@@ -6,7 +6,7 @@ package cn.oyzh.fx.plus.controls;
  * @author oyzh
  * @since 2020/10/29
  */
-public class DisableField extends BaseTextField {
+public class DisabledField extends BaseTextField {
 
     {
         this.setDisable(true);

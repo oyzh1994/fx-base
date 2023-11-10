@@ -1,15 +1,17 @@
-package cn.oyzh.fx.plus.ext;
+package cn.oyzh.fx.plus.controls.textfield;
+
+import cn.oyzh.fx.plus.controls.textfield.BaseNumberTextField;
 
 /**
- * 整数文本域
+ * 小数文本域
  *
  * @author oyzh
- * @since 2020/10/29
+ * @since 2023/08/28
  */
-public class NumberTextField extends BaseNumberTextField {
+public class DecimalTextField extends BaseNumberTextField {
 
-    public NumberTextField() {
-        super(false);
+    public DecimalTextField() {
+        super(true);
     }
 
     /**
@@ -17,8 +19,8 @@ public class NumberTextField extends BaseNumberTextField {
      *
      * @return 值
      */
-    public long getValue() {
-        return super._getValue().longValue();
+    public double getValue() {
+        return super._getValue().doubleValue();
     }
 
     /**
@@ -26,15 +28,15 @@ public class NumberTextField extends BaseNumberTextField {
      *
      * @param value 值
      */
-    public void setValue(long value) {
+    public void setValue(double value) {
         super.setValue(value);
     }
 
     /**
      * 获取最大值
      */
-    public Long getMax() {
-        return this.max == null ? null : this.max.longValue();
+    public Double getMax() {
+        return this.max == null ? null : this.max.doubleValue();
     }
 
     /**
@@ -42,15 +44,15 @@ public class NumberTextField extends BaseNumberTextField {
      *
      * @param max 最大值
      */
-    public void setMax(Long max) {
+    public void setMax(Double max) {
         super.setMax(max);
     }
 
     /**
      * 获取最小值
      */
-    public Long getMin() {
-        return this.min == null ? null : this.min.longValue();
+    public Double getMin() {
+        return this.min == null ? null : this.min.doubleValue();
     }
 
     /**
@@ -58,7 +60,7 @@ public class NumberTextField extends BaseNumberTextField {
      *
      * @param min 最小值
      */
-    public void setMin(Long min) {
+    public void setMin(Double min) {
         super.setMin(min);
     }
 
@@ -67,8 +69,8 @@ public class NumberTextField extends BaseNumberTextField {
      *
      * @return 递进值
      */
-    public long getStep() {
-        return this.step.longValue();
+    public double getStep() {
+        return this.step.doubleValue();
     }
 
     /**
@@ -76,7 +78,7 @@ public class NumberTextField extends BaseNumberTextField {
      *
      * @param step 递进值
      */
-    public void setStep(long step) {
+    public void setStep(double step) {
         this.step = step;
     }
 }

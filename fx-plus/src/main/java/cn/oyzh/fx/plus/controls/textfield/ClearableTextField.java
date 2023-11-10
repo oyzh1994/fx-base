@@ -1,6 +1,6 @@
-package cn.oyzh.fx.plus.ext;
+package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.controls.LimitTextField;
+import cn.oyzh.fx.plus.skin.textfield.ClearableTextFieldSkin;
 
 /**
  * 可清除文本域

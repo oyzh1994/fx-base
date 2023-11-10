@@ -1,15 +1,17 @@
-package cn.oyzh.fx.plus.ext;
+package cn.oyzh.fx.plus.controls.textfield;
+
+import cn.oyzh.fx.plus.controls.textfield.BaseNumberTextField;
 
 /**
- * 小数文本域
+ * 整数文本域
  *
  * @author oyzh
- * @since 2023/08/28
+ * @since 2020/10/29
  */
-public class DecimalTextField extends BaseNumberTextField {
+public class NumberTextField extends BaseNumberTextField {
 
-    public DecimalTextField() {
-        super(true);
+    public NumberTextField() {
+        super(false);
     }
 
     /**
@@ -17,8 +19,8 @@ public class DecimalTextField extends BaseNumberTextField {
      *
      * @return 值
      */
-    public double getValue() {
-        return super._getValue().doubleValue();
+    public long getValue() {
+        return super._getValue().longValue();
     }
 
     /**
@@ -26,15 +28,15 @@ public class DecimalTextField extends BaseNumberTextField {
      *
      * @param value 值
      */
-    public void setValue(double value) {
+    public void setValue(long value) {
         super.setValue(value);
     }
 
     /**
      * 获取最大值
      */
-    public Double getMax() {
-        return this.max == null ? null : this.max.doubleValue();
+    public Long getMax() {
+        return this.max == null ? null : this.max.longValue();
     }
 
     /**
@@ -42,15 +44,15 @@ public class DecimalTextField extends BaseNumberTextField {
      *
      * @param max 最大值
      */
-    public void setMax(Double max) {
+    public void setMax(Long max) {
         super.setMax(max);
     }
 
     /**
      * 获取最小值
      */
-    public Double getMin() {
-        return this.min == null ? null : this.min.doubleValue();
+    public Long getMin() {
+        return this.min == null ? null : this.min.longValue();
     }
 
     /**
@@ -58,7 +60,7 @@ public class DecimalTextField extends BaseNumberTextField {
      *
      * @param min 最小值
      */
-    public void setMin(Double min) {
+    public void setMin(Long min) {
         super.setMin(min);
     }
 
@@ -67,8 +69,8 @@ public class DecimalTextField extends BaseNumberTextField {
      *
      * @return 递进值
      */
-    public double getStep() {
-        return this.step.doubleValue();
+    public long getStep() {
+        return this.step.longValue();
     }
 
     /**
@@ -76,7 +78,7 @@ public class DecimalTextField extends BaseNumberTextField {
      *
      * @param step 递进值
      */
-    public void setStep(double step) {
+    public void setStep(long step) {
         this.step = step;
     }
 }
