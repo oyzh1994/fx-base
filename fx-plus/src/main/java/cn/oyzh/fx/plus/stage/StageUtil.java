@@ -34,7 +34,8 @@ public class StageUtil {
      */
     public static void exit() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageWrapper wrapper && wrapper.controller() instanceof StageListener listener) {
+            Object reference = window.getProperties().get("_stageReference");
+            if (reference instanceof StageWrapper wrapper && wrapper.controller() instanceof StageListener listener) {
                 try {
                     listener.onSystemExit();
                     if (log.isDebugEnabled()) {

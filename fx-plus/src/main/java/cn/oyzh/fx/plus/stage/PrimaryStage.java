@@ -13,18 +13,19 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/10/12
  */
+@Getter
 @Slf4j
 public class PrimaryStage implements StageWrapper {
 
     /**
      * 舞台
      */
-    @Getter
     @Accessors(fluent = true, chain = false)
     private final Stage stage;
 
-    public PrimaryStage(@NonNull Stage primaryStage,@NonNull StageAttribute attribute, Window owner) {
+    public PrimaryStage(@NonNull Stage primaryStage, @NonNull StageAttribute attribute, Window owner) {
         this.stage = primaryStage;
+        this.stage.getProperties().put("_stageReference", this);
         this.init(attribute, owner);
     }
 }

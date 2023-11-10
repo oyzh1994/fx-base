@@ -16,6 +16,7 @@ public class StageExt extends Stage implements StageWrapper {
 
     public StageExt(@NonNull StageAttribute window, Window owner) {
         this.init(window, owner);
+        this.setProp("_stageReference", this);
     }
 
     @Override
