@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.information;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.FontUtil;
 import javafx.geometry.Insets;

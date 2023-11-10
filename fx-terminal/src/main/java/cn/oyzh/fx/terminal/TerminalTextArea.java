@@ -3,7 +3,7 @@ package cn.oyzh.fx.terminal;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.plus.controls.FlexTextArea;
+import cn.oyzh.fx.plus.controls.area.FlexTextArea;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;

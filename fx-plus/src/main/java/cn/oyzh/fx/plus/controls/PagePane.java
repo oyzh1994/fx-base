@@ -2,7 +2,8 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.common.dto.Paging;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
-import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.text.FlexText;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;

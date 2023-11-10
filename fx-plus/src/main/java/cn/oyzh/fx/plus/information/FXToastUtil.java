@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.fx.common.Parser;
-import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.view.FXView;
 import javafx.scene.paint.Color;

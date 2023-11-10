@@ -1,7 +1,8 @@
 package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.adapter.FontAdapter;
-import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.text.FXLabel;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

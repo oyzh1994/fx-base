@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.FXConst;
-import cn.oyzh.fx.plus.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import javafx.event.EventTarget;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
