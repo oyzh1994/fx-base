@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.tab;
+package cn.oyzh.fx.plus.tabs;
 
 import javafx.event.Event;
 import javafx.fxml.Initializable;

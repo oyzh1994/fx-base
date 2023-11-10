@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
@@ -62,8 +63,8 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
      *
      * @return 根节点
      */
-    public TreeItem<?> root() {
-        return super.getRoot();
+    public RichTreeItem root() {
+        return (RichTreeItem) super.getRoot();
     }
 
     /**
@@ -71,7 +72,7 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
      *
      * @param root 根节点
      */
-    public void root(TreeItem<?> root) {
+    public void root(RichTreeItem root) {
         FXUtil.runWait(() -> super.setRoot(root));
     }
 
@@ -177,22 +178,6 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
         this.select(item);
         this.scrollTo(item);
     }
-
-    ///**
-    // * 显示操作面板
-    // *
-    // * @param menuItems 菜单列表
-    // * @param screenX   屏幕x
-    // * @param screenY   屏幕y
-    // */
-    // public void showContextMenu(List<MenuItem> menuItems, double screenX, double screenY) {
-    //    ContextMenu menu;
-    //    if (this.contextMenuReference == null || (menu = this.contextMenuReference.get()) == null) {
-    //        this.contextMenuReference = new SoftReference<>(menu = new ContextMenu());
-    //    }
-    //    menu.getItems().setAll(menuItems);
-    //    menu.show(this, screenX, screenY);
-    //}
 
     /**
      * 节点是否选中
