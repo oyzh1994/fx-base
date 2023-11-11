@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 import cn.oyzh.fx.common.util.NumUtil;
-import cn.oyzh.fx.plus.controls.textfield.BaseTextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 
@@ -14,7 +13,7 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/08/29
  */
-public class LimitTextField extends BaseTextField {
+public class LimitTextField extends FlexTextField {
 
     /**
      * 最小长度

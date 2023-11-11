@@ -16,7 +16,7 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2020/10/29
  */
-public abstract class BaseNumberTextField extends BaseTextField {
+public abstract class BaseNumberTextField extends FlexTextField {
 
     /**
      * 最大值

@@ -17,24 +17,13 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class BaseTextField extends TextField implements FlexAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FlexTextField extends FXTextField implements FlexAdapter {
 
-    {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setPickOnBounds(true);
-        this.setCacheHint(CacheHint.QUALITY);
-    }
-
-    @Getter
-    @Setter
-    private boolean require;
-
-    public BaseTextField() {
+    public FlexTextField() {
         super.setText("");
     }
 
-    public BaseTextField(String text) {
+    public FlexTextField(String text) {
         super.setText(text);
     }
 
@@ -102,44 +91,5 @@ public class BaseTextField extends TextField implements FlexAdapter, TextAdapter
     @Override
     public void setRealHeight(double height) {
         FlexAdapter.super.realHeight(height);
-    }
-
-    @Override
-    public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
-        this.setPromptText(tipText);
-    }
-
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
-
-    /**
-     * 是否为空
-     *
-     * @return 结果
-     */
-    public boolean isEmpty() {
-        return this.getLength() == 0 || this.getText().isEmpty();
-    }
-
-    /**
-     * 校验数据
-     *
-     * @return 结果
-     */
-    public boolean validate() {
-        return true;
-    }
-
-    @Override
-    public void setStateManager(StateManager manager) {
-        FlexAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return FlexAdapter.super.stateManager();
     }
 }
