@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.validator;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.information.FXTipUtil;
+import cn.oyzh.fx.plus.information.MessageBox;
 import javafx.scene.Node;
 
 /**
@@ -15,7 +15,7 @@ public class TipVerifyFailHandler implements VerifyFailHandler {
     @Override
     public void onVerifyFail(String failMsg, Node node) {
         if (StrUtil.isNotBlank(failMsg) && node != null) {
-            FXTipUtil.tip(failMsg, node);
+            MessageBox.tipMsg(failMsg, node);
         }
     }
 }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.spring;
 
-import cn.oyzh.fx.common.util.SpringUtil;
-import cn.oyzh.fx.plus.view.FXWindow;
+import cn.oyzh.fx.common.spring.SpringUtil;
+import cn.oyzh.fx.plus.stage.StageAttribute;
 import javafx.util.Callback;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +17,12 @@ public class SpringControllerFactory implements Callback<Class<?>, Object> {
     public Object call(Class<?> clazz) {
         try {
             Object controller = null;
-            if (clazz.getAnnotation(FXWindow.class) != null) {
+            if (clazz.getAnnotation(StageAttribute.class) != null) {
                 controller = SpringUtil.getBean(clazz);
             }
+//            if (clazz.getAnnotation(FXWindow.class) != null) {
+//                controller = SpringUtil.getBean(clazz);
+//            }
             if (controller == null && clazz.getAnnotation(Component.class) != null) {
                 controller = SpringUtil.getBean(clazz);
             }

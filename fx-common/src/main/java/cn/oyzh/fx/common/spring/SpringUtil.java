@@ -1,4 +1,4 @@
-package cn.oyzh.fx.common.util;
+package cn.oyzh.fx.common.spring;
 
 import lombok.Getter;
 import lombok.NonNull;

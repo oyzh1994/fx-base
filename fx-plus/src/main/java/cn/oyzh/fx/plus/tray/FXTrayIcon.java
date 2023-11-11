@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
+import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.view.FXViewUtil;
 import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
@@ -75,7 +75,7 @@ public class FXTrayIcon extends TrayIcon {
                 }
             });
             // 隐藏窗口的任务栏图标
-            FXViewUtil.hideTaskbar(this.stage);
+            StageUtil.hideTaskbar(this.stage);
         }
         // 显示窗口
         if (!this.stage.isShowing()) {

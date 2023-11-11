@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.stage.StageWrapper;
-import cn.oyzh.fx.plus.view.FXStage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumnBase;
@@ -30,8 +29,8 @@ public interface PropAdapter {
             scene.getProperties().put(key, val);
         } else if (this instanceof Window window) {
             window.getProperties().put(key, val);
-        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-            stage.getStage().getProperties().put(key, val);
+//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
+//            stage.getStage().getProperties().put(key, val);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             stage.stage().getProperties().put(key, val);
         }
@@ -52,8 +51,8 @@ public interface PropAdapter {
             return (T) scene.getProperties().get(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().get(key);
-        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-            return (T) stage.getStage().getProperties().get(key);
+//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
+//            return (T) stage.getStage().getProperties().get(key);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().get(key);
         }
@@ -75,8 +74,8 @@ public interface PropAdapter {
             return scene.getProperties().containsKey(key);
         } else if (this instanceof Window window) {
             return window.getProperties().containsKey(key);
-        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-            return stage.getStage().getProperties().containsKey(key);
+//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
+//            return stage.getStage().getProperties().containsKey(key);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             return stage.stage().getProperties().containsKey(key);
         }
@@ -99,8 +98,8 @@ public interface PropAdapter {
             return (T) scene.getProperties().remove(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().remove(key);
-        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-            return (T) stage.getStage().getProperties().remove(key);
+//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
+//            return (T) stage.getStage().getProperties().remove(key);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().remove(key);
         }
@@ -119,8 +118,8 @@ public interface PropAdapter {
             scene.getProperties().clear();
         } else if (this instanceof Window window) {
             window.getProperties().clear();
-        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-            stage.getStage().getProperties().clear();
+//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
+//            stage.getStage().getProperties().clear();
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             stage.stage().getProperties().clear();
         }
