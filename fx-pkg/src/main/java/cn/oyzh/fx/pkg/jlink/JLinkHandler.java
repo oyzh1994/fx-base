@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.jlink;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.common.util.RuntimeUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,7 @@ public class JLinkHandler {
     /**
      * 执行jlink
      */
-    public void exec(@NonNull JLinkConfig config) throws InterruptedException, IOException {
+    public void exec(@NonNull JLinkConfig config) throws Exception {
         FileUtil.del(config.getOutput());
         String cmdStr = "jlink";
         if (config.isVerbose()) {
@@ -51,9 +52,10 @@ public class JLinkHandler {
         }
         cmdStr += " --output " + config.getOutput();
         // 执行jlink
-        log.info("jlink exec start, command:{}.", cmdStr);
-        Process process = Runtime.getRuntime().exec(cmdStr, null, null);
-        process.waitFor();
-        log.info("jlink finish.");
+        // log.info("jlink exec start, command:{}.", cmdStr);
+        // Process process = Runtime.getRuntime().exec(cmdStr, null, null);
+        // process.waitFor();
+        RuntimeUtil.execAndWait(cmdStr);
+        // log.info("jlink finish.");
     }
 }

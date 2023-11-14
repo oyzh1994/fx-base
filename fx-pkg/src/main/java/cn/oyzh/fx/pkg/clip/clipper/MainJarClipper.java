@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.common.util.RuntimeUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class MainJarClipper extends BaseJarClipper {
      * @param jarUnDir 主jar解压目录
      * @param mainJar  主jar
      */
-    public void mergeLibs(String jarUnDir, String mainJar) throws IOException {
+    public void mergeLibs(String jarUnDir, String mainJar) throws Exception {
         if (!FileUtil.exist(jarUnDir)) {
             throw new RuntimeException("jarUnDir " + jarUnDir + " is not exist.");
         }
@@ -50,16 +51,18 @@ public class MainJarClipper extends BaseJarClipper {
         // 解压目录
         File dir = new File(jarUnDir);
         // 移动主jar文件到解压目录
-        Runtime.getRuntime().exec("cmd cd " + jarUnDir);
+        // Runtime.getRuntime().exec("cmd cd " + jarUnDir);
+        // RuntimeUtil.execAndWait("cmd cd " + jarUnDir);
         // lib目录合并
         if (FileUtil.exist(jarUnDir + "/BOOT-INF/lib")) {
             try {
                 // 合并lib目录到主jar文件
                 String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ./BOOT-INF/lib";
-                log.info("mergeLibs {} exec start.", cmdStr);
-                Process process = Runtime.getRuntime().exec(cmdStr, null, dir);
-                process.waitFor();
-                log.info("mergeLibs {} exec finish.", cmdStr);
+                // log.info("mergeLibs {} exec start.", cmdStr);
+                // Process process = Runtime.getRuntime().exec(cmdStr, null, dir);
+                // process.waitFor();
+                RuntimeUtil.execAndWait(cmdStr, dir);
+                // log.info("mergeLibs {} exec finish.", cmdStr);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -70,10 +73,11 @@ public class MainJarClipper extends BaseJarClipper {
                 try {
                     String fName = file.getPath().replace(dir.getPath(), "");
                     String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ." + fName;
-                    log.info("mergeLibs {} exec start.", cmdStr);
-                    Process process = Runtime.getRuntime().exec(cmdStr, null, dir);
-                    process.waitFor();
-                    log.info("mergeLibs {} exec finish.", cmdStr);
+                    // log.info("mergeLibs {} exec start.", cmdStr);
+                    // Process process = Runtime.getRuntime().exec(cmdStr, null, dir);
+                    // process.waitFor();
+                    RuntimeUtil.execAndWait(cmdStr, dir);
+                    // log.info("mergeLibs {} exec finish.", cmdStr);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

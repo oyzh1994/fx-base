@@ -23,15 +23,15 @@
         <!--    <scope>system</scope>-->
         <!--</dependency>-->
 
-        <!-- 打包工具 -->
-        <!-- https://mvnrepository.com/artifact/com.nimblygames.packr/packr-all -->
-        <dependency>
-            <groupId>com.nimblygames.packr</groupId>
-            <artifactId>packr-all</artifactId>
-            <version>3.0.3-custom</version>
-            <systemPath>${project.basedir}/lib/packr-all-3.0.3-custom.jar</systemPath>
-            <scope>system</scope>
-        </dependency>
+        <!-- &lt;!&ndash; 打包工具 &ndash;&gt; -->
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/com.nimblygames.packr/packr-all &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.nimblygames.packr</groupId> -->
+        <!--     <artifactId>packr-all</artifactId> -->
+        <!--     <version>3.0.3-custom</version> -->
+        <!--     <systemPath>${project.basedir}/lib/packr-all-3.0.3-custom.jar</systemPath> -->
+        <!--     <scope>system</scope> -->
+        <!-- </dependency> -->
 
         <!--&lt;!&ndash; 打包工具 &ndash;&gt;-->
         <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.nimblygames.packr/packr-all &ndash;&gt;-->
@@ -48,6 +48,14 @@
         <!--    <artifactId>minimal-json</artifactId>-->
         <!--    <version>0.9.5</version>-->
         <!--</dependency>-->
+
+        <!-- 打包工具 -->
+        <dependency>
+            <groupId>cn.oyzh</groupId>
+            <artifactId>packr-all-custom</artifactId>
+            <version>3.0.3</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- java 辅助工具包 -->
         <dependency>
@@ -90,6 +98,33 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>install-mylib</id>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <file>${project.basedir}/lib/packr-all-3.0.3-custom.jar</file>
+                            <groupId>cn.oyzh</groupId>
+                            <artifactId>packr-all-custom</artifactId>
+                            <version>3.0.3</version>
+                            <packaging>jar</packaging>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>

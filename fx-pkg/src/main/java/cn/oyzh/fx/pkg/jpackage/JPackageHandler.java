@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.jpackage;
 
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.common.util.RuntimeUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +19,7 @@ public class JPackageHandler {
     /**
      * 执行jpackage
      */
-    public void exec(@NonNull JPackageConfig config) throws InterruptedException, IOException {
+    public void exec(@NonNull JPackageConfig config) throws Exception {
         FileUtil.del(config.getDest());
         String cmdStr = "jpackage";
         if (config.isVerbose()) {
@@ -53,9 +54,10 @@ public class JPackageHandler {
         }
         cmdStr += " -d " + config.getDest();
         // 执行jpackage
-        log.info("jpackage exec start, command:{}.", cmdStr);
-        Process process = Runtime.getRuntime().exec(cmdStr, null, null);
-        process.waitFor();
-        log.info("jpackage finish.");
+        // log.info("jpackage exec start, command:{}.", cmdStr);
+        // Process process = Runtime.getRuntime().exec(cmdStr, null, null);
+        // process.waitFor();
+        RuntimeUtil.execAndWait(cmdStr);
+        // log.info("jpackage finish.");
     }
 }

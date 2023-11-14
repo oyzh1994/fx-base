@@ -6,7 +6,7 @@ package cn.oyzh.fx.plus.controls.textfield;
  * @author oyzh
  * @since 2020/10/29
  */
-public class DisabledField extends FlexTextField {
+public class DisabledTextField extends FlexTextField {
 
     {
         this.setDisable(true);
