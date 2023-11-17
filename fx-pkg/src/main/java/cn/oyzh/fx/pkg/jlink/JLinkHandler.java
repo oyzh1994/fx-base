@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
+import cn.oyzh.fx.pkg.util.PkgUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,35 +20,7 @@ public class JLinkHandler {
      */
     public void exec(@NonNull JLinkConfig config) throws Exception {
         FileUtil.del(config.getOutput());
-        String cmdStr = "jlink";
-        if (config.isVerbose()) {
-            cmdStr += " --verbose";
-        }
-        if (config.getVm() != null) {
-            cmdStr += " --vm=" + config.getVm();
-        }
-        if (config.getCompress() != null) {
-            cmdStr += " --compress=" + config.getCompress();
-        }
-        if (config.isNoHeaderFiles()) {
-            cmdStr += " --no-header-files";
-        }
-        if (config.isNoManPages()) {
-            cmdStr += " --no-man-pages";
-        }
-        if (config.isStripDebug()) {
-            cmdStr += " --strip-debug";
-        }
-        if (config.isStripJavaDebugAttributes()) {
-            cmdStr += " --strip-java-debug-attributes";
-        }
-        if (CollUtil.isNotEmpty(config.getAddModules())) {
-            cmdStr += " --add-modules " + CollUtil.join(config.getAddModules(), ",");
-        }
-        if (CollUtil.isNotEmpty(config.getExcludeFiles())) {
-            cmdStr += " --exclude-files=" + CollUtil.join(config.getExcludeFiles(), ",");
-        }
-        cmdStr += " --output " + config.getOutput();
+        String cmdStr = PkgUtil.getJLinkCMD(config);
         // 执行jlink
         RuntimeUtil.execAndWait(cmdStr);
     }

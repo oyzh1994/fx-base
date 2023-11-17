@@ -228,8 +228,13 @@ public abstract class BasePackager {
         log.info("pack after start.");
         if (StrUtil.isNotBlank(this.packageConfig().getCompressType())) {
             switch (this.packageConfig().getCompressType().toLowerCase()) {
-                case "zip" ->
-                        PkgUtil.zipDest(this.getCompressName(), this.packageConfig().getAppDest(), this.getPlatform() == PackrConfig.Platform.MacOS);
+                case "zip" -> {
+                    if (this.getPlatform() == PackrConfig.Platform.MacOS) {
+                        PkgUtil.zipDestByMacos(this.getCompressName(), this.packageConfig().getAppDest());
+                    } else {
+                        PkgUtil.zipDest(this.getCompressName(), this.packageConfig().getAppDest());
+                    }
+                }
                 case "tar" -> PkgUtil.tarDest(this.getCompressName(), this.packageConfig().getAppDest());
                 case "tar.gz" -> PkgUtil.gzipDest(this.getCompressName(), this.packageConfig().getAppDest());
             }

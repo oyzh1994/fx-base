@@ -137,7 +137,9 @@ public class ConfigParser {
     public JLinkConfig getCrossJLinkConfig(String platform) {
         PlatformConfig config = this.platformConfig.get(platform);
         JLinkConfig jLinkConfig = this.globalJLinkConfig.cross(config.getJLinkConfig());
-        jLinkConfig.setOutput(this.getJrePath(platform));
+        if (jLinkConfig.getOutput() == null) {
+            jLinkConfig.setOutput(this.getJrePath(platform));
+        }
         return jLinkConfig;
     }
 

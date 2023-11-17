@@ -1,9 +1,11 @@
 package cn.oyzh.fx.pkg.util;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
+import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.packager.BasePackager;
 import cn.oyzh.fx.pkg.packager.LinuxPackager;
 import cn.oyzh.fx.pkg.packager.MacPackager;
@@ -44,14 +46,27 @@ public class PkgUtil {
     /**
      * 压缩打包目录，zip格式
      */
-    public static void zipDest(String name, String appDest, boolean withSrcDir) {
+    public static void zipDest(String name, String appDest) {
         String compressName = name + ".zip";
         log.info("zipDest start, config.compressType is:{} compressName:{}.", "zip", compressName);
         File dest = new File(appDest);
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
-        ZipUtil.zip(dest.getPath(), compressFile.getPath(), withSrcDir);
+        ZipUtil.zip(dest.getPath(), compressFile.getPath(), false);
         log.info("zipDest finish.");
+    }
+
+    /**
+     * 压缩打包目录，zip格式，mac专用
+     */
+    public static void zipDestByMacos(String name, String appDest) {
+        String compressName = name + ".zip";
+        log.info("zipDestByMacos start, config.compressType is:{} compressName:{}.", "zip", compressName);
+        File dest = new File(appDest);
+        File compressFile = new File(dest.getParentFile(), compressName);
+        // 进行zip压缩，如果是macos则保留目录名称，否则不保留
+        ZipUtil.zip(dest.getPath(), compressFile.getPath(), true);
+        log.info("zipDestByMacos finish.");
     }
 
     /**
@@ -103,5 +118,43 @@ public class PkgUtil {
             case "linux_amd64" -> new LinuxPackager();
             default -> throw new IllegalStateException("Unexpected value: " + platform);
         };
+    }
+
+    /**
+     * 获取jlink命令
+     *
+     * @return jlink命令
+     */
+    public static String getJLinkCMD(JLinkConfig config) {
+        String cmdStr = "jlink";
+        if (config.isVerbose()) {
+            cmdStr += " --verbose";
+        }
+        if (config.getVm() != null) {
+            cmdStr += " --vm=" + config.getVm();
+        }
+        if (config.getCompress() != null) {
+            cmdStr += " --compress=" + config.getCompress();
+        }
+        if (config.isNoHeaderFiles()) {
+            cmdStr += " --no-header-files";
+        }
+        if (config.isNoManPages()) {
+            cmdStr += " --no-man-pages";
+        }
+        if (config.isStripDebug()) {
+            cmdStr += " --strip-debug";
+        }
+        if (config.isStripJavaDebugAttributes()) {
+            cmdStr += " --strip-java-debug-attributes";
+        }
+        if (CollUtil.isNotEmpty(config.getAddModules())) {
+            cmdStr += " --add-modules " + CollUtil.join(config.getAddModules(), ",");
+        }
+        if (CollUtil.isNotEmpty(config.getExcludeFiles())) {
+            cmdStr += " --exclude-files=" + CollUtil.join(config.getExcludeFiles(), ",");
+        }
+        cmdStr += " --output " + config.getOutput();
+        return cmdStr;
     }
 }

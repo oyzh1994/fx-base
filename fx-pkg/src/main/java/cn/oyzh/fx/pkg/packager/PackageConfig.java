@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg.packager;
 
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.FileNameUtil;
 import cn.oyzh.fx.pkg.config.BaseConfig;
 import com.alibaba.fastjson.JSONObject;
@@ -115,6 +116,9 @@ public class PackageConfig extends BaseConfig {
      * @return app目标目录
      */
     public String getAppDest() {
+        if (StrUtil.startWithIgnoreCase(this.platform, "macos")) {
+            return FileNameUtil.concat(this.destPath, this.appName + ".app");
+        }
         return FileNameUtil.concat(this.destPath, this.appName);
     }
 

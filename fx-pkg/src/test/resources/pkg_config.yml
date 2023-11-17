@@ -197,3 +197,84 @@ platform:
     jlink:
       # 是否开启
       enable: false
+      # 输出目录
+      output: /home/oyzh/Desktop/Package/EasyZK/jre
+      # 排除文件
+      excludeFiles:
+        - "**javaw"
+        - "**jrunscript"
+        - "**splashscreen"
+#        - "**libjawt.so"
+        - "**liblcms.so"
+        - "**libj2gss.so"
+        - "**libprefs.so"
+        - "**libjsound.so"
+        - "**libjavajpeg.so"
+#        - "**libmlib_image.so"
+        - "**libsplashscreen.so"
+  # macos x64
+  macos_amd64:
+    # 是否开启
+    enable: true
+    # 打包配置
+    package:
+      # 是否开启
+      enable: true
+      # jre路径
+      jrePath: D:\\Package\\EasyZK\\macos_amd64_jre
+      # 主类
+      mainClass: org.springframework.boot.loader.JarLauncher
+      # 图标
+      appIcon: D:\\Workspaces\\OYZH\\Web\\easypanel\\easyzk\\resource\\zookeeper.icns
+      # 压缩类型
+      compressType: zip
+      # 标识符
+      identifier: "cn.oyzh.EasyZK"
+    # jar裁剪配置
+    jar_clip:
+      # 是否开启
+      enable: true
+      # 排除jar
+      excludeJars:
+        - "javafx-fxml-21.0.1-win.jar"
+        - "javafx-fxml-21.0.1-linux.jar"
+        - "javafx-controls-21.0.1-win.jar"
+        - "javafx-controls-21.0.1-linux.jar"
+        - "javafx-graphics-21.0.1-win.jar"
+        - "javafx-graphics-21.0.1-linux.jar"
+    # jre裁剪
+    jre_clip:
+      # 是否开启
+      enable: true
+      # 排除文件
+      excludeFiles:
+        - "javaw"
+        - "jrunscript"
+        - "splashscreen"
+#        - "libjawt.dylib"
+        - "liblcms.dylib"
+        - "libprefs.dylib"
+        - "libj2gss.dylib"
+        - "libjsound.dylib"
+        - "libjavajpeg.dylib"
+#        - "libmlib_image.dylib"
+        - "libsplashscreen.dylib"
+    # jlink处理
+    jlink:
+      # 是否开启
+      enable: false
+      # 输出目录
+      output: /Users/oyzh/Desktop/Package/EasyZK/jre
+      # 排除文件
+      excludeFiles:
+        - "**javaw"
+        - "**jrunscript"
+        - "**splashscreen"
+        - "**libjawt.dylib"
+        - "**liblcms.dylib"
+        - "**libprefs.dylib"
+        - "**libj2gss.dylib"
+        - "**libjsound.dylib"
+        - "**libjavajpeg.dylib"
+        - "**libmlib_image.dylib"
+        - "**libsplashscreen.dylib"

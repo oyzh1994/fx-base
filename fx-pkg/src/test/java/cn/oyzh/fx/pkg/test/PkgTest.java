@@ -33,4 +33,32 @@ public class PkgTest {
 
     }
 
+    @Test
+    public void pkg_test3() throws Exception {
+        String config = "/pkg_config.yml";
+        ConfigParser parser = new ConfigParser();
+        parser.parseConfig(config);
+        for (String platform : parser.getPlatforms()) {
+            if (platform.equals("macos_amd64")) {
+                PlatformConfig platformConfig = parser.getCrossPlatformConfig(platform);
+                String cmd = PkgUtil.getJLinkCMD(platformConfig.getJLinkConfig());
+                System.out.println(cmd);
+            }
+        }
+    }
+
+    @Test
+    public void pkg_test4() throws Exception {
+        String config = "/pkg_config.yml";
+        ConfigParser parser = new ConfigParser();
+        parser.parseConfig(config);
+        for (String platform : parser.getPlatforms()) {
+            if (platform.equals("linux_amd64")) {
+                PlatformConfig platformConfig = parser.getCrossPlatformConfig(platform);
+                String cmd = PkgUtil.getJLinkCMD(platformConfig.getJLinkConfig());
+                System.out.println(cmd);
+            }
+        }
+    }
+
 }
