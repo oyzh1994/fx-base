@@ -18,7 +18,7 @@ public class MacPackager extends BasePackager {
             throw new UnsupportedOperationException("current os is:" + OSUtil.getOSType() + ", cat not jlink macos jre!");
         }
         super.packBefore();
-        FileUtil.del(this.packageConfig.getDestPath());
+        FileUtil.del(this.packageConfig().getDestPath());
     }
 
     @Override

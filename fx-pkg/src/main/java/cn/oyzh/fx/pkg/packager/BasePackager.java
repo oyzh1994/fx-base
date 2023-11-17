@@ -8,6 +8,7 @@ import cn.oyzh.fx.pkg.clip.clipper.JarClipper;
 import cn.oyzh.fx.pkg.clip.clipper.JreClipConfig;
 import cn.oyzh.fx.pkg.clip.clipper.JreClipper;
 import cn.oyzh.fx.pkg.config.GlobalConfig;
+import cn.oyzh.fx.pkg.config.PlatformConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkHandler;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -64,25 +65,32 @@ public abstract class BasePackager {
     private GlobalConfig globalConfig;
 
     /**
-     * jar裁剪配置
+     * 平台配置
      */
     @Getter
     @Setter
-    private JarClipConfig jarClipConfig;
+    private PlatformConfig platformConfig;
 
-    /**
-     * jar裁剪配置
-     */
-    @Getter
-    @Setter
-    private JreClipConfig jreClipConfig;
-
-    /**
-     * jink配置
-     */
-    @Getter
-    @Setter
-    private JLinkConfig jLinkConfig;
+    // /**
+    //  * jar裁剪配置
+    //  */
+    // @Getter
+    // @Setter
+    // private JarClipConfig jarClipConfig;
+    //
+    // /**
+    //  * jar裁剪配置
+    //  */
+    // @Getter
+    // @Setter
+    // private JreClipConfig jreClipConfig;
+    //
+    // /**
+    //  * jink配置
+    //  */
+    // @Getter
+    // @Setter
+    // private JLinkConfig jLinkConfig;
 
     /*
      * 裁剪的jar
@@ -98,6 +106,11 @@ public abstract class BasePackager {
      * jlink目录
      */
     protected String jreJLinkDir;
+
+    /*
+     * jpackage输入目录
+     */
+    protected String jPackageInputDir;
 
     // /**
     //  * 是否删除裁剪的jar
@@ -123,13 +136,12 @@ public abstract class BasePackager {
     // @Setter
     // private boolean clearJreJLinkDir = true;
 
-    /**
-     * 打包配置
-     */
-    @Getter
-    @Setter
-    protected PackageConfig packageConfig;
-
+    // /**
+    //  * 打包配置
+    //  */
+    // @Getter
+    // @Setter
+    // protected PackageConfig packageConfig;
 
     /**
      * 打包前处理
@@ -137,36 +149,56 @@ public abstract class BasePackager {
      * @throws Exception 异常
      */
     protected void packBefore() throws Exception {
-        if (this.jLinkConfig != null && this.jLinkConfig.isEnable()) {
+        if (!this.platformConfig.isEnable()) {
+            log.warn("platform is disable, skip pack.");
+            return;
+        }
+        if (this.jLinkConfig() != null && this.jLinkConfig().isEnable()) {
             log.info("jlink start------------------------------------------------>");
             ThreadUtil.sleep(1500);
-            this.jLinkHandler.exec(this.jLinkConfig);
-            this.packageConfig.setJrePath(this.jLinkConfig.getOutput());
-            this.jreJLinkDir = this.jLinkConfig.getOutput();
+            this.jLinkHandler.exec(this.jLinkConfig());
+            this.packageConfig().setJrePath(this.jLinkConfig().getOutput());
+            this.jreJLinkDir = this.jLinkConfig().getOutput();
             log.info("jlink finish------------------------------------------------>");
         } else {
             log.warn("jLinkConfig is null or jLinkConfig.enable is false, skip jlink.");
         }
-        if (this.jreClipConfig != null && this.jreClipConfig.isEnable()) {
+        if (this.jreClipConfig() != null && this.jreClipConfig().isEnable()) {
             log.info("jreClip start------------------------------------------------>");
             ThreadUtil.sleep(1500);
-            this.jreClipper.clip(this.jreClipConfig);
-            this.packageConfig.setJrePath(this.jreClipConfig.getDest());
-            this.jreClipDir = this.jreClipConfig.getDest();
+            this.jreClipper.clip(this.jreClipConfig());
+            this.packageConfig().setJrePath(this.jreClipConfig().getDest());
+            this.jreClipDir = this.jreClipConfig().getDest();
             log.info("jreClip finish------------------------------------------------>");
         } else {
             log.warn("jreClipConfig is null or jreClipConfig.enable is false, skip jre clip.");
         }
-        if (this.jarClipConfig != null && this.jarClipConfig.isEnable()) {
+        if (this.jarClipConfig() != null && this.jarClipConfig().isEnable()) {
             log.info("jarClip start------------------------------------------------>");
             ThreadUtil.sleep(1500);
-            this.jarClipper.clip(this.jarClipConfig);
-            this.packageConfig.setJarPath(this.jarClipConfig.getDest());
-            this.clapJar = this.jarClipConfig.getDest();
+            this.jarClipper.clip(this.jarClipConfig());
+            this.packageConfig().setJarPath(this.jarClipConfig().getDest());
+            this.clapJar = this.jarClipConfig().getDest();
             log.info("jarClip finish------------------------------------------------>");
         } else {
             log.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
         }
+    }
+
+    protected JarClipConfig jarClipConfig() {
+        return this.platformConfig == null ? null : this.platformConfig.getJarClipConfig();
+    }
+
+    protected JreClipConfig jreClipConfig() {
+        return this.platformConfig == null ? null : this.platformConfig.getJreClipConfig();
+    }
+
+    protected PackageConfig packageConfig() {
+        return this.platformConfig == null ? null : this.platformConfig.getPackageConfig();
+    }
+
+    protected JLinkConfig jLinkConfig() {
+        return this.platformConfig == null ? null : this.platformConfig.getJLinkConfig();
     }
 
     /**
@@ -189,17 +221,18 @@ public abstract class BasePackager {
      * 打包后处理
      */
     protected void packAfter() {
+        if (!this.platformConfig.isEnable()) {
+            log.warn("platform is disable, skip pack.");
+            return;
+        }
         log.info("pack after start.");
-        if (StrUtil.isNotBlank(this.packageConfig.getCompressType())) {
-            switch (this.packageConfig.getCompressType().toLowerCase()) {
+        if (StrUtil.isNotBlank(this.packageConfig().getCompressType())) {
+            switch (this.packageConfig().getCompressType().toLowerCase()) {
                 case "zip" ->
-                        PkgUtil.zipDest(this.getCompressName(), this.packageConfig.getAppDest(), this.getPlatform() == PackrConfig.Platform.MacOS);
-                case "tar" -> PkgUtil.tarDest(this.getCompressName(), this.packageConfig.getAppDest());
-                case "tar.gz" -> PkgUtil.gzipDest(this.getCompressName(), this.packageConfig.getAppDest());
+                        PkgUtil.zipDest(this.getCompressName(), this.packageConfig().getAppDest(), this.getPlatform() == PackrConfig.Platform.MacOS);
+                case "tar" -> PkgUtil.tarDest(this.getCompressName(), this.packageConfig().getAppDest());
+                case "tar.gz" -> PkgUtil.gzipDest(this.getCompressName(), this.packageConfig().getAppDest());
             }
-            // this.clearPackDir = true;
-        // } else {
-        //     this.clearPackDir = false;
         }
         // 删除中间目录
         if (!this.isRetainDuringDir()) {
@@ -209,19 +242,24 @@ public abstract class BasePackager {
                 log.info("delete ClapJar:{}.", this.clapJar);
             }
             // 删除打包目录
-            if (this.packageConfig.getAppDest() != null) {
-                FileUtil.del(this.packageConfig.getAppDest());
-                log.info("delete AppDest:{}.",this.packageConfig.getAppDest());
+            if (this.packageConfig().getAppDest() != null) {
+                FileUtil.del(this.packageConfig().getAppDest());
+                log.info("delete AppDest:{}.", this.packageConfig().getAppDest());
             }
             // 删除jre裁剪目录
             if (this.jreClipDir != null) {
                 FileUtil.del(this.jreClipDir);
-                log.info("delete JreClipDir:{}.",this.jreClipDir);
+                log.info("delete JreClipDir:{}.", this.jreClipDir);
             }
             // 删除jlink目录
             if (this.jreJLinkDir != null) {
                 FileUtil.del(this.jreJLinkDir);
-                log.info("delete JreJLinkDir:{}.",this.jreJLinkDir);
+                log.info("delete JreJLinkDir:{}.", this.jreJLinkDir);
+            }
+            // 删除jlink目录
+            if (this.jPackageInputDir != null) {
+                FileUtil.del(this.jPackageInputDir);
+                log.info("delete jPackageInputDir:{}.", this.jPackageInputDir);
             }
         }
         log.info("pack after finish.");
@@ -232,11 +270,11 @@ public abstract class BasePackager {
     //  */
     // protected void zipDest() {
     //     String compressName = this.getCompressName() + ".zip";
-    //     log.info("zipDest start, config.compressType is:{} compressName:{}.", this.packageConfig.getCompressType(), compressName);
-    //     File compressFile = new File(this.packageConfig.getDestFile(), compressName);
-    //     // File compressFile = new File(this.packageConfig.getDestFile().getParentFile(), compressName);
+    //     log.info("zipDest start, config.compressType is:{} compressName:{}.", this.packageConfig().getCompressType(), compressName);
+    //     File compressFile = new File(this.packageConfig().getDestFile(), compressName);
+    //     // File compressFile = new File(this.packageConfig().getDestFile().getParentFile(), compressName);
     //     // 进行zip压缩，如果是macos则保留目录名称，否则不保留
-    //     ZipUtil.zip(this.packageConfig.getAppDest(), compressFile.getPath(), this.getPlatform() == PackrConfig.Platform.MacOS);
+    //     ZipUtil.zip(this.packageConfig().getAppDest(), compressFile.getPath(), this.getPlatform() == PackrConfig.Platform.MacOS);
     //     log.info("zipDest finish.");
     // }
     //
@@ -245,9 +283,9 @@ public abstract class BasePackager {
     //  */
     // protected void tarDest() {
     //     String compressName = this.getCompressName() + ".tar";
-    //     log.info("tarDest start, config.compressType is:{} compressName:{}.", this.packageConfig.getCompressType(), compressName);
-    //     File dest = this.packageConfig.getDestFile();
-    //     File compressFile = new File(this.packageConfig.getDestFile().getParentFile(), compressName);
+    //     log.info("tarDest start, config.compressType is:{} compressName:{}.", this.packageConfig().getCompressType(), compressName);
+    //     File dest = this.packageConfig().getDestFile();
+    //     File compressFile = new File(this.packageConfig().getDestFile().getParentFile(), compressName);
     //     // 进行tar压缩
     //     Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, ArchiveStreamFactory.TAR, compressFile)
     //             .add(dest);
@@ -260,9 +298,9 @@ public abstract class BasePackager {
     //  */
     // protected void gzipDest() {
     //     String compressName = this.getCompressName() + ".tar.gz";
-    //     log.info("gzipDest start, config.compressType is:{} compressName:{}.", this.packageConfig.getCompressType(), compressName);
-    //     File dest = this.packageConfig.getDestFile();
-    //     File compressFile = new File(this.packageConfig.getDestFile().getParentFile(), compressName);
+    //     log.info("gzipDest start, config.compressType is:{} compressName:{}.", this.packageConfig().getCompressType(), compressName);
+    //     File dest = this.packageConfig().getDestFile();
+    //     File compressFile = new File(this.packageConfig().getDestFile().getParentFile(), compressName);
     //     // 进行tar.gz压缩
     //     Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile)
     //             .add(dest);
@@ -277,14 +315,14 @@ public abstract class BasePackager {
      */
     protected String getCompressName() {
         String name = "";
-        if (this.packageConfig.getAppName() != null) {
-            name += this.packageConfig.getAppName();
+        if (this.packageConfig().getAppName() != null) {
+            name += this.packageConfig().getAppName();
         }
-        if (this.packageConfig.getVersion() != null) {
-            name = name + "_" + this.packageConfig.getVersion();
+        if (this.packageConfig().getVersion() != null) {
+            name = name + "_" + this.packageConfig().getVersion();
         }
-        if (this.packageConfig.getPlatform() != null) {
-            name = name + "_" + this.packageConfig.getPlatform();
+        if (this.packageConfig().getPlatform() != null) {
+            name = name + "_" + this.packageConfig().getPlatform();
         }
         name = name + "_release";
         return name;
@@ -332,24 +370,23 @@ public abstract class BasePackager {
      * @throws Exception 异常
      */
     protected void packByJPackage() throws Exception {
-        if (!this.packageConfig.isEnable()) {
-            log.warn("packageConfig.enable is false, skip pack.");
+        if (!this.packageConfig().isEnable() || !this.platformConfig.isEnable()) {
+            log.warn("package or platform is disable, skip pack.");
             return;
         }
         log.info("pack with JPackage================================");
         // copy主jar到输出目录
-        File mainJar = PkgUtil.copyJarToJpackageInputDir(this.packageConfig.getDestPath(), this.packageConfig.getPlatform(), this.packageConfig.getJarFile());
-        File inputDir = mainJar.getParentFile();
+        File mainJar = PkgUtil.copyJarToJpackageInputDir(this.packageConfig().getDestPath(), this.packageConfig().getPlatform(), this.packageConfig().getJarFile());
+        // jPackage输出目录
+        this.jPackageInputDir = mainJar.getParent();
         // 初始化参数
-        JPackageConfig config = JPackageConfig.from(this.packageConfig);
+        JPackageConfig config = JPackageConfig.from(this.packageConfig());
         config.setMainJar(mainJar.getName());
-        config.setInput(inputDir.getPath());
+        config.setInput(this.jPackageInputDir);
         // 删除app的目标目录
-        FileUtil.del(this.packageConfig.getAppDest());
+        FileUtil.del(this.packageConfig().getAppDest());
         // 执行打包
         this.jPackageHandler.exec(config);
-        // 删除输出目录
-        // FileUtil.del(inputDir);
     }
 
     /**
@@ -358,14 +395,14 @@ public abstract class BasePackager {
      * @throws Exception 异常
      */
     protected void packByPackr() throws Exception {
-        if (!this.packageConfig.isEnable()) {
-            log.warn("packageConfig.enable is false, skip pack.");
+        if (!this.packageConfig().isEnable() || !this.platformConfig.isEnable()) {
+            log.warn("package or platform is disable, skip pack.");
             return;
         }
         log.info("pack with Packr================================");
         // 删除app的目标目录
-        FileUtil.del(this.packageConfig.getAppDest());
-        PackrConfigExt config = PackrConfigExt.form(this.packageConfig);
+        FileUtil.del(this.packageConfig().getAppDest());
+        PackrConfigExt config = PackrConfigExt.form(this.packageConfig());
         config.platform = this.getPlatform();
         this.packrPackager.pack(config);
     }

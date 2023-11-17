@@ -5,7 +5,7 @@ global:
   # 目标路径
   destPath: D:\\Package\\EasyZK\\
   # 保留过程中目录
-  retainDuringDir: true
+  retainDuringDir: false
 
 # 打包相关
 package:
@@ -20,10 +20,6 @@ package:
 
 # jar裁剪
 jar_clip:
-  #  # 是否保留临时目录
-  #  retainTemp: true
-  # 是否删除空jar
-  delEmptyJar: true
   # 排除jar
   excludeJars:
     - "lombok-"
@@ -96,10 +92,12 @@ jlink:
 platform:
   # windows x64
   win_amd64:
+    # 是否开启
+    enable: false
     # 打包配置
     package:
       # 是否开启
-      enable: true
+      enable: false
       # 主类
       mainClass: cn.oyzh.easyzk.EasyZKApp
       # 图标
@@ -109,15 +107,19 @@ platform:
     # jar裁剪配置
     jar_clip:
       # 是否开启
-      enable: true
+      enable: false
       # 排除jar
       excludeJars:
-        - "-mac.jar"
-        - "-linux.jar"
+        - "javafx-fxml-21.0.1-linux.jar"
+        - "javafx-controls-21.0.1-mac.jar"
+        - "javafx-controls-21.0.1-linux.jar"
+        - "javafx-graphics-21.0.1-mac.jar"
+        - "javafx-graphics-21.0.1-linux.jar"
+        - "javafx-fxml-21.0.1-mac.jar"
     # jre裁剪
     jre_clip:
       # 是否开启
-      enable: true
+      enable: false
       # 排除文件
       excludeFiles:
         - "javaw.exe"
@@ -137,7 +139,7 @@ platform:
     # jlink处理
     jlink:
       # 是否开启
-      enable: true
+      enable: false
       # 排除文件
       excludeFiles:
         - "**jvm.lib"
@@ -159,3 +161,39 @@ platform:
         - "**msvcp140.dll"
         - "**vcruntime140.dll"
         - "**vcruntime140_1.dll"
+  # linux x64
+  linux_amd64:
+    # 是否开启
+    enable: true
+    # 打包配置
+    package:
+      # 是否开启
+      enable: true
+      # jre路径
+      jrePath: D:\\Package\\EasyZK\\linux_amd64_jre.zip
+      # 主类
+      mainClass: org.springframework.boot.loader.JarLauncher
+      # 图标
+      appIcon: D:\\Workspaces\\OYZH\\Web\\easypanel\\easyzk\\resource\\zookeeper_512x512.png
+      # 压缩类型
+      compressType: tar.gz
+    # jar裁剪配置
+    jar_clip:
+      # 是否开启
+      enable: true
+      # 排除jar
+      excludeJars:
+        - "javafx-fxml-21.0.1-win.jar"
+        - "javafx-fxml-21.0.1-mac.jar"
+        - "javafx-controls-21.0.1-win.jar"
+        - "javafx-controls-21.0.1-mac.jar"
+        - "javafx-graphics-21.0.1-win.jar"
+        - "javafx-graphics-21.0.1-mac.jar"
+    # jre裁剪
+    jre_clip:
+      # 是否开启
+      enable: false
+    # jlink处理
+    jlink:
+      # 是否开启
+      enable: false

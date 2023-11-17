@@ -10,10 +10,9 @@ import lombok.Getter;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 配置解析器
@@ -24,30 +23,9 @@ import java.util.Map;
 public class ConfigParser {
 
     /**
-     * 平台列表
+     * 平台配置
      */
-    @Getter
-    private final List<String> platforms = new ArrayList<>();
-
-    /**
-     * 平台打包配置
-     */
-    private final Map<String, PackageConfig> platformPackageConfig = new HashMap<>();
-
-    /**
-     * 平台jlink配置
-     */
-    private final Map<String, JLinkConfig> platformJlinkConfig = new HashMap<>();
-
-    /**
-     * 平台jar裁剪配置
-     */
-    private final Map<String, JarClipConfig> platformJarClipConfig = new HashMap<>();
-
-    /**
-     * 平台jre裁剪配置
-     */
-    private final Map<String, JreClipConfig> platformJreClipConfig = new HashMap<>();
+    private final Map<String, PlatformConfig> platformConfig = new HashMap<>();
 
     /**
      * 全局配置
@@ -110,33 +88,11 @@ public class ConfigParser {
         }
         if (obj.containsKey("platform")) {
             JSONObject platformObj = obj.getJSONObject("platform");
-            this.platforms.addAll(platformObj.keySet());
-            for (String platform : platforms) {
+            for (String platform : platformObj.keySet()) {
                 JSONObject object1 = platformObj.getJSONObject(platform);
-                if (object1.containsKey("package")) {
-                    JSONObject object = object1.getJSONObject("package");
-                    PackageConfig config = new PackageConfig();
-                    config.parseConfig(object);
-                    this.platformPackageConfig.put(platform, config);
-                }
-                if (object1.containsKey("jlink")) {
-                    JSONObject object = object1.getJSONObject("jlink");
-                    JLinkConfig config = new JLinkConfig();
-                    config.parseConfig(object);
-                    this.platformJlinkConfig.put(platform, config);
-                }
-                if (object1.containsKey("jre_clip")) {
-                    JSONObject object = object1.getJSONObject("jre_clip");
-                    JreClipConfig config = new JreClipConfig();
-                    config.parseConfig(object);
-                    this.platformJreClipConfig.put(platform, config);
-                }
-                if (object1.containsKey("jar_clip")) {
-                    JSONObject object = object1.getJSONObject("jar_clip");
-                    JarClipConfig config = new JarClipConfig();
-                    config.parseConfig(object);
-                    this.platformJarClipConfig.put(platform, config);
-                }
+                PlatformConfig config = new PlatformConfig();
+                config.parseConfig(object1);
+                this.platformConfig.put(platform, config);
             }
         }
     }
@@ -148,8 +104,8 @@ public class ConfigParser {
      * @return jre裁剪配置
      */
     public JreClipConfig getCrossJreClipConfig(String platform) {
-        JreClipConfig config = this.platformJreClipConfig.get(platform);
-        JreClipConfig jreClipConfig = this.globalJreClipConfig.cross(config);
+        PlatformConfig config = this.platformConfig.get(platform);
+        JreClipConfig jreClipConfig = this.globalJreClipConfig.cross(config.getJreClipConfig());
         if (jreClipConfig.getSrc() == null) {
             jreClipConfig.setSrc(this.getJrePath(platform));
         }
@@ -164,8 +120,8 @@ public class ConfigParser {
      * @return jar裁剪配置
      */
     public JarClipConfig getCrossJarClipConfig(String platform) {
-        JarClipConfig config = this.platformJarClipConfig.get(platform);
-        JarClipConfig jarClipConfig = this.globalJarClipConfig.cross(config);
+        PlatformConfig config = this.platformConfig.get(platform);
+        JarClipConfig jarClipConfig = this.globalJarClipConfig.cross(config.getJarClipConfig());
         String src = this.globalConfig.getJarPath();
         jarClipConfig.setSrc(src);
         jarClipConfig.setDest(this.getJarClipPath(platform, src));
@@ -179,10 +135,27 @@ public class ConfigParser {
      * @return jlink配置
      */
     public JLinkConfig getCrossJLinkConfig(String platform) {
-        JLinkConfig config = this.platformJlinkConfig.get(platform);
-        JLinkConfig jLinkConfig = this.globalJLinkConfig.cross(config);
+        PlatformConfig config = this.platformConfig.get(platform);
+        JLinkConfig jLinkConfig = this.globalJLinkConfig.cross(config.getJLinkConfig());
         jLinkConfig.setOutput(this.getJrePath(platform));
         return jLinkConfig;
+    }
+
+    /**
+     * 获取交叉的平台配置
+     *
+     * @param platform 平台
+     * @return 平台配置
+     */
+    public PlatformConfig getCrossPlatformConfig(String platform) {
+        PlatformConfig config = this.platformConfig.get(platform);
+        PlatformConfig config1 = new PlatformConfig();
+        config1.setJarClipConfig(this.getCrossJarClipConfig(platform));
+        config1.setJreClipConfig(this.getCrossJreClipConfig(platform));
+        config1.setPackageConfig(this.getCrossPackageConfig(platform));
+        config1.setJLinkConfig(this.getCrossJLinkConfig(platform));
+        config1.setEnable(config.isEnable());
+        return config1;
     }
 
     /**
@@ -192,8 +165,8 @@ public class ConfigParser {
      * @return 打包配置
      */
     public PackageConfig getCrossPackageConfig(String platform) {
-        PackageConfig config = this.platformPackageConfig.get(platform);
-        PackageConfig packageConfig = this.globalPackageConfig.cross(config);
+        PlatformConfig config = this.platformConfig.get(platform);
+        PackageConfig packageConfig = this.globalPackageConfig.cross(config.getPackageConfig());
         String src = this.globalConfig.getJarPath();
         packageConfig.setJarPath(src);
         packageConfig.setPlatform(platform);
@@ -211,5 +184,9 @@ public class ConfigParser {
 
     public String getJarClipPath(String platform, String src) {
         return src.replaceFirst(".jar", "_" + platform + "_clip.jar");
+    }
+
+    public Set<String> getPlatforms() {
+        return this.platformConfig.keySet();
     }
 }

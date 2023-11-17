@@ -4,6 +4,10 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
+import cn.oyzh.fx.pkg.packager.BasePackager;
+import cn.oyzh.fx.pkg.packager.LinuxPackager;
+import cn.oyzh.fx.pkg.packager.MacPackager;
+import cn.oyzh.fx.pkg.packager.WinPackager;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
@@ -74,9 +78,30 @@ public class PkgUtil {
         File dest = new File(appDest);
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行tar.gz压缩
-        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile)
-                .add(dest);
+        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile);
+        // 把目录的一级文件或者目录添加进去，以免生成解压后还存在一个子目录
+        File[] files = dest.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                archiver.add(file);
+            }
+        }
         archiver.finish().close();
         log.info("gzipDest finish.");
+    }
+
+    /**
+     * 获取打包器
+     *
+     * @param platform 平台
+     * @return 打包器
+     */
+    public static BasePackager getPackager(String platform) {
+        return switch (platform) {
+            case "win_amd64" -> new WinPackager();
+            case "macos_amd64" -> new MacPackager();
+            case "linux_amd64" -> new LinuxPackager();
+            default -> throw new IllegalStateException("Unexpected value: " + platform);
+        };
     }
 }

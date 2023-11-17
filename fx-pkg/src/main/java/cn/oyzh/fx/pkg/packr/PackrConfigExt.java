@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.packr;
 import cn.oyzh.fx.pkg.packager.PackageConfig;
 import com.badlogicgames.packr.PackrConfig;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class PackrConfigExt extends PackrConfig {
         config.vmArgs = new ArrayList<>();
         config.useZgcIfSupportedOs = true;
         config.jdk = packageConfig.getJrePath();
-        config.outDir = packageConfig.getDestFile();
         config.mainClass = packageConfig.getMainClass();
         config.iconResource = packageConfig.getIconFile();
         config.executable = packageConfig.getExecutable();
+        config.outDir = new File(packageConfig.getAppDest());
         config.classpath = List.of(packageConfig.getJarPath());
         return config;
     }
