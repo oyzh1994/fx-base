@@ -3,8 +3,6 @@ package cn.oyzh.fx.pkg.packager;
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.common.util.OSUtil;
 import com.badlogicgames.packr.PackrConfig;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * mac打包器
@@ -14,20 +12,13 @@ import lombok.Setter;
  */
 public class MacPackager extends BasePackager {
 
-    /**
-     * 打包配置
-     */
-    @Getter
-    @Setter
-    private MacPkgConfig pkgConfig;
-
     @Override
     protected void packBefore() throws Exception {
-        if (!OSUtil.isMacOS() && this.getJLinkHandler() != null) {
+        if (!OSUtil.isMacOS()) {
             throw new UnsupportedOperationException("current os is:" + OSUtil.getOSType() + ", cat not jlink macos jre!");
         }
         super.packBefore();
-        FileUtil.del(this.pkgConfig.getDestPath());
+        FileUtil.del(this.packageConfig.getDestPath());
     }
 
     @Override

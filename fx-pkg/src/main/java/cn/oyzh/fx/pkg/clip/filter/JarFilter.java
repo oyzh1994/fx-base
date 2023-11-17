@@ -24,9 +24,9 @@ public class JarFilter extends BaseFilter {
     @Override
     public boolean acceptExclude(String name) {
         // 过滤的jar
-        for (String excludeJar : this.getExcludes()) {
-            if (name.toLowerCase().contains(excludeJar.toLowerCase())) {
-                log.warn("JarFilter filter by excludes contains.");
+        for (String exclude : this.getExcludes()) {
+            if (name.toLowerCase().contains(exclude.toLowerCase())) {
+                log.warn("{} acceptExclude by exclude:{} contains.", name, exclude);
                 return true;
             }
         }

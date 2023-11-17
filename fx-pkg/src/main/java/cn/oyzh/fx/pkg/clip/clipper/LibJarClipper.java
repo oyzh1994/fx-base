@@ -37,7 +37,6 @@ public class LibJarClipper extends BaseJarClipper {
                 if (!JarUtil.isJar(file)) {
                     continue;
                 }
-
                 // 符合排除jar，删除文件
                 if (this.jarFilter.acceptExclude(file.getName())) {
                     FileUtil.del(file);

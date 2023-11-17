@@ -85,7 +85,6 @@ public class BaseJarClipper extends BaseClipper {
 
     @Override
     public boolean filterName(String name) {
-        //log.info("filter start, name: {}", name);
         boolean accept;
         // class文件
         if (name.endsWith(".class")) {
@@ -98,7 +97,6 @@ public class BaseJarClipper extends BaseClipper {
         if (!accept) {
             log.info("file:{} filtered.", name);
         }
-        //log.info("filter finish, accept {}.", accept);
         return accept;
     }
 

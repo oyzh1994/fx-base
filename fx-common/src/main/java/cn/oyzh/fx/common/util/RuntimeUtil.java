@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 /**
  * @author oyzh
@@ -24,7 +25,7 @@ public class RuntimeUtil {
      * @throws Exception 异常
      */
     public static int execAndWait(String cmd) throws Exception {
-        return execAndWait(cmd, null, true, true);
+        return execAndWait(cmd, (File) null);
     }
 
     /**
@@ -36,7 +37,7 @@ public class RuntimeUtil {
      * @throws Exception 异常
      */
     public static int execAndWait(String cmd, String dir) throws Exception {
-        return execAndWait(cmd, new File(dir), true, true);
+        return execAndWait(cmd, new File(dir));
     }
 
     /**
@@ -48,7 +49,13 @@ public class RuntimeUtil {
      * @throws Exception 异常
      */
     public static int execAndWait(String cmd, File dir) throws Exception {
-        return execAndWait(cmd, dir, true, true);
+        Charset charset;
+        if (OSUtil.isWindows()) {
+            charset = Charset.forName(System.getProperty("sun.jnu.encoding"));
+        } else {
+            charset = Charset.defaultCharset();
+        }
+        return execAndWait(cmd, dir, true, true, charset);
     }
 
     /**
@@ -58,12 +65,16 @@ public class RuntimeUtil {
      * @param dir        执行目录
      * @param printInput 打印输入内容
      * @param printError 打印异常内容
+     * @param charset    流打印字符集
      * @return 执行结果
      * @throws Exception 异常
      */
-    public static int execAndWait(String cmd, File dir, boolean printInput, boolean printError) throws Exception {
+    public static int execAndWait(String cmd, File dir, boolean printInput, boolean printError, Charset charset) throws Exception {
         int code = 0;
         try {
+            if (charset == null) {
+                charset = Charset.defaultCharset();
+            }
             log.info("execAndWait start cmd:{} dir:{} printInput:{} printError:{}", cmd, dir, printInput, printError);
             Process process;
             if (FileUtil.isDirectory(dir)) {
@@ -71,10 +82,10 @@ public class RuntimeUtil {
             } else {
                 process = Runtime.getRuntime().exec(cmd, null);
             }
-            if (printInput) {
+            if (printInput && process.getInputStream().available() > 0) {
                 log.info("process input--->start");
                 // 获取进程的标准输出流
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), charset));
                 // 读取输出并打印到控制台
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -82,10 +93,10 @@ public class RuntimeUtil {
                 }
                 log.info("process input--->start");
             }
-            if (printError) {
+            if (printError && process.getErrorStream().available() > 0) {
                 log.info("process error--->start");
                 // 获取进程的标准输出流
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream(), charset));
                 // 读取输出并打印到控制台
                 String line;
                 while ((line = reader.readLine()) != null) {

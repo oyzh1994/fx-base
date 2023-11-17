@@ -1,10 +1,10 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.pkg.config.BaseConfig;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,8 @@ import java.util.List;
  * @since 2023/3/8
  */
 @Data
-public class JLinkConfig {
+@EqualsAndHashCode(callSuper = true)
+public class JLinkConfig extends BaseConfig {
 
     /**
      * vm类型
@@ -66,68 +67,85 @@ public class JLinkConfig {
      */
     private List<String> excludeFiles = new ArrayList<>();
 
-    /**
-     * 解析配置
-     *
-     * @param configPath 配置路径
-     */
-    public void parseConfig(String configPath) {
-        String text = FileUtil.readUtf8String(configPath);
-        JSONObject object = JSONObject.parseObject(text);
-        this.fromConfig(object);
-    }
-
-    /**
-     * 从配置对象生成
-     *
-     * @param object 配置对象
-     */
-    protected void fromConfig(JSONObject object) {
-        this.output = object.getString("output");
-        if (object.containsKey("vm")) {
-            this.vm = object.getString("vm");
-        }
-        if (object.containsKey("compress")) {
-            this.compress = object.getIntValue("compress");
-        }
-        if (object.containsKey("verbose")) {
-            this.verbose = object.getBooleanValue("verbose");
-        }
-        if (object.containsKey("stripDebug")) {
-            this.stripDebug = object.getBooleanValue("stripDebug");
-        }
-        if (object.containsKey("noManPages")) {
-            this.noManPages = object.getBooleanValue("noManPages");
-        }
-        if (object.containsKey("noHeaderFiles")) {
-            this.noHeaderFiles = object.getBooleanValue("noHeaderFiles");
-        }
-        if (object.containsKey("stripJavaDebugAttributes")) {
-            this.stripJavaDebugAttributes = object.getBooleanValue("stripJavaDebugAttributes");
+    public void parseConfig(JSONObject object) {
+        super.parseConfig(object);
+        JSONArray excludeFiles = object.getJSONArray("excludeFiles");
+        if (excludeFiles != null) {
+            for (Object o : excludeFiles) {
+                this.excludeFiles.add(o.toString());
+            }
         }
         JSONArray addModules = object.getJSONArray("addModules");
-        if (CollUtil.isNotEmpty(addModules)) {
-            for (Object addModule : addModules) {
-                this.addModules.add((String) addModule);
+        if (addModules != null) {
+            for (Object o : addModules) {
+                this.addModules.add(o.toString());
             }
         }
-        JSONArray excludeFiles = object.getJSONArray("excludeFiles");
-        if (CollUtil.isNotEmpty(excludeFiles)) {
-            for (Object excludeFile : excludeFiles) {
-                this.excludeFiles.add((String) excludeFile);
-            }
+        Boolean verbose = object.getBoolean("verbose");
+        if (verbose != null) {
+            this.verbose = verbose;
+        }
+        Boolean noManPages = object.getBoolean("noManPages");
+        if (noManPages != null) {
+            this.noManPages = noManPages;
+        }
+        Boolean noHeaderFiles = object.getBoolean("noHeaderFiles");
+        if (noHeaderFiles != null) {
+            this.noHeaderFiles = noHeaderFiles;
+        }
+        Boolean stripDebug = object.getBoolean("stripDebug");
+        if (stripDebug != null) {
+            this.stripDebug = stripDebug;
+        }
+        Boolean stripJavaDebugAttributes = object.getBoolean("stripJavaDebugAttributes");
+        if (stripJavaDebugAttributes != null) {
+            this.stripJavaDebugAttributes = stripJavaDebugAttributes;
+        }
+        Integer compress = object.getInteger("compress");
+        if (compress != null) {
+            this.compress = compress;
+        }
+        String vm = object.getString("vm");
+        if (vm != null) {
+            this.vm = vm;
+        }
+        String output = object.getString("output");
+        if (output != null) {
+            this.output = output;
         }
     }
 
-    /**
-     * 从配置文件生成配置对象
-     *
-     * @param configPath 配置文件路径
-     * @return 配置对象
-     */
-    public static JLinkConfig fromConfig(String configPath) {
-        JLinkConfig config = new JLinkConfig();
-        config.parseConfig(configPath);
-        return config;
+    @Override
+    public JLinkConfig cross(Object o) {
+        if (o instanceof JLinkConfig config) {
+            JLinkConfig config1 = new JLinkConfig();
+            config1.setEnable(config.isEnable());
+            config1.verbose = config.verbose;
+            config1.stripDebug = config.stripDebug;
+            config1.noManPages = config.noManPages;
+            config1.noHeaderFiles = config.noHeaderFiles;
+            config1.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
+            config1.addModules.addAll(this.addModules);
+            config1.addModules.addAll(config.addModules);
+            config1.excludeFiles.addAll(this.excludeFiles);
+            config1.excludeFiles.addAll(config.excludeFiles);
+            if (config.vm != null) {
+                config1.vm = config.vm;
+            } else {
+                config1.vm = this.vm;
+            }
+            if (config.compress != null) {
+                config1.compress = config.compress;
+            } else {
+                config1.compress = this.compress;
+            }
+            if (config.output != null) {
+                config1.output = config.output;
+            } else {
+                config1.output = this.output;
+            }
+            return config1;
+        }
+        return this;
     }
 }

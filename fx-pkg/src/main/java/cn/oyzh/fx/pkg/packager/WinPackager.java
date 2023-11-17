@@ -2,8 +2,7 @@ package cn.oyzh.fx.pkg.packager;
 
 import cn.oyzh.fx.common.util.OSUtil;
 import com.badlogicgames.packr.PackrConfig;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * windows平台打包器
@@ -13,16 +12,9 @@ import lombok.Setter;
  */
 public class WinPackager extends BasePackager {
 
-    /**
-     * 打包配置
-     */
-    @Getter
-    @Setter
-    private WinPkgConfig pkgConfig;
-
     @Override
     protected void packBefore() throws Exception {
-        if (!OSUtil.isWindows() && this.getJLinkHandler() != null) {
+        if (!OSUtil.isWindows()) {
             throw new UnsupportedOperationException("current os is:" + OSUtil.getOSType() + ", cat not jlink windows jre!");
         }
         super.packBefore();

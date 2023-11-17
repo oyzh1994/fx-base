@@ -28,17 +28,17 @@ public class FileFilter extends BaseFilter {
         for (String exclude : this.getExcludes()) {
             // 文件夹排除
             if (exclude.endsWith("/") && name.equals(exclude.toLowerCase())) {
-                log.warn("FileFilter filter by excludes:{} equals(folder).", exclude);
+                log.warn("{} acceptExclude by exclude:{} equals folder.", name, exclude);
                 return true;
             }
             // 类型排除
             if (exclude.startsWith(".") && name.endsWith(exclude.toLowerCase())) {
-                log.warn("FileFilter filter by excludes:{} endsWith(type).", exclude);
+                log.warn("{} acceptExclude by exclude:{} endsWith type.", name, exclude);
                 return true;
             }
             // 包含排除
             if (name.contains(exclude.toLowerCase())) {
-                log.warn("FileFilter filter by excludes:{} contains.", exclude);
+                log.warn("{} acceptExclude by exclude:{} contains.", name, exclude);
                 return true;
             }
         }

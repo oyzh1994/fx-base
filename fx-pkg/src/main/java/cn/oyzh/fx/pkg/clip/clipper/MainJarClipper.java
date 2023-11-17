@@ -24,7 +24,7 @@ public class MainJarClipper extends BaseJarClipper {
      * @param jarUnDir 主jar解压目录
      * @param mainJar  主jar
      */
-    public void mergeLibs(String jarUnDir, String mainJar) throws Exception {
+    public void mergeLibs(String jarUnDir, String mainJar) {
         if (!FileUtil.exist(jarUnDir)) {
             throw new RuntimeException("jarUnDir " + jarUnDir + " is not exist.");
         }
@@ -58,11 +58,7 @@ public class MainJarClipper extends BaseJarClipper {
             try {
                 // 合并lib目录到主jar文件
                 String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ./BOOT-INF/lib";
-                // log.info("mergeLibs {} exec start.", cmdStr);
-                // Process process = Runtime.getRuntime().exec(cmdStr, null, dir);
-                // process.waitFor();
                 RuntimeUtil.execAndWait(cmdStr, dir);
-                // log.info("mergeLibs {} exec finish.", cmdStr);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -73,11 +69,7 @@ public class MainJarClipper extends BaseJarClipper {
                 try {
                     String fName = file.getPath().replace(dir.getPath(), "");
                     String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ." + fName;
-                    // log.info("mergeLibs {} exec start.", cmdStr);
-                    // Process process = Runtime.getRuntime().exec(cmdStr, null, dir);
-                    // process.waitFor();
                     RuntimeUtil.execAndWait(cmdStr, dir);
-                    // log.info("mergeLibs {} exec finish.", cmdStr);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

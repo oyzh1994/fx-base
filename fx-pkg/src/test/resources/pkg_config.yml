@@ -1,0 +1,161 @@
+# 全局配置
+global:
+  # jar路径
+  jarPath: D:\\Workspaces\\OYZH\\easyzk\\target\\easyzk-1.5.9.jar
+  # 目标路径
+  destPath: D:\\Package\\EasyZK\\
+  # 保留过程中目录
+  retainDuringDir: true
+
+# 打包相关
+package:
+  # 作者
+  vendor: oyzh
+  # 版本
+  version: v1.5.9
+  # 程序名称
+  appName: EasyZK
+  # 可执行程序名称
+  executable: EasyZK
+
+# jar裁剪
+jar_clip:
+  #  # 是否保留临时目录
+  #  retainTemp: true
+  # 是否删除空jar
+  delEmptyJar: true
+  # 排除jar
+  excludeJars:
+    - "lombok-"
+  # 排除类
+  excludeClasses:
+    - "module-info"
+    - "package-info"
+  # 排除文件
+  excludeFiles:
+    - ".md"
+    - ".idx"
+    - ".xsd"
+    - ".tooling"
+    - ".schemas"
+    - ".handlers"
+    - ".processors"
+    - ".kotlin_module"
+    - "pom.xml"
+    - "pom.properties"
+    - "DEPENDENCIES"
+    - "NOTICE"
+    - "LICENSE"
+    - "README.md"
+    - "README.txt"
+    - "changelog.txt"
+    - "release-timestamp.txt"
+    - "latestchanges.html"
+    - "AUTHORS"
+    - "ASSEMBLY_EXCEPTION"
+    - "ADDITIONAL_LICENSE_INFO"
+    - "spring.factories"
+    - "reactor.blockhound.integration.BlockHoundIntegration"
+    - "aot.factories"
+    - "reflectionconfig.json"
+# jre裁剪
+jre_clip:
+  # 排除文件
+  excludeFiles:
+    - "**README.txt"
+    - "**ASSEMBLY_EXCEPTION"
+    - "**ADDITIONAL_LICENSE_INFO"
+    - "classlist"
+    - "sound.properties"
+
+# jlink处理
+jlink:
+  # 排除文件
+  excludeFiles:
+    - "**.md"
+    - "**LICENSE"
+    - "**classlist"
+    - "**COPYRIGHT"
+    - "**README.txt"
+    - "**sound.properties"
+    - "**ASSEMBLY_EXCEPTION"
+    - "**ADDITIONAL_LICENSE_INFO"
+  # 添加模块
+  addModules:
+    - "java.xml"
+    - "java.sql"
+    - "java.base"
+    - "java.naming"
+    - "java.logging"
+    - "java.desktop"
+    - "java.scripting"
+    - "jdk.unsupported"
+    - "java.security.jgss"
+
+  # 各平台处理
+platform:
+  # windows x64
+  win_amd64:
+    # 打包配置
+    package:
+      # 是否开启
+      enable: true
+      # 主类
+      mainClass: cn.oyzh.easyzk.EasyZKApp
+      # 图标
+      appIcon: D:\\Workspaces\\OYZH\\easyzk\\resource\\zookeeper.ico
+      # 压缩类型
+      compressType: zip
+    # jar裁剪配置
+    jar_clip:
+      # 是否开启
+      enable: true
+      # 排除jar
+      excludeJars:
+        - "-mac.jar"
+        - "-linux.jar"
+    # jre裁剪
+    jre_clip:
+      # 是否开启
+      enable: true
+      # 排除文件
+      excludeFiles:
+        - "javaw.exe"
+        - "jrunscript.exe"
+        - "splashscreen.dll"
+        - "jvm.lib"
+        - "jawt.lib"
+        - "lcms.dll"
+        - "jawt.dll"
+        - "prefs.dll"
+        - "jsound.dll"
+        - "j2gss.dll"
+        - "javajpeg.dll"
+        - "mlib_image.dll"
+        - "sspi_bridge.dll"
+        - "w2k_lsa_auth.dll"
+    # jlink处理
+    jlink:
+      # 是否开启
+      enable: true
+      # 排除文件
+      excludeFiles:
+        - "**jvm.lib"
+        - "**jawt.lib"
+        - "**lcms.dll"
+        - "**jawt.dll"
+        - "**javaw.exe"
+        - "**prefs.dll"
+        - "**j2gss.dll"
+        - "**jsound.dll"
+        - "**javajpeg.dll"
+        - "**jrunscript.exe"
+        - "**mlib_image.dll"
+        - "**sspi_bridge.dll"
+        - "**splashscreen.dll"
+        - "**w2k_lsa_auth.dll"
+        - "**api-**.dll"
+        - "**ucrtbase.dll"
+        - "**msvcp140.dll"
+        - "**vcruntime140.dll"
+        - "**vcruntime140_1.dll"

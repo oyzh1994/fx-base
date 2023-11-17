@@ -2,8 +2,7 @@ package cn.oyzh.fx.pkg.packager;
 
 import cn.oyzh.fx.common.util.OSUtil;
 import com.badlogicgames.packr.PackrConfig;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * linux平台打包器
@@ -11,18 +10,12 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/3/8
  */
+@Slf4j
 public class LinuxPackager extends BasePackager {
-
-    /**
-     * 打包配置
-     */
-    @Getter
-    @Setter
-    private LinuxPkgConfig pkgConfig;
 
     @Override
     protected void packBefore() throws Exception {
-        if (!OSUtil.isLinux() && this.getJLinkHandler() != null) {
+        if (!OSUtil.isLinux()) {
             throw new UnsupportedOperationException("current os is:" + OSUtil.getOSType() + ", cat not jlink linux jre!");
         }
         super.packBefore();

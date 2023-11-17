@@ -13,16 +13,26 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class JreClipConfig extends BaseClipConfig {
 
-    /**
-     * 从配置文件生成配置对象
-     *
-     * @param configPath 配置文件路径
-     * @return 配置对象
-     */
-    public static JreClipConfig fromConfig(String configPath) {
-        JreClipConfig config = new JreClipConfig();
-        config.parseConfig(configPath);
-        config.applyDefault();
-        return config;
+    @Override
+    public JreClipConfig cross(Object o) {
+        if (o instanceof JreClipConfig config) {
+            JreClipConfig config1 = new JreClipConfig();
+            config1.setEnable(config.isEnable());
+            config1.excludeFiles.addAll(this.excludeFiles);
+            config1.excludeFiles.addAll(config.excludeFiles);
+            if (config.src != null) {
+                config1.src = config.src;
+            } else {
+                config1.src = this.src;
+            }
+            if (config.dest != null) {
+                config1.dest = config.dest;
+            } else {
+                config1.dest = this.dest;
+            }
+            return config1;
+        }
+        return this;
     }
+
 }

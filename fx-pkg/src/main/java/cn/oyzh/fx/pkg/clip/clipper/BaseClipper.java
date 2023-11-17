@@ -40,12 +40,10 @@ public abstract class BaseClipper {
      * @return 结果
      */
     public boolean filterName(String name) {
-        //log.info("filter start, name: {}", name);
         boolean accept = this.fileFilter.accept(name);
         if (!accept) {
             log.info("file:{} filtered.", name);
         }
-        //log.info("filter finish, accept {}.", accept);
         return accept;
     }
 

@@ -72,9 +72,9 @@ public class JarClipper extends BaseJarClipper {
         // 合并类库jar
         this.mainJarClipper.mergeLibs(jarUnDir, dest);
         // 删除解压目录
-        if (!config.isRetainTemp()) {
-            FileUtil.del(jarUnDir);
-        }
+        // if (!config.isRetainTemp()) {
+        FileUtil.del(jarUnDir);
+        // }
         long end = System.currentTimeMillis();
         log.info("clip end, used time: {}ms.", end - start);
     }

@@ -6,8 +6,6 @@ import cn.oyzh.fx.common.util.RuntimeUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-
 /**
  * jlink处理
  *
@@ -52,10 +50,6 @@ public class JLinkHandler {
         }
         cmdStr += " --output " + config.getOutput();
         // 执行jlink
-        // log.info("jlink exec start, command:{}.", cmdStr);
-        // Process process = Runtime.getRuntime().exec(cmdStr, null, null);
-        // process.waitFor();
         RuntimeUtil.execAndWait(cmdStr);
-        // log.info("jlink finish.");
     }
 }

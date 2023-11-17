@@ -18,7 +18,6 @@ public class ClassFilter extends BaseFilter {
         if (StrUtil.isBlank(name) || !name.endsWith(".class")) {
             return null;
         }
-
         // 处理class
         name = name.replace("BOOT-INF/classes/", "")
                 .replace(".class", "")
@@ -30,14 +29,13 @@ public class ClassFilter extends BaseFilter {
     public boolean acceptExclude(String name) {
         // 排除的class
         if (this.getExcludes().contains(name)) {
-            log.warn("ClassFilter filter by excludes contains.");
+            log.warn("{} acceptExclude by excludes contains.", name);
             return true;
         }
-
         // 排除的class子类或者包
         for (String exclude : this.getExcludes()) {
             if (name.startsWith(exclude)) {
-                log.warn("ClassFilter unFilter by excludes:{} startsWith.", exclude);
+                log.warn("{} acceptExclude by exclude:{} startsWith.", name, exclude);
                 return true;
             }
         }
