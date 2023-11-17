@@ -15,9 +15,10 @@ public class PkgTest {
 
     @Test
     public void pkg_test() throws Exception {
-        String config = "/pkg_config.yml";
+        String global_config = "global_config.json";
+        String win_pkg_config = "win_pkg_config.json";
         ConfigParser parser = new ConfigParser();
-        parser.parseConfig(config);
+        parser.loadConfig(global_config, win_pkg_config);
         for (String platform : parser.getPlatforms()) {
             PlatformConfig platformConfig = parser.getCrossPlatformConfig(platform);
             BasePackager packager = PkgUtil.getPackager(platform);
@@ -37,7 +38,7 @@ public class PkgTest {
     public void pkg_test3() throws Exception {
         String config = "/pkg_config.yml";
         ConfigParser parser = new ConfigParser();
-        parser.parseConfig(config);
+        parser.loadConfig(config);
         for (String platform : parser.getPlatforms()) {
             if (platform.equals("macos_amd64")) {
                 PlatformConfig platformConfig = parser.getCrossPlatformConfig(platform);
@@ -51,7 +52,7 @@ public class PkgTest {
     public void pkg_test4() throws Exception {
         String config = "/pkg_config.yml";
         ConfigParser parser = new ConfigParser();
-        parser.parseConfig(config);
+        parser.loadConfig(config);
         for (String platform : parser.getPlatforms()) {
             if (platform.equals("linux_amd64")) {
                 PlatformConfig platformConfig = parser.getCrossPlatformConfig(platform);

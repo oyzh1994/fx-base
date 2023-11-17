@@ -5,7 +5,10 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
+import cn.oyzh.fx.common.util.FileNameUtil;
+import cn.oyzh.fx.common.util.OSUtil;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
+import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.packager.BasePackager;
 import cn.oyzh.fx.pkg.packager.LinuxPackager;
 import cn.oyzh.fx.pkg.packager.MacPackager;
@@ -25,14 +28,29 @@ import java.nio.charset.StandardCharsets;
 @UtilityClass
 public class PkgUtil {
 
+    /**
+     * 复制jar到jpackage输出目录
+     *
+     * @param destPath 目标路径
+     * @param platform 平台
+     * @param jarFile  jar文件
+     * @return 新jar文件
+     */
     public static File copyJarToJpackageInputDir(String destPath, String platform, File jarFile) {
         File inputDir = getJpackageInputDir(destPath, platform);
         // jpackage主jar
         return FileUtil.copy(jarFile, inputDir, true);
     }
 
+    /**
+     * 获取jpackage输出目录
+     *
+     * @param destPath 目标路径
+     * @param platform 平台
+     * @return jpackage输出目录
+     */
     public static File getJpackageInputDir(String destPath, String platform) {
-        String inputPath = destPath + platform + "_jpackage_input_dir";
+        String inputPath = FileNameUtil.concat(destPath, platform + "_jpackage_input_dir");
         File inputDir;
         if (FileUtil.exist(inputPath)) {
             FileUtil.clean(inputPath);
@@ -53,7 +71,7 @@ public class PkgUtil {
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
         ZipUtil.zip(dest.getPath(), compressFile.getPath(), false);
-        log.info("zipDest finish.");
+        log.info("zipDest finish appDest:{}", compressFile.getPath());
     }
 
     /**
@@ -66,7 +84,7 @@ public class PkgUtil {
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
         ZipUtil.zip(dest.getPath(), compressFile.getPath(), true);
-        log.info("zipDestByMacos finish.");
+        log.info("zipDestByMacos finish appDest:{}", compressFile.getPath());
     }
 
     /**
@@ -81,7 +99,7 @@ public class PkgUtil {
         Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, ArchiveStreamFactory.TAR, compressFile)
                 .add(dest);
         archiver.finish().close();
-        log.info("tarDest finish.");
+        log.info("tarDest finish appDest:{}", compressFile.getPath());
     }
 
     /**
@@ -102,7 +120,7 @@ public class PkgUtil {
             }
         }
         archiver.finish().close();
-        log.info("gzipDest finish.");
+        log.info("gzipDest finish appDest:{}", compressFile.getPath());
     }
 
     /**
@@ -123,6 +141,7 @@ public class PkgUtil {
     /**
      * 获取jlink命令
      *
+     * @param config jlink配置
      * @return jlink命令
      */
     public static String getJLinkCMD(JLinkConfig config) {
@@ -156,5 +175,65 @@ public class PkgUtil {
         }
         cmdStr += " --output " + config.getOutput();
         return cmdStr;
+    }
+
+    /**
+     * 获取jpackage命令
+     *
+     * @param config jpackage配置
+     * @return jlink命令
+     */
+    public static String getJPackageCMD(JPackageConfig config) {
+        String cmdStr = "jpackage";
+        if (config.isVerbose()) {
+            cmdStr += " --verbose";
+        }
+        if (config.getVendor() != null) {
+            cmdStr += " --vendor " + config.getVendor();
+        }
+        if (config.getDescription() != null) {
+            cmdStr += " --description " + config.getDescription();
+        }
+        if (config.getIcon() != null) {
+            cmdStr += " --icon " + config.getIcon();
+        }
+        if (config.getInput() != null) {
+            cmdStr += " -i " + config.getInput();
+        }
+        if (config.getMainJar() != null) {
+            cmdStr += " --main-jar " + config.getMainJar();
+        }
+        if (config.getName() != null) {
+            cmdStr += " -n " + config.getName();
+        }
+        if (config.getType() != null) {
+            cmdStr += " -t " + config.getType();
+        }
+        if (config.getAppVersion() != null) {
+            cmdStr += " --app-version " + config.getAppVersion();
+        }
+        if (config.getRuntimeImage() != null) {
+            cmdStr += " --runtime-image " + config.getRuntimeImage();
+        }
+        cmdStr += " -d " + config.getDest();
+        return cmdStr;
+    }
+
+    /**
+     * 获取jdk执行命令
+     *
+     * @param jdkPath jdk目录
+     * @param cmd     命令
+     * @return 执行命令
+     */
+    public static String getJDKExecCMD(String jdkPath, String cmd) {
+        // 执行jpackage
+        if (jdkPath == null) {
+            return cmd;
+        }
+        if (OSUtil.isWindows()) {
+            return FileNameUtil.concat(jdkPath, "bin", cmd);
+        }
+        return "sh " + FileNameUtil.concat(jdkPath, "bin", cmd);
     }
 }

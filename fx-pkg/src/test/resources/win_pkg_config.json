@@ -1,0 +1,120 @@
+{
+  "enable": true,
+  "jdkPath": "D:\\JDKs\\jdk-21",
+  "package": {
+    "enable": true,
+    "platform": "win_amd64",
+    "mainClass": "cn.oyzh.easyzk.EasyZKApp",
+    "compressType": "zip",
+    "appIcon": "D:\\Development\\WorkSpaces\\OYZH\\easyzk\\resource\\zookeeper.ico"
+  },
+  "jlink": {
+    "enable": true,
+    "addModules": [
+      "java.xml",
+      "java.sql",
+      "java.base",
+      "java.naming",
+      "java.logging",
+      "java.desktop",
+      "java.scripting",
+      "jdk.unsupported",
+      "java.security.jgss"
+    ],
+    "excludeFiles": [
+      "**.md",
+      "**LICENSE",
+      "**classlist",
+      "**sound.properties",
+      "**COPYRIGHT",
+      "**README.txt",
+      "**ASSEMBLY_EXCEPTION",
+      "**ADDITIONAL_LICENSE_INFO",
+      "**jrunscript.exe",
+      "**javaw.exe",
+      "**jvm.lib",
+      "**jawt.lib",
+      "**lcms.dll",
+      "**jawt.dll",
+      "**javaw.exe",
+      "**prefs.dll",
+      "**j2gss.dll",
+      "**jsound.dll",
+      "**javajpeg.dll",
+      "**jrunscript.exe",
+      "**mlib_image.dll",
+      "**sspi_bridge.dll",
+      "**splashscreen.dll",
+      "**w2k_lsa_auth.dll",
+      "**api-**.dll",
+      "**ucrtbase.dll",
+      "**msvcp140.dll",
+      "**vcruntime140.dll",
+      "**vcruntime140_1.dll"
+    ]
+  },
+  "jre_clip": {
+    "enable": true,
+    "excludeFiles": [
+      "javaw.exe",
+      "jrunscript.exe",
+      "splashscreen.dll",
+      "jvm.lib",
+      "jawt.lib",
+      "lcms.dll",
+      "jawt.dll",
+      "prefs.dll",
+      "jsound.dll",
+      "j2gss.dll",
+      "javajpeg.dll",
+      "mlib_image.dll",
+      "sspi_bridge.dll",
+      "w2k_lsa_auth.dll",
+      "classlist",
+      "sound.properties"
+    ]
+  },
+  "jar_clip": {
+    "enable": true,
+    "excludeJars": [
+      "lombok-",
+      "javafx-fxml-21.0.1-mac.jar",
+      "javafx-fxml-21.0.1-linux.jar",
+      "javafx-controls-21.0.1-mac.jar",
+      "javafx-controls-21.0.1-linux.jar",
+      "javafx-graphics-21.0.1-mac.jar",
+      "javafx-graphics-21.0.1-linux.jar"
+    ],
+    "excludeClasses": [
+      "module-info",
+      "package-info"
+    ],
+    "excludeFiles": [
+      ".md",
+      ".idx",
+      ".xsd",
+      ".tooling",
+      ".schemas",
+      ".handlers",
+      ".processors",
+      ".kotlin_module",
+      "pom.xml",
+      "pom.properties",
+      "DEPENDENCIES",
+      "NOTICE",
+      "LICENSE",
+      "README.md",
+      "README.txt",
+      "changelog.txt",
+      "release-timestamp.txt",
+      "latestchanges.html",
+      "AUTHORS",
+      "ASSEMBLY_EXCEPTION",
+      "ADDITIONAL_LICENSE_INFO",
+      "spring.factories",
+      "reactor.blockhound.integration.BlockHoundIntegration",
+      "aot.factories",
+      "reflectionconfig.json"
+    ]
+  }
+}

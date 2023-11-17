@@ -71,27 +71,6 @@ public abstract class BasePackager {
     @Setter
     private PlatformConfig platformConfig;
 
-    // /**
-    //  * jar裁剪配置
-    //  */
-    // @Getter
-    // @Setter
-    // private JarClipConfig jarClipConfig;
-    //
-    // /**
-    //  * jar裁剪配置
-    //  */
-    // @Getter
-    // @Setter
-    // private JreClipConfig jreClipConfig;
-    //
-    // /**
-    //  * jink配置
-    //  */
-    // @Getter
-    // @Setter
-    // private JLinkConfig jLinkConfig;
-
     /*
      * 裁剪的jar
      */
@@ -112,91 +91,38 @@ public abstract class BasePackager {
      */
     protected String jPackageInputDir;
 
-    // /**
-    //  * 是否删除裁剪的jar
-    //  */
-    // private boolean deleteClapJar = true;
-    //
-    // /**
-    //  * 是否删除打包目录
-    //  */
-    // private boolean clearPackDir = true;
-
-    // /**
-    //  * 是否删除裁剪的jre目录
-    //  */
-    // @Getter
-    // @Setter
-    // private boolean clearJreClipDir = true;
-    //
-    // /**
-    //  * 是否删除jlink目录
-    //  */
-    // @Getter
-    // @Setter
-    // private boolean clearJreJLinkDir = true;
-
-    // /**
-    //  * 打包配置
-    //  */
-    // @Getter
-    // @Setter
-    // protected PackageConfig packageConfig;
-
     /**
-     * 打包前处理
+     * 获取jar裁剪配置
      *
-     * @throws Exception 异常
+     * @return jar裁剪配置
      */
-    protected void packBefore() throws Exception {
-        if (!this.platformConfig.isEnable()) {
-            log.warn("platform is disable, skip pack.");
-            return;
-        }
-        if (this.jLinkConfig() != null && this.jLinkConfig().isEnable()) {
-            log.info("jlink start------------------------------------------------>");
-            ThreadUtil.sleep(1500);
-            this.jLinkHandler.exec(this.jLinkConfig());
-            this.packageConfig().setJrePath(this.jLinkConfig().getOutput());
-            this.jreJLinkDir = this.jLinkConfig().getOutput();
-            log.info("jlink finish------------------------------------------------>");
-        } else {
-            log.warn("jLinkConfig is null or jLinkConfig.enable is false, skip jlink.");
-        }
-        if (this.jreClipConfig() != null && this.jreClipConfig().isEnable()) {
-            log.info("jreClip start------------------------------------------------>");
-            ThreadUtil.sleep(1500);
-            this.jreClipper.clip(this.jreClipConfig());
-            this.packageConfig().setJrePath(this.jreClipConfig().getDest());
-            this.jreClipDir = this.jreClipConfig().getDest();
-            log.info("jreClip finish------------------------------------------------>");
-        } else {
-            log.warn("jreClipConfig is null or jreClipConfig.enable is false, skip jre clip.");
-        }
-        if (this.jarClipConfig() != null && this.jarClipConfig().isEnable()) {
-            log.info("jarClip start------------------------------------------------>");
-            ThreadUtil.sleep(1500);
-            this.jarClipper.clip(this.jarClipConfig());
-            this.packageConfig().setJarPath(this.jarClipConfig().getDest());
-            this.clapJar = this.jarClipConfig().getDest();
-            log.info("jarClip finish------------------------------------------------>");
-        } else {
-            log.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
-        }
-    }
-
     protected JarClipConfig jarClipConfig() {
         return this.platformConfig == null ? null : this.platformConfig.getJarClipConfig();
     }
 
+    /**
+     * 获取jre裁剪配置
+     *
+     * @return jre裁剪配置
+     */
     protected JreClipConfig jreClipConfig() {
         return this.platformConfig == null ? null : this.platformConfig.getJreClipConfig();
     }
 
+    /**
+     * 获取打包配置
+     *
+     * @return 打包配置
+     */
     protected PackageConfig packageConfig() {
         return this.platformConfig == null ? null : this.platformConfig.getPackageConfig();
     }
 
+    /**
+     * 获取jlink配置
+     *
+     * @return jlink配置
+     */
     protected JLinkConfig jLinkConfig() {
         return this.platformConfig == null ? null : this.platformConfig.getJLinkConfig();
     }
@@ -218,6 +144,50 @@ public abstract class BasePackager {
     public abstract void pack() throws Exception;
 
     /**
+     * 打包前处理
+     *
+     * @throws Exception 异常
+     */
+    protected void packBefore() throws Exception {
+        if (!this.platformConfig.isEnable()) {
+            log.warn("platform is disable, skip pack.");
+            return;
+        }
+        if (this.jLinkConfig() != null && this.jLinkConfig().isEnable()) {
+            log.info("jlink start------------------------------------------------>");
+            ThreadUtil.sleep(1500);
+            // 删除旧的jlink目录
+            FileUtil.del(this.jLinkConfig().getOutput());
+            this.jLinkHandler.exec(this.jLinkConfig(), this.platformConfig.getJdkPath());
+            this.packageConfig().setJrePath(this.jLinkConfig().getOutput());
+            this.jreJLinkDir = this.jLinkConfig().getOutput();
+            log.info("jlink finish jreJLinkDir:{}------------------------------------------------>", this.jreJLinkDir);
+        } else {
+            log.warn("jLinkConfig is null or jLinkConfig.enable is false, skip jlink.");
+        }
+        if (this.jreClipConfig() != null && this.jreClipConfig().isEnable()) {
+            log.info("jreClip start------------------------------------------------>");
+            ThreadUtil.sleep(1500);
+            this.jreClipper.clip(this.jreClipConfig());
+            this.packageConfig().setJrePath(this.jreClipConfig().getDest());
+            this.jreClipDir = this.jreClipConfig().getDest();
+            log.info("jreClip finish jreClipDir:{}------------------------------------------------>", this.jreClipDir);
+        } else {
+            log.warn("jreClipConfig is null or jreClipConfig.enable is false, skip jre clip.");
+        }
+        if (this.jarClipConfig() != null && this.jarClipConfig().isEnable()) {
+            log.info("jarClip start------------------------------------------------>");
+            ThreadUtil.sleep(1500);
+            this.jarClipper.clip(this.jarClipConfig(), this.platformConfig.getJdkPath());
+            this.packageConfig().setJarPath(this.jarClipConfig().getDest());
+            this.clapJar = this.jarClipConfig().getDest();
+            log.info("jarClip finish clapJar:{}------------------------------------------------>", this.clapJar);
+        } else {
+            log.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
+        }
+    }
+
+    /**
      * 打包后处理
      */
     protected void packAfter() {
@@ -226,7 +196,7 @@ public abstract class BasePackager {
             return;
         }
         log.info("pack after start.");
-        if (StrUtil.isNotBlank(this.packageConfig().getCompressType())) {
+        if (StrUtil.isNotBlank(this.packageConfig().getCompressType()) && this.packageConfig().isEnable()) {
             switch (this.packageConfig().getCompressType().toLowerCase()) {
                 case "zip" -> {
                     if (this.getPlatform() == PackrConfig.Platform.MacOS) {
@@ -270,49 +240,6 @@ public abstract class BasePackager {
         log.info("pack after finish.");
     }
 
-    // /**
-    //  * 压缩打包目录，zip格式
-    //  */
-    // protected void zipDest() {
-    //     String compressName = this.getCompressName() + ".zip";
-    //     log.info("zipDest start, config.compressType is:{} compressName:{}.", this.packageConfig().getCompressType(), compressName);
-    //     File compressFile = new File(this.packageConfig().getDestFile(), compressName);
-    //     // File compressFile = new File(this.packageConfig().getDestFile().getParentFile(), compressName);
-    //     // 进行zip压缩，如果是macos则保留目录名称，否则不保留
-    //     ZipUtil.zip(this.packageConfig().getAppDest(), compressFile.getPath(), this.getPlatform() == PackrConfig.Platform.MacOS);
-    //     log.info("zipDest finish.");
-    // }
-    //
-    // /**
-    //  * 压缩打包目录，tar格式
-    //  */
-    // protected void tarDest() {
-    //     String compressName = this.getCompressName() + ".tar";
-    //     log.info("tarDest start, config.compressType is:{} compressName:{}.", this.packageConfig().getCompressType(), compressName);
-    //     File dest = this.packageConfig().getDestFile();
-    //     File compressFile = new File(this.packageConfig().getDestFile().getParentFile(), compressName);
-    //     // 进行tar压缩
-    //     Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, ArchiveStreamFactory.TAR, compressFile)
-    //             .add(dest);
-    //     archiver.finish().close();
-    //     log.info("tarDest finish.");
-    // }
-    //
-    // /**
-    //  * 压缩打包文件，tar.gz格式
-    //  */
-    // protected void gzipDest() {
-    //     String compressName = this.getCompressName() + ".tar.gz";
-    //     log.info("gzipDest start, config.compressType is:{} compressName:{}.", this.packageConfig().getCompressType(), compressName);
-    //     File dest = this.packageConfig().getDestFile();
-    //     File compressFile = new File(this.packageConfig().getDestFile().getParentFile(), compressName);
-    //     // 进行tar.gz压缩
-    //     Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile)
-    //             .add(dest);
-    //     archiver.finish().close();
-    //     log.info("gzipDest finish.");
-    // }
-
     /**
      * 获取压缩文件名称
      *
@@ -333,42 +260,6 @@ public abstract class BasePackager {
         return name;
     }
 
-    // /**
-    //  * 设置jlink参数
-    //  *
-    //  * @param jLinkConfig jlink参数
-    //  */
-    // public void setJLinkConfig(@NonNull JLinkConfig jLinkConfig) {
-    //     if (this.jLinkHandler == null && jLinkConfig.isEnable()) {
-    //         this.jLinkHandler = new JLinkHandler();
-    //     }
-    //     this.jLinkConfig = jLinkConfig;
-    // }
-    //
-    // /**
-    //  * 设置jar裁剪参数
-    //  *
-    //  * @param jarClipConfig jar裁剪参数
-    //  */
-    // public void setJarClipConfig(@NonNull JarClipConfig jarClipConfig) {
-    //     if (this.jarClipper == null && jarClipConfig.isEnable()) {
-    //         this.jarClipper = new JarClipper();
-    //     }
-    //     this.jarClipConfig = jarClipConfig;
-    // }
-    //
-    // /**
-    //  * 设置jre裁剪参数
-    //  *
-    //  * @param jreClipConfig jre裁剪参数
-    //  */
-    // public void setJreClipConfig(JreClipConfig jreClipConfig) {
-    //     if (this.jreClipper == null && jreClipConfig.isEnable()) {
-    //         this.jreClipper = new JreClipper();
-    //     }
-    //     this.jreClipConfig = jreClipConfig;
-    // }
-
     /**
      * 使用JPackage打包
      *
@@ -388,10 +279,10 @@ public abstract class BasePackager {
         JPackageConfig config = JPackageConfig.from(this.packageConfig());
         config.setMainJar(mainJar.getName());
         config.setInput(this.jPackageInputDir);
-        // 删除app的目标目录
+        // 删除旧的jpackage目录
         FileUtil.del(this.packageConfig().getAppDest());
         // 执行打包
-        this.jPackageHandler.exec(config);
+        this.jPackageHandler.exec(config, this.platformConfig.getJdkPath());
     }
 
     /**
@@ -405,7 +296,7 @@ public abstract class BasePackager {
             return;
         }
         log.info("pack with Packr================================");
-        // 删除app的目标目录
+        // 删除旧的打包目录
         FileUtil.del(this.packageConfig().getAppDest());
         PackrConfigExt config = PackrConfigExt.form(this.packageConfig());
         config.platform = this.getPlatform();

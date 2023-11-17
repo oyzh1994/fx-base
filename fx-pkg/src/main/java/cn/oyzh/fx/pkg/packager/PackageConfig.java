@@ -201,6 +201,10 @@ public class PackageConfig extends BaseConfig {
         if (desc != null) {
             this.desc = desc;
         }
+        String platform = object.getString("platform");
+        if (platform != null) {
+            this.platform = platform;
+        }
     }
 
     @Override

@@ -49,8 +49,11 @@ public class JarClipper extends BaseJarClipper {
 
     /**
      * 裁剪
+     *
+     * @param config  配置
+     * @param jdkPath jdk路径
      */
-    public void clip(@NonNull JarClipConfig config) throws Exception {
+    public void clip(@NonNull JarClipConfig config, String jdkPath) throws Exception {
         this.addExcludeJars(config.getExcludeJars());
         this.addExcludeFiles(config.getExcludeFiles());
         this.addExcludeClasses(config.getExcludeClasses());
@@ -70,7 +73,7 @@ public class JarClipper extends BaseJarClipper {
             this.libJarClipper.delEmptyLibs(jarUnDir);
         }
         // 合并类库jar
-        this.mainJarClipper.mergeLibs(jarUnDir, dest);
+        this.mainJarClipper.mergeLibs(jarUnDir, dest, jdkPath);
         // 删除解压目录
         // if (!config.isRetainTemp()) {
         FileUtil.del(jarUnDir);

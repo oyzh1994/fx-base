@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 import lombok.NonNull;
@@ -17,10 +16,13 @@ public class JLinkHandler {
 
     /**
      * 执行jlink
+     *
+     * @param config  配置
+     * @param jdkPath jdk路径
      */
-    public void exec(@NonNull JLinkConfig config) throws Exception {
-        FileUtil.del(config.getOutput());
+    public void exec(@NonNull JLinkConfig config, String jdkPath) throws Exception {
         String cmdStr = PkgUtil.getJLinkCMD(config);
+        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
         // 执行jlink
         RuntimeUtil.execAndWait(cmdStr);
     }

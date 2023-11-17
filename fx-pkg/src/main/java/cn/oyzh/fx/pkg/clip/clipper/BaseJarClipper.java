@@ -44,9 +44,9 @@ public class BaseJarClipper extends BaseClipper {
     protected final ClassFilter classFilter = new ClassFilter();
 
     @Override
-    public void clip(@NonNull String src, @NonNull String dest) throws Exception {
+    public void clip(@NonNull String src, String dest) throws Exception {
         super.clip(src, dest);
-        log.info("clipJar start, src: {} dest: {}.", src, dest);
+        log.info("clipJar start, src:{}", src);
         JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)));
         Manifest manifest = jarIn.getManifest();
         JarOutputStream jarOut;
@@ -80,7 +80,7 @@ public class BaseJarClipper extends BaseClipper {
             jarOut.finish();
             IoUtil.close(jarOut);
         }
-        log.info("clipJar finish.");
+        log.info("clipJar finish dest:{}", dest);
     }
 
     @Override

@@ -2,10 +2,10 @@ package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
+import cn.oyzh.fx.pkg.util.PkgUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +23,9 @@ public class MainJarClipper extends BaseJarClipper {
      *
      * @param jarUnDir 主jar解压目录
      * @param mainJar  主jar
+     * @param jdkPath  jdk路径
      */
-    public void mergeLibs(String jarUnDir, String mainJar) {
+    public void mergeLibs(String jarUnDir, String mainJar, String jdkPath) {
         if (!FileUtil.exist(jarUnDir)) {
             throw new RuntimeException("jarUnDir " + jarUnDir + " is not exist.");
         }
@@ -58,6 +59,7 @@ public class MainJarClipper extends BaseJarClipper {
             try {
                 // 合并lib目录到主jar文件
                 String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ./BOOT-INF/lib";
+                cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
                 RuntimeUtil.execAndWait(cmdStr, dir);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -69,6 +71,7 @@ public class MainJarClipper extends BaseJarClipper {
                 try {
                     String fName = file.getPath().replace(dir.getPath(), "");
                     String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ." + fName;
+                    cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
                     RuntimeUtil.execAndWait(cmdStr, dir);
                 } catch (Exception e) {
                     e.printStackTrace();

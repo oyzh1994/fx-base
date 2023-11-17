@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg.config;
 
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.oyzh.fx.pkg.clip.clipper.JarClipConfig;
 import cn.oyzh.fx.pkg.clip.clipper.JreClipConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
@@ -17,28 +18,34 @@ import lombok.Setter;
 public class PlatformConfig extends BaseConfig {
 
     /**
+     * jdk路径
+     */
+    private String jdkPath;
+
+    /**
      * jlink配置
      */
-    private  JLinkConfig jLinkConfig = new JLinkConfig();
+    private JLinkConfig jLinkConfig = new JLinkConfig();
 
     /**
      * jar裁剪配置
      */
-    private  JarClipConfig jarClipConfig = new JarClipConfig();
+    private JarClipConfig jarClipConfig = new JarClipConfig();
 
     /**
      * jre裁剪配置
      */
-    private  JreClipConfig jreClipConfig = new JreClipConfig();
+    private JreClipConfig jreClipConfig = new JreClipConfig();
 
     /**
      * 打包配置
      */
-    private  PackageConfig packageConfig = new PackageConfig();
+    private PackageConfig packageConfig = new PackageConfig();
 
     @Override
     public void parseConfig(JSONObject object1) {
         super.parseConfig(object1);
+        this.jdkPath = object1.getString("jdkPath");
         if (object1.containsKey("package")) {
             JSONObject object = object1.getJSONObject("package");
             this.packageConfig.parseConfig(object);
@@ -55,5 +62,19 @@ public class PlatformConfig extends BaseConfig {
             JSONObject object = object1.getJSONObject("jar_clip");
             this.jarClipConfig.parseConfig(object);
         }
+    }
+
+    /**
+     * 加载配置
+     *
+     * @param configPath 配置路径
+     * @return PlatformConfig
+     */
+    public static PlatformConfig loadConfig(String configPath) {
+        String text = ResourceUtil.readUtf8Str(configPath);
+        JSONObject object = JSONObject.parseObject(text);
+        PlatformConfig config = new PlatformConfig();
+        config.parseConfig(object);
+        return config;
     }
 }

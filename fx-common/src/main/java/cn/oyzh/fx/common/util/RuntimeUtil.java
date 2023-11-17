@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author oyzh
@@ -81,6 +82,9 @@ public class RuntimeUtil {
                 process = Runtime.getRuntime().exec(cmd, null, dir);
             } else {
                 process = Runtime.getRuntime().exec(cmd, null);
+            }
+            if (process.getInputStream().available() <= 0) {
+                process.waitFor(1000, TimeUnit.MILLISECONDS);
             }
             if (printInput && process.getInputStream().available() > 0) {
                 log.info("process input--->start");
