@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,12 +32,12 @@ public class JarClipConfig extends BaseClipConfig {
     /**
      * 排除的jar
      */
-    private Set<String> excludeJars = new HashSet<>();
+    private Set<String> excludeJars;
 
     /**
      * 排除的类
      */
-    private Set<String> excludeClasses = new HashSet<>();
+    private Set<String> excludeClasses;
 
     // @Override
     // public void applyDefault() {
@@ -103,12 +104,14 @@ public class JarClipConfig extends BaseClipConfig {
         super.parseConfig(object);
         JSONArray excludeJars = object.getJSONArray("excludeJars");
         if (excludeJars != null) {
+            this.excludeJars = new HashSet<>();
             for (Object o : excludeJars) {
                 this.excludeJars.add(o.toString());
             }
         }
         JSONArray excludeClasses = object.getJSONArray("excludeClasses");
         if (excludeClasses != null) {
+            this.excludeClasses = new HashSet<>();
             for (Object o : excludeClasses) {
                 this.excludeClasses.add(o.toString());
             }
@@ -124,30 +127,52 @@ public class JarClipConfig extends BaseClipConfig {
     }
 
     @Override
+    public JarClipConfig clone() {
+        JarClipConfig config = new JarClipConfig();
+        config.src = this.src;
+        config.dest = this.dest;
+        config.enable = this.enable;
+        config.delEmptyJar = this.delEmptyJar;
+        config.excludeJars = this.excludeJars;
+        config.excludeFiles = this.excludeFiles;
+        config.excludeClasses = this.excludeClasses;
+        return config;
+    }
+
+    @Override
     public JarClipConfig cross(Object o) {
+        JarClipConfig config1 = this.clone();
         if (o instanceof JarClipConfig config) {
-            JarClipConfig config1 = new JarClipConfig();
-            config1.setEnable(config.isEnable());
-            // config1.retainTemp = config.retainTemp;
+            config1.enable = config.enable;
             config1.delEmptyJar = config.delEmptyJar;
-            config1.excludeJars.addAll(this.excludeJars);
-            config1.excludeJars.addAll(config.excludeJars);
-            config1.excludeFiles.addAll(this.excludeFiles);
-            config1.excludeFiles.addAll(config.excludeFiles);
-            config1.excludeClasses.addAll(this.excludeClasses);
-            config1.excludeClasses.addAll(config.excludeClasses);
+            if (config.excludeJars != null) {
+                if (config1.excludeJars == null) {
+                    config1.excludeJars = config.excludeJars;
+                } else {
+                    config1.excludeJars.addAll(config.excludeJars);
+                }
+            }
+            if (config.excludeFiles != null) {
+                if (config1.excludeFiles == null) {
+                    config1.excludeFiles = config.excludeFiles;
+                } else {
+                    config1.excludeFiles.addAll(config.excludeFiles);
+                }
+            }
+            if (config.excludeClasses != null) {
+                if (config1.excludeClasses == null) {
+                    config1.excludeClasses = config.excludeClasses;
+                } else {
+                    config1.excludeClasses.addAll(config.excludeClasses);
+                }
+            }
             if (config.src != null) {
                 config1.src = config.src;
-            } else {
-                config1.src = this.src;
             }
             if (config.dest != null) {
                 config1.dest = config.dest;
-            } else {
-                config1.dest = this.dest;
             }
-            return config1;
         }
-        return this;
+        return config1;
     }
 }

@@ -25,22 +25,22 @@ public class PlatformConfig extends BaseConfig {
     /**
      * jlink配置
      */
-    private JLinkConfig jLinkConfig = new JLinkConfig();
+    private JLinkConfig jLinkConfig;
 
     /**
      * jar裁剪配置
      */
-    private JarClipConfig jarClipConfig = new JarClipConfig();
+    private JarClipConfig jarClipConfig;
 
     /**
      * jre裁剪配置
      */
-    private JreClipConfig jreClipConfig = new JreClipConfig();
+    private JreClipConfig jreClipConfig;
 
     /**
      * 打包配置
      */
-    private PackageConfig packageConfig = new PackageConfig();
+    private PackageConfig packageConfig;
 
     @Override
     public void parseConfig(JSONObject object1) {
@@ -48,20 +48,59 @@ public class PlatformConfig extends BaseConfig {
         this.jdkPath = object1.getString("jdkPath");
         if (object1.containsKey("package")) {
             JSONObject object = object1.getJSONObject("package");
+            this.packageConfig = new PackageConfig();
             this.packageConfig.parseConfig(object);
         }
         if (object1.containsKey("jlink")) {
             JSONObject object = object1.getJSONObject("jlink");
+            this.jLinkConfig = new JLinkConfig();
             this.jLinkConfig.parseConfig(object);
         }
         if (object1.containsKey("jre_clip")) {
             JSONObject object = object1.getJSONObject("jre_clip");
+            this.jreClipConfig = new JreClipConfig();
             this.jreClipConfig.parseConfig(object);
         }
         if (object1.containsKey("jar_clip")) {
             JSONObject object = object1.getJSONObject("jar_clip");
+            this.jarClipConfig = new JarClipConfig();
             this.jarClipConfig.parseConfig(object);
         }
+    }
+
+    @Override
+    public PlatformConfig clone() {
+        PlatformConfig config = new PlatformConfig();
+        config.jdkPath = this.jdkPath;
+        config.jLinkConfig = this.jLinkConfig;
+        config.packageConfig = this.packageConfig;
+        config.jarClipConfig = this.jarClipConfig;
+        config.jreClipConfig = this.jreClipConfig;
+        return config;
+    }
+
+    @Override
+    public PlatformConfig cross(Object o) {
+        PlatformConfig config1 = this.clone();
+        if (o instanceof PlatformConfig config) {
+            config1.enable = config.enable;
+            if (config.jLinkConfig != null) {
+                config1.jLinkConfig = config.jLinkConfig;
+            }
+            if (config.jreClipConfig != null) {
+                config1.jreClipConfig = config.jreClipConfig;
+            }
+            if (config.jarClipConfig != null) {
+                config1.jarClipConfig = config.jarClipConfig;
+            }
+            if (config.packageConfig != null) {
+                config1.packageConfig = config.packageConfig;
+            }
+            if (config.jdkPath != null) {
+                config1.jdkPath = config.jdkPath;
+            }
+        }
+        return config1;
     }
 
     /**
@@ -76,5 +115,13 @@ public class PlatformConfig extends BaseConfig {
         PlatformConfig config = new PlatformConfig();
         config.parseConfig(object);
         return config;
+    }
+
+    public String getPlatform() {
+        return this.packageConfig.getPlatform();
+    }
+
+    public void setPlatform(String platform) {
+        this.packageConfig.setPlatform(platform);
     }
 }

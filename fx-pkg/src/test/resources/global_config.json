@@ -1,10 +1,93 @@
 {
-  "vendor": "oyzh",
-  "version": "v1.5.9",
-  "appName": "EasyZK",
-  "executable": "EasyZK",
-  "destPath": "D:\\Package\\EasyZK",
-  "jarPath": "D:\\Development\\WorkSpaces\\OYZH\\easyzk\\target\\easyzk-1.5.9.jar",
-  "desc": "这是一个Zookeeper管理工具，简化提供导入导出、传输、控制台、可视化操作等高级功能.",
-  "retainDuringDir": false
+      "destPath": "D:\\Package\\EasyZK",
+      "jdkPath": "D:\\Libraries\\JDKs\\openjdk-21_windows-x64_bin\\jdk-21",
+      "jarPath": "D:\\Workspaces\\OYZH\\easyzk\\target\\easyzk-1.5.9.jar",
+      "retainDuringDir": false,
+      "package": {
+            "vendor": "oyzh",
+            "version": "v1.5.9",
+            "appName": "EasyZK",
+            "executable": "EasyZK",
+            "desc": "这是一个Zookeeper管理工具，简化提供导入导出、传输、控制台、可视化操作等高级功能."
+      },
+      "jlink": {
+            "addModules": [
+                  "java.xml",
+                  "java.sql",
+                  "java.base",
+                  "java.naming",
+                  "java.logging",
+                  "java.desktop",
+                  "java.scripting",
+                  "jdk.unsupported",
+                  "java.security.jgss"
+            ],
+            "excludeFiles": [
+                  "**.md",
+                  "**LICENSE",
+                  "**COPYRIGHT",
+                  "**README.txt",
+                  "**ASSEMBLY_EXCEPTION",
+                  "**ADDITIONAL_LICENSE_INFO",
+                  "**classlist",
+                  "**sound.properties"
+            ]
+      },
+      "jre_clip": {
+            "excludeFiles": [
+                  ".md",
+                  "LICENSE",
+                  "COPYRIGHT",
+                  "README.txt",
+                  "ASSEMBLY_EXCEPTION",
+                  "ADDITIONAL_LICENSE_INFO",
+                  "jawt.",
+                  "j2gss.",
+                  "jsound.",
+                  "javajpeg.",
+                  "prefs.",
+                  "splashscreen.",
+                  "lcms.",
+                  "javaw",
+                  "jrunscript",
+                  "classlist",
+                  "sound.properties"
+            ]
+      },
+      "jar_clip": {
+            "excludeJars": [
+                  "lombok-"
+            ],
+            "excludeClasses": [
+                  "module-info",
+                  "package-info"
+            ],
+            "excludeFiles": [
+                  ".md",
+                  ".idx",
+                  ".xsd",
+                  ".tooling",
+                  ".schemas",
+                  ".handlers",
+                  ".processors",
+                  ".kotlin_module",
+                  "pom.xml",
+                  "pom.properties",
+                  "DEPENDENCIES",
+                  "NOTICE",
+                  "LICENSE",
+                  "README.md",
+                  "README.txt",
+                  "changelog.txt",
+                  "release-timestamp.txt",
+                  "latestchanges.html",
+                  "AUTHORS",
+                  "ASSEMBLY_EXCEPTION",
+                  "ADDITIONAL_LICENSE_INFO",
+                  "spring.factories",
+                  "reactor.blockhound.integration.BlockHoundIntegration",
+                  "aot.factories",
+                  "reflectionconfig.json"
+            ]
+      }
 }

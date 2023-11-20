@@ -15,7 +15,7 @@ public class BaseConfig {
     /**
      * 是否启用
      */
-    private boolean enable = true;
+    protected boolean enable = true;
 
     /**
      * 解析配置

@@ -14,25 +14,35 @@ import lombok.EqualsAndHashCode;
 public class JreClipConfig extends BaseClipConfig {
 
     @Override
+    public JreClipConfig clone() {
+        JreClipConfig config = new JreClipConfig();
+        config.src = this.src;
+        config.dest = this.dest;
+        config.enable = this.enable;
+        config.excludeFiles = this.excludeFiles;
+        return config;
+    }
+
+    @Override
     public JreClipConfig cross(Object o) {
+        JreClipConfig config1 = this.clone();
         if (o instanceof JreClipConfig config) {
-            JreClipConfig config1 = new JreClipConfig();
-            config1.setEnable(config.isEnable());
-            config1.excludeFiles.addAll(this.excludeFiles);
-            config1.excludeFiles.addAll(config.excludeFiles);
+            config1.enable = config.enable;
+            if (config.excludeFiles != null) {
+                if (config1.excludeFiles == null) {
+                    config1.excludeFiles = config.excludeFiles;
+                } else {
+                    config1.excludeFiles.addAll(config.excludeFiles);
+                }
+            }
             if (config.src != null) {
                 config1.src = config.src;
-            } else {
-                config1.src = this.src;
             }
             if (config.dest != null) {
                 config1.dest = config.dest;
-            } else {
-                config1.dest = this.dest;
             }
-            return config1;
         }
-        return this;
+        return config1;
     }
 
 }

@@ -60,23 +60,25 @@ public class JLinkConfig extends BaseConfig {
     /**
      * 添加的模块
      */
-    private List<String> addModules = new ArrayList<>();
+    private List<String> addModules;
 
     /**
      * 排除文件
      */
-    private List<String> excludeFiles = new ArrayList<>();
+    private List<String> excludeFiles;
 
     public void parseConfig(JSONObject object) {
         super.parseConfig(object);
         JSONArray excludeFiles = object.getJSONArray("excludeFiles");
         if (excludeFiles != null) {
+            this.excludeFiles = new ArrayList<>();
             for (Object o : excludeFiles) {
                 this.excludeFiles.add(o.toString());
             }
         }
         JSONArray addModules = object.getJSONArray("addModules");
         if (addModules != null) {
+            this.addModules = new ArrayList<>();
             for (Object o : addModules) {
                 this.addModules.add(o.toString());
             }
@@ -116,36 +118,56 @@ public class JLinkConfig extends BaseConfig {
     }
 
     @Override
+    public JLinkConfig clone() {
+        JLinkConfig config = new JLinkConfig();
+        config.vm = this.vm;
+        config.output = this.output;
+        config.enable = this.enable;
+        config.verbose = this.verbose;
+        config.compress = this.compress;
+        config.addModules = this.addModules;
+        config.stripDebug = this.stripDebug;
+        config.noManPages = this.noManPages;
+        config.excludeFiles = this.excludeFiles;
+        config.noHeaderFiles = this.noHeaderFiles;
+        config.stripJavaDebugAttributes = this.stripJavaDebugAttributes;
+        return config;
+    }
+
+    @Override
     public JLinkConfig cross(Object o) {
+        JLinkConfig config1 = this.clone();
         if (o instanceof JLinkConfig config) {
-            JLinkConfig config1 = new JLinkConfig();
-            config1.setEnable(config.isEnable());
+            config1.enable = config.enable;
             config1.verbose = config.verbose;
             config1.stripDebug = config.stripDebug;
             config1.noManPages = config.noManPages;
             config1.noHeaderFiles = config.noHeaderFiles;
             config1.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
-            config1.addModules.addAll(this.addModules);
-            config1.addModules.addAll(config.addModules);
-            config1.excludeFiles.addAll(this.excludeFiles);
-            config1.excludeFiles.addAll(config.excludeFiles);
             if (config.vm != null) {
                 config1.vm = config.vm;
-            } else {
-                config1.vm = this.vm;
+            }
+            if (config.addModules != null) {
+                if (config1.addModules == null) {
+                    config1.addModules = config.addModules;
+                } else {
+                    config1.addModules.addAll(config.addModules);
+                }
+            }
+            if (config.excludeFiles != null) {
+                if (config1.excludeFiles == null) {
+                    config1.excludeFiles = config.excludeFiles;
+                } else {
+                    config1.excludeFiles.addAll(config.excludeFiles);
+                }
             }
             if (config.compress != null) {
                 config1.compress = config.compress;
-            } else {
-                config1.compress = this.compress;
             }
             if (config.output != null) {
                 config1.output = config.output;
-            } else {
-                config1.output = this.output;
             }
-            return config1;
         }
-        return this;
+        return config1;
     }
 }

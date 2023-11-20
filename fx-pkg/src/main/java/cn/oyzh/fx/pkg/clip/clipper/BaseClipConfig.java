@@ -32,13 +32,14 @@ public class BaseClipConfig extends BaseConfig {
     /**
      * 排除的文件
      */
-    protected Set<String> excludeFiles = new HashSet<>();
+    protected Set<String> excludeFiles;
 
     @Override
     public void parseConfig(JSONObject object) {
         super.parseConfig(object);
         JSONArray excludeFiles = object.getJSONArray("excludeFiles");
         if (excludeFiles != null) {
+            this.excludeFiles = new HashSet<>();
             for (Object o : excludeFiles) {
                 this.excludeFiles.add(o.toString());
             }

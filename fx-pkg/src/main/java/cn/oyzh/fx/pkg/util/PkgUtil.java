@@ -63,8 +63,12 @@ public class PkgUtil {
 
     /**
      * 压缩打包目录，zip格式
+     *
+     * @param name    文件名称
+     * @param appDest app目录
+     * @return 压缩后的文件
      */
-    public static void zipDest(String name, String appDest) {
+    public static File zipDest(String name, String appDest) {
         String compressName = name + ".zip";
         log.info("zipDest start, config.compressType is:{} compressName:{}.", "zip", compressName);
         File dest = new File(appDest);
@@ -72,12 +76,17 @@ public class PkgUtil {
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
         ZipUtil.zip(dest.getPath(), compressFile.getPath(), false);
         log.info("zipDest finish appDest:{}", compressFile.getPath());
+        return compressFile;
     }
 
     /**
-     * 压缩打包目录，zip格式，mac专用
+     * 压缩打包目录，zip格式，macos专用
+     *
+     * @param name    文件名称
+     * @param appDest app目录
+     * @return 压缩后的文件
      */
-    public static void zipDestByMacos(String name, String appDest) {
+    public static File zipDestByMacos(String name, String appDest) {
         String compressName = name + ".zip";
         log.info("zipDestByMacos start, config.compressType is:{} compressName:{}.", "zip", compressName);
         File dest = new File(appDest);
@@ -85,12 +94,17 @@ public class PkgUtil {
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
         ZipUtil.zip(dest.getPath(), compressFile.getPath(), true);
         log.info("zipDestByMacos finish appDest:{}", compressFile.getPath());
+        return compressFile;
     }
 
     /**
      * 压缩打包目录，tar格式
+     *
+     * @param name    文件名称
+     * @param appDest app目录
+     * @return 压缩后的文件
      */
-    public static void tarDest(String name, String appDest) {
+    public static File tarDest(String name, String appDest) {
         String compressName = name + ".tar";
         log.info("tarDest start, config.compressType is:{} compressName:{}.", "tar", compressName);
         File dest = new File(appDest);
@@ -100,12 +114,15 @@ public class PkgUtil {
                 .add(dest);
         archiver.finish().close();
         log.info("tarDest finish appDest:{}", compressFile.getPath());
+        return compressFile;
     }
 
     /**
      * 压缩打包文件，tar.gz格式
+     *
+     * @return 压缩后的文件
      */
-    public static void gzipDest(String name, String appDest) {
+    public static File gzipDest(String name, String appDest) {
         String compressName = name + ".tar.gz";
         log.info("gzipDest start, config.compressType is:{} compressName:{}.", "tar.gz", compressName);
         File dest = new File(appDest);
@@ -121,6 +138,7 @@ public class PkgUtil {
         }
         archiver.finish().close();
         log.info("gzipDest finish appDest:{}", compressFile.getPath());
+        return compressFile;
     }
 
     /**

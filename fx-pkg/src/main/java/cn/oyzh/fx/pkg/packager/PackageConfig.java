@@ -208,77 +208,75 @@ public class PackageConfig extends BaseConfig {
     }
 
     @Override
+    public PackageConfig clone() {
+        PackageConfig config = new PackageConfig();
+        config.enable = this.enable;
+        config.desc = this.desc;
+        config.vendor = this.vendor;
+        config.appName = this.appName;
+        config.jarPath = this.jarPath;
+        config.jrePath = this.jrePath;
+        config.appIcon = this.appIcon;
+        config.mainClass = this.mainClass;
+        config.destPath = this.destPath;
+        config.executable = this.executable;
+        config.version = this.version;
+        config.compressType = this.compressType;
+        config.type = this.type;
+        config.identifier = this.identifier;
+        config.platform = this.platform;
+        return config;
+    }
+
+
+    @Override
     public PackageConfig cross(Object o) {
+        PackageConfig config1 = this.clone();
         if (o instanceof PackageConfig config) {
-            PackageConfig config1 = new PackageConfig();
-            config1.setEnable(config.isEnable());
+            config1.enable = config.enable;
             if (config.desc != null) {
                 config1.desc = config.desc;
-            } else {
-                config1.desc = this.desc;
             }
             if (config.vendor != null) {
                 config1.vendor = config.vendor;
-            } else {
-                config1.vendor = this.vendor;
             }
             if (config.appName != null) {
                 config1.appName = config.appName;
-            } else {
-                config1.appName = this.appName;
             }
             if (config.jarPath != null) {
                 config1.jarPath = config.jarPath;
-            } else {
-                config1.jarPath = this.jarPath;
             }
             if (config.jrePath != null) {
                 config1.jrePath = config.jrePath;
-            } else {
-                config1.jrePath = this.jrePath;
             }
             if (config.appIcon != null) {
                 config1.appIcon = config.appIcon;
-            } else {
-                config1.appIcon = this.appIcon;
             }
             if (config.mainClass != null) {
                 config1.mainClass = config.mainClass;
-            } else {
-                config1.mainClass = this.mainClass;
             }
             if (config.destPath != null) {
                 config1.destPath = config.destPath;
-            } else {
-                config1.destPath = this.destPath;
             }
             if (config.executable != null) {
                 config1.executable = config.executable;
-            } else {
-                config1.executable = this.executable;
             }
             if (config.version != null) {
                 config1.version = config.version;
-            } else {
-                config1.version = this.version;
             }
             if (config.compressType != null) {
                 config1.compressType = config.compressType;
-            } else {
-                config1.compressType = this.compressType;
             }
             if (config.type != null) {
                 config1.type = config.type;
-            } else {
-                config1.type = this.type;
             }
             if (config.identifier != null) {
                 config1.identifier = config.identifier;
-            } else {
-                config1.identifier = this.identifier;
             }
-            return config1;
+            if (config.platform != null) {
+                config1.platform = config.platform;
+            }
         }
-        return this;
+        return config1;
     }
 }

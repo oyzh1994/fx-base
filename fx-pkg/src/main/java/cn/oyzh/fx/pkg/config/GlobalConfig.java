@@ -1,8 +1,13 @@
 package cn.oyzh.fx.pkg.config;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.oyzh.fx.pkg.clip.clipper.JarClipConfig;
+import cn.oyzh.fx.pkg.clip.clipper.JreClipConfig;
+import cn.oyzh.fx.pkg.jlink.JLinkConfig;
+import cn.oyzh.fx.pkg.packager.PackageConfig;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 全局配置
@@ -11,12 +16,18 @@ import lombok.Data;
  * @since 2023/11/15
  */
 @Data
-public class GlobalConfig {
+@EqualsAndHashCode(callSuper = true)
+public class GlobalConfig extends BaseConfig {
 
     /**
      * jar路径
      */
     private String jarPath;
+
+    /**
+     * jdk路径
+     */
+    private String jdkPath;
 
     /**
      * 目标路径
@@ -29,64 +40,58 @@ public class GlobalConfig {
     private boolean retainDuringDir;
 
     /**
-     * 程序描述
+     * jlink配置
      */
-    private String desc;
+    private JLinkConfig jLinkConfig = new JLinkConfig();
 
     /**
-     * 作者
+     * jar裁剪配置
      */
-    private String vendor;
+    private JarClipConfig jarClipConfig = new JarClipConfig();
 
     /**
-     * 程序名称
+     * jre裁剪配置
      */
-    private String appName;
+    private JreClipConfig jreClipConfig = new JreClipConfig();
 
     /**
-     * 版本号
+     * 打包配置
      */
-    private String version;
+    private PackageConfig packageConfig = new PackageConfig();
 
-    /**
-     * 可执行程序的名称
-     */
-    private String executable;
-
-    public void parseConfig(JSONObject object) {
-        String desc = object.getString("desc");
-        if (desc != null) {
-            this.desc = desc;
-        }
-        String vendor = object.getString("vendor");
-        if (vendor != null) {
-            this.vendor = vendor;
-        }
-        String version = object.getString("version");
-        if (version != null) {
-            this.version = version;
-        }
-        String appName = object.getString("appName");
-        if (appName != null) {
-            this.appName = appName;
-        }
-        String executable = object.getString("executable");
-        if (executable != null) {
-            this.executable = executable;
-        } else {
-            this.executable = this.appName;
-        }
-        String jarPath = object.getString("jarPath");
+    @Override
+    public void parseConfig(JSONObject object1) {
+        String jarPath = object1.getString("jarPath");
         if (jarPath != null) {
             this.jarPath = jarPath;
         }
-        String destPath = object.getString("destPath");
+        String destPath = object1.getString("destPath");
         if (destPath != null) {
             this.destPath = destPath;
         }
-        Boolean retainDuringDir = object.getBoolean("retainDuringDir");
+        String jdkPath = object1.getString("jdkPath");
+        if (jdkPath != null) {
+            this.jdkPath = jdkPath;
+        }
+        Boolean retainDuringDir = object1.getBoolean("retainDuringDir");
         if (retainDuringDir != null) {
             this.retainDuringDir = retainDuringDir;
+        }
+        if (object1.containsKey("package")) {
+            JSONObject object = object1.getJSONObject("package");
+            this.packageConfig.parseConfig(object);
+        }
+        if (object1.containsKey("jlink")) {
+            JSONObject object = object1.getJSONObject("jlink");
+            this.jLinkConfig.parseConfig(object);
+        }
+        if (object1.containsKey("jre_clip")) {
+            JSONObject object = object1.getJSONObject("jre_clip");
+            this.jreClipConfig.parseConfig(object);
+        }
+        if (object1.containsKey("jar_clip")) {
+            JSONObject object = object1.getJSONObject("jar_clip");
+            this.jarClipConfig.parseConfig(object);
         }
     }
 
