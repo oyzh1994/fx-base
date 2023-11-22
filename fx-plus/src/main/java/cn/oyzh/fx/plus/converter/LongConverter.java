@@ -16,7 +16,7 @@ public class LongConverter extends StringConverter<Long> {
 
     @Override
     public Long fromString(String s) {
-        if (NumberUtil.isLong(s)) {
+        if (NumberUtil.isLong(s) || NumberUtil.isNumber(s)) {
             return NumberUtil.parseLong(s);
         }
         return null;

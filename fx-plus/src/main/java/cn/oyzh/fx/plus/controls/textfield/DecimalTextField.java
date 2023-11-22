@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.function.UnaryOperator;
 
 /**
@@ -105,12 +106,13 @@ public class DecimalTextField extends FlexTextField {
                         return null;
                     }
                     // 判断数字
-                    if (!NumberUtil.isDouble(text)) {
+                    if (!NumberUtil.isDouble(text) && !NumberUtil.isNumber(text)) {
                         return null;
                     }
-                    BigDecimal decimal = new BigDecimal(text);
                     // 判断小数位数
+                    BigDecimal decimal = new BigDecimal(text);
                     if (this.scaleLen != null && decimal.scale() > this.scaleLen) {
+                        this.setValue(decimal.setScale(this.scaleLen, RoundingMode.HALF_UP).doubleValue());
                         return null;
                     }
                     // 判断最大值
@@ -171,6 +173,11 @@ public class DecimalTextField extends FlexTextField {
                 value = this.max;
             } else if (this.min != null && value < this.min) {
                 value = this.min;
+            } else if (this.scaleLen != null) {
+                BigDecimal decimal = new BigDecimal(value);
+                if (decimal.scale() > this.scaleLen) {
+                    value = decimal.setScale(this.scaleLen, RoundingMode.HALF_UP).doubleValue();
+                }
             }
             this.textFormatter.setValue(value);
         }

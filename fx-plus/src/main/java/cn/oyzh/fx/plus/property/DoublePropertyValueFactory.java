@@ -6,8 +6,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.math.BigDecimal;
-
 /**
  * double属性工厂
  *
@@ -23,7 +21,6 @@ public class DoublePropertyValueFactory<S> extends PropertyValueFactory<S, Doubl
         this.scaleLen = scaleLen;
     }
 
-    // 重写call方法，根据性别，给name属性加上称呼，然后返回一个SimpleStringProperty对象
     @Override
     public ObservableValue<Double> call(TableColumn.CellDataFeatures<S, Double> param) {
         if (this.scaleLen == null) {
@@ -32,12 +29,23 @@ public class DoublePropertyValueFactory<S> extends PropertyValueFactory<S, Doubl
         // 调用父类的call方法，获取原始的属性值
         ObservableValue<Double> originalValue = super.call(param);
         // 判断原始的属性值是否为空
-        if (originalValue == null || originalValue.getValue() == null) {
+        if (originalValue == null) {
             // 如果为空，直接返回null
             return null;
         }
-        BigDecimal decimal = NumberUtil.round(originalValue.getValue(), this.scaleLen);
-        return new SimpleObjectProperty<>(decimal.doubleValue());
+        SimpleObjectProperty<Double> property = new SimpleObjectProperty<>() {
+            @Override
+            public Double get() {
+                Double d = super.get();
+                if (d != null) {
+                    return NumberUtil.round(d, scaleLen).doubleValue();
+                }
+                return d;
+            }
+        };
+        property.bind(originalValue);
+        return property;
+
     }
 
 

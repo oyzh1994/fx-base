@@ -93,6 +93,7 @@ public class MessageBox {
      * @param ex 异常信息
      */
     public static void exception(@NonNull Throwable ex) {
+        ex.printStackTrace();
         exception(ex, null);
     }
 

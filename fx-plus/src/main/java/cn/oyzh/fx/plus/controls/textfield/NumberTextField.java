@@ -96,10 +96,10 @@ public class NumberTextField extends FlexTextField {
                         return null;
                     }
                     // 判断数字
-                    if (!NumberUtil.isLong(text)) {
+                    Long l = this.converter.fromString(text);
+                    if (l == null) {
                         return null;
                     }
-                    long l = NumberUtil.parseLong(text);
                     // 判断最大值
                     if (this.max != null && l > this.max) {
                         this.setValue(this.max);
