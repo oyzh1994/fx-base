@@ -56,8 +56,8 @@ public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipA
     }
 
     @Override
-    public void setTipText(String tipTitle) {
-        TipAdapter.super.tipText(tipTitle);
+    public void setTipText(String tipText) {
+        TipAdapter.super.tipText(tipText);
     }
 
     @Override

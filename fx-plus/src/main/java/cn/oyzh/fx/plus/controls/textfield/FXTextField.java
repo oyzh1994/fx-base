@@ -1,14 +1,15 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 
+import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import javafx.scene.CacheHint;
 import javafx.scene.control.TextField;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -17,7 +18,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements  TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         this.setCache(true);
@@ -41,6 +42,9 @@ public class FXTextField extends TextField implements  TextAdapter, TipAdapter, 
     @Override
     public void setTipText(String tipText) {
         TipAdapter.super.tipText(tipText);
+        if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
+            this.setPromptText(tipText);
+        }
     }
 
     @Override
@@ -74,5 +78,25 @@ public class FXTextField extends TextField implements  TextAdapter, TipAdapter, 
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        FontAdapter.super.fontSize(fontSize);
+    }
+
+    @Override
+    public double getFontSize() {
+        return FontAdapter.super.fontSize();
+    }
+
+    @Override
+    public void setFontFamily(@NonNull String fontFamily) {
+        FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public String getFontFamily() {
+        return FontAdapter.super.fontFamily();
     }
 }

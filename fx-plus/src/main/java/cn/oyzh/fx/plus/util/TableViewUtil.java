@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.plus.information.MessageBox;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
@@ -27,9 +26,7 @@ public class TableViewUtil {
         // 双击时，复制数据到粘贴板
         tableView.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             if (cn.oyzh.fx.plus.util.MouseUtil.isDubboClick(event) && MouseUtil.isPrimaryButton(event)) {
-                if (FXUtil.clipboardCopy((String) getSelectCellData(tableView))) {
-                    MessageBox.okToast("已复制数据到粘贴板");
-                }
+                ClipboardUtil.setStringAndTip((String) getSelectCellData(tableView), "数据");
             }
         });
     }

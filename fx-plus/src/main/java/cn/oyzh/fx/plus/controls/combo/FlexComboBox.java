@@ -43,8 +43,8 @@ public class FlexComboBox<T> extends ComboBox<T> implements ThemeAdapter, FlexAd
     private BaseValidator validator = new BaseValidator(this);
 
     @Override
-    public void setTipText(String tipTitle) {
-        TipAdapter.super.tipText(tipTitle);
+    public void setTipText(String tipText) {
+        TipAdapter.super.tipText(tipText);
     }
 
     @Override

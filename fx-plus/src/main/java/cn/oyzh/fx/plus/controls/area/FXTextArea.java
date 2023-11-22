@@ -5,9 +5,7 @@ import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
@@ -46,8 +44,11 @@ public class FXTextArea extends TextArea implements AreaAdapter, Verifiable<Base
     }
 
     @Override
-    public void setTipText(String tipTitle) {
-        TipAdapter.super.tipText(tipTitle);
+    public void setTipText(String tipText) {
+        TipAdapter.super.tipText(tipText);
+        if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
+            this.setPromptText(tipText);
+        }
     }
 
     @Override

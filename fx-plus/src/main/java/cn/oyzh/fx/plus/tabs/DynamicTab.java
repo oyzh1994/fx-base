@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
  */
 public abstract class DynamicTab extends FXTab {
 
-    {
+    public DynamicTab(){
         // 加载内容
         this.loadContent();
         this.setClosable(true);

@@ -68,8 +68,8 @@ public class FlexImageView extends ImageView implements FlexAdapter, TipAdapter 
     }
 
     @Override
-    public void setTipText(String tipTitle) {
-        TipAdapter.super.tipText(tipTitle);
+    public void setTipText(String tipText) {
+        TipAdapter.super.tipText(tipText);
     }
 
     @Override

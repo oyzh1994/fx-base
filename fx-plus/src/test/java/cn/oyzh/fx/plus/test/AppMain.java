@@ -2,20 +2,20 @@ package cn.oyzh.fx.plus.test;
 
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.ThreadUtil;
-import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.FlexVBox;
 import cn.oyzh.fx.plus.controls.ToggleSwitch;
+import cn.oyzh.fx.plus.controls.button.FXButton;
+import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGPathExt;
 import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.controls.textfield.DecimalTextField;
 import cn.oyzh.fx.plus.controls.textfield.NumberTextField;
-import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.textfield.SearchTextField;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGPathExt;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
@@ -60,7 +61,7 @@ public class AppMain extends Application {
 //         test8(stage);
 //         test9(stage);
         // test10(stage);
-        test11(stage);
+        // test11(stage);
         // test12(stage);
         // test13(stage);
         // test14(stage);
@@ -68,6 +69,8 @@ public class AppMain extends Application {
         // test16(stage);
         // test17(stage);
         // test18(stage);
+        // test19(stage);
+        test20(stage);
     }
 
     private void test1(Stage stage) {
@@ -388,7 +391,7 @@ public class AppMain extends Application {
         field1.setPrefWidth(200);
         field1.setMax(21.1d);
         field1.setMin(-5.2);
-        field1.setStep(2.1);
+        field1.setStep(2.1d);
 
         // NumberTextField1 field1 = new NumberTextField1();
         // field1.setMaxHeight(25);
@@ -686,4 +689,48 @@ public class AppMain extends Application {
         stage.setScene(new Scene(vBox, 500, 500));
         stage.show();
     }
+
+    private void test19(Stage stage) throws InterruptedException {
+
+        TitledPane titledPane = new TitledPane();
+        titledPane.setContent(new Button("test1"));
+        titledPane.setUnderline(false);
+        titledPane.setText("数据");
+        titledPane.setCollapsible(false);
+
+        TitledPane titledPane1 = new TitledPane();
+        titledPane1.setContent(new Button("test2"));
+        titledPane1.setUnderline(false);
+        titledPane1.setText("内容");
+        titledPane1.setCollapsible(false);
+
+        VBox vBox = new VBox(titledPane, titledPane1);
+
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
+    }
+
+    private void test20(Stage stage) {
+        DecimalTextField decimalTextField = new DecimalTextField();
+        decimalTextField.setRealHeight(30);
+        decimalTextField.setMin(1d);
+        decimalTextField.setMax(10000d);
+        decimalTextField.setValue(20d);
+        decimalTextField.setScaleLen(5);
+        // decimalTextField.setValue(20E-3);
+
+        NumberTextField numberTextField = new NumberTextField();
+        numberTextField.setRealHeight(30);
+        numberTextField.setMin(1L);
+        numberTextField.setMax(20000L);
+        numberTextField.setValue(20L);
+
+        VBox hBox = new VBox(decimalTextField, numberTextField);
+        // // 设置HBox的间距
+        hBox.setSpacing(10);
+        stage.setScene(new Scene(hBox, 500, 500));
+        stage.show();
+    }
+
+
 }

@@ -44,7 +44,7 @@ public class MenuItemExt extends MenuItem implements StateAdapter {
         }
         // 设置提示文字
         if (tipText != null) {
-            ControlUtil.setTipTitle(this, tipText);
+            ControlUtil.setTipText(this, tipText);
         }
     }
 
@@ -101,7 +101,7 @@ public class MenuItemExt extends MenuItem implements StateAdapter {
         MenuItemExt item = new MenuItemExt(label);
         // 设置提示文字
         if (tipText != null) {
-            ControlUtil.setTipTitle(item.getGraphic(), tipText);
+            ControlUtil.setTipText(item.getGraphic(), tipText);
         }
         // 设置操作
         if (action != null) {

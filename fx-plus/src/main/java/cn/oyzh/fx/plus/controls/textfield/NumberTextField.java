@@ -1,6 +1,15 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.controls.textfield.BaseNumberTextField;
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.plus.converter.LongConverter;
+import cn.oyzh.fx.plus.skin.NumberTextFieldSkin;
+import javafx.beans.value.WeakChangeListener;
+import javafx.scene.control.TextFormatter;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.function.UnaryOperator;
 
 /**
  * 整数文本域
@@ -8,10 +17,125 @@ import cn.oyzh.fx.plus.controls.textfield.BaseNumberTextField;
  * @author oyzh
  * @since 2020/10/29
  */
-public class NumberTextField extends BaseNumberTextField {
+public class NumberTextField extends FlexTextField {
+
+    /**
+     * 最大值
+     */
+    @Getter
+    @Setter
+    protected Long max;
+
+    /**
+     * 最小值
+     */
+    @Getter
+    @Setter
+    protected Long min;
+
+    /**
+     * 递进值
+     */
+    @Getter
+    @Setter
+    protected Long step = 1L;
+
+    /**
+     * 数据转换器
+     */
+    protected final LongConverter converter = new LongConverter();
+
+    /**
+     * 文本格式器
+     */
+    protected final TextFormatter<Long> textFormatter = new TextFormatter<>(this.converter, 0L, this.createFilter());
+
+    {
+        this.setSkin(new NumberTextFieldSkin(this, this::incrValue, this::decrValue));
+    }
+
+    /**
+     * 增加值
+     */
+    protected void incrValue() {
+        // 设置值
+        if (this.step != null) {
+            this.setValue(this.getValue() + this.step);
+        }
+    }
+
+    /**
+     * 减少值
+     */
+    protected void decrValue() {
+        // 设置值
+        if (this.step != null) {
+            this.setValue(this.getValue() - this.step);
+        }
+    }
 
     public NumberTextField() {
-        super(false);
+        // 将TextFormatter对象设置到文本字段中
+        this.setTextFormatter(this.textFormatter);
+        // 监听值变化
+        this.textFormatter.valueProperty().addListener(new WeakChangeListener<>((observableValue, number, t1) -> this.valueChanged(t1)));
+    }
+
+    /**
+     * 创建一个过滤器，用于限制文本输入
+     *
+     * @return 过滤器
+     */
+    protected UnaryOperator<TextFormatter.Change> createFilter() {
+        return change -> {
+            if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
+                try {
+                    String text = change.getControlNewText();
+                    if (StrUtil.isEmpty(text)) {
+                        this.setValue(0L);
+                        return null;
+                    }
+                    // 判断数字
+                    if (!NumberUtil.isLong(text)) {
+                        return null;
+                    }
+                    long l = NumberUtil.parseLong(text);
+                    // 判断最大值
+                    if (this.max != null && l > this.max) {
+                        this.setValue(this.max);
+                        return null;
+                    }
+                    // 判断最小值
+                    if (this.min != null && l < this.min) {
+                        this.setValue(this.min);
+                        return null;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+            return change;
+        };
+    }
+
+    /**
+     * 值变化
+     *
+     * @param newVal 新值
+     */
+    protected void valueChanged(Long newVal) {
+        if (newVal != null) {
+            NumberTextFieldSkin skin = (NumberTextFieldSkin) this.getSkin();
+            if (this.min != null && newVal <= this.min) {
+                skin.disableDecrButton();
+            } else {
+                skin.enableDecrButton();
+            }
+            if (this.max != null && newVal >= this.max) {
+                skin.disableIncrButton();
+            } else {
+                skin.enableIncrButton();
+            }
+        }
     }
 
     /**
@@ -19,8 +143,24 @@ public class NumberTextField extends BaseNumberTextField {
      *
      * @return 值
      */
-    public long getValue() {
-        return super._getValue().longValue();
+    public Long getValue() {
+        return NumberUtil.parseLong(this.getText());
+    }
+
+    /**
+     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
+     *
+     * @param value 值
+     */
+    public void setValue(Long value) {
+        if (value != null) {
+            if (this.max != null && value > this.max) {
+                value = this.max;
+            } else if (this.min != null && value < this.min) {
+                value = this.min;
+            }
+            this.textFormatter.setValue(value);
+        }
     }
 
     /**
@@ -29,56 +169,6 @@ public class NumberTextField extends BaseNumberTextField {
      * @param value 值
      */
     public void setValue(long value) {
-        super.setValue(value);
-    }
-
-    /**
-     * 获取最大值
-     */
-    public Long getMax() {
-        return this.max == null ? null : this.max.longValue();
-    }
-
-    /**
-     * 设置最大值，如果当前的数字值超出最大值，将设置为最大值
-     *
-     * @param max 最大值
-     */
-    public void setMax(Long max) {
-        super.setMax(max);
-    }
-
-    /**
-     * 获取最小值
-     */
-    public Long getMin() {
-        return this.min == null ? null : this.min.longValue();
-    }
-
-    /**
-     * 设置最小值，如果当前的数字值超出最小值，将设置为最小值
-     *
-     * @param min 最小值
-     */
-    public void setMin(Long min) {
-        super.setMin(min);
-    }
-
-    /**
-     * 获取递进值
-     *
-     * @return 递进值
-     */
-    public long getStep() {
-        return this.step.longValue();
-    }
-
-    /**
-     * 设置递进值
-     *
-     * @param step 递进值
-     */
-    public void setStep(long step) {
-        this.step = step;
+        this.setValue((Long) value);
     }
 }

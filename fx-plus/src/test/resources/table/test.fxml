@@ -1,0 +1,23 @@
+<?import cn.oyzh.fx.plus.controls.FlexHBox?>
+<?import cn.oyzh.fx.plus.controls.FlexVBox?>
+<?import cn.oyzh.fx.plus.controls.table.FlexTableColumn?>
+<?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
+<?import javafx.scene.control.Button?>
+<FlexVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
+    <FlexHBox realHeight="50">
+        <Button text="测试1" onAction="#test1"></Button>
+        <Button text="测试2" onAction="#test2"></Button>
+    </FlexHBox>
+    <FlexTableView focusTraversable="true" flexWidth="100%" flexHeight="100% - 50" fx:id="listTable"
+                   fixedCellSize="30">
+        <columns>
+            <FlexTableColumn flexWidth="10%" fx:id="index" text="编号"/>
+            <FlexTableColumn flexWidth="50%" fx:id="value" text="成员名称"/>
+            <FlexTableColumn flexWidth="30%" fx:id="score" visible="false" text="分数"/>
+            <FlexTableColumn flexWidth="25%" fx:id="longitude" visible="false" text="经度"/>
+            <FlexTableColumn flexWidth="25%" fx:id="latitude" visible="false" text="纬度"/>
+            <FlexTableColumn flexWidth="10% - 6" fx:id="action" text="操作" sortable="false"/>
+        </columns>
+    </FlexTableView>
+</FlexVBox>

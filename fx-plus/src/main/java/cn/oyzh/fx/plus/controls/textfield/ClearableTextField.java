@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.skin.textfield.ClearableTextFieldSkin;
+import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
 
 /**
  * 可清除文本域

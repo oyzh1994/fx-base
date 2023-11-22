@@ -24,7 +24,7 @@ public interface TipAdapter extends EventTarget {
      * @return 提示标题
      */
     default String tipText() {
-        return ControlUtil.getTipTitle(this);
+        return ControlUtil.getTipText(this);
     }
 
     /**
@@ -40,6 +40,6 @@ public interface TipAdapter extends EventTarget {
      * @param tipText 提示标题
      */
     default void tipText(String tipText) {
-        ControlUtil.setTipTitle(this, tipText);
+        ControlUtil.setTipText(this, tipText);
     }
 }

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.skin.textfield;
+package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.ext.TextFieldSkinExt;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;

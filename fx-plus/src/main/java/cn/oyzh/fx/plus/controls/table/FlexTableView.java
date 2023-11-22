@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.TableViewUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -47,10 +46,14 @@ public class FlexTableView<S> extends TableView<S> implements FlexAdapter, Selec
     @Override
     public void resizeNode(Double width, Double height) {
         FlexAdapter.super.resizeNode(width, height);
-        ObservableList<? extends TableColumn<?, ?>> columns = this.getVisibleLeafColumns();
+        ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
         for (TableColumn<?, ?> column : columns) {
             if (column instanceof FlexAdapter flexNode) {
-                flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
+                if (column.isVisible()) {
+                    flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
+                } else {
+                    NodeUtil.setWidth(column, 0);
+                }
             }
         }
     }

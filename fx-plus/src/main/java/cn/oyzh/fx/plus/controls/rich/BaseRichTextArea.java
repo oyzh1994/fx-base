@@ -77,8 +77,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements FontAdapter, 
     }
 
     @Override
-    public void setTipText(String tipTitle) {
-        TipAdapter.super.tipText(tipTitle);
+    public void setTipText(String tipText) {
+        TipAdapter.super.tipText(tipText);
     }
 
     @Override

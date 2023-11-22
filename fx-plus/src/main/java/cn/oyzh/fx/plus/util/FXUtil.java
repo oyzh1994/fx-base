@@ -200,40 +200,40 @@ public class FXUtil {
         }
     }
 
-    /**
-     * 复制到粘贴板
-     *
-     * @param content 内容
-     * @return 结果
-     */
-    public static boolean clipboardCopy(@NonNull String content) {
-        try {
-            StringSelection stringSelection = new StringSelection(content);
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 获取粘贴板文本
-     *
-     * @return 结果
-     */
-    public static String clipboardContent() {
-        try {
-            // 获取系统剪贴板
-            Clipboard clipboard = Clipboard.getSystemClipboard();
-            // 判断剪贴板中是否有文本内容
-            if (clipboard.hasString()) {
-                // 获取文本内容
-                return clipboard.getString();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    // /**
+    //  * 复制到粘贴板
+    //  *
+    //  * @param content 内容
+    //  * @return 结果
+    //  */
+    // public static boolean clipboardCopy(@NonNull String content) {
+    //     try {
+    //         StringSelection stringSelection = new StringSelection(content);
+    //         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return false;
+    //     }
+    //     return true;
+    // }
+    //
+    // /**
+    //  * 获取粘贴板文本
+    //  *
+    //  * @return 结果
+    //  */
+    // public static String clipboardContent() {
+    //     try {
+    //         // 获取系统剪贴板
+    //         Clipboard clipboard = Clipboard.getSystemClipboard();
+    //         // 判断剪贴板中是否有文本内容
+    //         if (clipboard.hasString()) {
+    //             // 获取文本内容
+    //             return clipboard.getString();
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     return null;
+    // }
 }

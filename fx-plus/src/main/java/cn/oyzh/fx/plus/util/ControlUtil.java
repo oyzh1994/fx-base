@@ -22,8 +22,6 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Objects;
-
 
 /**
  * fx控件工具类
@@ -72,35 +70,33 @@ public class ControlUtil {
      * 设置提示标题
      *
      * @param target 组件
-     * @param title  标题
+     * @param text   提示文本
      */
-    public static void setTipTitle(@NonNull EventTarget target, String title) {
-        if (StrUtil.isNotBlank(title)) {
+    public static void setTipText(@NonNull EventTarget target, String text) {
+        if (StrUtil.isNotBlank(text)) {
             Tooltip tooltip = getTooltip(target);
             if (tooltip != null) {
-                if (!Objects.equals(tooltip.getText(), title)) {
-                    tooltip.setText(title);
+                tooltip.setText(text);
+            } else {
+                tooltip = new Tooltip(text);
+                initTooltip(tooltip);
+                if (target instanceof Node node) {
+                    Tooltip.install(node, tooltip);
+                } else if (target instanceof Tab tab) {
+                    tab.setTooltip(tooltip);
+                    tab.getProperties().put(FXConst.TOOLTIP_PROP_KEY, tooltip);
                 }
-                return;
-            }
-            tooltip = new Tooltip(title);
-            initTooltip(tooltip);
-            if (target instanceof Node node) {
-                Tooltip.install(node, tooltip);
-            } else if (target instanceof Tab tab) {
-                tab.setTooltip(tooltip);
-                tab.getProperties().put(FXConst.TOOLTIP_PROP_KEY, tooltip);
             }
         }
     }
 
     /**
-     * 获取提示标题
+     * 获取提示文本
      *
      * @param target 组件
-     * @return 提示标题
+     * @return 提示文本
      */
-    public static String getTipTitle(EventTarget target) {
+    public static String getTipText(EventTarget target) {
         Tooltip tooltip = getTooltip(target);
         if (tooltip != null) {
             return tooltip.getText();
