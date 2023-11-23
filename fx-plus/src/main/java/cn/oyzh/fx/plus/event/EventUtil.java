@@ -36,6 +36,9 @@ public class EventUtil {
      * @param obj 事件处理对象
      */
     public static void register(@NonNull Object obj) {
+        // 先取消注册对象
+        unregister(obj);
+        // 重新注册对象
         RECEIVERS.add(new WeakReference<>(obj));
     }
 

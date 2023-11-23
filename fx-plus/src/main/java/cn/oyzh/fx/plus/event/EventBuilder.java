@@ -60,4 +60,10 @@ public class EventBuilder<D> {
     public static <D> EventBuilder<D> newBuilder() {
         return new EventBuilder<>();
     }
+
+    public static EventBuilder<Object> newBuilder(EventMsg msg) {
+        EventBuilder<Object> builder = new EventBuilder<>();
+        builder.type(msg.name()).group(msg.group()).data(msg);
+        return builder;
+    }
 }
