@@ -81,7 +81,7 @@ public class SearchParam {
             if (!Objects.equals(this.fullMatch, param1.fullMatch)) {
                 return false;
             }
-            if (this.mode == param1.mode) {
+            if (this.mode != param1.mode) {
                 return false;
             }
             return Objects.equals(this.compareCase, param1.compareCase);
