@@ -93,7 +93,7 @@ public class RichTreeView extends FlexTreeView {
         // 清除选中节点
         this.clearSelection();
         // 执行过滤
-        this.root().doFilter(this.itemFilter);
+        this.root().doFilter();
         // 选中并滚动节点
         this.selectAndScroll(item);
         this.flushLocal();

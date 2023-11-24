@@ -8,6 +8,6 @@ import java.util.function.Function;
  * @author oyzh
  * @since 2023/11/10
  */
-public interface RichTreeItemFilter extends Function<RichTreeItem, Boolean> {
+public interface RichTreeItemFilter extends Function<RichTreeItem<?>, Boolean> {
 
 }

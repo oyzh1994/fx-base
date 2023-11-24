@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.event;
+package cn.oyzh.fx.plus.search;
 
 import javafx.event.Event;
 import javafx.event.EventType;

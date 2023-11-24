@@ -3,21 +3,21 @@ package cn.oyzh.fx.plus.trees;
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
-import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,42 +26,55 @@ import java.util.List;
  * @author oyzh
  * @since 2023/11/10
  */
-@Slf4j
-public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
+@Getter
+public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements DragNodeItem {
 
     /**
      * 当前排序类型
      * 0 asc 1 desc
      */
-    @Getter
-    protected byte sortType;
+    protected volatile byte sortType;
+
+    /**
+     * 当前树组件
+     */
+    @Setter
+    protected RichTreeView treeView;
 
     /**
      * 是否可见
      */
-    @Getter
     @Setter
-    protected boolean visible;
+    protected volatile boolean visible = true;
 
     /**
-     * 获取当前组件
-     *
-     * @return 树组件
+     * 是否过滤中
      */
-    public abstract FlexTreeView treeView();
+    protected volatile boolean filtering;
 
     /**
-     * 设置当前树组件
-     *
-     * @param treeView 树组件
+     * 真实子节点
      */
-    public abstract void treeView(FlexTreeView treeView);
+    protected final ObservableList<TreeItem<?>> realChildren = FXCollections.observableArrayList();
+
+    {
+        this.realChildren.addListener((ListChangeListener<TreeItem<?>>) change -> this.doFilter());
+    }
+
+    public RichTreeItem(RichTreeView treeView) {
+        this.treeView = treeView;
+    }
+
+    @Override
+    public ObservableList getChildren() {
+        return super.getChildren();
+    }
 
     /**
      * 开始等待
      */
     public void startWaiting() {
-        if (this.itemValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.getValue().graphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
         }
     }
@@ -72,7 +85,7 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
      * @param task 待执行业务
      */
     public void startWaiting(Task task) {
-        if (this.itemValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.getValue().graphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting(task);
         }
     }
@@ -81,7 +94,7 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
      * 取消等待
      */
     public void stopWaiting() {
-        if (this.itemValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.getValue().graphic() instanceof SVGGlyph glyph) {
             glyph.stopWaiting();
         }
     }
@@ -92,7 +105,7 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
      * @return 结果
      */
     public boolean isWaiting() {
-        if (this.itemValue() != null && this.itemValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.getValue() != null && this.getValue().graphic() instanceof SVGGlyph glyph) {
             return glyph.isWaiting();
         }
         return false;
@@ -149,8 +162,6 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
     public void remove() {
         if (this.getParent() != null) {
             this.getParent().getChildren().remove(this);
-        } else {
-            log.warn("remove fail, this.getParent() is null.");
         }
     }
 
@@ -161,12 +172,46 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
     }
 
     /**
+     * 获取首个子节点
+     *
+     * @return 首个子节点
+     */
+    public TreeItem<?> firstChild() {
+        return (TreeItem<?>) CollUtil.getFirst(this.getChildren());
+    }
+
+    /**
+     * 清除子节点
+     */
+    public void clearChild() {
+        FXUtil.runWait(this.realChildren::clear);
+    }
+
+    /**
+     * 设置子节点
+     *
+     * @param item 节点
+     */
+    public void setChild(@NonNull TreeItem<?> item) {
+        FXUtil.runWait(() -> this.realChildren.setAll(item));
+    }
+
+    /**
+     * 设置子节点
+     *
+     * @param items 节点列表
+     */
+    public void setChild(@NonNull List<TreeItem<?>> items) {
+        FXUtil.runWait(() -> this.realChildren.setAll(items));
+    }
+
+    /**
      * 添加子节点
      *
      * @param item 节点
      */
     public void addChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getChildren().add(item));
+        FXUtil.runWait(() -> this.realChildren.add(item));
     }
 
     /**
@@ -175,17 +220,18 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
      * @param item 节点
      */
     public void removeChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getChildren().remove(item));
+        FXUtil.runWait(() -> this.realChildren.remove(item));
     }
+
 
     /**
      * 移除多个子节点
      *
      * @param items 节点列表
      */
-    public void removeChildes(@NonNull List<TreeItem<?>> items) {
+    public void removeChild(@NonNull List<TreeItem<?>> items) {
         // 移除节点
-        FXUtil.runWait(() -> this.getChildren().removeAll(items));
+        FXUtil.runWait(() -> this.realChildren.removeAll(items));
     }
 
     /**
@@ -200,15 +246,15 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
      * @return 结果
      */
     public boolean isChildEmpty() {
-        return CollUtil.isEmpty(this.getChildren());
+        return this.realChildren.isEmpty();
     }
 
     /**
      * 刷新图标
      */
     public void flushGraphic() {
-        this.itemValue().flushGraphic();
-        this.itemValue().flushGraphicColor();
+        this.getValue().flushGraphic();
+        this.getValue().flushGraphicColor();
     }
 
     /**
@@ -216,24 +262,8 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
      *
      * @return 右键菜单按钮列表
      */
-    public abstract List<MenuItem> getMenuItems();
-
-    /**
-     * 获取节点值
-     *
-     * @return RichTreeItemValue
-     */
-    public RichTreeItemValue itemValue() {
-        return (RichTreeItemValue) super.getValue();
-    }
-
-    /**
-     * 设置节点值
-     *
-     * @param itemValue 节点值
-     */
-    public void itemValue(RichTreeItemValue itemValue) {
-        super.setValue(itemValue);
+    public List<MenuItem> getMenuItems() {
+        return null;
     }
 
     @Override
@@ -272,8 +302,8 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
         this.sortType = 0;
         if (!this.isChildEmpty()) {
             // 执行排序
-            ObservableList<RichTreeItem> subs = this.getChildren();
-            subs.sort((a, b) -> CharSequence.compare(a.itemValue().name(), b.itemValue().name()));
+            ObservableList<TreeItem<V>> subs = this.getChildren();
+            subs.sort((a, b) -> CharSequence.compare(a.getValue().name(), b.getValue().name()));
         }
     }
 
@@ -284,21 +314,138 @@ public abstract class RichTreeItem extends TreeItem implements DragNodeItem {
         this.sortType = 1;
         if (!this.isChildEmpty()) {
             // 执行排序
-            ObservableList<RichTreeItem> subs = this.getChildren();
-            subs.sort((a, b) -> CharSequence.compare(b.itemValue().name(), a.itemValue().name()));
+            ObservableList<TreeItem<V>> subs = this.getChildren();
+            subs.sort((a, b) -> CharSequence.compare(b.getValue().name(), a.getValue().name()));
         }
     }
 
     /**
      * 执行过滤
      */
-    public void doFilter(RichTreeItemFilter itemFilter) {
-        if (!this.isChildEmpty() && itemFilter != null) {
-            List<RichTreeItem> childes = this.getChildren();
-            for (RichTreeItem child : childes) {
-                child.visible = itemFilter.apply(child);
-                child.doFilter(itemFilter);
+    public void doFilter() {
+        this.doFilter(this.treeView.itemFilter);
+    }
+
+    /**
+     * 执行过滤
+     *
+     * @param itemFilter 节点过滤器
+     */
+    public synchronized void doFilter(RichTreeItemFilter itemFilter) {
+        if (this.filtering) {
+            return;
+        }
+        this.filtering = true;
+        try {
+
+            ObservableList children = this.getChildren();
+            if (this.realChildren.isEmpty()) {
+                children.clear();
+            } else if (itemFilter == null) {
+                List<TreeItem<?>> shows = new ArrayList<>();
+                for (TreeItem<?> child : this.realChildren) {
+                    if (!children.contains(child)) {
+                        shows.add(child);
+                    }
+                }
+                if (!shows.isEmpty()) {
+                    children.addAll(shows);
+                }
+            } else {
+                for (TreeItem<?> child : this.realChildren) {
+                    if (child instanceof RichTreeItem<?> treeItem) {
+                        treeItem.visible = itemFilter.apply(treeItem);
+                        treeItem.doFilter(itemFilter);
+                    }
+                }
+                List<TreeItem<?>> shows = new ArrayList<>();
+                List<TreeItem<?>> hides = new ArrayList<>();
+                for (TreeItem<?> child : this.realChildren) {
+                    if (child instanceof RichTreeItem<?> treeItem) {
+                        if (treeItem.itemVisible()) {
+                            if (!children.contains(treeItem)) {
+                                shows.add(treeItem);
+                            }
+                        } else if (children.contains(treeItem)) {
+                            hides.add(treeItem);
+                        }
+                    } else if (!children.contains(child)) {
+                        shows.add(child);
+                    }
+                }
+                if (!hides.isEmpty()) {
+                    children.removeAll(hides);
+                }
+                if (!shows.isEmpty()) {
+                    children.addAll(shows);
+                }
             }
+            this.sort();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            this.filtering = false;
+        }
+    }
+
+    /**
+     * 节点是否可见
+     *
+     * @return 结果
+     */
+    public boolean itemVisible() {
+        return this.itemVisible(this);
+    }
+
+    /**
+     * 节点是否可见
+     *
+     * @param item 节点
+     * @return 结果
+     */
+    public boolean itemVisible(TreeItem<?> item) {
+        if (item instanceof RichTreeItem<?> richTreeItem) {
+            if (richTreeItem.visible) {
+                return true;
+            }
+            if (richTreeItem.isChildEmpty()) {
+                return false;
+            }
+            for (TreeItem<?> child : this.realChildren) {
+                if (child instanceof RichTreeItem<?> treeItem) {
+                    if (treeItem.visible) {
+                        return true;
+                    }
+                    if (treeItem.itemVisible()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 收缩所有节点
+     *
+     * @param item 待收缩节点
+     */
+    public void collapseAll(TreeItem<?> item) {
+        item.setExpanded(false);
+        for (TreeItem<?> child : item.getChildren()) {
+            this.collapseAll(child);
+        }
+    }
+
+    /**
+     * 展开所有节点
+     *
+     * @param item 待展开节点
+     */
+    public void expandAll(TreeItem<?> item) {
+        item.setExpanded(true);
+        for (TreeItem<?> child : item.getChildren()) {
+            this.collapseAll(child);
         }
     }
 }

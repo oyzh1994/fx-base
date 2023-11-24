@@ -16,6 +16,9 @@ import cn.oyzh.fx.plus.controls.textfield.NumberTextField;
 import cn.oyzh.fx.plus.controls.textfield.SearchTextField;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
+import cn.oyzh.fx.plus.trees.RichTreeItem;
+import cn.oyzh.fx.plus.trees.RichTreeItemValue;
+import cn.oyzh.fx.plus.trees.RichTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -70,7 +73,8 @@ public class AppMain extends Application {
         // test17(stage);
         // test18(stage);
         // test19(stage);
-        test20(stage);
+        // test20(stage);
+        test21(stage);
     }
 
     private void test1(Stage stage) {
@@ -729,6 +733,58 @@ public class AppMain extends Application {
         // // 设置HBox的间距
         hBox.setSpacing(10);
         stage.setScene(new Scene(hBox, 500, 500));
+        stage.show();
+    }
+
+    private void test21(Stage stage) {
+        ClearableTextField field = new ClearableTextField();
+        HBox hBox = new HBox(field);
+        RichTreeView treeView = new RichTreeView();
+        field.addTextChangeListener((observableValue, string, t1) -> {
+            treeView.filter();
+        });
+        treeView.itemFilter(richTreeItem -> {
+            if (field.getText().isEmpty()) {
+                return true;
+            }
+            return richTreeItem.getValue().name().contains(field.getText());
+        });
+
+        RichTreeItem<RichTreeItemValue> rootItem = new RichTreeItem<>(treeView);
+
+        RichTreeItemValue rootValue = new RichTreeItemValue();
+
+        rootValue.name("根节点");
+        rootItem.setValue(rootValue);
+
+        for (int i = 0; i < 10; i++) {
+            RichTreeItem<RichTreeItemValue> level1SubItem = new RichTreeItem<>(treeView);
+            RichTreeItemValue level1SubValue = new RichTreeItemValue();
+            level1SubValue.name("一级子节点" + i);
+            level1SubItem.setValue(level1SubValue);
+            rootItem.addChild(level1SubItem);
+
+            for (int j = 0; j < 10; j++) {
+                RichTreeItem<RichTreeItemValue> level2SubItem = new RichTreeItem<>(treeView);
+                RichTreeItemValue level2SubValue = new RichTreeItemValue();
+                level2SubValue.name("二级子节点" + j);
+                level2SubItem.setValue(level2SubValue);
+                level1SubItem.addChild(level2SubItem);
+
+                for (int k = 0; k < 10; k++) {
+                    RichTreeItem<RichTreeItemValue> level3SubItem = new RichTreeItem<>(treeView);
+                    RichTreeItemValue level3SubValue = new RichTreeItemValue();
+                    level3SubValue.name("三级子节点" + k);
+                    level3SubItem.setValue(level3SubValue);
+                    level2SubItem.addChild(level3SubItem);
+                }
+            }
+        }
+        treeView.root(rootItem);
+
+
+        VBox vBox = new VBox(hBox, treeView);
+        stage.setScene(new Scene(vBox, 500, 500));
         stage.show();
     }
 

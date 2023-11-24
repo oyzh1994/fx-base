@@ -74,6 +74,7 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
      */
     public void root(RichTreeItem root) {
         FXUtil.runWait(() -> super.setRoot(root));
+        root.doFilter();
     }
 
     /**

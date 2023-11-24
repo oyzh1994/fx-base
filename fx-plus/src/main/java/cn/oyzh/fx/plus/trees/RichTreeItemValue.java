@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2023/11/10
  */
 @Slf4j
-public abstract class RichTreeItemValue extends FXHBox {
+public class RichTreeItemValue extends FXHBox {
 
     {
         this.setCursor(Cursor.HAND);
@@ -91,10 +91,14 @@ public abstract class RichTreeItemValue extends FXHBox {
     /**
      * 刷新图标
      */
-    public abstract void flushGraphic();
+    public void flushGraphic() {
+
+    }
 
     /**
      * 刷新图标颜色
      */
-    public abstract void flushGraphicColor();
+    public void flushGraphicColor() {
+
+    }
 }
