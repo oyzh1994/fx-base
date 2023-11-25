@@ -365,14 +365,14 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
             TerminalExecuteResult result = handler.execute(command, this);
             if (result == null) {
                 this.outputByPrompt("");
-            } else if (result.isSuccess()) {
+            } else if (!result.isSuccess()) {
+                this.outputByPrompt(result.getErrMsg());
+            } else if (!result.isIgnoreOutput()) {
                 if (result.getResult() == null) {
                     this.outputByPrompt("");
                 } else {
                     this.outputByPrompt(String.valueOf(result.getResult()));
                 }
-            } else {
-                this.outputByPrompt(result.getErrMsg());
             }
         }
     }

@@ -1,9 +1,12 @@
 package cn.oyzh.fx.terminal.complete;
 
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.spring.SpringUtil;
 import cn.oyzh.fx.common.util.TextUtil;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
+import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;
+import cn.oyzh.fx.terminal.standard.HelpTerminalCommandHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
 
 import java.util.List;
@@ -28,13 +31,20 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
 
     @Override
     public boolean completion(String line, T terminal) {
-        List<TerminalCommandHandler> handlers = this.findCommandHandlers(line);
-        if (handlers.isEmpty()) {
-            this.noMatch(line, terminal);
-        } else if (handlers.size() == 1) {
-            this.oneMatch(line, terminal, handlers.get(0));
+        if (StrUtil.isEmpty(line)) {
+            HelpTerminalCommandHandler commandHandler = SpringUtil.getBean(HelpTerminalCommandHandler.class);
+            TerminalExecuteResult result = commandHandler.execute(null, terminal);
+            terminal.outputLine((String) result.getResult());
+            terminal.outputPrompt();
         } else {
-            this.multiMatch(line, terminal, handlers);
+            List<TerminalCommandHandler> handlers = this.findCommandHandlers(line);
+            if (handlers.isEmpty()) {
+                this.noMatch(line, terminal);
+            } else if (handlers.size() == 1) {
+                this.oneMatch(line, terminal, handlers.get(0));
+            } else {
+                this.multiMatch(line, terminal, handlers);
+            }
         }
         return true;
     }

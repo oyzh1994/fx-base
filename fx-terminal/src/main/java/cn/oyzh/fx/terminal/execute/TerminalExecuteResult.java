@@ -31,6 +31,13 @@ public class TerminalExecuteResult {
     private Exception exception;
 
     /**
+     * 忽略输出
+     */
+    @Setter
+    @Getter
+    private boolean ignoreOutput;
+
+    /**
      * 是否成功
      *
      * @return 结果
@@ -66,5 +73,26 @@ public class TerminalExecuteResult {
             this.result += "\n";
         }
         this.result += result;
+    }
+
+    /**
+     * 执行ok
+     *
+     * @return TerminalExecuteResult
+     */
+    public static TerminalExecuteResult ok() {
+        return new TerminalExecuteResult();
+    }
+
+    /**
+     * 执行失败
+     *
+     * @param exception 异常信息
+     * @return TerminalExecuteResult
+     */
+    public static TerminalExecuteResult fail(Exception exception) {
+        TerminalExecuteResult result = new TerminalExecuteResult();
+        result.exception = exception;
+        return result;
     }
 }

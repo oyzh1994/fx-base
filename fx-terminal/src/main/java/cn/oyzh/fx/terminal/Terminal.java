@@ -1,5 +1,6 @@
 package cn.oyzh.fx.terminal;
 
+import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
 import cn.oyzh.fx.terminal.help.TerminalHelpHandler;
 import cn.oyzh.fx.terminal.histroy.TerminalHistoryHandler;
@@ -211,6 +212,15 @@ public interface Terminal {
     void moveCaretEnd();
 
     /**
+     * 移动光标到末尾
+     *
+     * @param delay 延迟时间，单位毫秒
+     */
+    default void moveCaretEnd(int delay) {
+        ExecutorUtil.start(this::moveCaretEnd, delay);
+    }
+
+    /**
      * 获取光标位置
      */
     int caretPosition();
@@ -253,12 +263,12 @@ public interface Terminal {
     /**
      * 字体大小递增
      */
-     void fontSizeIncr() ;
+    void fontSizeIncr();
 
     /**
      * 字体大小递减
      */
-     void fontSizeDecr() ;
+    void fontSizeDecr();
 
     /**
      * 获取提示文本

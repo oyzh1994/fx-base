@@ -14,6 +14,11 @@ import lombok.experimental.Accessors;
 public class TerminalCommand {
 
     /**
+     * 命令
+     */
+    private String command;
+
+    /**
      * 参数列表
      */
     private String[] args;
