@@ -30,16 +30,16 @@ import java.util.List;
 public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements DragNodeItem {
 
     /**
-     * 当前排序类型
-     * 0 asc 1 desc
-     */
-    protected volatile byte sortType;
-
-    /**
      * 当前树组件
      */
     @Setter
     protected RichTreeView treeView;
+
+    /**
+     * 当前排序类型
+     * 0 asc 1 desc
+     */
+    protected volatile byte sortType;
 
     /**
      * 是否可见
@@ -142,20 +142,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
-     * 展开节点
-     */
-    public void extend() {
-        FXUtil.runWait(() -> this.setExpanded(true));
-    }
-
-    /**
-     * 收缩节点
-     */
-    public void collapse() {
-        FXUtil.runWait(() -> this.setExpanded(false));
-    }
-
-    /**
      * 删除节点
      */
     public void delete() {
@@ -228,7 +214,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         FXUtil.runWait(() -> this.realChildren.remove(item));
     }
 
-
     /**
      * 移除多个子节点
      *
@@ -300,9 +285,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
-     * 从小到大排序
+     * 对节点排序，正序
      */
-    public void sortAsc() {
+    public synchronized void sortAsc() {
         this.sortType = 0;
         if (!this.isChildEmpty()) {
             // 执行排序
@@ -312,9 +297,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
-     * 从大到小排序
+     * 对节点排序，倒序
      */
-    public void sortDesc() {
+    public synchronized void sortDesc() {
         this.sortType = 1;
         if (!this.isChildEmpty()) {
             // 执行排序
@@ -431,11 +416,25 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
+     * 展开节点
+     */
+    public void extend() {
+        FXUtil.runWait(() -> this.setExpanded(true));
+    }
+
+    /**
+     * 收缩节点
+     */
+    public void collapse() {
+        FXUtil.runWait(() -> this.setExpanded(false));
+    }
+
+    /**
      * 收缩所有节点
      *
      * @param item 待收缩节点
      */
-    public void collapseAll(TreeItem<?> item) {
+    public synchronized void collapseAll(TreeItem<?> item) {
         item.setExpanded(false);
         for (TreeItem<?> child : item.getChildren()) {
             this.collapseAll(child);
@@ -447,10 +446,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 待展开节点
      */
-    public void expandAll(TreeItem<?> item) {
+    public synchronized void expandAll(TreeItem<?> item) {
         item.setExpanded(true);
         for (TreeItem<?> child : item.getChildren()) {
-            this.collapseAll(child);
+            this.expandAll(child);
         }
     }
 

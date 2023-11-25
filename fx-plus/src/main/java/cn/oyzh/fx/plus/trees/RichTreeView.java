@@ -55,13 +55,13 @@ public class RichTreeView extends FlexTreeView {
     }
 
     /**
-     * 对节点排序
+     * 对节点排序，正序
      */
-    public void sortAsc() {
+    public synchronized void sortAsc() {
         // 获取选中节点
         TreeItem<?> item = this.getSelectedItem();
         // 执行排序
-        if (item instanceof RichTreeItem treeItem) {
+        if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.sortAsc();
         }
         // 重新选中此节点
@@ -70,13 +70,13 @@ public class RichTreeView extends FlexTreeView {
     }
 
     /**
-     * 对节点排序
+     * 对节点排序，倒序
      */
-    public void sortDesc() {
+    public synchronized void sortDesc() {
         // 获取选中节点
         TreeItem<?> item = this.getSelectedItem();
         // 执行排序
-        if (item instanceof RichTreeItem treeItem) {
+        if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.sortDesc();
         }
         // 重新选中此节点
@@ -87,7 +87,7 @@ public class RichTreeView extends FlexTreeView {
     /**
      * 过滤节点
      */
-    public void filter() {
+    public synchronized void filter() {
         // 获取选中节点
         TreeItem<?> item = this.getSelectedItem();
         // 清除选中节点
@@ -104,7 +104,7 @@ public class RichTreeView extends FlexTreeView {
      */
     public void expand() {
         TreeItem<?> item = this.getSelectedItem();
-        if (item instanceof RichTreeItem treeItem) {
+        if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.extend();
         }
         if (item != null) {
@@ -118,7 +118,7 @@ public class RichTreeView extends FlexTreeView {
      */
     public void collapse() {
         TreeItem<?> item = this.getSelectedItem();
-        if (item instanceof RichTreeItem treeItem) {
+        if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.collapse();
         }
         if (item != null) {
@@ -132,7 +132,7 @@ public class RichTreeView extends FlexTreeView {
      */
     public void reload() {
         TreeItem<?> item = this.getSelectedItem();
-        if (item instanceof RichTreeItem treeItem) {
+        if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.reloadChild();
         }
         this.flushLocal();
