@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.packager;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import cn.oyzh.fx.pkg.clip.clipper.JarClipConfig;
 import cn.oyzh.fx.pkg.clip.clipper.JarClipper;
@@ -19,7 +20,6 @@ import cn.oyzh.fx.pkg.util.PkgUtil;
 import com.badlogicgames.packr.PackrConfig;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 
@@ -29,7 +29,7 @@ import java.io.File;
  * @author oyzh
  * @since 2023/3/8
  */
-@Slf4j
+//@Slf4j
 public abstract class BasePackager {
 
     /**
@@ -155,40 +155,40 @@ public abstract class BasePackager {
      */
     protected void packBefore() throws Exception {
         if (!this.platformConfig.isEnable()) {
-            log.warn("platform is disable, skip pack.");
+            StaticLog.warn("platform is disable, skip pack.");
             return;
         }
         if (this.jLinkConfig() != null && this.jLinkConfig().isEnable()) {
-            log.info("jlink start, platform:{}------------------------------------------------>", this.getPlatform());
+            StaticLog.info("jlink start, platform:{}------------------------------------------------>", this.getPlatform());
             ThreadUtil.sleep(1500);
             // 删除旧的jlink目录
             FileUtil.del(this.jLinkConfig().getOutput());
             this.jLinkHandler.exec(this.jLinkConfig(), this.platformConfig.getJdkPath());
             this.packageConfig().setJrePath(this.jLinkConfig().getOutput());
             this.jreJLinkDir = this.jLinkConfig().getOutput();
-            log.info("jlink finish jreJLinkDir:{}------------------------------------------------>", this.jreJLinkDir);
+            StaticLog.info("jlink finish jreJLinkDir:{}------------------------------------------------>", this.jreJLinkDir);
         } else {
-            log.warn("jLinkConfig is null or jLinkConfig.enable is false, skip jlink.");
+            StaticLog.warn("jLinkConfig is null or jLinkConfig.enable is false, skip jlink.");
         }
         if (this.jreClipConfig() != null && this.jreClipConfig().isEnable()) {
-            log.info("jreClip start, platform:{}------------------------------------------------>", this.getPlatform());
+            StaticLog.info("jreClip start, platform:{}------------------------------------------------>", this.getPlatform());
             ThreadUtil.sleep(1500);
             this.jreClipper.clip(this.jreClipConfig());
             this.packageConfig().setJrePath(this.jreClipConfig().getDest());
             this.jreClipDir = this.jreClipConfig().getDest();
-            log.info("jreClip finish jreClipDir:{}------------------------------------------------>", this.jreClipDir);
+            StaticLog.info("jreClip finish jreClipDir:{}------------------------------------------------>", this.jreClipDir);
         } else {
-            log.warn("jreClipConfig is null or jreClipConfig.enable is false, skip jre clip.");
+            StaticLog.warn("jreClipConfig is null or jreClipConfig.enable is false, skip jre clip.");
         }
         if (this.jarClipConfig() != null && this.jarClipConfig().isEnable()) {
-            log.info("jarClip start, platform:{}------------------------------------------------>", this.getPlatform());
+            StaticLog.info("jarClip start, platform:{}------------------------------------------------>", this.getPlatform());
             ThreadUtil.sleep(1500);
             this.jarClipper.clip(this.jarClipConfig(), this.platformConfig.getJdkPath());
             this.packageConfig().setJarPath(this.jarClipConfig().getDest());
             this.clapJar = this.jarClipConfig().getDest();
-            log.info("jarClip finish clapJar:{}------------------------------------------------>", this.clapJar);
+            StaticLog.info("jarClip finish clapJar:{}------------------------------------------------>", this.clapJar);
         } else {
-            log.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
+            StaticLog.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
         }
     }
 
@@ -197,10 +197,10 @@ public abstract class BasePackager {
      */
     protected void packAfter() {
         if (!this.platformConfig.isEnable()) {
-            log.warn("platform is disable, skip pack.");
+            StaticLog.warn("platform is disable, skip pack.");
             return;
         }
-        log.info("pack after start.");
+        StaticLog.info("pack after start.");
         if (StrUtil.isNotBlank(this.packageConfig().getCompressType()) && this.packageConfig().isEnable()) {
             this.destFile = switch (this.packageConfig().getCompressType().toLowerCase()) {
                 case "zip" -> {
@@ -221,30 +221,30 @@ public abstract class BasePackager {
             // 删除裁剪的jar
             if (this.clapJar != null) {
                 FileUtil.del(this.clapJar);
-                log.info("delete ClapJar:{}.", this.clapJar);
+                StaticLog.info("delete ClapJar:{}.", this.clapJar);
             }
             // 删除打包目录
             if (this.packageConfig().getAppDest() != null) {
                 FileUtil.del(this.packageConfig().getAppDest());
-                log.info("delete AppDest:{}.", this.packageConfig().getAppDest());
+                StaticLog.info("delete AppDest:{}.", this.packageConfig().getAppDest());
             }
             // 删除jre裁剪目录
             if (this.jreClipDir != null) {
                 FileUtil.del(this.jreClipDir);
-                log.info("delete JreClipDir:{}.", this.jreClipDir);
+                StaticLog.info("delete JreClipDir:{}.", this.jreClipDir);
             }
             // 删除jlink目录
             if (this.jreJLinkDir != null) {
                 FileUtil.del(this.jreJLinkDir);
-                log.info("delete JreJLinkDir:{}.", this.jreJLinkDir);
+                StaticLog.info("delete JreJLinkDir:{}.", this.jreJLinkDir);
             }
             // 删除jlink目录
             if (this.jPackageInputDir != null) {
                 FileUtil.del(this.jPackageInputDir);
-                log.info("delete jPackageInputDir:{}.", this.jPackageInputDir);
+                StaticLog.info("delete jPackageInputDir:{}.", this.jPackageInputDir);
             }
         }
-        log.info("pack after finish, dest:{}", this.destFile);
+        StaticLog.info("pack after finish, dest:{}", this.destFile);
     }
 
     /**
@@ -274,10 +274,10 @@ public abstract class BasePackager {
      */
     protected void packByJPackage() throws Exception {
         if (!this.packageConfig().isEnable() || !this.platformConfig.isEnable()) {
-            log.warn("package or platform is disable, skip pack.");
+            StaticLog.warn("package or platform is disable, skip pack.");
             return;
         }
-        log.info("pack with JPackage, platform:{}================================", this.getPlatform());
+        StaticLog.info("pack with JPackage, platform:{}================================", this.getPlatform());
         // copy主jar到输出目录
         File mainJar = PkgUtil.copyJarToJpackageInputDir(this.packageConfig().getDestPath(), this.platformConfig.getPlatform(), this.packageConfig().getJarFile());
         // jPackage输出目录
@@ -299,10 +299,10 @@ public abstract class BasePackager {
      */
     protected void packByPackr() throws Exception {
         if (!this.packageConfig().isEnable() || !this.platformConfig.isEnable()) {
-            log.warn("package or platform is disable, skip pack.");
+            StaticLog.warn("package or platform is disable, skip pack.");
             return;
         }
-        log.info("pack with Packr, platform:{}================================", this.getPlatform());
+        StaticLog.info("pack with Packr, platform:{}================================", this.getPlatform());
         // 删除旧的打包目录
         FileUtil.del(this.packageConfig().getAppDest());
         PackrConfigExt config = PackrConfigExt.form(this.packageConfig());

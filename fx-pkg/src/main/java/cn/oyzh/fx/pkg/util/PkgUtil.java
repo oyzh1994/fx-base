@@ -5,6 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.FileNameUtil;
 import cn.oyzh.fx.common.util.OSUtil;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
@@ -14,7 +15,6 @@ import cn.oyzh.fx.pkg.packager.LinuxPackager;
 import cn.oyzh.fx.pkg.packager.MacPackager;
 import cn.oyzh.fx.pkg.packager.WinPackager;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
 import java.io.File;
@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
  * @author oyzh
  * @since 2023/11/17
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class PkgUtil {
 
@@ -70,12 +70,12 @@ public class PkgUtil {
      */
     public static File zipDest(String name, String appDest) {
         String compressName = name + ".zip";
-        log.info("zipDest start, config.compressType is:{} compressName:{}.", "zip", compressName);
+        StaticLog.info("zipDest start, config.compressType is:{} compressName:{}.", "zip", compressName);
         File dest = new File(appDest);
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
         ZipUtil.zip(dest.getPath(), compressFile.getPath(), false);
-        log.info("zipDest finish appDest:{}", compressFile.getPath());
+        StaticLog.info("zipDest finish appDest:{}", compressFile.getPath());
         return compressFile;
     }
 
@@ -88,12 +88,12 @@ public class PkgUtil {
      */
     public static File zipDestByMacos(String name, String appDest) {
         String compressName = name + ".zip";
-        log.info("zipDestByMacos start, config.compressType is:{} compressName:{}.", "zip", compressName);
+        StaticLog.info("zipDestByMacos start, config.compressType is:{} compressName:{}.", "zip", compressName);
         File dest = new File(appDest);
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
         ZipUtil.zip(dest.getPath(), compressFile.getPath(), true);
-        log.info("zipDestByMacos finish appDest:{}", compressFile.getPath());
+        StaticLog.info("zipDestByMacos finish appDest:{}", compressFile.getPath());
         return compressFile;
     }
 
@@ -106,14 +106,14 @@ public class PkgUtil {
      */
     public static File tarDest(String name, String appDest) {
         String compressName = name + ".tar";
-        log.info("tarDest start, config.compressType is:{} compressName:{}.", "tar", compressName);
+        StaticLog.info("tarDest start, config.compressType is:{} compressName:{}.", "tar", compressName);
         File dest = new File(appDest);
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行tar压缩
         Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, ArchiveStreamFactory.TAR, compressFile)
                 .add(dest);
         archiver.finish().close();
-        log.info("tarDest finish appDest:{}", compressFile.getPath());
+        StaticLog.info("tarDest finish appDest:{}", compressFile.getPath());
         return compressFile;
     }
 
@@ -124,7 +124,7 @@ public class PkgUtil {
      */
     public static File gzipDest(String name, String appDest) {
         String compressName = name + ".tar.gz";
-        log.info("gzipDest start, config.compressType is:{} compressName:{}.", "tar.gz", compressName);
+        StaticLog.info("gzipDest start, config.compressType is:{} compressName:{}.", "tar.gz", compressName);
         File dest = new File(appDest);
         File compressFile = new File(dest.getParentFile(), compressName);
         // 进行tar.gz压缩
@@ -137,7 +137,7 @@ public class PkgUtil {
             }
         }
         archiver.finish().close();
-        log.info("gzipDest finish appDest:{}", compressFile.getPath());
+        StaticLog.info("gzipDest finish appDest:{}", compressFile.getPath());
         return compressFile;
     }
 

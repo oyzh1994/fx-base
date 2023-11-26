@@ -1,9 +1,9 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.clip.filter.FileFilter;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
 
@@ -13,7 +13,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2022/12/7
  */
-@Slf4j
+//@Slf4j
 public abstract class BaseClipper {
 
     /**
@@ -42,7 +42,7 @@ public abstract class BaseClipper {
     public boolean filterName(String name) {
         boolean accept = this.fileFilter.accept(name);
         if (!accept) {
-            log.info("file:{} filtered.", name);
+            StaticLog.info("file:{} filtered.", name);
         }
         return accept;
     }

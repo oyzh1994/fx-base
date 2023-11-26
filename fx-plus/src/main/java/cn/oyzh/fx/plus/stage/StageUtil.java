@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.stage;
 
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.OSUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Platform;
@@ -10,7 +11,6 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.NoSuchElementException;
 
@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
  * @author oyzh
  * @since 2023/10/12
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class StageUtil {
 
@@ -38,15 +38,15 @@ public class StageUtil {
             if (reference instanceof StageWrapper wrapper && wrapper.controller() instanceof StageListener listener) {
                 try {
                     listener.onSystemExit();
-                    if (log.isDebugEnabled()) {
-                        log.debug("listener.onSystemExit() execute...");
-                    }
+//                    if (log.isDebugEnabled()) {
+                        StaticLog.debug("listener.onSystemExit() execute...");
+//                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         }
-        log.warn("system exit...");
+        StaticLog.warn("system exit...");
         Platform.exit();
     }
 

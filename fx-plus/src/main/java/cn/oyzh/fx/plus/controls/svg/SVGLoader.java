@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.util.ResourceUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author oyzh
  * @since 2022/5/30
  */
-@Slf4j
+//@Slf4j
 public class SVGLoader {
 
     /**
@@ -49,7 +49,7 @@ public class SVGLoader {
         // 获取路径
         URL url = ResourceUtil.getResource(svgPath);
         if (url == null) {
-            log.warn("svgPath: {} is not found.", svgPath);
+            StaticLog.warn("svgPath: {} is not found.", svgPath);
             return null;
         }
         String svg = null;

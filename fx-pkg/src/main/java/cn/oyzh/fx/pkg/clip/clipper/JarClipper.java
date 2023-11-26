@@ -1,10 +1,10 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.clip.util.JarUtil;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
 
@@ -14,7 +14,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2022/12/7
  */
-@Slf4j
+//@Slf4j
 public class JarClipper extends BaseJarClipper {
 
     /**
@@ -59,7 +59,7 @@ public class JarClipper extends BaseJarClipper {
         this.addExcludeClasses(config.getExcludeClasses());
         String src = config.getSrc();
         String dest = config.getDest();
-        log.info("clip start.");
+        StaticLog.info("clip start.");
         long start = System.currentTimeMillis();
         this.clip(src, dest);
         // jar解压目录
@@ -79,7 +79,7 @@ public class JarClipper extends BaseJarClipper {
         FileUtil.del(jarUnDir);
         // }
         long end = System.currentTimeMillis();
-        log.info("clip end, used time: {}ms.", end - start);
+        StaticLog.info("clip end, used time: {}ms.", end - start);
     }
 
     @Override

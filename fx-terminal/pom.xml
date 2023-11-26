@@ -40,12 +40,12 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-            <version>${hutool.version}</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.hutool</groupId>-->
+<!--            <artifactId>hutool-extra</artifactId>-->
+<!--            <version>${hutool.version}</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
         <!-- Spring boot -->
         <dependency>

@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 组件控制器
@@ -13,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/10/12
  */
-@Slf4j
+//@Slf4j
 public class Controller implements StageListener {
 
     /**

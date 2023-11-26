@@ -3,7 +3,6 @@ package cn.oyzh.fx.pkg.jlink;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * jlink处理
@@ -11,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/3/8
  */
-@Slf4j
+//@Slf4j
 public class JLinkHandler {
 
     /**

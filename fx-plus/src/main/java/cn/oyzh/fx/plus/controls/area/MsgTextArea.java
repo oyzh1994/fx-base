@@ -2,12 +2,12 @@ package cn.oyzh.fx.plus.controls.area;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.Queue;
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  * @author oyzh
  * @since 2023/04/08
  */
-@Slf4j
+//@Slf4j
 @ToString
 public class MsgTextArea extends FlexTextArea {
 
@@ -123,9 +123,9 @@ public class MsgTextArea extends FlexTextArea {
         }
         try {
             Long startTime = null;
-            if (log.isDebugEnabled()) {
+//            if (log.isDebugEnabled()) {
                 startTime = System.currentTimeMillis();
-            }
+//            }
             // 检测最大行
             if (this.maxLine != null) {
                 // 追加文本计数
@@ -148,7 +148,7 @@ public class MsgTextArea extends FlexTextArea {
             }
             super.appendText(s);
             if (startTime != null) {
-                log.debug("appendText cost:{}ms", (System.currentTimeMillis() - startTime));
+                StaticLog.debug("appendText cost:{}ms", (System.currentTimeMillis() - startTime));
             }
         } catch (Exception ex) {
             ex.printStackTrace();

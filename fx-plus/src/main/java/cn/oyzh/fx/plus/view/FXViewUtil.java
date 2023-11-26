@@ -47,14 +47,14 @@
 //                try {
 //                    listener.onSystemExit();
 //                    if (log.isDebugEnabled()) {
-//                        log.debug("listener.onSystemExit() execute...");
+//                        StaticLog.debug("listener.onSystemExit() execute...");
 //                    }
 //                } catch (Exception ex) {
 //                    ex.printStackTrace();
 //                }
 //            }
 //        }
-//        log.warn("system exit...");
+//        StaticLog.warn("system exit...");
 //        Platform.exit();
 //    }
 //
@@ -186,7 +186,7 @@
 //    //    if (fxView != null) {
 //    //        frontView(fxView.getStage());
 //    //    } else {
-//    //        log.warn("fxView is null!");
+//    //        StaticLog.warn("fxView is null!");
 //    //    }
 //    //}
 //    //
@@ -202,7 +202,7 @@
 //    //            stage.setIconified(false);
 //    //        });
 //    //    } else {
-//    //        log.warn("stage is null!");
+//    //        StaticLog.warn("stage is null!");
 //    //    }
 //    //}
 //
@@ -315,11 +315,11 @@
 //    //    if (window.usePrimary()) {
 //    //        //FXPrimaryStage FXPrimaryStage = FXViewUtil.getFXPrimaryStage();
 //    //        if (Primary_Stage == null) {
-//    //            log.error("PrimaryStage is null, please set PrimaryStage.");
+//    //            StaticLog.error("PrimaryStage is null, please set PrimaryStage.");
 //    //            return null;
 //    //        }
 //    //        if (Primary_Stage.isShowing()) {
-//    //            log.error("PrimaryStage is showing.");
+//    //            StaticLog.error("PrimaryStage is showing.");
 //    //            return null;
 //    //        }
 //    //        stage.set(Primary_Stage.getStage());
@@ -343,7 +343,7 @@
 //    //    if (ArrayUtil.isNotEmpty(window.iconUrls())) {
 //    //        // linux不支持
 //    //        if (OSUtil.isLinux()) {
-//    //            log.warn("linux is not support icon!");
+//    //            StaticLog.warn("linux is not support icon!");
 //    //        } else {
 //    //            stage.get().getIcons().addAll(FXIconUtil.getIcons(window.iconUrls()));
 //    //        }

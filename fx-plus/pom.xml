@@ -76,12 +76,12 @@
             <classifier>mac</classifier>
         </dependency>
 
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-            <version>${hutool.version}</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.hutool</groupId>-->
+<!--            <artifactId>hutool-extra</artifactId>-->
+<!--            <version>${hutool.version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
         <dependency>

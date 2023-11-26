@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.mouse;
 
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
@@ -11,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 键盘按键事件
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/1/16
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class MouseListener {
 
@@ -77,9 +77,9 @@ public class MouseListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(mouseHandler);
-            if (log.isDebugEnabled()) {
-                log.debug("addHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("addHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
+//            }
         }
     }
 
@@ -105,9 +105,9 @@ public class MouseListener {
         MouseEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(mouseHandler);
-            if (log.isDebugEnabled()) {
-                log.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
+//            }
         }
     }
 

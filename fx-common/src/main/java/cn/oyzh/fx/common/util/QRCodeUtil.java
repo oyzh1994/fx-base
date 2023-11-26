@@ -45,18 +45,18 @@
 //        hints.put(EncodeHintType.MARGIN, 1);
 //        hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
 //        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-//        log.info("encode before.");
+//        StaticLog.info("encode before.");
 //        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, w, h, hints);
 //        int width = bitMatrix.getWidth();
 //        int height = bitMatrix.getHeight();
-//        log.info("createImage before.");
+//        StaticLog.info("createImage before.");
 //        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 //        for (int x = 0; x < width; x++) {
 //            for (int y = 0; y < height; y++) {
 //                image.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
 //            }
 //        }
-//        log.info("createImage finish.");
+//        StaticLog.info("createImage finish.");
 //        return image;
 //    }
 //

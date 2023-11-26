@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
 import javafx.application.Platform;
@@ -11,7 +12,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * @author oyzh
  * @since 2021/8/19
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class FXUtil {
 
@@ -172,7 +172,7 @@ public class FXUtil {
                 // Platform.runLater(new RunTask(task1));
                 if (timeout > 0) {
                     if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
-                        log.warn("latch.await fail!");
+                        StaticLog.warn("latch.await fail!");
                     }
                 } else {
                     latch.await();

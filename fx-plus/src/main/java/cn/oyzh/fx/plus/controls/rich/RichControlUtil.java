@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.rich;
 
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.fxmisc.richtext.StyledTextArea;
 
 
@@ -11,7 +10,7 @@ import org.fxmisc.richtext.StyledTextArea;
  * @author oyzh
  * @since 2023/11/20
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class RichControlUtil {
 

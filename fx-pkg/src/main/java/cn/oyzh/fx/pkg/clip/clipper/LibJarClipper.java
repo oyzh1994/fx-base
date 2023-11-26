@@ -1,9 +1,9 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.clip.util.JarUtil;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/12/14
  */
-@Slf4j
+//@Slf4j
 public class LibJarClipper extends BaseJarClipper {
 
     /**
@@ -29,7 +29,7 @@ public class LibJarClipper extends BaseJarClipper {
         if (!FileUtil.isDirectory(jarUnDir)) {
             throw new RuntimeException("jarUnDir " + jarUnDir + " is not dir.");
         }
-        log.info("clipLibs start, jarUnDir: {}.", jarUnDir);
+        StaticLog.info("clipLibs start, jarUnDir: {}.", jarUnDir);
         List<File> files = FileUtil.loopFiles(jarUnDir);
         for (File file : files) {
             try {
@@ -44,7 +44,7 @@ public class LibJarClipper extends BaseJarClipper {
                 }
                 // 替换路径
                 String dest = file.getPath().replace("\\", "/");
-                log.info("clipLibJar jar: {}.", file.getName());
+                StaticLog.info("clipLibJar jar: {}.", file.getName());
                 // 文件名
                 dest = dest.replace(".jar", "_clip.jar");
                 // 裁剪类库
@@ -53,7 +53,7 @@ public class LibJarClipper extends BaseJarClipper {
                 ex.printStackTrace();
             }
         }
-        log.info("clipLibs finish.");
+        StaticLog.info("clipLibs finish.");
     }
 
     /**
@@ -68,7 +68,7 @@ public class LibJarClipper extends BaseJarClipper {
         if (!FileUtil.isDirectory(jarUnDir)) {
             throw new RuntimeException("jarUnDir " + jarUnDir + " is not dir.");
         }
-        log.info("coverLibs start, jarUnDir: {}.", jarUnDir);
+        StaticLog.info("coverLibs start, jarUnDir: {}.", jarUnDir);
         List<File> files = FileUtil.loopFiles(jarUnDir);
         for (File file : files) {
             try {
@@ -81,7 +81,7 @@ public class LibJarClipper extends BaseJarClipper {
                 ex.printStackTrace();
             }
         }
-        log.info("coverLibs finish.");
+        StaticLog.info("coverLibs finish.");
     }
 
     /**
@@ -96,7 +96,7 @@ public class LibJarClipper extends BaseJarClipper {
         if (!FileUtil.isDirectory(jarUnDir)) {
             throw new RuntimeException("jarUnDir " + jarUnDir + " is not dir.");
         }
-        log.info("delEmptyLibs start, jarUnDir: {}.", jarUnDir);
+        StaticLog.info("delEmptyLibs start, jarUnDir: {}.", jarUnDir);
         List<File> files = FileUtil.loopFiles(jarUnDir);
         for (File file : files) {
             try {
@@ -107,12 +107,12 @@ public class LibJarClipper extends BaseJarClipper {
                 // 没有class文件则删除此jar
                 if (!JarUtil.hasClass(file.getPath())) {
                     FileUtil.del(file);
-                    log.warn("lib {} is empty, deleted.", file.getName());
+                    StaticLog.warn("lib {} is empty, deleted.", file.getName());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        log.info("delEmptyLibs finish.");
+        StaticLog.info("delEmptyLibs finish.");
     }
 }

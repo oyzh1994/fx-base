@@ -3,10 +3,10 @@ package cn.oyzh.fx.terminal.histroy;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.store.ArrayFileStore;
 import com.alibaba.fastjson.JSON;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/5/29
  */
-@Slf4j
+//@Slf4j
 public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistory> {
 
     /**
@@ -51,7 +51,7 @@ public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistor
             // 更新数据
             return this.save(this.histories);
         } catch (Exception e) {
-            log.warn("add error,err:{}", e.getMessage());
+            StaticLog.warn("add error,err:{}", e.getMessage());
         }
         return false;
     }

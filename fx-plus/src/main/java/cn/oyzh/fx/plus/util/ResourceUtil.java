@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.hutool.log.StaticLog;
 import javafx.scene.image.Image;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/02/28
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class ResourceUtil {
 
@@ -40,10 +40,10 @@ public class ResourceUtil {
     public static List<Image> getImages(@NonNull List<String> imgUrls) {
         List<Image> icons = new ArrayList<>(imgUrls.size());
         for (String url : imgUrls) {
-            log.info("load imgUrl:{}", url);
+            StaticLog.info("load imgUrl:{}", url);
             InputStream stream = getResourceAsStream(url);
             if (stream == null) {
-                log.warn("img stream is null.");
+                StaticLog.warn("img stream is null.");
             } else {
                 icons.add(new Image(stream));
             }
@@ -58,10 +58,10 @@ public class ResourceUtil {
      * @return 图片
      */
     public static Image getImage(@NonNull String imgUrl) {
-        log.info("load imgUrl:{}", imgUrl);
+        StaticLog.info("load imgUrl:{}", imgUrl);
         InputStream stream = getResourceAsStream(imgUrl);
         if (stream == null) {
-            log.warn("img stream is null.");
+            StaticLog.warn("img stream is null.");
             return null;
         }
         return new Image(stream);
@@ -119,7 +119,7 @@ public class ResourceUtil {
      * @return 物理地址
      */
     public static String toExternalUrl(@NonNull String url) {
-        log.info("url:{}", url);
+        StaticLog.info("url:{}", url);
         URL u = getResource(url);
         return u == null ? null : u.toExternalForm();
     }

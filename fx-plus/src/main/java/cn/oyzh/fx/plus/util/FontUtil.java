@@ -8,7 +8,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +21,7 @@ import java.util.Optional;
  * @author oyzh
  * @since 2023048/24
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class FontUtil {
 

@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -17,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/11/10
  */
-@Slf4j
+//@Slf4j
 public class RichTreeItemValue extends FXHBox {
 
     {

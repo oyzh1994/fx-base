@@ -23,7 +23,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 命令行文本域
@@ -31,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/05/28
  */
-@Slf4j
+//@Slf4j
 public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     /**

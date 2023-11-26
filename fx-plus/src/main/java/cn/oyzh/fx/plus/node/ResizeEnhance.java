@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -9,7 +10,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 组件大小改变增强
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/5/15
  */
-@Slf4j
+//@Slf4j
 @Accessors(chain = true, fluent = true)
 public class ResizeEnhance {
 
@@ -130,7 +130,7 @@ public class ResizeEnhance {
             }
             event.consume();
 //            if (log.isDebugEnabled()) {
-//                log.debug("MouseMoved");
+//                StaticLog.debug("MouseMoved");
 //            }
         };
     }
@@ -158,13 +158,13 @@ public class ResizeEnhance {
                 return;
             }
             this.setNodeCursor(this.originalCursor);
-            if (log.isDebugEnabled()) {
-                log.debug("Cursor recover.");
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("Cursor recover.");
+//            }
             event.consume();
-            if (log.isDebugEnabled()) {
-                log.debug("MouseExited");
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("MouseExited");
+//            }
         };
     }
 
@@ -190,9 +190,9 @@ public class ResizeEnhance {
             // 设置拉伸中标志位
             this.resizeIng(true);
             event.consume();
-            if (log.isDebugEnabled()) {
-                log.debug("MousePressed");
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("MousePressed");
+//            }
         };
     }
 
@@ -218,9 +218,9 @@ public class ResizeEnhance {
             this.resizeIng(null);
             this.setNodeCursor(this.originalCursor);
             event.consume();
-            if (log.isDebugEnabled()) {
-                log.debug("MouseReleased");
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("MouseReleased");
+//            }
         };
     }
 

@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.packager;
 
 import cn.oyzh.fx.common.util.OSUtil;
 import com.badlogicgames.packr.PackrConfig;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * linux平台打包器
@@ -10,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/3/8
  */
-@Slf4j
+//@Slf4j
 public class LinuxPackager extends BasePackager {
 
     @Override

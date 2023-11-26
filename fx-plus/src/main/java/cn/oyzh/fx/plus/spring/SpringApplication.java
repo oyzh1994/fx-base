@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.spring;
 import cn.oyzh.fx.plus.ext.ApplicationExt;
 import javafx.application.Application;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
@@ -15,7 +14,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @author oyzh
  * @since 2021/8/19
  */
-@Slf4j
+//@Slf4j
 public abstract class SpringApplication extends ApplicationExt implements CommandLineRunner, DisposableBean {
 
     /**

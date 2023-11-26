@@ -99,7 +99,7 @@
 //        // 加载根节点
 //        Parent root = loader.load(window.value());
 //        if (root == null) {
-//            log.error("load root fail.");
+//            StaticLog.error("load root fail.");
 //            return;
 //        }
 //        // 设置controller

@@ -65,12 +65,12 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- 常用工具扩展类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
+<!--        &lt;!&ndash; 常用工具扩展类库 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>cn.hutool</groupId>-->
+<!--            <artifactId>hutool-extra</artifactId>-->
+<!--            <version>${hutool.version}</version>-->
+<!--        </dependency>-->
 
         <!-- 压缩工具包 -->
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->

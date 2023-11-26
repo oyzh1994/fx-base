@@ -1,9 +1,9 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @author oyzh
  * @since 2022/12/14
  */
-@Slf4j
+//@Slf4j
 public class MainJarClipper extends BaseJarClipper {
 
     /**
@@ -38,7 +38,7 @@ public class MainJarClipper extends BaseJarClipper {
         if (!FileUtil.isFile(mainJar)) {
             throw new RuntimeException("mainJar " + mainJar + " is not file.");
         }
-        log.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
+        StaticLog.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
         // jar文件
         File mainJarFile = new File(mainJar);
         // 新jar文件
@@ -80,6 +80,6 @@ public class MainJarClipper extends BaseJarClipper {
         }
         // 移动主jar文件到原始目录
         FileUtil.move(mainJarNewFile, mainJarFile, true);
-        log.info("mergeLibs finish.");
+        StaticLog.info("mergeLibs finish.");
     }
 }

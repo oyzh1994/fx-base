@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.keyboard;
 
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
@@ -11,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 键盘按键事件
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/1/16
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class KeyListener {
 
@@ -92,9 +92,9 @@ public class KeyListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(keyHandler);
-            if (log.isDebugEnabled()) {
-                log.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyCode(), keyHandler.keyCode());
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyCode(), keyHandler.keyCode());
+//            }
         }
     }
 
@@ -108,9 +108,9 @@ public class KeyListener {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyHandler.keyCode(), keyHandler.keyType());
-            if (log.isDebugEnabled()) {
-                log.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
+//            }
         }
     }
 
@@ -125,9 +125,9 @@ public class KeyListener {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyCode, keyType);
-            if (log.isDebugEnabled()) {
-                log.debug("removeHandler, keyType:{} keyCode:{}", keyType, keyCode);
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("removeHandler, keyType:{} keyCode:{}", keyType, keyCode);
+//            }
         }
     }
 

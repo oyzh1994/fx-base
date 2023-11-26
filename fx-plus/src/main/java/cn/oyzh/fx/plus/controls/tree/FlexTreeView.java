@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.tree;
 
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
@@ -17,7 +18,6 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import lombok.NonNull;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
 
@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/1/19
  */
-@Slf4j
+//@Slf4j
 @ToString
 public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuAdapter, FlexAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
@@ -165,7 +165,7 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
             if (index >= 0) {
                 this.scrollTo(index);
             } else {
-                log.warn("row index:{} invalid.", index);
+                StaticLog.warn("row index:{} invalid.", index);
             }
         }
     }

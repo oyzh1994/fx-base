@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.clip.filter;
 
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
+import cn.hutool.log.StaticLog;
 
 /**
  * 文件过滤器
@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2022/12/13
  */
-@Slf4j
+//@Slf4j
 public class FileFilter extends BaseFilter {
 
     @Override
@@ -28,17 +28,17 @@ public class FileFilter extends BaseFilter {
         for (String exclude : this.getExcludes()) {
             // 文件夹排除
             if (exclude.endsWith("/") && name.equals(exclude.toLowerCase())) {
-                log.warn("{} acceptExclude by exclude:{} equals folder.", name, exclude);
+                StaticLog.warn("{} acceptExclude by exclude:{} equals folder.", name, exclude);
                 return true;
             }
             // 类型排除
             if (exclude.startsWith(".") && name.endsWith(exclude.toLowerCase())) {
-                log.warn("{} acceptExclude by exclude:{} endsWith type.", name, exclude);
+                StaticLog.warn("{} acceptExclude by exclude:{} endsWith type.", name, exclude);
                 return true;
             }
             // 包含排除
             if (name.contains(exclude.toLowerCase())) {
-                log.warn("{} acceptExclude by exclude:{} contains.", name, exclude);
+                StaticLog.warn("{} acceptExclude by exclude:{} contains.", name, exclude);
                 return true;
             }
         }

@@ -2,11 +2,11 @@ package cn.oyzh.fx.plus.event;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * @author oyzh
  * @since 2023/4/10
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class EventUtil {
 
@@ -141,7 +141,7 @@ public class EventUtil {
         }
         // 判断是否可调用
         if (!method.trySetAccessible()) {
-            log.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
+            StaticLog.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
             return;
         }
         // 设置可访问
@@ -165,7 +165,7 @@ public class EventUtil {
         }
         // 判断是否可调用
         if (!method.trySetAccessible()) {
-            log.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
+            StaticLog.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
             return;
         }
         // 设置可访问
@@ -191,9 +191,10 @@ public class EventUtil {
         Runnable invoke = () -> {
             Long startTime = null;
             // 打印日志
-            if (verbose && log.isDebugEnabled()) {
+            if (verbose) {
+//            if (verbose && log.isDebugEnabled()) {
                 startTime = System.currentTimeMillis();
-                log.debug("fire event[type={},group={},async={},fxThread={},method={}] start.", event.type(), event.group(), async, fxThread, method.getName());
+                StaticLog.debug("fire event[type={},group={},async={},fxThread={},method={}] start.", event.type(), event.group(), async, fxThread, method.getName());
             }
             try {
                 // 无参
@@ -209,16 +210,17 @@ public class EventUtil {
                 } else if (method.getParameterCount() == 2 && method.getParameterTypes()[0] == String.class) {// String&Object参数
                     method.invoke(obj, event.type(), event.data());
                 } else {
-                    log.error("method:{} invoke error, ParameterTypes invalid!", method.getName());
+                    StaticLog.error("method:{} invoke error, ParameterTypes invalid!", method.getName());
                 }
                 // 打印日志
-                if (verbose && startTime != null & log.isDebugEnabled()) {
+                if (verbose && startTime != null) {
+//                if (verbose && startTime != null & log.isDebugEnabled()) {
                     long endTime = System.currentTimeMillis();
-                    log.debug("fire event:[class={},method={},type={},group={}] finish, cost:{}ms.", obj.getClass().getName(), method.getName(), event.type(), event.data(), (endTime - startTime));
+                    StaticLog.debug("fire event:[class={},method={},type={},group={}] finish, cost:{}ms.", obj.getClass().getName(), method.getName(), event.type(), event.data(), (endTime - startTime));
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                log.warn("fire event:[class={},method={},type={},group={}] fail.", obj.getClass().getName(), method.getName(), event.type(), event.group());
+                StaticLog.warn("fire event:[class={},method={},type={},group={}] fail.", obj.getClass().getName(), method.getName(), event.type(), event.group());
             }
         };
         // 判断调用方式

@@ -7,7 +7,6 @@ import javafx.stage.Window;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 富功能树
@@ -15,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2023/11/10
  */
-@Slf4j
+//@Slf4j
 @Accessors(chain = true, fluent = true)
 public class RichTreeView extends FlexTreeView {
 

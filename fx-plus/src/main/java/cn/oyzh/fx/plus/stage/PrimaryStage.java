@@ -5,7 +5,6 @@ import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 主舞台
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2023/10/12
  */
 @Getter
-@Slf4j
+//@Slf4j
 public class PrimaryStage implements StageWrapper {
 
     /**

@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.log.StaticLog;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/03/09
  */
-@Slf4j
+//@Slf4j
 public class JreClipper extends BaseClipper {
 
     @Override
@@ -46,7 +46,7 @@ public class JreClipper extends BaseClipper {
     @Override
     public void clip(@NonNull String src, String dest) {
         this.checkPath(src, dest);
-        log.info("clip start.");
+        StaticLog.info("clip start.");
         long start = System.currentTimeMillis();
         // 删除旧文件
         FileUtil.del(dest);
@@ -58,6 +58,6 @@ public class JreClipper extends BaseClipper {
             }
         }
         long end = System.currentTimeMillis();
-        log.info("clip end, used time: {}ms.", end - start);
+        StaticLog.info("clip end, used time: {}ms.", end - start);
     }
 }

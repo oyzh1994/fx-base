@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.Node;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/8/24
  */
-@Slf4j
+//@Slf4j
 public class FXSystemTray {
 
     /**
@@ -52,7 +52,7 @@ public class FXSystemTray {
      */
     private void initTray() {
         if (!SystemTray.isSupported()) {
-            log.warn("SystemTray is not supported.");
+            StaticLog.warn("SystemTray is not supported.");
             throw new RuntimeException("SystemTray is not supported.");
         }
         System.setProperty("java.awt.headless", "false");
@@ -71,7 +71,7 @@ public class FXSystemTray {
         // 创建新系统托盘图标
         URL url = ResourceUtil.getResource(iconPath);
         if (url == null) {
-            log.error("iconPath: {} is invalid.", iconPath);
+            StaticLog.error("iconPath: {} is invalid.", iconPath);
             return false;
         }
         return this.initIcon(url);

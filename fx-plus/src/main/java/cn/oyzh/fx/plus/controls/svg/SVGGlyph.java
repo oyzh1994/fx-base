@@ -21,7 +21,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2022/5/31
  */
-@Slf4j
+//@Slf4j
 public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
     /**

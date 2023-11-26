@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +19,7 @@ import java.util.zip.ZipEntry;
  * @since 2022/12/7
  */
 @UtilityClass
-@Slf4j
+//@Slf4j
 public class JarUtil {
 
     /**

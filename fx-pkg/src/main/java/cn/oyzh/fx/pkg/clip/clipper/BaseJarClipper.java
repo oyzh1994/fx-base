@@ -2,12 +2,12 @@ package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.clip.filter.ClassFilter;
 import cn.oyzh.fx.pkg.clip.filter.JarFilter;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -26,7 +26,7 @@ import java.util.zip.ZipEntry;
  * @author oyzh
  * @since 2023/3/9
  */
-@Slf4j
+//@Slf4j
 public class BaseJarClipper extends BaseClipper {
 
     /**
@@ -46,7 +46,7 @@ public class BaseJarClipper extends BaseClipper {
     @Override
     public void clip(@NonNull String src, String dest) throws Exception {
         super.clip(src, dest);
-        log.info("clipJar start, src:{}", src);
+        StaticLog.info("clipJar start, src:{}", src);
         JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)));
         Manifest manifest = jarIn.getManifest();
         JarOutputStream jarOut;
@@ -80,7 +80,7 @@ public class BaseJarClipper extends BaseClipper {
             jarOut.finish();
             IoUtil.close(jarOut);
         }
-        log.info("clipJar finish dest:{}", dest);
+        StaticLog.info("clipJar finish dest:{}", dest);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class BaseJarClipper extends BaseClipper {
             accept = super.fileFilter.accept(name);
         }
         if (!accept) {
-            log.info("file:{} filtered.", name);
+            StaticLog.info("file:{} filtered.", name);
         }
         return accept;
     }

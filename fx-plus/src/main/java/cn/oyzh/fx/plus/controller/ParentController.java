@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.stage.WindowEvent;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/10/12
  */
-@Slf4j
+//@Slf4j
 public class ParentController extends Controller {
 
     @Override

@@ -1,8 +1,8 @@
 package cn.oyzh.fx.common.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.log.StaticLog;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author oyzh
  * @since 2023/11/14
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class RuntimeUtil {
 
@@ -76,7 +76,7 @@ public class RuntimeUtil {
             if (charset == null) {
                 charset = Charset.defaultCharset();
             }
-            log.info("execAndWait start cmd:{} dir:{} printInput:{} printError:{}", cmd, dir, printInput, printError);
+            StaticLog.info("execAndWait start cmd:{} dir:{} printInput:{} printError:{}", cmd, dir, printInput, printError);
             Process process;
             if (FileUtil.isDirectory(dir)) {
                 process = Runtime.getRuntime().exec(cmd, null, dir);
@@ -87,31 +87,31 @@ public class RuntimeUtil {
                 process.waitFor(1000, TimeUnit.MILLISECONDS);
             }
             if (printInput && process.getInputStream().available() > 0) {
-                log.info("process input--->start");
+                StaticLog.info("process input--->start");
                 // 获取进程的标准输出流
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), charset));
                 // 读取输出并打印到控制台
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    log.info(line);
+                    StaticLog.info(line);
                 }
-                log.info("process input--->start");
+                StaticLog.info("process input--->start");
             }
             if (printError && process.getErrorStream().available() > 0) {
-                log.info("process error--->start");
+                StaticLog.info("process error--->start");
                 // 获取进程的标准输出流
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream(), charset));
                 // 读取输出并打印到控制台
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    log.info(line);
+                    StaticLog.info(line);
                 }
-                log.info("process error--->end");
+                StaticLog.info("process error--->end");
             }
             // 等待进程执行完成
             return code = process.waitFor();
         } finally {
-            log.info("execAndWait finish code:{}", code);
+            StaticLog.info("execAndWait finish code:{}", code);
         }
     }
 }

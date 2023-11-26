@@ -8,7 +8,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 富功能树节点工厂
@@ -17,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2023/11/10
  */
 @Getter
-@Slf4j
+//@Slf4j
 public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
 
     /**

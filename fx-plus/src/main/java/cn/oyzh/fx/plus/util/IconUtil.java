@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.log.StaticLog;
 import javafx.scene.image.Image;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author oyzh
  * @since 2023/4/4
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class IconUtil {
 
@@ -74,7 +74,7 @@ public class IconUtil {
             }
         } else {
             stream = IoUtil.toStream(reference.get());
-            log.info("load icon form cache.");
+            StaticLog.info("load icon form cache.");
         }
         return stream == null ? null : new Image(stream);
     }

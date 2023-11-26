@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
 
@@ -35,7 +34,7 @@ import java.awt.*;
  * @author oyzh
  * @since 2020/10/19
  */
-@Slf4j
+//@Slf4j
 @Accessors(fluent = true, chain = true)
 public class Toast {
 

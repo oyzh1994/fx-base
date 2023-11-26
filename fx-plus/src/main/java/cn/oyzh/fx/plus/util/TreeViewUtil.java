@@ -5,7 +5,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/05/09
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class TreeViewUtil {
 

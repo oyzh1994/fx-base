@@ -20,7 +20,6 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -29,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2022/1/19
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class ControlUtil {
 

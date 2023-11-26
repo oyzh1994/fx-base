@@ -1,9 +1,9 @@
 package cn.oyzh.fx.common.util;
 
+import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Future;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.Future;
  * @author oyzh
  * @since 2023/04/05
  */
-@Slf4j
+//@Slf4j
 @UtilityClass
 public class SystemUtil {
 
@@ -31,7 +31,7 @@ public class SystemUtil {
             long freeMemory = Runtime.getRuntime().freeMemory();
             long totalMemory = Runtime.getRuntime().totalMemory();
             long usedMemory = totalMemory - freeMemory;
-            log.info(
+            StaticLog.info(
                     "gc before freeMemory:{}Mb usedMemory:{}Mb totalMemory:{}Mb maxMemory:{}Mb",
                     freeMemory / 1024 / 1024.0,
                     usedMemory / 1024 / 1024.0,
@@ -42,7 +42,7 @@ public class SystemUtil {
             freeMemory = Runtime.getRuntime().freeMemory();
             totalMemory = Runtime.getRuntime().totalMemory();
             usedMemory = totalMemory - freeMemory;
-            log.info(
+            StaticLog.info(
                     "gc after freeMemory:{}Mb usedMemory:{}Mb totalMemory:{}Mb",
                     freeMemory / 1024 / 1024.0,
                     usedMemory / 1024 / 1024.0,
@@ -58,9 +58,9 @@ public class SystemUtil {
      */
     public static void gcInterval(int interval) {
         clearGCInterval();
-        if (log.isDebugEnabled()) {
-            log.debug("gc interval in {}ms...", interval);
-        }
+//        if (log.isDebugEnabled()) {
+            StaticLog.debug("gc interval in {}ms...", interval);
+//        }
         GC_INTERVAL_TASK = ExecutorUtil.start(SystemUtil::gc, interval, interval);
     }
 
@@ -70,9 +70,9 @@ public class SystemUtil {
     public static void clearGCInterval() {
         if (GC_INTERVAL_TASK != null && !GC_INTERVAL_TASK.isDone()) {
             ExecutorUtil.cancel(GC_INTERVAL_TASK);
-            if (log.isDebugEnabled()) {
-                log.debug("cancel gc interval task.");
-            }
+//            if (log.isDebugEnabled()) {
+                StaticLog.debug("cancel gc interval task.");
+//            }
         }
     }
 

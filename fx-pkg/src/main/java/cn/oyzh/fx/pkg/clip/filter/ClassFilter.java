@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.clip.filter;
 
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
+import cn.hutool.log.StaticLog;
 
 /**
  * class过滤器
@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author oyzh
  * @since 2022/12/13
  */
-@Slf4j
+//@Slf4j
 public class ClassFilter extends BaseFilter {
 
     @Override
@@ -29,13 +29,13 @@ public class ClassFilter extends BaseFilter {
     public boolean acceptExclude(String name) {
         // 排除的class
         if (this.getExcludes().contains(name)) {
-            log.warn("{} acceptExclude by excludes contains.", name);
+            StaticLog.warn("{} acceptExclude by excludes contains.", name);
             return true;
         }
         // 排除的class子类或者包
         for (String exclude : this.getExcludes()) {
             if (name.startsWith(exclude)) {
-                log.warn("{} acceptExclude by exclude:{} startsWith.", name, exclude);
+                StaticLog.warn("{} acceptExclude by exclude:{} startsWith.", name, exclude);
                 return true;
             }
         }
