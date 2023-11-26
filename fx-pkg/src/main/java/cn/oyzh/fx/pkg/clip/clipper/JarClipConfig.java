@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 

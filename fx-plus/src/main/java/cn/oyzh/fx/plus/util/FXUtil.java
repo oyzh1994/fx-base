@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.Clipboard;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -14,8 +13,6 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 

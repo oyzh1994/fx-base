@@ -1,23 +1,7 @@
 package cn.oyzh.fx.plus.controls.area;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.plus.adapter.AreaAdapter;
-import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.validator.BaseValidator;
-import cn.oyzh.fx.plus.validator.Verifiable;
-import javafx.scene.CacheHint;
-import javafx.scene.control.TextArea;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Collection;
 
 /**
  * 文本域

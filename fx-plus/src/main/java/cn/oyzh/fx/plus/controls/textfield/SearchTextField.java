@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.search.SearchEvent;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
+import cn.oyzh.fx.plus.search.SearchEvent;
 import cn.oyzh.fx.plus.skin.SearchTextFieldSkin;
 import javafx.event.EventHandler;
 import lombok.Getter;

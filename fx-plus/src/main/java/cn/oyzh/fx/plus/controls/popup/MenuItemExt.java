@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.popup;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FontUtil;
 import javafx.scene.Node;

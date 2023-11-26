@@ -42,7 +42,7 @@
 
         <dependency>
             <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
+            <artifactId>hutool-extra</artifactId>
             <version>${hutool.version}</version>
             <scope>compile</scope>
         </dependency>

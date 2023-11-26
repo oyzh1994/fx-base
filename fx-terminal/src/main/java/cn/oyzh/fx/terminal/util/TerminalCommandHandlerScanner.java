@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.util;
 
-import cn.oyzh.fx.common.spring.SpringUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import org.springframework.stereotype.Component;
 

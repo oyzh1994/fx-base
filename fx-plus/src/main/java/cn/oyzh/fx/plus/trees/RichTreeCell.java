@@ -7,9 +7,7 @@ import cn.oyzh.fx.plus.drag.DrapNodeHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**

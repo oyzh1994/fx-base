@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.plus.ext.TextFieldSkinExt;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.ext.TextFieldSkinExt;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;

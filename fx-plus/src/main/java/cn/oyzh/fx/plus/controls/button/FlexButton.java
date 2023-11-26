@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls.button;
 
-import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 
 /**

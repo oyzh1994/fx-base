@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.spring;
 
-import cn.oyzh.fx.common.spring.SpringUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.oyzh.fx.plus.stage.StageAttribute;
 import javafx.util.Callback;
 import org.springframework.stereotype.Component;

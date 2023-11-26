@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.packager;
 
 import cn.oyzh.fx.common.util.OSUtil;
 import com.badlogicgames.packr.PackrConfig;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * windows平台打包器

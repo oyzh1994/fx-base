@@ -1,15 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 
-import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.adapter.TextAdapter;
-import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
-import javafx.scene.CacheHint;
-import javafx.scene.control.TextField;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 基础文本域

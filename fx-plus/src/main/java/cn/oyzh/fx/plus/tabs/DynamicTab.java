@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.tabs;
 
-import cn.oyzh.fx.plus.controls.tab.FXTab;
-import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
+import cn.oyzh.fx.plus.controls.tab.FXTab;
+import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;

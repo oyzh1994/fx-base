@@ -1,7 +1,7 @@
 package cn.oyzh.fx.terminal.complete;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.common.spring.SpringUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.oyzh.fx.common.util.TextUtil;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;

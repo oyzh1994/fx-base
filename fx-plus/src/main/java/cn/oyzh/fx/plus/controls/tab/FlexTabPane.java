@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
