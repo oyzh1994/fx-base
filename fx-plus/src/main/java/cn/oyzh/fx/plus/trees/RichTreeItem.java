@@ -13,6 +13,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
+import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -458,5 +459,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void flushLocal() {
         this.getTreeView().flushLocal();
+    }
+
+    /**
+     * 获取窗口
+     *
+     * @return 窗口
+     */
+    public Window window() {
+        return this.getTreeView().window();
     }
 }

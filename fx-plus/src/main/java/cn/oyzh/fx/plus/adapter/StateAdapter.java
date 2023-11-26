@@ -203,13 +203,19 @@ public interface StateAdapter extends PropAdapter {
         }
         if (node != null) {
             if (!node.visibleProperty().isBound()) {
-                manager.visibleProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setVisible(t1)));
+                node.visibleProperty().bind(manager.visibleProperty());
+//                manager.visibleProperty().addListener((observableValue, aBoolean, t1) -> node.setVisible(t1));
+//                manager.visibleProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setVisible(t1)));
             }
             if (!node.managedProperty().isBound()) {
-                manager.managedProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setManaged(t1)));
+                node.managedProperty().bind(manager.managedProperty());
+//                manager.managedProperty().addListener((observableValue, aBoolean, t1) -> node.setManaged(t1));
+//                manager.managedProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setManaged(t1)));
             }
             if (!node.disableProperty().isBound()) {
-                manager.disableProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setDisable(t1)));
+                node.disableProperty().bind(manager.disableProperty());
+//                manager.disableProperty().addListener((observableValue, aBoolean, t1) -> node.setDisable(t1));
+//                manager.disableProperty().addListener(new WeakChangeListener<>((observableValue, aBoolean, t1) -> node.setDisable(t1)));
             }
         }
         this.setProp("_stateManager", manager);
