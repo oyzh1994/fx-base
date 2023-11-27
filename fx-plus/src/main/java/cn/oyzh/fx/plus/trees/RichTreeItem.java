@@ -18,8 +18,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 富功能树节点
@@ -152,8 +153,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 移除节点
      */
     public void remove() {
-        if (this.getParent() != null) {
-            this.getParent().getChildren().remove(this);
+        TreeItem<?> parent = this.getParent();
+        if (parent instanceof RichTreeItem<?> treeItem) {
+            treeItem.realChildren.remove(this);
+        } else {
+            parent.getChildren().remove(this);
         }
     }
 
@@ -169,7 +173,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 首个子节点
      */
     public TreeItem<?> firstChild() {
-        return (TreeItem<?>) CollUtil.getFirst(this.getChildren());
+        return CollUtil.getFirst(this.realChildren);
     }
 
     /**
@@ -325,11 +329,12 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         if (!this.filtering) {
             this.filtering = true;
             try {
-                ObservableList children = this.getChildren();
+                ObservableList<TreeItem<?>> children = this.getChildren();
                 if (this.realChildren.isEmpty()) {
                     children.clear();
                 } else if (itemFilter == null || !this.filterable) {
-                    List<TreeItem<?>> shows = new ArrayList<>();
+                    Set<TreeItem<?>> shows = new HashSet<>();
+                    Set<TreeItem<?>> hides = new HashSet<>();
                     for (TreeItem<?> child : this.realChildren) {
                         if (!children.contains(child)) {
                             shows.add(child);
@@ -337,6 +342,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                         if (child instanceof RichTreeItem<?> treeItem) {
                             treeItem.doFilter(itemFilter);
                         }
+                    }
+                    for (TreeItem<?> child : children) {
+                        if (!this.realChildren.contains(child)) {
+                            hides.add(child);
+                        }
+                    }
+                    if (!hides.isEmpty()) {
+                        children.removeAll(hides);
                     }
                     if (!shows.isEmpty()) {
                         children.addAll(shows);
@@ -348,8 +361,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                             treeItem.doFilter(itemFilter);
                         }
                     }
-                    List<TreeItem<?>> shows = new ArrayList<>();
-                    List<TreeItem<?>> hides = new ArrayList<>();
+                    Set<TreeItem<?>> shows = new HashSet<>();
+                    Set<TreeItem<?>> hides = new HashSet<>();
                     for (TreeItem<?> child : this.realChildren) {
                         if (child instanceof RichTreeItem<?> treeItem) {
                             if (treeItem.itemVisible()) {
@@ -361,6 +374,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                             }
                         } else if (!children.contains(child)) {
                             shows.add(child);
+                        }
+                    }
+                    for (TreeItem<?> child : children) {
+                        if (!this.realChildren.contains(child)) {
+                            hides.add(child);
                         }
                     }
                     if (!hides.isEmpty()) {
