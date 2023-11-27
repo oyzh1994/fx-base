@@ -1,11 +1,12 @@
 package cn.oyzh.fx.pkg.config;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.pkg.clip.clipper.JarClipConfig;
 import cn.oyzh.fx.pkg.clip.clipper.JreClipConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.packager.PackageConfig;
-import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,7 +46,7 @@ public class PlatformConfig extends BaseConfig {
     @Override
     public void parseConfig(JSONObject object1) {
         super.parseConfig(object1);
-        this.jdkPath = object1.getString("jdkPath");
+        this.jdkPath = object1.getStr("jdkPath");
         if (object1.containsKey("package")) {
             JSONObject object = object1.getJSONObject("package");
             this.packageConfig = new PackageConfig();
@@ -111,7 +112,7 @@ public class PlatformConfig extends BaseConfig {
      */
     public static PlatformConfig loadConfig(String configPath) {
         String text = ResourceUtil.readUtf8Str(configPath);
-        JSONObject object = JSONObject.parseObject(text);
+        JSONObject object = JSONUtil.parseObj(text);
         PlatformConfig config = new PlatformConfig();
         config.parseConfig(object);
         return config;

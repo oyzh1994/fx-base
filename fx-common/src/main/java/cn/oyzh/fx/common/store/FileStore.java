@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.store;
 
 import cn.hutool.core.io.FileUtil;
-import com.alibaba.fastjson.JSON;
+import cn.hutool.json.JSONUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -54,7 +54,7 @@ public abstract class FileStore<T> {
     protected synchronized boolean saveData(Object obj) {
         try {
             if (obj != null) {
-                String content = JSON.toJSONString(obj);
+                String content = JSONUtil.toJsonStr(obj);
                 return FileUtil.writeString(content, this.storeFile, this.charset) != null;
             }
             return FileUtil.clean(this.storeFile);

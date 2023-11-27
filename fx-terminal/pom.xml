@@ -27,12 +27,21 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- json类库 -->
+        <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.alibaba</groupId> -->
+        <!--     <artifactId>fastjson</artifactId> -->
+        <!--     <scope>compile</scope> -->
+        <!-- </dependency> -->
+
+        <!-- json工具类库 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <scope>compile</scope>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
+            <version>${hutool.version}</version>
+            <scope>provided</scope>
         </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>

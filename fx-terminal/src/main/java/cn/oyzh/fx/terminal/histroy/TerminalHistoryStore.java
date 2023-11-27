@@ -3,9 +3,9 @@ package cn.oyzh.fx.terminal.histroy;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.store.ArrayFileStore;
-import com.alibaba.fastjson.JSON;
 import lombok.NonNull;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistor
             if (StrUtil.isBlank(text)) {
                 return new ArrayList<>();
             }
-            this.histories.addAll(JSON.parseArray(text, TerminalHistory.class));
+            this.histories.addAll(JSONUtil.toList(text, TerminalHistory.class));
         }
         return this.histories;
     }

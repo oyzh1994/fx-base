@@ -1,11 +1,12 @@
 package cn.oyzh.fx.pkg.config;
 
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.pkg.clip.clipper.JarClipConfig;
 import cn.oyzh.fx.pkg.clip.clipper.JreClipConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.packager.PackageConfig;
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -61,19 +62,19 @@ public class GlobalConfig extends BaseConfig {
 
     @Override
     public void parseConfig(JSONObject object1) {
-        String jarPath = object1.getString("jarPath");
+        String jarPath = object1.getStr("jarPath");
         if (jarPath != null) {
             this.jarPath = jarPath;
         }
-        String destPath = object1.getString("destPath");
+        String destPath = object1.getStr("destPath");
         if (destPath != null) {
             this.destPath = destPath;
         }
-        String jdkPath = object1.getString("jdkPath");
+        String jdkPath = object1.getStr("jdkPath");
         if (jdkPath != null) {
             this.jdkPath = jdkPath;
         }
-        Boolean retainDuringDir = object1.getBoolean("retainDuringDir");
+        Boolean retainDuringDir = object1.getBool("retainDuringDir");
         if (retainDuringDir != null) {
             this.retainDuringDir = retainDuringDir;
         }
@@ -103,7 +104,7 @@ public class GlobalConfig extends BaseConfig {
      */
     public static GlobalConfig loadConfig(String configPath) {
         String text = ResourceUtil.readUtf8Str(configPath);
-        JSONObject object = JSONObject.parseObject(text);
+        JSONObject object = JSONUtil.parseObj(text);
         GlobalConfig config = new GlobalConfig();
         config.parseConfig(object);
         return config;

@@ -1,9 +1,9 @@
 package cn.oyzh.fx.pkg.packager;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.common.util.FileNameUtil;
 import cn.oyzh.fx.pkg.config.BaseConfig;
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -149,59 +149,59 @@ public class PackageConfig extends BaseConfig {
     @Override
     public void parseConfig(JSONObject object) {
         super.parseConfig(object);
-        String identifier = object.getString("identifier");
+        String identifier = object.getStr("identifier");
         if (identifier != null) {
             this.identifier = identifier;
         }
-        String type = object.getString("type");
+        String type = object.getStr("type");
         if (type != null) {
             this.type = type;
         }
-        String compressType = object.getString("compressType");
+        String compressType = object.getStr("compressType");
         if (compressType != null) {
             this.compressType = compressType;
         }
-        String version = object.getString("version");
+        String version = object.getStr("version");
         if (version != null) {
             this.version = version;
         }
-        String executable = object.getString("executable");
+        String executable = object.getStr("executable");
         if (executable != null) {
             this.executable = executable;
         }
-        String destPath = object.getString("destPath");
+        String destPath = object.getStr("destPath");
         if (destPath != null) {
             this.destPath = destPath;
         }
-        String mainClass = object.getString("mainClass");
+        String mainClass = object.getStr("mainClass");
         if (mainClass != null) {
             this.mainClass = mainClass;
         }
-        String appIcon = object.getString("appIcon");
+        String appIcon = object.getStr("appIcon");
         if (appIcon != null) {
             this.appIcon = appIcon;
         }
-        String jarPath = object.getString("jarPath");
+        String jarPath = object.getStr("jarPath");
         if (jarPath != null) {
             this.jarPath = jarPath;
         }
-        String jrePath = object.getString("jrePath");
+        String jrePath = object.getStr("jrePath");
         if (jrePath != null) {
             this.jrePath = jrePath;
         }
-        String appName = object.getString("appName");
+        String appName = object.getStr("appName");
         if (appName != null) {
             this.appName = appName;
         }
-        String vendor = object.getString("vendor");
+        String vendor = object.getStr("vendor");
         if (vendor != null) {
             this.vendor = vendor;
         }
-        String desc = object.getString("desc");
+        String desc = object.getStr("desc");
         if (desc != null) {
             this.desc = desc;
         }
-        String platform = object.getString("platform");
+        String platform = object.getStr("platform");
         if (platform != null) {
             this.platform = platform;
         }

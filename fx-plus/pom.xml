@@ -144,12 +144,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- json类库 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.alibaba</groupId> -->
+        <!--     <artifactId>fastjson</artifactId> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

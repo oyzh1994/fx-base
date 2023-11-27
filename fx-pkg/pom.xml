@@ -86,10 +86,17 @@
             <artifactId>fx-common</artifactId>
         </dependency>
 
-        <!-- json类库 -->
+        <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.alibaba</groupId> -->
+        <!--     <artifactId>fastjson</artifactId> -->
+        <!-- </dependency> -->
+
+        <!-- json工具类库 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- 测试类库 -->

@@ -213,6 +213,19 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
+     * 是否包含节点
+     *
+     * @param item 节点
+     * @return 结果
+     */
+    public boolean containsChild(TreeItem<?> item) {
+        if (item != null) {
+            return this.getShowChildren().contains(item);
+        }
+        return false;
+    }
+
+    /**
      * 设置子节点
      *
      * @param item 节点

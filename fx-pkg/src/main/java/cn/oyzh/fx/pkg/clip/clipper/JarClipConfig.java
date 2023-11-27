@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -115,7 +115,7 @@ public class JarClipConfig extends BaseClipConfig {
                 this.excludeClasses.add(o.toString());
             }
         }
-        Boolean delEmptyJar = object.getBoolean("delEmptyJar");
+        Boolean delEmptyJar = object.getBool("delEmptyJar");
         if (delEmptyJar != null) {
             this.delEmptyJar = delEmptyJar;
         }

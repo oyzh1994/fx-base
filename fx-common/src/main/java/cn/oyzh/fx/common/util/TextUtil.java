@@ -2,10 +2,7 @@ package cn.oyzh.fx.common.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.HexUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.parser.Feature;
+import cn.hutool.json.JSONUtil;
 import lombok.experimental.UtilityClass;
 
 import java.io.UnsupportedEncodingException;
@@ -201,31 +198,27 @@ public class TextUtil {
             return null;
         }
         String data = null;
-        if (rawData instanceof byte[] bytes) {
-            data = new String(bytes);
-        }
-        // if (rawData instanceof Byte[] bytes) {
-        //     byte[] bytes1 = new byte[bytes.length];
-        //     for (int i = 0; i < bytes1.length; i++) {
-        //         bytes1[i] = bytes[i];
-        //     }
-        //     data = new String(bytes1);
-        // }
-        if (rawData instanceof CharSequence sequence) {
-            data = sequence.toString();
-        }
-        if (data == null) {
-            return null;
-        }
-        if (!data.contains("{") && !data.contains("[")) {
-            return data;
-        }
         try {
-            JSONObject json = JSON.parseObject(data, Feature.OrderedField);
-            if (json != null) {
-                return JSONObject.toJSONString(json, true);
+            if (rawData instanceof byte[] bytes) {
+                data = new String(bytes);
             }
-        } catch (JSONException ignore) {
+            // if (rawData instanceof Byte[] bytes) {
+            //     byte[] bytes1 = new byte[bytes.length];
+            //     for (int i = 0; i < bytes1.length; i++) {
+            //         bytes1[i] = bytes[i];
+            //     }
+            //     data = new String(bytes1);
+            // }
+            if (rawData instanceof CharSequence sequence) {
+                data = sequence.toString();
+            }
+            if (data == null) {
+                return null;
+            }
+            if (!data.contains("{") && !data.contains("[")) {
+                return data;
+            }
+            return JSONUtil.toJsonPrettyStr(data);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.config.BaseConfig;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -44,11 +44,11 @@ public class BaseClipConfig extends BaseConfig {
                 this.excludeFiles.add(o.toString());
             }
         }
-        String src = object.getString("src");
+        String src = object.getStr("src");
         if (src != null) {
             this.src = src;
         }
-        String dest = object.getString("dest");
+        String dest = object.getStr("dest");
         if (dest != null) {
             this.dest = dest;
         }

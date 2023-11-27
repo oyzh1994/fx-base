@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg.config;
 
-import com.alibaba.fastjson.JSONObject;
+import cn.hutool.json.JSONObject;
 import lombok.Data;
 
 /**
@@ -23,7 +23,7 @@ public class BaseConfig {
      * @param object 配置对象
      */
     public void parseConfig(JSONObject object) {
-        Boolean enable = object.getBoolean("enable");
+        Boolean enable = object.getBool("enable");
         if (enable != null) {
             this.enable = enable;
         }

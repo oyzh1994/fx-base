@@ -32,15 +32,23 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-extra</artifactId>
             <version>${hutool.version}</version>
-<!--            <scope>provided</scope>-->
+            <!--            <scope>provided</scope>-->
         </dependency>
 
-        <!-- json类库 -->
+        <!-- json工具类库 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
+            <version>${hutool.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.alibaba</groupId> -->
+        <!--     <artifactId>fastjson</artifactId> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <!-- 二维码工具 -->
         <dependency>

@@ -1,9 +1,9 @@
 package cn.oyzh.fx.pkg.jpackage;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.config.BaseConfig;
 import cn.oyzh.fx.pkg.packager.PackageConfig;
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -75,47 +75,47 @@ public class JPackageConfig extends BaseConfig {
     @Override
     public void parseConfig(JSONObject object) {
         super.parseConfig(object);
-        String name = object.getString("name");
+        String name = object.getStr("name");
         if (name != null) {
             this.name = name;
         }
-        String type = object.getString("type");
+        String type = object.getStr("type");
         if (type != null) {
             this.type = type;
         }
-        String appVersion = object.getString("appVersion");
+        String appVersion = object.getStr("appVersion");
         if (appVersion != null) {
             this.appVersion = appVersion;
         }
-        String mainJar = object.getString("mainJar");
+        String mainJar = object.getStr("mainJar");
         if (mainJar != null) {
             this.mainJar = mainJar;
         }
-        String runtimeImage = object.getString("runtimeImage");
+        String runtimeImage = object.getStr("runtimeImage");
         if (runtimeImage != null) {
             this.runtimeImage = runtimeImage;
         }
-        String icon = object.getString("icon");
+        String icon = object.getStr("icon");
         if (icon != null) {
             this.icon = icon;
         }
-        String input = object.getString("input");
+        String input = object.getStr("input");
         if (input != null) {
             this.input = input;
         }
-        String dest = object.getString("dest");
+        String dest = object.getStr("dest");
         if (dest != null) {
             this.dest = dest;
         }
-        String vendor = object.getString("vendor");
+        String vendor = object.getStr("vendor");
         if (vendor != null) {
             this.vendor = vendor;
         }
-        Boolean verbose = object.getBoolean("verbose");
+        Boolean verbose = object.getBool("verbose");
         if (vendor != null) {
             this.verbose = verbose;
         }
-        String description = object.getString("description");
+        String description = object.getStr("description");
         if (description != null) {
             this.description = description;
         }

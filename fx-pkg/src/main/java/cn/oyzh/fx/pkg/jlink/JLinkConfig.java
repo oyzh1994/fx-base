@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.jlink;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.config.BaseConfig;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -83,35 +83,35 @@ public class JLinkConfig extends BaseConfig {
                 this.addModules.add(o.toString());
             }
         }
-        Boolean verbose = object.getBoolean("verbose");
+        Boolean verbose = object.getBool("verbose");
         if (verbose != null) {
             this.verbose = verbose;
         }
-        Boolean noManPages = object.getBoolean("noManPages");
+        Boolean noManPages = object.getBool("noManPages");
         if (noManPages != null) {
             this.noManPages = noManPages;
         }
-        Boolean noHeaderFiles = object.getBoolean("noHeaderFiles");
+        Boolean noHeaderFiles = object.getBool("noHeaderFiles");
         if (noHeaderFiles != null) {
             this.noHeaderFiles = noHeaderFiles;
         }
-        Boolean stripDebug = object.getBoolean("stripDebug");
+        Boolean stripDebug = object.getBool("stripDebug");
         if (stripDebug != null) {
             this.stripDebug = stripDebug;
         }
-        Boolean stripJavaDebugAttributes = object.getBoolean("stripJavaDebugAttributes");
+        Boolean stripJavaDebugAttributes = object.getBool("stripJavaDebugAttributes");
         if (stripJavaDebugAttributes != null) {
             this.stripJavaDebugAttributes = stripJavaDebugAttributes;
         }
-        Integer compress = object.getInteger("compress");
+        Integer compress = object.getInt("compress");
         if (compress != null) {
             this.compress = compress;
         }
-        String vm = object.getString("vm");
+        String vm = object.getStr("vm");
         if (vm != null) {
             this.vm = vm;
         }
-        String output = object.getString("output");
+        String output = object.getStr("output");
         if (output != null) {
             this.output = output;
         }
