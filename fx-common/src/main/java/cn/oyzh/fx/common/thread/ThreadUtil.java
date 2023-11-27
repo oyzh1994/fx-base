@@ -1,6 +1,7 @@
 package cn.oyzh.fx.common.thread;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.thread.ExecutorBuilder;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -179,5 +180,29 @@ public class ThreadUtil {
         if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
         }
+    }
+
+    /**
+     * 加入线程
+     *
+     * @param thread 线程
+     */
+    public static void join(Thread thread) {
+        if (thread != null && thread.isAlive()) {
+            try {
+                thread.join();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 创建单任务线程池
+     *
+     * @return 单任务线程池
+     */
+    public static ExecutorService newSingleExecutor() {
+        return ExecutorBuilder.create().setCorePoolSize(1).setMaxPoolSize(1).setKeepAliveTime(0L).buildFinalizable();
     }
 }
