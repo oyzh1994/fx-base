@@ -17,14 +17,12 @@
         <dependency>
             <groupId>cn.oyzh</groupId>
             <artifactId>fx-common</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- 自定义类库，fx相关 -->
         <dependency>
             <groupId>cn.oyzh</groupId>
             <artifactId>fx-plus</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
@@ -39,9 +37,7 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-json</artifactId>
             <version>${hutool.version}</version>
-            <scope>provided</scope>
         </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>

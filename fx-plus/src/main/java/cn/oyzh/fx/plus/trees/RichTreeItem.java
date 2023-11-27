@@ -100,10 +100,19 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     /**
      * 获取子节点大小
      *
-     * @return
+     * @return 子节点大小
      */
     public int getChildrenSize() {
         return this.getShowChildren().size();
+    }
+
+    /**
+     * 获取真实子节点大小
+     *
+     * @return 真实子节点大小
+     */
+    public int getRealChildrenSize() {
+        return this.realChildren == null ? 0 : this.realChildren.size();
     }
 
     /**
