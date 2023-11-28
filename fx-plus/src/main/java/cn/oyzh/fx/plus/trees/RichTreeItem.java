@@ -88,13 +88,23 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
-     * 获取显示的子节点列表
+     * 获取显示子节点列表
      *
      * @return 子节点列表
      */
     public ObservableList<TreeItem<?>> getShowChildren() {
         // 如果是可过滤则显示真实子节点列表
         return this.filterable ? this.realChildren : this.getChildren();
+    }
+
+    /**
+     * 获取富功能子节点列表
+     *
+     * @return 子节点列表
+     */
+    public ObservableList<RichTreeItem<?>> getRichChildren() {
+        List list = this.getShowChildren();
+        return (ObservableList<RichTreeItem<?>>) list;
     }
 
     /**
@@ -377,7 +387,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 执行过滤
      */
     public void doFilter() {
-        FXUtil.runLater(()-> this.doFilter(this.treeView.itemFilter));
+        FXUtil.runLater(() -> this.doFilter(this.treeView.itemFilter));
     }
 
     /**
@@ -391,36 +401,31 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         }
         this.filtering = true;
         try {
+            ObservableList<RichTreeItem<?>> richChildren = this.getRichChildren();
             if (this.filterable) {
                 ObservableList<TreeItem<?>> children = this.getChildren();
                 if (this.isChildEmpty()) {
                     children.clear();
                 } else {
-                    for (TreeItem<?> child : this.getShowChildren()) {
-                        if (child instanceof RichTreeItem<?> treeItem) {
-                            if (itemFilter != null) {
-                                treeItem.visible = itemFilter.apply(treeItem);
-                            }
-                            treeItem.doFilter(itemFilter);
+                    for (RichTreeItem<?> child : richChildren) {
+                        if (itemFilter != null) {
+                            child.visible = itemFilter.apply(child);
                         }
+                        child.doFilter(itemFilter);
                     }
                     Set<TreeItem<?>> shows = new HashSet<>();
                     Set<TreeItem<?>> hides = new HashSet<>();
-                    for (TreeItem<?> child : this.getShowChildren()) {
-                        if (child instanceof RichTreeItem<?> treeItem) {
-                            if (treeItem.itemVisible()) {
-                                if (!children.contains(treeItem)) {
-                                    shows.add(treeItem);
-                                }
-                            } else if (children.contains(treeItem)) {
-                                hides.add(treeItem);
+                    for (RichTreeItem<?> child : richChildren) {
+                        if (child.itemVisible()) {
+                            if (!children.contains(child)) {
+                                shows.add(child);
                             }
-                        } else if (!children.contains(child)) {
-                            shows.add(child);
+                        } else if (children.contains(child)) {
+                            hides.add(child);
                         }
                     }
                     for (TreeItem<?> child : children) {
-                        if (!this.getShowChildren().contains(child)) {
+                        if (!richChildren.contains(child)) {
                             hides.add(child);
                         }
                     }
@@ -432,10 +437,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                     }
                 }
             } else {
-                for (TreeItem<?> child : this.getShowChildren()) {
-                    if (child instanceof RichTreeItem<?> treeItem) {
-                        treeItem.doFilter(itemFilter);
-                    }
+                for (RichTreeItem<?> child : richChildren) {
+                    child.doFilter(itemFilter);
                 }
             }
             this.sort();
@@ -461,23 +464,19 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param item 节点
      * @return 结果
      */
-    public boolean itemVisible(TreeItem<?> item) {
-        if (item instanceof RichTreeItem<?> richTreeItem) {
-            if (richTreeItem.visible) {
+    public boolean itemVisible(RichTreeItem<?> item) {
+        if (item.visible) {
+            return true;
+        }
+        if (item.isChildEmpty()) {
+            return false;
+        }
+        for (RichTreeItem<?> child : item.getRichChildren()) {
+            if (child.visible) {
                 return true;
             }
-            if (richTreeItem.isChildEmpty()) {
-                return false;
-            }
-            for (TreeItem<?> child : this.getShowChildren()) {
-                if (child instanceof RichTreeItem<?> treeItem) {
-                    if (treeItem.visible) {
-                        return true;
-                    }
-                    if (treeItem.itemVisible()) {
-                        return true;
-                    }
-                }
+            if (child.itemVisible()) {
+                return true;
             }
         }
         return false;
