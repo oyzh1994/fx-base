@@ -377,7 +377,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 执行过滤
      */
     public void doFilter() {
-        this.doFilter(this.treeView.itemFilter);
+        FXUtil.runLater(()-> this.doFilter(this.treeView.itemFilter));
     }
 
     /**
