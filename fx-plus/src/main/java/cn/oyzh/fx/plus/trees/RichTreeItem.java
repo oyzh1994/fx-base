@@ -5,6 +5,7 @@ import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.RenderService;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -39,15 +40,20 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     /**
      * 当前排序类型
-     * 0 asc 1 desc
+     * 0 asc 1 desc -1 无
      */
-    protected volatile byte sortType;
+    protected volatile Byte sortType;
 
     /**
      * 是否可见
      */
     @Setter
     protected volatile boolean visible = true;
+
+    /**
+     * 禁用排序
+     */
+    private volatile byte sortState;
 
     /**
      * 是否过滤中
@@ -80,6 +86,27 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
             this.realChildren = FXCollections.observableArrayList();
         }
         this.getShowChildren().addListener((ListChangeListener<TreeItem<?>>) change -> this.doFilter());
+    }
+
+    /**
+     * 排序是否启用
+     */
+    public boolean isSortEnable() {
+        return this.sortState == 0;
+    }
+
+    /**
+     * 禁用排序
+     */
+    public void disableSort() {
+        this.sortState = 1;
+    }
+
+    /**
+     * 启用排序
+     */
+    public void enableSort() {
+        this.sortState = 0;
     }
 
     @Override
@@ -352,10 +379,12 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 按照类型排序
      */
     public void sort() {
-        if (this.sortType == 0) {
-            this.sortAsc();
-        } else {
-            this.sortDesc();
+        if (this.sortType != null) {
+            if (this.sortType == 0) {
+                this.sortAsc();
+            } else {
+                this.sortDesc();
+            }
         }
     }
 
@@ -363,11 +392,13 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 对节点排序，正序
      */
     public synchronized void sortAsc() {
-        this.sortType = 0;
-        if (!this.isChildEmpty()) {
+        if (this.isSortEnable()) {
+            this.sortType = 0;
             // 执行排序
             ObservableList<TreeItem<V>> subs = this.getChildren();
-            subs.sort((a, b) -> CharSequence.compare(a.getValue().name(), b.getValue().name()));
+            if (!subs.isEmpty()) {
+                subs.sort((a, b) -> CharSequence.compare(a.getValue().name(), b.getValue().name()));
+            }
         }
     }
 
@@ -375,11 +406,13 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 对节点排序，倒序
      */
     public synchronized void sortDesc() {
-        this.sortType = 1;
-        if (!this.isChildEmpty()) {
+        if (this.isSortEnable()) {
+            this.sortType = 1;
             // 执行排序
             ObservableList<TreeItem<V>> subs = this.getChildren();
-            subs.sort((a, b) -> CharSequence.compare(b.getValue().name(), a.getValue().name()));
+            if (!subs.isEmpty()) {
+                subs.sort((a, b) -> CharSequence.compare(b.getValue().name(), a.getValue().name()));
+            }
         }
     }
 
@@ -387,7 +420,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 执行过滤
      */
     public void doFilter() {
-        FXUtil.runLater(() -> this.doFilter(this.treeView.itemFilter));
+        RenderService.submit(() -> this.doFilter(this.treeView.itemFilter));
     }
 
     /**
@@ -442,6 +475,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                 }
             }
             this.sort();
+            this.flushLocal();
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
@@ -468,18 +502,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         if (item.visible) {
             return true;
         }
-        if (item.isChildEmpty()) {
+        if (item.isLeaf() || item.isChildEmpty()) {
             return false;
         }
-        for (RichTreeItem<?> child : item.getRichChildren()) {
-            if (child.visible) {
-                return true;
-            }
-            if (child.itemVisible()) {
-                return true;
-            }
-        }
-        return false;
+        return item.getRichChildren().parallelStream().anyMatch(RichTreeItem::itemVisible);
     }
 
     /**
