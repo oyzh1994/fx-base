@@ -262,7 +262,12 @@ public abstract class SearchHandler {
                 searchValue.setMatchType(matchType);
                 values.add(searchValue);
             }
-            ObservableList<? extends TreeItem<?>> children = item.getChildren();
+            ObservableList<? extends TreeItem<?>> children;
+            if (item instanceof RichTreeItem<?> richTreeItem) {
+                children = richTreeItem.getShowChildren();
+            } else {
+                children = item.getChildren();
+            }
             if (children != null && !children.isEmpty()) {
                 for (TreeItem<?> child : children) {
                     this.getMatchValues(child, values, level + 1);
