@@ -28,7 +28,7 @@ public class TaskManager {
      * @param task  任务
      * @param delay 延迟时间
      */
-    public static void startDelayTask(@NonNull String key, @NonNull Runnable task, int delay) {
+    public static void startDelay(@NonNull String key, @NonNull Runnable task, int delay) {
         Future<?> delayTask = DELAY_TASKS.get(key);
         if (delayTask != null && !delayTask.isDone()) {
             ExecutorUtil.cancel(delayTask);

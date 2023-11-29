@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.event;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.thread.Task;
+import cn.oyzh.fx.common.thread.TaskBuilder;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import lombok.NonNull;
@@ -11,9 +13,8 @@ import lombok.experimental.UtilityClass;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 事件工具类
@@ -26,9 +27,49 @@ import java.util.stream.Stream;
 public class EventUtil {
 
     /**
+     * 排除方法
+     */
+    private static final Set<String> EXCLUDES = new HashSet<>();
+
+    /**
      * 事件接收者列表
      */
-    private static final List<WeakReference<Object>> RECEIVERS = new ArrayList<>();
+    private static final Set<WeakReference<Object>> RECEIVERS = new HashSet<>();
+
+    static {
+        // 基础
+        EXCLUDES.add("wait");
+        EXCLUDES.add("hashCode");
+        EXCLUDES.add("equals");
+        EXCLUDES.add("toString");
+        EXCLUDES.add("finalize");
+        EXCLUDES.add("getClass");
+
+        // fx
+        EXCLUDES.add("computeAreaInScreen");
+        EXCLUDES.add("setOnRotationStarted");
+        EXCLUDES.add("setOnRotationFinished");
+        EXCLUDES.add("setOnScrollFinished");
+        EXCLUDES.add("setMouseTransparent");
+        EXCLUDES.add("setFocusTraversable");
+        EXCLUDES.add("setOnContextMenuRequested");
+        EXCLUDES.add("getOnMouseDragEntered");
+        EXCLUDES.add("previousSibling");
+        EXCLUDES.add("nextSibling");
+        EXCLUDES.add("setExpanded");
+        EXCLUDES.add("getGraphic");
+        EXCLUDES.add("setGraphic");
+        EXCLUDES.add("buildEventDispatchChain");
+        EXCLUDES.add("addEventFilter");
+        EXCLUDES.add("removeEventFilter");
+        EXCLUDES.add("isLeaf");
+        EXCLUDES.add("getParent");
+        EXCLUDES.add("isExpanded");
+        EXCLUDES.add("addEventHandler");
+        EXCLUDES.add("removeEventHandler");
+        EXCLUDES.add("getValue");
+        EXCLUDES.add("setValue");
+    }
 
     /**
      * 注册事件处理对象
@@ -84,96 +125,137 @@ public class EventUtil {
             if (obj == null) {
                 continue;
             }
-            // 获取方法
-            Method[] methods = ReflectUtil.getMethods(obj.getClass());
-            if (ArrayUtil.isEmpty(methods)) {
-                continue;
+            // 执行方法
+            Method[] methods = obj.getClass().getMethods();
+            for (Method method : methods) {
+                invokeMethod(method, event, obj);
             }
-            List<Method> methodList = Stream.of(methods).filter(EventUtil::filterMethod).toList();
-            // 遍历并处理方法
-            for (Method method : methodList) {
-                // 类型处理
-                if (event.type() != null) {
-                    EventReceiver[] receivers = method.getAnnotationsByType(EventReceiver.class);
-                    if (ArrayUtil.isNotEmpty(receivers)) {
-                        handleByType(receivers, event, method, obj);
-                    }
-                }
-                // 分组处理
-                if (event.group() != null) {
-                    EventGroup[] groups = method.getAnnotationsByType(EventGroup.class);
-                    if (ArrayUtil.isNotEmpty(groups)) {
-                        handleByGroup(groups, event, method, obj);
-                    }
-                }
+            methods = obj.getClass().getDeclaredMethods();
+            for (Method method : methods) {
+                invokeMethod(method, event, obj);
             }
         }
     }
 
-    private static boolean filterMethod(Method method) {
+    /**
+     * 触发事件，延迟执行
+     *
+     * @param event 事件
+     * @param delay 延迟事件
+     */
+    public static void fireDelay(@NonNull Event<?> event, int delay) {
+        // 执行延迟任务
+        Task task = TaskBuilder.newBuilder().onStart(() -> fire(event)).build();
+        TaskManager.startDelay("event:delay:" + event.type() + ":" + event.group(), task, delay);
+    }
+
+    /**
+     * 执行方法
+     *
+     * @param method 方法
+     * @param event  事件
+     * @param obj    对象
+     * @return 结果
+     */
+    private static boolean invokeMethod(Method method, Event<?> event, Object obj) {
         // 排除一般方法
         if (Modifier.isInterface(method.getModifiers()) || Modifier.isAbstract(method.getModifiers())
                 || Modifier.isNative(method.getModifiers()) || Modifier.isStatic(method.getModifiers())
-                || method.isDefault() || method.isBridge()) {
+                || method.isDefault() || method.isBridge() || method.getName().contains("$")
+                || method.getName().endsWith("Property") || EXCLUDES.contains(method.getName())) {
             return false;
         }
-        EventReceiver[] receivers = method.getAnnotationsByType(EventReceiver.class);
-        if (receivers.length > 0) {
-            return true;
+        // 按类型执行
+        if (event.type() != null) {
+            EventReceiver[] receivers = method.getAnnotationsByType(EventReceiver.class);
+            if (handleByType(receivers, event, method, obj)) {
+                return true;
+            }
         }
-        EventGroup[] groups = method.getAnnotationsByType(EventGroup.class);
-        if (groups.length > 0) {
-            return true;
+        // 按分组执行
+        if (event.group() != null) {
+            EventGroup[] groups = method.getAnnotationsByType(EventGroup.class);
+            return handleByGroup(groups, event, method, obj);
         }
         return false;
     }
 
-    private static void handleByType(EventReceiver[] receivers, Event<?> event, Method method, Object obj) {
-        List<EventReceiver> list = new ArrayList<>();
+    /**
+     * 按类型执行
+     *
+     * @param receivers 接收注解
+     * @param event     事件
+     * @param method    方法
+     * @param obj       对象
+     * @return 结果
+     */
+    private static boolean handleByType(EventReceiver[] receivers, Event<?> event, Method method, Object obj) {
+        if (ArrayUtil.isEmpty(receivers)) {
+            return false;
+        }
+        // 是否成功
+        boolean success = false;
+        // 遍历注解
         for (EventReceiver receiver : receivers) {
+            // 初次执行判断
+            if (!success) {
+                // 判断是否可调用
+                if (!method.trySetAccessible()) {
+                    StaticLog.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
+                    return false;
+                }
+                // 设置可访问
+                method.setAccessible(true);
+            }
             // 检查类型
             if (receiver.value().equals(event.type())) {
-                list.add(receiver);
+                // 执行方法
+                fire(obj, method, event, receiver.verbose(), receiver.fxThread(), receiver.async());
+                // 执行成功
+                success = true;
             }
         }
-        if (list.isEmpty()) {
-            return;
-        }
-        // 判断是否可调用
-        if (!method.trySetAccessible()) {
-            StaticLog.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
-            return;
-        }
-        // 设置可访问
-        method.setAccessible(true);
-        // 处理并添加到集合
-        for (EventReceiver receiver : receivers) {
-            fire(obj, method, event, receiver.verbose(), receiver.fxThread(), receiver.async());
-        }
+        // 返回结果
+        return success;
     }
 
-    private static void handleByGroup(EventGroup[] groups, Event<?> event, Method method, Object obj) {
-        List<EventGroup> list = new ArrayList<>();
+    /**
+     * 按分组执行
+     *
+     * @param groups 分组
+     * @param event  事件
+     * @param method 方法
+     * @param obj    对象
+     * @return 结果
+     */
+    private static boolean handleByGroup(EventGroup[] groups, Event<?> event, Method method, Object obj) {
+        if (ArrayUtil.isEmpty(groups)) {
+            return false;
+        }
+        // 是否成功
+        boolean success = false;
+        // 遍历注解
         for (EventGroup group : groups) {
-            // 检查类型
+            // 初次执行判断
+            if (!success) {
+                // 判断是否可调用
+                if (!method.trySetAccessible()) {
+                    StaticLog.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
+                    return false;
+                }
+                // 设置可访问
+                method.setAccessible(true);
+            }
+            // 检查分组
             if (group.value().equals(event.group())) {
-                list.add(group);
+                // 执行方法
+                fire(obj, method, event, group.verbose(), group.fxThread(), group.async());
+                // 执行成功
+                success = true;
             }
         }
-        if (list.isEmpty()) {
-            return;
-        }
-        // 判断是否可调用
-        if (!method.trySetAccessible()) {
-            StaticLog.warn("trySetAccessible fail obj:{} method:{}.", obj.getClass().getName(), method.getName());
-            return;
-        }
-        // 设置可访问
-        method.setAccessible(true);
-        // 处理并添加到集合
-        for (EventGroup group : list) {
-            fire(obj, method, event, group.verbose(), group.fxThread(), group.async());
-        }
+        // 返回结果
+        return success;
     }
 
     /**
@@ -186,13 +268,13 @@ public class EventUtil {
      * @param fxThread 是否使用fx线程
      * @param async    是否异步执行
      */
-    private static void fire(Object obj, Method method, Event<?> event, boolean verbose, boolean fxThread, boolean async) {
+    private static void fire(Object obj, Method method, Event<?> event, boolean verbose, boolean fxThread,
+                             boolean async) {
         // 实际调用
         Runnable invoke = () -> {
             Long startTime = null;
             // 打印日志
             if (verbose) {
-//            if (verbose && log.isDebugEnabled()) {
                 startTime = System.currentTimeMillis();
                 StaticLog.debug("fire event[type={},group={},async={},fxThread={},method={}] start.", event.type(), event.group(), async, fxThread, method.getName());
             }
@@ -213,8 +295,7 @@ public class EventUtil {
                     StaticLog.error("method:{} invoke error, ParameterTypes invalid!", method.getName());
                 }
                 // 打印日志
-                if (verbose && startTime != null) {
-//                if (verbose && startTime != null & log.isDebugEnabled()) {
+                if (verbose) {
                     long endTime = System.currentTimeMillis();
                     StaticLog.debug("fire event:[class={},method={},type={},group={}] finish, cost:{}ms.", obj.getClass().getName(), method.getName(), event.type(), event.data(), (endTime - startTime));
                 }
