@@ -42,11 +42,11 @@ public class RenderService {
     }
 
     /**
-     * 提交任务，fx线程异步
+     * 提交任务，fx线程，并延后处理
      *
      * @param task 任务
      */
-    public static void submitFXAsync(Runnable task) {
+    public static void submitFXLater(Runnable task) {
         if (task != null) {
             RENDER_SERVICE.submit(() -> FXUtil.runLater(task));
         }

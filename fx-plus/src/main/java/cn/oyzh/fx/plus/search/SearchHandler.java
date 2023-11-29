@@ -4,10 +4,14 @@ import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.TreeViewUtil;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -218,11 +222,78 @@ public abstract class SearchHandler {
     }
 
     /**
-     * 获取匹配的节点列表
+     * 获取匹配的数据列表
      *
-     * @return 匹配的节点列表，扩展了属性
+     * @return 匹配的数据列表，扩展了属性
      */
     protected abstract List<SearchValue> getMatchValues();
+
+    /**
+     * 获取匹配的数据列表
+     *
+     * @param root 根节点
+     * @return 匹配的数据列表，扩展了属性
+     */
+    protected List<SearchValue> getMatchValues(TreeItem<?> root) {
+        // 匹配值
+        List<SearchValue> values = new ArrayList<>();
+        // 获取匹配的数据列表
+        this.getMatchValues(root, values, 0);
+        // 返回数据
+        return values;
+    }
+
+    /**
+     * 获取匹配的数据列表
+     *
+     * @param item   树节点
+     * @param values 值列表
+     * @param level  当前深度
+     */
+    protected void getMatchValues(TreeItem<?> item, List<SearchValue> values, int level) {
+        if (item != null) {
+            // 获取匹配类型
+            String matchType = this.getMatchType(item);
+            if (matchType != null) {
+                // 生成对象
+                SearchValue searchValue = new SearchValue();
+                searchValue.setItem(item);
+                searchValue.setLevel(level);
+                searchValue.setMatchType(matchType);
+                values.add(searchValue);
+            }
+            ObservableList<? extends TreeItem<?>> children = item.getChildren();
+            if (children != null && !children.isEmpty()) {
+                for (TreeItem<?> child : children) {
+                    this.getMatchValues(child, values, level + 1);
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取可见树节点
+     *
+     * @param treeView 树组件
+     * @return 可见树节点
+     */
+    public static List<TreeItem<?>> getVisibleItems(@NonNull TreeView<?> treeView) {
+        List<TreeItem<?>> result = new ArrayList<>(treeView.getExpandedItemCount());
+        int startIndex = -1;
+        for (int i = 0; i < treeView.getExpandedItemCount(); i++) {
+            TreeItem<?> item = treeView.getTreeItem(i);
+            if (item == treeView.getSelectionModel().getSelectedItem()) {
+                startIndex = i;
+            }
+            if (startIndex > -1 && !item.isExpanded()) {
+                startIndex = -1;
+            }
+            if (startIndex > -1) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
 
     /**
      * 执行分析

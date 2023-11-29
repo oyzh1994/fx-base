@@ -8,6 +8,8 @@ import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 
 /**
@@ -38,28 +40,63 @@ public class TreeViewUtil {
      * 获取树组件的全部节点
      *
      * @param treeView 树组件
+     * @param filter   过滤器
      * @return 全部节点列表
      */
-    public static List<TreeItem<?>> getAllItem(@NonNull TreeView<?> treeView) {
+    public static List<TreeItem<?>> getAllItem(@NonNull TreeView<?> treeView, Function<TreeItem<?>, Boolean> filter) {
         TreeItem<?> root = treeView.getRoot();
         List<TreeItem<?>> items = new ArrayList<>();
-        getAllItem(root, items);
+        getAllItem(root, items, filter);
         return items;
     }
 
     /**
      * 获取树节点全部节点
      *
-     * @param item  树节点
-     * @param items 全部节点列表
+     * @param item   树节点
+     * @param filter 过滤器
+     * @param items  全部节点列表
      */
-    private static void getAllItem(TreeItem<?> item, List<TreeItem<?>> items) {
+    private static void getAllItem(TreeItem<?> item, List<TreeItem<?>> items, Function<TreeItem<?>, Boolean> filter) {
         if (item != null) {
-            items.add(item);
+            if (filter == null || filter.apply(item)) {
+                items.add(item);
+            }
             ObservableList<? extends TreeItem<?>> children = item.getChildren();
             if (children != null && !children.isEmpty()) {
                 for (TreeItem<?> child : children) {
-                    getAllItem(child, items);
+                    getAllItem(child, items, filter);
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取树组件的全部节点
+     *
+     * @param treeView 树组件
+     * @param filter   过滤器
+     */
+    public static void filterItem(@NonNull TreeView<?> treeView, Consumer<TreeItem<?>> filter) {
+        TreeItem<?> root = treeView.getRoot();
+        filterItem(root, filter);
+    }
+
+    /**
+     * 获取树节点全部节点
+     *
+     * @param item   树节点
+     * @param filter 过滤器
+     */
+    private static void filterItem(TreeItem<?> item, Consumer<TreeItem<?>> filter) {
+        if (item != null) {
+            if (filter != null) {
+                filter.accept(item);
+            }
+            ObservableList<? extends TreeItem<?>> children = item.getChildren();
+            if (children != null && !children.isEmpty()) {
+                for (TreeItem<?> child : children) {
+                    filterItem(child, filter);
                 }
             }
         }
@@ -108,6 +145,6 @@ public class TreeViewUtil {
             }
         }
         return false;
-        //return treeView.getRow((TreeItem) item) != -1;
+        // return treeView.getRow((TreeItem) item) != -1;
     }
 }
