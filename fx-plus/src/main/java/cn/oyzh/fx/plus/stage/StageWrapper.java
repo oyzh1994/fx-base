@@ -5,7 +5,7 @@ import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.drag.DragUtil;
-import cn.oyzh.fx.plus.drag.DrapFileHandler;
+import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.StateManager;
@@ -406,7 +406,7 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
      */
     default void initDragFile(@NonNull String dragboardContent, @NonNull Consumer<List<File>> onDragFile) {
         // 文件拖拽初始化
-        DragUtil.initDragFile(new DrapFileHandler() {
+        DragUtil.initDragFile(new DragFileHandler() {
 
             @Override
             public boolean checkDragboard(Dragboard dragboard) {

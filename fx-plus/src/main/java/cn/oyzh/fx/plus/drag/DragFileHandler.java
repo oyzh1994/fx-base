@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * @since 2023/5/14
  */
 @Accessors(chain = true, fluent = true)
-public class DrapFileHandler {
+public class DragFileHandler {
 
     /**
      * 检查拖动板

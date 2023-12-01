@@ -126,11 +126,7 @@ public class EventUtil {
                 continue;
             }
             // 执行方法
-            Method[] methods = obj.getClass().getMethods();
-            for (Method method : methods) {
-                invokeMethod(method, event, obj);
-            }
-            methods = obj.getClass().getDeclaredMethods();
+            Method[] methods = obj.getClass().getDeclaredMethods();
             for (Method method : methods) {
                 invokeMethod(method, event, obj);
             }
@@ -209,10 +205,10 @@ public class EventUtil {
             }
             // 检查类型
             if (receiver.value().equals(event.type())) {
-                // 执行方法
-                fire(obj, method, event, receiver.verbose(), receiver.fxThread(), receiver.async());
                 // 执行成功
                 success = true;
+                // 执行方法
+                fire(obj, method, event, receiver.verbose(), receiver.fxThread(), receiver.async());
             }
         }
         // 返回结果

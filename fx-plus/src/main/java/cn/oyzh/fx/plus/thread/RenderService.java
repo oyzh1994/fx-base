@@ -1,12 +1,13 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.plus.thread;
 
+import cn.oyzh.fx.plus.util.FXUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 渲染服务
+ * 渲染服务，单进程
  *
  * @author oyzh
  * @since 2023/11/28

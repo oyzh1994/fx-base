@@ -170,12 +170,10 @@ public class FXUtil {
                 Task task1 = TaskBuilder.newBuilder().onStart(task).onFinish(latch::countDown).build();
                 Platform.runLater(task1);
                 // Platform.runLater(new RunTask(task1));
-                if (timeout > 0) {
-                    if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
-                        StaticLog.warn("latch.await fail!");
-                    }
-                } else {
+                if (timeout <= 0) {
                     latch.await();
+                } else if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
+                    StaticLog.warn("latch.await fail!");
                 }
                 // 抛出异常(如果有)
                 task1.throwRuntimeException();
@@ -192,7 +190,7 @@ public class FXUtil {
         if (Platform.isFxApplicationThread()) {
             task.run();
         } else {
-           Platform.runLater(task);
+            Platform.runLater(task);
             // Platform.runLater(new RunTask(task));
         }
     }

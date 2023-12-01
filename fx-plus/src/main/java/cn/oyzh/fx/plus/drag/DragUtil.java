@@ -42,7 +42,7 @@ public class DragUtil {
      * @param node    监听节点
      * @param content 拖动板内容
      */
-    public static void initDragNode(DrapNodeHandler handler, Node node, String content) {
+    public static void initDragNode(DragNodeHandler handler, Node node, String content) {
         // 触发拖动
         node.setOnDragDetected(event -> {
             // 获取拖动节点
@@ -109,7 +109,7 @@ public class DragUtil {
      * @param handler 拖动处理器
      * @param scene   场景
      */
-    public static void initDragFile(DrapFileHandler handler, Scene scene) {
+    public static void initDragFile(DragFileHandler handler, Scene scene) {
         scene.setOnDragOver(handler::onDragOver);
         scene.setOnDragExited(handler::onDragExited);
         scene.setOnDragDropped(handler::onDragDropped);

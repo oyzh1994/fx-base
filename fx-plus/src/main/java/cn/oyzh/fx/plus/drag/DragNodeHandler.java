@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.drag;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -11,8 +13,10 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/5/14
  */
+@Lazy
+@Component
 @Accessors(chain = true, fluent = true)
-public class DrapNodeHandler {
+public class DragNodeHandler {
 
     /**
      * 来源

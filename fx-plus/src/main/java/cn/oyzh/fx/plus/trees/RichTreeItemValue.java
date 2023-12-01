@@ -6,8 +6,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
-import lombok.experimental.Accessors;
+
+import java.util.Objects;
 
 
 /**
@@ -20,15 +20,19 @@ import lombok.experimental.Accessors;
 public class RichTreeItemValue extends FXHBox {
 
     {
+        this.setCache(false);
+        this.setCacheShape(false);
         this.setCursor(Cursor.HAND);
     }
 
     /**
-     * 当前名称
+     * 获取当前名称
+     *
+     * @return 当前名称
      */
-    @Getter
-    @Accessors(fluent = true, chain = false)
-    private String name;
+    public String name() {
+        return this.getProp("name");
+    }
 
     /**
      * 设置当前名称
@@ -36,7 +40,7 @@ public class RichTreeItemValue extends FXHBox {
      * @param name 名称
      */
     public void name(String name) {
-        this.name = name;
+        this.setProp("name", name);
         this.flushText();
     }
 
@@ -46,10 +50,7 @@ public class RichTreeItemValue extends FXHBox {
      * @return 文本组件
      */
     public FXText text() {
-        if (this.getChild(1) instanceof FXText text) {
-            return text;
-        }
-        return null;
+        return (FXText) this.lookup("#name");
     }
 
     /**
@@ -58,7 +59,7 @@ public class RichTreeItemValue extends FXHBox {
      * @return 当前图标
      */
     public Node graphic() {
-        return this.getChild(0);
+        return this.lookup("#graphic");
     }
 
     /**
@@ -68,6 +69,7 @@ public class RichTreeItemValue extends FXHBox {
      */
     public void graphic(Node graphic) {
         if (graphic != null) {
+            graphic.setId("graphic");
             this.setChild(0, graphic);
             HBox.setMargin(graphic, new Insets(0, 3, 0, 0));
         }
@@ -78,12 +80,15 @@ public class RichTreeItemValue extends FXHBox {
      */
     public void flushText() {
         FXText text = this.text();
+        String name = this.name();
         if (text == null) {
-            text = new FXText(this.name());
+            text = new FXText(name);
+            text.setId("name");
             text.setFontSize(11);
             this.setChild(1, text);
-        } else {
-            text.setText(this.name());
+            this.removeProp("name");
+        } else if (name != null && !Objects.equals(text.getText(), name)) {
+            text.setText(name);
         }
     }
 

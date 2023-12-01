@@ -1,9 +1,11 @@
 package cn.oyzh.fx.plus.trees;
 
+import cn.hutool.extra.spring.SpringUtil;
 import cn.oyzh.fx.plus.controls.tree.FXTreeCell;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.drag.DragUtil;
-import cn.oyzh.fx.plus.drag.DrapNodeHandler;
+import cn.oyzh.fx.plus.drag.DragNodeHandler;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
@@ -22,7 +24,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
     /**
      * 拖动处理
      */
-    private DrapNodeHandler drapNodeHandler;
+    private DragNodeHandler dragNodeHandler;
 
     {
         this.setCursor(Cursor.HAND);
@@ -33,11 +35,12 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         TreeItem<?> item = this.getTreeItem();
         RichTreeView treeView = (RichTreeView) this.getTreeView();
         // 初始化拖动
-        if (item instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.drapNodeHandler == null) {
-            this.drapNodeHandler = new DrapNodeHandler();
-            DragUtil.initDragNode(this.drapNodeHandler, this, treeView.dragContent());
+        if (item instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
+            BackgroundService.submit(() -> {
+                this.dragNodeHandler = SpringUtil.getBean(DragNodeHandler.class);
+                DragUtil.initDragNode(this.dragNodeHandler, this, treeView.dragContent());
+            });
         }
-
         // 刷新图标
         if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.flushGraphic();
