@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.thread.RenderService;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -454,7 +454,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 执行过滤
      */
     public void doFilter() {
-        RenderService.submit(() -> this.doFilter(this.treeView.itemFilter));
+        BackgroundService.submit(() -> this.doFilter(this.treeView.itemFilter));
     }
 
     /**

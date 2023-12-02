@@ -118,6 +118,31 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 子节点是否为空
+     *
+     * @return 结果
+     */
+    default boolean isChildEmpty() {
+        if (this instanceof Pane pane) {
+            return pane.getChildren().isEmpty();
+        } else if (this instanceof Group group) {
+            return group.getChildren().isEmpty();
+        }
+        return true;
+    }
+
+    /**
+     * 清除子节点
+     */
+    default void clearChild() {
+        if (this instanceof Pane pane) {
+            FXUtil.runWait(() -> pane.getChildren().clear());
+        } else if (this instanceof Group group) {
+            FXUtil.runWait(() -> group.getChildren().clear());
+        }
+    }
+
+    /**
      * 添加子节点
      *
      * @param node 子节点
