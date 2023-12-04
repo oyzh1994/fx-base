@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.util.AnimationUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.animation.RotateTransition;
 import javafx.scene.Cursor;
 import lombok.experimental.UtilityClass;
@@ -23,7 +23,7 @@ public class SVGManager {
     public static void startWaiting(SVGGlyph glyph) {
         if (glyph != null) {
             glyph.setWaiting(true);
-            FXUtil.runLater(() -> {
+            BackgroundService.submitFXLater(() -> {
                 RotateTransition transition = glyph.getProp("_transition");
                 if (transition == null) {
                     transition = AnimationUtil.rotate(glyph);
@@ -52,7 +52,7 @@ public class SVGManager {
      */
     public static void stopWaiting(SVGGlyph glyph) {
         if (glyph != null) {
-            FXUtil.runWait(() -> {
+            BackgroundService.submitFX(() -> {
                 SVGPathExt shape = glyph.removeProp("_shape");
                 if (shape != null) {
                     glyph.setShape(shape);

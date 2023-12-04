@@ -1,13 +1,14 @@
+### compile ###
 target/
 
-### 崩溃日志
+### 崩溃日志 ###
 hs_err_*.log
 
 ### IntelliJ IDEA ###
 .idea
 
-/logs
-
+### logs ###
+logs/
 
 ### VS Code ###
 .vscode/

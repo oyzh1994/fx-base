@@ -4,8 +4,8 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
+import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.StateManager;
@@ -44,6 +44,23 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
      * @return 舞台
      */
     Stage stage();
+
+    /**
+     * 是否已经显示过了
+     *
+     * @return 结果
+     */
+    default boolean hasBeenVisible() {
+        Boolean hasBeenVisible = this.getProp("_hasBeenVisible");
+        return hasBeenVisible != null && hasBeenVisible;
+    }
+
+    /**
+     * 设置已经显示过标志位
+     */
+    default void setBeenVisible() {
+        this.setProp("_hasBeenVisible", true);
+    }
 
     /**
      * 获取场景
@@ -176,7 +193,9 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
         // 设置controller
         this.setProp("_controller", loader.getController());
         // 设置窗口样式
-        this.stage().initStyle(attribute.stageStyle());
+        if (this.hasBeenVisible()) {
+            this.stage().initStyle(attribute.stageStyle());
+        }
         // 初始化stage
         this.stage().setTitle(attribute.title());
         this.stage().setMaximized(attribute.maximized());
@@ -188,7 +207,7 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
         // 设置scene
         FXUtil.runWait(() -> this.stage().setScene(new Scene(root)));
         // 非主窗口
-        if (!attribute.usePrimary()) {
+        if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
             if (owner != null) {
                 this.stage().initOwner(owner);

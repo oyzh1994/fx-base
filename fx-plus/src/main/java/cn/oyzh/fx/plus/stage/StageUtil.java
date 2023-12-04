@@ -38,9 +38,7 @@ public class StageUtil {
             if (reference instanceof StageWrapper wrapper && wrapper.controller() instanceof StageListener listener) {
                 try {
                     listener.onSystemExit();
-//                    if (log.isDebugEnabled()) {
-                        StaticLog.debug("listener.onSystemExit() execute...");
-//                    }
+                    StaticLog.debug("listener.onSystemExit() execute...");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -58,7 +56,8 @@ public class StageUtil {
      */
     public static StageWrapper getStage(@NonNull Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageWrapper wrapper && wrapper.controllerClass() == controllerClass) {
+            Object reference = window.getProperties().get("_stageReference");
+            if (reference instanceof StageWrapper wrapper && wrapper.controllerClass() == controllerClass) {
                 return wrapper;
             }
         }
