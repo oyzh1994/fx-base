@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 import java.util.Objects;
 
@@ -31,7 +32,15 @@ public class RichTreeItemValue extends FXHBox {
      * @return 当前名称
      */
     public String name() {
-        return this.getProp("name");
+        String name = this.getProp("name");
+        if (name != null) {
+            return name;
+        }
+        Text text = this.text();
+        if (text != null) {
+            return text.getText();
+        }
+        return null;
     }
 
     /**
