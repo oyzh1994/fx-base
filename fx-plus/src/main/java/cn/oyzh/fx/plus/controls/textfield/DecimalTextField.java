@@ -5,7 +5,6 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.converter.DoubleConverter;
 import cn.oyzh.fx.plus.skin.NumberTextFieldSkin;
-import javafx.beans.value.WeakChangeListener;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 import lombok.Setter;
@@ -88,7 +87,7 @@ public class DecimalTextField extends FlexTextField {
         // 将TextFormatter对象设置到文本字段中
         this.setTextFormatter(this.textFormatter);
         // 监听值变化
-        this.textFormatter.valueProperty().addListener(new WeakChangeListener<>((observableValue, number, t1) -> this.valueChanged(t1)));
+        this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
     }
 
     /**
@@ -101,9 +100,9 @@ public class DecimalTextField extends FlexTextField {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
                     String text = change.getControlNewText();
-                    if (StrUtil.isEmpty(text)) {
-                        this.setValue(0.d);
-                        return null;
+                    if (StrUtil.isEmpty(text) || text.equals("-") || text.equals("+") || ".".equals(text)) {
+                        // this.setValue(0.d);
+                        return change;
                     }
                     // 判断数字
                     if (!NumberUtil.isDouble(text) && !NumberUtil.isNumber(text)) {
@@ -159,7 +158,11 @@ public class DecimalTextField extends FlexTextField {
      * @return 值
      */
     public Double getValue() {
-        return NumberUtil.parseDouble(this.getText());
+        String text = this.getText();
+        if (StrUtil.isEmpty(text) || "-".equals(text) || "+".equals(text) || ".".equals(text)) {
+            return 0.D;
+        }
+        return NumberUtil.parseDouble(text);
     }
 
     /**

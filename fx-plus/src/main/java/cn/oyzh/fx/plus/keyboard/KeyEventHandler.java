@@ -6,9 +6,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import lombok.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 按键事件处理器
@@ -21,7 +21,7 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
     /**
      * 按键处理器
      */
-    private final List<KeyHandler> handlers = new ArrayList<>();
+    private final List<KeyHandler> handlers = new CopyOnWriteArrayList<>();
 
     /**
      * 获取按键处理器

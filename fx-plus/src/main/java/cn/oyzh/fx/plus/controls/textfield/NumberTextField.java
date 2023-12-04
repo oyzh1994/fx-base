@@ -4,7 +4,6 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.converter.LongConverter;
 import cn.oyzh.fx.plus.skin.NumberTextFieldSkin;
-import javafx.beans.value.WeakChangeListener;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 import lombok.Setter;
@@ -78,7 +77,7 @@ public class NumberTextField extends FlexTextField {
         // 将TextFormatter对象设置到文本字段中
         this.setTextFormatter(this.textFormatter);
         // 监听值变化
-        this.textFormatter.valueProperty().addListener(new WeakChangeListener<>((observableValue, number, t1) -> this.valueChanged(t1)));
+        this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
     }
 
     /**
@@ -91,9 +90,9 @@ public class NumberTextField extends FlexTextField {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
                     String text = change.getControlNewText();
-                    if (StrUtil.isEmpty(text)) {
-                        this.setValue(0L);
-                        return null;
+                    if (StrUtil.isEmpty(text) || text.equals("-") || text.equals("+")) {
+                        // this.setValue(0L);
+                        return change;
                     }
                     // 判断数字
                     Long l = this.converter.fromString(text);
@@ -144,7 +143,11 @@ public class NumberTextField extends FlexTextField {
      * @return 值
      */
     public Long getValue() {
-        return NumberUtil.parseLong(this.getText());
+        String text = this.getText();
+        if (StrUtil.isEmpty(text) || "-".equals(text) || "+".equals(text)) {
+            return 0L;
+        }
+        return NumberUtil.parseLong(text);
     }
 
     /**

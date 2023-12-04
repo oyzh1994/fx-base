@@ -67,6 +67,10 @@ public class FXTextField extends TextField implements FontAdapter, TextAdapter, 
      * @return 结果
      */
     public boolean validate() {
+        if (this.require && this.isEmpty()) {
+            this.requestFocus();
+            return false;
+        }
         return true;
     }
 
