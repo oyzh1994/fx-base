@@ -52,21 +52,21 @@ public class SVGManager {
      */
     public static void stopWaiting(SVGGlyph glyph) {
         if (glyph != null) {
-            FXUtil.runLater(() -> {
-                RotateTransition transition = glyph.removeProp("_transition");
-                if (transition != null) {
-                    transition.stop();
-                }
-                Cursor cursor = glyph.removeProp("_cursor");
+            FXUtil.runWait(() -> {
                 SVGPathExt shape = glyph.removeProp("_shape");
                 if (shape != null) {
                     glyph.setShape(shape);
                 }
+                glyph.setRotate(0);
+                glyph.setWaiting(false);
+                Cursor cursor = glyph.removeProp("_cursor");
                 if (cursor != null) {
                     glyph.cursor(cursor);
                 }
-                glyph.setRotate(0);
-                glyph.setWaiting(false);
+                RotateTransition transition = glyph.removeProp("_transition");
+                if (transition != null) {
+                    transition.stop();
+                }
             });
         }
     }
