@@ -4,12 +4,14 @@ import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
-import cn.oyzh.fx.plus.thread.BackgroundService;
+import cn.oyzh.fx.plus.thread.RenderService;
 import cn.oyzh.fx.plus.util.FXUtil;
+import com.sun.javafx.reflect.FieldUtil;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
@@ -20,6 +22,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -110,13 +114,16 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param filterable 是否可过滤
      */
-    public void setFilterable(boolean filterable) {
+    public void setFilterable(boolean filterable) throws NoSuchFieldException {
         this.filterable = filterable;
         // 可过滤则初始化真实子节点集合
         if (this.filterable) {
             this.realChildren = FXCollections.observableArrayList();
         }
         this.setVisible(true);
+
+       Field field= FieldUtil.getField(TreeItem.class,"childrenListener");
+       field.setAccessible(true);
         this.getShowChildren().addListener((ListChangeListener<TreeItem<?>>) change -> this.doFilter());
     }
 
@@ -454,7 +461,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 执行过滤
      */
     public void doFilter() {
-        BackgroundService.submit(() -> this.doFilter(this.treeView.itemFilter));
+        RenderService.submit(() -> this.doFilter(this.treeView.itemFilter));
     }
 
     /**
@@ -462,7 +469,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param itemFilter 节点过滤器
      */
-    public synchronized void doFilter(RichTreeItemFilter itemFilter) {
+    public void doFilter(RichTreeItemFilter itemFilter) {
         if (this.filtering) {
             return;
         }
@@ -470,7 +477,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         try {
             List<RichTreeItem<?>> richChildren = new CopyOnWriteArrayList<>(this.getRichChildren());
             if (this.filterable) {
-                ObservableList<TreeItem<?>> children = this.getChildren();
                 for (RichTreeItem<?> child : richChildren) {
                     if (itemFilter != null) {
                         child.setVisible(itemFilter.apply(child));
@@ -481,20 +487,22 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                 }
                 Set<TreeItem<?>> shows = new HashSet<>();
                 Set<TreeItem<?>> hides = new HashSet<>();
+                List<TreeItem<?>> list = new CopyOnWriteArrayList<>(this.getChildren());
                 for (RichTreeItem<?> child : richChildren) {
                     if (child.itemVisible()) {
-                        if (!children.contains(child)) {
+                        if (!list.contains(child)) {
                             shows.add(child);
                         }
-                    } else if (children.contains(child)) {
+                    } else if (list.contains(child)) {
                         hides.add(child);
                     }
                 }
-                for (TreeItem<?> child : children) {
+                for (TreeItem<?> child : list) {
                     if (!richChildren.contains(child)) {
                         hides.add(child);
                     }
                 }
+                ObservableList<TreeItem<?>> children = this.getChildren();
                 if (!hides.isEmpty()) {
                     children.removeAll(hides);
                 }
@@ -507,7 +515,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                 }
             }
             this.sort();
-//            this.flushLocal();
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
