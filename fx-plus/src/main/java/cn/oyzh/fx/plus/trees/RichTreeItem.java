@@ -121,9 +121,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
             this.realChildren = FXCollections.observableArrayList();
         }
         this.setVisible(true);
-
-       Field field= FieldUtil.getField(TreeItem.class,"childrenListener");
-       field.setAccessible(true);
         this.getShowChildren().addListener((ListChangeListener<TreeItem<?>>) change -> this.doFilter());
     }
 
