@@ -53,7 +53,7 @@ public class AppMain2 extends Application {
         AtomicBoolean first = new AtomicBoolean(true);
         root.expandedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue && first.get()) {
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 50; i++) {
                     AvdTreeItem<String> sub1 = new AvdTreeItem<>(treeView, root, "sub" + i + "(deep=" + deep + ")", new SVGGlyph("/folder.svg", 14));
                     root.getChildren().add(sub1);
                     this.initExtend(sub1, treeView, deep + 1);
