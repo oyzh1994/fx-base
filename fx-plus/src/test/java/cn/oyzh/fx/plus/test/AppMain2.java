@@ -33,6 +33,8 @@ public class AppMain2 extends Application {
         AvdTreeView treeView = new AvdTreeView();
         // treeView.setFlexWidth("100%");
         // treeView.setFlexHeight("100%");
+        treeView.setPrefHeight(300);
+        treeView.setPrefWidth(300);
         AvdTreeItem<String> root = new AvdTreeItem<>(treeView, null, "root", new FlexImageView("/zoo.jpg", 18));
         treeView.setRoot(root);
         this.initExtend(root, treeView, 0);

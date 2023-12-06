@@ -5,11 +5,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
 
@@ -20,7 +16,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AvdTreeViewUtil extends FlexVBox {
 
-    public static SVGGlyph initRightIcon(AvdTreeItem<?> item){
+    public static SVGGlyph initRightIcon(AvdTreeItem<?> item) {
         SVGGlyph glyph = new SVGGlyph("/fx-plus/font/arrow-right-filling.svg");
         glyph.setSizeStr("12,14");
         glyph.setColor(Color.GRAY);
@@ -29,7 +25,7 @@ public class AvdTreeViewUtil extends FlexVBox {
         return glyph;
     }
 
-    public static SVGGlyph initDownIcon(AvdTreeItem<?> item){
+    public static SVGGlyph initDownIcon(AvdTreeItem<?> item) {
         SVGGlyph glyph = new SVGGlyph("/fx-plus/font/arrow-down-filling.svg");
         glyph.setSizeStr("14,12");
         glyph.setColor(Color.GRAY);
@@ -38,17 +34,32 @@ public class AvdTreeViewUtil extends FlexVBox {
         return glyph;
     }
 
-    public static void updateHeight(Pane pane) {
-        if (pane != null) {
+    public static void updateHeight(AvdTreeItem<?> item) {
+        if (item != null) {
             double size = 0;
-            for (Node child : pane.getChildren()) {
+            for (Node child : item.getChildren()) {
                 if (child.isVisible() && child.isManaged()) {
                     size += NodeUtil.getHeight(child);
                 }
             }
-            NodeUtil.setHeight(pane, size);
-            if(pane.getParent() instanceof Pane pane1){
-                updateHeight(pane1);
+            NodeUtil.setHeight(item, size);
+            if (item.getItemParent() != null) {
+                updateHeight(item.getItemParent());
+            } else {
+                double size1 = 0;
+                for (Node child : item.getTreeView().content().getChildren()) {
+                    if (child.isVisible() && child.isManaged()) {
+                        size1 += NodeUtil.getHeight(child);
+                    }
+                }
+                // NodeUtil.setHeight(item.getTreeView(), size1);
+                NodeUtil.setHeight(item.getTreeView().getContent(), size1);
+
+                item.getTreeView().setHmax(size1);
+                item.getTreeView().setHmin(size1);
+
+                System.out.println("---------size1=" + size1);
+                System.out.println("---------size2=" + item.getTreeView().getHeight());
             }
         }
     }

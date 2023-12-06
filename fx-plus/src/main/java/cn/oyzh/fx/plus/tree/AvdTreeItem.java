@@ -34,6 +34,7 @@ public class AvdTreeItem<E> extends FlexVBox {
     @Getter
     private final AvdTreeItem<?> itemParent;
 
+    @Getter
     private final AvdTreeView treeView;
 
     private AvdTreeItemList<AvdTreeItem<?>> childItem;
