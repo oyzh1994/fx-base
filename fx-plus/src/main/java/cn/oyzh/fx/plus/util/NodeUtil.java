@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.TableColumnBase;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
@@ -76,7 +77,7 @@ public class NodeUtil {
      */
     public static double getHeight(EventTarget target) {
         if (target instanceof Region region) {
-            double w1 = region.getHeight();
+            double w1 = region.getPrefHeight();
             double w2 = region.getMinHeight();
             return Math.max(w1, w2);
         }
@@ -176,6 +177,11 @@ public class NodeUtil {
             return;
         }
         switch (target) {
+            case ImageView image -> {
+                if (!image.fitHeightProperty().isBound()) {
+                    image.setFitHeight(height);
+                }
+            }
             case Region region -> {
                 if (!region.prefHeightProperty().isBound()) {
                     region.setPrefHeight(height);
