@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.util.ResourceUtil;
@@ -9,8 +11,6 @@ import org.dom4j.io.SAXReader;
 
 import java.net.URL;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * svg加载器
@@ -29,7 +29,7 @@ public class SVGLoader {
     /**
      * 缓存
      */
-    protected final Map<String, String> caches = new ConcurrentHashMap<>();
+    private final TimedCache<String, String> cache = CacheUtil.newTimedCache(60 * 1000L);
 
     /**
      * 加载svg内容
@@ -43,8 +43,8 @@ public class SVGLoader {
         }
         svgPath = svgPath.trim();
         // 缓存
-        if (this.caches.containsKey(svgPath)) {
-            return this.caches.get(svgPath);
+        if (this.cache.containsKey(svgPath)) {
+            return this.cache.get(svgPath);
         }
         // 获取路径
         URL url = ResourceUtil.getResource(svgPath);
@@ -77,7 +77,7 @@ public class SVGLoader {
                 svg = data.toString().trim();
             }
             // 添加到缓存
-            this.caches.put(svgPath, svg);
+            this.cache.put(svgPath, svg);
         } catch (Exception e) {
             e.printStackTrace();
         }

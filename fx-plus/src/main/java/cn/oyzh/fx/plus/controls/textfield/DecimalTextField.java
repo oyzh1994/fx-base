@@ -100,8 +100,8 @@ public class DecimalTextField extends FlexTextField {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
                     String text = change.getControlNewText();
+                    // 如果文本为空，或者为"-"、"+"或者"."，则不进行任何操作，直接返回原change对象
                     if (StrUtil.isEmpty(text) || text.equals("-") || text.equals("+") || ".".equals(text)) {
-                        // this.setValue(0.d);
                         return change;
                     }
                     // 判断数字
@@ -110,16 +110,17 @@ public class DecimalTextField extends FlexTextField {
                     }
                     // 判断小数位数
                     BigDecimal decimal = new BigDecimal(text);
+                    // 如果小数位数超过了设定的最大位数，则将小数转换为最大位数，并设置组件值为转换后的结果
                     if (this.scaleLen != null && decimal.scale() > this.scaleLen) {
                         this.setValue(decimal.setScale(this.scaleLen, RoundingMode.HALF_UP).doubleValue());
                         return null;
                     }
-                    // 判断最大值
+                    // 如果超过了最大值，则将组件值设置为最大值
                     if (this.max != null && decimal.doubleValue() > this.max) {
                         this.setValue(this.max);
                         return null;
                     }
-                    // 判断最小值
+                    // 如果小于了最小值，则将组件值设置为最小值
                     if (this.min != null && decimal.doubleValue() < this.min) {
                         this.setValue(this.min);
                         return null;
@@ -137,16 +138,22 @@ public class DecimalTextField extends FlexTextField {
      * @param newVal 新值
      */
     protected void valueChanged(Double newVal) {
+        // 检查新值是否有效
         if (newVal != null && !Double.isNaN(newVal)) {
+            // 获取当前皮肤
             NumberTextFieldSkin skin = (NumberTextFieldSkin) this.getSkin();
+            // 判断新值是否小于等于最小值，如果是则禁用减号按钮
             if (this.min != null && newVal <= this.min) {
                 skin.disableDecrButton();
             } else {
+                // 否则启用减号按钮
                 skin.enableDecrButton();
             }
+            // 判断新值是否大于等于最大值，如果是则禁用加号按钮
             if (this.max != null && newVal >= this.max) {
                 skin.disableIncrButton();
             } else {
+                // 否则启用加号按钮
                 skin.enableIncrButton();
             }
         }
@@ -158,10 +165,13 @@ public class DecimalTextField extends FlexTextField {
      * @return 值
      */
     public Double getValue() {
+        // 获取文本内容
         String text = this.getText();
+        // 如果文本为空，或者为"-"，或者为"+"，或者为"."，则返回0.D
         if (StrUtil.isEmpty(text) || "-".equals(text) || "+".equals(text) || ".".equals(text)) {
             return 0.D;
         }
+        // 否则，将文本转为Double类型并返回
         return NumberUtil.parseDouble(text);
     }
 

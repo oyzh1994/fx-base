@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.log.StaticLog;
 import javafx.scene.image.Image;
@@ -11,8 +13,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 图标工具类
@@ -27,7 +27,7 @@ public class IconUtil {
     /**
      * 图标缓存
      */
-    private static final Map<String, WeakReference<byte[]>> ICON_CACHE = new ConcurrentHashMap<>();
+    private static final TimedCache<String, WeakReference<byte[]>> ICON_CACHE = CacheUtil.newTimedCache(60 * 1000L);
 
     /**
      * 获取图标

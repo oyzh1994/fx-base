@@ -6,10 +6,10 @@
     <parent>
         <groupId>cn.oyzh</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
     </parent>
 
-    <version>1.0</version>
+    <version>1.1</version>
     <artifactId>fx-pkg</artifactId>
 
     <dependencies>

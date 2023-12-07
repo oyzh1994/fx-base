@@ -15,11 +15,8 @@ import javafx.scene.control.TreeCell;
 public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter {
 
     {
-        // this.cacheProperty().bind(this.visibleProperty());
-        // this.managedProperty().bind(this.visibleProperty());
         this.setCache(true);
         this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
     }
 

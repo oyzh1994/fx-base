@@ -13,24 +13,9 @@ import javafx.scene.control.skin.TextFieldSkin;
 public class TextFieldSkinExt extends TextFieldSkin {
 
     /**
-     * 文本监听器
+     * 可见监听器
      */
-    protected final InvalidationListener textChanged = observable -> this.updateButtonVisibility();
-
-    /**
-     * 焦点监听器
-     */
-    protected final InvalidationListener focusChanged = textChanged;
-
-    /**
-     * 显示监听器
-     */
-    protected final InvalidationListener visibleChanged = textChanged;
-
-    /**
-     * 禁用监听器
-     */
-    protected final InvalidationListener disableChanged = textChanged;
+    protected final InvalidationListener visibilityChanged = observable -> this.updateButtonVisibility();
 
     /**
      * 修改按钮状态
@@ -41,19 +26,23 @@ public class TextFieldSkinExt extends TextFieldSkin {
     public TextFieldSkinExt(TextField control) {
         super(control);
         // 初始化监听器
-        control.textProperty().addListener(this.textChanged);
-        control.focusedProperty().addListener(this.focusChanged);
-        control.visibleProperty().addListener(this.visibleChanged);
-        control.disableProperty().addListener(this.disableChanged);
+        control.textProperty().addListener(this.visibilityChanged);
+        control.focusedProperty().addListener(this.visibilityChanged);
+        control.visibleProperty().addListener(this.visibilityChanged);
+        control.disableProperty().addListener(this.visibilityChanged);
+        control.setOnMouseEntered(event -> this.updateButtonVisibility());
+        control.setOnMouseExited(event -> this.updateButtonVisibility());
     }
 
     @Override
     public void dispose() {
         // 清除监听器
-        this.getSkinnable().textProperty().removeListener(this.textChanged);
-        this.getSkinnable().focusedProperty().removeListener(this.focusChanged);
-        this.getSkinnable().visibleProperty().removeListener(this.visibleChanged);
-        this.getSkinnable().disableProperty().removeListener(this.disableChanged);
+        this.getSkinnable().textProperty().removeListener(this.visibilityChanged);
+        this.getSkinnable().focusedProperty().removeListener(this.visibilityChanged);
+        this.getSkinnable().visibleProperty().removeListener(this.visibilityChanged);
+        this.getSkinnable().disableProperty().removeListener(this.visibilityChanged);
+        this.getSkinnable().setOnMouseExited(null);
+        this.getSkinnable().setOnMouseEntered(null);
         super.dispose();
     }
 

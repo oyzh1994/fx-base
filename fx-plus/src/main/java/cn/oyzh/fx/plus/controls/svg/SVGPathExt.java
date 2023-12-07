@@ -33,11 +33,21 @@ public class SVGPathExt extends SVGPath {
         super.setContent(SVGLoader.INSTANCE.load(url));
     }
 
+    /**
+     * 设置颜色
+     *
+     * @param paint 绘画对象
+     */
     public void setColor(@NonNull Paint paint) {
         this.setFill(paint);
         this.setStroke(paint);
     }
 
+    /**
+     * 获取颜色
+     *
+     * @return 颜色
+     */
     public Paint getColor() {
         return this.getFill();
     }

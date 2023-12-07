@@ -6,17 +6,16 @@
     <parent>
         <groupId>cn.oyzh</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
     </parent>
 
-    <version>1.0</version>
+    <version>1.1</version>
     <artifactId>fx-common</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!--Spring 注解支持-->
@@ -32,7 +31,6 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-extra</artifactId>
             <version>${hutool.version}</version>
-            <!--            <scope>provided</scope>-->
         </dependency>
 
         <!-- json工具类库 -->
@@ -42,13 +40,6 @@
             <version>${hutool.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
-        <!-- <dependency> -->
-        <!--     <groupId>com.alibaba</groupId> -->
-        <!--     <artifactId>fastjson</artifactId> -->
-        <!--     <scope>provided</scope> -->
-        <!-- </dependency> -->
 
         <!-- 二维码工具 -->
         <dependency>

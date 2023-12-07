@@ -6,31 +6,18 @@
     <parent>
         <groupId>cn.oyzh</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
     </parent>
 
-    <version>1.0</version>
+    <version>1.1</version>
     <artifactId>fx-terminal</artifactId>
 
     <dependencies>
-        <!-- 自定义类库，通用 -->
-        <dependency>
-            <groupId>cn.oyzh</groupId>
-            <artifactId>fx-common</artifactId>
-        </dependency>
-
         <!-- 自定义类库，fx相关 -->
         <dependency>
             <groupId>cn.oyzh</groupId>
             <artifactId>fx-plus</artifactId>
         </dependency>
-
-        <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
-        <!-- <dependency> -->
-        <!--     <groupId>com.alibaba</groupId> -->
-        <!--     <artifactId>fastjson</artifactId> -->
-        <!--     <scope>compile</scope> -->
-        <!-- </dependency> -->
 
         <!-- json工具类库 -->
         <dependency>
@@ -39,32 +26,10 @@
             <version>${hutool.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>cn.hutool</groupId>-->
-<!--            <artifactId>hutool-extra</artifactId>-->
-<!--            <version>${hutool.version}</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
-
         <!-- Spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!--Spring 注解支持-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->

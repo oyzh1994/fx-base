@@ -273,24 +273,24 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * @param size 大小字符串形式
      */
     public void setSizeStr(String size) {
-        if (StrUtil.isBlank(size)) {
+        if (StrUtil.isBlank(size)) {    // 判断大小字符串是否为空
             return;
         }
         try {
-            size = size.trim();
+            size = size.trim();    // 去除大小字符串的首尾空格
             double w, h;
-            if (size.contains(",")) {
-                String[] strArr = size.split(",");
-                w = Double.parseDouble(strArr[0]);
-                h = Double.parseDouble(strArr[1]);
+            if (size.contains(",")) {    // 判断大小字符串中是否包含逗号
+                String[] strArr = size.split(",");    // 使用逗号分割大小字符串
+                w = Double.parseDouble(strArr[0]);    // 转换并解析第一个值作为宽度
+                h = Double.parseDouble(strArr[1]);    // 转换并解析第二个值作为高度
             } else {
-                w = h = Double.parseDouble(size);
+                w = h = Double.parseDouble(size);    // 解析大小字符串作为宽度和高度
             }
-            this.setMinSize(w, h);
-            this.setMaxSize(w, h);
-            this.setPrefSize(w, h);
+            this.setMinSize(w, h);    // 设置最小大小为宽度和高度
+            this.setMaxSize(w, h);    // 设置最大大小为宽度和高度
+            this.setPrefSize(w, h);    // 设置首选大小为宽度和高度
         } catch (Exception ex) {
-            ex.printStackTrace();
+            ex.printStackTrace();    // 打印异常信息
         }
     }
 
