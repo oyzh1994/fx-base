@@ -7,9 +7,9 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.thread.RenderService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
@@ -20,9 +20,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -78,7 +76,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 结果
      */
     public boolean isVisible() {
-        return this.visibleProperty != null && this.visibleProperty().get();
+        return this.visibleProperty == null || this.visibleProperty().get();
     }
 
     /**
@@ -87,37 +85,19 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     private volatile byte sortState;
 
     /**
-     * 是否过滤中
-     */
-    private volatile boolean filtering;
-
-    /**
      * 是否可过滤
      */
+    @Setter
     private volatile boolean filterable;
-
-    /**
-     * 真实子节点
-     */
-    private ObservableList<TreeItem<?>> realChildren;
 
     public RichTreeItem(RichTreeView treeView) {
         this.treeView = treeView;
     }
 
-    /**
-     * 设置是否可过滤
-     *
-     * @param filterable 是否可过滤
-     */
-    public void setFilterable(boolean filterable) {
-        this.filterable = filterable;
-        // 可过滤则初始化真实子节点集合
-        if (this.filterable) {
-            this.realChildren = FXCollections.observableArrayList();
-        }
-        this.setVisible(true);
-        this.getShowChildren().addListener((ListChangeListener<TreeItem<?>>) change -> this.doFilter());
+    @Override
+    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
+        this.doFilter();
+        super.updateChildren(c);
     }
 
     /**
@@ -143,7 +123,15 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     @Override
     public ObservableList getChildren() {
-        return super.getChildren();
+        return super.getChildren().filtered(item -> {
+            if (item instanceof RichTreeItem<?> treeItem) {
+                if (this.filterable) {
+                    return treeItem.itemVisible();
+                }
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -151,9 +139,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @return 子节点列表
      */
-    public ObservableList<TreeItem<?>> getShowChildren() {
+    public ObservableList<TreeItem<?>> getRealChildren() {
+        List list = super.getChildren();
         // 如果是可过滤则显示真实子节点列表
-        return this.filterable ? this.realChildren : this.getChildren();
+        return (ObservableList<TreeItem<?>>) list;
     }
 
     /**
@@ -162,7 +151,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 子节点列表
      */
     public ObservableList<RichTreeItem<?>> getRichChildren() {
-        List list = this.getShowChildren();
+        List list = super.getChildren();
         return (ObservableList<RichTreeItem<?>>) list;
     }
 
@@ -172,7 +161,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 子节点大小
      */
     public int getChildrenSize() {
-        return this.getShowChildren().size();
+        return this.getChildren().size();
     }
 
     /**
@@ -181,14 +170,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 真实子节点大小
      */
     public int getRealChildrenSize() {
-        return this.realChildren == null ? 0 : this.realChildren.size();
+        return this.getRealChildren().size();
     }
 
     /**
      * 开始等待
      */
     public void startWaiting() {
-        if (this.getValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.graphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
         }
     }
@@ -199,7 +188,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param task 待执行业务
      */
     public void startWaiting(Task task) {
-        if (this.getValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.graphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting(task);
         }
     }
@@ -208,7 +197,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 取消等待
      */
     public void stopWaiting() {
-        if (this.getValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.graphic() instanceof SVGGlyph glyph) {
             glyph.stopWaiting();
         }
     }
@@ -219,10 +208,22 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 结果
      */
     public boolean isWaiting() {
-        if (this.getValue() != null && this.getValue().graphic() instanceof SVGGlyph glyph) {
+        if (this.graphic() instanceof SVGGlyph glyph) {
             return glyph.isWaiting();
         }
         return false;
+    }
+
+    /**
+     * 获取当前图标
+     *
+     * @return 图标组件
+     */
+    public Node graphic() {
+        if (this.getValue() == null) {
+            return null;
+        }
+        return this.getValue().graphic();
     }
 
     /**
@@ -243,10 +244,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void reExpanded() {
         if (this.isExpanded()) {
-            FXUtil.runLater(() -> {
-                this.setExpanded(false);
-                this.setExpanded(true);
-            });
+            this.setExpanded(false);
+            this.setExpanded(true);
         }
     }
 
@@ -262,8 +261,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     public void remove() {
         TreeItem<?> parent = this.getParent();
         if (parent instanceof RichTreeItem<?> treeItem) {
-            treeItem.getShowChildren().remove(this);
-        } else {
+            treeItem.getRealChildren().remove(this);
+        } else if (parent != null) {
             parent.getChildren().remove(this);
         }
     }
@@ -280,14 +279,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 首个子节点
      */
     public TreeItem<?> firstChild() {
-        return CollUtil.getFirst(this.getShowChildren());
+        return CollUtil.getFirst(this.getRealChildren());
     }
 
     /**
      * 清除子节点
      */
     public void clearChild() {
-        FXUtil.runWait(this.getShowChildren()::clear);
+        FXUtil.runWait(this.getRealChildren()::clear);
     }
 
     /**
@@ -298,7 +297,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public boolean containsChild(TreeItem<?> item) {
         if (item != null) {
-            return this.getShowChildren().contains(item);
+            return this.getRealChildren().contains(item);
         }
         return false;
     }
@@ -309,7 +308,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param item 节点
      */
     public synchronized void setChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getShowChildren().setAll(item));
+        FXUtil.runWait(() -> this.getRealChildren().setAll(item));
     }
 
     /**
@@ -318,7 +317,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param items 节点列表
      */
     public synchronized void setChild(@NonNull List<TreeItem<?>> items) {
-        FXUtil.runWait(() -> this.getShowChildren().setAll(items));
+        FXUtil.runWait(() -> this.getRealChildren().setAll(items));
     }
 
     /**
@@ -327,7 +326,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param item 节点
      */
     public synchronized void addChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getShowChildren().add(item));
+        FXUtil.runWait(() -> this.getRealChildren().add(item));
     }
 
     /**
@@ -336,7 +335,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param items 节点列表
      */
     public synchronized void addChild(@NonNull List<TreeItem<?>> items) {
-        FXUtil.runWait(() -> this.getShowChildren().addAll(items));
+        FXUtil.runWait(() -> this.getRealChildren().addAll(items));
     }
 
     /**
@@ -345,7 +344,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param item 节点
      */
     public synchronized void removeChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getShowChildren().remove(item));
+        FXUtil.runWait(() -> this.getRealChildren().remove(item));
     }
 
     /**
@@ -354,7 +353,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param items 节点列表
      */
     public synchronized void removeChild(@NonNull List<TreeItem<?>> items) {
-        FXUtil.runWait(() -> this.getShowChildren().removeAll(items));
+        FXUtil.runWait(() -> this.getRealChildren().removeAll(items));
     }
 
     /**
@@ -363,7 +362,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 结果
      */
     public boolean isChildEmpty() {
-        return this.getShowChildren().isEmpty();
+        return this.getRealChildren().isEmpty();
     }
 
     /**
@@ -463,44 +462,16 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param itemFilter 节点过滤器
      */
     public void doFilter(RichTreeItemFilter itemFilter) {
-        if (this.filtering) {
-            return;
-        }
-        this.filtering = true;
         try {
             List<RichTreeItem<?>> richChildren = new CopyOnWriteArrayList<>(this.getRichChildren());
             if (this.filterable) {
                 for (RichTreeItem<?> child : richChildren) {
                     if (itemFilter != null) {
-                        child.setVisible(itemFilter.apply(child));
+                        child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
                     } else {
                         child.setVisible(true);
                     }
-                }
-                Set<TreeItem<?>> shows = new HashSet<>();
-                Set<TreeItem<?>> hides = new HashSet<>();
-                List<TreeItem<?>> list = new CopyOnWriteArrayList<>(this.getChildren());
-                for (RichTreeItem<?> child : richChildren) {
-                    if (child.itemVisible()) {
-                        if (!list.contains(child)) {
-                            shows.add(child);
-                        }
-                    } else if (list.contains(child)) {
-                        hides.add(child);
-                    }
-                }
-                for (TreeItem<?> child : list) {
-                    if (!richChildren.contains(child)) {
-                        hides.add(child);
-                    }
-                }
-                ObservableList<TreeItem<?>> children = this.getChildren();
-                if (!hides.isEmpty()) {
-                    children.removeAll(hides);
-                }
-                if (!shows.isEmpty()) {
-                    children.addAll(shows);
                 }
             } else {
                 for (RichTreeItem<?> child : richChildren) {
@@ -508,10 +479,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                 }
             }
             this.sort();
+            this.reExpanded();
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            this.filtering = false;
         }
     }
 

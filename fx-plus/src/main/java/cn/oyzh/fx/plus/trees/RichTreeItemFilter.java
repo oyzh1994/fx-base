@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.trees;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * 富功能树节点过滤器
@@ -8,6 +8,6 @@ import java.util.function.Function;
  * @author oyzh
  * @since 2023/11/10
  */
-public interface RichTreeItemFilter extends Function<RichTreeItem<?>, Boolean> {
+public interface RichTreeItemFilter extends Predicate<RichTreeItem<?>> {
 
 }
