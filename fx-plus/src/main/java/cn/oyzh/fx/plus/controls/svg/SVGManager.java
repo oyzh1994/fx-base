@@ -52,13 +52,13 @@ public class SVGManager {
      */
     public static void stopWaiting(SVGGlyph glyph) {
         if (glyph != null) {
-            BackgroundService.submitFX(() -> {
+            glyph.setWaiting(false);
+            BackgroundService.submitFXLater(() -> {
                 SVGPathExt shape = glyph.removeProp("_shape");
                 if (shape != null) {
                     glyph.setShape(shape);
                 }
                 glyph.setRotate(0);
-                glyph.setWaiting(false);
                 Cursor cursor = glyph.removeProp("_cursor");
                 if (cursor != null) {
                     glyph.cursor(cursor);

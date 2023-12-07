@@ -44,7 +44,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         // 刷新图标
         if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.flushGraphic();
-            treeView.flushLocal();
+            // treeView.flushLocal();
             return treeItem.getValue();
         }
         return null;
