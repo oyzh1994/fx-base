@@ -26,11 +26,11 @@
             <version>${hutool.version}</version>
         </dependency>
 
-        <!-- Spring boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
+        <!-- &lt;!&ndash; Spring boot &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.springframework.boot</groupId> -->
+        <!--     <artifactId>spring-boot-starter-log4j2</artifactId> -->
+        <!-- </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
         <dependency>

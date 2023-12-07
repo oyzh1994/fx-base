@@ -30,8 +30,8 @@ public class TextFieldSkinExt extends TextFieldSkin {
         control.focusedProperty().addListener(this.visibilityChanged);
         control.visibleProperty().addListener(this.visibilityChanged);
         control.disableProperty().addListener(this.visibilityChanged);
-        control.setOnMouseEntered(event -> this.updateButtonVisibility());
-        control.setOnMouseExited(event -> this.updateButtonVisibility());
+        // control.setOnMouseEntered(event -> this.updateButtonVisibility());
+        // control.setOnMouseExited(event -> this.updateButtonVisibility());
     }
 
     @Override
