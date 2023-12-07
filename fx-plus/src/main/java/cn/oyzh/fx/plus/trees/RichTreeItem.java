@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.thread.RenderService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -244,8 +245,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void reExpanded() {
         if (this.isExpanded()) {
-            this.setExpanded(false);
-            this.setExpanded(true);
+            BackgroundService.submitFXLater(() -> {
+                this.setExpanded(false);
+                this.setExpanded(true);
+            });
         }
     }
 
