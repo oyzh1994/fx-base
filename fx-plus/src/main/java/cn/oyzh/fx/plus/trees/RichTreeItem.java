@@ -43,12 +43,19 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 当前排序类型
      * 0 asc 1 desc -1 无
      */
-    protected volatile Byte sortType;
+    private volatile Byte sortType;
 
     /**
      * 排序中标志位
      */
     private volatile boolean sorting;
+
+    /**
+     * 是否可排序
+     */
+    @Setter
+    @Getter
+    private volatile boolean sortable = true;
 
     /**
      * 可见属性
@@ -86,11 +93,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
-     * 禁用排序
-     */
-    private volatile byte sortState;
-
-    /**
      * 是否可过滤
      */
     @Setter
@@ -106,27 +108,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
             this.doFilter();
         }
         super.updateChildren(c);
-    }
-
-    /**
-     * 排序是否启用
-     */
-    public boolean isSortEnable() {
-        return this.sortState == 0;
-    }
-
-    /**
-     * 禁用排序
-     */
-    public void disableSort() {
-        this.sortState = 1;
-    }
-
-    /**
-     * 启用排序
-     */
-    public void enableSort() {
-        this.sortState = 0;
     }
 
     @Override
@@ -435,14 +416,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 对节点排序，正序
      */
     public synchronized void sortAsc() {
-        if (this.isSortEnable()) {
+        if (this.isSortable()) {
             this.sortType = 0;
             // 执行排序
-            ObservableList<TreeItem<V>> children = super.getChildren();
+            ObservableList<RichTreeItem<?>> children = this.getRichChildren();
             if (!children.isEmpty()) {
                 try {
                     this.sorting = true;
-                    children.sort((a, b) -> CharSequence.compare(a.getValue().name(), b.getValue().name()));
+                    children.sort(this::sortAsc);
                 } finally {
                     this.sorting = false;
                 }
@@ -451,22 +432,50 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
+     * 节点排序正序实现
+     *
+     * @param item1 节点1
+     * @param item2 节点2
+     * @return 结果
+     */
+    protected int sortAsc(RichTreeItem<?> item1, RichTreeItem<?> item2) {
+        if (item1 == item2 || item1 == null || item2 == null || item1.getValue() == null || item2.getValue() == null || item1.getValue().name() == null || item2.getValue().name() == null) {
+            return 0;
+        }
+        return CharSequence.compare(item1.getValue().name(), item2.getValue().name());
+    }
+
+    /**
      * 对节点排序，倒序
      */
     public synchronized void sortDesc() {
-        if (this.isSortEnable()) {
+        if (this.isSortable()) {
             this.sortType = 1;
             // 执行排序
-            ObservableList<TreeItem<V>> children = super.getChildren();
+            ObservableList<RichTreeItem<?>> children = this.getRichChildren();
             if (!children.isEmpty()) {
                 try {
                     this.sorting = true;
-                    children.sort((a, b) -> CharSequence.compare(b.getValue().name(), a.getValue().name()));
+                    children.sort(this::sortDesc);
                 } finally {
                     this.sorting = false;
                 }
             }
         }
+    }
+
+    /**
+     * 节点排序倒序实现
+     *
+     * @param item1 节点1
+     * @param item2 节点2
+     * @return 结果
+     */
+    protected int sortDesc(RichTreeItem<?> item1, RichTreeItem<?> item2) {
+        if (item1 == item2 || item1 == null || item2 == null || item1.getValue() == null || item2.getValue() == null || item1.getValue().name() == null || item2.getValue().name() == null) {
+            return 0;
+        }
+        return CharSequence.compare(item2.getValue().name(), item1.getValue().name());
     }
 
     /**
