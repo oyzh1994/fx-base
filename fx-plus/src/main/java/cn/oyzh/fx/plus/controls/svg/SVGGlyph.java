@@ -310,8 +310,8 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * @param task 处理业务
      */
     public void startWaiting(@NonNull Task task) {
-        ExecutorUtil.submit(this::startWaiting);
-        ThreadUtil.startVirtual(task);
+        this.startWaiting();
+        ExecutorUtil.start(task, 20);
     }
 
     /**
