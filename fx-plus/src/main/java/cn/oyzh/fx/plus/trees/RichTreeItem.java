@@ -46,6 +46,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     protected volatile Byte sortType;
 
     /**
+     * 排序中标志位
+     */
+    private volatile boolean sorting;
+
+    /**
      * 可见属性
      */
     protected SimpleBooleanProperty visibleProperty;
@@ -97,7 +102,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     @Override
     protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
-        this.doFilter();
+        if (!this.sorting) {
+            this.doFilter();
+        }
         super.updateChildren(c);
     }
 
@@ -431,9 +438,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         if (this.isSortEnable()) {
             this.sortType = 0;
             // 执行排序
-            ObservableList<TreeItem<V>> subs = this.getChildren();
-            if (!subs.isEmpty()) {
-                subs.sort((a, b) -> CharSequence.compare(a.getValue().name(), b.getValue().name()));
+            ObservableList<TreeItem<V>> children = super.getChildren();
+            if (!children.isEmpty()) {
+                try {
+                    this.sorting = true;
+                    children.sort((a, b) -> CharSequence.compare(a.getValue().name(), b.getValue().name()));
+                } finally {
+                    this.sorting = false;
+                }
             }
         }
     }
@@ -445,9 +457,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         if (this.isSortEnable()) {
             this.sortType = 1;
             // 执行排序
-            ObservableList<TreeItem<V>> subs = this.getChildren();
-            if (!subs.isEmpty()) {
-                subs.sort((a, b) -> CharSequence.compare(b.getValue().name(), a.getValue().name()));
+            ObservableList<TreeItem<V>> children = super.getChildren();
+            if (!children.isEmpty()) {
+                try {
+                    this.sorting = true;
+                    children.sort((a, b) -> CharSequence.compare(b.getValue().name(), a.getValue().name()));
+                } finally {
+                    this.sorting = false;
+                }
             }
         }
     }
