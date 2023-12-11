@@ -1,16 +1,23 @@
 package cn.oyzh.fx.plus.tabs;
 
+import cn.oyzh.fx.plus.controls.popup.MenuItemExt;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 动态tab
@@ -20,7 +27,7 @@ import lombok.experimental.Accessors;
  */
 public abstract class DynamicTab extends FXTab {
 
-    public DynamicTab(){
+    public DynamicTab() {
         // 加载内容
         this.loadContent();
         this.setClosable(true);
@@ -120,5 +127,82 @@ public abstract class DynamicTab extends FXTab {
                 label.setTextFill(paint);
             }
         });
+    }
+
+    /**
+     * 获取右键菜单按钮列表
+     *
+     * @return 右键菜单按钮列表
+     */
+    public List<MenuItem> getMenuItems() {
+        List<MenuItem> items = new ArrayList<>();
+        MenuItem closeTab = MenuItemExt.newItem("关闭当前标签", "关闭当前标签页", this::closeTab);
+        MenuItem closeLeftTab = MenuItemExt.newItem("关闭左侧标签", "关闭左侧标签页", this::closeLeftTab);
+        MenuItem closeRightTab = MenuItemExt.newItem("关闭右侧标签", "关闭右侧标签页", this::closeRightTab);
+        MenuItem closeOtherTab = MenuItemExt.newItem("关闭其他标签", "关闭其他标签页", this::closeOtherTab);
+        MenuItem closeAllTab = MenuItemExt.newItem("关闭全部标签", "关闭全部标签页", this::closeAllTab);
+        items.add(closeTab);
+        items.add(closeLeftTab);
+        items.add(closeRightTab);
+        items.add(closeOtherTab);
+        items.add(closeAllTab);
+        return items;
+    }
+
+    /**
+     * 关闭左侧tab
+     */
+    public void closeLeftTab() {
+        FXUtil.runLater(() -> {
+            List<Tab> list = new ArrayList<>();
+            for (Tab tab : this.tabs()) {
+                if (tab == this) {
+                    break;
+                }
+                list.add(tab);
+            }
+            this.tabs().removeAll(list);
+        });
+    }
+
+    /**
+     * 关闭右侧tab
+     */
+    public void closeRightTab() {
+        FXUtil.runLater(() -> {
+            List<Tab> list = new ArrayList<>();
+            boolean start = false;
+            for (Tab tab : this.tabs()) {
+                if (tab == this) {
+                    start = true;
+                } else if (start) {
+                    list.add(tab);
+                }
+            }
+            this.tabs().removeAll(list);
+        });
+    }
+
+    /**
+     * 关闭全部tab
+     */
+    public void closeAllTab() {
+        FXUtil.runLater(() -> this.tabs().clear());
+    }
+
+    /**
+     * 关闭其他tab
+     */
+    public void closeOtherTab() {
+        FXUtil.runLater(() -> this.tabs().removeIf(tab -> tab != this));
+    }
+
+    /**
+     * 获取tab列表
+     *
+     * @return tab列表
+     */
+    protected ObservableList<Tab> tabs() {
+        return this.getTabPane().getTabs();
     }
 }

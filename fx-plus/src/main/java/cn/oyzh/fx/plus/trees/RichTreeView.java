@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.trees;
 
 import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
+import cn.oyzh.fx.plus.keyboard.KeyListener;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Window;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +16,42 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/11/10
  */
-//@Slf4j
 @Accessors(chain = true, fluent = true)
 public class RichTreeView extends FlexTreeView {
 
     {
+        this.initTreeView();
+    }
+
+    /**
+     * 初始化组件
+     */
+    protected void initTreeView() {
+        // 选中模式
         this.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        // 右键菜单事件
+        this.setOnContextMenuRequested(e -> {
+            TreeItem<?> item = this.getSelectedItem();
+            if (item instanceof RichTreeItem<?> treeItem) {
+                this.showContextMenu(treeItem.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+            } else {
+                this.clearContextMenu();
+            }
+        });
+        // f2按键处理
+        KeyListener.listenReleased(this, KeyCode.F2, event -> {
+            TreeItem<?> item = this.getSelectedItem();
+            if (item instanceof RichTreeItem<?> treeItem) {
+                treeItem.rename();
+            }
+        });
+        // 删除按键处理
+        KeyListener.listenReleased(this, KeyCode.DELETE, event -> {
+            TreeItem<?> item = this.getSelectedItem();
+            if (item instanceof RichTreeItem<?> treeItem) {
+                treeItem.delete();
+            }
+        });
     }
 
     /**

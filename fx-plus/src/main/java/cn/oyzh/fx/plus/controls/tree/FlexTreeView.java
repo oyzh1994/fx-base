@@ -35,7 +35,6 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
-        // this.expandedItemCountProperty().addListener((observable, oldValue, newValue) -> this.flushLocal());
     }
 
     @Override

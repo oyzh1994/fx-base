@@ -1,11 +1,11 @@
 package cn.oyzh.fx.plus.controls.tab;
 
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
@@ -18,7 +18,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FlexTabPane extends TabPane implements ThemeAdapter, FlexAdapter, SelectAdapter<Tab> {
+public class FlexTabPane extends TabPane implements ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
 
     {
         this.setCache(true);

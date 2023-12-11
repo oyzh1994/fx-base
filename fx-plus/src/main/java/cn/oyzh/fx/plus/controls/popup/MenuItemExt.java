@@ -110,6 +110,28 @@ public class MenuItemExt extends MenuItem implements StateAdapter {
         return item;
     }
 
+    /**
+     * 使用文字来生成菜单项
+     *
+     * @param text    文字
+     * @param tipText 提示文字
+     * @param action  执行业务
+     * @return 菜单项
+     */
+    public static MenuItemExt newItem(String text, String tipText, Runnable action) {
+        // 生成菜单项
+        MenuItemExt item = new MenuItemExt(text, tipText, action);
+        // 设置提示文字
+        if (tipText != null) {
+            ControlUtil.setTipText(item, tipText);
+        }
+        // 设置操作
+        if (action != null) {
+            item.setOnAction(e -> action.run());
+        }
+        return item;
+    }
+
     @Override
     public void setStateManager(StateManager manager) {
         StateAdapter.super.stateManager(manager);

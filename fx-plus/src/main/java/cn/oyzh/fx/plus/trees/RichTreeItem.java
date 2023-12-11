@@ -243,7 +243,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     /**
      * 删除节点
      */
-    public void delete() throws Exception {
+    public void delete() {
     }
 
     /**

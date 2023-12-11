@@ -16,6 +16,22 @@ public class DynamicTabPane extends FlexTabPane {
     {
         this.setCache(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.initTabPane();
+    }
+
+    /**
+     * 初始化组件
+     */
+    protected void initTabPane() {
+        // 右键菜单事件
+        this.setOnContextMenuRequested(e -> {
+            Tab tab = this.getSelectedItem();
+            if (tab instanceof DynamicTab dynamicTab) {
+                this.showContextMenu(dynamicTab.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+            } else {
+                this.clearContextMenu();
+            }
+        });
     }
 
     /**
