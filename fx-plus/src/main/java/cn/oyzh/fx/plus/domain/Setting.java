@@ -41,6 +41,55 @@ public class Setting {
     private Integer rememberPageLocation;
 
     /**
+     * 标签策略
+     * null或者ALL_CONNECT 代表所有连接
+     * SINGLE_CONNECT 代表单个连接
+     */
+    private String tabStrategy;
+
+    /**
+     * 标签数量限制
+     * 0代表无限，null或者1代表1个
+     */
+    private Integer tabLimit;
+
+    /**
+     * 标签策略是否限制全部连接
+     *
+     * @return 结果
+     */
+    public boolean isAllTabLimitStrategy() {
+        return this.tabStrategy == null || "ALL_CONNECT".equals(this.tabStrategy);
+    }
+
+    /**
+     * 标签策略是否限制单个连接
+     *
+     * @return 结果
+     */
+    public boolean isSingleTabLimitStrategy() {
+        return "SINGLE_CONNECT".equals(this.tabStrategy);
+    }
+
+    /**
+     * 获取标签数量限制
+     *
+     * @return 标签数量限制
+     */
+    public int getTabLimit() {
+        return this.tabLimit == null ? 1 : this.tabLimit;
+    }
+
+    /**
+     * 是否标签数量无限制
+     *
+     * @return 标签数量限制
+     */
+    public boolean isTabUnLimit() {
+        return this.tabLimit != null && this.tabLimit == 0;
+    }
+
+    /**
      * 是否退出到系统托盘
      *
      * @return 结果
