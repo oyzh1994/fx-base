@@ -115,7 +115,7 @@ public class TreeUtil {
                 break;
             }
 
-            siblings = p.children;
+            siblings = p.getChildren();
 
             // work up each sibling, from the current item
             int itemIndex = siblings.indexOf(i);

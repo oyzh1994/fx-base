@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.search;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.util.ControlUtil;
@@ -29,11 +30,6 @@ public abstract class SearchHandler {
      * 节点索引
      */
     protected Integer index;
-
-    /**
-     * 最后操作
-     */
-    protected String lastAction;
 
     /**
      * 当前搜索节点
@@ -68,7 +64,6 @@ public abstract class SearchHandler {
     protected void resetSearch() {
         this.index = 0;
         this.updateCurrentItem(null);
-        this.lastAction = null;
     }
 
     /**
@@ -143,27 +138,44 @@ public abstract class SearchHandler {
             // 更新搜索信息
             this.searchResult().setCount(matchItems.size());
             // 内容为空
-            if (matchItems.isEmpty()) {
+            if (CollUtil.isEmpty(matchItems)) {
                 // 更新节点
                 this.updateCurrentItem(null);
                 return;
             }
-            // 操作不一致，更新索引
-            if (this.lastAction != null && !Objects.equals(action, this.lastAction)) {
-                this.index = "next".equals(this.lastAction) ? this.index - 2 : this.index + 2;
+            // 更新参数
+            if (this.searchParam == null || !this.searchParam.equalsTo(param)) {
+                this.searchParam = param;
+                this.resetSearch();
             }
-            // 重置索引位置
-            if (this.index >= matchItems.size()) {
-                this.index = 0;
-            } else if (this.index < 0) {
-                this.index = matchItems.size() - 1;
+            // 树节点列表
+            List<? extends TreeItem<?>> treeItems = matchItems.stream().map(SearchValue::getItem).toList();
+            // 获取索引
+            int index;
+            if (this.currentItem == null || !treeItems.contains(this.currentItem)) {
+                if (action.equals("prev")) {
+                    index = matchItems.size() - 1;
+                } else {
+                    index = 0;
+                }
+            } else {
+                index = treeItems.indexOf(this.currentItem);
+                if (action.equals("prev")) {
+                    --index;
+                } else {
+                    ++index;
+                }
             }
-            // 数据排序
-            matchItems.sort(Comparator.comparing(SearchValue::getLevel));
-            // 获取索引数据
-            SearchValue searchValue = matchItems.get("next".equals(action) ? this.index++ : this.index--);
-            // 应用搜索值
-            this.applyValue(searchValue, action);
+            // 修正索引
+            if (index < 0) {
+                index = matchItems.size() - 1;
+            } else if (index >= matchItems.size()) {
+                index = 0;
+            }
+            // 处理值
+            SearchValue searchValue = matchItems.get(index);
+            // 应用值
+            this.applyValue(searchValue, index);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -173,9 +185,9 @@ public abstract class SearchHandler {
      * 应用搜索值
      *
      * @param value  搜索值
-     * @param action 操作
+     * @param index 索引
      */
-    protected void applyValue(SearchValue value, String action) {
+    protected void applyValue(SearchValue value,int index) {
         // 获取节点
         TreeItem<?> item = value.getItem();
         // 展开其父节点
@@ -184,8 +196,7 @@ public abstract class SearchHandler {
         this.updateCurrentItem(item);
         // 更新搜索结果及参数
         this.searchResult().setMatchType(value.getMatchType());
-        this.searchResult().setIndex("next".equals(action) ? this.index : this.index + 2);
-        this.lastAction = action;
+        this.searchResult().setIndex(index + 1);
     }
 
     /**
@@ -262,12 +273,7 @@ public abstract class SearchHandler {
                 searchValue.setMatchType(matchType);
                 values.add(searchValue);
             }
-            ObservableList<? extends TreeItem<?>> children;
-            // if (item instanceof RichTreeItem<?> richTreeItem) {
-            //     children = richTreeItem.getShowChildren();
-            // } else {
-                children = item.getChildren();
-            // }
+            ObservableList<? extends TreeItem<?>> children = item.getChildren();
             if (children != null && !children.isEmpty()) {
                 for (TreeItem<?> child : children) {
                     this.getMatchValues(child, values, level + 1);

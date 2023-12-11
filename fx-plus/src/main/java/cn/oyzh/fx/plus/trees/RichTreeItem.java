@@ -104,10 +104,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     @Override
     protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
+        super.updateChildren(c);
         if (!this.sorting) {
             this.doFilter();
         }
-        super.updateChildren(c);
     }
 
     @Override

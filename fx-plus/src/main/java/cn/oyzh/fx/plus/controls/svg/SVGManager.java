@@ -53,7 +53,7 @@ public class SVGManager {
     public static void stopWaiting(SVGGlyph glyph) {
         if (glyph != null) {
             glyph.setWaiting(false);
-            BackgroundService.submitFXLater(() -> {
+            BackgroundService.submitFX(() -> {
                 SVGPathExt shape = glyph.removeProp("_shape");
                 if (shape != null) {
                     glyph.setShape(shape);
