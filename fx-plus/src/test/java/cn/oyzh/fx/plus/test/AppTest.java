@@ -7,8 +7,8 @@ package cn.oyzh.fx.plus.test;
 public class AppTest {
 
     public static void main(String[] args) {
-        // AppMain.main(args);
-        AppMain2.main(args);
+        AppMain.main(args);
+        // AppMain2.main(args);
 //        LabelListExample.main(args);
     }
 

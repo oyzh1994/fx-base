@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -31,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 2023/11/10
  */
 @Getter
-public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements DragNodeItem {
+public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements DragNodeItem, Comparable<Object> {
 
     /**
      * 当前树组件
@@ -112,15 +113,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     @Override
     public ObservableList getChildren() {
-        return super.getChildren().filtered(item -> {
-            if (item instanceof RichTreeItem<?> treeItem) {
-                if (this.filterable) {
-                    return treeItem.itemVisible();
-                }
-                return true;
-            }
-            return false;
-        });
+        if (this.filterable) {
+            return super.getChildren();
+        }
+        return this.getRichChildren().filtered(RichTreeItem::itemVisible);
     }
 
     /**
@@ -403,8 +399,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 按照类型排序
      */
     public void sort() {
-        if (this.sortType != null) {
-            if (this.sortType == 0) {
+        if (this.sortable && this.sortType != null) {
+            if (this.isSortAsc()) {
                 this.sortAsc();
             } else {
                 this.sortDesc();
@@ -418,31 +414,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     public synchronized void sortAsc() {
         if (this.isSortable()) {
             this.sortType = 0;
-            // 执行排序
-            ObservableList<RichTreeItem<?>> children = this.getRichChildren();
-            if (!children.isEmpty()) {
-                try {
-                    this.sorting = true;
-                    children.sort(this::sortAsc);
-                } finally {
-                    this.sorting = false;
-                }
-            }
+            this.sortChild();
         }
-    }
-
-    /**
-     * 节点排序正序实现
-     *
-     * @param item1 节点1
-     * @param item2 节点2
-     * @return 结果
-     */
-    protected int sortAsc(RichTreeItem<?> item1, RichTreeItem<?> item2) {
-        if (item1 == item2 || item1 == null || item2 == null || item1.getValue() == null || item2.getValue() == null || item1.getValue().name() == null || item2.getValue().name() == null) {
-            return 0;
-        }
-        return CharSequence.compare(item1.getValue().name(), item2.getValue().name());
     }
 
     /**
@@ -451,31 +424,38 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     public synchronized void sortDesc() {
         if (this.isSortable()) {
             this.sortType = 1;
-            // 执行排序
-            ObservableList<RichTreeItem<?>> children = this.getRichChildren();
-            if (!children.isEmpty()) {
-                try {
-                    this.sorting = true;
-                    children.sort(this::sortDesc);
-                } finally {
-                    this.sorting = false;
-                }
-            }
+            this.sortChild();
         }
     }
 
     /**
-     * 节点排序倒序实现
+     * 是否asc排序
      *
-     * @param item1 节点1
-     * @param item2 节点2
      * @return 结果
      */
-    protected int sortDesc(RichTreeItem<?> item1, RichTreeItem<?> item2) {
-        if (item1 == item2 || item1 == null || item2 == null || item1.getValue() == null || item2.getValue() == null || item1.getValue().name() == null || item2.getValue().name() == null) {
-            return 0;
+    protected boolean isSortAsc() {
+        return this.sortType != null && this.sortType == 0;
+    }
+
+    /**
+     * 子节点排序
+     */
+    protected void sortChild() {
+        // 执行排序
+        ObservableList<RichTreeItem<?>> children = this.getRichChildren();
+        if (!children.isEmpty()) {
+            try {
+                this.sorting = true;
+                // asc
+                if (this.isSortAsc()) {
+                    children.sort(RichTreeItem::compareTo);
+                } else {// desc
+                    children.sort(Comparator.reverseOrder());
+                }
+            } finally {
+                this.sorting = false;
+            }
         }
-        return CharSequence.compare(item2.getValue().name(), item1.getValue().name());
     }
 
     /**
@@ -595,5 +575,22 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public Window window() {
         return this.getTreeView().window();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (this == o) {
+            return 0;
+        }
+        if (o == null) {
+            return 1;
+        }
+        if (o instanceof RichTreeItem<?> item) {
+            if (item.getValue() == this.getValue() || item.getValue() == null || this.getValue() == null) {
+                return 0;
+            }
+            return CharSequence.compare(this.getValue().name(), item.getValue().name());
+        }
+        return 0;
     }
 }
