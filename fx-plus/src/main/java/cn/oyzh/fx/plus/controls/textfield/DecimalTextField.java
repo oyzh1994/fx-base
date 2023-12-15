@@ -160,6 +160,16 @@ public class DecimalTextField extends FlexTextField {
     }
 
     /**
+     * 获取float值
+     *
+     * @return float值
+     */
+    public Float getFloatValue() {
+        Double val = this.getValue();
+        return val == null ? null : val.floatValue();
+    }
+
+    /**
      * 获取值
      *
      * @return 值

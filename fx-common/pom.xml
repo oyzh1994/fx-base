@@ -55,5 +55,14 @@
             <artifactId>spring-boot-starter</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!-- ssh类库 -->
+        <!-- https://mvnrepository.com/artifact/com.github.mwiede/jsch -->
+        <dependency>
+            <groupId>com.github.mwiede</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.2.13</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
