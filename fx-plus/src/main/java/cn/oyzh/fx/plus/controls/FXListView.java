@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListView;
@@ -20,6 +21,7 @@ public class FXListView<T> extends ListView<T> implements ThemeAdapter, LayoutAd
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
         this.setCursor(Cursor.HAND);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Override

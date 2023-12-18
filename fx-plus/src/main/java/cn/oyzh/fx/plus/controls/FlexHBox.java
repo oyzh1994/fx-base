@@ -8,7 +8,7 @@ import javafx.scene.Node;
  * @author oyzh
  * @since 2022/1/19
  */
-public class FlexHBox extends FXHBox implements ThemeAdapter, FlexAdapter {
+public class FlexHBox extends FXHBox implements FlexAdapter {
 
     public FlexHBox() {
         super();

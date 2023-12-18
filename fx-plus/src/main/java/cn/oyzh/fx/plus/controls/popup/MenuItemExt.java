@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FontUtil;
 import javafx.scene.Node;
@@ -15,7 +17,7 @@ import javafx.scene.control.MenuItem;
  * @author oyzh
  * @since 2023/3/3
  */
-public class MenuItemExt extends MenuItem implements StateAdapter {
+public class MenuItemExt extends MenuItem implements StateAdapter, ThemeAdapter {
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
@@ -24,6 +26,7 @@ public class MenuItemExt extends MenuItem implements StateAdapter {
                 this.getGraphic().setDisable(newValue);
             }
         });
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     public MenuItemExt(Node graphic) {

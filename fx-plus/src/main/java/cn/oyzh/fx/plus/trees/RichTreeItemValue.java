@@ -2,10 +2,12 @@ package cn.oyzh.fx.plus.trees;
 
 import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.text.FXText;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.Objects;
@@ -17,7 +19,6 @@ import java.util.Objects;
  * @author oyzh
  * @since 2023/11/10
  */
-//@Slf4j
 public class RichTreeItemValue extends FXHBox {
 
     {
@@ -98,6 +99,11 @@ public class RichTreeItemValue extends FXHBox {
             this.removeProp("name");
         } else if (name != null && !Objects.equals(text.getText(), name)) {
             text.setText(name);
+        }
+        if (ThemeManager.isDarkMode()) {
+            text.setFill(Color.WHITE);
+        } else {
+            text.setFill(Color.BLACK);
         }
     }
 

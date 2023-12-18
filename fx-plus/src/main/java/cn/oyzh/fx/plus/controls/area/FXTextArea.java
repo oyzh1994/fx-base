@@ -6,6 +6,8 @@ import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
@@ -25,7 +27,7 @@ import java.util.Collection;
  * @since 2022/1/20
  */
 @ToString
-public class FXTextArea extends TextArea implements AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
 
     {
         this.setCache(true);
@@ -41,6 +43,7 @@ public class FXTextArea extends TextArea implements AreaAdapter, Verifiable<Base
                 }
             }
         });
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**

@@ -62,36 +62,36 @@ public class TableTestController extends Controller {
 
     public void theme1(ActionEvent actionEvent) {
         // this.stage.switchPrimerLightTheme();
-        ThemeManager.setCurrentTheme(Theme.PRIMER_LIGHT);
+        ThemeManager.currentTheme(Theme.PRIMER_LIGHT);
     }
 
     public void theme2(ActionEvent actionEvent) {
         // this.stage.switchPrimerDarkTheme();
-        ThemeManager.setCurrentTheme(Theme.PRIMER_DARK);
+        ThemeManager.currentTheme(Theme.PRIMER_DARK);
     }
 
     public void theme3(ActionEvent actionEvent) {
         // this.stage.switchNordLightTheme();
-        ThemeManager.setCurrentTheme(Theme.NORD_LIGHT);
+        ThemeManager.currentTheme(Theme.NORD_LIGHT);
     }
 
     public void theme4(ActionEvent actionEvent) {
         // this.stage.switchNordDarkTheme();
-        ThemeManager.setCurrentTheme(Theme.NORD_DARK);
+        ThemeManager.currentTheme(Theme.NORD_DARK);
     }
 
     public void theme5(ActionEvent actionEvent) {
         // this.stage.switchCupertinoLightTheme();
-        ThemeManager.setCurrentTheme(Theme.CUPERTINO_LIGHT);
+        ThemeManager.currentTheme(Theme.CUPERTINO_LIGHT);
     }
 
     public void theme6(ActionEvent actionEvent) {
         // this.stage.switchCupertinoDarkTheme();
-        ThemeManager.setCurrentTheme(Theme.CUPERTINO_DARK);
+        ThemeManager.currentTheme(Theme.CUPERTINO_DARK);
     }
 
     public void theme7(ActionEvent actionEvent) {
         // this.stage.switchDraculaTheme();
-        ThemeManager.setCurrentTheme(Theme.DRACULA);
+        ThemeManager.currentTheme(Theme.DRACULA);
     }
 }

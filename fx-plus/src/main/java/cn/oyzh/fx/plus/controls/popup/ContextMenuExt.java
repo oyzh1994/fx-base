@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.controls.popup;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -10,11 +12,12 @@ import javafx.scene.control.MenuItem;
  * @author oyzh
  * @since 2023/3/7
  */
-public class ContextMenuExt extends ContextMenu implements LayoutAdapter {
+public class ContextMenuExt extends ContextMenu implements LayoutAdapter, ThemeAdapter {
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
         this.getItems().addListener((ListChangeListener<MenuItem>) c -> this.calcWidth());
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     public ContextMenuExt() {

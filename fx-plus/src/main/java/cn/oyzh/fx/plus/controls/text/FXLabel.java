@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -25,6 +26,7 @@ public class FXLabel extends Label implements ThemeAdapter, MouseAdapter, TextAd
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     public FXLabel() {

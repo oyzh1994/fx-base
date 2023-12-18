@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.layout.FlowPane;
 import lombok.NonNull;
@@ -13,12 +14,13 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FlexFlowPane extends FlowPane implements FontAdapter, FlexAdapter, TipAdapter {
+public class FlexFlowPane extends FlowPane implements ThemeAdapter, FontAdapter, FlexAdapter, TipAdapter {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Override

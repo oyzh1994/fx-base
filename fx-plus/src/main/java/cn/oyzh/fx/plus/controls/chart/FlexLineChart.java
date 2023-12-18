@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.NamedArg;
 import javafx.collections.ObservableList;
@@ -15,7 +17,11 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/8/2
  */
-public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter, TipAdapter, FontAdapter {
+public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter, TipAdapter, FontAdapter, ThemeAdapter {
+
+    {
+        this.changeTheme(ThemeManager.currentTheme());
+    }
 
     public FlexLineChart(@NamedArg("xAxis") Axis<X> xAxis, @NamedArg("yAxis") Axis<Y> yAxis) {
         super(xAxis, yAxis);

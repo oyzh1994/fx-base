@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
@@ -33,6 +34,7 @@ public class FlexComboBox<T> extends ComboBox<T> implements ThemeAdapter, FlexAd
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setFocusTraversable(false);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Getter

@@ -5,6 +5,8 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.FXListView;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.FontUtil;
@@ -28,7 +30,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/10/23
  */
-public class SearchHistoryPopup extends Popup {
+public class SearchHistoryPopup extends Popup implements ThemeAdapter {
 
     {
         this.setAutoFix(true);
@@ -41,6 +43,7 @@ public class SearchHistoryPopup extends Popup {
                 ExecutorUtil.start(this::clearHistories, 100);
             }
         });
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**

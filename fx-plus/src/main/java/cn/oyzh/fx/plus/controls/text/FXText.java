@@ -3,7 +3,11 @@ package cn.oyzh.fx.plus.controls.text;
 import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 
@@ -11,11 +15,12 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/04/25
  */
-public class FXText extends Text implements TextAdapter, FontAdapter, LayoutAdapter {
+public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter {
 
     {
         this.setCache(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     public FXText() {
@@ -69,5 +74,15 @@ public class FXText extends Text implements TextAdapter, FontAdapter, LayoutAdap
     @Override
     public void setRealHeight(double height) {
         LayoutAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void changeTheme(Theme theme) {
+        ThemeAdapter.super.changeTheme(theme);
+        if (theme.isDarkMode()) {
+            this.setFill(Color.WHITE);
+        } else {
+            this.setFill(Color.BLACK);
+        }
     }
 }

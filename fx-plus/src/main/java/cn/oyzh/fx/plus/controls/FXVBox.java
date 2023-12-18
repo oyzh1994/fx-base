@@ -1,10 +1,13 @@
 package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -14,12 +17,13 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/06/03
  */
-public class FXVBox extends VBox implements FontAdapter, StateAdapter, NodeAdapter {
+public class FXVBox extends VBox implements ThemeAdapter, FontAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     public FXVBox() {
@@ -58,5 +62,25 @@ public class FXVBox extends VBox implements FontAdapter, StateAdapter, NodeAdapt
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public double getRealWidth() {
+        return LayoutAdapter.super.realWidth();
+    }
+
+    @Override
+    public void setRealWidth(double width) {
+        LayoutAdapter.super.realWidth(width);
+    }
+
+    @Override
+    public double getRealHeight() {
+        return LayoutAdapter.super.realHeight();
+    }
+
+    @Override
+    public void setRealHeight(double height) {
+        LayoutAdapter.super.realHeight(height);
     }
 }

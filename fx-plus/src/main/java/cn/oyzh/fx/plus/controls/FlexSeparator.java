@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Separator;
 
@@ -9,12 +11,13 @@ import javafx.scene.control.Separator;
  * @author oyzh
  * @since 2023/4/4
  */
-public class FlexSeparator extends Separator implements FlexAdapter {
+public class FlexSeparator extends Separator implements FlexAdapter, ThemeAdapter {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Override

@@ -10,7 +10,6 @@ import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
-import cn.oyzh.fx.plus.theme.Theme;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.CursorUtil;
@@ -240,7 +239,7 @@ public interface StageWrapper extends PropAdapter, StateAdapter, ThemeAdapter {
             }
         });
         // 设置主题
-        this.changeTheme(ThemeManager.getCurrentTheme());
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**

@@ -4,6 +4,8 @@ import cn.oyzh.fx.common.dto.Paging;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FlexText;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -22,7 +24,7 @@ import java.util.Objects;
  * @author oyzh
  * @since 2022/12/22
  */
-public class PagePane<T> extends Region implements LayoutAdapter {
+public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
 
     /**
      * 分页信息文本组件
@@ -171,6 +173,7 @@ public class PagePane<T> extends Region implements LayoutAdapter {
         this.setShowPageText(this.showPageText);
         this.formatPageText();
         this.managedProperty().bind(this.visibleProperty());
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**

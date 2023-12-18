@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.Theme;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -84,6 +85,7 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
             svgPathExt.setCursor(t1);
         });
         this.cursor(this.cursor);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**
@@ -164,7 +166,11 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     }
 
     public SVGGlyph() {
-        this.setColor(this.isDisabled() ? Color.GREY : Color.BLACK);
+        if (ThemeManager.isDarkMode()) {
+            this.setColor(this.isDisabled() ? Color.BLUEVIOLET : Color.WHITE);
+        } else {
+            this.setColor(this.isDisabled() ? Color.GREY : Color.BLACK);
+        }
     }
 
     public SVGGlyph(@NonNull String url) {
@@ -231,7 +237,7 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      */
     public void setColor(Color color) {
         if (color == null) {
-            color = Color.BLACK;
+            color = ThemeManager.isDarkMode() ? Color.WHITE : Color.BLACK;
         }
         this.color = color;
         this.setBackground(ControlUtil.background(color));

@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.TitledPane;
@@ -13,7 +15,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/11/21
  */
-public class FXTitledPane extends TitledPane implements TipAdapter, StateAdapter, FontAdapter {
+public class FXTitledPane extends TitledPane implements TipAdapter, StateAdapter, FontAdapter, ThemeAdapter {
 
     {
         this.setCache(true);
@@ -23,6 +25,7 @@ public class FXTitledPane extends TitledPane implements TipAdapter, StateAdapter
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
         this.setFocusTraversable(false);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Override

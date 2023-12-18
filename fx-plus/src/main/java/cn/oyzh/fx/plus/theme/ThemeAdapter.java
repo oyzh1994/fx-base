@@ -44,13 +44,13 @@ public interface ThemeAdapter {
      * @param root  根节点
      * @param theme 主题
      */
-    default void changeTheme(Parent root, Theme theme) {
+    default void changeTheme(Node root, Theme theme) {
         if (root instanceof ThemeAdapter adapter) {
             adapter.changeTheme(theme);
         }
-        for (Node node : root.getChildrenUnmodifiable()) {
-            if (node instanceof Parent parent) {
-                this.changeTheme(parent, theme);
+        if (root instanceof Parent parent) {
+            for (Node node : parent.getChildrenUnmodifiable()) {
+                this.changeTheme(node, theme);
             }
         }
     }

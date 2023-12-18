@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
@@ -25,6 +26,7 @@ public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipA
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
         this.setFocusTraversable(false);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     public FXButton() {

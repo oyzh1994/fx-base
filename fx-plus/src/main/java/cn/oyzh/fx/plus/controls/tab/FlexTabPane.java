@@ -7,6 +7,8 @@ import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
@@ -19,12 +21,13 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FlexTabPane extends TabPane implements FontAdapter, ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
+public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Override

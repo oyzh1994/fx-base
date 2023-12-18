@@ -6,6 +6,8 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.control.TextField;
 import lombok.Getter;
@@ -18,13 +20,14 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setPickOnBounds(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Getter

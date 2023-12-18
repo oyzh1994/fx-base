@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.layout.Pane;
 import lombok.NonNull;
@@ -12,12 +13,13 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FlexPane extends Pane implements FontAdapter, FlexAdapter {
+public class FlexPane extends Pane implements ThemeAdapter, FontAdapter, FlexAdapter {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     @Override

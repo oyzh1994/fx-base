@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.TableViewUtil;
 import javafx.collections.ObservableList;
@@ -15,7 +17,7 @@ import javafx.scene.control.TableView;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FlexTableView<S> extends TableView<S> implements FlexAdapter, SelectAdapter<S> {
+public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, FlexAdapter, SelectAdapter<S> {
 
     {
         this.setCache(true);
@@ -25,6 +27,7 @@ public class FlexTableView<S> extends TableView<S> implements FlexAdapter, Selec
         this.setFocusTraversable(false);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         // this.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**
