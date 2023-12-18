@@ -84,20 +84,18 @@ public interface FontAdapter {
      * @param fontSize 字体大小
      */
     default void fontSize(double fontSize) {
-        if (fontSize != this.getFontSize()) {
-            if (this instanceof Text text) {
-                text.setFont(Font.font(this.getFontFamily(), fontSize));
-            } else if (this instanceof Labeled labeled) {
-                labeled.setFont(Font.font(this.getFontFamily(), fontSize));
-            } else if (this instanceof TextInputControl inputControl) {
-                inputControl.setFont(Font.font(this.getFontFamily(), fontSize));
-            } else if (this instanceof Node node) {
-                String style = node.getStyle() == null ? "" : node.getStyle();
-                List<String> list = StrUtil.split(style, ";");
-                list = list.stream().filter(f -> !f.trim().toLowerCase().contains("-fx-font-size")).collect(Collectors.toList());
-                list.add("-fx-font-size: " + fontSize);
-                node.setStyle(CollUtil.join(list, ";"));
-            }
+        if (this instanceof Text text) {
+            text.setFont(Font.font(this.getFontFamily(), fontSize));
+        } else if (this instanceof Labeled labeled) {
+            labeled.setFont(Font.font(this.getFontFamily(), fontSize));
+        } else if (this instanceof TextInputControl inputControl) {
+            inputControl.setFont(Font.font(this.getFontFamily(), fontSize));
+        } else if (this instanceof Node node) {
+            String style = node.getStyle() == null ? "" : node.getStyle();
+            List<String> list = StrUtil.split(style, ";");
+            list = list.stream().filter(f -> !f.trim().toLowerCase().contains("-fx-font-size")).collect(Collectors.toList());
+            list.add("-fx-font-size: " + fontSize);
+            node.setStyle(CollUtil.join(list, ";"));
         }
     }
 
@@ -155,20 +153,18 @@ public interface FontAdapter {
      * @param fontFamily 字体类型
      */
     default void fontFamily(@NonNull String fontFamily) {
-        if (!FontUtil.isSameFamily(fontFamily, this.getFontFamily())) {
-            if (this instanceof Text text) {
-                text.setFont(Font.font(fontFamily, text.getFont().getSize()));
-            } else if (this instanceof Labeled labeled) {
-                labeled.setFont(Font.font(fontFamily, labeled.getFont().getSize()));
-            } else if (this instanceof TextInputControl inputControl) {
-                inputControl.setFont(Font.font(fontFamily, inputControl.getFont().getSize()));
-            } else if (this instanceof Node node) {
-                String style = node.getStyle() == null ? "" : node.getStyle();
-                List<String> list = StrUtil.split(style, ";");
-                list = list.stream().filter(f -> !f.trim().toLowerCase().contains("-fx-font-family")).collect(Collectors.toList());
-                list.add("-fx-font-family: " + fontFamily);
-                node.setStyle(CollUtil.join(list, ";"));
-            }
+        if (this instanceof Text text) {
+            text.setFont(Font.font(fontFamily, text.getFont().getSize()));
+        } else if (this instanceof Labeled labeled) {
+            labeled.setFont(Font.font(fontFamily, labeled.getFont().getSize()));
+        } else if (this instanceof TextInputControl inputControl) {
+            inputControl.setFont(Font.font(fontFamily, inputControl.getFont().getSize()));
+        } else if (this instanceof Node node) {
+            String style = node.getStyle() == null ? "" : node.getStyle();
+            List<String> list = StrUtil.split(style, ";");
+            list = list.stream().filter(f -> !f.trim().toLowerCase().contains("-fx-font-family")).collect(Collectors.toList());
+            list.add("-fx-font-family: " + fontFamily);
+            node.setStyle(CollUtil.join(list, ";"));
         }
     }
 

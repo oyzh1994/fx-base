@@ -17,23 +17,25 @@ public class SpringControllerFactory implements Callback<Class<?>, Object> {
     @Override
     public Object call(Class<?> clazz) {
         Object controller = null;
-        try {
-            if (clazz.getAnnotation(StageAttribute.class) != null) {
-                controller = SpringUtil.getBean(clazz);
+        if (SpringUtil.getBeanFactory() != null) {
+            try {
+                if (clazz.getAnnotation(StageAttribute.class) != null) {
+                    controller = SpringUtil.getBean(clazz);
+                }
+            } catch (BeansException ignored) {
             }
-        } catch (BeansException ignored) {
-        }
-        try {
-            if (controller == null && clazz.getAnnotation(Component.class) != null) {
-                controller = SpringUtil.getBean(clazz);
+            try {
+                if (controller == null && clazz.getAnnotation(Component.class) != null) {
+                    controller = SpringUtil.getBean(clazz);
+                }
+            } catch (BeansException ignored) {
             }
-        } catch (BeansException ignored) {
-        }
-        try {
-            if (controller == null) {
-                controller = SpringUtil.getBean(clazz);
+            try {
+                if (controller == null) {
+                    controller = SpringUtil.getBean(clazz);
+                }
+            } catch (BeansException ignored) {
             }
-        } catch (BeansException ignored) {
         }
         try {
             if (controller == null) {

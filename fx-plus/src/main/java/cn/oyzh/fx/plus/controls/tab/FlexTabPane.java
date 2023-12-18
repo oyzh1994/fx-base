@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.tab;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
+import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
@@ -18,7 +19,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FlexTabPane extends TabPane implements ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
+public class FlexTabPane extends TabPane implements FontAdapter, ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
 
     {
         this.setCache(true);
@@ -216,5 +217,25 @@ public class FlexTabPane extends TabPane implements ContextMenuAdapter, FlexAdap
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        FontAdapter.super.fontSize(fontSize);
+    }
+
+    @Override
+    public double getFontSize() {
+        return FontAdapter.super.fontSize();
+    }
+
+    @Override
+    public void setFontFamily(@NonNull String fontFamily) {
+        FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public String getFontFamily() {
+        return FontAdapter.super.fontFamily();
     }
 }

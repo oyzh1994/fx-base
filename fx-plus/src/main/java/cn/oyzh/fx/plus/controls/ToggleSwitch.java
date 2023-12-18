@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls;
 
-import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.util.ControlUtil;
@@ -19,7 +18,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/08/29
  */
-public class ToggleSwitch extends FlexFlowPane implements FontAdapter {
+public class ToggleSwitch extends FlexFlowPane {
 
     /**
      * 选中时显示的文字
@@ -204,24 +203,24 @@ public class ToggleSwitch extends FlexFlowPane implements FontAdapter {
     public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
     }
-
-    @Override
-    public void setFontSize(double fontSize) {
-        FontAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return FontAdapter.super.fontSize();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public String getFontFamily() {
-        return FontAdapter.super.fontFamily();
-    }
+    //
+    // @Override
+    // public void setFontSize(double fontSize) {
+    //     FlexFlowPane.super.fontSize(fontSize);
+    // }
+    //
+    // @Override
+    // public double getFontSize() {
+    //     return FlexFlowPane.super.fontSize();
+    // }
+    //
+    // @Override
+    // public void setFontFamily(@NonNull String fontFamily) {
+    //     FlexFlowPane.super.fontFamily(fontFamily);
+    // }
+    //
+    // @Override
+    // public String getFontFamily() {
+    //     return FlexFlowPane.super.fontFamily();
+    // }
 }

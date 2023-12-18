@@ -1,0 +1,22 @@
+/* 根节点默认字体，覆盖atlantafx的默认字体 */
+.root {
+    -fx-font-size: 11px;
+}
+
+/* tab默认内边距，修复atlantafx的显示遮挡 */
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
+    -fx-padding: 0.1em 0.1em 0.1em 0.1em;
+}
+
+/* tree-cell展开图标样式，修复atlantafx的图标角度错误 */
+.tree-cell:expanded > .tree-disclosure-node > .arrow,
+.tree-table-row-cell:expanded > .tree-disclosure-node > .arrow {
+    -fx-padding: 0.2em 0.5em 0 0;
+    -fx-rotate: 0;
+}
+
+/* tree-cell默认图标样式，修复atlantafx的图标下移问题 */
+.tree-cell > .tree-disclosure-node > .arrow,
+.tree-table-row-cell > .tree-disclosure-node > .arrow {
+    -fx-padding: 0.2em 0.5em 0 0;
+}

@@ -1,21 +1,43 @@
 package cn.oyzh.fx.plus.controls;
 
+import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
 import javafx.scene.layout.Pane;
+import lombok.NonNull;
 
 /**
  * @author oyzh
  * @since 2022/1/18
  */
-public class FlexPane extends Pane implements ThemeAdapter, FlexAdapter {
+public class FlexPane extends Pane implements FontAdapter, FlexAdapter {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        FontAdapter.super.fontSize(fontSize);
+    }
+
+    @Override
+    public double getFontSize() {
+        return FontAdapter.super.fontSize();
+    }
+
+    @Override
+    public String getFontFamily() {
+        return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontFamily(@NonNull String fontFamily) {
+        FontAdapter.super.fontFamily(fontFamily);
     }
 
     @Override

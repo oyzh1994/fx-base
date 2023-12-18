@@ -20,9 +20,9 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.JMetroStyleClass;
-import jfxtras.styles.jmetro.Style;
+// import jfxtras.styles.jmetro.JMetro;
+// import jfxtras.styles.jmetro.JMetroStyleClass;
+// import jfxtras.styles.jmetro.Style;
 import lombok.NonNull;
 
 import java.io.File;
@@ -215,16 +215,16 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
             // 初始化模态
             this.stage().initModality(attribute.modality());
         }
-        // 设置美化css类
-        root.getStyleClass().addAll(
-                JMetroStyleClass.BACKGROUND,
-                JMetroStyleClass.LIGHT_BUTTONS,
-                JMetroStyleClass.TABLE_GRID_LINES,
-                JMetroStyleClass.UNDERLINE_TAB_PANE,
-                JMetroStyleClass.ALTERNATING_ROW_COLORS
-        );
-        // 扩展风格
-        new JMetro(this.root(), Style.LIGHT);
+        // // 设置美化css类
+        // root.getStyleClass().addAll(
+        //         JMetroStyleClass.BACKGROUND,
+        //         JMetroStyleClass.LIGHT_BUTTONS,
+        //         JMetroStyleClass.TABLE_GRID_LINES,
+        //         JMetroStyleClass.UNDERLINE_TAB_PANE,
+        //         JMetroStyleClass.ALTERNATING_ROW_COLORS
+        // );
+        // // 扩展风格
+        // new JMetro(this.root(), Style.LIGHT);
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));

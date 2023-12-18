@@ -10,7 +10,6 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/10/12
  */
-//@Slf4j
 public class StageExt extends Stage implements StageWrapper {
 
     public StageExt(@NonNull StageAttribute window, Window owner) {
