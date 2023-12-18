@@ -10,49 +10,49 @@ import lombok.Getter;
  */
 public enum Theme {
 
-    PRIMER_LIGHT("基本风格-明亮模式") {
+    PRIMER_LIGHT("明亮基础") {
         @Override
         public boolean isDarkMode() {
             return false;
         }
     },
 
-    PRIMER_DARK("基本风格-暗黑模式") {
+    PRIMER_DARK("暗黑基础") {
         @Override
         public boolean isDarkMode() {
             return true;
         }
     },
 
-    NORD_LIGHT("北欧风格-明亮模式") {
+    NORD_LIGHT("明亮北欧") {
         @Override
         public boolean isDarkMode() {
             return false;
         }
     },
 
-    NORD_DARK("北欧风格-暗黑模式") {
+    NORD_DARK("暗黑北欧") {
         @Override
         public boolean isDarkMode() {
             return true;
         }
     },
 
-    CUPERTINO_LIGHT("库比蒂诺-明亮模式") {
+    CUPERTINO_LIGHT("明亮库比蒂诺") {
         @Override
         public boolean isDarkMode() {
             return false;
         }
     },
 
-    CUPERTINO_DARK("库比蒂诺-暗黑模式") {
+    CUPERTINO_DARK("暗黑库比蒂诺") {
         @Override
         public boolean isDarkMode() {
             return true;
         }
     },
 
-    DRACULA("暗黑模式") {
+    DRACULA("暗黑德古拉") {
         @Override
         public boolean isDarkMode() {
             return true;
