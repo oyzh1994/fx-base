@@ -106,6 +106,9 @@ public class Counter {
      * @return 耗时毫秒值
      */
     public long getElapsed() {
+        if (this.startTime == 0) {
+            return 0;
+        }
         return System.currentTimeMillis() - this.startTime;
     }
 

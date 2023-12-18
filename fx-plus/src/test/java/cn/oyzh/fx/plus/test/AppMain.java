@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.FlexVBox;
 import cn.oyzh.fx.plus.controls.ToggleSwitch;
+import cn.oyzh.fx.plus.controls.area.MsgTextArea;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
@@ -21,6 +22,8 @@ import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.trees.RichTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,6 +40,9 @@ import org.fxmisc.richtext.model.StyleSpansBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,7 +80,9 @@ public class AppMain extends Application {
         // test18(stage);
         // test19(stage);
         // test20(stage);
-        test21(stage);
+        // test21(stage);
+        // test22(stage);
+        test23(stage);
     }
 
     private void test1(Stage stage) {
@@ -784,6 +792,56 @@ public class AppMain extends Application {
 
 
         VBox vBox = new VBox(hBox, treeView);
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
+    }
+
+    private void test22(Stage stage) {
+        LongAdder adder = new LongAdder();
+        TextArea textArea = new TextArea();
+        ExecutorUtil.start(() -> {
+            FXUtil.runLater(() -> {
+                adder.increment();
+                textArea.appendText("测试内容" + adder.longValue() + "\n");
+            });
+        }, 100, 20);
+        // 当文本内容改变时，将文本框上滚到顶
+        textArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                textArea.setScrollTop(Double.MAX_VALUE);
+            }
+        });
+        VBox vBox = new VBox(textArea);
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
+    }
+
+    private void test23(Stage stage) {
+        LongAdder adder = new LongAdder();
+        MsgTextArea textArea = new MsgTextArea();
+        textArea.setMaxLine(100L);
+        AtomicReference<ScheduledFuture<?>> scheduledFuture = new AtomicReference<>();
+        Button start = new Button("开始");
+        start.setOnAction(event -> {
+            ScheduledFuture<?> future = ExecutorUtil.start(() -> {
+                FXUtil.runLater(() -> {
+                    adder.increment();
+                    textArea.appendText("测试内容" + adder.longValue() + "\n");
+                });
+            }, 100, 20);
+            scheduledFuture.set(future);
+        });
+        Button pause = new Button("暂停");
+        pause.setOnAction(event -> {
+            ScheduledFuture<?> future = scheduledFuture.get();
+            if (future != null) {
+                future.cancel(true);
+            }
+        });
+        HBox hBox = new HBox(start, pause);
+        VBox vBox = new VBox(textArea, hBox);
+
         stage.setScene(new Scene(vBox, 500, 500));
         stage.show();
     }

@@ -43,6 +43,11 @@ public class FXTextArea extends TextArea implements AreaAdapter, Verifiable<Base
         });
     }
 
+    /**
+     * 行分隔符
+     */
+    public static final String LINE_SEPARATOR = "\n";
+
     @Override
     public void setTipText(String tipText) {
         TipAdapter.super.tipText(tipText);
@@ -63,8 +68,8 @@ public class FXTextArea extends TextArea implements AreaAdapter, Verifiable<Base
      */
     public void appendLines(Collection<String> list) {
         if (CollUtil.isNotEmpty(list)) {
-            String str = CollUtil.join(list, "\n");
-            this.appendText(str + "\n");
+            String str = CollUtil.join(list, FXTextArea.LINE_SEPARATOR);
+            this.appendText(str + FXTextArea.LINE_SEPARATOR);
         }
     }
 
@@ -76,11 +81,11 @@ public class FXTextArea extends TextArea implements AreaAdapter, Verifiable<Base
     public void appendLine(String s) {
         if (s != null) {
             String text = s;
-            if (this.getLength() > 0 && !this.getText().endsWith("\n") && !text.startsWith("\n")) {
-                text = "\n" + text;
+            if (this.getLength() > 0 && !this.getText().endsWith(FXTextArea.LINE_SEPARATOR) && !text.startsWith(FXTextArea.LINE_SEPARATOR)) {
+                text = FXTextArea.LINE_SEPARATOR + text;
             }
-            if (!text.endsWith("\n")) {
-                text = text + "\n";
+            if (!text.endsWith(FXTextArea.LINE_SEPARATOR)) {
+                text = text + FXTextArea.LINE_SEPARATOR;
             }
             this.appendText(text);
         }
