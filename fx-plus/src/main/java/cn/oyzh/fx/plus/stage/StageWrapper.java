@@ -10,6 +10,9 @@ import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
@@ -20,9 +23,6 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-// import jfxtras.styles.jmetro.JMetro;
-// import jfxtras.styles.jmetro.JMetroStyleClass;
-// import jfxtras.styles.jmetro.Style;
 import lombok.NonNull;
 
 import java.io.File;
@@ -36,7 +36,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/10/11
  */
-public interface StageWrapper extends PropAdapter, StateAdapter {
+public interface StageWrapper extends PropAdapter, StateAdapter, ThemeAdapter {
 
     /**
      * 获取舞台
@@ -239,6 +239,8 @@ public interface StageWrapper extends PropAdapter, StateAdapter {
                 this.onClosed();
             }
         });
+        // 设置主题
+        this.changeTheme(ThemeManager.getCurrentTheme());
     }
 
     /**

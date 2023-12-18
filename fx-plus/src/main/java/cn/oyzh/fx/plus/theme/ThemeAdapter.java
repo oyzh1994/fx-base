@@ -1,55 +1,101 @@
 package cn.oyzh.fx.plus.theme;
 
-import javafx.scene.Node;
-import javafx.scene.control.Tab;
+import cn.oyzh.fx.plus.FXStyle;
+import cn.oyzh.fx.plus.extra.AtlantaFX;
+import cn.oyzh.fx.plus.stage.StageWrapper;
+import javafx.collections.ObservableList;
 
 /**
- * 主题件适配器
+ * 主题适配器
  *
  * @author oyzh
  * @since 2023/05/11
  */
 public interface ThemeAdapter {
 
-    default void onThemeChanged(Theme theme) {
+    /**
+     * 更改主题
+     *
+     * @param theme 主题
+     */
+    default void changeTheme(Theme theme) {
         if (theme != null) {
             switch (theme) {
-                case DARK -> this.onDarkTheme();
-                case LIGHT -> this.onLightTheme();
+                case DRACULA -> this.switchDraculaTheme();
+                case NORD_DARK -> this.switchNordDarkTheme();
+                case NORD_LIGHT -> this.switchNordLightTheme();
+                case PRIMER_DARK -> this.switchPrimerDarkTheme();
+                case PRIMER_LIGHT -> this.switchPrimerLightTheme();
+                case CUPERTINO_DARK -> this.switchCupertinoDarkTheme();
+                case CUPERTINO_LIGHT -> this.switchCupertinoLightTheme();
             }
         }
     }
 
-    default void onDarkTheme() {
-        if (this instanceof Node node) {
-            node.getStyleClass().remove("light");
-            node.getStyleClass().add("dark");
-        } else if (this instanceof Tab tab) {
-            tab.getStyleClass().remove("light");
-            tab.getStyleClass().add("dark");
+    default void switchDraculaTheme() {
+        if (this instanceof StageWrapper wrapper) {
+            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.DRACULA);
         }
     }
 
-    default void onLightTheme() {
-        if (this instanceof Node node) {
-            node.getStyleClass().remove("dark");
-            node.getStyleClass().add("light");
-        } else if (this instanceof Tab tab) {
-            tab.getStyleClass().remove("light");
-            tab.getStyleClass().add("dark");
+    default void switchNordDarkTheme() {
+        if (this instanceof StageWrapper wrapper) {
+            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.NORD_DARK);
         }
     }
 
-    //    default void onDarkTheme() {
-//        if (this instanceof Region region) {
-//            region.setBackground(ControlUtil.backgroundOfColor(Color.valueOf("#5B5B5B")));
-//        }
-//    }
-//
-//    default void onLightTheme() {
-//        if (this instanceof Region region) {
-//            region.setBackground(ControlUtil.backgroundOfColor(Color.WHITE));
-//        }
-//    }
+    default void switchNordLightTheme() {
+        if (this instanceof StageWrapper wrapper) {
+            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.NORD_LIGHT);
+        }
+    }
 
+    default void switchPrimerDarkTheme() {
+        if (this instanceof StageWrapper wrapper) {
+            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.PRIMER_DARK);
+        }
+    }
+
+    default void switchPrimerLightTheme() {
+        if (this instanceof StageWrapper wrapper) {
+            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.PRIMER_LIGHT);
+        }
+    }
+
+    default void switchCupertinoDarkTheme() {
+        if (this instanceof StageWrapper wrapper) {
+            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.CUPERTINO_DARK);
+        }
+    }
+
+    default void switchCupertinoLightTheme() {
+        if (this instanceof StageWrapper wrapper) {
+            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.CUPERTINO_LIGHT);
+        }
+    }
+
+    private void addStyle(ObservableList<String> stylesheets, String style) {
+        if (stylesheets != null) {
+            if (!stylesheets.contains(style)) {
+                if (!stylesheets.isEmpty()) {
+                    stylesheets.remove(AtlantaFX.DRACULA);
+                    stylesheets.remove(AtlantaFX.NORD_DARK);
+                    stylesheets.remove(AtlantaFX.NORD_LIGHT);
+                    stylesheets.remove(AtlantaFX.PRIMER_DARK);
+                    stylesheets.remove(AtlantaFX.PRIMER_LIGHT);
+                    stylesheets.remove(AtlantaFX.CUPERTINO_DARK);
+                    stylesheets.remove(AtlantaFX.CUPERTINO_LIGHT);
+                    stylesheets.remove(FXStyle.FX_BASE);
+                }
+                stylesheets.addAll(style, FXStyle.FX_BASE);
+            }
+        }
+    }
 }

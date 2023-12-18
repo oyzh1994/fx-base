@@ -12,6 +12,8 @@ import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -33,9 +35,8 @@ public class StageUtil {
      * 退出系统
      */
     public static void exit() {
-        for (Window window : Window.getWindows()) {
-            Object reference = window.getProperties().get("_stageReference");
-            if (reference instanceof StageWrapper wrapper && wrapper.controller() instanceof StageListener listener) {
+        for (StageWrapper wrapper : allStages()) {
+            if (wrapper.controller() instanceof StageListener listener) {
                 try {
                     listener.onSystemExit();
                     StaticLog.debug("listener.onSystemExit() execute...");
@@ -46,6 +47,20 @@ public class StageUtil {
         }
         StaticLog.warn("system exit...");
         Platform.exit();
+    }
+
+    /**
+     * 获取所有stage
+     */
+    public static List<StageWrapper> allStages() {
+        List<StageWrapper> list = new ArrayList<>();
+        for (Window window : Window.getWindows()) {
+            Object reference = window.getProperties().get("_stageReference");
+            if (reference instanceof StageWrapper wrapper) {
+                list.add(wrapper);
+            }
+        }
+        return list;
     }
 
     /**

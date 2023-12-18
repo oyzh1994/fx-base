@@ -3,13 +3,26 @@
 <?import cn.oyzh.fx.plus.controls.table.FlexTableColumn?>
 <?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
 <?import javafx.scene.control.Button?>
+<?import cn.oyzh.fx.plus.controls.textfield.ClearableTextField?>
+<?import javafx.scene.control.CheckBox?>
 <FlexVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
         <Button text="测试1" onAction="#test1"></Button>
         <Button text="测试2" onAction="#test2"></Button>
+        <Button text="主题1" onAction="#theme1"></Button>
+        <Button text="主题2" onAction="#theme2"></Button>
+        <Button text="主题3" onAction="#theme3"></Button>
+        <Button text="主题4" onAction="#theme4"></Button>
+        <Button text="主题5" onAction="#theme5"></Button>
+        <Button text="主题6" onAction="#theme6"></Button>
+        <Button text="主题7" onAction="#theme7"></Button>
     </FlexHBox>
-    <FlexTableView focusTraversable="true" flexWidth="100%" flexHeight="100% - 50" fx:id="listTable"
+    <FlexHBox realHeight="50">
+      <ClearableTextField promptText="测试内容"></ClearableTextField>
+      <CheckBox text="测试内容checkbox" maxWidth="119"></CheckBox>
+    </FlexHBox>
+    <FlexTableView focusTraversable="true" flexWidth="100%" flexHeight="100% - 100" fx:id="listTable"
                    fixedCellSize="30">
         <columns>
             <FlexTableColumn flexWidth="10%" fx:id="index" text="编号"/>

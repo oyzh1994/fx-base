@@ -9,6 +9,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AtlantaFX {
 
+    public static final String DRACULA = "/atlantafx/base/theme/dracula.css";
+
     public static final String NORD_LIGHT = "/atlantafx/base/theme/nord-light.css";
 
     public static final String NORD_DARK = "/atlantafx/base/theme/cupertino-dark.css";

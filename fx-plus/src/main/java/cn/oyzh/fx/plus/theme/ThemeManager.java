@@ -1,40 +1,43 @@
 package cn.oyzh.fx.plus.theme;
 
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
-import javafx.stage.Window;
+import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageWrapper;
 
 import java.util.List;
 
+/**
+ * 主题管理器
+ *
+ * @author oyzh
+ * @since 2023/12/18
+ */
 public class ThemeManager {
 
-   public static Theme Current_Theme = Theme.LIGHT;
+    public static Theme DEFAULT_THEME = Theme.PRIMER_LIGHT;
 
-   public static void changeTheme(Theme theme) {
-       if (theme == Current_Theme) {
-           return;
-       }
-       Current_Theme = theme;
-       List<Window> windows = Window.getWindows();
-       for (Window window : windows) {
-           if (!window.isShowing()) {
-               continue;
-           }
-           if (window instanceof Stage stage && stage.getScene() != null && stage.getScene().getRoot() != null) {
-               changeTheme(stage.getScene().getRoot(), theme);
-           }
-       }
-   }
+    private static Theme Current_Theme;
 
-   private static void changeTheme(Node node, Theme theme) {
-       if (node instanceof ThemeAdapter adapter) {
-           adapter.onThemeChanged(theme);
-       }
-       if (node instanceof Parent parent) {
-           for (Node node1 : parent.getChildrenUnmodifiable()) {
-               changeTheme(node1, theme);
-           }
-       }
-   }
+    public static Theme getCurrentTheme() {
+        if (Current_Theme == null) {
+            return DEFAULT_THEME;
+        }
+        return Current_Theme;
+    }
+
+    public static void setCurrentTheme(String themeName) {
+        Theme theme = Theme.valueOf(themeName.toUpperCase());
+        setCurrentTheme(theme);
+    }
+
+    public static void setCurrentTheme(Theme theme) {
+        try {
+            Current_Theme = theme;
+            List<StageWrapper> wrappers = StageUtil.allStages();
+            for (StageWrapper wrapper : wrappers) {
+                wrapper.changeTheme(Current_Theme);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

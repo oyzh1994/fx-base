@@ -2,11 +2,11 @@ package cn.oyzh.fx.plus.test.table;
 
 import cn.oyzh.fx.plus.controller.Controller;
 import cn.oyzh.fx.plus.controls.table.FlexTableColumn;
-import cn.oyzh.fx.plus.spring.SpringApplication;
 import cn.oyzh.fx.plus.stage.StageAttribute;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
 import javafx.stage.Modality;
 
 /**
@@ -16,7 +16,7 @@ import javafx.stage.Modality;
 @StageAttribute(
         title = "table测试",
         modality = Modality.WINDOW_MODAL,
-        value =  "/table/test.fxml"
+        value = "/table/test.fxml"
 )
 public class TableTestController extends Controller {
 
@@ -44,7 +44,6 @@ public class TableTestController extends Controller {
     @FXML
     private FlexTableColumn<String, Double> latitude;
 
-
     public void test1(ActionEvent actionEvent) {
         value.setText("成员名称");
         value.setFlexWidth("50%");
@@ -59,5 +58,40 @@ public class TableTestController extends Controller {
         score.setVisible(false);
         latitude.setVisible(true);
         longitude.setVisible(true);
+    }
+
+    public void theme1(ActionEvent actionEvent) {
+        // this.stage.switchPrimerLightTheme();
+        ThemeManager.setCurrentTheme(Theme.PRIMER_LIGHT);
+    }
+
+    public void theme2(ActionEvent actionEvent) {
+        // this.stage.switchPrimerDarkTheme();
+        ThemeManager.setCurrentTheme(Theme.PRIMER_DARK);
+    }
+
+    public void theme3(ActionEvent actionEvent) {
+        // this.stage.switchNordLightTheme();
+        ThemeManager.setCurrentTheme(Theme.NORD_LIGHT);
+    }
+
+    public void theme4(ActionEvent actionEvent) {
+        // this.stage.switchNordDarkTheme();
+        ThemeManager.setCurrentTheme(Theme.NORD_DARK);
+    }
+
+    public void theme5(ActionEvent actionEvent) {
+        // this.stage.switchCupertinoLightTheme();
+        ThemeManager.setCurrentTheme(Theme.CUPERTINO_LIGHT);
+    }
+
+    public void theme6(ActionEvent actionEvent) {
+        // this.stage.switchCupertinoDarkTheme();
+        ThemeManager.setCurrentTheme(Theme.CUPERTINO_DARK);
+    }
+
+    public void theme7(ActionEvent actionEvent) {
+        // this.stage.switchDraculaTheme();
+        ThemeManager.setCurrentTheme(Theme.DRACULA);
     }
 }

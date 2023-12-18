@@ -12,6 +12,11 @@ import lombok.Data;
 public class Setting {
 
     /**
+     * 主题
+     */
+    private String theme;
+
+    /**
      * 应用退出
      * 0 到系统托盘
      * 1 每次询问

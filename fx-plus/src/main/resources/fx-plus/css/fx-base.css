@@ -3,20 +3,44 @@
     -fx-font-size: 11px;
 }
 
-/* tab默认内边距，修复atlantafx的显示遮挡 */
+/* tab，修复atlantafx的显示遮挡 */
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
     -fx-padding: 0.1em 0.1em 0.1em 0.1em;
 }
 
-/* tree-cell展开图标样式，修复atlantafx的图标角度错误 */
+/* tree-cell，修复atlantafx的图标角度错误 */
 .tree-cell:expanded > .tree-disclosure-node > .arrow,
 .tree-table-row-cell:expanded > .tree-disclosure-node > .arrow {
     -fx-padding: 0.2em 0.5em 0 0;
     -fx-rotate: 0;
 }
 
-/* tree-cell默认图标样式，修复atlantafx的图标下移问题 */
+/* tree-cell，修复atlantafx的图标下移问题 */
 .tree-cell > .tree-disclosure-node > .arrow,
 .tree-table-row-cell > .tree-disclosure-node > .arrow {
     -fx-padding: 0.2em 0.5em 0 0;
+}
+
+/* text-input，修复atlantafx的样式异常问题 */
+.text-input {
+    -fx-padding: 6px;
+}
+
+/* button，修复atlantafx的样式异常问题 */
+.button {
+    -fx-padding: 6px 10px 6px 10px;
+}
+
+/* check-box，修复atlantafx的样式异常问题 */
+.check-box {
+    -fx-label-padding: 2px 2px 0 6px;
+}
+.check-box > .box {
+    -fx-padding: 3px 4px 3px 4px;
+}
+.check-box > .box > .mark {
+    -fx-min-height: 0.75em;
+    -fx-max-height: 0.75em;
+    -fx-min-width: 0.75em;
+    -fx-max-width: 0.75em;
 }

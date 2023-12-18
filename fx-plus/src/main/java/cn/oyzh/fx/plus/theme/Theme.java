@@ -10,19 +10,24 @@ import lombok.Getter;
  */
 public enum Theme {
 
-    LIGHT(0, "明亮模式"),
+    PRIMER_LIGHT("基本风格-明亮模式"),
 
-    DARK(1, "暗黑模式");
+    PRIMER_DARK("基本风格-暗黑模式"),
 
-    @Getter
-    private final Integer code;
+    NORD_LIGHT("北欧风格-明亮模式"),
+
+    NORD_DARK("北欧风格-暗黑模式"),
+
+    CUPERTINO_LIGHT("库比蒂诺-明亮模式"),
+
+    CUPERTINO_DARK("库比蒂诺-暗黑模式"),
+
+    DRACULA("暗黑模式");
 
     @Getter
     private final String desc;
 
-    Theme(Integer code, String desc) {
-        this.code = code;
+    Theme(String desc) {
         this.desc = desc;
     }
-
 }

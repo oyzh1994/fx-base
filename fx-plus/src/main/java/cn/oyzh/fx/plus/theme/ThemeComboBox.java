@@ -1,30 +1,38 @@
-package cn.oyzh.fx.plus.theme;//package cn.oyzh.fx.plus.theme;
-//
-//import cn.oyzh.fx.plus.SimpleStringConverter;
-//import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
-//
-//public class ThemeComboBox extends FlexComboBox<Theme> {
-//
-//    {
-//        this.addItems(Theme.values());
-//        this.setConverter(new SimpleStringConverter<>() {
-//            @Override
-//            public String toString(Theme o) {
-//                return o.getDesc();
-//            }
-//        });
-//    }
-//
-//    public void select(String themeName) {
-//        if (themeName == null) {
-//            this.select(0);
-//            return;
-//        }
-//        try {
-//            Theme theme = Theme.valueOf(themeName);
-//            super.select(theme);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-//}
+package cn.oyzh.fx.plus.theme;
+
+import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.plus.SimpleStringConverter;
+import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+
+/**
+ * 主题下拉框
+ *
+ * @author oyzh
+ * @since 2023/12/18
+ */
+public class ThemeComboBox extends FlexComboBox<Theme> {
+
+    {
+        this.addItems(Theme.values());
+        this.setConverter(new SimpleStringConverter<>() {
+            @Override
+            public String toString(Theme o) {
+                return o.getDesc();
+            }
+        });
+    }
+
+    public void select(String themeName) {
+        if (StrUtil.isEmpty(themeName)) {
+            this.select(0);
+        } else {
+            try {
+                Theme theme = Theme.valueOf(themeName.toUpperCase());
+                super.select(theme);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                this.select(0);
+            }
+        }
+    }
+}

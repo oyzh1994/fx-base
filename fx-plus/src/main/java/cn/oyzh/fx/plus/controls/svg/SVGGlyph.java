@@ -3,12 +3,10 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.Task;
-import cn.oyzh.fx.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,7 +28,7 @@ import lombok.experimental.Accessors;
  * @since 2022/5/31
  */
 //@Slf4j
-public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
+public class SVGGlyph extends Region implements MouseAdapter, TipAdapter, StateAdapter {
 
     /**
      * 颜色
@@ -326,16 +324,6 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      */
     public void stopWaiting() {
         SVGManager.stopWaiting(this);
-    }
-
-    @Override
-    public void onDarkTheme() {
-        this.setColor(Color.WHITE);
-    }
-
-    @Override
-    public void onLightTheme() {
-        this.setColor(Color.BLACK);
     }
 
     @Override
