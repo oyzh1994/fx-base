@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import cn.oyzh.fx.plus.controls.textfield.ClearableTextField?>
 <?import javafx.scene.control.CheckBox?>
+<?import cn.oyzh.fx.plus.controls.svg.SVGGlyph?>
 <FlexVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -21,6 +22,7 @@
     <FlexHBox realHeight="50">
       <ClearableTextField promptText="测试内容"></ClearableTextField>
       <CheckBox text="测试内容checkbox" maxWidth="119"></CheckBox>
+      <SVGGlyph url="/fx-plus/font/clear.svg" maxWidth="119"></SVGGlyph>
     </FlexHBox>
     <FlexTableView focusTraversable="true" flexWidth="100%" flexHeight="100% - 100" fx:id="listTable"
                    fixedCellSize="30">

@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.extra.AtlantaFX;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 
 /**
  * 主题适配器
@@ -29,12 +31,36 @@ public interface ThemeAdapter {
                 case CUPERTINO_DARK -> this.switchCupertinoDarkTheme();
                 case CUPERTINO_LIGHT -> this.switchCupertinoLightTheme();
             }
+            // 页面
+            if (this instanceof StageWrapper wrapper) {
+                this.changeTheme(wrapper.root(), theme);
+            }
+        }
+    }
+
+    /**
+     * 更改主题
+     *
+     * @param root  根节点
+     * @param theme 主题
+     */
+    default void changeTheme(Parent root, Theme theme) {
+        if (root instanceof ThemeAdapter adapter) {
+            adapter.changeTheme(theme);
+        }
+        for (Node node : root.getChildrenUnmodifiable()) {
+            if (node instanceof Parent parent) {
+                this.changeTheme(parent, theme);
+            }
         }
     }
 
     default void switchDraculaTheme() {
         if (this instanceof StageWrapper wrapper) {
             ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.DRACULA);
+        } else if (this instanceof Parent parent) {
+            ObservableList<String> stylesheets = parent.getStylesheets();
             this.addStyle(stylesheets, AtlantaFX.DRACULA);
         }
     }
@@ -43,12 +69,18 @@ public interface ThemeAdapter {
         if (this instanceof StageWrapper wrapper) {
             ObservableList<String> stylesheets = wrapper.root().getStylesheets();
             this.addStyle(stylesheets, AtlantaFX.NORD_DARK);
+        } else if (this instanceof Parent parent) {
+            ObservableList<String> stylesheets = parent.getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.NORD_DARK);
         }
     }
 
     default void switchNordLightTheme() {
         if (this instanceof StageWrapper wrapper) {
             ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.NORD_LIGHT);
+        } else if (this instanceof Parent parent) {
+            ObservableList<String> stylesheets = parent.getStylesheets();
             this.addStyle(stylesheets, AtlantaFX.NORD_LIGHT);
         }
     }
@@ -57,12 +89,18 @@ public interface ThemeAdapter {
         if (this instanceof StageWrapper wrapper) {
             ObservableList<String> stylesheets = wrapper.root().getStylesheets();
             this.addStyle(stylesheets, AtlantaFX.PRIMER_DARK);
+        } else if (this instanceof Parent parent) {
+            ObservableList<String> stylesheets = parent.getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.PRIMER_DARK);
         }
     }
 
     default void switchPrimerLightTheme() {
         if (this instanceof StageWrapper wrapper) {
             ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.PRIMER_LIGHT);
+        } else if (this instanceof Parent parent) {
+            ObservableList<String> stylesheets = parent.getStylesheets();
             this.addStyle(stylesheets, AtlantaFX.PRIMER_LIGHT);
         }
     }
@@ -71,12 +109,18 @@ public interface ThemeAdapter {
         if (this instanceof StageWrapper wrapper) {
             ObservableList<String> stylesheets = wrapper.root().getStylesheets();
             this.addStyle(stylesheets, AtlantaFX.CUPERTINO_DARK);
+        } else if (this instanceof Parent parent) {
+            ObservableList<String> stylesheets = parent.getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.CUPERTINO_DARK);
         }
     }
 
     default void switchCupertinoLightTheme() {
         if (this instanceof StageWrapper wrapper) {
             ObservableList<String> stylesheets = wrapper.root().getStylesheets();
+            this.addStyle(stylesheets, AtlantaFX.CUPERTINO_LIGHT);
+        } else if (this instanceof Parent parent) {
+            ObservableList<String> stylesheets = parent.getStylesheets();
             this.addStyle(stylesheets, AtlantaFX.CUPERTINO_LIGHT);
         }
     }

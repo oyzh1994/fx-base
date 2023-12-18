@@ -34,7 +34,7 @@ public class ThemeManager {
             Current_Theme = theme;
             List<StageWrapper> wrappers = StageUtil.allStages();
             for (StageWrapper wrapper : wrappers) {
-                wrapper.changeTheme(Current_Theme);
+                wrapper.changeTheme(theme);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

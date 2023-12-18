@@ -7,6 +7,8 @@ import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,8 +29,7 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2022/5/31
  */
-//@Slf4j
-public class SVGGlyph extends Region implements MouseAdapter, TipAdapter, StateAdapter {
+public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
     /**
      * 颜色
@@ -334,5 +335,15 @@ public class SVGGlyph extends Region implements MouseAdapter, TipAdapter, StateA
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public void changeTheme(Theme theme) {
+        ThemeAdapter.super.changeTheme(theme);
+        if (theme.isDarkMode()) {
+            this.setColor(Color.WHITE);
+        } else {
+            this.setColor(Color.BLACK);
+        }
     }
 }
