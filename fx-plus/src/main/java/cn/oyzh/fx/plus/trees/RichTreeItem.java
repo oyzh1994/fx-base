@@ -113,10 +113,12 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     @Override
     public ObservableList getChildren() {
-        if (this.filterable) {
-            return super.getChildren();
-        }
-        return this.getRichChildren().filtered(RichTreeItem::itemVisible);
+        return this.getRichChildren().filtered(item -> {
+            if (this.filterable) {
+                return item.itemVisible();
+            }
+            return true;
+        });
     }
 
     /**

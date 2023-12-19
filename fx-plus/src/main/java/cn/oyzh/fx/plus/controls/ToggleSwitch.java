@@ -208,8 +208,10 @@ public class ToggleSwitch extends FlexFlowPane {
 
     @Override
     public void changeTheme(Theme theme) {
-        super.changeTheme(theme);
-        this.selectedBtn.changeTheme(theme);
-        this.unselectedBtn.changeTheme(theme);
+        if (this.isEnableTheme()) {
+            super.changeTheme(theme);
+            this.selectedBtn.changeTheme(theme);
+            this.unselectedBtn.changeTheme(theme);
+        }
     }
 }

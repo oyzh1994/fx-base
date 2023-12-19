@@ -33,14 +33,22 @@
 
 /* check-box，修复atlantafx的样式异常问题 */
 .check-box {
-    -fx-label-padding: 2px 2px 0 6px;
+    -fx-label-padding: 1px 0 1px 3px;
 }
 .check-box > .box {
-    -fx-padding: 3px 4px 3px 4px;
+    -fx-padding: 4px;
 }
 .check-box > .box > .mark {
     -fx-min-height: 0.75em;
     -fx-max-height: 0.75em;
     -fx-min-width: 0.75em;
     -fx-max-width: 0.75em;
+}
+
+/* text-area，修复atlantafx的样式异常问题 */
+.text-area  {
+    -fx-padding: 1px;
+}
+.text-area .content {
+    -fx-padding: 2px 3px 2px 3px;
 }

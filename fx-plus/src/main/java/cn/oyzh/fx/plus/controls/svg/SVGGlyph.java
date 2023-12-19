@@ -347,11 +347,13 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
 
     @Override
     public void changeTheme(Theme theme) {
-        ThemeAdapter.super.changeTheme(theme);
-        if (theme.isDarkMode()) {
-            this.setColor(Color.WHITE);
-        } else {
-            this.setColor(Color.BLACK);
+        if (this.isEnableTheme()) {
+            ThemeAdapter.super.changeTheme(theme);
+            if (theme.isDarkMode()) {
+                this.setColor(Color.WHITE);
+            } else {
+                this.setColor(Color.BLACK);
+            }
         }
     }
 }

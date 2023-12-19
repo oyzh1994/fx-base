@@ -14,6 +14,9 @@
 <?import cn.oyzh.fx.plus.controls.button.IconButton?>
 <?import cn.oyzh.fx.plus.controls.FlexPane?>
 <?import atlantafx.base.controls.ToggleSwitch?>
+<?import cn.oyzh.fx.plus.controls.area.FlexTextArea?>
+<?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
+<?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
 <FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -30,10 +33,12 @@
     <FlexHBox realHeight="50">
       <ClearableTextField promptText="测试内容"></ClearableTextField>
       <NumberTextField promptText="测试内容"></NumberTextField>
-      <CheckBox text="测试内容checkbox" maxWidth="119"></CheckBox>
+      <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
+      <FXRadioButton text="测试内容checkbox" fontSize="15" maxWidth="119"></FXRadioButton>
       <SVGGlyph url="/fx-plus/font/clear.svg"></SVGGlyph>
       <FXText text="测试内容"></FXText>
       <ToggleSwitch text="测试内容"></ToggleSwitch>
+      <FlexTextArea text="测试内容"></FlexTextArea>
     </FlexHBox>
     <FlexTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
                    fixedCellSize="30">

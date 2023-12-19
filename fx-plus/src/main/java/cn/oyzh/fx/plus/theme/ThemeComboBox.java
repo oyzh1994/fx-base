@@ -22,6 +22,11 @@ public class ThemeComboBox extends FlexComboBox<Theme> {
         });
     }
 
+    /**
+     * 选择主题
+     *
+     * @param themeName 主题名称
+     */
     public void select(String themeName) {
         if (StrUtil.isEmpty(themeName)) {
             this.select(0);

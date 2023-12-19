@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
+import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -8,12 +9,13 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.RadioButton;
+import lombok.NonNull;
 
 /**
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXRadioButton extends RadioButton implements ThemeAdapter, StateAdapter, LayoutAdapter, TipAdapter {
+public class FXRadioButton extends RadioButton implements ThemeAdapter, StateAdapter, LayoutAdapter, TipAdapter, FontAdapter {
 
     {
         this.setCache(true);
@@ -61,5 +63,25 @@ public class FXRadioButton extends RadioButton implements ThemeAdapter, StateAda
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        FontAdapter.super.fontSize(fontSize);
+    }
+
+    @Override
+    public double getFontSize() {
+        return FontAdapter.super.fontSize();
+    }
+
+    @Override
+    public void setFontFamily(@NonNull String fontFamily) {
+        FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public String getFontFamily() {
+        return FontAdapter.super.fontFamily();
     }
 }

@@ -1,0 +1,10 @@
+/* text-area，修复atlantafx的样式异常问题 */
+.text-area .content {
+    -fx-text-fill: -color-light;
+    -fx-background-color: -color-bg-default;
+}
+
+/* table-view，修复atlantafx的样式异常问题 */
+.table-view {
+    -fx-background-color: -color-bg-default;
+}

@@ -78,11 +78,13 @@ public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapt
 
     @Override
     public void changeTheme(Theme theme) {
-        ThemeAdapter.super.changeTheme(theme);
-        if (theme.isDarkMode()) {
-            this.setFill(Color.WHITE);
-        } else {
-            this.setFill(Color.BLACK);
+        if (this.isEnableTheme()) {
+            ThemeAdapter.super.changeTheme(theme);
+            if (theme.isDarkMode()) {
+                this.setFill(Color.WHITE);
+            } else {
+                this.setFill(Color.BLACK);
+            }
         }
     }
 }

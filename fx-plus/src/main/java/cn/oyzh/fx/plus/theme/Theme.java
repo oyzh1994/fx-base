@@ -59,6 +59,9 @@ public enum Theme {
         }
     };
 
+    /**
+     * 描述内容
+     */
     @Getter
     private final String desc;
 
@@ -66,6 +69,10 @@ public enum Theme {
         this.desc = desc;
     }
 
-
+    /**
+     * 是否暗黑模式
+     *
+     * @return 结果
+     */
     public abstract boolean isDarkMode();
 }
