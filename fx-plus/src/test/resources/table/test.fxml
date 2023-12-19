@@ -17,6 +17,7 @@
 <?import cn.oyzh.fx.plus.controls.area.FlexTextArea?>
 <?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
+<?import cn.oyzh.fx.plus.controls.rich.FlexRichTextArea?>
 <FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -34,11 +35,14 @@
       <ClearableTextField promptText="测试内容"></ClearableTextField>
       <NumberTextField promptText="测试内容"></NumberTextField>
       <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
-      <FXRadioButton text="测试内容checkbox" fontSize="15" maxWidth="119"></FXRadioButton>
       <SVGGlyph url="/fx-plus/font/clear.svg"></SVGGlyph>
       <FXText text="测试内容"></FXText>
+    </FlexHBox>
+    <FlexHBox realHeight="50">
+      <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
       <ToggleSwitch text="测试内容"></ToggleSwitch>
       <FlexTextArea text="测试内容"></FlexTextArea>
+      <FlexRichTextArea text="测试内容" promptText="测试内容提示"></FlexRichTextArea>
     </FlexHBox>
     <FlexTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
                    fixedCellSize="30">

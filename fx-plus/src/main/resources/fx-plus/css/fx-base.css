@@ -23,7 +23,7 @@
 
 /* text-input，修复atlantafx的样式异常问题 */
 .text-input {
-    -fx-padding: 6px;
+    -fx-padding: 3px;
 }
 
 /* button，修复atlantafx的样式异常问题 */
@@ -35,9 +35,11 @@
 .check-box {
     -fx-label-padding: 1px 0 1px 3px;
 }
+
 .check-box > .box {
     -fx-padding: 4px;
 }
+
 .check-box > .box > .mark {
     -fx-min-height: 0.75em;
     -fx-max-height: 0.75em;
@@ -46,9 +48,55 @@
 }
 
 /* text-area，修复atlantafx的样式异常问题 */
-.text-area  {
+.text-area {
     -fx-padding: 1px;
 }
+
 .text-area .content {
     -fx-padding: 2px 3px 2px 3px;
 }
+
+/* table-view，修复atlantafx的样式异常问题 */
+.table-view {
+    -fx-fill: -color-fg-default;
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
+}
+
+/* rich-text-area，支持atlantafx的样式 */
+.rich-text-area {
+    -fx-fill: -color-fg-default;
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
+}
+
+/* rich-text-field，支持atlantafx的样式 */
+.rich-text-field {
+    -fx-fill: -color-fg-default;
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
+}
+
+/* svg-glyph，支持atlantafx的样式 */
+.svg-glyph {
+    -fx-fill: -color-fg-default;
+    -fx-text-fill: -color-fg-default;
+    -fx-stroke: -color-fg-default;
+    -fx-background-color: -color-fg-default;
+}
+
+.svg-glyph.shape{
+    -fx-fill: -color-fg-default;
+    -fx-text-fill: -color-fg-default;
+    -fx-stroke: -color-fg-default;
+    -fx-background-color: -color-fg-default;
+}
+
+/* text-area，修复atlantafx的样式异常问题 */
+.text-area .content {
+    -fx-fill: -color-fg-default;
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
+}
+
+

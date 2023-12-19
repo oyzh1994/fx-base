@@ -7,10 +7,14 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -18,6 +22,7 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import lombok.NonNull;
+import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.reactfx.value.Val;
@@ -29,7 +34,7 @@ import java.util.function.IntFunction;
  * @author oyzh
  * @since 2023/9/28
  */
-public class BaseRichTextArea extends InlineCssTextArea implements FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         this.setCache(true);
@@ -42,6 +47,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements FontAdapter, 
         this.setPadding(new Insets(5, 5, 5, 5));
         BorderStroke stroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         this.setBorder(new Border(stroke));
+        this.changeTheme(ThemeManager.currentTheme());
+        this.getStyleClass().add("rich-text-area");
     }
 
     /**
@@ -108,6 +115,14 @@ public class BaseRichTextArea extends InlineCssTextArea implements FontAdapter, 
 
     public void setPromptText(String prompt) {
         FXUtil.runLater(() -> this.setPlaceholder(new Text(prompt)));
+    }
+
+    public String getPromptText() {
+        Node node = super.getPlaceholder();
+        if (node instanceof Labeled l) {
+            return l.getText();
+        }
+        return null;
     }
 
     public Val<Boolean> undoableProperty() {
@@ -251,5 +266,26 @@ public class BaseRichTextArea extends InlineCssTextArea implements FontAdapter, 
     @Override
     public void selectRange(int anchor, int caretPosition) {
         FXUtil.runWait(() -> super.selectRange(anchor, caretPosition));
+    }
+
+    @Override
+    public void changeTheme(Theme theme) {
+        if (this.isEnableTheme()) {
+            Node placeholder = this.getPlaceholder();
+            CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
+            if (theme.isDarkMode()) {
+                this.setStyle(0, this.getLength(), "-fx-fill: #fff;");
+                caretNode.setStroke(Color.WHITE);
+                if (placeholder != null) {
+                    placeholder.setStyle("-fx-fill: #fff;");
+                }
+            } else {
+                this.setStyle(0, this.getLength(), "-fx-fill: #000");
+                caretNode.setStroke(Color.BLACK);
+                if (placeholder != null) {
+                    placeholder.setStyle("-fx-fill: #000;");
+                }
+            }
+        }
     }
 }

@@ -20,14 +20,14 @@ public interface ThemeAdapter extends PropAdapter {
      * 禁用主题
      */
     default void disableTheme() {
-        this.setProp("_disableTheme", true);
+        this.setProp("_enableTheme", false);
     }
 
     /**
      * 启用主题
      */
     default void enableTheme() {
-        this.removeProp("_disableTheme");
+        this.removeProp("_enableTheme");
     }
 
     /**
@@ -36,7 +36,7 @@ public interface ThemeAdapter extends PropAdapter {
      * @return 结果
      */
     default boolean isEnableTheme() {
-        Boolean b = this.getProp("_disableTheme");
+        Boolean b = this.getProp("_enableTheme");
         return b == null || b;
     }
 
@@ -161,7 +161,7 @@ public interface ThemeAdapter extends PropAdapter {
     private void handleStyle(ObservableList<String> stylesheets, Theme theme) {
         if (stylesheets != null) {
             String style = switch (theme) {
-                case PRIMER_LIGHT -> AtlantaFX.PRIMER_DARK;
+                case PRIMER_LIGHT -> AtlantaFX.PRIMER_LIGHT;
                 case PRIMER_DARK -> AtlantaFX.PRIMER_DARK;
                 case NORD_LIGHT -> AtlantaFX.NORD_LIGHT;
                 case NORD_DARK -> AtlantaFX.NORD_DARK;
@@ -179,14 +179,15 @@ public interface ThemeAdapter extends PropAdapter {
                     stylesheets.remove(AtlantaFX.CUPERTINO_DARK);
                     stylesheets.remove(AtlantaFX.CUPERTINO_LIGHT);
                     stylesheets.remove(FXStyle.FX_BASE);
-                    stylesheets.remove(FXStyle.FX_DARK);
-                    stylesheets.remove(FXStyle.FX_LIGHT);
+                    // stylesheets.remove(FXStyle.FX_DARK);
+                    // stylesheets.remove(FXStyle.FX_LIGHT);
                 }
-                if (theme.isDarkMode()) {
-                    stylesheets.addAll(style, FXStyle.FX_BASE, FXStyle.FX_DARK);
-                } else {
-                    stylesheets.addAll(style, FXStyle.FX_BASE, FXStyle.FX_LIGHT);
-                }
+                stylesheets.addAll(style, FXStyle.FX_BASE);
+                // if (theme.isDarkMode()) {
+                //     stylesheets.addAll(style, FXStyle.FX_BASE, FXStyle.FX_DARK);
+                // } else {
+                //     stylesheets.addAll(style, FXStyle.FX_BASE, FXStyle.FX_LIGHT);
+                // }
             }
         }
     }

@@ -4,14 +4,20 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.InlineCssTextField;
 
 /**
  * @author oyzh
  * @since 2023/9/15
  */
-public class BaseRichTextField extends InlineCssTextField implements  TextAdapter, TipAdapter, StateAdapter {
+public class BaseRichTextField extends InlineCssTextField implements ThemeAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         this.setCache(true);
@@ -19,6 +25,8 @@ public class BaseRichTextField extends InlineCssTextField implements  TextAdapte
         this.setPickOnBounds(true);
         this.setFocusTraversable(false);
         this.setCacheHint(CacheHint.QUALITY);
+        this.changeTheme(ThemeManager.currentTheme());
+        this.getStyleClass().add("rich-text-field");
     }
 
     @Override
@@ -41,4 +49,24 @@ public class BaseRichTextField extends InlineCssTextField implements  TextAdapte
         return StateAdapter.super.stateManager();
     }
 
+    @Override
+    public void changeTheme(Theme theme) {
+        if (this.isEnableTheme()) {
+            Node placeholder = this.getPlaceholder();
+            CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
+            if (theme.isDarkMode()) {
+                this.setStyle(0, this.getLength(), "-fx-fill: #fff;");
+                caretNode.setStroke(Color.WHITE);
+                if (placeholder != null) {
+                    placeholder.setStyle("-fx-fill: #fff;");
+                }
+            } else {
+                this.setStyle(0, this.getLength(), "-fx-fill: #000");
+                caretNode.setStroke(Color.BLACK);
+                if (placeholder != null) {
+                    placeholder.setStyle("-fx-fill: #000;");
+                }
+            }
+        }
+    }
 }

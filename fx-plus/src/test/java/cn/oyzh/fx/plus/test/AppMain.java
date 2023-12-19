@@ -1,11 +1,12 @@
 package cn.oyzh.fx.plus.test;
 
+import atlantafx.base.controls.ToggleSwitch;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.FlexVBox;
-import cn.oyzh.fx.plus.controls.ToggleSwitch;
+// import cn.oyzh.fx.plus.controls.ToggleSwitch;
 import cn.oyzh.fx.plus.controls.area.MsgTextArea;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
@@ -444,35 +445,35 @@ public class AppMain extends Application {
 
     }
 
-    private void test11(Stage stage) {
-        ToggleSwitch toggleSwitch = new ToggleSwitch();
-        toggleSwitch.setFontSize(15);
-        toggleSwitch.setSelectedText("开启");
-        toggleSwitch.setUnselectedText("关闭");
-
-        ToggleSwitch toggleSwitch1 = new ToggleSwitch();
-        toggleSwitch1.setFontSize(12);
-        toggleSwitch1.setSelectedText("已打开");
-        toggleSwitch1.setUnselectedText("已关闭");
-
-        Button button = new Button("添加");
-
-        HBox hBox1 = new HBox(button);
-        HBox hBox2 = new HBox(toggleSwitch);
-        HBox hBox3 = new HBox(toggleSwitch1);
-        VBox vBox = new VBox(hBox1, hBox2, hBox3);
-        button.setOnAction(actionEvent -> {
-            ToggleSwitch toggleSwitch2 = new ToggleSwitch();
-            toggleSwitch2.setFontSize(12);
-            toggleSwitch2.setSelectedText("已打开");
-            toggleSwitch2.setUnselectedText("已关闭");
-
-            vBox.getChildren().add(new HBox(toggleSwitch2));
-        });
-
-        stage.setScene(new Scene(vBox, 800, 300));
-        stage.show();
-    }
+    // private void test11(Stage stage) {
+    //     ToggleSwitch toggleSwitch = new ToggleSwitch();
+    //     toggleSwitch.setFontSize(15);
+    //     toggleSwitch.setSelectedText("开启");
+    //     toggleSwitch.setUnselectedText("关闭");
+    //
+    //     ToggleSwitch toggleSwitch1 = new ToggleSwitch();
+    //     toggleSwitch1.setFontSize(12);
+    //     toggleSwitch1.setSelectedText("已打开");
+    //     toggleSwitch1.setUnselectedText("已关闭");
+    //
+    //     Button button = new Button("添加");
+    //
+    //     HBox hBox1 = new HBox(button);
+    //     HBox hBox2 = new HBox(toggleSwitch);
+    //     HBox hBox3 = new HBox(toggleSwitch1);
+    //     VBox vBox = new VBox(hBox1, hBox2, hBox3);
+    //     button.setOnAction(actionEvent -> {
+    //         ToggleSwitch toggleSwitch2 = new ToggleSwitch();
+    //         toggleSwitch2.setFontSize(12);
+    //         toggleSwitch2.setSelectedText("已打开");
+    //         toggleSwitch2.setUnselectedText("已关闭");
+    //
+    //         vBox.getChildren().add(new HBox(toggleSwitch2));
+    //     });
+    //
+    //     stage.setScene(new Scene(vBox, 800, 300));
+    //     stage.show();
+    // }
 
     private void test12(Stage stage) {
         ClearableTextField textField = new ClearableTextField();
