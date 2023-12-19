@@ -1,8 +1,10 @@
-package cn.oyzh.fx.plus.ext;
+package cn.oyzh.fx.plus.skin;
 
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.beans.InvalidationListener;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TextFieldSkin;
+import javafx.scene.paint.Color;
 
 /**
  * 文本域皮肤扩展
@@ -30,8 +32,6 @@ public class TextFieldSkinExt extends TextFieldSkin {
         control.focusedProperty().addListener(this.visibilityChanged);
         control.visibleProperty().addListener(this.visibilityChanged);
         control.disableProperty().addListener(this.visibilityChanged);
-        // control.setOnMouseEntered(event -> this.updateButtonVisibility());
-        // control.setOnMouseExited(event -> this.updateButtonVisibility());
     }
 
     @Override
@@ -44,6 +44,18 @@ public class TextFieldSkinExt extends TextFieldSkin {
         this.getSkinnable().setOnMouseExited(null);
         this.getSkinnable().setOnMouseEntered(null);
         super.dispose();
+    }
+
+    /**
+     * 获取按钮颜色
+     *
+     * @return 按钮颜色
+     */
+    protected Color getButtonColor() {
+        if (!ThemeManager.isDarkMode()) {
+            return Color.BLACK;
+        }
+        return Color.WHITE;
     }
 
     /**

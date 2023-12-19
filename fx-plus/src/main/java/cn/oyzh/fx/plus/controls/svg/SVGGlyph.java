@@ -240,7 +240,9 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
             color = ThemeManager.isDarkMode() ? Color.WHITE : Color.BLACK;
         }
         this.color = color;
-        this.setBackground(ControlUtil.background(color));
+        if (!this.isDisabled()) {
+            this.setBackground(ControlUtil.background(color));
+        }
     }
 
     /**

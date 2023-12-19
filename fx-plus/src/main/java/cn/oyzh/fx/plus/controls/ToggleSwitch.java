@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
+import cn.oyzh.fx.plus.theme.Theme;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,6 +19,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/08/29
  */
+@Deprecated
 public class ToggleSwitch extends FlexFlowPane {
 
     /**
@@ -203,24 +205,11 @@ public class ToggleSwitch extends FlexFlowPane {
     public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
     }
-    //
-    // @Override
-    // public void setFontSize(double fontSize) {
-    //     FlexFlowPane.super.fontSize(fontSize);
-    // }
-    //
-    // @Override
-    // public double getFontSize() {
-    //     return FlexFlowPane.super.fontSize();
-    // }
-    //
-    // @Override
-    // public void setFontFamily(@NonNull String fontFamily) {
-    //     FlexFlowPane.super.fontFamily(fontFamily);
-    // }
-    //
-    // @Override
-    // public String getFontFamily() {
-    //     return FlexFlowPane.super.fontFamily();
-    // }
+
+    @Override
+    public void changeTheme(Theme theme) {
+        super.changeTheme(theme);
+        this.selectedBtn.changeTheme(theme);
+        this.unselectedBtn.changeTheme(theme);
+    }
 }

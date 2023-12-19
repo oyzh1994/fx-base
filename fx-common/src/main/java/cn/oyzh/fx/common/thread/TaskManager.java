@@ -1,10 +1,10 @@
 package cn.oyzh.fx.common.thread;
 
+import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.WeakCache;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
 /**
@@ -19,7 +19,7 @@ public class TaskManager {
     /**
      * 延迟任务列表
      */
-    private static final Map<String, Future<?>> DELAY_TASKS = new ConcurrentHashMap<>();
+    private static final WeakCache<String, Future<?>> CACHE = CacheUtil.newWeakCache(-1);
 
     /**
      * 开始延迟任务
@@ -29,7 +29,7 @@ public class TaskManager {
      * @param delay 延迟时间
      */
     public static void startDelay(@NonNull String key, @NonNull Runnable task, int delay) {
-        Future<?> delayTask = DELAY_TASKS.get(key);
+        Future<?> delayTask = CACHE.get(key);
         if (delayTask != null && !delayTask.isDone()) {
             ExecutorUtil.cancel(delayTask);
         }
@@ -38,7 +38,7 @@ public class TaskManager {
             myTask = TaskBuilder.newBuilder()
                     .from(task1)
                     .onFinish(() -> {
-                        DELAY_TASKS.remove(key);
+                        CACHE.remove(key);
                         if (task1.getFinish() != null) {
                             task1.getFinish().run();
                         }
@@ -47,10 +47,10 @@ public class TaskManager {
         } else {
             myTask = TaskBuilder.newBuilder()
                     .onStart(task)
-                    .onFinish(() -> DELAY_TASKS.remove(key))
+                    .onFinish(() -> CACHE.remove(key))
                     .build();
         }
         delayTask = ExecutorUtil.start(myTask, delay);
-        DELAY_TASKS.put(key, delayTask);
+        CACHE.put(key, delayTask);
     }
 }

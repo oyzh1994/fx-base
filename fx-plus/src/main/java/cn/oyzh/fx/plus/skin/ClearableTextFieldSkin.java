@@ -1,11 +1,12 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.ext.TextFieldSkinExt;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 /**
  * 可清除文本输入框皮肤
@@ -37,7 +38,7 @@ public class ClearableTextFieldSkin extends TextFieldSkinExt {
         // 初始化清除按钮
         this.clearButton = new SVGGlyph("/fx-plus/font/clear.svg");
         this.clearButton.setTipText("清除");
-        this.clearButton.setColor("#696969");
+        this.clearButton.setColor(this.getButtonColor());
         this.clearButton.managedBindVisible();
         this.clearButton.setVisible(false);
         this.clearButton.setEnableWaiting(false);
@@ -45,8 +46,16 @@ public class ClearableTextFieldSkin extends TextFieldSkinExt {
         this.clearButton.setPadding(new Insets(0));
         this.clearButton.setOnMousePrimaryClicked(event -> this.getSkinnable().clear());
         this.clearButton.setOnMouseMoved(mouseEvent -> this.clearButton.setColor("#DC143C"));
-        this.clearButton.setOnMouseExited(mouseEvent -> this.clearButton.setColor("#696969"));
+        this.clearButton.setOnMouseExited(mouseEvent -> this.clearButton.setColor(this.getButtonColor()));
         this.getChildren().add(this.clearButton);
+    }
+
+    @Override
+    protected Color getButtonColor() {
+        if (!ThemeManager.isDarkMode()) {
+            return Color.valueOf("#696969");
+        }
+        return super.getButtonColor();
     }
 
     @Override

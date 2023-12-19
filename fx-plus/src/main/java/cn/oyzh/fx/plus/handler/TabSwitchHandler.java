@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.handler;
 
+import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.WeakCache;
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import javafx.event.EventTarget;
@@ -15,9 +17,7 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * tab按键切换处理
@@ -30,7 +30,7 @@ public class TabSwitchHandler {
     /**
      * 处理器列表
      */
-    private static final Map<EventTarget, TabSwitchHandler> HANDLERS = new HashMap<>();
+    private static final WeakCache<EventTarget, TabSwitchHandler> CACHE = CacheUtil.newWeakCache(-1);
 
     /**
      * 执行初始化
@@ -42,13 +42,26 @@ public class TabSwitchHandler {
         TabSwitchHandler handler = null;
         if (target instanceof Parent parent) {
             handler = new TabSwitchHandler(parent);
-            HANDLERS.put(target, new TabSwitchHandler(parent));
+            CACHE.put(target, new TabSwitchHandler(parent));
             return handler;
         } else if (target instanceof Stage stage) {
             handler = new TabSwitchHandler(stage);
-            HANDLERS.put(target, new TabSwitchHandler(stage));
+            CACHE.put(target, new TabSwitchHandler(stage));
         }
         return handler;
+    }
+
+    /**
+     * 是否存在处理器
+     *
+     * @param target 对象
+     * @return 结果
+     */
+    public static boolean exists(EventTarget target) {
+        if (target != null) {
+            return CACHE.containsKey(target);
+        }
+        return false;
     }
 
     /**
@@ -58,8 +71,9 @@ public class TabSwitchHandler {
      */
     public static void destroy(EventTarget target) {
         if (target != null) {
-            TabSwitchHandler handler = HANDLERS.remove(target);
+            TabSwitchHandler handler = CACHE.get(target);
             if (handler != null) {
+                CACHE.remove(target);
                 handler.destroy();
             }
         }
@@ -81,19 +95,6 @@ public class TabSwitchHandler {
         }
         this.root = stage.getScene().getRoot();
         this.init();
-    }
-
-    /**
-     * 是否存在处理器
-     *
-     * @param target 对象
-     * @return 结果
-     */
-    public static boolean exists(EventTarget target) {
-        if (target != null) {
-            return HANDLERS.containsKey(target);
-        }
-        return false;
     }
 
     /**

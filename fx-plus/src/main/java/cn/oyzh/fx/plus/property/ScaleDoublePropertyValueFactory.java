@@ -19,7 +19,6 @@ public class ScaleDoublePropertyValueFactory<S> extends PropertyValueFactory<S, 
      */
     private final int scaleLen;
 
-
     public ScaleDoublePropertyValueFactory(String property, int scaleLen) {
         super(property);
         this.scaleLen = scaleLen;
@@ -45,8 +44,5 @@ public class ScaleDoublePropertyValueFactory<S> extends PropertyValueFactory<S, 
             return property;
         }
         return null;
-
     }
-
-
 }

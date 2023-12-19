@@ -28,7 +28,7 @@
 
 /* button，修复atlantafx的样式异常问题 */
 .button {
-    -fx-padding: 6px 10px 6px 10px;
+    -fx-padding: 6px 12px 6px 12px;
 }
 
 /* check-box，修复atlantafx的样式异常问题 */

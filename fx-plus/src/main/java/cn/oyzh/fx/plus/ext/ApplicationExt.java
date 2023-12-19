@@ -13,7 +13,6 @@ import javafx.stage.Stage;
  * @author oyzh
  * @since 2021/8/19
  */
-//@Slf4j
 public abstract class ApplicationExt extends Application {
 
     @Override

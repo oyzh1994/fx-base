@@ -17,7 +17,6 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/5/15
  */
-//@Slf4j
 @Accessors(chain = true, fluent = true)
 public class ResizeEnhance {
 
@@ -25,7 +24,7 @@ public class ResizeEnhance {
      * 拉伸节点
      */
     @Getter
-    private Node node;
+    private final Node node;
 
     /**
      * 最小宽度

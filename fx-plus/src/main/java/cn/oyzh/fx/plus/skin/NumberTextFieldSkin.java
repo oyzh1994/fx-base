@@ -1,11 +1,12 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.ext.TextFieldSkinExt;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 /**
  * @author oyzh
@@ -41,7 +42,7 @@ public class NumberTextFieldSkin extends TextFieldSkinExt {
         this.incrButton = new SVGGlyph("/fx-plus/font/arrow-up-filling.svg");
         this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
-        this.incrButton.setColor("#000000");
+        this.incrButton.setColor(this.getButtonColor());
         this.incrButton.setTipText("增加值");
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);
@@ -51,7 +52,7 @@ public class NumberTextFieldSkin extends TextFieldSkinExt {
         this.decrButton = new SVGGlyph("/fx-plus/font/arrow-down-filling.svg");
         this.decrButton.setSize(h);
         this.decrButton.setVisible(false);
-        this.decrButton.setColor("#000000");
+        this.decrButton.setColor(this.getButtonColor());
         this.decrButton.setTipText("减少值");
         this.decrButton.managedBindVisible();
         this.decrButton.setEnableWaiting(false);
@@ -69,21 +70,33 @@ public class NumberTextFieldSkin extends TextFieldSkinExt {
         this.getChildren().addAll(this.incrButton, this.decrButton);
     }
 
+    /**
+     * 获取按钮颜色
+     *
+     * @return 按钮颜色
+     */
+    protected Color getButtonColor() {
+        if (ThemeManager.isDarkMode()) {
+            return Color.WHITE;
+        }
+        return Color.BLACK;
+    }
+
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 按钮大小，规则 (组件高/2-2)*0.9
-        double size = (this.getSkinnable().getHeight() / 2.0 - 2) * 0.9;
+        // 按钮大小，规则 (组件高/2-4)*0.92
+        double size = (this.getSkinnable().getHeight() / 2 - 4) * 0.92;
         this.incrButton.setSize(size);
         this.decrButton.setSize(size);
         // 计算按钮实际大小
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽+x-按钮实际大小
         double areaX = w + x - btnSize;
-        // 位移的areaY1值，规则 组件高*0.1/2 +1
-        double areaY1 = h * 0.1 / 2 + 1;
-        // 位移的areaY2值，规则 组件高/2+areaY1+2
-        double areaY2 = h / 2 + areaY1 + 2;
+        // 位移的areaY1值，规则 组件高*0.08/2 +2
+        double areaY1 = h * 0.08 / 2 + 2;
+        // 位移的areaY2值，规则 组件高/2+areaY1+3
+        double areaY2 = h / 2 + areaY1 + 3;
         // 设置按钮位置
         super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
         super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);

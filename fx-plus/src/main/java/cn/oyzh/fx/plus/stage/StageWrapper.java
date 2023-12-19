@@ -228,6 +228,8 @@ public interface StageWrapper extends PropAdapter, StateAdapter, ThemeAdapter {
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
         }
+        // 设置主题
+        this.changeTheme(ThemeManager.currentTheme());
         // 设置事件
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
@@ -238,8 +240,6 @@ public interface StageWrapper extends PropAdapter, StateAdapter, ThemeAdapter {
                 this.onClosed();
             }
         });
-        // 设置主题
-        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**

@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2020/10/21
  */
-public class FXFileChooser {
+public class FileChooserUtil {
 
     /**
      * 桌面路径
@@ -53,7 +53,7 @@ public class FXFileChooser {
      * @param title 标题
      * @return 文件选择器
      */
-    public FXFileChooser title(String title) {
+    public FileChooserUtil title(String title) {
         this.title = title;
         return this;
     }
@@ -64,7 +64,7 @@ public class FXFileChooser {
      * @param filters 过滤器列表
      * @return 文件选择器
      */
-    public FXFileChooser extensionFilters(FileChooser.ExtensionFilter... filters) {
+    public FileChooserUtil extensionFilters(FileChooser.ExtensionFilter... filters) {
         if (filters != null) {
             for (FileChooser.ExtensionFilter filter : filters) {
                 if (filter != null) {
@@ -81,7 +81,7 @@ public class FXFileChooser {
      * @param initDir 初始化目录
      * @return 文件选择器
      */
-    public FXFileChooser initDir(String initDir) {
+    public FileChooserUtil initDir(String initDir) {
         this.initDir(new File(initDir));
         return this;
     }
@@ -92,7 +92,7 @@ public class FXFileChooser {
      * @param initDir 初始化目录
      * @return 文件选择器
      */
-    public FXFileChooser initDir(File initDir) {
+    public FileChooserUtil initDir(File initDir) {
         if (!FileUtil.exist(initDir)) {
             throw new RuntimeException("initDir路径不存在！");
         }
@@ -130,8 +130,8 @@ public class FXFileChooser {
      *
      * @return 文件选择构建器
      */
-    public static FXFileChooser builder() {
-        return new FXFileChooser();
+    public static FileChooserUtil builder() {
+        return new FileChooserUtil();
     }
 
     /**
@@ -144,7 +144,7 @@ public class FXFileChooser {
     public static File save(String title, String initFileName, FileChooser.ExtensionFilter[] extensionFilter) {
         AtomicReference<File> file = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            FXFileChooser builder = FXFileChooser.builder();
+            FileChooserUtil builder = FileChooserUtil.builder();
             builder.title(title).extensionFilters(extensionFilter).initialFileName(initFileName);
             FileChooser fileChooser = builder.build();
             file.set(fileChooser.showSaveDialog(new Stage()));
@@ -162,7 +162,7 @@ public class FXFileChooser {
     public static File choose(String title, FileChooser.ExtensionFilter[] extensionFilter) {
         AtomicReference<File> file = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            FXFileChooser builder = FXFileChooser.builder();
+            FileChooserUtil builder = FileChooserUtil.builder();
             builder.title(title).extensionFilters(extensionFilter);
             FileChooser fileChooser = builder.build();
             file.set(fileChooser.showOpenDialog(new Stage()));

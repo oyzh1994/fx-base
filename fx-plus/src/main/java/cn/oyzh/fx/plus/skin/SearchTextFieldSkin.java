@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -88,13 +90,13 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         // 初始化历史按钮
         this.historyButton = new SVGGlyph("/fx-plus/font/history.svg");
         this.historyButton.setTipText("历史记录");
-        this.historyButton.setColor("#696969");
+        this.historyButton.setColor(this.getButtonColor());
         this.historyButton.setEnableWaiting(false);
         this.historyButton.setFocusTraversable(false);
         this.historyButton.setPadding(new Insets(0));
         this.historyButton.setOnMousePrimaryClicked(e -> this.showHistoryPopup());
-        this.historyButton.setOnMouseMoved(mouseEvent -> this.historyButton.setColor("#000"));
-        this.historyButton.setOnMouseExited(mouseEvent -> this.historyButton.setColor("#696969"));
+        this.historyButton.setOnMouseMoved(mouseEvent -> this.historyButton.setColor("#E36413"));
+        this.historyButton.setOnMouseExited(mouseEvent -> this.historyButton.setColor(this.getButtonColor()));
         this.getChildren().add(this.historyButton);
 
         // 按键监听
@@ -124,6 +126,14 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         });
         // 鼠标监听
         this.getSkinnable().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> this.closeHistoryPopup());
+    }
+
+    @Override
+    protected Color getButtonColor() {
+        if (!ThemeManager.isDarkMode()) {
+            return Color.valueOf("#696969");
+        }
+        return super.getButtonColor();
     }
 
     @Override

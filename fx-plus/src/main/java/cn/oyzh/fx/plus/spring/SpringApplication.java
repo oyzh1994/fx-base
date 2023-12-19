@@ -14,7 +14,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @author oyzh
  * @since 2021/8/19
  */
-//@Slf4j
 public abstract class SpringApplication extends ApplicationExt implements CommandLineRunner, DisposableBean {
 
     /**

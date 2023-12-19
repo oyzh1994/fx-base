@@ -1,14 +1,13 @@
 package cn.oyzh.fx.plus.handler;
 
+import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.WeakCache;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import javafx.event.EventTarget;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import lombok.NonNull;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * esc按键隐藏处理器
@@ -19,9 +18,9 @@ import java.util.Map;
 public class EscHideHandler {
 
     /**
-     * 处理器列表
+     * 缓存列表
      */
-    private static final Map<EventTarget, EscHideHandler> HANDLERS = new HashMap<>();
+    private static final WeakCache<EventTarget, EscHideHandler> CACHE = CacheUtil.newWeakCache(-1);
 
     /**
      * 执行初始化
@@ -31,7 +30,7 @@ public class EscHideHandler {
      */
     public static EscHideHandler init(@NonNull Stage stage) {
         EscHideHandler handler = new EscHideHandler(stage);
-        HANDLERS.put(stage, handler);
+        CACHE.put(stage, handler);
         return handler;
     }
 
@@ -43,7 +42,7 @@ public class EscHideHandler {
      */
     public static boolean exists(Stage stage) {
         if (stage != null) {
-            return HANDLERS.containsKey(stage);
+            return CACHE.containsKey(stage);
         }
         return false;
     }
@@ -55,8 +54,9 @@ public class EscHideHandler {
      */
     public static void destroy(Stage stage) {
         if (stage != null) {
-            EscHideHandler handler = HANDLERS.remove(stage);
+            EscHideHandler handler = CACHE.get(stage);
             if (handler != null) {
+                CACHE.remove(stage);
                 handler.destroy();
             }
         }
