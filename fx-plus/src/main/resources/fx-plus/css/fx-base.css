@@ -77,21 +77,6 @@
     -fx-background-color: -color-bg-default;
 }
 
-/* svg-glyph，支持atlantafx的样式 */
-.svg-glyph {
-    -fx-fill: -color-fg-default;
-    -fx-text-fill: -color-fg-default;
-    -fx-stroke: -color-fg-default;
-    -fx-background-color: -color-fg-default;
-}
-
-.svg-glyph.shape{
-    -fx-fill: -color-fg-default;
-    -fx-text-fill: -color-fg-default;
-    -fx-stroke: -color-fg-default;
-    -fx-background-color: -color-fg-default;
-}
-
 /* text-area，修复atlantafx的样式异常问题 */
 .text-area .content {
     -fx-fill: -color-fg-default;
@@ -99,4 +84,8 @@
     -fx-background-color: -color-bg-default;
 }
 
+/* svg-glyph，支持atlantafx的样式 */
+.svg-glyph {
+    -fx-background-color: -color-fg-default;
+}
 

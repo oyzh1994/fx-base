@@ -90,7 +90,7 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         // 初始化历史按钮
         this.historyButton = new SVGGlyph("/fx-plus/font/history.svg");
         this.historyButton.setTipText("历史记录");
-        this.historyButton.setColor(this.getButtonColor());
+//        this.historyButton.setColor(this.getButtonColor());
         this.historyButton.setEnableWaiting(false);
         this.historyButton.setFocusTraversable(false);
         this.historyButton.setPadding(new Insets(0));

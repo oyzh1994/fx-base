@@ -42,7 +42,7 @@ public class NumberTextFieldSkin extends TextFieldSkinExt {
         this.incrButton = new SVGGlyph("/fx-plus/font/arrow-up-filling.svg");
         this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
-        this.incrButton.setColor(this.getButtonColor());
+//        this.incrButton.setColor(this.getButtonColor());
         this.incrButton.setTipText("增加值");
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);

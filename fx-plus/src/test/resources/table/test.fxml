@@ -18,6 +18,8 @@
 <?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
 <?import cn.oyzh.fx.plus.controls.rich.FlexRichTextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import cn.oyzh.fx.plus.controls.textfield.SearchTextField?>
 <FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -35,7 +37,7 @@
       <ClearableTextField promptText="测试内容"></ClearableTextField>
       <NumberTextField promptText="测试内容"></NumberTextField>
       <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
-      <SVGGlyph url="/fx-plus/font/clear.svg"></SVGGlyph>
+      <SVGGlyph url="/fx-plus/font/clear.svg" enableTheme="false"></SVGGlyph>
       <FXText text="测试内容"></FXText>
     </FlexHBox>
     <FlexHBox realHeight="50">
@@ -57,14 +59,21 @@
     </FlexTableView>
     <FlexTabPane focusTraversable="true" flexWidth="100%" realHeight="200">
         <FXTab text="测试tab">
-            <FlexPane>
+            <HBox>
                 <SVGGlyph url="/fx-plus/font/clear.svg"></SVGGlyph>
                 <IconButton text="测试内容">
                     <graphic>
                         <SVGGlyph url="/fx-plus/font/clear.svg"/>
                     </graphic>
                 </IconButton>
-            </FlexPane>
+                <IconButton text="测试内容1" styleClass="success">
+                    <graphic>
+                        <SVGGlyph url="/fx-plus/font/clear.svg"/>
+                    </graphic>
+                </IconButton>
+                <SearchTextField>
+                </SearchTextField>
+            </HBox>
         </FXTab>
     </FlexTabPane>
 </FlexVBox>

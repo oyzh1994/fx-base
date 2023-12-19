@@ -61,14 +61,18 @@ public class IconButton extends FlexButton {
                 glyph.setColor(color);
             }
         });
-        this.disableProperty().addListener((observable, o, n) -> {
-            if (!n && this.getGraphic() instanceof SVGGlyph glyph && this.getTextFill() instanceof Color color) {
-                glyph.setColor(color);
-            }
-        });
+//        this.disableProperty().addListener((observable, o, n) -> {
+//            if (!n && this.getGraphic() instanceof SVGGlyph glyph && this.getTextFill() instanceof Color color) {
+//                glyph.setColor(color);
+//            }
+//        });
         this.graphicProperty().addListener((observable, o, n) -> {
-            if (this.iconSizePercent != null && this.getFont() != null && n instanceof SVGGlyph glyph) {
-                glyph.setSize(this.getFont().getSize() * this.iconSizePercent);
+            if (n instanceof SVGGlyph glyph) {
+                glyph.disableTheme();
+                if (this.iconSizePercent != null && this.getFont() != null) {
+                    glyph.setSize(this.getFont().getSize() * this.iconSizePercent);
+                }
+                glyph.setColor((Color) this.getTextFill());
             }
         });
     }

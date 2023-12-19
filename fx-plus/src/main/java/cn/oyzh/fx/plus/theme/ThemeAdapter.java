@@ -31,6 +31,15 @@ public interface ThemeAdapter extends PropAdapter {
     }
 
     /**
+     * 设置启用主题
+     *
+     * @param enableTheme 启用主题
+     */
+    default void setEnableTheme(boolean enableTheme) {
+        this.setProp("_enableTheme", enableTheme);
+    }
+
+    /**
      * 是否启用主题
      *
      * @return 结果

@@ -67,13 +67,13 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         this.setPadding(new Insets(0));
         this.setFocusTraversable(false);
         this.setCacheHint(CacheHint.QUALITY);
-        this.disabledProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (t1) {
-                this.setBackground(ControlUtil.background(Color.GRAY));
-            } else {
-                this.setBackground(ControlUtil.background(this.color));
-            }
-        });
+//        this.disabledProperty().addListener((observableValue, aBoolean, t1) -> {
+//            if (t1) {
+//                this.setBackground(ControlUtil.background(Color.GRAY));
+//            } else {
+//                this.setBackground(ControlUtil.background(this.color));
+//            }
+//        });
         this.backgroundProperty().addListener((observableValue, background, t1) -> {
             if (t1 != null && t1.getFills() != null && !t1.isEmpty()) {
                 SVGPathExt svgPathExt = this.shape();
@@ -87,6 +87,18 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         this.cursor(this.cursor);
         this.getStyleClass().add("svg-glyph");
         this.changeTheme(ThemeManager.currentTheme());
+    }
+
+    @Override
+    public void enableTheme() {
+        ThemeAdapter.super.enableTheme();
+        this.getStyleClass().add("svg-glyph");
+    }
+
+    @Override
+    public void disableTheme() {
+        ThemeAdapter.super.disableTheme();
+        this.getStyleClass().remove("svg-glyph");
     }
 
     /**
@@ -167,11 +179,11 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     }
 
     public SVGGlyph() {
-        if (ThemeManager.isDarkMode()) {
-            this.setColor(this.isDisabled() ? Color.BLUEVIOLET : Color.WHITE);
-        } else {
-            this.setColor(this.isDisabled() ? Color.GREY : Color.BLACK);
-        }
+//        if (ThemeManager.isDarkMode()) {
+//            this.setColor(this.isDisabled() ? Color.BLUEVIOLET : Color.WHITE);
+//        } else {
+//            this.setColor(this.isDisabled() ? Color.GREY : Color.BLACK);
+//        }
     }
 
     public SVGGlyph(@NonNull String url) {
@@ -204,7 +216,9 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      */
     public void setUrl(@NonNull String url) {
         this.shape().setUrl(url);
-        this.shape().setColor(this.color);
+        if (this.color != null) {
+            this.shape().setColor(this.color);
+        }
     }
 
     /**
@@ -237,13 +251,14 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * @param color 颜色
      */
     public void setColor(Color color) {
-        if (color == null) {
-            color = ThemeManager.isDarkMode() ? Color.WHITE : Color.BLACK;
-        }
+//        if (color == null) {
+//            color = ThemeManager.isDarkMode() ? Color.WHITE : Color.BLACK;
+//        }
         this.color = color;
-        // if (!this.isDisabled()) {
-        //     this.setBackground(ControlUtil.background(color));
-        // }
+        if (!this.isDisabled() && color != null) {
+            this.setBackground(ControlUtil.background(color));
+            this.shape().setColor(this.color);
+        }
     }
 
     /**
@@ -357,4 +372,14 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     //         }
     //     }
     // }
+
+    @Override
+    public boolean isEnableTheme() {
+        return ThemeAdapter.super.isEnableTheme();
+    }
+
+    @Override
+    public void setEnableTheme(boolean enableTheme) {
+        ThemeAdapter.super.setEnableTheme(enableTheme);
+    }
 }

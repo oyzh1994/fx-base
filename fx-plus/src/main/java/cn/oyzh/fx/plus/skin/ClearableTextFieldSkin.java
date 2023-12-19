@@ -38,7 +38,7 @@ public class ClearableTextFieldSkin extends TextFieldSkinExt {
         // 初始化清除按钮
         this.clearButton = new SVGGlyph("/fx-plus/font/clear.svg");
         this.clearButton.setTipText("清除");
-        this.clearButton.setColor(this.getButtonColor());
+//        this.clearButton.setColor(this.getButtonColor());
         this.clearButton.managedBindVisible();
         this.clearButton.setVisible(false);
         this.clearButton.setEnableWaiting(false);

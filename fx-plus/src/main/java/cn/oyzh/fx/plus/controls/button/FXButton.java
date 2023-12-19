@@ -76,4 +76,14 @@ public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipA
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
     }
+
+    @Override
+    public boolean isEnableTheme() {
+        return ThemeAdapter.super.isEnableTheme();
+    }
+
+    @Override
+    public void setEnableTheme(boolean enableTheme) {
+        ThemeAdapter.super.setEnableTheme(enableTheme);
+    }
 }
