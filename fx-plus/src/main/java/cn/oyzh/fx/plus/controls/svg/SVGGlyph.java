@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.Theme;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
@@ -254,10 +253,12 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
 //        if (color == null) {
 //            color = ThemeManager.isDarkMode() ? Color.WHITE : Color.BLACK;
 //        }
-        this.color = color;
-        if (!this.isDisabled() && color != null) {
-            this.setBackground(ControlUtil.background(color));
-            this.shape().setColor(this.color);
+        if (color != this.color) {
+            this.color = color;
+            if (!this.isDisabled() && color != null) {
+                this.setBackground(ControlUtil.background(color));
+                this.shape().setColor(this.color);
+            }
         }
     }
 
