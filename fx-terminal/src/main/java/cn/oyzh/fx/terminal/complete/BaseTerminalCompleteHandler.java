@@ -83,7 +83,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
      */
     protected void multiMatch(String input, T terminal, List<TerminalCommandHandler> handlers) {
         List<String> commands = handlers.parallelStream().map(TerminalCommandHandler::commandFullName).toList();
-        String formatText = TextUtil.beautifyFormat(commands, 4);
+        String formatText = TextUtil.beautifyFormat(commands, 4, 0);
         terminal.outputByPrompt(formatText);
         terminal.outputPrompt();
         terminal.output(input);

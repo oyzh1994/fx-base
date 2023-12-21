@@ -14,7 +14,7 @@ import java.util.Map;
  * @since 2023/7/21
  */
 @Component
-public class TerminalCommandHandlerScanner {
+public class TerminalScanner {
 
     /**
      * 扫描命令处理器

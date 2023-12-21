@@ -10,7 +10,8 @@ import lombok.ToString;
  * @since 2022/1/20
  */
 @ToString
-public class FlexTextArea extends FXTextArea implements  FlexAdapter {
+public class FlexTextArea extends FXTextArea implements FlexAdapter {
+
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);

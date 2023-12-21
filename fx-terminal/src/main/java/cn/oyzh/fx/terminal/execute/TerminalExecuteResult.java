@@ -69,6 +69,21 @@ public class TerminalExecuteResult {
         }
         if (this.result == null) {
             this.result = "";
+        }
+        this.result += result;
+    }
+
+    /**
+     * 追加结果，附带换行
+     *
+     * @param result 结果
+     */
+    public void appendResultLine(String result) {
+        if (result == null) {
+            return;
+        }
+        if (this.result == null) {
+            this.result = "";
         } else if (!this.result.toString().endsWith("\n")) {
             this.result += "\n";
         }

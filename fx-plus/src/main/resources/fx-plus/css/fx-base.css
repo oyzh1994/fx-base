@@ -84,6 +84,11 @@
     -fx-background-color: -color-bg-default;
 }
 
+/* terminal-text-area，修复atlantafx的样式异常问题 */
+.terminal-text-area {
+    -fx-font-family: Monospaced;
+}
+
 /* svg-glyph，支持atlantafx的样式 */
 .svg-glyph {
     -fx-background-color: -color-fg-default;

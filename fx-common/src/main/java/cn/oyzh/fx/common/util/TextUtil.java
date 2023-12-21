@@ -119,7 +119,7 @@ public class TextUtil {
      * @param lineItemLimit 单行内容个数限制
      * @return 美化后的字符
      */
-    public static String beautifyFormat(Collection<String> list, int lineItemLimit) {
+    public static String beautifyFormat(Collection<String> list, int lineItemLimit, int spacing) {
         if (list == null || lineItemLimit <= 0) {
             return "";
         }
@@ -142,11 +142,16 @@ public class TextUtil {
         for (List<String> strings : lists) {
             for (int i = 0; i < strings.size(); i++) {
                 String str = strings.get(i);
+                builder.append(str);
                 int maxLen = lenMap.get(i);
                 int strLen = getDisplayLen(str);
-                builder.append(str);
+                int len = maxLen - strLen;
                 // 使用空格填充
-                builder.append(" ".repeat(maxLen - strLen));
+                builder.append(" ".repeat(len));
+                // 使用空格填充间距
+                if (spacing > 0) {
+                    builder.append(" ".repeat(spacing));
+                }
                 // 然后进行tab补全
                 builder.append("\t");
             }
@@ -166,15 +171,15 @@ public class TextUtil {
             return 0;
         }
         char[] charArray = str.toCharArray();
-        int displayLen = 0;
+        double displayLen = 0;
         for (char c : charArray) {
             if (isChinese(c)) {
-                displayLen += 2;
+                displayLen += 1.5;
             } else {
                 displayLen += 1;
             }
         }
-        return displayLen;
+        return (int) displayLen;
     }
 
     /**

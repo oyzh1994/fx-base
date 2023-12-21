@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -24,17 +26,7 @@ public class TerminalManager {
     /**
      * 命令处理器列表
      */
-    private static final WeakCache<String, TerminalCommandHandler> CACHE = CacheUtil.newWeakCache(-1);
-
-    private static List<TerminalCommandHandler> handlers() {
-        List<TerminalCommandHandler> handlers = new ArrayList<>();
-        for (TerminalCommandHandler handler : CACHE) {
-            if (handler != null) {
-                handlers.add(handler);
-            }
-        }
-        return handlers;
-    }
+    private static final Map<String, TerminalCommandHandler> CACHE = new ConcurrentHashMap<>();
 
     /**
      * 列表命令处理器
@@ -42,7 +34,7 @@ public class TerminalManager {
      * @return 命令处理器列表
      */
     public static Collection<TerminalCommandHandler> listHandler() {
-        return handlers().stream().sorted(Comparator.comparing(TerminalCommandHandler::commandFullName)).collect(Collectors.toList());
+        return CACHE.values().stream().sorted(Comparator.comparing(TerminalCommandHandler::commandFullName)).collect(Collectors.toList());
     }
 
     /**
@@ -54,7 +46,7 @@ public class TerminalManager {
      */
     public static List<TerminalCommandHandler> findHandlers(String commandText, int matchType) {
         List<TerminalCommandHandler> commands = new ArrayList<>();
-        for (TerminalCommandHandler value : handlers()) {
+        for (TerminalCommandHandler value : CACHE.values()) {
             String command = value.commandFullName();
             if (matchType == 1 && StrUtil.startWithIgnoreCase(command, commandText)) {
                 commands.add(value);
@@ -73,7 +65,7 @@ public class TerminalManager {
      * @return 命令列表
      */
     public static List<String> listCommands() {
-        return handlers().stream().map(TerminalCommandHandler::commandName).collect(Collectors.toList());
+        return CACHE.values().stream().map(TerminalCommandHandler::commandName).collect(Collectors.toList());
     }
 
     /**
@@ -84,7 +76,7 @@ public class TerminalManager {
      */
     public static List<String> findCommands(String commandText) {
         List<String> commands = new ArrayList<>();
-        for (TerminalCommandHandler value : handlers()) {
+        for (TerminalCommandHandler value : CACHE.values()) {
             if (StrUtil.startWithIgnoreCase(value.commandName(), commandText)) {
                 commands.add(value.commandName());
             }
@@ -112,7 +104,7 @@ public class TerminalManager {
     public static TerminalCommandHandler findHandler(String input) {
         if (input != null) {
             String[] words = TerminalUtil.split(input);
-            List<TerminalCommandHandler> list = handlers().parallelStream().filter(s -> StrUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
+            List<TerminalCommandHandler> list = CACHE.values().parallelStream().filter(s -> StrUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
             if (!list.isEmpty()) {
                 if (words.length >= 2) {
                     List<TerminalCommandHandler> list1 = list.parallelStream().filter(s -> StrUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();

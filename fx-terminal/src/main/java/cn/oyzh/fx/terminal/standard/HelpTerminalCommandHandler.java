@@ -38,7 +38,8 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
             List<String> list = new ArrayList<>();
             list.add("序号");
             list.add("命令");
-            list.add("版本");
+            list.add("版本要求");
+            list.add("状态");
             list.add("描述");
             int index = 0;
             for (TerminalCommandHandler handler : handlers) {
@@ -52,9 +53,10 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
                 } else {
                     list.add(version);
                 }
+                list.add(handler.commandDeprecated() ? "过时" : "正常");
                 list.add(handler.commandDesc());
             }
-            result.setResult(TextUtil.beautifyFormat(list, 4));
+            result.setResult(TextUtil.beautifyFormat(list, 5, 2));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

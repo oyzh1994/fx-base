@@ -30,7 +30,6 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/05/28
  */
-//@Slf4j
 public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     /**
@@ -84,6 +83,7 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     {
         // 保证字符等宽
+        this.getStyleClass().add("terminal-text-area");
         this.setFontFamily("Monospaced");
         this.setContextMenu(new ContextMenu());
         this.caretPositionProperty().addListener((observableValue, number, t1) -> {
