@@ -111,6 +111,15 @@ public class StageUtil {
     /**
      * 创建舞台
      *
+     * @return StageExt
+     */
+    public static StageExt newStage( ) {
+        return new StageExt(null);
+    }
+
+    /**
+     * 创建舞台
+     *
      * @param owner 父窗口
      * @return StageExt
      */

@@ -2,8 +2,12 @@ package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.FontUtil;
+import cn.oyzh.fx.plus.window.FXPopup;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,7 +38,6 @@ import java.awt.*;
  * @author oyzh
  * @since 2020/10/19
  */
-//@Slf4j
 @Accessors(fluent = true, chain = true)
 public class Toast {
 
@@ -151,7 +154,8 @@ public class Toast {
         box.setPrefWidth(boxWidth + 20);
         // 初始化面板
         if (owner == null) {// Stage
-            Stage stage = new Stage();
+            StageWrapper wrapper = StageUtil.newStage(null);
+            Stage stage = wrapper.stage();
             this.window = stage;
             Scene scene = new Scene(box);
             scene.setCursor(Cursor.NONE);
@@ -159,7 +163,7 @@ public class Toast {
             stage.setAlwaysOnTop(true);
             stage.initStyle(StageStyle.UNDECORATED);
         } else {// Popup
-            Popup popup = new Popup();
+            Popup popup = new FXPopup();
             this.window = popup;
             box.setCursor(Cursor.NONE);
             popup.setAutoFix(true);
@@ -178,7 +182,13 @@ public class Toast {
             });
         }
         // 显示窗口
-        if (this.window instanceof Stage stage) {
+        if (this.window instanceof StageWrapper wrapper) {
+            wrapper.changeTheme(ThemeManager.currentTheme());
+            wrapper.display();
+        } else if (this.window instanceof FXPopup popup) {
+            popup.changeTheme(ThemeManager.currentTheme());
+            popup.show(owner);
+        } else if (this.window instanceof Stage stage) {
             stage.show();
         } else if (this.window instanceof Popup popup) {
             popup.show(owner);

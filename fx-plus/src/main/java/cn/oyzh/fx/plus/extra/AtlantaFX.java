@@ -23,4 +23,7 @@ public class AtlantaFX {
 
     public static final String CUPERTINO_DARK = "/atlantafx/base/theme/cupertino-dark.css";
 
+    public static String[] styles() {
+        return new String[]{DRACULA, NORD_LIGHT, NORD_DARK, PRIMER_LIGHT, PRIMER_DARK, CUPERTINO_LIGHT, CUPERTINO_DARK};
+    }
 }

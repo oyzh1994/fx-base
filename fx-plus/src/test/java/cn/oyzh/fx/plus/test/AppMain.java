@@ -1,12 +1,13 @@
 package cn.oyzh.fx.plus.test;
 
-import atlantafx.base.controls.ToggleSwitch;
+import atlantafx.base.controls.Message;
+import atlantafx.base.controls.Notification;
+import atlantafx.base.util.Animations;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.FlexVBox;
-// import cn.oyzh.fx.plus.controls.ToggleSwitch;
 import cn.oyzh.fx.plus.controls.area.MsgTextArea;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
@@ -16,12 +17,17 @@ import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.controls.textfield.DecimalTextField;
 import cn.oyzh.fx.plus.controls.textfield.NumberTextField;
 import cn.oyzh.fx.plus.controls.textfield.SearchTextField;
+import cn.oyzh.fx.plus.extra.AtlantaFX;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
+import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.trees.RichTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,6 +41,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
@@ -83,7 +90,8 @@ public class AppMain extends Application {
         // test20(stage);
         // test21(stage);
         // test22(stage);
-        test23(stage);
+        // test23(stage);
+        test24(stage);
     }
 
     private void test1(Stage stage) {
@@ -845,6 +853,43 @@ public class AppMain extends Application {
 
         stage.setScene(new Scene(vBox, 500, 500));
         stage.show();
+    }
+
+    private void test24(Stage stage) {
+        StageWrapper wrapper = StageUtil.newStage(null);
+        Message message = new Message("测试", "内容");
+        message.setPrefWidth(100);
+        message.setPrefHeight(100);
+        wrapper.stage().setScene(new Scene(message, 500, 500));
+        wrapper.root().getStylesheets().add(AtlantaFX.CUPERTINO_LIGHT);
+        // 设置主题
+        wrapper.changeTheme(ThemeManager.currentTheme());
+        wrapper.display();
+
+        Notification notification = new Notification("xxx");
+        // stage.setScene(new Scene(notification, 500, 500));
+        // stage.show();
+
+        // Timeline timeline= Animations.fadeIn(message, new Duration(2000));
+        // Timeline timeline = Animations.fadeOut(message, new Duration(2000));
+        // Timeline timeline = Animations.flash(message);
+        // Timeline timeline = Animations.pulse(message);
+        // Timeline timeline = Animations.shakeX(message);
+        // Timeline timeline = Animations.shakeY(message);
+        Timeline timeline = Animations.wobble(message);
+        timeline.play();
+
+        // Popover popover = new Popover(message);
+        // // Popover popover = new Popover(notification);
+        // popover.setSkin(new PopoverSkin(popover));
+        // popover.show(stage);
+        // popover.setAutoHide(false);
+        //
+        // popover.setWidth(100);
+        // popover.setHeight(100);
+        // stage.show();
+
+
     }
 
 

@@ -1,12 +1,14 @@
 package cn.oyzh.fx.plus.theme;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.extra.AtlantaFX;
 import cn.oyzh.fx.plus.stage.StageWrapper;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.stage.Stage;
+
+import java.util.List;
 
 /**
  * 主题适配器
@@ -55,120 +57,25 @@ public interface ThemeAdapter extends PropAdapter {
      * @param theme 主题
      */
     default void changeTheme(Theme theme) {
-        if (this.isEnableTheme()) {
-            if (theme != null) {
-                switch (theme) {
-                    case DRACULA -> this.switchDraculaTheme();
-                    case NORD_DARK -> this.switchNordDarkTheme();
-                    case NORD_LIGHT -> this.switchNordLightTheme();
-                    case PRIMER_DARK -> this.switchPrimerDarkTheme();
-                    case PRIMER_LIGHT -> this.switchPrimerLightTheme();
-                    case CUPERTINO_DARK -> this.switchCupertinoDarkTheme();
-                    case CUPERTINO_LIGHT -> this.switchCupertinoLightTheme();
+        if (this.isEnableTheme() && theme != null) {
+            switch (this) {
+                case Parent node -> this.handleStyle(node, theme);
+                case StageWrapper wrapper -> this.handleStyle(wrapper.root(), theme);
+                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), theme);
+                default -> {
                 }
-                // // 页面
-                // if (this instanceof StageWrapper wrapper) {
-                //     this.changeTheme(wrapper.root(), theme);
-                // }
             }
-        }
-    }
-
-    // /**
-    //  * 更改主题
-    //  *
-    //  * @param root  根节点
-    //  * @param theme 主题
-    //  */
-    // default void changeTheme(Node root, Theme theme) {
-    //     if (root instanceof ThemeAdapter adapter) {
-    //         adapter.changeTheme(theme);
-    //     }
-    //     if (root instanceof Parent parent) {
-    //         for (Node node : parent.getChildrenUnmodifiable()) {
-    //             this.changeTheme(node, theme);
-    //         }
-    //     }
-    // }
-
-    default void switchDraculaTheme() {
-        if (this instanceof StageWrapper wrapper) {
-            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
-            this.handleStyle(stylesheets, Theme.DRACULA);
-        } else if (this instanceof Parent parent) {
-            ObservableList<String> stylesheets = parent.getStylesheets();
-            this.handleStyle(stylesheets, Theme.DRACULA);
-        }
-    }
-
-    default void switchNordDarkTheme() {
-        if (this instanceof StageWrapper wrapper) {
-            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
-            this.handleStyle(stylesheets, Theme.NORD_DARK);
-        } else if (this instanceof Parent parent) {
-            ObservableList<String> stylesheets = parent.getStylesheets();
-            this.handleStyle(stylesheets, Theme.NORD_DARK);
-        }
-    }
-
-    default void switchNordLightTheme() {
-        if (this instanceof StageWrapper wrapper) {
-            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
-            this.handleStyle(stylesheets, Theme.NORD_LIGHT);
-        } else if (this instanceof Parent parent) {
-            ObservableList<String> stylesheets = parent.getStylesheets();
-            this.handleStyle(stylesheets, Theme.NORD_LIGHT);
-        }
-    }
-
-    default void switchPrimerDarkTheme() {
-        if (this instanceof StageWrapper wrapper) {
-            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
-            this.handleStyle(stylesheets, Theme.PRIMER_DARK);
-        } else if (this instanceof Parent parent) {
-            ObservableList<String> stylesheets = parent.getStylesheets();
-            this.handleStyle(stylesheets, Theme.PRIMER_DARK);
-        }
-    }
-
-    default void switchPrimerLightTheme() {
-        if (this instanceof StageWrapper wrapper) {
-            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
-            this.handleStyle(stylesheets, Theme.PRIMER_LIGHT);
-        } else if (this instanceof Parent parent) {
-            ObservableList<String> stylesheets = parent.getStylesheets();
-            this.handleStyle(stylesheets, Theme.PRIMER_LIGHT);
-        }
-    }
-
-    default void switchCupertinoDarkTheme() {
-        if (this instanceof StageWrapper wrapper) {
-            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
-            this.handleStyle(stylesheets, Theme.CUPERTINO_DARK);
-        } else if (this instanceof Parent parent) {
-            ObservableList<String> stylesheets = parent.getStylesheets();
-            this.handleStyle(stylesheets, Theme.CUPERTINO_DARK);
-        }
-    }
-
-    default void switchCupertinoLightTheme() {
-        if (this instanceof StageWrapper wrapper) {
-            ObservableList<String> stylesheets = wrapper.root().getStylesheets();
-            this.handleStyle(stylesheets, Theme.CUPERTINO_LIGHT);
-        } else if (this instanceof Parent parent) {
-            ObservableList<String> stylesheets = parent.getStylesheets();
-            this.handleStyle(stylesheets, Theme.CUPERTINO_LIGHT);
         }
     }
 
     /**
      * 处理样式
      *
-     * @param stylesheets 样式列表
-     * @param theme       主题
+     * @param node  节点
+     * @param theme 主题
      */
-    private void handleStyle(ObservableList<String> stylesheets, Theme theme) {
-        if (stylesheets != null) {
+    private void handleStyle(Parent node, Theme theme) {
+        if (node != null) {
             String style = switch (theme) {
                 case PRIMER_LIGHT -> AtlantaFX.PRIMER_LIGHT;
                 case PRIMER_DARK -> AtlantaFX.PRIMER_DARK;
@@ -178,26 +85,10 @@ public interface ThemeAdapter extends PropAdapter {
                 case CUPERTINO_DARK -> AtlantaFX.CUPERTINO_DARK;
                 case DRACULA -> AtlantaFX.DRACULA;
             };
-            if (!stylesheets.contains(style)) {
-                if (!stylesheets.isEmpty()) {
-                    stylesheets.remove(AtlantaFX.DRACULA);
-                    stylesheets.remove(AtlantaFX.NORD_DARK);
-                    stylesheets.remove(AtlantaFX.NORD_LIGHT);
-                    stylesheets.remove(AtlantaFX.PRIMER_DARK);
-                    stylesheets.remove(AtlantaFX.PRIMER_LIGHT);
-                    stylesheets.remove(AtlantaFX.CUPERTINO_DARK);
-                    stylesheets.remove(AtlantaFX.CUPERTINO_LIGHT);
-                    stylesheets.remove(FXStyle.FX_BASE);
-                    // stylesheets.remove(FXStyle.FX_DARK);
-                    // stylesheets.remove(FXStyle.FX_LIGHT);
-                }
-                stylesheets.addAll(style, FXStyle.FX_BASE);
-                // if (theme.isDarkMode()) {
-                //     stylesheets.addAll(style, FXStyle.FX_BASE, FXStyle.FX_DARK);
-                // } else {
-                //     stylesheets.addAll(style, FXStyle.FX_BASE, FXStyle.FX_LIGHT);
-                // }
-            }
+            List<String> removes = CollUtil.toList(AtlantaFX.styles());
+            removes.add(FXStyle.FX_BASE);
+            node.getStylesheets().removeAll(removes);
+            node.getStylesheets().addAll(style, FXStyle.FX_BASE);
         }
     }
 }

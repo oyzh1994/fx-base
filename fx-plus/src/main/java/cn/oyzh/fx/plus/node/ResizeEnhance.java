@@ -158,11 +158,11 @@ public class ResizeEnhance {
             }
             this.setNodeCursor(this.originalCursor);
 //            if (log.isDebugEnabled()) {
-                StaticLog.debug("Cursor recover.");
+            StaticLog.debug("Cursor recover.");
 //            }
             event.consume();
 //            if (log.isDebugEnabled()) {
-                StaticLog.debug("MouseExited");
+            StaticLog.debug("MouseExited");
 //            }
         };
     }
@@ -190,7 +190,7 @@ public class ResizeEnhance {
             this.resizeIng(true);
             event.consume();
 //            if (log.isDebugEnabled()) {
-                StaticLog.debug("MousePressed");
+            StaticLog.debug("MousePressed");
 //            }
         };
     }
@@ -218,7 +218,7 @@ public class ResizeEnhance {
             this.setNodeCursor(this.originalCursor);
             event.consume();
 //            if (log.isDebugEnabled()) {
-                StaticLog.debug("MouseReleased");
+            StaticLog.debug("MouseReleased");
 //            }
         };
     }
