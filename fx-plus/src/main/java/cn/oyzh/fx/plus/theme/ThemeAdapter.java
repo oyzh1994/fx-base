@@ -66,30 +66,30 @@ public interface ThemeAdapter extends PropAdapter {
                     case CUPERTINO_DARK -> this.switchCupertinoDarkTheme();
                     case CUPERTINO_LIGHT -> this.switchCupertinoLightTheme();
                 }
-                // 页面
-                if (this instanceof StageWrapper wrapper) {
-                    this.changeTheme(wrapper.root(), theme);
-                }
+                // // 页面
+                // if (this instanceof StageWrapper wrapper) {
+                //     this.changeTheme(wrapper.root(), theme);
+                // }
             }
         }
     }
 
-    /**
-     * 更改主题
-     *
-     * @param root  根节点
-     * @param theme 主题
-     */
-    default void changeTheme(Node root, Theme theme) {
-        if (root instanceof ThemeAdapter adapter) {
-            adapter.changeTheme(theme);
-        }
-        if (root instanceof Parent parent) {
-            for (Node node : parent.getChildrenUnmodifiable()) {
-                this.changeTheme(node, theme);
-            }
-        }
-    }
+    // /**
+    //  * 更改主题
+    //  *
+    //  * @param root  根节点
+    //  * @param theme 主题
+    //  */
+    // default void changeTheme(Node root, Theme theme) {
+    //     if (root instanceof ThemeAdapter adapter) {
+    //         adapter.changeTheme(theme);
+    //     }
+    //     if (root instanceof Parent parent) {
+    //         for (Node node : parent.getChildrenUnmodifiable()) {
+    //             this.changeTheme(node, theme);
+    //         }
+    //     }
+    // }
 
     default void switchDraculaTheme() {
         if (this instanceof StageWrapper wrapper) {

@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.stage.StageWrapper;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -71,10 +73,27 @@ public class ThemeManager {
             Current_Theme = theme;
             List<StageWrapper> wrappers = StageUtil.allStages();
             for (StageWrapper wrapper : wrappers) {
-                wrapper.changeTheme(theme);
+                changeThemeCycle(wrapper.root(), theme);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 更改主题，循环处理
+     *
+     * @param root  根节点
+     * @param theme 主题
+     */
+    private static void changeThemeCycle(Node root, Theme theme) {
+        if (root instanceof ThemeAdapter adapter) {
+            adapter.changeTheme(theme);
+        }
+        if (root instanceof Parent parent) {
+            for (Node node : parent.getChildrenUnmodifiable()) {
+                changeThemeCycle(node, theme);
+            }
         }
     }
 }
