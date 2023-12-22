@@ -138,6 +138,16 @@ public class NumberTextField extends FlexTextField {
     }
 
     /**
+     * 获取byte值
+     *
+     * @return byte值
+     */
+    public Byte getByteValue() {
+        Long val = this.getValue();
+        return val == null ? null : val.byteValue();
+    }
+
+    /**
      * 获取int值
      *
      * @return int值
