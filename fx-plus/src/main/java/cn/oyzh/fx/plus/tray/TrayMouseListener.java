@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/8/24
  */
-public class FXTrayMouseListener extends MouseAdapter {
+public class TrayMouseListener extends MouseAdapter {
 
     /**
      * 鼠标监听器

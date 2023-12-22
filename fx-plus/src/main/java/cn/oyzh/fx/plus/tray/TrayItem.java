@@ -1,12 +1,12 @@
 package cn.oyzh.fx.plus.tray;
 
+import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.FontUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import lombok.NonNull;
 
@@ -16,18 +16,18 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/3/2
  */
-public class FXTrayItem extends Label {
+public class TrayItem extends FXLabel {
 
     {
         this.setHeight(25);
         this.setCursor(Cursor.HAND);
     }
 
-    public FXTrayItem(@NonNull String label, Runnable action) {
+    public TrayItem(@NonNull String label, Runnable action) {
         this(label, null, action);
     }
 
-    public FXTrayItem(@NonNull String label, Node icon, Runnable action) {
+    public TrayItem(@NonNull String label, Node icon, Runnable action) {
         super(label);
         if (icon != null) {
             this.setGraphic(icon);

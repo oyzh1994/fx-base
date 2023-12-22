@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.tray;
 
+import cn.oyzh.fx.plus.controls.FXVBox;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -11,7 +12,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/3/2
  */
-public class FXTrayMenu extends VBox {
+public class TrayMenu extends FXVBox {
 
     {
         // 初始化样式
@@ -23,7 +24,7 @@ public class FXTrayMenu extends VBox {
      *
      * @param menuItem 菜单项
      */
-    public void addItem(@NonNull FXTrayItem menuItem) {
+    public void addItem(@NonNull TrayItem menuItem) {
         // 添加节点
         this.getChildren().add(menuItem);
         // 设置边距
@@ -33,7 +34,7 @@ public class FXTrayMenu extends VBox {
         // 计算宽度
         double w = 0;
         for (Node child : this.getChildren()) {
-            if (child instanceof FXTrayItem item && item.getRealWidth() > w) {
+            if (child instanceof TrayItem item && item.getRealWidth() > w) {
                 w = item.getRealWidth();
             }
         }
@@ -48,9 +49,7 @@ public class FXTrayMenu extends VBox {
      */
     private void initStyle() {
         this.setStyle(this.getStyle() +
-                "-fx-background-color: white;" +
                 "-fx-border-style: solid;" +
-                "-fx-border-color: gray;" +
                 "-fx-border-width: 1;" +
                 "-fx-padding: 5 10 5 10;" +
                 "-fx-border-radius: 3;"

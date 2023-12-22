@@ -1,10 +1,13 @@
 package cn.oyzh.fx.plus.tray;
 
+import cn.oyzh.fx.plus.stage.StageExt;
 import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Setter;
 
@@ -17,20 +20,20 @@ import java.awt.event.MouseEvent;
  * @author oyzh
  * @since 2023/3/2
  */
-public class FXTrayIcon extends TrayIcon {
+public class TrayImage extends TrayIcon implements ThemeAdapter {
 
     /**
      * 窗口
      */
-    private Stage stage;
+    private StageExt stage;
 
     /**
      * 菜单
      */
     @Setter
-    private FXTrayMenu menu;
+    private TrayMenu menu;
 
-    public FXTrayIcon(Image image) {
+    public TrayImage(Image image) {
         super(image);
     }
 
@@ -39,11 +42,11 @@ public class FXTrayIcon extends TrayIcon {
      *
      * @return 菜单
      */
-    public FXTrayMenu getMenu() {
+    public TrayMenu getMenu() {
         if (this.menu == null) {
-            this.menu = new FXTrayMenu();
+            this.menu = new TrayMenu();
             // 监听鼠标
-            FXTrayMouseListener listener = new FXTrayMouseListener();
+            TrayMouseListener listener = new TrayMouseListener();
             listener.setMouseClicked(e -> {
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     FXUtil.runLater(this::showMenu);
@@ -60,7 +63,7 @@ public class FXTrayIcon extends TrayIcon {
     private void showMenu() {
         // 初始化窗口
         if (this.stage == null) {
-            this.stage = new Stage();
+            this.stage = StageUtil.newStage(null);
             this.stage.setScene(new Scene(this.menu));
             this.stage.setWidth(this.menu.getPrefWidth());
             this.stage.setHeight(this.menu.getPrefHeight());
@@ -83,7 +86,16 @@ public class FXTrayIcon extends TrayIcon {
             this.stage.setX(robot.getMouseX() - 5);
             this.stage.setY(robot.getMouseY() - this.stage.getHeight() - 15);
             this.stage.setAlwaysOnTop(true);
+            this.menu.changeTheme(ThemeManager.currentTheme());
             this.stage.show();
+        }
+    }
+
+    @Override
+    public void changeTheme(Theme theme) {
+        ThemeAdapter.super.changeTheme(theme);
+        if (this.menu != null) {
+            this.menu.changeTheme(theme);
         }
     }
 }

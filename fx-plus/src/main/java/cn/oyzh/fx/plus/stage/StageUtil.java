@@ -22,7 +22,6 @@ import java.util.NoSuchElementException;
  * @author oyzh
  * @since 2023/10/12
  */
-//@Slf4j
 @UtilityClass
 public class StageUtil {
 
@@ -107,6 +106,16 @@ public class StageUtil {
     public static void showStage(@NonNull Class<?> clazz, Window owner) {
         StageWrapper wrapper = parseStage(clazz, owner);
         wrapper.display();
+    }
+
+    /**
+     * 创建舞台
+     *
+     * @param owner 父窗口
+     * @return StageExt
+     */
+    public static StageExt newStage(Window owner) {
+        return new StageExt(owner);
     }
 
     /**

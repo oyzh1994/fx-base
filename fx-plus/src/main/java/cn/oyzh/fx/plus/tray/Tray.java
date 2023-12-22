@@ -2,6 +2,9 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.Node;
 import lombok.NonNull;
@@ -13,52 +16,29 @@ import java.net.URL;
 import java.util.function.Consumer;
 
 /**
- * 系统托盘
+ * 系统托盘扩展
  *
  * @author oyzh
  * @since 2022/8/24
  */
-//@Slf4j
-public class FXSystemTray {
-
-    /**
-     * 系统托盘
-     */
-    private SystemTray tray;
+public class Tray implements ThemeAdapter {
 
     /**
      * 托盘图标
      */
-    //private TrayIconExt trayIcon;
-    private FXTrayIcon trayIcon;
+    private TrayImage trayIcon;
 
     /**
      * icon鼠标事件
      */
-    private FXTrayMouseListener trayMouseListener;
+    private TrayMouseListener trayMouseListener;
 
-    public FXSystemTray(@NonNull URL iconUrl) {
-        this.initTray();
+    public Tray(@NonNull URL iconUrl) {
         this.initIcon(iconUrl);
     }
 
-    public FXSystemTray(@NonNull String iconUrl) {
-        this.initTray();
+    public Tray(@NonNull String iconUrl) {
         this.initIcon(iconUrl);
-    }
-
-    /**
-     * 初始化托盘
-     */
-    private void initTray() {
-        if (!SystemTray.isSupported()) {
-            StaticLog.warn("SystemTray is not supported.");
-            throw new RuntimeException("SystemTray is not supported.");
-        }
-        System.setProperty("java.awt.headless", "false");
-        if (this.tray == null) {
-            this.tray = SystemTray.getSystemTray();
-        }
     }
 
     /**
@@ -87,12 +67,11 @@ public class FXSystemTray {
         try {
             Image image = Toolkit.getDefaultToolkit().getImage(url);
             // 系统托盘图标
-            //this.trayIcon = new TrayIconExt(image);
-            this.trayIcon = new FXTrayIcon(image);
+            this.trayIcon = new TrayImage(image);
             // 设置图标尺寸自动适应
             this.trayIcon.setImageAutoSize(true);
             // 设置鼠标事件
-            this.trayMouseListener = new FXTrayMouseListener();
+            this.trayMouseListener = new TrayMouseListener();
             this.trayIcon.addMouseListener(this.trayMouseListener);
             return true;
         } catch (Exception ex) {
@@ -128,7 +107,7 @@ public class FXSystemTray {
      * @param action 菜单业务
      */
     public void addMenuItem(@NonNull String label, Node icon, Runnable action) {
-        this.trayIcon.getMenu().addItem(new FXTrayItem(label, icon, action));
+        this.trayIcon.getMenu().addItem(new TrayItem(label, icon, action));
     }
 
     /**
@@ -155,10 +134,11 @@ public class FXSystemTray {
     public void show() {
         try {
             // 添加到托盘
-            if (ArrayUtil.isEmpty(this.tray.getTrayIcons())) {
-                this.tray.remove(this.trayIcon);
-                this.tray.add(this.trayIcon);
+            if (ArrayUtil.isEmpty(TrayManager.systemTray().getTrayIcons())) {
+                TrayManager.systemTray().remove(this.trayIcon);
+                TrayManager.systemTray().add(this.trayIcon);
             }
+            this.trayIcon.changeTheme(ThemeManager.currentTheme());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -169,11 +149,19 @@ public class FXSystemTray {
      */
     public void close() {
         try {
-            if (ArrayUtil.isNotEmpty(this.tray.getTrayIcons())) {
-                this.tray.remove(this.trayIcon);
+            if (ArrayUtil.isNotEmpty(TrayManager.systemTray().getTrayIcons())) {
+                TrayManager.systemTray().remove(this.trayIcon);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void changeTheme(Theme theme) {
+        ThemeAdapter.super.changeTheme(theme);
+        if ( this.trayIcon != null) {
+            this.trayIcon.changeTheme(theme);
         }
     }
 }

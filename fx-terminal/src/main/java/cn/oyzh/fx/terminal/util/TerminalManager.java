@@ -1,7 +1,5 @@
 package cn.oyzh.fx.terminal.util;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.WeakCache;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import lombok.experimental.UtilityClass;

@@ -12,8 +12,15 @@ import lombok.NonNull;
  */
 public class StageExt extends Stage implements StageWrapper {
 
-    public StageExt(@NonNull StageAttribute window, Window owner) {
-        this.init(window, owner);
+    public StageExt(@NonNull StageAttribute attribute, Window owner) {
+        this.init(attribute, owner);
+        this.setProp("_stageReference", this);
+    }
+
+    public StageExt(Window owner) {
+        if (owner != null) {
+            this.initOwner(owner);
+        }
         this.setProp("_stageReference", this);
     }
 
