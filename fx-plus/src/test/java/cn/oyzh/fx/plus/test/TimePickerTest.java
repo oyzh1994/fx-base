@@ -13,14 +13,14 @@ public class TimePickerTest extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        TimePicker dateTimePicker = new TimePicker();
+        TimePicker picker = new TimePicker();
 
-//		dateTimePicker.setTimeProperty( LocalDateTime.now() );
+//		picker.setTimeProperty( LocalDateTime.now() );
 
-        dateTimePicker.setShowLocalizedDateTime(false);
+        picker.setShowLocalizedDateTime(false);
 
         final VBox vBox = new VBox();
-        vBox.getChildren().add(dateTimePicker);
+        vBox.getChildren().add(picker);
         final Scene scene = new Scene(vBox);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();

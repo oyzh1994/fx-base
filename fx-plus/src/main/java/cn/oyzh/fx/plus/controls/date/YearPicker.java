@@ -29,7 +29,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/12/24
  */
-public class TimePicker extends HBox {
+public class YearPicker extends HBox {
 
     private final DateTimeFormatter formatter;
 
@@ -46,7 +46,7 @@ public class TimePicker extends HBox {
 
     private final Button button;
 
-    public TimePicker() {
+    public YearPicker() {
         this.textField = new TextField();
         this.textField.setDisable(true);
         this.textField.setFocusTraversable(false);
@@ -59,8 +59,7 @@ public class TimePicker extends HBox {
         this.button.setOnAction(this::handleButtonAction);
         this.getChildren().add(this.button);
 
-        this.formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
+        this.formatter = DateTimeFormatter.ofPattern("yyyy");
 
         if (showLocalizedDateTime) {
             textField.setText(formatter.format(dateTime.get()));
@@ -157,7 +156,7 @@ public class TimePicker extends HBox {
      */
     static class TimePickerSelect extends VBox {
 
-        private final TimePicker dateTimePicker;
+        private final YearPicker dateTimePicker;
 
         private final List<Button> dayList;
 
@@ -165,11 +164,7 @@ public class TimePicker extends HBox {
 
         private LocalDateTime cursorDateTime;
 
-        private final ComboBox<String> hour;
-
-        private final ComboBox<String> minute;
-
-        private final ComboBox<String> second;
+        private final ComboBox<String> year;
 
         private final Button buttonCancel;
 
@@ -179,7 +174,7 @@ public class TimePicker extends HBox {
 
         private final Button buttonReset;
 
-        public TimePickerSelect(final TimePicker parentCont) {
+        public TimePickerSelect(final YearPicker parentCont) {
             this.dateTimePicker = parentCont;
             dayList = new ArrayList<Button>();
 
@@ -192,29 +187,9 @@ public class TimePicker extends HBox {
             ch4.setMaxHeight(30);
             this.getChildren().add(ch4);
 
-            this.hour = new ComboBox<>();
-            this.hour.setId("fontStyle");
-            ch4.getChildren().add(hour);
-
-            Label label2 = new Label("时");
-            label2.setId("fontStyle");
-            ch4.getChildren().add(label2);
-
-            this.minute = new ComboBox<>();
-            this.minute.setId("fontStyle");
-            ch4.getChildren().add(minute);
-
-            Label label3 = new Label("分");
-            label3.setId("fontStyle");
-            ch4.getChildren().add(label3);
-
-            this.second = new ComboBox<>();
-            this.second.setId("fontStyle");
-            ch4.getChildren().add(second);
-
-            Label label4 = new Label("秒");
-            label4.setId("fontStyle");
-            ch4.getChildren().add(label4);
+            this.year = new ComboBox<>();
+            this.year.setId("fontStyle");
+            ch4.getChildren().add(year);
 
             HBox ch5 = new HBox();
             ch5.setAlignment(Pos.BASELINE_CENTER);
@@ -326,11 +301,21 @@ public class TimePicker extends HBox {
             setTime();
         }
 
+        /**
+         * �������º������ڱ�����ʾ��������ʽ��������Ϊ���ɵ��
+         *
+         * @param btn ���ڰ�ťButton
+         */
         public void setDisable(Button btn) {
             btn.setDisable(true);
             btn.setStyle("-fx-text-fill: black;-fx-background-color: transparent;;-fx-font-size: 10");
         }
 
+        /**
+         * ���ñ������ڵĵ���¼�����ʽ�����е��ʱ����Զ���¼ʱ��
+         *
+         * @param btn ���ڰ�ťButton
+         */
         public void setAble(Button btn) {
             btn.setStyle("-fx-text-fill: black;-fx-background-color: #fff;-fx-font-size: 10");
             btn.setOnAction(event -> {
@@ -345,20 +330,10 @@ public class TimePicker extends HBox {
         }
 
         private void setTime() {
-            for (int i = 1; i < 25; i++) {
-                hour.getItems().add(strValue(i));
+            for (int i = 1901; i <= 2155; i++) {
+                year.getItems().add(strValue(i));
             }
-            hour.getSelectionModel().select(calendar.get(Calendar.HOUR_OF_DAY) == 0 ? 24 : calendar.get(Calendar.HOUR_OF_DAY) - 1);
-
-            for (int i = 0; i < 60; i++) {
-                minute.getItems().add(strValue(i));
-            }
-            minute.getSelectionModel().select(calendar.get(Calendar.MINUTE));
-
-            for (int i = 0; i < 60; i++) {
-                second.getItems().add(strValue(i));
-            }
-            second.getSelectionModel().select(calendar.get(Calendar.SECOND));
+            year.getSelectionModel().select(calendar.get(Calendar.YEAR));
         }
 
         protected void buttonOKOnMousePressed(MouseEvent event) {
@@ -372,11 +347,11 @@ public class TimePicker extends HBox {
         protected void buttonOKOnAction(ActionEvent event) {
             if (this.calendar != null) {
                 calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                        Integer.parseInt(hour.getSelectionModel().getSelectedItem()), Integer.parseInt(minute.getSelectionModel().getSelectedItem()), Integer.parseInt(second.getSelectionModel().getSelectedItem()));
+                        Integer.parseInt(year.getSelectionModel().getSelectedItem()), 0, 0);
                 LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
                 this.dateTimePicker.setTimeProperty(localDateTime);
             } else {
-    //            System.out.println("����ѡ������");
+                //            System.out.println("����ѡ������");
             }
             this.dateTimePicker.hide();
         }
@@ -394,7 +369,9 @@ public class TimePicker extends HBox {
             calendar = Calendar.getInstance();
             if (this.calendar != null) {
                 calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                        Integer.parseInt(hour.getSelectionModel().getSelectedItem()), Integer.parseInt(minute.getSelectionModel().getSelectedItem()), Integer.parseInt(second.getSelectionModel().getSelectedItem()));
+                        Integer.parseInt(year.getSelectionModel().getSelectedItem()), 0, 0);
+            } else {
+                //            System.out.println("����ѡ������");
             }
             this.dateTimePicker.setTimeProperty(localDateTime);
             this.dateTimePicker.hide();
@@ -425,6 +402,39 @@ public class TimePicker extends HBox {
             this.cursorDateTime = null;
             this.dateTimePicker.clearTimeProperty();
         }
+        //    /**
+        //     *
+        //     * ������������ѡ��ť������ʱ�͵���ʱ����ɫ
+        //     * @param btn  ��������ѡ��ťButton
+        //     */
+        //    public void btnMouthPress(Button btn){
+        //        btn.setOnMousePressed(new EventHandler<MouseEvent>() {
+        //            @Override
+        //            public void handle(MouseEvent event) {
+        //                btn.setStyle("-fx-text-fill: black;-fx-background-color: #FFD306;");
+        //            }
+        //        });
+        //        btn.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        //            @Override
+        //            public void handle(MouseEvent event) {
+        //                btn.setStyle("-fx-text-fill: black;-fx-background-color: #c66;");
+        //            }
+        //        });
+        //    }
+        //    public void btnYearPress(Button btn){
+        //        btn.setOnMousePressed(new EventHandler<MouseEvent>() {
+        //            @Override
+        //            public void handle(MouseEvent event) {
+        //                btn.setStyle("-fx-text-fill: black;-fx-background-color:#FF0000;");
+        //            }
+        //        });
+        //        btn.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        //            @Override
+        //            public void handle(MouseEvent event) {
+        //                btn.setStyle("-fx-text-fill: black;-fx-background-color: #6cc;");
+        //            }
+        //        });
+        //    }
 
         @Override
         public String getUserAgentStylesheet() {
