@@ -4,7 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.stage.StageWrapper;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -61,7 +63,24 @@ public interface ThemeAdapter extends PropAdapter {
                 case Parent node -> this.handleStyle(node, themeType);
                 case StageWrapper wrapper -> this.handleStyle(wrapper.root(), themeType);
                 case Stage stage -> this.handleStyle(stage.getScene().getRoot(), themeType);
+                case Popup popup -> this.handleStyle(popup.getContent(), themeType);
                 default -> {
+                }
+            }
+        }
+    }
+
+    /**
+     * 处理样式
+     *
+     * @param nodes     节点列表
+     * @param themeType 主题
+     */
+    private void handleStyle(List<Node> nodes, ThemeType themeType) {
+        if (CollUtil.isNotEmpty(nodes)) {
+            for (Node node : nodes) {
+                if (node instanceof Parent parent) {
+                    this.handleStyle(parent, themeType);
                 }
             }
         }
@@ -87,8 +106,7 @@ public interface ThemeAdapter extends PropAdapter {
             List<String> removes = CollUtil.toList(AtlantaFX.styles());
             removes.add(FXStyle.FX_BASE);
             node.getStylesheets().removeAll(removes);
-            node.getStylesheets().add(style);
-            node.getStylesheets().add(FXStyle.FX_BASE);
+            node.getStylesheets().addAll(style, FXStyle.FX_BASE);
         }
     }
 }

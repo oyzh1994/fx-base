@@ -1,18 +1,20 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.controls.date.DateTimePicker;
 import cn.oyzh.fx.plus.controls.date.TimePicker;
-import javafx.application.Application;
+import cn.oyzh.fx.plus.spring.SpringApplication;
+import cn.oyzh.fx.plus.test.table.TableTestApp;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.time.LocalDateTime;
+public class TimePickerTest extends SpringApplication {
 
-public class TimePickerTest extends Application {
+    public static void main(String[] args) {
+        launchSpring(TimePickerTest.class, args);
+    }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         TimePicker picker = new TimePicker();
 
 //		picker.setTimeProperty( LocalDateTime.now() );
@@ -27,9 +29,19 @@ public class TimePickerTest extends Application {
         primaryStage.show();
     }
 
+    @Override
+    public void destroy() throws Exception {
+
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+
+    }
+
     static class TimePickerMain {
         public static void main(String[] args) {
-            launch(TimePickerTest.class, args);
+            TimePickerTest.main(args);
         }
     }
 

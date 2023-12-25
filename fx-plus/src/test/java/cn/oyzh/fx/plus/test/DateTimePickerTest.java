@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.controls.date.DateTimePicker;
+import cn.oyzh.fx.plus.controls.date.DateTimePicker2;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -10,7 +10,7 @@ public class DateTimePickerTest extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        DateTimePicker picker = new DateTimePicker();
+        DateTimePicker2 picker = new DateTimePicker2();
         picker.setShowNow(false);
 
         final VBox vBox = new VBox();

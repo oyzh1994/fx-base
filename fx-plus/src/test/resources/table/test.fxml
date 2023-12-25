@@ -1,25 +1,28 @@
-<?import cn.oyzh.fx.plus.controls.FlexHBox?>
-<?import cn.oyzh.fx.plus.controls.FlexVBox?>
-<?import cn.oyzh.fx.plus.controls.table.FlexTableColumn?>
-<?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
-<?import javafx.scene.control.Button?>
-<?import cn.oyzh.fx.plus.controls.textfield.ClearableTextField?>
-<?import javafx.scene.control.CheckBox?>
-<?import cn.oyzh.fx.plus.controls.svg.SVGGlyph?>
-<?import cn.oyzh.fx.plus.controls.text.FXText?>
-<?import cn.oyzh.fx.plus.controls.textfield.NumberTextField?>
-<?import cn.oyzh.fx.plus.controls.tab.FlexTabPane?>
-<?import cn.oyzh.fx.plus.controls.FXHBox?>
-<?import cn.oyzh.fx.plus.controls.tab.FXTab?>
-<?import cn.oyzh.fx.plus.controls.button.IconButton?>
-<?import cn.oyzh.fx.plus.controls.FlexPane?>
 <?import atlantafx.base.controls.ToggleSwitch?>
 <?import cn.oyzh.fx.plus.controls.area.FlexTextArea?>
 <?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
+<?import cn.oyzh.fx.plus.controls.button.IconButton?>
+<?import cn.oyzh.fx.plus.controls.date.DateTimePicker2?>
+<?import cn.oyzh.fx.plus.controls.FlexHBox?>
+<?import cn.oyzh.fx.plus.controls.FlexVBox?>
 <?import cn.oyzh.fx.plus.controls.rich.FlexRichTextArea?>
-<?import javafx.scene.layout.HBox?>
+<?import cn.oyzh.fx.plus.controls.svg.SVGGlyph?>
+<?import cn.oyzh.fx.plus.controls.tab.FlexTabPane?>
+<?import cn.oyzh.fx.plus.controls.tab.FXTab?>
+<?import cn.oyzh.fx.plus.controls.table.FlexTableColumn?>
+<?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
+<?import cn.oyzh.fx.plus.controls.text.FXText?>
+<?import cn.oyzh.fx.plus.controls.textfield.ClearableTextField?>
+<?import cn.oyzh.fx.plus.controls.textfield.NumberTextField?>
 <?import cn.oyzh.fx.plus.controls.textfield.SearchTextField?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import java.lang.String?>
+<?import cn.oyzh.fx.plus.controls.date.FlexDatePicker?>
+<?import cn.oyzh.fx.plus.controls.date.DateTimePicker?>
 <FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -34,17 +37,41 @@
         <Button text="主题7" onAction="#theme7"></Button>
     </FlexHBox>
     <FlexHBox realHeight="50">
-      <ClearableTextField promptText="测试内容"></ClearableTextField>
-      <NumberTextField promptText="测试内容"></NumberTextField>
-      <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
-      <SVGGlyph url="/fx-plus/font/clear.svg" enableTheme="false"></SVGGlyph>
-      <FXText text="测试内容"></FXText>
+        <ClearableTextField promptText="测试内容"></ClearableTextField>
+        <NumberTextField promptText="测试内容"></NumberTextField>
+        <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
+        <SVGGlyph url="/fx-plus/font/clear.svg" enableTheme="false"></SVGGlyph>
+        <FXText text="测试内容"></FXText>
+        <ComboBox>
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="用户密码明文"/>
+                    <String fx:value="已有认证信息"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <!-- <DateTimePicker2> -->
+
+        <!-- </DateTimePicker2> -->
+        <DateTimePicker prefHeight="25" maxHeight="25">
+
+        </DateTimePicker>
+        <!-- <DateTimePicker> -->
+
+        <!-- </DateTimePicker> -->
+        <!-- <FlexDateTimePicker> -->
+
+        <!-- </FlexDateTimePicker> -->
+        <!-- <FlexDatePicker> -->
+
+        <!-- </FlexDatePicker> -->
     </FlexHBox>
     <FlexHBox realHeight="50">
-      <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
-      <ToggleSwitch text="测试内容"></ToggleSwitch>
-      <FlexTextArea text="测试内容"></FlexTextArea>
-      <FlexRichTextArea text="测试内容" promptText="测试内容提示"></FlexRichTextArea>
+        <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
+        <ToggleSwitch text="测试内容"></ToggleSwitch>
+        <FlexTextArea text="测试内容"></FlexTextArea>
+        <FlexRichTextArea text="测试内容" promptText="测试内容提示"></FlexRichTextArea>
     </FlexHBox>
     <FlexTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
                    fixedCellSize="30">

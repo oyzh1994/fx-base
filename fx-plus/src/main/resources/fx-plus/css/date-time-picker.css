@@ -10,46 +10,6 @@
     -fx-background-radius: 0 3 3 0;
 }
 
-#dt_day_label {
-    -fx-text-alignment: center;
-    -fx-alignment: center;
-    -fx-font-size: 9;
-    -fx-max-width: 35;
-    -fx-min-width: 35;
-    -fx-pref-width: 35;
-}
-
-#dt_day_disable {
-    -fx-font-size: 9;
-    -fx-max-width: 35;
-    -fx-min-width: 35;
-    -fx-pref-width: 35;
-    -fx-text-fill: black;
-    -fx-cursor: NONE;
-    -fx-background-color: transparent;
-}
-
-#dt_day_enable {
-    -fx-font-size: 9;
-    -fx-max-width: 35;
-    -fx-min-width: 35;
-    -fx-cursor: HAND;
-    -fx-pref-width: 35;
-}
-
-#dt_day_select {
-    -fx-font-size: 9;
-    -fx-max-width: 35;
-    -fx-cursor: HAND;
-    -fx-min-width: 35;
-    -fx-pref-width: 35;
-    -fx-text-fill: white;
-    -fx-background-color: #5b8cff;
-}
-
-#dt_time_picker_select {
-    -fx-background-color: #efefef;
-}
 
 #fontStyle {
     -fx-font-size: 10;

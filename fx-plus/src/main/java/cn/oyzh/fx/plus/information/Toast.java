@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.FontUtil;
-import cn.oyzh.fx.plus.window.FXPopup;
+import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

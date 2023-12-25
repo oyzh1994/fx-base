@@ -5,7 +5,6 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.FXListView;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -15,7 +14,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
-import javafx.stage.Popup;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -30,7 +28,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/10/23
  */
-public class SearchHistoryPopup extends Popup implements ThemeAdapter {
+public class SearchHistoryPopup extends FXPopup {
 
     {
         this.setAutoFix(true);
