@@ -12,17 +12,13 @@ public class DateTimePickerMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //初始化一个时间选择器
         DateTimePicker dateTimePicker = new DateTimePicker();
 
-        //设置选中时间 为 当前时间
 //		dateTimePicker.setTimeProperty( LocalDateTime.now() );
 
-        //是否默认显示当前时间
         dateTimePicker.setShowLocalizedDateTime(false);
 
 
-        //设置一个容器
         final VBox vBox = new VBox();
         vBox.getChildren().add(dateTimePicker);
         final Scene scene = new Scene(vBox);
@@ -31,16 +27,15 @@ public class DateTimePickerMain extends Application {
         primaryStage.show();
 
 
-        //循环获取选中时间-打印
         Thread thread = new Thread() {
             @Override
             public void run() {
                 while (true) {
                     try {
                         if (dateTimePicker.dateTimeProperty() == null) {
-                            System.out.println("没有选中日期！");
+                            System.out.println("没锟斤拷选锟斤拷锟斤拷锟节ｏ拷");
                         } else {
-                            //获取选中时间
+                            //锟斤拷取选锟斤拷时锟斤拷
                             LocalDateTime dateTime = dateTimePicker.dateTimeProperty().get();
                             System.out.println(dateTime.getYear() + "-" + dateTime.getMonthValue() + "-" + dateTime.getDayOfMonth() + " " + dateTime.getHour() + ":" + dateTime.getMinute() + ":" + dateTime.getSecond());
                         }

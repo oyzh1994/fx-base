@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.date;
+package cn.oyzh.fx.plus.controls.date;
 
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;

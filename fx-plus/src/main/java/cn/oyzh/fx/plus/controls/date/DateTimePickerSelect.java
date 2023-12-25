@@ -2,11 +2,7 @@ package cn.oyzh.fx.plus.controls.date;
 
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -16,8 +12,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -25,13 +19,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * @author oyzh
  * @since 2023/12/24
  */
-class DateTimePickerSelect extends VBox   {
+class DateTimePickerSelect extends VBox {
 
     private final DateTimePicker dateTimePicker;
 
@@ -82,7 +75,7 @@ class DateTimePickerSelect extends VBox   {
         ch1.setAlignment(Pos.CENTER);
         this.getChildren().add(ch1);
 
-        this.previousYear = new Button("¡¶");
+        this.previousYear = new Button("<");
         this.previousYear.setMaxHeight(20);
         this.previousYear.setPrefHeight(20);
         this.previousYear.setMinHeight(20);
@@ -90,7 +83,7 @@ class DateTimePickerSelect extends VBox   {
         this.previousYear.setStyle("-fx-text-fill: black;-fx-background-color: #6cc;-fx-cursor: HAND;-fx-font-size: 10");
         ch1.getChildren().add(this.previousYear);
 
-        this.previousMonth = new Button("¡û");
+        this.previousMonth = new Button("â†");
         this.previousMonth.setMaxHeight(20);
         this.previousMonth.setPrefHeight(20);
         this.previousMonth.setMinHeight(20);
@@ -102,7 +95,7 @@ class DateTimePickerSelect extends VBox   {
         this.labelYear.setId("fontStyle");
         ch1.getChildren().add(this.labelYear);
 
-        Label label = new Label("Äê");
+        Label label = new Label("å¹´");
         label.setId("fontStyle");
         ch1.getChildren().add(label);
 
@@ -113,11 +106,11 @@ class DateTimePickerSelect extends VBox   {
         this.labelMouth.setMinHeight(25);
         ch1.getChildren().add(this.labelMouth);
 
-        Label label1 = new Label("ÔÂ");
+        Label label1 = new Label("æœˆ");
         label1.setId("fontStyle");
         ch1.getChildren().add(label1);
 
-        this.nextMonth = new Button("¡ú");
+        this.nextMonth = new Button("â†’");
         this.nextMonth.setMaxHeight(20);
         this.nextMonth.setPrefHeight(20);
         this.nextMonth.setMinHeight(20);
@@ -125,7 +118,7 @@ class DateTimePickerSelect extends VBox   {
         this.nextMonth.setStyle("-fx-text-fill: black;-fx-background-color: #c66;-fx-cursor: HAND;-fx-font-size: 10");
         ch1.getChildren().add(this.nextMonth);
 
-        this.nextYear = new Button("¡·");
+        this.nextYear = new Button(">");
         this.nextYear.setMaxHeight(20);
         this.nextYear.setPrefHeight(20);
         this.nextYear.setMinHeight(20);
@@ -144,31 +137,31 @@ class DateTimePickerSelect extends VBox   {
         this.flowPane.setPrefWrapLength(260);
         this.getChildren().add(this.flowPane);
 
-        Label labelD1 = new Label("Ò»");
+        Label labelD1 = new Label("ä¸€");
         labelD1.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
         this.flowPane.getChildren().add(labelD1);
 
-        Label labelD2 = new Label("¶ş");
+        Label labelD2 = new Label("äºŒ");
         labelD2.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
         this.flowPane.getChildren().add(labelD2);
 
-        Label labelD3 = new Label("Èı");
+        Label labelD3 = new Label("ä¸‰");
         labelD3.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
         this.flowPane.getChildren().add(labelD3);
 
-        Label labelD4 = new Label("ËÄ");
+        Label labelD4 = new Label("å››");
         labelD4.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
         this.flowPane.getChildren().add(labelD4);
 
-        Label labelD5 = new Label("Îå");
+        Label labelD5 = new Label("äº”");
         labelD5.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
         this.flowPane.getChildren().add(labelD5);
 
-        Label labelD6 = new Label("Áù");
+        Label labelD6 = new Label("å…­");
         labelD6.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
         this.flowPane.getChildren().add(labelD6);
 
-        Label labelD7 = new Label("Æß");
+        Label labelD7 = new Label("æ—¥");
         labelD7.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
         this.flowPane.getChildren().add(labelD7);
 
@@ -191,7 +184,7 @@ class DateTimePickerSelect extends VBox   {
         this.hour.setId("fontStyle");
         ch4.getChildren().add(hour);
 
-        Label label2 = new Label("Ê±");
+        Label label2 = new Label("æ—¶");
         label2.setId("fontStyle");
         ch4.getChildren().add(label2);
 
@@ -199,7 +192,7 @@ class DateTimePickerSelect extends VBox   {
         this.minute.setId("fontStyle");
         ch4.getChildren().add(minute);
 
-        Label label3 = new Label("·Ö");
+        Label label3 = new Label("åˆ†");
         label3.setId("fontStyle");
         ch4.getChildren().add(label3);
 
@@ -207,7 +200,7 @@ class DateTimePickerSelect extends VBox   {
         this.second.setId("fontStyle");
         ch4.getChildren().add(second);
 
-        Label label4 = new Label("Ãë");
+        Label label4 = new Label("ç§’");
         label4.setId("fontStyle");
         ch4.getChildren().add(label4);
 
@@ -215,7 +208,7 @@ class DateTimePickerSelect extends VBox   {
         ch5.setAlignment(Pos.BASELINE_CENTER);
         this.getChildren().add(ch5);
 
-        this.buttonReset = new Button("Çå¿Õ");
+        this.buttonReset = new Button("æ¸…é™¤");
         buttonReset.setOnAction(this::buttonResetOnAction);
         buttonReset.setOnMousePressed(this::buttonResetOnMousePressed);
         buttonReset.setOnMouseReleased(this::buttonResetOnMouseReleased);
@@ -230,7 +223,7 @@ class DateTimePickerSelect extends VBox   {
         label5.setPrefWidth(5);
         ch5.getChildren().add(label5);
 
-        this.buttonCancel = new Button("È¡Ïû");
+        this.buttonCancel = new Button("å–æ¶ˆ");
         buttonCancel.setOnAction(this::buttonCancelOnAction);
         buttonCancel.setOnMousePressed(this::buttonCancelOnMousePressed);
         buttonCancel.setOnMouseReleased(this::buttonCancelOnMouseReleased);
@@ -245,7 +238,7 @@ class DateTimePickerSelect extends VBox   {
         label6.setPrefWidth(5);
         ch5.getChildren().add(label6);
 
-        this.buttonNow = new Button("´Ë¿Ì");
+        this.buttonNow = new Button("å½“å‰");
         buttonNow.setOnAction(this::buttonNowOnAction);
         buttonNow.setOnMousePressed(this::buttonNowOnMousePressed);
         buttonNow.setOnMouseReleased(this::buttonNowOnMouseReleased);
@@ -260,7 +253,7 @@ class DateTimePickerSelect extends VBox   {
         label7.setPrefWidth(5);
         ch5.getChildren().add(label7);
 
-        this.buttonOK = new Button("È·ÈÏ");
+        this.buttonOK = new Button("ç¡®å®š");
         buttonOK.setOnAction(this::buttonOKOnAction);
         buttonOK.setOnMousePressed(this::buttonOKOnMousePressed);
         buttonOK.setOnMouseReleased(this::buttonOKOnMouseReleased);
@@ -279,7 +272,7 @@ class DateTimePickerSelect extends VBox   {
         if (this.dateTimePicker.dateTimeProperty() != null) {
             this.cursorDateTime = this.dateTimePicker.dateTimeProperty().getValue();
         }
-        //Éú³ÉÈÕÆÚ²¿·Ö
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½
         upDataCalendar(true);
     }
 
@@ -294,7 +287,7 @@ class DateTimePickerSelect extends VBox   {
     }
 
     /**
-     * ÓÃÓÚ¸üĞÂÄêÔÂÕ¹Ê¾
+     * ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹Ê¾
      */
     public void upDataLab() {
         if (calendar != null) {
@@ -304,7 +297,7 @@ class DateTimePickerSelect extends VBox   {
     }
 
     /**
-     * ¸üĞÂÈÕÆÚ²¿·ÖµÄÊı¾İ
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½
      */
     public void upDataCalendar(boolean open) {
         dayList.clear();
@@ -332,11 +325,11 @@ class DateTimePickerSelect extends VBox   {
         int lastMouthDays = tmpCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         tmpCalendar.add(Calendar.MONTH, 1);
 
-        //System.out.println("±¾ÔÂÌìÊı£º"+mouthDays+"   ÉÏÔÂÌìÊı"+lastMouthDays);
+        // System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"+mouthDays+"   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"+lastMouthDays);
         if (weekMouthFirstDay == 1) {
-            //System.out.println("±¾ÔÂµÚÒ»ÌìÊÇÖÜÈÕ£¬Ç°ÃæÓĞ6Ìì");
+            // System.out.println("ï¿½ï¿½ï¿½Âµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ£ï¿½Ç°ï¿½ï¿½ï¿½ï¿½6ï¿½ï¿½");
             for (int i = lastMouthDays - 5; i <= lastMouthDays; i++) {
-                //dayList.add(i);
+                // dayList.add(i);
                 Button btn = new Button(strValue(i));
                 setDisable(btn);
                 flow.getChildren().add(btn);
@@ -348,7 +341,7 @@ class DateTimePickerSelect extends VBox   {
                 flow.getChildren().add(btn);
             }
         } else if (weekMouthFirstDay == 2) {
-            //System.out.println("±¾ÔÂµÚÒ»ÌìÊÇÖÜÒ»£¬Ç°ÃæÃ»ÓĞ");
+            // System.out.println("ï¿½ï¿½ï¿½Âµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ç°ï¿½ï¿½Ã»ï¿½ï¿½");
             for (int i = 1; i <= mouthDays; i++) {
                 Button btn = new Button(strValue(i));
                 dayList.add(btn);
@@ -361,9 +354,9 @@ class DateTimePickerSelect extends VBox   {
                 flow.getChildren().add(btn);
             }
         } else {
-            //System.out.println("±¾ÔÂµÚÒ»Ìì²»ÊÇÖÜÈÕ£¬Ò²²»ÊÇÖÜÒ»");
+            // System.out.println("ï¿½ï¿½ï¿½Âµï¿½Ò»ï¿½ì²»ï¿½ï¿½ï¿½ï¿½ï¿½Õ£ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»");
             for (int i = lastMouthDays - weekMouthFirstDay + 3; i <= lastMouthDays; i++) {
-                //dayList.add(i);
+                // dayList.add(i);
                 Button btn = new Button(strValue(i));
                 setDisable(btn);
                 flow.getChildren().add(btn);
@@ -382,22 +375,22 @@ class DateTimePickerSelect extends VBox   {
         }
         if (weekMouthLastDay != 1) {
             for (int i = 1; i <= 8 - weekMouthLastDay; i++) {
-                //dayList.add(i);
+                // dayList.add(i);
                 Button btn = new Button(strValue(i));
                 setDisable(btn);
                 flow.getChildren().add(btn);
             }
         }
-        //Éú³ÉÊ±¼ä²¿·Ö
+        //ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä²¿ï¿½ï¿½
         setTime();
-        //ÏÔÊ¾µ±Ç°ÄêÔÂ
+        //ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
         upDataLab();
     }
 
     /**
-     * ÉèÖÃÉÏÔÂºÍÏÂÔÂÔÚ±¾ÔÂÏÔÊ¾µÄÈÕÆÚÑùÊ½£¬²¢ÉèÖÃÎª²»¿Éµã»÷
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Éµï¿½ï¿½
      *
-     * @param btn ÈÕÆÚ°´Å¥Button
+     * @param btn ï¿½ï¿½ï¿½Ú°ï¿½Å¥Button
      */
     public void setDisable(Button btn) {
         btn.setDisable(true);
@@ -405,9 +398,9 @@ class DateTimePickerSelect extends VBox   {
     }
 
     /**
-     * ÉèÖÃ±¾ÔÂÈÕÆÚµÄµã»÷ÊÂ¼şºÍÑùÊ½£¬ÆäÖĞµã»÷Ê±¼äºó£¬×Ô¶¯¼ÇÂ¼Ê±¼ä
+     * ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÚµÄµï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½Ğµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Â¼Ê±ï¿½ï¿½
      *
-     * @param btn ÈÕÆÚ°´Å¥Button
+     * @param btn ï¿½ï¿½ï¿½Ú°ï¿½Å¥Button
      */
     public void setAble(Button btn) {
         btn.setStyle("-fx-text-fill: black;-fx-background-color: #fff;-fx-font-size: 10");
@@ -476,7 +469,7 @@ class DateTimePickerSelect extends VBox   {
             LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
             this.dateTimePicker.setTimeProperty(localDateTime);
         } else {
-//            System.out.println("ÇëÏÈÑ¡ÔñÈÕÆÚ");
+//            System.out.println("ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
         this.dateTimePicker.hide();
     }
@@ -496,7 +489,7 @@ class DateTimePickerSelect extends VBox   {
             calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
                     Integer.parseInt(hour.getSelectionModel().getSelectedItem()), Integer.parseInt(minute.getSelectionModel().getSelectedItem()), Integer.parseInt(second.getSelectionModel().getSelectedItem()));
         } else {
-//            System.out.println("ÇëÏÈÑ¡ÔñÈÕÆÚ");
+//            System.out.println("ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
         this.dateTimePicker.setTimeProperty(localDateTime);
         this.dateTimePicker.hide();
@@ -529,8 +522,8 @@ class DateTimePickerSelect extends VBox   {
     }
 //    /**
 //     *
-//     * ÉèÖÃÄêÔÂ×óÓÒÑ¡Ôñ°´Å¥±»°´ÏÂÊ±ºÍµ¯ÆğÊ±µÄÑÕÉ«
-//     * @param btn  ÄêÔÂ×óÓÒÑ¡Ôñ°´Å¥Button
+//     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Íµï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½É«
+//     * @param btn  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Å¥Button
 //     */
 //    public void btnMouthPress(Button btn){
 //        btn.setOnMousePressed(new EventHandler<MouseEvent>() {
