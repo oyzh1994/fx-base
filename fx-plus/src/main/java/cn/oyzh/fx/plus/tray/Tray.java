@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ResourceUtil;
@@ -158,10 +158,10 @@ public class Tray implements ThemeAdapter {
     }
 
     @Override
-    public void changeTheme(Theme theme) {
-        ThemeAdapter.super.changeTheme(theme);
+    public void changeTheme(ThemeType themeType) {
+        ThemeAdapter.super.changeTheme(themeType);
         if ( this.trayIcon != null) {
-            this.trayIcon.changeTheme(theme);
+            this.trayIcon.changeTheme(themeType);
         }
     }
 }

@@ -1,61 +1,49 @@
-package cn.oyzh.fx.plus.controls.button;
+package cn.oyzh.fx.plus.controls;
 
+import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
-import cn.oyzh.fx.plus.adapter.MouseAdapter;
+import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
-import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import lombok.NonNull;
 
 /**
  * @author oyzh
- * @since 2020/10/29
+ * @since 2023/12/25
  */
-public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter {
+public class FXFlowPane extends FlowPane implements ThemeAdapter, FontAdapter, TipAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
 
     {
         this.setCache(true);
         this.setCacheShape(true);
         this.setCacheHint(CacheHint.QUALITY);
-        this.setCursor(Cursor.HAND);
-        this.setPickOnBounds(true);
-        this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
         this.changeTheme(ThemeManager.currentTheme());
     }
 
-    public FXButton() {
-        super();
-    }
-
-    public FXButton(String text) {
-        super(text);
+    @Override
+    public void setFontSize(double fontSize) {
+        FontAdapter.super.fontSize(fontSize);
     }
 
     @Override
-    public void setOnMousePrimaryClicked(EventHandler<? super MouseEvent> handler) {
-        MouseAdapter.super.setOnMousePrimaryClicked(handler);
+    public double getFontSize() {
+        return FontAdapter.super.fontSize();
     }
 
     @Override
-    public EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
-        return MouseAdapter.super.getOnMousePrimaryClicked();
+    public String getFontFamily() {
+        return FontAdapter.super.fontFamily();
     }
 
     @Override
-    public void setOnMouseSecondClicked(EventHandler<? super MouseEvent> handler) {
-        MouseAdapter.super.setOnMouseSecondClicked(handler);
-    }
-
-    @Override
-    public EventHandler<? super MouseEvent> getOnMouseSecondClicked() {
-        return MouseAdapter.super.getOnMouseSecondClicked();
+    public void setFontFamily(@NonNull String fontFamily) {
+        FontAdapter.super.fontFamily(fontFamily);
     }
 
     @Override
@@ -76,16 +64,6 @@ public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipA
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
-    }
-
-    @Override
-    public boolean isEnableTheme() {
-        return ThemeAdapter.super.isEnableTheme();
-    }
-
-    @Override
-    public void setEnableTheme(boolean enableTheme) {
-        ThemeAdapter.super.setEnableTheme(enableTheme);
     }
 
     @Override

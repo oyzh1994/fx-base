@@ -1,6 +1,0 @@
-/* text-area，修复atlantafx的样式异常问题 */
-.text-area .content {
-    -fx-fill: -color-dark;
-    -fx-text-fill: -color-dark;
-    -fx-background-color: -color-bg-default;
-}

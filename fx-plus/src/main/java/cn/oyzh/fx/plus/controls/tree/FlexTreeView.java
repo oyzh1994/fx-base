@@ -8,7 +8,7 @@ import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.trees.RichTreeItem;
@@ -233,8 +233,8 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
     }
 
     @Override
-    public void changeTheme(Theme theme) {
-        ThemeAdapter.super.changeTheme(theme);
+    public void changeTheme(ThemeType themeType) {
+        ThemeAdapter.super.changeTheme(themeType);
         this.refresh();
     }
 }

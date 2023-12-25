@@ -10,13 +10,13 @@ import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
  * @author oyzh
  * @since 2023/12/18
  */
-public class ThemeComboBox extends FlexComboBox<Theme> {
+public class ThemeComboBox extends FlexComboBox<ThemeType> {
 
     {
-        this.addItems(Theme.values());
+        this.addItems(ThemeType.values());
         this.setConverter(new SimpleStringConverter<>() {
             @Override
-            public String toString(Theme o) {
+            public String toString(ThemeType o) {
                 return o.getDesc();
             }
         });
@@ -32,8 +32,8 @@ public class ThemeComboBox extends FlexComboBox<Theme> {
             this.select(0);
         } else {
             try {
-                Theme theme = Theme.valueOf(themeName.toUpperCase());
-                super.select(theme);
+                ThemeType themeType = ThemeType.valueOf(themeName.toUpperCase());
+                super.select(themeType);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 this.select(0);

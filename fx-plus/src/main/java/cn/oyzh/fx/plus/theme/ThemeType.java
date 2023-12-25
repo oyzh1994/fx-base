@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author oyzh
  * @since 2023/05/11
  */
-public enum Theme {
+public enum ThemeType {
 
     PRIMER_LIGHT("明亮基础") {
         @Override
@@ -31,7 +31,7 @@ public enum Theme {
         }
     },
 
-    NORD_DARK("暗黑北欧") {
+    NORD_DARK("明亮北欧") {
         @Override
         public boolean isDarkMode() {
             return true;
@@ -65,7 +65,7 @@ public enum Theme {
     @Getter
     private final String desc;
 
-    Theme(String desc) {
+    ThemeType(String desc) {
         this.desc = desc;
     }
 

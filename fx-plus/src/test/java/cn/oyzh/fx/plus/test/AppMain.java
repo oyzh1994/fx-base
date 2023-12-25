@@ -17,7 +17,7 @@ import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.controls.textfield.DecimalTextField;
 import cn.oyzh.fx.plus.controls.textfield.NumberTextField;
 import cn.oyzh.fx.plus.controls.textfield.SearchTextField;
-import cn.oyzh.fx.plus.extra.AtlantaFX;
+import cn.oyzh.fx.plus.theme.AtlantaFX;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.fx.plus.stage.StageUtil;
@@ -41,7 +41,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
@@ -861,7 +860,7 @@ public class AppMain extends Application {
         message.setPrefWidth(100);
         message.setPrefHeight(100);
         wrapper.stage().setScene(new Scene(message, 500, 500));
-        wrapper.root().getStylesheets().add(AtlantaFX.CUPERTINO_LIGHT);
+        // wrapper.root().getStylesheets().add(AtlantaFX.CUPERTINO_LIGHT);
         // 设置主题
         wrapper.changeTheme(ThemeManager.currentTheme());
         wrapper.display();

@@ -11,11 +11,7 @@ public class DateTimePickerTest extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         DateTimePicker picker = new DateTimePicker();
-
-//		picker.setTimeProperty( LocalDateTime.now() );
-
-        picker.setShowLocalizedDateTime(false);
-
+        picker.setShowNow(false);
 
         final VBox vBox = new VBox();
         vBox.getChildren().add(picker);

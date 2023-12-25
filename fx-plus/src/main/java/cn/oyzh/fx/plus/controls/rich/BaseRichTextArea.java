@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -269,11 +269,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
     }
 
     @Override
-    public void changeTheme(Theme theme) {
+    public void changeTheme(ThemeType themeType) {
         if (this.isEnableTheme()) {
             Node placeholder = this.getPlaceholder();
             CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
-            if (theme.isDarkMode()) {
+            if (themeType.isDarkMode()) {
                 this.setStyle(0, this.getLength(), "-fx-fill: #fff;");
                 caretNode.setStroke(Color.WHITE);
                 if (placeholder != null) {

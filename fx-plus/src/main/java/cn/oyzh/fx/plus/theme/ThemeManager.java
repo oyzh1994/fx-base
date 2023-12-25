@@ -20,12 +20,12 @@ public class ThemeManager {
     /**
      * 默认主题
      */
-    public static Theme DEFAULT_THEME = Theme.PRIMER_LIGHT;
+    public static ThemeType defaultThemeType = ThemeType.PRIMER_LIGHT;
 
     /**
      * 当前主题
      */
-    private static Theme Current_Theme;
+    private static ThemeType current_ThemeType;
 
     /**
      * 是否暗黑模式
@@ -41,11 +41,11 @@ public class ThemeManager {
      *
      * @return 当前主题
      */
-    public static Theme currentTheme() {
-        if (Current_Theme == null) {
-            return DEFAULT_THEME;
+    public static ThemeType currentTheme() {
+        if (current_ThemeType == null) {
+            return defaultThemeType;
         }
-        return Current_Theme;
+        return current_ThemeType;
     }
 
     /**
@@ -54,26 +54,26 @@ public class ThemeManager {
      * @param themeName 主题名称
      */
     public static void currentTheme(String themeName) {
-        Theme theme;
+        ThemeType themeType;
         if (themeName == null) {
-            theme = DEFAULT_THEME;
+            themeType = defaultThemeType;
         } else {
-            theme = Theme.valueOf(themeName.toUpperCase());
+            themeType = ThemeType.valueOf(themeName.toUpperCase());
         }
-        currentTheme(theme);
+        currentTheme(themeType);
     }
 
     /**
      * 设置主题
      *
-     * @param theme 主题
+     * @param themeType 主题
      */
-    public static void currentTheme(Theme theme) {
+    public static void currentTheme(ThemeType themeType) {
         try {
-            Current_Theme = theme;
+            current_ThemeType = themeType;
             List<StageWrapper> wrappers = StageUtil.allStages();
             for (StageWrapper wrapper : wrappers) {
-                changeThemeCycle(wrapper.root(), theme);
+                changeThemeCycle(wrapper.root(), themeType);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -84,15 +84,15 @@ public class ThemeManager {
      * 更改主题，循环处理
      *
      * @param root  根节点
-     * @param theme 主题
+     * @param themeType 主题
      */
-    private static void changeThemeCycle(Node root, Theme theme) {
+    private static void changeThemeCycle(Node root, ThemeType themeType) {
         if (root instanceof ThemeAdapter adapter) {
-            adapter.changeTheme(theme);
+            adapter.changeTheme(themeType);
         }
         if (root instanceof Parent parent) {
             for (Node node : parent.getChildrenUnmodifiable()) {
-                changeThemeCycle(node, theme);
+                changeThemeCycle(node, themeType);
             }
         }
     }

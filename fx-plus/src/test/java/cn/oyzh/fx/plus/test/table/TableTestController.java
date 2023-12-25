@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.test.table;
 import cn.oyzh.fx.plus.controller.Controller;
 import cn.oyzh.fx.plus.controls.table.FlexTableColumn;
 import cn.oyzh.fx.plus.stage.StageAttribute;
-import cn.oyzh.fx.plus.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,36 +62,36 @@ public class TableTestController extends Controller {
 
     public void theme1(ActionEvent actionEvent) {
         // this.stage.switchPrimerLightTheme();
-        ThemeManager.currentTheme(Theme.PRIMER_LIGHT);
+        ThemeManager.currentTheme(ThemeType.PRIMER_LIGHT);
     }
 
     public void theme2(ActionEvent actionEvent) {
         // this.stage.switchPrimerDarkTheme();
-        ThemeManager.currentTheme(Theme.PRIMER_DARK);
+        ThemeManager.currentTheme(ThemeType.PRIMER_DARK);
     }
 
     public void theme3(ActionEvent actionEvent) {
         // this.stage.switchNordLightTheme();
-        ThemeManager.currentTheme(Theme.NORD_LIGHT);
+        ThemeManager.currentTheme(ThemeType.NORD_LIGHT);
     }
 
     public void theme4(ActionEvent actionEvent) {
         // this.stage.switchNordDarkTheme();
-        ThemeManager.currentTheme(Theme.NORD_DARK);
+        ThemeManager.currentTheme(ThemeType.NORD_DARK);
     }
 
     public void theme5(ActionEvent actionEvent) {
         // this.stage.switchCupertinoLightTheme();
-        ThemeManager.currentTheme(Theme.CUPERTINO_LIGHT);
+        ThemeManager.currentTheme(ThemeType.CUPERTINO_LIGHT);
     }
 
     public void theme6(ActionEvent actionEvent) {
         // this.stage.switchCupertinoDarkTheme();
-        ThemeManager.currentTheme(Theme.CUPERTINO_DARK);
+        ThemeManager.currentTheme(ThemeType.CUPERTINO_DARK);
     }
 
     public void theme7(ActionEvent actionEvent) {
         // this.stage.switchDraculaTheme();
-        ThemeManager.currentTheme(Theme.DRACULA);
+        ThemeManager.currentTheme(ThemeType.DRACULA);
     }
 }

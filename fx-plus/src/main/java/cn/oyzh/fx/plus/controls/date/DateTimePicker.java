@@ -1,15 +1,16 @@
 package cn.oyzh.fx.plus.controls.date;
 
+import cn.oyzh.fx.plus.controls.text.FlexLabel;
+import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -17,15 +18,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Window;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * @author oyzh
@@ -33,121 +34,183 @@ import java.util.List;
  */
 public class DateTimePicker extends HBox {
 
+    /**
+     * 格式化器
+     */
     private final DateTimeFormatter formatter;
 
-    // DateTime value
-    private ObjectProperty<LocalDateTime> dateTime;
+    /**
+     * 时间值
+     */
+    private ObjectProperty<LocalDateTime> valueProperty;
 
-    private Popup popupContainer;
+    /**
+     * 弹出组件
+     */
+    private Popup popup;
 
-    private DateTimePickerSelect dateTimePickerSelect;
+    /**
+     * 选择器
+     */
+    private DateTimePickerSelect select;
 
-    public Boolean showLocalizedDateTime = false;
+    /**
+     * 是否显示当前时间
+     */
+    @Getter
+    public boolean showNow;
 
-    private final TextField textField;
-
+    /**
+     * 按钮组件
+     */
     private final Button button;
 
-    public DateTimePicker() {
-        this.textField = new TextField();
-        this.textField.setDisable(true);
-        this.textField.setFocusTraversable(false);
-        this.textField.setId("dt_text_field");
-        this.getChildren().add(this.textField);
+    /**
+     * 文本组件
+     */
+    private final ClearableTextField textField;
 
+    public DateTimePicker() {
+        // 初始化文本组件
+        this.textField = new ClearableTextField();
+        this.textField.setFocusTraversable(false);
+        this.textField.maxHeightProperty().bind(this.maxHeightProperty());
+        this.textField.minHeightProperty().bind(this.minHeightProperty());
+        this.textField.prefHeightProperty().bind(this.prefHeightProperty());
+        this.textField.setId("dt_text_field");
+
+        // 初始化按钮组件
         this.button = new Button();
         this.button.setId("dt_button");
+        this.button.maxHeightProperty().bind(this.maxHeightProperty());
+        this.button.minHeightProperty().bind(this.minHeightProperty());
+        this.button.prefHeightProperty().bind(this.prefHeightProperty());
         this.button.setGraphic(new ImageView("/fx-plus/img/calendar.png"));
-        this.button.setOnAction(this::handleButtonAction);
-        this.getChildren().add(this.button);
 
+        // 初始化格式化器
         this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
-        if (showLocalizedDateTime) {
-            textField.setText(formatter.format(dateTime.get()));
-            this.dateTime = new SimpleObjectProperty<>(LocalDateTime.now());
-        }
-        button.prefHeightProperty().bind(textField.heightProperty());
-    }
-
-    protected void handleButtonAction(ActionEvent event) {
-        if (popupContainer != null && popupContainer.isShowing()) {
-            popupContainer.hide();
-        } else {
-            if (this.popupContainer == null) {
-                this.popupContainer = new Popup();
-                this.dateTimePickerSelect = new DateTimePickerSelect(this);
-                popupContainer.getContent().add(dateTimePickerSelect);
-                popupContainer.autoHideProperty().set(true);
+        // 初始化监听器
+        this.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                this.textField.clear();
+            } else {
+                this.textField.setText(this.formatter.format(newValue));
             }
-            final Window window = button.getScene().getWindow();
-            final double x = window.getX()
-                    + textField.localToScene(0, 0).getX()
-                    + textField.getScene().getX();
-            final double y = window.getY()
-                    + button.localToScene(0, 0).getY()
-                    + button.getScene().getY()
-                    + button.getHeight();
+        });
+        this.button.setOnAction(this::handleButtonAction);
 
-//            popupContainer.setWidth(100);
-//            popupContainer.setHeight(100);
-
-            System.out.println(this.getParent());
-            popupContainer.show(this.getParent(), x, y);
-            dateTimePickerSelect.upDataCalendar(true);
-        }
+        // 添加到子节点列表
+        this.getChildren().add(this.textField);
+        this.getChildren().add(this.button);
     }
 
     /**
-     * Gets the current LocalDateTime value
+     * 设置提示文本
      *
-     * @return The current LocalDateTime value
+     * @param promptText 提示文本
      */
-    public ObjectProperty<LocalDateTime> dateTimeProperty() {
-        return dateTime;
+    public void setPromptText(String promptText) {
+        this.textField.setPromptText(promptText);
     }
 
     /**
-     * @Description: setTimeProperty
-     * @Params
-     * @Return
-     * @Author wzy
-     * @Date 2023/4/19 11:11
-     **/
-    public void setTimeProperty(LocalDateTime localDateTime) {
-        this.dateTime = new SimpleObjectProperty<LocalDateTime>(localDateTime);
-        textField.setText(formatter.format(this.dateTime.get()));
+     * 获取提示文本
+     *
+     * @return 提示文本
+     */
+    public String setPromptText() {
+        return this.textField.getPromptText();
     }
 
     /**
-     * @Description: clearTimeProperty
-     * @Params
-     * @Return
-     * @Author wzy
-     * @Date 2023/4/19 11:11
-     **/
-    public void clearTimeProperty() {
-        this.dateTime = null;
-        textField.setText("");
+     * 获取值属性
+     *
+     * @return 值属性
+     */
+    public ObjectProperty<LocalDateTime> valueProperty() {
+        if (this.valueProperty == null) {
+            this.valueProperty = new SimpleObjectProperty<>();
+        }
+        return this.valueProperty;
     }
 
-    public void hide() {
-        if (popupContainer.isShowing()) {
-            popupContainer.hide();
+    /**
+     * 获取值
+     *
+     * @return 值
+     */
+    public LocalDateTime getValue() {
+        return this.valueProperty == null ? null : this.valueProperty.get();
+    }
+
+    /**
+     * 设置值
+     *
+     * @param value 值
+     */
+    public void setValue(LocalDateTime value) {
+        this.valueProperty().setValue(value);
+    }
+
+    /**
+     * 清除值
+     */
+    public void clearValue() {
+        this.valueProperty().set(null);
+    }
+
+    /**
+     * 设置是否显示当前时间
+     *
+     * @param showNow 是否显示当前时间
+     */
+    public void setShowNow(boolean showNow) {
+        if (showNow) {
+            this.valueProperty.setValue(LocalDateTime.now());
+        } else {
+            this.valueProperty.setValue(null);
+        }
+        this.showNow = showNow;
+    }
+
+    /**
+     * 处理按钮事件
+     *
+     * @param event 事件
+     */
+    protected void handleButtonAction(ActionEvent event) {
+        // 隐藏弹窗
+        if (this.popup != null && popup.isShowing()) {
+            this.popup.hide();
+        } else {
+            // 初始化弹窗
+            if (this.popup == null) {
+                this.popup = new Popup();
+                this.select = new DateTimePickerSelect();
+                this.popup.getContent().add(this.select);
+                this.popup.autoHideProperty().set(true);
+            }
+            // 获取window对象
+            final Window window = this.button.getScene().getWindow();
+            // 计算x值
+            final double x = window.getX() + this.textField.localToScene(0, 0).getX() + this.textField.getScene().getX();
+            // 计算y值
+            final double y = window.getY() + this.button.localToScene(0, 0).getY() + this.button.getScene().getY() + this.button.getHeight();
+            // 显示弹窗
+            this.popup.show(this.getParent(), x, y);
+            // 更新日期
+            this.select.updateDataCalendar(true);
         }
     }
 
-    public Boolean getShowLocalizedDateTime() {
-        return showLocalizedDateTime;
-    }
-
-    public void setShowLocalizedDateTime(Boolean show) {
-        this.showLocalizedDateTime = show;
-        if (show) {
-            setTimeProperty(LocalDateTime.now());
+    /**
+     * 隐藏弹窗
+     */
+    public void hidePopup() {
+        if (this.popup != null && this.popup.isShowing()) {
+            this.popup.hide();
         }
-
     }
 
     @Override
@@ -159,31 +222,26 @@ public class DateTimePicker extends HBox {
      * @author oyzh
      * @since 2023/12/24
      */
-    static class DateTimePickerSelect extends VBox {
+    private class DateTimePickerSelect extends VBox {
 
-        private final DateTimePicker dateTimePicker;
-
-        private final List<Button> dayList;
-
+        /**
+         * 日历对象
+         */
         private Calendar calendar;
 
-        private LocalDateTime cursorDateTime;
+        /**
+         * 当前时间
+         */
+        private LocalDateTime currDateTime;
 
-        private final FlowPane flowPane;
-
-        private final FlowPane flow;
+        /**
+         * 日期数据组件
+         */
+        private final FlowPane daysPane;
 
         private final Label labelYear;
 
         private final Label labelMouth;
-
-        private final Button previousYear;
-
-        private final Button nextYear;
-
-        private final Button previousMonth;
-
-        private final Button nextMonth;
 
         private final ComboBox<String> hour;
 
@@ -193,222 +251,207 @@ public class DateTimePicker extends HBox {
 
         private final Button buttonCancel;
 
-        private final Button buttonNow;
-
         private final Button buttonOK;
 
         private final Button buttonReset;
 
-        public DateTimePickerSelect(final DateTimePicker parentCont) {
-            this.dateTimePicker = parentCont;
-            dayList = new ArrayList<Button>();
+        public DateTimePickerSelect() {
+            this.setId("dt_time_picker_select");
+            this.getStylesheets().add(ResourceUtil.toExternalUrl("/fx-plus/css/date-time-picker.css"));
 
-            this.setStyle("-fx-background-color: #efefef;");
+            // 顶部操作栏
+            HBox topAction = new HBox();
+            topAction.setSpacing(10);
+            topAction.setAlignment(Pos.CENTER);
 
-            HBox ch1 = new HBox();
-            ch1.setSpacing(10);
-            ch1.setAlignment(Pos.CENTER);
-            this.getChildren().add(ch1);
+            // 上一年
+            Button preYear = new Button("<");
+            preYear.setMaxHeight(25);
+            preYear.setPrefHeight(25);
+            preYear.setOnAction(this::prevYear);
+            preYear.setStyle("-fx-text-fill: black;-fx-background-color: #6cc;-fx-cursor: HAND;-fx-font-size: 10");
 
-            this.previousYear = new Button("<");
-            this.previousYear.setMaxHeight(20);
-            this.previousYear.setPrefHeight(20);
-            this.previousYear.setMinHeight(20);
-            this.previousYear.setOnAction(this::previousYear);
-            this.previousYear.setStyle("-fx-text-fill: black;-fx-background-color: #6cc;-fx-cursor: HAND;-fx-font-size: 10");
-            ch1.getChildren().add(this.previousYear);
+            // 上一月
+            Button prevMonth = new Button("←");
+            preYear.setMaxHeight(25);
+            preYear.setPrefHeight(25);
+            prevMonth.setOnAction(this::prevMonth);
+            prevMonth.setStyle("-fx-text-fill: black;-fx-background-color: #c66;-fx-cursor: HAND;-fx-font-size: 10");
 
-            this.previousMonth = new Button("←");
-            this.previousMonth.setMaxHeight(20);
-            this.previousMonth.setPrefHeight(20);
-            this.previousMonth.setMinHeight(20);
-            this.previousMonth.setOnAction(this::previousMonth);
-            this.previousMonth.setStyle("-fx-text-fill: black;-fx-background-color: #c66;-fx-cursor: HAND;-fx-font-size: 10");
-            ch1.getChildren().add(this.previousMonth);
-
-            this.labelYear = new Label();
+            // 年
+            this.labelYear = new FlexLabel();
             this.labelYear.setId("fontStyle");
-            ch1.getChildren().add(this.labelYear);
+            this.labelYear.setMaxHeight(25);
+            this.labelYear.setMinHeight(25);
 
-            Label label = new Label("年");
-            label.setId("fontStyle");
-            ch1.getChildren().add(label);
-
-            this.labelMouth = new Label();
+            // 月
+            this.labelMouth = new FlexLabel();
             this.labelMouth.setId("fontStyle");
             this.labelMouth.setMaxHeight(25);
-            this.labelMouth.setPrefHeight(25);
             this.labelMouth.setMinHeight(25);
-            ch1.getChildren().add(this.labelMouth);
 
-            Label label1 = new Label("月");
-            label1.setId("fontStyle");
-            ch1.getChildren().add(label1);
+            // 下一月
+            Button nextMonth = new Button("→");
+            preYear.setMaxHeight(25);
+            preYear.setPrefHeight(25);
+            nextMonth.setOnAction(this::nextMonth);
+            nextMonth.setStyle("-fx-text-fill: black;-fx-background-color: #c66;-fx-cursor: HAND;-fx-font-size: 10");
 
-            this.nextMonth = new Button("→");
-            this.nextMonth.setMaxHeight(20);
-            this.nextMonth.setPrefHeight(20);
-            this.nextMonth.setMinHeight(20);
-            this.nextMonth.setOnAction(this::nextMonth);
-            this.nextMonth.setStyle("-fx-text-fill: black;-fx-background-color: #c66;-fx-cursor: HAND;-fx-font-size: 10");
-            ch1.getChildren().add(this.nextMonth);
+            // 下一年
+            Button nextYear = new Button(">");
+            preYear.setMaxHeight(25);
+            preYear.setPrefHeight(25);
+            nextYear.setOnAction(this::nextYear);
+            nextYear.setStyle("-fx-text-fill: black;-fx-background-color: #6cc;-fx-cursor: HAND;-fx-font-size: 10");
 
-            this.nextYear = new Button(">");
-            this.nextYear.setMaxHeight(20);
-            this.nextYear.setPrefHeight(20);
-            this.nextYear.setMinHeight(20);
-            this.nextYear.setOnAction(this::previousMonth);
-            this.nextYear.setStyle("-fx-text-fill: black;-fx-background-color: #6cc;-fx-cursor: HAND;-fx-font-size: 10");
-            ch1.getChildren().add(this.nextYear);
+            // 添加子节点
+            topAction.getChildren().add(preYear);
+            topAction.getChildren().add(prevMonth);
+            topAction.getChildren().add(this.labelYear);
+            topAction.getChildren().add(this.labelMouth);
+            topAction.getChildren().add(nextMonth);
+            topAction.getChildren().add(nextYear);
 
+            // 日期组件
+            FlowPane dayPane = new FlowPane();
+            dayPane.setAlignment(Pos.CENTER);
+            preYear.setMaxHeight(25);
+            preYear.setPrefHeight(25);
+            dayPane.setPrefWrapLength(280);
 
-            this.flowPane = new FlowPane();
-            this.flowPane.setAlignment(Pos.CENTER);
-            this.flowPane.setMaxHeight(25);
-            this.flowPane.setPrefHeight(25);
-            this.flowPane.setMinHeight(25);
-            this.flowPane.setHgap(29);
-            this.flowPane.setVgap(3);
-            this.flowPane.setPrefWrapLength(260);
-            this.getChildren().add(this.flowPane);
+            // 星期一
+            FlexLabel labelDay1 = new FlexLabel("一");
+            labelDay1.setId("dt_day_label");
 
-            Label labelD1 = new Label("一");
-            labelD1.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
-            this.flowPane.getChildren().add(labelD1);
+            // 星期二
+            FlexLabel labelDay2 = new FlexLabel("二");
+            labelDay2.setId("dt_day_label");
 
-            Label labelD2 = new Label("二");
-            labelD2.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
-            this.flowPane.getChildren().add(labelD2);
+            // 星期三
+            FlexLabel labelDay3 = new FlexLabel("三");
+            labelDay3.setId("dt_day_label");
 
-            Label labelD3 = new Label("三");
-            labelD3.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
-            this.flowPane.getChildren().add(labelD3);
+            // 星期四
+            FlexLabel labelDay4 = new FlexLabel("四");
+            labelDay4.setId("dt_day_label");
 
-            Label labelD4 = new Label("四");
-            labelD4.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
-            this.flowPane.getChildren().add(labelD4);
+            // 星期五
+            FlexLabel labelDay5 = new FlexLabel("五");
+            labelDay5.setId("dt_day_label");
 
-            Label labelD5 = new Label("五");
-            labelD5.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
-            this.flowPane.getChildren().add(labelD5);
+            // 星期六
+            FlexLabel labelDay6 = new FlexLabel("六");
+            labelDay6.setId("dt_day_label");
 
-            Label labelD6 = new Label("六");
-            labelD6.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
-            this.flowPane.getChildren().add(labelD6);
+            // 星期日
+            FlexLabel labelDay7 = new FlexLabel("日");
+            labelDay7.setId("dt_day_label");
 
-            Label labelD7 = new Label("日");
-            labelD7.setStyle("-fx-font-size: 9;-fx-font-family: Microsoft YaHei;");
-            this.flowPane.getChildren().add(labelD7);
+            // 添加子节点
+            dayPane.getChildren().add(labelDay1);
+            dayPane.getChildren().add(labelDay2);
+            dayPane.getChildren().add(labelDay3);
+            dayPane.getChildren().add(labelDay4);
+            dayPane.getChildren().add(labelDay5);
+            dayPane.getChildren().add(labelDay6);
+            dayPane.getChildren().add(labelDay7);
 
-            this.flow = new FlowPane();
-            this.flow.setAlignment(Pos.CENTER);
-            this.flow.setHgap(12);
-            this.flow.setVgap(6);
-            this.flow.setStyle("-fx-cursor: HAND;");
-            this.flow.setPrefWrapLength(260);
-            this.getChildren().add(this.flow);
+            // 日期数据组件
+            this.daysPane = new FlowPane();
+            this.daysPane.setAlignment(Pos.CENTER);
+            this.daysPane.setPrefWrapLength(280);
 
-            HBox ch4 = new HBox();
-            ch4.setAlignment(Pos.CENTER);
-            ch4.setPrefHeight(30);
-            ch4.setMinHeight(30);
-            ch4.setMaxHeight(30);
-            this.getChildren().add(ch4);
+            // 时间组件
+            HBox timeAction = new HBox();
+            timeAction.setAlignment(Pos.CENTER);
+            timeAction.setPrefHeight(30);
 
+            // 小时下拉框
             this.hour = new ComboBox<>();
             this.hour.setId("fontStyle");
-            ch4.getChildren().add(hour);
 
-            Label label2 = new Label("时");
-            label2.setId("fontStyle");
-            ch4.getChildren().add(label2);
+            // 小时文本框
+            Label labelHour = new Label("时");
+            labelHour.setId("fontStyle");
 
+            // 分钟下拉框
             this.minute = new ComboBox<>();
             this.minute.setId("fontStyle");
-            ch4.getChildren().add(minute);
 
-            Label label3 = new Label("分");
-            label3.setId("fontStyle");
-            ch4.getChildren().add(label3);
+            // 分钟文本框
+            Label labelMinute = new Label("分");
+            labelMinute.setId("fontStyle");
 
+            // 秒下拉框
             this.second = new ComboBox<>();
             this.second.setId("fontStyle");
-            ch4.getChildren().add(second);
 
-            Label label4 = new Label("秒");
-            label4.setId("fontStyle");
-            ch4.getChildren().add(label4);
+            // 秒文本框
+            Label labelSecond = new Label("秒");
+            labelSecond.setId("fontStyle");
 
-            HBox ch5 = new HBox();
-            ch5.setAlignment(Pos.BASELINE_CENTER);
-            this.getChildren().add(ch5);
+            timeAction.getChildren().add(this.hour);
+            timeAction.getChildren().add(labelHour);
+            timeAction.getChildren().add(this.minute);
+            timeAction.getChildren().add(labelMinute);
+            timeAction.getChildren().add(this.second);
+            timeAction.getChildren().add(labelSecond);
 
+            HBox bottomAction = new HBox();
+            bottomAction.setAlignment(Pos.BASELINE_CENTER);
+
+            // 清除
             this.buttonReset = new Button("清除");
-            buttonReset.setOnAction(this::buttonResetOnAction);
-            buttonReset.setOnMousePressed(this::buttonResetOnMousePressed);
-            buttonReset.setOnMouseReleased(this::buttonResetOnMouseReleased);
-            buttonReset.setMaxWidth(58.6);
-            buttonReset.setPrefWidth(58.6);
-            buttonReset.setMinHeight(25);
-            buttonReset.setMaxHeight(25);
-            buttonReset.setStyle("-fx-background-color:#96e561;-fx-font-size: 12;-fx-cursor: HAND;");
-            ch5.getChildren().add(buttonReset);
+            this.buttonReset.setOnAction(this::buttonResetOnAction);
+            this.buttonReset.setOnMousePressed(this::buttonResetOnMousePressed);
+            this.buttonReset.setOnMouseReleased(this::buttonResetOnMouseReleased);
+            this.buttonReset.setMaxWidth(58.6);
+            this.buttonReset.setMaxHeight(25);
+            this.buttonReset.setStyle("-fx-background-color:#96e561;-fx-font-size: 12;-fx-cursor: HAND;");
 
-            Label label5 = new Label();
-            label5.setPrefWidth(5);
-            ch5.getChildren().add(label5);
-
+            // 取消
             this.buttonCancel = new Button("取消");
-            buttonCancel.setOnAction(this::buttonCancelOnAction);
-            buttonCancel.setOnMousePressed(this::buttonCancelOnMousePressed);
-            buttonCancel.setOnMouseReleased(this::buttonCancelOnMouseReleased);
-            buttonCancel.setMaxWidth(58.6);
-            buttonCancel.setPrefWidth(58.6);
-            buttonCancel.setMinHeight(25);
-            buttonCancel.setMaxHeight(25);
-            buttonCancel.setStyle("-fx-background-color:#FFD2D2;-fx-font-size: 12;-fx-cursor: HAND;");
-            ch5.getChildren().add(buttonCancel);
+            this.buttonCancel.setOnAction(this::buttonCancelOnAction);
+            this.buttonCancel.setOnMousePressed(this::buttonCancelOnMousePressed);
+            this.buttonCancel.setOnMouseReleased(this::buttonCancelOnMouseReleased);
+            this.buttonCancel.setMaxWidth(58.6);
+            this.buttonCancel.setMaxHeight(25);
+            this.buttonCancel.setStyle("-fx-background-color:#FFD2D2;-fx-font-size: 12;-fx-cursor: HAND;");
 
-            Label label6 = new Label();
-            label6.setPrefWidth(5);
-            ch5.getChildren().add(label6);
-
-            this.buttonNow = new Button("当前");
+            // 当前时间
+            Button buttonNow = new Button("当前");
             buttonNow.setOnAction(this::buttonNowOnAction);
             buttonNow.setOnMousePressed(this::buttonNowOnMousePressed);
             buttonNow.setOnMouseReleased(this::buttonNowOnMouseReleased);
-            buttonNow.setMaxWidth(58.6);
-            buttonNow.setPrefWidth(58.6);
-            buttonNow.setMinHeight(25);
-            buttonNow.setMaxHeight(25);
+            this.buttonCancel.setMaxWidth(58.6);
+            this.buttonCancel.setMaxHeight(25);
             buttonNow.setStyle("-fx-background-color:#FFD2D2;-fx-font-size: 12;-fx-cursor: HAND;");
-            ch5.getChildren().add(buttonNow);
 
-            Label label7 = new Label();
-            label7.setPrefWidth(5);
-            ch5.getChildren().add(label7);
-
+            // 确定
             this.buttonOK = new Button("确定");
-            buttonOK.setOnAction(this::buttonOKOnAction);
-            buttonOK.setOnMousePressed(this::buttonOKOnMousePressed);
-            buttonOK.setOnMouseReleased(this::buttonOKOnMouseReleased);
-            buttonOK.setMaxWidth(58.6);
-            buttonOK.setPrefWidth(58.6);
-            buttonOK.setMinHeight(25);
-            buttonOK.setMaxHeight(25);
-            buttonOK.setStyle("-fx-background-color:#ACD6FF;-fx-font-size: 12;-fx-cursor: HAND;");
-            ch5.getChildren().add(buttonOK);
+            this.buttonOK.setOnAction(this::buttonOKOnAction);
+            this.buttonOK.setOnMousePressed(this::buttonOKOnMousePressed);
+            this.buttonOK.setOnMouseReleased(this::buttonOKOnMouseReleased);
+            this.buttonOK.setMaxWidth(58.6);
+            this.buttonOK.setMaxHeight(25);
+            this.buttonOK.setStyle("-fx-background-color:#ACD6FF;-fx-font-size: 12;-fx-cursor: HAND;");
 
-            Label ch6 = new Label();
-            ch6.setMinHeight(5);
-            ch6.setPrefHeight(5);
-            this.getChildren().add(ch6);
+            bottomAction.getChildren().add(this.buttonReset);
+            bottomAction.getChildren().add(this.buttonCancel);
+            bottomAction.getChildren().add(buttonNow);
+            bottomAction.getChildren().add(this.buttonOK);
 
-            if (this.dateTimePicker.dateTimeProperty() != null) {
-                this.cursorDateTime = this.dateTimePicker.dateTimeProperty().getValue();
+
+            this.getChildren().add(topAction);
+            this.getChildren().add(dayPane);
+            this.getChildren().add(this.daysPane);
+            this.getChildren().add(timeAction);
+            this.getChildren().add(bottomAction);
+
+            if (getValue() != null) {
+                this.currDateTime = getValue();
             }
-            //�������ڲ���
-            upDataCalendar(true);
+            this.updateDataCalendar(true);
         }
 
         public String strValue(int i) {
@@ -422,35 +465,21 @@ public class DateTimePicker extends HBox {
         }
 
         /**
-         * ���ڸ�������չʾ
+         * 更新日期组件
+         *
+         * @param open 是否展开
          */
-        public void upDataLab() {
-            if (calendar != null) {
-                labelMouth.setText(calendar.get(Calendar.MONTH) + 1 + "");
-                labelYear.setText(calendar.get(Calendar.YEAR) + "");
-            }
-        }
-
-        /**
-         * �������ڲ��ֵ�����
-         */
-        public void upDataCalendar(boolean open) {
-            dayList.clear();
-            flow.getChildren().clear();
-
-            this.cursorDateTime = this.dateTimePicker.dateTimeProperty() != null ? this.dateTimePicker.dateTimeProperty().get() : null;
-            int nowYear = this.cursorDateTime != null ? this.cursorDateTime.getYear() : -1;
-            int nowMonth = this.cursorDateTime != null ? this.cursorDateTime.getMonthValue() : -1;
-
-            Calendar tmpCalendar = this.cursorDateTime != null ?
-                    GregorianCalendar.from(ZonedDateTime.of(this.cursorDateTime, ZoneId.systemDefault())) :
-                    GregorianCalendar.from(ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()));
+        public void updateDataCalendar(boolean open) {
+            this.daysPane.getChildren().clear();
+            this.currDateTime = getValue();
+            int nowYear = this.currDateTime != null ? this.currDateTime.getYear() : -1;
+            int nowMonth = this.currDateTime != null ? this.currDateTime.getMonthValue() : -1;
+            Calendar tmpCalendar;
             if (open) {
-                calendar = tmpCalendar;
+                this.calendar = tmpCalendar = GregorianCalendar.from(ZonedDateTime.of(this.currDateTime != null ? this.currDateTime : LocalDateTime.now(), ZoneId.systemDefault()));
             } else {
                 tmpCalendar = this.calendar;
             }
-
             int mouthDays = tmpCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
             tmpCalendar.set(tmpCalendar.get(Calendar.YEAR), tmpCalendar.get(Calendar.MONTH), mouthDays, tmpCalendar.get(Calendar.HOUR_OF_DAY), tmpCalendar.get(Calendar.MINUTE), tmpCalendar.get(Calendar.SECOND));
             int weekMouthLastDay = tmpCalendar.get(Calendar.DAY_OF_WEEK);
@@ -459,117 +488,97 @@ public class DateTimePicker extends HBox {
             tmpCalendar.add(Calendar.MONTH, -1);
             int lastMouthDays = tmpCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
             tmpCalendar.add(Calendar.MONTH, 1);
-
-            // System.out.println("����������"+mouthDays+"   ��������"+lastMouthDays);
             if (weekMouthFirstDay == 1) {
-                // System.out.println("���µ�һ�������գ�ǰ����6��");
                 for (int i = lastMouthDays - 5; i <= lastMouthDays; i++) {
-                    // dayList.add(i);
                     Button btn = new Button(strValue(i));
                     setDisable(btn);
-                    flow.getChildren().add(btn);
+                    this.daysPane.getChildren().add(btn);
                 }
                 for (int i = 1; i <= mouthDays; i++) {
                     Button btn = new Button(strValue(i));
-                    dayList.add(btn);
                     setAble(btn);
-                    flow.getChildren().add(btn);
+                    this.daysPane.getChildren().add(btn);
                 }
             } else if (weekMouthFirstDay == 2) {
-                // System.out.println("���µ�һ������һ��ǰ��û��");
                 for (int i = 1; i <= mouthDays; i++) {
                     Button btn = new Button(strValue(i));
-                    dayList.add(btn);
                     setAble(btn);
-                    if (this.cursorDateTime != null && this.cursorDateTime.getDayOfMonth() == i && this.calendar != null &&
+                    if (this.currDateTime != null && this.currDateTime.getDayOfMonth() == i && this.calendar != null &&
                             this.calendar.get(Calendar.YEAR) == nowYear && this.calendar.get(Calendar.MONTH) + 1 == nowMonth) {
-                        btn.setStyle("-fx-text-fill: white;-fx-background-color: #5b8cff;-fx-font-size: 10");
-                        this.calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), this.cursorDateTime.getDayOfMonth());
+                        btn.getStyleClass().add("dt_day_select");
+                        this.calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), this.currDateTime.getDayOfMonth());
                     }
-                    flow.getChildren().add(btn);
+                    this.daysPane.getChildren().add(btn);
                 }
             } else {
-                // System.out.println("���µ�һ�첻�����գ�Ҳ������һ");
                 for (int i = lastMouthDays - weekMouthFirstDay + 3; i <= lastMouthDays; i++) {
-                    // dayList.add(i);
                     Button btn = new Button(strValue(i));
                     setDisable(btn);
-                    flow.getChildren().add(btn);
+                    this.daysPane.getChildren().add(btn);
                 }
                 for (int i = 1; i <= mouthDays; i++) {
                     Button btn = new Button(strValue(i));
-                    dayList.add(btn);
                     setAble(btn);
-                    if (this.cursorDateTime != null && this.cursorDateTime.getDayOfMonth() == i && this.calendar != null &&
+                    if (this.currDateTime != null && this.currDateTime.getDayOfMonth() == i && this.calendar != null &&
                             this.calendar.get(Calendar.YEAR) == nowYear && this.calendar.get(Calendar.MONTH) + 1 == nowMonth) {
-                        btn.setStyle("-fx-text-fill: white;-fx-background-color: #5b8cff;-fx-font-size: 10");
-                        this.calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), this.cursorDateTime.getDayOfMonth());
+                        btn.getStyleClass().add("dt_day_select");
+                        this.calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), this.currDateTime.getDayOfMonth());
                     }
-                    flow.getChildren().add(btn);
+                    this.daysPane.getChildren().add(btn);
                 }
             }
             if (weekMouthLastDay != 1) {
                 for (int i = 1; i <= 8 - weekMouthLastDay; i++) {
-                    // dayList.add(i);
                     Button btn = new Button(strValue(i));
                     setDisable(btn);
-                    flow.getChildren().add(btn);
+                    this.daysPane.getChildren().add(btn);
                 }
             }
-            //����ʱ�䲿��
-            setTime();
-            //��ʾ��ǰ����
-            upDataLab();
+            this.setTime();
+            if (this.calendar != null) {
+                this.labelMouth.setText(this.calendar.get(Calendar.MONTH) + 1 + "月");
+                this.labelYear.setText(this.calendar.get(Calendar.YEAR) + "年");
+            }
         }
 
-        /**
-         * �������º������ڱ�����ʾ��������ʽ��������Ϊ���ɵ��
-         *
-         * @param btn ���ڰ�ťButton
-         */
         public void setDisable(Button btn) {
             btn.setDisable(true);
-            btn.setStyle("-fx-text-fill: black;-fx-background-color: transparent;;-fx-font-size: 10");
+            btn.setId("dt_day_disable");
         }
 
-        /**
-         * ���ñ������ڵĵ���¼�����ʽ�����е��ʱ����Զ���¼ʱ��
-         *
-         * @param btn ���ڰ�ťButton
-         */
         public void setAble(Button btn) {
-            btn.setStyle("-fx-text-fill: black;-fx-background-color: #fff;-fx-font-size: 10");
+            btn.setId("dt_day_enable");
             btn.setOnAction(event -> {
-                dayList.forEach(e -> {
-                    e.setStyle("-fx-text-fill: black;-fx-background-color: #fff;-fx-font-size: 10");
-                });
-                btn.setStyle("-fx-text-fill: white;-fx-background-color: #5b8cff;-fx-font-size: 10");
+                for (Node node : this.daysPane.getChildren()) {
+                    if (Objects.equals(node.getId(), "dt_day_select")) {
+                        node.setId("dt_day_enable");
+                        break;
+                    }
+                }
+                btn.setId("dt_day_select");
                 calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), Integer.valueOf(btn.getText()),
                         calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-                ;
             });
         }
 
-        public void previousYear(ActionEvent event) {
+        private void prevYear(ActionEvent event) {
             calendar.add(Calendar.YEAR, -1);
-            upDataCalendar(false);
+            updateDataCalendar(false);
         }
 
-        public void previousMonth(ActionEvent event) {
+        private void prevMonth(ActionEvent event) {
             calendar.add(Calendar.MONTH, -1);
-            upDataCalendar(false);
+            updateDataCalendar(false);
         }
 
-        @FXML
-        public void nextYear(ActionEvent event) {
+        private void nextYear(ActionEvent event) {
             calendar.add(Calendar.YEAR, 1);
-            upDataCalendar(false);
+            updateDataCalendar(false);
         }
 
-        @FXML
-        public void nextMonth(ActionEvent event) {
+        private void nextMonth(ActionEvent event) {
             calendar.add(Calendar.MONTH, 1);
-            upDataCalendar(false);
+            updateDataCalendar(false);
         }
 
         private void setTime() {
@@ -599,14 +608,16 @@ public class DateTimePicker extends HBox {
 
         protected void buttonOKOnAction(ActionEvent event) {
             if (this.calendar != null) {
-                calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                        Integer.parseInt(hour.getSelectionModel().getSelectedItem()), Integer.parseInt(minute.getSelectionModel().getSelectedItem()), Integer.parseInt(second.getSelectionModel().getSelectedItem()));
+                calendar.set(
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
+                        Integer.parseInt(hour.getSelectionModel().getSelectedItem()),
+                        Integer.parseInt(minute.getSelectionModel().getSelectedItem()),
+                        Integer.parseInt(second.getSelectionModel().getSelectedItem())
+                );
                 LocalDateTime localDateTime = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
-                this.dateTimePicker.setTimeProperty(localDateTime);
-            } else {
-    //            System.out.println("����ѡ������");
+                setValue(localDateTime);
             }
-            this.dateTimePicker.hide();
+            hidePopup();
         }
 
         protected void buttonNowOnMousePressed(MouseEvent event) {
@@ -623,11 +634,9 @@ public class DateTimePicker extends HBox {
             if (this.calendar != null) {
                 calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
                         Integer.parseInt(hour.getSelectionModel().getSelectedItem()), Integer.parseInt(minute.getSelectionModel().getSelectedItem()), Integer.parseInt(second.getSelectionModel().getSelectedItem()));
-            } else {
-    //            System.out.println("����ѡ������");
             }
-            this.dateTimePicker.setTimeProperty(localDateTime);
-            this.dateTimePicker.hide();
+            setValue(localDateTime);
+            hidePopup();
         }
 
         protected void buttonCancelOnMousePressed(MouseEvent event) {
@@ -639,7 +648,7 @@ public class DateTimePicker extends HBox {
         }
 
         protected void buttonCancelOnAction(ActionEvent event) {
-            this.dateTimePicker.hide();
+            hidePopup();
         }
 
         protected void buttonResetOnMousePressed(MouseEvent event) {
@@ -651,47 +660,14 @@ public class DateTimePicker extends HBox {
         }
 
         protected void buttonResetOnAction(ActionEvent event) {
-            this.calendar = null;
-            this.cursorDateTime = null;
-            this.dateTimePicker.clearTimeProperty();
-        }
-    //    /**
-    //     *
-    //     * ������������ѡ��ť������ʱ�͵���ʱ����ɫ
-    //     * @param btn  ��������ѡ��ťButton
-    //     */
-    //    public void btnMouthPress(Button btn){
-    //        btn.setOnMousePressed(new EventHandler<MouseEvent>() {
-    //            @Override
-    //            public void handle(MouseEvent event) {
-    //                btn.setStyle("-fx-text-fill: black;-fx-background-color: #FFD306;");
-    //            }
-    //        });
-    //        btn.setOnMouseReleased(new EventHandler<MouseEvent>() {
-    //            @Override
-    //            public void handle(MouseEvent event) {
-    //                btn.setStyle("-fx-text-fill: black;-fx-background-color: #c66;");
-    //            }
-    //        });
-    //    }
-    //    public void btnYearPress(Button btn){
-    //        btn.setOnMousePressed(new EventHandler<MouseEvent>() {
-    //            @Override
-    //            public void handle(MouseEvent event) {
-    //                btn.setStyle("-fx-text-fill: black;-fx-background-color:#FF0000;");
-    //            }
-    //        });
-    //        btn.setOnMouseReleased(new EventHandler<MouseEvent>() {
-    //            @Override
-    //            public void handle(MouseEvent event) {
-    //                btn.setStyle("-fx-text-fill: black;-fx-background-color: #6cc;");
-    //            }
-    //        });
-    //    }
-
-        @Override
-        public String getUserAgentStylesheet() {
-            return ResourceUtil.toExternalUrl("/fx-plus/css/date-time-picker.css");
+            for (Node node : this.daysPane.getChildren()) {
+                if (Objects.equals(node.getId(), "dt_day_select")) {
+                    node.setId("dt_day_enable");
+                    break;
+                }
+            }
+            this.currDateTime = null;
+            clearValue();
         }
     }
 }

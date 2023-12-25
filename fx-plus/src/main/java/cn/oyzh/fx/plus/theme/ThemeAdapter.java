@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.theme;
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
-import cn.oyzh.fx.plus.extra.AtlantaFX;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -54,14 +53,14 @@ public interface ThemeAdapter extends PropAdapter {
     /**
      * 更改主题
      *
-     * @param theme 主题
+     * @param themeType 主题
      */
-    default void changeTheme(Theme theme) {
-        if (this.isEnableTheme() && theme != null) {
+    default void changeTheme(ThemeType themeType) {
+        if (this.isEnableTheme() && themeType != null) {
             switch (this) {
-                case Parent node -> this.handleStyle(node, theme);
-                case StageWrapper wrapper -> this.handleStyle(wrapper.root(), theme);
-                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), theme);
+                case Parent node -> this.handleStyle(node, themeType);
+                case StageWrapper wrapper -> this.handleStyle(wrapper.root(), themeType);
+                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), themeType);
                 default -> {
                 }
             }
@@ -71,24 +70,25 @@ public interface ThemeAdapter extends PropAdapter {
     /**
      * 处理样式
      *
-     * @param node  节点
-     * @param theme 主题
+     * @param node      节点
+     * @param themeType 主题
      */
-    private void handleStyle(Parent node, Theme theme) {
+    private void handleStyle(Parent node, ThemeType themeType) {
         if (node != null) {
-            String style = switch (theme) {
-                case PRIMER_LIGHT -> AtlantaFX.PRIMER_LIGHT;
-                case PRIMER_DARK -> AtlantaFX.PRIMER_DARK;
-                case NORD_LIGHT -> AtlantaFX.NORD_LIGHT;
-                case NORD_DARK -> AtlantaFX.NORD_DARK;
-                case CUPERTINO_LIGHT -> AtlantaFX.CUPERTINO_LIGHT;
-                case CUPERTINO_DARK -> AtlantaFX.CUPERTINO_DARK;
-                case DRACULA -> AtlantaFX.DRACULA;
+            String style = switch (themeType) {
+                case DRACULA -> AtlantaFX.DRACULA.getUserAgentStylesheet();
+                case NORD_DARK -> AtlantaFX.NORD_DARK.getUserAgentStylesheet();
+                case NORD_LIGHT -> AtlantaFX.NORD_LIGHT.getUserAgentStylesheet();
+                case PRIMER_DARK -> AtlantaFX.PRIMER_DARK.getUserAgentStylesheet();
+                case PRIMER_LIGHT -> AtlantaFX.PRIMER_LIGHT.getUserAgentStylesheet();
+                case CUPERTINO_DARK -> AtlantaFX.CUPERTINO_DARK.getUserAgentStylesheet();
+                case CUPERTINO_LIGHT -> AtlantaFX.CUPERTINO_LIGHT.getUserAgentStylesheet();
             };
             List<String> removes = CollUtil.toList(AtlantaFX.styles());
             removes.add(FXStyle.FX_BASE);
             node.getStylesheets().removeAll(removes);
-            node.getStylesheets().addAll(style, FXStyle.FX_BASE);
+            node.getStylesheets().add(style);
+            node.getStylesheets().add(FXStyle.FX_BASE);
         }
     }
 }

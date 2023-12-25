@@ -8,6 +8,14 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
  */
 public class FlexLabel extends FXLabel implements FlexAdapter {
 
+    public FlexLabel() {
+        super("");
+    }
+
+    public FlexLabel(String text) {
+        super(text);
+    }
+
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);

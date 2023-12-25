@@ -61,24 +61,4 @@ public class FlexButton extends FXButton implements FlexAdapter {
     public void setFlexY(String flexY) {
         FlexAdapter.super.flexY(flexY);
     }
-
-    @Override
-    public double getRealWidth() {
-        return FlexAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        FlexAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return FlexAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        FlexAdapter.super.realHeight(height);
-    }
 }
