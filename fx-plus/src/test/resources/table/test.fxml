@@ -3,7 +3,6 @@
 <?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
 <?import cn.oyzh.fx.plus.controls.button.IconButton?>
-<?import cn.oyzh.fx.plus.controls.date.DateTimePicker2?>
 <?import cn.oyzh.fx.plus.controls.FlexHBox?>
 <?import cn.oyzh.fx.plus.controls.FlexVBox?>
 <?import cn.oyzh.fx.plus.controls.rich.FlexRichTextArea?>

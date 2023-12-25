@@ -19,11 +19,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -59,11 +61,6 @@ public class DateTimePicker extends FlexHBox {
     public boolean showNow;
 
     /**
-     * 按钮组件
-     */
-    private final Button button;
-
-    /**
      * 文本组件
      */
     private final ClearableTextField textField;
@@ -78,12 +75,12 @@ public class DateTimePicker extends FlexHBox {
         this.textField.setId("dt_text_field");
 
         // 初始化按钮组件
-        this.button = new Button();
-        this.button.setId("dt_button");
-        this.button.maxHeightProperty().bind(this.maxHeightProperty());
-        this.button.minHeightProperty().bind(this.minHeightProperty());
-        this.button.prefHeightProperty().bind(this.prefHeightProperty());
-        this.button.setGraphic(new ImageView("/fx-plus/img/calendar.png"));
+        Button button = new Button();
+        button.setId("dt_button");
+        button.maxHeightProperty().bind(this.maxHeightProperty());
+        button.minHeightProperty().bind(this.minHeightProperty());
+        button.prefHeightProperty().bind(this.prefHeightProperty());
+        button.setGraphic(new ImageView("/fx-plus/img/calendar.png"));
 
         // 初始化格式化器
         this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -96,11 +93,11 @@ public class DateTimePicker extends FlexHBox {
                 this.textField.setText(this.formatter.format(newValue));
             }
         });
-        this.button.setOnAction(this::handleButtonAction);
+        button.setOnAction(this::handleButtonAction);
 
         // 添加到子节点列表
         this.getChildren().add(this.textField);
-        this.getChildren().add(this.button);
+        this.getChildren().add(button);
     }
 
     /**
@@ -238,13 +235,6 @@ public class DateTimePicker extends FlexHBox {
         public DateTimePickerSelector() {
             // 日期组件
             this.calendarPane = new atlantafx.base.controls.Calendar();
-            this.calendarPane.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue == null) {
-                    setValue(null);
-                } else {
-                    setValue(LocalDateTimeUtil.of(newValue));
-                }
-            });
 
             // 时间组件
             FXHBox timeAction = new FXHBox();
@@ -273,9 +263,9 @@ public class DateTimePicker extends FlexHBox {
             // 秒文本框
             FXLabel labelSecond = new FXLabel("秒");
 
-            HBox.setMargin(labelHour, new Insets(0,5,0,5));
-            HBox.setMargin(labelMinute, new Insets(0,5,0,5));
-            HBox.setMargin(labelSecond, new Insets(0,0,0,5));
+            HBox.setMargin(labelHour, new Insets(0, 5, 0, 5));
+            HBox.setMargin(labelMinute, new Insets(0, 5, 0, 5));
+            HBox.setMargin(labelSecond, new Insets(0, 0, 0, 5));
 
             timeAction.getChildren().add(this.hour);
             timeAction.getChildren().add(labelHour);
@@ -319,6 +309,26 @@ public class DateTimePicker extends FlexHBox {
             this.getChildren().add(this.calendarPane);
             this.getChildren().add(timeAction);
             this.getChildren().add(bottomAction);
+
+            // 初始化事件
+            this.calendarPane.valueProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue == null) {
+                    setValue(null);
+                } else {
+                    this.updateTime();
+                }
+            });
+            this.hour.valueProperty().addListener((observable, oldValue, newValue) -> {
+                this.updateTime();
+            });
+            this.minute.valueProperty().addListener((observable, oldValue, newValue) -> {
+                this.updateTime();
+            });
+            this.second.valueProperty().addListener((observable, oldValue, newValue) -> {
+                this.updateTime();
+            });
+
+            this.initTime();
         }
 
         /**
@@ -332,7 +342,6 @@ public class DateTimePicker extends FlexHBox {
             this.calendar.set(this.calendar.get(Calendar.YEAR), this.calendar.get(Calendar.MONTH), 1, this.calendar.get(Calendar.HOUR_OF_DAY), this.calendar.get(Calendar.MINUTE), this.calendar.get(Calendar.SECOND));
             this.calendar.add(Calendar.MONTH, -1);
             this.calendar.add(Calendar.MONTH, 1);
-            this.initTime();
         }
 
         /**
@@ -351,6 +360,22 @@ public class DateTimePicker extends FlexHBox {
             this.hour.getSelectionModel().select(calendar.get(Calendar.HOUR_OF_DAY));
             this.minute.getSelectionModel().select(calendar.get(Calendar.MINUTE));
             this.second.getSelectionModel().select(calendar.get(Calendar.SECOND));
+        }
+
+        private void updateTime() {
+            LocalDate localDate = this.calendarPane.getValue();
+            if (localDate == null) {
+                setValue(null);
+            } else {
+                Date date = new Date();
+                date.setYear(localDate.getYear());
+                date.setMonth(localDate.getMonthValue());
+                date.setDate(localDate.getDayOfMonth());
+                date.setHours(this.hour.getSelectedIndex());
+                date.setMinutes(this.minute.getSelectedIndex());
+                date.setSeconds(this.second.getSelectedIndex());
+                setValue(LocalDateTimeUtil.of(date));
+            }
         }
     }
 }
