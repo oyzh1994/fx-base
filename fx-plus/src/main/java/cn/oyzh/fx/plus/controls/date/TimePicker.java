@@ -19,7 +19,7 @@ import java.time.format.FormatStyle;
  * @author oyzh
  * @since 2023/12/24
  */
-public class DateTimePicker extends HBox {
+public class TimePicker extends HBox {
 
     private final DateTimeFormatter formatter;
 
@@ -28,7 +28,7 @@ public class DateTimePicker extends HBox {
 
     private Popup popupContainer;
 
-    private DateTimePickerSelect dateTimePickerSelect;
+    private TimePickerSelect dateTimePickerSelect;
 
     public Boolean showLocalizedDateTime = false;
 
@@ -36,7 +36,7 @@ public class DateTimePicker extends HBox {
 
     private final Button button;
 
-    public DateTimePicker() {
+    public TimePicker() {
         this.textField = new TextField();
         this.textField.setDisable(true);
         this.textField.setFocusTraversable(false);
@@ -49,7 +49,7 @@ public class DateTimePicker extends HBox {
         this.button.setOnAction(this::handleButtonAction);
         this.getChildren().add(this.button);
 
-        this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 
         if (showLocalizedDateTime) {
@@ -65,7 +65,7 @@ public class DateTimePicker extends HBox {
         } else {
             if (this.popupContainer == null) {
                 this.popupContainer = new Popup();
-                this.dateTimePickerSelect = new DateTimePickerSelect(this);
+                this.dateTimePickerSelect = new TimePickerSelect(this);
                 popupContainer.getContent().add(dateTimePickerSelect);
                 popupContainer.autoHideProperty().set(true);
             }
@@ -78,8 +78,6 @@ public class DateTimePicker extends HBox {
                     + button.getScene().getY()
                     + button.getHeight();
 
-//            popupContainer.setWidth(100);
-//            popupContainer.setHeight(100);
 
             System.out.println(this.getParent());
             popupContainer.show(this.getParent(), x, y);
