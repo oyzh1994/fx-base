@@ -19,7 +19,7 @@ public class TimePickerTest extends SpringApplication {
 
 //		picker.setTimeProperty( LocalDateTime.now() );
 
-        picker.setShowLocalizedDateTime(false);
+        // picker.setShowNow(false);
 
         final VBox vBox = new VBox();
         vBox.getChildren().add(picker);

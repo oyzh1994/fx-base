@@ -158,9 +158,25 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 添加子节点
+     *
+     * @param index 下标
+     * @param node  子节点
+     */
+    default void addChild(int index, Node node) {
+        if (node != null) {
+            if (this instanceof Pane pane) {
+                FXUtil.runWait(() -> pane.getChildren().add(index, node));
+            } else if (this instanceof Group group) {
+                FXUtil.runWait(() -> group.getChildren().add(index, node));
+            }
+        }
+    }
+
+    /**
      * 设置子节点
      *
-     * @param index 索引
+     * @param index 下标
      * @param node  子节点
      */
     default void setChild(int index, Node node) {
@@ -203,7 +219,7 @@ public interface NodeAdapter extends EventTarget {
     /**
      * 获取子节点
      *
-     * @param index 索引
+     * @param index 下标
      * @return 子节点
      */
     default Node getChild(int index) {
@@ -226,7 +242,7 @@ public interface NodeAdapter extends EventTarget {
     /**
      * 移除子节点
      *
-     * @param index 索引
+     * @param index 下标
      */
     default void removeChild(int index) {
         if (index >= 0) {

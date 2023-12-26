@@ -16,7 +16,7 @@ public class YearPickerTest extends Application {
 
 //		dateTimePicker.setTimeProperty( LocalDateTime.now() );
 
-        picker.setShowLocalizedDateTime(false);
+        // picker.setShowLocalizedDateTime(false);
 
 
         // ChoiceBox<String> choiceBox = new ChoiceBox<>();

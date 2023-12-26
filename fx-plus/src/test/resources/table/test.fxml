@@ -22,6 +22,8 @@
 <?import java.lang.String?>
 <?import cn.oyzh.fx.plus.controls.date.FlexDatePicker?>
 <?import cn.oyzh.fx.plus.controls.date.DateTimePicker?>
+<?import cn.oyzh.fx.plus.controls.date.TimePicker?>
+<?import cn.oyzh.fx.plus.controls.date.YearPicker?>
 <FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -53,9 +55,7 @@
         <!-- <DateTimePicker2> -->
 
         <!-- </DateTimePicker2> -->
-        <DateTimePicker prefHeight="25" maxHeight="25">
 
-        </DateTimePicker>
         <!-- <DateTimePicker> -->
 
         <!-- </DateTimePicker> -->
@@ -65,6 +65,14 @@
         <!-- <FlexDatePicker> -->
 
         <!-- </FlexDatePicker> -->
+    </FlexHBox>
+    <FlexHBox realHeight="50">
+        <DateTimePicker prefHeight="25" maxHeight="25">
+        </DateTimePicker>
+        <TimePicker prefHeight="25" maxHeight="25">
+        </TimePicker>
+        <YearPicker prefHeight="25" maxHeight="25">
+        </YearPicker>
     </FlexHBox>
     <FlexHBox realHeight="50">
         <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
