@@ -3,6 +3,10 @@
 <?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
 <?import cn.oyzh.fx.plus.controls.button.IconButton?>
+<?import cn.oyzh.fx.plus.controls.calendar.DatePicker?>
+<?import cn.oyzh.fx.plus.controls.calendar.DateTimePicker?>
+<?import cn.oyzh.fx.plus.controls.calendar.TimePicker?>
+<?import cn.oyzh.fx.plus.controls.calendar.YearPicker?>
 <?import cn.oyzh.fx.plus.controls.FlexHBox?>
 <?import cn.oyzh.fx.plus.controls.FlexVBox?>
 <?import cn.oyzh.fx.plus.controls.rich.FlexRichTextArea?>
@@ -20,10 +24,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.HBox?>
 <?import java.lang.String?>
-<?import cn.oyzh.fx.plus.controls.date.FlexDatePicker?>
-<?import cn.oyzh.fx.plus.controls.date.DateTimePicker?>
-<?import cn.oyzh.fx.plus.controls.date.TimePicker?>
-<?import cn.oyzh.fx.plus.controls.date.YearPicker?>
 <FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -69,6 +69,8 @@
     <FlexHBox realHeight="50">
         <DateTimePicker prefHeight="25" maxHeight="25">
         </DateTimePicker>
+        <DatePicker prefHeight="25" maxHeight="25">
+        </DatePicker>
         <TimePicker prefHeight="25" maxHeight="25">
         </TimePicker>
         <YearPicker prefHeight="25" maxHeight="25">

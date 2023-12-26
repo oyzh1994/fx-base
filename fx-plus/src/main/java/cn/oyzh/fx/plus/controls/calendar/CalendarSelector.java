@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.date;
+package cn.oyzh.fx.plus.controls.calendar;
 
 import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.FXVBox;

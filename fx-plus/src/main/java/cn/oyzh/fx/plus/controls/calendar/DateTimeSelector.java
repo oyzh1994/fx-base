@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.date;
+package cn.oyzh.fx.plus.controls.calendar;
 
 import atlantafx.base.controls.Calendar;
 import cn.hutool.core.date.LocalDateTimeUtil;
@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.controls.text.FXLabel;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.layout.HBox;
 
 import java.time.LocalDate;
@@ -47,6 +48,8 @@ public class DateTimeSelector extends CalendarSelector {
     protected void initNode() {
         // 日期组件
         this.calendar = new Calendar();
+        // 设置鼠标
+        this.calendar.setCursor(Cursor.HAND);
 
         // 时间组件
         FXHBox timeAction = new FXHBox();
@@ -148,6 +151,10 @@ public class DateTimeSelector extends CalendarSelector {
 
     @Override
     protected void onNowAction(ActionEvent event) {
-        this.calendar.setValue(LocalDateTime.now().toLocalDate());
+        LocalDateTime time = LocalDateTime.now();
+        this.calendar.setValue(time.toLocalDate());
+        this.hour.select(time.getHour());
+        this.minute.select(time.getMinute());
+        this.second.select(time.getSecond());
     }
 }

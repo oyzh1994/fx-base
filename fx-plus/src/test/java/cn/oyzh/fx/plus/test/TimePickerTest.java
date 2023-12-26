@@ -1,8 +1,7 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.controls.date.TimePicker;
+import cn.oyzh.fx.plus.controls.calendar.TimePicker;
 import cn.oyzh.fx.plus.spring.SpringApplication;
-import cn.oyzh.fx.plus.test.table.TableTestApp;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;

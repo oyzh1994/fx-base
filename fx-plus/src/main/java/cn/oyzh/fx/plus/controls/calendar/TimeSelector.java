@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.date;
+package cn.oyzh.fx.plus.controls.calendar;
 
 import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
@@ -64,6 +64,7 @@ public class TimeSelector extends CalendarSelector {
         // 秒文本框
         FXLabel labelSecond = new FXLabel("秒");
 
+        // 设置边距
         HBox.setMargin(labelHour, new Insets(0, 5, 0, 5));
         HBox.setMargin(labelMinute, new Insets(0, 5, 0, 5));
         HBox.setMargin(labelSecond, new Insets(0, 0, 0, 5));
@@ -130,5 +131,6 @@ public class TimeSelector extends CalendarSelector {
     @Override
     protected void onNowAction(ActionEvent event) {
         this.picker.setValue(LocalDateTime.now());
+        this.updateCalendar();
     }
 }

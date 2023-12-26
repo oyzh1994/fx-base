@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.date;
+package cn.oyzh.fx.plus.controls.calendar;
 
 import atlantafx.base.controls.Popover;
 import cn.oyzh.fx.plus.controls.FlexHBox;
@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -65,7 +66,7 @@ public abstract class CalendarPicker<S extends CalendarSelector> extends FlexHBo
                 this.textField.setText(this.formatter.format(newValue));
             }
         });
-        button.setOnAction(event -> {
+        button.setOnMousePrimaryClicked(event -> {
             if (this.isPopupShowing()) {
                 this.hidePopup();
             } else {
@@ -157,14 +158,24 @@ public abstract class CalendarPicker<S extends CalendarSelector> extends FlexHBo
         this.valueProperty().set(null);
     }
 
+    /**
+     * 获取年
+     *
+     * @return 年
+     */
+    public int yearValue() {
+        return this.getValue().getYear();
+    }
 
     /**
      * 隐藏弹窗
      */
     public void hidePopup() {
-        if (this.popup != null && this.popup.isShowing()) {
+        if (this.popup.isShowing()) {
             this.popup.hide();
         }
+        this.popup = null;
+        this.selector = null;
     }
 
     /**
@@ -173,14 +184,13 @@ public abstract class CalendarPicker<S extends CalendarSelector> extends FlexHBo
     public void showPopup() {
         // 初始化弹窗
         if (this.popup == null) {
-            this.popup = new Popover();
-            this.popup.setContentNode(this.selector);
-            // 更新日期
-            this.popup.showingProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue) {
-                    this.selector.updateCalendar();
-                }
-            });
+            this.popup = new Popover(this.selector);
+            this.popup.setAutoFix(true);
+            this.popup.setAnimated(true);
+            this.popup.setAutoHide(true);
+            this.popup.setHideOnEscape(true);
+            this.popup.setFadeInDuration(Duration.millis(600));
+            this.popup.setFadeOutDuration(Duration.millis(600));
         }
         // 显示弹窗
         this.popup.show(this);

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.date;
+package cn.oyzh.fx.plus.controls.calendar;
 
 import cn.oyzh.fx.plus.controls.FXHBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.text.FXLabel;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
 
 import java.time.LocalDateTime;
 
@@ -34,10 +35,13 @@ public class YearSelector extends CalendarSelector {
 
         // 小时下拉框
         this.year = new FXComboBox<>();
-        this.year.setRealWidth(150);
+        this.year.setRealWidth(180);
 
         // 年文本框
         FXLabel labelYear = new FXLabel("年");
+
+        // 设置边距
+        HBox.setMargin(labelYear, new Insets(0, 5, 0, 5));
 
         timeAction.getChildren().add(this.year);
         timeAction.getChildren().add(labelYear);
@@ -74,7 +78,7 @@ public class YearSelector extends CalendarSelector {
     @Override
     protected void updateTime() {
         LocalDateTime dateTime = LocalDateTime.now();
-        dateTime = dateTime.withYear(this.year.getSelectedIndex());
+        dateTime = dateTime.withYear(this.year.getSelectedItem());
         this.picker.setValue(dateTime);
     }
 
@@ -85,6 +89,7 @@ public class YearSelector extends CalendarSelector {
 
     @Override
     protected void onNowAction(ActionEvent event) {
-        this.picker.setValue(LocalDateTime.now());
+        Integer year = LocalDateTime.now().getYear();
+        this.year.select(year);
     }
 }
