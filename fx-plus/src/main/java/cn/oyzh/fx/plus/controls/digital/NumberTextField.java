@@ -1,7 +1,8 @@
-package cn.oyzh.fx.plus.controls.textfield;
+package cn.oyzh.fx.plus.controls.digital;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.plus.controls.digital.DigitalTextField;
 import cn.oyzh.fx.plus.converter.LongConverter;
 import cn.oyzh.fx.plus.skin.NumberTextFieldSkin;
 import javafx.scene.control.TextFormatter;

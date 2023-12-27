@@ -1,12 +1,12 @@
-package cn.oyzh.fx.plus.controls.textfield;
+package cn.oyzh.fx.plus.controls.digital;
 
 /**
- * bit文本域
+ * integer文本域
  *
  * @author oyzh
  * @since 2023/12/22
  */
-public class IntTextField extends NumberTextField {
+public class IntegerTextField extends NumberTextField {
 
     {
         super.setMin((long) Integer.MIN_VALUE);

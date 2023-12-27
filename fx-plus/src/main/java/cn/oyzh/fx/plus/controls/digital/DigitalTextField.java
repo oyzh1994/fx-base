@@ -1,6 +1,7 @@
-package cn.oyzh.fx.plus.controls.textfield;
+package cn.oyzh.fx.plus.controls.digital;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.plus.controls.textfield.FlexTextField;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,8 @@
-package cn.oyzh.fx.plus.controls.textfield;
+package cn.oyzh.fx.plus.controls.digital;
+
 
 /**
- * bit文本域
+ * flot文本域
  *
  * @author oyzh
  * @since 2023/12/22
