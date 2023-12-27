@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.trees;
 
 import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
+import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
@@ -38,6 +39,13 @@ public class RichTreeView extends FlexTreeView {
                 this.clearContextMenu();
             }
         });
+        this.initEvenListener();
+    }
+
+    /**
+     * 初始化事件监听器
+     */
+    protected void initEvenListener() {
         // f2按键处理
         KeyListener.listenReleased(this, KeyCode.F2, event -> {
             TreeItem<?> item = this.getSelectedItem();
@@ -50,6 +58,20 @@ public class RichTreeView extends FlexTreeView {
             TreeItem<?> item = this.getSelectedItem();
             if (item instanceof RichTreeItem<?> treeItem) {
                 treeItem.delete();
+            }
+        });
+        // 鼠标按键处理
+        this.setOnMousePrimaryClicked(event -> {
+            if (MouseUtil.isPrimaryButton(event)) {
+                this.clearContextMenu();
+                TreeItem<?> item = this.getSelectedItem();
+                if (item instanceof RichTreeItem<?> treeItem) {
+                    if (event.getClickCount() == 1) {
+                        treeItem.onPrimarySingleClick();
+                    } else if (event.getClickCount() >= 2) {
+                        treeItem.onPrimaryDoubleClick();
+                    }
+                }
             }
         });
     }

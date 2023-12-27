@@ -595,4 +595,18 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         }
         return 0;
     }
+
+    /**
+     * 鼠标主按钮单击事件
+     */
+    public void onPrimarySingleClick() {
+
+    }
+
+    /**
+     * 鼠标主按钮双击事件
+     */
+    public void onPrimaryDoubleClick() {
+
+    }
 }
