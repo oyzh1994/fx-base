@@ -5,8 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.converter.LongConverter;
 import cn.oyzh.fx.plus.skin.NumberTextFieldSkin;
 import javafx.scene.control.TextFormatter;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.function.UnaryOperator;
 
@@ -16,82 +14,54 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2020/10/29
  */
-public class NumberTextField extends FlexTextField {
+public class NumberTextField extends DigitalTextField {
 
     /**
-     * 最大值
+     * 文本格式器
      */
-    @Getter
-    @Setter
-    protected Long max;
-
-    /**
-     * 最小值
-     */
-    @Getter
-    @Setter
-    protected Long min;
-
-    /**
-     * 递进值
-     */
-    @Getter
-    @Setter
-    protected Long step = 1L;
+    protected final TextFormatter<Long> textFormatter;
 
     /**
      * 数据转换器
      */
     protected final LongConverter converter = new LongConverter();
 
-    /**
-     * 文本格式器
-     */
-    protected final TextFormatter<Long> textFormatter = new TextFormatter<>(this.converter, 0L, this.createFilter());
-
-    {
-        this.setSkin(new NumberTextFieldSkin(this, this::incrValue, this::decrValue));
-    }
-
-    /**
-     * 增加值
-     */
-    protected void incrValue() {
-        // 设置值
-        if (this.step != null) {
-            this.setValue(this.getValue() + this.step);
-        }
-    }
-
-    /**
-     * 减少值
-     */
-    protected void decrValue() {
-        // 设置值
-        if (this.step != null) {
-            this.setValue(this.getValue() - this.step);
-        }
-    }
-
     public NumberTextField() {
+        this.setSkin(new NumberTextFieldSkin(this, this::incrValue, this::decrValue));
+        if (this.defVal != null) {
+            this.textFormatter = new TextFormatter<>(this.converter, this.defVal.longValue(), this.createFilter());
+        } else {
+            this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
+        }
         // 将TextFormatter对象设置到文本字段中
         this.setTextFormatter(this.textFormatter);
         // 监听值变化
         this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
     }
 
-    /**
-     * 创建一个过滤器，用于限制文本输入
-     *
-     * @return 过滤器
-     */
+    @Override
+    protected void incrValue() {
+        // 设置值
+        if (this.step != null) {
+            this.setValue(this.getValue() + this.step.longValue());
+        }
+    }
+
+    @Override
+    protected void decrValue() {
+        // 设置值
+        if (this.step != null) {
+            this.setValue(this.getValue() - this.step.longValue());
+        }
+    }
+
+    @Override
     protected UnaryOperator<TextFormatter.Change> createFilter() {
         return change -> {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
                     String text = change.getControlNewText();
                     if (StrUtil.isEmpty(text) || text.equals("-") || text.equals("+")) {
-                        // this.setValue(0L);
                         return change;
                     }
                     // 判断数字
@@ -100,13 +70,13 @@ public class NumberTextField extends FlexTextField {
                         return null;
                     }
                     // 判断最大值
-                    if (this.max != null && l > this.max) {
-                        this.setValue(this.max);
+                    if (this.max != null && l > this.max.longValue()) {
+                        this.setValue(this.max.longValue());
                         return null;
                     }
                     // 判断最小值
-                    if (this.min != null && l < this.min) {
-                        this.setValue(this.min);
+                    if (this.min != null && l < this.min.longValue()) {
+                        this.setValue(this.min.longValue());
                         return null;
                     }
                 } catch (Exception ignored) {
@@ -124,12 +94,12 @@ public class NumberTextField extends FlexTextField {
     protected void valueChanged(Long newVal) {
         if (newVal != null) {
             NumberTextFieldSkin skin = (NumberTextFieldSkin) this.getSkin();
-            if (this.min != null && newVal <= this.min) {
+            if (this.min != null && newVal <= this.min.longValue()) {
                 skin.disableDecrButton();
             } else {
                 skin.enableDecrButton();
             }
-            if (this.max != null && newVal >= this.max) {
+            if (this.max != null && newVal >= this.max.longValue()) {
                 skin.disableIncrButton();
             } else {
                 skin.enableIncrButton();
@@ -137,24 +107,39 @@ public class NumberTextField extends FlexTextField {
         }
     }
 
-    /**
-     * 获取byte值
-     *
-     * @return byte值
-     */
+    @Override
     public Byte getByteValue() {
         Long val = this.getValue();
         return val == null ? null : val.byteValue();
     }
 
-    /**
-     * 获取int值
-     *
-     * @return int值
-     */
-    public Integer getIntValue() {
+    @Override
+    public Short getShortValue() {
+        Long val = this.getValue();
+        return val == null ? null : val.shortValue();
+    }
+
+    @Override
+    public Integer getIntegerValue() {
         Long val = this.getValue();
         return val == null ? null : val.intValue();
+    }
+
+    @Override
+    public Long getLongValue() {
+        return this.getValue();
+    }
+
+    @Override
+    public Float getFloatValue() {
+        Long val = this.getValue();
+        return val == null ? null : val.floatValue();
+    }
+
+    @Override
+    public Double getDoubleValue() {
+        Long val = this.getValue();
+        return val == null ? null : val.doubleValue();
     }
 
     /**
@@ -177,10 +162,10 @@ public class NumberTextField extends FlexTextField {
      */
     public void setValue(Long value) {
         if (value != null) {
-            if (this.max != null && value > this.max) {
-                value = this.max;
-            } else if (this.min != null && value < this.min) {
-                value = this.min;
+            if (this.max != null && value > this.max.longValue()) {
+                value = this.max.longValue();
+            } else if (this.min != null && value < this.min.longValue()) {
+                value = this.min.longValue();
             }
             this.textFormatter.setValue(value);
         }
@@ -193,5 +178,21 @@ public class NumberTextField extends FlexTextField {
      */
     public void setValue(long value) {
         this.setValue((Long) value);
+    }
+
+    @Override
+    public void setDefVal(Number defVal) {
+        super.setDefVal(defVal);
+        if (this.getValue() == null && defVal != null) {
+            this.setValue(defVal.longValue());
+        }
+    }
+
+    @Override
+    public void defVal(Object defVal) {
+        super.defVal(defVal);
+        if (this.getValue() == null && super.defVal != null) {
+            this.setValue(super.defVal.longValue());
+        }
     }
 }

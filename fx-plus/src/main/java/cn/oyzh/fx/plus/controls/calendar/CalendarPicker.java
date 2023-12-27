@@ -152,6 +152,13 @@ public abstract class CalendarPicker<S extends CalendarSelector> extends FlexHBo
     }
 
     /**
+     * 设置为当前时间
+     */
+    public void setNow() {
+        this.setValue(LocalDateTime.now());
+    }
+
+    /**
      * 清除值
      */
     public void clearValue() {

@@ -10,6 +10,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
+import java.util.List;
+
 
 /**
  * 节点适配器
@@ -217,6 +219,23 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 设置子节点
+     *
+     * @param nodes 子节点列表
+     */
+    default void setChild(List<? extends Node> nodes) {
+        if (nodes != null && !nodes.isEmpty()) {
+            FXUtil.runWait(() -> {
+                if (this instanceof Pane pane) {
+                    pane.getChildren().setAll(nodes);
+                } else if (this instanceof Group group) {
+                    group.getChildren().setAll(nodes);
+                }
+            });
+        }
+    }
+
+    /**
      * 获取子节点
      *
      * @param index 下标
@@ -269,6 +288,19 @@ public interface NodeAdapter extends EventTarget {
                 FXUtil.runWait(() -> pane.getChildren().remove(child));
             } else if (this instanceof Group group) {
                 FXUtil.runWait(() -> group.getChildren().remove(child));
+            }
+        }
+    }
+
+    /**
+     * 添加样式类
+     *
+     * @param styleClass 样式类
+     */
+    default void addClass(String styleClass) {
+        if (styleClass != null) {
+            if (this instanceof Node node) {
+                node.getStyleClass().add(styleClass);
             }
         }
     }

@@ -19,28 +19,8 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/08/28
  */
-public class DecimalTextField extends FlexTextField {
+public class DecimalTextField extends DigitalTextField {
 
-    /**
-     * 最大值
-     */
-    @Getter
-    @Setter
-    protected Double max;
-
-    /**
-     * 最小值
-     */
-    @Getter
-    @Setter
-    protected Double min;
-
-    /**
-     * 递进值
-     */
-    @Getter
-    @Setter
-    protected Double step = 1.0D;
 
     /**
      * 小数位数
@@ -50,51 +30,45 @@ public class DecimalTextField extends FlexTextField {
     protected Integer scaleLen;
 
     /**
+     * 文本格式器
+     */
+    protected final TextFormatter<Double> textFormatter;
+
+    /**
      * 数据转换器
      */
     protected final DoubleConverter converter = new DoubleConverter();
 
-    /**
-     * 文本格式器
-     */
-    protected final TextFormatter<Double> textFormatter = new TextFormatter<>(this.converter, 0.d, this.createFilter());
-
-    {
-        this.setSkin(new NumberTextFieldSkin(this, this::incrValue, this::decrValue));
-    }
-
-    /**
-     * 增加值
-     */
-    protected void incrValue() {
-        // 设置值
-        if (this.step != null) {
-            this.setValue(this.getValue() + this.step);
-        }
-    }
-
-    /**
-     * 减少值
-     */
-    protected void decrValue() {
-        // 设置值
-        if (this.step != null) {
-            this.setValue(this.getValue() - this.step);
-        }
-    }
-
     public DecimalTextField() {
+        this.setSkin(new NumberTextFieldSkin(this, this::incrValue, this::decrValue));
+        if (this.defVal != null) {
+            this.textFormatter = new TextFormatter<>(this.converter, this.defVal.doubleValue(), this.createFilter());
+        } else {
+            this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
+        }
         // 将TextFormatter对象设置到文本字段中
         this.setTextFormatter(this.textFormatter);
         // 监听值变化
         this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
     }
 
-    /**
-     * 创建一个过滤器，用于限制文本输入
-     *
-     * @return 过滤器
-     */
+    @Override
+    protected void incrValue() {
+        // 设置值
+        if (this.step != null) {
+            this.setValue(this.getValue() + this.step.doubleValue());
+        }
+    }
+
+    @Override
+    protected void decrValue() {
+        // 设置值
+        if (this.step != null) {
+            this.setValue(this.getValue() - this.step.doubleValue());
+        }
+    }
+
+    @Override
     protected UnaryOperator<TextFormatter.Change> createFilter() {
         return change -> {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
@@ -116,13 +90,13 @@ public class DecimalTextField extends FlexTextField {
                         return null;
                     }
                     // 如果超过了最大值，则将组件值设置为最大值
-                    if (this.max != null && decimal.doubleValue() > this.max) {
-                        this.setValue(this.max);
+                    if (this.max != null && decimal.doubleValue() > this.max.doubleValue()) {
+                        this.setValue(this.max.doubleValue());
                         return null;
                     }
                     // 如果小于了最小值，则将组件值设置为最小值
-                    if (this.min != null && decimal.doubleValue() < this.min) {
-                        this.setValue(this.min);
+                    if (this.min != null && decimal.doubleValue() < this.min.doubleValue()) {
+                        this.setValue(this.min.doubleValue());
                         return null;
                     }
                 } catch (Exception ignored) {
@@ -143,14 +117,14 @@ public class DecimalTextField extends FlexTextField {
             // 获取当前皮肤
             NumberTextFieldSkin skin = (NumberTextFieldSkin) this.getSkin();
             // 判断新值是否小于等于最小值，如果是则禁用减号按钮
-            if (this.min != null && newVal <= this.min) {
+            if (this.min != null && newVal <= this.min.doubleValue()) {
                 skin.disableDecrButton();
             } else {
                 // 否则启用减号按钮
                 skin.enableDecrButton();
             }
             // 判断新值是否大于等于最大值，如果是则禁用加号按钮
-            if (this.max != null && newVal >= this.max) {
+            if (this.max != null && newVal >= this.max.doubleValue()) {
                 skin.disableIncrButton();
             } else {
                 // 否则启用加号按钮
@@ -159,14 +133,39 @@ public class DecimalTextField extends FlexTextField {
         }
     }
 
-    /**
-     * 获取float值
-     *
-     * @return float值
-     */
+    @Override
+    public Byte getByteValue() {
+        Double val = this.getValue();
+        return val == null ? null : val.byteValue();
+    }
+
+    @Override
+    public Short getShortValue() {
+        Double val = this.getValue();
+        return val == null ? null : val.shortValue();
+    }
+
+    @Override
+    public Integer getIntegerValue() {
+        Double val = this.getValue();
+        return val == null ? null : val.intValue();
+    }
+
+    @Override
+    public Long getLongValue() {
+        Double val = this.getValue();
+        return val == null ? null : val.longValue();
+    }
+
+    @Override
     public Float getFloatValue() {
         Double val = this.getValue();
         return val == null ? null : val.floatValue();
+    }
+
+    @Override
+    public Double getDoubleValue() {
+        return this.getValue();
     }
 
     /**
@@ -192,10 +191,10 @@ public class DecimalTextField extends FlexTextField {
      */
     public void setValue(Double value) {
         if (value != null && !Double.isNaN(value)) {
-            if (this.max != null && value > this.max) {
-                value = this.max;
-            } else if (this.min != null && value < this.min) {
-                value = this.min;
+            if (this.max != null && value > this.max.doubleValue()) {
+                value = this.max.doubleValue();
+            } else if (this.min != null && value < this.min.doubleValue()) {
+                value = this.min.doubleValue();
             } else if (this.scaleLen != null) {
                 BigDecimal decimal = new BigDecimal(value);
                 if (decimal.scale() > this.scaleLen) {
@@ -203,6 +202,22 @@ public class DecimalTextField extends FlexTextField {
                 }
             }
             this.textFormatter.setValue(value);
+        }
+    }
+
+    @Override
+    public void setDefVal(Number defVal) {
+        super.setDefVal(defVal);
+        if (this.getValue() == null && defVal != null) {
+            this.setValue(defVal.doubleValue());
+        }
+    }
+
+    @Override
+    public void defVal(Object defVal) {
+        super.defVal(defVal);
+        if (this.getValue() == null && super.defVal != null) {
+            this.setValue(super.defVal.doubleValue());
         }
     }
 }

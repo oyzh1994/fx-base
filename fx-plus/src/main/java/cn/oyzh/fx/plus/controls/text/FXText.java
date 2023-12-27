@@ -2,10 +2,11 @@ package cn.oyzh.fx.plus.controls.text;
 
 import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
+import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
-import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeType;
 import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -15,7 +16,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/04/25
  */
-public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter {
+public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
 
     {
         this.setCache(true);
