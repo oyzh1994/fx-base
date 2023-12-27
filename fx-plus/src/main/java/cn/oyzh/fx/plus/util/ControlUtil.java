@@ -28,7 +28,6 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2022/1/19
  */
-//@Slf4j
 @UtilityClass
 public class ControlUtil {
 
