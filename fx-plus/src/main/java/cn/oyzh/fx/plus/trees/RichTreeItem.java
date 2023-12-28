@@ -364,9 +364,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 刷新图标
      */
     public void flushGraphic() {
-        if (this.getValue() != null) {
-            this.getValue().flushGraphic();
-            this.getValue().flushGraphicColor();
+        RichTreeItemValue value = this.getValue();
+        if (value != null) {
+            value.flushText();
+            value.flushGraphic();
+            value.flushGraphicColor();
         }
     }
 

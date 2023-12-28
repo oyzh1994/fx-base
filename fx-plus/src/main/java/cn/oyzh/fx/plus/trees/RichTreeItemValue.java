@@ -101,8 +101,10 @@ public class RichTreeItemValue extends FXHBox {
             text.setText(name);
         }
         if (ThemeManager.isDarkMode()) {
-            text.setFill(Color.WHITE);
-        } else {
+            if (text.getFill() != Color.WHITE) {
+                text.setFill(Color.WHITE);
+            }
+        } else if (text.getFill() != Color.BLACK) {
             text.setFill(Color.BLACK);
         }
     }
