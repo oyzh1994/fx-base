@@ -26,6 +26,8 @@ import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.trees.RichTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.TextUtil;
+import cn.oyzh.fx.plus.value.DoubleTextValueFactory;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -33,9 +35,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
+import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
@@ -89,7 +97,8 @@ public class AppMain extends Application {
         // test21(stage);
         // test22(stage);
         // test23(stage);
-        test24(stage);
+//        test24(stage);
+        test25(stage);
     }
 
     private void test1(Stage stage) {
@@ -887,8 +896,64 @@ public class AppMain extends Application {
         // popover.setHeight(100);
         // stage.show();
 
-
     }
 
+    private void test25(Stage stage) {
+        Spinner<Double> spinner = new Spinner<>( new DoubleTextValueFactory() {
+        }
 
+        );
+//        Spinner<Double> spinner = new Spinner<>(new SpinnerValueFactory<Double>() {
+//            @Override
+//            public void decrement(int i) {
+//
+//            }
+//
+//            @Override
+//            public void increment(int i) {
+//
+//            }
+//        }
+//
+//        );
+
+//        DoubleSpinnerValueFactory valueFactory=new DoubleSpinnerValueFactory();
+
+        TextField field = spinner.getEditor();
+//        field.setTextFormatter(new TextFormatter<>(new SimpleStringConverter<>() {
+//            @Override
+//            public Object fromString(String s) {
+//                System.out.println(s);
+//                return super.fromString(s);
+//            }
+//        }));
+
+//
+
+//        String textLast;
+//        boolean ignore=false;
+        field.textProperty().addListener((observableValue, s, t1) -> {
+
+
+            System.out.println("++++++++");
+        });
+
+
+        field.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            System.out.println("---------");
+            System.out.println(field.getSelection().getStart());
+            System.out.println(field.getSelection().getEnd());
+            System.out.println(field.getCaretPosition());
+            if (!TextUtil.checkNumber(event, field.getText())) {
+                event.consume();
+            }
+        });
+
+
+        Spinner<Integer> spinner2 = new Spinner<>(new IntegerSpinnerValueFactory(0, 100));
+        VBox vBox = new VBox(spinner, spinner2);
+        spinner.setEditable(true);
+        stage.setScene(new Scene(vBox, 500, 500));
+        stage.show();
+    }
 }
