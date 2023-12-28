@@ -8,10 +8,10 @@ import java.math.BigDecimal;
  * @author oyzh
  * @since 2023/12/22
  */
-public class LongTextField extends NumberTextField {
+public class UnSignedLongTextField extends LongTextField {
 
     {
-        super.setMin(Long.MIN_VALUE);
-        super.setMax(Long.MAX_VALUE);
+        super.setMin(0L);
+        super.setMaxVal(new BigDecimal("18446744073709551615"));
     }
 }

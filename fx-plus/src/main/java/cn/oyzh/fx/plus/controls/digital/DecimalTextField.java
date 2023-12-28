@@ -3,8 +3,7 @@ package cn.oyzh.fx.plus.controls.digital;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.converter.DoubleConverter;
-import cn.oyzh.fx.plus.skin.NumberTextFieldSkin;
+import cn.oyzh.fx.common.util.NumUtil;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +20,6 @@ import java.util.function.UnaryOperator;
  */
 public class DecimalTextField extends DigitalTextField {
 
-
     /**
      * 小数位数
      */
@@ -29,27 +27,8 @@ public class DecimalTextField extends DigitalTextField {
     @Getter
     protected Integer scaleLen;
 
-    /**
-     * 文本格式器
-     */
-    protected final TextFormatter<Double> textFormatter;
-
-    /**
-     * 数据转换器
-     */
-    protected final DoubleConverter converter = new DoubleConverter();
-
     public DecimalTextField() {
-        this.setSkin(new NumberTextFieldSkin(this, this::incrValue, this::decrValue));
-        if (this.defVal != null) {
-            this.textFormatter = new TextFormatter<>(this.converter, this.defVal.doubleValue(), this.createFilter());
-        } else {
-            this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
-        }
-        // 将TextFormatter对象设置到文本字段中
-        this.setTextFormatter(this.textFormatter);
-        // 监听值变化
-        this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
+        super();
     }
 
     @Override
@@ -90,13 +69,13 @@ public class DecimalTextField extends DigitalTextField {
                         return null;
                     }
                     // 如果超过了最大值，则将组件值设置为最大值
-                    if (this.max != null && decimal.doubleValue() > this.max.doubleValue()) {
-                        this.setValue(this.max.doubleValue());
+                    if (this.maxVal != null && NumUtil.isGT(decimal.doubleValue(), this.maxVal)) {
+                        this.setValue(this.maxVal.doubleValue());
                         return null;
                     }
                     // 如果小于了最小值，则将组件值设置为最小值
-                    if (this.min != null && decimal.doubleValue() < this.min.doubleValue()) {
-                        this.setValue(this.min.doubleValue());
+                    if (this.minVal != null && NumUtil.isLT(decimal.doubleValue(), this.minVal)) {
+                        this.setValue(this.minVal.doubleValue());
                         return null;
                     }
                 } catch (Exception ignored) {
@@ -107,81 +86,25 @@ public class DecimalTextField extends DigitalTextField {
     }
 
     /**
-     * 值变化
-     *
-     * @param newVal 新值
-     */
-    protected void valueChanged(Double newVal) {
-        // 检查新值是否有效
-        if (newVal != null && !Double.isNaN(newVal)) {
-            // 获取当前皮肤
-            NumberTextFieldSkin skin = (NumberTextFieldSkin) this.getSkin();
-            // 判断新值是否小于等于最小值，如果是则禁用减号按钮
-            if (this.min != null && newVal <= this.min.doubleValue()) {
-                skin.disableDecrButton();
-            } else {
-                // 否则启用减号按钮
-                skin.enableDecrButton();
-            }
-            // 判断新值是否大于等于最大值，如果是则禁用加号按钮
-            if (this.max != null && newVal >= this.max.doubleValue()) {
-                skin.disableIncrButton();
-            } else {
-                // 否则启用加号按钮
-                skin.enableIncrButton();
-            }
-        }
-    }
-
-    @Override
-    public Byte getByteValue() {
-        Double val = this.getValue();
-        return val == null ? null : val.byteValue();
-    }
-
-    @Override
-    public Short getShortValue() {
-        Double val = this.getValue();
-        return val == null ? null : val.shortValue();
-    }
-
-    @Override
-    public Integer getIntegerValue() {
-        Double val = this.getValue();
-        return val == null ? null : val.intValue();
-    }
-
-    @Override
-    public Long getLongValue() {
-        Double val = this.getValue();
-        return val == null ? null : val.longValue();
-    }
-
-    @Override
-    public Float getFloatValue() {
-        Double val = this.getValue();
-        return val == null ? null : val.floatValue();
-    }
-
-    @Override
-    public Double getDoubleValue() {
-        return this.getValue();
-    }
-
-    /**
      * 获取值
      *
      * @return 值
      */
     public Double getValue() {
+        Number val = this.value();
+        // 否则，将文本转为Double类型并返回
+        return val == null ? null : val.doubleValue();
+    }
+
+    @Override
+    public Number value() {
         // 获取文本内容
         String text = this.getText();
         // 如果文本为空，或者为"-"，或者为"+"，或者为"."，则返回0.D
-        if (StrUtil.isEmpty(text) || "-".equals(text) || "+".equals(text) || ".".equals(text)) {
-            return 0.D;
+        if (StrUtil.equalsAny(text, "", "-", "+", ".")) {
+            return 0D;
         }
-        // 否则，将文本转为Double类型并返回
-        return NumberUtil.parseDouble(text);
+        return super.value();
     }
 
     /**
@@ -190,34 +113,37 @@ public class DecimalTextField extends DigitalTextField {
      * @param value 值
      */
     public void setValue(Double value) {
-        if (value != null && !Double.isNaN(value)) {
-            if (this.max != null && value > this.max.doubleValue()) {
-                value = this.max.doubleValue();
-            } else if (this.min != null && value < this.min.doubleValue()) {
-                value = this.min.doubleValue();
-            } else if (this.scaleLen != null) {
-                BigDecimal decimal = new BigDecimal(value);
-                if (decimal.scale() > this.scaleLen) {
-                    value = decimal.setScale(this.scaleLen, RoundingMode.HALF_UP).doubleValue();
-                }
+        this.value(value);
+    }
+
+    @Override
+    protected void value(Number value) {
+        if (value != null && this.scaleLen != null) {
+            BigDecimal decimal = NumberUtil.toBigDecimal(value);
+            if (decimal.scale() > this.scaleLen) {
+                value = decimal.setScale(this.scaleLen, RoundingMode.HALF_UP);
+                this.textFormatter.setValue(value);
+            } else {
+                super.value(value);
             }
-            this.textFormatter.setValue(value);
+        } else {
+            super.value(value);
         }
     }
 
-    @Override
-    public void setDefVal(Number defVal) {
-        super.setDefVal(defVal);
-        if (this.getValue() == null && defVal != null) {
-            this.setValue(defVal.doubleValue());
-        }
+    public void setMin(Double minVal) {
+        this.minVal = minVal;
     }
 
-    @Override
-    public void defVal(Object defVal) {
-        super.defVal(defVal);
-        if (this.getValue() == null && super.defVal != null) {
-            this.setValue(super.defVal.doubleValue());
-        }
+    public Double getMin() {
+        return this.minVal == null ? null : this.minVal.doubleValue();
+    }
+
+    public void setMax(Double maxVal) {
+        this.maxVal = maxVal;
+    }
+
+    public Double getMax() {
+        return this.maxVal == null ? null : this.maxVal.doubleValue();
     }
 }

@@ -6,7 +6,7 @@ package cn.oyzh.fx.plus.controls.digital;
  * @author oyzh
  * @since 2023/12/27
  */
-public class ShortTextField extends NumberTextField {
+public class UnSignedShortTextField extends ShortTextField {
 
     {
         super.setMin((long) Short.MIN_VALUE);

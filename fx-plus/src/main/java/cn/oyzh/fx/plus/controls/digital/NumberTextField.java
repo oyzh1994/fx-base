@@ -1,10 +1,7 @@
 package cn.oyzh.fx.plus.controls.digital;
 
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.controls.digital.DigitalTextField;
-import cn.oyzh.fx.plus.converter.LongConverter;
-import cn.oyzh.fx.plus.skin.NumberTextFieldSkin;
+import cn.oyzh.fx.common.util.NumUtil;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
@@ -17,27 +14,8 @@ import java.util.function.UnaryOperator;
  */
 public class NumberTextField extends DigitalTextField {
 
-    /**
-     * 文本格式器
-     */
-    protected final TextFormatter<Long> textFormatter;
-
-    /**
-     * 数据转换器
-     */
-    protected final LongConverter converter = new LongConverter();
-
     public NumberTextField() {
-        this.setSkin(new NumberTextFieldSkin(this, this::incrValue, this::decrValue));
-        if (this.defVal != null) {
-            this.textFormatter = new TextFormatter<>(this.converter, this.defVal.longValue(), this.createFilter());
-        } else {
-            this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
-        }
-        // 将TextFormatter对象设置到文本字段中
-        this.setTextFormatter(this.textFormatter);
-        // 监听值变化
-        this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
+        super();
     }
 
     @Override
@@ -66,18 +44,18 @@ public class NumberTextField extends DigitalTextField {
                         return change;
                     }
                     // 判断数字
-                    Long l = this.converter.fromString(text);
+                    Number l = this.converter.fromString(text);
                     if (l == null) {
                         return null;
                     }
-                    // 判断最大值
-                    if (this.max != null && l > this.max.longValue()) {
-                        this.setValue(this.max.longValue());
+                    // 如果超过了最大值，则将组件值设置为最大值
+                    if (this.maxVal != null && NumUtil.isGT(l.longValue(), this.maxVal)) {
+                        this.setValue(this.maxVal.longValue());
                         return null;
                     }
-                    // 判断最小值
-                    if (this.min != null && l < this.min.longValue()) {
-                        this.setValue(this.min.longValue());
+                    // 如果小于了最小值，则将组件值设置为最小值
+                    if (this.minVal != null && NumUtil.isLT(l.longValue(), this.minVal)) {
+                        this.setValue(this.minVal.longValue());
                         return null;
                     }
                 } catch (Exception ignored) {
@@ -88,72 +66,23 @@ public class NumberTextField extends DigitalTextField {
     }
 
     /**
-     * 值变化
-     *
-     * @param newVal 新值
-     */
-    protected void valueChanged(Long newVal) {
-        if (newVal != null) {
-            NumberTextFieldSkin skin = (NumberTextFieldSkin) this.getSkin();
-            if (this.min != null && newVal <= this.min.longValue()) {
-                skin.disableDecrButton();
-            } else {
-                skin.enableDecrButton();
-            }
-            if (this.max != null && newVal >= this.max.longValue()) {
-                skin.disableIncrButton();
-            } else {
-                skin.enableIncrButton();
-            }
-        }
-    }
-
-    @Override
-    public Byte getByteValue() {
-        Long val = this.getValue();
-        return val == null ? null : val.byteValue();
-    }
-
-    @Override
-    public Short getShortValue() {
-        Long val = this.getValue();
-        return val == null ? null : val.shortValue();
-    }
-
-    @Override
-    public Integer getIntegerValue() {
-        Long val = this.getValue();
-        return val == null ? null : val.intValue();
-    }
-
-    @Override
-    public Long getLongValue() {
-        return this.getValue();
-    }
-
-    @Override
-    public Float getFloatValue() {
-        Long val = this.getValue();
-        return val == null ? null : val.floatValue();
-    }
-
-    @Override
-    public Double getDoubleValue() {
-        Long val = this.getValue();
-        return val == null ? null : val.doubleValue();
-    }
-
-    /**
      * 获取值
      *
      * @return 值
      */
     public Long getValue() {
+        Number val = this.value();
+        // 否则，将文本转为Double类型并返回
+        return val == null ? null : val.longValue();
+    }
+
+    @Override
+    protected Number value() {
         String text = this.getText();
-        if (StrUtil.isEmpty(text) || "-".equals(text) || "+".equals(text)) {
+        if (StrUtil.equalsAny(text, "", "+", "-")) {
             return 0L;
         }
-        return NumberUtil.parseLong(text);
+        return super.value();
     }
 
     /**
@@ -163,12 +92,7 @@ public class NumberTextField extends DigitalTextField {
      */
     public void setValue(Long value) {
         if (value != null) {
-            if (this.max != null && value > this.max.longValue()) {
-                value = this.max.longValue();
-            } else if (this.min != null && value < this.min.longValue()) {
-                value = this.min.longValue();
-            }
-            this.textFormatter.setValue(value);
+            super.value(value);
         }
     }
 
@@ -178,22 +102,22 @@ public class NumberTextField extends DigitalTextField {
      * @param value 值
      */
     public void setValue(long value) {
-        this.setValue((Long) value);
+        super.value(value);
     }
 
-    @Override
-    public void setDefVal(Number defVal) {
-        super.setDefVal(defVal);
-        if (this.getValue() == null && defVal != null) {
-            this.setValue(defVal.longValue());
-        }
+    public void setMin(Long minVal) {
+        this.minVal = minVal;
     }
 
-    @Override
-    public void defVal(Object defVal) {
-        super.defVal(defVal);
-        if (this.getValue() == null && super.defVal != null) {
-            this.setValue(super.defVal.longValue());
-        }
+    public Long getMin() {
+        return this.minVal == null ? null : this.minVal.longValue();
+    }
+
+    public void setMax(Long maxVal) {
+        this.maxVal = maxVal;
+    }
+
+    public Long getMax() {
+        return this.maxVal == null ? null : this.maxVal.longValue();
     }
 }

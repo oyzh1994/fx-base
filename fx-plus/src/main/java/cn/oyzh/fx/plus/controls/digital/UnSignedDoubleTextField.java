@@ -6,10 +6,10 @@ package cn.oyzh.fx.plus.controls.digital;
  * @author oyzh
  * @since 2023/12/22
  */
-public class DoubleTextField extends DecimalTextField {
+public class UnSignedDoubleTextField extends DoubleTextField {
 
     {
-        super.setMin(-Double.MAX_VALUE);
+        super.setMin(0D);
         super.setMax(Double.MAX_VALUE);
     }
 }

@@ -24,6 +24,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.HBox?>
 <?import java.lang.String?>
+<?import cn.oyzh.fx.plus.controls.digital.FloatTextField?>
+<?import com.sun.javafx.scene.control.IntegerField?>
+<?import cn.oyzh.fx.plus.controls.digital.IntTextField?>
 <FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FlexHBox realHeight="50">
@@ -75,6 +78,10 @@
         </TimePicker>
         <YearPicker prefHeight="25" maxHeight="25">
         </YearPicker>
+    </FlexHBox>
+    <FlexHBox realHeight="50">
+        <FloatTextField promptText="测试内容"></FloatTextField>
+        <IntTextField promptText="测试内容"></IntTextField>
     </FlexHBox>
     <FlexHBox realHeight="50">
         <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>

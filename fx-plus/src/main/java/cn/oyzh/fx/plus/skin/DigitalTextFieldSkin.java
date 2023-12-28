@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
  * @author oyzh
  * @since 2023/10/9
  */
-public class NumberTextFieldSkin extends TextFieldSkinExt {
+public class DigitalTextFieldSkin extends TextFieldSkinExt {
 
     /**
      * 增加按钮
@@ -35,14 +35,13 @@ public class NumberTextFieldSkin extends TextFieldSkinExt {
         this.incrButton.setVisible(shouldBeVisible);
     }
 
-    public NumberTextFieldSkin(TextField textField, Runnable onIncr, Runnable onDecr) {
+    public DigitalTextFieldSkin(TextField textField, Runnable onIncr, Runnable onDecr) {
         super(textField);
         double h = textField.getHeight() / 2.d - 1;
         // 初始化增加、减少按钮
         this.incrButton = new SVGGlyph("/fx-plus/font/arrow-up-filling.svg");
         this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
-//        this.incrButton.setColor(this.getButtonColor());
         this.incrButton.setTipText("增加值");
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);
@@ -85,18 +84,18 @@ public class NumberTextFieldSkin extends TextFieldSkinExt {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 按钮大小，规则 (组件高/2-4)*0.92
-        double size = (this.getSkinnable().getHeight() / 2 - 4) * 0.92;
+        // 按钮大小，规则 组件高*0.5-3
+        double size = (this.getSkinnable().getHeight() * 0.5 - 2.5);
         this.incrButton.setSize(size);
         this.decrButton.setSize(size);
         // 计算按钮实际大小
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽+x-按钮实际大小
         double areaX = w + x - btnSize;
-        // 位移的areaY1值，规则 组件高*0.08/2 +2
-        double areaY1 = h * 0.08 / 2 + 2;
-        // 位移的areaY2值，规则 组件高/2+areaY1+3
-        double areaY2 = h / 2 + areaY1 + 3;
+        // 位移的areaY1值
+        double areaY1 = 1.5;
+        // 位移的areaY2值
+        double areaY2 = size + 3;
         // 设置按钮位置
         super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
         super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);

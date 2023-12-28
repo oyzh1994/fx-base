@@ -6,10 +6,10 @@ package cn.oyzh.fx.plus.controls.digital;
  * @author oyzh
  * @since 2023/12/27
  */
-public class MidIntTextField extends IntTextField {
+public class UnSignedMidIntTextField extends MidIntTextField {
 
     {
-        super.setMin(-8_388_608L);
-        super.setMax(8_388_607L);
+        super.setMin(0L);
+        super.setMax(16777215L);
     }
 }

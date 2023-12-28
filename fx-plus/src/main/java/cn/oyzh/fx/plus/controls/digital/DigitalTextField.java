@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.controls.digital;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.textfield.FlexTextField;
+import cn.oyzh.fx.plus.converter.NumberConverter;
+import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,16 +21,16 @@ public abstract class DigitalTextField extends FlexTextField {
     /**
      * 最大值
      */
-    @Getter
     @Setter
-    protected Number max;
+    @Getter
+    protected Number maxVal;
 
     /**
      * 最小值
      */
-    @Getter
     @Setter
-    protected Number min;
+    @Getter
+    protected Number minVal;
 
     /**
      * 递进值
@@ -38,53 +40,112 @@ public abstract class DigitalTextField extends FlexTextField {
     protected Number step = 1L;
 
     /**
-     * 默认值
+     * 文本格式器
      */
-    @Getter
-    @Setter
-    protected Number defVal;
+    protected final TextFormatter<Number> textFormatter;
+
+    /**
+     * 数据转换器
+     */
+    protected final NumberConverter converter = new NumberConverter();
+
+    public DigitalTextField() {
+        // 设置皮肤
+        this.setSkin(new DigitalTextFieldSkin(this, this::incrValue, this::decrValue));
+        // 创建文本格式化器
+        this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
+        // 将TextFormatter对象设置到文本字段中
+        this.setTextFormatter(this.textFormatter);
+        // 监听值变化
+        this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
+    }
+
+    /**
+     * 值变化
+     *
+     * @param newVal 新值
+     */
+    protected void valueChanged(Number newVal) {
+        // 检查新值是否有效
+        if (newVal != null) {
+            // 获取当前皮肤
+            DigitalTextFieldSkin skin = (DigitalTextFieldSkin) this.getSkin();
+            // 判断新值是否小于等于最小值，如果是则禁用减号按钮
+            if (this.minVal != null && newVal.doubleValue() <= this.minVal.doubleValue()) {
+                skin.disableDecrButton();
+            } else {
+                // 否则启用减号按钮
+                skin.enableDecrButton();
+            }
+            // 判断新值是否大于等于最大值，如果是则禁用加号按钮
+            if (this.maxVal != null && newVal.doubleValue() >= this.maxVal.doubleValue()) {
+                skin.disableIncrButton();
+            } else {
+                // 否则启用加号按钮
+                skin.enableIncrButton();
+            }
+        }
+    }
 
     /**
      * 获取byte值
      *
      * @return byte值
      */
-    public abstract Byte getByteValue();
+    public Byte getByteValue() {
+        Number val = this.value();
+        return val == null ? null : val.byteValue();
+    }
 
     /**
      * 获取short值
      *
      * @return short值
      */
-    public abstract Short getShortValue();
+    public Short getShortValue() {
+        Number val = this.value();
+        return val == null ? null : val.shortValue();
+    }
 
     /**
-     * 获取integer值
+     * 获取int值
      *
-     * @return integer值
+     * @return int值
      */
-    public abstract Integer getIntegerValue();
+    public Integer getIntValue() {
+        Number val = this.value();
+        return val == null ? null : val.intValue();
+    }
 
     /**
      * 获取long值
      *
      * @return long值
      */
-    public abstract Long getLongValue();
+    public Long getLongValue() {
+        Number val = this.value();
+        return val == null ? null : val.longValue();
+    }
 
     /**
      * 获取float值
      *
      * @return float值
      */
-    public abstract Float getFloatValue();
+    public Float getFloatValue() {
+        Number val = this.value();
+        return val == null ? null : val.floatValue();
+    }
 
     /**
      * 获取double值
      *
      * @return double值
      */
-    public abstract Double getDoubleValue();
+    public Double getDoubleValue() {
+        Number val = this.value();
+        return val == null ? null : val.doubleValue();
+    }
 
     /**
      * 增加值
@@ -104,19 +165,28 @@ public abstract class DigitalTextField extends FlexTextField {
     protected abstract UnaryOperator<TextFormatter.Change> createFilter();
 
     /**
-     * 设置默认值
+     * 获取值
      *
-     * @param defVal 默认值
+     * @return 值
      */
-    public void defVal(Object defVal) {
-        try {
-            if (defVal instanceof Number number) {
-                this.defVal = number;
-            } else if (defVal instanceof CharSequence sequence) {
-                this.defVal = NumberUtil.parseNumber(sequence.toString());
+    protected Number value() {
+        // 否则，将文本转为Double类型并返回
+        return NumberUtil.parseNumber(this.getText());
+    }
+
+    /**
+     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
+     *
+     * @param value 值
+     */
+    protected void value(Number value) {
+        if (value != null) {
+            if (this.maxVal != null && value.doubleValue() > this.maxVal.doubleValue()) {
+                value = this.maxVal;
+            } else if (this.minVal != null && value.doubleValue() < this.minVal.doubleValue()) {
+                value = this.minVal;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            this.textFormatter.setValue(value);
         }
     }
 }

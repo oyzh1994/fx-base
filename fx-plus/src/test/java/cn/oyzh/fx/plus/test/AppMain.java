@@ -43,6 +43,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -903,6 +904,9 @@ public class AppMain extends Application {
         }
 
         );
+
+
+
 //        Spinner<Double> spinner = new Spinner<>(new SpinnerValueFactory<Double>() {
 //            @Override
 //            public void decrement(int i) {
@@ -939,15 +943,42 @@ public class AppMain extends Application {
         });
 
 
-        field.addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            System.out.println("---------");
-            System.out.println(field.getSelection().getStart());
-            System.out.println(field.getSelection().getEnd());
-            System.out.println(field.getCaretPosition());
-            if (!TextUtil.checkNumber(event, field.getText())) {
+
+
+        field.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            // System.out.println("---------");
+            // System.out.println(field.getSelection().getStart());
+            // System.out.println(field.getSelection().getEnd());
+            // System.out.println(field.getCaretPosition());
+            if (!TextUtil.checkNumber(event, field)) {
+                System.out.println(",,,,,,,,,,,1");
                 event.consume();
             }
         });
+
+        field.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+            // System.out.println("---------");
+            // System.out.println(field.getSelection().getStart());
+            // System.out.println(field.getSelection().getEnd());
+            // System.out.println(field.getCaretPosition());
+            if (!TextUtil.checkNumber(event, field)) {
+                System.out.println(",,,,,,,,,,,2");
+                event.consume();
+            }
+        });
+        field.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+            // System.out.println("---------");
+            // System.out.println(field.getSelection().getStart());
+            // System.out.println(field.getSelection().getEnd());
+            // System.out.println(field.getCaretPosition());
+            if (!TextUtil.checkNumber(event, field)) {
+                System.out.println(",,,,,,,,,,,2");
+                event.consume();
+            }
+        });
+
+        field.paste();
+
 
 
         Spinner<Integer> spinner2 = new Spinner<>(new IntegerSpinnerValueFactory(0, 100));
