@@ -31,7 +31,7 @@ public enum ThemeType {
         }
     },
 
-    NORD_DARK("明亮北欧") {
+    NORD_DARK("暗黑北欧") {
         @Override
         public boolean isDarkMode() {
             return true;
