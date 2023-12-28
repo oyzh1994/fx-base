@@ -255,5 +255,153 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void setIgnoreChanged(boolean ignoreChanged) {
         this.setProp("_ignoreChanged", ignoreChanged);
     }
+
+    /**
+     * 子节点是否为空
+     *
+     * @return 结果
+     */
+    default boolean isItemEmpty() {
+        if (this instanceof TableView<?> view) {
+            return view.getItems().isEmpty();
+        }
+        return true;
+    }
+
+    /**
+     * 添加子节点
+     *
+     * @param item 子节点
+     */
+    default void addItem(Object item) {
+        if (item != null) {
+            if (this instanceof TableView view) {
+                FXUtil.runWait(() -> view.getItems().add(item));
+            }
+        }
+    }
+
+    /**
+     * 添加子节点
+     *
+     * @param items 子节点列表
+     */
+    default void addItem(List<?> items) {
+        if (items != null && !items.isEmpty()) {
+            if (this instanceof TableView view) {
+                FXUtil.runWait(() -> view.getItems().addAll(items));
+            }
+        }
+    }
+
+    /**
+     * 添加子节点
+     *
+     * @param index 下标
+     * @param item  子节点
+     */
+    default void addItem(int index, Object item) {
+        if (item != null) {
+            if (this instanceof TableView view) {
+                FXUtil.runWait(() -> view.getItems().add(index, item));
+            }
+        }
+    }
+
+    /**
+     * 设置子节点
+     *
+     * @param index 下标
+     * @param item  子节点
+     */
+    default void setItem(int index, Object item) {
+        if (item != null && index >= 0) {
+            FXUtil.runWait(() -> {
+                if (this instanceof TableView view) {
+                    if (view.getItems().size() <= index) {
+                        view.getItems().add(item);
+                    } else {
+                        view.getItems().set(index, item);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 设置子节点
+     *
+     * @param item 子节点
+     */
+    default void setItem(Object item) {
+        if (item != null) {
+            FXUtil.runWait(() -> {
+                if (this instanceof TableView view) {
+                    view.getItems().setAll(item);
+                }
+            });
+        }
+    }
+
+    /**
+     * 设置子节点
+     *
+     * @param items 子节点列表
+     */
+    default void setItem(List<?> items) {
+        if (items != null && !items.isEmpty()) {
+            FXUtil.runWait(() -> {
+                if (this instanceof TableView view) {
+                    view.getItems().setAll(items);
+                }
+            });
+        }
+    }
+
+    /**
+     * 获取子节点
+     *
+     * @param index 下标
+     * @return 子节点
+     */
+    default Object getItem(int index) {
+        if (index >= 0) {
+            if (this instanceof TableView<?> view) {
+                if (view.getItems().size() <= index) {
+                    return null;
+                }
+                return view.getItems().get(index);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 移除子节点
+     *
+     * @param index 下标
+     */
+    default void removeItem(int index) {
+        if (index >= 0) {
+            if (this instanceof TableView<?> view) {
+                if (view.getItems().size() >= index) {
+                    FXUtil.runWait(() -> view.getItems().remove(index));
+                }
+            }
+        }
+    }
+
+    /**
+     * 移除子节点
+     *
+     * @param item 子节点
+     */
+    default void removeItem(Object item) {
+        if (item != null) {
+            if (this instanceof TableView<?> view) {
+                FXUtil.runWait(() -> view.getItems().remove(item));
+            }
+        }
+    }
 }
 

@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.button.FlexButton;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
-import cn.oyzh.fx.plus.controls.text.FlexText;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -185,7 +184,6 @@ public class PageBox<T> extends FlexHBox {
         // 页码文本
         this.pageText = new FlexLabel();
         this.pageText.setFlexHeight("90%");
-        this.pageText.setFlexWidth("100% - 180");
         this.pageText.managedBindVisible();
 
         // 设置边距
@@ -275,6 +273,20 @@ public class PageBox<T> extends FlexHBox {
         } else {
             HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 0));
         }
+        this.updateSize();
+    }
+
+    /**
+     * 更新组件大小
+     */
+    private void updateSize() {
+        if (this.showFirst && this.showLast) {
+            this.pageText.setFlexWidth("100% - 190");
+        } else if (this.showFirst || this.showLast) {
+            this.pageText.setFlexWidth("100% - 140");
+        } else {
+            this.pageText.setFlexWidth("100% - 90");
+        }
     }
 
     /**
@@ -295,5 +307,6 @@ public class PageBox<T> extends FlexHBox {
     public void setShowLast(boolean showLast) {
         this.showLast = showLast;
         this.lastBtn.setVisible(showLast);
+        this.updateSize();
     }
 }

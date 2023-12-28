@@ -82,14 +82,14 @@ public class FXComboBox<T> extends ComboBox<T> implements ThemeAdapter, Verifiab
         });
     }
 
-    /**
-     * 添加数据
-     *
-     * @param item 数据
-     */
-    public void addItem(@NonNull T item) {
-        FXUtil.runWait(() -> this.getItems().add(item));
-    }
+    // /**
+    //  * 添加数据
+    //  *
+    //  * @param item 数据
+    //  */
+    // public void addItem(@NonNull T item) {
+    //     FXUtil.runWait(() -> this.getItems().add(item));
+    // }
 
     /**
      * 是否包含数据

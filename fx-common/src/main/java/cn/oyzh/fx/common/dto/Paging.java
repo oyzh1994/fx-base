@@ -19,28 +19,28 @@ public class Paging<T> {
      */
     @Getter
     @Accessors(fluent = true, chain = true)
-    private int limit = 10;
+    private long limit = 10;
 
     /**
      * 数据总数
      */
     @Getter
     @Accessors(fluent = true, chain = true)
-    private int count;
+    private long count;
 
     /**
      * 总页数
      */
     @Getter
     @Accessors(fluent = true, chain = true)
-    private int countPage;
+    private long countPage;
 
     /**
      * 当前页
      */
     @Getter
     @Accessors(fluent = true, chain = true)
-    private int currentPage;
+    private long currentPage;
 
     /**
      * 数据列表
@@ -54,11 +54,15 @@ public class Paging<T> {
      */
     public static final Paging<Object> EMPTY = new Paging<>(Collections.emptyList());
 
+    public Paging(long limit) {
+        this(Collections.emptyList(), limit);
+    }
+
     public Paging(List<T> dataList) {
         this.dataList(dataList);
     }
 
-    public Paging(List<T> dataList, int limit) {
+    public Paging(List<T> dataList, long limit) {
         if (limit <= 0) {
             limit = 10;
         }
@@ -66,7 +70,7 @@ public class Paging<T> {
         this.dataList(dataList);
     }
 
-    public Paging(List<T> dataList, int limit, int count) {
+    public Paging(List<T> dataList, long limit, long count) {
         if (limit <= 0) {
             limit = 10;
         }
@@ -155,7 +159,7 @@ public class Paging<T> {
      *
      * @return 页码
      */
-    public int prevPage() {
+    public long prevPage() {
         if (this.currentPage != 0) {
             return this.currentPage - 1;
         }
@@ -167,7 +171,7 @@ public class Paging<T> {
      *
      * @return 页码
      */
-    public int nextPage() {
+    public long nextPage() {
         if (this.currentPage < this.countPage - 1) {
             return this.currentPage + 1;
         }
@@ -175,11 +179,21 @@ public class Paging<T> {
     }
 
     /**
+     * 尾页页码
+     *
+     * @return 页码
+     */
+    public long lastPage() {
+        long lastPage = this.countPage - 1;
+        return Math.max(0, lastPage);
+    }
+
+    /**
      * 更新当前分页
      *
      * @param pageNo 页码
      */
-    public void currentPage(int pageNo) {
+    public void currentPage(long pageNo) {
         if (pageNo <= 0) {
             this.currentPage = 0;
         } else if (pageNo >= this.countPage) {
@@ -190,12 +204,21 @@ public class Paging<T> {
     }
 
     /**
+     * 获取开始下标
+     *
+     * @return 开始下标
+     */
+    public long startIndex() {
+        return this.currentPage * this.limit;
+    }
+
+    /**
      * 获取分页数据
      *
      * @param pageNo 页码
      * @return 分页内容
      */
-    public List<T> page(int pageNo) {
+    public List<T> page(long pageNo) {
         this.currentPage(pageNo);
         return this.pageData();
     }
@@ -206,7 +229,7 @@ public class Paging<T> {
      * @return 结果
      */
     public boolean isEmpty() {
-        return this.dataList == null || this.dataList.size() == 0;
+        return this.dataList == null || this.dataList.isEmpty();
     }
 
     /**
@@ -237,8 +260,8 @@ public class Paging<T> {
      * @return 分页数据
      */
     private List<T> pageData() {
-        int start = this.limit * this.currentPage;
-        int end = Math.min(start + this.limit, this.count);
-        return this.dataList.subList(start, end);
+        long start = this.limit * this.currentPage;
+        long end = Math.min(start + this.limit, this.count);
+        return this.dataList.subList((int) start, (int) end);
     }
 }
