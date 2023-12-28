@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.page;
 
 import cn.oyzh.fx.common.dto.Paging;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;

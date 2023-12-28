@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Pagination;
 import javafx.stage.Modality;
 
 /**
@@ -93,5 +94,10 @@ public class TableTestController extends Controller {
     public void theme7(ActionEvent actionEvent) {
         // this.stage.switchDraculaTheme();
         ThemeManager.currentTheme(ThemeType.DRACULA);
+    }
+
+
+    public void test(){
+        Pagination pagination;
     }
 }

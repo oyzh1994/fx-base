@@ -7,6 +7,9 @@
 <?import cn.oyzh.fx.plus.controls.calendar.DateTimePicker?>
 <?import cn.oyzh.fx.plus.controls.calendar.TimePicker?>
 <?import cn.oyzh.fx.plus.controls.calendar.YearPicker?>
+<?import cn.oyzh.fx.plus.controls.digital.FloatTextField?>
+<?import cn.oyzh.fx.plus.controls.digital.IntTextField?>
+<?import cn.oyzh.fx.plus.controls.digital.NumberTextField?>
 <?import cn.oyzh.fx.plus.controls.FlexHBox?>
 <?import cn.oyzh.fx.plus.controls.FlexVBox?>
 <?import cn.oyzh.fx.plus.controls.rich.FlexRichTextArea?>
@@ -17,106 +20,126 @@
 <?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
 <?import cn.oyzh.fx.plus.controls.text.FXText?>
 <?import cn.oyzh.fx.plus.controls.textfield.ClearableTextField?>
-<?import cn.oyzh.fx.plus.controls.digital.NumberTextField?>
 <?import cn.oyzh.fx.plus.controls.textfield.SearchTextField?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.HBox?>
 <?import java.lang.String?>
-<?import cn.oyzh.fx.plus.controls.digital.FloatTextField?>
-<?import com.sun.javafx.scene.control.IntegerField?>
-<?import cn.oyzh.fx.plus.controls.digital.IntTextField?>
-<FlexVBox realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
-    <FlexHBox realHeight="50">
-        <Button text="测试1" onAction="#test1"></Button>
-        <Button text="测试2" onAction="#test2"></Button>
-        <Button text="主题1" onAction="#theme1"></Button>
-        <Button text="主题2" onAction="#theme2"></Button>
-        <Button text="主题3" onAction="#theme3"></Button>
-        <Button text="主题4" onAction="#theme4"></Button>
-        <Button text="主题5" onAction="#theme5"></Button>
-        <Button text="主题6" onAction="#theme6"></Button>
-        <Button text="主题7" onAction="#theme7"></Button>
-    </FlexHBox>
-    <FlexHBox realHeight="50">
-        <ClearableTextField promptText="测试内容"></ClearableTextField>
-        <NumberTextField promptText="测试内容"></NumberTextField>
-        <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
-        <SVGGlyph url="/fx-plus/font/clear.svg" enableTheme="false"></SVGGlyph>
-        <FXText text="测试内容"></FXText>
-        <ComboBox>
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="用户密码明文"/>
-                    <String fx:value="已有认证信息"/>
-                </FXCollections>
-            </items>
-        </ComboBox>
+<?import javafx.scene.control.Pagination?>
+<?import cn.oyzh.fx.plus.controls.page.PagePane?>
+<?import cn.oyzh.fx.plus.controls.page.PageBox?>
+<FlexTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
+             fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
+    <FXTab text="测试1">
+        <FlexVBox>
+            <FlexHBox realHeight="50">
+                <Button text="测试1" onAction="#test1"></Button>
+                <Button text="测试2" onAction="#test2"></Button>
+                <Button text="主题1" onAction="#theme1"></Button>
+                <Button text="主题2" onAction="#theme2"></Button>
+                <Button text="主题3" onAction="#theme3"></Button>
+                <Button text="主题4" onAction="#theme4"></Button>
+                <Button text="主题5" onAction="#theme5"></Button>
+                <Button text="主题6" onAction="#theme6"></Button>
+                <Button text="主题7" onAction="#theme7"></Button>
+            </FlexHBox>
+            <FlexHBox realHeight="50">
+                <ClearableTextField promptText="测试内容"></ClearableTextField>
+                <NumberTextField promptText="测试内容"></NumberTextField>
+                <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
+                <SVGGlyph url="/fx-plus/font/clear.svg" enableTheme="false"></SVGGlyph>
+                <FXText text="测试内容"></FXText>
+                <ComboBox>
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="用户密码明文"/>
+                            <String fx:value="已有认证信息"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
 
-        <!-- <DateTimePicker2> -->
+                <!-- <DateTimePicker2> -->
 
-        <!-- </DateTimePicker2> -->
+                <!-- </DateTimePicker2> -->
 
-        <!-- <DateTimePicker> -->
+                <!-- <DateTimePicker> -->
 
-        <!-- </DateTimePicker> -->
-        <!-- <FlexDateTimePicker> -->
+                <!-- </DateTimePicker> -->
+                <!-- <FlexDateTimePicker> -->
 
-        <!-- </FlexDateTimePicker> -->
-        <!-- <FlexDatePicker> -->
+                <!-- </FlexDateTimePicker> -->
+                <!-- <FlexDatePicker> -->
 
-        <!-- </FlexDatePicker> -->
-    </FlexHBox>
-    <FlexHBox realHeight="50">
-        <DateTimePicker prefHeight="25" maxHeight="25">
-        </DateTimePicker>
-        <DatePicker prefHeight="25" maxHeight="25">
-        </DatePicker>
-        <TimePicker prefHeight="25" maxHeight="25">
-        </TimePicker>
-        <YearPicker prefHeight="25" maxHeight="25">
-        </YearPicker>
-    </FlexHBox>
-    <FlexHBox realHeight="50">
-        <FloatTextField promptText="测试内容"></FloatTextField>
-        <IntTextField promptText="测试内容"></IntTextField>
-    </FlexHBox>
-    <FlexHBox realHeight="50">
-        <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
-        <ToggleSwitch text="测试内容"></ToggleSwitch>
-        <FlexTextArea text="测试内容"></FlexTextArea>
-        <FlexRichTextArea text="测试内容" promptText="测试内容提示"></FlexRichTextArea>
-    </FlexHBox>
-    <FlexTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
-                   fixedCellSize="30">
-        <columns>
-            <FlexTableColumn flexWidth="10%" fx:id="index" text="编号"/>
-            <FlexTableColumn flexWidth="50%" fx:id="value" text="成员名称"/>
-            <FlexTableColumn flexWidth="30%" fx:id="score" visible="false" text="分数"/>
-            <FlexTableColumn flexWidth="25%" fx:id="longitude" visible="false" text="经度"/>
-            <FlexTableColumn flexWidth="25%" fx:id="latitude" visible="false" text="纬度"/>
-            <FlexTableColumn flexWidth="10% - 6" fx:id="action" text="操作" sortable="false"/>
-        </columns>
-    </FlexTableView>
-    <FlexTabPane focusTraversable="true" flexWidth="100%" realHeight="200">
-        <FXTab text="测试tab">
-            <HBox>
-                <SVGGlyph url="/fx-plus/font/clear.svg"></SVGGlyph>
-                <IconButton text="测试内容">
-                    <graphic>
-                        <SVGGlyph url="/fx-plus/font/clear.svg"/>
-                    </graphic>
-                </IconButton>
-                <IconButton text="测试内容1" styleClass="success">
-                    <graphic>
-                        <SVGGlyph url="/fx-plus/font/clear.svg"/>
-                    </graphic>
-                </IconButton>
-                <SearchTextField>
-                </SearchTextField>
-            </HBox>
-        </FXTab>
-    </FlexTabPane>
-</FlexVBox>
+                <!-- </FlexDatePicker> -->
+            </FlexHBox>
+            <FlexHBox realHeight="50">
+                <DateTimePicker prefHeight="25" maxHeight="25">
+                </DateTimePicker>
+                <DatePicker prefHeight="25" maxHeight="25">
+                </DatePicker>
+                <TimePicker prefHeight="25" maxHeight="25">
+                </TimePicker>
+                <YearPicker prefHeight="25" maxHeight="25">
+                </YearPicker>
+            </FlexHBox>
+            <FlexHBox realHeight="50">
+                <FloatTextField promptText="测试内容"></FloatTextField>
+                <IntTextField promptText="测试内容"></IntTextField>
+            </FlexHBox>
+            <FlexHBox realHeight="50">
+                <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
+                <ToggleSwitch text="测试内容"></ToggleSwitch>
+                <FlexTextArea text="测试内容"></FlexTextArea>
+                <FlexRichTextArea text="测试内容" promptText="测试内容提示"></FlexRichTextArea>
+            </FlexHBox>
+            <FlexTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
+                           fixedCellSize="30">
+                <columns>
+                    <FlexTableColumn flexWidth="10%" fx:id="index" text="编号"/>
+                    <FlexTableColumn flexWidth="50%" fx:id="value" text="成员名称"/>
+                    <FlexTableColumn flexWidth="30%" fx:id="score" visible="false" text="分数"/>
+                    <FlexTableColumn flexWidth="25%" fx:id="longitude" visible="false" text="经度"/>
+                    <FlexTableColumn flexWidth="25%" fx:id="latitude" visible="false" text="纬度"/>
+                    <FlexTableColumn flexWidth="10% - 6" fx:id="action" text="操作" sortable="false"/>
+                </columns>
+            </FlexTableView>
+            <FlexTabPane focusTraversable="true" flexWidth="100%" realHeight="200">
+                <FXTab text="测试tab">
+                    <HBox>
+                        <SVGGlyph url="/fx-plus/font/clear.svg"></SVGGlyph>
+                        <IconButton text="测试内容">
+                            <graphic>
+                                <SVGGlyph url="/fx-plus/font/clear.svg"/>
+                            </graphic>
+                        </IconButton>
+                        <IconButton text="测试内容1" styleClass="success">
+                            <graphic>
+                                <SVGGlyph url="/fx-plus/font/clear.svg"/>
+                            </graphic>
+                        </IconButton>
+                        <SearchTextField>
+                        </SearchTextField>
+                    </HBox>
+                </FXTab>
+            </FlexTabPane>
+        </FlexVBox>
+    </FXTab>
+    <FXTab text="测试2">
+        <FlexVBox>
+            <FlexHBox realHeight="50">
+
+                <Pagination pageCount="5" prefWidth="300" prefHeight="100">
+
+                </Pagination>
+                <PagePane prefWidth="300" prefHeight="100">
+
+                </PagePane>
+                <PageBox prefWidth="400" realHeight="25" showFirst="true" showLast="true">
+
+                </PageBox>
+            </FlexHBox>
+        </FlexVBox>
+    </FXTab>
+</FlexTabPane>
+

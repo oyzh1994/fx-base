@@ -48,11 +48,13 @@ public abstract class CalendarPicker<S extends CalendarSelector> extends FlexHBo
         this.textField = new ClearableTextField();
         this.textField.setFocusTraversable(false);
         this.textField.maxHeightProperty().bind(this.maxHeightProperty());
+        this.textField.setFlexWidth("100% - 30");
         this.textField.minHeightProperty().bind(this.minHeightProperty());
         this.textField.prefHeightProperty().bind(this.prefHeightProperty());
 
         // 初始化按钮组件
         FXButton button = new FXButton();
+        button.setRealWidth(30);
         button.maxHeightProperty().bind(this.maxHeightProperty());
         button.minHeightProperty().bind(this.minHeightProperty());
         button.prefHeightProperty().bind(this.prefHeightProperty());

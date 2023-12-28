@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
+import cn.oyzh.fx.plus.adapter.AreaAdapter;
+import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -12,12 +14,13 @@ import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import lombok.NonNull;
 
 /**
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter {
+public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
 
     {
         this.setCache(true);
@@ -106,5 +109,25 @@ public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipA
     @Override
     public void setRealHeight(double height) {
         LayoutAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        FontAdapter.super.fontSize(fontSize);
+    }
+
+    @Override
+    public double getFontSize() {
+        return FontAdapter.super.fontSize();
+    }
+
+    @Override
+    public String getFontFamily() {
+        return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontFamily(@NonNull String fontFamily) {
+        FontAdapter.super.fontFamily(fontFamily);
     }
 }
