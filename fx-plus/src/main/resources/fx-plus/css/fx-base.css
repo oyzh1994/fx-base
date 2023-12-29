@@ -35,9 +35,11 @@
 .check-box {
     -fx-label-padding: 1px 0 1px 3px;
 }
+
 .check-box > .box {
     -fx-padding: 4px;
 }
+
 .check-box > .box > .mark {
     -fx-min-height: 0.75em;
     -fx-max-height: 0.75em;
@@ -49,6 +51,7 @@
 .text-area {
     -fx-padding: 1px;
 }
+
 .text-area .content {
     -fx-padding: 3px 3px 3px 5px;
 }
@@ -95,9 +98,11 @@
 .titled-pane > .content {
     -fx-padding: 3px 3px 3px 5px;
 }
+
 .titled-pane > .title {
     -fx-padding: 3px 3px 3px 5px;
 }
+
 .titled-pane > .title > .text {
     -fx-font-size: 1em;
 }
@@ -106,4 +111,21 @@
 .combo-box > .list-cell {
     -fx-padding: 3px 3px 3px 5px;
 }
+
+/* chart，修复atlantafx的样式异常问题 */
+.chart-legend {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
+}
+
+.chart-legend-item {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
+}
+
+.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
+}
+
 
