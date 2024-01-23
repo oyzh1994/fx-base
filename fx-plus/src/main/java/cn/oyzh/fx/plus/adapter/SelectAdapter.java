@@ -349,7 +349,7 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @param items 子节点列表
      */
     default void setItem(List<?> items) {
-        if (items != null && !items.isEmpty()) {
+        if (items != null) {
             FXUtil.runWait(() -> {
                 if (this instanceof TableView view) {
                     view.getItems().setAll(items);

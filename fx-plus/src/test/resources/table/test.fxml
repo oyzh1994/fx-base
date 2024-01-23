@@ -141,5 +141,9 @@
             </FlexHBox>
         </FlexVBox>
     </FXTab>
+    <FXTab text="测试3">
+        <FlexVBox>
+        </FlexVBox>
+    </FXTab>
 </FlexTabPane>
 
