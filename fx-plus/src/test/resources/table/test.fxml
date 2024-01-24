@@ -29,6 +29,9 @@
 <?import javafx.scene.control.Pagination?>
 <?import cn.oyzh.fx.plus.controls.page.PagePane?>
 <?import cn.oyzh.fx.plus.controls.page.PageBox?>
+<?import atlantafx.base.layout.DeckPane?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ListView?>
 <FlexTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
              fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FXTab text="测试1">
@@ -143,6 +146,18 @@
     </FXTab>
     <FXTab text="测试3">
         <FlexVBox>
+            <ListView maxHeight="100">
+                <CheckBox text="测试1"></CheckBox>
+                <CheckBox text="测试2"></CheckBox>
+                <CheckBox text="测试3"></CheckBox>
+                <CheckBox text="测试4"></CheckBox>
+                <CheckBox text="测试5"></CheckBox>
+                <CheckBox text="测试6"></CheckBox>
+                <CheckBox text="测试7"></CheckBox>
+                <CheckBox text="测试8"></CheckBox>
+                <CheckBox text="测试9"></CheckBox>
+                <CheckBox text="测试10"></CheckBox>
+            </ListView>
         </FlexVBox>
     </FXTab>
 </FlexTabPane>

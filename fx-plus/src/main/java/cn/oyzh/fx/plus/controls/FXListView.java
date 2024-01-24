@@ -3,6 +3,9 @@ package cn.oyzh.fx.plus.controls;
 import cn.oyzh.fx.plus.adapter.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
+import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
@@ -14,7 +17,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/4/24
  */
-public class FXListView<T> extends ListView<T> implements ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
+public class FXListView<T> extends ListView<T> implements TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
 
     {
         this.setCache(true);
@@ -22,6 +25,16 @@ public class FXListView<T> extends ListView<T> implements ThemeAdapter, LayoutAd
         this.setCacheHint(CacheHint.QUALITY);
         this.setCursor(Cursor.HAND);
         this.changeTheme(ThemeManager.currentTheme());
+    }
+
+    @Override
+    public void setTipText(String tipText) {
+        TipAdapter.super.tipText(tipText);
+    }
+
+    @Override
+    public String getTipText() {
+        return TipAdapter.super.tipText();
     }
 
     @Override
@@ -72,5 +85,15 @@ public class FXListView<T> extends ListView<T> implements ThemeAdapter, LayoutAd
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setStateManager(StateManager manager) {
+        StateAdapter.super.stateManager(manager);
+    }
+
+    @Override
+    public StateManager getStateManager() {
+        return StateAdapter.super.stateManager();
     }
 }
