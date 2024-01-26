@@ -265,6 +265,9 @@ public interface SelectAdapter<T> extends PropAdapter {
         if (this instanceof TableView<?> view) {
             return view.getItems().isEmpty();
         }
+        if (this instanceof ComboBox<?> comboBox) {
+            return comboBox.getItems().isEmpty();
+        }
         return true;
     }
 
@@ -277,6 +280,8 @@ public interface SelectAdapter<T> extends PropAdapter {
         if (item != null) {
             if (this instanceof TableView view) {
                 FXUtil.runWait(() -> view.getItems().add(item));
+            } else if (this instanceof ComboBox comboBox) {
+                FXUtil.runWait(() -> comboBox.getItems().add(item));
             }
         }
     }
@@ -290,6 +295,8 @@ public interface SelectAdapter<T> extends PropAdapter {
         if (items != null && !items.isEmpty()) {
             if (this instanceof TableView view) {
                 FXUtil.runWait(() -> view.getItems().addAll(items));
+            } else if (this instanceof ComboBox comboBox) {
+                FXUtil.runWait(() -> comboBox.getItems().addAll(items));
             }
         }
     }
@@ -304,6 +311,8 @@ public interface SelectAdapter<T> extends PropAdapter {
         if (item != null) {
             if (this instanceof TableView view) {
                 FXUtil.runWait(() -> view.getItems().add(index, item));
+            } else if (this instanceof ComboBox comboBox) {
+                FXUtil.runWait(() -> comboBox.getItems().add(index, item));
             }
         }
     }
@@ -338,6 +347,8 @@ public interface SelectAdapter<T> extends PropAdapter {
             FXUtil.runWait(() -> {
                 if (this instanceof TableView view) {
                     view.getItems().setAll(item);
+                } else if (this instanceof ComboBox comboBox) {
+                    comboBox.getItems().setAll(item);
                 }
             });
         }
@@ -353,6 +364,8 @@ public interface SelectAdapter<T> extends PropAdapter {
             FXUtil.runWait(() -> {
                 if (this instanceof TableView view) {
                     view.getItems().setAll(items);
+                } else if (this instanceof ComboBox comboBox) {
+                    comboBox.getItems().setAll(items);
                 }
             });
         }
@@ -371,6 +384,11 @@ public interface SelectAdapter<T> extends PropAdapter {
                     return null;
                 }
                 return view.getItems().get(index);
+            } else if (this instanceof ComboBox<?> comboBox) {
+                if (comboBox.getItems().size() <= index) {
+                    return null;
+                }
+                return comboBox.getItems().get(index);
             }
         }
         return null;
@@ -387,6 +405,10 @@ public interface SelectAdapter<T> extends PropAdapter {
                 if (view.getItems().size() >= index) {
                     FXUtil.runWait(() -> view.getItems().remove(index));
                 }
+            } else if (this instanceof ComboBox<?> comboBox) {
+                if (comboBox.getItems().size() >= index) {
+                    FXUtil.runWait(() -> comboBox.getItems().remove(index));
+                }
             }
         }
     }
@@ -400,6 +422,8 @@ public interface SelectAdapter<T> extends PropAdapter {
         if (item != null) {
             if (this instanceof TableView<?> view) {
                 FXUtil.runWait(() -> view.getItems().remove(item));
+            } else if (this instanceof ComboBox<?> comboBox) {
+                FXUtil.runWait(() -> comboBox.getItems().remove(item));
             }
         }
     }

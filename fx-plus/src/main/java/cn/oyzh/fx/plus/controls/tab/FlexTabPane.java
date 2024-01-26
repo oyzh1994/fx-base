@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
 import cn.oyzh.fx.plus.adapter.FontAdapter;
@@ -16,6 +17,8 @@ import javafx.scene.CacheHint;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import lombok.NonNull;
+
+import java.util.List;
 
 /**
  * @author oyzh
@@ -151,6 +154,17 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, C
      */
     public void removeTab(@NonNull Tab tab) {
         FXUtil.runLater(() -> this.getTabs().remove(tab));
+    }
+
+    /**
+     * 移除tab
+     *
+     * @param tabs tabs
+     */
+    public void removeTab(List<? extends Tab> tabs) {
+        if (CollUtil.isNotEmpty(tabs)) {
+            FXUtil.runLater(() -> this.getTabs().removeAll(tabs));
+        }
     }
 
     @Override
