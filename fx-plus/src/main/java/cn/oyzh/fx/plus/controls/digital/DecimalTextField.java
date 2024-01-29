@@ -18,17 +18,21 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/08/28
  */
+@Getter
 public class DecimalTextField extends DigitalTextField {
 
     /**
      * 小数位数
      */
     @Setter
-    @Getter
     protected Integer scaleLen;
 
     public DecimalTextField() {
-        super();
+        super(false);
+    }
+
+    public DecimalTextField(boolean unsigned) {
+        super(unsigned);
     }
 
     @Override

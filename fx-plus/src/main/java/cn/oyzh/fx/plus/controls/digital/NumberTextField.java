@@ -14,8 +14,12 @@ import java.util.function.UnaryOperator;
  */
 public class NumberTextField extends DigitalTextField {
 
-    public NumberTextField() {
-        super();
+    public NumberTextField( ) {
+        super(false);
+    }
+
+    public NumberTextField(boolean unsigned) {
+        super(unsigned);
     }
 
     @Override

@@ -123,9 +123,9 @@ public class NodeUtil {
                 if (!columnBase.minWidthProperty().isBound()) {
                     columnBase.setMinWidth(width);
                 }
-                if (!columnBase.maxWidthProperty().isBound()) {
-                    columnBase.setMaxWidth(width);
-                }
+                // if (!columnBase.maxWidthProperty().isBound()) {
+                //     columnBase.setMaxWidth(width);
+                // }
             }
             case PopupControl control -> {
                 if (!control.prefWidthProperty().isBound()) {

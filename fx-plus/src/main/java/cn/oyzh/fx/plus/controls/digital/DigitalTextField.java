@@ -40,6 +40,13 @@ public abstract class DigitalTextField extends FlexTextField {
     protected Number step = 1L;
 
     /**
+     * 无符号模式
+     */
+    @Getter
+    @Setter
+    private boolean unsigned;
+
+    /**
      * 文本格式器
      */
     protected final TextFormatter<Number> textFormatter;
@@ -49,7 +56,7 @@ public abstract class DigitalTextField extends FlexTextField {
      */
     protected final NumberConverter converter = new NumberConverter();
 
-    public DigitalTextField() {
+    public DigitalTextField(boolean unsigned) {
         // 设置皮肤
         this.setSkin(new DigitalTextFieldSkin(this, this::incrValue, this::decrValue));
         // 创建文本格式化器
@@ -58,6 +65,7 @@ public abstract class DigitalTextField extends FlexTextField {
         this.setTextFormatter(this.textFormatter);
         // 监听值变化
         this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
+        this.setUnsigned(unsigned);
     }
 
     /**

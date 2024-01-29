@@ -304,4 +304,16 @@ public interface NodeAdapter extends EventTarget {
             }
         }
     }
+
+    /**
+     * 节点是否启用
+     *
+     * @return 结果
+     */
+    default boolean isEnable() {
+        if (this instanceof Node node) {
+            return !node.isDisable() && !node.isDisabled();
+        }
+        return false;
+    }
 }

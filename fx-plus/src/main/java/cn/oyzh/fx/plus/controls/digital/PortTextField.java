@@ -6,8 +6,10 @@ package cn.oyzh.fx.plus.controls.digital;
  */
 public class PortTextField extends NumberTextField {
 
-    {
+    public PortTextField() {
+        super(false);
         this.setMin(1L);
-        this.setMax(65535L);
+        this.setMax(65_535L);
     }
+
 }

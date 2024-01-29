@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.controls.digital;
 
+import java.math.BigDecimal;
+
 /**
  * integer文本域
  *
@@ -8,8 +10,23 @@ package cn.oyzh.fx.plus.controls.digital;
  */
 public class IntTextField extends NumberTextField {
 
-    {
-        super.setMin((long) Integer.MIN_VALUE);
-        super.setMax((long) Integer.MAX_VALUE);
+    public IntTextField() {
+        super(false);
+    }
+
+    public IntTextField(boolean unsigned) {
+        super(unsigned);
+    }
+
+    @Override
+    public void setUnsigned(boolean unsigned) {
+        super.setUnsigned(unsigned);
+        if (unsigned) {
+            super.setMin(0L);
+            super.setMaxVal(4_294_967_295L);
+        } else {
+            super.setMin((long) Integer.MIN_VALUE);
+            super.setMax((long) Integer.MAX_VALUE);
+        }
     }
 }

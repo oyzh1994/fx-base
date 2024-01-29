@@ -8,8 +8,23 @@ package cn.oyzh.fx.plus.controls.digital;
  */
 public class ByteTextField extends NumberTextField {
 
-    {
-        super.setMin((long) Byte.MIN_VALUE);
-        super.setMax((long) Byte.MAX_VALUE);
+    public ByteTextField() {
+        super(false);
+    }
+
+    public ByteTextField(boolean unsigned) {
+        super(unsigned);
+    }
+
+    @Override
+    public void setUnsigned(boolean unsigned) {
+        super.setUnsigned(unsigned);
+        if (unsigned) {
+            super.setMin(0L);
+            super.setMaxVal(255);
+        } else {
+            super.setMin((long) Byte.MIN_VALUE);
+            super.setMax((long) Byte.MAX_VALUE);
+        }
     }
 }

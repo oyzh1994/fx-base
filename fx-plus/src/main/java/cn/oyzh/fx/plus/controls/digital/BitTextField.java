@@ -8,8 +8,9 @@ package cn.oyzh.fx.plus.controls.digital;
  */
 public class BitTextField extends NumberTextField {
 
-    {
-        super.setMax(1L);
-        super.setMin(0L);
+    public BitTextField() {
+        super(false);
+        this.setMin(0L);
+        this.setMax(2L);
     }
 }

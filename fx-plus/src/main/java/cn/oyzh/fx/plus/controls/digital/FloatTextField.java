@@ -9,8 +9,23 @@ package cn.oyzh.fx.plus.controls.digital;
  */
 public class FloatTextField extends DecimalTextField {
 
-    {
-        super.setMin((double) -Float.MAX_VALUE);
-        super.setMax((double) Float.MAX_VALUE);
+    public FloatTextField() {
+        super(false);
+    }
+
+    public FloatTextField(boolean unsigned) {
+        super(unsigned);
+    }
+
+    @Override
+    public void setUnsigned(boolean unsigned) {
+        super.setUnsigned(unsigned);
+        if (unsigned) {
+            super.setMin(0D);
+            super.setMax((double) Float.MAX_VALUE);
+        } else {
+            super.setMin((double) -Float.MAX_VALUE);
+            super.setMax((double) Float.MAX_VALUE);
+        }
     }
 }

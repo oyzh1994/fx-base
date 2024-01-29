@@ -10,8 +10,23 @@ import java.math.BigDecimal;
  */
 public class LongTextField extends NumberTextField {
 
-    {
-        super.setMin(Long.MIN_VALUE);
-        super.setMax(Long.MAX_VALUE);
+    public LongTextField() {
+        super(false);
+    }
+
+    public LongTextField(boolean unsigned) {
+        super(unsigned);
+    }
+
+    @Override
+    public void setUnsigned(boolean unsigned) {
+        super.setUnsigned(unsigned);
+        if (unsigned) {
+            super.setMin(0L);
+            super.setMaxVal(new BigDecimal("18446744073709551615"));
+        } else {
+            super.setMin(Long.MIN_VALUE);
+            super.setMax(Long.MAX_VALUE);
+        }
     }
 }

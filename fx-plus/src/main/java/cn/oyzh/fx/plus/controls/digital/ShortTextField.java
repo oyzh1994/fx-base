@@ -8,8 +8,23 @@ package cn.oyzh.fx.plus.controls.digital;
  */
 public class ShortTextField extends NumberTextField {
 
-    {
-        super.setMin((long) Short.MIN_VALUE);
-        super.setMax((long) Short.MAX_VALUE);
+    public ShortTextField() {
+        super(false);
+    }
+
+    public ShortTextField(boolean unsigned) {
+        super(unsigned);
+    }
+
+    @Override
+    public void setUnsigned(boolean unsigned) {
+        super.setUnsigned(unsigned);
+        if (unsigned) {
+            super.setMin(0L);
+            super.setMaxVal(65545);
+        } else {
+            super.setMin((long) Short.MIN_VALUE);
+            super.setMax((long) Short.MAX_VALUE);
+        }
     }
 }

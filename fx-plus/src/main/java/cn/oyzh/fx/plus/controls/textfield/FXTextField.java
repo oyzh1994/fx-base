@@ -26,6 +26,7 @@ public class FXTextField extends TextField implements ThemeAdapter, FontAdapter,
         this.setCache(true);
         this.setCacheShape(true);
         this.setPickOnBounds(true);
+        this.setFocusTraversable(false);
         this.setCacheHint(CacheHint.QUALITY);
         this.changeTheme(ThemeManager.currentTheme());
     }

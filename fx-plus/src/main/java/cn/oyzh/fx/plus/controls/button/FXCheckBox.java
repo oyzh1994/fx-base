@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
@@ -15,7 +16,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXCheckBox extends CheckBox implements ThemeAdapter, TipAdapter, StateAdapter, FontAdapter {
+public class FXCheckBox extends CheckBox implements NodeAdapter, ThemeAdapter, TipAdapter, StateAdapter, FontAdapter {
 
     {
         this.setCache(true);

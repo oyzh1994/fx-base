@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.controls.digital;
 
+import java.math.BigDecimal;
+
 /**
  * double文本域
  *
@@ -8,8 +10,23 @@ package cn.oyzh.fx.plus.controls.digital;
  */
 public class DoubleTextField extends DecimalTextField {
 
-    {
-        super.setMin(-Double.MAX_VALUE);
-        super.setMax(Double.MAX_VALUE);
+    public DoubleTextField() {
+        super(false);
+    }
+
+    public DoubleTextField(boolean unsigned) {
+        super(unsigned);
+    }
+
+    @Override
+    public void setUnsigned(boolean unsigned) {
+        super.setUnsigned(unsigned);
+        if (unsigned) {
+            super.setMin(0D);
+            super.setMax(Double.MAX_VALUE);
+        } else {
+            super.setMin(-Double.MAX_VALUE);
+            super.setMax(Double.MAX_VALUE);
+        }
     }
 }
