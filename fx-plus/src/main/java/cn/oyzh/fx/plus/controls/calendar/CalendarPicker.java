@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.calendar;
 
 import atlantafx.base.controls.Popover;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
@@ -11,6 +12,7 @@ import javafx.util.Duration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @author oyzh
@@ -151,6 +153,41 @@ public abstract class CalendarPicker<S extends CalendarSelector> extends FlexHBo
      */
     public void setValue(LocalDateTime value) {
         this.valueProperty().setValue(value);
+    }
+
+    /**
+     * 设置值
+     *
+     * @param value 值
+     */
+    public void setValue(Date value) {
+        this.setValue(LocalDateTimeUtil.of(value));
+    }
+
+    /**
+     * 设置值
+     *
+     * @param value 值
+     */
+    public void setValue(java.sql.Date value) {
+        if (value != null) {
+            this.setValue(new Date(value.getTime()));
+        }
+    }
+
+    /**
+     * 设置值
+     *
+     * @param value 值
+     */
+    public void setValue(Object value) {
+        if (value instanceof java.sql.Date d1) {
+            this.setValue(d1);
+        } else if (value instanceof Date d2) {
+            this.setValue(d2);
+        } else if (value instanceof LocalDateTime d3) {
+            this.setValue(d3);
+        }
     }
 
     /**

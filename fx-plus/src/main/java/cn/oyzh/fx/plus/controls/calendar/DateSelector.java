@@ -51,7 +51,7 @@ public class DateSelector extends CalendarSelector {
         LocalDate localDate = this.calendar.getValue();
         // 没有值
         if (localDate == null) {
-            this.picker.setValue(null);
+            this.picker.setValue((LocalDateTime) null);
         } else {// 更新值
             this.picker.setValue(LocalDateTimeUtil.of(localDate));
         }

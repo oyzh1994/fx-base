@@ -84,7 +84,7 @@ public class YearSelector extends CalendarSelector {
 
     @Override
     protected void onClearAction(ActionEvent event) {
-        this.picker.setValue(null);
+        this.picker.setValue((LocalDateTime) null);
     }
 
     @Override

@@ -134,7 +134,7 @@ public class DateTimeSelector extends CalendarSelector {
         LocalDate localDate = this.calendar.getValue();
         // 没有值
         if (localDate == null) {
-            this.picker.setValue(null);
+            this.picker.setValue((LocalDateTime) null);
         } else {// 更新值
             LocalDateTime dateTime = LocalDateTimeUtil.of(localDate);
             dateTime = dateTime.withHour(this.hour.getSelectedIndex())
