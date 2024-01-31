@@ -28,11 +28,20 @@ public class DecimalTextField extends DigitalTextField {
     protected Integer scaleLen;
 
     public DecimalTextField() {
-        super(false);
+        super(false, null);
     }
 
     public DecimalTextField(boolean unsigned) {
-        super(unsigned);
+        super(unsigned, null);
+    }
+
+    public DecimalTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
+    }
+
+    public DecimalTextField(boolean unsigned, Integer maxLen, Integer scaleLen) {
+        super(unsigned, maxLen);
+        this.setScaleLen(scaleLen);
     }
 
     @Override
@@ -57,12 +66,20 @@ public class DecimalTextField extends DigitalTextField {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
                     String text = change.getControlNewText();
-                    // 如果文本为空，或者为"-"、"+"或者"."，则不进行任何操作，直接返回原change对象
-                    if (StrUtil.isEmpty(text) || text.equals("-") || text.equals("+") || ".".equals(text)) {
+                    // 如果文本为空、"+"、"."，则不进行任何操作，直接返回原change对象
+                    if (StrUtil.isEmpty(text) || text.equals("+") || ".".equals(text)) {
                         return change;
                     }
-                    // 判断数字
+                    // 无符号判断
+                    if (this.isUnsigned() && text.startsWith("-")) {
+                        return null;
+                    }
+                    // 数字判断
                     if (!NumberUtil.isDouble(text) && !NumberUtil.isNumber(text)) {
+                        return null;
+                    }
+                    // 长度判断
+                    if (!super.checkLimit(change)) {
                         return null;
                     }
                     // 判断小数位数

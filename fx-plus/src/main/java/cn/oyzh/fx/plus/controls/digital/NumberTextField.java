@@ -14,12 +14,16 @@ import java.util.function.UnaryOperator;
  */
 public class NumberTextField extends DigitalTextField {
 
-    public NumberTextField( ) {
-        super(false);
+    public NumberTextField() {
+        super(false, null);
     }
 
     public NumberTextField(boolean unsigned) {
-        super(unsigned);
+        super(unsigned, null);
+    }
+
+    public NumberTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
     }
 
     @Override
@@ -44,12 +48,21 @@ public class NumberTextField extends DigitalTextField {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
                     String text = change.getControlNewText();
-                    if (StrUtil.isEmpty(text) || text.equals("-") || text.equals("+")) {
+                    // 如果文本为空、"+"，则不进行任何操作，直接返回原change对象
+                    if (StrUtil.isEmpty(text) || text.equals("+")) {
                         return change;
                     }
-                    // 判断数字
+                    // 无符号判断
+                    if (this.isUnsigned() && text.startsWith("-")) {
+                        return null;
+                    }
+                    // 数字判断
                     Number l = this.converter.fromString(text);
                     if (l == null) {
+                        return null;
+                    }
+                    // 长度判断
+                    if (!super.checkLimit(change)) {
                         return null;
                     }
                     // 如果超过了最大值，则将组件值设置为最大值

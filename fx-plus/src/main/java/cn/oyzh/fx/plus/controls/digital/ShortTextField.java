@@ -16,6 +16,10 @@ public class ShortTextField extends NumberTextField {
         super(unsigned);
     }
 
+    public ShortTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
+    }
+
     @Override
     public void setUnsigned(boolean unsigned) {
         super.setUnsigned(unsigned);

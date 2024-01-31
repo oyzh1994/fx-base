@@ -16,6 +16,10 @@ public class ByteTextField extends NumberTextField {
         super(unsigned);
     }
 
+    public ByteTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
+    }
+
     @Override
     public void setUnsigned(boolean unsigned) {
         super.setUnsigned(unsigned);

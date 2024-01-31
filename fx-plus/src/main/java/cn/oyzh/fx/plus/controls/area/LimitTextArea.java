@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.area;
 
-import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.plus.LimitControl;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 
@@ -13,23 +13,40 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/09/22
  */
-public class LimitTextArea extends FlexTextArea {
+public class LimitTextArea extends FlexTextArea implements LimitControl {
 
     /**
      * 最小长度
      */
     @Getter
-    private Number minLen;
+    private Integer minLen;
 
     /**
      * 最大长度
      */
     @Getter
-    private Number maxLen;
+    private Integer maxLen;
 
     {
         // 创建TextFormatter对象
         this.setTextFormatter(new TextFormatter<>(this.createFilter()));
+    }
+
+    public LimitTextArea() {
+        super.setText("");
+    }
+
+    public LimitTextArea(String text) {
+        super.setText(text);
+    }
+
+    public LimitTextArea(Integer maxLen) {
+        this.maxLen = maxLen;
+    }
+
+    public LimitTextArea(Integer minLen, Integer maxLen) {
+        this.minLen = minLen;
+        this.maxLen = maxLen;
     }
 
     /**
@@ -39,39 +56,26 @@ public class LimitTextArea extends FlexTextArea {
      */
     protected UnaryOperator<TextFormatter.Change> createFilter() {
         return change -> {
-            if (this.maxLen != null || this.minLen != null) {
-                try {
-                    String text = change.getControlNewText();
-                    if (change.isAdded() && NumUtil.isGTEq(text.length(), this.maxLen)) {
-                        return null;
-                    }
-                    if (change.isReplaced() || change.isDeleted()) {
-                        if (NumUtil.isGTEq(text.length(), this.maxLen)) {
-                            return null;
-                        }
-                        if (NumUtil.isLTEq(text.length(), this.minLen)) {
-                            return null;
-                        }
-                    }
-                    return change;
-                } catch (Exception ignore) {
-                }
+            if (this.checkLimit(change)) {
+                return change;
             }
-            return change;
+            return null;
         };
     }
 
-    public void setMaxLen(Number maxLen) {
+    @Override
+    public void setMaxLen(Integer maxLen) {
         if (this.minLen != null && maxLen.longValue() < this.minLen.longValue()) {
             throw new InvalidParameterException("maxLen不能小于minLen！");
         }
-        this.maxLen = maxLen.longValue();
+        this.maxLen = maxLen;
     }
 
-    public void setMinLen(Number minLen) {
+    @Override
+    public void setMinLen(Integer minLen) {
         if (this.maxLen != null && minLen.longValue() > this.maxLen.longValue()) {
             throw new InvalidParameterException("minLen不能大于maxLen！");
         }
-        this.minLen = minLen.longValue();
+        this.minLen = minLen;
     }
 }

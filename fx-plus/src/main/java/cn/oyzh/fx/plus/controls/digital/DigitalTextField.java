@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.digital;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.textfield.FlexTextField;
+import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 import cn.oyzh.fx.plus.converter.NumberConverter;
 import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;
 import javafx.scene.control.TextFormatter;
@@ -16,7 +17,7 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/12/27
  */
-public abstract class DigitalTextField extends FlexTextField {
+public abstract class DigitalTextField extends LimitTextField {
 
     /**
      * 最大值
@@ -56,7 +57,7 @@ public abstract class DigitalTextField extends FlexTextField {
      */
     protected final NumberConverter converter = new NumberConverter();
 
-    public DigitalTextField(boolean unsigned) {
+    public DigitalTextField(boolean unsigned, Integer maxLen) {
         // 设置皮肤
         this.setSkin(new DigitalTextFieldSkin(this, this::incrValue, this::decrValue));
         // 创建文本格式化器
@@ -65,6 +66,7 @@ public abstract class DigitalTextField extends FlexTextField {
         this.setTextFormatter(this.textFormatter);
         // 监听值变化
         this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
+        this.setMaxLen(maxLen);
         this.setUnsigned(unsigned);
     }
 

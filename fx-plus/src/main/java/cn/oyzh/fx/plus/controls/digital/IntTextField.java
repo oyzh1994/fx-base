@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.controls.digital;
 
-import java.math.BigDecimal;
-
 /**
  * integer文本域
  *
@@ -16,6 +14,10 @@ public class IntTextField extends NumberTextField {
 
     public IntTextField(boolean unsigned) {
         super(unsigned);
+    }
+
+    public IntTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
     }
 
     @Override

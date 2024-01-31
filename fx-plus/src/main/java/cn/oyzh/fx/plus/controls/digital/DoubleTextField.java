@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.controls.digital;
 
-import java.math.BigDecimal;
-
 /**
  * double文本域
  *
@@ -16,6 +14,14 @@ public class DoubleTextField extends DecimalTextField {
 
     public DoubleTextField(boolean unsigned) {
         super(unsigned);
+    }
+
+    public DoubleTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
+    }
+
+    public DoubleTextField(boolean unsigned, Integer maxLen, Integer scaleLen) {
+        super(unsigned, maxLen, scaleLen);
     }
 
     @Override

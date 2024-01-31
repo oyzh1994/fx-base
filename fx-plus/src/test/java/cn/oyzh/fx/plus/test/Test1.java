@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.test;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.NumUtil;
 import org.junit.Test;
 
@@ -107,6 +108,32 @@ public class Test1 {
         DecimalFormat df = new DecimalFormat("#.###");
 
         System.out.println(df.format(0.777999));
+    }
+
+    @Test
+    public void test9() {
+        byte[] val = {21, 101};
+        StringBuilder builder = new StringBuilder();
+        for (byte b : val) {
+            // 将字节与0xFF进行按位与运算，保留最低8位
+            int bitValue = b & 0xFF;
+            for (int i = 7; i >= 0; i--) {
+                builder.append((bitValue & (1 << i)) != 0 ? "1" : "0");
+            }
+        }
+        System.out.println(builder);
+    }
+
+    @Test
+    public void test10() {
+        String bit = "0001010101100101";
+        String[] bits = StrUtil.split(bit, 8);
+
+        for (String s : bits) {
+            int decimalValue = Integer.parseInt(s, 2); // 将二进制字符串转换为十进制整数
+            byte byteValue = Byte.parseByte(String.valueOf(decimalValue)); // 将十进制整数转换为字节
+            System.out.println(byteValue);
+        }
     }
 
 }

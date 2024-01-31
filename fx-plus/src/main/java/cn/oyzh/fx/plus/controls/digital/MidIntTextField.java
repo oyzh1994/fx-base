@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.digital;
 
 /**
- *  mid int文本域
+ * mid int文本域
  *
  * @author oyzh
  * @since 2023/12/27
@@ -14,6 +14,10 @@ public class MidIntTextField extends IntTextField {
 
     public MidIntTextField(boolean unsigned) {
         super(unsigned);
+    }
+
+    public MidIntTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
     }
 
     @Override

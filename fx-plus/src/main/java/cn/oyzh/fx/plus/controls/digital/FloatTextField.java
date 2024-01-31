@@ -17,6 +17,14 @@ public class FloatTextField extends DecimalTextField {
         super(unsigned);
     }
 
+    public FloatTextField(boolean unsigned, Integer maxLen) {
+        super(unsigned, maxLen);
+    }
+
+    public FloatTextField(boolean unsigned, Integer maxLen, Integer scaleLen) {
+        super(unsigned, maxLen, scaleLen);
+    }
+
     @Override
     public void setUnsigned(boolean unsigned) {
         super.setUnsigned(unsigned);
