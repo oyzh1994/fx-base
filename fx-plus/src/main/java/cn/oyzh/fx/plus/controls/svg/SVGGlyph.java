@@ -136,12 +136,15 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * @return svg内容
      */
     public SVGPathExt shape() {
-        SVGPathExt svgPathExt = (SVGPathExt) this.getShape();
-        if (svgPathExt == null) {
-            svgPathExt = new SVGPathExt();
-            this.setShape(svgPathExt);
+        SVGPathExt shape = (SVGPathExt) this.getShape();
+        if (shape == null) {
+            shape = new SVGPathExt();
+            this.setShape(shape);
         }
-        return svgPathExt;
+        if (this.color != shape.getColor()) {
+            shape.setColor(this.color);
+        }
+        return shape;
     }
 
     @Override
@@ -178,11 +181,6 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     }
 
     public SVGGlyph() {
-//        if (ThemeManager.isDarkMode()) {
-//            this.setColor(this.isDisabled() ? Color.BLUEVIOLET : Color.WHITE);
-//        } else {
-//            this.setColor(this.isDisabled() ? Color.GREY : Color.BLACK);
-//        }
     }
 
     public SVGGlyph(@NonNull String url) {
@@ -215,9 +213,6 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      */
     public void setUrl(@NonNull String url) {
         this.shape().setUrl(url);
-        if (this.color != null) {
-            this.shape().setColor(this.color);
-        }
     }
 
     /**
@@ -250,15 +245,10 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * @param color 颜色
      */
     public void setColor(Color color) {
-//        if (color == null) {
-//            color = ThemeManager.isDarkMode() ? Color.WHITE : Color.BLACK;
-//        }
-        if (color != this.color) {
-            this.color = color;
-            if (!this.isDisabled() && color != null) {
-                this.setBackground(ControlUtil.background(color));
-                this.shape().setColor(this.color);
-            }
+        this.color = color;
+        if (!this.isDisabled()) {
+            this.setBackground(ControlUtil.background(color));
+            this.shape().setColor(this.color);
         }
     }
 
@@ -361,18 +351,6 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
     }
-
-    // @Override
-    // public void changeTheme(Theme theme) {
-    //     if (this.isEnableTheme()) {
-    //         ThemeAdapter.super.changeTheme(theme);
-    //         if (theme.isDarkMode()) {
-    //             this.setColor(Color.WHITE);
-    //         } else {
-    //             this.setColor(Color.BLACK);
-    //         }
-    //     }
-    // }
 
     @Override
     public boolean isEnableTheme() {

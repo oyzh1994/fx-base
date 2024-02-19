@@ -38,7 +38,7 @@ public class SVGPathExt extends SVGPath {
      *
      * @param paint 绘画对象
      */
-    public void setColor(@NonNull Paint paint) {
+    public void setColor(Paint paint) {
         this.setFill(paint);
         this.setStroke(paint);
     }

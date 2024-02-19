@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
  * @since 2023/10/12
  */
 @Getter
-//@Slf4j
 public class PrimaryStage implements StageWrapper {
 
     /**

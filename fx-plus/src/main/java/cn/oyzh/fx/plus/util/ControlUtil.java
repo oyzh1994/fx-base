@@ -276,7 +276,10 @@ public class ControlUtil {
      * @param paint 颜色
      * @return 背景
      */
-    public static Background background(@NonNull Paint paint) {
+    public static Background background(Paint paint) {
+        if (paint == null) {
+            return null;
+        }
         return new Background(new BackgroundFill(paint, null, null));
     }
 

@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.scene.Node;
 import javafx.scene.control.Tab;
 
 /**
@@ -17,6 +18,18 @@ public class FXTab extends Tab implements ThemeAdapter, StateAdapter, TipAdapter
     {
         this.setClosable(false);
         this.changeTheme(ThemeManager.currentTheme());
+    }
+
+    public FXTab() {
+        super();
+    }
+
+    public FXTab(String text) {
+        super(text);
+    }
+
+    public FXTab(String text, Node content) {
+        super(text, content);
     }
 
     @Override
