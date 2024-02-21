@@ -7,9 +7,9 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -25,6 +25,7 @@ import lombok.NonNull;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
+import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
 
 import java.util.Collection;
@@ -49,12 +50,48 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
         this.setBorder(new Border(stroke));
         this.changeTheme(ThemeManager.currentTheme());
         this.getStyleClass().add("rich-text-area");
+        this.applyPlainUndoManager();
+    }
+
+    /**
+     * 应用丰富操作管理器
+     */
+    public void applyRichUndoManager(){
+        this.setUndoManager(UndoUtils.richTextUndoManager(this));
+    }
+
+    /**
+     * 应用文本操作管理器
+     */
+    public void applyPlainUndoManager(){
+        this.setUndoManager(UndoUtils.plainTextUndoManager(this));
     }
 
     /**
      * 行号函数
      */
     private IntFunction<Node> lineFunc;
+
+    /**
+     * 设置是否显示行号
+     *
+     * @param showLine 是否显示行号
+     */
+    public void setShowLine(boolean showLine) {
+        this.setProp("showLine", showLine);
+        if (showLine) {
+            this.showLineNum();
+        } else {
+            this.hideLineNum();
+        }
+    }
+
+    /**
+     * 获取设置是否显示行号
+     */
+    public boolean isShowLine() {
+        return this.getProp("showLine");
+    }
 
     /**
      * 显示行号
@@ -75,7 +112,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
 
     public void setText(String text) {
         FXUtil.runWait(() -> this.replaceText(text));
-        this.forgetHistory();
     }
 
     @Override
@@ -221,7 +257,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
      */
     public void clearTextStyle() {
         FXUtil.runWait(() -> this.setStyle(0, this.getLength(), ""));
-        this.forgetHistory();
     }
 
     /**

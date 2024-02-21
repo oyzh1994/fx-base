@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.adapter;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
 import javafx.stage.Window;
 
@@ -23,14 +24,14 @@ public interface PropAdapter {
     default void setProp(String key, Object val) {
         if (this instanceof Node node) {
             node.getProperties().put(key, val);
+        } else if (this instanceof Tab tab) {
+            tab.getProperties().put(key, val);
         } else if (this instanceof TableColumnBase<?, ?> columnBase) {
             columnBase.getProperties().put(key, val);
         } else if (this instanceof Scene scene) {
             scene.getProperties().put(key, val);
         } else if (this instanceof Window window) {
             window.getProperties().put(key, val);
-//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-//            stage.getStage().getProperties().put(key, val);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             stage.stage().getProperties().put(key, val);
         }
@@ -45,14 +46,14 @@ public interface PropAdapter {
     default <T> T getProp(String key) {
         if (this instanceof Node node) {
             return (T) node.getProperties().get(key);
+        } else if (this instanceof Tab tab) {
+            return (T) tab.getProperties().get(key);
         } else if (this instanceof TableColumnBase<?, ?> columnBase) {
             return (T) columnBase.getProperties().get(key);
         } else if (this instanceof Scene scene) {
             return (T) scene.getProperties().get(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().get(key);
-//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-//            return (T) stage.getStage().getProperties().get(key);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().get(key);
         }
@@ -68,15 +69,20 @@ public interface PropAdapter {
     default boolean hasProp(String key) {
         if (this instanceof Node node) {
             return node.getProperties().containsKey(key);
-        } else if (this instanceof TableColumnBase<?, ?> columnBase) {
+        }
+        if (this instanceof Tab tab) {
+            return tab.getProperties().containsKey(key);
+        }
+        if (this instanceof TableColumnBase<?, ?> columnBase) {
             return columnBase.getProperties().containsKey(key);
-        } else if (this instanceof Scene scene) {
+        }
+        if (this instanceof Scene scene) {
             return scene.getProperties().containsKey(key);
-        } else if (this instanceof Window window) {
+        }
+        if (this instanceof Window window) {
             return window.getProperties().containsKey(key);
-//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-//            return stage.getStage().getProperties().containsKey(key);
-        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+        }
+        if (this instanceof StageWrapper stage && stage.stage() != null) {
             return stage.stage().getProperties().containsKey(key);
         }
         return false;
@@ -92,14 +98,14 @@ public interface PropAdapter {
     default <T> T removeProp(String key) {
         if (this instanceof Node node) {
             return (T) node.getProperties().remove(key);
+        } else if (this instanceof Tab tab) {
+            return (T) tab.getProperties().remove(key);
         } else if (this instanceof TableColumnBase<?, ?> columnBase) {
             return (T) columnBase.getProperties().remove(key);
         } else if (this instanceof Scene scene) {
             return (T) scene.getProperties().remove(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().remove(key);
-//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-//            return (T) stage.getStage().getProperties().remove(key);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().remove(key);
         }
@@ -112,14 +118,14 @@ public interface PropAdapter {
     default void clearProps() {
         if (this instanceof Node node) {
             node.getProperties().clear();
+        } else if (this instanceof Tab tab) {
+            tab.getProperties().clear();
         } else if (this instanceof TableColumnBase<?, ?> columnBase) {
             columnBase.getProperties().clear();
         } else if (this instanceof Scene scene) {
             scene.getProperties().clear();
         } else if (this instanceof Window window) {
             window.getProperties().clear();
-//        } else if (this instanceof FXStage stage && stage.getStage() != null) {
-//            stage.getStage().getProperties().clear();
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             stage.stage().getProperties().clear();
         }
