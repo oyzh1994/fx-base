@@ -25,17 +25,17 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void clearItems() {
         FXUtil.runWait(() -> {
-            if (this instanceof TreeView<?> view) {
-                view.getRoot().getChildren().clear();
-                view.setRoot(null);
-            } else if (this instanceof TableView<?> view) {
-                view.getItems().clear();
-            } else if (this instanceof TabPane tabPane) {
-                tabPane.getTabs().clear();
-            } else if (this instanceof ComboBox<?> comboBox) {
-                comboBox.getItems().clear();
-            } else if (this instanceof ListView<?> listView) {
-                listView.getItems().clear();
+            if (this instanceof TreeView<?> node) {
+                node.getRoot().getChildren().clear();
+                node.setRoot(null);
+            } else if (this instanceof TableView<?> node) {
+                node.getItems().clear();
+            } else if (this instanceof TabPane node) {
+                node.getTabs().clear();
+            } else if (this instanceof ComboBox<?> node) {
+                node.getItems().clear();
+            } else if (this instanceof ListView<?> node) {
+                node.getItems().clear();
             }
         });
     }
@@ -45,16 +45,16 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void selectFirst() {
         FXUtil.runWait(() -> {
-            if (this instanceof TreeView<?> view) {
-                view.getSelectionModel().selectFirst();
-            } else if (this instanceof TableView<?> view) {
-                view.getSelectionModel().selectFirst();
-            } else if (this instanceof TabPane tabPane) {
-                tabPane.getSelectionModel().selectFirst();
-            } else if (this instanceof ComboBox<?> comboBox) {
-                comboBox.getSelectionModel().selectFirst();
-            } else if (this instanceof ListView<?> listView) {
-                listView.getSelectionModel().selectFirst();
+            if (this instanceof TreeView<?> node) {
+                node.getSelectionModel().selectFirst();
+            } else if (this instanceof TableView<?> node) {
+                node.getSelectionModel().selectFirst();
+            } else if (this instanceof TabPane node) {
+                node.getSelectionModel().selectFirst();
+            } else if (this instanceof ComboBox<?> node) {
+                node.getSelectionModel().selectFirst();
+            } else if (this instanceof ListView<?> node) {
+                node.getSelectionModel().selectFirst();
             }
         });
     }
@@ -66,16 +66,16 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void select(int index) {
         FXUtil.runWait(() -> {
-            if (this instanceof TreeView<?> view) {
-                view.getSelectionModel().select(index);
-            } else if (this instanceof TableView<?> view) {
-                view.getSelectionModel().select(index);
-            } else if (this instanceof TabPane tabPane) {
-                tabPane.getSelectionModel().select(index);
-            } else if (this instanceof ComboBox<?> comboBox) {
-                comboBox.getSelectionModel().select(index);
-            } else if (this instanceof ListView<?> listView) {
-                listView.getSelectionModel().select(index);
+            if (this instanceof TreeView<?> node) {
+                node.getSelectionModel().select(index);
+            } else if (this instanceof TableView<?> node) {
+                node.getSelectionModel().select(index);
+            } else if (this instanceof TabPane node) {
+                node.getSelectionModel().select(index);
+            } else if (this instanceof ComboBox<?> node) {
+                node.getSelectionModel().select(index);
+            } else if (this instanceof ListView<?> node) {
+                node.getSelectionModel().select(index);
             }
         });
     }
@@ -87,16 +87,16 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void select(T obj) {
         FXUtil.runWait(() -> {
-            if (this instanceof TreeView view) {
-                view.getSelectionModel().select(obj);
-            } else if (this instanceof TableView view) {
-                view.getSelectionModel().select(obj);
-            } else if (this instanceof TabPane tabPane) {
-                tabPane.getSelectionModel().select((Tab) obj);
-            } else if (this instanceof ComboBox comboBox) {
-                comboBox.getSelectionModel().select(obj);
-            } else if (this instanceof ListView listView) {
-                listView.getSelectionModel().select(obj);
+            if (this instanceof TreeView node) {
+                node.getSelectionModel().select(obj);
+            } else if (this instanceof TableView node) {
+                node.getSelectionModel().select(obj);
+            } else if (this instanceof TabPane node) {
+                node.getSelectionModel().select((Tab) obj);
+            } else if (this instanceof ComboBox node) {
+                node.getSelectionModel().select(obj);
+            } else if (this instanceof ListView node) {
+                node.getSelectionModel().select(obj);
             }
         });
     }
@@ -108,16 +108,16 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default T getSelectedItem() {
         Object o = null;
-        if (this instanceof TreeView<?> view) {
-            o = view.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TableView<?> view) {
-            o = view.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TabPane tabPane) {
-            o = tabPane.getSelectionModel().getSelectedItem();
-        } else if (this instanceof ComboBox<?> comboBox) {
-            o = comboBox.getSelectionModel().getSelectedItem();
-        } else if (this instanceof ListView<?> listView) {
-            o = listView.getSelectionModel().getSelectedItem();
+        if (this instanceof TreeView<?> node) {
+            o = node.getSelectionModel().getSelectedItem();
+        } else if (this instanceof TableView<?> node) {
+            o = node.getSelectionModel().getSelectedItem();
+        } else if (this instanceof TabPane node) {
+            o = node.getSelectionModel().getSelectedItem();
+        } else if (this instanceof ComboBox<?> node) {
+            o = node.getSelectionModel().getSelectedItem();
+        } else if (this instanceof ListView<?> node) {
+            o = node.getSelectionModel().getSelectedItem();
         }
         return (T) o;
     }
@@ -129,12 +129,12 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default List<T> getSelectedItems() {
         List<?> o = null;
-        if (this instanceof TreeView<?> view) {
-            o = view.getSelectionModel().getSelectedItems();
-        } else if (this instanceof TableView<?> view) {
-            o = view.getSelectionModel().getSelectedItems();
-        } else if (this instanceof ListView<?> listView) {
-            o = listView.getSelectionModel().getSelectedItems();
+        if (this instanceof TreeView<?> node) {
+            o = node.getSelectionModel().getSelectedItems();
+        } else if (this instanceof TableView<?> node) {
+            o = node.getSelectionModel().getSelectedItems();
+        } else if (this instanceof ListView<?> node) {
+            o = node.getSelectionModel().getSelectedItems();
         }
         return (List<T>) o;
     }
@@ -145,16 +145,34 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @return 结果
      */
     default int getSelectedIndex() {
-        if (this instanceof TreeView<?> view) {
-            return view.getSelectionModel().getSelectedIndex();
-        } else if (this instanceof TableView<?> view) {
-            return view.getSelectionModel().getSelectedIndex();
-        } else if (this instanceof TabPane tabPane) {
-            return tabPane.getSelectionModel().getSelectedIndex();
-        } else if (this instanceof ComboBox<?> comboBox) {
-            return comboBox.getSelectionModel().getSelectedIndex();
-        } else if (this instanceof ListView<?> listView) {
-            return listView.getSelectionModel().getSelectedIndex();
+        if (this instanceof TreeView<?> node) {
+            return node.getSelectionModel().getSelectedIndex();
+        } else if (this instanceof TableView<?> node) {
+            return node.getSelectionModel().getSelectedIndex();
+        } else if (this instanceof TabPane node) {
+            return node.getSelectionModel().getSelectedIndex();
+        } else if (this instanceof ComboBox<?> node) {
+            return node.getSelectionModel().getSelectedIndex();
+        } else if (this instanceof ListView<?> node) {
+            return node.getSelectionModel().getSelectedIndex();
+        }
+        return -1;
+    }
+
+    /**
+     * 获取节点数量
+     *
+     * @return 结果
+     */
+    default int getItemSize() {
+        if (this instanceof TableView<?> node) {
+            return node.getItems().size();
+        } else if (this instanceof TabPane node) {
+            return node.getTabs().size();
+        } else if (this instanceof ComboBox<?> node) {
+            return node.getItems().size();
+        } else if (this instanceof ListView<?> node) {
+            return node.getItems().size();
         }
         return -1;
     }
@@ -165,32 +183,32 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @param listener 监听器
      */
     default void selectedIndexChanged(@NonNull ChangeListener<Number> listener) {
-        if (this instanceof TreeView<?> view) {
-            view.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
+        if (this instanceof TreeView<?> node) {
+            node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
                     listener.changed(observableValue, t, t1);
                 }
             });
-        } else if (this instanceof TableView<?> view) {
-            view.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
+        } else if (this instanceof TableView<?> node) {
+            node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
                     listener.changed(observableValue, t, t1);
                 }
             });
-        } else if (this instanceof TabPane tabPane) {
-            tabPane.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
+        } else if (this instanceof TabPane node) {
+            node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
                     listener.changed(observableValue, t, t1);
                 }
             });
-        } else if (this instanceof ComboBox<?> comboBox) {
-            comboBox.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
+        } else if (this instanceof ComboBox<?> node) {
+            node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
                     listener.changed(observableValue, t, t1);
                 }
             });
-        } else if (this instanceof ListView<?> listView) {
-            listView.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
+        } else if (this instanceof ListView<?> node) {
+            node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
                     listener.changed(observableValue, t, t1);
                 }
@@ -262,11 +280,14 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @return 结果
      */
     default boolean isItemEmpty() {
-        if (this instanceof TableView<?> view) {
-            return view.getItems().isEmpty();
+        if (this instanceof TableView<?> node) {
+            return node.getItems().isEmpty();
         }
-        if (this instanceof ComboBox<?> comboBox) {
-            return comboBox.getItems().isEmpty();
+        if (this instanceof ComboBox<?> node) {
+            return node.getItems().isEmpty();
+        }
+        if (this instanceof ListView<?> node) {
+            return node.getItems().isEmpty();
         }
         return true;
     }
@@ -278,10 +299,12 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void addItem(Object item) {
         if (item != null) {
-            if (this instanceof TableView view) {
-                FXUtil.runWait(() -> view.getItems().add(item));
-            } else if (this instanceof ComboBox comboBox) {
-                FXUtil.runWait(() -> comboBox.getItems().add(item));
+            if (this instanceof TableView node) {
+                FXUtil.runWait(() -> node.getItems().add(item));
+            } else if (this instanceof ComboBox node) {
+                FXUtil.runWait(() -> node.getItems().add(item));
+            } else if (this instanceof ListView node) {
+                FXUtil.runWait(() -> node.getItems().add(item));
             }
         }
     }
@@ -293,10 +316,12 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void addItem(List<?> items) {
         if (items != null && !items.isEmpty()) {
-            if (this instanceof TableView view) {
-                FXUtil.runWait(() -> view.getItems().addAll(items));
-            } else if (this instanceof ComboBox comboBox) {
-                FXUtil.runWait(() -> comboBox.getItems().addAll(items));
+            if (this instanceof TableView node) {
+                FXUtil.runWait(() -> node.getItems().addAll(items));
+            } else if (this instanceof ComboBox node) {
+                FXUtil.runWait(() -> node.getItems().addAll(items));
+            } else if (this instanceof ListView node) {
+                FXUtil.runWait(() -> node.getItems().addAll(items));
             }
         }
     }
@@ -309,10 +334,12 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void addItem(int index, Object item) {
         if (item != null) {
-            if (this instanceof TableView view) {
-                FXUtil.runWait(() -> view.getItems().add(index, item));
-            } else if (this instanceof ComboBox comboBox) {
-                FXUtil.runWait(() -> comboBox.getItems().add(index, item));
+            if (this instanceof TableView node) {
+                FXUtil.runWait(() -> node.getItems().add(index, item));
+            } else if (this instanceof ComboBox node) {
+                FXUtil.runWait(() -> node.getItems().add(index, item));
+            } else if (this instanceof ListView node) {
+                FXUtil.runWait(() -> node.getItems().add(index, item));
             }
         }
     }
@@ -326,11 +353,23 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void setItem(int index, Object item) {
         if (item != null && index >= 0) {
             FXUtil.runWait(() -> {
-                if (this instanceof TableView view) {
-                    if (view.getItems().size() <= index) {
-                        view.getItems().add(item);
+                if (this instanceof TableView node) {
+                    if (node.getItems().size() <= index) {
+                        node.getItems().add(item);
                     } else {
-                        view.getItems().set(index, item);
+                        node.getItems().set(index, item);
+                    }
+                } else if (this instanceof ComboBox node) {
+                    if (node.getItems().size() <= index) {
+                        node.getItems().add(item);
+                    } else {
+                        node.getItems().set(index, item);
+                    }
+                } else if (this instanceof ListView node) {
+                    if (node.getItems().size() <= index) {
+                        node.getItems().add(item);
+                    } else {
+                        node.getItems().set(index, item);
                     }
                 }
             });
@@ -345,10 +384,12 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void setItem(Object item) {
         if (item != null) {
             FXUtil.runWait(() -> {
-                if (this instanceof TableView view) {
-                    view.getItems().setAll(item);
-                } else if (this instanceof ComboBox comboBox) {
-                    comboBox.getItems().setAll(item);
+                if (this instanceof TableView node) {
+                    node.getItems().setAll(item);
+                } else if (this instanceof ComboBox node) {
+                    node.getItems().setAll(item);
+                } else if (this instanceof ListView node) {
+                    node.getItems().setAll(item);
                 }
             });
         }
@@ -362,10 +403,12 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void setItem(List<?> items) {
         if (items != null) {
             FXUtil.runWait(() -> {
-                if (this instanceof TableView view) {
-                    view.getItems().setAll(items);
-                } else if (this instanceof ComboBox comboBox) {
-                    comboBox.getItems().setAll(items);
+                if (this instanceof TableView node) {
+                    node.getItems().setAll(items);
+                } else if (this instanceof ComboBox node) {
+                    node.getItems().setAll(items);
+                } else if (this instanceof ListView node) {
+                    node.getItems().setAll(items);
                 }
             });
         }
@@ -379,16 +422,21 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default Object getItem(int index) {
         if (index >= 0) {
-            if (this instanceof TableView<?> view) {
-                if (view.getItems().size() <= index) {
+            if (this instanceof TableView<?> node) {
+                if (node.getItems().size() <= index) {
                     return null;
                 }
-                return view.getItems().get(index);
-            } else if (this instanceof ComboBox<?> comboBox) {
-                if (comboBox.getItems().size() <= index) {
+                return node.getItems().get(index);
+            } else if (this instanceof ComboBox<?> node) {
+                if (node.getItems().size() <= index) {
                     return null;
                 }
-                return comboBox.getItems().get(index);
+                return node.getItems().get(index);
+            } else if (this instanceof ListView<?> node) {
+                if (node.getItems().size() <= index) {
+                    return null;
+                }
+                return node.getItems().get(index);
             }
         }
         return null;
@@ -401,13 +449,17 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void removeItem(int index) {
         if (index >= 0) {
-            if (this instanceof TableView<?> view) {
-                if (view.getItems().size() >= index) {
-                    FXUtil.runWait(() -> view.getItems().remove(index));
+            if (this instanceof TableView<?> node) {
+                if (node.getItems().size() >= index) {
+                    FXUtil.runWait(() -> node.getItems().remove(index));
                 }
-            } else if (this instanceof ComboBox<?> comboBox) {
-                if (comboBox.getItems().size() >= index) {
-                    FXUtil.runWait(() -> comboBox.getItems().remove(index));
+            } else if (this instanceof ComboBox<?> node) {
+                if (node.getItems().size() >= index) {
+                    FXUtil.runWait(() -> node.getItems().remove(index));
+                }
+            } else if (this instanceof ListView<?> node) {
+                if (node.getItems().size() >= index) {
+                    FXUtil.runWait(() -> node.getItems().remove(index));
                 }
             }
         }
@@ -420,10 +472,12 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default void removeItem(Object item) {
         if (item != null) {
-            if (this instanceof TableView<?> view) {
-                FXUtil.runWait(() -> view.getItems().remove(item));
-            } else if (this instanceof ComboBox<?> comboBox) {
-                FXUtil.runWait(() -> comboBox.getItems().remove(item));
+            if (this instanceof TableView<?> node) {
+                FXUtil.runWait(() -> node.getItems().remove(item));
+            } else if (this instanceof ComboBox<?> node) {
+                FXUtil.runWait(() -> node.getItems().remove(item));
+            } else if (this instanceof ListView<?> node) {
+                FXUtil.runWait(() -> node.getItems().remove(item));
             }
         }
     }
