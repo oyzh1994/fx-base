@@ -25,6 +25,23 @@ public class RichTreeView extends FlexTreeView {
     }
 
     /**
+     * 渲染服务
+     */
+    protected RichTreeViewService service;
+
+    /**
+     * 获取渲染服务
+     *
+     * @return 渲染服务
+     */
+    public RichTreeViewService service() {
+        if (this.service == null) {
+            this.service = new RichTreeViewService();
+        }
+        return this.service;
+    }
+
+    /**
      * 初始化组件
      */
     protected void initTreeView() {
@@ -155,7 +172,7 @@ public class RichTreeView extends FlexTreeView {
     /**
      * 展开节点
      */
-    public void expand() {
+    public synchronized void expand() {
         TreeItem<?> item = this.getSelectedItem();
         if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.extend();
@@ -169,7 +186,7 @@ public class RichTreeView extends FlexTreeView {
     /**
      * 收缩节点
      */
-    public void collapse() {
+    public synchronized void collapse() {
         TreeItem<?> item = this.getSelectedItem();
         if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.collapse();
@@ -183,7 +200,7 @@ public class RichTreeView extends FlexTreeView {
     /**
      * 重新载入
      */
-    public void reload() {
+    public synchronized void reload() {
         TreeItem<?> item = this.getSelectedItem();
         if (item instanceof RichTreeItem<?> treeItem) {
             treeItem.reloadChild();

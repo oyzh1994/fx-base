@@ -4,9 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
-import cn.oyzh.fx.plus.thread.BackgroundService;
-import cn.oyzh.fx.plus.thread.RenderService;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -101,6 +98,15 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     public RichTreeItem(RichTreeView treeView) {
         this.treeView = treeView;
+    }
+
+    /**
+     * 获取渲染服务
+     *
+     * @return 渲染服务
+     */
+    private RichTreeViewService service() {
+        return this.getTreeView().service();
     }
 
     @Override
@@ -231,7 +237,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void reExpanded() {
         if (this.isExpanded()) {
-            BackgroundService.submitFXLater(() -> {
+            this.service().submitFX(() -> {
                 this.setExpanded(false);
                 this.setExpanded(true);
             });
@@ -275,7 +281,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 清除子节点
      */
     public void clearChild() {
-        FXUtil.runWait(this.getRealChildren()::clear);
+        this.service().submitFX(this.getRealChildren()::clear);
     }
 
     /**
@@ -296,8 +302,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 节点
      */
-    public synchronized void setChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getRealChildren().setAll(item));
+    public void setChild(@NonNull TreeItem<?> item) {
+        this.service().submitFX(() -> this.getRealChildren().setAll(item));
     }
 
     /**
@@ -305,8 +311,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param items 节点列表
      */
-    public synchronized void setChild(@NonNull List<TreeItem<?>> items) {
-        FXUtil.runWait(() -> this.getRealChildren().setAll(items));
+    public void setChild(@NonNull List<TreeItem<?>> items) {
+        this.service().submitFX(() -> this.getRealChildren().setAll(items));
     }
 
     /**
@@ -314,8 +320,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 节点
      */
-    public synchronized void addChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getRealChildren().add(item));
+    public void addChild(@NonNull TreeItem<?> item) {
+        this.service().submitFX(() -> this.getRealChildren().add(item));
     }
 
     /**
@@ -323,8 +329,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param items 节点列表
      */
-    public synchronized void addChild(@NonNull List<TreeItem<?>> items) {
-        FXUtil.runWait(() -> this.getRealChildren().addAll(items));
+    public void addChild(@NonNull List<TreeItem<?>> items) {
+        this.service().submitFX(() -> this.getRealChildren().addAll(items));
     }
 
     /**
@@ -332,8 +338,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 节点
      */
-    public synchronized void removeChild(@NonNull TreeItem<?> item) {
-        FXUtil.runWait(() -> this.getRealChildren().remove(item));
+    public void removeChild(@NonNull TreeItem<?> item) {
+        this.service().submitFX(() -> this.getRealChildren().remove(item));
     }
 
     /**
@@ -341,8 +347,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param items 节点列表
      */
-    public synchronized void removeChild(@NonNull List<TreeItem<?>> items) {
-        FXUtil.runWait(() -> this.getRealChildren().removeAll(items));
+    public void removeChild(@NonNull List<TreeItem<?>> items) {
+        this.service().submitFX(() -> this.getRealChildren().removeAll(items));
     }
 
     /**
@@ -415,7 +421,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     /**
      * 对节点排序，正序
      */
-    public synchronized void sortAsc() {
+    public void sortAsc() {
         if (this.isSortable()) {
             this.sortType = 0;
             this.sortChild();
@@ -425,7 +431,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     /**
      * 对节点排序，倒序
      */
-    public synchronized void sortDesc() {
+    public void sortDesc() {
         if (this.isSortable()) {
             this.sortType = 1;
             this.sortChild();
@@ -445,28 +451,30 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 子节点排序
      */
     protected void sortChild() {
-        // 执行排序
-        ObservableList<RichTreeItem<?>> children = this.getRichChildren();
-        if (!children.isEmpty()) {
-            try {
-                this.sorting = true;
-                // asc
-                if (this.isSortAsc()) {
-                    children.sort(RichTreeItem::compareTo);
-                } else {// desc
-                    children.sort(Comparator.reverseOrder());
+        this.service().submitFX(() -> {
+            // 执行排序
+            ObservableList<RichTreeItem<?>> children = this.getRichChildren();
+            if (!children.isEmpty()) {
+                try {
+                    this.sorting = true;
+                    // asc
+                    if (this.isSortAsc()) {
+                        children.sort(RichTreeItem::compareTo);
+                    } else {// desc
+                        children.sort(Comparator.reverseOrder());
+                    }
+                } finally {
+                    this.sorting = false;
                 }
-            } finally {
-                this.sorting = false;
             }
-        }
+        });
     }
 
     /**
      * 执行过滤
      */
     public void doFilter() {
-        RenderService.submit(() -> this.doFilter(this.treeView.itemFilter));
+        this.service().submit(() -> this.doFilter(this.treeView.itemFilter));
     }
 
     /**
@@ -528,7 +536,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void extend() {
         if (!this.isExpanded()) {
-            FXUtil.runWait(() -> this.setExpanded(true));
+            this.service().submitFX(() -> this.setExpanded(true));
         }
     }
 
@@ -537,7 +545,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void collapse() {
         if (this.isExpanded()) {
-            FXUtil.runWait(() -> this.setExpanded(false));
+            this.service().submitFX(() -> this.setExpanded(false));
         }
     }
 
@@ -546,7 +554,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 待收缩节点
      */
-    public synchronized void collapseAll(TreeItem<?> item) {
+    public void collapseAll(TreeItem<?> item) {
         item.setExpanded(false);
         for (TreeItem<?> child : item.getChildren()) {
             this.collapseAll(child);
@@ -558,7 +566,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 待展开节点
      */
-    public synchronized void expandAll(TreeItem<?> item) {
+    public void expandAll(TreeItem<?> item) {
         item.setExpanded(true);
         for (TreeItem<?> child : item.getChildren()) {
             this.expandAll(child);
@@ -569,7 +577,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 刷新坐标，防止出现白屏
      */
     public void flushLocal() {
-        this.getTreeView().flushLocal();
+        this.service().submitFX(() -> this.getTreeView().flushLocal());
     }
 
     /**

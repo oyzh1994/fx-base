@@ -209,8 +209,9 @@ public abstract class CalendarPicker<S extends CalendarSelector> extends FlexHBo
      *
      * @return 年
      */
-    public int yearValue() {
-        return this.getValue().getYear();
+    public Integer yearValue() {
+        LocalDateTime dateTime = this.getValue();
+        return dateTime == null ? null : dateTime.getYear();
     }
 
     /**

@@ -1,0 +1,86 @@
+package cn.oyzh.fx.plus.trees;
+
+import cn.oyzh.fx.plus.thread.BackgroundService;
+import cn.oyzh.fx.plus.util.FXUtil;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+/**
+ * TreeView渲染服务
+ *
+ * @author oyzh
+ * @since 2024/03/26
+ */
+public class RichTreeViewService {
+
+    /**
+     * 渲染中标志位
+     */
+    private final AtomicBoolean rendering = new AtomicBoolean(false);
+
+    /**
+     * 任务队列
+     */
+    private final Queue<RichTreeViewTask> tasks = new ConcurrentLinkedQueue<>();
+
+    /**
+     * 提交任务
+     *
+     * @param task 任务
+     */
+    public void submit(Runnable task) {
+        if (task != null) {
+            tasks.add(new RichTreeViewTask(task, (byte) 0));
+            this.doRender();
+        }
+    }
+
+    /**
+     * 提交任务，fx线程
+     *
+     * @param task 任务
+     */
+    public void submitFX(Runnable task) {
+        if (task != null) {
+            tasks.add(new RichTreeViewTask(task, (byte) 1));
+            this.doRender();
+        }
+    }
+
+    /**
+     * 提交任务，fx线程，并延后处理
+     *
+     * @param task 任务
+     */
+    public void submitFXLater(Runnable task) {
+        if (task != null) {
+            tasks.add(new RichTreeViewTask(task, (byte) 2));
+            this.doRender();
+        }
+    }
+
+    /**
+     * 执行渲染
+     */
+    protected void doRender() {
+        if (!this.rendering.get()) {
+            this.rendering.set(true);
+            try {
+                while (!tasks.isEmpty()) {
+                    RichTreeViewTask task = tasks.poll();
+                    if (task.getType() == 2) {
+                        FXUtil.runLater(task.getTask());
+                    } else if (task.getType() == 1) {
+                        FXUtil.runWait(task.getTask());
+                    } else {
+                        BackgroundService.submit(task.getTask());
+                    }
+                }
+            } finally {
+                this.rendering.set(false);
+            }
+        }
+    }
+}

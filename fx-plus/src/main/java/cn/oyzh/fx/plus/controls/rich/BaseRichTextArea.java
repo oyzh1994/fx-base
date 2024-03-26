@@ -56,14 +56,14 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
     /**
      * 应用丰富操作管理器
      */
-    public void applyRichUndoManager(){
+    public void applyRichUndoManager() {
         this.setUndoManager(UndoUtils.richTextUndoManager(this));
     }
 
     /**
      * 应用文本操作管理器
      */
-    public void applyPlainUndoManager(){
+    public void applyPlainUndoManager() {
         this.setUndoManager(UndoUtils.plainTextUndoManager(this));
     }
 
@@ -110,8 +110,15 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
         FXUtil.runWait(() -> this.setParagraphGraphicFactory(null));
     }
 
+    /**
+     * 设置内容
+     *
+     * @param text 内容
+     */
     public void setText(String text) {
-        FXUtil.runWait(() -> this.replaceText(text));
+        if (text != null) {
+            FXUtil.runWait(() -> this.replaceText(text));
+        }
     }
 
     @Override
