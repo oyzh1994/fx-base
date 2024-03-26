@@ -15,7 +15,6 @@ import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.stage.Window;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Comparator;
@@ -302,8 +301,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 节点
      */
-    public void setChild(@NonNull TreeItem<?> item) {
-        this.service().submitFX(() -> this.getRealChildren().setAll(item));
+    public void setChild(TreeItem<?> item) {
+        if (item != null) {
+            this.service().submitFX(() -> this.getRealChildren().setAll(item));
+        }
     }
 
     /**
@@ -311,8 +312,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param items 节点列表
      */
-    public void setChild(@NonNull List<TreeItem<?>> items) {
-        this.service().submitFX(() -> this.getRealChildren().setAll(items));
+    public void setChild(List<TreeItem<?>> items) {
+        if (CollUtil.isNotEmpty(items)) {
+            this.service().submitFX(() -> this.getRealChildren().setAll(items));
+        }
     }
 
     /**
@@ -320,8 +323,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 节点
      */
-    public void addChild(@NonNull TreeItem<?> item) {
-        this.service().submitFX(() -> this.getRealChildren().add(item));
+    public void addChild(TreeItem<?> item) {
+        if (item != null) {
+            this.service().submitFX(() -> this.getRealChildren().add(item));
+        }
     }
 
     /**
@@ -329,8 +334,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param items 节点列表
      */
-    public void addChild(@NonNull List<TreeItem<?>> items) {
-        this.service().submitFX(() -> this.getRealChildren().addAll(items));
+    public void addChild(List<TreeItem<?>> items) {
+        if (CollUtil.isNotEmpty(items)) {
+            this.service().submitFX(() -> this.getRealChildren().addAll(items));
+        }
     }
 
     /**
@@ -338,8 +345,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param item 节点
      */
-    public void removeChild(@NonNull TreeItem<?> item) {
-        this.service().submitFX(() -> this.getRealChildren().remove(item));
+    public void removeChild(TreeItem<?> item) {
+        if (item != null) {
+            this.service().submitFX(() -> this.getRealChildren().remove(item));
+        }
     }
 
     /**
@@ -347,8 +356,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param items 节点列表
      */
-    public void removeChild(@NonNull List<TreeItem<?>> items) {
-        this.service().submitFX(() -> this.getRealChildren().removeAll(items));
+    public void removeChild(List<TreeItem<?>> items) {
+        if (CollUtil.isNotEmpty(items)) {
+            this.service().submitFX(() -> this.getRealChildren().removeAll(items));
+        }
     }
 
     /**
