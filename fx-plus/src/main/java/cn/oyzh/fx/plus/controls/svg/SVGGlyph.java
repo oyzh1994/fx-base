@@ -66,23 +66,19 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         this.setPadding(new Insets(0));
         this.setFocusTraversable(false);
         this.setCacheHint(CacheHint.QUALITY);
-//        this.disabledProperty().addListener((observableValue, aBoolean, t1) -> {
-//            if (t1) {
-//                this.setBackground(ControlUtil.background(Color.GRAY));
-//            } else {
-//                this.setBackground(ControlUtil.background(this.color));
-//            }
-//        });
-        this.backgroundProperty().addListener((observableValue, background, t1) -> {
+        // this.disabledProperty().addListener((_, _, t1) -> {
+        //     if (t1) {
+        //         this.setBackground(ControlUtil.background(Color.GRAY));
+        //     } else {
+        //         this.setBackground(ControlUtil.background(this.color));
+        //     }
+        // });
+        this.backgroundProperty().addListener((_, _, t1) -> {
             if (t1 != null && t1.getFills() != null && !t1.isEmpty()) {
-                SVGPathExt svgPathExt = this.shape();
-                svgPathExt.setColor(t1.getFills().getFirst().getFill());
+                this.shape().setColor(t1.getFills().getFirst().getFill());
             }
         });
-        this.cursorProperty().addListener((observableValue, background, t1) -> {
-            SVGPathExt svgPathExt = this.shape();
-            svgPathExt.setCursor(t1);
-        });
+        this.cursorProperty().addListener((_, _, t1) -> this.shape().setCursor(t1));
         this.cursor(this.cursor);
         this.getStyleClass().add("svg-glyph");
         this.changeTheme(ThemeManager.currentTheme());

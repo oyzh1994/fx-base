@@ -33,6 +33,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ListView?>
 <?import cn.oyzh.fx.plus.controls.digital.BitTextField?>
+<?import javafx.scene.shape.SVGPath?>
 <FlexTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
              fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FXTab text="测试1">
@@ -159,7 +160,11 @@
                 <CheckBox text="测试9"></CheckBox>
                 <CheckBox text="测试10"></CheckBox>
             </ListView>
-            <BitTextField len="10"></BitTextField>
+        </FlexVBox>
+    </FXTab>
+    <FXTab text="测试4">
+        <FlexVBox>
+           <SVGGlyph disable="true" url="/fx-plus/font/clear.svg"></SVGGlyph>
         </FlexVBox>
     </FXTab>
 </FlexTabPane>

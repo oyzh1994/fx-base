@@ -3,33 +3,42 @@
     -fx-font-size: 11px;
 }
 
-/* tab，修复atlantafx的显示遮挡 */
+/* 根节点默认字体，覆盖atlantafx的默认字体 */
+
+/* tab，修复atlantafx的样式异常问题 */
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
     -fx-padding: 0.1em 0.1em 0.1em 0.1em;
 }
 
-/* tree-cell，修复atlantafx的图标角度错误 */
+/* tab，修复atlantafx的显样式异常问题 */
+
+/* tree-cell，修复atlantafx的样式异常问题 */
 .tree-cell:expanded > .tree-disclosure-node > .arrow,
 .tree-table-row-cell:expanded > .tree-disclosure-node > .arrow {
     -fx-padding: 0.2em 0.5em 0 0;
     -fx-rotate: 0;
 }
 
-/* tree-cell，修复atlantafx的图标下移问题 */
 .tree-cell > .tree-disclosure-node > .arrow,
 .tree-table-row-cell > .tree-disclosure-node > .arrow {
     -fx-padding: 0.2em 0.5em 0 0;
 }
+
+/* tree-cell，修复atlantafx的样式异常问题 */
 
 /* text-input，修复atlantafx的样式异常问题 */
 .text-input {
     -fx-padding: 3px;
 }
 
+/* text-input，修复atlantafx的样式异常问题 */
+
 /* button，修复atlantafx的样式异常问题 */
 .button {
     -fx-padding: 6px 12px 6px 12px;
 }
+
+/* button，修复atlantafx的样式异常问题 */
 
 /* check-box，修复atlantafx的样式异常问题 */
 .check-box {
@@ -47,6 +56,8 @@
     -fx-max-width: 0.75em;
 }
 
+/* check-box，修复atlantafx的样式异常问题 */
+
 /* text-area，修复atlantafx的样式异常问题 */
 .text-area {
     -fx-padding: 1px;
@@ -54,7 +65,12 @@
 
 .text-area .content {
     -fx-padding: 3px 3px 3px 5px;
+    -fx-fill: -color-fg-default;
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-bg-default;
 }
+
+/* text-area，修复atlantafx的样式异常问题 */
 
 /* table-view，修复atlantafx的样式异常问题 */
 .table-view {
@@ -63,12 +79,16 @@
     -fx-background-color: -color-bg-default;
 }
 
+/* table-view，修复atlantafx的样式异常问题 */
+
 /* rich-text-area，支持atlantafx的样式 */
 .rich-text-area {
     -fx-fill: -color-fg-default;
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
 }
+
+/* rich-text-area，支持atlantafx的样式 */
 
 /* rich-text-field，支持atlantafx的样式 */
 .rich-text-field {
@@ -77,22 +97,25 @@
     -fx-background-color: -color-bg-default;
 }
 
-/* text-area，修复atlantafx的样式异常问题 */
-.text-area .content {
-    -fx-fill: -color-fg-default;
-    -fx-text-fill: -color-fg-default;
-    -fx-background-color: -color-bg-default;
-}
+/* rich-text-field，支持atlantafx的样式 */
 
 /* terminal-text-area，修复atlantafx的样式异常问题 */
 .terminal-text-area {
     -fx-font-family: Monospaced;
 }
 
+/* terminal-text-area，修复atlantafx的样式异常问题 */
+
 /* svg-glyph，支持atlantafx的样式 */
 .svg-glyph {
     -fx-background-color: -color-fg-default;
 }
+
+.svg-glyph:disabled {
+    -fx-opacity: 0.4;
+}
+
+/* svg-glyph，支持atlantafx的样式 */
 
 /* titled-pane，修复atlantafx的样式异常问题 */
 .titled-pane > .content {
@@ -107,10 +130,14 @@
     -fx-font-size: 1em;
 }
 
+/* titled-pane，修复atlantafx的样式异常问题 */
+
 /* combo-box，修复atlantafx的样式异常问题 */
 .combo-box > .list-cell {
     -fx-padding: 3px 3px 3px 5px;
 }
+
+/* combo-box，修复atlantafx的样式异常问题 */
 
 /* chart，修复atlantafx的样式异常问题 */
 .chart-legend {
@@ -127,5 +154,7 @@
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
 }
+
+/* chart，修复atlantafx的样式异常问题 */
 
 
