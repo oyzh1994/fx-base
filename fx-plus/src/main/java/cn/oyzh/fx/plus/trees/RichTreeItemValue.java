@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.trees;
 
 import cn.oyzh.fx.plus.controls.FXHBox;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.Insets;
@@ -120,6 +121,14 @@ public class RichTreeItemValue extends FXHBox {
      * 刷新图标颜色
      */
     public void flushGraphicColor() {
-
+        if (this.graphic() instanceof SVGGlyph glyph) {
+            if (ThemeManager.isDarkMode()) {
+                glyph.setColor(Color.WHITE);
+            } else {
+                glyph.setColor(Color.BLACK);
+            }
+            // 移除等待动画设置的颜色，避免被重复覆盖
+            glyph.removeProp("_color");
+        }
     }
 }
