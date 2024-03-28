@@ -214,16 +214,6 @@ public interface StageWrapper extends PropAdapter, StateAdapter, ThemeAdapter {
             // 初始化模态
             this.stage().initModality(attribute.modality());
         }
-        // // 设置美化css类
-        // root.getStyleClass().addAll(
-        //         JMetroStyleClass.BACKGROUND,
-        //         JMetroStyleClass.LIGHT_BUTTONS,
-        //         JMetroStyleClass.TABLE_GRID_LINES,
-        //         JMetroStyleClass.UNDERLINE_TAB_PANE,
-        //         JMetroStyleClass.ALTERNATING_ROW_COLORS
-        // );
-        // // 扩展风格
-        // new JMetro(this.root(), Style.LIGHT);
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));

@@ -28,7 +28,7 @@
 
 /* text-input，修复atlantafx的样式异常问题 */
 .text-input {
-    -fx-padding: 3px;
+    -fx-padding: 3px 5px 3px 5px;
 }
 
 /* text-input，修复atlantafx的样式异常问题 */
