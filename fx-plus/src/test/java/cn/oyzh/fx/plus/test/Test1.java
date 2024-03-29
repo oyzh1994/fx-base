@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.test;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.plus.event.EventUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -134,6 +135,21 @@ public class Test1 {
             byte byteValue = Byte.parseByte(String.valueOf(decimalValue)); // 将十进制整数转换为字节
             System.out.println(byteValue);
         }
+    }
+
+    @Test
+    public void test12() {
+        TestEventListener listener = new TestEventListener();
+        EventUtil.register(listener);
+        TestEvent event = new TestEvent();
+        event.data("test----------------->");
+        TestEvent2 event2 = new TestEvent2();
+        event2.data("test2----------------->");
+        TestEvent3 event3 = new TestEvent3();
+        event3.data("test3----------------->");
+        EventUtil.post(event);
+        EventUtil.post(event2);
+        EventUtil.post(event3);
     }
 
 }

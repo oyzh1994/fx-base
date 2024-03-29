@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controller;
 
+import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.stage.StageListener;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.stage.WindowEvent;
@@ -12,8 +13,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/10/12
  */
-//@Slf4j
-public class Controller implements StageListener {
+public class Controller implements StageListener, EventListener {
 
     /**
      * 舞台
@@ -38,6 +38,7 @@ public class Controller implements StageListener {
 
     @Override
     public void onStageShowing(WindowEvent event) {
+        EventListener.super.register();
     }
 
     @Override
@@ -55,6 +56,7 @@ public class Controller implements StageListener {
 
     @Override
     public void onStageHidden(WindowEvent event) {
+        EventListener.super.unregister();
     }
 
     @Override

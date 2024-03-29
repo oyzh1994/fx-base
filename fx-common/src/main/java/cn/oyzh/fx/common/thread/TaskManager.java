@@ -53,4 +53,27 @@ public class TaskManager {
         delayTask = ExecutorUtil.start(myTask, delay);
         CACHE.put(key, delayTask);
     }
+
+    /**
+     * 开始延迟任务
+     *
+     * @param task  任务
+     * @param delay 延迟时间
+     */
+    public static void startDelay(Runnable task, int delay) {
+        if (task != null) {
+            ExecutorUtil.start(task, delay);
+        }
+    }
+
+    /**
+     * 开始任务
+     *
+     * @param task 任务
+     */
+    public static void start(Runnable task) {
+        if (task != null) {
+            ExecutorUtil.submit(task);
+        }
+    }
 }

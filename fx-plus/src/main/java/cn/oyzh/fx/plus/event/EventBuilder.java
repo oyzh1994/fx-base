@@ -61,9 +61,9 @@ public class EventBuilder<D> {
         return new EventBuilder<>();
     }
 
-    public static EventBuilder<Object> newBuilder(EventMsg msg) {
-        EventBuilder<Object> builder = new EventBuilder<>();
-        builder.type(msg.name()).group(msg.group()).data(msg);
-        return builder;
-    }
+    // public static EventBuilder<Object> newBuilder(EventMsg msg) {
+    //     EventBuilder<Object> builder = new EventBuilder<>();
+    //     builder.type(msg.name()).group(msg.group()).data(msg);
+    //     return builder;
+    // }
 }

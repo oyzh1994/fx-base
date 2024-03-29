@@ -28,6 +28,7 @@
         <hutool.version>5.8.24</hutool.version>
         <javafx.version>23-ea+3</javafx.version>
         <lombok.version>1.18.32</lombok.version>
+        <guava.version>33.1.0-jre</guava.version>
         <spring.boot.version>3.2.4</spring.boot.version>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
