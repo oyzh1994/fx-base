@@ -2,9 +2,9 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeType;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.Node;
 import lombok.NonNull;
@@ -133,12 +133,14 @@ public class Tray implements ThemeAdapter {
      */
     public void show() {
         try {
-            // 添加到托盘
-            if (ArrayUtil.isEmpty(TrayManager.systemTray().getTrayIcons())) {
-                TrayManager.systemTray().remove(this.trayIcon);
-                TrayManager.systemTray().add(this.trayIcon);
+            if (SystemTray.isSupported()) {
+                // 添加到托盘
+                if (ArrayUtil.isEmpty(TrayManager.systemTray().getTrayIcons())) {
+                    TrayManager.systemTray().remove(this.trayIcon);
+                    TrayManager.systemTray().add(this.trayIcon);
+                }
+                this.trayIcon.changeTheme(ThemeManager.currentTheme());
             }
-            this.trayIcon.changeTheme(ThemeManager.currentTheme());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -149,8 +151,10 @@ public class Tray implements ThemeAdapter {
      */
     public void close() {
         try {
-            if (ArrayUtil.isNotEmpty(TrayManager.systemTray().getTrayIcons())) {
-                TrayManager.systemTray().remove(this.trayIcon);
+            if (SystemTray.isSupported()) {
+                if (ArrayUtil.isNotEmpty(TrayManager.systemTray().getTrayIcons())) {
+                    TrayManager.systemTray().remove(this.trayIcon);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -160,7 +164,7 @@ public class Tray implements ThemeAdapter {
     @Override
     public void changeTheme(ThemeType themeType) {
         ThemeAdapter.super.changeTheme(themeType);
-        if ( this.trayIcon != null) {
+        if (this.trayIcon != null) {
             this.trayIcon.changeTheme(themeType);
         }
     }

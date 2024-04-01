@@ -134,4 +134,13 @@ public class TrayManager {
     public static boolean exist() {
         return tray != null;
     }
+
+    /**
+     * 是否支持托盘
+     *
+     * @return 结果
+     */
+    public static boolean supported() {
+        return SystemTray.isSupported();
+    }
 }

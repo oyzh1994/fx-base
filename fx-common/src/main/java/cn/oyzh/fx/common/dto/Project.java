@@ -1,9 +1,10 @@
 package cn.oyzh.fx.common.dto;
 
 import lombok.Data;
-import lombok.Getter;
-
-import java.util.Properties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 /**
  * 项目信息
@@ -11,46 +12,40 @@ import java.util.Properties;
  * @author oyzh
  * @since 2020/9/14
  */
-@Getter
+@Data
+@Lazy
+@Component
+@PropertySource(value = "/project.properties", encoding = "utf-8")
 public class Project {
 
     /**
      * 名称
      */
+    @Value("${project.name}")
     private String name;
 
     /**
      * 类型
      */
+    @Value("${project.type}")
     private String type;
 
     /**
      * 版本号
      */
+    @Value("${project.version}")
     private String version;
 
     /**
      * 更新日期
      */
+    @Value("${project.updateDate}")
     private String updateDate;
 
     /**
      * copyright
      */
+    @Value("${project.copyright}")
     private String copyright;
 
-    public Project() {
-        try {
-            Properties properties = new Properties();
-            properties.load(Project.class.getResourceAsStream("/project.properties"));
-            this.name = properties.getProperty("project.name");
-            this.type = properties.getProperty("project.type");
-            this.version = properties.getProperty("project.version");
-            this.copyright = properties.getProperty("project.copyright");
-            this.updateDate = properties.getProperty("project.updateDate");
-            properties.clear();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 }
