@@ -37,8 +37,9 @@ public class StageUtil {
         for (StageWrapper wrapper : allStages()) {
             if (wrapper.controller() instanceof StageListener listener) {
                 try {
+                    StaticLog.info("listener:{} exit...", listener.getClass());
                     listener.onSystemExit();
-                    StaticLog.debug("listener.onSystemExit() execute...");
+                    StaticLog.info("listener:{} success...", listener.getClass());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -46,6 +47,7 @@ public class StageUtil {
         }
         StaticLog.warn("system exit...");
         Platform.exit();
+        System.exit(0);
     }
 
     /**
@@ -113,7 +115,7 @@ public class StageUtil {
      *
      * @return StageExt
      */
-    public static StageExt newStage( ) {
+    public static StageExt newStage() {
         return new StageExt(null);
     }
 

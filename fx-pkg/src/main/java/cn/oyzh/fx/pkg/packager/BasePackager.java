@@ -188,6 +188,7 @@ public abstract class BasePackager {
             this.clapJar = this.jarClipConfig().getDest();
             StaticLog.info("jarClip finish clapJar:{}------------------------------------------------>", this.clapJar);
         } else {
+            this.packageConfig().setJarPath(this.jarClipConfig().getSrc());
             StaticLog.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
         }
     }

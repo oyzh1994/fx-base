@@ -5,7 +5,11 @@ import cn.hutool.cache.impl.WeakCache;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 任务管理器
@@ -63,6 +67,26 @@ public class TaskManager {
     public static void startDelay(Runnable task, int delay) {
         if (task != null) {
             ExecutorUtil.start(task, delay);
+        }
+    }
+
+    /**
+     * 开始超时任务
+     *
+     * @param task    任务
+     * @param timeout 超时时间
+     */
+    public static void startTimeout(Runnable task, int timeout) {
+        if (task != null) {
+            // 创建一个异步任务
+            CompletableFuture<Void> future = CompletableFuture.runAsync(task, ExecutorUtil.executor());
+            // 等待异步任务完成，如果超时则抛出异常
+            try {
+                future.get(timeout, TimeUnit.MILLISECONDS);
+            } catch (TimeoutException | InterruptedException | ExecutionException e) {
+                // 如果任务超时，这里会被执行
+                future.cancel(true);
+            }
         }
     }
 

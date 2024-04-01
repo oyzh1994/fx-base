@@ -28,7 +28,7 @@ public class ExecutorUtil {
      *
      * @return 业务执行器
      */
-    private static ScheduledExecutorService executor() {
+    public static ScheduledExecutorService executor() {
         if (executor == null) {
             executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 2);
         }

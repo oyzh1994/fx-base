@@ -1,11 +1,8 @@
 package cn.oyzh.fx.plus.spring;
 
-import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.extra.spring.SpringUtil;
-import cn.oyzh.fx.plus.stage.StageAttribute;
 import javafx.util.Callback;
 import org.springframework.beans.BeansException;
-import org.springframework.stereotype.Component;
 
 /**
  * fx Controller 工厂
@@ -19,27 +16,8 @@ public class SpringControllerFactory implements Callback<Class<?>, Object> {
     public Object call(Class<?> clazz) {
         Object controller = null;
         try {
-            if (SpringUtil.getBeanFactory() != null) {
-                try {
-                    if (clazz.getAnnotation(StageAttribute.class) != null) {
-                        controller = SpringUtil.getBean(clazz);
-                    }
-                } catch (BeansException ignored) {
-                }
-                try {
-                    if (controller == null && clazz.getAnnotation(Component.class) != null) {
-                        controller = SpringUtil.getBean(clazz);
-                    }
-                } catch (BeansException ignored) {
-                }
-                try {
-                    if (controller == null) {
-                        controller = SpringUtil.getBean(clazz);
-                    }
-                } catch (BeansException ignored) {
-                }
-            }
-        } catch (UtilException ignored) {
+            controller = SpringUtil.getBean(clazz);
+        } catch (BeansException ignored) {
         }
         try {
             if (controller == null) {

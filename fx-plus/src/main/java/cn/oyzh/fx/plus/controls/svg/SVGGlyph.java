@@ -73,12 +73,12 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         //         this.setBackground(ControlUtil.background(this.color));
         //     }
         // });
-        this.backgroundProperty().addListener((_, _, t1) -> {
+        this.backgroundProperty().addListener((obs, t0, t1) -> {
             if (t1 != null && t1.getFills() != null && !t1.isEmpty()) {
                 this.shape().setColor(t1.getFills().getFirst().getFill());
             }
         });
-        this.cursorProperty().addListener((_, _, t1) -> this.shape().setCursor(t1));
+        this.cursorProperty().addListener((obs, t0, t1) -> this.shape().setCursor(t1));
         this.cursor(this.cursor);
         this.getStyleClass().add("svg-glyph");
         this.changeTheme(ThemeManager.currentTheme());

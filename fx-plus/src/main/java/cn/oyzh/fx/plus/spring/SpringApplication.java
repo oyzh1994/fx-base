@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.spring;
 
 import cn.oyzh.fx.plus.ext.ApplicationExt;
-import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
-import javafx.application.Preloader;
 import lombok.NonNull;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;

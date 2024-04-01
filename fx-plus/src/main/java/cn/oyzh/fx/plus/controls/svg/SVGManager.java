@@ -28,7 +28,7 @@ public class SVGManager {
             RotateTransition transition = glyph.getProp("_transition");
             if (transition == null) {
                 transition = AnimationUtil.rotate(glyph);
-                transition.setOnFinished(_ -> {
+                transition.setOnFinished(t1 -> {
                     glyph.setRotate(0);
                     glyph.setWaiting(false);
                 });

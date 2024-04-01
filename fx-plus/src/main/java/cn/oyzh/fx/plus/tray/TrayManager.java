@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.thread.TaskManager;
 import javafx.scene.Node;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -41,7 +42,7 @@ public class TrayManager {
      */
     public static void show() {
         if (tray != null) {
-            tray.show();
+            TaskManager.startTimeout(tray::show, 100);
         }
     }
 
@@ -50,7 +51,7 @@ public class TrayManager {
      */
     public static void destroy() {
         if (tray != null) {
-            tray.close();
+            TaskManager.startTimeout(tray::close, 100);
             tray = null;
         }
     }
