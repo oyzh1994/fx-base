@@ -23,16 +23,6 @@ public class KeyHandler {
     private KeyCode keyCode;
 
     /**
-     * 事件处理器
-     */
-    private EventHandler<? super KeyEvent> handler;
-
-    /**
-     * 按键类型
-     */
-    private EventType<KeyEvent> keyType;
-
-    /**
      * 是否alt按下
      */
     private boolean altDown;
@@ -52,25 +42,19 @@ public class KeyHandler {
      */
     private boolean controlDown;
 
+    /**
+     * 按键类型
+     */
+    private EventType<KeyEvent> keyType;
+
+    /**
+     * 事件处理器
+     */
+    private EventHandler<? super KeyEvent> handler;
+
     public void handle(KeyEvent event) {
         if (this.handler != null) {
             this.handler.handle(event);
         }
-    }
-
-    public static KeyHandler of(KeyCode keyCode) {
-        KeyHandler keyHandler = new KeyHandler();
-        keyHandler.keyCode = keyCode;
-        return keyHandler;
-    }
-
-    public static KeyHandler of(KeyCode keyCode, boolean altDown, boolean metaDown, boolean shiftDown, boolean controlDown) {
-        KeyHandler keyHandler = new KeyHandler();
-        keyHandler.keyCode = keyCode;
-        keyHandler.altDown = altDown;
-        keyHandler.metaDown = metaDown;
-        keyHandler.shiftDown = shiftDown;
-        keyHandler.controlDown = controlDown;
-        return keyHandler;
     }
 }
