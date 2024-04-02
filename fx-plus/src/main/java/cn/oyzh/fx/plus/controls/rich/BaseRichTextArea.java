@@ -97,17 +97,22 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
      * 显示行号
      */
     public void showLineNum() {
-        if (lineFunc == null) {
-            lineFunc = LineNumberFactory.get(this);
+        if (this.getParagraphGraphicFactory() == null) {
+            if (lineFunc == null) {
+                lineFunc = LineNumberFactory.get(this);
+            }
+            FXUtil.runWait(() -> this.setParagraphGraphicFactory(lineFunc));
         }
-        FXUtil.runWait(() -> this.setParagraphGraphicFactory(lineFunc));
     }
 
     /**
      * 隐藏行号
      */
     public void hideLineNum() {
-        FXUtil.runWait(() -> this.setParagraphGraphicFactory(null));
+        if (this.getParagraphGraphicFactory() != null) {
+            this.lineFunc = null;
+            FXUtil.runWait(() -> this.setParagraphGraphicFactory(null));
+        }
     }
 
     /**
