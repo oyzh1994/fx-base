@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.ThreadUtil;
+import cn.oyzh.fx.pkg.PackageManager;
 import cn.oyzh.fx.pkg.clip.clipper.JarClipConfig;
 import cn.oyzh.fx.pkg.clip.clipper.JarClipper;
 import cn.oyzh.fx.pkg.clip.clipper.JreClipConfig;
@@ -29,7 +30,6 @@ import java.io.File;
  * @author oyzh
  * @since 2023/3/8
  */
-//@Slf4j
 public abstract class BasePackager {
 
     /**
@@ -254,18 +254,7 @@ public abstract class BasePackager {
      * @return 压缩文件名称
      */
     protected String getCompressName() {
-        String name = "";
-        if (this.packageConfig().getAppName() != null) {
-            name += this.packageConfig().getAppName();
-        }
-        if (this.packageConfig().getVersion() != null) {
-            name = name + "_" + this.packageConfig().getVersion();
-        }
-        if (this.packageConfig().getPlatform() != null) {
-            name = name + "_" + this.packageConfig().getPlatform();
-        }
-        name = name + "_release";
-        return name;
+        return PackageManager.getCompressNameProvider().getCompressName(this.packageConfig());
     }
 
     /**

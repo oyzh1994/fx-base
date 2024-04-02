@@ -45,6 +45,11 @@ public class PackageConfig extends BaseConfig {
     private String platform;
 
     /**
+     * 构建类型
+     */
+    private String buildType;
+
+    /**
      * 主jar路径
      */
     private String jarPath;
@@ -157,6 +162,10 @@ public class PackageConfig extends BaseConfig {
         if (type != null) {
             this.type = type;
         }
+        String buildType = object.getStr("buildType");
+        if (buildType != null) {
+            this.buildType = buildType;
+        }
         String compressType = object.getStr("compressType");
         if (compressType != null) {
             this.compressType = compressType;
@@ -210,24 +219,24 @@ public class PackageConfig extends BaseConfig {
     @Override
     public PackageConfig clone() {
         PackageConfig config = new PackageConfig();
-        config.enable = this.enable;
         config.desc = this.desc;
+        config.type = this.type;
+        config.enable = this.enable;
         config.vendor = this.vendor;
         config.appName = this.appName;
+        config.version = this.version;
         config.jarPath = this.jarPath;
         config.jrePath = this.jrePath;
         config.appIcon = this.appIcon;
-        config.mainClass = this.mainClass;
         config.destPath = this.destPath;
-        config.executable = this.executable;
-        config.version = this.version;
-        config.compressType = this.compressType;
-        config.type = this.type;
-        config.identifier = this.identifier;
         config.platform = this.platform;
+        config.buildType = this.buildType;
+        config.mainClass = this.mainClass;
+        config.identifier = this.identifier;
+        config.executable = this.executable;
+        config.compressType = this.compressType;
         return config;
     }
-
 
     @Override
     public PackageConfig cross(Object o) {
@@ -275,6 +284,9 @@ public class PackageConfig extends BaseConfig {
             }
             if (config.platform != null) {
                 config1.platform = config.platform;
+            }
+            if (config.buildType != null) {
+                config1.buildType = config.buildType;
             }
         }
         return config1;

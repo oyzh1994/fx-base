@@ -1,7 +1,8 @@
-package cn.oyzh.fx.plus.skin;
+package cn.oyzh.fx.plus.search;
 
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

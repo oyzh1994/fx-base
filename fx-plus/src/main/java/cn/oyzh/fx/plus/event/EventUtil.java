@@ -332,7 +332,11 @@ public class EventUtil {
 
     public static void unregister(EventListener listener) {
         if (listener != null) {
-            eventBus().unregister(listener);
+            try {
+                eventBus().unregister(listener);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

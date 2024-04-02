@@ -33,4 +33,12 @@ public class Event<D> {
      */
     private Object extra;
 
+    public Event() {
+
+    }
+
+    public Event(D data) {
+        this.data = data;
+    }
+
 }
