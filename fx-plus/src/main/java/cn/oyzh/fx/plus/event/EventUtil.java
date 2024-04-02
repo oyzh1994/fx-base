@@ -132,7 +132,7 @@ public class EventUtil {
      * @param delay 延迟事件
      */
     public static void postDelay(Event<?> event, int delay) {
-        post(event, EventConfigBuilder.newBuilder().delay(delay).build());
+        post(event, EventConfigBuilder.newBuilder().fxThread(true).async(true).delay(delay).build());
     }
 
     /**
@@ -141,7 +141,7 @@ public class EventUtil {
      * @param event 事件
      */
     public static void postAsync(Event<?> event) {
-        post(event, EventConfigBuilder.newBuilder().async(true).build());
+        post(event, EventConfigBuilder.newBuilder().async(true).fxThread(true).build());
     }
 }
 

@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.Task;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -307,21 +308,21 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     /**
      * 开始等待动画
      *
-     * @param handler 处理业务
+     * @param task 任务
      */
-    public void startWaiting(@NonNull Runnable handler) {
+    public void startWaiting(@NonNull Runnable task) {
         this.startWaiting();
-        ExecutorUtil.start(handler, 20);
+        TaskManager.startDelay(task, 20);
     }
 
     /**
      * 开始等待动画
      *
-     * @param task 处理业务
+     * @param task 任务
      */
     public void startWaiting(@NonNull Task task) {
         this.startWaiting();
-        ExecutorUtil.start(task, 20);
+        TaskManager.startDelay(task, 20);
     }
 
     /**
