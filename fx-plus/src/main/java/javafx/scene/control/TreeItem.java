@@ -420,7 +420,7 @@ public class TreeItem<T> implements EventTarget { //, Comparable<TreeItem<T>> {
      **************************************************************************/
 
     // called whenever the contents of the children sequence changes
-    private final ListChangeListener<TreeItem<T>> childrenListener = c -> {
+    private ListChangeListener<TreeItem<T>> childrenListener = c -> {
         expandedDescendentCountDirty = true;
         updateChildren(c);
     };

@@ -19,16 +19,6 @@ public class Event<D> {
     private D data;
 
     /**
-     * 类型
-     */
-    private String type;
-
-    /**
-     * 分组名称
-     */
-    private String group;
-
-    /**
      * 额外数据
      */
     private Object extra;

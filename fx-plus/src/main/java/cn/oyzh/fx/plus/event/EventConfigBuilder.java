@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.event;
 
 /**
- * 事件
+ * 事件配置构建器
  *
  * @author oyzh
- * @since 2023/4/10
+ * @since 2024/03/30
  */
 public class EventConfigBuilder {
 

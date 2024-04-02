@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.event;
 
 /**
- * 事件消息格式化器
+ * 事件格式化器
  *
  * @author oyzh
  * @since 2023/9/18
