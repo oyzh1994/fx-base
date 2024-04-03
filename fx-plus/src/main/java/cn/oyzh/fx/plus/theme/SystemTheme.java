@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.Theme;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.UUID;
 import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.ResourceUtil;
@@ -9,6 +10,7 @@ import javafx.application.ColorScheme;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +19,7 @@ import java.nio.charset.StandardCharsets;
  * @author oyzh
  * @since 2024/4/3
  */
+@Slf4j
 public class SystemTheme implements Theme, ThemeStyle {
 
     /**
@@ -40,16 +43,6 @@ public class SystemTheme implements Theme, ThemeStyle {
     private String themePath;
 
     /**
-     * 初始化主题文件路径
-     */
-    private void initThemePath() {
-        this.themePath = FXUtil.getAppStorePath() + "theme.css";
-        while (this.themePath.contains("\\")) {
-            this.themePath = themePath.replace("\\", "/");
-        }
-    }
-
-    /**
      * 更新主题样式文件
      */
     public void updateThemeCss() {
@@ -59,11 +52,25 @@ public class SystemTheme implements Theme, ThemeStyle {
         } else {
             url = ResourceUtil.getResource("/fx-plus/css/system-light.css");
         }
+        // 替换颜色
         String content = FileUtil.readString(url, StandardCharsets.UTF_8);
         content = content.replace("${accent_color}", this.getAccentColorHex());
         content = content.replace("${bg_color}", this.getBackgroundColorHex());
         content = content.replace("${fg_color}", this.getForegroundColorHex());
-        FileUtil.writeString(content, FXUtil.getAppStorePath() + "theme.css", StandardCharsets.UTF_8);
+        // 删除样式文件
+        if (this.themePath != null) {
+            FileUtil.del(this.themePath.replace("file:/", ""));
+        }
+        // 生成文件名
+        String path = FXUtil.getAppStorePath() + "theme_" + UUID.fastUUID().toString(true) + ".css";
+        // 写入文件
+        FileUtil.writeUtf8String(content, path);
+        // 替换特殊符号
+        while (path.contains("\\")) {
+            path = path.replace("\\", "/");
+        }
+        // 设置主题文件
+        this.themePath = "file:/" + path;
     }
 
     @Override
@@ -79,9 +86,9 @@ public class SystemTheme implements Theme, ThemeStyle {
     @Override
     public String getUserAgentStylesheet() {
         if (this.themePath == null) {
-            this.initThemePath();
+            this.updateThemeCss();
         }
-        return "file:/" + this.themePath;
+        return this.themePath;
     }
 
     @Override
@@ -140,7 +147,10 @@ public class SystemTheme implements Theme, ThemeStyle {
      * 变更主题
      */
     protected void changeTheme() {
-        this.updateThemeCss();
-        TaskManager.startDelay("changeTheme", () -> FXUtil.runLater(() -> ThemeManager.changeTheme(this)), 1000);
+        log.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
+        TaskManager.startDelay("changeTheme", () -> FXUtil.runLater(() -> {
+            this.updateThemeCss();
+            ThemeManager.changeTheme(this);
+        }), 1000);
     }
 }

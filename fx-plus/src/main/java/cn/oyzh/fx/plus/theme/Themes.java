@@ -42,6 +42,11 @@ public class Themes {
         };
     }
 
+    /**
+     * 获取主题
+     *
+     * @return 主题列表
+     */
     public static List<ThemeStyle> themes() {
         List<ThemeStyle> themes = new ArrayList<>();
         themes.add(PRIMER_LIGHT);
@@ -54,13 +59,27 @@ public class Themes {
         return themes;
     }
 
+    /**
+     * 获取全部主题
+     *
+     * @return 主题
+     */
     public static List<ThemeStyle> allThemes() {
         List<ThemeStyle> themes = themes();
         themes.add(SYSTEM);
         return themes;
     }
 
+    /**
+     * 获取主题
+     *
+     * @param name 主题名称
+     * @return 主题
+     */
     public static ThemeStyle getTheme(String name) {
+        if (name == null) {
+            return PRIMER_LIGHT;
+        }
         return switch (name.toUpperCase()) {
             case "PRIMER LIGHT", "PRIMER_LIGHT" -> PRIMER_LIGHT;
             case "PRIMER DARK", "PRIMER_DARK" -> PRIMER_DARK;

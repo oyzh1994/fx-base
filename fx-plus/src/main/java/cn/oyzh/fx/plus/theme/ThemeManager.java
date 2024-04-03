@@ -1,7 +1,10 @@
 package cn.oyzh.fx.plus.theme;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.experimental.UtilityClass;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,6 +26,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @UtilityClass
 public class ThemeManager {
+
+    static {
+        clearThemeTmp();
+    }
 
     /**
      * 默认主题
@@ -115,6 +123,20 @@ public class ThemeManager {
             changeThemeCycle(window.getScene(), style);
         } else if (root instanceof Scene scene) {
             changeThemeCycle(scene.getRoot(), style);
+        }
+    }
+
+    /**
+     * 清理临时主题文件
+     */
+    public static void clearThemeTmp() {
+        File[] files = FileUtil.ls(FXUtil.getAppStorePath());
+        if (ArrayUtil.isNotEmpty(files)) {
+            for (File file : files) {
+                if (file.getName().startsWith("theme") && file.getName().endsWith(".css")) {
+                    file.delete();
+                }
+            }
         }
     }
 }

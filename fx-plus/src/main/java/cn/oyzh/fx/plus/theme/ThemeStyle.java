@@ -49,6 +49,7 @@ public interface ThemeStyle {
 
     /**
      * 获取强调色16进制值
+     *
      * @return 强调色16进制值
      */
     default String getAccentColorHex() {
@@ -64,6 +65,7 @@ public interface ThemeStyle {
 
     /**
      * 获取背景色16进制值
+     *
      * @return 背景色16进制值
      */
     default String getForegroundColorHex() {
@@ -77,9 +79,9 @@ public interface ThemeStyle {
      */
     Color getBackgroundColor();
 
-
     /**
      * 获取背景色16进制值
+     *
      * @return 背景色16进制值
      */
     default String getBackgroundColorHex() {
