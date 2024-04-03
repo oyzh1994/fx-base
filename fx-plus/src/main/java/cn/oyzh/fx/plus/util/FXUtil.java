@@ -112,46 +112,6 @@ public class FXUtil {
         }
     }
 
-//    /**
-//     * 根据id寻找子节点
-//     *
-//     * @param children 子节点集合
-//     * @param id       id
-//     * @return 子节点
-//     */
-//    public static <T extends Node> T findChildById(@NonNull ObservableList<T> children, @NonNull String id) {
-//        Node node = null;
-//        for (Node next : children) {
-//            if (id.equals(next.getId())) {
-//                node = next;
-//                break;
-//            }
-//        }
-//        return (T) node;
-//    }
-//
-//    /**
-//     * 根据id寻找子节点
-//     *
-//     * @param parent 父节点
-//     * @param id     id
-//     * @return 子节点
-//     */
-//    public static <T extends Node> T findChildById(@NonNull Parent parent, @NonNull String id) {
-//        Node node = findChildById(parent.getChildrenUnmodifiable(), id);
-//        if (node == null) {
-//            for (Node next : parent.getChildrenUnmodifiable()) {
-//                if (next instanceof Parent) {
-//                    node = findChildById((Parent) next, id);
-//                    if (node != null) {
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//        return (T) node;
-//    }
-
     /**
      * 同步运行
      *
@@ -199,44 +159,6 @@ public class FXUtil {
             task.run();
         } else {
             Platform.runLater(task);
-            // Platform.runLater(new RunTask(task));
         }
     }
-
-    // /**
-    //  * 复制到粘贴板
-    //  *
-    //  * @param content 内容
-    //  * @return 结果
-    //  */
-    // public static boolean clipboardCopy(@NonNull String content) {
-    //     try {
-    //         StringSelection stringSelection = new StringSelection(content);
-    //         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         return false;
-    //     }
-    //     return true;
-    // }
-    //
-    // /**
-    //  * 获取粘贴板文本
-    //  *
-    //  * @return 结果
-    //  */
-    // public static String clipboardContent() {
-    //     try {
-    //         // 获取系统剪贴板
-    //         Clipboard clipboard = Clipboard.getSystemClipboard();
-    //         // 判断剪贴板中是否有文本内容
-    //         if (clipboard.hasString()) {
-    //             // 获取文本内容
-    //             return clipboard.getString();
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null;
-    // }
 }

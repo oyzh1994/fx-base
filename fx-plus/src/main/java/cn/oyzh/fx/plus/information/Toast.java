@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.information;
 
-import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.stage.StageWrapper;
@@ -178,7 +178,7 @@ public class Toast {
                 // 计算位置
                 FXUtil.computePos(owner, this.window);
                 // 执行延迟关闭
-                ExecutorUtil.start(this::close, this.duration);
+                TaskManager.startDelay(this::close, this.duration);
             });
         }
         // 显示窗口
