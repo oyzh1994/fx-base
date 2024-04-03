@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.fx.plus.stage.StageExt;
 import cn.oyzh.fx.plus.stage.StageUtil;
-import cn.oyzh.fx.plus.theme.ThemeType;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -92,10 +92,10 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
     }
 
     @Override
-    public void changeTheme(ThemeType themeType) {
-        ThemeAdapter.super.changeTheme(themeType);
+    public void changeTheme(ThemeStyle style) {
+        ThemeAdapter.super.changeTheme(style);
         if (this.menu != null) {
-            this.menu.changeTheme(themeType);
+            this.menu.changeTheme(style);
         }
     }
 }

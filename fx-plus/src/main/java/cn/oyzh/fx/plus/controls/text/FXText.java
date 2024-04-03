@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.ThemeType;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -78,10 +78,10 @@ public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapt
     }
 
     @Override
-    public void changeTheme(ThemeType themeType) {
+    public void changeTheme(ThemeStyle style) {
         if (this.isEnableTheme()) {
-            ThemeAdapter.super.changeTheme(themeType);
-            if (themeType.isDarkMode()) {
+            ThemeAdapter.super.changeTheme(style);
+            if (style.isDarkMode()) {
                 this.setFill(Color.WHITE);
             } else {
                 this.setFill(Color.BLACK);

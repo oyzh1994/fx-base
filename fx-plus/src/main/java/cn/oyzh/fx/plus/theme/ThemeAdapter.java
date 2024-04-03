@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.scene.Node;
@@ -55,15 +53,15 @@ public interface ThemeAdapter extends PropAdapter {
     /**
      * 更改主题
      *
-     * @param themeType 主题
+     * @param style 主题风格
      */
-    default void changeTheme(ThemeType themeType) {
-        if (this.isEnableTheme() && themeType != null) {
+    default void changeTheme(ThemeStyle style) {
+        if (this.isEnableTheme() && style != null) {
             switch (this) {
-                case Parent node -> this.handleStyle(node, themeType);
-                case StageWrapper wrapper -> this.handleStyle(wrapper.root(), themeType);
-                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), themeType);
-                case Popup popup -> this.handleStyle(popup.getContent(), themeType);
+                case Parent node -> this.handleStyle(node, style);
+                case StageWrapper wrapper -> this.handleStyle(wrapper.root(), style);
+                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);
+                case Popup popup -> this.handleStyle(popup.getContent(), style);
                 default -> {
                 }
             }
@@ -73,40 +71,22 @@ public interface ThemeAdapter extends PropAdapter {
     /**
      * 处理样式
      *
-     * @param nodes     节点列表
-     * @param themeType 主题
+     * @param nodes 节点列表
+     * @param style 主题风格
      */
-    private void handleStyle(List<Node> nodes, ThemeType themeType) {
-        if (CollUtil.isNotEmpty(nodes)) {
-            for (Node node : nodes) {
-                if (node instanceof Parent parent) {
-                    this.handleStyle(parent, themeType);
-                }
-            }
+    private void handleStyle(List<Node> nodes, ThemeStyle style) {
+        for (Node node : nodes) {
+            style.handleStyle(node);
         }
     }
 
     /**
      * 处理样式
      *
-     * @param node      节点
-     * @param themeType 主题
+     * @param node  节点
+     * @param style 主题风格
      */
-    private void handleStyle(Parent node, ThemeType themeType) {
-        if (node != null) {
-            String style = switch (themeType) {
-                case DRACULA -> AtlantaFX.DRACULA.getUserAgentStylesheet();
-                case NORD_DARK -> AtlantaFX.NORD_DARK.getUserAgentStylesheet();
-                case NORD_LIGHT -> AtlantaFX.NORD_LIGHT.getUserAgentStylesheet();
-                case PRIMER_DARK -> AtlantaFX.PRIMER_DARK.getUserAgentStylesheet();
-                case PRIMER_LIGHT -> AtlantaFX.PRIMER_LIGHT.getUserAgentStylesheet();
-                case CUPERTINO_DARK -> AtlantaFX.CUPERTINO_DARK.getUserAgentStylesheet();
-                case CUPERTINO_LIGHT -> AtlantaFX.CUPERTINO_LIGHT.getUserAgentStylesheet();
-            };
-            List<String> removes = CollUtil.toList(AtlantaFX.styles());
-            removes.add(FXStyle.FX_BASE);
-            node.getStylesheets().removeAll(removes);
-            node.getStylesheets().addAll(style, FXStyle.FX_BASE);
-        }
+    private void handleStyle(Node node, ThemeStyle style) {
+        style.handleStyle(node);
     }
 }

@@ -4,7 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.ThemeType;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.Node;
 import lombok.NonNull;
@@ -162,10 +162,10 @@ public class Tray implements ThemeAdapter {
     }
 
     @Override
-    public void changeTheme(ThemeType themeType) {
-        ThemeAdapter.super.changeTheme(themeType);
+    public void changeTheme(ThemeStyle style) {
+        ThemeAdapter.super.changeTheme(style);
         if (this.trayIcon != null) {
-            this.trayIcon.changeTheme(themeType);
+            this.trayIcon.changeTheme(style);
         }
     }
 }

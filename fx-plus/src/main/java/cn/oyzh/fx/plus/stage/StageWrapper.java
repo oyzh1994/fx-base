@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/10/11
  */
-public interface StageWrapper extends PropAdapter, StateAdapter, ThemeAdapter {
+public interface StageWrapper extends StateAdapter, ThemeAdapter {
 
     /**
      * 获取舞台

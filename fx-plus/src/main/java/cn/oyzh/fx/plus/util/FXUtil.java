@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
 import java.util.concurrent.CountDownLatch;
@@ -22,9 +24,15 @@ import java.util.concurrent.TimeUnit;
  * @author oyzh
  * @since 2021/8/19
  */
-//@Slf4j
 @UtilityClass
 public class FXUtil {
+
+    /**
+     * app存储路径
+     */
+    @Getter
+    @Setter
+    private static String appStorePath;
 
     /**
      * 当前机器对象

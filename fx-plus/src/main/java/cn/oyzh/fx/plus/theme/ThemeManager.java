@@ -2,11 +2,17 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.stage.StageWrapper;
+import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 主题管理器
@@ -20,12 +26,12 @@ public class ThemeManager {
     /**
      * 默认主题
      */
-    public static ThemeType defaultThemeType = ThemeType.PRIMER_LIGHT;
+    public static ThemeStyle defaultTheme = Themes.PRIMER_LIGHT;
 
     /**
      * 当前主题
      */
-    private static ThemeType current_ThemeType;
+    private static ThemeStyle currentTheme;
 
     /**
      * 是否暗黑模式
@@ -41,11 +47,11 @@ public class ThemeManager {
      *
      * @return 当前主题
      */
-    public static ThemeType currentTheme() {
-        if (current_ThemeType == null) {
-            return defaultThemeType;
+    public static ThemeStyle currentTheme() {
+        if (currentTheme == null) {
+            return defaultTheme;
         }
-        return current_ThemeType;
+        return currentTheme;
     }
 
     /**
@@ -53,28 +59,33 @@ public class ThemeManager {
      *
      * @param themeName 主题名称
      */
-    public static void currentTheme(String themeName) {
-        ThemeType themeType;
-        if (themeName == null) {
-            themeType = defaultThemeType;
-        } else {
-            themeType = ThemeType.valueOf(themeName.toUpperCase());
-        }
-        currentTheme(themeType);
+    public static void changeTheme(String themeName) {
+        changeTheme(Themes.getTheme(themeName));
     }
 
     /**
-     * 设置主题
+     * 变更主题
      *
-     * @param themeType 主题
+     * @param style 主题风格
      */
-    public static void currentTheme(ThemeType themeType) {
+    public static void changeTheme(ThemeStyle style) {
+        if (style == null) {
+            return;
+        }
         try {
-            current_ThemeType = themeType;
+            // 变更颜色
             List<StageWrapper> wrappers = StageUtil.allStages();
             for (StageWrapper wrapper : wrappers) {
-                changeThemeCycle(wrapper.root(), themeType);
+                changeThemeCycle(wrapper.root(), style);
             }
+            // 监听系统主题
+            if (style == Themes.SYSTEM) {
+                Themes.SYSTEM.listener();
+            } else {
+                Themes.SYSTEM.unListener();
+            }
+            // 设置当前主题
+            currentTheme = style;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -84,16 +95,26 @@ public class ThemeManager {
      * 更改主题，循环处理
      *
      * @param root  根节点
-     * @param themeType 主题
+     * @param style 主题风格
      */
-    private static void changeThemeCycle(Node root, ThemeType themeType) {
+    private static void changeThemeCycle(EventTarget root, ThemeStyle style) {
         if (root instanceof ThemeAdapter adapter) {
-            adapter.changeTheme(themeType);
+            adapter.changeTheme(style);
         }
         if (root instanceof Parent parent) {
-            for (Node node : parent.getChildrenUnmodifiable()) {
-                changeThemeCycle(node, themeType);
+            for (Node node : new CopyOnWriteArrayList<>(parent.getChildrenUnmodifiable())) {
+                changeThemeCycle(node, style);
             }
+        } else if (root instanceof Popup popup) {
+            for (Node node : new CopyOnWriteArrayList<>(popup.getContent())) {
+                changeThemeCycle(node, style);
+            }
+        } else if (root instanceof Stage stage) {
+            changeThemeCycle(stage.getScene(), style);
+        } else if (root instanceof Window window) {
+            changeThemeCycle(window.getScene(), style);
+        } else if (root instanceof Scene scene) {
+            changeThemeCycle(scene.getRoot(), style);
         }
     }
 }

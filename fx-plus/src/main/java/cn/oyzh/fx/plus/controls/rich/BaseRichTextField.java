@@ -4,7 +4,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.theme.ThemeType;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
@@ -50,11 +50,11 @@ public class BaseRichTextField extends InlineCssTextField implements ThemeAdapte
     }
 
     @Override
-    public void changeTheme(ThemeType themeType) {
+    public void changeTheme(ThemeStyle style) {
         if (this.isEnableTheme()) {
             Node placeholder = this.getPlaceholder();
             CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
-            if (themeType.isDarkMode()) {
+            if (style.isDarkMode()) {
                 this.setStyle(0, this.getLength(), "-fx-fill: #fff;");
                 caretNode.setStroke(Color.WHITE);
                 if (placeholder != null) {
