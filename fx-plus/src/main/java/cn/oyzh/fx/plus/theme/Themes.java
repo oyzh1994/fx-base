@@ -16,6 +16,8 @@ public class Themes {
 
     public static final SystemTheme SYSTEM = new SystemTheme();
 
+    public static final CustomTheme CUSTOM = new CustomTheme();
+
     public static final DraculaTheme DRACULA = new DraculaTheme();
 
     public static final NordDarkTheme NORD_DARK = new NordDarkTheme();

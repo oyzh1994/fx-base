@@ -25,7 +25,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2022/2/7
  */
-public class FlexComboBox<T> extends FXComboBox<T>implements   FlexAdapter {
+public class FlexComboBox<T> extends FXComboBox<T> implements FlexAdapter {
 
     @Override
     public void resize(double width, double height) {

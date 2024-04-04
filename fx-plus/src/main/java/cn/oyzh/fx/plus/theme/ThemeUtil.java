@@ -1,7 +1,15 @@
 package cn.oyzh.fx.plus.theme;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.UUID;
+import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
+
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * 主题工具类
@@ -73,5 +81,55 @@ public class ThemeUtil {
 
         // 返回16进制颜色字符串
         return "#" + hexRed + hexGreen + hexBlue;
+    }
+
+    /**
+     * 获取接近系统的主题
+     *
+     * @return 接近系统的主题风格
+     */
+    public static ThemeStyle getSystemNear() {
+        ThemeStyle style = null;
+        double corr = 0;
+        for (ThemeStyle theme : Themes.themes()) {
+            double corr1 = theme.corr(Themes.SYSTEM);
+            if (corr1 > corr) {
+                corr = corr1;
+                style = theme;
+            }
+        }
+        return style;
+    }
+
+    /**
+     * 更新主题样式文件
+     */
+    public String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
+        // 读取资源
+        URL url = ResourceUtil.getResource(style.getUserAgentStylesheet());
+        // 读取内容
+        List<String> lines = FileUtil.readLines(url, StandardCharsets.UTF_8);
+        // 替换颜色
+        StringBuilder content = new StringBuilder();
+        for (String s : lines) {
+            if (s.trim().startsWith("-color-fg-default:")) {
+                content.append("-color-fg-default:").append(fgColor).append(";");
+            } else if (s.trim().startsWith("-color-bg-default:")) {
+                content.append("-color-bg-default:").append(bgColor).append(";");
+            } else if (s.trim().startsWith("-color-accent-fg:")) {
+                content.append("-color-accent-fg:").append(accentColor).append(";");
+            } else {
+                content.append(s);
+            }
+        }
+        // 生成文件名
+        String path = FXUtil.getAppStorePath() + "theme_" + UUID.fastUUID().toString(true) + ".css";
+        // 写入文件
+        FileUtil.writeUtf8String(content.toString(), path);
+        // 替换特殊符号
+        while (path.contains("\\")) {
+            path = path.replace("\\", "/");
+        }
+        return path;
     }
 }

@@ -72,6 +72,21 @@ public class ThemeManager {
     }
 
     /**
+     * 设置主题
+     *
+     * @param config 主题配置
+     */
+    public static void changeTheme(ThemeConfig config) {
+        if (config.isCustom()) {
+            CustomTheme theme = Themes.CUSTOM;
+            theme.updateTheme(config.getName(), config.getBgColor(), config.getFgColor(), config.getAccentColor());
+            changeTheme(theme);
+        } else {
+            changeTheme(Themes.getTheme(config.getName()));
+        }
+    }
+
+    /**
      * 变更主题
      *
      * @param style 主题风格

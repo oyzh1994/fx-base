@@ -120,4 +120,23 @@ public interface ThemeStyle {
         });
     }
 
+    /**
+     * 计算相关度
+     * @param style 主题
+     * @return 相关度
+     */
+    default double corr(ThemeStyle style) {
+        if (this.isDarkMode() && !style.isDarkMode()) {
+            return -1;
+        }
+        // 前景色
+        double d1 = ThemeUtil.calcCorr(this.getForegroundColor(), style.getForegroundColor());
+        // 背景色
+        double d2 = ThemeUtil.calcCorr(this.getBackgroundColor(), style.getBackgroundColor());
+        // 强调色
+        double d3 = ThemeUtil.calcCorr(this.getAccentColor(), style.getAccentColor());
+        // 返回相关度
+        return d1 * 4.5 + d2 * 3.5 + d3 * 2;
+    }
+
 }

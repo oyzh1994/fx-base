@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.domain;
 
+import cn.oyzh.fx.plus.theme.ThemeConfig;
 import lombok.Data;
 
 /**
@@ -15,6 +16,21 @@ public class Setting {
      * 主题
      */
     private String theme;
+
+    /**
+     * 自定义前景色
+     */
+    private String fgColor;
+
+    /**
+     * 自定义背景色
+     */
+    private String bgColor;
+
+    /**
+     * 自定义强调色
+     */
+    private String accentColor;
 
     /**
      * 应用退出
@@ -146,5 +162,19 @@ public class Setting {
      */
     public boolean isRememberPageLocation() {
         return this.rememberPageLocation != null && this.rememberPageLocation == 1;
+    }
+
+    /**
+     * 获取主题配置
+     *
+     * @return 主题配置
+     */
+    public ThemeConfig themeConfig() {
+        ThemeConfig config = new ThemeConfig();
+        config.setName(this.theme);
+        config.setBgColor(this.bgColor);
+        config.setFgColor(this.fgColor);
+        config.setAccentColor(this.accentColor);
+        return config;
     }
 }

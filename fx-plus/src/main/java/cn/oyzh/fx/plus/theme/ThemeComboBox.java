@@ -48,4 +48,13 @@ public class ThemeComboBox extends FlexComboBox<ThemeStyle> {
     public String name() {
         return this.getSelectedItem().getName();
     }
+
+    /**
+     * 是否系统主题
+     *
+     * @return 结果
+     */
+    public boolean isSystem() {
+        return this.getSelectedItem() == Themes.SYSTEM;
+    }
 }
