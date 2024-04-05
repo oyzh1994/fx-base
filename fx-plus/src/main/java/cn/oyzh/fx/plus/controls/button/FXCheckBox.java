@@ -10,6 +10,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -65,6 +66,16 @@ public class FXCheckBox extends CheckBox implements NodeAdapter, ThemeAdapter, T
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

@@ -19,6 +19,11 @@ public class FontConfig {
     /**
      * 字体名称
      */
-    private String name;
+    private String family;
+
+    /**
+     * 字体粗细
+     */
+    private Integer weight;
 
 }

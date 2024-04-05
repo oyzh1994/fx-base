@@ -1,18 +1,14 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import lombok.NonNull;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * 字体组件适配器
@@ -58,14 +54,14 @@ public interface FontAdapter extends PropAdapter {
      * @return 字体
      */
     default Font getFont() {
-        if (this instanceof Text text) {
-            return text.getFont();
+        if (this instanceof Text node) {
+            return node.getFont();
         }
-        if (this instanceof Labeled labeled) {
-            return labeled.getFont();
+        if (this instanceof Labeled node) {
+            return node.getFont();
         }
-        if (this instanceof TextInputControl inputControl) {
-            return inputControl.getFont();
+        if (this instanceof TextInputControl node) {
+            return node.getFont();
         }
         if (this instanceof Node) {
             return Font.font(this.getFontFamily(), this.getFontSize());
@@ -86,18 +82,14 @@ public interface FontAdapter extends PropAdapter {
      * @param fontSize 字体大小
      */
     default void fontSize(double fontSize) {
-        if (this instanceof Text text) {
-            text.setFont(Font.font(this.getFontFamily(), fontSize));
-        } else if (this instanceof Labeled labeled) {
-            labeled.setFont(Font.font(this.getFontFamily(), fontSize));
-        } else if (this instanceof TextInputControl inputControl) {
-            inputControl.setFont(Font.font(this.getFontFamily(), fontSize));
+        if (this instanceof Text node) {
+            node.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
+        } else if (this instanceof Labeled node) {
+            node.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
+        } else if (this instanceof TextInputControl node) {
+            node.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
         } else if (this instanceof Node node) {
-            String style = node.getStyle() == null ? "" : node.getStyle();
-            List<String> list = StrUtil.split(style, ";");
-            list = list.stream().filter(f -> !f.trim().toLowerCase().contains("-fx-font-size")).collect(Collectors.toList());
-            list.add("-fx-font-size: " + fontSize);
-            node.setStyle(CollUtil.join(list, ";"));
+            NodeUtil.replaceStyle(node, "-fx-font-size", fontSize);
         }
     }
 
@@ -114,29 +106,19 @@ public interface FontAdapter extends PropAdapter {
      * @return 字体大小
      */
     default double fontSize() {
-        if (this instanceof Text text) {
-            return text.getFont().getSize();
+        if (this instanceof Text node) {
+            return node.getFont().getSize();
         }
-        if (this instanceof Labeled labeled) {
-            return labeled.getFont().getSize();
+        if (this instanceof Labeled node) {
+            return node.getFont().getSize();
         }
-        if (this instanceof TextInputControl inputControl) {
-            return inputControl.getFont().getSize();
+        if (this instanceof TextInputControl node) {
+            return node.getFont().getSize();
         }
         if (this instanceof Node node) {
-            try {
-                String style = node.getStyle();
-                if (StrUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-size")) {
-                    List<String> list = StrUtil.split(style, ";");
-                    Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-size")).findAny();
-                    if (fontSize.isPresent()) {
-                        String size = fontSize.get().toLowerCase().trim().replace("-fx-font-size", "");
-                        size = size.replace(":", "").trim();
-                        return Double.parseDouble(size);
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            String size = NodeUtil.getStyle(node, "-fx-font-size");
+            if (size != null) {
+                return Double.parseDouble(size);
             }
         }
         return Font.getDefault().getSize();
@@ -154,19 +136,18 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontFamily 字体类型
      */
-    default void fontFamily(@NonNull String fontFamily) {
-        if (this instanceof Text text) {
-            text.setFont(Font.font(fontFamily, text.getFont().getSize()));
-        } else if (this instanceof Labeled labeled) {
-            labeled.setFont(Font.font(fontFamily, labeled.getFont().getSize()));
-        } else if (this instanceof TextInputControl inputControl) {
-            inputControl.setFont(Font.font(fontFamily, inputControl.getFont().getSize()));
+    default void fontFamily(String fontFamily) {
+        if (fontFamily == null) {
+            return;
+        }
+        if (this instanceof Text node) {
+            node.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        } else if (this instanceof Labeled node) {
+            node.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        } else if (this instanceof TextInputControl node) {
+            node.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
         } else if (this instanceof Node node) {
-            String style = node.getStyle() == null ? "" : node.getStyle();
-            List<String> list = StrUtil.split(style, ";");
-            list = list.stream().filter(f -> !f.trim().toLowerCase().contains("-fx-font-family")).collect(Collectors.toList());
-            list.add("-fx-font-family: " + fontFamily);
-            node.setStyle(CollUtil.join(list, ";"));
+            NodeUtil.replaceStyle(node, "-fx-font-family", fontFamily);
         }
     }
 
@@ -183,32 +164,80 @@ public interface FontAdapter extends PropAdapter {
      * @return 字体类型
      */
     default String fontFamily() {
-        if (this instanceof Text text) {
-            return text.getFont().getFamily();
+        if (this instanceof Text node) {
+            return node.getFont().getFamily();
         }
-        if (this instanceof Labeled labeled) {
-            return labeled.getFont().getFamily();
+        if (this instanceof Labeled node) {
+            return node.getFont().getFamily();
         }
-        if (this instanceof TextInputControl inputControl) {
-            return inputControl.getFont().getFamily();
+        if (this instanceof TextInputControl node) {
+            return node.getFont().getFamily();
         }
         if (this instanceof Node node) {
-            try {
-                String style = node.getStyle();
-                if (StrUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-family")) {
-                    List<String> list = StrUtil.split(style, ";");
-                    Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-family")).findAny();
-                    if (fontSize.isPresent()) {
-                        String family = fontSize.get().toLowerCase().trim().replace("-fx-font-family", "");
-                        family = family.replace(":", "").trim();
-                        return family;
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            String family = NodeUtil.getStyle(node, "-fx-font-family");
+            if (family != null) {
+                return family;
             }
         }
         return Font.getDefault().getFamily();
+    }
+
+    /**
+     * 设置字体粗细
+     *
+     * @param fontWeight 字体粗细
+     */
+    void setFontWeight(FontWeight fontWeight);
+
+    /**
+     * 设置字体粗细实现
+     *
+     * @param fontWeight 字体粗细
+     */
+    default void fontWeight(FontWeight fontWeight) {
+        if (fontWeight == null) {
+            return;
+        }
+        if (this instanceof Text node) {
+            node.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        } else if (this instanceof Labeled node) {
+            node.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        } else if (this instanceof TextInputControl node) {
+            node.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        } else if (this instanceof Node node) {
+            NodeUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
+        }
+    }
+
+    /**
+     * 获取字体粗细
+     *
+     * @return 字体粗细
+     */
+    FontWeight getFontWeight();
+
+    /**
+     * 获取字体粗细实现
+     *
+     * @return 字体粗细
+     */
+    default FontWeight fontWeight() {
+        if (this instanceof Text node) {
+            return FontWeight.findByName(node.getFont().getFamily());
+        }
+        if (this instanceof Labeled node) {
+            return FontWeight.findByName(node.getFont().getFamily());
+        }
+        if (this instanceof TextInputControl node) {
+            return FontWeight.findByName(node.getFont().getFamily());
+        }
+        if (this instanceof Node node) {
+            String weight = NodeUtil.getStyle(node, "-fx-font-weight");
+            if (weight != null) {
+                return FontWeight.findByName(weight);
+            }
+        }
+        return FontWeight.findByName(Font.getDefault().getStyle());
     }
 
     /**

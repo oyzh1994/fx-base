@@ -16,6 +16,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.ComboBox;
+import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -129,6 +130,16 @@ public class FXComboBox<T> extends ComboBox<T> implements ThemeAdapter, Verifiab
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

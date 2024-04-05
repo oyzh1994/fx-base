@@ -12,6 +12,7 @@ import javafx.beans.NamedArg;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -111,6 +112,16 @@ public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter,
     @Override
     public void setFontFamily(@NonNull String fontFamily) {
         FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

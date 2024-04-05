@@ -16,6 +16,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -92,6 +93,16 @@ public class FXLabel extends Label implements ThemeAdapter, MouseAdapter, TextAd
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.RadioButton;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -83,5 +84,15 @@ public class FXRadioButton extends RadioButton implements ThemeAdapter, StateAda
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 }

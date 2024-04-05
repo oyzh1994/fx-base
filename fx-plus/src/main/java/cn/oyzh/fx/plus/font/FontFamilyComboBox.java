@@ -10,28 +10,32 @@ import javafx.scene.text.Font;
  * @author oyzh
  * @since 2024/04/05
  */
-public class FontNameComboBox extends FlexComboBox<String> {
+public class FontFamilyComboBox extends FlexComboBox<String> {
 
     {
-        this.addItems(Font.getFontNames());
+        this.addItems(Font.getFamilies());
         this.select(null);
+    }
+
+    public String getDefault() {
+        return FontManager.defaultFont.getFamily();
     }
 
     /**
      * 选择字体
      *
-     * @param fontName 字体名称
+     * @param fontFamily 字体名称
      */
     @Override
-    public void select(String fontName) {
-        if (StrUtil.isEmpty(fontName)) {
-            super.select(FontManager.defaultFont.getName());
+    public void select(String fontFamily) {
+        if (StrUtil.isEmpty(fontFamily)) {
+            super.select(this.getDefault());
         } else {
             try {
-                super.select(fontName);
+                super.select(fontFamily);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                this.select(0);
+                super.select(this.getDefault());
             }
         }
     }

@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -53,9 +54,9 @@ public class FontManager {
      * @param config 字体配置
      */
     public static void apply(FontConfig config) {
-        if (config != null && StrUtil.isNotEmpty(config.getName()) && config.getSize() != null) {
+        if (config != null && StrUtil.isNotEmpty(config.getFamily()) && config.getWeight() != null && config.getSize() != null) {
             try {
-                apply(Font.font(config.getName(), config.getSize()));
+                apply(Font.font(config.getFamily(), FontWeight.findByWeight(config.getWeight()), config.getSize()));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

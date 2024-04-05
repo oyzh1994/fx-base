@@ -11,6 +11,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.control.TextField;
+import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -108,5 +109,15 @@ public class FXTextField extends TextField implements ThemeAdapter, FontAdapter,
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 }

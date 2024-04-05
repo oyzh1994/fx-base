@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -42,6 +43,16 @@ public class FlexPane extends Pane implements ThemeAdapter, FontAdapter, FlexAda
     @Override
     public void setFontFamily(@NonNull String fontFamily) {
         FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

@@ -14,6 +14,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -130,5 +131,15 @@ public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipA
     @Override
     public void setFontFamily(@NonNull String fontFamily) {
         FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 }

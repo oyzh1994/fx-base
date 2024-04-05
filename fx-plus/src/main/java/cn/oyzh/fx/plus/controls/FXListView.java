@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListView;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -87,6 +88,16 @@ public class FXListView<T> extends ListView<T> implements TipAdapter, StateAdapt
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

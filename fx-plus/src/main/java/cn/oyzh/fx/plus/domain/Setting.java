@@ -41,7 +41,12 @@ public class Setting {
     /**
      * 字体名称
      */
-    private String fontName;
+    private String fontFamily;
+
+    /**
+     * 字体粗细
+     */
+    private Integer fontWeight;
 
     /**
      * 应用退出
@@ -198,12 +203,13 @@ public class Setting {
      * @return 字体配置
      */
     public FontConfig fontConfig() {
-        if (this.fontName == null || this.fontSize == null) {
+        if (this.fontWeight == null || this.fontFamily == null || this.fontSize == null) {
             return null;
         }
         FontConfig config = new FontConfig();
-        config.setName(this.fontName);
         config.setSize(this.fontSize);
+        config.setWeight(this.fontWeight);
+        config.setFamily(this.fontFamily);
         return config;
     }
 }

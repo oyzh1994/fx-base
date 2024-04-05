@@ -13,6 +13,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -116,6 +117,16 @@ public class FlexColorPicker extends ColorPicker implements FlexAdapter, TipAdap
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

@@ -17,6 +17,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 import java.util.List;
@@ -256,5 +257,15 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, C
     @Override
     public String getFontFamily() {
         return FontAdapter.super.fontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 }

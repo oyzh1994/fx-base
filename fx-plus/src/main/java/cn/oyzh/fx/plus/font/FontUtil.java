@@ -5,6 +5,7 @@ import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -25,35 +26,69 @@ import java.util.Optional;
 public class FontUtil {
 
     /**
+     * 创建一个新字体
+     *
+     * @param font 原字体
+     * @param size 字体大小
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFontBySize(javafx.scene.text.Font font, double size) {
+        FontWeight weight = FontWeight.findByName(font.getStyle());
+        return javafx.scene.text.Font.font(font.getFamily(), weight, size);
+    }
+
+    /**
+     * 创建一个新字体
+     *
+     * @param font   原字体
+     * @param family 字体名称
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFontByFamily(javafx.scene.text.Font font, String family) {
+        FontWeight weight = FontWeight.findByName(font.getStyle());
+        return javafx.scene.text.Font.font(family, weight, font.getSize());
+    }
+
+    /**
+     * 创建一个新字体
+     *
+     * @param font  原字体
+     * @param style 字体粗细
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFontByWeight(javafx.scene.text.Font font, String style) {
+        FontWeight weight = FontWeight.findByName(style);
+        return javafx.scene.text.Font.font(font.getFamily(), weight, font.getSize());
+    }
+
+    /**
+     * 创建一个新字体
+     *
+     * @param font   原字体
+     * @param weight 字体粗细
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFontByWeight(javafx.scene.text.Font font, FontWeight weight) {
+        return javafx.scene.text.Font.font(font.getFamily(), weight, font.getSize());
+    }
+
+    /**
      * 是否相同字体
      *
      * @param font1 字体类型1
-     * @param font2   字体类型2
+     * @param font2 字体类型2
      * @return 结果
      */
     public static boolean isSameFont(javafx.scene.text.Font font1, javafx.scene.text.Font font2) {
-        if (!isSameFamily(font1.getFamily(), font2.getFamily())) {
+        if (!StrUtil.equalsIgnoreCase(font1.getFamily(), font2.getFamily())) {
+            return false;
+        }
+        if (!StrUtil.equalsIgnoreCase(font1.getStyle(), font2.getStyle())) {
             return false;
         }
         return font1.getSize() == font2.getSize();
     }
 
-    /**
-     * 是否相同字体类型
-     *
-     * @param family1 字体类型1
-     * @param family2 字体类型2
-     * @return 结果
-     */
-    public static boolean isSameFamily(String family1, String family2) {
-        if (Objects.equals(family1, family2)) {
-            return true;
-        }
-        if (family1 != null && family2 != null) {
-            return Objects.equals(family1.toLowerCase(), family2.toLowerCase());
-        }
-        return false;
-    }
 
     /**
      * 计算字符宽度

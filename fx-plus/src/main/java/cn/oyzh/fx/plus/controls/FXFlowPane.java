@@ -11,6 +11,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**
@@ -45,6 +46,16 @@ public class FXFlowPane extends FlowPane implements ThemeAdapter, FontAdapter, T
     @Override
     public void setFontFamily(@NonNull String fontFamily) {
         FontAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        FontAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontAdapter.super.fontWeight();
     }
 
     @Override

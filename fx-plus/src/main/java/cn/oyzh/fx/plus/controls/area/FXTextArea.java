@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -154,6 +155,16 @@ public class FXTextArea extends TextArea implements ThemeAdapter, AreaAdapter, V
     @Override
     public void setFontFamily(@NonNull String fontFamily) {
         AreaAdapter.super.fontFamily(fontFamily);
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        AreaAdapter.super.fontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return AreaAdapter.super.fontWeight();
     }
 
     @Getter

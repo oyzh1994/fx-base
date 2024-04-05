@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
+import atlantafx.base.theme.Styles;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -22,6 +23,41 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class NodeUtil {
+
+    /**
+     * 获取样式值
+     *
+     * @param node 节点
+     * @param prop 属性
+     * @return 样式值
+     */
+    public static String getStyle(Node node, String prop) {
+        String currentStyle = node.getStyle();
+        if (currentStyle != null && !currentStyle.isBlank()) {
+            if (prop != null && !prop.isBlank()) {
+                String[] stylePairs = currentStyle.split(";");
+                for (String stylePair : stylePairs) {
+                    String[] styleParts = stylePair.split(":");
+                    if (styleParts[0].trim().equals(prop)) {
+                        return styleParts[1];
+                    }
+                }
+            }
+        }
+        return currentStyle;
+    }
+
+    /**
+     * 替换样式
+     *
+     * @param node  节点
+     * @param prop  属性
+     * @param value 值
+     */
+    public static void replaceStyle(Node node, String prop, Object value) {
+        Styles.removeStyle(node, prop);
+        Styles.appendStyle(node, prop, value.toString());
+    }
 
     /**
      * 获取宽度
