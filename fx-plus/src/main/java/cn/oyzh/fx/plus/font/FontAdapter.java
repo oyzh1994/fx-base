@@ -27,7 +27,10 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param font 字体
      */
-    default void setFont(@NonNull Font font) {
+    default void setFont(Font font) {
+        if (font == null) {
+            return;
+        }
         if (this instanceof Text node) {
             Font font1 = node.getFont();
             if (!FontUtil.isSameFont(font, font1)) {
