@@ -1,0 +1,41 @@
+package cn.oyzh.fx.plus.node;
+
+import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.font.FontManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import javafx.scene.CacheHint;
+import javafx.scene.Node;
+import javafx.scene.layout.Region;
+import lombok.experimental.UtilityClass;
+
+/**
+ * 节点管理器
+ *
+ * @author oyzh
+ * @since 2024/04/05
+ */
+@UtilityClass
+public class NodeManager {
+
+    /**
+     * 初始化节点
+     *
+     * @param node 节点
+     */
+    public static void init(Object node) {
+        if (node instanceof FontAdapter adapter) {
+            adapter.changeFont(FontManager.currentFont());
+        }
+        if (node instanceof ThemeAdapter adapter) {
+            adapter.changeTheme(ThemeManager.currentTheme());
+        }
+        if (node instanceof Node node1) {
+            node1.setCache(true);
+            node1.setCacheHint(CacheHint.QUALITY);
+        }
+        if (node instanceof Region region) {
+            region.setCacheShape(true);
+        }
+    }
+}

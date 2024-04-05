@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.CursorUtil;
@@ -218,8 +219,8 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
         }
-        // 设置主题
-        this.changeTheme(ThemeManager.currentTheme());
+//        // 设置主题
+//        this.changeTheme(ThemeManager.currentTheme());
         // 设置事件
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
@@ -230,6 +231,7 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
                 this.onClosed();
             }
         });
+        NodeManager.init(this);
     }
 
     /**

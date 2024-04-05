@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.controls.text.FlexText;
-import cn.oyzh.fx.plus.util.FontUtil;
+import cn.oyzh.fx.plus.font.FontUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
 import lombok.Getter;

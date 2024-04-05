@@ -5,10 +5,11 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.FXListView;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.FontUtil;
+import cn.oyzh.fx.plus.font.FontUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -41,7 +42,8 @@ public class SearchHistoryPopup extends FXPopup {
                 ExecutorUtil.start(this::clearHistories, 100);
             }
         });
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     /**

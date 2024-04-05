@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.NodeUtil;
@@ -20,14 +21,15 @@ import javafx.scene.control.TableView;
 public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, FlexAdapter, SelectAdapter<S> {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setFixedCellSize(35.f);
         this.setFocusTraversable(false);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         // this.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     /**

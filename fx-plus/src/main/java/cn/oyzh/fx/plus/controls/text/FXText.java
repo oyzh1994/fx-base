@@ -1,9 +1,10 @@
 package cn.oyzh.fx.plus.controls.text;
 
-import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -19,9 +20,10 @@ import lombok.NonNull;
 public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheHint(CacheHint.QUALITY);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.setCache(true);
+//        this.setCacheHint(CacheHint.QUALITY);
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     public FXText() {

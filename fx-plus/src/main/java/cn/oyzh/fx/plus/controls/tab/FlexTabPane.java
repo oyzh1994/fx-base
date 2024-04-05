@@ -3,11 +3,12 @@ package cn.oyzh.fx.plus.controls.tab;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
-import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -27,10 +28,11 @@ import java.util.List;
 public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package cn.oyzh.fx.plus.controls.picker;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeUtil;
@@ -21,13 +22,14 @@ import lombok.NonNull;
 public class FlexColorPicker extends ColorPicker implements FlexAdapter, TipAdapter, FontAdapter, ThemeAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setFocusTraversable(false);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     @Override

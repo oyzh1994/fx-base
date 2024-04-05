@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -20,13 +21,14 @@ import org.fxmisc.richtext.InlineCssTextField;
 public class BaseRichTextField extends InlineCssTextField implements ThemeAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setPickOnBounds(true);
         this.setFocusTraversable(false);
-        this.setCacheHint(CacheHint.QUALITY);
-        this.changeTheme(ThemeManager.currentTheme());
         this.getStyleClass().add("rich-text-field");
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     @Override

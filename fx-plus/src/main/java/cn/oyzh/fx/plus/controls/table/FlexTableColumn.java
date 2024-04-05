@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.control.TableCell;
@@ -14,7 +15,8 @@ import javafx.scene.control.TableColumn;
 public class FlexTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter {
 
     {
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     @Override

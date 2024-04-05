@@ -1,11 +1,12 @@
 package cn.oyzh.fx.plus.controls.combo;
 
-import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -28,13 +29,14 @@ import java.util.Collection;
 public class FXComboBox<T> extends ComboBox<T> implements ThemeAdapter, Verifiable<BaseValidator>, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setFocusTraversable(false);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     @Getter

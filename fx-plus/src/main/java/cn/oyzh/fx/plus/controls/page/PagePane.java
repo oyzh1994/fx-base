@@ -4,6 +4,7 @@ import cn.oyzh.fx.common.dto.Paging;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FlexText;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.EventHandler;
@@ -121,9 +122,9 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     private EventHandler<MouseEvent> onLastClicked;
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.firstSVG = new SVGGlyph("/fx-plus/font/page-first.svg");
         this.prevSVG = new SVGGlyph("/fx-plus/font/arrow-left-line.svg");
         this.nextSVG = new SVGGlyph("/fx-plus/font/arrow-right-line.svg");
@@ -173,7 +174,8 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
         this.setShowPageText(this.showPageText);
         this.formatPageText();
         this.managedProperty().bind(this.visibleProperty());
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     /**

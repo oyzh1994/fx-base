@@ -2,11 +2,12 @@ package cn.oyzh.fx.plus.controls.rich;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -38,19 +39,20 @@ import java.util.function.IntFunction;
 public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
-        this.setCache(true);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setWrapText(true);
-        this.setCacheShape(true);
         this.setPickOnBounds(true);
         this.setFocusTraversable(false);
-        this.setCacheHint(CacheHint.QUALITY);
         this.setAutoScrollOnDragDesired(true);
         this.setPadding(new Insets(5, 5, 5, 5));
         BorderStroke stroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         this.setBorder(new Border(stroke));
-        this.changeTheme(ThemeManager.currentTheme());
         this.getStyleClass().add("rich-text-area");
         this.applyPlainUndoManager();
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     /**

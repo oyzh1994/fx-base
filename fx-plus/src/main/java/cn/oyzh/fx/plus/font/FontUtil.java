@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.plus.font;
 
 import cn.hutool.core.util.StrUtil;
 import javafx.event.EventTarget;
@@ -21,24 +21,21 @@ import java.util.Optional;
  * @author oyzh
  * @since 2023048/24
  */
-//@Slf4j
 @UtilityClass
 public class FontUtil {
 
     /**
      * 是否相同字体
      *
-     * @param family1 字体类型1
-     * @param size1   字体大小1
-     * @param family2 字体类型2
-     * @param size2   字体大小1
+     * @param font1 字体类型1
+     * @param font2   字体类型2
      * @return 结果
      */
-    public static boolean isSameFont(String family1, double size1, String family2, double size2) {
-        if (!isSameFamily(family1, family2)) {
+    public static boolean isSameFont(javafx.scene.text.Font font1, javafx.scene.text.Font font2) {
+        if (!isSameFamily(font1.getFamily(), font2.getFamily())) {
             return false;
         }
-        return size1 == size2;
+        return font1.getSize() == font2.getSize();
     }
 
     /**

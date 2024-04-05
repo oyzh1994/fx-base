@@ -127,7 +127,7 @@ public class SystemTheme implements Theme, ThemeStyle {
         log.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
         TaskManager.startDelay("changeTheme", () -> FXUtil.runLater(() -> {
             this.updateThemeCss();
-            ThemeManager.changeTheme(this);
+            ThemeManager.apply(this);
         }), 1000);
     }
 }

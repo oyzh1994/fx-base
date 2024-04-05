@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.controls.popup;
 
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.stage.Popup;
 
 /**
@@ -13,7 +15,8 @@ public class FXPopup extends Popup implements ThemeAdapter {
     {
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                this.changeTheme(ThemeManager.currentTheme());
+//                this.changeTheme(ThemeManager.currentTheme());
+                NodeManager.init(this);
             }
         });
     }

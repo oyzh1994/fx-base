@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.domain;
 
+import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
 import lombok.Data;
 
@@ -31,6 +32,16 @@ public class Setting {
      * 自定义强调色
      */
     private String accentColor;
+
+    /**
+     * 字体大小
+     */
+    private Integer fontSize;
+
+    /**
+     * 字体名称
+     */
+    private String fontName;
 
     /**
      * 应用退出
@@ -170,11 +181,29 @@ public class Setting {
      * @return 主题配置
      */
     public ThemeConfig themeConfig() {
+        if (this.theme == null || this.fgColor == null || this.bgColor == null || this.accentColor == null) {
+            return null;
+        }
         ThemeConfig config = new ThemeConfig();
         config.setName(this.theme);
         config.setBgColor(this.bgColor);
         config.setFgColor(this.fgColor);
         config.setAccentColor(this.accentColor);
+        return config;
+    }
+
+    /**
+     * 获取字体配置
+     *
+     * @return 字体配置
+     */
+    public FontConfig fontConfig() {
+        if (this.fontName == null || this.fontSize == null) {
+            return null;
+        }
+        FontConfig config = new FontConfig();
+        config.setName(this.fontName);
+        config.setSize(this.fontSize);
         return config;
     }
 }

@@ -51,7 +51,7 @@ public class ThemeManager {
     }
 
     /**
-     * 获取主题
+     * 获取当前主题
      *
      * @return 当前主题
      */
@@ -63,35 +63,28 @@ public class ThemeManager {
     }
 
     /**
-     * 设置主题
-     *
-     * @param themeName 主题名称
-     */
-    public static void changeTheme(String themeName) {
-        changeTheme(Themes.getTheme(themeName));
-    }
-
-    /**
-     * 设置主题
+     * 应用主题
      *
      * @param config 主题配置
      */
-    public static void changeTheme(ThemeConfig config) {
-        if (config.isCustom()) {
+    public static void apply(ThemeConfig config) {
+        if (config == null) {
+            apply(defaultTheme);
+        } else if (config.isCustom()) {
             CustomTheme theme = Themes.CUSTOM;
             theme.updateTheme(config.getName(), config.getBgColor(), config.getFgColor(), config.getAccentColor());
-            changeTheme(theme);
+            apply(theme);
         } else {
-            changeTheme(Themes.getTheme(config.getName()));
+            apply(Themes.getTheme(config.getName()));
         }
     }
 
     /**
-     * 变更主题
+     * 设置主题
      *
      * @param style 主题风格
      */
-    public static void changeTheme(ThemeStyle style) {
+    public static void apply(ThemeStyle style) {
         if (style == null) {
             return;
         }
@@ -99,7 +92,7 @@ public class ThemeManager {
             // 变更颜色
             List<StageWrapper> wrappers = StageUtil.allStages();
             for (StageWrapper wrapper : wrappers) {
-                changeThemeCycle(wrapper.root(), style);
+                applyCycle(wrapper.root(), style);
             }
             // 监听系统主题
             if (style == Themes.SYSTEM) {
@@ -115,29 +108,29 @@ public class ThemeManager {
     }
 
     /**
-     * 更改主题，循环处理
+     * 应用主题，循环处理
      *
      * @param root  根节点
      * @param style 主题风格
      */
-    private static void changeThemeCycle(EventTarget root, ThemeStyle style) {
+    private static void applyCycle(EventTarget root, ThemeStyle style) {
         if (root instanceof ThemeAdapter adapter) {
             adapter.changeTheme(style);
         }
         if (root instanceof Parent parent) {
             for (Node node : new CopyOnWriteArrayList<>(parent.getChildrenUnmodifiable())) {
-                changeThemeCycle(node, style);
+                applyCycle(node, style);
             }
         } else if (root instanceof Popup popup) {
             for (Node node : new CopyOnWriteArrayList<>(popup.getContent())) {
-                changeThemeCycle(node, style);
+                applyCycle(node, style);
             }
         } else if (root instanceof Stage stage) {
-            changeThemeCycle(stage.getScene(), style);
+            applyCycle(stage.getScene(), style);
         } else if (root instanceof Window window) {
-            changeThemeCycle(window.getScene(), style);
+            applyCycle(window.getScene(), style);
         } else if (root instanceof Scene scene) {
-            changeThemeCycle(scene.getRoot(), style);
+            applyCycle(scene.getRoot(), style);
         }
     }
 

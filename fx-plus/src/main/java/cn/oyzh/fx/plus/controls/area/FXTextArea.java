@@ -6,12 +6,11 @@ import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
-import javafx.scene.CacheHint;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
 import lombok.NonNull;
@@ -30,10 +29,10 @@ import java.util.Collection;
 public class FXTextArea extends TextArea implements ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
 
     {
-        this.setCache(true);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setWrapText(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
         this.setOnScroll(event -> {
             if (event.isControlDown()) {
                 if (event.getDeltaY() > 0) {
@@ -43,7 +42,8 @@ public class FXTextArea extends TextArea implements ThemeAdapter, AreaAdapter, V
                 }
             }
         });
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     /**

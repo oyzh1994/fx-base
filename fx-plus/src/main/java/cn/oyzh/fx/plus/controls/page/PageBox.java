@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.button.FlexButton;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -115,9 +116,9 @@ public class PageBox<T> extends FlexHBox {
     private EventHandler<MouseEvent> onLastClicked;
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
 
         // 首页
         FXLabel firstLabel = new FXLabel("<<");
@@ -202,7 +203,8 @@ public class PageBox<T> extends FlexHBox {
         this.setShowPageText(this.showPageText);
         this.formatPageText();
         this.managedProperty().bind(this.visibleProperty());
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     /**

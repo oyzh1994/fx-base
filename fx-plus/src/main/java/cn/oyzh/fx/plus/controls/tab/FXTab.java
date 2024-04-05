@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.tab;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -17,7 +18,8 @@ public class FXTab extends Tab implements ThemeAdapter, StateAdapter, TipAdapter
 
     {
         this.setClosable(false);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     public FXTab() {

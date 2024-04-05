@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls;
 
 import atlantafx.base.controls.ToggleSwitch;
-import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;

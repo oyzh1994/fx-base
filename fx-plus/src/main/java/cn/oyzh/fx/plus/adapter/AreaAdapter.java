@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.oyzh.fx.plus.font.FontAdapter;
+
 /**
  * 文本组件适配器
  *

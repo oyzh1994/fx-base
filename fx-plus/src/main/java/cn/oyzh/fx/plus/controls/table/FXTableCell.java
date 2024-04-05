@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.table;
 
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
@@ -16,11 +17,12 @@ import javafx.scene.control.TableCell;
 public abstract class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     /**

@@ -1,11 +1,12 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 
-import cn.oyzh.fx.plus.adapter.FontAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
@@ -23,12 +24,13 @@ import lombok.Setter;
 public class FXTextField extends TextField implements ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setPickOnBounds(true);
         this.setFocusTraversable(false);
-        this.setCacheHint(CacheHint.QUALITY);
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     @Getter

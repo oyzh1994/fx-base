@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
@@ -60,13 +61,13 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     private Cursor cursor = Cursor.HAND;
 
     {
+//        this.setCache(true);
+//        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setSize(16);
-        this.setCache(true);
-        this.setCacheShape(true);
         this.setPickOnBounds(true);
         this.setPadding(new Insets(0));
         this.setFocusTraversable(false);
-        this.setCacheHint(CacheHint.QUALITY);
         // this.disabledProperty().addListener((_, _, t1) -> {
         //     if (t1) {
         //         this.setBackground(ControlUtil.background(Color.GRAY));
@@ -82,7 +83,8 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         this.cursorProperty().addListener((obs, t0, t1) -> this.shape().setCursor(t1));
         this.cursor(this.cursor);
         this.getStyleClass().add("svg-glyph");
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.changeTheme(ThemeManager.currentTheme());
+        NodeManager.init(this);
     }
 
     @Override

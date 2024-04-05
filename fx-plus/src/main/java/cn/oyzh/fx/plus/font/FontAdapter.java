@@ -1,8 +1,8 @@
-package cn.oyzh.fx.plus.adapter;
+package cn.oyzh.fx.plus.font;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.util.FontUtil;
+import cn.oyzh.fx.plus.adapter.PropAdapter;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
@@ -20,33 +20,32 @@ import java.util.stream.Collectors;
  * @author oyzh
  * @since 2023/04/14
  */
-public interface FontAdapter {
+public interface FontAdapter extends PropAdapter {
 
     /**
      * 设置字体
      *
-     * @param fontFamily 字体类型
-     * @param fontSize   字体大小
+     * @param font 字体
      */
-    default void setFont(@NonNull String fontFamily, double fontSize) {
-        if (this instanceof Text text) {
-            Font font = text.getFont();
-            if (!FontUtil.isSameFont(fontFamily, fontSize, font.getFamily(), font.getSize())) {
-                text.setFont(Font.font(fontFamily, fontSize));
+    default void setFont(@NonNull Font font) {
+        if (this instanceof Text node) {
+            Font font1 = node.getFont();
+            if (!FontUtil.isSameFont(font, font1)) {
+                node.setFont(font);
             }
-        } else if (this instanceof Labeled labeled) {
-            Font font = labeled.getFont();
-            if (!FontUtil.isSameFont(fontFamily, fontSize, font.getFamily(), font.getSize())) {
-                labeled.setFont(Font.font(fontFamily, fontSize));
+        } else if (this instanceof Labeled node) {
+            Font font1 = node.getFont();
+            if (!FontUtil.isSameFont(font, font1)) {
+                node.setFont(font);
             }
-        } else if (this instanceof TextInputControl inputControl) {
-            Font font = inputControl.getFont();
-            if (!FontUtil.isSameFont(fontFamily, fontSize, font.getFamily(), font.getSize())) {
-                inputControl.setFont(Font.font(fontFamily, fontSize));
+        } else if (this instanceof TextInputControl node) {
+            Font font1 = node.getFont();
+            if (!FontUtil.isSameFont(font, font1)) {
+                node.setFont(font);
             }
         } else if (this instanceof Node) {
-            this.setFontSize(fontSize);
-            this.setFontFamily(fontFamily);
+            this.setFontSize(font.getSize());
+            this.setFontFamily(font.getFamily());
         }
     }
 
@@ -207,5 +206,49 @@ public interface FontAdapter {
             }
         }
         return Font.getDefault().getFamily();
+    }
+
+    /**
+     * 禁用字体
+     */
+    default void disableFont() {
+        this.setProp("_enableFont", false);
+    }
+
+    /**
+     * 启用字体
+     */
+    default void enableFont() {
+        this.removeProp("_enableFont");
+    }
+
+    /**
+     * 设置启用字体
+     *
+     * @param enableFont 启用字体
+     */
+    default void setEnableFont(boolean enableFont) {
+        this.setProp("_enableFont", enableFont);
+    }
+
+    /**
+     * 是否启用字体
+     *
+     * @return 结果
+     */
+    default boolean isEnableFont() {
+        Boolean b = this.getProp("_enableFont");
+        return b == null || b;
+    }
+
+    /**
+     * 变更字体
+     *
+     * @param font 字体
+     */
+    default void changeFont(Font font) {
+        if (this.isEnableFont() && font != null) {
+            this.setFont(font);
+        }
     }
 }
