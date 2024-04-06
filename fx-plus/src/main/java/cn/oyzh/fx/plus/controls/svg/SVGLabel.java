@@ -1,9 +1,8 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.oyzh.fx.plus.controls.text.FXLabel;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Cursor;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import lombok.NonNull;
 
 /**
@@ -65,7 +64,7 @@ public class SVGLabel extends FXLabel {
      * 设置尺寸
      * @param size 尺寸
      */
-    public void setSize(@NonNull Number size) {
+    public void setSize( double size) {
         if (this.graphic() != null) {
             this.graphic().setSize(size);
         }
@@ -76,18 +75,18 @@ public class SVGLabel extends FXLabel {
      *
      * @return 尺寸的大小，如果图形对象为空则返回null。
      */
-    public Number getSize() {
+    public double getSize() {
         if (this.graphic() != null) {
             return this.graphic().getSize();
         }
-        return null;
+        return 0.d;
     }
 
     /**
      * 获取颜色
      * @return 颜色对象，如果图形为空，则返回null
      */
-    public Color getColor() {
+    public Paint getColor() {
         if (this.graphic() != null) {
             return this.graphic().getColor();
         }
@@ -98,7 +97,7 @@ public class SVGLabel extends FXLabel {
      * 设置颜色
      * @param color 颜色对象
      */
-    public void setColor(Color color) {
+    public void setColor(Paint color) {
         if (this.graphic() != null) {
             this.graphic().setColor(color);
         }

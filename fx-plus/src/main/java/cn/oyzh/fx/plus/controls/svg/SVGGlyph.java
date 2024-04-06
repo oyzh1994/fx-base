@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
@@ -10,19 +9,19 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.util.AnimationUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
+import javafx.animation.RotateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 
 /**
@@ -34,10 +33,16 @@ import lombok.experimental.Accessors;
 public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
     /**
-     * 颜色
+     * 图标地址
      */
     @Getter
-    private Color color;
+    private String url;
+
+    /**
+     * 图标颜色
+     */
+    @Getter
+    private Paint color;
 
     /**
      * 是否等待中
@@ -53,37 +58,15 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     @Getter
     private boolean enableWaiting = true;
 
-    /**
-     * svg鼠标样式
-     */
-    @Getter
-    @Accessors(fluent = true, chain = false)
-    private Cursor cursor = Cursor.HAND;
-
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
         this.setSize(16);
         this.setPickOnBounds(true);
-        this.setPadding(new Insets(0));
+        this.setCursor(Cursor.HAND);
         this.setFocusTraversable(false);
-        // this.disabledProperty().addListener((_, _, t1) -> {
-        //     if (t1) {
-        //         this.setBackground(ControlUtil.background(Color.GRAY));
-        //     } else {
-        //         this.setBackground(ControlUtil.background(this.color));
-        //     }
-        // });
-        this.backgroundProperty().addListener((obs, t0, t1) -> {
-            if (t1 != null && t1.getFills() != null && !t1.isEmpty()) {
-                this.shape().setColor(t1.getFills().getFirst().getFill());
-            }
-        });
-        this.cursorProperty().addListener((obs, t0, t1) -> this.shape().setCursor(t1));
-        this.cursor(this.cursor);
+        this.setPadding(new Insets(0));
+        this.cursorProperty().addListener((obs, t0, t1) -> this.updateContent());
+        this.backgroundProperty().addListener((obs, t0, t1) -> this.updateContent());
         this.getStyleClass().add("svg-glyph");
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -102,11 +85,11 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     /**
      * 设置初始鼠标
      *
-     * @param cursor 鼠标类型
+     * @param initCursor 鼠标类型
      */
-    public void setInitCursor(String cursor) {
-        if (cursor != null) {
-            this.cursor(Cursor.cursor(cursor));
+    public void setInitCursor(String initCursor) {
+        if (initCursor != null) {
+            this.setCursor(Cursor.cursor(initCursor));
         }
     }
 
@@ -120,30 +103,61 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     }
 
     /**
-     * 设置鼠标样式
-     *
-     * @param cursor 鼠标样式
+     * 更新内容
      */
-    public void cursor(Cursor cursor) {
-        this.cursor = cursor;
-        this.setCursor(cursor);
+    private void updateContent() {
+        // 获取图标
+        SVGPathExt svgPath = (SVGPathExt) this.getShape();
+        if (svgPath != null) {
+            // 更新颜色
+            if (this.color != svgPath.getColor()) {
+                svgPath.setColor(this.color);
+            }
+            // 更新鼠标
+            if (!svgPath.isLoading() && this.getCursor() != svgPath.getCursor()) {
+                svgPath.setCursor(this.getCursor());
+            }
+        }
     }
 
     /**
-     * 获取svg内容
-     *
-     * @return svg内容
+     * 初始化内容
      */
-    public SVGPathExt shape() {
-        SVGPathExt shape = (SVGPathExt) this.getShape();
-        if (shape == null) {
-            shape = new SVGPathExt();
-            this.setShape(shape);
+    public void initContent() {
+        if (this.url == null) {
+            return;
         }
-        if (this.color != shape.getColor()) {
-            shape.setColor(this.color);
+        // 结束动画
+        if (this.waitingTransition != null) {
+            this.waitingTransition.stop();
+            this.waitingTransition = null;
         }
-        return shape;
+        // 初始化角度
+        this.setRotate(0);
+        // 创建图标
+        SVGPathExt svgPath = new SVGPathExt(this.url);
+        svgPath.setColor(this.color);
+        svgPath.setCursor(this.getCursor());
+        this.setShape(svgPath);
+    }
+
+    /**
+     * 等待动画
+     */
+    private RotateTransition waitingTransition;
+
+    /**
+     * 初始化等待
+     */
+    public void initWaiting() {
+        // 创建图标
+        SVGPathExt svgPath = new SVGPathExt("/fx-plus/font/loading.svg");
+        svgPath.setColor(this.color);
+        svgPath.setCursor(Cursor.NONE);
+        this.setShape(svgPath);
+        // 初始化动画
+        this.waitingTransition = AnimationUtil.rotate(this);
+        this.waitingTransition.play();
     }
 
     @Override
@@ -199,7 +213,7 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
         this.setSizeStr(size);
     }
 
-    public SVGGlyph(@NonNull String url, Number size) {
+    public SVGGlyph(@NonNull String url, double size) {
         this();
         this.setUrl(url);
         this.setSize(size);
@@ -211,16 +225,8 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      * @param url svg地址
      */
     public void setUrl(@NonNull String url) {
-        this.shape().setUrl(url);
-    }
-
-    /**
-     * 获取svg地址
-     *
-     * @return svg地址
-     */
-    public String getUrl() {
-        return this.shape().getUrl();
+        this.url = url;
+        this.initContent();
     }
 
     /**
@@ -243,11 +249,10 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      *
      * @param color 颜色
      */
-    public void setColor(Color color) {
+    public void setColor(Paint color) {
         this.color = color;
         if (!this.isDisabled()) {
             this.setBackground(ControlUtil.background(color));
-            this.shape().setColor(this.color);
         }
     }
 
@@ -256,9 +261,9 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      *
      * @param size 大小
      */
-    public void setSize(Number size) {
-        if (size != null && size.doubleValue() > 0) {
-            this.setSizeStr(size.toString());
+    public void setSize(double size) {
+        if (size > 0) {
+            this.setSizeStr(size + "");
         }
     }
 
@@ -267,7 +272,7 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
      *
      * @return 大小
      */
-    public Number getSize() {
+    public double getSize() {
         return this.getWidth();
     }
 

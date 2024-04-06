@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.hutool.core.util.StrUtil;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 import lombok.Getter;
@@ -50,5 +51,9 @@ public class SVGPathExt extends SVGPath {
      */
     public Paint getColor() {
         return this.getFill();
+    }
+
+    public boolean isLoading() {
+        return StrUtil.contains(this.url, "loading.svg");
     }
 }

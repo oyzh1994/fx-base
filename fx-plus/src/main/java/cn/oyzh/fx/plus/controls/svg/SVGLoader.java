@@ -18,7 +18,6 @@ import java.util.Iterator;
  * @author oyzh
  * @since 2022/5/30
  */
-//@Slf4j
 public class SVGLoader {
 
     /**

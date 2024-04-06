@@ -30,7 +30,7 @@ public class FontSizeComboBox extends FlexComboBox<Integer> {
     }
 
     public Integer getDefault() {
-        return 12;
+        return 10;
     }
 
     @Override
