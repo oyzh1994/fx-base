@@ -21,6 +21,15 @@ public class ChangelogManager {
     /**
      * 加载更新日志
      *
+     * @return 更新日志列表
+     */
+    public static List<Changelog> load() {
+        return load("/changelog.json");
+    }
+
+    /**
+     * 加载更新日志
+     *
      * @param url 文件地址
      * @return 更新日志列表
      */
