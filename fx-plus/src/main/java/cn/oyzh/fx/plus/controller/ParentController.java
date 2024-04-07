@@ -14,7 +14,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/10/12
  */
-//@Slf4j
 public class ParentController extends Controller {
 
     @Override

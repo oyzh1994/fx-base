@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
+import cn.oyzh.fx.plus.i18n.I18nAdapter;
+import cn.oyzh.fx.plus.i18n.I18nManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.CacheHint;
@@ -29,6 +31,9 @@ public class NodeManager {
         }
         if (node instanceof ThemeAdapter adapter) {
             adapter.changeTheme(ThemeManager.currentTheme());
+        }
+        if (node instanceof I18nAdapter adapter) {
+            adapter.changeLocale(I18nManager.currentLocale());
         }
         if (node instanceof Node node1) {
             node1.setCache(true);

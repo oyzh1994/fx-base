@@ -1,11 +1,16 @@
 package cn.oyzh.fx.plus.controller;
 
 import cn.oyzh.fx.plus.event.EventListener;
+import cn.oyzh.fx.plus.i18n.I18nAdapter;
+import cn.oyzh.fx.plus.i18n.I18nManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.stage.StageListener;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;
+
+import java.util.Locale;
 
 /**
  * 组件控制器
@@ -13,7 +18,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/10/12
  */
-public class Controller implements StageListener, EventListener {
+public class Controller implements StageListener, EventListener, I18nAdapter {
 
     /**
      * 舞台
@@ -34,6 +39,8 @@ public class Controller implements StageListener, EventListener {
     public void onStageInitialize(StageWrapper stage) {
         // 设置页面
         this.setStage(stage);
+        I18nManager.loadResource(this);
+        NodeManager.init(this);
     }
 
     @Override
@@ -57,6 +64,7 @@ public class Controller implements StageListener, EventListener {
     @Override
     public void onStageHidden(WindowEvent event) {
         EventListener.super.unregister();
+        I18nManager.unloadResource(this);
     }
 
     @Override
@@ -90,4 +98,13 @@ public class Controller implements StageListener, EventListener {
         return this.stage == null ? null : this.stage.getProp(key);
     }
 
+    @Override
+    public String i18nResource() {
+        return null;
+    }
+
+    @Override
+    public void changeLocale(Locale locale) {
+
+    }
 }
