@@ -103,6 +103,11 @@ public class ThemeUtil {
 
     /**
      * 更新主题样式文件
+     *
+     * @param style       样式
+     * @param fgColor     前景色
+     * @param bgColor     背景色
+     * @param accentColor 强调色
      */
     public String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
         // 读取资源

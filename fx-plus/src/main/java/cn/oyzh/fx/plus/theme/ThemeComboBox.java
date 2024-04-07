@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.SimpleStringConverter;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import javafx.scene.paint.Color;
 
 /**
  * 主题下拉框
@@ -56,5 +57,29 @@ public class ThemeComboBox extends FlexComboBox<ThemeStyle> {
      */
     public boolean isSystem() {
         return this.getSelectedItem() == Themes.SYSTEM;
+    }
+
+    public Color getFgColor() {
+        return this.getValue().getForegroundColor();
+    }
+
+    public String getFgColorHex() {
+        return this.getValue().getForegroundColorHex();
+    }
+
+    public Color getBgColor() {
+        return this.getValue().getBackgroundColor();
+    }
+
+    public String getBgColorHex() {
+        return this.getValue().getBackgroundColorHex();
+    }
+
+    public Color getAccentColor() {
+        return this.getValue().getAccentColor();
+    }
+
+    public String getAccentColorHex() {
+        return this.getValue().getAccentColorHex();
     }
 }

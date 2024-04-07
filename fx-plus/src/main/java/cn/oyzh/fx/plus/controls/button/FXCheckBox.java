@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.CacheHint;
@@ -20,13 +21,11 @@ import lombok.NonNull;
 public class FXCheckBox extends CheckBox implements NodeAdapter, ThemeAdapter, TipAdapter, StateAdapter, FontAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
         this.setFocusTraversable(false);
+        NodeManager.init(this);
     }
 
     @Override

@@ -24,14 +24,10 @@ import lombok.NonNull;
 public class FXButton extends Button implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
         this.setFocusTraversable(false);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 

@@ -21,10 +21,6 @@ import lombok.NonNull;
 public class FXVBox extends VBox implements ThemeAdapter, FontAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 

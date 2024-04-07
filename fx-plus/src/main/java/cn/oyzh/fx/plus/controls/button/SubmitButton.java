@@ -12,8 +12,6 @@ public class SubmitButton extends IconButton {
     {
         this.setText("提交");
         this.setPrefHeight(25);
-        // this.getStyleClass().add("btn");
-        // this.getStyleClass().add("btn-primary");
         this.getStyleClass().add("accent");
         this.init("/fx-plus/font/check.svg", 0.7);
     }
