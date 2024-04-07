@@ -18,13 +18,6 @@
             <artifactId>fx-plus</artifactId>
         </dependency>
 
-        <!-- json工具类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-json</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
-
         <!-- &lt;!&ndash; Spring boot &ndash;&gt; -->
         <!-- <dependency> -->
         <!--     <groupId>org.springframework.boot</groupId> -->

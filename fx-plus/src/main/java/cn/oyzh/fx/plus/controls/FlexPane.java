@@ -18,10 +18,6 @@ import lombok.NonNull;
 public class FlexPane extends Pane implements ThemeAdapter, FontAdapter, FlexAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 

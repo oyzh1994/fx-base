@@ -22,11 +22,7 @@ import lombok.NonNull;
 public class FXListView<T> extends ListView<T> implements TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
         this.setCursor(Cursor.HAND);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 

@@ -76,6 +76,13 @@
            <version>${hutool.version}</version>
        </dependency>
 
+       <!--  json工具类库 -->
+       <dependency>
+           <groupId>cn.hutool</groupId>
+           <artifactId>hutool-json</artifactId>
+           <version>${hutool.version}</version>
+       </dependency>
+
         <!-- xml类库 -->
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
         <dependency>
