@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.tabs;
 
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.controls.popup.MenuItemExt;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
@@ -7,11 +8,9 @@ import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -38,7 +37,7 @@ public abstract class DynamicTab extends FXTab {
      */
     @Getter
     @Accessors(fluent = true, chain = false)
-    protected Object controller;
+    protected DynamicTabController controller;
 
     /**
      * 加载内容
@@ -47,25 +46,32 @@ public abstract class DynamicTab extends FXTab {
         String url = this.url();
         if (url != null) {
             FXMLLoaderExt loaderExt = new FXMLLoaderExt();
-            Node content = loaderExt.load(url);
-            content.setCache(true);
-            content.setCacheHint(CacheHint.QUALITY);
-            this.controller = loaderExt.getController();
+            Node content = loaderExt.load(url, this.resource());
+            // content.setCache(true);
+            // content.setCacheHint(CacheHint.QUALITY);
             this.setContent(content);
-            if (this.controller instanceof DynamicTabController tabContent) {
-                tabContent.onTabInit();
-                this.setOnClosed(tabContent::onTabClose);
-            }
+            this.controller = loaderExt.getController();
+            this.controller.onTabInit(this);
+            this.setOnClosed(e -> this.controller.onTabClose(this, e));
         }
     }
 
     /**
-     * 地址
+     * 获取tab内容地址
      *
-     * @return tab的地址
+     * @return tab内容地址
      */
     protected String url() {
         return null;
+    }
+
+    /**
+     * 获取资源文件
+     *
+     * @return 资源文件
+     */
+    protected String resource() {
+        return "i18n";
     }
 
     /**
@@ -86,11 +92,20 @@ public abstract class DynamicTab extends FXTab {
     }
 
     /**
+     * 获取标题
+     *
+     * @return 标题
+     */
+    public String getTitle() {
+        return this.getText();
+    }
+
+    /**
      * 设置标题
      *
      * @param title 标题
      */
-    protected void title(String title) {
+    public void setTitle(String title) {
         FXUtil.runWait(() -> {
             this.setText(title);
             this.setTipText(title);
@@ -121,9 +136,9 @@ public abstract class DynamicTab extends FXTab {
         FXUtil.runWait(() -> {
             Node node = this.getGraphic();
             if (node instanceof SVGGlyph glyph) {
-                glyph.setColor((Color) paint);
+                glyph.setColor(paint);
             } else if (node instanceof SVGLabel label) {
-                label.setColor((Color) paint);
+                label.setColor(paint);
                 label.setTextFill(paint);
             }
         });
@@ -204,5 +219,16 @@ public abstract class DynamicTab extends FXTab {
      */
     protected ObservableList<Tab> tabs() {
         return this.getTabPane().getTabs();
+    }
+
+    @Override
+    public void flushTitle() {
+        super.flushTitle();
+        if (StrUtil.isEmpty(this.getTitle())) {
+            String title = this.controller.i18nString("title");
+            if (title != null) {
+                this.setTitle(title);
+            }
+        }
     }
 }

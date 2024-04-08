@@ -8,14 +8,13 @@ import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
-import javafx.scene.CacheHint;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
@@ -30,15 +29,10 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/1/19
  */
-//@Slf4j
 @ToString
-public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuAdapter, FlexAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FlexTreeView extends TreeView implements NodeAdapter, ThemeAdapter, ContextMenuAdapter, FlexAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -238,5 +232,10 @@ public class FlexTreeView extends TreeView implements ThemeAdapter, ContextMenuA
     public void changeTheme(ThemeStyle style) {
         ThemeAdapter.super.changeTheme(style);
         this.refresh();
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

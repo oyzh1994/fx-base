@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -18,8 +17,10 @@ public class IconButton extends FlexButton {
     @Getter
     private Double iconSizePercent = 0.7;
 
-    {
+    @Override
+    public void initNode() {
         this.initListener();
+        super.initNode();
     }
 
     /**
@@ -42,7 +43,10 @@ public class IconButton extends FlexButton {
      */
     protected void init(String iconUrl, double iconSizePercent) {
         if (iconUrl != null) {
-            this.setGraphic(new SVGGlyph(iconUrl));
+            SVGGlyph glyph = new SVGGlyph(iconUrl);
+            glyph.disableTheme();
+            glyph.setColor(this.getTextFill());
+            this.setGraphic(glyph);
         }
         this.setIconSizePercent(iconSizePercent);
     }
@@ -57,22 +61,16 @@ public class IconButton extends FlexButton {
             }
         });
         this.textFillProperty().addListener((observable, o, n) -> {
-            if (n instanceof Color color && this.getGraphic() instanceof SVGGlyph glyph) {
-                glyph.setColor(color);
+            if (this.getGraphic() instanceof SVGGlyph glyph) {
+                glyph.setColor(n);
             }
         });
-//        this.disableProperty().addListener((observable, o, n) -> {
-//            if (!n && this.getGraphic() instanceof SVGGlyph glyph && this.getTextFill() instanceof Color color) {
-//                glyph.setColor(color);
-//            }
-//        });
         this.graphicProperty().addListener((observable, o, n) -> {
             if (n instanceof SVGGlyph glyph) {
-                glyph.disableTheme();
                 if (this.iconSizePercent != null && this.getFont() != null) {
                     glyph.setSize(this.getFont().getSize() * this.iconSizePercent);
                 }
-                glyph.setColor((Color) this.getTextFill());
+                glyph.setColor(this.getTextFill());
             }
         });
     }

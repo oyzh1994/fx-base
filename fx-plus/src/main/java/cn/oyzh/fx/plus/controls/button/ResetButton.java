@@ -11,9 +11,11 @@ import cn.oyzh.fx.plus.i18n.I18nManager;
  */
 public class ResetButton extends IconButton {
 
-    {
-        this.setText(I18nManager.baseI18nString("btn.reset"));
+    @Override
+    public void initNode() {
         this.setPrefHeight(25);
+        this.setText(I18nManager.baseI18nString("btn.reset"));
         this.init("/fx-plus/font/reset.svg", 0.7);
+        super.initNode();
     }
 }

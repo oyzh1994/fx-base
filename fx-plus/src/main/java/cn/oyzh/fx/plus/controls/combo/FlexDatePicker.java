@@ -3,15 +3,15 @@ package cn.oyzh.fx.plus.controls.combo;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.CacheHint;
 import javafx.scene.control.DatePicker;
 
-public class FlexDatePicker extends DatePicker implements FlexAdapter, TipAdapter {
+public class FlexDatePicker extends DatePicker implements ThemeAdapter, FlexAdapter, TipAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
-        this.setCacheHint(CacheHint.QUALITY);
+        NodeManager.init(this);
     }
 
     @Override
@@ -98,5 +98,9 @@ public class FlexDatePicker extends DatePicker implements FlexAdapter, TipAdapte
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
     }
 }

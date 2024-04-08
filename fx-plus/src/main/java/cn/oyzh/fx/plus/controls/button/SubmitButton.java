@@ -11,10 +11,12 @@ import cn.oyzh.fx.plus.i18n.I18nManager;
  */
 public class SubmitButton extends IconButton {
 
-    {
-        this.setText(I18nManager.baseI18nString("btn.submit"));
+    @Override
+    public void initNode() {
         this.setPrefHeight(25);
-        this.getStyleClass().add("accent");
+        this.addClass("accent");
+        this.setText(I18nManager.baseI18nString("btn.submit"));
         this.init("/fx-plus/font/check.svg", 0.7);
+        super.initNode();
     }
 }

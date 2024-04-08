@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -27,16 +28,9 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements ThemeAdapter, Verifiable<BaseValidator>, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements NodeAdapter, ThemeAdapter, Verifiable<BaseValidator>, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-        this.setPickOnBounds(true);
-        this.setCursor(Cursor.HAND);
-        this.setFocusTraversable(false);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -170,5 +164,12 @@ public class FXComboBox<T> extends ComboBox<T> implements ThemeAdapter, Verifiab
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+        this.setPickOnBounds(true);
+        this.setCursor(Cursor.HAND);
+        this.setFocusTraversable(false);
     }
 }

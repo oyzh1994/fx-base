@@ -3,9 +3,9 @@ package cn.oyzh.fx.plus.controls.tab;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -14,11 +14,9 @@ import javafx.scene.control.Tab;
  * @author oyzh
  * @since 2022/1/21
  */
-public class FXTab extends Tab implements ThemeAdapter, StateAdapter, TipAdapter {
+public class FXTab extends Tab implements NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
 
     {
-        this.setClosable(false);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -104,5 +102,10 @@ public class FXTab extends Tab implements ThemeAdapter, StateAdapter, TipAdapter
      * 刷新tab图标颜色
      */
     public void flushGraphicColor() {
+    }
+
+    @Override
+    public void initNode() {
+        this.setClosable(false);
     }
 }

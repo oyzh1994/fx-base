@@ -26,7 +26,7 @@ public class DateSelector extends CalendarSelector {
     }
 
     @Override
-    protected void initNode() {
+    protected void initCalendar() {
         // 日期组件
         this.calendar = new Calendar();
         // 设置鼠标

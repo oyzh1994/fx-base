@@ -2,14 +2,12 @@ package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
-import cn.oyzh.fx.plus.adapter.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.scene.CacheHint;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.FontWeight;
 import lombok.NonNull;
@@ -21,10 +19,6 @@ import lombok.NonNull;
 public class FXFlowPane extends FlowPane implements ThemeAdapter, FontAdapter, TipAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -96,5 +90,10 @@ public class FXFlowPane extends FlowPane implements ThemeAdapter, FontAdapter, T
     @Override
     public void setRealHeight(double height) {
         LayoutAdapter.super.realHeight(height);
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

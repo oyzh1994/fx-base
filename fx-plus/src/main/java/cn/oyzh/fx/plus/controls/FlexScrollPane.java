@@ -17,10 +17,6 @@ import javafx.scene.control.ScrollPane;
 public class FlexScrollPane extends ScrollPane implements FlexAdapter, ThemeAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -110,5 +106,10 @@ public class FlexScrollPane extends ScrollPane implements FlexAdapter, ThemeAdap
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

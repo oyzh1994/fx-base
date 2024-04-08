@@ -15,10 +15,6 @@ import javafx.scene.control.Separator;
 public class FlexSeparator extends Separator implements FlexAdapter, ThemeAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -96,5 +92,10 @@ public class FlexSeparator extends Separator implements FlexAdapter, ThemeAdapte
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

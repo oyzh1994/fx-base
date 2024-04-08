@@ -22,7 +22,6 @@ import lombok.NonNull;
 public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter, TipAdapter, FontAdapter, ThemeAdapter {
 
     {
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -152,5 +151,10 @@ public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter,
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

@@ -1,12 +1,11 @@
 package cn.oyzh.fx.plus.controls;
 
-import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.scene.CacheHint;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.FontWeight;
 import lombok.NonNull;
@@ -15,7 +14,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FlexPane extends Pane implements ThemeAdapter, FontAdapter, FlexAdapter {
+public class FlexPane extends Pane implements NodeAdapter, ThemeAdapter, FontAdapter, FlexAdapter {
 
     {
         NodeManager.init(this);
@@ -125,5 +124,10 @@ public class FlexPane extends Pane implements ThemeAdapter, FontAdapter, FlexAda
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

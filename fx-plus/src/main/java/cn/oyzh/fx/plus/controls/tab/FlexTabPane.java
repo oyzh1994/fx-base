@@ -29,10 +29,6 @@ import java.util.List;
 public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -267,5 +263,10 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, C
     @Override
     public FontWeight getFontWeight() {
         return FontAdapter.super.fontWeight();
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

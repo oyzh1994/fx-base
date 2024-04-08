@@ -26,6 +26,9 @@ public class NodeManager {
      * @param node 节点
      */
     public static void init(Object node) {
+        if (node instanceof NodeAdapter adapter) {
+            adapter.initNode();
+        }
         if (node instanceof FontAdapter adapter) {
             adapter.changeFont(FontManager.currentFont());
         }

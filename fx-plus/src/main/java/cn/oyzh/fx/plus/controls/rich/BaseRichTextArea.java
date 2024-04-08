@@ -2,18 +2,17 @@ package cn.oyzh.fx.plus.controls.rich;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Insets;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.layout.Border;
@@ -37,22 +36,9 @@ import java.util.function.IntFunction;
  * @author oyzh
  * @since 2023/9/28
  */
-public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class BaseRichTextArea extends InlineCssTextArea implements NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-        this.setWrapText(true);
-        this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
-        this.setAutoScrollOnDragDesired(true);
-        this.setPadding(new Insets(5, 5, 5, 5));
-        BorderStroke stroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        this.setBorder(new Border(stroke));
-        this.getStyleClass().add("rich-text-area");
-        this.applyPlainUndoManager();
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -347,5 +333,18 @@ public class BaseRichTextArea extends InlineCssTextArea implements ThemeAdapter,
                 }
             }
         }
+    }
+
+    @Override
+    public void initNode() {
+        this.setWrapText(true);
+        this.setPickOnBounds(true);
+        this.setFocusTraversable(false);
+        this.setAutoScrollOnDragDesired(true);
+        this.setPadding(new Insets(5, 5, 5, 5));
+        BorderStroke stroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        this.setBorder(new Border(stroke));
+        this.getStyleClass().add("rich-text-area");
+        this.applyPlainUndoManager();
     }
 }

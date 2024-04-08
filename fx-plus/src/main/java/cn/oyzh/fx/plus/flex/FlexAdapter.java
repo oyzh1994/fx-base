@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.flex;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
-import cn.oyzh.fx.plus.adapter.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 
 /**

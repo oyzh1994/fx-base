@@ -21,14 +21,6 @@ import javafx.scene.control.TableView;
 public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, FlexAdapter, SelectAdapter<S> {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-        this.setFixedCellSize(35.f);
-        this.setFocusTraversable(false);
-        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        // this.setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -147,5 +139,12 @@ public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, Flex
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+        this.setFixedCellSize(35.f);
+        this.setFocusTraversable(false);
+        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
     }
 }

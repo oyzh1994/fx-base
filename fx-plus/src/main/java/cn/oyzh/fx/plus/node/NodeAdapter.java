@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.adapter;
+package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
@@ -20,6 +20,11 @@ import java.util.List;
  * @since 2023/5/15
  */
 public interface NodeAdapter extends EventTarget {
+
+    /**
+     * 初始化节点
+     */
+    void initNode();
 
     /**
      * 获取父节点

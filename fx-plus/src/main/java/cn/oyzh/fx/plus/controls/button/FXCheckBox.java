@@ -1,14 +1,13 @@
 package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.adapter.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 import javafx.scene.text.FontWeight;
@@ -21,10 +20,6 @@ import lombok.NonNull;
 public class FXCheckBox extends CheckBox implements NodeAdapter, ThemeAdapter, TipAdapter, StateAdapter, FontAdapter {
 
     {
-        this.setCursor(Cursor.HAND);
-        this.setPickOnBounds(true);
-        this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
         NodeManager.init(this);
     }
 
@@ -87,4 +82,11 @@ public class FXCheckBox extends CheckBox implements NodeAdapter, ThemeAdapter, T
         return StateAdapter.super.stateManager();
     }
 
+    @Override
+    public void initNode() {
+        this.setCursor(Cursor.HAND);
+        this.setPickOnBounds(true);
+        this.setMnemonicParsing(false);
+        this.setFocusTraversable(false);
+    }
 }

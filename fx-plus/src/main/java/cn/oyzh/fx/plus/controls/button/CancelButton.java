@@ -9,11 +9,13 @@ import cn.oyzh.fx.plus.i18n.I18nManager;
  */
 public class CancelButton extends IconButton {
 
-    {
-        this.setText(I18nManager.baseI18nString("btn.cancel"));
+    @Override
+    public void initNode() {
         this.setPrefHeight(25);
-        this.getStyleClass().add("danger");
+        this.addClass("danger");
+        this.setText(I18nManager.baseI18nString("btn.cancel"));
         this.init("/fx-plus/font/close.svg", 0.7);
         this.setOnAction(actionEvent -> this.getScene().getWindow().hide());
+        super.initNode();
     }
 }

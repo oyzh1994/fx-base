@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -27,23 +28,9 @@ import java.util.Collection;
  * @since 2022/1/20
  */
 @ToString
-public class FXTextArea extends TextArea implements ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-        this.setWrapText(true);
-        this.setOnScroll(event -> {
-            if (event.isControlDown()) {
-                if (event.getDeltaY() > 0) {
-                    this.fontSizeIncr();
-                } else {
-                    this.fontSizeDecr();
-                }
-            }
-        });
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -193,5 +180,19 @@ public class FXTextArea extends TextArea implements ThemeAdapter, AreaAdapter, V
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+        this.setWrapText(true);
+        this.setOnScroll(event -> {
+            if (event.isControlDown()) {
+                if (event.getDeltaY() > 0) {
+                    this.fontSizeIncr();
+                } else {
+                    this.fontSizeDecr();
+                }
+            }
+        });
     }
 }

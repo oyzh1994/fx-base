@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.controls;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
@@ -18,11 +20,7 @@ import lombok.Setter;
 public class FlexImageView extends ImageView implements FlexAdapter, TipAdapter {
 
     {
-        this.setCache(true);
-        this.setCacheHint(CacheHint.QUALITY);
-        this.setPickOnBounds(true);
-        this.setPreserveRatio(true);
-        this.setFocusTraversable(false);
+        NodeManager.init(this);
     }
 
     @Getter
@@ -151,5 +149,12 @@ public class FlexImageView extends ImageView implements FlexAdapter, TipAdapter 
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
+    }
+
+    @Override
+    public void initNode() {
+        this.setPickOnBounds(true);
+        this.setPreserveRatio(true);
+        this.setFocusTraversable(false);
     }
 }

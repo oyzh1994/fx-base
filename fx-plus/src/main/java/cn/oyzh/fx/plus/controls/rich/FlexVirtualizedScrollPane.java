@@ -95,4 +95,9 @@ public class FlexVirtualizedScrollPane<V extends Region & Virtualized> extends V
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
     }
+
+    @Override
+    public void initNode() {
+
+    }
 }

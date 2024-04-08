@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Cursor;
@@ -16,11 +17,9 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXRadioButton extends RadioButton implements ThemeAdapter, StateAdapter, LayoutAdapter, TipAdapter, FontAdapter {
+public class FXRadioButton extends RadioButton implements NodeAdapter, ThemeAdapter, StateAdapter, LayoutAdapter, TipAdapter, FontAdapter {
 
     {
-        this.setCursor(Cursor.HAND);
-        this.setMnemonicParsing(false);
         NodeManager.init(this);
     }
 
@@ -92,5 +91,11 @@ public class FXRadioButton extends RadioButton implements ThemeAdapter, StateAda
     @Override
     public FontWeight getFontWeight() {
         return FontAdapter.super.fontWeight();
+    }
+
+    @Override
+    public void initNode() {
+        this.setCursor(Cursor.HAND);
+        this.setMnemonicParsing(false);
     }
 }

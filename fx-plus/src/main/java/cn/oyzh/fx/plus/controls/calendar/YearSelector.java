@@ -26,7 +26,7 @@ public class YearSelector extends CalendarSelector {
     }
 
     @Override
-    protected void initNode() {
+    protected void initCalendar() {
         // 时间组件
         FXHBox timeAction = new FXHBox();
         timeAction.setAlignment(Pos.CENTER);

@@ -2,9 +2,9 @@ package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 
@@ -12,10 +12,9 @@ import javafx.scene.control.TableColumn;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FlexTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter {
+public class FlexTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapter, FlexAdapter, ThemeAdapter {
 
     {
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -95,5 +94,10 @@ public class FlexTableColumn<S, T> extends TableColumn<S, T> implements FlexAdap
      */
     public void setCell(TableCell<S, T> cell) {
         this.setCellFactory((c) -> cell);
+    }
+
+    @Override
+    public void initNode() {
+
     }
 }

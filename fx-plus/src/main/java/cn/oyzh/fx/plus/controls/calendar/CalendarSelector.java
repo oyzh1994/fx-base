@@ -42,7 +42,7 @@ public abstract class CalendarSelector extends FXVBox {
     public CalendarSelector(CalendarPicker<?> picker) {
         this.picker = picker;
         // 初始化节点
-        this.initNode();
+        this.initCalendar();
         // 初始化时间
         this.initTime();
         // 更新日期
@@ -61,7 +61,7 @@ public abstract class CalendarSelector extends FXVBox {
     /**
      * 初始化节点
      */
-    protected void initNode() {
+    protected void initCalendar() {
         this.bottomAction = new FXHBox();
         this.bottomAction.setAlignment(Pos.BASELINE_CENTER);
 

@@ -1,15 +1,14 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 
-import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.scene.CacheHint;
 import javafx.scene.control.TextField;
 import javafx.scene.text.FontWeight;
 import lombok.Getter;
@@ -22,15 +21,9 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-        this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -119,5 +112,11 @@ public class FXTextField extends TextField implements ThemeAdapter, FontAdapter,
     @Override
     public FontWeight getFontWeight() {
         return FontAdapter.super.fontWeight();
+    }
+
+    @Override
+    public void initNode() {
+        this.setPickOnBounds(true);
+        this.setFocusTraversable(false);
     }
 }

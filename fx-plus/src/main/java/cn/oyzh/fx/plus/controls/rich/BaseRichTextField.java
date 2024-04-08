@@ -4,11 +4,10 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.scene.CacheHint;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import org.fxmisc.richtext.CaretNode;
@@ -18,16 +17,9 @@ import org.fxmisc.richtext.InlineCssTextField;
  * @author oyzh
  * @since 2023/9/15
  */
-public class BaseRichTextField extends InlineCssTextField implements ThemeAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class BaseRichTextField extends InlineCssTextField implements NodeAdapter, ThemeAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-        this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
-        this.getStyleClass().add("rich-text-field");
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -70,5 +62,12 @@ public class BaseRichTextField extends InlineCssTextField implements ThemeAdapte
                 }
             }
         }
+    }
+
+    @Override
+    public void initNode() {
+        this.setPickOnBounds(true);
+        this.setFocusTraversable(false);
+        this.getStyleClass().add("rich-text-field");
     }
 }

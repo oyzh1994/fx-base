@@ -23,13 +23,6 @@ import lombok.NonNull;
 public class FlexColorPicker extends ColorPicker implements FlexAdapter, TipAdapter, FontAdapter, ThemeAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-        this.setPickOnBounds(true);
-        this.setCursor(Cursor.HAND);
-        this.setFocusTraversable(false);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -166,5 +159,12 @@ public class FlexColorPicker extends ColorPicker implements FlexAdapter, TipAdap
             ex.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void initNode() {
+        this.setPickOnBounds(true);
+        this.setCursor(Cursor.HAND);
+        this.setFocusTraversable(false);
     }
 }
