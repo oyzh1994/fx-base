@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -12,6 +13,7 @@ import lombok.NonNull;
 
 import java.net.URL;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -47,6 +49,13 @@ public class Controller implements StageListener, EventListener, I18nAdapter, In
     public void onStageInitialize(StageWrapper stage) {
         // 设置页面
         this.setStage(stage);
+        // 处理标题
+        if (StrUtil.isEmpty(this.stage.getTitleExt())) {
+            String title = this.i18nString("title");
+            if (title != null) {
+                this.stage.setTitleExt(title);
+            }
+        }
         NodeManager.init(this);
     }
 
@@ -106,10 +115,15 @@ public class Controller implements StageListener, EventListener, I18nAdapter, In
 
     @Override
     public String i18nString(String key) {
-        if (this.i18nId() == null) {
-            return this.resources.getString(key);
+        try {
+            if (this.i18nId() == null) {
+                return this.resources.getString(key);
+            }
+            return this.resources.getString(this.i18nId() + "." + key);
+        } catch (MissingResourceException ex) {
+            ex.printStackTrace();
         }
-        return this.resources.getString(this.i18nId() + "." + key);
+        return null;
     }
 
     @Override

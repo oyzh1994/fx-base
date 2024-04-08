@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.i18n.I18nManager;
+
 /**
  * 取消按钮
  *
@@ -10,7 +12,7 @@ package cn.oyzh.fx.plus.controls.button;
 public class SubmitButton extends IconButton {
 
     {
-        this.setText("提交");
+        this.setText(I18nManager.baseI18nString("btn.submit"));
         this.setPrefHeight(25);
         this.getStyleClass().add("accent");
         this.init("/fx-plus/font/check.svg", 0.7);

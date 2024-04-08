@@ -4,8 +4,12 @@ import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import lombok.experimental.UtilityClass;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * 国际化管理器
@@ -78,5 +82,35 @@ public class I18nManager {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 资源列表
+     * key 地区
+     * value 资源
+     */
+    private final Map<Locale, ResourceBundle> resources = new HashMap<>();
+
+    /**
+     * 获取基础的国际化资源，字符串
+     *
+     * @param key 键
+     * @return 值
+     */
+    public static String baseI18nString(String key) {
+        ResourceBundle resource = resources.get(currentLocale());
+        if (resource == null) {
+            resource = ResourceBundle.getBundle("base_i18n", currentLocale());
+            resources.put(currentLocale(), resource);
+        }
+        try {
+            if (key.startsWith("base.")) {
+                return resource.getString(key);
+            }
+            return resource.getString("base." + key);
+        } catch (MissingResourceException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

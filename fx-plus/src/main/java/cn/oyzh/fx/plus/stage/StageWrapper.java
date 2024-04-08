@@ -272,6 +272,13 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
     }
 
     /**
+     * 获取标题，扩展
+     */
+    default String getTitleExt() {
+        return this.stage() == null ? null : this.stage().getTitle();
+    }
+
+    /**
      * 追加标题
      *
      * @param append 追加内容
