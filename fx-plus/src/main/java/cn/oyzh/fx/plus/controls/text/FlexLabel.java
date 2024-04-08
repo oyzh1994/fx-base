@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.text;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import javafx.scene.Node;
 
 /**
  * @author oyzh
@@ -14,6 +15,10 @@ public class FlexLabel extends FXLabel implements FlexAdapter {
 
     public FlexLabel(String text) {
         super(text);
+    }
+
+    public FlexLabel(String text, Node graphic) {
+        super(text, graphic);
     }
 
     @Override
