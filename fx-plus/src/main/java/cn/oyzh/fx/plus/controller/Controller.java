@@ -2,15 +2,17 @@ package cn.oyzh.fx.plus.controller;
 
 import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
-import cn.oyzh.fx.plus.i18n.I18nManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.stage.StageListener;
 import cn.oyzh.fx.plus.stage.StageWrapper;
+import javafx.fxml.Initializable;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.net.URL;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * 组件控制器
@@ -18,13 +20,19 @@ import java.util.Locale;
  * @author oyzh
  * @since 2023/10/12
  */
-public class Controller implements StageListener, EventListener, I18nAdapter {
+public class Controller implements StageListener, EventListener, I18nAdapter, Initializable {
 
     /**
      * 舞台
      */
     @Getter
     protected StageWrapper stage;
+
+    /**
+     * 资源
+     */
+    @Getter
+    protected ResourceBundle resources;
 
     /**
      * 设置舞台
@@ -39,7 +47,6 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
     public void onStageInitialize(StageWrapper stage) {
         // 设置页面
         this.setStage(stage);
-        I18nManager.loadResource(this);
         NodeManager.init(this);
     }
 
@@ -64,7 +71,6 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
     @Override
     public void onStageHidden(WindowEvent event) {
         EventListener.super.unregister();
-        I18nManager.unloadResource(this);
     }
 
     @Override
@@ -99,12 +105,20 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
     }
 
     @Override
-    public String i18nResource() {
-        return null;
+    public String i18nString(String key) {
+        if (this.i18nId() == null) {
+            return this.resources.getString(key);
+        }
+        return this.resources.getString(this.i18nId() + "." + key);
     }
 
     @Override
     public void changeLocale(Locale locale) {
 
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.resources = resources;
     }
 }

@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.stage;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
@@ -12,7 +11,6 @@ import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
@@ -186,7 +184,7 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
         // 初始化加载器
         FXMLLoaderExt loader = new FXMLLoaderExt();
         // 加载根节点
-        Parent root = loader.load(attribute.value());
+        Parent root = loader.load(attribute.value(), attribute.resource());
         if (root == null) {
             throw new RuntimeException("load root fail");
         }

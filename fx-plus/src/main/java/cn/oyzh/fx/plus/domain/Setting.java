@@ -49,6 +49,11 @@ public class Setting {
     private Integer fontWeight;
 
     /**
+     * 区域
+     */
+    private String locale;
+
+    /**
      * 应用退出
      * 0 到系统托盘
      * 1 每次询问
