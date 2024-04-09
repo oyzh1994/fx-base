@@ -80,10 +80,7 @@ public class ThemeUtil {
         hexBlue = hexBlue.length() == 1 ? "0" + hexBlue : hexBlue;
 
         // 返回16进制颜色字符串
-        String xx = "#" + hexRed + hexGreen + hexBlue;
-
-        System.out.println("xx================" + xx);
-        return xx;
+        return "#" + hexRed + hexGreen + hexBlue;
     }
 
     /**
