@@ -51,6 +51,17 @@ public class IconButton extends FlexButton {
         this.setIconSizePercent(iconSizePercent);
     }
 
+    public void setIconUrl(String url) {
+        this.init(url, this.iconSizePercent);
+    }
+
+    public String getIconUrl() {
+        if (this.getGraphic() instanceof SVGGlyph glyph) {
+            return glyph.getUrl();
+        }
+        return null;
+    }
+
     /**
      * 初始化图标
      */
