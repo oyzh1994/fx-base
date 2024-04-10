@@ -121,10 +121,9 @@ public class Controller implements StageListener, EventListener, I18nAdapter, In
                 return this.resources.getString(key);
             }
             return this.resources.getString(this.i18nId() + "." + key);
-        } catch (MissingResourceException ex) {
-            ex.printStackTrace();
+        } catch (MissingResourceException ignored) {
         }
-        return BaseResourceBundle.getBaseString(key);
+        return BaseResourceBundle.getBaseString("base." + key);
     }
 
     @Override
