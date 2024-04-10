@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.toggle;
 
 import javafx.scene.control.ToggleGroup;
 

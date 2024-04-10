@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.ext;
 
-import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.i18n.I18nManager;
+import cn.oyzh.fx.plus.i18n.ResourceBundleWrapper;
 import cn.oyzh.fx.plus.spring.SpringControllerFactory;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +8,6 @@ import javafx.fxml.JavaFXBuilderFactory;
 import lombok.NonNull;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 /**
  * fxml加载器扩展
@@ -44,9 +42,7 @@ public class FXMLLoaderExt extends FXMLLoader {
     public <T> T load(@NonNull String fxmlUrl, String resource) {
         try {
             this.setLocation(ResourceUtil.getResource(fxmlUrl));
-            if (StrUtil.isNotBlank(resource)) {
-                this.setResources(ResourceBundle.getBundle(resource, I18nManager.currentLocale()));
-            }
+            this.setResources(ResourceBundleWrapper.newResource(resource));
             return super.load();
         } catch (IOException e) {
             e.printStackTrace();

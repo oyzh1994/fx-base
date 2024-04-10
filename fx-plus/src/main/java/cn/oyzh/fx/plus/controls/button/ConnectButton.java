@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.button;
 
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 
@@ -17,7 +18,7 @@ public class ConnectButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("success");
-        this.setText(I18nManager.baseI18nString("btn.connect"));
+        this.setText(BaseResourceBundle.getBaseString("btn.connect"));
         this.init("/fx-plus/font/add.svg", 0.7);
         super.initNode();
     }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 
 /**
@@ -15,7 +16,7 @@ public class ClearButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("danger");
-        this.setText(I18nManager.baseI18nString("btn.clear"));
+        this.setText(BaseResourceBundle.getBaseString("btn.clear"));
         this.init("/fx-plus/font/clear.svg", 0.7);
         super.initNode();
     }

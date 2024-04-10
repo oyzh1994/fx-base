@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 
 /**
@@ -11,7 +12,7 @@ public class CloseButton extends CancelButton {
 
     @Override
     public void initNode() {
-        this.setText(I18nManager.baseI18nString("btn.stop"));
+        this.setText(BaseResourceBundle.getBaseString("btn.stop"));
         super.initNode();
     }
 }

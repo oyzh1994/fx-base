@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.toggle;
 
 import atlantafx.base.controls.ToggleSwitch;
 import cn.oyzh.fx.plus.font.FontAdapter;

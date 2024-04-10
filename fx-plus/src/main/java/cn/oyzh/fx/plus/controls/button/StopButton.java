@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 
 /**
@@ -15,7 +16,7 @@ public class StopButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("default");
-        this.setText(I18nManager.baseI18nString("btn.stop"));
+        this.setText(BaseResourceBundle.getBaseString("btn.stop"));
         this.init("/fx-plus/font/stop-circle-line.svg", 0.7);
         super.initNode();
     }

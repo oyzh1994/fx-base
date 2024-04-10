@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 
 /**
@@ -15,7 +16,7 @@ public class ChangelogButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("danger");
-        this.setText(I18nManager.baseI18nString("btn.changelog"));
+        this.setText(BaseResourceBundle.getBaseString("btn.changelog"));
         this.init("/fx-plus/font/changelog.svg", 0.7);
         super.initNode();
     }
