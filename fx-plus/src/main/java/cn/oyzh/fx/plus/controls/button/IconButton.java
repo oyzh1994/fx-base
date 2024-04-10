@@ -45,10 +45,10 @@ public class IconButton extends FlexButton {
         if (iconUrl != null) {
             SVGGlyph glyph = new SVGGlyph(iconUrl);
             glyph.disableTheme();
-            glyph.setColor(this.getTextFill());
             this.setGraphic(glyph);
         }
         this.setIconSizePercent(iconSizePercent);
+        this.initGlyph();
     }
 
     public void setIconUrl(String url) {
@@ -66,23 +66,20 @@ public class IconButton extends FlexButton {
      * 初始化图标
      */
     protected void initListener() {
-        this.fontProperty().addListener((observable, o, n) -> {
-            if (this.iconSizePercent != null && this.getGraphic() instanceof SVGGlyph glyph) {
-                glyph.setSize(n.getSize() * this.iconSizePercent);
+        this.fontProperty().addListener((observable, o, n) -> this.initGlyph());
+        this.graphicProperty().addListener((observable, o, n) -> this.initGlyph());
+        this.textFillProperty().addListener((observable, o, n) -> this.initGlyph());
+        this.backgroundProperty().addListener((observable, o, n) -> this.initGlyph());
+    }
+
+    private void initGlyph() {
+        if (this.getGraphic() instanceof SVGGlyph glyph) {
+            if (this.iconSizePercent != null && this.getFont() != null) {
+                glyph.setSize(this.getFont().getSize() * this.iconSizePercent);
             }
-        });
-        this.textFillProperty().addListener((observable, o, n) -> {
-            if (this.getGraphic() instanceof SVGGlyph glyph) {
-                glyph.setColor(n);
-            }
-        });
-        this.graphicProperty().addListener((observable, o, n) -> {
-            if (n instanceof SVGGlyph glyph) {
-                if (this.iconSizePercent != null && this.getFont() != null) {
-                    glyph.setSize(this.getFont().getSize() * this.iconSizePercent);
-                }
+            if (this.getTextFill() != null) {
                 glyph.setColor(this.getTextFill());
             }
-        });
+        }
     }
 }

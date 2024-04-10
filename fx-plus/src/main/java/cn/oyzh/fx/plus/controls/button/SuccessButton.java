@@ -12,5 +12,6 @@ public class SuccessButton extends IconButton {
     @Override
     public void initNode() {
         this.addClass("success");
+        super.initNode();
     }
 }

@@ -10,5 +10,6 @@ public class AccentButton extends IconButton {
     @Override
     public void initNode() {
         this.addClass("accent");
+        super.initNode();
     }
 }
