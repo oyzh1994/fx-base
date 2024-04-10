@@ -16,7 +16,8 @@ public class SubmitButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("accent");
-        this.setText(BaseResourceBundle.getBaseString("btn.submit"));
+        this.setText(BaseResourceBundle.getBaseString("submit"));
+        this.setTipText(BaseResourceBundle.getBaseString("submit"));
         this.init("/fx-plus/font/check.svg", 0.7);
         super.initNode();
     }

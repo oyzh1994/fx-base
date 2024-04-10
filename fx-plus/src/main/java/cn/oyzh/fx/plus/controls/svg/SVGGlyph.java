@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.AnimationUtil;
@@ -30,7 +31,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2022/5/31
  */
-public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
+public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
     /**
      * 图标地址
@@ -59,14 +60,6 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     private boolean enableWaiting = true;
 
     {
-        this.setSize(16);
-        this.setPickOnBounds(true);
-        this.setCursor(Cursor.HAND);
-        this.setFocusTraversable(false);
-        this.setPadding(new Insets(0));
-        this.cursorProperty().addListener((obs, t0, t1) -> this.updateContent());
-        this.backgroundProperty().addListener((obs, t0, t1) -> this.updateContent());
-        this.getStyleClass().add("svg-glyph");
         NodeManager.init(this);
     }
 
@@ -364,5 +357,17 @@ public class SVGGlyph extends Region implements ThemeAdapter, MouseAdapter, TipA
     @Override
     public void setEnableTheme(boolean enableTheme) {
         ThemeAdapter.super.setEnableTheme(enableTheme);
+    }
+
+    @Override
+    public void initNode() {
+        this.setSize(16);
+        this.setPickOnBounds(true);
+        this.setCursor(Cursor.HAND);
+        this.setFocusTraversable(false);
+        this.setPadding(new Insets(0));
+        this.cursorProperty().addListener((obs, t0, t1) -> this.updateContent());
+        this.backgroundProperty().addListener((obs, t0, t1) -> this.updateContent());
+        this.getStyleClass().add("svg-glyph");
     }
 }

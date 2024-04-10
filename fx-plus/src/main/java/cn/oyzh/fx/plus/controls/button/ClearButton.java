@@ -16,7 +16,8 @@ public class ClearButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("danger");
-        this.setText(BaseResourceBundle.getBaseString("btn.clear"));
+        this.setText(BaseResourceBundle.getBaseString("clear"));
+        this.setTipText(BaseResourceBundle.getBaseString("clear"));
         this.init("/fx-plus/font/clear.svg", 0.7);
         super.initNode();
     }

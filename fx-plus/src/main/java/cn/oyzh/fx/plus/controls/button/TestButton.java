@@ -16,7 +16,8 @@ public class TestButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("success");
-        this.setText(BaseResourceBundle.getBaseString("btn.test"));
+        this.setText(BaseResourceBundle.getBaseString("test"));
+        this.setTipText(BaseResourceBundle.getBaseString("test"));
         this.init("/fx-plus/font/link.svg", 0.7);
         super.initNode();
     }

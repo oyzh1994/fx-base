@@ -15,7 +15,8 @@ public class CopyButton extends IconButton {
     @Override
     public void initNode() {
         this.setPrefHeight(25);
-        this.setText(BaseResourceBundle.getBaseString("btn.copy"));
+        this.setText(BaseResourceBundle.getBaseString("copy"));
+        this.setTipText(BaseResourceBundle.getBaseString("copy"));
         this.init("/fx-plus/font/copy.svg", 0.7);
         super.initNode();
     }
