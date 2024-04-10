@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.tabs;
 
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
@@ -55,10 +55,9 @@ public abstract class DynamicTabController implements Initializable, EventListen
                 return this.resources.getString(key);
             }
             return this.resources.getString(this.i18nId() + "." + key);
-        } catch (MissingResourceException ex) {
-            ex.printStackTrace();
+        } catch (MissingResourceException ignored) {
         }
-        return null;
+        return BaseResourceBundle.getBaseString("base." + key);
     }
 
     @Override

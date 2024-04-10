@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.stage.StageListener;
@@ -123,7 +124,7 @@ public class Controller implements StageListener, EventListener, I18nAdapter, In
         } catch (MissingResourceException ex) {
             ex.printStackTrace();
         }
-        return null;
+        return BaseResourceBundle.getBaseString(key);
     }
 
     @Override

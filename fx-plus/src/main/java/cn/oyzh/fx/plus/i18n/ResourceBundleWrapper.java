@@ -28,8 +28,7 @@ public class ResourceBundleWrapper extends ResourceBundle {
         if (val == null) {
             try {
                 val = this.resources.getObject(key);
-            } catch (MissingResourceException ex) {
-                ex.printStackTrace();
+            } catch (MissingResourceException ignored) {
             }
         }
         return val;
