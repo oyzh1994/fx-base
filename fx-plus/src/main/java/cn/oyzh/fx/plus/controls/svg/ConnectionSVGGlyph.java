@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class ConnectionSVGGlyph extends SVGGlyph {
 
     public ConnectionSVGGlyph() {
-        super("/fx-plus/font/connections.svg");
+        this.setUrl("/fx-plus/font/connections.svg");
     }
 
     public ConnectionSVGGlyph(String size) {
@@ -19,7 +19,7 @@ public class ConnectionSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("connections"));
+        this.setTipText(BaseResourceBundle.getBaseString("connection"));
         super.initNode();
     }
 }

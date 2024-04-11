@@ -9,11 +9,12 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class TerminalSVGGlyph extends SVGGlyph {
 
     public TerminalSVGGlyph() {
-        super("/fx-plus/font/code library.svg");
+        this.setUrl("/fx-plus/font/code library.svg");
     }
 
     public TerminalSVGGlyph(String size) {
-        super("/fx-plus/font/code library.svg", size);
+        this();
+        this.setSizeStr(size);
     }
 
     @Override

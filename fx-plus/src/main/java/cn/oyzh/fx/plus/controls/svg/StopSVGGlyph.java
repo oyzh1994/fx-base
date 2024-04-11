@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class StopSVGGlyph extends SVGGlyph {
 
     public StopSVGGlyph() {
-        super("/fx-plus/font/stop-circle-line.svg");
+        this.setUrl("/fx-plus/font/stop-circle-line.svg");
     }
 
     public StopSVGGlyph(String size) {

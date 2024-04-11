@@ -9,12 +9,12 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class CopySVGLabel extends SVGLabel {
 
     public CopySVGLabel() {
-        super("/fx-plus/font/copy.svg");
+        this.setUrl("/fx-plus/font/copy.svg");
     }
 
     public CopySVGLabel(String size) {
         this();
-        this.graphic().setSizeStr(size);
+        this.setSizeStr(size);
     }
 
     @Override

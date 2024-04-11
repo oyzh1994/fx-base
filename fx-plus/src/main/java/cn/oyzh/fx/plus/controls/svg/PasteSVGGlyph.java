@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class PasteSVGGlyph extends SVGGlyph {
 
+    public PasteSVGGlyph() {
+        this.setUrl("/fx-plus/font/file-paste.svg");
+    }
+
+    public PasteSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/file-paste.svg");
         this.setTipText(BaseResourceBundle.getBaseString("paste"));
         super.initNode();
     }

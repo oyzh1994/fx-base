@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class UndoSVGGlyph extends SVGGlyph {
 
+    public UndoSVGGlyph() {
+        this.setUrl("/fx-plus/font/data_revoke.svg");
+    }
+
+    public UndoSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/data_revoke.svg");
         this.setTipText(BaseResourceBundle.getBaseString("undo"));
         super.initNode();
     }

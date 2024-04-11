@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class EditSVGLabel extends SVGLabel {
 
     public EditSVGLabel() {
-        super("/fx-plus/font/edit.svg");
+        this.setUrl("/fx-plus/font/edit.svg");
     }
 
     public EditSVGLabel(String size) {

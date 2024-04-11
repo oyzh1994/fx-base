@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class MessageSVGGlyph extends SVGGlyph {
 
     public MessageSVGGlyph() {
-        super("/fx-plus/font/message.svg");
+        this.setUrl("/fx-plus/font/message.svg");
     }
 
     public MessageSVGGlyph(String size) {

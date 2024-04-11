@@ -9,11 +9,12 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class RefreshSVGGlyph extends SVGGlyph {
 
     public RefreshSVGGlyph() {
-        super("/fx-plus/font/reload.svg");
+        this.setUrl("/fx-plus/font/reload.svg");
     }
 
     public RefreshSVGGlyph(String size) {
-        super("/fx-plus/font/reload.svg", size);
+        this();
+        this.setSizeStr(size);
     }
 
     @Override

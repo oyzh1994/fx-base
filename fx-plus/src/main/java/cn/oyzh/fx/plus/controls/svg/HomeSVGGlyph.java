@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.controls.svg;
 public class HomeSVGGlyph extends SVGGlyph {
 
     public HomeSVGGlyph() {
-        super("/fx-plus/font/home.svg");
+        this.setUrl("/fx-plus/font/home.svg");
     }
 
     public HomeSVGGlyph(String size) {

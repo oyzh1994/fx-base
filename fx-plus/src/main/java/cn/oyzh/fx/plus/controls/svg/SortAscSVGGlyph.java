@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class SortAscSVGGlyph extends SVGGlyph {
 
+    public SortAscSVGGlyph() {
+        this.setUrl("/fx-plus/font/sort-descending.svg");
+    }
+
+    public SortAscSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/sort-descending.svg");
         this.setTipText(BaseResourceBundle.getBaseString("sortDesc"));
         super.initNode();
     }

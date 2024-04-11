@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class PrevSVGGlyph extends SVGGlyph {
 
+    public PrevSVGGlyph() {
+        this.setUrl("/fx-plus/font/direction-up.svg");
+    }
+
+    public PrevSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/direction-up.svg");
         this.setTipText(BaseResourceBundle.getBaseString("prev"));
         super.initNode();
     }

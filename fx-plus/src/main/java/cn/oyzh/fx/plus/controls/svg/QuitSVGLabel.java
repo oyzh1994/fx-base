@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class QuitSVGLabel extends SVGLabel{
 
+    public QuitSVGLabel() {
+        this.setUrl("/fx-plus/font/poweroff.svg");
+    }
+
+    public QuitSVGLabel(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/poweroff.svg");
         this.setText(BaseResourceBundle.getBaseString("quit"));
         this.setTipText(BaseResourceBundle.getBaseString("quit"));
         super.initNode();

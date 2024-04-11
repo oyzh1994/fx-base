@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class ChangelogSVGGlyph extends SVGGlyph {
 
     public ChangelogSVGGlyph() {
-        super("/fx-plus/font/changelog.svg");
+        this.setUrl("/fx-plus/font/changelog.svg");
     }
 
     public ChangelogSVGGlyph(String size) {

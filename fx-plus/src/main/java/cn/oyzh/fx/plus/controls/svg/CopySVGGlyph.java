@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class CopySVGGlyph extends SVGGlyph {
 
+    public CopySVGGlyph() {
+        this.setUrl("/fx-plus/font/copy.svg");
+    }
+
+    public CopySVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/copy.svg");
         this.setTipText(BaseResourceBundle.getBaseString("copy"));
         super.initNode();
     }

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class TransportSVGGlyph extends SVGGlyph {
 
     public TransportSVGGlyph() {
-        super("/fx-plus/font/arrow-left-right-line.svg");
+        this.setUrl("/fx-plus/font/arrow-left-right-line.svg");
     }
 
     public TransportSVGGlyph(String size) {

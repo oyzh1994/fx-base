@@ -40,6 +40,7 @@ public class SVGLabel extends FXLabel {
 
     /**
      * 设置URL地址
+     *
      * @param url 图标URL地址
      */
     public void setUrl(@NonNull String url) {
@@ -62,9 +63,10 @@ public class SVGLabel extends FXLabel {
 
     /**
      * 设置尺寸
+     *
      * @param size 尺寸
      */
-    public void setSize( double size) {
+    public void setSize(double size) {
         if (this.graphic() != null) {
             this.graphic().setSize(size);
         }
@@ -84,6 +86,7 @@ public class SVGLabel extends FXLabel {
 
     /**
      * 获取颜色
+     *
      * @return 颜色对象，如果图形为空，则返回null
      */
     public Paint getColor() {
@@ -95,11 +98,16 @@ public class SVGLabel extends FXLabel {
 
     /**
      * 设置颜色
+     *
      * @param color 颜色对象
      */
     public void setColor(Paint color) {
         if (this.graphic() != null) {
             this.graphic().setColor(color);
         }
+    }
+
+    protected void setSizeStr(String size) {
+        this.graphic().setSizeStr(size);
     }
 }

@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.controls.svg;
 public class DesktopSVGGlyph extends SVGGlyph {
 
     public DesktopSVGGlyph() {
-        super("/fx-plus/font/desktop.svg");
+        this.setUrl("/fx-plus/font/desktop.svg");
     }
 
     public DesktopSVGGlyph(String size) {

@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.controls.svg;
 public class PlaySVGGlyph extends SVGGlyph {
 
     public PlaySVGGlyph() {
-        super("/fx-plus/font/play-circle.svg");
+        this.setUrl("/fx-plus/font/positioning.svg");
     }
 
     public PlaySVGGlyph(String size) {

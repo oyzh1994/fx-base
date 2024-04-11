@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class SaveSVGGlyph extends SVGGlyph {
 
+    public SaveSVGGlyph() {
+        this.setUrl("/fx-plus/font/save.svg");
+    }
+
+    public SaveSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/save.svg");
         this.setTipText(BaseResourceBundle.getBaseString("save"));
         super.initNode();
     }

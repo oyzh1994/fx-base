@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class AddGroupSVGGlyph extends SVGGlyph {
 
     public AddGroupSVGGlyph() {
-        super("/fx-plus/font/addGroup.svg");
+        this.setUrl("/fx-plus/font/addGroup.svg");
     }
 
     public AddGroupSVGGlyph(String size) {

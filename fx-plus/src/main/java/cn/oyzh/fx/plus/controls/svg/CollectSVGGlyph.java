@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class CollectSVGGlyph extends SVGGlyph {
 
+    public CollectSVGGlyph() {
+        this.setUrl("/fx-plus/font/star-l.svg");
+    }
+
+    public CollectSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/star-l.svg");
         this.setTipText(BaseResourceBundle.getBaseString("collect"));
         super.initNode();
     }

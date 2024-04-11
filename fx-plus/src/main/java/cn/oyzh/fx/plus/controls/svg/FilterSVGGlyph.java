@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class FilterSVGGlyph extends SVGGlyph {
 
     public FilterSVGGlyph() {
-        super("/fx-plus/font/filter.svg");
+        this.setUrl("/fx-plus/font/filter.svg");
     }
 
     public FilterSVGGlyph(String size) {

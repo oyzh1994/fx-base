@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class CloseSVGGlyph extends SVGGlyph {
 
     public CloseSVGGlyph() {
-        super("/fx-plus/font/close.svg");
+        this.setUrl("/fx-plus/font/close.svg");
     }
 
     public CloseSVGGlyph(String size) {

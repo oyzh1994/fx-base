@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.controls.svg;
 public class RepeatSVGGlyph extends SVGGlyph {
 
     public RepeatSVGGlyph() {
-        super("/fx-plus/font/repeated.svg");
+        this.setUrl("/fx-plus/font/repeated.svg");
     }
 
     public RepeatSVGGlyph(String size) {

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class RenameSVGGlyph extends SVGGlyph {
 
     public RenameSVGGlyph() {
-        super("/fx-plus/font/edit-square.svg");
+        this.setUrl("/fx-plus/font/edit-square.svg");
     }
 
     public RenameSVGGlyph(String size) {

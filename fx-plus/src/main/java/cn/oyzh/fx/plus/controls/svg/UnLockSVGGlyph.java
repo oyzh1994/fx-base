@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class UnLockSVGGlyph extends SVGGlyph {
 
     public UnLockSVGGlyph() {
-        super("/fx-plus/font/unlock.svg");
+        this.setUrl("/fx-plus/font/unlock.svg");
     }
 
     public UnLockSVGGlyph(String size) {

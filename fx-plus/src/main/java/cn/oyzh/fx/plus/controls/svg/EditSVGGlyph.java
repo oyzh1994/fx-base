@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class EditSVGGlyph extends SVGGlyph {
 
     public EditSVGGlyph() {
-        super("/fx-plus/font/edit.svg");
+        this.setUrl("/fx-plus/font/edit.svg");
     }
 
     public EditSVGGlyph(String size) {

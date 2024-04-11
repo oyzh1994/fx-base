@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class RedoSVGGlyph extends SVGGlyph {
 
+    public RedoSVGGlyph() {
+        this.setUrl("/fx-plus/font/data_redo.svg");
+    }
+
+    public RedoSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/data_redo.svg");
         this.setTipText(BaseResourceBundle.getBaseString("redo"));
         super.initNode();
     }

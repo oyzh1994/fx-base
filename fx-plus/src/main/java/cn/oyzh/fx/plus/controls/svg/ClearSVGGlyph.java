@@ -8,9 +8,17 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  */
 public class ClearSVGGlyph extends SVGGlyph {
 
+    public ClearSVGGlyph() {
+        this.setUrl("/fx-plus/font/clear2.svg");
+    }
+
+    public ClearSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/clear2.svg");
         this.setTipText(BaseResourceBundle.getBaseString("clear"));
         super.initNode();
     }
