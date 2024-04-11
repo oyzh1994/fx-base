@@ -10,6 +10,7 @@ public class PortTextField extends NumberTextField {
         super(false);
         this.setMin(1L);
         this.setMax(65_535L);
+        this.setTipText("1-65535");
     }
 
 }
