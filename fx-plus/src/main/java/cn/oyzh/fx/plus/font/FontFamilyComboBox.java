@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.font;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import javafx.scene.text.Font;
 
 /**
@@ -15,6 +16,7 @@ public class FontFamilyComboBox extends FlexComboBox<String> {
     {
         this.addItems(Font.getFamilies());
         this.select(null);
+        this.setTipText(BaseResourceBundle.getBaseString("fontNameTip"));
     }
 
     public String getDefault() {

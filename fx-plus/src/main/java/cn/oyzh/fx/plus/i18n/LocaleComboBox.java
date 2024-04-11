@@ -16,6 +16,7 @@ public class LocaleComboBox extends FlexComboBox<Locale> {
 
     {
         this.addItems(Locales.locales());
+        this.setTipText(BaseResourceBundle.getBaseString("localeTip"));
         this.setConverter(new SimpleStringConverter<>() {
             @Override
             public String toString(Locale o) {

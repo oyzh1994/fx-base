@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.fx.plus.SimpleStringConverter;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import javafx.scene.text.FontWeight;
 
 /**
@@ -14,6 +15,7 @@ public class FontWeightComboBox extends FlexComboBox<FontWeight> {
 
     {
         this.addItems(FontWeight.values());
+        this.setTipText(BaseResourceBundle.getBaseString("fontWeightTip"));
         this.setConverter(new SimpleStringConverter<>() {
             @Override
             public String toString(FontWeight o) {
