@@ -4,22 +4,21 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 
 /**
  * @author oyzh
- * @since 2024/4/10
+ * @since 2024/4/11
  */
-public class FilterSVGLabel extends SVGLabel{
+public class FilterSVGGlyph extends SVGGlyph {
 
-    public FilterSVGLabel() {
+    public FilterSVGGlyph() {
         super("/fx-plus/font/filter.svg");
     }
 
-    public FilterSVGLabel(String size) {
+    public FilterSVGGlyph(String size) {
         this();
-        this.graphic().setSizeStr(size);
+        this.setSizeStr(size);
     }
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("filter"));
         this.setTipText(BaseResourceBundle.getBaseString("filter"));
         super.initNode();
     }

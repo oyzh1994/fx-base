@@ -1,0 +1,25 @@
+package cn.oyzh.fx.plus.controls.svg;
+
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+
+/**
+ * @author oyzh
+ * @since 2024/4/11
+ */
+public class ChangelogSVGGlyph extends SVGGlyph {
+
+    public ChangelogSVGGlyph() {
+        super("/fx-plus/font/changelog.svg");
+    }
+
+    public ChangelogSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+    @Override
+    public void initNode() {
+        this.setTipText(BaseResourceBundle.getBaseString("changelog"));
+        super.initNode();
+    }
+}

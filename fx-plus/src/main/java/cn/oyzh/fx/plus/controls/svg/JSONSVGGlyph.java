@@ -7,9 +7,12 @@ package cn.oyzh.fx.plus.controls.svg;
  */
 public class JSONSVGGlyph extends SVGGlyph {
 
-    @Override
-    public void initNode() {
-        this.setUrl("/fx-plus/font/json.svg");
-        super.initNode();
+    public JSONSVGGlyph() {
+        super("/fx-plus/font/json.svg");
+    }
+
+    public JSONSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
     }
 }

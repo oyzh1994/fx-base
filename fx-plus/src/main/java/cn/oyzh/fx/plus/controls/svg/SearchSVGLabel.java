@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  * @author oyzh
  * @since 2024/4/10
  */
-public class SearchSVGLabel extends SVGLabel{
+public class SearchSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {

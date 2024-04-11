@@ -6,11 +6,18 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  * @author oyzh
  * @since 2024/4/10
  */
-public class TerminalSVGGlyph extends SVGGlyph{
+public class TerminalSVGGlyph extends SVGGlyph {
+
+    public TerminalSVGGlyph() {
+        super("/fx-plus/font/code library.svg");
+    }
+
+    public TerminalSVGGlyph(String size) {
+        super("/fx-plus/font/code library.svg", size);
+    }
 
     @Override
     public void initNode() {
-        this.setUrl("/fx-plus/font/code library.svg");
         this.setTipText(BaseResourceBundle.getBaseString("terminal"));
         super.initNode();
     }
