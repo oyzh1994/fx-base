@@ -3,7 +3,11 @@ package cn.oyzh.fx.plus.theme;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.SimpleStringConverter;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.i18n.I18nManager;
 import javafx.scene.paint.Color;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * 主题下拉框
@@ -18,7 +22,7 @@ public class ThemeComboBox extends FlexComboBox<ThemeStyle> {
         this.setConverter(new SimpleStringConverter<>() {
             @Override
             public String toString(ThemeStyle o) {
-                return o.getDesc();
+                return o.getDesc(I18nManager.currentLocale());
             }
         });
     }
@@ -82,4 +86,5 @@ public class ThemeComboBox extends FlexComboBox<ThemeStyle> {
     public String getAccentColorHex() {
         return this.getValue().getAccentColorHex();
     }
+
 }

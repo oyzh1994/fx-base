@@ -10,6 +10,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Locale;
+
 /**
  * 系统主题风格
  *
@@ -59,8 +61,13 @@ public class SystemTheme implements Theme, ThemeStyle {
     }
 
     @Override
-    public String getDesc() {
-        return "跟随系统";
+    public String getDesc(Locale locale) {
+        if (locale == Locale.TRADITIONAL_CHINESE) {
+            return "暗黑基礎";
+        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+            return "跟随系统";
+        }
+        return "System";
     }
 
     @Override

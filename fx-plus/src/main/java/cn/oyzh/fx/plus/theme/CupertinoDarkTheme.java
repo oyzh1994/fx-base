@@ -4,6 +4,8 @@ import atlantafx.base.theme.CupertinoDark;
 import atlantafx.base.theme.Theme;
 import javafx.scene.paint.Color;
 
+import java.util.Locale;
+
 /**
  * @author oyzh
  * @since 2024/4/3
@@ -18,8 +20,13 @@ public class CupertinoDarkTheme implements Theme, ThemeStyle {
     }
 
     @Override
-    public String getDesc() {
-        return "暗黑库比蒂诺";
+    public String getDesc(Locale locale) {
+        if (locale == Locale.TRADITIONAL_CHINESE) {
+            return "暗黑庫比蒂諾";
+        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+            return "暗黑库比蒂诺";
+        }
+        return "Cupertino Dark";
     }
 
     @Override

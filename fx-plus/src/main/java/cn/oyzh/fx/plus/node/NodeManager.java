@@ -4,11 +4,9 @@ import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.i18n.I18nManager;
+import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.scene.CacheHint;
-import javafx.scene.Node;
-import javafx.scene.layout.Region;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -37,6 +35,9 @@ public class NodeManager {
         }
         if (node instanceof I18nAdapter adapter) {
             adapter.changeLocale(I18nManager.currentLocale());
+        }
+        if (node instanceof I18nSelectAdapter<?> adapter) {
+            adapter.values(I18nManager.currentLocale());
         }
         // if (node instanceof Node node1) {
         //     node1.setCache(true);

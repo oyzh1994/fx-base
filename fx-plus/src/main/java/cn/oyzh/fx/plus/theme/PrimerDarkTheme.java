@@ -4,6 +4,8 @@ import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.Theme;
 import javafx.scene.paint.Color;
 
+import java.util.Locale;
+
 /**
  * @author oyzh
  * @since 2024/4/3
@@ -18,8 +20,13 @@ public class PrimerDarkTheme implements Theme, ThemeStyle {
     }
 
     @Override
-    public String getDesc() {
-        return "暗黑基础";
+    public String getDesc(Locale locale) {
+        if (locale == Locale.TRADITIONAL_CHINESE) {
+            return "暗黑基礎";
+        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+            return "暗黑基础";
+        }
+        return "Primer Light";
     }
 
     @Override

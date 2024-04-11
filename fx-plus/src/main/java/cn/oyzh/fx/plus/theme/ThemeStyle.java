@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 主题风格
@@ -27,9 +28,10 @@ public interface ThemeStyle {
     /**
      * 获取描述
      *
+     * @param locale 地区
      * @return 主题描述
      */
-    String getDesc();
+    String getDesc(Locale locale);
 
     /**
      * 是否暗黑模式
@@ -122,6 +124,7 @@ public interface ThemeStyle {
 
     /**
      * 计算相关度
+     *
      * @param style 主题
      * @return 相关度
      */

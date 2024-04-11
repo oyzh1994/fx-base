@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Locale;
+
 /**
  * 自定义主题
  *
@@ -78,8 +80,13 @@ public class CustomTheme implements Theme, ThemeStyle {
     }
 
     @Override
-    public String getDesc() {
-        return "定制主题";
+    public String getDesc(Locale locale) {
+        if (locale == Locale.TRADITIONAL_CHINESE) {
+            return "定制主題";
+        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+            return "定制主题";
+        }
+        return "Custom";
     }
 
     @Override
