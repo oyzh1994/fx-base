@@ -1,0 +1,17 @@
+package cn.oyzh.fx.plus.controls.svg;
+
+/**
+ * @author oyzh
+ * @since 2024/4/11
+ */
+public class RepeatSVGGlyph extends SVGGlyph {
+
+    public RepeatSVGGlyph() {
+        super("/fx-plus/font/repeated.svg");
+    }
+
+    public RepeatSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+}
