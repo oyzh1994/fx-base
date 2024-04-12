@@ -1,14 +1,13 @@
-package cn.oyzh.fx.plus.controls.popup;
+package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
-import cn.oyzh.fx.plus.font.FontUtil;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 
@@ -18,7 +17,7 @@ import javafx.scene.control.MenuItem;
  * @author oyzh
  * @since 2023/3/3
  */
-public class MenuItemExt extends MenuItem implements StateAdapter, ThemeAdapter {
+public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
@@ -27,16 +26,15 @@ public class MenuItemExt extends MenuItem implements StateAdapter, ThemeAdapter 
                 this.getGraphic().setDisable(newValue);
             }
         });
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
-    public MenuItemExt(Node graphic) {
+    public FXMenuItem(Node graphic) {
         super("", graphic);
     }
 
-    public MenuItemExt(String text, String tipText, Runnable action) {
-        super(text);
+    public FXMenuItem(Node graphic, String text, String tipText, Runnable action) {
+        super(text, graphic);
         // 设置操作代理
         if (action != null) {
             this.setOnAction(event -> {
@@ -75,8 +73,20 @@ public class MenuItemExt extends MenuItem implements StateAdapter, ThemeAdapter 
      * @param glyph svg内容
      * @return 菜单项
      */
-    public static MenuItemExt newItem(String text, SVGGlyph glyph) {
+    public static FXMenuItem newItem(String text, SVGGlyph glyph) {
         return newItem(text, glyph, null, null);
+    }
+
+    /**
+     * 使用svg和文字来生成菜单项
+     *
+     * @param text   文字
+     * @param glyph  svg内容
+     * @param action 执行业务
+     * @return 菜单项
+     */
+    public static FXMenuItem newItem(String text, SVGGlyph glyph, Runnable action) {
+        return newItem(text, glyph, null, action);
     }
 
     /**
@@ -88,7 +98,7 @@ public class MenuItemExt extends MenuItem implements StateAdapter, ThemeAdapter 
      * @param action  执行业务
      * @return 菜单项
      */
-    public static MenuItemExt newItem(String text, SVGGlyph glyph, String tipText, Runnable action) {
+    public static FXMenuItem newItem(String text, SVGGlyph glyph, String tipText, Runnable action) {
         // 生成标签
         SVGLabel label = new SVGLabel(text, glyph);
         // 设置边距
@@ -103,7 +113,7 @@ public class MenuItemExt extends MenuItem implements StateAdapter, ThemeAdapter 
         label.setMinWidth(w);
         label.setPrefWidth(w);
         // 生成菜单项
-        MenuItemExt item = new MenuItemExt(label);
+        FXMenuItem item = new FXMenuItem(label);
         // 设置提示文字
         if (tipText != null) {
             ControlUtil.setTipText(item.getGraphic(), tipText);
@@ -123,13 +133,26 @@ public class MenuItemExt extends MenuItem implements StateAdapter, ThemeAdapter 
      * @param action  执行业务
      * @return 菜单项
      */
-    public static MenuItemExt newItem(String text, String tipText, Runnable action) {
+    public static FXMenuItem newItem(String text, String tipText, Runnable action) {
         // 生成菜单项
-        MenuItemExt item = new MenuItemExt(text, tipText, action);
-        // 设置提示文字
-        if (tipText != null) {
-            ControlUtil.setTipText(item, tipText);
+        FXMenuItem item = new FXMenuItem(null, text, tipText, action);
+        // 设置操作
+        if (action != null) {
+            item.setOnAction(e -> action.run());
         }
+        return item;
+    }
+
+    /**
+     * 使用文字来生成菜单项
+     *
+     * @param text   文字
+     * @param action 执行业务
+     * @return 菜单项
+     */
+    public static FXMenuItem newItem(String text, Runnable action) {
+        // 生成菜单项
+        FXMenuItem item = new FXMenuItem(null, text, null, action);
         // 设置操作
         if (action != null) {
             item.setOnAction(e -> action.run());

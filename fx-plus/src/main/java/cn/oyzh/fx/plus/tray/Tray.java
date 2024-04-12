@@ -111,6 +111,15 @@ public class Tray implements ThemeAdapter {
     }
 
     /**
+     * 添加菜单项
+     *
+     * @param trayItem 托盘菜单
+     */
+    public void addMenuItem(@NonNull TrayItem trayItem) {
+        this.trayIcon.getMenu().addItem(trayItem);
+    }
+
+    /**
      * 设置鼠标监听事件
      *
      * @param mouseListener 鼠标监听器

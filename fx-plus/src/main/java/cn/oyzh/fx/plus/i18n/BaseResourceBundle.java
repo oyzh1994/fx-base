@@ -77,7 +77,7 @@ public class BaseResourceBundle extends ResourceBundle {
         } catch (MissingResourceException ex) {
             ex.printStackTrace();
         }
-        return null;
+        return "";
     }
 
     /**

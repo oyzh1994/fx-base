@@ -104,6 +104,17 @@ public class TrayManager {
     }
 
     /**
+     * 添加系统托盘菜单项
+     *
+     * @param trayItem 托盘菜单
+     */
+    public static void addMenuItem(@NonNull TrayItem trayItem) {
+        if (tray != null) {
+            tray.addMenuItem(trayItem);
+        }
+    }
+
+    /**
      * 获取系统托盘扩展
      *
      * @return 系统托盘扩展
