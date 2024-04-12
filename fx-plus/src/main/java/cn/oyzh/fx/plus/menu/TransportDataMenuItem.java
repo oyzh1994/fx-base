@@ -10,6 +10,11 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class TransportDataMenuItem extends FXMenuItem {
 
     public TransportDataMenuItem(String iconSize, Runnable action) {
-        super(new TransportSVGGlyph(iconSize), BaseResourceBundle.getBaseString("base.transportData"), null, action);
+        this(BaseResourceBundle.getBaseString("base.transportData"), iconSize, action);
     }
+
+    public TransportDataMenuItem(String title, String iconSize, Runnable action) {
+        super(new TransportSVGGlyph(iconSize), title, null, action);
+    }
+
 }

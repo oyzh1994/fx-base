@@ -8,9 +8,9 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  * @author oyzh
  * @since 2024/4/12
  */
-public class EditConnectMenuItem extends FXMenuItem{
+public class EditConnectMenuItem extends EditMenuItem{
 
     public EditConnectMenuItem(String iconSize, Runnable action) {
-        super(new EditSVGGlyph(iconSize), BaseResourceBundle.getBaseString("base.editConnect"), null, action);
+        super(BaseResourceBundle.getBaseString("base.editConnect"), null, iconSize, action);
     }
 }
