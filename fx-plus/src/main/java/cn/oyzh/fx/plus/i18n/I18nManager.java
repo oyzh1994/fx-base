@@ -79,6 +79,8 @@ public class I18nManager {
             }
             // 设置当前区域
             currentLocale = locale;
+            // 设置系统区域
+            Locale.setDefault(currentLocale);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class TransportSVGLabel extends SVGLabel {
 
     public TransportSVGLabel() {
-        this.setUrl("/fx-plus/font/arrow-left-right-line.svg");
+        this.setGraphic(new TransportSVGGlyph());
     }
 
     public TransportSVGLabel(String size) {
@@ -19,8 +19,8 @@ public class TransportSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("transport"));
-        this.setTipText(BaseResourceBundle.getBaseString("transport"));
+        this.setText(BaseResourceBundle.getBaseString("base.transport"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.transport"));
         super.initNode();
     }
 }

@@ -19,7 +19,7 @@ public class UndoSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("undo"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.undo"));
         super.initNode();
     }
 }

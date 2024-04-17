@@ -19,7 +19,7 @@ public class PrevSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("prev"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.prev"));
         super.initNode();
     }
 }

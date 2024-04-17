@@ -19,7 +19,7 @@ public class PositioningSVGGlyph  extends SVGGlyph{
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("positioning"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.positioning"));
         super.initNode();
     }
 }

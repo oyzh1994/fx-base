@@ -19,7 +19,7 @@ public class GroupSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("group"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.group"));
         super.initNode();
     }
 }

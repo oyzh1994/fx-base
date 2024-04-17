@@ -19,7 +19,7 @@ public class NextSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("next"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.next"));
         super.initNode();
     }
 }

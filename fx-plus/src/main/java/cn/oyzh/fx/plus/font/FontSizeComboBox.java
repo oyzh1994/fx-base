@@ -29,7 +29,7 @@ public class FontSizeComboBox extends FlexComboBox<Integer> {
 
         this.select(null);
 
-        this.setTipText(BaseResourceBundle.getBaseString("fontSizeTip"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.fontSizeTip"));
     }
 
     public Integer getDefault() {

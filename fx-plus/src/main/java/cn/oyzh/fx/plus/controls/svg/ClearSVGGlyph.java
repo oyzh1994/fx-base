@@ -19,7 +19,7 @@ public class ClearSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("clear"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.clear"));
         super.initNode();
     }
 }

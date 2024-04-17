@@ -11,8 +11,8 @@ import cn.oyzh.fx.plus.i18n.I18nManager;
 public class SwitchToggleSwitch extends FXToggleSwitch  {
 
     {
-        this.setSelectedText(BaseResourceBundle.getBaseString("toggle.switch.selected"));
-        this.setUnselectedText(BaseResourceBundle.getBaseString("toggle.switch.unselected"));
+        this.setSelectedText(BaseResourceBundle.getBaseString("base.toggle.switch.selected"));
+        this.setUnselectedText(BaseResourceBundle.getBaseString("base.toggle.switch.unselected"));
     }
 
 }

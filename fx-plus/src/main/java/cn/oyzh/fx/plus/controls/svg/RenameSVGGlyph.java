@@ -19,7 +19,7 @@ public class RenameSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("rename"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.rename"));
         super.initNode();
     }
 }

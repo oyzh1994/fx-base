@@ -19,7 +19,7 @@ public class StopSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("stop"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.stop"));
         super.initNode();
     }
 }

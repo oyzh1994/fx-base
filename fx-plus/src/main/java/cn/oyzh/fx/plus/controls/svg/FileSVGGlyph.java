@@ -19,7 +19,7 @@ public class FileSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("file"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.file"));
         super.initNode();
     }
 }

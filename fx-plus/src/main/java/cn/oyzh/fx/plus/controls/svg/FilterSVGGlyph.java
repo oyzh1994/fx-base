@@ -19,7 +19,7 @@ public class FilterSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("filter"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.filter"));
         super.initNode();
     }
 }

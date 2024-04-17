@@ -19,7 +19,7 @@ public class QuitSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("quit"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.quit"));
         super.initNode();
     }
 }

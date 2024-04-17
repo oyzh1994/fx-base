@@ -15,7 +15,7 @@ public class CancelSVGGlyph extends CloseSVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("cancel"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.cancel"));
         super.initNode();
     }
 }

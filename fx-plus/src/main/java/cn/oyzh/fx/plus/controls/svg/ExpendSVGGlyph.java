@@ -6,20 +6,20 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
  * @author oyzh
  * @since 2024/4/10
  */
-public class EditSVGGlyph extends SVGGlyph {
+public class ExpendSVGGlyph extends SVGGlyph {
 
-    public EditSVGGlyph() {
-        this.setUrl("/fx-plus/font/edit.svg");
+    public ExpendSVGGlyph() {
+        this.setUrl("/fx-plus/font/arrow-to-right.svg");
     }
 
-    public EditSVGGlyph(String size) {
+    public ExpendSVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("base.edit"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.expand"));
         super.initNode();
     }
 }

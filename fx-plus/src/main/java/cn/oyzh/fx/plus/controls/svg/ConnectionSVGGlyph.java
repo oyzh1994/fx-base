@@ -19,7 +19,7 @@ public class ConnectionSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("connection"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.connection"));
         super.initNode();
     }
 }

@@ -19,7 +19,7 @@ public class ExportSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("export"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.export"));
         super.initNode();
     }
 }

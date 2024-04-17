@@ -19,7 +19,7 @@ public class TransportSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("transport"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.transport"));
         super.initNode();
     }
 }

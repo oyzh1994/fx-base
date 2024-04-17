@@ -19,7 +19,7 @@ public class SortDescSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("sortAsc"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.sortAsc"));
         super.initNode();
     }
 }

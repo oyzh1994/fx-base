@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class DeleteSVGLabel extends SVGLabel {
 
     public DeleteSVGLabel() {
-        this.setUrl("/fx-plus/font/delete.svg");
+        this.setGraphic(new DeleteSVGGlyph());
     }
 
     public DeleteSVGLabel(String size) {
@@ -19,8 +19,8 @@ public class DeleteSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("delete"));
-        this.setTipText(BaseResourceBundle.getBaseString("delete"));
+        this.setText(BaseResourceBundle.getBaseString("base.delete"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.delete"));
         super.initNode();
     }
 }

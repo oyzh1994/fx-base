@@ -16,8 +16,8 @@ public class SaveButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("accent");
-        this.setText(BaseResourceBundle.getBaseString("save"));
-        this.setTipText(BaseResourceBundle.getBaseString("save"));
+        this.setText(BaseResourceBundle.getBaseString("base.save"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.save"));
         this.init("/fx-plus/font/save.svg", 0.7);
         super.initNode();
     }

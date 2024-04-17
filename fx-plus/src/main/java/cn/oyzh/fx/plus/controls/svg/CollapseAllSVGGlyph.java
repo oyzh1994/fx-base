@@ -19,7 +19,7 @@ public class CollapseAllSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("collapseAll"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.collapseAll"));
         super.initNode();
     }
 }

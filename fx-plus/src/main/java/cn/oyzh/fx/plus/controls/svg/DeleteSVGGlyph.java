@@ -19,7 +19,7 @@ public class DeleteSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("delete"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.delete"));
         super.initNode();
     }
 }

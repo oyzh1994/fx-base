@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class CollapseSVGLabel extends SVGLabel {
 
     public CollapseSVGLabel() {
-        this.setUrl("/fx-plus/font/left-arrow-to-left.svg");
+        this.setGraphic(new CollapseSVGGlyph());
     }
 
     public CollapseSVGLabel(String size) {
@@ -19,8 +19,8 @@ public class CollapseSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("collapse"));
-        this.setTipText(BaseResourceBundle.getBaseString("collapse"));
+        this.setText(BaseResourceBundle.getBaseString("base.collapse"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.collapse"));
         super.initNode();
     }
 }

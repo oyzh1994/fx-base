@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.controls.button;
 
 
 import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
-import cn.oyzh.fx.plus.i18n.I18nManager;
 
 /**
  * 分组按钮
@@ -10,13 +9,14 @@ import cn.oyzh.fx.plus.i18n.I18nManager;
  * @author oyzh
  * @since 2024/04/08
  */
-public class GroupButton extends IconButton {
+public class AddGroupButton extends IconButton {
 
     @Override
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("accent");
-        this.setText(BaseResourceBundle.getBaseString("btn.group"));
+        this.setText(BaseResourceBundle.getBaseString("base.addGroup"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.addGroup"));
         this.init("/fx-plus/font/addGroup.svg", 0.7);
         super.initNode();
     }

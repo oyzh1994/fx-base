@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.information.MessageBox;
 import javafx.scene.input.Clipboard;
 import lombok.NonNull;
@@ -37,19 +38,19 @@ public class ClipboardUtil {
     /**
      * 设置字符串到粘贴板，并提示
      *
-     * @param content  内容
+     * @param content 内容
      * @param tipText 提示标题
      * @return 结果
      */
-    public static boolean setStringAndTip(@NonNull String content, @NonNull String tipText) {
+    public static boolean setStringAndTip(@NonNull String content, String tipText) {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
-            MessageBox.okToast("已复制" + tipText + "到粘贴板");
+            MessageBox.okToast(BaseResourceBundle.getBaseString("base.copySuccess"));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.warn("复制" + tipText + "到粘贴板失败");
+            MessageBox.warn(BaseResourceBundle.getBaseString("base.copyFail"));
         }
         return false;
     }

@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.controls.svg;
 public class ServerSVGGlyph extends SVGGlyph {
 
     public ServerSVGGlyph() {
-        this.setUrl("/fx-plus/font/server.svg");
+        this.setUrl("/fx-plus/font/sever.svg");
     }
 
     public ServerSVGGlyph(String size) {

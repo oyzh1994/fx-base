@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class SettingSVGLabel extends SVGLabel {
 
     public SettingSVGLabel() {
-        this.setUrl("/fx-plus/font/setting.svg");
+        this.setGraphic(new SettingSVGGlyph());
     }
 
     public SettingSVGLabel(String size) {
@@ -19,8 +19,8 @@ public class SettingSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("setting"));
-        this.setTipText(BaseResourceBundle.getBaseString("setting"));
+        this.setText(BaseResourceBundle.getBaseString("base.setting"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.setting"));
         super.initNode();
     }
 }

@@ -16,7 +16,7 @@ public class FontFamilyComboBox extends FlexComboBox<String> {
     {
         this.addItems(Font.getFamilies());
         this.select(null);
-        this.setTipText(BaseResourceBundle.getBaseString("fontNameTip"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.fontNameTip"));
     }
 
     public String getDefault() {

@@ -19,8 +19,8 @@ public class SearchSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("search"));
-        this.setTipText(BaseResourceBundle.getBaseString("search"));
+        this.setText(BaseResourceBundle.getBaseString("base.search"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.search"));
         super.initNode();
     }
 }

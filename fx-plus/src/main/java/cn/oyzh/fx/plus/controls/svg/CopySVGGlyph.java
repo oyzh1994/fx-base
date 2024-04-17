@@ -19,7 +19,7 @@ public class CopySVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("copy"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.copy"));
         super.initNode();
     }
 }

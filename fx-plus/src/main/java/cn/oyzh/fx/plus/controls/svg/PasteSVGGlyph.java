@@ -19,7 +19,7 @@ public class PasteSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("paste"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.paste"));
         super.initNode();
     }
 }

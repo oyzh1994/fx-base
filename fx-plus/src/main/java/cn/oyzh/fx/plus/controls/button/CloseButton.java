@@ -12,8 +12,8 @@ public class CloseButton extends CancelButton {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("close"));
-        this.setTipText(BaseResourceBundle.getBaseString("close"));
+        this.setText(BaseResourceBundle.getBaseString("base.close"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.close"));
         super.initNode();
     }
 }

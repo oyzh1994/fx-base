@@ -19,7 +19,7 @@ public class RefreshSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("refresh"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.refresh"));
         super.initNode();
     }
 }

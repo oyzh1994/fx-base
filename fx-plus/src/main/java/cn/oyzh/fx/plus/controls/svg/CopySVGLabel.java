@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class CopySVGLabel extends SVGLabel {
 
     public CopySVGLabel() {
-        this.setUrl("/fx-plus/font/copy.svg");
+        this.setGraphic(new CopySVGGlyph());
     }
 
     public CopySVGLabel(String size) {
@@ -19,8 +19,8 @@ public class CopySVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("copy"));
-        this.setTipText(BaseResourceBundle.getBaseString("copy"));
+        this.setText(BaseResourceBundle.getBaseString("base.copy"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.copy"));
         super.initNode();
     }
 }

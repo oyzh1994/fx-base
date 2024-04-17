@@ -16,8 +16,8 @@ public class StopButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("default");
-        this.setText(BaseResourceBundle.getBaseString("stop"));
-        this.setTipText(BaseResourceBundle.getBaseString("stop"));
+        this.setText(BaseResourceBundle.getBaseString("base.stop"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.stop"));
         this.init("/fx-plus/font/stop-circle-line.svg", 0.7);
         super.initNode();
     }

@@ -10,8 +10,8 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class MatchToggleSwitch extends FXToggleSwitch  {
 
     {
-        this.setSelectedText(BaseResourceBundle.getBaseString("toggle.match.selected"));
-        this.setUnselectedText(BaseResourceBundle.getBaseString("toggle.match.unselected"));
+        this.setSelectedText(BaseResourceBundle.getBaseString("base.toggle.match.selected"));
+        this.setUnselectedText(BaseResourceBundle.getBaseString("base.toggle.match.unselected"));
     }
 
 }

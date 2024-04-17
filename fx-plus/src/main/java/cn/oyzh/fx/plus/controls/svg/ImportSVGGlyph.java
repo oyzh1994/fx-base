@@ -19,7 +19,7 @@ public class ImportSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("import"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.import"));
         super.initNode();
     }
 }

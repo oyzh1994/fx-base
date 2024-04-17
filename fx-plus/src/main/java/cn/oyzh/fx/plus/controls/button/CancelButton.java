@@ -14,8 +14,8 @@ public class CancelButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("danger");
-        this.setText(BaseResourceBundle.getBaseString("cancel"));
-        this.setTipText(BaseResourceBundle.getBaseString("cancel"));
+        this.setText(BaseResourceBundle.getBaseString("base.cancel"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.cancel"));
         this.init("/fx-plus/font/close.svg", 0.7);
         this.setOnAction(actionEvent -> this.getScene().getWindow().hide());
         super.initNode();

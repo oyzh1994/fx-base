@@ -19,7 +19,7 @@ public class RedoSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("redo"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.redo"));
         super.initNode();
     }
 }

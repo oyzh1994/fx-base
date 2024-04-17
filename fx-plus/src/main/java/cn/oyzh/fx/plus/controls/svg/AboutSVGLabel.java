@@ -19,8 +19,8 @@ public class AboutSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("about"));
-        this.setTipText(BaseResourceBundle.getBaseString("about"));
+        this.setText(BaseResourceBundle.getBaseString("base.about"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.about"));
         super.initNode();
     }
 }

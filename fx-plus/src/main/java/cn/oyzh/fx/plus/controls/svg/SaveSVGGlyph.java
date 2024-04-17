@@ -19,7 +19,7 @@ public class SaveSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("save"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.save"));
         super.initNode();
     }
 }

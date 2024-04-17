@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.controls.button;
 
 
 import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
-import cn.oyzh.fx.plus.i18n.I18nManager;
 
 /**
  * 终端按钮
@@ -10,13 +9,14 @@ import cn.oyzh.fx.plus.i18n.I18nManager;
  * @author oyzh
  * @since 2024/04/08
  */
-public class TerminalButton extends IconButton {
+public class OpenTerminalButton extends IconButton {
 
     @Override
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("default");
-        this.setText(BaseResourceBundle.getBaseString("btn.terminal"));
+        this.setText(BaseResourceBundle.getBaseString("base.openTerminal"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.openTerminal"));
         this.init("/fx-plus/font/code library.svg", 0.7);
         super.initNode();
     }

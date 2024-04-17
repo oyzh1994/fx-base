@@ -10,8 +10,8 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class EnabledToggleSwitch extends FXToggleSwitch  {
 
     {
-        this.setSelectedText(BaseResourceBundle.getBaseString("toggle.enabled.selected"));
-        this.setUnselectedText(BaseResourceBundle.getBaseString("toggle.enabled.unselected"));
+        this.setSelectedText(BaseResourceBundle.getBaseString("base.toggle.enabled.selected"));
+        this.setUnselectedText(BaseResourceBundle.getBaseString("base.toggle.enabled.unselected"));
     }
 
 }

@@ -19,7 +19,7 @@ public class TerminalSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("terminal"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.terminal"));
         super.initNode();
     }
 }

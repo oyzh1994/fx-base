@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class EditSVGLabel extends SVGLabel {
 
     public EditSVGLabel() {
-        this.setUrl("/fx-plus/font/edit.svg");
+        this.setGraphic(new EditSVGGlyph());
     }
 
     public EditSVGLabel(String size) {
@@ -19,8 +19,8 @@ public class EditSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("edit"));
-        this.setTipText(BaseResourceBundle.getBaseString("edit"));
+        this.setText(BaseResourceBundle.getBaseString("base.edit"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.edit"));
         super.initNode();
     }
 }

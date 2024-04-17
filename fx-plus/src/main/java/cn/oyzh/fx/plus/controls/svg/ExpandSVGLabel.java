@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class ExpandSVGLabel extends SVGLabel {
 
     public ExpandSVGLabel() {
-        this.setUrl("/fx-plus/font/arrow-to-right.svg");
+        this.setGraphic(new ExpendSVGGlyph());
     }
 
     public ExpandSVGLabel(String size) {
@@ -19,8 +19,8 @@ public class ExpandSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("expand"));
-        this.setTipText(BaseResourceBundle.getBaseString("expand"));
+        this.setText(BaseResourceBundle.getBaseString("base.expand"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.expand"));
         super.initNode();
     }
 }

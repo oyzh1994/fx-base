@@ -15,7 +15,7 @@ public class FontWeightComboBox extends FlexComboBox<FontWeight> {
 
     {
         this.addItems(FontWeight.values());
-        this.setTipText(BaseResourceBundle.getBaseString("fontWeightTip"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.fontWeightTip"));
         this.setConverter(new SimpleStringConverter<>() {
             @Override
             public String toString(FontWeight o) {

@@ -15,8 +15,8 @@ public class ResetButton extends IconButton {
     @Override
     public void initNode() {
         this.setPrefHeight(25);
-        this.setText(BaseResourceBundle.getBaseString("reset"));
-        this.setTipText(BaseResourceBundle.getBaseString("reset"));
+        this.setText(BaseResourceBundle.getBaseString("base.reset"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.reset"));
         this.init("/fx-plus/font/reset.svg", 0.7);
         super.initNode();
     }

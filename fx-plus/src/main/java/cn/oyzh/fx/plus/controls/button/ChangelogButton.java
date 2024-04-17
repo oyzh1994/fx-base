@@ -16,7 +16,8 @@ public class ChangelogButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("danger");
-        this.setText(BaseResourceBundle.getBaseString("btn.changelog"));
+        this.setText(BaseResourceBundle.getBaseString("base.changelog"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.changelog"));
         this.init("/fx-plus/font/changelog.svg", 0.7);
         super.initNode();
     }

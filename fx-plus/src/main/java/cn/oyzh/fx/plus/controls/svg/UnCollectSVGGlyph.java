@@ -19,7 +19,7 @@ public class UnCollectSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("unCollect"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.unCollect"));
         super.initNode();
     }
 }

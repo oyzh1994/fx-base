@@ -19,7 +19,7 @@ public class CloseSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("close"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.close"));
         super.initNode();
     }
 }

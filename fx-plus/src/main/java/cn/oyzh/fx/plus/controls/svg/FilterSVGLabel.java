@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class FilterSVGLabel extends SVGLabel{
 
     public FilterSVGLabel() {
-        this.setUrl("/fx-plus/font/filter.svg");
+        this.setGraphic(new FilterSVGGlyph());
     }
 
     public FilterSVGLabel(String size) {
@@ -19,8 +19,8 @@ public class FilterSVGLabel extends SVGLabel{
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("filter"));
-        this.setTipText(BaseResourceBundle.getBaseString("filter"));
+        this.setText(BaseResourceBundle.getBaseString("base.filter"));
+        this.setTipText(BaseResourceBundle.getBaseString("base.filter"));
         super.initNode();
     }
 }
