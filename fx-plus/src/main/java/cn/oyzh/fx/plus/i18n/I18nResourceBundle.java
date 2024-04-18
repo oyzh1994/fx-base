@@ -125,7 +125,6 @@ public class I18nResourceBundle extends ResourceBundle {
             StringBuilder builder = new StringBuilder();
             for (String key : keys) {
                 String val = INSTANCE.getString(key);
-                builder.append(val);
                 if (I18nManager.currentLocale() == Locale.ENGLISH) {
                     builder.append(" ").append(StrUtil.lowerFirst(val));
                 } else {
