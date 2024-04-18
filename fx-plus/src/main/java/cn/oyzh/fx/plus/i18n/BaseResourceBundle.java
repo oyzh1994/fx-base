@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.i18n;
 
+import cn.hutool.core.util.StrUtil;
+
 import javax.annotation.Nonnull;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -74,6 +76,34 @@ public class BaseResourceBundle extends ResourceBundle {
     public static String getBaseString(String key) {
         try {
             return BASE_RESOURCE.getString(key);
+        } catch (MissingResourceException ex) {
+            ex.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 获取基础的国际化资源，对象
+     *
+     * @param keys 键
+     * @return 值
+     */
+    public static String getBaseString(String... keys) {
+        try {
+            StringBuilder builder = new StringBuilder();
+            for (String key : keys) {
+                String val = BASE_RESOURCE.getString(key);
+                builder.append(val);
+                if (I18nManager.currentLocale() == Locale.ENGLISH) {
+                    builder.append(" ").append(StrUtil.lowerFirst(val));
+                } else {
+                    builder.append(val);
+                }
+            }
+            if (I18nManager.currentLocale() == Locale.ENGLISH) {
+                return builder.substring(1, builder.length());
+            }
+            return builder.toString();
         } catch (MissingResourceException ex) {
             ex.printStackTrace();
         }

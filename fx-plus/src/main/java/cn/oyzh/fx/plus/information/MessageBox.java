@@ -2,9 +2,10 @@ package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.font.FontUtil;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -56,7 +57,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(String content) {
-        return confirm("提示信息", content);
+        return confirm(BaseResourceBundle.getBaseString("base.tip"), content);
     }
 
     /**
@@ -67,8 +68,8 @@ public class MessageBox {
      */
     public static boolean confirm(@NonNull String title, String content) {
         content = content == null ? "" : content;
-        ButtonType button1 = new ButtonType("确定");
-        ButtonType button2 = new ButtonType("取消");
+        ButtonType button1 = new ButtonType(BaseResourceBundle.getBaseString("base.ok"));
+        ButtonType button2 = new ButtonType(BaseResourceBundle.getBaseString("base.cancel"));
         AtomicReference<Alert> reference = new AtomicReference<>();
         String finalContent = content;
         FXUtil.runWait(() -> reference.set(new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2)));
@@ -84,7 +85,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void warn(@NonNull String content) {
-        alert(Alert.AlertType.WARNING, "提示信息", null, content);
+        alert(Alert.AlertType.WARNING, BaseResourceBundle.getBaseString("base.tip"), null, content);
     }
 
     /**
@@ -110,7 +111,7 @@ public class MessageBox {
         } else {
             err = ex.getMessage();
         }
-        title = title == null ? "提示信息" : title;
+        title = title == null ? BaseResourceBundle.getBaseString("base.tip") : title;
         alert(Alert.AlertType.WARNING, title, null, err);
     }
 
@@ -120,7 +121,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void info(@NonNull String content) {
-        alert(Alert.AlertType.INFORMATION, "提示信息", null, content);
+        alert(Alert.AlertType.INFORMATION, BaseResourceBundle.getBaseString("base.tip"), null, content);
     }
 
     /**
@@ -129,7 +130,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void error(@NonNull String content) {
-        alert(Alert.AlertType.ERROR, "提示信息", null, content);
+        alert(Alert.AlertType.ERROR, BaseResourceBundle.getBaseString("base.tip"), null, content);
     }
 
     /**
@@ -138,7 +139,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void none(@NonNull String content) {
-        alert(Alert.AlertType.NONE, "提示信息", null, content);
+        alert(Alert.AlertType.NONE, BaseResourceBundle.getBaseString("base.tip"), null, content);
     }
 
     /**
@@ -184,7 +185,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void dialog(String content) {
-        dialog("提示信息", content);
+        dialog(BaseResourceBundle.getBaseString("base.tip"), content);
     }
 
     /**
@@ -220,7 +221,7 @@ public class MessageBox {
      * @param initText 初始值
      */
     public static String prompt(String title, String initText) {
-        title = title == null ? "提示信息" : title;
+        title = title == null ? BaseResourceBundle.getBaseString("base.tip") : title;
         initText = initText == null ? "" : initText;
         TextInputDialog dialog = new TextInputDialog(initText);
         dialog.setTitle(title);
