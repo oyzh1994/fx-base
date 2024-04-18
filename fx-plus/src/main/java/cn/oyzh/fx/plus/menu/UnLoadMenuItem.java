@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -9,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class UnLoadMenuItem extends StopMenuItem {
 
     public UnLoadMenuItem(String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.unload"), null, iconSize, action);
+        super(I18nResourceBundle.i18nString("base.unload"), null, iconSize, action);
     }
 }

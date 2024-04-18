@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * 字体大小下拉框
@@ -29,7 +29,7 @@ public class FontSizeComboBox extends FlexComboBox<Integer> {
 
         this.select(null);
 
-        this.setTipText(BaseResourceBundle.getBaseString("base.fontSizeTip"));
+        this.setTipText(I18nResourceBundle.i18nString("base.fontSizeTip"));
     }
 
     public Integer getDefault() {
@@ -39,7 +39,7 @@ public class FontSizeComboBox extends FlexComboBox<Integer> {
     @Override
     public void select(Integer obj) {
         if (obj == null) {
-            super.select(this.getDefault());
+            this.clearSelection();
         } else {
             super.select(obj);
         }

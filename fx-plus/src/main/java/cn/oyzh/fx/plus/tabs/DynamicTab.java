@@ -46,9 +46,7 @@ public abstract class DynamicTab extends FXTab {
         String url = this.url();
         if (url != null) {
             FXMLLoaderExt loaderExt = new FXMLLoaderExt();
-            Node content = loaderExt.load(url, this.resource());
-            // content.setCache(true);
-            // content.setCacheHint(CacheHint.QUALITY);
+            Node content = loaderExt.load(url);
             this.setContent(content);
             this.controller = loaderExt.getController();
             this.controller.onTabInit(this);
@@ -65,14 +63,14 @@ public abstract class DynamicTab extends FXTab {
         return null;
     }
 
-    /**
-     * 获取资源文件
-     *
-     * @return 资源文件
-     */
-    protected String resource() {
-        return "i18n";
-    }
+    // /**
+    //  * 获取资源文件
+    //  *
+    //  * @return 资源文件
+    //  */
+    // protected String resource() {
+    //     return "i18n";
+    // }
 
     /**
      * 重载tab

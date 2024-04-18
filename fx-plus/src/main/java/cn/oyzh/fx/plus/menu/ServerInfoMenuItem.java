@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.controls.svg.ServerSVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -10,6 +10,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class ServerInfoMenuItem extends FXMenuItem {
 
     public ServerInfoMenuItem(String iconSize, Runnable action) {
-        super(new ServerSVGGlyph(iconSize), BaseResourceBundle.getBaseString("base.serverInfo"), null, action);
+        super(new ServerSVGGlyph(iconSize), I18nResourceBundle.i18nString("base.serverInfo"), null, action);
     }
 }

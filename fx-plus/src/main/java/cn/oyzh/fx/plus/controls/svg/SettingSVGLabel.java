@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -19,8 +19,8 @@ public class SettingSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("base.setting"));
-        this.setTipText(BaseResourceBundle.getBaseString("base.setting"));
+        this.setText(I18nResourceBundle.i18nString("base.setting"));
+        this.setTipText(I18nResourceBundle.i18nString("base.setting"));
         super.initNode();
     }
 }

@@ -1,8 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.plus.controls.svg.DesktopSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.QuitSVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * 托盘菜单项
@@ -13,6 +12,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class QuitTrayItem extends TrayItem {
 
     public QuitTrayItem(String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.quit"), new QuitSVGGlyph(iconSize), action);
+        super(I18nResourceBundle.i18nString("base.quit"), new QuitSVGGlyph(iconSize), action);
     }
 }

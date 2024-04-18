@@ -1,8 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.controls.svg.EditSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.PlaySVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -11,6 +10,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class StartConnectMenuItem extends FXMenuItem{
 
     public StartConnectMenuItem(String iconSize, Runnable action) {
-        super(new PlaySVGGlyph(iconSize), BaseResourceBundle.getBaseString("base.startConnect"), BaseResourceBundle.getBaseString("base.startTip1"), action);
+        super(new PlaySVGGlyph(iconSize), I18nResourceBundle.i18nString("base.startConnect"), I18nResourceBundle.i18nString("base.startTip1"), action);
     }
 }

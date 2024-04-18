@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.stage.StageListener;
@@ -23,19 +23,13 @@ import java.util.ResourceBundle;
  * @author oyzh
  * @since 2023/10/12
  */
-public class Controller implements StageListener, EventListener, I18nAdapter, Initializable {
+public class Controller implements StageListener, EventListener, I18nAdapter {
 
     /**
      * 舞台
      */
     @Getter
     protected StageWrapper stage;
-
-    /**
-     * 资源
-     */
-    @Getter
-    protected ResourceBundle resources;
 
     /**
      * 设置舞台
@@ -115,24 +109,7 @@ public class Controller implements StageListener, EventListener, I18nAdapter, In
     }
 
     @Override
-    public String i18nString(String key) {
-        try {
-            if (this.i18nId() == null) {
-                return this.resources.getString(key);
-            }
-            return this.resources.getString(this.i18nId() + "." + key);
-        } catch (MissingResourceException ignored) {
-        }
-        return BaseResourceBundle.getBaseString("base." + key);
-    }
-
-    @Override
     public void changeLocale(Locale locale) {
 
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        this.resources = resources;
     }
 }

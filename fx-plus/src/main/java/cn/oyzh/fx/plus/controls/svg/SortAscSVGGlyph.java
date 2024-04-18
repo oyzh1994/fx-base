@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -19,7 +19,7 @@ public class SortAscSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("base.sortDesc"));
+        this.setTipText(I18nResourceBundle.i18nString("base.sortDesc"));
         super.initNode();
     }
 }

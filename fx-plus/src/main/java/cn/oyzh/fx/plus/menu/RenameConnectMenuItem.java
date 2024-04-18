@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -9,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class RenameConnectMenuItem extends RenameMenuItem {
 
     public RenameConnectMenuItem(String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.renameConnect"), BaseResourceBundle.getBaseString("base.renameTip1"), iconSize, action);
+        super(I18nResourceBundle.i18nString("base.renameConnect"), I18nResourceBundle.i18nString("base.renameTip1"), iconSize, action);
     }
 }

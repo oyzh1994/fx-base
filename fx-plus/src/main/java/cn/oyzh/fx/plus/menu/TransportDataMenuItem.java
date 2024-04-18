@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.controls.svg.TransportSVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -10,7 +10,7 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class TransportDataMenuItem extends FXMenuItem {
 
     public TransportDataMenuItem(String iconSize, Runnable action) {
-        this(BaseResourceBundle.getBaseString("base.transportData"), iconSize, action);
+        this(I18nResourceBundle.i18nString("base.transportData"), iconSize, action);
     }
 
     public TransportDataMenuItem(String title, String iconSize, Runnable action) {

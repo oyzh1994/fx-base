@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -9,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class DeleteConnectMenuItem extends DeleteMenuItem {
 
     public DeleteConnectMenuItem(String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.deleteConnect"), BaseResourceBundle.getBaseString("base.deleteTip1"), iconSize, action);
+        super(I18nResourceBundle.i18nString("base.deleteConnect"), I18nResourceBundle.i18nString("base.deleteTip1"), iconSize, action);
     }
 }

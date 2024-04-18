@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -11,8 +11,8 @@ public class ImportButton extends IconButton{
     @Override
     public void initNode() {
         this.setPrefHeight(25);
-        this.setText(BaseResourceBundle.getBaseString("base.import"));
-        this.setTipText(BaseResourceBundle.getBaseString("base.import"));
+        this.setText(I18nResourceBundle.i18nString("base.import"));
+        this.setTipText(I18nResourceBundle.i18nString("base.import"));
         this.init("/fx-plus/font/Import.svg", 0.7);
         super.initNode();
     }

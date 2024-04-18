@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -9,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class CloseOtherConnectTabMenuItem extends FXMenuItem {
 
     public CloseOtherConnectTabMenuItem(Runnable action) {
-        super(null, BaseResourceBundle.getBaseString("base.closeOtherConnectTab"), null, action);
+        super(null, I18nResourceBundle.i18nString("base.closeOtherConnectTab"), null, action);
     }
 }

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.toggle;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
-import cn.oyzh.fx.plus.i18n.I18nManager;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  *
@@ -11,8 +10,8 @@ import cn.oyzh.fx.plus.i18n.I18nManager;
 public class SwitchToggleSwitch extends FXToggleSwitch  {
 
     {
-        this.setSelectedText(BaseResourceBundle.getBaseString("base.toggle.switch.selected"));
-        this.setUnselectedText(BaseResourceBundle.getBaseString("base.toggle.switch.unselected"));
+        this.setSelectedText(I18nResourceBundle.i18nString("base.toggle.switch.selected"));
+        this.setUnselectedText(I18nResourceBundle.i18nString("base.toggle.switch.unselected"));
     }
 
 }

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -9,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class CloseConnectMenuItem extends CloseMenuItem {
 
     public CloseConnectMenuItem(String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.closeConnect"), null, iconSize, action);
+        super(I18nResourceBundle.i18nString("base.closeConnect"), null, iconSize, action);
     }
 }

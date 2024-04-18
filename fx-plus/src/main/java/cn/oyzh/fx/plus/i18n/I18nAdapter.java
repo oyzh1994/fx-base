@@ -27,7 +27,12 @@ public interface I18nAdapter extends PropAdapter {
      * @param key 键
      * @return 国际化资源，字符串类型
      */
-    String i18nString(String key);
+    default String i18nString(String key) {
+        if (this.i18nId() == null || key.startsWith("base.")) {
+            return I18nResourceBundle.i18nString(key);
+        }
+        return I18nResourceBundle.i18nString(this.i18nId() + "." + key);
+    }
 
     /**
      * 更改语言

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.controls.svg.UnLockSVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -10,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class AuthNodeMenuItem extends AuthMenuItem{
 
     public AuthNodeMenuItem(  String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.authNode"), null, iconSize, action);
+        super(I18nResourceBundle.i18nString("base.authNode"), null, iconSize, action);
     }
 }

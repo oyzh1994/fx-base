@@ -8,62 +8,94 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
  * @author oyzh
  * @since 2024/4/10
  */
-public class BaseResourceBundle extends ResourceBundle {
-
-    private static final BaseResourceBundle BASE_RESOURCE = new BaseResourceBundle();
-
+public class I18nResourceBundle extends ResourceBundle {
 
     /**
-     * 资源列表
+     * 当前实例
+     */
+    public static final I18nResourceBundle INSTANCE = new I18nResourceBundle();
+
+    /**
+     * 基础资源列表
      * key 地区
      * value 资源
      */
-    private final Map<Locale, ResourceBundle> resources = new HashMap<>();
+    private final Map<Locale, ResourceBundle> base_resources = new HashMap<>();
 
+    /**
+     * 项目资源列表
+     * key 地区
+     * value 资源
+     */
+    private final Map<Locale, ResourceBundle> i18n_resources = new HashMap<>();
 
-    private BaseResourceBundle() {
+    private I18nResourceBundle() {
 
     }
 
     @Override
     protected Object handleGetObject(@Nonnull String key) {
         try {
-            ResourceBundle resource = this.initResource();
-            if (key.startsWith("base.")) {
+            ResourceBundle resource = this.initResource(key);
+            if (resource != null) {
                 return resource.getObject(key);
             }
-            return resource.getObject("base." + key);
         } catch (MissingResourceException ex) {
             ex.printStackTrace();
         }
         return null;
     }
 
-    private ResourceBundle initResource() {
-        ResourceBundle resource = this.resources.get(I18nManager.currentLocale());
-        if (resource == null) {
-            resource = ResourceBundle.getBundle("base_i18n", I18nManager.currentLocale());
-            this.resources.put(I18nManager.currentLocale(), resource);
+    @Nonnull
+    @Override
+    public Enumeration<String> getKeys() {
+        return new Enumeration<>() {
+            @Override
+            public boolean hasMoreElements() {
+                return false;
+            }
+
+            @Override
+            public String nextElement() {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * 初始化资源
+     *
+     * @param key 键
+     * @return 资源
+     */
+    private ResourceBundle initResource(String key) {
+        ResourceBundle resource;
+        if (key.startsWith("base.")) {
+            resource = this.base_resources.get(I18nManager.currentLocale());
+            if (resource == null) {
+                resource = ResourceBundle.getBundle("base_i18n", I18nManager.currentLocale());
+                this.base_resources.put(I18nManager.currentLocale(), resource);
+            }
+        } else {
+            resource = this.i18n_resources.get(I18nManager.currentLocale());
+            if (resource == null) {
+                resource = ResourceBundle.getBundle("i18n", I18nManager.currentLocale());
+                this.i18n_resources.put(I18nManager.currentLocale(), resource);
+            }
         }
         return resource;
     }
 
-    @Nonnull
-    @Override
-    public Enumeration<String> getKeys() {
-        ResourceBundle resource = this.initResource();
-        return resource.getKeys();
-    }
-
     @Override
     public boolean containsKey(@Nonnull String key) {
-        ResourceBundle resource = this.initResource();
+        ResourceBundle resource = this.initResource(key);
         return resource.containsKey(key);
     }
 
@@ -73,9 +105,9 @@ public class BaseResourceBundle extends ResourceBundle {
      * @param key 键
      * @return 值
      */
-    public static String getBaseString(String key) {
+    public static String i18nString(String key) {
         try {
-            return BASE_RESOURCE.getString(key);
+            return INSTANCE.getString(key);
         } catch (MissingResourceException ex) {
             ex.printStackTrace();
         }
@@ -88,11 +120,11 @@ public class BaseResourceBundle extends ResourceBundle {
      * @param keys 键
      * @return 值
      */
-    public static String getBaseString(String... keys) {
+    public static String i18nString(String... keys) {
         try {
             StringBuilder builder = new StringBuilder();
             for (String key : keys) {
-                String val = BASE_RESOURCE.getString(key);
+                String val = INSTANCE.getString(key);
                 builder.append(val);
                 if (I18nManager.currentLocale() == Locale.ENGLISH) {
                     builder.append(" ").append(StrUtil.lowerFirst(val));
@@ -116,14 +148,15 @@ public class BaseResourceBundle extends ResourceBundle {
      * @param key 键
      * @return 值
      */
-    public static Object getBaseObject(String key) {
+    public static Object i18nObject(String key) {
         try {
-            return BASE_RESOURCE.getString(key);
+            return INSTANCE.getObject(key);
         } catch (MissingResourceException ex) {
             ex.printStackTrace();
         }
         return null;
     }
+
 
     /**
      * 是否存在值
@@ -131,8 +164,7 @@ public class BaseResourceBundle extends ResourceBundle {
      * @param key 键
      * @return 值
      */
-    public static boolean containsBaseKey(String key) {
-        return BASE_RESOURCE.containsKey(key);
+    public static boolean containsI18nKey(String key) {
+        return INSTANCE.containsKey(key);
     }
-
 }

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -9,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class ImportConnectMenuItem extends ImportMenuItem {
 
     public ImportConnectMenuItem(String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.importConnect"), BaseResourceBundle.getBaseString("base.importTip1"), iconSize, action);
+        super(I18nResourceBundle.i18nString("base.importConnect"), I18nResourceBundle.i18nString("base.importTip1"), iconSize, action);
     }
 }

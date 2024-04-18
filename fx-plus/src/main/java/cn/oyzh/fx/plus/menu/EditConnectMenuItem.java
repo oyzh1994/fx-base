@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.controls.svg.EditSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.RepeatSVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -11,6 +9,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class EditConnectMenuItem extends EditMenuItem{
 
     public EditConnectMenuItem(String iconSize, Runnable action) {
-        super(BaseResourceBundle.getBaseString("base.editConnect"), null, iconSize, action);
+        super(I18nResourceBundle.i18nString("base.editConnect"), null, iconSize, action);
     }
 }

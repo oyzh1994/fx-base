@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -15,7 +15,7 @@ public class CancelSVGGlyph extends CloseSVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(BaseResourceBundle.getBaseString("base.cancel"));
+        this.setTipText(I18nResourceBundle.i18nString("base.cancel"));
         super.initNode();
     }
 }

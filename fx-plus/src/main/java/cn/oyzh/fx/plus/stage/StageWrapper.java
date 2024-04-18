@@ -184,7 +184,7 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
         // 初始化加载器
         FXMLLoaderExt loader = new FXMLLoaderExt();
         // 加载根节点
-        Parent root = loader.load(attribute.value(), attribute.resource());
+        Parent root = loader.load(attribute.value());
         if (root == null) {
             throw new RuntimeException("load root fail");
         }

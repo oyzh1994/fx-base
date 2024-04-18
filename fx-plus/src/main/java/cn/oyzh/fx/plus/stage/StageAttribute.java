@@ -33,13 +33,6 @@ public @interface StageAttribute {
     String value();
 
     /**
-     * 资源
-     *
-     * @return 资源名称
-     */
-    String resource() default "i18n";
-
-    /**
      * 页面标题
      *
      * @return 页面标题

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -19,8 +19,8 @@ public class DeleteSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(BaseResourceBundle.getBaseString("base.delete"));
-        this.setTipText(BaseResourceBundle.getBaseString("base.delete"));
+        this.setText(I18nResourceBundle.i18nString("base.delete"));
+        this.setTipText(I18nResourceBundle.i18nString("base.delete"));
         super.initNode();
     }
 }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.controls.svg.RepeatSVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh
@@ -10,6 +10,6 @@ import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 public class RepeatConnectMenuItem extends FXMenuItem{
 
     public RepeatConnectMenuItem(String iconSize, Runnable action) {
-        super(new RepeatSVGGlyph(iconSize), BaseResourceBundle.getBaseString("base.repeatConnect"), null, action);
+        super(new RepeatSVGGlyph(iconSize), I18nResourceBundle.i18nString("base.repeatConnect"), null, action);
     }
 }

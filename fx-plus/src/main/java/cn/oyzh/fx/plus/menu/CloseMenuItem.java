@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.controls.svg.CancelSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
-import cn.oyzh.fx.plus.i18n.BaseResourceBundle;
 
 /**
  * @author oyzh

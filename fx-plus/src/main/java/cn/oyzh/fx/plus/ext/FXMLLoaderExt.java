@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.ext;
 
-import cn.oyzh.fx.plus.i18n.ResourceBundleWrapper;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.spring.SpringControllerFactory;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.fxml.FXMLLoader;
@@ -25,24 +25,13 @@ public class FXMLLoaderExt extends FXMLLoader {
     /**
      * 加载
      *
-     * @param fxmlUrl 资源地址
+     * @param fxmlUrl  fxml地址
      * @return 内容
      */
     public <T> T load(@NonNull String fxmlUrl) {
-        return this.load(fxmlUrl, null);
-    }
-
-    /**
-     * 加载
-     *
-     * @param fxmlUrl  fxml地址
-     * @param resource 资源名称
-     * @return 内容
-     */
-    public <T> T load(@NonNull String fxmlUrl, String resource) {
         try {
             this.setLocation(ResourceUtil.getResource(fxmlUrl));
-            this.setResources(ResourceBundleWrapper.newResource(resource));
+            this.setResources(I18nResourceBundle.INSTANCE);
             return super.load();
         } catch (IOException e) {
             e.printStackTrace();
