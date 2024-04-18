@@ -66,7 +66,7 @@ public class LimitTextArea extends FlexTextArea implements LimitControl {
     @Override
     public void setMaxLen(Integer maxLen) {
         if (this.minLen != null && maxLen.longValue() < this.minLen.longValue()) {
-            throw new InvalidParameterException("maxLen不能小于minLen！");
+            throw new InvalidParameterException("maxLen cannot be less than minLen！");
         }
         this.maxLen = maxLen;
     }
@@ -74,7 +74,7 @@ public class LimitTextArea extends FlexTextArea implements LimitControl {
     @Override
     public void setMinLen(Integer minLen) {
         if (this.maxLen != null && minLen.longValue() > this.maxLen.longValue()) {
-            throw new InvalidParameterException("minLen不能大于maxLen！");
+            throw new InvalidParameterException("minLen cannot be greater than maxLen！");
         }
         this.minLen = minLen;
     }

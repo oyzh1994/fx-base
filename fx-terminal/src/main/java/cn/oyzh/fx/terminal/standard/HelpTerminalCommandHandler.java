@@ -1,6 +1,7 @@
 package cn.oyzh.fx.terminal.standard;
 
 import cn.oyzh.fx.common.util.TextUtil;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.BaseTerminalCommandHandler;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
@@ -27,7 +28,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
 
     @Override
     public String commandDesc() {
-        return "获取帮助";
+        return I18nResourceBundle.i18nString("base.get", "base.help");
     }
 
     @Override
@@ -36,11 +37,16 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
         try {
             Collection<TerminalCommandHandler> handlers = TerminalManager.listHandler();
             List<String> list = new ArrayList<>();
-            list.add("序号");
-            list.add("命令");
-            list.add("版本要求");
-            list.add("状态");
-            list.add("描述");
+            // list.add("序号");
+            list.add(I18nResourceBundle.i18nString("base.orderNo"));
+            // list.add("命令");
+            list.add(I18nResourceBundle.i18nString("base.cmd"));
+            // list.add("版本要求");
+            list.add(I18nResourceBundle.i18nString("base.version"));
+            // list.add("状态");
+            list.add(I18nResourceBundle.i18nString("base.status"));
+            // list.add("描述");
+            list.add(I18nResourceBundle.i18nString("base.desc"));
             int index = 0;
             for (TerminalCommandHandler handler : handlers) {
                 list.add(++index + ")");
@@ -53,7 +59,8 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
                 } else {
                     list.add(version);
                 }
-                list.add(handler.commandDeprecated() ? "过时" : "正常");
+                list.add(handler.commandDeprecated() ? I18nResourceBundle.i18nString("base.deprecated") : I18nResourceBundle.i18nString("base.normal"));
+                // list.add(handler.commandDeprecated() ? "过时" : "正常");
                 list.add(handler.commandDesc());
             }
             result.setResult(TextUtil.beautifyFormat(list, 5, 2));

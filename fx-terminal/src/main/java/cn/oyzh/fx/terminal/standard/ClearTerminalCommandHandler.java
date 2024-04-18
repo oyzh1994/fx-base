@@ -1,6 +1,7 @@
 package cn.oyzh.fx.terminal.standard;
 
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.BaseTerminalCommandHandler;
 import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;
@@ -25,12 +26,12 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
 
     @Override
     public String commandDesc() {
-        return "清除窗口";
+        return I18nResourceBundle.i18nString("base.clear", "base.window");
     }
 
     @Override
     public String commandHelp() {
-        return super.commandHelp() + "\n-his 历史";
+        return super.commandHelp() + "\n-his " + I18nResourceBundle.i18nString("base.his");
     }
 
     @Override
