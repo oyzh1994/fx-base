@@ -1,5 +1,6 @@
-package cn.oyzh.fx.common.util;
+package cn.oyzh.fx.plus.util;
 
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -148,11 +149,17 @@ public class Counter {
      * @return 格式化内容
      */
     public String knownFormat() {
-        String tpl = "总数：$sum，已处理：$totalCount，成功：$successCount，失败：$failCount，忽略：$ignoreCount，已耗时：$elapsed秒";
+        StringBuilder builder = new StringBuilder();
+        builder.append(I18nResourceBundle.i18nString("base.total")).append(": $sum, ");
+        builder.append(I18nResourceBundle.i18nString("base.processed")).append(": $totalCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.success")).append(": $successCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.fail")).append(": $failCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.Ignored")).append(": $ignoreCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.cost")).append(": $elapsed").append(I18nResourceBundle.i18nString("base.second"));
         if (this.extraMsg != null) {
-            tpl += " 提示信息：$extraMsg";
+            builder.append(" ").append(I18nResourceBundle.i18nString("base.tip")).append(": $extraMsg ");
         }
-        return this.format(tpl);
+        return this.format(builder.toString());
     }
 
     /**
@@ -161,10 +168,15 @@ public class Counter {
      * @return 格式化内容
      */
     public String unknownFormat() {
-        String tpl = "已处理：$totalCount，成功：$successCount，失败：$failCount，忽略：$ignoreCount，已耗时：$elapsed秒";
+        StringBuilder builder = new StringBuilder();
+        builder.append(I18nResourceBundle.i18nString("base.processed")).append(": $totalCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.success")).append(": $successCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.fail")).append(": $failCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.Ignored")).append(": $ignoreCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.cost")).append(": $elapsed").append(I18nResourceBundle.i18nString("base.second"));
         if (this.extraMsg != null) {
-            tpl += " 提示信息：$extraMsg";
+            builder.append(" ").append(I18nResourceBundle.i18nString("base.tip")).append(": $extraMsg ");
         }
-        return this.format(tpl);
+        return this.format(builder.toString());
     }
 }

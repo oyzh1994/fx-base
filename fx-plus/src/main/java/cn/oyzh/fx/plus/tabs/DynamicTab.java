@@ -1,11 +1,16 @@
 package cn.oyzh.fx.plus.tabs;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
+import cn.oyzh.fx.plus.menu.CloseAllTabMenuItem;
+import cn.oyzh.fx.plus.menu.CloseCurrTabMenuItem;
+import cn.oyzh.fx.plus.menu.CloseLeftTabMenuItem;
+import cn.oyzh.fx.plus.menu.CloseOtherTabMenuItem;
+import cn.oyzh.fx.plus.menu.CloseRightTabMenuItem;
+import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -149,11 +154,11 @@ public abstract class DynamicTab extends FXTab {
      */
     public List<MenuItem> getMenuItems() {
         List<MenuItem> items = new ArrayList<>();
-        MenuItem closeTab = FXMenuItem.newItem("关闭当前标签", "关闭当前标签页", this::closeTab);
-        MenuItem closeLeftTab = FXMenuItem.newItem("关闭左侧标签", "关闭左侧标签页", this::closeLeftTab);
-        MenuItem closeRightTab = FXMenuItem.newItem("关闭右侧标签", "关闭右侧标签页", this::closeRightTab);
-        MenuItem closeOtherTab = FXMenuItem.newItem("关闭其他标签", "关闭其他标签页", this::closeOtherTab);
-        MenuItem closeAllTab = FXMenuItem.newItem("关闭全部标签", "关闭全部标签页", this::closeAllTab);
+        CloseCurrTabMenuItem closeTab = new CloseCurrTabMenuItem(this::closeTab);
+        CloseLeftTabMenuItem closeLeftTab = new CloseLeftTabMenuItem(this::closeLeftTab);
+        CloseRightTabMenuItem closeRightTab = new CloseRightTabMenuItem(this::closeRightTab);
+        CloseOtherTabMenuItem closeOtherTab = new CloseOtherTabMenuItem(this::closeOtherTab);
+        CloseAllTabMenuItem closeAllTab = new CloseAllTabMenuItem(this::closeAllTab);
         items.add(closeTab);
         items.add(closeLeftTab);
         items.add(closeRightTab);
