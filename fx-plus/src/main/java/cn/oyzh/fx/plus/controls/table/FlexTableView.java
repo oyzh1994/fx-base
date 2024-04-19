@@ -56,7 +56,7 @@ public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, Flex
                     flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
                 } else {
                     // 否则将列宽度设置为0
-                    NodeUtil.setWidth(column, 0);
+                    NodeUtil.setWidth(column, 0D);
                 }
             }
         }
