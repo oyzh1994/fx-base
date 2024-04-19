@@ -19,7 +19,7 @@ public class ExpandAllSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(I18nResourceBundle.i18nString("expandAll"));
+        this.setTipText(I18nResourceBundle.i18nString("base.expandAll"));
         super.initNode();
     }
 }
