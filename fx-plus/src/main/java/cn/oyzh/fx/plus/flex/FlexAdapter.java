@@ -2,8 +2,8 @@ package cn.oyzh.fx.plus.flex;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 
 /**
  * 流式节点
@@ -187,19 +187,17 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         Double parentWidth1 = this.getProp("_parentWidth");
         if (parentWidth1 == null || computeWidth1 == null || width1 == null || parentWidth1 != parentWidth || width1 != width) {
             String flexWidth = this.getFlexWidth();
-            double computeWidth;
             // 计算宽度值
             double flexValue = FlexUtil.computeFlexValue(flexWidth, parentWidth);
             if (Double.isNaN(flexValue)) {
-                computeWidth = width;
+                size[0] = width;
             } else {
-                computeWidth = flexValue;
+                // 设置属性
+                this.setProp("_width", width);
+                this.setProp("_parentWidth", parentWidth);
+                this.setProp("_computeWidth", flexValue);
+                size[0] = flexValue;
             }
-            // 设置属性
-            this.setProp("_width", width);
-            this.setProp("_parentWidth", parentWidth);
-            this.setProp("_computeWidth", computeWidth);
-            size[0] = computeWidth;
         } else {
             size[0] = computeWidth1;
         }
@@ -211,19 +209,17 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         Double computeHeight1 = this.computeHeight();
         if (parentHeight1 == null || computeHeight1 == null || height1 == null || parentHeight1 != parentHeight || height1 != height) {
             String flexHeight = this.getFlexHeight();
-            double computeHeight;
             // 计算高度值
             double flexValue = FlexUtil.computeFlexValue(flexHeight, parentHeight);
             if (Double.isNaN(flexValue)) {
-                computeHeight = height;
+                size[1] = height;
             } else {
-                computeHeight = flexValue;
+                // 设置属性
+                this.setProp("_height", height);
+                this.setProp("_parentHeight", parentHeight);
+                this.setProp("_computeHeight", flexValue);
+                size[1] = flexValue;
             }
-            // 设置属性
-            this.setProp("_height", height);
-            this.setProp("_parentHeight", parentHeight);
-            this.setProp("_computeHeight", computeHeight);
-            size[1] = computeHeight;
         } else {
             size[1] = computeHeight1;
         }

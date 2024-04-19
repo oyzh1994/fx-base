@@ -19,8 +19,8 @@ public class FlexUtil {
      * @param value     真实值
      * @return 计算后的流式值
      */
-    public static double computeFlexValue(String flexValue, double value) {
-        if (StrUtil.isNotBlank(flexValue) && !Double.isNaN(value)) {
+    public static double computeFlexValue(String flexValue, Double value) {
+        if (value != null && StrUtil.isNotBlank(flexValue) && !Double.isNaN(value)) {
             try {
                 flexValue = flexValue.trim();
                 Double fixed = null;
