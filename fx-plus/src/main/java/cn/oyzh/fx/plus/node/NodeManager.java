@@ -5,6 +5,8 @@ import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
+import cn.oyzh.fx.plus.opacity.OpacityAdapter;
+import cn.oyzh.fx.plus.opacity.OpacityManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import lombok.experimental.UtilityClass;
@@ -26,6 +28,9 @@ public class NodeManager {
     public static void init(Object node) {
         if (node instanceof NodeAdapter adapter) {
             adapter.initNode();
+        }
+        if (node instanceof OpacityAdapter adapter) {
+            adapter.changeOpacity(OpacityManager.currentOpacity());
         }
         if (node instanceof FontAdapter adapter) {
             adapter.changeFont(FontManager.currentFont());

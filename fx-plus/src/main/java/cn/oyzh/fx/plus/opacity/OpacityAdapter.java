@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.opacity;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.stage.StageWrapper;
-import javafx.scene.Node;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 
@@ -53,7 +53,6 @@ public interface OpacityAdapter extends PropAdapter {
     default void changeOpacity(double opacity) {
         if (this.isEnableOpacity()) {
             switch (this) {
-                case Node node -> node.setOpacity(opacity);
                 case Window window -> window.setOpacity(opacity);
                 case StageWrapper wrapper -> wrapper.stage().setOpacity(opacity);
                 default -> {

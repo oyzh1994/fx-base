@@ -14,6 +14,11 @@ import lombok.Data;
 public class Setting {
 
     /**
+     * 透明度
+     */
+    private Double opacity;
+
+    /**
      * 主题
      */
     private String theme;

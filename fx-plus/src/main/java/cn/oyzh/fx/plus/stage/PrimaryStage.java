@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.stage;
 
+import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Getter;
@@ -13,7 +15,7 @@ import lombok.experimental.Accessors;
  * @since 2023/10/12
  */
 @Getter
-public class PrimaryStage implements StageWrapper {
+public class PrimaryStage implements StageWrapper, OpacityAdapter {
 
     /**
      * 舞台
@@ -25,5 +27,6 @@ public class PrimaryStage implements StageWrapper {
         this.stage = primaryStage;
         this.stage.getProperties().put("_stageReference", this);
         this.init(attribute, owner);
+        NodeManager.init(this);
     }
 }

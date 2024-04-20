@@ -51,6 +51,13 @@ public class StageUtil {
     }
 
     /**
+     * 获取所有窗口
+     */
+    public static List<Window> allWindows() {
+       return new ArrayList<>(Window.getWindows());
+    }
+
+    /**
      * 获取所有stage
      */
     public static List<StageWrapper> allStages() {
