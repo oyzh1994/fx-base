@@ -5,18 +5,19 @@ import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.button.FlexButton;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
+import cn.oyzh.fx.plus.i18n.I18nManager;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -75,7 +76,23 @@ public class PageBox<T> extends FlexHBox {
      */
     @Getter
     @Setter
-    private String pageTextTpl = "共#count条，每页#limit条，#currentPage/#countPage页";
+    private String pageTextTpl = this.pageTextTpl();
+
+    /**
+     * 获取解析模板
+     *
+     * @return 模板内容
+     */
+    private String pageTextTpl() {
+        if (I18nManager.currentLocale() == Locale.SIMPLIFIED_CHINESE) {
+            return "共#count条，每页#limit条，#currentPage/#countPage页";
+        }
+        if (I18nManager.currentLocale() == Locale.TRADITIONAL_CHINESE) {
+            return "共#count條，每頁#limit條，#currentPage/#countPage頁";
+        }
+
+        return "Total #count, Limit #limit, Page #currentPage/#countPage";
+    }
 
     /**
      * 分页信息
@@ -116,10 +133,6 @@ public class PageBox<T> extends FlexHBox {
     private EventHandler<MouseEvent> onLastClicked;
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
-
         // 首页
         FXLabel firstLabel = new FXLabel("<<");
         firstLabel.setAlignment(Pos.CENTER);
@@ -127,7 +140,7 @@ public class PageBox<T> extends FlexHBox {
         this.firstBtn.setGraphic(firstLabel);
         this.firstBtn.setFlexHeight("90%");
         this.firstBtn.realWidth(45);
-        this.firstBtn.setTipText("首页");
+        this.firstBtn.setTipText(I18nResourceBundle.i18nString("base.firstPage"));
         this.firstBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onFirstClicked != null) {
@@ -143,7 +156,7 @@ public class PageBox<T> extends FlexHBox {
         this.prevBtn.setGraphic(prevLabel);
         this.prevBtn.setFlexHeight("90%");
         this.prevBtn.realWidth(35);
-        this.prevBtn.setTipText("上一页");
+        this.prevBtn.setTipText(I18nResourceBundle.i18nString("base.prevPage"));
         this.prevBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onPrevClicked != null) {
@@ -158,7 +171,7 @@ public class PageBox<T> extends FlexHBox {
         this.nextBtn.setGraphic(nextLabel);
         this.nextBtn.setFlexHeight("90%");
         this.nextBtn.realWidth(35);
-        this.nextBtn.setTipText("下一页");
+        this.nextBtn.setTipText(I18nResourceBundle.i18nString("base.nextPage"));
         this.nextBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onNextClicked != null) {
@@ -173,7 +186,7 @@ public class PageBox<T> extends FlexHBox {
         this.lastBtn.setGraphic(lastLabel);
         this.lastBtn.setFlexHeight("90%");
         this.lastBtn.realWidth(45);
-        this.lastBtn.setTipText("尾页");
+        this.lastBtn.setTipText(I18nResourceBundle.i18nString("base.lastPage"));
         this.lastBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onLastClicked != null) {
@@ -203,7 +216,6 @@ public class PageBox<T> extends FlexHBox {
         this.setShowPageText(this.showPageText);
         this.formatPageText();
         this.managedProperty().bind(this.visibleProperty());
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 

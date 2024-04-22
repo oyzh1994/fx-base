@@ -172,8 +172,8 @@ public class Counter {
         builder.append(I18nResourceBundle.i18nString("base.processed")).append(": $totalCount, ");
         builder.append(I18nResourceBundle.i18nString("base.success")).append(": $successCount, ");
         builder.append(I18nResourceBundle.i18nString("base.fail")).append(": $failCount, ");
-        builder.append(I18nResourceBundle.i18nString("base.Ignored")).append(": $ignoreCount, ");
-        builder.append(I18nResourceBundle.i18nString("base.cost")).append(": $elapsed").append(I18nResourceBundle.i18nString("base.second"));
+        builder.append(I18nResourceBundle.i18nString("base.ignored")).append(": $ignoreCount, ");
+        builder.append(I18nResourceBundle.i18nString("base.cost")).append(": $elapsed ").append(I18nResourceBundle.i18nString("base.second"));
         if (this.extraMsg != null) {
             builder.append(" ").append(I18nResourceBundle.i18nString("base.tip")).append(": $extraMsg ");
         }

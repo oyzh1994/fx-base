@@ -44,9 +44,20 @@ public class IconButton extends FlexButton {
     protected void init(String iconUrl, double iconSizePercent) {
         if (iconUrl != null) {
             SVGGlyph glyph = new SVGGlyph(iconUrl);
-            glyph.disableTheme();
             this.setGraphic(glyph);
         }
+        this.setIconSizePercent(iconSizePercent);
+        this.initGlyph();
+    }
+
+    /**
+     * 初始化图标
+     *
+     * @param glyph           图标
+     * @param iconSizePercent 图标对比字符的百分比
+     */
+    protected void init(SVGGlyph glyph, double iconSizePercent) {
+        this.setGraphic(glyph);
         this.setIconSizePercent(iconSizePercent);
         this.initGlyph();
     }
@@ -72,8 +83,12 @@ public class IconButton extends FlexButton {
         this.backgroundProperty().addListener((observable, o, n) -> this.initGlyph());
     }
 
+    /**
+     * 初始化图标
+     */
     private void initGlyph() {
         if (this.getGraphic() instanceof SVGGlyph glyph) {
+            glyph.disableTheme();
             if (this.iconSizePercent != null && this.getFont() != null) {
                 glyph.setSize(this.getFont().getSize() * this.iconSizePercent);
             }
