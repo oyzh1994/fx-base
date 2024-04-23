@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.controls.svg.CopySVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -16,7 +17,7 @@ public class CopyButton extends IconButton {
         this.setPrefHeight(25);
         this.setText(I18nResourceBundle.i18nString("base.copy"));
         this.setTipText(I18nResourceBundle.i18nString("base.copy"));
-        this.init("/fx-plus/font/copy.svg", 0.7);
+        this.init(new CopySVGGlyph(), 0.7);
         super.initNode();
     }
 }

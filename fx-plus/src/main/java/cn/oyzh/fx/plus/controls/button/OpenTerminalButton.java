@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.controls.svg.TerminalSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -17,7 +18,7 @@ public class OpenTerminalButton extends IconButton {
         this.addClass("default");
         this.setText(I18nResourceBundle.i18nString("base.openTerminal"));
         this.setTipText(I18nResourceBundle.i18nString("base.openTerminal"));
-        this.init("/fx-plus/font/code library.svg", 0.7);
+        this.init(new TerminalSVGGlyph(), 0.7);
         super.initNode();
     }
 }

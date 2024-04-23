@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.combo;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +22,8 @@ public class CharsetComboBox extends FlexComboBox<String> {
         this.getItems().add("gb2312");
         this.getItems().add(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
         this.getItems().add(StandardCharsets.US_ASCII.displayName().toLowerCase());
-
         this.select(Charset.defaultCharset());
+        this.setTipText(I18nResourceBundle.i18nString("base.charset"));
     }
 
     /**

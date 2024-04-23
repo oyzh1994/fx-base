@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.controls.svg.AddSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -15,7 +16,7 @@ public class AddConnectButton extends IconButton {
         this.addClass("success");
         this.setText(I18nResourceBundle.i18nString("base.addConnect"));
         this.setTipText(I18nResourceBundle.i18nString("base.addConnect"));
-        this.init("/fx-plus/font/add.svg", 0.7);
+        this.init(new AddSVGGlyph(), 0.7);
         super.initNode();
     }
 

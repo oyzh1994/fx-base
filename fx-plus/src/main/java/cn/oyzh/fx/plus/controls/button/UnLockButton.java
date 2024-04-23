@@ -1,7 +1,8 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
-import cn.oyzh.fx.plus.controls.svg.SaveSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SubmitSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.UnLockSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -10,15 +11,13 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
  * @author oyzh
  * @since 2020/10/29
  */
-public class SaveButton extends IconButton {
+public class UnLockButton extends IconButton {
 
     @Override
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("accent");
-        this.setText(I18nResourceBundle.i18nString("base.save"));
-        this.setTipText(I18nResourceBundle.i18nString("base.save"));
-        this.init(new SaveSVGGlyph(), 0.7);
+        this.init(new UnLockSVGGlyph(), 0.7);
         super.initNode();
     }
 }

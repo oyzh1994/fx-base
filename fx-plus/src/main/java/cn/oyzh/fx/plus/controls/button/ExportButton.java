@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
+import cn.oyzh.fx.plus.controls.svg.ExportSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -13,7 +14,7 @@ public class ExportButton extends IconButton{
         this.setPrefHeight(25);
         this.setText(I18nResourceBundle.i18nString("base.export"));
         this.setTipText(I18nResourceBundle.i18nString("base.export"));
-        this.init("/fx-plus/font/export.svg", 0.7);
+        this.init(new ExportSVGGlyph(), 0.7);
         super.initNode();
     }
 }

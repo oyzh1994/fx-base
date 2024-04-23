@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -15,7 +16,7 @@ public class CancelButton extends IconButton {
         this.addClass("danger");
         this.setText(I18nResourceBundle.i18nString("base.cancel"));
         this.setTipText(I18nResourceBundle.i18nString("base.cancel"));
-        this.init("/fx-plus/font/close.svg", 0.7);
+        this.init(new CloseSVGGlyph(), 0.7);
         this.setOnAction(actionEvent -> this.getScene().getWindow().hide());
         super.initNode();
     }

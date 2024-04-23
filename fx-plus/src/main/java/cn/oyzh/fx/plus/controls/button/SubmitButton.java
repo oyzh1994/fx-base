@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
+import cn.oyzh.fx.plus.controls.svg.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -17,7 +18,7 @@ public class SubmitButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nResourceBundle.i18nString("base.submit"));
         this.setTipText(I18nResourceBundle.i18nString("base.submit"));
-        this.init("/fx-plus/font/check.svg", 0.7);
+        this.init(new SubmitSVGGlyph(), 0.7);
         super.initNode();
     }
 }

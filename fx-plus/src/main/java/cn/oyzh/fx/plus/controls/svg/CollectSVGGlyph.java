@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class CollectSVGGlyph extends SVGGlyph {
 
     public CollectSVGGlyph() {
-        this.setUrl("/fx-plus/font/left-arrow-to-left.svg");
+        this.setUrl("/fx-plus/font/star-l.svg");
     }
 
     public CollectSVGGlyph(String size) {
