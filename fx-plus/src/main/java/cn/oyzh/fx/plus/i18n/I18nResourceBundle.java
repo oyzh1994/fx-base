@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -123,10 +122,17 @@ public class I18nResourceBundle extends ResourceBundle {
     public static String i18nString(String... keys) {
         try {
             StringBuilder builder = new StringBuilder();
+            boolean isFirst = true;
             for (String key : keys) {
                 String val = INSTANCE.getString(key);
                 if (I18nManager.currentLocale() == Locale.ENGLISH) {
-                    builder.append(" ").append(StrUtil.lowerFirst(val));
+                    builder.append(" ");
+                    if (isFirst) {
+                        isFirst = false;
+                        builder.append(val);
+                    } else {
+                        builder.append(StrUtil.lowerFirst(val));
+                    }
                 } else {
                     builder.append(val);
                 }
