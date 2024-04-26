@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.tabs;
 
 import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 
@@ -22,7 +21,7 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
      * tab初始化事件
      */
     public void onTabInit(DynamicTab tab) {
-
+        EventListener.super.register();
     }
 
     /**

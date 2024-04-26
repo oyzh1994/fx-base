@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.search;
 
+import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import lombok.Data;
 
 import java.util.Objects;
@@ -42,11 +43,14 @@ public class SearchResult {
         }
         return switch (this.matchType) {
             case "name":
-                yield "名称";
+                yield I18nResourceBundle.i18nString("base.name");
+                // yield "名称";
             case "data":
-                yield "值";
+                // yield "值";
+                yield I18nResourceBundle.i18nString("base.value");
             case "all":
-                yield "名称、值";
+                // yield "名称、值";
+                yield I18nResourceBundle.i18nString("base.name") + "、" + I18nResourceBundle.i18nString("base.value");
             default:
                 yield "";
         };
