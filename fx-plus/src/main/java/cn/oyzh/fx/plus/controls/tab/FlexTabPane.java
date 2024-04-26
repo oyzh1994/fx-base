@@ -10,11 +10,9 @@ import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.CacheHint;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.text.FontWeight;
@@ -44,8 +42,8 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, C
         FlexAdapter.super.resizeNode(width, height);
         for (Tab tab : this.getTabs()) {
             if (tab.getContent() instanceof FlexAdapter flexNode) {
-                flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
-                flexNode.setRealHeight(FlexUtil.computeFlexValue(flexNode.getFlexHeight(), height));
+                flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                flexNode.setRealHeight(FlexUtil.compute(flexNode.getFlexHeight(), height));
             } else {
                 NodeUtil.setWidth(tab.getContent(), width);
                 NodeUtil.setHeight(tab.getContent(), height);

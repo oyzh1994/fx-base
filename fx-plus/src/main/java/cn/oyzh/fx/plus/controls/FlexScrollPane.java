@@ -5,9 +5,7 @@ import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.NodeUtil;
-import javafx.scene.CacheHint;
 import javafx.scene.control.ScrollPane;
 
 /**
@@ -31,8 +29,8 @@ public class FlexScrollPane extends ScrollPane implements FlexAdapter, ThemeAdap
     public void resizeNode(Double width, Double height) {
         FlexAdapter.super.resizeNode(width, height);
         if (this.getContent() instanceof FlexAdapter flexNode) {
-            flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
-            flexNode.setRealHeight(FlexUtil.computeFlexValue(flexNode.getFlexHeight(), height));
+            flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+            flexNode.setRealHeight(FlexUtil.compute(flexNode.getFlexHeight(), height));
         } else {
             NodeUtil.setWidth(this.getContent(), width);
             NodeUtil.setHeight(this.getContent(), height);

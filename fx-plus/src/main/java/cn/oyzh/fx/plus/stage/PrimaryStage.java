@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.stage;
 
-import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -27,6 +26,5 @@ public class PrimaryStage implements StageWrapper, OpacityAdapter {
         this.stage = primaryStage;
         this.stage.getProperties().put("_stageReference", this);
         this.init(attribute, owner);
-        NodeManager.init(this);
     }
 }

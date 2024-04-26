@@ -188,7 +188,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         if (parentWidth1 == null || computeWidth1 == null || width1 == null || parentWidth1 != parentWidth || width1 != width) {
             String flexWidth = this.getFlexWidth();
             // 计算宽度值
-            double flexValue = FlexUtil.computeFlexValue(flexWidth, parentWidth);
+            double flexValue = FlexUtil.compute(flexWidth, parentWidth);
             if (Double.isNaN(flexValue)) {
                 size[0] = width;
             } else {
@@ -210,7 +210,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         if (parentHeight1 == null || computeHeight1 == null || height1 == null || parentHeight1 != parentHeight || height1 != height) {
             String flexHeight = this.getFlexHeight();
             // 计算高度值
-            double flexValue = FlexUtil.computeFlexValue(flexHeight, parentHeight);
+            double flexValue = FlexUtil.compute(flexHeight, parentHeight);
             if (Double.isNaN(flexValue)) {
                 size[1] = height;
             } else {
@@ -236,7 +236,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         if (Double.isNaN(parentWidth)) {
             return Double.NaN;
         }
-        return FlexUtil.computeFlexValue(this.getFlexX(), parentWidth);
+        return FlexUtil.compute(this.getFlexX(), parentWidth);
     }
 
     /**
@@ -249,7 +249,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         if (Double.isNaN(parentHeight)) {
             return Double.NaN;
         }
-        return FlexUtil.computeFlexValue(this.getFlexY(), parentHeight);
+        return FlexUtil.compute(this.getFlexY(), parentHeight);
     }
 
     /**

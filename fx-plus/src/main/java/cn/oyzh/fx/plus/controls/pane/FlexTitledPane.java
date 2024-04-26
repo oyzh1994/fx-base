@@ -21,8 +21,8 @@ public class FlexTitledPane extends FXTitledPane implements FlexAdapter {
     public void resizeNode(Double width, Double height) {
         FlexAdapter.super.resizeNode(width, height);
         if (this.getContent() instanceof FlexAdapter flexNode) {
-            flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
-            flexNode.setRealHeight(FlexUtil.computeFlexValue(flexNode.getFlexHeight(), height));
+            flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+            flexNode.setRealHeight(FlexUtil.compute(flexNode.getFlexHeight(), height));
         } else {
             NodeUtil.setWidth(this.getContent(), width);
             NodeUtil.setHeight(this.getContent(), height);

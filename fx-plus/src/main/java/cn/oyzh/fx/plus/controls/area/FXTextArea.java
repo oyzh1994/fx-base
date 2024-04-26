@@ -17,7 +17,6 @@ import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collection;
 
@@ -27,7 +26,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2022/1/20
  */
-@ToString
+@Getter
 public class FXTextArea extends TextArea implements NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
 
     {
@@ -154,10 +153,8 @@ public class FXTextArea extends TextArea implements NodeAdapter, ThemeAdapter, A
         return AreaAdapter.super.fontWeight();
     }
 
-    @Getter
     private Boolean require;
 
-    @Getter
     @Setter
     private BaseValidator validator = new BaseValidator(this);
 

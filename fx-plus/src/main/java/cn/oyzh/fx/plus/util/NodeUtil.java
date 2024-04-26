@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import atlantafx.base.theme.Styles;
+import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -98,6 +99,12 @@ public class NodeUtil {
             return Math.max(w1, w2);
         }
 
+        if (target instanceof StageWrapper wrapper) {
+            double w1 = wrapper.stage().getWidth();
+            double w2 = wrapper.stage().getMinWidth();
+            return Math.max(w1, w2);
+        }
+
         if (target instanceof Window window) {
             return window.getWidth();
         }
@@ -131,6 +138,12 @@ public class NodeUtil {
         if (target instanceof Stage stage) {
             double w1 = stage.getHeight();
             double w2 = stage.getMinHeight();
+            return Math.max(w1, w2);
+        }
+
+        if (target instanceof StageWrapper wrapper) {
+            double w1 = wrapper.stage().getHeight();
+            double w2 = wrapper.stage().getMinHeight();
             return Math.max(w1, w2);
         }
 

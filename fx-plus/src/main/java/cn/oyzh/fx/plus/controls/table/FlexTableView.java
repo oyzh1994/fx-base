@@ -6,11 +6,9 @@ import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.TableViewUtil;
 import javafx.collections.ObservableList;
-import javafx.scene.CacheHint;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -53,7 +51,7 @@ public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, Flex
             if (column instanceof FlexAdapter flexNode) {
                 // 如果列可见，则设置实际宽度为计算得到的弹性宽度
                 if (column.isVisible()) {
-                    flexNode.setRealWidth(FlexUtil.computeFlexValue(flexNode.getFlexWidth(), width));
+                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
                 } else {
                     // 否则将列宽度设置为0
                     NodeUtil.setWidth(column, 0D);

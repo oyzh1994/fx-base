@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.area;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import lombok.ToString;
 
 /**
  * 文本域
@@ -9,7 +8,6 @@ import lombok.ToString;
  * @author oyzh
  * @since 2022/1/20
  */
-@ToString
 public class FlexTextArea extends FXTextArea implements FlexAdapter {
 
     @Override

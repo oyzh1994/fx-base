@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.stage;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
@@ -14,6 +15,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -217,8 +219,6 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
         }
-//        // 设置主题
-//        this.changeTheme(ThemeManager.currentTheme());
         // 设置事件
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
@@ -230,6 +230,8 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
             }
         });
         NodeManager.init(this);
+        // 监听最大化，处理内置内容大小
+        this.stage().maximizedProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay("_stage_resize", () -> this.root().resize(NodeUtil.getWidth(this.stage()) - 15, NodeUtil.getHeight(this.stage()) - 40), 1));
     }
 
     /**
