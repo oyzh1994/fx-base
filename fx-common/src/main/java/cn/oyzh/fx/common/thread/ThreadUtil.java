@@ -125,8 +125,7 @@ public class ThreadUtil {
      */
     public static <V> List<V> invoke(List<Callable<V>> tasks) {
         if (CollUtil.isNotEmpty(tasks)) {
-            ExecutorService service = Executors.newCachedThreadPool();
-            try {
+            try (ExecutorService service = Executors.newCachedThreadPool()){
                 List<Future<V>> futures = service.invokeAll(tasks);
                 List<V> results = new ArrayList<>(futures.size());
                 for (Future<V> future : futures) {
@@ -142,8 +141,6 @@ public class ThreadUtil {
                 return results;
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
-            } finally {
-                service.shutdown();
             }
         }
         return Collections.emptyList();

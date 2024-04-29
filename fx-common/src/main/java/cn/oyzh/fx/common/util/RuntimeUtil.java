@@ -14,9 +14,21 @@ import java.util.concurrent.TimeUnit;
  * @author oyzh
  * @since 2023/11/14
  */
-//@Slf4j
 @UtilityClass
 public class RuntimeUtil {
+
+    /**
+     * 获取处理器数量
+     *
+     * @return 处理器数量
+     */
+    public static int processorCount() {
+        int count = Runtime.getRuntime().availableProcessors();
+        if (count <= 0) {
+            count = 1;
+        }
+        return count;
+    }
 
     /**
      * 执行并等待
