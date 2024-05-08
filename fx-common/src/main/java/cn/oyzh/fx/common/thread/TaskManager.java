@@ -23,7 +23,12 @@ public class TaskManager {
     /**
      * 延迟任务列表
      */
-    private static final WeakCache<String, Future<?>> CACHE = CacheUtil.newWeakCache(-1);
+    private static final WeakCache<String, Future<?>> DELAY_TASKS = CacheUtil.newWeakCache(-1);
+
+    /**
+     * 循环任务列表
+     */
+    private static final WeakCache<String, Future<?>> INTERVAL_TASKS = CacheUtil.newWeakCache(-1);
 
     /**
      * 开始延迟任务
@@ -33,16 +38,16 @@ public class TaskManager {
      * @param delay 延迟时间
      */
     public static void startDelay(@NonNull String key, @NonNull Runnable task, int delay) {
-        Future<?> delayTask = CACHE.get(key);
-        if (delayTask != null && !delayTask.isDone()) {
-            ExecutorUtil.cancel(delayTask);
+        Future<?> future = DELAY_TASKS.get(key);
+        if (future != null && !future.isDone()) {
+            ExecutorUtil.cancel(future);
         }
         Task myTask;
         if (task instanceof Task task1) {
             myTask = TaskBuilder.newBuilder()
                     .from(task1)
                     .onFinish(() -> {
-                        CACHE.remove(key);
+                        DELAY_TASKS.remove(key);
                         if (task1.getFinish() != null) {
                             task1.getFinish().run();
                         }
@@ -51,11 +56,57 @@ public class TaskManager {
         } else {
             myTask = TaskBuilder.newBuilder()
                     .onStart(task)
-                    .onFinish(() -> CACHE.remove(key))
+                    .onFinish(() -> DELAY_TASKS.remove(key))
                     .build();
         }
-        delayTask = ExecutorUtil.start(myTask, delay);
-        CACHE.put(key, delayTask);
+        future = ExecutorUtil.start(myTask, delay);
+        DELAY_TASKS.put(key, future);
+    }
+
+    /**
+     * 取消延迟任务
+     *
+     * @param key 唯一标识
+     */
+    public static void cancelDelay(@NonNull String key) {
+        Future<?> future = DELAY_TASKS.get(key);
+        if (future != null) {
+            if (!future.isDone()) {
+                ExecutorUtil.cancel(future);
+            }
+            DELAY_TASKS.remove(key);
+        }
+    }
+
+    /**
+     * 开始定时任务
+     *
+     * @param key      唯一标识
+     * @param task     任务
+     * @param interval 定时时间
+     */
+    public static void startInterval(@NonNull String key, @NonNull Runnable task, int interval) {
+        Future<?> future = INTERVAL_TASKS.get(key);
+        if (future != null && !future.isDone()) {
+            ExecutorUtil.cancel(future);
+        }
+        future = ExecutorUtil.start(task, 0, interval);
+        INTERVAL_TASKS.put(key, future);
+    }
+
+    /**
+     * 取消定时任务
+     *
+     * @param key 唯一标识
+     */
+    public static void cancelInterval(@NonNull String key) {
+        Future<?> future = INTERVAL_TASKS.get(key);
+        if (future != null) {
+            if (!future.isDone()) {
+                ExecutorUtil.cancel(future);
+            }
+            INTERVAL_TASKS.remove(key);
+        }
     }
 
     /**

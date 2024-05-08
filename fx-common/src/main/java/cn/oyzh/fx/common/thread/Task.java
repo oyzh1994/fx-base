@@ -41,6 +41,9 @@ public class Task implements Runnable {
     @Getter
     private Consumer<Exception> error;
 
+    /**
+     * 异常
+     */
     private Exception exception;
 
     public void onStart() throws Exception {

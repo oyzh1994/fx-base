@@ -1,11 +1,13 @@
 package cn.oyzh.fx.common.util;
 
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import lombok.experimental.UtilityClass;
 
-import java.util.concurrent.Future;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
 
 /**
  * 系统工具类
@@ -13,41 +15,25 @@ import java.util.concurrent.Future;
  * @author oyzh
  * @since 2023/04/05
  */
-//@Slf4j
 @UtilityClass
 public class SystemUtil {
-
-    /**
-     * gc定期任务
-     */
-    private static Future<?> GC_INTERVAL_TASK;
 
     /**
      * 执行gc
      */
     public static void gc() {
         try {
-            long maxMemory = Runtime.getRuntime().maxMemory();
-            long freeMemory = Runtime.getRuntime().freeMemory();
-            long totalMemory = Runtime.getRuntime().totalMemory();
-            long usedMemory = totalMemory - freeMemory;
-            StaticLog.info(
-                    "gc before freeMemory:{}Mb usedMemory:{}Mb totalMemory:{}Mb maxMemory:{}Mb",
-                    freeMemory / 1024 / 1024.0,
-                    usedMemory / 1024 / 1024.0,
-                    totalMemory / 1024 / 1024.0,
-                    maxMemory / 1024 / 1024.0
-            );
+            // 获取 MemoryMXBean 实例
+            MemoryMXBean mxBean = ManagementFactory.getMemoryMXBean();
+            // 获取堆内存信息
+            MemoryUsage heapMemoryUsage = mxBean.getHeapMemoryUsage();
+            // 获取非堆内存信息
+            MemoryUsage nonHeapMemoryUsage = mxBean.getNonHeapMemoryUsage();
+            long usedMemory = heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
+            StaticLog.info("gc之前预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
             System.gc();
-            freeMemory = Runtime.getRuntime().freeMemory();
-            totalMemory = Runtime.getRuntime().totalMemory();
-            usedMemory = totalMemory - freeMemory;
-            StaticLog.info(
-                    "gc after freeMemory:{}Mb usedMemory:{}Mb totalMemory:{}Mb",
-                    freeMemory / 1024 / 1024.0,
-                    usedMemory / 1024 / 1024.0,
-                    totalMemory / 1024 / 1024.0
-            );
+            usedMemory = heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
+            StaticLog.info("gc之前预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -57,23 +43,9 @@ public class SystemUtil {
      * 定期gc
      */
     public static void gcInterval(int interval) {
-        clearGCInterval();
-//        if (log.isDebugEnabled()) {
-            StaticLog.debug("gc interval in {}ms...", interval);
-//        }
-        GC_INTERVAL_TASK = ExecutorUtil.start(SystemUtil::gc, interval, interval);
-    }
-
-    /**
-     * 清除定期gc任务
-     */
-    public static void clearGCInterval() {
-        if (GC_INTERVAL_TASK != null && !GC_INTERVAL_TASK.isDone()) {
-            ExecutorUtil.cancel(GC_INTERVAL_TASK);
-//            if (log.isDebugEnabled()) {
-                StaticLog.debug("cancel gc interval task.");
-//            }
-        }
+        StaticLog.debug("gc interval in {}ms", interval);
+        TaskManager.cancelInterval("gc:task");
+        TaskManager.startInterval("gc:task", SystemUtil::gc, interval);
     }
 
     /**
