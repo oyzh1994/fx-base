@@ -39,11 +39,6 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
     }
 
     @Override
-    public String i18nId() {
-        return I18nAdapter.super.i18nId();
-    }
-
-    @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
 
     }

@@ -228,13 +228,14 @@ public abstract class DynamicTab extends FXTab {
     public void flushTitle() {
         super.flushTitle();
         if (StrUtil.isEmpty(this.getTitle())) {
-            String title = this.controller.i18nString("base.title." + this.controller.i18nId());
-            if (title == null) {
-                title = this.controller.i18nString("title");
-            }
+            String title = this.getTabTitle();
             if (title != null) {
                 this.setTitle(title);
             }
         }
+    }
+
+    protected String getTabTitle() {
+        return null;
     }
 }

@@ -41,10 +41,7 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
         this.setStage(stage);
         // 处理标题
         if (StrUtil.isEmpty(this.stage.getTitleExt())) {
-            String title = this.i18nString("base.title." + this.i18nId());
-            if (title == null) {
-                title = this.i18nString("title");
-            }
+            String title = this.getViewTitle();
             if (title != null) {
                 this.stage.setTitleExt(title);
             }
@@ -109,5 +106,9 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
     @Override
     public void changeLocale(Locale locale) {
 
+    }
+
+    public String getViewTitle() {
+        return null;
     }
 }
