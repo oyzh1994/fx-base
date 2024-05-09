@@ -2,20 +2,15 @@ package cn.oyzh.fx.plus.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.stage.StageListener;
 import cn.oyzh.fx.plus.stage.StageWrapper;
-import javafx.fxml.Initializable;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.net.URL;
 import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 /**
  * 组件控制器
@@ -46,7 +41,10 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
         this.setStage(stage);
         // 处理标题
         if (StrUtil.isEmpty(this.stage.getTitleExt())) {
-            String title = this.i18nString("title");
+            String title = this.i18nString("base.title." + this.i18nId());
+            if (title == null) {
+                title = this.i18nString("title");
+            }
             if (title != null) {
                 this.stage.setTitleExt(title);
             }
