@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.oyzh</groupId>
     <artifactId>fx-base</artifactId>
-    <version>1.3</version>
+    <version>1.3.1</version>
     <packaging>pom</packaging>
     <modules>
         <module>fx-pkg</module>
@@ -21,7 +21,7 @@
     </modules>
 
     <properties>
-        <fx.version>1.3</fx.version>
+        <fx.version>1.3.1</fx.version>
         <zxing.version>3.4.1</zxing.version>
         <dom4j.version>2.1.3</dom4j.version>
         <spring.version>6.0.18</spring.version>
