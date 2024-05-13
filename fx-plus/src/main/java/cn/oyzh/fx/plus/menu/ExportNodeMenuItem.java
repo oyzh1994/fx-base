@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 /**
  * @author oyzh
@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class ExportNodeMenuItem extends ExportMenuItem {
 
     public ExportNodeMenuItem(String iconSize, Runnable action) {
-        super(I18nResourceBundle.i18nString("base.exportNode"), null, iconSize, action);
+        super(I18nHelper.exportNode(), null, iconSize, action);
     }
 
 }
