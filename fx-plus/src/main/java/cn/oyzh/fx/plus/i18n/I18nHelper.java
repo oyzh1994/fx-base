@@ -165,6 +165,16 @@ public class I18nHelper {
 
     public static final String SOFT = "base.soft";
 
+    public static final String LATITUDE = "base.latitude";
+
+    public static final String LONGITUDE = "base.longitude";
+
+    public static final String HOST = "base.host";
+
+    public static final String PORT = "base.port";
+
+    public static final String READONLY_MODE = "base.readonlyMode";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -683,5 +693,33 @@ public class I18nHelper {
 
     public static String soft() {
         return I18nResourceBundle.i18nString(SOFT);
+    }
+
+    public static String latitude() {
+        return I18nResourceBundle.i18nString(LATITUDE);
+    }
+
+    public static String longitude() {
+        return I18nResourceBundle.i18nString(LONGITUDE);
+    }
+
+    public static String host() {
+        return I18nResourceBundle.i18nString(HOST);
+    }
+
+    public static String port() {
+        return I18nResourceBundle.i18nString(PORT);
+    }
+
+    public static String userName() {
+        return I18nResourceBundle.i18nString(USER_NAME);
+    }
+
+    public static String password() {
+        return I18nResourceBundle.i18nString(PASSWORD);
+    }
+
+    public static String readonlyMode() {
+        return I18nResourceBundle.i18nString(READONLY_MODE);
     }
 }
