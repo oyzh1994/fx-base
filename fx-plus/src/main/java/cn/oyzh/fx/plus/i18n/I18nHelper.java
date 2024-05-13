@@ -137,6 +137,34 @@ public class I18nHelper {
 
     public static final String CURRENT = "base.current";
 
+    public static final String START = "base.start";
+
+    public static final String COPY = "base.copy";
+
+    public static final String TEST = "base.test";
+
+    public static final String RESTORE = "base.restore";
+
+    public static final String QUIT = "base.quit";
+
+    public static final String USER_NAME = "base.userName";
+
+    public static final String PASSWORD = "base.password";
+
+    public static final String PERMS = "base.perms";
+
+    public static final String NAME = "base.name";
+
+    public static final String TRAY = "base.tray";
+
+    public static final String VALUE = "base.value";
+
+    public static final String COST = "base.cost";
+
+    public static final String ENV = "base.env";
+
+    public static final String SOFT = "base.soft";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -433,6 +461,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(TRANSPORT, PROCESS, ING);
     }
 
+    public static String transportStarting() {
+        return I18nResourceBundle.i18nString(TRANSPORT, START, ING);
+    }
+
     public static String connect() {
         return I18nResourceBundle.i18nString(CONNECT);
     }
@@ -545,8 +577,12 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(KEYS);
     }
 
+    public static String deleteKey() {
+        return I18nResourceBundle.i18nString(DELETE, KEY);
+    }
+
     public static String deleteKeys() {
-        return I18nResourceBundle.i18nString(DELETE, DELETE);
+        return I18nResourceBundle.i18nString(DELETE, KEYS);
     }
 
     public static String deleted() {
@@ -559,5 +595,93 @@ public class I18nHelper {
 
     public static String currentDatabase() {
         return I18nResourceBundle.i18nString(CURRENT, DATABASE);
+    }
+
+    public static String deleteData() {
+        return I18nResourceBundle.i18nString(DELETE, DATA);
+    }
+
+    public static String invalidData() {
+        return I18nResourceBundle.i18nString(INVALID, DATA);
+    }
+
+    public static String copySuccess() {
+        return I18nResourceBundle.i18nString(COPY, SUCCESS);
+    }
+
+    public static String connectSuccess() {
+        return I18nResourceBundle.i18nString(CONNECT, SUCCESS);
+    }
+
+    public static String connectFail() {
+        return I18nResourceBundle.i18nString(CONNECT, FAIL);
+    }
+
+    public static String connectIng() {
+        return I18nResourceBundle.i18nString(CONNECT, ING);
+    }
+
+    public static String connectTesting() {
+        return I18nResourceBundle.i18nString(CONNECT, TEST, ING);
+    }
+
+    public static String restoreData() {
+        return I18nResourceBundle.i18nString(RESTORE, DATA);
+    }
+
+    public static String quit() {
+        return I18nResourceBundle.i18nString(QUIT);
+    }
+
+    public static String connectStart() {
+        return I18nResourceBundle.i18nString(CONNECT, START);
+    }
+
+    public static String invalidOperation() {
+        return I18nResourceBundle.i18nString(INVALID, OPERATION);
+    }
+
+    public static String userNameCanNotEmpty() {
+        return I18nResourceBundle.i18nString(USER_NAME, CAN_NOT, EMPTY);
+    }
+
+    public static String passwordCanNotEmpty() {
+        return I18nResourceBundle.i18nString(PASSWORD, CAN_NOT, EMPTY);
+    }
+
+    public static String invalidPerms() {
+        return I18nResourceBundle.i18nString(INVALID, PERMS);
+    }
+
+    public static String perms() {
+        return I18nResourceBundle.i18nString(PERMS);
+    }
+
+    public static String nameCanNotEmpty() {
+        return I18nResourceBundle.i18nString(NAME, CAN_NOT, EMPTY);
+    }
+
+    public static String trayNotSupport() {
+        return I18nResourceBundle.i18nString(TRAY, NOT, SUPPORT);
+    }
+
+    public static String name() {
+        return I18nResourceBundle.i18nString(NAME);
+    }
+
+    public static String value() {
+        return I18nResourceBundle.i18nString(VALUE);
+    }
+
+    public static String cost() {
+        return I18nResourceBundle.i18nString(COST);
+    }
+
+    public static String env() {
+        return I18nResourceBundle.i18nString(ENV);
+    }
+
+    public static String soft() {
+        return I18nResourceBundle.i18nString(SOFT);
     }
 }
