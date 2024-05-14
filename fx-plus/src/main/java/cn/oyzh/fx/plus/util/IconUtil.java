@@ -20,7 +20,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/4/4
  */
-//@Slf4j
 @UtilityClass
 public class IconUtil {
 

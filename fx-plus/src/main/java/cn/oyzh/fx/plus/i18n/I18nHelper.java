@@ -177,6 +177,8 @@ public class I18nHelper {
 
     public static final String PORT = "base.port";
 
+    public static final String READONLY = "base.readonly";
+
     public static final String READONLY_MODE = "base.readonlyMode";
 
     public static final String CONNECTION = "base.connection";
@@ -220,6 +222,8 @@ public class I18nHelper {
     public static final String SLAVE = "base.slave";
 
     public static final String SENTINEL = "base.sentinel";
+
+    public static final String LOADING = "base.loading";
 
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
@@ -883,5 +887,13 @@ public class I18nHelper {
 
     public static String sentinel() {
         return I18nResourceBundle.i18nString(SENTINEL);
+    }
+
+    public static String readonly() {
+        return I18nResourceBundle.i18nString(READONLY);
+    }
+
+    public static String dataLoading() {
+        return I18nResourceBundle.i18nString(DATA, LOADING);
     }
 }
