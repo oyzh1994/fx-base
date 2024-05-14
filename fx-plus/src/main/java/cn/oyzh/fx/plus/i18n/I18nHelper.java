@@ -235,6 +235,26 @@ public class I18nHelper {
 
     public static final String HANDLE = "base.handle";
 
+    public static final String UNNAMED = "base.unnamed";
+
+    public static final String SERVER_INFO = "base.serverInfo";
+
+    public static final String EXPIRED = "base.expired";
+
+    public static final String SUBSCRIBE = "base.subscribe";
+
+    public static final String STARTED = "base.started";
+
+    public static final String RECEIVE = "base.receive";
+
+    public static final String CLOSED = "base.closed";
+
+    public static final String CONNECTING = "base.connecting";
+
+    public static final String BROKEN = "base.broken";
+
+    public static final String LOSS = "base.loss";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -929,5 +949,41 @@ public class I18nHelper {
 
     public static String handleKey() {
         return I18nResourceBundle.i18nString(HANDLE, KEY);
+    }
+
+    public static String unnamedConnection() {
+        return I18nResourceBundle.i18nString(UNNAMED, CONNECTION);
+    }
+
+    public static String serverInfo() {
+        return I18nResourceBundle.i18nString(SERVER_INFO);
+    }
+
+    public static String expired() {
+        return I18nResourceBundle.i18nString(EXPIRED);
+    }
+
+    public static String subscribe() {
+        return I18nResourceBundle.i18nString(SUBSCRIBE);
+    }
+
+    public static String receiveMessage() {
+        return I18nResourceBundle.i18nString(RECEIVE, MESSAGE);
+    }
+
+    public static String connectionClosed() {
+        return I18nResourceBundle.i18nString(CONNECTION, CLOSED);
+    }
+
+    public static String connectionConnecting() {
+        return I18nResourceBundle.i18nString(CONNECTION, CONNECTING);
+    }
+
+    public static String connectionBroken() {
+        return I18nResourceBundle.i18nString(CONNECTION, BROKEN);
+    }
+
+    public static String connectionLoss() {
+        return I18nResourceBundle.i18nString(CONNECTION, LOSS);
     }
 }
