@@ -133,6 +133,10 @@ public class I18nHelper {
 
     public static final String DELETED = "base.deleted";
 
+    public static final String ADDED = "base.added";
+
+    public static final String UPDATED = "base.updated";
+
     public static final String FOUND = "base.found";
 
     public static final String CURRENT = "base.current";
@@ -174,6 +178,48 @@ public class I18nHelper {
     public static final String PORT = "base.port";
 
     public static final String READONLY_MODE = "base.readonlyMode";
+
+    public static final String CONNECTION = "base.connection";
+
+    public static final String CONNECTED = "base.connected";
+
+    public static final String DISCONNECTED = "base.disconnected";
+
+    public static final String ADD = "base.add";
+
+    public static final String FIELD = "base.field";
+
+    public static final String ELEMENT = "base.element";
+
+    public static final String KEY_TYPE = "base.keyType";
+
+    public static final String MOVED = "base.moved";
+
+    public static final String RENAMED = "base.renamed";
+
+    public static final String NEW_NAME = "base.newName";
+
+    public static final String TTL = "base.ttl";
+
+    public static final String ROW = "base.row";
+
+    public static final String MEMBER = "base.member";
+
+    public static final String MESSAGE = "base.message";
+
+    public static final String COORDINATES = "base.coordinates";
+
+    public static final String SCORE = "base.score";
+
+    public static final String CLUSTER = "base.cluster";
+
+    public static final String MASTER_SLAVE = "base.master_slave";
+
+    public static final String MASTER = "base.master";
+
+    public static final String SLAVE = "base.slave";
+
+    public static final String SENTINEL = "base.sentinel";
 
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
@@ -721,5 +767,121 @@ public class I18nHelper {
 
     public static String readonlyMode() {
         return I18nResourceBundle.i18nString(READONLY_MODE);
+    }
+
+    public static String connectionConnected() {
+        return I18nResourceBundle.i18nString(CONNECTION, CONNECTED);
+    }
+
+    public static String connectionDisconnected() {
+        return I18nResourceBundle.i18nString(CONNECTION, DISCONNECTED);
+    }
+
+    public static String connectionDeleted() {
+        return I18nResourceBundle.i18nString(CONNECTION, DELETED);
+    }
+
+    public static String connectionAdded() {
+        return I18nResourceBundle.i18nString(CONNECTION, ADDED);
+    }
+
+    public static String connectionUpdated() {
+        return I18nResourceBundle.i18nString(CONNECTION, UPDATED);
+    }
+
+    public static String key() {
+        return I18nResourceBundle.i18nString(KEY);
+    }
+
+    public static String field() {
+        return I18nResourceBundle.i18nString(FIELD);
+    }
+
+    public static String add() {
+        return I18nResourceBundle.i18nString(ADD);
+    }
+
+    public static String addField() {
+        return I18nResourceBundle.i18nString(ADD, FIELD);
+    }
+
+    public static String addElement() {
+        return I18nResourceBundle.i18nString(ADD, ELEMENT);
+    }
+
+    public static String addKey() {
+        return I18nResourceBundle.i18nString(ADD, KEY);
+    }
+
+    public static String keyType() {
+        return I18nResourceBundle.i18nString(KEY_TYPE);
+    }
+
+    public static String copyKey() {
+        return I18nResourceBundle.i18nString(COPY, KEY);
+    }
+
+    public static String targetDatabase() {
+        return I18nResourceBundle.i18nString(TARGET, DATABASE);
+    }
+
+    public static String keyDeleted() {
+        return I18nResourceBundle.i18nString(KEY, DELETED);
+    }
+
+    public static String keyMoved() {
+        return I18nResourceBundle.i18nString(KEY, MOVED);
+    }
+
+    public static String keyRenamed() {
+        return I18nResourceBundle.i18nString(KEY, RENAMED);
+    }
+
+    public static String newName() {
+        return I18nResourceBundle.i18nString(NEW_NAME);
+    }
+
+    public static String ttlUpdated() {
+        return I18nResourceBundle.i18nString(TTL, UPDATED);
+    }
+
+    public static String rowAdded() {
+        return I18nResourceBundle.i18nString(ROW, ADDED);
+    }
+
+    public static String memberAdded() {
+        return I18nResourceBundle.i18nString(MEMBER, ADDED);
+    }
+
+    public static String messageAdded() {
+        return I18nResourceBundle.i18nString(MESSAGE, ADDED);
+    }
+
+    public static String coordinatesAdded() {
+        return I18nResourceBundle.i18nString(COORDINATES, ADDED);
+    }
+
+    public static String score() {
+        return I18nResourceBundle.i18nString(SCORE);
+    }
+
+    public static String master_slave() {
+        return I18nResourceBundle.i18nString(MASTER_SLAVE);
+    }
+
+    public static String cluster() {
+        return I18nResourceBundle.i18nString(CLUSTER);
+    }
+
+    public static String slave() {
+        return I18nResourceBundle.i18nString(SLAVE);
+    }
+
+    public static String master() {
+        return I18nResourceBundle.i18nString(MASTER);
+    }
+
+    public static String sentinel() {
+        return I18nResourceBundle.i18nString(SENTINEL);
     }
 }
