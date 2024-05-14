@@ -39,9 +39,10 @@ public class ExecutorUtil {
      * 提交任务
      *
      * @param task 任务
+     * @return 任务
      */
-    public static void submit(Runnable task) {
-        executor().submit(task);
+    public static Future<?> submit(Runnable task) {
+       return executor().submit(task);
     }
 
     /**

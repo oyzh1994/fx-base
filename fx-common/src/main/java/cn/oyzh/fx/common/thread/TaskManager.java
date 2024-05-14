@@ -114,11 +114,13 @@ public class TaskManager {
      *
      * @param task  任务
      * @param delay 延迟时间
+     * @return 任务
      */
-    public static void startDelay(Runnable task, int delay) {
+    public static Future<?> startDelay(Runnable task, int delay) {
         if (task != null) {
-            ExecutorUtil.start(task, delay);
+            return ExecutorUtil.start(task, delay);
         }
+        return null;
     }
 
     /**
@@ -145,10 +147,28 @@ public class TaskManager {
      * 开始任务
      *
      * @param task 任务
+     * @return 任务
      */
-    public static void start(Runnable task) {
+    public static Future<?> start(Runnable task) {
         if (task != null) {
-            ExecutorUtil.submit(task);
+            return ExecutorUtil.submit(task);
+        }
+        return null;
+    }
+
+    /**
+     * 取消任务
+     *
+     * @param future 任务
+     */
+    public static void cancel(Future<?> future) {
+        try {
+            if (future != null && !future.isDone()) {
+                future.exceptionNow();
+                future.cancel(true);
+            }
+        } catch (Throwable ignore) {
+
         }
     }
 }

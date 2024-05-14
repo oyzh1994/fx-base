@@ -30,4 +30,14 @@ public interface AreaAdapter extends TextAdapter, FontAdapter {
         this.setFontSize(this.getFontSize() - 1);
         this.flushCaret();
     }
+
+    /**
+     * 设置内容
+     *
+     * @param text 文本内容
+     */
+    default void setTextExt(String text) {
+
+    }
+
 }

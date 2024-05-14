@@ -51,6 +51,8 @@ public class I18nHelper {
 
     public static final String OPERATION = "base.operation";
 
+    public static final String EXECUTE = "base.execute";
+
     public static final String CANCEL = "base.cancel";
 
     public static final String TIMOUT = "base.timout";
@@ -225,6 +227,14 @@ public class I18nHelper {
 
     public static final String LOADING = "base.loading";
 
+    public static final String DAYS = "base.days";
+
+    public static final String COPIED = "base.copied";
+
+    public static final String MOVE = "base.move";
+
+    public static final String HANDLE = "base.handle";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -247,6 +257,10 @@ public class I18nHelper {
 
     public static String operationIng() {
         return I18nResourceBundle.i18nString(OPERATION, ING);
+    }
+
+    public static String executeIng() {
+        return I18nResourceBundle.i18nString(EXECUTE, ING);
     }
 
     public static String operationFinish() {
@@ -895,5 +909,25 @@ public class I18nHelper {
 
     public static String dataLoading() {
         return I18nResourceBundle.i18nString(DATA, LOADING);
+    }
+
+    public static String days() {
+        return I18nResourceBundle.i18nString(DAYS);
+    }
+
+    public static String copiedSuccess() {
+        return I18nResourceBundle.i18nString(COPIED, SUCCESS);
+    }
+
+    public static String copiedFail() {
+        return I18nResourceBundle.i18nString(COPIED, FAIL);
+    }
+
+    public static String moveKey() {
+        return I18nResourceBundle.i18nString(MOVE, KEY);
+    }
+
+    public static String handleKey() {
+        return I18nResourceBundle.i18nString(HANDLE, KEY);
     }
 }

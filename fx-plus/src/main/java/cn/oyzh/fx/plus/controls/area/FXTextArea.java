@@ -192,4 +192,9 @@ public class FXTextArea extends TextArea implements NodeAdapter, ThemeAdapter, A
             }
         });
     }
+
+    @Override
+    public void setTextExt(String text) {
+        FXUtil.runWait(() -> this.setText(text));
+    }
 }
