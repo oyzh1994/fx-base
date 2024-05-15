@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.controls.text.FlexLabel;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -225,7 +226,7 @@ public class PageBox<T> extends FlexHBox {
     private void formatPageText() {
         if (this.showPageText) {
             String text = Objects.requireNonNullElse(this.paging, Paging.EMPTY).formatTpl(this.pageTextTpl);
-            this.pageText.setText(text);
+            FXUtil.runWait(()-> this.pageText.setText(text));
         }
     }
 

@@ -4,9 +4,10 @@ package cn.oyzh.fx.plus.controls.digital;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
+import cn.oyzh.fx.plus.format.DigitalDecimalFormat;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,8 +25,12 @@ public class DecimalTextField extends DigitalTextField {
     /**
      * 小数位数
      */
-    @Setter
     protected Integer scaleLen;
+
+    public void setScaleLen(Integer scaleLen) {
+        this.scaleLen = scaleLen;
+        this.format();
+    }
 
     public DecimalTextField() {
         super(false, null);
@@ -37,6 +42,11 @@ public class DecimalTextField extends DigitalTextField {
 
     public DecimalTextField(boolean unsigned, Integer maxLen) {
         super(unsigned, maxLen);
+    }
+
+    @Override
+    protected DigitalFormatStringConverter getConverter() {
+        return new DigitalFormatStringConverter(this.format());
     }
 
     public DecimalTextField(boolean unsigned, Integer maxLen, Integer scaleLen) {
@@ -137,19 +147,31 @@ public class DecimalTextField extends DigitalTextField {
         this.value(value);
     }
 
-    @Override
-    protected void value(Number value) {
-        if (value != null && this.scaleLen != null) {
-            BigDecimal decimal = NumberUtil.toBigDecimal(value);
-            if (decimal.scale() > this.scaleLen) {
-                value = decimal.setScale(this.scaleLen, RoundingMode.HALF_UP);
-                this.textFormatter.setValue(value);
-            } else {
-                super.value(value);
-            }
+    // @Override
+    // protected void value(Number value) {
+    //     if (value != null && this.scaleLen != null) {
+    //         // BigDecimal decimal = NumberUtil.toBigDecimal(value);
+    //         // if (decimal.scale() > this.scaleLen) {
+    //         //     value = decimal.setScale(this.scaleLen, RoundingMode.HALF_UP);
+    //         //     this.textFormatter.setValue(value);
+    //         // } else {
+    //         //     super.value(value);
+    //         // }
+    //         super.value(this.format().format(value));
+    //     } else {
+    //         super.value(value);
+    //     }
+    // }
+
+    private DigitalDecimalFormat format;
+
+    private DigitalDecimalFormat format() {
+        if (this.format == null) {
+            this.format = new DigitalDecimalFormat(this.scaleLen);
         } else {
-            super.value(value);
+            this.format.setScaleLen(this.scaleLen);
         }
+        return this.format;
     }
 
     public void setMin(Double minVal) {

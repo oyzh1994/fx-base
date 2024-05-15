@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.controls.digital;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
@@ -24,6 +26,11 @@ public class NumberTextField extends DigitalTextField {
 
     public NumberTextField(boolean unsigned, Integer maxLen) {
         super(unsigned, maxLen);
+    }
+
+    @Override
+    protected DigitalFormatStringConverter getConverter() {
+        return new DigitalFormatStringConverter();
     }
 
     @Override
@@ -57,7 +64,8 @@ public class NumberTextField extends DigitalTextField {
                         return null;
                     }
                     // 数字判断
-                    Number l = this.converter.fromString(text);
+                    Number l = NumberUtil.parseNumber(text);
+                    // Number l = this.converter.fromString(text);
                     if (l == null) {
                         return null;
                     }

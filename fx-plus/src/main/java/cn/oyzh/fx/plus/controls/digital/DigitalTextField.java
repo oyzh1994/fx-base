@@ -1,9 +1,8 @@
 package cn.oyzh.fx.plus.controls.digital;
 
 import cn.hutool.core.util.NumberUtil;
-import cn.oyzh.fx.plus.controls.textfield.FlexTextField;
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
-import cn.oyzh.fx.plus.converter.NumberConverter;
+import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
@@ -50,18 +49,19 @@ public abstract class DigitalTextField extends LimitTextField {
     /**
      * 文本格式器
      */
-    protected final TextFormatter<Number> textFormatter;
+    protected final TextFormatter<String> textFormatter;
 
-    /**
-     * 数据转换器
-     */
-    protected final NumberConverter converter = new NumberConverter();
+    // /**
+    //  * 数据转换器
+    //  */
+    // protected final NumberConverter converter = new NumberConverter();
 
     public DigitalTextField(boolean unsigned, Integer maxLen) {
         // 设置皮肤
         this.setSkin(new DigitalTextFieldSkin(this, this::incrValue, this::decrValue));
         // 创建文本格式化器
-        this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
+        // this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
+        this.textFormatter = new TextFormatter<>(this.getConverter(), null, this.createFilter());
         // 将TextFormatter对象设置到文本字段中
         this.setTextFormatter(this.textFormatter);
         // 监听值变化
@@ -70,25 +70,29 @@ public abstract class DigitalTextField extends LimitTextField {
         this.setUnsigned(unsigned);
     }
 
+    protected abstract DigitalFormatStringConverter getConverter();
+
     /**
      * 值变化
      *
      * @param newVal 新值
      */
-    protected void valueChanged(Number newVal) {
+    protected void valueChanged(String newVal) {
         // 检查新值是否有效
         if (newVal != null) {
             // 获取当前皮肤
             DigitalTextFieldSkin skin = (DigitalTextFieldSkin) this.getSkin();
+            Number number = NumberUtil.parseNumber(newVal);
+
             // 判断新值是否小于等于最小值，如果是则禁用减号按钮
-            if (this.minVal != null && newVal.doubleValue() <= this.minVal.doubleValue()) {
+            if (this.minVal != null && number.doubleValue() <= this.minVal.doubleValue()) {
                 skin.disableDecrButton();
             } else {
                 // 否则启用减号按钮
                 skin.enableDecrButton();
             }
             // 判断新值是否大于等于最大值，如果是则禁用加号按钮
-            if (this.maxVal != null && newVal.doubleValue() >= this.maxVal.doubleValue()) {
+            if (this.maxVal != null && number.doubleValue() >= this.maxVal.doubleValue()) {
                 skin.disableIncrButton();
             } else {
                 // 否则启用加号按钮
@@ -196,7 +200,7 @@ public abstract class DigitalTextField extends LimitTextField {
             } else if (this.minVal != null && value.doubleValue() < this.minVal.doubleValue()) {
                 value = this.minVal;
             }
-            this.textFormatter.setValue(value);
+            this.textFormatter.setValue(value.toString());
         }
     }
 

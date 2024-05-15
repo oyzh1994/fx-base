@@ -206,8 +206,17 @@ public class I18nHelper {
     public static final String TTL = "base.ttl";
 
     public static final String ROW = "base.row";
+    public static final String FIELD_NAME = "base.fieldName";
+
+    public static final String FIELD_VALUE = "base.fieldValue";
 
     public static final String MEMBER = "base.member";
+
+    public static final String COUNT = "base.count";
+
+    public static final String MESSAGE_ID = "base.messageId";
+
+    public static final String UNSAVED_AND_CONTINUE = "base.unsavedAndContinue";
 
     public static final String MESSAGE = "base.message";
 
@@ -297,6 +306,10 @@ public class I18nHelper {
 
     public static String alreadyExists() {
         return I18nResourceBundle.i18nString(ALREADY_EXISTS);
+    }
+
+    public static String dataAlreadyExists() {
+        return I18nResourceBundle.i18nString(DATA, ALREADY_EXISTS);
     }
 
     public static String fail() {
@@ -985,5 +998,41 @@ public class I18nHelper {
 
     public static String connectionLoss() {
         return I18nResourceBundle.i18nString(CONNECTION, LOSS);
+    }
+
+    public static String coordinates() {
+        return I18nResourceBundle.i18nString(COORDINATES);
+    }
+
+    public static String member() {
+        return I18nResourceBundle.i18nString(MEMBER);
+    }
+
+    public static String keyName() {
+        return I18nResourceBundle.i18nString(KEY, NAME);
+    }
+
+    public static String count() {
+        return I18nResourceBundle.i18nString(COUNT);
+    }
+
+    public static String unsavedAndContinue() {
+        return I18nResourceBundle.i18nString(UNSAVED_AND_CONTINUE);
+    }
+
+    public static String messageId() {
+        return I18nResourceBundle.i18nString(MESSAGE_ID);
+    }
+
+    public static String row() {
+        return I18nResourceBundle.i18nString(ROW);
+    }
+
+    public static String fieldName() {
+        return I18nResourceBundle.i18nString(FIELD_NAME);
+    }
+
+    public static String fieldValue() {
+        return I18nResourceBundle.i18nString(FIELD_VALUE);
     }
 }
