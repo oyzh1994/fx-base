@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.fx.plus.controls.svg.QuitSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -12,6 +13,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class QuitTrayItem extends TrayItem {
 
     public QuitTrayItem(String iconSize, Runnable action) {
-        super(I18nResourceBundle.i18nString("base.quit"), new QuitSVGGlyph(iconSize), action);
+        super(I18nHelper.quit(), new QuitSVGGlyph(iconSize), action);
     }
 }

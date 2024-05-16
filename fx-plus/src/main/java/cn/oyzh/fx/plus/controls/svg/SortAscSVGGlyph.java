@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -9,7 +10,7 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class SortAscSVGGlyph extends SVGGlyph {
 
     public SortAscSVGGlyph() {
-        this.setUrl("/fx-plus/font/sort-descending.svg");
+        this.setUrl("/fx-plus/font/sort-ascending.svg");
     }
 
     public SortAscSVGGlyph(String size) {
@@ -19,7 +20,7 @@ public class SortAscSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(I18nResourceBundle.i18nString("base.sortDesc"));
+        this.setTipText(I18nHelper.sortAsc());
         super.initNode();
     }
 }

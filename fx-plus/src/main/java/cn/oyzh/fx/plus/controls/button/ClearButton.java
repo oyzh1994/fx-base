@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.button;
 
 
 import cn.oyzh.fx.plus.controls.svg.ClearSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -16,8 +17,8 @@ public class ClearButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("danger");
-        this.setText(I18nResourceBundle.i18nString("base.clear"));
-        this.setTipText(I18nResourceBundle.i18nString("base.clear"));
+        this.setText(I18nHelper.clear());
+        this.setTipText(I18nHelper.clear());
         this.init(new ClearSVGGlyph(), 0.7);
         super.initNode();
     }

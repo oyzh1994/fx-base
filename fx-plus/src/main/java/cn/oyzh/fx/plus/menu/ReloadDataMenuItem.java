@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -9,7 +10,7 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class ReloadDataMenuItem extends ReloadMenuItem {
 
     public ReloadDataMenuItem(String iconSize, Runnable action) {
-        super(I18nResourceBundle.i18nString("base.reloadData"), null, iconSize, action);
+        super(I18nHelper.reloadData(), null, iconSize, action);
     }
 
 }

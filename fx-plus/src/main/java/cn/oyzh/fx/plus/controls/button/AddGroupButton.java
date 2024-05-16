@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.button;
 
 
 import cn.oyzh.fx.plus.controls.svg.AddSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -16,8 +17,8 @@ public class AddGroupButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("accent");
-        this.setText(I18nResourceBundle.i18nString("base.addGroup"));
-        this.setTipText(I18nResourceBundle.i18nString("base.addGroup"));
+        this.setText(I18nHelper.addGroup());
+        this.setTipText(I18nHelper.addGroup());
         this.init(new AddSVGGlyph(), 0.7);
         super.initNode();
     }

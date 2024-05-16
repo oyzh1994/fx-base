@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -9,6 +10,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class EditGroupMenuItem extends EditMenuItem {
 
     public EditGroupMenuItem(String iconSize, Runnable action) {
-        super(I18nResourceBundle.i18nString("base.editGroup"), null, iconSize, action);
+        super(I18nHelper.editGroup(), null, iconSize, action);
     }
 }

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -9,6 +10,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class RenameKeyMenuItem extends RenameMenuItem {
 
     public RenameKeyMenuItem(String iconSize, Runnable action) {
-        super(I18nResourceBundle.i18nString("base.rename","base.key"), I18nResourceBundle.i18nString("base.renameTip1"), iconSize, action);
+        super(I18nHelper.renameKey(), I18nResourceBundle.i18nString("base.renameTip1"), iconSize, action);
     }
 }

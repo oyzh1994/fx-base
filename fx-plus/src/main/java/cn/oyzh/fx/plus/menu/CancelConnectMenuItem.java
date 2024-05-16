@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -9,6 +10,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class CancelConnectMenuItem extends CancelMenuItem {
 
     public CancelConnectMenuItem(String iconSize, Runnable action) {
-        super(I18nResourceBundle.i18nString("base.cancelConnect"), null, iconSize, action);
+        super(I18nHelper.cancelConnect(), null, iconSize, action);
     }
 }

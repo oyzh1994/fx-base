@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.controls.svg.ExpandAllSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -10,6 +11,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class ExpandAllMenuItem extends FXMenuItem {
 
     public ExpandAllMenuItem(String iconSize, Runnable action) {
-        super(new ExpandAllSVGGlyph(iconSize), I18nResourceBundle.i18nString("base.expandAll"), null, action);
+        super(new ExpandAllSVGGlyph(iconSize), I18nHelper.expandAll(), null, action);
     }
 }

@@ -218,6 +218,8 @@ public class I18nHelper {
 
     public static final String UNSAVED_AND_CONTINUE = "base.unsavedAndContinue";
 
+    public static final String CLOSE_AND_CONTINUE = "base.closeAndContinue";
+
     public static final String MESSAGE = "base.message";
 
     public static final String COORDINATES = "base.coordinates";
@@ -263,6 +265,160 @@ public class I18nHelper {
     public static final String BROKEN = "base.broken";
 
     public static final String LOSS = "base.loss";
+
+    public static final String REPEAT = "base.repeat";
+
+    public static final String GROUP = "base.group";
+
+    public static final String CONTENT_TIP1 = "base.contentTip1";
+
+    public static final String FILTER = "base.filter";
+
+    public static final String SAVE = "base.save";
+
+    public static final String ENCODING = "base.encoding";
+
+    public static final String IDLE_TIME = "base.idleTime";
+
+    public static final String REFCOUNT = "base.refcount";
+
+    public static final String ARE_YOU_SURE = "base.areYouSure";
+
+    public static final String TIPS = "base.tips";
+
+    public static final String OK = "base.ok";
+
+    public static final String USED_MEMORY = "base.usedMemory";
+
+    public static final String CLIENT_NUM = "base.clientNum";
+
+    public static final String NETWORK = "base.network";
+
+    public static final String INPUT = "base.input";
+
+    public static final String OUTPUT = "base.output";
+
+    public static final String EXEC_CMD_PER_SEC = "base.execCmdPerSec";
+
+    public static final String REDIS = "base.redis";
+
+    public static final String ZK = "base.zk";
+
+    public static final String BUILD_TYPE1 = "base.buildType1";
+
+    public static final String BUILD_TYPE2 = "base.buildType2";
+
+    public static final String DATA_TOO_LARGE = "base.dataTooLarge";
+
+    public static final String ENABLE = "base.enable";
+
+    public static final String CLOSE = "base.close";
+
+    public static final String TERMINAL_TIP1 = "base.terminalTip1";
+
+    public static final String TERMINAL_TIP2 = "base.terminalTip2";
+
+    public static final String DELETE_GROUP_TIP1 = "base.deleteGroupTip1";
+
+    public static final String DELETE_GROUP_TIP2 = "base.deleteGroupTip2";
+
+    public static final String CREATE_TIME = "base.createTime";
+
+    public static final String UPDATE_TIME = "base.updateTime";
+
+    public static final String LOAD = "base.load";
+
+    public static final String AUTHED = "base.authed";
+
+    public static final String NO_MORE_RESULT = "base.noMoreResult";
+
+    public static final String AUTH_FAIL_TIP1 = "base.authFailTip1";
+
+    public static final String TYPE = "base.type";
+
+    public static final String PATH = "base.path";
+
+    public static final String CHANGELOG = "base.changelog";
+
+    public static final String CLEAR = "base.clear";
+
+    public static final String OPEN = "base.open";
+
+    public static final String TERMINAL = "base.terminal";
+
+    public static final String RESET = "base.reset";
+
+    public static final String STOP = "base.stop";
+
+    public static final String SUBMIT = "base.submit";
+
+    public static final String ABOUT = "base.about";
+
+    public static final String COLLAPSE = "base.collapse";
+
+    public static final String COLLECT = "base.collect";
+
+    public static final String EDIT = "base.edit";
+
+    public static final String EXPAND = "base.expand";
+
+    public static final String NEXT = "base.next";
+
+    public static final String PASTE = "base.paste";
+
+    public static final String POSITIONING = "base.positioning";
+
+    public static final String PREV = "base.prev";
+
+    public static final String REDO = "base.redo";
+
+    public static final String REFRESH = "base.refresh";
+
+    public static final String RENAME = "base.rename";
+
+    public static final String SETTING = "base.setting";
+
+    public static final String UNDO = "base.undo";
+
+    public static final String BATCH_OPT = "base.batchOpt";
+
+    public static final String HIS = "base.his";
+
+    public static final String QR_CODE = "base.qrCode";
+
+    public static final String SORT_ASC = "base.sortAsc";
+
+    public static final String SORT_DESC = "base.sortDesc";
+
+    public static final String UN_COLLECT = "base.unCollect";
+
+    public static final String FONT_SIZE_TIP = "base.fontSizeTip";
+
+    public static final String FONT_NAME_TIP = "base.fontNameTip";
+
+    public static final String FONT_WEIGHT_TIP = "base.fontWeightTip";
+
+    public static final String FIRST_PAGE = "base.firstPage";
+
+    public static final String NEXT_PAGE = "base.nextPage";
+
+    public static final String PREV_PAGE = "base.prevPage";
+
+    public static final String LAST_PAGE = "base.lastPage";
+
+    public static final String RELOAD = "base.reload";
+
+    public static final String UNLOAD = "base.unload";
+
+    public static final String DELETE_TIP1 = "base.deleteTip1";
+
+    public static final String IGNORED = "base.ignored";
+
+    public static final String PROCESSED = "base.processed";
+
+    public static final String SECONDS = "base.seconds";
+
+    public static final String AUTH = "base.auth";
 
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
@@ -426,6 +582,10 @@ public class I18nHelper {
 
     public static String contentAlreadyExists() {
         return I18nResourceBundle.i18nString(CONTENT, ALREADY_EXISTS);
+    }
+
+    public static String groupAlreadyExists() {
+        return I18nResourceBundle.i18nString(GROUP, ALREADY_EXISTS);
     }
 
     public static String cancel() {
@@ -1020,6 +1180,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(UNSAVED_AND_CONTINUE);
     }
 
+    public static String closeAndContinue() {
+        return I18nResourceBundle.i18nString(CLOSE_AND_CONTINUE);
+    }
+
     public static String messageId() {
         return I18nResourceBundle.i18nString(MESSAGE_ID);
     }
@@ -1034,5 +1198,469 @@ public class I18nHelper {
 
     public static String fieldValue() {
         return I18nResourceBundle.i18nString(FIELD_VALUE);
+    }
+
+    public static String repeat() {
+        return I18nResourceBundle.i18nString(REPEAT);
+    }
+
+    public static String contentTip1() {
+        return I18nResourceBundle.i18nString(CONTENT_TIP1);
+    }
+
+    public static String keyFilter() {
+        return I18nResourceBundle.i18nString(KEY, FILTER);
+    }
+
+    public static String saveConnection() {
+        return I18nResourceBundle.i18nString(SAVE, CONNECTION);
+    }
+
+    public static String importFail() {
+        return I18nResourceBundle.i18nString(IMPORT, FAIL);
+    }
+
+    public static String connected() {
+        return I18nResourceBundle.i18nString(CONNECTED);
+    }
+
+    public static String connection() {
+        return I18nResourceBundle.i18nString(CONNECTION);
+    }
+
+    public static String encoding() {
+        return I18nResourceBundle.i18nString(ENCODING);
+    }
+
+    public static String idleTime() {
+        return I18nResourceBundle.i18nString(IDLE_TIME);
+    }
+
+    public static String refcount() {
+        return I18nResourceBundle.i18nString(REFCOUNT);
+    }
+
+    public static String areYouSure() {
+        return I18nResourceBundle.i18nString(ARE_YOU_SURE);
+    }
+
+    public static String tips() {
+        return I18nResourceBundle.i18nString(TIPS);
+    }
+
+    public static String ok() {
+        return I18nResourceBundle.i18nString(OK);
+    }
+
+    public static String usedMemory() {
+        return I18nResourceBundle.i18nString(USED_MEMORY);
+    }
+
+    public static String connectedClientNum() {
+        return I18nResourceBundle.i18nString(CONNECTED, CLIENT_NUM);
+    }
+
+    public static String networkInput() {
+        return I18nResourceBundle.i18nString(NETWORK, INPUT);
+    }
+
+    public static String networkOutput() {
+        return I18nResourceBundle.i18nString(NETWORK, OUTPUT);
+    }
+
+    public static String execCmdPerSec() {
+        return I18nResourceBundle.i18nString(EXEC_CMD_PER_SEC);
+    }
+
+    public static String redis() {
+        return I18nResourceBundle.i18nString(REDIS);
+    }
+
+    public static String zk() {
+        return I18nResourceBundle.i18nString(ZK);
+    }
+
+    public static String buildType1() {
+        return I18nResourceBundle.i18nString(BUILD_TYPE1);
+    }
+
+    public static String buildType2() {
+        return I18nResourceBundle.i18nString(BUILD_TYPE2);
+    }
+
+    public static String dataTooLarge() {
+        return I18nResourceBundle.i18nString(DATA_TOO_LARGE);
+    }
+
+    public static String close() {
+        return I18nResourceBundle.i18nString(CLOSE);
+    }
+
+    public static String enable() {
+        return I18nResourceBundle.i18nString(ENABLE);
+    }
+
+    public static String terminalTip1() {
+        return I18nResourceBundle.i18nString(TERMINAL_TIP1);
+    }
+
+    public static String terminalTip2() {
+        return I18nResourceBundle.i18nString(TERMINAL_TIP2);
+    }
+
+    public static String deleteGroupTip1() {
+        return I18nResourceBundle.i18nString(DELETE_GROUP_TIP1);
+    }
+
+    public static String deleteGroupTip2() {
+        return I18nResourceBundle.i18nString(DELETE_GROUP_TIP2);
+    }
+
+    public static String connectionIsEmpty() {
+        return I18nResourceBundle.i18nString(CONNECTION, IS, EMPTY);
+    }
+
+    public static String createTime() {
+        return I18nResourceBundle.i18nString(CREATE_TIME);
+    }
+
+    public static String updateTime() {
+        return I18nResourceBundle.i18nString(UPDATE_TIME);
+    }
+
+    public static String loadFail() {
+        return I18nResourceBundle.i18nString(LOAD, FAIL);
+    }
+
+    public static String authed() {
+        return I18nResourceBundle.i18nString(AUTHED);
+    }
+
+    public static String noMoreResult() {
+        return I18nResourceBundle.i18nString(NO_MORE_RESULT);
+    }
+
+    public static String permsAlreadyExists() {
+        return I18nResourceBundle.i18nString(PERMS, ALREADY_EXISTS);
+    }
+
+    public static String chooseSourceConnection() {
+        return I18nResourceBundle.i18nString(CHOOSE, SOURCE, CONNECTION);
+    }
+
+    public static String chooseTargetConnection() {
+        return I18nResourceBundle.i18nString(CHOOSE, TARGET, CONNECTION);
+    }
+
+    public static String authFailTip1() {
+        return I18nResourceBundle.i18nString(AUTH_FAIL_TIP1);
+    }
+
+    public static String nodePath() {
+        return I18nResourceBundle.i18nString(NODE, PATH);
+    }
+
+    public static String nodeData() {
+        return I18nResourceBundle.i18nString(NODE, DATA);
+    }
+
+    public static String nodeType() {
+        return I18nResourceBundle.i18nString(NODE, TYPE);
+    }
+
+    public static String changelog() {
+        return I18nResourceBundle.i18nString(CHANGELOG);
+    }
+
+    public static String clear() {
+        return I18nResourceBundle.i18nString(CLEAR);
+    }
+
+    public static String copy() {
+        return I18nResourceBundle.i18nString(COPY);
+    }
+
+    public static String openTerminal() {
+        return I18nResourceBundle.i18nString(OPEN, TERMINAL);
+    }
+
+    public static String reset() {
+        return I18nResourceBundle.i18nString(RESET);
+    }
+
+    public static String save() {
+        return I18nResourceBundle.i18nString(SAVE);
+    }
+
+    public static String addConnect() {
+        return I18nResourceBundle.i18nString(ADD, CONNECT);
+    }
+
+    public static String test() {
+        return I18nResourceBundle.i18nString(TEST);
+    }
+
+    public static String stop() {
+        return I18nResourceBundle.i18nString(STOP);
+    }
+
+    public static String addGroup() {
+        return I18nResourceBundle.i18nString(ADD, GROUP);
+    }
+
+    public static String submit() {
+        return I18nResourceBundle.i18nString(SUBMIT);
+    }
+
+    public static String about() {
+        return I18nResourceBundle.i18nString(ABOUT);
+    }
+
+    public static String collapse() {
+        return I18nResourceBundle.i18nString(COLLAPSE);
+    }
+
+    public static String collect() {
+        return I18nResourceBundle.i18nString(COLLECT);
+    }
+
+    public static String edit() {
+        return I18nResourceBundle.i18nString(EDIT);
+    }
+
+    public static String expand() {
+        return I18nResourceBundle.i18nString(EXPAND);
+    }
+
+    public static String filter() {
+        return I18nResourceBundle.i18nString(FILTER);
+    }
+
+    public static String group() {
+        return I18nResourceBundle.i18nString(GROUP);
+    }
+
+    public static String message() {
+        return I18nResourceBundle.i18nString(MESSAGE);
+    }
+
+    public static String move() {
+        return I18nResourceBundle.i18nString(MOVE);
+    }
+
+    public static String next() {
+        return I18nResourceBundle.i18nString(NEXT);
+    }
+
+    public static String paste() {
+        return I18nResourceBundle.i18nString(PASTE);
+    }
+
+    public static String positioning() {
+        return I18nResourceBundle.i18nString(POSITIONING);
+    }
+
+    public static String prev() {
+        return I18nResourceBundle.i18nString(PREV);
+    }
+
+    public static String redo() {
+        return I18nResourceBundle.i18nString(REDO);
+    }
+
+    public static String refresh() {
+        return I18nResourceBundle.i18nString(REFRESH);
+    }
+
+    public static String rename() {
+        return I18nResourceBundle.i18nString(RENAME);
+    }
+
+    public static String setting() {
+        return I18nResourceBundle.i18nString(SETTING);
+    }
+
+    public static String terminal() {
+        return I18nResourceBundle.i18nString(TERMINAL);
+    }
+
+    public static String undo() {
+        return I18nResourceBundle.i18nString(UNDO);
+    }
+
+    public static String batchOpt() {
+        return I18nResourceBundle.i18nString(BATCH_OPT);
+    }
+
+    public static String collapseAll() {
+        return I18nResourceBundle.i18nString(COLLAPSE, ALL);
+    }
+
+    public static String expandAll() {
+        return I18nResourceBundle.i18nString(EXPAND, ALL);
+    }
+
+    public static String his() {
+        return I18nResourceBundle.i18nString(HIS);
+    }
+
+    public static String qrCode() {
+        return I18nResourceBundle.i18nString(QR_CODE);
+    }
+
+    public static String sortDesc() {
+        return I18nResourceBundle.i18nString(SORT_DESC);
+    }
+
+    public static String sortAsc() {
+        return I18nResourceBundle.i18nString(SORT_ASC);
+    }
+
+    public static String unCollect() {
+        return I18nResourceBundle.i18nString(UN_COLLECT);
+    }
+
+    public static String addNode() {
+        return I18nResourceBundle.i18nString(ADD, NODE);
+    }
+
+    public static String deleteNode() {
+        return I18nResourceBundle.i18nString(DELETE, NODE);
+    }
+
+    public static String fontNameTip() {
+        return I18nResourceBundle.i18nString(FONT_NAME_TIP);
+    }
+
+    public static String fontSizeTip() {
+        return I18nResourceBundle.i18nString(FONT_SIZE_TIP);
+    }
+
+    public static String fontWeightTip() {
+        return I18nResourceBundle.i18nString(FONT_WEIGHT_TIP);
+    }
+
+    public static String firstPage() {
+        return I18nResourceBundle.i18nString(FIRST_PAGE);
+    }
+
+    public static String prevPage() {
+        return I18nResourceBundle.i18nString(PREV_PAGE);
+    }
+
+    public static String nextPage() {
+        return I18nResourceBundle.i18nString(NEXT_PAGE);
+    }
+
+    public static String lastPage() {
+        return I18nResourceBundle.i18nString(LAST_PAGE);
+    }
+
+    public static String closeConnect() {
+        return I18nResourceBundle.i18nString(CLOSE, CONNECT);
+    }
+
+    public static String cancelOperation() {
+        return I18nResourceBundle.i18nString(CANCEL, OPERATION);
+    }
+
+    public static String cancelConnect() {
+        return I18nResourceBundle.i18nString(CANCEL, CONNECT);
+    }
+
+    public static String clearData() {
+        return I18nResourceBundle.i18nString(CLEAR, DATA);
+    }
+
+    public static String deleteConnect() {
+        return I18nResourceBundle.i18nString(DELETE, CONNECT);
+    }
+
+    public static String deleteGroup() {
+        return I18nResourceBundle.i18nString(DELETE, GROUP);
+    }
+
+    public static String editConnect() {
+        return I18nResourceBundle.i18nString(EDIT, CONNECT);
+    }
+
+    public static String editGroup() {
+        return I18nResourceBundle.i18nString(EDIT, GROUP);
+    }
+
+    public static String exportConnect() {
+        return I18nResourceBundle.i18nString(EXPORT, CONNECT);
+    }
+
+    public static String importConnect() {
+        return I18nResourceBundle.i18nString(IMPORT, CONNECT);
+    }
+
+    public static String loadAll() {
+        return I18nResourceBundle.i18nString(LOAD, ALL);
+    }
+
+    public static String reloadData() {
+        return I18nResourceBundle.i18nString(RELOAD, DATA);
+    }
+
+    public static String renameConnect() {
+        return I18nResourceBundle.i18nString(RENAME, CONNECT);
+    }
+
+    public static String renameGroup() {
+        return I18nResourceBundle.i18nString(RENAME, GROUP);
+    }
+
+    public static String renameKey() {
+        return I18nResourceBundle.i18nString(RENAME, KEY);
+    }
+
+    public static String renameNode() {
+        return I18nResourceBundle.i18nString(RENAME, NODE);
+    }
+
+    public static String repeatConnect() {
+        return I18nResourceBundle.i18nString(REPEAT, CONNECT);
+    }
+
+    public static String startConnect() {
+        return I18nResourceBundle.i18nString(START, CONNECT);
+    }
+
+    public static String transportData() {
+        return I18nResourceBundle.i18nString(TRANSPORT, DATA);
+    }
+
+    public static String unload() {
+        return I18nResourceBundle.i18nString(UNLOAD);
+    }
+
+    public static String deleteTip1() {
+        return I18nResourceBundle.i18nString(DELETE_TIP1);
+    }
+
+    public static String ignored() {
+        return I18nResourceBundle.i18nString(IGNORED);
+    }
+
+    public static String processed() {
+        return I18nResourceBundle.i18nString(PROCESSED);
+    }
+
+    public static String copyFail() {
+        return I18nResourceBundle.i18nString(COPY, FAIL);
+    }
+
+    public static String open() {
+        return I18nResourceBundle.i18nString(OPEN);
+    }
+
+    public static String seconds() {
+        return I18nResourceBundle.i18nString(SECONDS);
+    }
+
+    public static String authNode() {
+        return I18nResourceBundle.i18nString(AUTH, NODE);
     }
 }

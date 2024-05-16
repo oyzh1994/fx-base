@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.search;
 
+import cn.oyzh.fx.plus.i18n.I18nAdapter;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import lombok.Data;
 
@@ -43,14 +45,14 @@ public class SearchResult {
         }
         return switch (this.matchType) {
             case "name":
-                yield I18nResourceBundle.i18nString("base.name");
+                yield I18nHelper.name();
                 // yield "名称";
             case "data":
                 // yield "值";
-                yield I18nResourceBundle.i18nString("base.value");
+                yield I18nHelper.value();
             case "all":
                 // yield "名称、值";
-                yield I18nResourceBundle.i18nString("base.name") + "、" + I18nResourceBundle.i18nString("base.value");
+                yield I18nHelper.name() + "、" + I18nHelper.value();
             default:
                 yield "";
         };

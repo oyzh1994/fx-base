@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.button;
 
 
 import cn.oyzh.fx.plus.controls.svg.StopSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -16,8 +17,8 @@ public class StopButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("default");
-        this.setText(I18nResourceBundle.i18nString("base.stop"));
-        this.setTipText(I18nResourceBundle.i18nString("base.stop"));
+        this.setText(I18nHelper.stop());
+        this.setTipText(I18nHelper.stop());
         this.init(new StopSVGGlyph(), 0.7);
         super.initNode();
     }

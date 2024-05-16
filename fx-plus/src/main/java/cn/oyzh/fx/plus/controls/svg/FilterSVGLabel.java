@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -19,8 +20,8 @@ public class FilterSVGLabel extends SVGLabel{
 
     @Override
     public void initNode() {
-        this.setText(I18nResourceBundle.i18nString("base.filter"));
-        this.setTipText(I18nResourceBundle.i18nString("base.filter"));
+        this.setText(I18nHelper.filter());
+        this.setTipText(I18nHelper.filter());
         super.initNode();
     }
 }

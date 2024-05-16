@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -19,7 +20,7 @@ public class TransportSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(I18nResourceBundle.i18nString("base.transport"));
+        this.setTipText(I18nHelper.transport());
         super.initNode();
     }
 }

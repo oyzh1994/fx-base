@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -19,8 +20,8 @@ public class CollapseSVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setText(I18nResourceBundle.i18nString("base.collapse"));
-        this.setTipText(I18nResourceBundle.i18nString("base.collapse"));
+        this.setText(I18nHelper.collapse());
+        // this.setTipText(I18nResourceBundle.i18nString("base.collapse"));
         super.initNode();
     }
 }

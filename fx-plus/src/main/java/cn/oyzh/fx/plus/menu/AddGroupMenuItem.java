@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.controls.svg.AddGroupSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -10,6 +11,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class AddGroupMenuItem extends FXMenuItem{
 
     public AddGroupMenuItem(String iconSize, Runnable action) {
-        super(new AddGroupSVGGlyph(iconSize), I18nResourceBundle.i18nString("base.addGroup"), null, action);
+        super(new AddGroupSVGGlyph(iconSize), I18nHelper.addGroup(), null, action);
     }
 }

@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.FlexHBox;
 import cn.oyzh.fx.plus.controls.button.FlexButton;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -141,7 +142,7 @@ public class PageBox<T> extends FlexHBox {
         this.firstBtn.setGraphic(firstLabel);
         this.firstBtn.setFlexHeight("90%");
         this.firstBtn.realWidth(45);
-        this.firstBtn.setTipText(I18nResourceBundle.i18nString("base.firstPage"));
+        this.firstBtn.setTipText(I18nHelper.firstPage());
         this.firstBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onFirstClicked != null) {
@@ -157,7 +158,7 @@ public class PageBox<T> extends FlexHBox {
         this.prevBtn.setGraphic(prevLabel);
         this.prevBtn.setFlexHeight("90%");
         this.prevBtn.realWidth(35);
-        this.prevBtn.setTipText(I18nResourceBundle.i18nString("base.prevPage"));
+        this.prevBtn.setTipText(I18nHelper.prevPage());
         this.prevBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onPrevClicked != null) {
@@ -172,7 +173,7 @@ public class PageBox<T> extends FlexHBox {
         this.nextBtn.setGraphic(nextLabel);
         this.nextBtn.setFlexHeight("90%");
         this.nextBtn.realWidth(35);
-        this.nextBtn.setTipText(I18nResourceBundle.i18nString("base.nextPage"));
+        this.nextBtn.setTipText(I18nHelper.nextPage());
         this.nextBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onNextClicked != null) {
@@ -187,7 +188,7 @@ public class PageBox<T> extends FlexHBox {
         this.lastBtn.setGraphic(lastLabel);
         this.lastBtn.setFlexHeight("90%");
         this.lastBtn.realWidth(45);
-        this.lastBtn.setTipText(I18nResourceBundle.i18nString("base.lastPage"));
+        this.lastBtn.setTipText(I18nHelper.lastPage());
         this.lastBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
             if (this.onLastClicked != null) {

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.controls.svg.TerminalSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -10,6 +11,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 public class OpenTerminalMenuItem extends FXMenuItem {
 
     public OpenTerminalMenuItem(String iconSize, Runnable action) {
-        super(new TerminalSVGGlyph(iconSize), I18nResourceBundle.i18nString("base.openTerminal"), null, action);
+        super(new TerminalSVGGlyph(iconSize), I18nHelper.openTerminal(), null, action);
     }
 }

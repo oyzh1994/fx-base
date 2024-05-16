@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.information.MessageBox;
 import javafx.scene.input.Clipboard;
@@ -46,11 +47,11 @@ public class ClipboardUtil {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
-            MessageBox.okToast(I18nResourceBundle.i18nString("base.copySuccess"));
+            MessageBox.okToast(I18nHelper.copySuccess());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            MessageBox.warn(I18nResourceBundle.i18nString("base.copyFail"));
+            MessageBox.warn(I18nHelper.copyFail());
         }
         return false;
     }

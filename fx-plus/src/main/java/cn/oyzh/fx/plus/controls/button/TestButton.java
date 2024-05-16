@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.button;
 
 
 import cn.oyzh.fx.plus.controls.svg.TestSVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
@@ -16,8 +17,8 @@ public class TestButton extends IconButton {
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("success");
-        this.setText(I18nResourceBundle.i18nString("base.test"));
-        this.setTipText(I18nResourceBundle.i18nString("base.test"));
+        this.setText(I18nHelper.test());
+        this.setTipText(I18nHelper.test());
         this.init(new TestSVGGlyph(), 0.7);
         super.initNode();
     }
