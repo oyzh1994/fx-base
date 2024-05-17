@@ -420,6 +420,8 @@ public class I18nHelper {
 
     public static final String AUTH = "base.auth";
 
+    public static final String REVERSE = "base.reverse";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -1662,5 +1664,9 @@ public class I18nHelper {
 
     public static String authNode() {
         return I18nResourceBundle.i18nString(AUTH, NODE);
+    }
+
+    public static String reverse() {
+        return I18nResourceBundle.i18nString(REVERSE);
     }
 }

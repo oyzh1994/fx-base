@@ -40,6 +40,25 @@ public class ClipboardUtil {
      * 设置字符串到粘贴板，并提示
      *
      * @param content 内容
+     * @return 结果
+     */
+    public static boolean setStringAndTip(@NonNull String content ) {
+        try {
+            StringSelection stringSelection = new StringSelection(content);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
+            MessageBox.okToast(I18nHelper.copySuccess());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageBox.warn(I18nHelper.copyFail());
+        }
+        return false;
+    }
+
+    /**
+     * 设置字符串到粘贴板，并提示
+     *
+     * @param content 内容
      * @param tipText 提示标题
      * @return 结果
      */
