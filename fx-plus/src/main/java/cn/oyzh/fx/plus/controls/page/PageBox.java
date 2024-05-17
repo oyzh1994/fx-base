@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.page;
 
 import cn.oyzh.fx.common.dto.Paging;
 import cn.oyzh.fx.plus.controls.FlexHBox;
+import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.button.FlexButton;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
@@ -141,7 +142,7 @@ public class PageBox<T> extends FlexHBox {
         this.firstBtn = new FlexButton();
         this.firstBtn.setGraphic(firstLabel);
         this.firstBtn.setFlexHeight("90%");
-        this.firstBtn.realWidth(45);
+        this.firstBtn.prefWidth(40);
         this.firstBtn.setTipText(I18nHelper.firstPage());
         this.firstBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
@@ -150,6 +151,7 @@ public class PageBox<T> extends FlexHBox {
             }
         });
         this.firstBtn.managedBindVisible();
+        this.firstBtn.setPadding(new Insets(0,0,0,0));
 
         // 上一页
         FXLabel prevLabel = new FXLabel("<");
@@ -157,7 +159,7 @@ public class PageBox<T> extends FlexHBox {
         this.prevBtn = new FlexButton();
         this.prevBtn.setGraphic(prevLabel);
         this.prevBtn.setFlexHeight("90%");
-        this.prevBtn.realWidth(35);
+        this.prevBtn.prefWidth(30);
         this.prevBtn.setTipText(I18nHelper.prevPage());
         this.prevBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
@@ -165,6 +167,7 @@ public class PageBox<T> extends FlexHBox {
                 this.onPrevClicked.handle(e);
             }
         });
+        this.prevBtn.setPadding(new Insets(0,0,0,0));
 
         // 下一页
         FXLabel nextLabel = new FXLabel(">");
@@ -172,7 +175,7 @@ public class PageBox<T> extends FlexHBox {
         this.nextBtn = new FlexButton();
         this.nextBtn.setGraphic(nextLabel);
         this.nextBtn.setFlexHeight("90%");
-        this.nextBtn.realWidth(35);
+        this.nextBtn.prefWidth(30);
         this.nextBtn.setTipText(I18nHelper.nextPage());
         this.nextBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
@@ -180,6 +183,7 @@ public class PageBox<T> extends FlexHBox {
                 this.onNextClicked.handle(e);
             }
         });
+        this.nextBtn.setPadding(new Insets(0,0,0,0));
 
         // 尾页
         FXLabel lastLabel = new FXLabel(">>");
@@ -187,7 +191,7 @@ public class PageBox<T> extends FlexHBox {
         this.lastBtn = new FlexButton();
         this.lastBtn.setGraphic(lastLabel);
         this.lastBtn.setFlexHeight("90%");
-        this.lastBtn.realWidth(45);
+        this.lastBtn.prefWidth(40);
         this.lastBtn.setTipText(I18nHelper.lastPage());
         this.lastBtn.setOnMousePrimaryClicked(e -> {
             this.formatPageText();
@@ -196,17 +200,18 @@ public class PageBox<T> extends FlexHBox {
             }
         });
         this.lastBtn.managedBindVisible();
+        this.lastBtn.setPadding(new Insets(0,0,0,0));
 
         // 页码文本
         this.pageText = new FlexLabel();
         this.pageText.setFlexHeight("90%");
         this.pageText.managedBindVisible();
 
-        // 设置边距
-        HBox.setMargin(this.firstBtn, new Insets(0, 0, 0, 0));
-        HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 0));
-        HBox.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
-        HBox.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
+        // // 设置边距
+        // HBox.setMargin(this.firstBtn, new Insets(0, 0, 0, 0));
+        // HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 0));
+        // HBox.setMargin(this.nextBtn, new Insets(0, 0, 0, 0));
+        // HBox.setMargin(this.lastBtn, new Insets(0, 0, 0, 0));
         HBox.setMargin(this.pageText, new Insets(0, 0, 0, 5));
 
         // 添加子节点
@@ -284,11 +289,11 @@ public class PageBox<T> extends FlexHBox {
     public void setShowFirst(boolean showFirst) {
         this.showFirst = showFirst;
         this.firstBtn.setVisible(showFirst);
-        if (this.showFirst) {
-            HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
-        } else {
-            HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 0));
-        }
+        // if (this.showFirst) {
+        //     HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
+        // } else {
+        //     HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 0));
+        // }
         this.updateSize();
     }
 

@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.controls.rich;
+package cn.oyzh.fx.rich.util;
 
+import cn.oyzh.fx.rich.data.RichDataPane;
 import lombok.experimental.UtilityClass;
 import org.fxmisc.richtext.StyledTextArea;
 
@@ -10,7 +11,6 @@ import org.fxmisc.richtext.StyledTextArea;
  * @author oyzh
  * @since 2023/11/20
  */
-//@Slf4j
 @UtilityClass
 public class RichControlUtil {
 
@@ -22,6 +22,17 @@ public class RichControlUtil {
     public static void deselect(StyledTextArea<?, ?> textArea) {
         if (textArea != null) {
             textArea.deselect();
+        }
+    }
+
+    /**
+     * 取消选中
+     *
+     * @param pane 组件
+     */
+    public static void deselect(RichDataPane pane) {
+        if (pane != null) {
+            pane.getContent().deselect();
         }
     }
 }

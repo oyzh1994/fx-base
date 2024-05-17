@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.rich;
+package cn.oyzh.fx.rich.control;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.rich.RichTextStyle;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
