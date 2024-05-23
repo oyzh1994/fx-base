@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.controls.svg.RenameSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.UnLockSVGGlyph;
 
 /**

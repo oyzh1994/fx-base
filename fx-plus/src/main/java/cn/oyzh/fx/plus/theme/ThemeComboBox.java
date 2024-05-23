@@ -6,9 +6,6 @@ import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
 import cn.oyzh.fx.plus.i18n.I18nManager;
 import javafx.scene.paint.Color;
 
-import java.util.List;
-import java.util.Locale;
-
 /**
  * 主题下拉框
  *

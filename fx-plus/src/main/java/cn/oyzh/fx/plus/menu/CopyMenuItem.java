@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.controls.svg.CopySVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.FileSVGGlyph;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * @author oyzh

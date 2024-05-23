@@ -1,11 +1,14 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 /**
@@ -42,7 +45,7 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
         this.incrButton = new SVGGlyph("/fx-plus/font/arrow-up-filling.svg");
         this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
-        this.incrButton.setTipText("增加值");
+        this.incrButton.setTipText(I18nHelper.addValue());
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);
         this.incrButton.setFocusTraversable(false);
@@ -52,19 +55,34 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
         this.decrButton.setSize(h);
         this.decrButton.setVisible(false);
         this.decrButton.setColor(this.getButtonColor());
-        this.decrButton.setTipText("减少值");
+        this.decrButton.setTipText(I18nHelper.reduceValue());
         this.decrButton.managedBindVisible();
         this.decrButton.setEnableWaiting(false);
         this.decrButton.setFocusTraversable(false);
         this.decrButton.setPadding(new Insets(0));
-
+        // 绑定事件到按钮
         if (onIncr != null) {
             this.incrButton.setOnMousePrimaryClicked(event -> onIncr.run());
         }
         if (onDecr != null) {
             this.decrButton.setOnMousePrimaryClicked(event -> onDecr.run());
         }
-
+        // 执行事件过滤
+        if (onIncr != null || onDecr != null) {
+            textField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.UP) {
+                    if (onIncr != null) {
+                        onIncr.run();
+                    }
+                    event.consume();
+                } else if (event.getCode() == KeyCode.DOWN) {
+                    if (onDecr != null) {
+                        onDecr.run();
+                    }
+                    event.consume();
+                }
+            });
+        }
         // 添加到组件
         this.getChildren().addAll(this.incrButton, this.decrButton);
     }

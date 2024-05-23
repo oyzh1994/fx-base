@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.controls.svg.AddSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.MoveSVGGlyph;
 
 /**

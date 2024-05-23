@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.LimitControl;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;

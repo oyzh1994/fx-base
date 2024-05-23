@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.text;
 
-import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;

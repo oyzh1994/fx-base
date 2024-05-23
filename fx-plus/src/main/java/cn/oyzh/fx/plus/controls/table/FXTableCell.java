@@ -2,8 +2,6 @@ package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;

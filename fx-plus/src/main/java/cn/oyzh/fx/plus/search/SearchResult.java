@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.search;
 
-import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import lombok.Data;
 
 import java.util.Objects;

@@ -206,6 +206,7 @@ public class I18nHelper {
     public static final String TTL = "base.ttl";
 
     public static final String ROW = "base.row";
+
     public static final String FIELD_NAME = "base.fieldName";
 
     public static final String FIELD_VALUE = "base.fieldValue";
@@ -421,6 +422,8 @@ public class I18nHelper {
     public static final String AUTH = "base.auth";
 
     public static final String REVERSE = "base.reverse";
+
+    public static final String REDUCE = "base.reduce";
 
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
@@ -1668,5 +1671,13 @@ public class I18nHelper {
 
     public static String reverse() {
         return I18nResourceBundle.i18nString(REVERSE);
+    }
+
+    public static String addValue() {
+        return I18nResourceBundle.i18nString(ADD,VALUE);
+    }
+
+    public static String reduceValue() {
+        return I18nResourceBundle.i18nString(REDUCE,VALUE);
     }
 }

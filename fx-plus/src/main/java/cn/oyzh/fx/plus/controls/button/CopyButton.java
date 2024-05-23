@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.controls.svg.CopySVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * 复制按钮

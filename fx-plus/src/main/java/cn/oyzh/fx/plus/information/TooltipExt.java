@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.font.FontUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;

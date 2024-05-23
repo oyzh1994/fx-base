@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.digital;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;
@@ -79,7 +80,7 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected void valueChanged(String newVal) {
         // 检查新值是否有效
-        if (newVal != null) {
+        if (StrUtil.isNotBlank(newVal)) {
             // 获取当前皮肤
             DigitalTextFieldSkin skin = (DigitalTextFieldSkin) this.getSkin();
             Number number = NumberUtil.parseNumber(newVal);

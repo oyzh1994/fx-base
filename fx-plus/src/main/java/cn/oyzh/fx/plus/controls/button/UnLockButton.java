@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
-import cn.oyzh.fx.plus.controls.svg.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.UnLockSVGGlyph;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
  * 取消按钮

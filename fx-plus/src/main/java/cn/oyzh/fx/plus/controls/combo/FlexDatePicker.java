@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.scene.CacheHint;
 import javafx.scene.control.DatePicker;
 
 public class FlexDatePicker extends DatePicker implements ThemeAdapter, FlexAdapter, TipAdapter {

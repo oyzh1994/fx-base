@@ -1,13 +1,13 @@
 package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.stage.StageUtil;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.font.FontUtil;
-import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

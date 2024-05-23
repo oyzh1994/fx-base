@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.controls.digital;
 import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 import javafx.scene.control.TextFormatter;
-import lombok.val;
 
 import java.util.function.UnaryOperator;
 

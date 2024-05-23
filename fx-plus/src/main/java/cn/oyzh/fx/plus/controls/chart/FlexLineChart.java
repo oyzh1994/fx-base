@@ -1,12 +1,11 @@
 package cn.oyzh.fx.plus.controls.chart;
 
-import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.NamedArg;
 import javafx.collections.ObservableList;

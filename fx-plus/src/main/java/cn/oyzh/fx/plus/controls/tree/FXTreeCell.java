@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TreeCell;

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -37,8 +38,7 @@ public class ClearableTextFieldSkin extends TextFieldSkinExt {
         super(textField);
         // 初始化清除按钮
         this.clearButton = new SVGGlyph("/fx-plus/font/clear.svg");
-        this.clearButton.setTipText("清除");
-//        this.clearButton.setColor(this.getButtonColor());
+        this.clearButton.setTipText(I18nHelper.clear());
         this.clearButton.managedBindVisible();
         this.clearButton.setVisible(false);
         this.clearButton.setEnableWaiting(false);

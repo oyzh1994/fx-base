@@ -1,20 +1,18 @@
 package cn.oyzh.fx.plus.controls.combo;
 
-import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.FontWeight;

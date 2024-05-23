@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.controls.svg.DeleteSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.EditSVGGlyph;
 
 /**

@@ -10,7 +10,6 @@ import cn.oyzh.fx.plus.menu.CloseCurrTabMenuItem;
 import cn.oyzh.fx.plus.menu.CloseLeftTabMenuItem;
 import cn.oyzh.fx.plus.menu.CloseOtherTabMenuItem;
 import cn.oyzh.fx.plus.menu.CloseRightTabMenuItem;
-import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

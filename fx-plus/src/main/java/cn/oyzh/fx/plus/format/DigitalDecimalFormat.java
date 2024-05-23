@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.format;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 
 import java.text.DecimalFormat;
@@ -48,7 +49,7 @@ public class DigitalDecimalFormat extends DecimalFormat {
     }
 
     public String format(CharSequence sequence) {
-        if (sequence != null) {
+        if (StrUtil.isNotBlank(sequence)) {
             try {
                 Number number = NumberUtil.parseNumber(sequence.toString());
                 return this.format(number);

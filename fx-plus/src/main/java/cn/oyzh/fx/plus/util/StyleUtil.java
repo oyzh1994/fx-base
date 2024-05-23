@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.util.ArrayUtil;
-import javafx.collections.ObservableList;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;

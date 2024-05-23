@@ -2,8 +2,6 @@ package cn.oyzh.fx.plus.controls.popup;
 
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.stage.Popup;
 
 /**
