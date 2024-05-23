@@ -129,7 +129,7 @@ public interface ThemeStyle {
      * @return 相关度
      */
     default double corr(ThemeStyle style) {
-        if (this.isDarkMode() && !style.isDarkMode()) {
+        if ((this.isDarkMode() && !style.isDarkMode()) || (!this.isDarkMode() && style.isDarkMode())) {
             return -1;
         }
         // 前景色
