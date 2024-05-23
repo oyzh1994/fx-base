@@ -1674,10 +1674,14 @@ public class I18nHelper {
     }
 
     public static String addValue() {
-        return I18nResourceBundle.i18nString(ADD,VALUE);
+        return I18nResourceBundle.i18nString(ADD, VALUE);
     }
 
     public static String reduceValue() {
-        return I18nResourceBundle.i18nString(REDUCE,VALUE);
+        return I18nResourceBundle.i18nString(REDUCE, VALUE);
+    }
+
+    public static String fieldAlreadyExists() {
+        return I18nResourceBundle.i18nString(FIELD, ALREADY_EXISTS);
     }
 }
