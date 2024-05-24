@@ -139,7 +139,7 @@ public interface ThemeStyle {
         // 强调色
         double d3 = ThemeUtil.calcCorr(this.getAccentColor(), style.getAccentColor());
         // 返回相关度
-        return d1 * 4.5 + d2 * 3.5 + d3 * 2;
+        return d1 * 5.5 + d2 * 2.5 + d3 * 2;
     }
 
 }

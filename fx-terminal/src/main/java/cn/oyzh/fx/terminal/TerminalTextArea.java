@@ -3,8 +3,10 @@ package cn.oyzh.fx.terminal;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.plus.controls.area.FlexTextArea;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.rich.RichTextStyle;
+import cn.oyzh.fx.rich.control.FlexRichTextArea;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -24,13 +26,19 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 命令行文本域
  *
  * @author oyzh
  * @since 2023/05/28
  */
-public class TerminalTextArea extends FlexTextArea implements Terminal {
+public class TerminalTextArea extends FlexRichTextArea implements Terminal {
+// public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     /**
      * 不可操作边界
@@ -93,6 +101,8 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
                 this.enableInput();
             }
         });
+        this.addTextChangeListener((observable, oldValue, newValue) -> this.initTextStyle());
+        this.showLineNum();
     }
 
     @Override
@@ -306,10 +316,11 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
             this.appendText(prompt);
         }
         this.flushNOP();
-        ExecutorUtil.start(() -> FXUtil.runLater(() -> {
-            super._scrollToEnd();
-            this._flushCaret();
-        }), 20);
+        // ExecutorUtil.start(() -> FXUtil.runLater(() -> {
+        //     super._scrollToEnd();
+        //     this._flushCaret();
+        // }), 20);
+        TaskManager.startDelay(this::flushCaret, 20);
     }
 
     @Override
@@ -324,7 +335,7 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     @Override
     public void caretPosition(int caretPosition) {
-        this.positionCaret(caretPosition);
+        FXUtil.runWait(() -> this.positionCaret(caretPosition));
     }
 
     @Override
@@ -382,7 +393,9 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     @Override
     public void flushCaret() {
-        FXUtil.runWait(this::_flushCaret);
+        // FXUtil.runWait(this::_flushCaret);
+        this.caretPosition(this.getNOP());
+        this.requestFocus();
     }
 
     @Override
@@ -395,17 +408,42 @@ public class TerminalTextArea extends FlexTextArea implements Terminal {
         super.fontSizeDecr();
     }
 
-    protected void _flushCaret() {
-        this.caretPosition(this.getNOP());
-        this.requestFocus();
-    }
+    // protected void _flushCaret() {
+    //     this.caretPosition(this.getNOP());
+    //     this.requestFocus();
+    // }
 
     @Override
     public void moveCaretEnd() {
+        this.caretPosition(this.getLength());
+        this.requestFocus();
+    }
+
+    /**
+     * 基础内容正则模式
+     */
+    private static Pattern Base_Content_Pattern;
+
+    private static Pattern baseContentPattern() {
+        if (Base_Content_Pattern == null) {
+            Base_Content_Pattern = Pattern.compile(">");
+        }
+        return Base_Content_Pattern;
+    }
+
+    @Override
+    public void initTextStyle() {
         FXUtil.runWait(() -> {
-            this.caretPosition(this.getLength());
-            // this.positionCaret(this.getLength());
-            this.requestFocus();
+            this.clearTextStyle();
+            String text = this.getText();
+            Matcher matcher1 = baseContentPattern().matcher(text);
+            List<RichTextStyle> styles = new ArrayList<>();
+            while (matcher1.find()) {
+                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
+            }
+            for (RichTextStyle style : styles) {
+                this.setStyle(style);
+            }
         });
     }
 }

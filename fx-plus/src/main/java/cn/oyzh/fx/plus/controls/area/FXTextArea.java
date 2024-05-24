@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.area;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -196,5 +197,10 @@ public class FXTextArea extends TextArea implements NodeAdapter, ThemeAdapter, A
     @Override
     public void setTextExt(String text) {
         FXUtil.runWait(() -> this.setText(text));
+    }
+
+    @Override
+    public void requestFocus() {
+        TaskManager.startDelay(() -> FXUtil.runWait(super::requestFocus), 1);
     }
 }

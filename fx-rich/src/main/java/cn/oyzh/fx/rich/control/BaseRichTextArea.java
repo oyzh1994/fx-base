@@ -2,11 +2,13 @@ package cn.oyzh.fx.rich.control;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -31,13 +33,14 @@ import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.function.IntFunction;
 
 /**
  * @author oyzh
  * @since 2023/9/28
  */
-public class BaseRichTextArea extends InlineCssTextArea implements NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -261,7 +264,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements NodeAdapter, 
     }
 
     public void positionCaret(int caretPosition) {
-        this.displaceCaret(caretPosition);
+        FXUtil.runWait(() -> this.displaceCaret(caretPosition));
     }
 
     /**
@@ -347,5 +350,15 @@ public class BaseRichTextArea extends InlineCssTextArea implements NodeAdapter, 
         this.setBorder(new Border(stroke));
         this.getStyleClass().add("rich-text-area");
         this.applyPlainUndoManager();
+    }
+
+    @Override
+    public void requestFocus() {
+        TaskManager.startDelay(() -> FXUtil.runWait(super::requestFocus), 1);
+    }
+
+    @Override
+    public void changeLocale(Locale locale) {
+        this.setLocale(locale);
     }
 }

@@ -12,17 +12,24 @@
     <artifactId>fx-terminal</artifactId>
 
     <dependencies>
-        <!-- 自定义类库，fx相关 -->
-        <dependency>
-            <groupId>cn.oyzh</groupId>
-            <artifactId>fx-plus</artifactId>
-        </dependency>
+
+        <!-- &lt;!&ndash; 自定义类库，fx相关 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>cn.oyzh</groupId> -->
+        <!--     <artifactId>fx-plus</artifactId> -->
+        <!-- </dependency> -->
 
         <!-- &lt;!&ndash; Spring boot &ndash;&gt; -->
         <!-- <dependency> -->
         <!--     <groupId>org.springframework.boot</groupId> -->
         <!--     <artifactId>spring-boot-starter-log4j2</artifactId> -->
         <!-- </dependency> -->
+
+        <!-- 自定义类库，富文本相关 -->
+        <dependency>
+            <groupId>cn.oyzh</groupId>
+            <artifactId>fx-rich</artifactId>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
         <dependency>

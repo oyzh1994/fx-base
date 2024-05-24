@@ -33,7 +33,7 @@ public class SystemUtil {
             StaticLog.info("gc之前预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
             System.gc();
             usedMemory = heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
-            StaticLog.info("gc之前预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
+            StaticLog.info("gc之后预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
