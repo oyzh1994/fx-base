@@ -25,6 +25,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -420,28 +421,40 @@ public class TerminalTextArea extends RichTerminalPane implements Terminal {
     /**
      * 基础内容正则模式
      */
-    private static Pattern Base_Content_Pattern;
+    private Pattern contentPrompts;
 
-    private static Pattern baseContentPattern() {
-        if (Base_Content_Pattern == null) {
-            Base_Content_Pattern = Pattern.compile(">");
+    /**
+     * 设置内容提示词
+     *
+     * @param collection 内容提示词列表
+     */
+    public void setContentPrompts(Collection<String> collection) {
+        if (collection == null || collection.isEmpty()) {
+            this.contentPrompts = null;
+        } else {
+            StringBuilder regex = new StringBuilder("\\b(");
+            for (String s : collection) {
+                regex.append(s).append("|");
+            }
+            regex.append(")\\b");
+            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
         }
-        return Base_Content_Pattern;
+        this.initTextStyle();
     }
 
     @Override
     public void initTextStyle() {
-        FXUtil.runWait(() -> {
-            this.clearTextStyle();
+        this.clearTextStyle();
+        if (this.contentPrompts != null) {
             String text = this.getText();
-            Matcher matcher1 = baseContentPattern().matcher(text);
+            Matcher matcher1 = this.contentPrompts.matcher(text);
             List<RichTextStyle> styles = new ArrayList<>();
             while (matcher1.find()) {
-                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
+                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
             }
             for (RichTextStyle style : styles) {
                 this.setStyle(style);
             }
-        });
+        }
     }
 }

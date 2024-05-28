@@ -294,7 +294,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      */
     public void setStyle(RichTextStyle style) {
         if (style != null) {
-            this.setStyle(style.start(), style.end(), style.style());
+            FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
         }
     }
 
