@@ -2,11 +2,9 @@ package cn.oyzh.fx.terminal;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.control.FlexRichTextArea;
+import cn.oyzh.fx.rich.terminal.RichTerminalPane;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -37,7 +35,7 @@ import java.util.regex.Pattern;
  * @author oyzh
  * @since 2023/05/28
  */
-public class TerminalTextArea extends FlexRichTextArea implements Terminal {
+public class TerminalTextArea extends RichTerminalPane implements Terminal {
 // public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     /**
@@ -320,7 +318,7 @@ public class TerminalTextArea extends FlexRichTextArea implements Terminal {
         //     super._scrollToEnd();
         //     this._flushCaret();
         // }), 20);
-        TaskManager.startDelay(this::flushCaret, 20);
+        super.scrollToEnd();
     }
 
     @Override

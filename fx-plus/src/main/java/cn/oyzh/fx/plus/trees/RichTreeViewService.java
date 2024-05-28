@@ -70,12 +70,14 @@ public class RichTreeViewService {
             try {
                 while (!tasks.isEmpty()) {
                     RichTreeViewTask task = tasks.poll();
-                    if (task.getType() == 2) {
-                        FXUtil.runLater(task.getTask());
-                    } else if (task.getType() == 1) {
-                        FXUtil.runWait(task.getTask());
-                    } else {
-                        BackgroundService.submit(task.getTask());
+                    if (task != null) {
+                        if (task.getType() == 2) {
+                            FXUtil.runLater(task.getTask());
+                        } else if (task.getType() == 1) {
+                            FXUtil.runWait(task.getTask());
+                        } else {
+                            BackgroundService.submit(task.getTask());
+                        }
                     }
                 }
             } finally {

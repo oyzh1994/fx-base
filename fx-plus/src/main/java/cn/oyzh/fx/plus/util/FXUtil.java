@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.util;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
+import cn.oyzh.fx.common.thread.TaskManager;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -118,7 +119,17 @@ public class FXUtil {
      * @param task 任务
      */
     public static void runWait(@NonNull Runnable task) {
-        runWait(task, -1);
+        runWaitByTimeout(task, -1);
+    }
+
+    /**
+     * 同步运行
+     *
+     * @param task  任务
+     * @param delay 延迟时间
+     */
+    public static void runWait(@NonNull Runnable task, int delay) {
+        TaskManager.startDelay(() -> runWait(task), delay);
     }
 
     /**
@@ -127,7 +138,7 @@ public class FXUtil {
      * @param task    任务
      * @param timeout 超时时间
      */
-    public static void runWait(@NonNull Runnable task, int timeout) {
+    public static void runWaitByTimeout(@NonNull Runnable task, int timeout) {
         if (Platform.isFxApplicationThread()) {
             task.run();
         } else {
@@ -137,7 +148,6 @@ public class FXUtil {
                 // 包装线程
                 Task task1 = TaskBuilder.newBuilder().onStart(task).onFinish(latch::countDown).build();
                 Platform.runLater(task1);
-                // Platform.runLater(new RunTask(task1));
                 if (timeout <= 0) {
                     latch.await();
                 } else if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
@@ -150,7 +160,8 @@ public class FXUtil {
         }
     }
 
-    /* 延迟执行
+    /**
+     * 稍后执行
      *
      * @param task 任务
      */
@@ -160,5 +171,15 @@ public class FXUtil {
         } else {
             Platform.runLater(task);
         }
+    }
+
+    /**
+     * 稍后执行
+     *
+     * @param task  任务
+     * @param delay 延迟时间
+     */
+    public static void runLater(@NonNull Runnable task, int delay) {
+        TaskManager.startDelay(() -> runLater(task), delay);
     }
 }
