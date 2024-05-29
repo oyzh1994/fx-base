@@ -79,9 +79,10 @@ public interface TerminalCommandHandler<C extends TerminalCommand, T extends Ter
     /**
      * 命令帮助
      *
+     * @param terminal 终端
      * @return 命令帮助
      */
-    default String commandHelp() {
+    default String commandHelp(T terminal) {
         StringBuilder builder = new StringBuilder();
         if (StrUtil.isNotBlank(this.commandName())) {
             builder.append(" ").append(this.commandName());

@@ -30,8 +30,8 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
     }
 
     @Override
-    public String commandHelp() {
-        return super.commandHelp() + "\n-his " + I18nResourceBundle.i18nString("base.his");
+    public String commandHelp(Terminal terminal) {
+        return super.commandHelp(terminal) + "\n-his " + I18nResourceBundle.i18nString("base.his");
     }
 
     @Override

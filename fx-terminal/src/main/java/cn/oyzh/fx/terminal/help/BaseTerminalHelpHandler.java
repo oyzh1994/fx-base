@@ -15,7 +15,7 @@ public class BaseTerminalHelpHandler<T extends Terminal> implements TerminalHelp
         String command = input.split(" -?")[0];
         TerminalCommandHandler handler = TerminalManager.findHandler(command);
         if (handler != null) {
-            String help = handler.commandHelp();
+            String help = handler.commandHelp(terminal);
             if (help != null) {
                 terminal.outputLine(help);
                 terminal.outputPrompt();
