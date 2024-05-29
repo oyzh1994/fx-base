@@ -27,10 +27,12 @@ public abstract class BaseTerminalCommandHandler<C extends TerminalCommand, T ex
     }
 
     protected boolean checkArgs(String[] words) throws RuntimeException {
-        return words != null && words.length == 1;
+        return words != null && words.length >= 1;
     }
 
     protected C parseCommand(String line, String[] words) throws Exception {
-        return null;
+        TerminalCommand command = new TerminalCommand();
+        command.parseArgs(words);
+        return (C) command;
     }
 }
