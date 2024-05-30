@@ -26,7 +26,9 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -440,6 +442,24 @@ public class TerminalTextArea extends RichTerminalPane implements Terminal {
             this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
         }
         this.initTextStyle();
+    }
+
+    /**
+     * 初始化内容提示词
+     */
+    protected void initContentPrompts() {
+        // 设置内容提示符
+        Collection<TerminalCommandHandler> handlers = TerminalManager.listHandler();
+        Set<String> set = new HashSet<>();
+        for (TerminalCommandHandler handler : handlers) {
+            if (StrUtil.isNotBlank(handler.commandName())) {
+                set.add(handler.commandName());
+            }
+            if (StrUtil.isNotBlank(handler.commandSubName())) {
+                set.add(handler.commandSubName());
+            }
+        }
+        this.setContentPrompts(set);
     }
 
     @Override
