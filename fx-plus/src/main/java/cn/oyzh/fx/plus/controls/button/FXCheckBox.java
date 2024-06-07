@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
@@ -17,7 +18,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXCheckBox extends CheckBox implements NodeAdapter, ThemeAdapter, TipAdapter, StateAdapter, FontAdapter {
+public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, ThemeAdapter, TipAdapter, StateAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -88,5 +89,15 @@ public class FXCheckBox extends CheckBox implements NodeAdapter, ThemeAdapter, T
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
         this.setFocusTraversable(false);
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.adapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
@@ -82,56 +83,14 @@ public interface StateAdapter extends PropAdapter {
      * 禁用
      */
     default void disable() {
-        if (this instanceof Node node) {
-            if (!node.disableProperty().isBound()) {
-                node.setDisable(true);
-            }
-        } else if (this instanceof MenuItem item) {
-            if (!item.disableProperty().isBound()) {
-                item.setDisable(true);
-            }
-        } else if (this instanceof Tab tab) {
-            if (!tab.disableProperty().isBound()) {
-                tab.setDisable(true);
-            }
-        } else if (this instanceof Stage stage) {
-            Scene scene = stage.getScene();
-            if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
-                scene.getRoot().setDisable(true);
-            }
-        } else if (this instanceof StageWrapper stage) {
-            if (stage.root() != null && !stage.root().disableProperty().isBound()) {
-                stage.root().setDisable(true);
-            }
-        }
+        NodeUtil.disable(this);
     }
 
     /**
      * 启用
      */
     default void enable() {
-        if (this instanceof Node node) {
-            if (!node.disableProperty().isBound()) {
-                node.setDisable(false);
-            }
-        } else if (this instanceof MenuItem item) {
-            if (!item.disableProperty().isBound()) {
-                item.setDisable(false);
-            }
-        } else if (this instanceof Tab tab) {
-            if (!tab.disableProperty().isBound()) {
-                tab.setDisable(false);
-            }
-        } else if (this instanceof Stage stage) {
-            Scene scene = stage.getScene();
-            if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
-                scene.getRoot().setDisable(false);
-            }
-        } else if (this instanceof StageWrapper stage) {
-            if (stage.root() != null && !stage.root().disableProperty().isBound()) {
-                stage.root().setDisable(false);
-            }
-        }
+        NodeUtil.enable(this);
     }
 
     /**

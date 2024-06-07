@@ -6,7 +6,9 @@ import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
@@ -282,15 +284,63 @@ public class NodeUtil {
         }
     }
 
-    public static void disable(Object source) {
-        if(source instanceof Node node){
-            FXUtil.runWait(()->node.setDisable(true));
+    /**
+     * 禁用组件
+     *
+     * @param obj 节点
+     */
+    public static void disable(Object obj) {
+        if (obj instanceof Node node) {
+            if (!node.disableProperty().isBound()) {
+                node.setDisable(true);
+            }
+        } else if (obj instanceof MenuItem item) {
+            if (!item.disableProperty().isBound()) {
+                item.setDisable(true);
+            }
+        } else if (obj instanceof Tab tab) {
+            if (!tab.disableProperty().isBound()) {
+                tab.setDisable(true);
+            }
+        } else if (obj instanceof Stage stage) {
+            Scene scene = stage.getScene();
+            if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
+                scene.getRoot().setDisable(true);
+            }
+        } else if (obj instanceof StageWrapper stage) {
+            if (stage.root() != null && !stage.root().disableProperty().isBound()) {
+                stage.root().setDisable(true);
+            }
         }
     }
 
-    public static void enable(Object source) {
-        if(source instanceof Node node){
-            FXUtil.runWait(()->node.setDisable(false));
+    /**
+     * 启用组件
+     *
+     * @param obj 节点
+     */
+    public static void enable(Object obj) {
+        if (obj instanceof Node node) {
+            if (!node.disableProperty().isBound()) {
+                node.setDisable(false);
+            }
+        } else if (obj instanceof MenuItem item) {
+            if (!item.disableProperty().isBound()) {
+                item.setDisable(false);
+            }
+        } else if (obj instanceof Tab tab) {
+            if (!tab.disableProperty().isBound()) {
+                tab.setDisable(false);
+            }
+        } else if (obj instanceof Stage stage) {
+            Scene scene = stage.getScene();
+            if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
+                scene.getRoot().setDisable(false);
+            }
+        } else if (obj instanceof StageWrapper stage) {
+            if (stage.root() != null && !stage.root().disableProperty().isBound()) {
+                stage.root().setDisable(false);
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -24,7 +25,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
+public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, FlexAdapter, SelectAdapter<Tab> {
 
     {
         NodeManager.init(this);
@@ -288,5 +289,15 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, C
     @Override
     public void initNode() {
 
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

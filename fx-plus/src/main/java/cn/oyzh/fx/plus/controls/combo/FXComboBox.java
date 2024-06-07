@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -26,7 +27,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements NodeAdapter, ThemeAdapter, Verifiable<BaseValidator>, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter, ThemeAdapter, Verifiable<BaseValidator>, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
 
     {
         NodeManager.init(this);
@@ -169,5 +170,15 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeAdapter, ThemeAdap
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setFocusTraversable(false);
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

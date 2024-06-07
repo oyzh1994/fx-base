@@ -4,11 +4,11 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 
@@ -16,7 +16,7 @@ import javafx.scene.control.Tab;
  * @author oyzh
  * @since 2022/1/21
  */
-public class FXTab extends Tab implements NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
+public class FXTab extends Tab implements NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
 
     {
         NodeManager.init(this);
@@ -119,5 +119,15 @@ public class FXTab extends Tab implements NodeAdapter, ThemeAdapter, StateAdapte
 
     protected void onTabRequest(Event event) {
 
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

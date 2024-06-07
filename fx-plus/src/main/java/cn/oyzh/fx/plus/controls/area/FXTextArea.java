@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -28,7 +29,7 @@ import java.util.Collection;
  * @since 2022/1/20
  */
 @Getter
-public class FXTextArea extends TextArea implements NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -202,5 +203,15 @@ public class FXTextArea extends TextArea implements NodeAdapter, ThemeAdapter, A
     @Override
     public void requestFocus() {
         TaskManager.startDelay(() -> FXUtil.runWait(super::requestFocus), 1);
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

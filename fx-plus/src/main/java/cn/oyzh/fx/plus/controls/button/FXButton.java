@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.event.EventHandler;
@@ -20,7 +21,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXButton extends Button implements NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
+public class FXButton extends Button implements NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -140,5 +141,15 @@ public class FXButton extends Button implements NodeAdapter, ThemeAdapter, Mouse
     @Override
     public FontWeight getFontWeight() {
         return FontAdapter.super.fontWeight();
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

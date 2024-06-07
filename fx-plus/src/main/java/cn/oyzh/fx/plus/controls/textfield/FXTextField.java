@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.control.TextField;
@@ -21,7 +22,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -118,5 +119,15 @@ public class FXTextField extends TextField implements NodeAdapter, ThemeAdapter,
     public void initNode() {
         this.setPickOnBounds(true);
         this.setFocusTraversable(false);
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }
