@@ -9,6 +9,12 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class I18nHelper {
 
+    public static final String CMD = "base.cmd";
+
+    public static final String MEMORY_USAGE = "base.memoryUsage";
+
+    public static final String UNKNOWN = "base.unknown";
+
     public static final String ALREADY_EXISTS = "base.alreadyExists";
 
     public static final String FAIL = "base.fail";
@@ -1683,5 +1689,21 @@ public class I18nHelper {
 
     public static String fieldAlreadyExists() {
         return I18nResourceBundle.i18nString(FIELD, ALREADY_EXISTS);
+    }
+
+    public static String unknown() {
+        return I18nResourceBundle.i18nString(UNKNOWN);
+    }
+
+    public static String notSupport() {
+        return I18nResourceBundle.i18nString(NOT,SUPPORT);
+    }
+
+    public static String cmd() {
+        return I18nResourceBundle.i18nString(CMD);
+    }
+
+    public static String memoryUsage() {
+        return I18nResourceBundle.i18nString(MEMORY_USAGE);
     }
 }
