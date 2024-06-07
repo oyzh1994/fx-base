@@ -281,4 +281,16 @@ public class NodeUtil {
             }
         }
     }
+
+    public static void disable(Object source) {
+        if(source instanceof Node node){
+            FXUtil.runWait(()->node.setDisable(true));
+        }
+    }
+
+    public static void enable(Object source) {
+        if(source instanceof Node node){
+            FXUtil.runWait(()->node.setDisable(false));
+        }
+    }
 }

@@ -164,6 +164,28 @@ public class FlexTabPane extends TabPane implements ThemeAdapter, FontAdapter, C
         }
     }
 
+    /**
+     * 禁用其他tab
+     *
+     * @param current 当前tab
+     */
+    public void disableOtherTab(Tab current) {
+        if (current != null) {
+            FXUtil.runLater(() -> this.getTabs().forEach(t -> {
+                if (t != current) {
+                    t.setDisable(true);
+                }
+            }));
+        }
+    }
+
+    /**
+     * 启用所有tab
+     */
+    public void enableTabs() {
+        FXUtil.runLater(() -> this.getTabs().forEach(t -> t.setDisable(false)));
+    }
+
     @Override
     public String getFlexWidth() {
         return FlexAdapter.super.flexWidth();

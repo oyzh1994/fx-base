@@ -83,8 +83,21 @@ public class ThreadUtil {
      * @return 线程
      */
     public static Thread start(@NonNull Runnable task) {
-        Thread thread = new Thread(task);
+        ThreadExt thread = new ThreadExt(task);
         thread.start();
+        return thread;
+    }
+
+    /**
+     * 开始运行线程
+     *
+     * @param task  任务
+     * @param delay 延迟
+     * @return 线程
+     */
+    public static Thread start(Runnable task, long delay) {
+        ThreadExt thread = new ThreadExt(task);
+        ExecutorUtil.start(thread::start, delay);
         return thread;
     }
 
@@ -125,7 +138,7 @@ public class ThreadUtil {
      */
     public static <V> List<V> invoke(List<Callable<V>> tasks) {
         if (CollUtil.isNotEmpty(tasks)) {
-            try (ExecutorService service = Executors.newCachedThreadPool()){
+            try (ExecutorService service = Executors.newCachedThreadPool()) {
                 List<Future<V>> futures = service.invokeAll(tasks);
                 List<V> results = new ArrayList<>(futures.size());
                 for (Future<V> future : futures) {
@@ -162,7 +175,17 @@ public class ThreadUtil {
     /**
      * 线程是否结束
      *
+     * @return 结果
+     */
+    public static boolean isInterrupted() {
+        return Thread.currentThread().isInterrupted();
+    }
+
+    /**
+     * 线程是否结束
+     *
      * @param thread 线程
+     * @return 结果
      */
     public static boolean isInterrupted(Thread thread) {
         return thread == null || thread.isInterrupted();

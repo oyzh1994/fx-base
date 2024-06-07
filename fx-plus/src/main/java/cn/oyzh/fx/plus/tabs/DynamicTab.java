@@ -67,15 +67,6 @@ public abstract class DynamicTab extends FXTab {
         return null;
     }
 
-    // /**
-    //  * 获取资源文件
-    //  *
-    //  * @return 资源文件
-    //  */
-    // protected String resource() {
-    //     return "i18n";
-    // }
-
     /**
      * 重载tab
      */

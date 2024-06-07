@@ -7,6 +7,8 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 
@@ -18,6 +20,8 @@ public class FXTab extends Tab implements NodeAdapter, ThemeAdapter, StateAdapte
 
     {
         NodeManager.init(this);
+        this.setOnClosed(this::onTabClosed);
+        this.setOnCloseRequest(this::onTabClosed);
     }
 
     public FXTab() {
@@ -107,5 +111,13 @@ public class FXTab extends Tab implements NodeAdapter, ThemeAdapter, StateAdapte
     @Override
     public void initNode() {
         this.setClosable(false);
+    }
+
+    protected void onTabClosed(Event event) {
+
+    }
+
+    protected void onTabRequest(Event event) {
+
     }
 }
