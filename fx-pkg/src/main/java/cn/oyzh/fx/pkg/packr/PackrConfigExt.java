@@ -1,7 +1,6 @@
 package cn.oyzh.fx.pkg.packr;
 
 import cn.oyzh.fx.pkg.packager.PackageConfig;
-import com.badlogicgames.packr.PackrConfig;
 
 import java.io.File;
 import java.util.ArrayList;

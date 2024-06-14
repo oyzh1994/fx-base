@@ -18,7 +18,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageHandler;
 import cn.oyzh.fx.pkg.packr.PackrConfigExt;
 import cn.oyzh.fx.pkg.packr.PackrPackager;
 import cn.oyzh.fx.pkg.util.PkgUtil;
-import com.badlogicgames.packr.PackrConfig;
+import cn.oyzh.fx.pkg.packr.PackrConfig;
 import lombok.Getter;
 import lombok.Setter;
 

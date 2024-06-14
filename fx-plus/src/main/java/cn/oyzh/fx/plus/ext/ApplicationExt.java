@@ -12,6 +12,8 @@ import lombok.NonNull;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import java.util.Properties;
+
 /**
  * fx 支持Spring启动的主入口
  *
@@ -49,6 +51,21 @@ public abstract class ApplicationExt extends Application {
      */
     public static void launch(@NonNull Class<? extends Application> appClass, String... args) {
         try {
+            if (args != null && args.length > 0) {
+                System.out.println("=============args start---------->");
+                for (String arg : args) {
+                    System.out.println("arg: " + arg);
+                }
+                System.out.println("=============args end---------->");
+            }
+            System.out.println("=============props start---------->");
+            Properties properties = System.getProperties();
+            for (String key : properties.stringPropertyNames()) {
+                if (key.startsWith("-")) {
+                    System.out.println(key + "=" + System.getProperty(key));
+                }
+            }
+            System.out.println("=============props end---------->");
             LauncherImpl.launchApplication(appClass, ApplicationPreloader.class, args);
         } catch (Exception ex) {
             ex.printStackTrace();

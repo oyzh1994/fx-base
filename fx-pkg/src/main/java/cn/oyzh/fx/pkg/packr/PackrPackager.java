@@ -1,8 +1,6 @@
 package cn.oyzh.fx.pkg.packr;
 
 import cn.hutool.log.StaticLog;
-import com.badlogicgames.packr.Packr;
-import com.badlogicgames.packr.PackrConfig;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.compressors.CompressorException;
 

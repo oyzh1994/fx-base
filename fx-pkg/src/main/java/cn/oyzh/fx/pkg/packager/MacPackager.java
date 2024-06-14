@@ -2,7 +2,7 @@ package cn.oyzh.fx.pkg.packager;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.common.util.OSUtil;
-import com.badlogicgames.packr.PackrConfig;
+import cn.oyzh.fx.pkg.packr.PackrConfig;
 
 /**
  * mac打包器

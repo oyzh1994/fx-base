@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.packager;
 
 import cn.oyzh.fx.common.util.OSUtil;
-import com.badlogicgames.packr.PackrConfig;
+import cn.oyzh.fx.pkg.packr.PackrConfig;
 
 /**
  * windows平台打包器

@@ -21,7 +21,6 @@ public class FileFilter extends BaseFilter {
         return name.replace("\\", "/").replace("//", "/").toLowerCase();
     }
 
-
     @Override
     public boolean acceptExclude(String name) {
         // 排除的文件
