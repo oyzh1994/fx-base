@@ -36,6 +36,11 @@ public class CompressNameHandler implements PostHandler {
 
     @Override
     public int order() {
-        return PackOrder.HIGH;
+        return PackOrder.LOW -1;
+    }
+
+    @Override
+    public String name() {
+        return "压缩文件名处理";
     }
 }

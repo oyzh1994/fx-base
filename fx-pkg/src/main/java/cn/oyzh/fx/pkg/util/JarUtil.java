@@ -127,14 +127,9 @@ public class JarUtil {
         return name.toLowerCase().endsWith(".class");
     }
 
-    public static File minimize(String src, String dest, Function<String, Boolean> function) throws IOException {
+    public static void minimize(String src, String dest, Function<String, Boolean> function) throws IOException {
         StaticLog.info("minimize jar start, src:{}", src);
-        File destFile;
-        if (dest == null) {
-            destFile = FileUtil.createTempFile(".jar", true);
-        } else {
-            destFile = new File(dest);
-        }
+        File destFile = FileUtil.createTempFile(".jar", true);
         JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)));
         Manifest manifest = jarIn.getManifest();
         JarOutputStream jarOut;
@@ -168,7 +163,7 @@ public class JarUtil {
             jarOut.finish();
             IoUtil.close(jarOut);
         }
-        StaticLog.info("minimize jar finish dest:{}", dest);
-        return destFile;
+        StaticLog.info("minimize jar finish dest:{}", destFile);
+        FileUtil.move(destFile, new File(dest), true);
     }
 }

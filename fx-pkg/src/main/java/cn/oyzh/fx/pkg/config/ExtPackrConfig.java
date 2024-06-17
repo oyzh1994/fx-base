@@ -83,4 +83,22 @@ public class ExtPackrConfig extends PackrConfig {
     public Object getProperty(String key) {
         return this.properties.get(key);
     }
+
+    public String mainJar() {
+        if (this.minimizeManJar != null) {
+            return this.minimizeManJar;
+        }
+        return this.mainJar;
+    }
+
+    public String mainJarName() {
+        String mainJar = this.mainJar();
+        if (mainJar.contains("/")) {
+            return mainJar.substring(mainJar.lastIndexOf("/") + 1);
+        }
+        if (mainJar.contains("\\")) {
+            return mainJar.substring(mainJar.lastIndexOf("\\") + 1);
+        }
+        return mainJar;
+    }
 }

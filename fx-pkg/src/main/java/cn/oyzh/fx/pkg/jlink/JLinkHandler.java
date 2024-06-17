@@ -65,7 +65,7 @@ public class JLinkHandler implements PreHandler, ConfigParser<JLinkConfig> {
     }
 
     @Override
-    public int order() {
-        return PackOrder.LOW;
+    public String name() {
+        return "jlink处理";
     }
 }

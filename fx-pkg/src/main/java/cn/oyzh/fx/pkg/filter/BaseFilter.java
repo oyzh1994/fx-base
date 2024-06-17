@@ -1,4 +1,4 @@
-package cn.oyzh.fx.pkg.clip.filter;
+package cn.oyzh.fx.pkg.filter;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;

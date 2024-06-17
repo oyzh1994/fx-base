@@ -1,7 +1,6 @@
-package cn.oyzh.fx.pkg.clip.filter;
+package cn.oyzh.fx.pkg.filter;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
 
 /**
  * jar过滤器

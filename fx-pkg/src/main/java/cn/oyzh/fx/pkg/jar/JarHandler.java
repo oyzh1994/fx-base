@@ -6,11 +6,10 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
+import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
-import cn.oyzh.fx.pkg.clip.filter.ClassFilter;
-import cn.oyzh.fx.pkg.clip.filter.FileFilter;
-import cn.oyzh.fx.pkg.clip.filter.JarFilter;
 import cn.oyzh.fx.pkg.config.ExtPackrConfig;
+import cn.oyzh.fx.pkg.filter.RegexpFilter;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
@@ -25,77 +24,80 @@ import java.util.List;
  */
 public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
 
-    private final JarConfig config;
+    // /**
+    //  * jar过滤器
+    //  */
+    // protected final JarFilter jarFilter = new JarFilter();
+    //
+    // /**
+    //  * 类过滤器
+    //  */
+    // protected final ClassFilter classFilter = new ClassFilter();
+    //
+    // /**
+    //  * 文件过滤器
+    //  */
+    // protected final FileFilter fileFilter = new FileFilter();
 
-    /**
-     * jar过滤器
-     */
-    protected final JarFilter jarFilter = new JarFilter();
-
-    /**
-     * 类过滤器
-     */
-    protected final ClassFilter classFilter = new ClassFilter();
-
-    /**
-     * 文件过滤器
-     */
-    protected final FileFilter fileFilter = new FileFilter();
+    private final RegexpFilter filter;
 
     public JarHandler(String configFile) {
-        this.config = this.parse(configFile);
-        this.jarFilter.addExcludes(this.config.getExcludeJars());
-        this.fileFilter.addExcludes(this.config.getExcludeFiles());
-        this.classFilter.addExcludes(this.config.getExcludeClasses());
+        JarConfig config = this.parse(configFile);
+        this.filter = new RegexpFilter(config.getExcludes());
+        // this.jarFilter.addExcludes(config.getExcludeJars());
+        // this.fileFilter.addExcludes(config.getExcludeFiles());
+        // this.classFilter.addExcludes(config.getExcludeClasses());
+    }
+
+    @Override
+    public String name() {
+        return "jar处理器";
     }
 
     @Override
     public void handle(ExtPackrConfig packrConfig) throws Exception {
-        StaticLog.info("clip start.");
         // 来源文件
         String src = packrConfig.getMainJar();
         // 目标文件
         String dest = src.replace(".jar", "_clip.jar");
-        long start = System.currentTimeMillis();
         // jar解压目录
         String jarUnDir = src.replace(".jar", "");
-        // 删除解压目录
+        // 删除解压目录，如果存在
         FileUtil.del(jarUnDir);
+        // 删除目标文件，如果存在
+        FileUtil.del(dest);
         // 解压主jar
         JarUtil.unJar(src, jarUnDir);
-        // 设置jar解压目录
-        packrConfig.setJarUnDir(jarUnDir);
         // 裁剪主jar
         JarUtil.minimize(src, dest, this::filterName);
         // 裁剪类库jar
         this.handleLibs(jarUnDir);
         // 合并类库jar
         this.mergeLibs(jarUnDir, dest, packrConfig.jdk);
+        // 设置最小化后的主程序
         packrConfig.setMinimizeManJar(dest);
-        long end = System.currentTimeMillis();
-        StaticLog.info("clip end, used time: {}ms.", end - start);
+        // 设置jar解压目录
+        packrConfig.setJarUnDir(jarUnDir);
     }
 
     @Override
     public JarConfig parse(String configFile) {
         JSONObject object = JSONUtil.parseObj(FileUtil.readUtf8String(configFile));
-        JarConfig config1 = new JarConfig();
-        config1.parseConfig(object);
-        return config1;
+        JarConfig config = new JarConfig();
+        config.parseConfig(object);
+        return config;
     }
 
-    public boolean filterName(String name) {
+    private boolean filterName(String name) {
         boolean accept;
-        // class文件
-        if (name.endsWith(".class")) {
-            accept = this.classFilter.accept(name);
-        } else if (name.endsWith(".jar")) { // jar包不处理
+           // jar包不处理
+       if (name.endsWith(".jar")) {
             accept = false;
         } else {// 其他文件
-            accept = this.fileFilter.accept(name);
+            accept = this.filter.apply(name);
         }
         if (!accept) {
-            StaticLog.info("file:{} filtered.", name);
+            StaticLog.info("文件:{}被过滤.", name);
         }
         return accept;
     }
@@ -115,7 +117,7 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
                     continue;
                 }
                 // 符合排除jar，删除文件
-                if (this.jarFilter.acceptExclude(file.getName())) {
+                if (!this.filter.apply(file.getName())) {
                     FileUtil.del(file);
                     StaticLog.warn("类库:{}被排除, 已删除.", file.getName());
                     continue;
@@ -129,9 +131,7 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
                 // 替换路径
                 StaticLog.info("minimize jar: {}.", file.getName());
                 // 裁剪类库
-                File dest = JarUtil.minimize(file.getPath(), null, this::filterName);
-                // 覆盖类库
-                FileUtil.move(dest, file, true);
+                JarUtil.minimize(file.getPath(), file.getPath(), this::filterName);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -148,23 +148,17 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
      */
     private void mergeLibs(String jarUnDir, String mainJar, String jdkPath) {
         StaticLog.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
-        // jar文件
-        File mainJarFile = new File(mainJar);
         // 新jar文件
-        File mainJarNewFile = new File(jarUnDir, mainJarFile.getName());
-        // 移动到解压目录
-        if (mainJarNewFile.exists()) {
-            FileUtil.move(mainJarFile, mainJarNewFile, true);
-        } else {
-            FileUtil.copy(mainJarFile, mainJarNewFile, false);
-        }
+        File mainJarNewFile = new File(jarUnDir, "temp.jar");
+        // 复制解压目录
+        FileUtil.copy(mainJar, mainJarNewFile.getPath(), false);
         // 解压目录
         File dir = new File(jarUnDir);
         // lib目录合并
         if (FileUtil.exist(jarUnDir + "/BOOT-INF/lib")) {
             try {
                 // 合并lib目录到主jar文件
-                String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ./BOOT-INF/lib";
+                String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ./BOOT-INF/lib";
                 cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
                 RuntimeUtil.execAndWait(cmdStr, dir);
             } catch (Exception e) {
@@ -176,7 +170,7 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
             for (File file : files) {
                 try {
                     String fName = file.getPath().replace(dir.getPath(), "");
-                    String cmdStr = "jar -uvf0 " + mainJarFile.getName() + " ." + fName;
+                    String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ." + fName;
                     cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
                     RuntimeUtil.execAndWait(cmdStr, dir);
                 } catch (Exception e) {
@@ -185,7 +179,12 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
             }
         }
         // 移动主jar文件到原始目录
-        FileUtil.move(mainJarNewFile, mainJarFile, true);
+        FileUtil.move(mainJarNewFile, new File(mainJar), true);
         StaticLog.info("mergeLibs finish.");
+    }
+
+    @Override
+    public int order() {
+        return PackOrder.HIGH - 1;
     }
 }

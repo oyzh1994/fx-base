@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.pkg.clip.filter.FileFilter;
+import cn.oyzh.fx.pkg.filter.FileFilter;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 

@@ -16,6 +16,11 @@ public class PackHandler implements Handler {
     private final Packr packr = new Packr();
 
     @Override
+    public String name() {
+        return "打包处理";
+    }
+
+    @Override
     public void handle(ExtPackrConfig packrConfig) throws Exception {
         if (packrConfig.getMinimizeJre() != null) {
             packrConfig.jdk = packrConfig.getMinimizeJre();

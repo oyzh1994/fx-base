@@ -1,5 +1,6 @@
-package cn.oyzh.fx.pkg.clip.filter;
+package cn.oyzh.fx.pkg.filter;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 
@@ -25,6 +26,9 @@ public class FileFilter extends BaseFilter {
     public boolean acceptExclude(String name) {
         // 排除的文件
         for (String exclude : this.getExcludes()) {
+
+
+
             // 文件夹排除
             if (exclude.endsWith("/") && name.equals(exclude.toLowerCase())) {
                 StaticLog.warn("{} acceptExclude by exclude:{} equals folder.", name, exclude);

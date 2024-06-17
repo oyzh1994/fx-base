@@ -13,18 +13,27 @@ public class EndHandler implements PostHandler {
 
     @Override
     public void handle(ExtPackrConfig packrConfig) throws Exception {
-        // 删除打包目录，仅保留压缩目录
+        // 删除打包目录
         if (packrConfig.getCompressFile() != null) {
             FileUtil.del(packrConfig.outDir);
         }
-        // 删除裁剪的jre
+        // 删除裁剪的jre目录
         if (packrConfig.getMinimizeJre() != null) {
             FileUtil.del(packrConfig.getMinimizeJre());
+        }
+        // 删除解压的jar目录
+        if (packrConfig.getJarUnDir() != null) {
+            FileUtil.del(packrConfig.getJarUnDir());
         }
     }
 
     @Override
     public int order() {
         return PackOrder.LOW_MAX;
+    }
+
+    @Override
+    public String name() {
+        return "最终处理";
     }
 }

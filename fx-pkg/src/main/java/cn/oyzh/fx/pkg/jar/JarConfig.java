@@ -22,6 +22,11 @@ public class JarConfig {
     private boolean delEmptyJar = true;
 
     /**
+     * 排除的文件
+     */
+    private Set<String> excludes;
+
+    /**
      * 排除的jar
      */
     private Set<String> excludeJars;
@@ -37,6 +42,13 @@ public class JarConfig {
     protected Set<String> excludeFiles;
 
     public void parseConfig(JSONObject object) {
+        JSONArray excludes = object.getJSONArray("excludes");
+        if (excludes != null) {
+            this.excludes = new HashSet<>();
+            for (Object o : excludes) {
+                this.excludes.add(o.toString());
+            }
+        }
         JSONArray excludeJars = object.getJSONArray("excludeJars");
         if (excludeJars != null) {
             this.excludeJars = new HashSet<>();
