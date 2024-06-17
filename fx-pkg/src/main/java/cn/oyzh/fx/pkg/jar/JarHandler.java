@@ -1,19 +1,20 @@
 package cn.oyzh.fx.pkg.jar;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
-import cn.oyzh.fx.pkg.ConfigParser;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.config.ExtPackrConfig;
-import cn.oyzh.fx.pkg.filter.RegexpFilter;
+import cn.oyzh.fx.pkg.filter.RegFilter;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -22,31 +23,13 @@ import java.util.List;
  * @author oyzh
  * @since 2022/12/14
  */
-public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
+public class JarHandler implements PreHandler {
 
-    // /**
-    //  * jar过滤器
-    //  */
-    // protected final JarFilter jarFilter = new JarFilter();
-    //
-    // /**
-    //  * 类过滤器
-    //  */
-    // protected final ClassFilter classFilter = new ClassFilter();
-    //
-    // /**
-    //  * 文件过滤器
-    //  */
-    // protected final FileFilter fileFilter = new FileFilter();
-
-    private final RegexpFilter filter;
+    private final RegFilter filter;
 
     public JarHandler(String configFile) {
-        JarConfig config = this.parse(configFile);
-        this.filter = new RegexpFilter(config.getExcludes());
-        // this.jarFilter.addExcludes(config.getExcludeJars());
-        // this.fileFilter.addExcludes(config.getExcludeFiles());
-        // this.classFilter.addExcludes(config.getExcludeClasses());
+        JarConfig config = JarConfigParser.parseConfig(configFile);
+        this.filter = new RegFilter(config.getExcludes());
     }
 
     @Override
@@ -69,7 +52,7 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
         // 解压主jar
         JarUtil.unJar(src, jarUnDir);
         // 裁剪主jar
-        JarUtil.minimize(src, dest, this::filterName);
+        JarUtil.minimize(src, dest, this::jarFilter);
         // 裁剪类库jar
         this.handleLibs(jarUnDir);
         // 合并类库jar
@@ -80,18 +63,16 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
         packrConfig.setJarUnDir(jarUnDir);
     }
 
-    @Override
-    public JarConfig parse(String configFile) {
-        JSONObject object = JSONUtil.parseObj(FileUtil.readUtf8String(configFile));
-        JarConfig config = new JarConfig();
-        config.parseConfig(object);
-        return config;
-    }
-
-    private boolean filterName(String name) {
+    /**
+     * jar过滤
+     *
+     * @param name 名称
+     * @return 结果
+     */
+    private boolean jarFilter(String name) {
         boolean accept;
-           // jar包不处理
-       if (name.endsWith(".jar")) {
+        // jar包不处理
+        if (name.endsWith(".jar")) {
             accept = false;
         } else {// 其他文件
             accept = this.filter.apply(name);
@@ -131,7 +112,7 @@ public class JarHandler implements PreHandler, ConfigParser<JarConfig> {
                 // 替换路径
                 StaticLog.info("minimize jar: {}.", file.getName());
                 // 裁剪类库
-                JarUtil.minimize(file.getPath(), file.getPath(), this::filterName);
+                JarUtil.minimize(file.getPath(), file.getPath(), this::jarFilter);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

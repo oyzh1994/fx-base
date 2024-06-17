@@ -18,25 +18,17 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/3/8
  */
-public class JLinkHandler implements PreHandler, ConfigParser<JLinkConfig> {
+public class JLinkHandler implements PreHandler {
 
     private final JLinkConfig config;
 
     public JLinkHandler(String configFile) {
-        this.config = this.parse(configFile);
+        this.config = JLinkConfigParser.parseConfig(configFile);
     }
 
-    /**
-     * 执行jlink
-     *
-     * @param config  配置
-     * @param jdkPath jdk路径
-     */
-    public void exec(@NonNull JLinkConfig config, String jdkPath) throws Exception {
-        String cmdStr = PkgUtil.getJLinkCMD(config);
-        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
-        // 执行jlink
-        RuntimeUtil.execAndWait(cmdStr);
+    @Override
+    public boolean unique() {
+        return true;
     }
 
     @Override
@@ -54,14 +46,6 @@ public class JLinkHandler implements PreHandler, ConfigParser<JLinkConfig> {
         RuntimeUtil.execAndWait(cmdStr);
         // 更新jre路径
         packrConfig.setJlinkJre(this.config.getOutput());
-    }
-
-    @Override
-    public JLinkConfig parse(String configFile) {
-        JSONObject object = JSONUtil.parseObj(FileUtil.readUtf8String(configFile));
-        JLinkConfig config1 = new JLinkConfig();
-        config1.parseConfig(object);
-        return config1;
     }
 
     @Override

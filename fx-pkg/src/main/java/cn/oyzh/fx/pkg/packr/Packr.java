@@ -51,7 +51,7 @@ import static cn.oyzh.fx.pkg.packr.ArchiveUtils.extractArchive;
  */
 public class Packr {
 
-    private static final String DEFAULT_JRE_PATH = "jre";
+    public static final String DEFAULT_JRE_PATH = "jre";
     private PackrConfig config;
     private Predicate<File> removePlatformLibsFileFilter = f -> false;
 

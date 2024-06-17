@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg.config;
 
+import cn.oyzh.fx.pkg.packr.Packr;
 import cn.oyzh.fx.pkg.packr.PackrConfig;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +16,15 @@ import java.util.Map;
 @Getter
 public class ExtPackrConfig extends PackrConfig {
 
+    /**
+     * jlink后的jre目录
+     */
     @Setter
     private String jlinkJre;
 
+    /**
+     * 最小化后的jre目录
+     */
     @Setter
     private String minimizeJre;
 
@@ -29,7 +36,7 @@ public class ExtPackrConfig extends PackrConfig {
     private String jarUnDir;
 
     /**
-     *
+     * 最小化后的主程序
      */
     @Setter
     @Getter
@@ -74,6 +81,9 @@ public class ExtPackrConfig extends PackrConfig {
     @Setter
     private File compressFile;
 
+    /**
+     * 属性
+     */
     private final Map<String, Object> properties = new HashMap<>();
 
     public void putProperty(String key, Object value) {
@@ -82,6 +92,13 @@ public class ExtPackrConfig extends PackrConfig {
 
     public Object getProperty(String key) {
         return this.properties.get(key);
+    }
+
+    public String jrePath() {
+        if (this.jrePath != null) {
+            return Packr.DEFAULT_JRE_PATH;
+        }
+        return this.jrePath;
     }
 
     public String mainJar() {

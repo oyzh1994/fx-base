@@ -127,6 +127,14 @@ public class JarUtil {
         return name.toLowerCase().endsWith(".class");
     }
 
+    /**
+     * 最小化处理
+     *
+     * @param src      来源
+     * @param dest     目标
+     * @param function 过滤函数
+     * @throws IOException 异常
+     */
     public static void minimize(String src, String dest, Function<String, Boolean> function) throws IOException {
         StaticLog.info("minimize jar start, src:{}", src);
         File destFile = FileUtil.createTempFile(".jar", true);

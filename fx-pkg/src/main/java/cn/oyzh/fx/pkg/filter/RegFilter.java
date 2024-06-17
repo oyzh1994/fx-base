@@ -12,26 +12,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 文件过滤器
+ * 正则过滤器
  *
  * @author oyzh
- * @since 2022/12/13
+ * @since 2024/06/17
  */
-public class RegexpFilter implements Function<String, Boolean> {
+public class RegFilter implements Function<String, Boolean> {
 
     /**
      * 排除的文件列表
      */
     private final Set<String> excludes = new CopyOnWriteArraySet<>();
 
-    public RegexpFilter() {
+    public RegFilter() {
 
     }
 
-    public RegexpFilter(Collection<String> excludes) {
+    public RegFilter(Collection<String> excludes) {
         this.addExcludes(excludes);
     }
-
 
     /**
      * 添加排除
@@ -62,18 +61,18 @@ public class RegexpFilter implements Function<String, Boolean> {
     public Boolean apply(String name) {
         // 排除的文件
         for (String exclude : this.excludes) {
+            // 正则模式
             if (exclude.contains("*")) {
                 // 编译正则表达式
                 Pattern pattern = Pattern.compile(exclude);
                 // 创建匹配器
                 Matcher matcher = pattern.matcher(name);
+                // 判断是否匹配
                 if (matcher.matches()) {
                     return false;
                 }
-            } else {
-                if (exclude.startsWith(name) || name.startsWith(exclude)) {
-                    return false;
-                }
+            } else if (exclude.startsWith(name) || name.startsWith(exclude)){// 普通模式
+                return false;
             }
         }
         return true;

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.pkg;
 
 import cn.oyzh.fx.pkg.config.ExtPackrConfig;
-import cn.oyzh.fx.pkg.packr.PackrConfig;
 
 /**
  * 处理器
@@ -10,6 +9,15 @@ import cn.oyzh.fx.pkg.packr.PackrConfig;
  * @since 2024/6/14
  */
 public interface Handler {
+
+    /**
+     * 唯一的
+     *
+     * @return 结果
+     */
+    default boolean unique() {
+        return false;
+    }
 
     /**
      * 获取排序

@@ -34,8 +34,8 @@ public class ExtPackrConfigParser implements ConfigParser<ExtPackrConfig> {
         config.outDir = new File(object.getStr("outDir"));
         config.bundleIdentifier = object.getStr("bundleIdentifier");
         config.iconResource = new File(object.getStr("iconResource"));
-        config.verbose = object.getBool("verbose", false);
         config.platform = Platform.byDesc(object.getStr("platform"));
+        config.verbose = object.getBool("verbose", false);
         config.classpath = object.getJSONArray("classpath").toList(String.class);
         config.useZgcIfSupportedOs = object.getBool("useZgcIfSupportedOs", true);
         if (object.containsKey("vmArgs")) {
@@ -44,5 +44,9 @@ public class ExtPackrConfigParser implements ConfigParser<ExtPackrConfig> {
             config.vmArgs = new ArrayList<>();
         }
         return config;
+    }
+
+    public static ExtPackrConfig parseConfig(String configFile) {
+        return new ExtPackrConfigParser().parse(configFile);
     }
 }

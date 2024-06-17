@@ -25,7 +25,7 @@ public class ConfHandler implements PostHandler {
             if (StrUtil.isBlank(packrConfig.mainJar())) {
                 throw new Exception("mainJar参数缺失！");
             }
-            String cmdText = packrConfig.jrePath + "/bin/javaw.exe -jar " + packrConfig.mainJarName();
+            String cmdText = packrConfig.jrePath() + "/bin/javaw.exe -jar " + packrConfig.mainJarName();
             File configFile = new File(packrConfig.outDir, "app.conf");
             FileUtil.writeUtf8String(cmdText, configFile);
         }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * jlink配置
+ *
  * @author oyzh
  * @since 2023/3/8
  */
@@ -65,52 +67,7 @@ public class JLinkConfig {
     private List<String> excludeFiles;
 
     public void parseConfig(JSONObject object) {
-        JSONArray excludeFiles = object.getJSONArray("excludeFiles");
-        if (excludeFiles != null) {
-            this.excludeFiles = new ArrayList<>();
-            for (Object o : excludeFiles) {
-                this.excludeFiles.add(o.toString());
-            }
-        }
-        JSONArray addModules = object.getJSONArray("addModules");
-        if (addModules != null) {
-            this.addModules = new ArrayList<>();
-            for (Object o : addModules) {
-                this.addModules.add(o.toString());
-            }
-        }
-        Boolean verbose = object.getBool("verbose");
-        if (verbose != null) {
-            this.verbose = verbose;
-        }
-        Boolean noManPages = object.getBool("noManPages");
-        if (noManPages != null) {
-            this.noManPages = noManPages;
-        }
-        Boolean noHeaderFiles = object.getBool("noHeaderFiles");
-        if (noHeaderFiles != null) {
-            this.noHeaderFiles = noHeaderFiles;
-        }
-        Boolean stripDebug = object.getBool("stripDebug");
-        if (stripDebug != null) {
-            this.stripDebug = stripDebug;
-        }
-        Boolean stripJavaDebugAttributes = object.getBool("stripJavaDebugAttributes");
-        if (stripJavaDebugAttributes != null) {
-            this.stripJavaDebugAttributes = stripJavaDebugAttributes;
-        }
-        Integer compress = object.getInt("compress");
-        if (compress != null) {
-            this.compress = compress;
-        }
-        String vm = object.getStr("vm");
-        if (vm != null) {
-            this.vm = vm;
-        }
-        String output = object.getStr("output");
-        if (output != null) {
-            this.output = output;
-        }
+
     }
 
     // @Override
