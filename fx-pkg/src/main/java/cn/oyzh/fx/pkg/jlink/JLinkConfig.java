@@ -2,9 +2,7 @@ package cn.oyzh.fx.pkg.jlink;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import cn.oyzh.fx.pkg.config.BaseConfig;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +12,7 @@ import java.util.List;
  * @since 2023/3/8
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class JLinkConfig extends BaseConfig {
+public class JLinkConfig {
 
     /**
      * vm类型
@@ -68,7 +65,6 @@ public class JLinkConfig extends BaseConfig {
     private List<String> excludeFiles;
 
     public void parseConfig(JSONObject object) {
-        super.parseConfig(object);
         JSONArray excludeFiles = object.getJSONArray("excludeFiles");
         if (excludeFiles != null) {
             this.excludeFiles = new ArrayList<>();
@@ -117,57 +113,57 @@ public class JLinkConfig extends BaseConfig {
         }
     }
 
-    @Override
-    public JLinkConfig clone() {
-        JLinkConfig config = new JLinkConfig();
-        config.vm = this.vm;
-        config.output = this.output;
-        config.enable = this.enable;
-        config.verbose = this.verbose;
-        config.compress = this.compress;
-        config.addModules = this.addModules;
-        config.stripDebug = this.stripDebug;
-        config.noManPages = this.noManPages;
-        config.excludeFiles = this.excludeFiles;
-        config.noHeaderFiles = this.noHeaderFiles;
-        config.stripJavaDebugAttributes = this.stripJavaDebugAttributes;
-        return config;
-    }
-
-    @Override
-    public JLinkConfig cross(Object o) {
-        JLinkConfig config1 = this.clone();
-        if (o instanceof JLinkConfig config) {
-            config1.enable = config.enable;
-            config1.verbose = config.verbose;
-            config1.stripDebug = config.stripDebug;
-            config1.noManPages = config.noManPages;
-            config1.noHeaderFiles = config.noHeaderFiles;
-            config1.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
-            if (config.vm != null) {
-                config1.vm = config.vm;
-            }
-            if (config.addModules != null) {
-                if (config1.addModules == null) {
-                    config1.addModules = config.addModules;
-                } else {
-                    config1.addModules.addAll(config.addModules);
-                }
-            }
-            if (config.excludeFiles != null) {
-                if (config1.excludeFiles == null) {
-                    config1.excludeFiles = config.excludeFiles;
-                } else {
-                    config1.excludeFiles.addAll(config.excludeFiles);
-                }
-            }
-            if (config.compress != null) {
-                config1.compress = config.compress;
-            }
-            if (config.output != null) {
-                config1.output = config.output;
-            }
-        }
-        return config1;
-    }
+    // @Override
+    // public JLinkConfig clone() {
+    //     JLinkConfig config = new JLinkConfig();
+    //     config.vm = this.vm;
+    //     config.output = this.output;
+    //     config.enable = this.enable;
+    //     config.verbose = this.verbose;
+    //     config.compress = this.compress;
+    //     config.addModules = this.addModules;
+    //     config.stripDebug = this.stripDebug;
+    //     config.noManPages = this.noManPages;
+    //     config.excludeFiles = this.excludeFiles;
+    //     config.noHeaderFiles = this.noHeaderFiles;
+    //     config.stripJavaDebugAttributes = this.stripJavaDebugAttributes;
+    //     return config;
+    // }
+    //
+    // @Override
+    // public JLinkConfig cross(Object o) {
+    //     JLinkConfig config1 = this.clone();
+    //     if (o instanceof JLinkConfig config) {
+    //         config1.enable = config.enable;
+    //         config1.verbose = config.verbose;
+    //         config1.stripDebug = config.stripDebug;
+    //         config1.noManPages = config.noManPages;
+    //         config1.noHeaderFiles = config.noHeaderFiles;
+    //         config1.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
+    //         if (config.vm != null) {
+    //             config1.vm = config.vm;
+    //         }
+    //         if (config.addModules != null) {
+    //             if (config1.addModules == null) {
+    //                 config1.addModules = config.addModules;
+    //             } else {
+    //                 config1.addModules.addAll(config.addModules);
+    //             }
+    //         }
+    //         if (config.excludeFiles != null) {
+    //             if (config1.excludeFiles == null) {
+    //                 config1.excludeFiles = config.excludeFiles;
+    //             } else {
+    //                 config1.excludeFiles.addAll(config.excludeFiles);
+    //             }
+    //         }
+    //         if (config.compress != null) {
+    //             config1.compress = config.compress;
+    //         }
+    //         if (config.output != null) {
+    //             config1.output = config.output;
+    //         }
+    //     }
+    //     return config1;
+    // }
 }

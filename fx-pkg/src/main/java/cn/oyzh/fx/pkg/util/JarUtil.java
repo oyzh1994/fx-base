@@ -1,15 +1,23 @@
-package cn.oyzh.fx.pkg.clip.util;
+package cn.oyzh.fx.pkg.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
+import cn.hutool.log.StaticLog;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.function.Function;
 import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
 /**
@@ -117,5 +125,50 @@ public class JarUtil {
             return false;
         }
         return name.toLowerCase().endsWith(".class");
+    }
+
+    public static File minimize(String src, String dest, Function<String, Boolean> function) throws IOException {
+        StaticLog.info("minimize jar start, src:{}", src);
+        File destFile;
+        if (dest == null) {
+            destFile = FileUtil.createTempFile(".jar", true);
+        } else {
+            destFile = new File(dest);
+        }
+        JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)));
+        Manifest manifest = jarIn.getManifest();
+        JarOutputStream jarOut;
+        if (manifest == null) {
+            jarOut = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(destFile)));
+        } else {
+            jarOut = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(destFile)), manifest);
+        }
+        try {
+            byte[] bytes = new byte[1024];
+            while (true) {
+                // 重点
+                ZipEntry entry = jarIn.getNextJarEntry();
+                if (entry == null) {
+                    break;
+                }
+                String name = entry.getName();
+                // 执行过滤
+                if (function.apply(name)) {
+                    // 添加到新jar文件
+                    jarOut.putNextEntry(entry);
+                    int len = jarIn.read(bytes, 0, bytes.length);
+                    while (len != -1) {
+                        jarOut.write(bytes, 0, len);
+                        len = jarIn.read(bytes, 0, bytes.length);
+                    }
+                }
+            }
+        } finally {
+            IoUtil.close(jarIn);
+            jarOut.finish();
+            IoUtil.close(jarOut);
+        }
+        StaticLog.info("minimize jar finish dest:{}", dest);
+        return destFile;
     }
 }

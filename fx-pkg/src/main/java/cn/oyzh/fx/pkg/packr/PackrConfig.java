@@ -56,10 +56,6 @@ public class PackrConfig {
     public boolean useZgcIfSupportedOs;
     public String jrePath;
 
-    @Getter
-    @Setter
-    private String mainJar;
-
     @SuppressWarnings("unused")
     public PackrConfig() {
         super();
@@ -206,27 +202,4 @@ public class PackrConfig {
             throw new IOException("No " + name + " specified. Please check your commandline or configuration.");
         }
     }
-
-    public enum Platform {
-        Windows64("windows64"),
-        Linux64("linux64"),
-        MacOS("mac"),
-        Win_64("win_64");
-
-        final String desc;
-
-        Platform(String desc) {
-            this.desc = desc;
-        }
-
-        static Platform byDesc(String desc) throws IOException {
-            for (Platform value : values()) {
-                if (value.desc.equalsIgnoreCase(desc)) {
-                    return value;
-                }
-            }
-            throw new IOException("Invalid platform '" + desc + "'");
-        }
-    }
-
 }

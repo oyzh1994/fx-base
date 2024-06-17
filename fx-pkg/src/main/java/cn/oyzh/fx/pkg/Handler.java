@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg;
 
+import cn.oyzh.fx.pkg.config.ExtPackrConfig;
 import cn.oyzh.fx.pkg.packr.PackrConfig;
 
 /**
@@ -9,9 +10,9 @@ import cn.oyzh.fx.pkg.packr.PackrConfig;
 public interface Handler {
 
     default int order() {
-        return 0;
+        return PackOrder.MID;
     }
 
-    void handle(PackrConfig packrConfig, ExtConfig extConfig) throws Exception;
+    void handle(ExtPackrConfig packrConfig) throws Exception;
 
 }

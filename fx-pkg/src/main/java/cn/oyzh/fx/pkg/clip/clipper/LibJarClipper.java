@@ -2,7 +2,7 @@ package cn.oyzh.fx.pkg.clip.clipper;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.pkg.clip.util.JarUtil;
+import cn.oyzh.fx.pkg.util.JarUtil;
 import lombok.NonNull;
 
 import java.io.File;

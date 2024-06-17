@@ -1,7 +1,15 @@
 package cn.oyzh.fx.pkg;
 
-import cn.oyzh.fx.pkg.packr.PackrHandler;
-import cn.oyzh.fx.pkg.packr.PackrConfig;
+import cn.oyzh.fx.pkg.comporess.CompressHandler;
+import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
+import cn.oyzh.fx.pkg.config.ConfHandler;
+import cn.oyzh.fx.pkg.config.ExtPackrConfig;
+import cn.oyzh.fx.pkg.config.ExtPackrConfigParser;
+import cn.oyzh.fx.pkg.jar.JarHandler;
+import cn.oyzh.fx.pkg.jlink.JLinkHandler;
+import cn.oyzh.fx.pkg.jre.JreHandler;
+import cn.oyzh.fx.pkg.pack.EndHandler;
+import cn.oyzh.fx.pkg.pack.PackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +22,43 @@ public class Packer {
 
     private final List<Handler> handlers = new ArrayList<>();
 
-    private final PackrHandler packrHandler = new PackrHandler();
+    private final PackHandler packHandler = new PackHandler();
+
+    private final ExtPackrConfigParser extPackrConfigParser = new ExtPackrConfigParser();
+
+    public void registerEndHandler() {
+        this.registerHandler(new EndHandler());
+    }
+
+    public void registerConfHandler() {
+        this.registerHandler(new ConfHandler());
+    }
+
+    public void registerJreHandler(String configFile) {
+        JreHandler jreHandler = new JreHandler();
+        jreHandler.parse(configFile);
+        this.registerHandler(jreHandler);
+    }
+
+    public void registerJarHandler(String configFile) {
+        this.registerHandler(new JarHandler(configFile));
+    }
+
+    public void registerJLinkHandler(String configFile) {
+        this.registerHandler(new JLinkHandler(configFile));
+    }
+
+    public void registerCompressHandler() {
+        this.registerHandler(new CompressHandler());
+    }
+
+    public void registerCompressNameHandler() {
+        this.registerHandler(new CompressNameHandler());
+    }
 
     public void registerHandler(Handler handler) {
         this.handlers.add(handler);
+        this.handlers.sort((o1, o2) -> Integer.compare(o2.order(), o1.order()));
     }
 
     private List<PreHandler> preHandlers() {
@@ -41,15 +82,13 @@ public class Packer {
     }
 
     public void pack(String configFile) throws Exception {
-        PackrConfig config = this.packrHandler.parse(configFile);
-        ExtConfig extConfig = new ExtConfig();
+        ExtPackrConfig packrConfig = this.extPackrConfigParser.parse(configFile);
         for (PreHandler preHandler : this.preHandlers()) {
-            preHandler.handle(config, extConfig);
+            preHandler.handle(packrConfig);
         }
-        this.packrHandler.handle(config, extConfig);
+        this.packHandler.handle(packrConfig);
         for (PostHandler postHandler : this.postHandlers()) {
-            postHandler.handle(config, extConfig);
+            postHandler.handle(packrConfig);
         }
     }
-
 }

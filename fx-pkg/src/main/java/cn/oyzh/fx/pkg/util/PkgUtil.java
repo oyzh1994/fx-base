@@ -10,10 +10,6 @@ import cn.oyzh.fx.common.util.FileNameUtil;
 import cn.oyzh.fx.common.util.OSUtil;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
-import cn.oyzh.fx.pkg.packager.BasePackager;
-import cn.oyzh.fx.pkg.packager.LinuxPackager;
-import cn.oyzh.fx.pkg.packager.MacPackager;
-import cn.oyzh.fx.pkg.packager.WinPackager;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
@@ -141,20 +137,20 @@ public class PkgUtil {
         return compressFile;
     }
 
-    /**
-     * 获取打包器
-     *
-     * @param platform 平台
-     * @return 打包器
-     */
-    public static BasePackager getPackager(String platform) {
-        return switch (platform) {
-            case "win_amd64" -> new WinPackager();
-            case "macos_amd64" -> new MacPackager();
-            case "linux_amd64" -> new LinuxPackager();
-            default -> throw new IllegalStateException("Unexpected value: " + platform);
-        };
-    }
+    // /**
+    //  * 获取打包器
+    //  *
+    //  * @param platform 平台
+    //  * @return 打包器
+    //  */
+    // public static BasePackager getPackager(String platform) {
+    //     return switch (platform) {
+    //         case "win_amd64" -> new WinPackager();
+    //         case "macos_amd64" -> new MacPackager();
+    //         case "linux_amd64" -> new LinuxPackager();
+    //         default -> throw new IllegalStateException("Unexpected value: " + platform);
+    //     };
+    // }
 
     /**
      * 获取jlink命令

@@ -177,7 +177,7 @@ public class Packr {
      * @throws IOException if an IO error occurs
      */
     private PackrOutput buildMacBundle(PackrOutput output) throws IOException {
-        if (config.platform != PackrConfig.Platform.MacOS) {
+        if (config.platform != Platform.MacOS) {
             return output;
         }
 
