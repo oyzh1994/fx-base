@@ -276,7 +276,7 @@ class PackrReduce {
         String libExtension;
 
         switch (config.platform) {
-            case Win_64:
+            case WIN_AMD64:
             case Windows64:
                 extensions.add(".dylib");
                 extensions.add(".dylib.git");
@@ -286,6 +286,7 @@ class PackrReduce {
                 extensions.add(".so.sha1");
                 libExtension = ".dll";
                 break;
+            case LINUX_AMD64:
             case Linux64:
                 extensions.add(".dll");
                 extensions.add(".dll.git");
@@ -295,6 +296,7 @@ class PackrReduce {
                 extensions.add(".dylib.sha1");
                 libExtension = ".so";
                 break;
+            case MACOS_AMD64:
             case MacOS:
                 extensions.add(".dll");
                 extensions.add(".dll.git");

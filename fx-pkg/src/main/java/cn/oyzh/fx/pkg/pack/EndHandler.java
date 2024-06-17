@@ -43,9 +43,9 @@ public class EndHandler implements PostHandler {
         long endTime = System.currentTimeMillis();
         long cost = endTime - startTime;
         if (packrConfig.getCompressFile() != null) {
-            StaticLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件大小:{}Mb", cost, packrConfig.getCompressFile().length() / 1024.0 / 1024);
+            StaticLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件:{} 大小:{}Mb", cost,packrConfig.outPath(), packrConfig.getCompressFile().length() / 1024.0 / 1024);
         } else {
-            StaticLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件目录:{}Mb", cost, packrConfig.outDir);
+            StaticLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件目录:{}Mb", cost, packrConfig.outPath());
 
         }
     }

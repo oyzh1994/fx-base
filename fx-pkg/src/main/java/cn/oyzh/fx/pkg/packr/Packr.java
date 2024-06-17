@@ -235,13 +235,15 @@ public class Packr {
                 exe = readResource("/packr-windows-x64.exe");
                 extension = ".exe";
                 break;
-            case Win_64:
+            case WIN_AMD64:
                 exe = readResource("/runj.exe");
                 extension = ".exe";
                 break;
+            case LINUX_AMD64:
             case Linux64:
                 exe = readResource("/packr-linux-x64");
                 break;
+            case MACOS_AMD64:
             case MacOS:
                 exe = readResource("/packr-mac");
                 break;

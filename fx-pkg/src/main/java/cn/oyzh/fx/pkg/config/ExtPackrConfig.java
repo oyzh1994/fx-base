@@ -82,6 +82,13 @@ public class ExtPackrConfig extends PackrConfig {
     private File compressFile;
 
     /**
+     * 执行用的jdk路径
+     */
+    @Getter
+    @Setter
+    private String jdkExec;
+
+    /**
      * 属性
      */
     private final Map<String, Object> properties = new HashMap<>();
@@ -117,5 +124,19 @@ public class ExtPackrConfig extends PackrConfig {
             return mainJar.substring(mainJar.lastIndexOf("\\") + 1);
         }
         return mainJar;
+    }
+
+    public String outPath() {
+        if (this.compressFile != null) {
+            return this.compressFile.getPath();
+        }
+        return this.outDir.getPath();
+    }
+
+    public String jdkExec() {
+        if (this.jdkExec == null) {
+            return this.jdk;
+        }
+        return this.jdkExec;
     }
 }

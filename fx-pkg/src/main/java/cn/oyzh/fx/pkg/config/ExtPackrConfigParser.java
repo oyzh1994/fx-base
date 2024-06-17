@@ -24,6 +24,7 @@ public class ExtPackrConfigParser implements ConfigParser<ExtPackrConfig> {
         // 扩展配置
         config.setMainJar(object.getStr("mainJar"));
         config.setVersion(object.getStr("version"));
+        config.setJdkExec(object.getStr("jdkExec"));
         config.setBuildType(object.getStr("buildType"));
         config.setCompressType(object.getStr("compressType"));
 
@@ -33,8 +34,8 @@ public class ExtPackrConfigParser implements ConfigParser<ExtPackrConfig> {
         config.executable = object.getStr("executable");
         config.outDir = new File(object.getStr("outDir"));
         config.bundleIdentifier = object.getStr("bundleIdentifier");
-        config.iconResource = new File(object.getStr("iconResource"));
         config.platform = Platform.byDesc(object.getStr("platform"));
+        config.iconResource = new File(object.getStr("iconResource"));
         config.verbose = object.getBool("verbose", false);
         config.classpath = object.getJSONArray("classpath").toList(String.class);
         config.useZgcIfSupportedOs = object.getBool("useZgcIfSupportedOs", true);

@@ -21,7 +21,7 @@ public class ConfHandler implements PostHandler {
 
     @Override
     public void handle(ExtPackrConfig packrConfig) throws Exception {
-        if (packrConfig.platform == Platform.Win_64) {
+        if (packrConfig.platform == Platform.WIN_AMD64) {
             if (StrUtil.isBlank(packrConfig.mainJar())) {
                 throw new Exception("mainJar参数缺失！");
             }

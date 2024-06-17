@@ -1,9 +1,6 @@
 package cn.oyzh.fx.pkg.jar;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -14,7 +11,6 @@ import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -56,7 +52,7 @@ public class JarHandler implements PreHandler {
         // 裁剪类库jar
         this.handleLibs(jarUnDir);
         // 合并类库jar
-        this.mergeLibs(jarUnDir, dest, packrConfig.jdk);
+        this.mergeLibs(jarUnDir, dest, packrConfig.jdkExec());
         // 设置最小化后的主程序
         packrConfig.setMinimizeManJar(dest);
         // 设置jar解压目录
@@ -127,7 +123,7 @@ public class JarHandler implements PreHandler {
      * @param mainJar  主jar
      * @param jdkPath  jdk路径
      */
-    private void mergeLibs(String jarUnDir, String mainJar, String jdkPath) {
+    private void mergeLibs(String jarUnDir, String mainJar, String jdkPath) throws Exception {
         StaticLog.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
         // 新jar文件
         File mainJarNewFile = new File(jarUnDir, "temp.jar");
@@ -137,26 +133,18 @@ public class JarHandler implements PreHandler {
         File dir = new File(jarUnDir);
         // lib目录合并
         if (FileUtil.exist(jarUnDir + "/BOOT-INF/lib")) {
-            try {
-                // 合并lib目录到主jar文件
-                String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ./BOOT-INF/lib";
-                cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
-                RuntimeUtil.execAndWait(cmdStr, dir);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // 合并lib目录到主jar文件
+            String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ./BOOT-INF/lib";
+            cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+            RuntimeUtil.execAndWait(cmdStr, dir);
         } else {// 单个jar逐个合并
             List<File> files = FileUtil.loopFiles(dir);
             files = files.parallelStream().filter(f -> f.isFile() && f.getName().endsWith(".jar")).toList();
             for (File file : files) {
-                try {
-                    String fName = file.getPath().replace(dir.getPath(), "");
-                    String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ." + fName;
-                    cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
-                    RuntimeUtil.execAndWait(cmdStr, dir);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                String fName = file.getPath().replace(dir.getPath(), "");
+                String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ." + fName;
+                cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+                RuntimeUtil.execAndWait(cmdStr, dir);
             }
         }
         // 移动主jar文件到原始目录

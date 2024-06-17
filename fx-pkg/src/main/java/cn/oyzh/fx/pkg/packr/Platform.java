@@ -4,7 +4,9 @@ public enum Platform {
     Windows64("windows64"),
     Linux64("linux64"),
     MacOS("mac"),
-    Win_64("win_64");
+    WIN_AMD64("win_amd64"),
+    MACOS_AMD64("macos_amd64"),
+    LINUX_AMD64("linux_amd64");
 
     public final String desc;
 
