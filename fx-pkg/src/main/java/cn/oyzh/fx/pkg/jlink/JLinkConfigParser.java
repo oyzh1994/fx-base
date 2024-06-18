@@ -6,7 +6,6 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import cn.oyzh.fx.pkg.jar.JarConfig;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,8 +17,7 @@ import java.util.ArrayList;
 public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
 
     @Override
-    public JLinkConfig parse(String configFile) {
-        JSONObject object = JSONUtil.parseObj(FileUtil.readUtf8String(configFile));
+    public JLinkConfig parse(JSONObject object) {
         JLinkConfig config = new JLinkConfig();
         JSONArray excludeFiles = object.getJSONArray("excludeFiles");
         if (excludeFiles != null) {
@@ -46,6 +44,10 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         config.setNoHeaderFiles(object.getBool("noHeaderFiles", true));
         config.setStripJavaDebugAttributes(object.getBool("stripJavaDebugAttributes", true));
         return config;
+    }
+
+    public static JLinkConfig parseConfig(JSONObject object) {
+        return new JLinkConfigParser().parse(object);
     }
 
     public static JLinkConfig parseConfig(String configFile) {

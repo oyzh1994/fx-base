@@ -5,14 +5,15 @@ import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
 import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
 import cn.oyzh.fx.pkg.config.ConfHandler;
-import cn.oyzh.fx.pkg.config.ExtPackrConfig;
-import cn.oyzh.fx.pkg.config.ExtPackrConfigParser;
+import cn.oyzh.fx.pkg.config.PackConfig;
+import cn.oyzh.fx.pkg.config.PackConfigParser;
 import cn.oyzh.fx.pkg.jar.JarHandler;
 import cn.oyzh.fx.pkg.jlink.JLinkHandler;
+import cn.oyzh.fx.pkg.jpackage.JPackageHandler;
 import cn.oyzh.fx.pkg.jre.JreHandler;
 import cn.oyzh.fx.pkg.pack.EndHandler;
-import cn.oyzh.fx.pkg.pack.PackHandler;
 import cn.oyzh.fx.pkg.pack.StartHandler;
+import cn.oyzh.fx.pkg.packr.PackrHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,14 @@ public class Packer {
     /**
      * 配置解析器
      */
-    private final ExtPackrConfigParser extPackrConfigParser = new ExtPackrConfigParser();
+    private final PackConfigParser configParser = new PackConfigParser();
 
     {
         this.registerEndHandler();
-        this.registerPackHandler();
         this.registerConfHandler();
+        this.registerJarHandler();
+        this.registerJreHandler();
+        this.registerJLinkHandler();
         this.registerStartHandler();
         this.registerCompressHandler();
         this.registerCompressNameHandler();
@@ -50,24 +53,28 @@ public class Packer {
         this.registerHandler(new StartHandler());
     }
 
-    public void registerPackHandler() {
-        this.registerHandler(new PackHandler());
+    public void registerPackrHandler() {
+        this.registerHandler(new PackrHandler());
+    }
+
+    public void registerJPackageHandler() {
+        this.registerHandler(new JPackageHandler());
     }
 
     public void registerConfHandler() {
         this.registerHandler(new ConfHandler());
     }
 
-    public void registerJreHandler(String configFile) {
-        this.registerHandler(new JreHandler(configFile));
+    public void registerJreHandler() {
+        this.registerHandler(new JreHandler());
     }
 
-    public void registerJarHandler(String configFile) {
-        this.registerHandler(new JarHandler(configFile));
+    public void registerJarHandler() {
+        this.registerHandler(new JarHandler());
     }
 
-    public void registerJLinkHandler(String configFile) {
-        this.registerHandler(new JLinkHandler(configFile));
+    public void registerJLinkHandler() {
+        this.registerHandler(new JLinkHandler());
     }
 
     public void registerCompressHandler() {
@@ -146,29 +153,34 @@ public class Packer {
      */
     public void pack(String configFile) throws Exception {
         // 解析配置
-        ExtPackrConfig packrConfig = this.extPackrConfigParser.parse(configFile);
+        PackConfig packConfig = this.configParser.parse(configFile);
+        if (packConfig.isParkByPackr()) {
+            this.registerPackrHandler();
+        } else {
+            this.registerJPackageHandler();
+        }
         for (PreHandler preHandler : this.preHandlers()) {
-            this.doHandle(preHandler, packrConfig);
+            this.doHandle(preHandler, packConfig);
         }
         for (PackHandler packHandler : this.packHandlers()) {
-            this.doHandle(packHandler, packrConfig);
+            this.doHandle(packHandler, packConfig);
         }
         for (PostHandler postHandler : this.postHandlers()) {
-            this.doHandle(postHandler, packrConfig);
+            this.doHandle(postHandler, packConfig);
         }
     }
 
     /**
      * 执行业务
      *
-     * @param handler     处理器
-     * @param packrConfig 打包配置
+     * @param handler    处理器
+     * @param packConfig 打包配置
      * @throws Exception 异常
      */
-    private void doHandle(Handler handler, ExtPackrConfig packrConfig) throws Exception {
+    private void doHandle(Handler handler, PackConfig packConfig) throws Exception {
         long start = System.currentTimeMillis();
         StaticLog.info("开始执行任务-{}", handler.name());
-        handler.handle(packrConfig);
+        handler.handle(packConfig);
         long end = System.currentTimeMillis();
         StaticLog.info("任务执行结束-{}, 耗时:{}毫秒", handler.name(), (end - start));
     }

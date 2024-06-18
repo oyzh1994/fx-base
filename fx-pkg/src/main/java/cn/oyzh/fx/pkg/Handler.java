@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg;
 
-import cn.oyzh.fx.pkg.config.ExtPackrConfig;
+import cn.oyzh.fx.pkg.config.PackConfig;
 
 /**
  * 处理器
@@ -38,9 +38,9 @@ public interface Handler {
     /**
      * 处理
      *
-     * @param packrConfig 打包配置
+     * @param packConfig 打包配置
      * @throws Exception 异常
      */
-    void handle(ExtPackrConfig packrConfig) throws Exception;
+    void handle(PackConfig packConfig) throws Exception;
 
 }

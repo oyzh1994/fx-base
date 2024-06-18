@@ -1,8 +1,9 @@
 package cn.oyzh.fx.pkg.pack;
 
+import cn.oyzh.fx.common.util.OSUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
-import cn.oyzh.fx.pkg.config.ExtPackrConfig;
+import cn.oyzh.fx.pkg.config.PackConfig;
 
 /**
  * @author oyzh
@@ -16,8 +17,8 @@ public class StartHandler implements PostHandler {
     }
 
     @Override
-    public void handle(ExtPackrConfig packrConfig) throws Exception {
-        packrConfig.putProperty("startTime", System.currentTimeMillis());
+    public void handle(PackConfig packConfig) throws Exception {
+        packConfig.putProperty("startTime", System.currentTimeMillis());
     }
 
     @Override

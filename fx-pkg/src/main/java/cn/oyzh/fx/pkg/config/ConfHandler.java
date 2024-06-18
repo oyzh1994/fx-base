@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.config;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.packr.Platform;
 
@@ -20,13 +19,13 @@ public class ConfHandler implements PostHandler {
     }
 
     @Override
-    public void handle(ExtPackrConfig packrConfig) throws Exception {
-        if (packrConfig.platform == Platform.WIN_AMD64) {
-            if (StrUtil.isBlank(packrConfig.mainJar())) {
+    public void handle(PackConfig packConfig) throws Exception {
+        if (packConfig.isParkByPackr() && packConfig.isPlatformWindows()) {
+            if (StrUtil.isBlank(packConfig.mainJar())) {
                 throw new Exception("mainJar参数缺失！");
             }
-            String cmdText = packrConfig.jrePath() + "/bin/javaw.exe -jar " + packrConfig.mainJarName();
-            File configFile = new File(packrConfig.outDir, "app.conf");
+            String cmdText = packConfig.jrePath() + "/bin/javaw.exe -jar " + packConfig.mainJarName();
+            File configFile = new File(packConfig.getDest(), "app.conf");
             FileUtil.writeUtf8String(cmdText, configFile);
         }
     }

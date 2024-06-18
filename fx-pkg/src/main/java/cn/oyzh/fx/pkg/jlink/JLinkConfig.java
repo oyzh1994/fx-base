@@ -1,10 +1,8 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -5,7 +5,6 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import cn.oyzh.fx.pkg.config.ExtPackrConfig;
 import cn.oyzh.fx.pkg.packr.Platform;
 
 import java.io.File;
@@ -19,8 +18,7 @@ import java.util.HashSet;
 public class JarConfigParser implements ConfigParser<JarConfig> {
 
     @Override
-    public JarConfig parse(String configFile) {
-        JSONObject object = JSONUtil.parseObj(FileUtil.readUtf8String(configFile));
+    public JarConfig parse(JSONObject object) {
         JarConfig config = new JarConfig();
         JSONArray excludes = object.getJSONArray("excludes");
         if (excludes != null) {
@@ -31,6 +29,10 @@ public class JarConfigParser implements ConfigParser<JarConfig> {
         }
         config.setRemoveEmpty(object.getBool("removeEmpty", true));
         return config;
+    }
+
+    public static JarConfig parseConfig(JSONObject object) {
+        return new JarConfigParser().parse(object);
     }
 
     public static JarConfig parseConfig(String configFile) {

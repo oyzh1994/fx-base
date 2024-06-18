@@ -9,6 +9,7 @@ import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.FileNameUtil;
 import cn.oyzh.fx.common.util.OSUtil;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
+import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
@@ -190,47 +191,47 @@ public class PkgUtil {
         return cmdStr;
     }
 
-    // /**
-    //  * 获取jpackage命令
-    //  *
-    //  * @param config jpackage配置
-    //  * @return jlink命令
-    //  */
-    // public static String getJPackageCMD(JPackageConfig config) {
-    //     String cmdStr = "jpackage";
-    //     if (config.isVerbose()) {
-    //         cmdStr += " --verbose";
-    //     }
-    //     if (config.getVendor() != null) {
-    //         cmdStr += " --vendor " + config.getVendor();
-    //     }
-    //     if (config.getDescription() != null) {
-    //         cmdStr += " --description " + config.getDescription();
-    //     }
-    //     if (config.getIcon() != null) {
-    //         cmdStr += " --icon " + config.getIcon();
-    //     }
-    //     if (config.getInput() != null) {
-    //         cmdStr += " -i " + config.getInput();
-    //     }
-    //     if (config.getMainJar() != null) {
-    //         cmdStr += " --main-jar " + config.getMainJar();
-    //     }
-    //     if (config.getName() != null) {
-    //         cmdStr += " -n " + config.getName();
-    //     }
-    //     if (config.getType() != null) {
-    //         cmdStr += " -t " + config.getType();
-    //     }
-    //     if (config.getAppVersion() != null) {
-    //         cmdStr += " --app-version " + config.getAppVersion();
-    //     }
-    //     if (config.getRuntimeImage() != null) {
-    //         cmdStr += " --runtime-image " + config.getRuntimeImage();
-    //     }
-    //     cmdStr += " -d " + config.getDest();
-    //     return cmdStr;
-    // }
+    /**
+     * 获取jpackage命令
+     *
+     * @param config jpackage配置
+     * @return jlink命令
+     */
+    public static String getJPackageCMD(JPackageConfig config) {
+        String cmdStr = "jpackage";
+        if (config.isVerbose()) {
+            cmdStr += " --verbose";
+        }
+        if (config.getVendor() != null) {
+            cmdStr += " --vendor " + config.getVendor();
+        }
+        if (config.getDescription() != null) {
+            cmdStr += " --description " + config.getDescription();
+        }
+        if (config.getIcon() != null) {
+            cmdStr += " --icon " + config.getIcon();
+        }
+        if (config.getInput() != null) {
+            cmdStr += " -i " + config.getInput();
+        }
+        if (config.getMainJar() != null) {
+            cmdStr += " --main-jar " + config.getMainJar();
+        }
+        if (config.getName() != null) {
+            cmdStr += " -n " + config.getName();
+        }
+        if (config.getType() != null) {
+            cmdStr += " -t " + config.getType();
+        }
+        if (config.getAppVersion() != null) {
+            cmdStr += " --app-version " + config.getAppVersion();
+        }
+        if (config.getRuntimeImage() != null) {
+            cmdStr += " --runtime-image " + config.getRuntimeImage();
+        }
+        cmdStr += " -d " + config.getDest();
+        return cmdStr;
+    }
 
     /**
      * 获取jdk执行命令

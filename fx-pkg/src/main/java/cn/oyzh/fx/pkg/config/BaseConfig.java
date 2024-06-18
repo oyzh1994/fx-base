@@ -12,30 +12,15 @@
 // @Data
 // public class BaseConfig {
 //
-//     /**
-//      * 是否启用
-//      */
-//     protected boolean enable = true;
 //
-//     /**
-//      * 解析配置
-//      *
-//      * @param object 配置对象
-//      */
-//     public void parseConfig(JSONObject object) {
-//         Boolean enable = object.getBool("enable");
-//         if (enable != null) {
-//             this.enable = enable;
-//         }
-//     }
+//     // private String icon;
+//     //
+//     // private String mainJar;
+//     //
+//     // private String mainClass;
+//     //
+//     // private String buildType;
+//     //
+//     // private String minimizeManJar;
 //
-//     /**
-//      * 配置交叉
-//      *
-//      * @param o 配置对象
-//      * @return 新配置对象
-//      */
-//     public BaseConfig cross(Object o) {
-//         return null;
-//     }
 // }

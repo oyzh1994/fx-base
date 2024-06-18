@@ -1,11 +1,12 @@
 package cn.oyzh.fx.pkg.jar;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
-import cn.oyzh.fx.pkg.config.ExtPackrConfig;
+import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.filter.RegFilter;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
@@ -21,12 +22,7 @@ import java.util.List;
  */
 public class JarHandler implements PreHandler {
 
-    private final RegFilter filter;
-
-    public JarHandler(String configFile) {
-        JarConfig config = JarConfigParser.parseConfig(configFile);
-        this.filter = new RegFilter(config.getExcludes());
-    }
+    private RegFilter filter;
 
     @Override
     public String name() {
@@ -34,9 +30,18 @@ public class JarHandler implements PreHandler {
     }
 
     @Override
-    public void handle(ExtPackrConfig packrConfig) throws Exception {
+    public void handle(PackConfig packConfig) throws Exception {
+        JarConfig jarConfig = packConfig.getJarConfig();
+        if (jarConfig == null) {
+            return;
+        }
+        String jdkExec = packConfig.getJdkExec();
+        if (StrUtil.isBlank(jdkExec)) {
+            throw new Exception("jdkExec为空！");
+        }
+        this.filter = new RegFilter(jarConfig.getExcludes());
         // 来源文件
-        String src = packrConfig.getMainJar();
+        String src = packConfig.getMainJar();
         // 目标文件
         String dest = src.replace(".jar", "_clip.jar");
         // jar解压目录
@@ -52,11 +57,11 @@ public class JarHandler implements PreHandler {
         // 裁剪类库jar
         this.handleLibs(jarUnDir);
         // 合并类库jar
-        this.mergeLibs(jarUnDir, dest, packrConfig.jdkExec());
+        this.mergeLibs(jarUnDir, dest, jdkExec);
         // 设置最小化后的主程序
-        packrConfig.setMinimizeManJar(dest);
+        packConfig.setMinimizeManJar(dest);
         // 设置jar解压目录
-        packrConfig.setJarUnDir(jarUnDir);
+        packConfig.setJarUnDir(jarUnDir);
     }
 
     /**
