@@ -24,9 +24,7 @@ public interface Handler {
      *
      * @return 排序
      */
-    default int order() {
-        return PackOrder.MID;
-    }
+    int order();
 
     /**
      * 获取名称

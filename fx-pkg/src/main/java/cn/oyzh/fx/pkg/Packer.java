@@ -4,9 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
 import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
-import cn.oyzh.fx.pkg.config.ConfHandler;
+import cn.oyzh.fx.pkg.config.AppConfigHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
+import cn.oyzh.fx.pkg.config.PackConfigHandler;
 import cn.oyzh.fx.pkg.config.PackConfigParser;
+import cn.oyzh.fx.pkg.config.ProjectHandler;
 import cn.oyzh.fx.pkg.jar.JarHandler;
 import cn.oyzh.fx.pkg.jlink.JLinkHandler;
 import cn.oyzh.fx.pkg.jpackage.JPackageHandler;
@@ -36,12 +38,13 @@ public class Packer {
 
     {
         this.registerEndHandler();
-        this.registerConfHandler();
         this.registerJarHandler();
         this.registerJreHandler();
         this.registerJLinkHandler();
         this.registerStartHandler();
         this.registerCompressHandler();
+        this.registerAppConfigHandler();
+        this.registerPackConfigHandler();
         this.registerCompressNameHandler();
     }
 
@@ -61,8 +64,8 @@ public class Packer {
         this.registerHandler(new JPackageHandler());
     }
 
-    public void registerConfHandler() {
-        this.registerHandler(new ConfHandler());
+    public void registerAppConfigHandler() {
+        this.registerHandler(new AppConfigHandler());
     }
 
     public void registerJreHandler() {
@@ -73,8 +76,20 @@ public class Packer {
         this.registerHandler(new JarHandler());
     }
 
+    public void registerProjectHandler() {
+        this.registerHandler(new ProjectHandler());
+    }
+
+    public void registerProjectHandler(String file) {
+        this.registerHandler(new ProjectHandler(file));
+    }
+
     public void registerJLinkHandler() {
         this.registerHandler(new JLinkHandler());
+    }
+
+    public void registerPackConfigHandler() {
+        this.registerHandler(new PackConfigHandler());
     }
 
     public void registerCompressHandler() {

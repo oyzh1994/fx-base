@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * jre裁剪配置
+ * jre配置
  *
  * @author oyzh
- * @since 2023/03/09
+ * @since 2024/06/18
  */
 @Data
 public class JreConfig {

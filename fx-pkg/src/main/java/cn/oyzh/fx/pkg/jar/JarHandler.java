@@ -15,14 +15,19 @@ import java.io.File;
 import java.util.List;
 
 /**
- * 主jar裁剪器
+ * jar处理器
  *
  * @author oyzh
- * @since 2022/12/14
+ * @since 2024/06/17
  */
 public class JarHandler implements PreHandler {
 
     private RegFilter filter;
+
+    @Override
+    public int order() {
+        return PackOrder.HIGH_P1;
+    }
 
     @Override
     public String name() {
@@ -35,9 +40,9 @@ public class JarHandler implements PreHandler {
         if (jarConfig == null) {
             return;
         }
-        String jdkExec = packConfig.getJdkExec();
-        if (StrUtil.isBlank(jdkExec)) {
-            throw new Exception("jdkExec为空！");
+        String jdkPath = packConfig.getJdkPath();
+        if (StrUtil.isBlank(jdkPath)) {
+            throw new Exception("jdkPath为空！");
         }
         this.filter = new RegFilter(jarConfig.getExcludes());
         // 来源文件
@@ -57,7 +62,7 @@ public class JarHandler implements PreHandler {
         // 裁剪类库jar
         this.handleLibs(jarUnDir);
         // 合并类库jar
-        this.mergeLibs(jarUnDir, dest, jdkExec);
+        this.mergeLibs(jarUnDir, dest, jdkPath);
         // 设置最小化后的主程序
         packConfig.setMinimizeManJar(dest);
         // 设置jar解压目录
@@ -157,8 +162,4 @@ public class JarHandler implements PreHandler {
         StaticLog.info("mergeLibs finish.");
     }
 
-    @Override
-    public int order() {
-        return PackOrder.HIGH - 1;
-    }
 }

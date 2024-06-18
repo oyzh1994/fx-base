@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.jlink;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
+import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -22,20 +23,25 @@ public class JLinkHandler implements PreHandler {
     }
 
     @Override
+    public int order() {
+        return PackOrder.HIGH_P2;
+    }
+
+    @Override
     public void handle(PackConfig packConfig) throws Exception {
         JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
         if (jLinkConfig == null) {
             return;
         }
-        String jdkExec = packConfig.getJdkExec();
-        if (StrUtil.isBlank(jdkExec)) {
-            throw new Exception("jdkExec为空！");
+        String jdkPath = packConfig.getJdkPath();
+        if (StrUtil.isBlank(jdkPath)) {
+            throw new Exception("jdkPath为空！");
         }
         if (FileUtil.exist(jLinkConfig.getOutput())) {
             FileUtil.del(jLinkConfig.getOutput());
         }
         String cmdStr = PkgUtil.getJLinkCMD(jLinkConfig);
-        cmdStr = PkgUtil.getJDKExecCMD(jdkExec, cmdStr);
+        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
         // 执行jlink
         RuntimeUtil.execAndWait(cmdStr);
         // 更新jre路径

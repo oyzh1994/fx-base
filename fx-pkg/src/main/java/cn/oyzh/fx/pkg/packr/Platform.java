@@ -22,4 +22,8 @@ public enum Platform {
         }
         throw new RuntimeException("Invalid platform '" + desc + "'");
     }
+
+    public boolean isMacos() {
+        return this == MacOS || this == MACOS_AMD64;
+    }
 }

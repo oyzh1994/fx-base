@@ -8,8 +8,4 @@ package cn.oyzh.fx.pkg;
  */
 public interface PreHandler extends Handler {
 
-    @Override
-    default int order() {
-        return PackOrder.HIGH;
-    }
 }

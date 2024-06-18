@@ -1,16 +1,14 @@
 package cn.oyzh.fx.pkg.jre;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import cn.oyzh.fx.pkg.jar.JarConfig;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
+ * jre配置解析器
+ *
  * @author oyzh
  * @since 2024/6/17
  */

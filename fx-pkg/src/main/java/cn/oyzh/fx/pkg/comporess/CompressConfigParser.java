@@ -2,14 +2,13 @@ package cn.oyzh.fx.pkg.comporess;
 
 import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
-import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import lombok.Data;
 
 /**
- * JPackage配置
+ * 压缩配置解析器
  *
  * @author oyzh
- * @since 2023/3/8
+ * @since 2024/06/18
  */
 @Data
 public class CompressConfigParser implements ConfigParser<CompressConfig> {

@@ -7,6 +7,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
+ * packr配置解析器
+ *
  * @author oyzh
  * @since 2024/6/17
  */
@@ -23,10 +25,10 @@ public class PackrConfigParser implements ConfigParser<PackrConfig> {
             packrConfig.outDir = new File(object.getStr("outDir"));
         }
         if (object.containsKey("platform")) {
-            packrConfig.platform =  Platform.byDesc(object.getStr("platform"));
+            packrConfig.platform = Platform.byDesc(object.getStr("platform"));
         }
         if (object.containsKey("iconResource")) {
-            packrConfig.iconResource =   new File(object.getStr("iconResource"));
+            packrConfig.iconResource = new File(object.getStr("iconResource"));
         }
         packrConfig.bundleIdentifier = object.getStr("bundleIdentifier");
         packrConfig.verbose = object.getBool("verbose", false);

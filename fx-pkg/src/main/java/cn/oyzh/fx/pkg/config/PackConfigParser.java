@@ -16,6 +16,8 @@ import cn.oyzh.fx.pkg.packr.PackrConfig;
 import cn.oyzh.fx.pkg.packr.PackrConfigParser;
 
 /**
+ * 打包配置解析器
+ *
  * @author oyzh
  * @since 2024/6/17
  */
@@ -31,7 +33,8 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         config.setAppIcon(object.getStr("appIcon"));
         config.setAppVersion(object.getStr("appVersion"));
         config.setMainJar(object.getStr("mainJar"));
-        config.setJdkExec(object.getStr("jdkExec"));
+        config.setJdkPath(object.getStr("jdkPath"));
+        config.setJrePath(object.getStr("jrePath"));
         config.setPlatform(object.getStr("platform"));
         config.setPackMode(object.getStr("packMode"));
         config.setBuildType(object.getStr("buildType"));

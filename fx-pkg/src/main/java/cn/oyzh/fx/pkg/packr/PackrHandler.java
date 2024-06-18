@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.packr;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.pkg.PackHandler;
+import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
 
 import java.io.File;
@@ -16,13 +17,17 @@ public class PackrHandler implements PackHandler {
     private final Packr packr = new Packr();
 
     @Override
+    public int order() {
+        return PackOrder.MID;
+    }
+
+    @Override
     public String name() {
         return "打包处理";
     }
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-
         PackrConfig packrConfig = packConfig.getPackrConfig();
         // 修正executable
         if (packrConfig.executable == null) {
@@ -30,11 +35,11 @@ public class PackrHandler implements PackHandler {
         }
         // 修正jd
         if (packrConfig.jdk == null) {
-            packrConfig.jdk = packConfig.jre();
+            packrConfig.jdk = packConfig.jrePath();
         }
         // 修正outDir
         if (packrConfig.outDir == null) {
-            packrConfig.outDir =new File(packConfig.getDest());
+            packrConfig.outDir = new File(packConfig.getDest());
         }
         // 修正icon
         if (packrConfig.iconResource == null) {

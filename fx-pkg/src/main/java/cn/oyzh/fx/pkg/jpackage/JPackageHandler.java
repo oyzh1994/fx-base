@@ -5,6 +5,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackHandler;
+import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
@@ -19,6 +20,11 @@ import java.io.File;
 public class JPackageHandler implements PackHandler {
 
     @Override
+    public int order() {
+        return PackOrder.MID;
+    }
+
+    @Override
     public String name() {
         return "jpackage打包处理";
     }
@@ -29,9 +35,9 @@ public class JPackageHandler implements PackHandler {
         if (jPackageConfig == null) {
             return;
         }
-        String jdkExec = packConfig.getJdkExec();
-        if (StrUtil.isBlank(jdkExec)) {
-            throw new Exception("jdkExec为空！");
+        String jdkPath = packConfig.getJdkPath();
+        if (StrUtil.isBlank(jdkPath)) {
+            throw new Exception("jdkPath为空！");
         }
         if (jPackageConfig.getInput() == null) {
             File dir = new File(FileUtil.getTmpDir(), "_temp_jpackage_input_" + UUID.fastUUID().toString(true));
@@ -54,17 +60,17 @@ public class JPackageHandler implements PackHandler {
             jPackageConfig.setName(packConfig.getAppName());
         }
         if (jPackageConfig.getAppVersion() == null) {
-            jPackageConfig.setAppVersion(packConfig.toJPackageVersion());
+            jPackageConfig.setAppVersion(packConfig.appVersion());
         }
         if (jPackageConfig.getRuntimeImage() == null) {
-            jPackageConfig.setRuntimeImage(packConfig.jre());
+            jPackageConfig.setRuntimeImage(packConfig.jrePath());
         }
         // 删除输出目录
         if (FileUtil.exist(packConfig.getDest())) {
             FileUtil.del(packConfig.getDest());
         }
         String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
-        cmdStr = PkgUtil.getJDKExecCMD(jdkExec, cmdStr);
+        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
         // 执行jpackage
         RuntimeUtil.execAndWait(cmdStr);
     }

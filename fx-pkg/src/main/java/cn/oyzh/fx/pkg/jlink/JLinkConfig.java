@@ -9,7 +9,7 @@ import java.util.List;
  * jlink配置
  *
  * @author oyzh
- * @since 2023/3/8
+ * @since 2024/06/17
  */
 @Data
 public class JLinkConfig {

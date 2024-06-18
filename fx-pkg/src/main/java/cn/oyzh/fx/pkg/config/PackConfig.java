@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 打包配置
+ *
  * @author oyzh
  * @since 2024/6/14
  */
@@ -56,7 +58,6 @@ public class PackConfig {
      * 打包方式
      * jpackage
      * packr
-     * auto
      */
     @Setter
     private String packMode = "packr";
@@ -107,13 +108,13 @@ public class PackConfig {
      * 打包用的jre路径
      */
     @Setter
-    private String jre;
+    private String jrePath;
 
     /**
      * 执行用的jdk路径
      */
     @Setter
-    private String jdkExec;
+    private String jdkPath;
 
     /**
      * 平台
@@ -170,13 +171,6 @@ public class PackConfig {
         return this.properties.get(key);
     }
 
-    public String jrePath() {
-        if (this.packrConfig == null || this.packrConfig.jrePath == null) {
-            return Packr.DEFAULT_JRE_PATH;
-        }
-        return this.packrConfig.jrePath;
-    }
-
     public String mainJar() {
         if (this.minimizeManJar != null) {
             return this.minimizeManJar;
@@ -204,7 +198,10 @@ public class PackConfig {
 
     public String appVersion() {
         if (this.appVersion == null) {
-            return jPackageConfig.getAppVersion();
+            return null;
+        }
+        if (this.appVersion.toLowerCase().startsWith("v")) {
+            return this.appVersion.substring(1);
         }
         return this.appVersion;
     }
@@ -213,14 +210,14 @@ public class PackConfig {
         return this.packMode.equalsIgnoreCase("packr");
     }
 
-    public String jre() {
+    public String jrePath() {
         if (this.minimizeJre != null) {
             return this.minimizeJre;
         }
         if (this.jlinkJre != null) {
             return this.jlinkJre;
         }
-        return this.jre;
+        return this.jrePath;
     }
 
     public boolean isPlatformMacos() {
@@ -229,15 +226,5 @@ public class PackConfig {
 
     public boolean isPlatformWindows() {
         return StrUtil.containsAnyIgnoreCase(this.platform, "win");
-    }
-
-    public String toJPackageVersion() {
-        if (this.appVersion == null ) {
-            return null;
-        }
-        if(this.appVersion.toLowerCase().startsWith("v")){
-            return this.appVersion.substring(1);
-        }
-        return this.appVersion;
     }
 }

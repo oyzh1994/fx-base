@@ -30,7 +30,7 @@ public class JreHandler implements PreHandler {
         if (packConfig.getJlinkJre() != null) {
             src = packConfig.getJlinkJre();
         } else {
-            src = packConfig.getJre();
+            src = packConfig.jrePath();
         }
         if (StrUtil.isBlank(src)) {
             throw new Exception("jre为空！");
@@ -51,7 +51,7 @@ public class JreHandler implements PreHandler {
 
     @Override
     public int order() {
-        return PackOrder.HIGH - 1;
+        return PackOrder.HIGH_P1;
     }
 
     @Override

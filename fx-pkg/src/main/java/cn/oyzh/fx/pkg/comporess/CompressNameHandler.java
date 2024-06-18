@@ -8,8 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * 压缩名称处理器
+ *
  * @author oyzh
- * @since 2024/4/2
+ * @since 2024/06/18
  */
 public class CompressNameHandler implements PostHandler {
 
@@ -27,7 +29,7 @@ public class CompressNameHandler implements PostHandler {
             compressName += packConfig.getAppName();
         }
         if (packConfig.appVersion() != null) {
-            compressName = compressName + "_" + packConfig.appVersion();
+            compressName = compressName + "_v" + packConfig.appVersion();
         }
         if (packConfig.getPlatform() != null) {
             compressName = compressName + "_" + packConfig.getPlatform();
@@ -43,7 +45,7 @@ public class CompressNameHandler implements PostHandler {
 
     @Override
     public int order() {
-        return PackOrder.LOW - 1;
+        return PackOrder.LOW_M3;
     }
 
     @Override

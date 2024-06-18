@@ -6,7 +6,7 @@ import lombok.Data;
  * 压缩配置
  *
  * @author oyzh
- * @since 2023/3/8
+ * @since 2024/06/18
  */
 @Data
 public class CompressConfig {

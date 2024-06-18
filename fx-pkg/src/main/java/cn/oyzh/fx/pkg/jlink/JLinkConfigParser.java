@@ -4,13 +4,14 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
 
 import java.io.File;
 import java.util.ArrayList;
 
 /**
+ * jlink配置解析器
+ *
  * @author oyzh
  * @since 2024/6/17
  */
