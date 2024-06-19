@@ -32,7 +32,7 @@ char* get_exec_cmd(){
 
 // window的gui程序主入口
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    printf("start----------");
+    printf("start----------\n");
     // 获取程序执行路径
     char* execCmd = get_exec_cmd();
     printf("execCmd: %s\n", execCmd);
@@ -64,6 +64,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // 关闭进程和线程句柄
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
-    printf("exit----------");
+    printf("exit----------\n");
     return 0;
 }

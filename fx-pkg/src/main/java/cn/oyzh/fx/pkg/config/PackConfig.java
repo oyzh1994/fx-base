@@ -227,4 +227,8 @@ public class PackConfig {
     public boolean isPlatformWindows() {
         return StrUtil.containsAnyIgnoreCase(this.platform, "win");
     }
+
+    public boolean isPlatformLinux() {
+        return StrUtil.containsAnyIgnoreCase(this.platform, "linux");
+    }
 }

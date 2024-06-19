@@ -123,15 +123,19 @@ public class PkgUtil {
         StaticLog.info("gzipDest start, config.compressType is:{} compressName:{}.", "tar.gz", compressName);
         File dest = new File(appDest);
         File compressFile = new File(dest.getParentFile(), compressName);
+        // // 进行tar.gz压缩
+        // Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile);
+        // // 把目录的一级文件或者目录添加进去，以免生成解压后还存在一个子目录
+        // File[] files = dest.listFiles();
+        // if (files != null) {
+        //     for (File file : files) {
+        //         archiver.add(file);
+        //     }
+        // }
+        // archiver.finish().close();
         // 进行tar.gz压缩
-        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile);
-        // 把目录的一级文件或者目录添加进去，以免生成解压后还存在一个子目录
-        File[] files = dest.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                archiver.add(file);
-            }
-        }
+        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile)
+                .add(dest);
         archiver.finish().close();
         StaticLog.info("gzipDest finish appDest:{}", compressFile.getPath());
         return compressFile;

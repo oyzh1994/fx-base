@@ -27,13 +27,21 @@ public class AppConfigHandler implements PostHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        if (packConfig.isParkByPackr() && packConfig.isPlatformWindows()) {
+        if (packConfig.isParkByPackr()) {
             if (StrUtil.isBlank(packConfig.mainJar())) {
                 throw new Exception("mainJar参数缺失！");
             }
-            String cmdText = packConfig.jrePath() + "/bin/javaw.exe -jar " + packConfig.mainJarName();
-            File configFile = new File(packConfig.getDest(), "app.conf");
-            FileUtil.writeUtf8String(cmdText, configFile);
+            String jre = packConfig.getPackrConfig().jrePath();
+            String cmdText = null;
+            if (packConfig.isPlatformWindows()) {
+                cmdText = jre + "/bin/javaw.exe -jar " + packConfig.mainJarName();
+            } else if (packConfig.isPlatformLinux()) {
+                cmdText = "./" + jre + "/bin/java -jar " + packConfig.mainJarName();
+            }
+            if (cmdText != null) {
+                File configFile = new File(packConfig.getDest(), "app.conf");
+                FileUtil.writeUtf8String(cmdText, configFile);
+            }
         }
     }
 }

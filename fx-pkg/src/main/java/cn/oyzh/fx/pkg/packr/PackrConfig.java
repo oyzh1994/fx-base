@@ -17,11 +17,10 @@
 
 package cn.oyzh.fx.pkg.packr;
 
+import cn.hutool.core.util.StrUtil;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.File;
 import java.io.IOException;
@@ -201,5 +200,9 @@ public class PackrConfig {
         if (parameter == null) {
             throw new IOException("No " + name + " specified. Please check your commandline or configuration.");
         }
+    }
+
+    public String jrePath() {
+        return StrUtil.blankToDefault(this.jrePath, Packr.DEFAULT_JRE_PATH);
     }
 }
