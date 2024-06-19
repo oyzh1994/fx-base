@@ -165,6 +165,8 @@ public class I18nHelper {
 
     public static final String PERMS = "base.perms";
 
+    public static final String NOT_SUPPORT = "base.notSupport";
+
     public static final String NAME = "base.name";
 
     public static final String TRAY = "base.tray";
@@ -940,7 +942,7 @@ public class I18nHelper {
     }
 
     public static String trayNotSupport() {
-        return I18nResourceBundle.i18nString(TRAY, NOT, SUPPORT);
+        return I18nResourceBundle.i18nString(TRAY, NOT_SUPPORT);
     }
 
     public static String name() {
