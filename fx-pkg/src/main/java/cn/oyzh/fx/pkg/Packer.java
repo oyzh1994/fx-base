@@ -13,6 +13,7 @@ import cn.oyzh.fx.pkg.jar.JarHandler;
 import cn.oyzh.fx.pkg.jlink.JLinkHandler;
 import cn.oyzh.fx.pkg.jpackage.JPackageHandler;
 import cn.oyzh.fx.pkg.jre.JreHandler;
+import cn.oyzh.fx.pkg.mvn.MvnHandler;
 import cn.oyzh.fx.pkg.pack.EndHandler;
 import cn.oyzh.fx.pkg.pack.StartHandler;
 import cn.oyzh.fx.pkg.packr.PackrHandler;
@@ -74,6 +75,10 @@ public class Packer {
 
     public void registerJarHandler() {
         this.registerHandler(new JarHandler());
+    }
+
+    public void registerMvnHandler(String projectDir, List<String> dependencies) {
+        this.registerHandler(new MvnHandler(projectDir, dependencies));
     }
 
     public void registerProjectHandler() {

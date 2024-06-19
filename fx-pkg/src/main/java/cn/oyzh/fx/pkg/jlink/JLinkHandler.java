@@ -5,9 +5,12 @@ import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
+import cn.oyzh.fx.pkg.SingleHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * jlink处理
@@ -15,7 +18,11 @@ import cn.oyzh.fx.pkg.util.PkgUtil;
  * @author oyzh
  * @since 2023/3/8
  */
-public class JLinkHandler implements PreHandler {
+public class JLinkHandler implements PreHandler, SingleHandler {
+
+    @Getter
+    @Setter
+    private boolean executed;
 
     @Override
     public boolean unique() {
@@ -29,6 +36,9 @@ public class JLinkHandler implements PreHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
+        if (this.executed) {
+            return;
+        }
         JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
         if (jLinkConfig == null) {
             return;
@@ -46,6 +56,7 @@ public class JLinkHandler implements PreHandler {
         RuntimeUtil.execAndWait(cmdStr);
         // 更新jre路径
         packConfig.setJlinkJre(jLinkConfig.getOutput());
+        this.executed = true;
     }
 
     @Override

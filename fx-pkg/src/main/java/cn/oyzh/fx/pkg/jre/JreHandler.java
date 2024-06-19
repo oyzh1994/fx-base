@@ -6,8 +6,11 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
+import cn.oyzh.fx.pkg.SingleHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.filter.RegFilter;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 import java.util.List;
@@ -18,10 +21,17 @@ import java.util.List;
  * @author oyzh
  * @since 2024/06/17
  */
-public class JreHandler implements PreHandler {
+public class JreHandler implements PreHandler, SingleHandler {
+
+    @Getter
+    @Setter
+    private boolean executed;
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
+        if (this.executed) {
+            return;
+        }
         JreConfig jreConfig = packConfig.getJreConfig();
         if (jreConfig == null) {
             return;
@@ -47,6 +57,7 @@ public class JreHandler implements PreHandler {
         }
         // 设置最小化后的jre
         packConfig.setMinimizeJre(dest.getPath());
+        this.executed = true;
     }
 
     @Override
