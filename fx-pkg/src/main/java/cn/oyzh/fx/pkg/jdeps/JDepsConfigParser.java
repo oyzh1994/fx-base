@@ -24,6 +24,16 @@ public class JDepsConfigParser implements ConfigParser<JDepsConfig> {
                 config.getSkips().add(o.toString());
             }
         }
+        JSONArray excludes = object.getJSONArray("excludes");
+        if (excludes != null) {
+            config.setExcludes(new HashSet<>());
+            for (Object o : excludes) {
+                config.getExcludes().add(o.toString());
+            }
+        }
+        config.setMultiRelease(object.getInt("multi-release"));
+        config.setSummary(object.getBool("summary", true));
+        config.setVerbose(object.getBool("verbose", false));
         return config;
     }
 

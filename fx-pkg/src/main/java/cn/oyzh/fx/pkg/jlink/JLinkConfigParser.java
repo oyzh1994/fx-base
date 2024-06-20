@@ -20,14 +20,14 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
     @Override
     public JLinkConfig parse(JSONObject object) {
         JLinkConfig config = new JLinkConfig();
-        JSONArray excludeFiles = object.getJSONArray("excludeFiles");
+        JSONArray excludeFiles = object.getJSONArray("exclude-files");
         if (excludeFiles != null) {
             config.setExcludeFiles(new ArrayList<>());
             for (Object o : excludeFiles) {
                 config.getExcludeFiles().add(o.toString());
             }
         }
-        JSONArray addModules = object.getJSONArray("addModules");
+        JSONArray addModules = object.getJSONArray("add-modules");
         if (addModules != null) {
             config.setAddModules(new ArrayList<>());
             for (Object o : addModules) {
@@ -40,10 +40,10 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         config.setOutput(object.getStr("output", tmpJreDir));
         config.setCompress(object.getInt("compress", 2));
         config.setVerbose(object.getBool("verbose", true));
-        config.setNoManPages(object.getBool("noManPages", true));
-        config.setStripDebug(object.getBool("stripDebug", true));
-        config.setNoHeaderFiles(object.getBool("noHeaderFiles", true));
-        config.setStripJavaDebugAttributes(object.getBool("stripJavaDebugAttributes", true));
+        config.setNoManPages(object.getBool("no-man-pages", true));
+        config.setStripDebug(object.getBool("strip-debug", true));
+        config.setNoHeaderFiles(object.getBool("no-header-files", true));
+        config.setStripJavaDebugAttributes(object.getBool("strip-java-debug-attributes", true));
         return config;
     }
 

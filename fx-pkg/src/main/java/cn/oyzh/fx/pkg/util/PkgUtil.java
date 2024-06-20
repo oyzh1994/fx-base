@@ -8,6 +8,7 @@ import cn.hutool.extra.compress.archiver.Archiver;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.FileNameUtil;
 import cn.oyzh.fx.common.util.OSUtil;
+import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import lombok.experimental.UtilityClass;
@@ -192,6 +193,26 @@ public class PkgUtil {
             cmdStr += " --exclude-files=" + CollUtil.join(config.getExcludeFiles(), ",");
         }
         cmdStr += " --output " + config.getOutput();
+        return cmdStr;
+    }
+
+    /**
+     * 获取jdeps命令
+     *
+     * @param config jdeps配置
+     * @return jdeps命令
+     */
+    public static String getJDepsCMD(JDepsConfig config) {
+        String cmdStr = "jdeps";
+        if (config.isVerbose()) {
+            cmdStr += " -verbose";
+        }
+        if (config.isSummary()) {
+            cmdStr += " -summary" ;
+        }
+        if (config.getMultiRelease() != null) {
+            cmdStr += " --multi-release " + config.getMultiRelease();
+        }
         return cmdStr;
     }
 

@@ -27,6 +27,10 @@ public class PackConfigHandler implements PreHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
+        if (StrUtil.equals(packConfig.getJdkPath(), "$SYSTEM")) {
+            String javaHome = System.getenv("JAVA_HOME");
+            packConfig.setJdkPath(javaHome);
+        }
         if (packConfig.getAppVersion() == null) {
             return;
         }

@@ -33,8 +33,6 @@ public class JDepsHandler implements PreHandler {
     @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P6;
 
-    private RegFilter filter;
-
     @Override
     public String name() {
         return "jdeps处理器";
@@ -47,9 +45,13 @@ public class JDepsHandler implements PreHandler {
             return;
         }
         JDepsConfig jDepsConfig = packConfig.getJDepsConfig();
-        this.filter = new RegFilter();
+        RegFilter fileFilter = new RegFilter();
+        RegFilter moduleFilter = new RegFilter();
         if (jDepsConfig != null) {
-            this.filter.addExcludes(jDepsConfig.getSkips());
+            fileFilter.addExcludes(jDepsConfig.getSkips());
+            moduleFilter.addExcludes(jDepsConfig.getExcludes());
+        } else {
+            jDepsConfig = new JDepsConfig();
         }
 
         String jdkPath = packConfig.getJdkPath();
@@ -73,7 +75,7 @@ public class JDepsHandler implements PreHandler {
         // 遍历所有文件，然后找出所有依赖模块
         Set<String> deps = new HashSet<>();
         List<File> files = FileUtil.loopFiles(jarUnDir);
-        cmdStr = new StringBuilder("jdeps -filter:module -s --multi-release 22");
+        cmdStr = new StringBuilder(PkgUtil.getJDepsCMD(jDepsConfig));
         for (File file : files) {
             try {
                 // 非jar，跳过
@@ -82,7 +84,7 @@ public class JDepsHandler implements PreHandler {
                 }
                 StaticLog.info("jdeps jar: {}.", file.getName());
                 // 被过滤
-                if (!this.filter.apply(file.getName())) {
+                if (!fileFilter.apply(file.getName())) {
                     continue;
                 }
                 // 拼接到命令
@@ -103,6 +105,10 @@ public class JDepsHandler implements PreHandler {
             String module = r.split("-> ")[1];
             // 处理内容
             module = module.trim();
+            // 被过滤
+            if (!moduleFilter.apply(module)) {
+                return;
+            }
             // 如果是系统模块，则添加到模块列表
             if (modules.contains(module) && !deps.contains(module)) {
                 System.out.println("module added:" + module);
