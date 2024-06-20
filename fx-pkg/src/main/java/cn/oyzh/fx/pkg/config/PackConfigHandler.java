@@ -3,6 +3,9 @@ package cn.oyzh.fx.pkg.config;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * 打包信息处理器
@@ -12,10 +15,10 @@ import cn.oyzh.fx.pkg.PreHandler;
  */
 public class PackConfigHandler implements PreHandler {
 
-    @Override
-    public int order() {
-        return PackOrder.HIGH_P3;
-    }
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_P8;
 
     @Override
     public String name() {

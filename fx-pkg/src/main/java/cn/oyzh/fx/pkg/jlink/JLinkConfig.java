@@ -1,8 +1,10 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.hutool.json.JSONObject;
+import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -64,61 +66,17 @@ public class JLinkConfig {
      */
     private List<String> excludeFiles;
 
-    public void parseConfig(JSONObject object) {
-
+    public void margeAddModules(Collection<String> addModules) {
+        if (CollUtil.isNotEmpty(addModules)) {
+            if (this.addModules == null || this.addModules.isEmpty()) {
+                this.addModules = new ArrayList<>(addModules);
+            } else {
+                for (String addModule : addModules) {
+                    if (!this.addModules.contains(addModule)) {
+                        this.addModules.add(addModule);
+                    }
+                }
+            }
+        }
     }
-
-    // @Override
-    // public JLinkConfig clone() {
-    //     JLinkConfig config = new JLinkConfig();
-    //     config.vm = this.vm;
-    //     config.output = this.output;
-    //     config.enable = this.enable;
-    //     config.verbose = this.verbose;
-    //     config.compress = this.compress;
-    //     config.addModules = this.addModules;
-    //     config.stripDebug = this.stripDebug;
-    //     config.noManPages = this.noManPages;
-    //     config.excludeFiles = this.excludeFiles;
-    //     config.noHeaderFiles = this.noHeaderFiles;
-    //     config.stripJavaDebugAttributes = this.stripJavaDebugAttributes;
-    //     return config;
-    // }
-    //
-    // @Override
-    // public JLinkConfig cross(Object o) {
-    //     JLinkConfig config1 = this.clone();
-    //     if (o instanceof JLinkConfig config) {
-    //         config1.enable = config.enable;
-    //         config1.verbose = config.verbose;
-    //         config1.stripDebug = config.stripDebug;
-    //         config1.noManPages = config.noManPages;
-    //         config1.noHeaderFiles = config.noHeaderFiles;
-    //         config1.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
-    //         if (config.vm != null) {
-    //             config1.vm = config.vm;
-    //         }
-    //         if (config.addModules != null) {
-    //             if (config1.addModules == null) {
-    //                 config1.addModules = config.addModules;
-    //             } else {
-    //                 config1.addModules.addAll(config.addModules);
-    //             }
-    //         }
-    //         if (config.excludeFiles != null) {
-    //             if (config1.excludeFiles == null) {
-    //                 config1.excludeFiles = config.excludeFiles;
-    //             } else {
-    //                 config1.excludeFiles.addAll(config.excludeFiles);
-    //             }
-    //         }
-    //         if (config.compress != null) {
-    //             config1.compress = config.compress;
-    //         }
-    //         if (config.output != null) {
-    //             config1.output = config.output;
-    //         }
-    //     }
-    //     return config1;
-    // }
 }

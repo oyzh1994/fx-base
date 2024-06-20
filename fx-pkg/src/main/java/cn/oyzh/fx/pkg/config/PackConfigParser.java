@@ -6,6 +6,8 @@ import cn.oyzh.fx.pkg.comporess.CompressConfig;
 import cn.oyzh.fx.pkg.comporess.CompressConfigParser;
 import cn.oyzh.fx.pkg.jar.JarConfig;
 import cn.oyzh.fx.pkg.jar.JarConfigParser;
+import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
+import cn.oyzh.fx.pkg.jdeps.JDepsConfigParser;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfigParser;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -57,6 +59,11 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         if (object.containsKey("jlink")) {
             JLinkConfig jLinkConfig = JLinkConfigParser.parseConfig(object.getJSONObject("jlink"));
             config.setJLinkConfig(jLinkConfig);
+        }
+
+        if (object.containsKey("jdeps")) {
+            JDepsConfig jDepsConfig = JDepsConfigParser.parseConfig(object.getJSONObject("jdeps"));
+            config.setJDepsConfig(jDepsConfig);
         }
 
         if (object.containsKey("compress")) {

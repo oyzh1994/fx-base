@@ -10,6 +10,7 @@ import cn.oyzh.fx.pkg.config.PackConfigHandler;
 import cn.oyzh.fx.pkg.config.PackConfigParser;
 import cn.oyzh.fx.pkg.config.ProjectHandler;
 import cn.oyzh.fx.pkg.jar.JarHandler;
+import cn.oyzh.fx.pkg.jdeps.JDepsHandler;
 import cn.oyzh.fx.pkg.jlink.JLinkHandler;
 import cn.oyzh.fx.pkg.jpackage.JPackageHandler;
 import cn.oyzh.fx.pkg.jre.JreHandler;
@@ -43,6 +44,7 @@ public class Packer {
         this.registerJreHandler();
         this.registerJLinkHandler();
         this.registerStartHandler();
+        this.registerJdepsHandler();
         this.registerCompressHandler();
         this.registerAppConfigHandler();
         this.registerPackConfigHandler();
@@ -87,6 +89,10 @@ public class Packer {
 
     public void registerProjectHandler(String file) {
         this.registerHandler(new ProjectHandler(file));
+    }
+
+    public void registerJdepsHandler() {
+        this.registerHandler(new JDepsHandler());
     }
 
     public void registerJLinkHandler() {

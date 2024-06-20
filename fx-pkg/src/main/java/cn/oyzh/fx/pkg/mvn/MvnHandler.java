@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.mvn;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.OSUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -9,6 +10,7 @@ import cn.oyzh.fx.pkg.SingleHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.List;
@@ -19,6 +21,11 @@ import java.util.List;
  * @since 2024/6/19
  */
 public class MvnHandler implements PreHandler, SingleHandler {
+
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_P9;
 
     /**
      * 项目工程
@@ -40,11 +47,6 @@ public class MvnHandler implements PreHandler, SingleHandler {
     }
 
     @Override
-    public int order() {
-        return PackOrder.HIGH_P2;
-    }
-
-    @Override
     public String name() {
         return "maven处理";
     }
@@ -58,7 +60,17 @@ public class MvnHandler implements PreHandler, SingleHandler {
         if (StrUtil.isBlank(mvnHome)) {
             mvnHome = System.getenv("M2_HOME");
         }
-        String mvnExe = mvnHome + "/bin/mvn.cmd";
+        if (StrUtil.isBlank(mvnHome)) {
+            throw new RuntimeException("maven主目录未找到!");
+        }
+        String mvnExe;
+        if (OSUtil.isLinux()) {
+            mvnExe = mvnHome + "/bin/mvn.sh";
+        } else if (OSUtil.isWindows()) {
+            mvnExe = mvnHome + "/bin/mvn.cmd";
+        } else {
+            mvnExe = mvnHome + "/bin/mvn";
+        }
         // 安装依赖工程
         if (CollUtil.isNotEmpty(this.dependencies)) {
             for (String dependency : this.dependencies) {

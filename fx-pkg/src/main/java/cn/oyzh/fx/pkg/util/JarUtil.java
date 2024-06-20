@@ -137,14 +137,15 @@ public class JarUtil {
      */
     public static void minimize(String src, String dest, Function<String, Boolean> function) throws IOException {
         StaticLog.info("minimize jar start, src:{}", src);
-        File destFile = FileUtil.createTempFile(".jar", true);
+        File destFile = new File(dest);
+        File tempFile = FileUtil.createTempFile(destFile.getName(), true);
         JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)));
         Manifest manifest = jarIn.getManifest();
         JarOutputStream jarOut;
         if (manifest == null) {
-            jarOut = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(destFile)));
+            jarOut = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(tempFile)));
         } else {
-            jarOut = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(destFile)), manifest);
+            jarOut = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(tempFile)), manifest);
         }
         try {
             byte[] bytes = new byte[1024];
@@ -172,6 +173,6 @@ public class JarUtil {
             IoUtil.close(jarOut);
         }
         StaticLog.info("minimize jar finish dest:{}", destFile);
-        FileUtil.move(destFile, new File(dest), true);
+        FileUtil.move(tempFile, destFile, true);
     }
 }

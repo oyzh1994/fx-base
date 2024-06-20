@@ -22,51 +22,51 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-            <classifier>win</classifier>
+            <!-- <classifier>win</classifier> -->
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>linux</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>linux-aarch64</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>mac</classifier>
-        </dependency>
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-fxml</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <classifier>linux</classifier> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-fxml</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <classifier>linux-aarch64</classifier> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-fxml</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <classifier>mac</classifier> -->
+        <!-- </dependency> -->
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
-            <classifier>win</classifier>
+            <!-- <classifier>win</classifier> -->
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>linux</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>linux-aarch64</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-            <classifier>mac</classifier>
-        </dependency>
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-controls</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <classifier>linux</classifier> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-controls</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <classifier>linux-aarch64</classifier> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-controls</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <classifier>mac</classifier> -->
+        <!-- </dependency> -->
 
         <dependency>
             <groupId>org.openjfx</groupId>

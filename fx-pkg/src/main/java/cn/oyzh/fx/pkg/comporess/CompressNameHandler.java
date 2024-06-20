@@ -3,6 +3,9 @@ package cn.oyzh.fx.pkg.comporess;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +17,11 @@ import java.util.Date;
  * @since 2024/06/18
  */
 public class CompressNameHandler implements PostHandler {
+
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_M5;
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
@@ -41,11 +49,6 @@ public class CompressNameHandler implements PostHandler {
             compressName = compressName + "_release";
         }
         compressConfig.setName(compressName);
-    }
-
-    @Override
-    public int order() {
-        return PackOrder.LOW_M3;
     }
 
     @Override

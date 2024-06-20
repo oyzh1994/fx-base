@@ -5,6 +5,9 @@ import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.File;
 
@@ -15,6 +18,11 @@ import java.io.File;
  * @since 2024/4/2
  */
 public class CompressHandler implements PostHandler {
+
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_M6;
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
@@ -43,11 +51,6 @@ public class CompressHandler implements PostHandler {
             };
             packConfig.setCompressFile(compressFile);
         }
-    }
-
-    @Override
-    public int order() {
-        return PackOrder.LOW_M4;
     }
 
     @Override

@@ -8,6 +8,9 @@ import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.File;
 
@@ -19,10 +22,10 @@ import java.io.File;
  */
 public class JPackageHandler implements PackHandler {
 
-    @Override
-    public int order() {
-        return PackOrder.MID;
-    }
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_0;
 
     @Override
     public String name() {

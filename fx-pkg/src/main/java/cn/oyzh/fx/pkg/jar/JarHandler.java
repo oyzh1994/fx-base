@@ -10,6 +10,9 @@ import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.filter.RegFilter;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.List;
@@ -22,12 +25,12 @@ import java.util.List;
  */
 public class JarHandler implements PreHandler {
 
-    private RegFilter filter;
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_P7;
 
-    @Override
-    public int order() {
-        return PackOrder.HIGH_P1;
-    }
+    private RegFilter filter;
 
     @Override
     public String name() {

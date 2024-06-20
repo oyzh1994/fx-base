@@ -11,6 +11,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * jlink处理
@@ -22,16 +23,16 @@ public class JLinkHandler implements PreHandler, SingleHandler {
 
     @Getter
     @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_P5;
+
+    @Getter
+    @Setter
     private boolean executed;
 
     @Override
     public boolean unique() {
         return true;
-    }
-
-    @Override
-    public int order() {
-        return PackOrder.HIGH_P2;
     }
 
     @Override

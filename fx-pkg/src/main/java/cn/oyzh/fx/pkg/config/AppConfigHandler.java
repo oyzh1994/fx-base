@@ -4,6 +4,9 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.File;
 
@@ -15,10 +18,10 @@ import java.io.File;
  */
 public class AppConfigHandler implements PostHandler {
 
-    @Override
-    public int order() {
-        return PackOrder.LOW_M2;
-    }
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_M4;
 
     @Override
     public String name() {

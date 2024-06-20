@@ -5,12 +5,20 @@ import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * @author oyzh
  * @since 2024/6/14
  */
 public class EndHandler implements PostHandler {
+
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_MIN;
 
     @Override
     public boolean unique() {
@@ -51,11 +59,6 @@ public class EndHandler implements PostHandler {
         } else {
             StaticLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件目录:{}", cost, packConfig.outPath());
         }
-    }
-
-    @Override
-    public int order() {
-        return PackOrder.LOW_MAX;
     }
 
     @Override

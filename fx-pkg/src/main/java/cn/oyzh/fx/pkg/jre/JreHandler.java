@@ -11,6 +11,7 @@ import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.filter.RegFilter;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.List;
@@ -22,6 +23,11 @@ import java.util.List;
  * @since 2024/06/17
  */
 public class JreHandler implements PreHandler, SingleHandler {
+
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_P4;
 
     @Getter
     @Setter
@@ -58,11 +64,6 @@ public class JreHandler implements PreHandler, SingleHandler {
         // 设置最小化后的jre
         packConfig.setMinimizeJre(dest.getPath());
         this.executed = true;
-    }
-
-    @Override
-    public int order() {
-        return PackOrder.HIGH_P1;
     }
 
     @Override

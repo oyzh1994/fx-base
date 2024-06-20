@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.config;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.pkg.comporess.CompressConfig;
 import cn.oyzh.fx.pkg.jar.JarConfig;
+import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jre.JreConfig;
@@ -133,6 +134,12 @@ public class PackConfig {
      */
     @Setter
     private JreConfig jreConfig;
+
+    /**
+     * jdeps配置
+     */
+    @Setter
+    private JDepsConfig jDepsConfig;
 
     /**
      * jlink配置

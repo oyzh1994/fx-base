@@ -126,4 +126,8 @@ public class RuntimeUtil {
             StaticLog.info("execAndWait finish code:{}", code);
         }
     }
+
+    public static String execForStr(String... cmdArr) {
+        return cn.hutool.core.util.RuntimeUtil.execForStr(cmdArr);
+    }
 }

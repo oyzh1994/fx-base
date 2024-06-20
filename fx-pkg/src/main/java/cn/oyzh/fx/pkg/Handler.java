@@ -27,6 +27,12 @@ public interface Handler {
     int order();
 
     /**
+     * 设置排序
+     * @param order 排序
+     */
+    void order(int order);
+
+    /**
      * 获取名称
      *
      * @return 名称

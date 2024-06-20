@@ -4,6 +4,9 @@ import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,12 +17,12 @@ import java.util.ArrayList;
  */
 public class PackrHandler implements PackHandler {
 
-    private final Packr packr = new Packr();
+    @Getter
+    @Setter
+    @Accessors(chain = false, fluent = true)
+    private int order = PackOrder.ORDER_0;
 
-    @Override
-    public int order() {
-        return PackOrder.MID;
-    }
+    private final Packr packr = new Packr();
 
     @Override
     public String name() {

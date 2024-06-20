@@ -8,45 +8,57 @@ package cn.oyzh.fx.pkg;
  */
 public class PackOrder {
 
-    public static final int HIGH_MAX = Integer.MAX_VALUE;
+    public static final int ORDER_MAX = Integer.MAX_VALUE;
 
-    public static final int HIGH_P4 = 100_000_000;
+    public static final int ORDER_P12 = 12;
 
-    public static final int HIGH_P3 = 10_000_000;
+    public static final int ORDER_P11 = 11;
 
-    public static final int HIGH_P2 = 1_000_000;
+    public static final int ORDER_P10 = 10;
 
-    public static final int HIGH_P1 = 100_000;
+    public static final int ORDER_P9 = 9;
 
-    public static final int HIGH = 10_000;
+    public static final int ORDER_P8 = 8;
 
-    public static final int HIGH_M1 = 1000;
+    public static final int ORDER_P7 = 7;
 
-    public static final int HIGH_M2 = 100;
+    public static final int ORDER_P6 = 6;
 
-    public static final int HIGH_M3 = 10;
+    public static final int ORDER_P5 = 5;
 
-    public static final int HIGH_M4 = 1;
+    public static final int ORDER_P4 = 4;
 
-    public static final int MID = 0;
+    public static final int ORDER_P3 = 3;
 
-    public static final int LOW_P4 = -1;
+    public static final int ORDER_P2 = 2;
 
-    public static final int LOW_P3 = -10;
+    public static final int ORDER_P1 = 1;
 
-    public static final int LOW_P2 = -100;
+    public static final int ORDER_0 = 0;
 
-    public static final int LOW_P1 = -1_000;
+    public static final int ORDER_M1 = -1;
 
-    public static final int LOW = -10_000;
+    public static final int ORDER_M2 = -2;
 
-    public static final int LOW_M1 = -100_000;
+    public static final int ORDER_M3 = -3;
 
-    public static final int LOW_M2 = -1_000_000;
+    public static final int ORDER_M4 = -4;
 
-    public static final int LOW_M3 = -10_000_000;
+    public static final int ORDER_M5 = -5;
 
-    public static final int LOW_M4 = -100_000_000;
+    public static final int ORDER_M6 = -6;
 
-    public static final int LOW_MAX = Integer.MIN_VALUE;
+    public static final int ORDER_M7 = -7;
+
+    public static final int ORDER_M8 = -8;
+
+    public static final int ORDER_M9 = -9;
+
+    public static final int ORDER_M10 = -10;
+
+    public static final int ORDER_M11 = -11;
+
+    public static final int ORDER_M12 = -12;
+
+    public static final int ORDER_MIN = Integer.MIN_VALUE;
 }

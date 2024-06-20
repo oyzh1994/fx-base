@@ -58,20 +58,31 @@ public class RegFilter implements Function<String, Boolean> {
     }
 
     @Override
-    public Boolean apply(String name) {
+    public Boolean apply(String fullName) {
+        String name;
+        // 对路径进行截取
+        if (fullName.contains("/")) {
+            name = fullName.substring(fullName.lastIndexOf("/") + 1);
+        } else {
+            name = fullName;
+        }
+        // 截取的内容为空，则不处理
+        if (name.isEmpty()) {
+            return true;
+        }
         // 排除的文件
         for (String exclude : this.excludes) {
             // 正则模式
-            if (exclude.contains("*")) {
+            if (exclude.contains(".*")) {
                 // 编译正则表达式
-                Pattern pattern = Pattern.compile(exclude);
+                Pattern pattern = Pattern.compile(exclude, Pattern.CASE_INSENSITIVE);
                 // 创建匹配器
                 Matcher matcher = pattern.matcher(name);
                 // 判断是否匹配
                 if (matcher.matches()) {
                     return false;
                 }
-            } else if (exclude.startsWith(name) || name.startsWith(exclude)){// 普通模式
+            } else if (exclude.equals(name) || exclude.endsWith(name) || name.endsWith(exclude)) {// 普通模式
                 return false;
             }
         }
