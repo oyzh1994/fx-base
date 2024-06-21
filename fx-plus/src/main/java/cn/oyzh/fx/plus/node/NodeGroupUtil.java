@@ -1,12 +1,15 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumnBase;
+import javafx.stage.Stage;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
@@ -60,7 +63,13 @@ public class NodeGroupUtil {
         if (node instanceof NodeGroup group && hasGroupId(group, groupId)) {
             groups.add(group);
         }
-        if (node instanceof TabPane tabPane) {
+        if (node instanceof StageWrapper wrapper) {
+            list(wrapper.root(), groupId, groups);
+        } else if (node instanceof Stage stage) {
+            list(stage.getScene().getRoot(), groupId, groups);
+        } else if (node instanceof Scene scene) {
+            list(scene.getRoot(), groupId, groups);
+        } else if (node instanceof TabPane tabPane) {
             for (Tab node1 : tabPane.getTabs()) {
                 list(node1, groupId, groups);
             }

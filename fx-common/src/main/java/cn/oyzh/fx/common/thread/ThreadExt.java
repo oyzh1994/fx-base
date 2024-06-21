@@ -8,10 +8,6 @@ public class ThreadExt extends Thread {
 
     private Boolean finish;
 
-    public ThreadExt() {
-        super();
-    }
-
     public ThreadExt(Runnable task) {
         super(task);
     }

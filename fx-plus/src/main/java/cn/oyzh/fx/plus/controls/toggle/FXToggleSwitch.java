@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
@@ -18,7 +19,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/12/19
  */
-public class FXToggleSwitch extends ToggleSwitch implements TipAdapter, StateAdapter, FontAdapter {
+public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapter, StateAdapter, FontAdapter {
 
     /**
      * 选中时显示的文字
@@ -129,5 +130,15 @@ public class FXToggleSwitch extends ToggleSwitch implements TipAdapter, StateAda
     @Override
     public FontWeight getFontWeight() {
         return FontAdapter.super.fontWeight();
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }
