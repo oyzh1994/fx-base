@@ -16,11 +16,11 @@ public class DoubleTextField extends DecimalTextField {
         super(unsigned);
     }
 
-    public DoubleTextField(boolean unsigned, Integer maxLen) {
+    public DoubleTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 
-    public DoubleTextField(boolean unsigned, Integer maxLen, Integer scaleLen) {
+    public DoubleTextField(boolean unsigned, Long maxLen, Integer scaleLen) {
         super(unsigned, maxLen, scaleLen);
     }
 

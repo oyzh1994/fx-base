@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.controls.area;
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.fx.plus.LimitLenControl;
+import cn.oyzh.fx.plus.LimitLineControl;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -10,11 +12,13 @@ import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.operator.LimitOperator;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
@@ -29,10 +33,38 @@ import java.util.Collection;
  * @since 2022/1/20
  */
 @Getter
-public class FXTextArea extends TextArea implements NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
+    }
+
+    /**
+     * 最大行数
+     */
+    @Getter
+    private Long maxLine;
+
+    /**
+     * 最大长度
+     */
+    @Getter
+    private Long maxLen;
+
+    @Override
+    public void setMaxLine(Long maxLine) {
+        this.maxLine = maxLine;
+        if (maxLine != null && this.getTextFormatter() == null) {
+            this.setTextFormatter(new TextFormatter<>(new LimitOperator()));
+        }
+    }
+
+    @Override
+    public void setMaxLen(Long maxLen) {
+        this.maxLen = maxLen;
+        if (maxLen != null && this.getTextFormatter() == null) {
+            this.setTextFormatter(new TextFormatter<>(new LimitOperator()));
+        }
     }
 
     /**

@@ -18,7 +18,7 @@ public class LongTextField extends NumberTextField {
         super(unsigned);
     }
 
-    public LongTextField(boolean unsigned, Integer maxLen) {
+    public LongTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 

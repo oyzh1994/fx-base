@@ -16,7 +16,7 @@ public class ByteTextField extends NumberTextField {
         super(unsigned);
     }
 
-    public ByteTextField(boolean unsigned, Integer maxLen) {
+    public ByteTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 

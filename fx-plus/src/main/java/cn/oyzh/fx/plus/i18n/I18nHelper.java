@@ -247,6 +247,10 @@ public class I18nHelper {
 
     public static final String LOADING = "base.loading";
 
+    public static final String PLEASE = "base.please";
+
+    public static final String WAIT = "base.wait";
+
     public static final String DAYS = "base.days";
 
     public static final String COPIED = "base.copied";
@@ -1117,6 +1121,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(DATA, LOADING);
     }
 
+    public static String dataLoadingPleaseWait() {
+        return I18nResourceBundle.i18nString(DATA, LOADING, PLEASE, WAIT);
+    }
+
     public static String days() {
         return I18nResourceBundle.i18nString(DAYS);
     }
@@ -1698,7 +1706,7 @@ public class I18nHelper {
     }
 
     public static String notSupport() {
-        return I18nResourceBundle.i18nString(NOT,SUPPORT);
+        return I18nResourceBundle.i18nString(NOT, SUPPORT);
     }
 
     public static String cmd() {

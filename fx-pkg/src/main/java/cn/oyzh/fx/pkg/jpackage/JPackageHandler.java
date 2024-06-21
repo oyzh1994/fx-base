@@ -60,7 +60,7 @@ public class JPackageHandler implements PackHandler {
             jPackageConfig.setIcon(packConfig.getAppIcon());
         }
         if (jPackageConfig.getName() == null) {
-            jPackageConfig.setName(packConfig.getAppName());
+            jPackageConfig.setName(packConfig.getAppName() + "_v" + packConfig.appVersion());
         }
         if (jPackageConfig.getAppVersion() == null) {
             jPackageConfig.setAppVersion(packConfig.appVersion());

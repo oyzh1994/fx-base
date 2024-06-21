@@ -17,11 +17,11 @@ public class FloatTextField extends DecimalTextField {
         super(unsigned);
     }
 
-    public FloatTextField(boolean unsigned, Integer maxLen) {
+    public FloatTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 
-    public FloatTextField(boolean unsigned, Integer maxLen, Integer scaleLen) {
+    public FloatTextField(boolean unsigned, Long maxLen, Integer scaleLen) {
         super(unsigned, maxLen, scaleLen);
     }
 

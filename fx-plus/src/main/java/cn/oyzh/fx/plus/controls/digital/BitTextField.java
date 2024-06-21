@@ -23,7 +23,7 @@ public class BitTextField extends LimitTextField {
         this(null);
     }
 
-    public BitTextField(Integer maxLen) {
+    public BitTextField(Long maxLen) {
         // 长度
         this.setMaxLen(maxLen);
         // 创建文本格式化器
@@ -32,12 +32,11 @@ public class BitTextField extends LimitTextField {
         this.setTextFormatter(this.textFormatter);
     }
 
-    @Override
     protected UnaryOperator<TextFormatter.Change> createFilter() {
         return change -> {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
-                    if (!super.checkLimit(change)) {
+                    if (!super.checkLenLimit(change)) {
                         return null;
                     }
                     String text = change.getControlNewText();

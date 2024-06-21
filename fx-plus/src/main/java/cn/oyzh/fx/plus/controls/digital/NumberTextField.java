@@ -24,7 +24,7 @@ public class NumberTextField extends DigitalTextField {
         super(unsigned, null);
     }
 
-    public NumberTextField(boolean unsigned, Integer maxLen) {
+    public NumberTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 
@@ -70,7 +70,7 @@ public class NumberTextField extends DigitalTextField {
                         return null;
                     }
                     // 长度判断
-                    if (!super.checkLimit(change)) {
+                    if (!super.checkLenLimit(change)) {
                         return null;
                     }
                     // 如果超过了最大值，则将组件值设置为最大值

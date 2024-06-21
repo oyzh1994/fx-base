@@ -40,7 +40,7 @@ public class DecimalTextField extends DigitalTextField {
         super(unsigned, null);
     }
 
-    public DecimalTextField(boolean unsigned, Integer maxLen) {
+    public DecimalTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 
@@ -49,7 +49,7 @@ public class DecimalTextField extends DigitalTextField {
         return new DigitalFormatStringConverter(this.format());
     }
 
-    public DecimalTextField(boolean unsigned, Integer maxLen, Integer scaleLen) {
+    public DecimalTextField(boolean unsigned, Long maxLen, Integer scaleLen) {
         super(unsigned, maxLen);
         this.setScaleLen(scaleLen);
     }
@@ -89,7 +89,7 @@ public class DecimalTextField extends DigitalTextField {
                         return null;
                     }
                     // 长度判断
-                    if (!super.checkLimit(change)) {
+                    if (!super.checkLenLimit(change)) {
                         return null;
                     }
                     // 判断小数位数

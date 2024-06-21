@@ -16,7 +16,7 @@ public class ShortTextField extends NumberTextField {
         super(unsigned);
     }
 
-    public ShortTextField(boolean unsigned, Integer maxLen) {
+    public ShortTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 

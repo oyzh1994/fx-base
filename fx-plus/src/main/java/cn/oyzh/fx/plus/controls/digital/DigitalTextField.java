@@ -52,12 +52,7 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected final TextFormatter<String> textFormatter;
 
-    // /**
-    //  * 数据转换器
-    //  */
-    // protected final NumberConverter converter = new NumberConverter();
-
-    public DigitalTextField(boolean unsigned, Integer maxLen) {
+    public DigitalTextField(boolean unsigned, Long maxLen) {
         // 设置皮肤
         this.setSkin(new DigitalTextFieldSkin(this, this::incrValue, this::decrValue));
         // 创建文本格式化器

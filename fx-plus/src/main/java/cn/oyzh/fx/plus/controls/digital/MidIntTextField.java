@@ -16,7 +16,7 @@ public class MidIntTextField extends IntTextField {
         super(unsigned);
     }
 
-    public MidIntTextField(boolean unsigned, Integer maxLen) {
+    public MidIntTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 

@@ -16,7 +16,7 @@ public class IntTextField extends NumberTextField {
         super(unsigned);
     }
 
-    public IntTextField(boolean unsigned, Integer maxLen) {
+    public IntTextField(boolean unsigned, Long maxLen) {
         super(unsigned, maxLen);
     }
 
