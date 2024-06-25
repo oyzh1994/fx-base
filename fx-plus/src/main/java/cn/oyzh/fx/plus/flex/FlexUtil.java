@@ -13,6 +13,18 @@ import lombok.experimental.UtilityClass;
 public class FlexUtil {
 
     /**
+     * 设置流式宽
+     *
+     * @param node      节点
+     * @param flexValue 流式值
+     */
+    public static void flexWidth(Object node, String flexValue) {
+        if (node instanceof FlexAdapter adapter) {
+            adapter.setFlexWidth(flexValue);
+        }
+    }
+
+    /**
      * 计算流式值
      *
      * @param flexValue 流式值

@@ -1716,4 +1716,12 @@ public class I18nHelper {
     public static String memoryUsage() {
         return I18nResourceBundle.i18nString(MEMORY_USAGE);
     }
+
+    public static String editRow() {
+        return I18nResourceBundle.i18nString(EDIT, ROW);
+    }
+
+    public static String addRow() {
+        return I18nResourceBundle.i18nString(ADD, ROW);
+    }
 }
