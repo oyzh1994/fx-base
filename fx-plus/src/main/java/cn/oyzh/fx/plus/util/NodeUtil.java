@@ -162,7 +162,7 @@ public class NodeUtil {
      * @param target 对象
      * @param width  宽度
      */
-    public static void setWidth(EventTarget target, Double width) {
+    public static void setWidth(Object target, Double width) {
         if (target == null || width == null || Double.isNaN(width) || width <= 0) {
             return;
         }
@@ -223,7 +223,7 @@ public class NodeUtil {
      * @param target 对象
      * @param height 高度
      */
-    public static void setHeight(EventTarget target, Double height) {
+    public static void setHeight(Object target, Double height) {
         if (target == null || height == null || Double.isNaN(height) || height <= 0) {
             return;
         }

@@ -21,31 +21,31 @@ public class Project {
     /**
      * 名称
      */
-    @Value("${project.name}")
+    @Value("${project.name:}")
     private String name;
 
     /**
      * 类型
      */
-    @Value("${project.type}")
+    @Value("${project.type:build}")
     private String type;
 
     /**
      * 版本号
      */
-    @Value("${project.version}")
+    @Value("${project.version:}")
     private String version;
 
     /**
      * 更新日期
      */
-    @Value("${project.updateDate}")
+    @Value("${project.updateDate:}")
     private String updateDate;
 
     /**
      * copyright
      */
-    @Value("${project.copyright}")
+    @Value("${project.copyright:}")
     private String copyright;
 
 }
