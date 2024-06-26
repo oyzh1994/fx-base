@@ -215,6 +215,8 @@ public class I18nHelper {
 
     public static final String ROW = "base.row";
 
+    public static final String APPLY = "base.apply";
+
     public static final String FIELD_NAME = "base.fieldName";
 
     public static final String FIELD_VALUE = "base.fieldValue";
@@ -1125,6 +1127,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(DATA, LOADING, PLEASE, WAIT);
     }
 
+    public static String pleaseInputContent() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, CONTENT);
+    }
+
     public static String days() {
         return I18nResourceBundle.i18nString(DAYS);
     }
@@ -1723,5 +1729,9 @@ public class I18nHelper {
 
     public static String addRow() {
         return I18nResourceBundle.i18nString(ADD, ROW);
+    }
+
+    public static String apply() {
+        return I18nResourceBundle.i18nString(APPLY);
     }
 }
