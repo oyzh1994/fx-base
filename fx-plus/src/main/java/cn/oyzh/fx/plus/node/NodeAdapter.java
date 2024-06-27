@@ -311,6 +311,19 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 移除样式类
+     *
+     * @param styleClass 样式类
+     */
+    default void removeClass(String styleClass) {
+        if (styleClass != null) {
+            if (this instanceof Node node) {
+                node.getStyleClass().remove(styleClass);
+            }
+        }
+    }
+
+    /**
      * 节点是否启用
      *
      * @return 结果

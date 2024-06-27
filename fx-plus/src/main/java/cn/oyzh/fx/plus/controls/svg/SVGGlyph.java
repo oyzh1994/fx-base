@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.AnimationUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.animation.RotateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -44,6 +45,12 @@ public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, Mouse
      */
     @Getter
     private Paint color;
+
+    /**
+     * 是否激活态
+     */
+    @Getter
+    private boolean active;
 
     /**
      * 是否等待中
@@ -103,8 +110,9 @@ public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, Mouse
         SVGPathExt svgPath = (SVGPathExt) this.getShape();
         if (svgPath != null) {
             // 更新颜色
-            if (this.color != svgPath.getColor()) {
-                svgPath.setColor(this.color);
+            Paint paint = ControlUtil.backgroundFill(this);
+            if (paint != svgPath.getColor()) {
+                svgPath.setColor(paint);
             }
             // 更新鼠标
             if (!svgPath.isLoading() && this.getCursor() != svgPath.getCursor()) {
@@ -244,8 +252,23 @@ public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, Mouse
      */
     public void setColor(Paint color) {
         this.color = color;
-        if (!this.isDisabled()) {
-            this.setBackground(ControlUtil.background(color));
+        this._setColor(color);
+    }
+
+    /**
+     * 设置颜色
+     *
+     * @param color 颜色
+     */
+    private void _setColor(Paint color) {
+        // 默认颜色
+        if (color == null) {
+            this.addClass("svg-glyph");
+        } else {// 自定义颜色
+            this.removeClass("svg-glyph");
+        }
+        if (!this.isDisabled() && color != null) {
+            FXUtil.runLater(() -> this.setBackground(ControlUtil.background(color)), 50);
         }
     }
 
@@ -368,6 +391,21 @@ public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, Mouse
         this.setPadding(new Insets(0));
         this.cursorProperty().addListener((obs, t0, t1) -> this.updateContent());
         this.backgroundProperty().addListener((obs, t0, t1) -> this.updateContent());
-        this.getStyleClass().add("svg-glyph");
+        this.addClass("svg-glyph");
+    }
+
+    /**
+     * 设置激活态
+     *
+     * @param active 激活态
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+        // 设置高亮颜色
+        if (active) {
+            this._setColor(Color.ORANGERED);
+        } else {// 设置预设颜色
+            this._setColor(this.color);
+        }
     }
 }

@@ -15,6 +15,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -338,5 +339,22 @@ public class ControlUtil {
         double min = node.minHeight(-1);
         double max = node.maxHeight(-1);
         return Math.min(Math.max(node.prefHeight(-1), min), Math.max(min, max));
+    }
+
+    /**
+     * 获取背景颜色
+     *
+     * @param region 组件
+     * @return 背景颜色
+     */
+    public static Paint backgroundFill(Region region) {
+        if (region == null) {
+            return null;
+        }
+        Background bg = region.getBackground();
+        if (bg == null || bg.getFills() == null || bg.getFills().isEmpty()) {
+            return null;
+        }
+        return bg.getFills().getFirst().getFill();
     }
 }

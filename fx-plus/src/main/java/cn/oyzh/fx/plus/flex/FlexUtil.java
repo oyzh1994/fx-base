@@ -25,6 +25,18 @@ public class FlexUtil {
     }
 
     /**
+     * 设置流式高
+     *
+     * @param node      节点
+     * @param flexValue 流式值
+     */
+    public static void flexHeight(Object node, String flexValue) {
+        if (node instanceof FlexAdapter adapter) {
+            adapter.setFlexHeight(flexValue);
+        }
+    }
+
+    /**
      * 计算流式值
      *
      * @param flexValue 流式值
@@ -85,4 +97,6 @@ public class FlexUtil {
         }
         return Double.NaN;
     }
+
+
 }
