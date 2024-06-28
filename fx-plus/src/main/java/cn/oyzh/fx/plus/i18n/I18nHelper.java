@@ -41,6 +41,8 @@ public class I18nHelper {
 
     public static final String INFO = "base.info";
 
+    public static final String VIEW = "base.view";
+
     public static final String EXPORT = "base.export";
 
     public static final String IMPORT = "base.import";
@@ -1157,6 +1159,10 @@ public class I18nHelper {
 
     public static String serverInfo() {
         return I18nResourceBundle.i18nString(SERVER_INFO);
+    }
+
+    public static String viewInfo() {
+        return I18nResourceBundle.i18nString(VIEW, INFO);
     }
 
     public static String expired() {
