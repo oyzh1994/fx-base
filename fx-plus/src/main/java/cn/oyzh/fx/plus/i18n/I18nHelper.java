@@ -43,6 +43,8 @@ public class I18nHelper {
 
     public static final String VIEW = "base.view";
 
+    public static final String TABLE = "base.table";
+
     public static final String EXPORT = "base.export";
 
     public static final String IMPORT = "base.import";
@@ -1739,5 +1741,17 @@ public class I18nHelper {
 
     public static String apply() {
         return I18nResourceBundle.i18nString(APPLY);
+    }
+
+    public static String addView() {
+        return I18nResourceBundle.i18nString(ADD, VIEW);
+    }
+
+    public static String reload() {
+        return I18nResourceBundle.i18nString(RELOAD);
+    }
+
+    public static String addTable() {
+        return I18nResourceBundle.i18nString(ADD, TABLE);
     }
 }
