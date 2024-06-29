@@ -45,6 +45,10 @@ public class I18nHelper {
 
     public static final String TABLE = "base.table";
 
+    public static final String PROCEDURE = "base.procedure";
+
+    public static final String FUNCTION = "base.function";
+
     public static final String EXPORT = "base.export";
 
     public static final String IMPORT = "base.import";
@@ -1753,5 +1757,33 @@ public class I18nHelper {
 
     public static String addTable() {
         return I18nResourceBundle.i18nString(ADD, TABLE);
+    }
+
+    public static String openProcedure() {
+        return I18nResourceBundle.i18nString(OPEN, PROCEDURE);
+    }
+
+    public static String addProcedure() {
+        return I18nResourceBundle.i18nString(ADD, PROCEDURE);
+    }
+
+    public static String procedureInfo() {
+        return I18nResourceBundle.i18nString(PROCEDURE, INFO);
+    }
+
+    public static String procedure() {
+        return I18nResourceBundle.i18nString(PROCEDURE);
+    }
+
+    public static String function() {
+        return I18nResourceBundle.i18nString(FUNCTION);
+    }
+
+    public static String addFunction() {
+        return I18nResourceBundle.i18nString(ADD, FUNCTION);
+    }
+
+    public static String openFunction() {
+        return I18nResourceBundle.i18nString(OPEN, FUNCTION);
     }
 }
