@@ -10,11 +10,13 @@ import cn.oyzh.fx.plus.controls.svg.EditSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.ExpandAllSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.ExportSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.FileSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.FunctionSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.ImportSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.InfoSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.LoadAllSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.MoveSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.PlaySVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.ProcedureSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.RefreshSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.RenameSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.RepeatSVGGlyph;
@@ -40,7 +42,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem addView(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.addView(), new InfoSVGGlyph(iconSize), null, action);
+        return FXMenuItem.newItem(I18nHelper.addView(), new AddSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem refreshData(String iconSize, Runnable action) {
@@ -60,11 +62,11 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem openProcedure(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.openProcedure(), new InfoSVGGlyph(iconSize), null, action);
+        return FXMenuItem.newItem(I18nHelper.openProcedure(), new ProcedureSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem addProcedure(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.addProcedure(), new InfoSVGGlyph(iconSize), null, action);
+        return FXMenuItem.newItem(I18nHelper.addProcedure(), new AddSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem procedureInfo(String iconSize, Runnable action) {
@@ -72,11 +74,11 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem addFunction(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.addFunction(), new InfoSVGGlyph(iconSize), null, action);
+        return FXMenuItem.newItem(I18nHelper.addFunction(), new AddSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem openFunction(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.openFunction(), new InfoSVGGlyph(iconSize), null, action);
+        return FXMenuItem.newItem(I18nHelper.openFunction(), new FunctionSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem moveKey(String iconSize, Runnable action) {
