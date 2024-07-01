@@ -397,6 +397,10 @@ public class I18nHelper {
 
     public static final String REFRESH = "base.refresh";
 
+    public static final String MOVE_UP = "base.moveUp";
+
+    public static final String MOVE_DOWN = "base.moveDown";
+
     public static final String RENAME = "base.rename";
 
     public static final String SETTING = "base.setting";
@@ -1789,5 +1793,13 @@ public class I18nHelper {
 
     public static String refreshData() {
         return I18nResourceBundle.i18nString(REFRESH, DATA);
+    }
+
+    public static String moveUp() {
+        return I18nResourceBundle.i18nString(MOVE_UP);
+    }
+
+    public static String moveDown() {
+        return I18nResourceBundle.i18nString(MOVE_DOWN);
     }
 }

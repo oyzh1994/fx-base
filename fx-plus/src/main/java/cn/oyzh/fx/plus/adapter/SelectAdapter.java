@@ -481,5 +481,12 @@ public interface SelectAdapter<T> extends PropAdapter {
             }
         }
     }
+
+    /**
+     * 移除已选中节点
+     */
+    default void removeSelectedItem() {
+        this.removeItem(this.getSelectedItem());
+    }
 }
 
