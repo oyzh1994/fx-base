@@ -1,14 +1,14 @@
-package cn.oyzh.fx.plus.menu;
-
-import cn.oyzh.fx.plus.i18n.I18nHelper;
-
-/**
- * @author oyzh
- * @since 2024/4/12
- */
-public class DeleteGroupMenuItem extends DeleteMenuItem {
-
-    public DeleteGroupMenuItem(String iconSize, Runnable action) {
-        super(I18nHelper.deleteGroup(), I18nHelper.deleteTip1(), iconSize, action);
-    }
-}
+// package cn.oyzh.fx.plus.menu;
+//
+// import cn.oyzh.fx.plus.i18n.I18nHelper;
+//
+// /**
+//  * @author oyzh
+//  * @since 2024/4/12
+//  */
+// public class DeleteGroupMenuItem extends DeleteMenuItem {
+//
+//     public DeleteGroupMenuItem(String iconSize, Runnable action) {
+//         super(I18nHelper.deleteGroup(), I18nHelper.deleteTip1(), iconSize, action);
+//     }
+// }

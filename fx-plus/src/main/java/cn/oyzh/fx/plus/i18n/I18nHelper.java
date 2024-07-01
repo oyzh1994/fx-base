@@ -1786,4 +1786,8 @@ public class I18nHelper {
     public static String openFunction() {
         return I18nResourceBundle.i18nString(OPEN, FUNCTION);
     }
+
+    public static String refreshData() {
+        return I18nResourceBundle.i18nString(REFRESH, DATA);
+    }
 }
