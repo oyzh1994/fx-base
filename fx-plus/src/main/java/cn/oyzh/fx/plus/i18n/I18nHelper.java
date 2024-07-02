@@ -1802,4 +1802,16 @@ public class I18nHelper {
     public static String moveDown() {
         return I18nResourceBundle.i18nString(MOVE_DOWN);
     }
+
+    public static String deleteFunction() {
+        return I18nResourceBundle.i18nString(DELETE, FUNCTION);
+    }
+
+    public static String deleteProcedure() {
+        return I18nResourceBundle.i18nString(DELETE, PROCEDURE);
+    }
+
+    public static String unnamedProcedure() {
+        return I18nResourceBundle.i18nString(UNNAMED, PROCEDURE);
+    }
 }

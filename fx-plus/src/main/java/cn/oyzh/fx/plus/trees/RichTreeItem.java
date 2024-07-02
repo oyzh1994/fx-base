@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Window;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +30,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Getter
 public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements DragNodeItem, Comparable<Object> {
+
+    /**
+     * 加载完成标志位
+     */
+    @Getter
+    @Accessors(chain = true, fluent = true)
+    protected boolean loaded;
+
+    /**
+     * 加载中标志位
+     */
+    @Getter
+    @Accessors(chain = true, fluent = true)
+    protected boolean loading;
 
     /**
      * 当前树组件

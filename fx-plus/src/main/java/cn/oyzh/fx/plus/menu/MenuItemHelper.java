@@ -232,6 +232,14 @@ public class MenuItemHelper {
     public static FXMenuItem collapseAll(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.collapseAll(), new CollapseAllSVGGlyph(iconSize), null, action);
     }
+
+    public static FXMenuItem deleteFunction(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteFunction(), new DeleteSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem deleteProcedure(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteProcedure(), new DeleteSVGGlyph(iconSize), null, action);
+    }
 }
 
 

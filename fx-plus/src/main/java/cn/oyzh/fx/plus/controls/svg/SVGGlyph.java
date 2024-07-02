@@ -395,6 +395,13 @@ public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, Mouse
     }
 
     /**
+     * 激活
+     */
+    public void active() {
+        this.setActive(true);
+    }
+
+    /**
      * 设置激活态
      *
      * @param active 激活态
@@ -407,5 +414,11 @@ public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, Mouse
         } else {// 设置预设颜色
             this._setColor(this.color);
         }
+    }
+
+    @Override
+    public void disable() {
+        StateAdapter.super.disable();
+        this.setActive(false);
     }
 }
