@@ -18,9 +18,11 @@ public class Const {
      */
     public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
+
     /**
      * 全局通用日期-时间格式化对象
      */
     public final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss.SSS");
+
 
 }
