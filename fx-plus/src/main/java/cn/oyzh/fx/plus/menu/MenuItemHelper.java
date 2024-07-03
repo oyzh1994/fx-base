@@ -15,6 +15,7 @@ import cn.oyzh.fx.plus.controls.svg.ImportSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.InfoSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.LoadAllSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.MoveSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.OpenSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.PlaySVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.ProcedureSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.RefreshSVGGlyph;
@@ -37,12 +38,24 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MenuItemHelper {
 
+    public static FXMenuItem openView(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.openView(), new OpenSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem viewInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.viewInfo(), new InfoSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem deleteView(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteView(), new DeleteSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem addView(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.addView(), new AddSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem editView(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.editView(), new DeleteSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem refreshData(String iconSize, Runnable action) {

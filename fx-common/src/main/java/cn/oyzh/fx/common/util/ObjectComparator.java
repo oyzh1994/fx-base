@@ -4,7 +4,7 @@ package cn.oyzh.fx.common.util;
  * 对象比较器
  *
  * @author oyzh
- * @since 2023/4/24
+ * @since 2023/04/24
  */
 public interface ObjectComparator<T> {
 

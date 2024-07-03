@@ -1818,4 +1818,29 @@ public class I18nHelper {
     public static String unnamedFunction() {
         return I18nResourceBundle.i18nString(UNNAMED, FUNCTION);
     }
+
+    public static String openView() {
+        return I18nResourceBundle.i18nString(OPEN, VIEW);
+    }
+
+    public static String deleteView() {
+        return I18nResourceBundle.i18nString(DELETE, VIEW);
+    }
+
+    public static String editView() {
+        return I18nResourceBundle.i18nString(EDIT, VIEW);
+    }
+
+    public static String unnamedView() {
+        return I18nResourceBundle.i18nString(UNNAMED, VIEW);
+    }
+
+    public static String view() {
+        return I18nResourceBundle.i18nString(VIEW);
+    }
+
+    public static String pleaseInputViewName() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, VIEW, NAME);
+    }
+
 }
