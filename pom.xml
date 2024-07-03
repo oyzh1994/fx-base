@@ -32,7 +32,7 @@
         <lombok.version>1.18.32</lombok.version>
         <guava.version>33.1.0-jre</guava.version>
         <spring.boot.version>3.1.12</spring.boot.version>
-        <richtextfx.version>0.11.2</richtextfx.version>
+        <richtextfx.version>0.11.3</richtextfx.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>

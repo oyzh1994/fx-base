@@ -21,7 +21,7 @@ public class FXTab extends Tab implements NodeGroup, NodeAdapter, ThemeAdapter, 
     {
         NodeManager.init(this);
         this.setOnClosed(this::onTabClosed);
-        this.setOnCloseRequest(this::onTabClosed);
+        this.setOnCloseRequest(this::onTabCloseRequest);
     }
 
     public FXTab() {
@@ -117,7 +117,7 @@ public class FXTab extends Tab implements NodeGroup, NodeAdapter, ThemeAdapter, 
 
     }
 
-    protected void onTabRequest(Event event) {
+    protected void onTabCloseRequest(Event event) {
 
     }
 

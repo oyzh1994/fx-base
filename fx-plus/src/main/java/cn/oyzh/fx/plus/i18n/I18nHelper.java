@@ -1814,4 +1814,8 @@ public class I18nHelper {
     public static String unnamedProcedure() {
         return I18nResourceBundle.i18nString(UNNAMED, PROCEDURE);
     }
+
+    public static String unnamedFunction() {
+        return I18nResourceBundle.i18nString(UNNAMED, FUNCTION);
+    }
 }
