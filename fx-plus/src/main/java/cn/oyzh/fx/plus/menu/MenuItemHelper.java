@@ -253,6 +253,10 @@ public class MenuItemHelper {
     public static FXMenuItem deleteProcedure(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteProcedure(), new DeleteSVGGlyph(iconSize), null, action);
     }
+
+    public static FXMenuItem openTable(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.openTable(), new OpenSVGGlyph(iconSize), null, action);
+    }
 }
 
 

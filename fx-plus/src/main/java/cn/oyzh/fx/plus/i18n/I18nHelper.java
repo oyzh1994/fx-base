@@ -1843,4 +1843,7 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, VIEW, NAME);
     }
 
+    public static String openTable() {
+        return I18nResourceBundle.i18nString(OPEN, TABLE);
+    }
 }
