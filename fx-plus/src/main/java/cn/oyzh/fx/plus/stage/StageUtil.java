@@ -54,7 +54,7 @@ public class StageUtil {
      * 获取所有窗口
      */
     public static List<Window> allWindows() {
-       return new ArrayList<>(Window.getWindows());
+        return new ArrayList<>(Window.getWindows());
     }
 
     /**
@@ -194,6 +194,20 @@ public class StageUtil {
      */
     public static Stage getPrimaryStage() {
         return Primary_Stage;
+    }
+
+    /**
+     * 获取活跃窗口
+     *
+     * @return Window
+     */
+    public static Window getActiveWindow() {
+        for (Window window : Window.getWindows()) {
+            if (window.isFocused() && window.isShowing()) {
+                return window;
+            }
+        }
+        return null;
     }
 
     /**

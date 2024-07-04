@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.skin;
 
+import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.beans.InvalidationListener;
 import javafx.scene.control.TextField;
@@ -74,5 +75,16 @@ public class TextFieldSkinExt extends TextFieldSkin {
      */
     protected void setText(String text) {
         this.getSkinnable().setText(text);
+    }
+
+    /**
+     * 设置提示文本
+     *
+     * @param tipText 提示文本
+     */
+    protected void setTipText(String tipText) {
+        TooltipExt tooltip = new TooltipExt();
+        tooltip.setText(tipText);
+        this.getSkinnable().setTooltip(tooltip);
     }
 }

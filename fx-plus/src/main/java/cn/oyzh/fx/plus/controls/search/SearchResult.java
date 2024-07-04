@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.search;
+package cn.oyzh.fx.plus.controls.search;
 
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.calendar;
 
-import cn.oyzh.fx.plus.controls.FXHBox;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import javafx.event.ActionEvent;

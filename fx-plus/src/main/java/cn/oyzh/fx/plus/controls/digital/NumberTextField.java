@@ -28,6 +28,12 @@ public class NumberTextField extends DigitalTextField {
         super(unsigned, maxLen);
     }
 
+    public NumberTextField(boolean unsigned, Long maxLen, Long minVal, Long maxVal) {
+        super(unsigned, maxLen);
+        super.setMinVal(minVal);
+        super.setMaxVal(maxVal);
+    }
+
     @Override
     protected DigitalFormatStringConverter getConverter() {
         return new DigitalFormatStringConverter();

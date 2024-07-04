@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.search;
+package cn.oyzh.fx.plus.controls.search;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.trees.RichTreeItem;

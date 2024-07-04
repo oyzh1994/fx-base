@@ -1,7 +1,9 @@
-package cn.oyzh.fx.plus.search;
+package cn.oyzh.fx.plus.controls.search;
 
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
+import cn.oyzh.fx.plus.controls.svg.HistorySVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
@@ -89,8 +91,8 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
     public SearchTextFieldSkin(TextField textField) {
         super(textField);
         // 初始化历史按钮
-        this.historyButton = new SVGGlyph("/fx-plus/font/history.svg");
-        this.historyButton.setTipText("历史记录");
+        this.historyButton = new HistorySVGGlyph();
+        this.historyButton.setTipText(I18nHelper.his());
 //        this.historyButton.setColor(this.getButtonColor());
         this.historyButton.setEnableWaiting(false);
         this.historyButton.setFocusTraversable(false);

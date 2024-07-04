@@ -44,14 +44,21 @@ public class DecimalTextField extends DigitalTextField {
         super(unsigned, maxLen);
     }
 
-    @Override
-    protected DigitalFormatStringConverter getConverter() {
-        return new DigitalFormatStringConverter(this.format());
+    public DecimalTextField(boolean unsigned, Long maxLen, Long minVal, Long maxVal, Integer scaleLen) {
+        super(unsigned, maxLen);
+        super.setMinVal(minVal);
+        super.setMaxVal(maxVal);
+        this.setScaleLen(scaleLen);
     }
 
     public DecimalTextField(boolean unsigned, Long maxLen, Integer scaleLen) {
         super(unsigned, maxLen);
         this.setScaleLen(scaleLen);
+    }
+
+    @Override
+    protected DigitalFormatStringConverter getConverter() {
+        return new DigitalFormatStringConverter(this.format());
     }
 
     @Override

@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controls.calendar;
 
 import atlantafx.base.controls.Calendar;
 import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.oyzh.fx.plus.controls.FXHBox;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import javafx.event.ActionEvent;

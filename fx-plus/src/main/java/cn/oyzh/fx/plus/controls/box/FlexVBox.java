@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.box;
 
+import cn.oyzh.fx.plus.controls.FXVBox;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import javafx.scene.Node;
 

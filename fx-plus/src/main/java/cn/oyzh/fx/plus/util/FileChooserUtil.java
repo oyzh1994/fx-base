@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.plus.stage.StageUtil;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -160,12 +162,28 @@ public class FileChooserUtil {
      * @return 文件
      */
     public static File choose(String title, FileChooser.ExtensionFilter[] extensionFilter) {
+        return choose(title, extensionFilter, null);
+    }
+
+    /**
+     * 选择文件
+     *
+     * @param title           标题
+     * @param extensionFilter 过滤器
+     * @param owner           父窗口
+     * @return 文件
+     */
+    public static File choose(String title, FileChooser.ExtensionFilter[] extensionFilter, Window owner) {
+        if (owner == null) {
+            owner = StageUtil.getActiveWindow();
+        }
         AtomicReference<File> file = new AtomicReference<>();
+        Window finalOwner = owner;
         FXUtil.runWait(() -> {
             FileChooserUtil builder = FileChooserUtil.builder();
             builder.title(title).extensionFilters(extensionFilter);
             FileChooser fileChooser = builder.build();
-            file.set(fileChooser.showOpenDialog(new Stage()));
+            file.set(fileChooser.showOpenDialog(finalOwner));
         });
         return file.get();
     }

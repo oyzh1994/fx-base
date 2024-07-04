@@ -10,8 +10,8 @@
 <?import cn.oyzh.fx.plus.controls.digital.FloatTextField?>
 <?import cn.oyzh.fx.plus.controls.digital.IntTextField?>
 <?import cn.oyzh.fx.plus.controls.digital.NumberTextField?>
-<?import cn.oyzh.fx.plus.controls.FlexHBox?>
-<?import cn.oyzh.fx.plus.controls.FlexVBox?>
+<?import cn.oyzh.fx.plus.controls.box.FlexHBox?>
+<?import cn.oyzh.fx.plus.controls.box.FlexVBox?>
 <?import cn.oyzh.fx.rich.control.FlexRichTextArea?>
 <?import cn.oyzh.fx.plus.controls.svg.SVGGlyph?>
 <?import cn.oyzh.fx.plus.controls.tab.FlexTabPane?>
@@ -20,7 +20,7 @@
 <?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
 <?import cn.oyzh.fx.plus.controls.text.FXText?>
 <?import cn.oyzh.fx.plus.controls.textfield.ClearableTextField?>
-<?import cn.oyzh.fx.plus.search.SearchTextField?>
+<?import cn.oyzh.fx.plus.controls.search.SearchTextField?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>

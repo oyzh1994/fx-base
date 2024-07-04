@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.page;
 
 import cn.oyzh.fx.common.dto.Paging;
-import cn.oyzh.fx.plus.controls.FlexHBox;
+import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.button.FlexButton;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
