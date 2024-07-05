@@ -38,7 +38,7 @@ public class FileTextFieldSkin extends ClearableTextFieldSkin {
     /**
      * 显示历史弹窗组件
      */
-    protected void showHistoryPopup() {
+    protected void onChooseButtonClick() {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("All", "*.*");
         this.file = FileChooserUtil.choose(I18nHelper.chooseFile(), new FileChooser.ExtensionFilter[]{filter});
         this.setText(this.file == null ? null : this.file.getName());
@@ -53,7 +53,7 @@ public class FileTextFieldSkin extends ClearableTextFieldSkin {
         this.chooseButton.setEnableWaiting(false);
         this.chooseButton.setFocusTraversable(false);
         this.chooseButton.setPadding(new Insets(0));
-        this.chooseButton.setOnMousePrimaryClicked(e -> this.showHistoryPopup());
+        this.chooseButton.setOnMousePrimaryClicked(e -> this.onChooseButtonClick());
         this.chooseButton.setOnMouseMoved(mouseEvent -> this.chooseButton.setColor("#E36413"));
         this.chooseButton.setOnMouseExited(mouseEvent -> this.chooseButton.setColor(this.getButtonColor()));
         this.getChildren().add(this.chooseButton);

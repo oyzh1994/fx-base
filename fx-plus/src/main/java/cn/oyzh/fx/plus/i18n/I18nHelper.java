@@ -45,6 +45,8 @@ public class I18nHelper {
 
     public static final String TABLE = "base.table";
 
+    public static final String EXAMPLE = "base.example";
+
     public static final String PROCEDURE = "base.procedure";
 
     public static final String FUNCTION = "base.function";
@@ -1845,5 +1847,9 @@ public class I18nHelper {
 
     public static String openTable() {
         return I18nResourceBundle.i18nString(OPEN, TABLE);
+    }
+
+    public static String example() {
+        return I18nResourceBundle.i18nString(EXAMPLE);
     }
 }
