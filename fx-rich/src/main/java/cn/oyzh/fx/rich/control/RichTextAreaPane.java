@@ -1,9 +1,8 @@
-package cn.oyzh.fx.rich.terminal;
+package cn.oyzh.fx.rich.control;
 
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.control.FlexVirtualizedScrollPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ContextMenu;
@@ -11,24 +10,19 @@ import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 import org.reactfx.value.Val;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * @author oyzh
  * @since 2024/5/17
  */
-public abstract class RichTerminalPane extends FlexVirtualizedScrollPane<RichTerminalTextArea> implements FontAdapter {
+public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexVirtualizedScrollPane<E> implements FontAdapter {
 
-    public RichTerminalPane() {
-        super(new RichTerminalTextArea());
-        this.initDataTextArea();
+    public RichTextAreaPane(E content) {
+        super(content);
+        this.initTextArea();
     }
 
-    protected void initDataTextArea() {
-        RichTerminalTextArea area = this.getContent();
+    protected void initTextArea() {
+        FlexRichTextArea area = this.getContent();
         area.disableProperty().bind(this.disableProperty());
         area.onKeyPressedProperty().bind(this.onKeyPressedProperty());
     }

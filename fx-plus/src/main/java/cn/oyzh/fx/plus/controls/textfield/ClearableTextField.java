@@ -13,4 +13,22 @@ public class ClearableTextField extends LimitTextField {
     {
         this.setSkin(new ClearableTextFieldSkin(this));
     }
+
+    public ClearableTextField( ) {
+        super();
+    }
+
+    public ClearableTextField(String text) {
+        super.setText(text);
+    }
+
+    public ClearableTextField(Long maxLen) {
+        this.setMaxLen(maxLen);
+    }
+
+    public ClearableTextField(String text, Long maxLen) {
+        super.setText(text);
+        this.setMaxLen(maxLen);
+    }
+
 }

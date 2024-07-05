@@ -1,6 +1,7 @@
 package cn.oyzh.fx.rich.data;
 
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.RegexHelper;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.common.util.TextUtil;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
@@ -159,42 +160,6 @@ public class RichDataTextArea extends FlexRichTextArea {
         return Pattern.compile(this.searchText);
     }
 
-    /**
-     * json符号正则模式
-     */
-    private static Pattern Json_Symbol_Pattern;
-
-    private static Pattern jsonSymbolPattern() {
-        if (Json_Symbol_Pattern == null) {
-            Json_Symbol_Pattern = Pattern.compile("[{}|\\[\\]]");
-        }
-        return Json_Symbol_Pattern;
-    }
-
-    /**
-     * json键正则模式
-     */
-    private static Pattern Json_Key_Pattern;
-
-    private static Pattern jsonKeyPattern() {
-        if (Json_Key_Pattern == null) {
-            Json_Key_Pattern = Pattern.compile("\"([a-zA-Z0-9-_.]+[\\w\\s]*[\\w]+)\":");
-        }
-        return Json_Key_Pattern;
-    }
-
-    /**
-     * json值正则模式
-     */
-    private static Pattern Json_Value_Pattern;
-
-    private static Pattern jsonValuePattern() {
-        if (Json_Value_Pattern == null) {
-            Json_Value_Pattern = Pattern.compile("(?<=:)\\s*(\"[^\"]*\"|\\d+|true|false|\\[.*?]|\\{.*?})");
-        }
-        return Json_Value_Pattern;
-    }
-
     @Override
     public void initTextStyle() {
         FXUtil.runWait(() -> {
@@ -212,16 +177,16 @@ public class RichDataTextArea extends FlexRichTextArea {
                 }
             } else if (this.dataType == RichDataType.JSON) { // json
                 String text = this.getText();
-                Matcher matcher1 = jsonSymbolPattern().matcher(text);
+                Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
                 List<RichTextStyle> styles = new ArrayList<>();
                 while (matcher1.find()) {
                     styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
                 }
-                Matcher matcher2 = jsonKeyPattern().matcher(text);
+                Matcher matcher2 =  RegexHelper.jsonKeyPattern().matcher(text);
                 while (matcher2.find()) {
                     styles.add(new RichTextStyle(matcher2.start(), matcher2.end() - 1, "-fx-fill: #EE2C2C;"));
                 }
-                Matcher matcher3 = jsonValuePattern().matcher(text);
+                Matcher matcher3 =  RegexHelper.jsonValuePattern().matcher(text);
                 while (matcher3.find()) {
                     styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
                 }

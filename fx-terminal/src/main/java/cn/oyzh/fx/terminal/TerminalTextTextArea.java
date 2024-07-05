@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.terminal.RichTerminalPane;
+import cn.oyzh.fx.rich.terminal.RichTerminalTextAreaPane;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  * @author oyzh
  * @since 2023/05/28
  */
-public class TerminalTextArea extends RichTerminalPane implements Terminal {
+public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Terminal {
 // public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     /**

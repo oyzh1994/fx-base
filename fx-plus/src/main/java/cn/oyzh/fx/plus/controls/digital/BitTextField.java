@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.digital;
 
 import cn.oyzh.fx.common.util.NumUtil;
-import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
@@ -12,7 +12,7 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/12/22
  */
-public class BitTextField extends LimitTextField {
+public class BitTextField extends ClearableTextField {
 
     /**
      * 文本格式器

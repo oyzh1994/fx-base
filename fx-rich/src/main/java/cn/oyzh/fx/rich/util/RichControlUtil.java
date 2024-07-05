@@ -1,6 +1,6 @@
 package cn.oyzh.fx.rich.util;
 
-import cn.oyzh.fx.rich.data.RichDataPane;
+import cn.oyzh.fx.rich.data.RichDataTextAreaPane;
 import lombok.experimental.UtilityClass;
 import org.fxmisc.richtext.StyledTextArea;
 
@@ -30,7 +30,7 @@ public class RichControlUtil {
      *
      * @param pane 组件
      */
-    public static void deselect(RichDataPane pane) {
+    public static void deselect(RichDataTextAreaPane pane) {
         if (pane != null) {
             pane.getContent().deselect();
         }
