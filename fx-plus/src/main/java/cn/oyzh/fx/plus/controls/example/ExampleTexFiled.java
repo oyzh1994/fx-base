@@ -21,6 +21,12 @@ public class ExampleTexFiled extends ClearableTextField {
         return (ExampleTextFieldSkin) this.getSkin();
     }
 
+    public void setExample(Object o) {
+        if (o != null) {
+            this.setExampleText(o.toString());
+        }
+    }
+
     public void setExampleText(String exampleText) {
         this.skin().setExampleText(exampleText);
     }
