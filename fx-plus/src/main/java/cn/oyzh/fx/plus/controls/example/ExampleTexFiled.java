@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 public class ExampleTexFiled extends ClearableTextField {
 
     {
-        this.setEditable(false);
         this.setSkin(new ExampleTextFieldSkin(this));
     }
 
