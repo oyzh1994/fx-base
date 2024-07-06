@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
@@ -21,6 +22,7 @@ import cn.oyzh.fx.pkg.packr.PackrHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author oyzh
@@ -178,8 +180,24 @@ public class Packer {
      * @throws Exception 异常
      */
     public void pack(String configFile) throws Exception {
+        this.pack(configFile, null);
+    }
+
+    /**
+     * 执行打包
+     *
+     * @param configFile 打包配置
+     * @param properties 属性
+     * @throws Exception 异常
+     */
+    public void pack(String configFile, Map<String, Object> properties) throws Exception {
         // 解析配置
         PackConfig packConfig = this.configParser.parse(configFile);
+        if (CollUtil.isNotEmpty(properties)) {
+            for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                packConfig.putProperty(entry.getKey(), entry.getValue());
+            }
+        }
         if (packConfig.isParkByPackr()) {
             this.registerPackrHandler();
         } else {

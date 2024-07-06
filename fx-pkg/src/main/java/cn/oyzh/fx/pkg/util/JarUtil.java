@@ -172,7 +172,7 @@ public class JarUtil {
             jarOut.finish();
             IoUtil.close(jarOut);
         }
-        StaticLog.info("minimize jar finish dest:{}", destFile);
+        StaticLog.info("minimize jar finish dest:{}", dest);
         FileUtil.move(tempFile, destFile, true);
     }
 }

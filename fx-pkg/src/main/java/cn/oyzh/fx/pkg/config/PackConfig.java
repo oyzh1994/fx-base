@@ -187,11 +187,11 @@ public class PackConfig {
 
     public String mainJarName() {
         String mainJar = this.mainJar();
-        if (mainJar.contains("/")) {
-            return mainJar.substring(mainJar.lastIndexOf("/") + 1);
-        }
         if (mainJar.contains("\\")) {
             return mainJar.substring(mainJar.lastIndexOf("\\") + 1);
+        }
+        if (mainJar.contains("/")) {
+            return mainJar.substring(mainJar.lastIndexOf("/") + 1);
         }
         return mainJar;
     }

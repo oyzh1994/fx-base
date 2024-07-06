@@ -31,15 +31,15 @@ public class PackConfigHandler implements PreHandler {
             String javaHome = System.getenv("JAVA_HOME");
             packConfig.setJdkPath(javaHome);
         }
-        if (packConfig.getAppVersion() == null) {
-            return;
-        }
         String appVersion = packConfig.appVersion();
-        if (StrUtil.contains(packConfig.getDest(), "${appVersion}")) {
+        if (appVersion != null) {
             packConfig.setDest(StrUtil.replace(packConfig.getDest(), "${appVersion}", appVersion));
-        }
-        if (StrUtil.contains(packConfig.getMainJar(), "${appVersion}")) {
             packConfig.setMainJar(StrUtil.replace(packConfig.getMainJar(), "${appVersion}", appVersion));
+        }
+        String projectPath = (String) packConfig.getProperty("projectPath");
+        if (projectPath != null) {
+            packConfig.setMainJar(StrUtil.replace(packConfig.getMainJar(), "${projectPath}", projectPath));
+            packConfig.setAppIcon(StrUtil.replace(packConfig.getAppIcon(), "${projectPath}", projectPath));
         }
     }
 }
