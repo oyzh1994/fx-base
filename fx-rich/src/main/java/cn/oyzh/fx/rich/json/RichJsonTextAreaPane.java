@@ -1,5 +1,6 @@
 package cn.oyzh.fx.rich.json;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.common.util.RegexHelper;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -53,6 +54,9 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
     }
 
     public void setJsonStr(String jsonStr) {
+        if (StrUtil.isEmpty(jsonStr)) {
+            return;
+        }
         if (!JSONUtil.isTypeJSON(jsonStr)) {
             this.requestFocus();
             throw new RuntimeException("invalid json text!");
@@ -62,6 +66,9 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
 
     public String getJsonStr() {
         String text = this.getText();
+        if (StrUtil.isEmpty(text)) {
+            return null;
+        }
         if (!JSONUtil.isTypeJSON(text)) {
             this.requestFocus();
             throw new RuntimeException("invalid json text!");
