@@ -1852,4 +1852,8 @@ public class I18nHelper {
     public static String example() {
         return I18nResourceBundle.i18nString(EXAMPLE);
     }
+
+    public static String table() {
+        return I18nResourceBundle.i18nString(TABLE);
+    }
 }

@@ -1,12 +1,15 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import lombok.experimental.UtilityClass;
+
+import java.util.Collections;
 
 /**
  * 表格工具类
@@ -16,6 +19,43 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class TableViewUtil {
+
+    /**
+     * 上移行
+     *
+     * @param tableView 组件
+     */
+    public static void moveRowUp(TableView<?> tableView) {
+        int index = tableView.getSelectionModel().getSelectedIndex();
+        if (index == -1) {
+            return;
+        }
+        ObservableList<?> list = tableView.getItems();
+        Object object = CollectionUtil.get(list, index - 1);
+        if (object != null) {
+            Collections.swap(list, index, index - 1);
+        }
+    }
+
+    /**
+     * 下移行
+     *
+     * @param tableView 组件
+     */
+    public static void moveRowDown(TableView<?> tableView) {
+        if (tableView == null) {
+            return;
+        }
+        int index = tableView.getSelectionModel().getSelectedIndex();
+        if (index == -1) {
+            return;
+        }
+        ObservableList<?> list = tableView.getItems();
+        Object object = CollUtil.get(list, index + 1);
+        if (object != null) {
+            Collections.swap(list, index, index + 1);
+        }
+    }
 
     /**
      * 双击时，复制列数据到粘贴板
