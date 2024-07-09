@@ -87,6 +87,19 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
     }
 
     /**
+     * 设置根节点
+     *
+     * @param root 根节点
+     */
+    default void root(Parent root) {
+        if (this.scene() != null) {
+            this.scene().setRoot(root);
+        } else {
+            this.stage().setScene(new Scene(root));
+        }
+    }
+
+    /**
      * 获取x值
      *
      * @return x值

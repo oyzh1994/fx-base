@@ -124,7 +124,9 @@ public class NodeUtil {
         if (target instanceof Region region) {
             double w1 = region.getPrefHeight();
             double w2 = region.getMinHeight();
-            return Math.max(w1, w2);
+            double w3 = region.getMaxHeight();
+            double w4 = region.getHeight();
+            return Math.max(Math.max(w1, w2), Math.max(w3, w4));
         }
 
         if (target instanceof Parent parent) {

@@ -36,10 +36,14 @@ public class BitTextField extends ClearableTextField {
         return change -> {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
+                    // 数据内容为空
+                    String text = change.getControlNewText();
+                    if (text.isEmpty()) {
+                        return change;
+                    }
                     if (!super.checkLenLimit(change)) {
                         return null;
                     }
-                    String text = change.getControlNewText();
                     if (!text.matches("^[01]+$")) {
                         return null;
                     }

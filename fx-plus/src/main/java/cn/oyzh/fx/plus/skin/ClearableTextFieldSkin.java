@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.skin;
 
+import cn.oyzh.fx.plus.controls.svg.ClearSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -37,12 +39,12 @@ public class ClearableTextFieldSkin extends TextFieldSkinExt {
     public ClearableTextFieldSkin(TextField textField) {
         super(textField);
         // 初始化清除按钮
-        this.clearButton = new SVGGlyph("/fx-plus/font/clear.svg");
-        this.clearButton.setTipText(I18nHelper.clear());
+        this.clearButton = new CloseSVGGlyph();
         this.clearButton.managedBindVisible();
         this.clearButton.setVisible(false);
         this.clearButton.setEnableWaiting(false);
         this.clearButton.setFocusTraversable(false);
+        this.clearButton.setTipText(I18nHelper.clear());
         this.clearButton.setPadding(new Insets(0));
         this.clearButton.setOnMousePrimaryClicked(event -> this.getSkinnable().clear());
         this.clearButton.setOnMouseMoved(mouseEvent -> this.clearButton.setColor("#DC143C"));

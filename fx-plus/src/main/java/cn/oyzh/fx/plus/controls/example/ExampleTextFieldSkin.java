@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -14,10 +15,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 文件文本输入框皮肤
+ * 示例文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/0704
+ * @since 2024/07/04
  */
 public class ExampleTextFieldSkin extends ClearableTextFieldSkin {
 

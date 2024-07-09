@@ -6,6 +6,7 @@ import javafx.beans.InvalidationListener;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.paint.Color;
+import javafx.stage.Window;
 
 /**
  * 文本域皮肤扩展
@@ -86,5 +87,9 @@ public class TextFieldSkinExt extends TextFieldSkin {
         TooltipExt tooltip = new TooltipExt();
         tooltip.setText(tipText);
         this.getSkinnable().setTooltip(tooltip);
+    }
+
+    protected Window getWindow() {
+        return this.getSkinnable().getScene().getWindow();
     }
 }

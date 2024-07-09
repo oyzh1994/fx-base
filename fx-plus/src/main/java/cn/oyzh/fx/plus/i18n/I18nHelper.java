@@ -47,6 +47,10 @@ public class I18nHelper {
 
     public static final String EXAMPLE = "base.example";
 
+    public static final String ENLARGE = "base.enlarge";
+
+    public static final String TRIGGER = "base.trigger";
+
     public static final String PROCEDURE = "base.procedure";
 
     public static final String FUNCTION = "base.function";
@@ -1855,5 +1859,13 @@ public class I18nHelper {
 
     public static String table() {
         return I18nResourceBundle.i18nString(TABLE);
+    }
+
+    public static String enlarge() {
+        return I18nResourceBundle.i18nString(ENLARGE);
+    }
+
+    public static String deleteTrigger() {
+        return I18nResourceBundle.i18nString(DELETE, TRIGGER);
     }
 }

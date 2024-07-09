@@ -31,8 +31,6 @@ import java.util.function.Consumer;
 public class SearchHistoryPopup extends FXPopup {
 
     {
-        this.setAutoFix(true);
-        this.setAutoHide(true);
         this.showingProperty().addListener((observableValue, windowEventEventHandler, t1) -> {
             if (BooleanUtil.isTrue(t1)) {
                 this.initContent();
@@ -41,7 +39,6 @@ public class SearchHistoryPopup extends FXPopup {
                 ExecutorUtil.start(this::clearHistories, 100);
             }
         });
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
@@ -59,7 +56,7 @@ public class SearchHistoryPopup extends FXPopup {
         FXListView<String> listView = this.listView();
         if (listView == null) {
             listView = new FXListView<>();
-            this.getContent().setAll(listView);
+            this.setContent(listView);
             listView.setFontSize(12);
             listView.setCursor(Cursor.HAND);
             listView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {

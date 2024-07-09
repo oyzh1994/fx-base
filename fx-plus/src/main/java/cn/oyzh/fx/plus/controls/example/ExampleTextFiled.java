@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ExampleTexFiled extends ClearableTextField {
+public class ExampleTextFiled extends ClearableTextField {
 
     {
         this.setSkin(new ExampleTextFieldSkin(this));
