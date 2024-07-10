@@ -8,6 +8,10 @@ import cn.oyzh.fx.plus.i18n.I18nHelper;
  */
 public class CancelSVGGlyph extends CloseSVGGlyph {
 
+    public CancelSVGGlyph( ) {
+        super();
+    }
+
     public CancelSVGGlyph(String size) {
         super();
         this.setSizeStr(size);

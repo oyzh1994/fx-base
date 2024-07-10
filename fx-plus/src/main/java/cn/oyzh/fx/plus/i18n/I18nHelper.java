@@ -51,6 +51,8 @@ public class I18nHelper {
 
     public static final String TRIGGER = "base.trigger";
 
+    public static final String SELECT = "base.select";
+
     public static final String PROCEDURE = "base.procedure";
 
     public static final String FUNCTION = "base.function";
@@ -1867,5 +1869,9 @@ public class I18nHelper {
 
     public static String deleteTrigger() {
         return I18nResourceBundle.i18nString(DELETE, TRIGGER);
+    }
+
+    public static String pleaseSelectField() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT,FIELD);
     }
 }
