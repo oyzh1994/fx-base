@@ -3,8 +3,11 @@ package cn.oyzh.fx.plus.util;
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.util.CollectionUtil;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import lombok.experimental.UtilityClass;
@@ -85,5 +88,21 @@ public class TableViewUtil {
             return column.getCellData(position.getRow());
         }
         return null;
+    }
+
+    /**
+     * 鼠标点击时，选中表单行
+     *
+     * @param node 组件
+     */
+    public static void selectRowOnMouseClicked(Node node) {
+        if (node != null) {
+            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Parent p1 = node.getParent();
+                if (p1 != null && p1.getParent() instanceof TableRow<?> row && row.getTableView() != null) {
+                    row.getTableView().getSelectionModel().select(row.getIndex());
+                }
+            });
+        }
     }
 }

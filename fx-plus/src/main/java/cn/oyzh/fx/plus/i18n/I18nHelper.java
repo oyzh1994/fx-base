@@ -65,6 +65,8 @@ public class I18nHelper {
 
     public static final String CONTENT = "base.content";
 
+    public static final String COMMENT = "base.comment";
+
     public static final String CAN_NOT = "base.canNot";
 
     public static final String IS = "base.is";
@@ -1149,6 +1151,14 @@ public class I18nHelper {
 
     public static String pleaseInputContent() {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, CONTENT);
+    }
+
+    public static String pleaseInputName() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, NAME);
+    }
+
+    public static String pleaseInputComment() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, COMMENT);
     }
 
     public static String days() {

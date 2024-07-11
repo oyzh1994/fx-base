@@ -1,35 +1,17 @@
 package cn.oyzh.fx.plus.controls.table;
 
-import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.NodeUtil;
-import cn.oyzh.fx.plus.util.TableViewUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 
 /**
  * @author oyzh
  * @since 2022/1/18
  */
-public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, FlexAdapter, SelectAdapter<S> {
-
-    {
-        NodeManager.init(this);
-    }
-
-    /**
-     * 获取当前选中列的数据
-     *
-     * @return 数据
-     */
-    public Object getSelectCellData() {
-        return TableViewUtil.getSelectCellData(this);
-    }
+public class FlexTableView<S> extends FXTableView<S> implements FlexAdapter {
 
     @Override
     public void resize(double width, double height) {
@@ -58,16 +40,6 @@ public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, Flex
                 }
             }
         }
-    }
-
-    @Override
-    public void setInitIndex(int initIndex) {
-        SelectAdapter.super.setInitIndex(initIndex);
-    }
-
-    @Override
-    public int getInitIndex() {
-        return SelectAdapter.super.getInitIndex();
     }
 
     @Override
@@ -137,12 +109,5 @@ public class FlexTableView<S> extends TableView<S> implements ThemeAdapter, Flex
     @Override
     public StateManager getStateManager() {
         return FlexAdapter.super.stateManager();
-    }
-
-    @Override
-    public void initNode() {
-        this.setFixedCellSize(35.f);
-        this.setFocusTraversable(false);
-        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
     }
 }
