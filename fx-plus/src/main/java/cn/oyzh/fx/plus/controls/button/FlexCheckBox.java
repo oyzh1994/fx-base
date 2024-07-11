@@ -10,6 +10,14 @@ import lombok.NonNull;
  */
 public class FlexCheckBox extends FXCheckBox implements FlexAdapter {
 
+    public FlexCheckBox() {
+        super();
+    }
+
+    public FlexCheckBox(String text) {
+        super(text);
+    }
+
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);

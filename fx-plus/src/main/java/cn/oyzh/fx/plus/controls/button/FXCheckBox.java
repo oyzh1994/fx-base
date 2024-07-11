@@ -24,6 +24,14 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
         NodeManager.init(this);
     }
 
+    public FXCheckBox() {
+        super();
+    }
+
+    public FXCheckBox(String text) {
+        super(text);
+    }
+
     @Override
     public void setTipText(String tipText) {
         TipAdapter.super.tipText(tipText);

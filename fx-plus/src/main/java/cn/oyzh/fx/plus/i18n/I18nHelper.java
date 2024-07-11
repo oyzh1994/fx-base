@@ -219,6 +219,14 @@ public class I18nHelper {
 
     public static final String FIELD = "base.field";
 
+    public static final String COLLATION = "base.collation";
+
+    public static final String AUTO_INCREMENT = "base.autoIncrement";
+
+    public static final String UNSIGNED = "base.unsigned";
+
+    public static final String UPDATE_BY_CURRENT_TIMESTAMP = "base.updateByCurrentTimestamp";
+
     public static final String ELEMENT = "base.element";
 
     public static final String KEY_TYPE = "base.keyType";
@@ -1882,6 +1890,22 @@ public class I18nHelper {
     }
 
     public static String pleaseSelectField() {
-        return I18nResourceBundle.i18nString(PLEASE, SELECT,FIELD);
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, FIELD);
+    }
+
+    public static String collation() {
+        return I18nResourceBundle.i18nString(COLLATION);
+    }
+
+    public static String autoIncrement() {
+        return I18nResourceBundle.i18nString(AUTO_INCREMENT);
+    }
+
+    public static String unsigned() {
+        return I18nResourceBundle.i18nString(UNSIGNED);
+    }
+
+    public static String updateByCurrentTimestamp() {
+        return I18nResourceBundle.i18nString(UNSIGNED);
     }
 }
