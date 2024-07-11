@@ -6,9 +6,11 @@ import javafx.event.EventTarget;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.stage.Window;
 
 import java.util.List;
 
@@ -333,5 +335,20 @@ public interface NodeAdapter extends EventTarget {
             return !node.isDisable() && !node.isDisabled();
         }
         return false;
+    }
+
+    /**
+     * 获取节点的窗口
+     *
+     * @return 窗口对象
+     */
+    default Window window() {
+        if (this instanceof Node node) {
+            Scene scene = node.getScene();
+            if (scene != null) {
+                return scene.getWindow();
+            }
+        }
+        return null;
     }
 }
