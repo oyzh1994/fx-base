@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.ext;
 
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.window.StageManager;
+import cn.oyzh.fx.plus.window.WindowManager;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
@@ -36,7 +37,7 @@ public abstract class ApplicationExt extends Application {
     public void stop() {
         try {
             super.stop();
-            StageManager.closeWindows();
+            WindowManager.closeWindows();
             System.exit(0);
         } catch (Exception ex) {
             ex.printStackTrace();

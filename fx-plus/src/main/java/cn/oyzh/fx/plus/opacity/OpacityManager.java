@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.opacity;
 
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.WindowManager;
 import javafx.stage.Window;
 import lombok.experimental.UtilityClass;
 
@@ -48,7 +49,7 @@ public class OpacityManager {
             try {
                 opacity /= 100;
                 // 变更透明度
-                List<Window> windows = StageManager.allWindows();
+                List<Window> windows = WindowManager.allWindows();
                 for (Window window : windows) {
                     if (window instanceof OpacityAdapter adapter) {
                         adapter.changeOpacity(opacity);

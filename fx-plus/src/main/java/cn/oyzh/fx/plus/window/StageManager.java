@@ -3,9 +3,7 @@ package cn.oyzh.fx.plus.window;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.util.OSUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -14,10 +12,9 @@ import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
- * fx舞台工具类
+ * 舞台工具类
  *
  * @author oyzh
  * @since 2023/10/12
@@ -50,13 +47,6 @@ public class StageManager {
         StaticLog.warn("system exit...");
         Platform.exit();
         System.exit(0);
-    }
-
-    /**
-     * 获取所有窗口
-     */
-    public static List<Window> allWindows() {
-        return new ArrayList<>(Window.getWindows());
     }
 
     /**
@@ -175,41 +165,12 @@ public class StageManager {
     }
 
     /**
-     * 关闭所有窗口
-     */
-    public static void closeWindows() {
-        try {
-            ObservableList<Window> windows = Window.getWindows();
-            for (Window window : windows) {
-                FXUtil.runLater(window::hide);
-            }
-        } catch (NoSuchElementException ignore) {
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
      * 获取主舞台
      *
      * @return Stage 主舞台
      */
     public static Stage getPrimaryStage() {
         return Primary_Stage;
-    }
-
-    /**
-     * 获取活跃窗口
-     *
-     * @return Window
-     */
-    public static Window getActiveWindow() {
-        for (Window window : Window.getWindows()) {
-            if (window.isFocused() && window.isShowing()) {
-                return window;
-            }
-        }
-        return null;
     }
 
     /**
@@ -274,5 +235,4 @@ public class StageManager {
         transparentStage.setY(-1000);
         return transparentStage;
     }
-
 }

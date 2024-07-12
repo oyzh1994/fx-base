@@ -21,7 +21,7 @@ public class PopupManager {
      * @param controllerClass controller类
      * @return PopupWrapper
      */
-    public static PopupWrapper getWindow(@NonNull Class<?> controllerClass) {
+    public static PopupWrapper getPopup(@NonNull Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             Object reference = window.getProperties().get(REF_ATTR);
             if (reference instanceof PopupWrapper wrapper && wrapper.controllerClass() == controllerClass) {
@@ -36,8 +36,8 @@ public class PopupManager {
      *
      * @param controllerClass controller类
      */
-    public static void showWindow(@NonNull Class<?> controllerClass) {
-        PopupWrapper window = parseWindow(controllerClass);
+    public static void showPopup(@NonNull Class<?> controllerClass) {
+        PopupWrapper window = parsePopup(controllerClass);
         if (window != null) {
             window.disable();
         }
@@ -49,13 +49,13 @@ public class PopupManager {
      * @param clazz 窗口类
      * @return PopupWrapper
      */
-    public static PopupWrapper parseWindow(@NonNull Class<?> clazz) {
+    public static PopupWrapper parsePopup(@NonNull Class<?> clazz) {
         PopupAttribute attribute = clazz.getAnnotation(PopupAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + PopupAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
         }
         // 获取窗口
-        PopupWrapper window = getWindow(clazz);
+        PopupWrapper window = getPopup(clazz);
         // 创建窗口
         if (window == null) {
             window = new PopupExt(attribute);

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.io.FileUtil;
-import cn.oyzh.fx.plus.window.StageManager;
+import cn.oyzh.fx.plus.window.WindowManager;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -175,7 +175,7 @@ public class FileChooserUtil {
      */
     public static File choose(String title, FileChooser.ExtensionFilter[] extensionFilter, Window owner) {
         if (owner == null) {
-            owner = StageManager.getActiveWindow();
+            owner = WindowManager.getActiveWindow();
         }
         AtomicReference<File> file = new AtomicReference<>();
         Window finalOwner = owner;
