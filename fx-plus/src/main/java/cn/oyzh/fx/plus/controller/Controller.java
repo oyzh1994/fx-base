@@ -18,7 +18,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2023/10/12
  */
-public class Controller implements StageListener, EventListener, I18nAdapter {
+public class Controller extends BaseController implements StageListener, EventListener {
 
     /**
      * 舞台
@@ -50,7 +50,7 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
     }
 
     @Override
-    public void onStageShowing(WindowEvent event) {
+    public void onWindowShowing(WindowEvent event) {
         EventListener.super.register();
     }
 
@@ -64,11 +64,11 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
     }
 
     @Override
-    public void onStageHiding(WindowEvent event) {
+    public void onWindowHiding(WindowEvent event) {
     }
 
     @Override
-    public void onStageHidden(WindowEvent event) {
+    public void onWindowHidden(WindowEvent event) {
         EventListener.super.unregister();
     }
 
@@ -76,30 +76,15 @@ public class Controller implements StageListener, EventListener, I18nAdapter {
     public void onSystemExit() {
     }
 
-    /**
-     * 绑定监听器相关业务
-     */
-    protected void bindListeners() {
-
-    }
-
-    /**
-     * 关闭舞台
-     */
-    protected void closeStage() {
+    @Override
+    protected void closeWindow() {
         if (this.stage != null) {
             this.stage.disappear();
         }
     }
 
-    /**
-     * 获取属性
-     *
-     * @param key key
-     * @param <T> 泛型
-     * @return 值
-     */
-    protected <T> T getStageProp(String key) {
+    @Override
+    protected <T> T getWindowProp(String key) {
         return this.stage == null ? null : this.stage.getProp(key);
     }
 

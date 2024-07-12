@@ -24,7 +24,7 @@ public class PrimaryStage implements StageWrapper, OpacityAdapter {
 
     public PrimaryStage(@NonNull Stage primaryStage, @NonNull StageAttribute attribute, Window owner) {
         this.stage = primaryStage;
-        this.stage.getProperties().put("_stageReference", this);
+        this.stage.getProperties().put(StageManager.REF_ATTR, this);
         this.init(attribute, owner);
     }
 }

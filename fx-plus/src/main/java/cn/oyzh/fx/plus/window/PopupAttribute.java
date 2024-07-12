@@ -11,10 +11,10 @@ import java.lang.annotation.Target;
 
 
 /**
- * 舞台属性
+ * 窗口属性
  *
  * @author oyzh
- * @since 2023/10/12
+ * @since 2024/07/12
  */
 @Lazy
 @Component

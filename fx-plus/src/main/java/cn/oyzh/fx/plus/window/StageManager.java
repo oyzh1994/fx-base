@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
 @UtilityClass
 public class StageManager {
 
-    public static final String REF_ATTR = "_popup_window_reference";
+    public static final String REF_ATTR = "_stage_window_reference";
 
     /**
      * 主舞台
@@ -65,7 +65,7 @@ public class StageManager {
     public static List<StageWrapper> allStages() {
         List<StageWrapper> list = new ArrayList<>();
         for (Window window : Window.getWindows()) {
-            Object reference = window.getProperties().get("_stageReference");
+            Object reference = window.getProperties().get(REF_ATTR);
             if (reference instanceof StageWrapper wrapper) {
                 list.add(wrapper);
             }
@@ -81,7 +81,7 @@ public class StageManager {
      */
     public static StageWrapper getStage(@NonNull Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
-            Object reference = window.getProperties().get("_stageReference");
+            Object reference = window.getProperties().get(REF_ATTR);
             if (reference instanceof StageWrapper wrapper && wrapper.controllerClass() == controllerClass) {
                 return wrapper;
             }

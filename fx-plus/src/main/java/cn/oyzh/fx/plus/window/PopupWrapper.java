@@ -37,9 +37,9 @@ public interface PopupWrapper extends StateAdapter, ThemeAdapter {
     default void initListener(@NonNull PopupListener listener) {
         // 设置事件
         listener.onPopupInitialize(this);
-        this.popup().setOnHiding(listener::onPopupHiding);
-        this.popup().setOnHidden(listener::onPopupHidden);
-        this.popup().setOnShowing(listener::onPopupShowing);
+        this.popup().setOnHiding(listener::onWindowHiding);
+        this.popup().setOnHidden(listener::onWindowHidden);
+        this.popup().setOnShowing(listener::onWindowShowing);
     }
 
     /**

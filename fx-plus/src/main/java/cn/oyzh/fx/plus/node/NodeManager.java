@@ -44,12 +44,5 @@ public class NodeManager {
         if (node instanceof I18nSelectAdapter<?> adapter) {
             adapter.values(I18nManager.currentLocale());
         }
-        // if (node instanceof Node node1) {
-        //     node1.setCache(true);
-        //     node1.setCacheHint(CacheHint.QUALITY);
-        // }
-        // if (node instanceof Region region) {
-        //     region.setCacheShape(true);
-        // }
     }
 }

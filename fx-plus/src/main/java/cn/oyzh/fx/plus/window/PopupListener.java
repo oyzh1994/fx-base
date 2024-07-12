@@ -3,38 +3,17 @@ package cn.oyzh.fx.plus.window;
 import javafx.stage.WindowEvent;
 
 /**
- * 舞台监听接口
+ * 窗口监听接口
  *
  * @author oyzh
- * @since 2023/10/12
+ * @since 2024/07/12
  */
-public interface PopupListener {
+public interface PopupListener extends WindowListener {
 
     /**
-     * 舞台初始化事件
+     * 窗口初始化事件
      *
-     * @param popup 舞台扩展
+     * @param window 窗口扩展
      */
-    void onPopupInitialize(PopupWrapper popup);
-
-    /**
-     * 舞台显示中事件
-     *
-     * @param event 事件
-     */
-    void onPopupShowing(WindowEvent event);
-
-    /**
-     * 舞台隐藏中事件
-     *
-     * @param event 事件
-     */
-    void onPopupHiding(WindowEvent event);
-
-    /**
-     * 舞台已隐藏事件
-     *
-     * @param event 事件
-     */
-    void onPopupHidden(WindowEvent event);
+    void onPopupInitialize(PopupWrapper window);
 }

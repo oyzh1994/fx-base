@@ -17,7 +17,7 @@ public class StageExt extends Stage implements StageWrapper, OpacityAdapter {
 
     public StageExt(@NonNull StageAttribute attribute, Window owner) {
         this.init(attribute, owner);
-        this.setProp("_stageReference", this);
+        this.setProp(StageManager.REF_ATTR, this);
     }
 
     public StageExt(Window owner) {
@@ -28,7 +28,7 @@ public class StageExt extends Stage implements StageWrapper, OpacityAdapter {
         if (owner != null) {
             this.initOwner(owner);
         }
-        this.setProp("_stageReference", this);
+        this.setProp(StageManager.REF_ATTR, this);
         NodeManager.init(this);
         if (root != null) {
             this.root(root);

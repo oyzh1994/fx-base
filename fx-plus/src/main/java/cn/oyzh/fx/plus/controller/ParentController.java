@@ -30,11 +30,11 @@ public class ParentController extends Controller {
     }
 
     @Override
-    public void onStageShowing(WindowEvent event) {
-        super.onStageShowing(event);
+    public void onWindowShowing(WindowEvent event) {
+        super.onWindowShowing(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
             for (Controller controller : this.getSubControllers()) {
-                controller.onStageShowing(event);
+                controller.onWindowShowing(event);
             }
         }
     }
@@ -60,21 +60,21 @@ public class ParentController extends Controller {
     }
 
     @Override
-    public void onStageHiding(WindowEvent event) {
-        super.onStageHiding(event);
+    public void onWindowHiding(WindowEvent event) {
+        super.onWindowHiding(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
             for (Controller controller : this.getSubControllers()) {
-                controller.onStageHiding(event);
+                controller.onWindowHiding(event);
             }
         }
     }
 
     @Override
-    public void onStageHidden(WindowEvent event) {
-        super.onStageHidden(event);
+    public void onWindowHidden(WindowEvent event) {
+        super.onWindowHidden(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
             for (Controller controller : this.getSubControllers()) {
-                controller.onStageHidden(event);
+                controller.onWindowHidden(event);
             }
         }
     }

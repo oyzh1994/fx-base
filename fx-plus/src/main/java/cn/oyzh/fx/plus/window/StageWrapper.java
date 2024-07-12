@@ -256,9 +256,9 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
         // 设置事件
         listener.onStageInitialize(this);
         this.stage().setOnShown(listener::onStageShown);
-        this.stage().setOnHiding(listener::onStageHiding);
-        this.stage().setOnHidden(listener::onStageHidden);
-        this.stage().setOnShowing(listener::onStageShowing);
+        this.stage().setOnHiding(listener::onWindowHiding);
+        this.stage().setOnHidden(listener::onWindowHidden);
+        this.stage().setOnShowing(listener::onWindowShowing);
         this.stage().setOnCloseRequest(listener::onStageCloseRequest);
     }
 
