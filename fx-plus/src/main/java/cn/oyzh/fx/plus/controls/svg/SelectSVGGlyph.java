@@ -1,0 +1,17 @@
+package cn.oyzh.fx.plus.controls.svg;
+
+/**
+ * @author oyzh
+ * @since 2024/4/10
+ */
+public class SelectSVGGlyph extends SVGGlyph {
+
+    public SelectSVGGlyph() {
+        this.setUrl("/fx-plus/font/select.svg");
+    }
+
+    public SelectSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+}

@@ -5,18 +5,19 @@ import atlantafx.base.controls.Notification;
 import atlantafx.base.util.Animations;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.ThreadUtil;
+import cn.oyzh.fx.plus.controls.area.MsgTextArea;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
-import cn.oyzh.fx.plus.controls.area.MsgTextArea;
 import cn.oyzh.fx.plus.controls.button.FXButton;
+import cn.oyzh.fx.plus.controls.digital.DecimalTextField;
+import cn.oyzh.fx.plus.controls.digital.NumberTextField;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
+import cn.oyzh.fx.plus.controls.search.SearchTextField;
+import cn.oyzh.fx.plus.controls.select.SelectTextFiled;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGPathExt;
 import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
-import cn.oyzh.fx.plus.controls.digital.DecimalTextField;
-import cn.oyzh.fx.plus.controls.digital.NumberTextField;
-import cn.oyzh.fx.plus.controls.search.SearchTextField;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.fx.plus.stage.StageUtil;
@@ -96,7 +97,8 @@ public class AppMain extends Application {
         // test22(stage);
         // test23(stage);
 //        test24(stage);
-        test25(stage);
+//         test25(stage);
+        test26(stage);
     }
 
     private void test1(Stage stage) {
@@ -897,11 +899,10 @@ public class AppMain extends Application {
     }
 
     private void test25(Stage stage) {
-        Spinner<Double> spinner = new Spinner<>( new DoubleTextValueFactory() {
+        Spinner<Double> spinner = new Spinner<>(new DoubleTextValueFactory() {
         }
 
         );
-
 
 
 //        Spinner<Double> spinner = new Spinner<>(new SpinnerValueFactory<Double>() {
@@ -940,8 +941,6 @@ public class AppMain extends Application {
         });
 
 
-
-
         field.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             // System.out.println("---------");
             // System.out.println(field.getSelection().getStart());
@@ -977,11 +976,18 @@ public class AppMain extends Application {
         field.paste();
 
 
-
         Spinner<Integer> spinner2 = new Spinner<>(new IntegerSpinnerValueFactory(0, 100));
         VBox vBox = new VBox(spinner, spinner2);
         spinner.setEditable(true);
         stage.setScene(new Scene(vBox, 500, 500));
         stage.show();
     }
+
+    private void test26(Stage stage) {
+        SelectTextFiled filed = new SelectTextFiled();
+        filed.setDataList(List.of("a1", "b1", "c1"));
+        stage.setScene(new Scene(filed));
+        stage.show();
+    }
+
 }

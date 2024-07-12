@@ -1893,6 +1893,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, SELECT, FIELD);
     }
 
+    public static String pleaseSelectContent() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, CONTENT);
+    }
+
     public static String collation() {
         return I18nResourceBundle.i18nString(COLLATION);
     }
@@ -1906,6 +1910,10 @@ public class I18nHelper {
     }
 
     public static String updateByCurrentTimestamp() {
-        return I18nResourceBundle.i18nString(UNSIGNED);
+        return I18nResourceBundle.i18nString(UPDATE_BY_CURRENT_TIMESTAMP);
+    }
+
+    public static String select() {
+        return I18nResourceBundle.i18nString(SELECT);
     }
 }

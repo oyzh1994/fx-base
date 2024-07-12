@@ -1,10 +1,9 @@
-package cn.oyzh.fx.plus.controls.more;
+package cn.oyzh.fx.plus.controls.choose;
 
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
-import cn.oyzh.fx.plus.skin.ChooseTextFieldSkin;
 
 /**
- * 文件选择框
+ * 选择输入框
  *
  * @author oyzh
  * @since 2024/07/04

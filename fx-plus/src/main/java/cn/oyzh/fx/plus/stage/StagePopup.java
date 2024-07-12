@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.stage;
 
 import javafx.scene.Parent;
+import javafx.stage.Modality;
 import javafx.stage.Window;
-import lombok.NonNull;
 
 /**
  * 舞台弹窗
@@ -12,11 +12,16 @@ import lombok.NonNull;
  */
 public class StagePopup extends StageExt {
 
-    public StagePopup(@NonNull Window owner) {
-        super(owner, null, null, null);
+    public StagePopup(Window owner) {
+        this(owner, null);
     }
 
-    public StagePopup(@NonNull Window owner, Parent root) {
+    public StagePopup(Window owner, Parent root) {
         super(owner, root, null, null);
+        if (owner == null) {
+            this.initModality(Modality.APPLICATION_MODAL);
+        } else {
+            this.initModality(Modality.WINDOW_MODAL);
+        }
     }
 }

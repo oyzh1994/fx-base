@@ -38,4 +38,15 @@ public class FXPopup extends Popup implements ThemeAdapter {
         double height = ControlUtil.boundedHeight(ownerNode);
         this.show(ownerNode, point2D.getX(), point2D.getY() + height);
     }
+
+    /**
+     * 显示组件
+     *
+     * @param ownerNode 父节点
+     */
+    public void showFixed(@NonNull Node ownerNode, double fixedX, double fixedY) {
+        Point2D point2D = ownerNode.localToScreen(ownerNode.getScaleX(), ownerNode.getScaleY());
+        double height = ControlUtil.boundedHeight(ownerNode);
+        this.show(ownerNode, point2D.getX() + fixedX, point2D.getY() + height + fixedY);
+    }
 }

@@ -1,8 +1,9 @@
-package cn.oyzh.fx.plus.skin;
+package cn.oyzh.fx.plus.controls.choose;
 
 import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -13,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 可清除文本输入框皮肤
+ * 选择输入框皮肤
  *
  * @author oyzh
  * @since 2023/10/9

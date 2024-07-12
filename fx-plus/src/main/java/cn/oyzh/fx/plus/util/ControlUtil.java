@@ -15,7 +15,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -245,6 +247,26 @@ public class ControlUtil {
 //    }
 
     /***
+     * 生成指定宽度的边框
+     * @param stroke 颜色
+     * @param width 宽度
+     * @return 指定宽度边框
+     */
+    public static Border strokeOfWidth(@NonNull Paint stroke, double width) {
+        return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(width)));
+    }
+
+    /***
+     * 生成指定宽度的边框，仅底部
+     * @param stroke 颜色
+     * @param width 宽度
+     * @return 指定宽度边框
+     */
+    public static Border strokeOfWidthBottom(@NonNull Paint stroke, double width) {
+        return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(0, 0, width, 0)));
+    }
+
+    /***
      * 生成较大宽度的边框
      * @param stroke 颜色
      * @return 中等宽度边框
@@ -282,6 +304,15 @@ public class ControlUtil {
             return null;
         }
         return new Background(new BackgroundFill(paint, null, null));
+    }
+
+    /**
+     * 生成高亮背景
+     *
+     * @return 高亮背景
+     */
+    public static Background hilightBackground() {
+        return background(Color.LIGHTBLUE);
     }
 
     /**
