@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- * 子控制器
+ * 子窗口控制器
  *
  * @author oyzh
  * @since 2023/10/12

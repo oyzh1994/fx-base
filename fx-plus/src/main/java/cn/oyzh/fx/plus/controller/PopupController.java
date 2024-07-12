@@ -10,7 +10,7 @@ import lombok.NonNull;
 import java.util.Locale;
 
 /**
- * 组件控制器
+ * 弹窗组件控制器
  *
  * @author oyzh
  * @since 2024/07/12
@@ -40,19 +40,6 @@ public class PopupController extends Controller implements PopupListener {
     }
 
     @Override
-    public void onWindowShowing(WindowEvent event) {
-        this.bindListeners();
-    }
-
-    @Override
-    public void onWindowHiding(WindowEvent event) {
-    }
-
-    @Override
-    public void onWindowHidden(WindowEvent event) {
-    }
-
-    @Override
     protected void closeWindow() {
         if (this.window != null) {
             this.window.disappear();
@@ -62,10 +49,5 @@ public class PopupController extends Controller implements PopupListener {
    @Override
     protected <T> T getWindowProp(String key) {
         return this.window == null ? null : this.window.getProp(key);
-    }
-
-    @Override
-    public void changeLocale(Locale locale) {
-
     }
 }

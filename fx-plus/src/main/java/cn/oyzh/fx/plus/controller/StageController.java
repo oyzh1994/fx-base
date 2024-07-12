@@ -9,10 +9,8 @@ import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.Locale;
-
 /**
- * 组件控制器
+ * 窗口控制器
  *
  * @author oyzh
  * @since 2023/10/12
@@ -30,14 +28,14 @@ public class StageController extends Controller implements StageListener, EventL
      *
      * @param stage 舞台
      */
-    protected void setStage(@NonNull StageWrapper stage) {
+    protected void setWindow(@NonNull StageWrapper stage) {
         this.stage = stage;
     }
 
     @Override
     public void onStageInitialize(StageWrapper stage) {
         // 设置页面
-        this.setStage(stage);
+        this.setWindow(stage);
         // 处理标题
         if (StrUtil.isEmpty(this.stage.getTitleExt())) {
             String title = this.getViewTitle();
@@ -63,10 +61,6 @@ public class StageController extends Controller implements StageListener, EventL
     }
 
     @Override
-    public void onWindowHiding(WindowEvent event) {
-    }
-
-    @Override
     public void onWindowHidden(WindowEvent event) {
         EventListener.super.unregister();
     }
@@ -85,11 +79,6 @@ public class StageController extends Controller implements StageListener, EventL
     @Override
     protected <T> T getWindowProp(String key) {
         return this.stage == null ? null : this.stage.getProp(key);
-    }
-
-    @Override
-    public void changeLocale(Locale locale) {
-
     }
 
     public String getViewTitle() {

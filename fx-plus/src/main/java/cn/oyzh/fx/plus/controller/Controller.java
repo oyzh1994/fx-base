@@ -1,8 +1,18 @@
 package cn.oyzh.fx.plus.controller;
 
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
+import cn.oyzh.fx.plus.window.WindowListener;
+import javafx.stage.WindowEvent;
 
-public abstract class Controller implements I18nAdapter {
+import java.util.Locale;
+
+/**
+ * 组件控制器
+ *
+ * @author oyzh
+ * @since 2024/07/12
+ */
+public abstract class Controller implements I18nAdapter, WindowListener {
 
     /**
      * 绑定监听器相关业务
@@ -28,4 +38,21 @@ public abstract class Controller implements I18nAdapter {
         return null;
     }
 
+    @Override
+    public void changeLocale(Locale locale) {
+
+    }
+
+    @Override
+    public void onWindowShowing(WindowEvent event) {
+        this.bindListeners();
+    }
+
+    @Override
+    public void onWindowHiding(WindowEvent event) {
+    }
+
+    @Override
+    public void onWindowHidden(WindowEvent event) {
+    }
 }

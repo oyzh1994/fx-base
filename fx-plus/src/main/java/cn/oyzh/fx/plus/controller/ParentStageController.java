@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 父控制器
+ * 父窗口控制器
  *
  * @author oyzh
  * @since 2023/10/12
@@ -17,11 +17,11 @@ import java.util.List;
 public class ParentStageController extends StageController {
 
     @Override
-    protected void setStage(@NonNull StageWrapper stage) {
-        super.setStage(stage);
+    protected void setWindow(@NonNull StageWrapper stage) {
+        super.setWindow(stage);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
-                controller.setStage(stage);
+                controller.setWindow(stage);
                 if (controller instanceof SubStageController subController) {
                     subController.parent(this);
                 }

@@ -1,11 +1,15 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.oyzh.fx.plus.window.PopupWrapper;
 import cn.oyzh.fx.plus.window.StageWrapper;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
+import javafx.stage.PopupWindow;
 import javafx.stage.Window;
+
+import javax.swing.*;
 
 /**
  * 属性适配器
@@ -32,6 +36,8 @@ public interface PropAdapter {
             scene.getProperties().put(key, val);
         } else if (this instanceof Window window) {
             window.getProperties().put(key, val);
+        } else if (this instanceof PopupWrapper wrapper && wrapper.popup() != null) {
+            wrapper.popup().getProperties().put(key, val);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             stage.stage().getProperties().put(key, val);
         }
