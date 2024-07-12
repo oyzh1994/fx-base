@@ -20,19 +20,19 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2024/07/12
  */
-public interface PopupWrapper extends StateAdapter, ThemeAdapter {
+public interface PopupWrapper extends WindowWrapper {
 
     /**
-     * 获取窗口
+     * 获取弹窗
      *
-     * @return 窗口
+     * @return 弹窗
      */
     PopupWindow popup();
 
     /**
      * 初始化监听器
      *
-     * @param listener 窗口监听器
+     * @param listener 弹窗监听器
      */
     default void initListener(@NonNull PopupListener listener) {
         // 设置事件
@@ -42,128 +42,74 @@ public interface PopupWrapper extends StateAdapter, ThemeAdapter {
         this.popup().setOnShowing(listener::onWindowShowing);
     }
 
-    /**
-     * 关闭事件
-     */
-    default void onClosed() {
-        try {
-            this.unSwitchOnTab();
-            this.unHideOnEscape();
-            this.clearProps();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
-
-    /**
-     * hand鼠标样式
-     */
+    @Override
     default void handCursor() {
         CursorUtil.handCursor(this.popup());
     }
 
-    /**
-     * wait鼠标样式
-     */
+    @Override
     default void waitCursor() {
         CursorUtil.waitCursor(this.popup());
     }
 
-    /**
-     * 默认鼠标样式
-     */
+    @Override
     default void defaultCursor() {
         CursorUtil.defaultCursor(this.popup());
     }
 
-    /**
-     * 获取controller
-     *
-     * @return controller
-     */
-    default Object controller() {
-        return this.getProp("_controller");
-    }
-
-    /**
-     * 获取controller类
-     *
-     * @return controller类
-     */
-    default Class<?> controllerClass() {
-        Object controller = this.controller();
-        return controller == null ? null : controller.getClass();
-    }
-
-    /**
-     * 设置按下esc时隐藏窗口
-     */
+    @Override
     default void hideOnEscape() {
         if (!EscHideHandler.exists(this.popup())) {
             EscHideHandler.init(this.popup());
         }
     }
 
-    /**
-     * 取消按下eac时隐藏窗口
-     */
+    @Override
     default void unHideOnEscape() {
         EscHideHandler.destroy(this.popup());
     }
 
-    /**
-     * 是否按下esc时隐藏窗口
-     *
-     * @return 结果
-     */
+    @Override
     default boolean isHideOnEscape() {
         return EscHideHandler.exists(this.popup());
     }
 
-    /**
-     * 设置按下tab时切换组件
-     */
+    @Override
     default void switchOnTab() {
         if (!TabSwitchHandler.exists(this.popup())) {
             TabSwitchHandler.init(this.popup());
         }
     }
 
-    /**
-     * 取消按下tab时切换组件
-     */
+    @Override
     default void unSwitchOnTab() {
         TabSwitchHandler.destroy(this.popup());
     }
 
-    /**
-     * 是否按下tab时切换组件
-     *
-     * @return 结果
-     */
+    @Override
     default boolean isSwitchOnTab() {
         return TabSwitchHandler.exists(this.popup());
     }
 
-    @Override
-    default void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    default StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
-    }
-
+    /**
+     * 显示弹窗
+     *
+     * @param owner 父组件
+     */
     void showPopup(Node owner);
 
+    /**
+     * 设置内容
+     *
+     * @param content 内容组件
+     */
     void setContent(Node content);
 
     /**
-     * 初始化窗口
+     * 初始化弹窗
      *
-     * @param attribute 窗口属性
+     * @param attribute 弹窗属性
      */
     default void init(@NonNull PopupAttribute attribute) {
         // 初始化加载器
@@ -176,7 +122,7 @@ public interface PopupWrapper extends StateAdapter, ThemeAdapter {
         this.setContent(root);
         // 设置controller
         this.setProp("_controller", loader.getController());
-        // 设置窗口样式
+        // 设置弹窗样式
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
@@ -192,6 +138,4 @@ public interface PopupWrapper extends StateAdapter, ThemeAdapter {
             }
         });
     }
-
-  
 }

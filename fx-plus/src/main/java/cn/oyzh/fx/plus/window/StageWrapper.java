@@ -3,15 +3,12 @@ package cn.oyzh.fx.plus.window;
 import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.TaskManager;
-import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
@@ -36,7 +33,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/10/11
  */
-public interface StageWrapper extends StateAdapter, ThemeAdapter {
+public interface StageWrapper extends WindowWrapper {
 
     /**
      * 获取舞台
@@ -263,19 +260,6 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
     }
 
     /**
-     * 关闭事件
-     */
-    default void onClosed() {
-        try {
-            this.unSwitchOnTab();
-            this.unHideOnEscape();
-            this.clearProps();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
      * 设置标题，扩展
      *
      * @param title 标题
@@ -340,92 +324,51 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
         });
     }
 
-    /**
-     * hand鼠标样式
-     */
+    @Override
     default void handCursor() {
         CursorUtil.handCursor(this.stage());
     }
 
-    /**
-     * wait鼠标样式
-     */
+    @Override
     default void waitCursor() {
         CursorUtil.waitCursor(this.stage());
     }
 
-    /**
-     * 默认鼠标样式
-     */
+    @Override
     default void defaultCursor() {
         CursorUtil.defaultCursor(this.stage());
     }
 
-    /**
-     * 获取controller
-     *
-     * @return controller
-     */
-    default Object controller() {
-        return this.getProp("_controller");
-    }
-
-    /**
-     * 获取controller类
-     *
-     * @return controller类
-     */
-    default Class<?> controllerClass() {
-        Object controller = this.controller();
-        return controller == null ? null : controller.getClass();
-    }
-
-    /**
-     * 设置按下eac时隐藏窗口
-     */
+    @Override
     default void hideOnEscape() {
         if (!EscHideHandler.exists(this.stage())) {
             EscHideHandler.init(this.stage());
         }
     }
 
-    /**
-     * 取消按下eac时隐藏窗口
-     */
+    @Override
     default void unHideOnEscape() {
         EscHideHandler.destroy(this.stage());
     }
 
-    /**
-     * 是否按下esc时隐藏窗口
-     *
-     * @return 结果
-     */
+    @Override
     default boolean isHideOnEscape() {
         return EscHideHandler.exists(this.stage());
     }
 
-    /**
-     * 设置按下tab时切换组件
-     */
+    @Override
     default void switchOnTab() {
         if (!TabSwitchHandler.exists(this.stage())) {
             TabSwitchHandler.init(this.stage());
         }
     }
 
-    /**
-     * 取消按下tab时切换组件
-     */
+    @Override
     default void unSwitchOnTab() {
         TabSwitchHandler.destroy(this.stage());
     }
 
-    /**
-     * 是否按下tab时切换组件
-     *
-     * @return 结果
-     */
+    @Override
     default boolean isSwitchOnTab() {
         return TabSwitchHandler.exists(this.stage());
     }
@@ -433,16 +376,16 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
     /**
      * 初始化文件拖拽事件
      *
-     * @param dragboardContent 拖拽板内容
+     * @param dragBoardContent 拖拽板内容
      * @param onDragFile       文件拖入处理
      */
-    default void initDragFile(@NonNull String dragboardContent, @NonNull Consumer<List<File>> onDragFile) {
+    default void initDragFile(@NonNull String dragBoardContent, @NonNull Consumer<List<File>> onDragFile) {
         // 文件拖拽初始化
         DragUtil.initDragFile(new DragFileHandler() {
 
             @Override
             public boolean checkDragboard(Dragboard dragboard) {
-                return dragboard == null || !Objects.equals(dragboard.getString(), dragboardContent);
+                return dragboard == null || !Objects.equals(dragboard.getString(), dragBoardContent);
             }
 
             @Override
@@ -464,15 +407,5 @@ public interface StageWrapper extends StateAdapter, ThemeAdapter {
                 }
             }
         }, this.scene());
-    }
-
-    @Override
-    default void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    default StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
     }
 }

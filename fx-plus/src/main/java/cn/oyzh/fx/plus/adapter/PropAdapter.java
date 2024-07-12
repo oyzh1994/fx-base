@@ -60,6 +60,8 @@ public interface PropAdapter {
             return (T) scene.getProperties().get(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().get(key);
+        } else if (this instanceof PopupWrapper wrapper) {
+            return (T) wrapper.popup().getProperties().get(key);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().get(key);
         }
@@ -88,6 +90,9 @@ public interface PropAdapter {
         if (this instanceof Window window) {
             return window.getProperties().containsKey(key);
         }
+        if (this instanceof PopupWrapper wrapper) {
+            return wrapper.popup().getProperties().containsKey(key);
+        }
         if (this instanceof StageWrapper stage && stage.stage() != null) {
             return stage.stage().getProperties().containsKey(key);
         }
@@ -112,6 +117,8 @@ public interface PropAdapter {
             return (T) scene.getProperties().remove(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().remove(key);
+        } else if (this instanceof PopupWrapper wrapper && wrapper.popup() != null) {
+            return (T) wrapper.popup().getProperties().remove(key);
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().remove(key);
         }
@@ -132,6 +139,8 @@ public interface PropAdapter {
             scene.getProperties().clear();
         } else if (this instanceof Window window) {
             window.getProperties().clear();
+        } else if (this instanceof PopupWrapper wrapper && wrapper.popup() != null) {
+            wrapper.popup().getProperties().clear();
         } else if (this instanceof StageWrapper stage && stage.stage() != null) {
             stage.stage().getProperties().clear();
         }

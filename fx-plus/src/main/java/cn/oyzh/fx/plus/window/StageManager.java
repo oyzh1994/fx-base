@@ -22,6 +22,9 @@ import java.util.List;
 @UtilityClass
 public class StageManager {
 
+    /**
+     * 引用属性
+     */
     public static final String REF_ATTR = "_stage_window_reference";
 
     /**

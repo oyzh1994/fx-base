@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  */
 @UtilityClass
 public class WindowManager {
-    
+
     /**
      * 获取所有窗口
      */
