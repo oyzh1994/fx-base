@@ -14,15 +14,15 @@ import java.util.List;
  * @author oyzh
  * @since 2023/10/12
  */
-public class ParentController extends Controller {
+public class ParentStageController extends StageController {
 
     @Override
     protected void setStage(@NonNull StageWrapper stage) {
         super.setStage(stage);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
-            for (Controller controller : this.getSubControllers()) {
+            for (StageController controller : this.getSubControllers()) {
                 controller.setStage(stage);
-                if (controller instanceof SubController subController) {
+                if (controller instanceof SubStageController subController) {
                     subController.parent(this);
                 }
             }
@@ -33,7 +33,7 @@ public class ParentController extends Controller {
     public void onWindowShowing(WindowEvent event) {
         super.onWindowShowing(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
-            for (Controller controller : this.getSubControllers()) {
+            for (StageController controller : this.getSubControllers()) {
                 controller.onWindowShowing(event);
             }
         }
@@ -43,7 +43,7 @@ public class ParentController extends Controller {
     public void onStageShown(WindowEvent event) {
         super.onStageShown(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
-            for (Controller controller : this.getSubControllers()) {
+            for (StageController controller : this.getSubControllers()) {
                 controller.onStageShown(event);
             }
         }
@@ -53,7 +53,7 @@ public class ParentController extends Controller {
     public void onStageCloseRequest(WindowEvent event) {
         super.onStageCloseRequest(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
-            for (Controller controller : this.getSubControllers()) {
+            for (StageController controller : this.getSubControllers()) {
                 controller.onStageCloseRequest(event);
             }
         }
@@ -63,7 +63,7 @@ public class ParentController extends Controller {
     public void onWindowHiding(WindowEvent event) {
         super.onWindowHiding(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
-            for (Controller controller : this.getSubControllers()) {
+            for (StageController controller : this.getSubControllers()) {
                 controller.onWindowHiding(event);
             }
         }
@@ -73,7 +73,7 @@ public class ParentController extends Controller {
     public void onWindowHidden(WindowEvent event) {
         super.onWindowHidden(event);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
-            for (Controller controller : this.getSubControllers()) {
+            for (StageController controller : this.getSubControllers()) {
                 controller.onWindowHidden(event);
             }
         }
@@ -83,7 +83,7 @@ public class ParentController extends Controller {
     public void onSystemExit() {
         super.onSystemExit();
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
-            for (Controller controller : this.getSubControllers()) {
+            for (StageController controller : this.getSubControllers()) {
                 controller.onSystemExit();
             }
         }
@@ -94,7 +94,7 @@ public class ParentController extends Controller {
      *
      * @return 子控制器列表
      */
-    public List<? extends Controller> getSubControllers() {
+    public List<? extends StageController> getSubControllers() {
         return Collections.emptyList();
     }
 }

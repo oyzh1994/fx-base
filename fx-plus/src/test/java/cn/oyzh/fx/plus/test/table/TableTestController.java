@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.test.table;
 
-import cn.oyzh.fx.plus.controller.Controller;
+import cn.oyzh.fx.plus.controller.StageController;
 import cn.oyzh.fx.plus.controls.table.FlexTableColumn;
 import cn.oyzh.fx.plus.window.StageAttribute;
 import cn.oyzh.fx.plus.theme.Themes;
@@ -19,7 +19,7 @@ import javafx.stage.Modality;
         modality = Modality.WINDOW_MODAL,
         value = "/table/test.fxml"
 )
-public class TableTestController extends Controller {
+public class TableTestController extends StageController {
 
     /**
      * 分数列

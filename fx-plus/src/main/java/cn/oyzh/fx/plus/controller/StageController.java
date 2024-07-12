@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
-import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.StageListener;
 import cn.oyzh.fx.plus.window.StageWrapper;
@@ -18,7 +17,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2023/10/12
  */
-public class Controller extends BaseController implements StageListener, EventListener {
+public class StageController extends Controller1 implements StageListener, EventListener {
 
     /**
      * 舞台

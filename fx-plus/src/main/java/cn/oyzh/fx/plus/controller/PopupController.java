@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controller;
 
-import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.PopupListener;
 import cn.oyzh.fx.plus.window.PopupWrapper;
@@ -16,7 +15,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/07/12
  */
-public class PopupController extends BaseController implements PopupListener {
+public class PopupController extends Controller1 implements PopupListener {
 
     /**
      * 窗口

@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/10/12
  */
-public class SubController extends Controller {
+public class SubStageController extends StageController {
 
     /**
      * 父控制器
@@ -18,5 +18,5 @@ public class SubController extends Controller {
     @Getter
     @Setter
     @Accessors(fluent = true, chain = false)
-    private ParentController parent;
+    private ParentStageController parent;
 }

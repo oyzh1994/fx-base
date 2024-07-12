@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.test.treeview;
 
-import cn.oyzh.fx.plus.controller.Controller;
+import cn.oyzh.fx.plus.controller.StageController;
 import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
 import cn.oyzh.fx.plus.window.StageAttribute;
 import javafx.event.ActionEvent;
@@ -18,7 +18,7 @@ import javafx.stage.Modality;
         // cssUrls = AtlantaFX.CUPERTINO_LIGHT + ";" + FXStyle.FX_BASE,/
         value = "/treeview/test.fxml"
 )
-public class TreeViewTestController extends Controller {
+public class TreeViewTestController extends StageController {
 
     @FXML
     private FlexTreeView tree;
