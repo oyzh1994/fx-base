@@ -17,7 +17,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2023/10/12
  */
-public class StageController extends Controller1 implements StageListener, EventListener {
+public class StageController extends Controller implements StageListener, EventListener {
 
     /**
      * 舞台

@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controller;
 
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 
-public abstract class Controller1 implements I18nAdapter {
+public abstract class Controller implements I18nAdapter {
 
     /**
      * 绑定监听器相关业务

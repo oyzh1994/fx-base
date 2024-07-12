@@ -15,7 +15,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/07/12
  */
-public class PopupController extends Controller1 implements PopupListener {
+public class PopupController extends Controller implements PopupListener {
 
     /**
      * 窗口
