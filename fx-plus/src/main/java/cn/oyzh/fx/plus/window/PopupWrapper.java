@@ -1,39 +1,18 @@
-package cn.oyzh.fx.plus.popup;
+package cn.oyzh.fx.plus.window;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.controls.svg.ConfigurationSVGGlyph;
-import cn.oyzh.fx.plus.drag.DragFileHandler;
-import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
-import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.stage.StageAttribute;
-import cn.oyzh.fx.plus.stage.StageListener;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.CursorUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.IconUtil;
-import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.stage.PopupWindow;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.NonNull;
-
-import java.io.File;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * 弹窗包装

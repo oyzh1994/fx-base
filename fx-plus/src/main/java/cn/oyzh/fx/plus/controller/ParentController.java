@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.window.StageWrapper;
 import javafx.stage.WindowEvent;
 import lombok.NonNull;
 

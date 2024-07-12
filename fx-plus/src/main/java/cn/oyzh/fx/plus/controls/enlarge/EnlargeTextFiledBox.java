@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.EnlargeSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.stage.StageExt;
+import cn.oyzh.fx.plus.window.StageExt;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import lombok.Getter;

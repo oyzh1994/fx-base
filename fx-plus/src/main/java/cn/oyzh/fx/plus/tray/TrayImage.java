@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.plus.stage.StageExt;
-import cn.oyzh.fx.plus.stage.StageManager;
+import cn.oyzh.fx.plus.window.StageExt;
+import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;

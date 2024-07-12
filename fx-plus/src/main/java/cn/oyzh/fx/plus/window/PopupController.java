@@ -1,12 +1,7 @@
-package cn.oyzh.fx.plus.popup;
+package cn.oyzh.fx.plus.window;
 
-import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.stage.StageListener;
-import cn.oyzh.fx.plus.stage.StageWrapper;
-import javafx.stage.PopupWindow;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;

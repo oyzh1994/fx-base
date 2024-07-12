@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.popup.PopupWrapper;
-import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.window.PopupWrapper;
+import cn.oyzh.fx.plus.window.StageWrapper;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.scene.Node;

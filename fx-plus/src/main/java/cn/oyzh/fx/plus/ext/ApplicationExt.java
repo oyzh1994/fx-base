@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.ext;
 
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.plus.stage.StageManager;
+import cn.oyzh.fx.plus.window.StageManager;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;

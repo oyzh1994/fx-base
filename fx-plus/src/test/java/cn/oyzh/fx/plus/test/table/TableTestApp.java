@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test.table;
 
 import cn.oyzh.fx.plus.spring.SpringApplication;
-import cn.oyzh.fx.plus.stage.StageManager;
+import cn.oyzh.fx.plus.window.StageManager;
 import javafx.stage.Stage;
 
 /**

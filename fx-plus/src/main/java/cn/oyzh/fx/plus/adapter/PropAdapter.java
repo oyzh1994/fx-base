@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.window.StageWrapper;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;

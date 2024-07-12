@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.keyboard;
 
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.window.StageWrapper;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.popup;
+package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
 import javafx.scene.Node;

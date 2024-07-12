@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.stage;
+package cn.oyzh.fx.plus.window;
 
 import javafx.stage.WindowEvent;
 

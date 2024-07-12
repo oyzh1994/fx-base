@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.stage;
+package cn.oyzh.fx.plus.window;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.stage;
+package cn.oyzh.fx.plus.window;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.log.StaticLog;

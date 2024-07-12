@@ -1,25 +1,8 @@
-package cn.oyzh.fx.plus.popup;
+package cn.oyzh.fx.plus.window;
 
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.common.util.OSUtil;
-import cn.oyzh.fx.plus.stage.PrimaryStage;
-import cn.oyzh.fx.plus.stage.StageAttribute;
-import cn.oyzh.fx.plus.stage.StageExt;
-import cn.oyzh.fx.plus.stage.StageListener;
-import cn.oyzh.fx.plus.stage.StageWrapper;
-import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * fx窗口工具类

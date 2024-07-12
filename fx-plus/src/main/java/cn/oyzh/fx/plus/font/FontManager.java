@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.font;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.stage.StageManager;
-import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.window.StageManager;
+import cn.oyzh.fx.plus.window.StageWrapper;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.stage;
+package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import javafx.stage.Stage;

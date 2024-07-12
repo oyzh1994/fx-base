@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import atlantafx.base.theme.Styles;
-import cn.oyzh.fx.plus.stage.StageWrapper;
+import cn.oyzh.fx.plus.window.StageWrapper;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;

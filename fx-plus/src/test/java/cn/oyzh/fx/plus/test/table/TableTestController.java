@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.test.table;
 
 import cn.oyzh.fx.plus.controller.Controller;
 import cn.oyzh.fx.plus.controls.table.FlexTableColumn;
-import cn.oyzh.fx.plus.stage.StageAttribute;
+import cn.oyzh.fx.plus.window.StageAttribute;
 import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.ActionEvent;

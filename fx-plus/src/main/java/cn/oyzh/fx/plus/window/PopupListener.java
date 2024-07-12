@@ -1,8 +1,5 @@
-package cn.oyzh.fx.plus.popup;
+package cn.oyzh.fx.plus.window;
 
-import cn.oyzh.fx.plus.stage.StageWrapper;
-import javafx.scene.control.PopupControl;
-import javafx.stage.PopupWindow;
 import javafx.stage.WindowEvent;
 
 /**
