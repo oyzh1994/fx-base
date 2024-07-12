@@ -21,5 +21,6 @@ public class CancelSVGGlyph extends CloseSVGGlyph {
     public void initNode() {
         this.setTipText(I18nHelper.cancel());
         super.initNode();
+
     }
 }

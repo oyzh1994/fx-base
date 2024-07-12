@@ -4,7 +4,7 @@ import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
-import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageManager;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -154,7 +154,7 @@ public class Toast {
         box.setPrefWidth(boxWidth + 20);
         // 初始化面板
         if (owner == null) {// Stage
-            StageWrapper wrapper = StageUtil.newStage(null);
+            StageWrapper wrapper = StageManager.newStage(null);
             Stage stage = wrapper.stage();
             this.window = stage;
             Scene scene = new Scene(box);

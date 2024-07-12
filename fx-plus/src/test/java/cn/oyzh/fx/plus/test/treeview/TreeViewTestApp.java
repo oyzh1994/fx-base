@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test.treeview;
 
 import cn.oyzh.fx.plus.spring.SpringApplication;
-import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageManager;
 import javafx.stage.Stage;
 
 /**
@@ -18,7 +18,7 @@ public class TreeViewTestApp extends SpringApplication {
     public void start(Stage primaryStage) {
         super.start(primaryStage);
         // 显示主页面
-        StageUtil.showStage(TreeViewTestController.class);
+        StageManager.showStage(TreeViewTestController.class);
     }
 
     @Override

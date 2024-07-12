@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test.table;
 
 import cn.oyzh.fx.plus.spring.SpringApplication;
-import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageManager;
 import javafx.stage.Stage;
 
 /**
@@ -18,7 +18,7 @@ public class TableTestApp extends SpringApplication {
     public void start(Stage primaryStage) {
         super.start(primaryStage);
         // 显示主页面
-        StageUtil.showStage(TableTestController.class);
+        StageManager.showStage(TableTestController.class);
     }
 
     @Override

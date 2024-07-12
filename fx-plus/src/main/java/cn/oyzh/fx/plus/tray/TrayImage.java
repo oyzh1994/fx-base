@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.fx.plus.stage.StageExt;
-import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -63,7 +63,7 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
     private void showMenu() {
         // 初始化窗口
         if (this.stage == null) {
-            this.stage = StageUtil.newStage(null);
+            this.stage = StageManager.newStage(null);
             this.stage.setScene(new Scene(this.menu));
             this.stage.setWidth(this.menu.getPrefWidth());
             this.stage.setHeight(this.menu.getPrefHeight());
@@ -78,7 +78,7 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
                 }
             });
             // 隐藏窗口的任务栏图标
-            StageUtil.hideTaskbar(this.stage);
+            StageManager.hideTaskbar(this.stage);
         }
         // 显示窗口
         if (!this.stage.isShowing()) {

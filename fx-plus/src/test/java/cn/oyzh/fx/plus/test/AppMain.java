@@ -20,7 +20,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGPathExt;
 import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
-import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageManager;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.trees.RichTreeItem;
@@ -863,7 +863,7 @@ public class AppMain extends Application {
     }
 
     private void test24(Stage stage) {
-        StageWrapper wrapper = StageUtil.newStage(null);
+        StageWrapper wrapper = StageManager.newStage(null);
         Message message = new Message("测试", "内容");
         message.setPrefWidth(100);
         message.setPrefHeight(100);

@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.util;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -20,7 +21,7 @@ public class CursorUtil {
      *
      * @param stage 页面
      */
-    public static void waitCursor(Stage stage) {
+    public static void waitCursor(Window stage) {
         setCursor(stage, Cursor.WAIT);
     }
 
@@ -29,7 +30,7 @@ public class CursorUtil {
      *
      * @param stage 页面
      */
-    public static void handCursor(Stage stage) {
+    public static void handCursor(Window stage) {
         setCursor(stage, Cursor.HAND);
     }
 
@@ -38,7 +39,7 @@ public class CursorUtil {
      *
      * @param stage 页面
      */
-    public static void defaultCursor(Stage stage) {
+    public static void defaultCursor(Window stage) {
         setCursor(stage, Cursor.DEFAULT);
     }
 
@@ -87,7 +88,7 @@ public class CursorUtil {
      * @param stage  页面
      * @param cursor 鼠标
      */
-    public void setCursor(Stage stage, @NonNull Cursor cursor) {
+    public void setCursor(Window stage, @NonNull Cursor cursor) {
         if (stage != null && stage.getScene() != null) {
             CursorUtil.setCursor(stage.getScene().getRoot(), cursor);
         }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.ext;
 
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageManager;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
@@ -29,14 +29,14 @@ public abstract class ApplicationExt extends Application {
         } else {
             StaticLog.warn("3D加速不支持.");
         }
-        StageUtil.setPrimaryStage(primaryStage);
+        StageManager.setPrimaryStage(primaryStage);
     }
 
     @Override
     public void stop() {
         try {
             super.stop();
-            StageUtil.closeWindows();
+            StageManager.closeWindows();
             System.exit(0);
         } catch (Exception ex) {
             ex.printStackTrace();

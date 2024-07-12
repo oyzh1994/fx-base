@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.font;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.stage.StageUtil;
+import cn.oyzh.fx.plus.stage.StageManager;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -74,7 +74,7 @@ public class FontManager {
         }
         try {
             // 变更颜色
-            List<StageWrapper> wrappers = StageUtil.allStages();
+            List<StageWrapper> wrappers = StageManager.allStages();
             for (StageWrapper wrapper : wrappers) {
                 applyCycle(wrapper.root(), font);
             }

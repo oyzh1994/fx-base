@@ -23,7 +23,9 @@ import java.util.NoSuchElementException;
  * @since 2023/10/12
  */
 @UtilityClass
-public class StageUtil {
+public class StageManager {
+
+    public static final String REF_ATTR = "_popup_window_reference";
 
     /**
      * 主舞台
@@ -272,4 +274,5 @@ public class StageUtil {
         transparentStage.setY(-1000);
         return transparentStage;
     }
+
 }

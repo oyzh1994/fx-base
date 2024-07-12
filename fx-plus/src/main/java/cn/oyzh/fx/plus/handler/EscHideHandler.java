@@ -7,6 +7,7 @@ import javafx.event.EventTarget;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.NonNull;
 
 /**
@@ -28,7 +29,7 @@ public class EscHideHandler {
      * @param stage 舞台
      * @return 处理器
      */
-    public static EscHideHandler init(@NonNull Stage stage) {
+    public static EscHideHandler init(@NonNull Window stage) {
         EscHideHandler handler = new EscHideHandler(stage);
         CACHE.put(stage, handler);
         return handler;
@@ -40,7 +41,7 @@ public class EscHideHandler {
      * @param stage 舞台
      * @return 结果
      */
-    public static boolean exists(Stage stage) {
+    public static boolean exists(Window stage) {
         if (stage != null) {
             return CACHE.containsKey(stage);
         }
@@ -52,7 +53,7 @@ public class EscHideHandler {
      *
      * @param stage 舞台
      */
-    public static void destroy(Stage stage) {
+    public static void destroy(Window stage) {
         if (stage != null) {
             EscHideHandler handler = CACHE.get(stage);
             if (handler != null) {
@@ -65,9 +66,9 @@ public class EscHideHandler {
     /**
      * 根节点
      */
-    private Stage stage;
+    private Window stage;
 
-    public EscHideHandler(@NonNull Stage stage) {
+    public EscHideHandler(@NonNull Window stage) {
         this.stage = stage;
         this.init();
     }
@@ -93,7 +94,7 @@ public class EscHideHandler {
      */
     private void quit(KeyEvent event) {
         try {
-            this.stage.close();
+            this.stage.hide();
             this.stage = null;
         } catch (Exception ex) {
             ex.printStackTrace();

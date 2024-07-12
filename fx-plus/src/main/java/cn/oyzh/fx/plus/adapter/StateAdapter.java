@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.handler.StateManager;
+import cn.oyzh.fx.plus.popup.PopupWrapper;
 import cn.oyzh.fx.plus.stage.StageWrapper;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import lombok.NonNull;
 
 /**
@@ -42,9 +44,17 @@ public interface StateAdapter extends PropAdapter {
             if (stage.isShowing()) {
                 FXUtil.runWait(stage::close);
             }
-        } else if (this instanceof StageWrapper stage) {
-            if (stage.stage().isShowing()) {
-                FXUtil.runWait(stage.stage()::close);
+        } else if (this instanceof Window window) {
+            if (window.isShowing()) {
+                FXUtil.runWait(window::hide);
+            }
+        } else if (this instanceof PopupWrapper wrapper) {
+            if (wrapper.popup().isShowing()) {
+                FXUtil.runWait(wrapper.popup()::hide);
+            }
+        } else if (this instanceof StageWrapper wrapper) {
+            if (wrapper.stage().isShowing()) {
+                FXUtil.runWait(wrapper.stage()::close);
             }
         }
     }
