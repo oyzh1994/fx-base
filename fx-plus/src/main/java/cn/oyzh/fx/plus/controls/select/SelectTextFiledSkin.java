@@ -28,7 +28,7 @@ import java.util.List;
  * 展开文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/09
+ * @since 2024/07/12
  */
 public class SelectTextFiledSkin extends TextFieldSkinExt {
 
@@ -38,6 +38,12 @@ public class SelectTextFiledSkin extends TextFieldSkinExt {
     @Getter
     @Setter
     protected double lineHeight = 25;
+
+    /**
+     * 选中的索引位
+     */
+    @Getter
+    protected int selectedIndex = -1;
 
     /**
      * 数据列表
@@ -82,6 +88,7 @@ public class SelectTextFiledSkin extends TextFieldSkinExt {
             listView.setRealWidth(NodeUtil.getWidth(textField));
             listView.selectedItemChanged((observable, oldValue, newValue) -> {
                 textField.setText(newValue);
+                this.selectedIndex = listView.getSelectedIndex();
                 this.popup.hide();
             });
             if (this.selectIndexChanged != null) {
@@ -149,6 +156,4 @@ public class SelectTextFiledSkin extends TextFieldSkinExt {
         // 设置位置
         super.positionInArea(this.selectButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
-
-
 }
