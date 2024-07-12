@@ -191,6 +191,8 @@ public class I18nHelper {
 
     public static final String VALUE = "base.value";
 
+    public static final String DEFAULT = "base.default";
+
     public static final String COST = "base.cost";
 
     public static final String ENV = "base.env";
@@ -1915,5 +1917,9 @@ public class I18nHelper {
 
     public static String select() {
         return I18nResourceBundle.i18nString(SELECT);
+    }
+
+    public static String defaultValue() {
+        return I18nResourceBundle.i18nString(DEFAULT, VALUE);
     }
 }

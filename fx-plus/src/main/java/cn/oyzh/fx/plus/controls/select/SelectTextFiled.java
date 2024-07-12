@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.controls.select;
 
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import javafx.beans.value.ChangeListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,11 +25,18 @@ public class SelectTextFiled extends LimitTextField {
         return (SelectTextFiledSkin) this.getSkin();
     }
 
+    public void addData(String data) {
+        if (this.getDataList() == null) {
+            this.setDataList(new ArrayList<>());
+        }
+        this.getDataList().add(data);
+    }
+
     public void setDataList(List<String> dataList) {
         this.skin().setDataList(dataList);
     }
 
-    public List<String> setDataList() {
+    public List<String> getDataList() {
         return this.skin().getDataList();
     }
 
@@ -37,5 +46,9 @@ public class SelectTextFiled extends LimitTextField {
 
     public double getLineHeight() {
         return this.skin().getLineHeight();
+    }
+
+    public void selectIndexChanged(ChangeListener<Number> listener) {
+        this.skin().setSelectIndexChanged(listener);
     }
 }

@@ -7,9 +7,9 @@ import cn.oyzh.fx.plus.controls.svg.SelectSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -47,6 +47,13 @@ public class SelectTextFiledSkin extends TextFieldSkinExt {
     protected List<String> dataList;
 
     /**
+     * 行高
+     */
+    @Getter
+    @Setter
+    protected ChangeListener<Number> selectIndexChanged;
+
+    /**
      * 展开按钮
      */
     protected final SVGGlyph selectButton;
@@ -77,6 +84,9 @@ public class SelectTextFiledSkin extends TextFieldSkinExt {
                 textField.setText(newValue);
                 this.popup.hide();
             });
+            if (this.selectIndexChanged != null) {
+                listView.selectedIndexChanged(this.selectIndexChanged);
+            }
             listView.setCellFactory(new Callback<>() {
                 @Override
                 public ListCell<String> call(ListView<String> param) {
@@ -139,4 +149,6 @@ public class SelectTextFiledSkin extends TextFieldSkinExt {
         // 设置位置
         super.positionInArea(this.selectButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
+
+
 }
