@@ -488,5 +488,27 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void removeSelectedItem() {
         this.removeItem(this.getSelectedItem());
     }
+
+    /**
+     * 获取末尾索引
+     *
+     * @return 末尾索引
+     */
+    default int getLastIndex() {
+        return this.getItemSize() - 1;
+    }
+
+    /**
+     * 选中末尾节点
+     */
+    default void selectLast() {
+        int lastIndex = this.getLastIndex();
+        this.select(lastIndex);
+        if (this instanceof ListView<?> node) {
+            node.scrollTo(this.getItemSize());
+        } else if (this instanceof TableView<?> node) {
+            node.scrollTo(this.getItemSize());
+        }
+    }
 }
 

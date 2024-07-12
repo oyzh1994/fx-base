@@ -260,7 +260,6 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         Double computeHeight = this.computeHeight();
         // 重新拉伸节点
         this.resizeNode(computeWidth, computeHeight);
-//        System.out.println("computeWidth=" + computeWidth + " computeHeight=" + computeHeight + " node=" + this);
     }
 
     /**
