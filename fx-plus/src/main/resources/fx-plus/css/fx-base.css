@@ -169,4 +169,15 @@
 
 /* lineno，修复atlantafx的样式异常问题 */
 
+/* popover，修复atlantafx的样式异常问题 */
+.popover > .content {
+    -fx-padding: 5px 5px 5px 5px;
+}
+
+.popover-item {
+    -fx-border-width: 0 0 0.5 0;
+    -fx-border-style: SOLID;
+    -fx-border-color: color-fg-default;
+}
+/* popover，修复atlantafx的样式异常问题 */
 

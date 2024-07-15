@@ -59,7 +59,7 @@ public class ChooseTextFieldSkin extends TextFieldSkinExt {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 按钮大小，组件高度/2
+        // 按钮大小，组件高度
         this.chooseButton.setSize(h);
         // 计算组件大小
         double btnSize = this.snapSizeX(h);

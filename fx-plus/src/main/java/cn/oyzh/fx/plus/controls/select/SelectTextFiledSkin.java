@@ -145,14 +145,14 @@ public class SelectTextFiledSkin extends TextFieldSkinExt {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        double h1 = h * 0.7;
+        double h1 = h * 0.5;
         double w1 = h1 * 0.7;
         // 按钮大小
         this.selectButton.setSizeStr(h1 + "," + w1);
         // 计算组件大小
         double btnSize = this.snapSizeX(w1);
         // 位移的areaX值，规则 组件宽+x-按钮大小
-        double areaX = w + x - btnSize;
+        double areaX = w + x - btnSize - 12;
         // 设置位置
         super.positionInArea(this.selectButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }

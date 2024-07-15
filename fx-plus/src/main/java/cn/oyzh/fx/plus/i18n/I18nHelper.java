@@ -193,6 +193,8 @@ public class I18nHelper {
 
     public static final String DEFAULT = "base.default";
 
+    public static final String MINUS = "base.minus";
+
     public static final String COST = "base.cost";
 
     public static final String ENV = "base.env";
@@ -1921,5 +1923,13 @@ public class I18nHelper {
 
     public static String defaultValue() {
         return I18nResourceBundle.i18nString(DEFAULT, VALUE);
+    }
+
+    public static String minus() {
+        return I18nResourceBundle.i18nString(MINUS);
+    }
+
+    public static String reduce() {
+        return I18nResourceBundle.i18nString(REDUCE);
     }
 }
