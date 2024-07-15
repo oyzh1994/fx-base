@@ -59,12 +59,12 @@ public class ChooseTextFieldSkin extends TextFieldSkinExt {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 按钮大小，组件高度
-        this.chooseButton.setSize(h);
         // 计算组件大小
-        double btnSize = this.snapSizeX(h);
+        double btnSize = this.snapSizeX(h * 0.6);
+        // 按钮大小，组件高度
+        this.chooseButton.setSize(btnSize);
         // 位移的areaX值，规则 组件宽+x-按钮大小
-        double areaX = w + x - btnSize;
+        double areaX = w + x - btnSize - 8;
         // 设置位置
         super.positionInArea(this.chooseButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
