@@ -74,8 +74,8 @@ public class ControlUtil {
      * @param text   提示文本
      */
     public static void setTipText(@NonNull EventTarget target, String text) {
+        Tooltip tooltip = getTooltip(target);
         if (StrUtil.isNotBlank(text)) {
-            Tooltip tooltip = getTooltip(target);
             if (tooltip != null) {
                 tooltip.setText(text);
             } else {
@@ -87,6 +87,12 @@ public class ControlUtil {
                     tab.setTooltip(tooltip);
                     tab.getProperties().put(FXConst.TOOLTIP_PROP_KEY, tooltip);
                 }
+            }
+        } else {
+            if (target instanceof Node node) {
+                Tooltip.uninstall(node, tooltip);
+            } else if (target instanceof Tab tab) {
+                tab.setTooltip(null);
             }
         }
     }

@@ -1,12 +1,9 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Node;
@@ -100,11 +97,18 @@ public interface PopupWrapper extends WindowWrapper {
     void showPopup(Node owner);
 
     /**
+     * 获取内容
+     *
+     * @return 内容
+     */
+    Node content();
+
+    /**
      * 设置内容
      *
      * @param content 内容组件
      */
-    void setContent(Node content);
+    void content(Node content);
 
     /**
      * 初始化弹窗
@@ -119,7 +123,7 @@ public interface PopupWrapper extends WindowWrapper {
         if (root == null) {
             throw new RuntimeException("load root fail");
         }
-        this.setContent(root);
+        this.content(root);
         // 设置controller
         this.setProp("_controller", loader.getController());
         // 设置弹窗样式

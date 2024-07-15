@@ -80,17 +80,17 @@ public class FXUtil {
      * @return x坐标
      */
     public static double getAbsoluteX(@NonNull EventTarget target) {
-        if (target instanceof Stage) {
-            return ((Stage) target).getX();
+        if (target instanceof Window window) {
+            return window.getX();
         } else if (target instanceof Scene scene) {
             return scene.getX() + getAbsoluteX(scene.getWindow());
-        } else {
-            Node node = (Node) target;
+        } else if (target instanceof Node node) {
             if (node.getParent() == null) {
                 return node.getLayoutX() + getAbsoluteX(node.getScene());
             }
             return node.getLayoutX() + getAbsoluteX(node.getParent());
         }
+        return Double.NaN;
     }
 
     /**
@@ -100,17 +100,17 @@ public class FXUtil {
      * @return y坐标
      */
     public static double getAbsoluteY(@NonNull EventTarget target) {
-        if (target instanceof Stage stage) {
-            return stage.getY();
+        if (target instanceof Window window) {
+            return window.getY();
         } else if (target instanceof Scene scene) {
             return scene.getY() + getAbsoluteY(scene.getWindow());
-        } else {
-            Node node = (Node) target;
+        } else if (target instanceof Node node) {
             if (node.getParent() == null) {
                 return node.getLayoutY() + getAbsoluteY(node.getScene());
             }
             return node.getLayoutY() + getAbsoluteY(node.getParent());
         }
+        return Double.NaN;
     }
 
     /**

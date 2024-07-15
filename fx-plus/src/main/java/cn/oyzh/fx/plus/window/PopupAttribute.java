@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * 窗口属性
+ * 弹窗属性
  *
  * @author oyzh
  * @since 2024/07/12
