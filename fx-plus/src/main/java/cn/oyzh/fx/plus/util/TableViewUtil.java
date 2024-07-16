@@ -28,7 +28,7 @@ public class TableViewUtil {
      *
      * @param tableView 组件
      */
-    public static void moveRowUp(TableView<?> tableView) {
+    public static void moveUp(TableView<?> tableView) {
         int index = tableView.getSelectionModel().getSelectedIndex();
         if (index == -1) {
             return;
@@ -37,6 +37,7 @@ public class TableViewUtil {
         Object object = CollectionUtil.get(list, index - 1);
         if (object != null) {
             Collections.swap(list, index, index - 1);
+            tableView.getSelectionModel().select(index - 1);
         }
     }
 
@@ -45,7 +46,7 @@ public class TableViewUtil {
      *
      * @param tableView 组件
      */
-    public static void moveRowDown(TableView<?> tableView) {
+    public static void moveDown(TableView<?> tableView) {
         if (tableView == null) {
             return;
         }
@@ -57,6 +58,7 @@ public class TableViewUtil {
         Object object = CollUtil.get(list, index + 1);
         if (object != null) {
             Collections.swap(list, index, index + 1);
+            tableView.getSelectionModel().select(index + 1);
         }
     }
 
@@ -90,6 +92,25 @@ public class TableViewUtil {
         return null;
     }
 
+    public static TableRow<?> findTableRow(Node node) {
+        if (node != null) {
+            if (node instanceof TableRow<?>) {
+                return (TableRow<?>) node;
+            }
+            while (true) {
+                Parent parent = node.getParent();
+                if (parent == null) {
+                    return null;
+                }
+                if (parent instanceof TableRow<?> tableRow) {
+                    return tableRow;
+                }
+                node = parent;
+            }
+        }
+        return null;
+    }
+
     /**
      * 鼠标点击时，选中表单行
      *
@@ -98,9 +119,9 @@ public class TableViewUtil {
     public static void selectRowOnMouseClicked(Node node) {
         if (node != null) {
             node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Parent p1 = node.getParent();
-                if (p1 != null && p1.getParent() instanceof TableRow<?> row && row.getTableView() != null) {
-                    row.getTableView().getSelectionModel().select(row.getIndex());
+                TableRow<?> tableRow = findTableRow(node);
+                if (tableRow != null && tableRow.getTableView() != null) {
+                    tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
                 }
             });
         }

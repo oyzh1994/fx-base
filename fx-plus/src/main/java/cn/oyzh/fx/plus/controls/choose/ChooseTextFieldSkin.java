@@ -48,8 +48,12 @@ public class ChooseTextFieldSkin extends TextFieldSkinExt {
             }
         });
         this.chooseButton.setOnMouseMoved(mouseEvent -> this.chooseButton.setColor("#DC143C"));
-        this.chooseButton.setOnMouseExited(mouseEvent -> this.chooseButton.setColor(this.getButtonColor()));
+        this.chooseButton.setOnMouseExited(mouseEvent -> this.resetButtonColor());
         this.getChildren().add(this.chooseButton);
+    }
+
+    public void resetButtonColor() {
+        this.chooseButton.setColor(this.getButtonColor());
     }
 
     @Override

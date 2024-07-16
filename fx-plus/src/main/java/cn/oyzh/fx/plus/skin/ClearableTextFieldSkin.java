@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.plus.controls.svg.ClearSVGGlyph;
+import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
@@ -63,13 +63,13 @@ public class ClearableTextFieldSkin extends TextFieldSkinExt {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 按钮大小，组件高度/2，最大12
-        double size = Math.min(12, h / 2);
+        // 按钮大小，组件高度/2，最大14，最小10
+        double size = NumUtil.limit(h / 2, 10, 14);
         this.clearButton.setSize(size);
         // 计算组件大小
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽+x-按钮大小
-        double areaX = w + x - btnSize;
+        double areaX = w + x - btnSize - 8;
         // 设置位置
         super.positionInArea(this.clearButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
