@@ -119,4 +119,18 @@ public class NumUtil {
         }
         return bytes;
     }
+
+    /**
+     * 限制大小
+     *
+     * @param val 值
+     * @param min 最小值
+     * @param max 最大值
+     * @return 结果
+     */
+    public static double limit(double val, double min, double max) {
+        val = Math.max(val, min);
+        val = Math.min(val, max);
+        return val;
+    }
 }

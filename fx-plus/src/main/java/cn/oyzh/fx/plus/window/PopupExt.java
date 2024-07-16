@@ -12,6 +12,16 @@ import javafx.stage.PopupWindow;
  */
 public class PopupExt extends Popover implements PopupWrapper {
 
+    public PopupExt() {
+        // 监听显示属性
+        this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                this.onClosed();
+            }
+        });
+        this.setProp(PopupManager.REF_ATTR, this);
+    }
+
     public PopupExt(PopupAttribute attribute) {
         this.init(attribute);
         this.setProp(PopupManager.REF_ATTR, this);

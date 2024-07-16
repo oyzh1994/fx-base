@@ -1,16 +1,20 @@
 package cn.oyzh.fx.plus.controls.enlarge;
 
+import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.controls.area.FlexTextArea;
+import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.controls.svg.EnlargeSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SaveSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
-import cn.oyzh.fx.plus.window.StageExt;
+import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.window.PopupExt;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +25,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024/07/09
  */
-public class EnlargeTextFiledSkin extends ClearableTextFieldSkin {
+public class EnlargeTextFiledSkin extends TextFieldSkinExt {
 
     /**
      * 展开宽
@@ -43,33 +47,50 @@ public class EnlargeTextFiledSkin extends ClearableTextFieldSkin {
     protected final SVGGlyph enlargeButton;
 
     /**
-     * 展开组件
+     * 弹窗组件
      */
-    protected StageExt stage;
+    protected PopupExt popup;
 
     /**
-     * 显示历史弹窗组件
+     * 展开按钮点击事件
      */
     protected void onEnlargeButtonClick() {
-        if (this.stage == null) {
-            FlexTextArea textArea = new FlexTextArea();
-            textArea.setText(this.getText());
-            textArea.setFlexWidth("100%");
-            textArea.setFlexHeight("100%");
-            textArea.setPromptText(I18nHelper.pleaseInputContent());
-            this.stage = new StageExt(this.getWindow(), textArea, this.enlargeWidth, this.enlargeHeight);
-            this.stage.setTitleExt(I18nHelper.pleaseInputContent());
-            this.stage.setOnCloseRequest(e -> this.setText(textArea.getTextTrim()));
+        if (this.popup != null) {
+            this.popup.hide();
         }
-        this.stage.show();
-        this.stage.root().requestFocus();
+        TextField textField = this.getSkinnable();
+        textField.setDisable(true);
+        FlexTextArea textArea = new FlexTextArea();
+        textArea.setPromptText(I18nHelper.pleaseInputContent());
+        textArea.setText(this.getText());
+        SVGGlyph glyph = new SaveSVGGlyph("14");
+        glyph.setOnMousePrimaryClicked(event -> this.onSubmit(textArea.getTextTrim()));
+        FlexVBox vBox = new FlexVBox(textArea, glyph);
+        VBox.setMargin(glyph, new Insets(5, 0, 0, 5));
+        this.popup = new PopupExt();
+        this.popup.setWidth(300);
+        this.popup.setHeight(240);
+        this.popup.content(vBox);
+        this.popup.setOnHiding(event -> this.onSubmit(textArea.getTextTrim()));
+        this.popup.showPopup(textField);
+    }
+
+    /**
+     * 内容提交事件
+     *
+     * @param text 内容
+     */
+    protected void onSubmit(String text) {
+        this.setText(text);
+        this.popup.hide();
+        this.getSkinnable().setDisable(false);
+        this.enlargeButton.setColor(this.getButtonColor());
     }
 
     public EnlargeTextFiledSkin(TextField textField) {
         super(textField);
         // 初始化历史按钮
-        this.enlargeButton = new EnlargeSVGGlyph();
-        this.enlargeButton.setSizeStr("13");
+        this.enlargeButton = new EnlargeSVGGlyph("14");
         this.enlargeButton.setTipText(I18nHelper.enlarge());
         this.enlargeButton.setEnableWaiting(false);
         this.enlargeButton.setFocusTraversable(false);
@@ -91,22 +112,15 @@ public class EnlargeTextFiledSkin extends ClearableTextFieldSkin {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 组件大小
-        double size = h * .8;
         // 计算组件大小
-        double btnSize = this.snapSizeX(size);
-        // 设置组件大小
-        this.enlargeButton.setSize(size);
-        // 获取边距
-        Insets padding = this.getSkinnable().getPadding();
-        // 计算左边距
-        double paddingLeft = btnSize + 8;
-        // 设置左边距
-        if (padding.getLeft() != paddingLeft) {
-            padding = new Insets(padding.getTop(), padding.getRight(), padding.getBottom(), paddingLeft);
-            this.getSkinnable().setPadding(padding);
-        }
-        // 设置组件位置
-        super.positionInArea(this.enlargeButton, 3, y * 0.9, w, h, btnSize, HPos.LEFT, VPos.CENTER);
+        double btnSize = this.snapSizeX(h * 0.7);
+        // 限制最大最小值
+        btnSize = NumUtil.limit(btnSize, 14, 20);
+        // 按钮大小，组件高度
+        this.enlargeButton.setSize(btnSize);
+        // 位移的areaX值，规则 组件宽+x-按钮大小
+        double areaX = w + x - btnSize - 8;
+        // 设置位置
+        super.positionInArea(this.enlargeButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
 }

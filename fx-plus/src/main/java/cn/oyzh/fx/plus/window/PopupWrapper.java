@@ -126,7 +126,6 @@ public interface PopupWrapper extends WindowWrapper {
         this.content(root);
         // 设置controller
         this.setProp("_controller", loader.getController());
-        // 设置弹窗样式
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
