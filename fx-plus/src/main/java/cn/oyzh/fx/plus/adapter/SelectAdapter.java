@@ -102,6 +102,27 @@ public interface SelectAdapter<T> extends PropAdapter {
     }
 
     /**
+     * 选中对象
+     *
+     * @param obj 对象
+     */
+    default void selectObj(Object obj) {
+        FXUtil.runWait(() -> {
+            if (this instanceof TreeView node) {
+                node.getSelectionModel().select(obj);
+            } else if (this instanceof TableView node) {
+                node.getSelectionModel().select(obj);
+            } else if (this instanceof TabPane node) {
+                node.getSelectionModel().select((Tab) obj);
+            } else if (this instanceof ComboBox node) {
+                node.getSelectionModel().select(obj);
+            } else if (this instanceof ListView node) {
+                node.getSelectionModel().select(obj);
+            }
+        });
+    }
+
+    /**
      * 获取已选择的数据
      *
      * @return 结果

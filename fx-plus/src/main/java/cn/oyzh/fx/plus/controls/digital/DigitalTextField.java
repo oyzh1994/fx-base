@@ -200,13 +200,12 @@ public abstract class DigitalTextField extends LimitTextField {
         }
     }
 
+    @Override
     public void setValue(Object value) {
-        if (value != null) {
-            if (value instanceof Number number) {
-                this.value(number);
-            } else if (value instanceof CharSequence sequence) {
-                this.value(NumberUtil.parseNumber(sequence.toString()));
-            }
+        if (value instanceof Number number) {
+            this.value(number);
+        } else if (value instanceof CharSequence sequence) {
+            this.value(NumberUtil.parseNumber(sequence.toString()));
         }
     }
 }

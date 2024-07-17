@@ -77,11 +77,7 @@ public class BitTextField extends ClearableTextField {
         this.setText(NumUtil.byteToBitStr(val));
     }
 
-    /**
-     * 设置值
-     *
-     * @param val 值
-     */
+    @Override
     public void setValue(Object val) {
         if (val instanceof CharSequence sequence) {
             this.setText(sequence.toString());

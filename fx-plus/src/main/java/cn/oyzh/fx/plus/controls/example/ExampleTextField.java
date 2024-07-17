@@ -1,12 +1,12 @@
 package cn.oyzh.fx.plus.controls.example;
 
-import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
+import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 
 /**
  * @author oyzh
  * @since 2024/07/04
  */
-public class ExampleTextFiled extends ClearableTextField {
+public class ExampleTextField extends LimitTextField {
 
     {
         this.setSkin(new ExampleTextFieldSkin(this));

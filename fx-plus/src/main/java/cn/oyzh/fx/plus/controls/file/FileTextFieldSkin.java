@@ -1,9 +1,10 @@
 package cn.oyzh.fx.plus.controls.file;
 
+import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
+import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FileChooserUtil;
 import javafx.geometry.HPos;
@@ -20,9 +21,9 @@ import java.io.File;
  * 文件文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/0704
+ * @since 2024/07/04
  */
-public class FileTextFieldSkin extends ClearableTextFieldSkin {
+public class FileTextFieldSkin extends TextFieldSkinExt {
 
     /**
      * 文件
@@ -40,14 +41,17 @@ public class FileTextFieldSkin extends ClearableTextFieldSkin {
      */
     protected void onChooseButtonClick() {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("All", "*.*");
-        this.file = FileChooserUtil.choose(I18nHelper.chooseFile(), new FileChooser.ExtensionFilter[]{filter});
-        this.setText(this.file == null ? null : this.file.getName());
-        this.setTipText(this.file == null ? null : this.file.getPath());
+        File file1 = FileChooserUtil.choose(I18nHelper.chooseFile(), new FileChooser.ExtensionFilter[]{filter});
+        if (file1 != null) {
+            this.file = file1;
+            this.setText(this.file.getName());
+            this.setTipText(this.file.getPath());
+        }
     }
 
     public FileTextFieldSkin(TextField textField) {
         super(textField);
-        // 初始化历史按钮
+        // 初始化按钮
         this.chooseButton = new ChooseSVGGlyph();
         this.chooseButton.setTipText(I18nHelper.choose());
         this.chooseButton.setEnableWaiting(false);
@@ -70,22 +74,15 @@ public class FileTextFieldSkin extends ClearableTextFieldSkin {
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 组件大小
-        double size = h * .8;
         // 计算组件大小
-        double btnSize = this.snapSizeX(size);
-        // 设置组件大小
-        this.chooseButton.setSize(size);
-        // 获取边距
-        Insets padding = this.getSkinnable().getPadding();
-        // 计算左边距
-        double paddingLeft = btnSize + 8;
-        // 设置左边距
-        if (padding.getLeft() != paddingLeft) {
-            padding = new Insets(padding.getTop(), padding.getRight(), padding.getBottom(), paddingLeft);
-            this.getSkinnable().setPadding(padding);
-        }
-        // 设置组件位置
-        super.positionInArea(this.chooseButton, 3, y * 0.9, w, h, btnSize, HPos.LEFT, VPos.CENTER);
+        double btnSize = this.snapSizeX(h * 0.7);
+        // 限制最大最小值
+        btnSize = NumUtil.limit(btnSize, 14, 20);
+        // 按钮大小，组件高度
+        this.chooseButton.setSize(btnSize);
+        // 位移的areaX值，规则 组件宽+x-按钮大小
+        double areaX = w + x - btnSize - 8;
+        // 设置位置
+        super.positionInArea(this.chooseButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
 }

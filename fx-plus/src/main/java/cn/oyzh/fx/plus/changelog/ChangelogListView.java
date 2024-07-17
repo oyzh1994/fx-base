@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.changelog;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.plus.controls.FlexListView;
+import cn.oyzh.fx.plus.controls.view.FlexListView;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;

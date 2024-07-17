@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.select;
 
-import cn.oyzh.fx.plus.controls.FlexListView;
+import cn.oyzh.fx.plus.controls.view.FlexListView;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SelectSVGGlyph;
