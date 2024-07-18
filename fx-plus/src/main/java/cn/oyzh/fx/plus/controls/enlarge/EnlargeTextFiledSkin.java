@@ -32,14 +32,14 @@ public class EnlargeTextFiledSkin extends TextFieldSkinExt {
      */
     @Getter
     @Setter
-    protected double enlargeWidth = 480;
+    protected double enlargeWidth = 350;
 
     /**
      * 展开高
      */
     @Getter
     @Setter
-    protected double enlargeHeight = 300;
+    protected double enlargeHeight = 280;
 
     /**
      * 展开按钮
@@ -63,13 +63,13 @@ public class EnlargeTextFiledSkin extends TextFieldSkinExt {
         FlexTextArea textArea = new FlexTextArea();
         textArea.setPromptText(I18nHelper.pleaseInputContent());
         textArea.setText(this.getText());
-        SVGGlyph glyph = new SaveSVGGlyph("14");
+        SaveSVGGlyph glyph = new SaveSVGGlyph("14");
         glyph.setOnMousePrimaryClicked(event -> this.onSubmit(textArea.getTextTrim()));
         FlexVBox vBox = new FlexVBox(textArea, glyph);
         VBox.setMargin(glyph, new Insets(5, 0, 0, 5));
         this.popup = new PopupExt();
-        this.popup.setWidth(300);
-        this.popup.setHeight(240);
+        this.popup.setWidth(this.enlargeWidth);
+        this.popup.setHeight(this.enlargeHeight);
         this.popup.content(vBox);
         this.popup.setOnHiding(event -> this.onSubmit(textArea.getTextTrim()));
         this.popup.showPopup(textField);
@@ -89,7 +89,7 @@ public class EnlargeTextFiledSkin extends TextFieldSkinExt {
 
     public EnlargeTextFiledSkin(TextField textField) {
         super(textField);
-        // 初始化历史按钮
+        // 初始化按钮
         this.enlargeButton = new EnlargeSVGGlyph("14");
         this.enlargeButton.setTipText(I18nHelper.enlarge());
         this.enlargeButton.setEnableWaiting(false);
@@ -113,7 +113,7 @@ public class EnlargeTextFiledSkin extends TextFieldSkinExt {
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
         // 计算组件大小
-        double btnSize = this.snapSizeX(h * 0.7);
+        double btnSize = this.snapSizeX(h * 0.6);
         // 限制最大最小值
         btnSize = NumUtil.limit(btnSize, 14, 20);
         // 按钮大小，组件高度

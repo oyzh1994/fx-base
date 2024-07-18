@@ -473,6 +473,8 @@ public class I18nHelper {
 
     public static final String REDUCE = "base.reduce";
 
+    public static final String DISCARD = "base.discard";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -1931,5 +1933,9 @@ public class I18nHelper {
 
     public static String reduce() {
         return I18nResourceBundle.i18nString(REDUCE);
+    }
+
+    public static String discard() {
+        return I18nResourceBundle.i18nString(DISCARD);
     }
 }

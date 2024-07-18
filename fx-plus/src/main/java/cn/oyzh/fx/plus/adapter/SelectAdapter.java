@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.ComboBox;
@@ -499,6 +500,23 @@ public interface SelectAdapter<T> extends PropAdapter {
                 FXUtil.runWait(() -> node.getItems().remove(item));
             } else if (this instanceof ListView<?> node) {
                 FXUtil.runWait(() -> node.getItems().remove(item));
+            }
+        }
+    }
+
+    /**
+     * 移除子节点列表
+     *
+     * @param items 子节点列表
+     */
+    default void removeItem(List<?> items) {
+        if (CollUtil.isNotEmpty(items)) {
+            if (this instanceof TableView<?> node) {
+                FXUtil.runWait(() -> node.getItems().removeAll(items));
+            } else if (this instanceof ComboBox<?> node) {
+                FXUtil.runWait(() -> node.getItems().removeAll(items));
+            } else if (this instanceof ListView<?> node) {
+                FXUtil.runWait(() -> node.getItems().removeAll(items));
             }
         }
     }
