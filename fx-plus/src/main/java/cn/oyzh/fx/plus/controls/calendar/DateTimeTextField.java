@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controls.calendar;
 
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -18,10 +18,10 @@ public class DateTimeTextField extends LimitTextField {
 
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public Date getValue() throws ParseException {
+    public Timestamp getValue() throws ParseException {
         if (!this.isEmpty()) {
             java.util.Date utilDate = FORMAT.parse(this.getText());
-            return new Date(utilDate.getTime());
+            return new Timestamp(utilDate.getTime());
         }
         return null;
     }

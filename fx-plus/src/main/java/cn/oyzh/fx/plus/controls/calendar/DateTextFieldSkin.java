@@ -65,16 +65,16 @@ public class DateTextFieldSkin extends TextFieldSkinExt {
         // 文本输入框
         TextField textField = getSkinnable();
         textField.setDisable(true);
+
         // 日期组件
         Calendar calendar = new Calendar();
         calendar.setCursor(Cursor.HAND);
-        LocalDateTime now = LocalDateTime.now();
-        LocalDate localDate = this.getLocalDate();
-        if (localDate != null) {
-            calendar.setValue(localDate);
-        } else {
-            calendar.setValue(now.toLocalDate());
+        // 初始化时间
+        LocalDateTime dateTime = this.getLocalDateTime();
+        if (dateTime == null) {
+            dateTime = LocalDateTime.now();
         }
+        calendar.setValue(dateTime.toLocalDate());
 
         // 按钮组件
         SubmitSVGGlyph submit = new SubmitSVGGlyph();
@@ -112,6 +112,17 @@ public class DateTextFieldSkin extends TextFieldSkinExt {
         if (StrUtil.isNotBlank(this.getText())) {
             try {
                 return LocalDate.parse(this.getText(), this.formatter());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    protected LocalDateTime getLocalDateTime() {
+        if (StrUtil.isNotBlank(this.getText())) {
+            try {
+                return LocalDateTime.parse(this.getText(), this.formatter());
             } catch (Exception e) {
                 e.printStackTrace();
             }

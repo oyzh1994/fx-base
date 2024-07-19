@@ -73,17 +73,16 @@ public class DateTimeTextFieldSkin extends TextFieldSkinExt {
         // 文本输入框
         TextField textField = getSkinnable();
         textField.setDisable(true);
+
         // 日期组件
         Calendar calendar = new Calendar();
         calendar.setCursor(Cursor.HAND);
-        // 当前事件
-        LocalDateTime now = LocalDateTime.now();
-        LocalDate localDate = this.getLocalDate();
-        if (localDate != null) {
-            calendar.setValue(localDate);
-        } else {
-            calendar.setValue(now.toLocalDate());
+        // 初始化时间
+        LocalDateTime dateTime = this.getLocalDateTime();
+        if (dateTime == null) {
+            dateTime = LocalDateTime.now();
         }
+        calendar.setValue(dateTime.toLocalDate());
 
         // 小时文本框
         FXLabel labelHour = new FXLabel(I18nHelper.hour());
@@ -118,9 +117,9 @@ public class DateTimeTextFieldSkin extends TextFieldSkinExt {
         }
 
         // 选择时分秒
-        hour.select(now.getHour());
-        minute.select(now.getMinute());
-        second.select(now.getSecond());
+        hour.select(dateTime.getHour());
+        minute.select(dateTime.getMinute());
+        second.select(dateTime.getSecond());
 
         // 时间组件
         FXHBox timeBox = new FXHBox();
@@ -141,9 +140,9 @@ public class DateTimeTextFieldSkin extends TextFieldSkinExt {
             if (date == null) {
                 this.setText("");
             } else {
-                LocalDateTime dateTime = LocalDateTimeUtil.of(date);
-                dateTime = dateTime.withHour(hour.getSelectedIndex()).withMinute(minute.getSelectedIndex()).withSecond(second.getSelectedIndex());
-                this.setText(this.formatter().format(dateTime));
+                LocalDateTime time = LocalDateTimeUtil.of(date).withHour(hour.getSelectedIndex())
+                        .withMinute(minute.getSelectedIndex()).withSecond(second.getSelectedIndex());
+                this.setText(this.formatter().format(time));
             }
             this.handleHide();
         });
@@ -181,10 +180,11 @@ public class DateTimeTextFieldSkin extends TextFieldSkinExt {
         this.popup.showPopup(this.getSkinnable());
     }
 
-    protected LocalDate getLocalDate() {
-        if (StrUtil.isNotBlank(this.getText())) {
+    protected LocalDateTime getLocalDateTime() {
+        String text = this.getText();
+        if (StrUtil.isNotBlank(text)) {
             try {
-                return LocalDate.parse(this.getText(), this.formatter());
+                return LocalDateTime.parse(text, this.formatter());
             } catch (Exception e) {
                 e.printStackTrace();
             }
