@@ -475,6 +475,10 @@ public class I18nHelper {
 
     public static final String DISCARD = "base.discard";
 
+    public static final String HOUR = "base.hour";
+
+    public static final String MINUTE = "base.minute";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -1937,5 +1941,13 @@ public class I18nHelper {
 
     public static String discard() {
         return I18nResourceBundle.i18nString(DISCARD);
+    }
+
+    public static String minute() {
+        return I18nResourceBundle.i18nString(MINUTE);
+    }
+
+    public static String hour() {
+        return I18nResourceBundle.i18nString(HOUR);
     }
 }

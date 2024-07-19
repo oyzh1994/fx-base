@@ -10,13 +10,13 @@ import java.text.SimpleDateFormat;
  * @author oyzh
  * @since 2024/07/19
  */
-public class DateTextField extends LimitTextField {
+public class DateTimeTextField extends LimitTextField {
 
     {
-        this.setSkin(new DateTextFieldSkin(this));
+        this.setSkin(new DateTimeTextFieldSkin(this));
     }
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public Date getValue() throws ParseException {
         if (!this.isEmpty()) {
