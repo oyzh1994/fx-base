@@ -1,8 +1,13 @@
 package cn.oyzh.fx.plus.controls.calendar;
 
 import atlantafx.base.controls.Calendar;
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.plus.controls.box.FlexHBox;
+import cn.oyzh.fx.plus.controls.box.FlexVBox;
+import cn.oyzh.fx.plus.controls.svg.CancelSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -10,69 +15,122 @@ import cn.oyzh.fx.plus.window.PopupExt;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
- * 选择输入框皮肤
+ * 日期输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/04
+ * @since 2024/07/19
  */
 public class DateTextFieldSkin extends TextFieldSkinExt {
 
     /**
-     * 选择事件
+     * 日期格式化器
      */
     @Setter
     @Getter
-    private Runnable chooseAction;
+    private DateTimeFormatter formatter;
 
     /**
-     * 选择按钮
+     * 日期按钮
      */
-    protected final SVGGlyph chooseButton;
+    protected final SVGGlyph button;
 
+    /**
+     * 弹窗
+     */
     private PopupExt popup;
 
+    protected DateTimeFormatter formatter() {
+        if (this.formatter == null) {
+            this.formatter = DateTimeFormatter.ofPattern("yyy-MM-dd");
+        }
+        return this.formatter;
+    }
+
+    /**
+     * 显示日期弹窗
+     */
     public void showDatePopup() {
-        this.popup = new PopupExt();
-        this.popup.setAutoFix(true);
-        this.popup.setAnimated(true);
-        this.popup.setAutoHide(true);
-        this.popup.setHideOnEscape(true);
-        this.popup.setFadeInDuration(Duration.millis(600));
-        this.popup.setFadeOutDuration(Duration.millis(600));
+        // 文本输入框
+        TextField textField = getSkinnable();
+        textField.setDisable(true);
         // 日期组件
         Calendar calendar = new Calendar();
-        this.popup.setContentNode(calendar);
+        calendar.setCursor(Cursor.HAND);
+        LocalDate localDate = this.getLocalDate();
+        if (localDate != null) {
+            calendar.setValue(localDate);
+        }
+        // 按钮组件
+        SubmitSVGGlyph submit = new SubmitSVGGlyph();
+        submit.setOnMousePrimaryClicked(mouseEvent -> {
+            this.setText(this.formatter().format(calendar.getValue()));
+            this.handleHide();
+        });
+        submit.setSizeStr("13,11");
+        CancelSVGGlyph cancel = new CancelSVGGlyph();
+        cancel.setSizeStr("12");
+        cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
+        // 按钮组件
+        FlexHBox hBox = new FlexHBox(submit, cancel);
+        HBox.setMargin(submit, new Insets(5, 0, 0, 5));
+        HBox.setMargin(cancel, new Insets(5, 0, 0, 12));
+        // 布局组件
+        FlexVBox vBox = new FlexVBox();
+        vBox.addChild(calendar);
+        vBox.addChild(hBox);
+        // 初始化弹窗
+        if (this.popup == null) {
+            this.popup = new PopupExt();
+            this.popup.setOnHiding(windowEvent -> this.handleHide());
+        }
+        this.popup.setContentNode(vBox);
         this.popup.showPopup(this.getSkinnable());
+    }
+
+    protected LocalDate getLocalDate() {
+        if (StrUtil.isNotBlank(this.getText())) {
+            try {
+                return LocalDate.parse(this.getText(), this.formatter());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    protected void handleHide() {
+        this.popup.hide();
+        this.getSkinnable().setDisable(false);
+        this.resetButtonColor();
     }
 
     public DateTextFieldSkin(TextField textField) {
         super(textField);
         // 初始化清除按钮
-        this.chooseButton = new SVGGlyph("/fx-plus/font/date.svg", "14");
-        this.chooseButton.setEnableWaiting(false);
-        this.chooseButton.setFocusTraversable(false);
-        this.chooseButton.setTipText(I18nHelper.choose());
-        this.chooseButton.setPadding(new Insets(0));
-        this.chooseButton.setOnMousePrimaryClicked(event -> {
-            // if (this.chooseAction != null) {
-            //     this.chooseAction.run();
-            // }
-            this.showDatePopup();
-        });
-        this.chooseButton.setOnMouseMoved(mouseEvent -> this.chooseButton.setColor("#DC143C"));
-        this.chooseButton.setOnMouseExited(mouseEvent -> this.resetButtonColor());
-        this.getChildren().add(this.chooseButton);
+        this.button = new SVGGlyph("/fx-plus/font/date.svg", "14");
+        this.button.setEnableWaiting(false);
+        this.button.setFocusTraversable(false);
+        this.button.setTipText(I18nHelper.choose());
+        this.button.setPadding(new Insets(0));
+        this.button.setOnMousePrimaryClicked(event -> this.showDatePopup());
+        this.button.setOnMouseMoved(mouseEvent -> this.button.setColor("#DC143C"));
+        this.button.setOnMouseExited(mouseEvent -> this.resetButtonColor());
+        this.getChildren().add(this.button);
     }
 
     public void resetButtonColor() {
-        this.chooseButton.setColor(this.getButtonColor());
+        this.button.setColor(this.getButtonColor());
     }
 
     @Override
@@ -91,10 +149,10 @@ public class DateTextFieldSkin extends TextFieldSkinExt {
         // 限制最大最小值
         btnSize = NumUtil.limit(btnSize, 14, 20);
         // 按钮大小，组件高度
-        this.chooseButton.setSize(btnSize);
+        this.button.setSize(btnSize);
         // 位移的areaX值，规则 组件宽+x-按钮大小
         double areaX = w + x - btnSize - 8;
         // 设置位置
-        super.positionInArea(this.chooseButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
 }

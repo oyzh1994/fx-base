@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.window;
 import atlantafx.base.controls.Popover;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
+import javafx.util.Duration;
 
 /**
  * 弹窗扩展
@@ -13,6 +14,7 @@ import javafx.stage.PopupWindow;
 public class PopupExt extends Popover implements PopupWrapper {
 
     public PopupExt() {
+        this.initDefault();
         // 监听显示属性
         this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
@@ -24,7 +26,17 @@ public class PopupExt extends Popover implements PopupWrapper {
 
     public PopupExt(PopupAttribute attribute) {
         this.init(attribute);
+        this.initDefault();
         this.setProp(PopupManager.REF_ATTR, this);
+    }
+
+    protected void initDefault() {
+        this.setAutoFix(true);
+        this.setAnimated(true);
+        this.setAutoHide(true);
+        this.setHideOnEscape(true);
+        this.setFadeInDuration(Duration.millis(350));
+        this.setFadeOutDuration(Duration.millis(350));
     }
 
     @Override
