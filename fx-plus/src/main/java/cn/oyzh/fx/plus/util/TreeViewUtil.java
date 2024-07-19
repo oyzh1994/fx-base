@@ -18,7 +18,6 @@ import java.util.function.Function;
  * @author oyzh
  * @since 2023/05/09
  */
-//@Slf4j
 @UtilityClass
 public class TreeViewUtil {
 

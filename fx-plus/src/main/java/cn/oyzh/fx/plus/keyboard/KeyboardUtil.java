@@ -19,7 +19,7 @@ public class KeyboardUtil {
      * @param event 事件
      * @return 结果
      */
-    public static boolean isCtrl_S(KeyEvent event) {
+    public static boolean isCtrlS(KeyEvent event) {
         if (event == null) {
             return false;
         }

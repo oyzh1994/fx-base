@@ -6,6 +6,8 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.TableViewUtil;
 import javafx.scene.control.TableView;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author oyzh
@@ -41,5 +43,15 @@ public class FXTableView<S> extends TableView<S> implements NodeAdapter, ThemeAd
         this.setFixedCellSize(35.f);
         this.setFocusTraversable(false);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+    }
+
+    @Getter
+    @Setter
+    private Runnable ctrlSAction;
+
+    public void onCtrl_S() {
+        if (this.ctrlSAction != null) {
+            this.ctrlSAction.run();
+        }
     }
 }

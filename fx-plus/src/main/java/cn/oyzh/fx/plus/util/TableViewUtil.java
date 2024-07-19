@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.util.CollectionUtil;
+import cn.oyzh.fx.plus.controls.table.FXTableView;
+import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -122,6 +124,24 @@ public class TableViewUtil {
                 TableRow<?> tableRow = findTableRow(node);
                 if (tableRow != null && tableRow.getTableView() != null) {
                     tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
+                }
+            });
+        }
+    }
+
+    /**
+     * ctrl+s事件
+     *
+     * @param node 组件
+     */
+    public static void rowOnCtrlS(Node node) {
+        if (node != null) {
+            node.setOnKeyPressed(event -> {
+                if (KeyboardUtil.isCtrlS(event)) {
+                    TableRow<?> tableRow = findTableRow(node);
+                    if (tableRow != null && tableRow.getTableView() instanceof FXTableView<?> tableView) {
+                        tableView.onCtrl_S();
+                    }
                 }
             });
         }
