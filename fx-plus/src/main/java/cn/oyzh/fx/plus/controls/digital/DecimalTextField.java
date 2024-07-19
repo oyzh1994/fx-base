@@ -56,9 +56,14 @@ public class DecimalTextField extends DigitalTextField {
         this.setScaleLen(scaleLen);
     }
 
+    private DigitalFormatStringConverter converter;
+
     @Override
     protected DigitalFormatStringConverter getConverter() {
-        return new DigitalFormatStringConverter(this.format());
+        if (this.converter == null) {
+            this.converter = new DigitalFormatStringConverter(this.format());
+        }
+        return this.converter;
     }
 
     @Override

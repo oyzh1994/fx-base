@@ -34,9 +34,14 @@ public class NumberTextField extends DigitalTextField {
         super.setMaxVal(maxVal);
     }
 
+    private DigitalFormatStringConverter converter;
+
     @Override
     protected DigitalFormatStringConverter getConverter() {
-        return new DigitalFormatStringConverter();
+        if (this.converter == null) {
+            this.converter = new DigitalFormatStringConverter();
+        }
+        return this.converter;
     }
 
     @Override
@@ -70,22 +75,21 @@ public class NumberTextField extends DigitalTextField {
                         return null;
                     }
                     // 数字判断
-                    Number l = NumberUtil.parseNumber(text);
-                    // Number l = this.converter.fromString(text);
-                    if (l == null) {
+                    if (!NumberUtil.isNumber(text)) {
                         return null;
                     }
                     // 长度判断
                     if (!super.checkLenLimit(change)) {
                         return null;
                     }
+                    Number number = NumberUtil.parseNumber(text);
                     // 如果超过了最大值，则将组件值设置为最大值
-                    if (this.maxVal != null && NumUtil.isGT(l.longValue(), this.maxVal)) {
+                    if (this.maxVal != null && NumUtil.isGT(number.longValue(), this.maxVal)) {
                         this.setValue(this.maxVal.longValue());
                         return null;
                     }
                     // 如果小于了最小值，则将组件值设置为最小值
-                    if (this.minVal != null && NumUtil.isLT(l.longValue(), this.minVal)) {
+                    if (this.minVal != null && NumUtil.isLT(number.longValue(), this.minVal)) {
                         this.setValue(this.minVal.longValue());
                         return null;
                     }
