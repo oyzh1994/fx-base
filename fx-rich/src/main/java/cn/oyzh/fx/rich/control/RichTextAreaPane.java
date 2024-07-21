@@ -189,4 +189,12 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     public void requestFocus() {
         this.getContent().requestFocus();
     }
+
+    public String getPromptText() {
+        return this.getContent().getPromptText();
+    }
+
+    public void setPromptText(String promptText) {
+        this.getContent().setPromptText(promptText);
+    }
 }

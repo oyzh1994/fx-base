@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
  */
 public class EnlargeTextFiled extends LimitTextField {
 
-    {
+    public EnlargeTextFiled() {
         this.setSkin(new EnlargeTextFiledSkin(this));
     }
 

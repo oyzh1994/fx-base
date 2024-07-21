@@ -24,7 +24,7 @@ public class ChooseTextField extends LimitTextField {
         return (ChooseTextFieldSkin) this.getSkin();
     }
 
-    public void setChooseAction(Runnable action) {
-        this.skin().setChooseAction(action);
+    public void setAction(Runnable action) {
+        this.skin().setAction(action);
     }
 }

@@ -4,12 +4,14 @@ import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,62 +22,10 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseTextFieldSkin extends TextFieldSkinExt {
-
-    /**
-     * 选择事件
-     */
-    @Setter
-    @Getter
-    private Runnable chooseAction;
-
-    /**
-     * 选择按钮
-     */
-    protected final SVGGlyph chooseButton;
+public class ChooseTextFieldSkin extends ActionTextFieldSkinExt {
 
     public ChooseTextFieldSkin(TextField textField) {
-        super(textField);
-        // 初始化清除按钮
-        this.chooseButton = new ChooseSVGGlyph("14");
-        this.chooseButton.setEnableWaiting(false);
-        this.chooseButton.setFocusTraversable(false);
-        this.chooseButton.setTipText(I18nHelper.choose());
-        this.chooseButton.setPadding(new Insets(0));
-        this.chooseButton.setOnMousePrimaryClicked(event -> {
-            if (this.chooseAction != null) {
-                this.chooseAction.run();
-            }
-        });
-        this.chooseButton.setOnMouseMoved(mouseEvent -> this.chooseButton.setColor("#DC143C"));
-        this.chooseButton.setOnMouseExited(mouseEvent -> this.resetButtonColor());
-        this.getChildren().add(this.chooseButton);
-    }
-
-    public void resetButtonColor() {
-        this.chooseButton.setColor(this.getButtonColor());
-    }
-
-    @Override
-    protected Color getButtonColor() {
-        if (!ThemeManager.isDarkMode()) {
-            return Color.valueOf("#696969");
-        }
-        return super.getButtonColor();
-    }
-
-    @Override
-    protected void layoutChildren(double x, double y, double w, double h) {
-        super.layoutChildren(x, y, w, h);
-        // 计算组件大小
-        double btnSize = this.snapSizeX(h * 0.7);
-        // 限制最大最小值
-        btnSize = NumUtil.limit(btnSize, 14, 20);
-        // 按钮大小，组件高度
-        this.chooseButton.setSize(btnSize);
-        // 位移的areaX值，规则 组件宽+x-按钮大小
-        double areaX = w + x - btnSize - 8;
-        // 设置位置
-        super.positionInArea(this.chooseButton, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+        super(textField,new ChooseSVGGlyph("13"));
+        this.button.setTipText(I18nHelper.choose());
     }
 }
