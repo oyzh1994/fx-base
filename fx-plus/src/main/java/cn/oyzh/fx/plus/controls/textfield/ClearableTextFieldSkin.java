@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 /**
  * 可清除文本输入框皮肤
@@ -27,5 +28,10 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkinExt {
         super(textField, new CloseSVGGlyph("12"));
         this.button.setVisible(false);
         this.button.setTipText(I18nHelper.clear());
+    }
+
+    @Override
+    protected void onButtonClicked(MouseEvent e) {
+        this.setText("");
     }
 }

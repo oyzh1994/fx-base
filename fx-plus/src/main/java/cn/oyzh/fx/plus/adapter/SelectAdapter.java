@@ -12,7 +12,6 @@ import javafx.scene.control.TreeView;
 import lombok.NonNull;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -102,6 +101,19 @@ public interface SelectAdapter<T> extends PropAdapter {
                 node.getSelectionModel().select(obj);
             }
         });
+    }
+
+    /**
+     * 如果为null，则选择首个元素
+     *
+     * @param obj 对象
+     */
+    default void selectFirstIfNull(T obj) {
+        if (obj == null) {
+            this.select(0);
+        } else {
+            this.select(obj);
+        }
     }
 
     /**
