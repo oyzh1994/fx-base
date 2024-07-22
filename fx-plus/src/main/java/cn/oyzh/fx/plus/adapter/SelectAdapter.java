@@ -11,6 +11,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TreeView;
 import lombok.NonNull;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -422,7 +424,7 @@ public interface SelectAdapter<T> extends PropAdapter {
      *
      * @param items 子节点列表
      */
-    default void setItem(List<?> items) {
+    default void setItem(Collection<?> items) {
         if (items != null) {
             FXUtil.runWait(() -> {
                 if (this instanceof TableView node) {
