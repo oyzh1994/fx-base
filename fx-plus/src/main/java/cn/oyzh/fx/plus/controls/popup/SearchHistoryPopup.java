@@ -9,11 +9,15 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.ListViewUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
+import javafx.util.Callback;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -50,6 +54,13 @@ public class SearchHistoryPopup extends FXPopup {
     protected Consumer<String> onHistorySelected;
 
     /**
+     * 单列数据高
+     */
+    @Getter
+    @Setter
+    protected double cellDataHeight = 20;
+
+    /**
      * 初始化内容
      */
     protected void initContent() {
@@ -57,13 +68,33 @@ public class SearchHistoryPopup extends FXPopup {
         if (listView == null) {
             listView = new FXListView<>();
             this.setContent(listView);
-            listView.setFontSize(12);
+            listView.setFontSize(11);
             listView.setCursor(Cursor.HAND);
-            listView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+            listView.selectedItemChanged((observableValue, s, t1) -> {
                 if (this.onHistorySelected != null && this.isShowing()) {
                     this.onHistorySelected.accept(t1);
                 }
             });
+
+            listView.setCellFactory(new Callback<>() {
+                @Override
+                public ListCell<String> call(ListView<String> param) {
+                    return new ListCell<>() {
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty || item == null) {
+                                this.setText(null);
+                            } else {
+                                this.setText(item);
+                                this.setPrefHeight(cellDataHeight);
+                                ListViewUtil.highlightCell(this);
+                            }
+                        }
+                    };
+                }
+            });
+
         }
         this.setHistories(this.getHistories());
     }
@@ -189,12 +220,10 @@ public class SearchHistoryPopup extends FXPopup {
             } else {
                 width += 60;
             }
-            int fontSize = (int) font.getSize();
-            // 计算列表视图高
-            double fontHeight = FontUtil.calcFontHeight(fontSize) + 8;
             // 显示个数限制为10个
             int size = Math.min(list.size(), 10);
-            double height = fontHeight * size;
+            // 修正高
+            double height = this.cellDataHeight * size + 3;
             listView.setRealWidth(width);
             listView.setRealHeight(height);
         }

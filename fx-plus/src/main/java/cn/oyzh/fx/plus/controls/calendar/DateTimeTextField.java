@@ -18,8 +18,15 @@ public class DateTimeTextField extends LimitTextField {
 
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    private static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
     public Timestamp getValue() throws ParseException {
         if (!this.isEmpty()) {
+            String text = this.getText();
+            if (text.contains("T")) {
+                java.util.Date utilDate = FORMAT_T.parse(this.getText());
+                return new Timestamp(utilDate.getTime());
+            }
             java.util.Date utilDate = FORMAT.parse(this.getText());
             return new Timestamp(utilDate.getTime());
         }

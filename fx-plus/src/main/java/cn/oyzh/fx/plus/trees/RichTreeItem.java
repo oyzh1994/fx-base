@@ -645,4 +645,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     public void onPrimaryDoubleClick() {
 
     }
+
+    public boolean supportFilter() {
+        return false;
+    }
 }
