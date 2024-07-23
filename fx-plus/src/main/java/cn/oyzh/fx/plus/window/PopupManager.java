@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.window;
 
+import atlantafx.base.controls.Popover;
 import javafx.scene.Node;
+import javafx.stage.PopupWindow;
 import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -53,6 +55,18 @@ public class PopupManager {
      * @return PopupWrapper
      */
     public static PopupWrapper parsePopup(@NonNull Class<?> clazz) {
+        return parsePopup(clazz, null, null);
+    }
+
+    /**
+     * 解析弹窗
+     *
+     * @param clazz          弹窗类
+     * @param arrowLocation  提示组件位置
+     * @param anchorLocation 弹窗位置
+     * @return PopupWrapper
+     */
+    public static PopupWrapper parsePopup(@NonNull Class<?> clazz, Popover.ArrowLocation arrowLocation, PopupWindow.AnchorLocation anchorLocation) {
         PopupAttribute attribute = clazz.getAnnotation(PopupAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + PopupAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
@@ -63,6 +77,13 @@ public class PopupManager {
         if (window != null) {
             window.disappear();
         }
-        return new PopupExt(attribute);
+        PopupExt popup = new PopupExt(attribute);
+        if (arrowLocation != null) {
+            popup.setArrowLocation(arrowLocation);
+        }
+        if (anchorLocation != null) {
+            popup.setAnchorLocation(anchorLocation);
+        }
+        return popup;
     }
 }

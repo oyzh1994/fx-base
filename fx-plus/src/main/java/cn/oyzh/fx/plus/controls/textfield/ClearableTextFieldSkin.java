@@ -25,7 +25,7 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkinExt {
     }
 
     public ClearableTextFieldSkin(TextField textField) {
-        super(textField, new CloseSVGGlyph("12"));
+        super(textField, new CloseSVGGlyph("10"));
         this.button.setVisible(false);
         this.button.setTipText(I18nHelper.clear());
     }
@@ -33,5 +33,10 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkinExt {
     @Override
     protected void onButtonClicked(MouseEvent e) {
         this.setText("");
+    }
+
+    @Override
+    protected double getButtonSizeMax() {
+        return 12;
     }
 }

@@ -2,21 +2,13 @@ package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.MouseUtil;
-import javafx.beans.InvalidationListener;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.stage.Window;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,7 +50,7 @@ public class ActionTextFieldSkinExt extends TextFieldSkinExt {
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
         // 按钮大小，组件高度/2，最大20，最小10
-        double size = NumUtil.limit(h * 0.5, 10, 20);
+        double size = NumUtil.limit(h * 0.5, this.getButtonSizeMin(), this.getButtonSizeMax());
         // 设置按钮大小
         this.button.setSize(size);
         // 计算组件大小
@@ -79,5 +71,13 @@ public class ActionTextFieldSkinExt extends TextFieldSkinExt {
 
     public void resetButtonColor() {
         this.button.setColor(this.getButtonColor());
+    }
+
+    protected double getButtonSizeMin() {
+        return 10;
+    }
+
+    protected double getButtonSizeMax() {
+        return 20;
     }
 }
