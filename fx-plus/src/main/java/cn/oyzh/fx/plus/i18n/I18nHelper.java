@@ -223,6 +223,10 @@ public class I18nHelper {
 
     public static final String FIELD = "base.field";
 
+    public static final String INDEX = "base.index";
+
+    public static final String FOREIGN_KEY = "base.foreignKey";
+
     public static final String COLLATION = "base.collation";
 
     public static final String AUTO_INCREMENT = "base.autoIncrement";
@@ -1949,5 +1953,17 @@ public class I18nHelper {
 
     public static String hour() {
         return I18nResourceBundle.i18nString(HOUR);
+    }
+
+    public static String deleteField() {
+        return I18nResourceBundle.i18nString(DELETE, FIELD);
+    }
+
+    public static String deleteIndex() {
+        return I18nResourceBundle.i18nString(DELETE, INDEX);
+    }
+
+    public static String foreignKey() {
+        return I18nResourceBundle.i18nString(DELETE, FOREIGN_KEY);
     }
 }
