@@ -11,7 +11,7 @@ import lombok.Getter;
  * @author oyzh
  * @since 2023/08/29
  */
-public class LimitTextField extends FlexTextField  implements LimitLenControl {
+public class LimitTextField extends FlexTextField implements LimitLenControl {
 
     /**
      * 最大长度

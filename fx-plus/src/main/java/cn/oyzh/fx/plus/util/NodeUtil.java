@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import atlantafx.base.theme.Styles;
+import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.window.StageWrapper;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -345,6 +346,21 @@ public class NodeUtil {
             if (stage.root() != null && !stage.root().disableProperty().isBound()) {
                 stage.root().setDisable(false);
             }
+        }
+    }
+
+    /**
+     * ctrl+s事件
+     *
+     * @param node 组件
+     */
+    public static void nodeOnCtrlS(Node node, Runnable action) {
+        if (node != null) {
+            node.setOnKeyPressed(event -> {
+                if (KeyboardUtil.isCtrlS(event)) {
+                    action.run();
+                }
+            });
         }
     }
 }
