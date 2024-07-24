@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.AnimationUtil;
@@ -32,7 +33,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2022/5/31
  */
-public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
+public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
     /**
      * 图标地址
@@ -420,5 +421,15 @@ public class SVGGlyph extends Region implements NodeAdapter, ThemeAdapter, Mouse
     public void disable() {
         StateAdapter.super.disable();
         this.setActive(false);
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

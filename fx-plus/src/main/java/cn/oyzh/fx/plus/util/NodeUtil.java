@@ -352,15 +352,26 @@ public class NodeUtil {
     /**
      * ctrl+s事件
      *
-     * @param node 组件
+     * @param target 组件
      */
-    public static void nodeOnCtrlS(Node node, Runnable action) {
-        if (node != null) {
-            node.setOnKeyPressed(event -> {
-                if (KeyboardUtil.isCtrlS(event)) {
-                    action.run();
+    public static void nodeOnCtrlS(Object target, Runnable action) {
+        if (target != null) {
+            switch (target) {
+                case Node node -> node.setOnKeyPressed(event -> {
+                    if (KeyboardUtil.isCtrlS(event)) {
+                        action.run();
+                    }
+                });
+                case Scene node -> node.setOnKeyPressed(event -> {
+                    if (KeyboardUtil.isCtrlS(event)) {
+                        action.run();
+                    }
+                });
+                case Stage stage -> nodeOnCtrlS(stage.getScene(), action);
+                case StageWrapper stage -> nodeOnCtrlS(stage.scene(), action);
+                default -> {
                 }
-            });
+            }
         }
     }
 }
