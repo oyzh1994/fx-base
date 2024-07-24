@@ -225,6 +225,8 @@ public class I18nHelper {
 
     public static final String INDEX = "base.index";
 
+    public static final String RECORD = "base.record";
+
     public static final String FOREIGN_KEY = "base.foreignKey";
 
     public static final String COLLATION = "base.collation";
@@ -1969,5 +1971,9 @@ public class I18nHelper {
 
     public static String deleteForeignKey() {
         return I18nResourceBundle.i18nString(DELETE, FOREIGN_KEY);
+    }
+
+    public static String deleteRecord() {
+        return I18nResourceBundle.i18nString(DELETE, RECORD);
     }
 }
