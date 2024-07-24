@@ -408,4 +408,8 @@ public interface StageWrapper extends WindowWrapper {
             }
         }, this.scene());
     }
+
+    default boolean isShowing() {
+        return this.stage().isShowing();
+    }
 }

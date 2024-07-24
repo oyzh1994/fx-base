@@ -1964,6 +1964,10 @@ public class I18nHelper {
     }
 
     public static String foreignKey() {
+        return I18nResourceBundle.i18nString(FOREIGN_KEY);
+    }
+
+    public static String deleteForeignKey() {
         return I18nResourceBundle.i18nString(DELETE, FOREIGN_KEY);
     }
 }

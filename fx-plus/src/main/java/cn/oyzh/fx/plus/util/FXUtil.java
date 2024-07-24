@@ -4,20 +4,22 @@ import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
 import cn.oyzh.fx.common.thread.TaskManager;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * fx工具类
@@ -181,5 +183,53 @@ public class FXUtil {
      */
     public static void runLater(@NonNull Runnable task, int delay) {
         TaskManager.startDelay(() -> runLater(task), delay);
+    }
+
+    /**
+     * 获取fx线程
+     *
+     * @return fx线程
+     */
+    public static Thread getFXThread() {
+        Map<Thread, StackTraceElement[]> map = Thread.getAllStackTraces();
+        for (Map.Entry<Thread, StackTraceElement[]> entry : map.entrySet()) {
+            Thread thread = entry.getKey();
+            if ("JavaFX Application Thread".equalsIgnoreCase(thread.getName())) {
+                return thread;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 在脉冲周期后执行
+     *
+     * @param task 任务
+     */
+    public static void runPulse(@NonNull Runnable task) {
+        runPulse(task, 10);
+    }
+
+    /**
+     * 在脉冲周期后执行
+     *
+     * @param task 任务
+     * @param sign 停止信号
+     */
+    public static void runPulse(@NonNull Runnable task, int sign) {
+        AtomicInteger tick = new AtomicInteger();
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (sign <= 0 || tick.incrementAndGet() >= sign) {
+                    try {
+                        task.run();
+                    } finally {
+                        this.stop();
+                    }
+                }
+            }
+        };
+        timer.start();
     }
 }
