@@ -2,13 +2,13 @@ package cn.oyzh.fx.plus.trees;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
+import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -29,7 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 2023/11/10
  */
 @Getter
-public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements DragNodeItem, Comparable<Object> {
+public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object> {
 
     /**
      * 加载完成标志位
@@ -402,15 +402,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
             value.flushGraphic();
             value.flushGraphicColor();
         }
-    }
-
-    /**
-     * 获取右键菜单按钮列表
-     *
-     * @return 右键菜单按钮列表
-     */
-    public List<MenuItem> getMenuItems() {
-        return null;
     }
 
     @Override

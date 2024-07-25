@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
@@ -16,7 +17,7 @@ import javafx.scene.control.Tab;
  * @author oyzh
  * @since 2022/1/21
  */
-public class FXTab extends Tab implements NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
+public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
 
     {
         NodeManager.init(this);

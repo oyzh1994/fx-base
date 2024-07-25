@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.trees;
 
+import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.util.MouseUtil;
@@ -50,7 +51,7 @@ public class RichTreeView extends FlexTreeView {
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             TreeItem<?> item = this.getSelectedItem();
-            if (item instanceof RichTreeItem<?> treeItem) {
+            if (item instanceof MenuItemAdapter treeItem) {
                 this.showContextMenu(treeItem.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
             } else {
                 this.clearContextMenu();

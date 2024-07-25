@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.tabs;
 
+import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.tab.FlexTabPane;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.CacheHint;
@@ -26,8 +27,8 @@ public class DynamicTabPane extends FlexTabPane {
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             Tab tab = this.getSelectedItem();
-            if (tab instanceof DynamicTab dynamicTab) {
-                this.showContextMenu(dynamicTab.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+            if (tab instanceof MenuItemAdapter adapter) {
+                this.showContextMenu(adapter.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
             } else {
                 this.clearContextMenu();
             }

@@ -63,7 +63,7 @@ public interface ContextMenuAdapter {
      * @param menuItems 菜单列表
      * @return ContextMenu
      */
-    default ContextMenu initContextMenu(List<MenuItem> menuItems) {
+    default ContextMenu initContextMenu(List<? extends MenuItem> menuItems) {
         if (menuItems != null && !menuItems.isEmpty()) {
             ContextMenu contextMenu = this.contextMenu();
             if (contextMenu == null) {
@@ -84,7 +84,7 @@ public interface ContextMenuAdapter {
      * @param screenX   屏幕x
      * @param screenY   屏幕y
      */
-    default void showContextMenu(List<MenuItem> menuItems, Double screenX, Double screenY) {
+    default void showContextMenu(List<? extends MenuItem> menuItems, Double screenX, Double screenY) {
         ContextMenu contextMenu = this.initContextMenu(menuItems);
         if (contextMenu != null && screenX != null && screenY != null) {
             if (this instanceof Node node) {

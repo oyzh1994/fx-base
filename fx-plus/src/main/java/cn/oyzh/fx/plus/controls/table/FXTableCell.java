@@ -15,11 +15,7 @@ import javafx.scene.control.TableCell;
 public abstract class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
 
     {
-//        this.setCache(true);
-//        this.setCacheShape(true);
-//        this.setCacheHint(CacheHint.QUALITY);
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//        this.changeTheme(ThemeManager.currentTheme());
         NodeManager.init(this);
     }
 
