@@ -257,6 +257,27 @@ public class MenuItemHelper {
     public static FXMenuItem openTable(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.openTable(), new OpenSVGGlyph(iconSize), null, action);
     }
+
+    public static FXMenuItem copy(Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.copy(), action);
+    }
+
+    public static FXMenuItem paste(Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.paste(), action);
+    }
+
+    public static FXMenuItem deleteRecord(Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteRecord(), action);
+    }
+
+    public static FXMenuItem setToNull(Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.setToNull(), action);
+    }
+
+    public static FXMenuItem setToEmptyString(Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.setToEmptyString(), action);
+    }
+
 }
 
 

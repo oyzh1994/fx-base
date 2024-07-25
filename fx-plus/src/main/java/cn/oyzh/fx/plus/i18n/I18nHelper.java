@@ -227,6 +227,10 @@ public class I18nHelper {
 
     public static final String RECORD = "base.record";
 
+    public static final String SET_TO_NULL = "base.setToNull";
+
+    public static final String SET_TO_EMPTY_STRING = "base.setToEmptyString";
+
     public static final String FOREIGN_KEY = "base.foreignKey";
 
     public static final String COLLATION = "base.collation";
@@ -1975,5 +1979,13 @@ public class I18nHelper {
 
     public static String deleteRecord() {
         return I18nResourceBundle.i18nString(DELETE, RECORD);
+    }
+
+    public static String setToNull() {
+        return I18nResourceBundle.i18nString(SET_TO_NULL);
+    }
+
+    public static String setToEmptyString() {
+        return I18nResourceBundle.i18nString(SET_TO_EMPTY_STRING);
     }
 }

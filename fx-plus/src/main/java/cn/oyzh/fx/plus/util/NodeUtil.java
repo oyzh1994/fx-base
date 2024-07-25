@@ -374,4 +374,10 @@ public class NodeUtil {
             }
         }
     }
+
+    public static void unFocus(Node node) {
+        if (node != null && node.getParent() != null) {
+            node.getParent().requestFocus();
+        }
+    }
 }

@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.information.MessageBox;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.Clipboard;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -17,6 +18,51 @@ import java.awt.datatransfer.StringSelection;
  */
 @UtilityClass
 public class ClipboardUtil {
+
+    /**
+     * 复制到粘贴板
+     *
+     * @param content 内容
+     * @return 结果
+     */
+    public static boolean copy(Object content) {
+        if (content instanceof TextInputControl control) {
+            return setString(control.getText());
+        }
+        if (content instanceof CharSequence sequence) {
+            return setString(sequence.toString());
+        }
+        return false;
+    }
+
+    /**
+     * 粘贴到组件
+     *
+     * @param node 组件
+     * @return 结果
+     */
+    public static boolean paste(Object node) {
+        return paste(node, null);
+    }
+
+    /**
+     * 粘贴到组件
+     *
+     * @param node    组件
+     * @param content 内容
+     * @return 结果
+     */
+    public static boolean paste(Object node, Object content) {
+        try {
+            if (node instanceof TextInputControl control) {
+                control.paste();
+            }
+            return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * 设置字符串到粘贴板
@@ -41,7 +87,7 @@ public class ClipboardUtil {
      * @param content 内容
      * @return 结果
      */
-    public static boolean setStringAndTip(@NonNull String content ) {
+    public static boolean setStringAndTip(@NonNull String content) {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
