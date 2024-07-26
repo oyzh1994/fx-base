@@ -1,7 +1,6 @@
-package cn.oyzh.fx.plus.controls.calendar;
+package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
-import cn.oyzh.fx.plus.skin.TimeTextFieldSkin;
+import cn.oyzh.fx.plus.skin.DateTimeTextFieldSkin;
 import javafx.scene.control.Skin;
 
 import java.sql.Timestamp;
@@ -10,14 +9,21 @@ import java.text.SimpleDateFormat;
 
 /**
  * @author oyzh
- * @since 2024/07/21
+ * @since 2024/07/19
  */
-public class TimeTextField extends LimitTextField {
+public class DateTimeTextField extends LimitTextField {
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public Timestamp getValue() throws ParseException {
         if (!this.isEmpty()) {
+            String text = this.getText();
+            if (text.contains("T")) {
+                java.util.Date utilDate = FORMAT_T.parse(this.getText());
+                return new Timestamp(utilDate.getTime());
+            }
             java.util.Date utilDate = FORMAT.parse(this.getText());
             return new Timestamp(utilDate.getTime());
         }
@@ -35,6 +41,6 @@ public class TimeTextField extends LimitTextField {
 
     @Override
     protected Skin<?> createDefaultSkin() {
-        return new TimeTextFieldSkin(this);
+        return new DateTimeTextFieldSkin(this);
     }
 }

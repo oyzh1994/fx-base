@@ -1,7 +1,7 @@
-package cn.oyzh.fx.plus.controls.enlarge;
+package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
-import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.plus.skin.ChooseTextFieldSkin;
+import cn.oyzh.fx.plus.skin.EnlargeTextFiledSkin;
 import javafx.scene.control.Skin;
 
 /**
@@ -16,7 +16,12 @@ public class EnlargeTextFiled extends LimitTextField {
      * @return 皮肤
      */
     public EnlargeTextFiledSkin skin() {
-        return (EnlargeTextFiledSkin) this.getSkin();
+        EnlargeTextFiledSkin skin = (EnlargeTextFiledSkin) this.getSkin();
+        if (skin == null) {
+            this.setSkin(this.createDefaultSkin());
+            skin = (EnlargeTextFiledSkin) this.getSkin();
+        }
+        return skin;
     }
 
     public void setEnlargeWidth(double width) {
@@ -34,7 +39,6 @@ public class EnlargeTextFiled extends LimitTextField {
     public double getEnlargeHeight() {
         return this.skin().getEnlargeHeight();
     }
-
 
     @Override
     protected Skin<?> createDefaultSkin() {

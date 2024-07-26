@@ -1,7 +1,7 @@
-package cn.oyzh.fx.plus.controls.file;
+package cn.oyzh.fx.plus.controls.textfield;
 
 import cn.hutool.core.io.FileUtil;
-import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.plus.skin.EnlargeTextFiledSkin;
 import cn.oyzh.fx.plus.skin.FileTextFieldSkin;
 import javafx.scene.control.Skin;
 
@@ -25,7 +25,12 @@ public class FileTextField extends LimitTextField {
      * @return 皮肤
      */
     public FileTextFieldSkin skin() {
-        return (FileTextFieldSkin) this.getSkin();
+        FileTextFieldSkin skin = (FileTextFieldSkin) this.getSkin();
+        if (skin == null) {
+            this.setSkin(this.createDefaultSkin());
+            skin = (FileTextFieldSkin) this.getSkin();
+        }
+        return skin;
     }
 
     /**

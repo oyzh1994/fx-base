@@ -1,7 +1,6 @@
-package cn.oyzh.fx.plus.controls.digital;
+package cn.oyzh.fx.plus.controls.textfield;
 
 import cn.oyzh.fx.common.util.NumUtil;
-import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
