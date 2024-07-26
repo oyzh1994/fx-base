@@ -24,6 +24,7 @@ import cn.oyzh.fx.plus.controls.svg.RepeatSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.StopSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.TerminalSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.TransportSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.TruncateSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.UnLockSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
@@ -210,6 +211,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.repeatConnect(), new RepeatSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem reload(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.reload(), new RefreshSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem serverInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.serverInfo(), new InfoSVGGlyph(iconSize), null, action);
     }
@@ -258,6 +263,30 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.openTable(), new OpenSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem editTable(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.editTable(), new EditSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem renameTable(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.renameTable(), new RenameSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem clearTable(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.clearTable(), new ClearSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem truncateTable(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.truncateTable(), new TruncateSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem deleteTable(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteTable(), new DeleteSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem tableInfo(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.tableInfo(), new InfoSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem copy(Runnable action) {
         return FXMenuItem.newItem(I18nHelper.copy(), action);
     }
@@ -280,6 +309,26 @@ public class MenuItemHelper {
 
     public static FXMenuItem fieldInfo(Runnable action) {
         return FXMenuItem.newItem(I18nHelper.fieldInfo(), action);
+    }
+
+    public static FXMenuItem closeDatabase(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.closeDatabase(), new CloseSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem editDatabase(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.editDatabase(), new EditSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem deleteDatabase(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteDatabase(), new DeleteSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem databaseInfo(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.databaseInfo(), new InfoSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem addDatabase(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.addDatabase(), new AddSVGGlyph(iconSize), null, action);
     }
 }
 

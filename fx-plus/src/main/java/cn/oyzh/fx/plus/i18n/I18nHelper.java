@@ -45,6 +45,8 @@ public class I18nHelper {
 
     public static final String TABLE = "base.table";
 
+    public static final String TRUNCATE = "base.truncate";
+
     public static final String EXAMPLE = "base.example";
 
     public static final String ENLARGE = "base.enlarge";
@@ -2009,5 +2011,53 @@ public class I18nHelper {
 
     public static String zeroFill() {
         return I18nResourceBundle.i18nString(ZEROFILL);
+    }
+
+    public static String editTable() {
+        return I18nResourceBundle.i18nString(EDIT, TABLE);
+    }
+
+    public static String renameTable() {
+        return I18nResourceBundle.i18nString(RENAME, TABLE);
+    }
+
+    public static String clearTable() {
+        return I18nResourceBundle.i18nString(CLEAR, TABLE);
+    }
+
+    public static String truncate() {
+        return I18nResourceBundle.i18nString(TRUNCATE);
+    }
+
+    public static String truncateTable() {
+        return I18nResourceBundle.i18nString(TRUNCATE, TABLE);
+    }
+
+    public static String deleteTable() {
+        return I18nResourceBundle.i18nString(DELETE, TABLE);
+    }
+
+    public static String tableInfo() {
+        return I18nResourceBundle.i18nString(TABLE, INFO);
+    }
+
+    public static String closeDatabase() {
+        return I18nResourceBundle.i18nString(CLOSE, DATABASE);
+    }
+
+    public static String editDatabase() {
+        return I18nResourceBundle.i18nString(EDIT, DATABASE);
+    }
+
+    public static String deleteDatabase() {
+        return I18nResourceBundle.i18nString(DELETE, DATABASE);
+    }
+
+    public static String databaseInfo() {
+        return I18nResourceBundle.i18nString(DATABASE, INFO);
+    }
+
+    public static String addDatabase() {
+        return I18nResourceBundle.i18nString(ADD, DATABASE);
     }
 }
