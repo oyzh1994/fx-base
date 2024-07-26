@@ -26,9 +26,12 @@ public class DynamicTabPane extends FlexTabPane {
     protected void initTabPane() {
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
-            Tab tab = this.getSelectedItem();
-            if (tab instanceof MenuItemAdapter adapter) {
-                this.showContextMenu(adapter.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+            // 判断是否在tab标签栏范围内
+            if (this.getTabMaxHeight() - e.getY() >= 0) {
+                Tab tab = this.getSelectedItem();
+                if (tab instanceof MenuItemAdapter adapter) {
+                    this.showContextMenu(adapter.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+                }
             } else {
                 this.clearContextMenu();
             }

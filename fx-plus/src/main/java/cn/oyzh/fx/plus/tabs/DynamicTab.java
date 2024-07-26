@@ -137,11 +137,7 @@ public abstract class DynamicTab extends FXTab {
         });
     }
 
-    /**
-     * 获取右键菜单按钮列表
-     *
-     * @return 右键菜单按钮列表
-     */
+    @Override
     public List<MenuItem> getMenuItems() {
         List<MenuItem> items = new ArrayList<>();
         CloseCurrTabMenuItem closeTab = new CloseCurrTabMenuItem(this::closeTab);
