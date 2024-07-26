@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,10 +54,7 @@ public abstract class DigitalTextField extends LimitTextField {
     protected final TextFormatter<String> textFormatter;
 
     public DigitalTextField(boolean unsigned, Long maxLen) {
-        // 设置皮肤
-        this.setSkin(new DigitalTextFieldSkin(this, this::incrValue, this::decrValue));
         // 创建文本格式化器
-        // this.textFormatter = new TextFormatter<>(this.converter, null, this.createFilter());
         this.textFormatter = new TextFormatter<>(this.getConverter(), null, this.createFilter());
         // 将TextFormatter对象设置到文本字段中
         this.setTextFormatter(this.textFormatter);
@@ -64,6 +62,20 @@ public abstract class DigitalTextField extends LimitTextField {
         this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
         this.setMaxLen(maxLen);
         this.setUnsigned(unsigned);
+    }
+
+    /**
+     * 当前皮肤
+     *
+     * @return 皮肤
+     */
+    public DigitalTextFieldSkin skin() {
+        DigitalTextFieldSkin skin = (DigitalTextFieldSkin) this.getSkin();
+        if (skin == null) {
+            this.setSkin(this.createDefaultSkin());
+            skin = (DigitalTextFieldSkin) this.getSkin();
+        }
+        return skin;
     }
 
     protected abstract DigitalFormatStringConverter getConverter();
@@ -77,9 +89,9 @@ public abstract class DigitalTextField extends LimitTextField {
         // 检查新值是否有效
         if (StrUtil.isNotBlank(newVal)) {
             // 获取当前皮肤
-            DigitalTextFieldSkin skin = (DigitalTextFieldSkin) this.getSkin();
+            DigitalTextFieldSkin skin =  this.skin();
+            // 解析值
             Number number = NumberUtil.parseNumber(newVal);
-
             // 判断新值是否小于等于最小值，如果是则禁用减号按钮
             if (this.minVal != null && number.doubleValue() <= this.minVal.doubleValue()) {
                 skin.disableDecrButton();
@@ -207,5 +219,10 @@ public abstract class DigitalTextField extends LimitTextField {
         } else if (value instanceof CharSequence sequence) {
             this.value(NumberUtil.parseNumber(sequence.toString()));
         }
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new DigitalTextFieldSkin(this, this::incrValue, this::decrValue);
     }
 }

@@ -278,6 +278,9 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.setToEmptyString(), action);
     }
 
+    public static FXMenuItem fieldInfo(Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.fieldInfo(), action);
+    }
 }
 
 

@@ -65,4 +65,10 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
     public void setRealHeight(double height) {
         LayoutAdapter.super.realHeight(height);
     }
+
+    public void addItem(MenuItem menuItem) {
+        if (menuItem != null) {
+            this.getItems().add(menuItem);
+        }
+    }
 }

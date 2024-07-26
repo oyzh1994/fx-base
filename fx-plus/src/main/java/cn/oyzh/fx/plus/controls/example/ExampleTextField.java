@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controls.example;
 
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.plus.skin.ExampleTextFieldSkin;
+import javafx.scene.control.Skin;
 
 /**
  * @author oyzh
@@ -8,17 +10,18 @@ import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
  */
 public class ExampleTextField extends LimitTextField {
 
-    {
-        this.setSkin(new ExampleTextFieldSkin(this));
-    }
-
     /**
      * 当前皮肤
      *
      * @return 皮肤
      */
     public ExampleTextFieldSkin skin() {
-        return (ExampleTextFieldSkin) this.getSkin();
+        ExampleTextFieldSkin skin = (ExampleTextFieldSkin) this.getSkin();
+        if (skin == null) {
+            this.setSkin(this.createDefaultSkin());
+            skin = (ExampleTextFieldSkin) this.getSkin();
+        }
+        return skin;
     }
 
     public void setExample(Object o) {
@@ -33,5 +36,10 @@ public class ExampleTextField extends LimitTextField {
 
     public String getExampleText() {
         return this.skin().getExampleText();
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new ExampleTextFieldSkin(this);
     }
 }

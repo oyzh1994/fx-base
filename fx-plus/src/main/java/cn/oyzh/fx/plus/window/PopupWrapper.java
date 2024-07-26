@@ -97,6 +97,13 @@ public interface PopupWrapper extends WindowWrapper {
     void showPopup(Node owner);
 
     /**
+     * 显示弹窗
+     *
+     * @param owner 父组件
+     */
+    void showPopup(Node owner, double x, double y);
+
+    /**
      * 获取内容
      *
      * @return 内容

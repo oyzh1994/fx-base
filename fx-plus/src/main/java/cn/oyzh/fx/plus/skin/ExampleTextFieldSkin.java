@@ -1,18 +1,9 @@
-package cn.oyzh.fx.plus.controls.example;
+package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.controls.svg.ExampleSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
-import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 

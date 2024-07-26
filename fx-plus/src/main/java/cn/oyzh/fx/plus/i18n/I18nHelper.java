@@ -223,6 +223,12 @@ public class I18nHelper {
 
     public static final String FIELD = "base.field";
 
+    public static final String PRIMARY_KEY = "base.primaryKey";
+
+    public static final String NULLABLE = "base.nullable";
+
+    public static final String ZEROFILL = "base.zeroFill";
+
     public static final String INDEX = "base.index";
 
     public static final String RECORD = "base.record";
@@ -1987,5 +1993,21 @@ public class I18nHelper {
 
     public static String setToEmptyString() {
         return I18nResourceBundle.i18nString(SET_TO_EMPTY_STRING);
+    }
+
+    public static String fieldInfo() {
+        return I18nResourceBundle.i18nString(FIELD, INFO);
+    }
+
+    public static String primaryKey() {
+        return I18nResourceBundle.i18nString(PRIMARY_KEY);
+    }
+
+    public static String nullable() {
+        return I18nResourceBundle.i18nString(NULLABLE);
+    }
+
+    public static String zeroFill() {
+        return I18nResourceBundle.i18nString(ZEROFILL);
     }
 }

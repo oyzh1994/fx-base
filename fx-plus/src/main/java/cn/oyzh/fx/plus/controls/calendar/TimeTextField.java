@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controls.calendar;
 
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.plus.skin.TimeTextFieldSkin;
+import javafx.scene.control.Skin;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -11,10 +13,6 @@ import java.text.SimpleDateFormat;
  * @since 2024/07/21
  */
 public class TimeTextField extends LimitTextField {
-
-    {
-        this.setSkin(new TimeTextFieldSkin(this));
-    }
 
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
 
@@ -33,5 +31,10 @@ public class TimeTextField extends LimitTextField {
         } else {
             super.setValue(val);
         }
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new TimeTextFieldSkin(this);
     }
 }

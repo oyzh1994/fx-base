@@ -13,6 +13,15 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MouseUtil {
 
+
+    public static double getMouseX() {
+        return FXUtil.getRobot().getMouseX();
+    }
+
+    public static double getMouseY() {
+        return FXUtil.getRobot().getMouseY();
+    }
+
     /**
      * 是否单击
      *

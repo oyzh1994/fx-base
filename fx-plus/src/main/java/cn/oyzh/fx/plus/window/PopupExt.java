@@ -50,6 +50,11 @@ public class PopupExt extends Popover implements PopupWrapper {
     }
 
     @Override
+    public void showPopup(Node owner, double x, double y) {
+        super.show(owner, x, y);
+    }
+
+    @Override
     public Node content() {
         return super.getContentNode();
     }

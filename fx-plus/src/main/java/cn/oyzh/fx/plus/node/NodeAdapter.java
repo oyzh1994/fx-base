@@ -169,6 +169,21 @@ public interface NodeAdapter extends EventTarget {
     /**
      * 添加子节点
      *
+     * @param nodes 子节点列表
+     */
+    default void addChild(List<? extends Node> nodes) {
+        if (nodes != null) {
+            if (this instanceof Pane pane) {
+                FXUtil.runWait(() -> pane.getChildren().addAll(nodes));
+            } else if (this instanceof Group group) {
+                FXUtil.runWait(() -> group.getChildren().addAll(nodes));
+            }
+        }
+    }
+
+    /**
+     * 添加子节点
+     *
      * @param index 下标
      * @param node  子节点
      */

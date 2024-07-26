@@ -1,6 +1,7 @@
-package cn.oyzh.fx.plus.controls.calendar;
+package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import javafx.scene.control.Skin;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -11,10 +12,6 @@ import java.text.SimpleDateFormat;
  * @since 2024/07/19
  */
 public class DateTimeTextField extends LimitTextField {
-
-    {
-        this.setSkin(new DateTimeTextFieldSkin(this));
-    }
 
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -40,5 +37,10 @@ public class DateTimeTextField extends LimitTextField {
         } else {
             super.setValue(val);
         }
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new DateTimeTextFieldSkin(this);
     }
 }

@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.controls.file;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.plus.skin.FileTextFieldSkin;
+import javafx.scene.control.Skin;
 
 import java.io.File;
 
@@ -15,7 +17,6 @@ public class FileTextField extends LimitTextField {
 
     {
         this.setEditable(false);
-        this.setSkin(new FileTextFieldSkin(this));
     }
 
     /**
@@ -33,7 +34,7 @@ public class FileTextField extends LimitTextField {
     private byte[] data;
 
     public byte[] getData() {
-        File file = this.skin().file;
+        File file = this.skin().getFile();
         if (file == null) {
             data = new byte[]{};
         } else {
@@ -51,5 +52,11 @@ public class FileTextField extends LimitTextField {
                 this.data[i] = bytes[i];
             }
         }
+    }
+
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new FileTextFieldSkin(this);
     }
 }

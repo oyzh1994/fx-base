@@ -2,7 +2,9 @@ package cn.oyzh.fx.plus.controls.search;
 
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.plus.skin.SearchTextFieldSkin;
 import javafx.event.EventHandler;
+import javafx.scene.control.Skin;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,26 +15,6 @@ import lombok.Setter;
  * @since 2023/10/24
  */
 public class SearchTextField extends LimitTextField {
-
-    {
-        this.setSkin(new SearchTextFieldSkin(this) {
-            @Override
-            protected void onSearch(String text) {
-                super.onSearch(text);
-                if (onSearch != null) {
-                    onSearch.handle(SearchEvent.searchTrigger(text));
-                }
-            }
-
-            @Override
-            protected void onHistorySelected(String text) {
-                super.onHistorySelected(text);
-                if (onHistorySelected != null) {
-                    onHistorySelected.handle(SearchEvent.historySelected(text));
-                }
-            }
-        });
-    }
 
     /**
      * 搜索触发事件
@@ -73,5 +55,26 @@ public class SearchTextField extends LimitTextField {
      */
     public SearchHistoryPopup getHistoryPopup() {
         return this.skin().getHistoryPopup();
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new SearchTextFieldSkin(this) {
+            @Override
+            protected void onSearch(String text) {
+                super.onSearch(text);
+                if (onSearch != null) {
+                    onSearch.handle(SearchEvent.searchTrigger(text));
+                }
+            }
+
+            @Override
+            protected void onHistorySelected(String text) {
+                super.onHistorySelected(text);
+                if (onHistorySelected != null) {
+                    onHistorySelected.handle(SearchEvent.historySelected(text));
+                }
+            }
+        };
     }
 }
