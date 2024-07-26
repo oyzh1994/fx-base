@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
+import javafx.scene.control.Skin;
 
 /**
  * 可清除文本域
@@ -9,10 +10,6 @@ import cn.oyzh.fx.plus.skin.ClearableTextFieldSkin;
  * @since 2023/08/15
  */
 public class ClearableTextField extends LimitTextField {
-
-    {
-        this.setSkin(new ClearableTextFieldSkin(this));
-    }
 
     public ClearableTextField( ) {
         super();
@@ -29,6 +26,11 @@ public class ClearableTextField extends LimitTextField {
     public ClearableTextField(String text, Long maxLen) {
         super.setText(text);
         this.setMaxLen(maxLen);
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new ClearableTextFieldSkin(this);
     }
 
 }

@@ -110,6 +110,7 @@ public class SelectTextFiledSkin extends ActionTextFieldSkinExt {
 
     public SelectTextFiledSkin(TextField textField) {
         super(textField, new SelectSVGGlyph("15,12"));
+        this.button.disappear();
         this.button.setTipText(I18nHelper.select());
     }
 
@@ -126,5 +127,14 @@ public class SelectTextFiledSkin extends ActionTextFieldSkinExt {
         double areaX = w + x - btnSize - 12;
         // 设置位置
         super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+    }
+
+    @Override
+    protected void updateButtonVisibility() {
+        boolean visible = this.getSkinnable().isVisible();
+        boolean disable = this.getSkinnable().isDisable();
+        boolean hasFocus = this.getSkinnable().isFocused();
+        boolean shouldBeVisible = !disable && visible && hasFocus;
+        this.button.setVisible(shouldBeVisible);
     }
 }

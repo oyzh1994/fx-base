@@ -37,7 +37,16 @@ public class FileTextFieldSkin extends ActionTextFieldSkinExt {
 
     public FileTextFieldSkin(TextField textField) {
         super(textField, new ChooseSVGGlyph("13"));
-        // 初始化按钮
+        this.button.disappear();
         this.button.setTipText(I18nHelper.choose());
+    }
+
+    @Override
+    protected void updateButtonVisibility() {
+        boolean visible = this.getSkinnable().isVisible();
+        boolean disable = this.getSkinnable().isDisable();
+        boolean hasFocus = this.getSkinnable().isFocused();
+        boolean shouldBeVisible = !disable && visible && hasFocus;
+        this.button.setVisible(shouldBeVisible);
     }
 }

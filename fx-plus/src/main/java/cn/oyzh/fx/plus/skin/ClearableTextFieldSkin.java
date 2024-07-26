@@ -25,7 +25,7 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkinExt {
 
     public ClearableTextFieldSkin(TextField textField) {
         super(textField, new CloseSVGGlyph("10"));
-        this.button.setVisible(false);
+        this.button.disappear();
         this.button.setTipText(I18nHelper.clear());
     }
 

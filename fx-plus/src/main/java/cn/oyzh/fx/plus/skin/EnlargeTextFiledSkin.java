@@ -90,7 +90,16 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkinExt {
 
     public EnlargeTextFiledSkin(TextField textField) {
         super(textField, new EnlargeSVGGlyph("13"));
-        // 初始化按钮
+        this.button.disappear();
         this.button.setTipText(I18nHelper.enlarge());
+    }
+
+    @Override
+    protected void updateButtonVisibility() {
+        boolean visible = this.getSkinnable().isVisible();
+        boolean disable = this.getSkinnable().isDisable();
+        boolean hasFocus = this.getSkinnable().isFocused();
+        boolean shouldBeVisible = !disable && visible && hasFocus;
+        this.button.setVisible(shouldBeVisible);
     }
 }

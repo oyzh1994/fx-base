@@ -115,6 +115,16 @@ public class DateTextFieldSkin extends ActionTextFieldSkinExt {
 
     public DateTextFieldSkin(TextField textField) {
         super(textField,new DateSVGGlyph("13"));
+        this.button.disappear();
         this.button.setTipText(I18nHelper.choose());
+    }
+
+    @Override
+    protected void updateButtonVisibility() {
+        boolean visible = this.getSkinnable().isVisible();
+        boolean disable = this.getSkinnable().isDisable();
+        boolean hasFocus = this.getSkinnable().isFocused();
+        boolean shouldBeVisible = !disable && visible && hasFocus;
+        this.button.setVisible(shouldBeVisible);
     }
 }

@@ -30,6 +30,16 @@ public class ExampleTextFieldSkin extends ActionTextFieldSkinExt {
 
     public ExampleTextFieldSkin(TextField textField) {
         super(textField,new ExampleSVGGlyph("13"));
+        this.button.disappear();
         this.button.setTipText(I18nHelper.example());
+    }
+
+    @Override
+    protected void updateButtonVisibility() {
+        boolean visible = this.getSkinnable().isVisible();
+        boolean disable = this.getSkinnable().isDisable();
+        boolean hasFocus = this.getSkinnable().isFocused();
+        boolean shouldBeVisible = !disable && visible && hasFocus;
+        this.button.setVisible(shouldBeVisible);
     }
 }

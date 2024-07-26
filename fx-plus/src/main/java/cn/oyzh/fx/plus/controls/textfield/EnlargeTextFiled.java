@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.skin.ChooseTextFieldSkin;
 import cn.oyzh.fx.plus.skin.EnlargeTextFiledSkin;
 import javafx.scene.control.Skin;
 
