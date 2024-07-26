@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -101,4 +102,9 @@ public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapt
     public void initNode() {
 
     }
+
+    public void setTextExt(String text) {
+        FXUtil.runWait(() -> super.setText(text));
+    }
+
 }
