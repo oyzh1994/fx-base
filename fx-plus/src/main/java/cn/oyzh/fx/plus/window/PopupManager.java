@@ -72,11 +72,11 @@ public class PopupManager {
             throw new RuntimeException("can not find annotation[" + PopupAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
         }
         // 获取弹窗
-        PopupAdapter window = getPopup(clazz);
-        // 创建弹窗
-        if (window != null) {
-            window.disappear();
+        PopupAdapter adapter = getPopup(clazz);
+        if (adapter != null) {
+            adapter.disappear();
         }
+        // 创建弹窗
         PopupExt popup = new PopupExt(attribute);
         if (arrowLocation != null) {
             popup.setArrowLocation(arrowLocation);

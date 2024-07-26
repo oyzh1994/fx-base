@@ -122,7 +122,7 @@ public class DragUtil {
      * @param scene 场景
      */
     public static void clearDragFile(Scene scene) {
-        if (scene.getProperties().containsKey("_drapFileHandler")) {
+        if (scene != null && scene.getProperties().containsKey("_drapFileHandler")) {
             scene.getProperties().remove("_drapFileHandler");
             scene.setOnDragOver(null);
             scene.setOnDragExited(null);

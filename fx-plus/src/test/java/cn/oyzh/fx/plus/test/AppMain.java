@@ -28,7 +28,7 @@ import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.trees.RichTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.TextUtil;
-import cn.oyzh.fx.plus.value.DoubleTextValueFactory;
+// import cn.oyzh.fx.plus.value.DoubleTextValueFactory;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -898,90 +898,90 @@ public class AppMain extends Application {
 
     }
 
-    private void test25(Stage stage) {
-        Spinner<Double> spinner = new Spinner<>(new DoubleTextValueFactory() {
-        }
-
-        );
-
-
-//        Spinner<Double> spinner = new Spinner<>(new SpinnerValueFactory<Double>() {
-//            @Override
-//            public void decrement(int i) {
+//     private void test25(Stage stage) {
+//         Spinner<Double> spinner = new Spinner<>(new DoubleTextValueFactory() {
+//         }
 //
-//            }
+//         );
 //
-//            @Override
-//            public void increment(int i) {
 //
-//            }
-//        }
+// //        Spinner<Double> spinner = new Spinner<>(new SpinnerValueFactory<Double>() {
+// //            @Override
+// //            public void decrement(int i) {
+// //
+// //            }
+// //
+// //            @Override
+// //            public void increment(int i) {
+// //
+// //            }
+// //        }
+// //
+// //        );
 //
-//        );
-
-//        DoubleSpinnerValueFactory valueFactory=new DoubleSpinnerValueFactory();
-
-        TextField field = spinner.getEditor();
-//        field.setTextFormatter(new TextFormatter<>(new SimpleStringConverter<>() {
-//            @Override
-//            public Object fromString(String s) {
-//                System.out.println(s);
-//                return super.fromString(s);
-//            }
-//        }));
-
+// //        DoubleSpinnerValueFactory valueFactory=new DoubleSpinnerValueFactory();
 //
-
-//        String textLast;
-//        boolean ignore=false;
-        field.textProperty().addListener((observableValue, s, t1) -> {
-
-
-            System.out.println("++++++++");
-        });
-
-
-        field.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            // System.out.println("---------");
-            // System.out.println(field.getSelection().getStart());
-            // System.out.println(field.getSelection().getEnd());
-            // System.out.println(field.getCaretPosition());
-            if (!TextUtil.checkNumber(event, field)) {
-                System.out.println(",,,,,,,,,,,1");
-                event.consume();
-            }
-        });
-
-        field.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-            // System.out.println("---------");
-            // System.out.println(field.getSelection().getStart());
-            // System.out.println(field.getSelection().getEnd());
-            // System.out.println(field.getCaretPosition());
-            if (!TextUtil.checkNumber(event, field)) {
-                System.out.println(",,,,,,,,,,,2");
-                event.consume();
-            }
-        });
-        field.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-            // System.out.println("---------");
-            // System.out.println(field.getSelection().getStart());
-            // System.out.println(field.getSelection().getEnd());
-            // System.out.println(field.getCaretPosition());
-            if (!TextUtil.checkNumber(event, field)) {
-                System.out.println(",,,,,,,,,,,2");
-                event.consume();
-            }
-        });
-
-        field.paste();
-
-
-        Spinner<Integer> spinner2 = new Spinner<>(new IntegerSpinnerValueFactory(0, 100));
-        VBox vBox = new VBox(spinner, spinner2);
-        spinner.setEditable(true);
-        stage.setScene(new Scene(vBox, 500, 500));
-        stage.show();
-    }
+//         TextField field = spinner.getEditor();
+// //        field.setTextFormatter(new TextFormatter<>(new SimpleStringConverter<>() {
+// //            @Override
+// //            public Object fromString(String s) {
+// //                System.out.println(s);
+// //                return super.fromString(s);
+// //            }
+// //        }));
+//
+// //
+//
+// //        String textLast;
+// //        boolean ignore=false;
+//         field.textProperty().addListener((observableValue, s, t1) -> {
+//
+//
+//             System.out.println("++++++++");
+//         });
+//
+//
+//         field.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+//             // System.out.println("---------");
+//             // System.out.println(field.getSelection().getStart());
+//             // System.out.println(field.getSelection().getEnd());
+//             // System.out.println(field.getCaretPosition());
+//             if (!TextUtil.checkNumber(event, field)) {
+//                 System.out.println(",,,,,,,,,,,1");
+//                 event.consume();
+//             }
+//         });
+//
+//         field.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+//             // System.out.println("---------");
+//             // System.out.println(field.getSelection().getStart());
+//             // System.out.println(field.getSelection().getEnd());
+//             // System.out.println(field.getCaretPosition());
+//             if (!TextUtil.checkNumber(event, field)) {
+//                 System.out.println(",,,,,,,,,,,2");
+//                 event.consume();
+//             }
+//         });
+//         field.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+//             // System.out.println("---------");
+//             // System.out.println(field.getSelection().getStart());
+//             // System.out.println(field.getSelection().getEnd());
+//             // System.out.println(field.getCaretPosition());
+//             if (!TextUtil.checkNumber(event, field)) {
+//                 System.out.println(",,,,,,,,,,,2");
+//                 event.consume();
+//             }
+//         });
+//
+//         field.paste();
+//
+//
+//         Spinner<Integer> spinner2 = new Spinner<>(new IntegerSpinnerValueFactory(0, 100));
+//         VBox vBox = new VBox(spinner, spinner2);
+//         spinner.setEditable(true);
+//         stage.setScene(new Scene(vBox, 500, 500));
+//         stage.show();
+//     }
 
     private void test26(Stage stage) {
         SelectTextFiled filed = new SelectTextFiled();

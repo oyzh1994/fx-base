@@ -238,4 +238,17 @@ public class StageManager {
         transparentStage.setY(-1000);
         return transparentStage;
     }
+
+    // private static LoadingStage LoadingStage;
+    //
+    // public static void showWithLoading(StageAdapter adapter) {
+    //     // if (LoadingStage == null) {
+    //         LoadingStage = new LoadingStage();
+    //     // }
+    //     LoadingStage.display();
+    //     FXUtil.runLater(() -> {
+    //         adapter.display();
+    //         LoadingStage.disappear();
+    //     }, 200);
+    // }
 }

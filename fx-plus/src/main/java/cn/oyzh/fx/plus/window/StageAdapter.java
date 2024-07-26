@@ -35,6 +35,18 @@ import java.util.function.Consumer;
  */
 public interface StageAdapter extends WindowAdapter {
 
+    @Override
+    default void onWindowClosed() {
+        try {
+            WindowAdapter.super.onWindowClosed();
+            DragUtil.clearDragFile(this.scene());
+            this.setTitleExt(null);
+            this.scene(null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * 获取舞台
      *
@@ -69,6 +81,17 @@ public interface StageAdapter extends WindowAdapter {
             return this.stage().getScene();
         }
         return null;
+    }
+
+    /**
+     * 设置场景
+     *
+     * @param scene 场景
+     */
+    default void scene(Scene scene) {
+        if (scene != null) {
+            this.stage().setScene(scene);
+        }
     }
 
     /**

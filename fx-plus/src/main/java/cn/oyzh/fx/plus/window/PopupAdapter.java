@@ -19,6 +19,16 @@ import lombok.NonNull;
  */
 public interface PopupAdapter extends WindowAdapter {
 
+    @Override
+    default void onWindowClosed() {
+        try {
+            WindowAdapter.super.onWindowClosed();
+            this.content(null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * 获取弹窗
      *
