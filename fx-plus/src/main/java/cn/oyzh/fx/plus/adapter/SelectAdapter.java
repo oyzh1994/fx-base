@@ -564,8 +564,10 @@ public interface SelectAdapter<T> extends PropAdapter {
         // }
         if (this instanceof ListView<?> node) {
             node.getSelectionModel().selectLast();
+            node.scrollTo(this.getItemSize());
         } else if (this instanceof TableView<?> node) {
             node.getSelectionModel().selectLast();
+            node.scrollTo(this.getItemSize());
         }
     }
 }
