@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.mouse;
 
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
@@ -50,7 +50,7 @@ public class MouseListener {
      * @param mouseHandler 按键处理器
      */
     private static void addHandler(Object target, MouseHandler mouseHandler) {
-        if (target instanceof StageWrapper view) {
+        if (target instanceof StageAdapter view) {
             target = view.root();
         } else if (target instanceof Stage stage) {
             target = stage.getScene();

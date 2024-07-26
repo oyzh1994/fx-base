@@ -21,7 +21,7 @@ import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.fx.plus.window.StageManager;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
@@ -863,7 +863,7 @@ public class AppMain extends Application {
     }
 
     private void test24(Stage stage) {
-        StageWrapper wrapper = StageManager.newStage(null);
+        StageAdapter wrapper = StageManager.newStage(null);
         Message message = new Message("测试", "内容");
         message.setPrefWidth(100);
         message.setPrefHeight(100);

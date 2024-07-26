@@ -11,14 +11,14 @@ import javafx.util.Duration;
  * @author oyzh
  * @since 2024/07/12
  */
-public class PopupExt extends Popover implements PopupWrapper {
+public class PopupExt extends Popover implements PopupAdapter {
 
     public PopupExt() {
         this.initDefault();
         // 监听显示属性
         this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                this.onClosed();
+                this.onWindowClosed();
             }
         });
         this.setProp(PopupManager.REF_ATTR, this);

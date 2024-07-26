@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.plus.window.StageManager;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -90,8 +90,8 @@ public class ThemeManager {
         }
         try {
             // 变更颜色
-            List<StageWrapper> wrappers = StageManager.allStages();
-            for (StageWrapper wrapper : wrappers) {
+            List<StageAdapter> wrappers = StageManager.allStages();
+            for (StageAdapter wrapper : wrappers) {
                 applyCycle(wrapper.root(), style);
             }
             // 监听系统主题

@@ -28,12 +28,12 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * 舞台包装
+ * 舞台适配器
  *
  * @author oyzh
  * @since 2023/10/11
  */
-public interface StageWrapper extends WindowWrapper {
+public interface StageAdapter extends WindowAdapter {
 
     /**
      * 获取舞台
@@ -236,7 +236,7 @@ public interface StageWrapper extends WindowWrapper {
         // 监听显示属性
         this.stage().showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                this.onClosed();
+                this.onWindowClosed();
             }
         });
         NodeManager.init(this);

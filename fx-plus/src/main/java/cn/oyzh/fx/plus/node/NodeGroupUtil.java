@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -63,7 +63,7 @@ public class NodeGroupUtil {
         if (node instanceof NodeGroup group && hasGroupId(group, groupId)) {
             groups.add(group);
         }
-        if (node instanceof StageWrapper wrapper) {
+        if (node instanceof StageAdapter wrapper) {
             list(wrapper.root(), groupId, groups);
         } else if (node instanceof Stage stage) {
             list(stage.getScene().getRoot(), groupId, groups);

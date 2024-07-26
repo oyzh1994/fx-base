@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
  * @since 2023/10/12
  */
 @Getter
-public class PrimaryStage implements StageWrapper, OpacityAdapter {
+public class PrimaryStage implements StageAdapter, OpacityAdapter {
 
     /**
      * 舞台

@@ -12,12 +12,12 @@ import javafx.stage.PopupWindow;
 import lombok.NonNull;
 
 /**
- * 弹窗包装
+ * 弹窗适配器
  *
  * @author oyzh
  * @since 2024/07/12
  */
-public interface PopupWrapper extends WindowWrapper {
+public interface PopupAdapter extends WindowAdapter {
 
     /**
      * 获取弹窗
@@ -144,7 +144,7 @@ public interface PopupWrapper extends WindowWrapper {
         // 监听显示属性
         this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                this.onClosed();
+                this.onWindowClosed();
             }
         });
     }

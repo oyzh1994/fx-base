@@ -27,10 +27,10 @@ public class PopupManager {
      * @param controllerClass controller类
      * @return PopupWrapper
      */
-    public static PopupWrapper getPopup(@NonNull Class<?> controllerClass) {
+    public static PopupAdapter getPopup(@NonNull Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             Object reference = window.getProperties().get(REF_ATTR);
-            if (reference instanceof PopupWrapper wrapper && wrapper.controllerClass() == controllerClass) {
+            if (reference instanceof PopupAdapter wrapper && wrapper.controllerClass() == controllerClass) {
                 return wrapper;
             }
         }
@@ -44,7 +44,7 @@ public class PopupManager {
      * @param owner           父组件
      */
     public static void showPopup(@NonNull Class<?> controllerClass, @NonNull Node owner) {
-        PopupWrapper window = parsePopup(controllerClass);
+        PopupAdapter window = parsePopup(controllerClass);
         window.showPopup(owner);
     }
 
@@ -54,7 +54,7 @@ public class PopupManager {
      * @param clazz 弹窗类
      * @return PopupWrapper
      */
-    public static PopupWrapper parsePopup(@NonNull Class<?> clazz) {
+    public static PopupAdapter parsePopup(@NonNull Class<?> clazz) {
         return parsePopup(clazz, null, null);
     }
 
@@ -66,13 +66,13 @@ public class PopupManager {
      * @param anchorLocation 弹窗位置
      * @return PopupWrapper
      */
-    public static PopupWrapper parsePopup(@NonNull Class<?> clazz, Popover.ArrowLocation arrowLocation, PopupWindow.AnchorLocation anchorLocation) {
+    public static PopupAdapter parsePopup(@NonNull Class<?> clazz, Popover.ArrowLocation arrowLocation, PopupWindow.AnchorLocation anchorLocation) {
         PopupAttribute attribute = clazz.getAnnotation(PopupAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + PopupAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
         }
         // 获取弹窗
-        PopupWrapper window = getPopup(clazz);
+        PopupAdapter window = getPopup(clazz);
         // 创建弹窗
         if (window != null) {
             window.disappear();

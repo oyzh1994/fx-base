@@ -13,7 +13,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/10/12
  */
-public class StageExt extends Stage implements StageWrapper, OpacityAdapter {
+public class StageExt extends Stage implements StageAdapter, OpacityAdapter {
 
     public StageExt(@NonNull StageAttribute attribute, Window owner) {
         this.init(attribute, owner);

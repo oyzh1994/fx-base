@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.keyboard;
 
 import cn.hutool.log.StaticLog;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
@@ -81,7 +81,7 @@ public class KeyListener {
      * @param keyHandler 按键处理器
      */
     private static void addHandler(Object target, KeyHandler keyHandler) {
-        if (target instanceof StageWrapper wrapper) {
+        if (target instanceof StageAdapter wrapper) {
             target = wrapper.root();
         } else if (target instanceof Stage stage) {
             target = stage.getScene();

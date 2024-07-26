@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.handler.StateManager;
-import cn.oyzh.fx.plus.window.PopupWrapper;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.PopupAdapter;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.scene.Node;
@@ -48,11 +48,11 @@ public interface StateAdapter extends PropAdapter {
             if (window.isShowing()) {
                 FXUtil.runWait(window::hide);
             }
-        } else if (this instanceof PopupWrapper wrapper) {
+        } else if (this instanceof PopupAdapter wrapper) {
             if (wrapper.popup().isShowing()) {
                 FXUtil.runWait(wrapper.popup()::hide);
             }
-        } else if (this instanceof StageWrapper wrapper) {
+        } else if (this instanceof StageAdapter wrapper) {
             if (wrapper.stage().isShowing()) {
                 FXUtil.runWait(wrapper.stage()::close);
             }
@@ -82,7 +82,7 @@ public interface StateAdapter extends PropAdapter {
             if (!stage.isShowing()) {
                 FXUtil.runWait(stage::show);
             }
-        } else if (this instanceof StageWrapper stage) {
+        } else if (this instanceof StageAdapter stage) {
             if (!stage.stage().isShowing()) {
                 FXUtil.runWait(stage.stage()::show);
             }
@@ -114,7 +114,7 @@ public interface StateAdapter extends PropAdapter {
             if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
                 this.managedBindVisible(scene.getRoot());
             }
-        } else if (this instanceof StageWrapper stage) {
+        } else if (this instanceof StageAdapter stage) {
             if (stage.root() != null && !stage.root().disableProperty().isBound()) {
                 this.managedBindVisible(stage.root());
             }

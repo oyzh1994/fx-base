@@ -15,7 +15,7 @@ public interface StageListener extends WindowListener{
      *
      * @param stage 舞台扩展
      */
-    void onStageInitialize(StageWrapper stage);
+    void onStageInitialize(StageAdapter stage);
 
     /**
      * 舞台已显示事件

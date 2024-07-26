@@ -1,15 +1,12 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.window.PopupWrapper;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.PopupAdapter;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
-import javafx.stage.PopupWindow;
 import javafx.stage.Window;
-
-import javax.swing.*;
 
 /**
  * 属性适配器
@@ -36,9 +33,9 @@ public interface PropAdapter {
             scene.getProperties().put(key, val);
         } else if (this instanceof Window window) {
             window.getProperties().put(key, val);
-        } else if (this instanceof PopupWrapper wrapper && wrapper.popup() != null) {
+        } else if (this instanceof PopupAdapter wrapper && wrapper.popup() != null) {
             wrapper.popup().getProperties().put(key, val);
-        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
             stage.stage().getProperties().put(key, val);
         }
     }
@@ -60,9 +57,9 @@ public interface PropAdapter {
             return (T) scene.getProperties().get(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().get(key);
-        } else if (this instanceof PopupWrapper wrapper) {
+        } else if (this instanceof PopupAdapter wrapper) {
             return (T) wrapper.popup().getProperties().get(key);
-        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().get(key);
         }
         return null;
@@ -90,10 +87,10 @@ public interface PropAdapter {
         if (this instanceof Window window) {
             return window.getProperties().containsKey(key);
         }
-        if (this instanceof PopupWrapper wrapper) {
+        if (this instanceof PopupAdapter wrapper) {
             return wrapper.popup().getProperties().containsKey(key);
         }
-        if (this instanceof StageWrapper stage && stage.stage() != null) {
+        if (this instanceof StageAdapter stage && stage.stage() != null) {
             return stage.stage().getProperties().containsKey(key);
         }
         return false;
@@ -117,9 +114,9 @@ public interface PropAdapter {
             return (T) scene.getProperties().remove(key);
         } else if (this instanceof Window window) {
             return (T) window.getProperties().remove(key);
-        } else if (this instanceof PopupWrapper wrapper && wrapper.popup() != null) {
+        } else if (this instanceof PopupAdapter wrapper && wrapper.popup() != null) {
             return (T) wrapper.popup().getProperties().remove(key);
-        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
             return (T) stage.stage().getProperties().remove(key);
         }
         return null;
@@ -139,9 +136,9 @@ public interface PropAdapter {
             scene.getProperties().clear();
         } else if (this instanceof Window window) {
             window.getProperties().clear();
-        } else if (this instanceof PopupWrapper wrapper && wrapper.popup() != null) {
+        } else if (this instanceof PopupAdapter wrapper && wrapper.popup() != null) {
             wrapper.popup().getProperties().clear();
-        } else if (this instanceof StageWrapper stage && stage.stage() != null) {
+        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
             stage.stage().getProperties().clear();
         }
     }

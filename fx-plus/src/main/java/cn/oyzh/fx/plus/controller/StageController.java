@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.StageListener;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,19 +21,19 @@ public class StageController extends Controller implements StageListener, EventL
      * 舞台
      */
     @Getter
-    protected StageWrapper stage;
+    protected StageAdapter stage;
 
     /**
      * 设置舞台
      *
      * @param stage 舞台
      */
-    protected void setWindow(@NonNull StageWrapper stage) {
+    protected void setWindow(@NonNull StageAdapter stage) {
         this.stage = stage;
     }
 
     @Override
-    public void onStageInitialize(StageWrapper stage) {
+    public void onStageInitialize(StageAdapter stage) {
         // 设置页面
         this.setWindow(stage);
         // 处理标题

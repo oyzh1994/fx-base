@@ -5,17 +5,17 @@ import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 
 /**
- * 窗口包装
+ * 窗口适配器
  *
  * @author oyzh
  * @since 2024/07/12
  */
-public interface WindowWrapper extends StateAdapter, ThemeAdapter {
+public interface WindowAdapter extends StateAdapter, ThemeAdapter {
 
     /**
      * 关闭事件
      */
-    default void onClosed() {
+    default void onWindowClosed() {
         try {
             this.unSwitchOnTab();
             this.unHideOnEscape();

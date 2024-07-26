@@ -5,7 +5,7 @@ import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.window.StageManager;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
@@ -154,7 +154,7 @@ public class Toast {
         box.setPrefWidth(boxWidth + 20);
         // 初始化面板
         if (owner == null) {// Stage
-            StageWrapper wrapper = StageManager.newStage(null);
+            StageAdapter wrapper = StageManager.newStage(null);
             Stage stage = wrapper.stage();
             this.window = stage;
             Scene scene = new Scene(box);
@@ -182,7 +182,7 @@ public class Toast {
             });
         }
         // 显示窗口
-        if (this.window instanceof StageWrapper wrapper) {
+        if (this.window instanceof StageAdapter wrapper) {
             wrapper.changeTheme(ThemeManager.currentTheme());
             wrapper.display();
         } else if (this.window instanceof FXPopup popup) {

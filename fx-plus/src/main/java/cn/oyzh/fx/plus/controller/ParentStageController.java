@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.WindowEvent;
 import lombok.NonNull;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class ParentStageController extends StageController {
 
     @Override
-    protected void setWindow(@NonNull StageWrapper stage) {
+    protected void setWindow(@NonNull StageAdapter stage) {
         super.setWindow(stage);
         if (CollUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {

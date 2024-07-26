@@ -2,12 +2,9 @@ package cn.oyzh.fx.plus.controller;
 
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.PopupListener;
-import cn.oyzh.fx.plus.window.PopupWrapper;
-import javafx.stage.WindowEvent;
+import cn.oyzh.fx.plus.window.PopupAdapter;
 import lombok.Getter;
 import lombok.NonNull;
-
-import java.util.Locale;
 
 /**
  * 弹窗组件控制器
@@ -21,19 +18,19 @@ public class PopupController extends Controller implements PopupListener {
      * 窗口
      */
     @Getter
-    protected PopupWrapper window;
+    protected PopupAdapter window;
 
     /**
      * 设置窗口
      *
      * @param window 窗口
      */
-    protected void setWindow(@NonNull PopupWrapper window) {
+    protected void setWindow(@NonNull PopupAdapter window) {
         this.window = window;
     }
 
     @Override
-    public void onPopupInitialize(PopupWrapper window) {
+    public void onPopupInitialize(PopupAdapter window) {
         // 设置页面
         this.setWindow(window);
         NodeManager.init(this);

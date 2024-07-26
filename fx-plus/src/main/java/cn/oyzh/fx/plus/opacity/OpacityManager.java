@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.opacity;
 
 import cn.oyzh.fx.plus.window.StageManager;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.WindowManager;
 import javafx.stage.Window;
 import lombok.experimental.UtilityClass;
@@ -55,8 +55,8 @@ public class OpacityManager {
                         adapter.changeOpacity(opacity);
                     }
                 }
-                List<StageWrapper> stages = StageManager.allStages();
-                for (StageWrapper stage : stages) {
+                List<StageAdapter> stages = StageManager.allStages();
+                for (StageAdapter stage : stages) {
                     if (stage instanceof OpacityAdapter adapter) {
                         adapter.changeOpacity(opacity);
                     }

@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.window;
 
-import javafx.stage.WindowEvent;
-
 /**
  * 窗口监听接口
  *
@@ -15,5 +13,5 @@ public interface PopupListener extends WindowListener {
      *
      * @param window 窗口扩展
      */
-    void onPopupInitialize(PopupWrapper window);
+    void onPopupInitialize(PopupAdapter window);
 }

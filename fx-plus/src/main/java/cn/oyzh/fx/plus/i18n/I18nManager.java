@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.i18n;
 
 import cn.oyzh.fx.plus.window.StageManager;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -67,8 +67,8 @@ public class I18nManager {
         }
         try {
             // 变更颜色
-            List<StageWrapper> wrappers = StageManager.allStages();
-            for (StageWrapper wrapper : wrappers) {
+            List<StageAdapter> wrappers = StageManager.allStages();
+            for (StageAdapter wrapper : wrappers) {
                 if (wrapper.controller() instanceof I18nAdapter adapter) {
                     adapter.changeLocale(locale);
                 }

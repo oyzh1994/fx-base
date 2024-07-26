@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.util;
 
 import atlantafx.base.theme.Styles;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -102,7 +102,7 @@ public class NodeUtil {
             return Math.max(w1, w2);
         }
 
-        if (target instanceof StageWrapper wrapper) {
+        if (target instanceof StageAdapter wrapper) {
             double w1 = wrapper.stage().getWidth();
             double w2 = wrapper.stage().getMinWidth();
             return Math.max(w1, w2);
@@ -146,7 +146,7 @@ public class NodeUtil {
             return Math.max(w1, w2);
         }
 
-        if (target instanceof StageWrapper wrapper) {
+        if (target instanceof StageAdapter wrapper) {
             double w1 = wrapper.stage().getHeight();
             double w2 = wrapper.stage().getMinHeight();
             return Math.max(w1, w2);
@@ -312,7 +312,7 @@ public class NodeUtil {
             if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
                 scene.getRoot().setDisable(true);
             }
-        } else if (obj instanceof StageWrapper stage) {
+        } else if (obj instanceof StageAdapter stage) {
             if (stage.root() != null && !stage.root().disableProperty().isBound()) {
                 stage.root().setDisable(true);
             }
@@ -342,7 +342,7 @@ public class NodeUtil {
             if (scene != null && scene.getRoot() != null && !scene.getRoot().disableProperty().isBound()) {
                 scene.getRoot().setDisable(false);
             }
-        } else if (obj instanceof StageWrapper stage) {
+        } else if (obj instanceof StageAdapter stage) {
             if (stage.root() != null && !stage.root().disableProperty().isBound()) {
                 stage.root().setDisable(false);
             }
@@ -368,7 +368,7 @@ public class NodeUtil {
                     }
                 });
                 case Stage stage -> nodeOnCtrlS(stage.getScene(), action);
-                case StageWrapper stage -> nodeOnCtrlS(stage.scene(), action);
+                case StageAdapter stage -> nodeOnCtrlS(stage.scene(), action);
                 default -> {
                 }
             }

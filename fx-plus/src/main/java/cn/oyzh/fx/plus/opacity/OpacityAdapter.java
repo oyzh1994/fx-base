@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.opacity;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
-import cn.oyzh.fx.plus.window.StageWrapper;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.Window;
 
 
@@ -53,7 +53,7 @@ public interface OpacityAdapter extends PropAdapter {
         if (this.isEnableOpacity()) {
             switch (this) {
                 case Window window -> window.setOpacity(opacity);
-                case StageWrapper wrapper -> wrapper.stage().setOpacity(opacity);
+                case StageAdapter wrapper -> wrapper.stage().setOpacity(opacity);
                 default -> {
                 }
             }
