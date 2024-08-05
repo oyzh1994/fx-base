@@ -25,4 +25,17 @@ public class KeyboardUtil {
         }
         return event.isControlDown() && event.getCode() == KeyCode.S;
     }
+
+    /**
+     * 是否按下ctrl r
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isCtrlR(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return event.isControlDown() && event.getCode() == KeyCode.R;
+    }
 }
