@@ -266,12 +266,12 @@ public class PageBox<T> extends FlexFlowPane {
         this.jump.setPadding(new Insets(0, 0, 0, 0));
 
         // 设置边距
-        FlowPane.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
+        FlowPane.setMargin(this.jump, new Insets(0, 0, 0, 5));
         FlowPane.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
         FlowPane.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
         FlowPane.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
+        FlowPane.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
         FlowPane.setMargin(this.settingBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.jump, new Insets(0, 0, 0, 5));
 
         // 添加子节点
         this.setChild(this.firstBtn, this.prevBtn, this.jump, this.nextBtn, this.lastBtn, this.settingBtn);
