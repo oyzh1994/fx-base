@@ -80,9 +80,13 @@ public class PopupManager {
         PopupExt popup = new PopupExt(attribute);
         if (arrowLocation != null) {
             popup.setArrowLocation(arrowLocation);
+        } else {
+            popup.setArrowLocation(attribute.arrowLocation());
         }
         if (anchorLocation != null) {
             popup.setAnchorLocation(anchorLocation);
+        } else {
+            popup.setAnchorLocation(attribute.anchorLocation());
         }
         return popup;
     }

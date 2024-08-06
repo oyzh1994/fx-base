@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
+import atlantafx.base.controls.Popover;
+import javafx.stage.PopupWindow;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -37,4 +39,15 @@ public @interface PopupAttribute {
      */
     String[] cssUrls() default {};
 
+    /**
+     * 箭头位置
+     * @return 箭头位置
+     */
+    Popover.ArrowLocation arrowLocation() default Popover.ArrowLocation.LEFT_TOP;
+
+    /**
+     * 弹窗位置
+     * @return 弹窗位置
+     */
+    PopupWindow.AnchorLocation anchorLocation() default PopupWindow.AnchorLocation.WINDOW_TOP_LEFT;
 }

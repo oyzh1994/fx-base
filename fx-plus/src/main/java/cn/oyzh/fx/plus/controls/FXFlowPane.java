@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.layout.FlowPane;
@@ -16,7 +17,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXFlowPane extends FlowPane implements ThemeAdapter, FontAdapter, TipAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
+public class FXFlowPane extends FlowPane implements NodeGroup, ThemeAdapter, FontAdapter, TipAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
 
     {
         NodeManager.init(this);
@@ -95,5 +96,15 @@ public class FXFlowPane extends FlowPane implements ThemeAdapter, FontAdapter, T
     @Override
     public void initNode() {
 
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

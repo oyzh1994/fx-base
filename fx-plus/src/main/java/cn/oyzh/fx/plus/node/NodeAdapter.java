@@ -245,6 +245,23 @@ public interface NodeAdapter extends EventTarget {
      *
      * @param nodes 子节点列表
      */
+    default void setChild(Node... nodes) {
+        if (nodes != null && nodes.length != 0) {
+            FXUtil.runWait(() -> {
+                if (this instanceof Pane pane) {
+                    pane.getChildren().setAll(nodes);
+                } else if (this instanceof Group group) {
+                    group.getChildren().setAll(nodes);
+                }
+            });
+        }
+    }
+
+    /**
+     * 设置子节点
+     *
+     * @param nodes 子节点列表
+     */
     default void setChild(List<? extends Node> nodes) {
         if (nodes != null && !nodes.isEmpty()) {
             FXUtil.runWait(() -> {

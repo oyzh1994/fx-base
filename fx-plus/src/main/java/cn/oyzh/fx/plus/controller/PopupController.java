@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controller;
 
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.window.PopupListener;
 import cn.oyzh.fx.plus.window.PopupAdapter;
+import cn.oyzh.fx.plus.window.PopupListener;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -43,8 +43,12 @@ public class PopupController extends Controller implements PopupListener {
         }
     }
 
-   @Override
+    @Override
     protected <T> T getWindowProp(String key) {
         return this.window == null ? null : this.window.getProp(key);
+    }
+
+    protected <T> void submit(T obj) {
+        this.window.submit(obj);
     }
 }

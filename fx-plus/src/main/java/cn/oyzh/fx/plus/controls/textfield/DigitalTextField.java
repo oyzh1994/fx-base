@@ -88,7 +88,7 @@ public abstract class DigitalTextField extends LimitTextField {
         // 检查新值是否有效
         if (StrUtil.isNotBlank(newVal)) {
             // 获取当前皮肤
-            DigitalTextFieldSkin skin =  this.skin();
+            DigitalTextFieldSkin skin = this.skin();
             // 解析值
             Number number = NumberUtil.parseNumber(newVal);
             // 判断新值是否小于等于最小值，如果是则禁用减号按钮
@@ -223,5 +223,13 @@ public abstract class DigitalTextField extends LimitTextField {
     @Override
     protected Skin<?> createDefaultSkin() {
         return new DigitalTextFieldSkin(this, this::incrValue, this::decrValue);
+    }
+
+    public void setBtnMarginRight(float btnMarginRight) {
+        this.skin().setBtnMarginRight(btnMarginRight);
+    }
+
+    public float getBtnMarginRight() {
+        return this.skin().getBtnMarginRight();
     }
 }

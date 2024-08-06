@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author oyzh
@@ -27,6 +29,13 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
      * 减少按钮
      */
     protected SVGGlyph decrButton;
+
+    /**
+     * 按钮右边距
+     */
+    @Getter
+    @Setter
+    private float btnMarginRight = 8.0f;
 
     @Override
     protected void updateButtonVisibility() {
@@ -107,17 +116,17 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
         // 按钮大小，规则 组件高*0.5-3
-        double size = (this.getSkinnable().getHeight() * 0.5 - 2.5);
+        double size = (this.getSkinnable().getHeight() * 0.5 - 2);
         // 限制按钮大小
-        size = NumUtil.limit(size, 8, 15);
+        size = NumUtil.limit(size, 6, 15);
         this.incrButton.setSize(size);
         this.decrButton.setSize(size);
         // 计算按钮实际大小
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽+x-按钮实际大小
-        double areaX = w + x - btnSize - 8;
+        double areaX = w + x - btnSize - this.btnMarginRight;
         // 位移的areaY1值
-        double areaY1 = (h - btnSize - btnSize - 2) / 2 + 1;
+        double areaY1 = (h - btnSize - btnSize) / 2 + 1;
         // 位移的areaY2值
         double areaY2 = areaY1 + btnSize + 2;
         // 设置按钮位置

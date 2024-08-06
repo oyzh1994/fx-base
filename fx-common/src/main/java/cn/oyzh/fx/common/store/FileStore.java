@@ -57,7 +57,7 @@ public abstract class FileStore<T> {
                 String content = JSONUtil.toJsonStr(obj);
                 return FileUtil.writeString(content, this.storeFile, this.charset) != null;
             }
-            return FileUtil.clean(this.storeFile);
+            // return FileUtil.clean(this.storeFile);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -38,4 +38,17 @@ public class KeyboardUtil {
         }
         return event.isControlDown() && event.getCode() == KeyCode.R;
     }
+
+    /**
+     * 是否按下enter
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isEnter(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return event.getCode() == KeyCode.ENTER;
+    }
 }

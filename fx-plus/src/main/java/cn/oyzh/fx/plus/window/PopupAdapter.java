@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.stage.PopupWindow;
 import lombok.NonNull;
 
+import java.util.function.Consumer;
+
 /**
  * 弹窗适配器
  *
@@ -157,5 +159,38 @@ public interface PopupAdapter extends WindowAdapter {
                 this.onWindowClosed();
             }
         });
+    }
+
+    /**
+     * 设置弹窗提交处理器
+     *
+     * @param handler 弹窗提交处理器
+     * @param <T>     泛型
+     */
+    default <T> void setSubmitHandler(Consumer<T> handler) {
+        setProp("_submitHandler", handler);
+    }
+
+    /**
+     * 获取弹窗提交处理器
+     *
+     * @param <T> 泛型
+     * @return 弹窗提交处理器
+     */
+    default <T> Consumer<T> getSubmitHandler() {
+        return getProp("_submitHandler");
+    }
+
+    /**
+     * 提交弹窗
+     *
+     * @param obj 对象
+     * @param <T> 泛型
+     */
+    default <T> void submit(T obj) {
+        Consumer<T> consumer = this.getSubmitHandler();
+        if (consumer != null) {
+            consumer.accept(obj);
+        }
     }
 }
