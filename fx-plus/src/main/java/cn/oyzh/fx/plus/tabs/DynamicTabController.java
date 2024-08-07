@@ -5,6 +5,8 @@ import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -17,10 +19,21 @@ import java.util.ResourceBundle;
  */
 public abstract class DynamicTabController implements EventListener, I18nAdapter, Initializable {
 
+    private Reference<DynamicTab> tabReference;
+
+    protected void setTab(DynamicTab tab) {
+        this.tabReference = new WeakReference<>(tab);
+    }
+
+    public DynamicTab getTab() {
+        return this.tabReference != null ? this.tabReference.get() : null;
+    }
+
     /**
      * tab初始化事件
      */
     public void onTabInit(DynamicTab tab) {
+        this.setTab(tab);
         EventListener.super.register();
     }
 
