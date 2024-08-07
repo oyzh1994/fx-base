@@ -423,6 +423,8 @@ public class I18nHelper {
 
     public static final String EDIT = "base.edit";
 
+    public static final String DESIGN = "base.design";
+
     public static final String EXPAND = "base.expand";
 
     public static final String NEXT = "base.next";
@@ -1885,6 +1887,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(EDIT, VIEW);
     }
 
+    public static String designView() {
+        return I18nResourceBundle.i18nString(DESIGN, VIEW);
+    }
+
     public static String unnamedView() {
         return I18nResourceBundle.i18nString(UNNAMED, VIEW);
     }
@@ -2059,5 +2065,9 @@ public class I18nHelper {
 
     public static String addDatabase() {
         return I18nResourceBundle.i18nString(ADD, DATABASE);
+    }
+
+    public static String design() {
+        return I18nResourceBundle.i18nString(DESIGN);
     }
 }

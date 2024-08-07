@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.CollapseAllSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.CopySVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.DeleteSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.DesignSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.EditSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.ExpandAllSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.ExportSVGGlyph;
@@ -55,8 +56,8 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.addView(), new AddSVGGlyph(iconSize), null, action);
     }
 
-    public static FXMenuItem editView(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.editView(), new DeleteSVGGlyph(iconSize), null, action);
+    public static FXMenuItem designView(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.designView(), new DesignSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem refreshData(String iconSize, Runnable action) {
