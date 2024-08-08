@@ -2031,6 +2031,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(EDIT, TABLE);
     }
 
+    public static String designTable() {
+        return I18nResourceBundle.i18nString(DESIGN, TABLE);
+    }
+
     public static String renameTable() {
         return I18nResourceBundle.i18nString(RENAME, TABLE);
     }

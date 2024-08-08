@@ -268,6 +268,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.editTable(), new EditSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem designTable(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.designTable(), new DesignSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem renameTable(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.renameTable(), new RenameSVGGlyph(iconSize), null, action);
     }
