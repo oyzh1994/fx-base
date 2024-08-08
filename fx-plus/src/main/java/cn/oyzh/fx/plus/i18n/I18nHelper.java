@@ -1195,6 +1195,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, NAME);
     }
 
+    public static String pleaseInputTableName() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, TABLE, NAME);
+    }
+
     public static String pleaseInputComment() {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, COMMENT);
     }
@@ -1893,6 +1897,10 @@ public class I18nHelper {
 
     public static String unnamedView() {
         return I18nResourceBundle.i18nString(UNNAMED, VIEW);
+    }
+
+    public static String unnamedTable() {
+        return I18nResourceBundle.i18nString(UNNAMED, TABLE);
     }
 
     public static String view() {
