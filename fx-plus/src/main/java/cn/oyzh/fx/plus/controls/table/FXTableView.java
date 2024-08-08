@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.TableViewUtil;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,5 +54,9 @@ public class FXTableView<S> extends TableView<S> implements NodeAdapter, ThemeAd
         if (this.ctrlSAction != null) {
             this.ctrlSAction.run();
         }
+    }
+
+    public ObservableList<S> itemList() {
+        return this.itemsProperty().get();
     }
 }

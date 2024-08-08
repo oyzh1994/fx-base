@@ -93,19 +93,19 @@
             <classifier>mac</classifier>
         </dependency>
 
-       <!--  缓存工具类库 -->
-       <dependency>
-           <groupId>cn.hutool</groupId>
-           <artifactId>hutool-cache</artifactId>
-           <version>${hutool.version}</version>
-       </dependency>
+        <!--  缓存工具类库 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-cache</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
 
-       <!--  json工具类库 -->
-       <dependency>
-           <groupId>cn.hutool</groupId>
-           <artifactId>hutool-json</artifactId>
-           <version>${hutool.version}</version>
-       </dependency>
+        <!--  json工具类库 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-json</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
 
         <!-- xml类库 -->
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
@@ -183,11 +183,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>io.github.mkpaz</groupId>-->
-<!--            <artifactId>atlantafx-styles</artifactId>-->
-<!--            <version>2.0.1</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.github.mkpaz</groupId>-->
+        <!--            <artifactId>atlantafx-styles</artifactId>-->
+        <!--            <version>2.0.1</version>-->
+        <!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>

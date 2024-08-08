@@ -30,10 +30,18 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
     }
 
     /**
+     * 绑定监听器
+     */
+    protected void bindListeners(){
+
+    }
+
+    /**
      * tab初始化事件
      */
     public void onTabInit(DynamicTab tab) {
         this.setTab(tab);
+        this.bindListeners();
         EventListener.super.register();
     }
 
