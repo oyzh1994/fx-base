@@ -1867,6 +1867,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(OPEN, FUNCTION);
     }
 
+    public static String functionInfo() {
+        return I18nResourceBundle.i18nString(FUNCTION, INFO);
+    }
+
     public static String refreshData() {
         return I18nResourceBundle.i18nString(REFRESH, DATA);
     }

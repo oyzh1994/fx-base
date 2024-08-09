@@ -104,6 +104,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.designFunction(), new DesignSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem functionInfo(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.functionInfo(), new InfoSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem moveKey(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.moveKey(), new MoveSVGGlyph(iconSize), null, action);
     }
