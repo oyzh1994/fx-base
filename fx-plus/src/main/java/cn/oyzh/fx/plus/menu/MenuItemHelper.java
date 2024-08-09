@@ -80,6 +80,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.openProcedure(), new ProcedureSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem designProcedure(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.designProcedure(), new DesignSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem addProcedure(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.addProcedure(), new AddSVGGlyph(iconSize), null, action);
     }

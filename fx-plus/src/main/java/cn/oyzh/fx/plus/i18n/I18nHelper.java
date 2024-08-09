@@ -1199,6 +1199,14 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, TABLE, NAME);
     }
 
+    public static String pleaseInputProcedureName() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, PROCEDURE, NAME);
+    }
+
+    public static String pleaseInputFunctionName() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, FUNCTION, NAME);
+    }
+
     public static String pleaseInputComment() {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, COMMENT);
     }
@@ -1825,6 +1833,10 @@ public class I18nHelper {
 
     public static String openProcedure() {
         return I18nResourceBundle.i18nString(OPEN, PROCEDURE);
+    }
+
+    public static String designProcedure() {
+        return I18nResourceBundle.i18nString(DESIGN, PROCEDURE);
     }
 
     public static String addProcedure() {
