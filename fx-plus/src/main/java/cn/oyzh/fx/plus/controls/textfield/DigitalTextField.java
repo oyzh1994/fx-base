@@ -191,8 +191,11 @@ public abstract class DigitalTextField extends LimitTextField {
      * @return 值
      */
     protected Number value() {
-        // 否则，将文本转为Double类型并返回
-        return NumberUtil.parseNumber(this.getText());
+        String text = this.getText();
+        if (StrUtil.isBlank(text)) {
+            return null;
+        }
+        return NumberUtil.parseNumber(text);
     }
 
     /**
