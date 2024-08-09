@@ -1839,6 +1839,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(DESIGN, PROCEDURE);
     }
 
+    public static String designFunction() {
+        return I18nResourceBundle.i18nString(DESIGN, FUNCTION);
+    }
+
     public static String addProcedure() {
         return I18nResourceBundle.i18nString(ADD, PROCEDURE);
     }
