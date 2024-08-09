@@ -109,4 +109,30 @@ public class NodeGroupUtil {
             NodeUtil.enable(group);
         }
     }
+
+    /**
+     * 显示分组
+     *
+     * @param node    节点
+     * @param groupId 分组id
+     */
+    public static void display(Object node, String groupId) {
+        List<NodeGroup> groups = list(node, groupId);
+        for (NodeGroup group : groups) {
+            NodeUtil.display(group);
+        }
+    }
+
+    /**
+     * 隐藏分组
+     *
+     * @param node    节点
+     * @param groupId 分组id
+     */
+    public static void disappear(Object node, String groupId) {
+        List<NodeGroup> groups = list(node, groupId);
+        for (NodeGroup group : groups) {
+            NodeUtil.disappear(group);
+        }
+    }
 }

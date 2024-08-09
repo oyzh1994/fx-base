@@ -25,68 +25,14 @@ public interface StateAdapter extends PropAdapter {
      * 隐藏
      */
     default void disappear() {
-        if (this instanceof Node node) {
-            if (!node.visibleProperty().isBound()) {
-                node.setVisible(false);
-            }
-            if (!node.managedProperty().isBound()) {
-                node.setManaged(false);
-            }
-        } else if (this instanceof MenuItem item) {
-            if (!item.visibleProperty().isBound()) {
-                item.setVisible(false);
-            }
-        } else if (this instanceof Tab tab) {
-            if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
-                tab.getContent().setVisible(false);
-            }
-        } else if (this instanceof Stage stage) {
-            if (stage.isShowing()) {
-                FXUtil.runWait(stage::close);
-            }
-        } else if (this instanceof Window window) {
-            if (window.isShowing()) {
-                FXUtil.runWait(window::hide);
-            }
-        } else if (this instanceof PopupAdapter wrapper) {
-            if (wrapper.popup().isShowing()) {
-                FXUtil.runWait(wrapper.popup()::hide);
-            }
-        } else if (this instanceof StageAdapter wrapper) {
-            if (wrapper.stage().isShowing()) {
-                FXUtil.runWait(wrapper.stage()::close);
-            }
-        }
+        NodeUtil.disappear(this);
     }
 
     /**
      * 显示
      */
     default void display() {
-        if (this instanceof Node node) {
-            if (!node.visibleProperty().isBound()) {
-                node.setVisible(true);
-            }
-            if (!node.managedProperty().isBound()) {
-                node.setManaged(true);
-            }
-        } else if (this instanceof MenuItem item) {
-            if (!item.visibleProperty().isBound()) {
-                item.setVisible(true);
-            }
-        } else if (this instanceof Tab tab) {
-            if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
-                tab.getContent().setVisible(true);
-            }
-        } else if (this instanceof Stage stage) {
-            if (!stage.isShowing()) {
-                FXUtil.runWait(stage::show);
-            }
-        } else if (this instanceof StageAdapter stage) {
-            if (!stage.stage().isShowing()) {
-                FXUtil.runWait(stage.stage()::show);
-            }
-        }
+        NodeUtil.display(this);
     }
 
     /**

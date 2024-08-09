@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.util;
 
 import atlantafx.base.theme.Styles;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
+import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -345,6 +346,78 @@ public class NodeUtil {
         } else if (obj instanceof StageAdapter stage) {
             if (stage.root() != null && !stage.root().disableProperty().isBound()) {
                 stage.root().setDisable(false);
+            }
+        }
+    }
+
+    /**
+     * 显示组件
+     *
+     * @param obj 节点
+     */
+    public static void display(Object obj) {
+        if (obj instanceof Node node) {
+            if (!node.visibleProperty().isBound()) {
+                node.setVisible(true);
+            }
+            if (!node.managedProperty().isBound()) {
+                node.setManaged(true);
+            }
+        } else if (obj instanceof MenuItem item) {
+            if (!item.visibleProperty().isBound()) {
+                item.setVisible(true);
+            }
+        } else if (obj instanceof Tab tab) {
+            if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
+                tab.getContent().setVisible(true);
+            }
+        } else if (obj instanceof Stage stage) {
+            if (!stage.isShowing()) {
+                FXUtil.runWait(stage::show);
+            }
+        } else if (obj instanceof StageAdapter stage) {
+            if (!stage.stage().isShowing()) {
+                FXUtil.runWait(stage.stage()::show);
+            }
+        }
+    }
+
+    /**
+     * 隐藏组件
+     *
+     * @param obj 节点
+     */
+    public static void disappear(Object obj) {
+        if (obj instanceof Node node) {
+            if (!node.visibleProperty().isBound()) {
+                node.setVisible(false);
+            }
+            if (!node.managedProperty().isBound()) {
+                node.setManaged(false);
+            }
+        } else if (obj instanceof MenuItem item) {
+            if (!item.visibleProperty().isBound()) {
+                item.setVisible(false);
+            }
+        } else if (obj instanceof Tab tab) {
+            if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
+                tab.getContent().setVisible(false);
+            }
+        } else if (obj instanceof Stage stage) {
+            if (stage.isShowing()) {
+                FXUtil.runWait(stage::close);
+            }
+        } else if (obj instanceof Window window) {
+            if (window.isShowing()) {
+                FXUtil.runWait(window::hide);
+            }
+        } else if (obj instanceof PopupAdapter wrapper) {
+            if (wrapper.popup().isShowing()) {
+                FXUtil.runWait(wrapper.popup()::hide);
+            }
+        } else if (obj instanceof StageAdapter wrapper) {
+            if (wrapper.stage().isShowing()) {
+                FXUtil.runWait(wrapper.stage()::close);
             }
         }
     }
