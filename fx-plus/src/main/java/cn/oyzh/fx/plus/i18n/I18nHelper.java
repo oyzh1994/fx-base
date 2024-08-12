@@ -429,6 +429,10 @@ public class I18nHelper {
 
     public static final String QUERY = "base.query";
 
+    public static final String TIME = "base.time";
+
+    public static final String TOTAL_DATA = "base.totalData";
+
     public static final String EXPAND = "base.expand";
 
     public static final String NEXT = "base.next";
@@ -1831,6 +1835,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(ADD, VIEW);
     }
 
+    public static String addQuery() {
+        return I18nResourceBundle.i18nString(ADD, QUERY);
+    }
+
     public static String reload() {
         return I18nResourceBundle.i18nString(RELOAD);
     }
@@ -2121,5 +2129,13 @@ public class I18nHelper {
 
     public static String renameQuery() {
         return I18nResourceBundle.i18nString(RENAME, QUERY);
+    }
+
+    public static String time() {
+        return I18nResourceBundle.i18nString(TIME);
+    }
+
+    public static String totalData() {
+        return I18nResourceBundle.i18nString(TOTAL_DATA);
     }
 }

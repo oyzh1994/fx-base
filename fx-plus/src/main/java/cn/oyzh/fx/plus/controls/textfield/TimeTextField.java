@@ -36,4 +36,11 @@ public class TimeTextField extends LimitTextField {
     protected Skin<?> createDefaultSkin() {
         return new TimeTextFieldSkin(this);
     }
+
+    public static String format(Object value) {
+        if (value instanceof java.util.Date date) {
+            return FORMAT.format(date);
+        }
+        return null;
+    }
 }

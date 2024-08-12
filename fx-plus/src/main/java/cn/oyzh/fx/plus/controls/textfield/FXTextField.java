@@ -137,12 +137,19 @@ public class FXTextField extends TextField implements NodeGroup, NodeAdapter, Th
      * @param val 值
      */
     public void setValue(Object val) {
+        this.setText(format(val));
+    }
+
+    public static String format(Object val) {
         if (val instanceof CharSequence sequence) {
-            this.setText(sequence.toString());
-        } else if (val instanceof byte[] bytes) {
-            this.setText(new String(bytes));
-        } else if (val != null) {
-            this.setText(val.toString());
+            return sequence.toString();
         }
+        if (val instanceof byte[] bytes) {
+            return new String(bytes);
+        }
+        if (val != null) {
+            return val.toString();
+        }
+        return null;
     }
 }

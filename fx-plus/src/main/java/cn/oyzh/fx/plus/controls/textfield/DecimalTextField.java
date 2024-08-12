@@ -186,6 +186,16 @@ public class DecimalTextField extends DigitalTextField {
         return this.format;
     }
 
+    public static String format(Object val) {
+        if (val instanceof CharSequence sequence) {
+            return sequence.toString();
+        }
+        if (val instanceof Number number) {
+            return number.doubleValue() + "";
+        }
+        return null;
+    }
+
     public void setMin(Double minVal) {
         this.minVal = minVal;
     }

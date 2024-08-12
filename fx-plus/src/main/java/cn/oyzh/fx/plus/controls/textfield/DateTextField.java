@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
  */
 public class DateTextField extends LimitTextField {
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public Date getValue() throws ParseException {
         if (!this.isEmpty()) {
@@ -35,5 +35,12 @@ public class DateTextField extends LimitTextField {
     @Override
     protected Skin<?> createDefaultSkin() {
         return new DateTextFieldSkin(this);
+    }
+
+    public static String format(Object value) {
+        if (value instanceof java.util.Date date) {
+            return FORMAT.format(date);
+        }
+        return null;
     }
 }

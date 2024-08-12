@@ -131,6 +131,16 @@ public class NumberTextField extends DigitalTextField {
         }
     }
 
+    public static String format(Object val) {
+        if (val instanceof CharSequence sequence) {
+            return sequence.toString();
+        }
+        if (val instanceof Number number) {
+            return number.longValue() + "";
+        }
+        return null;
+    }
+
     /**
      * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
      *

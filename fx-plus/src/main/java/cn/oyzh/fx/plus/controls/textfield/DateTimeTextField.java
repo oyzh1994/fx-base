@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
  */
 public class DateTimeTextField extends LimitTextField {
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
@@ -42,5 +42,12 @@ public class DateTimeTextField extends LimitTextField {
     @Override
     protected Skin<?> createDefaultSkin() {
         return new DateTimeTextFieldSkin(this);
+    }
+
+    public static String format(Object value) {
+        if (value instanceof java.util.Date date) {
+            return FORMAT.format(date);
+        }
+        return null;
     }
 }

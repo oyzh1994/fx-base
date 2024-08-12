@@ -60,6 +60,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.addView(), new AddSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem addQuery(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.addQuery(), new AddSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem designView(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.designView(), new DesignSVGGlyph(iconSize), null, action);
     }

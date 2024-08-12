@@ -73,7 +73,7 @@ public class BitTextField extends ClearableTextField {
      * @param val 值
      */
     public void setValue(byte[] val) {
-        this.setText(NumUtil.byteToBitStr(val));
+        this.setText(format(val));
     }
 
     @Override
@@ -85,5 +85,9 @@ public class BitTextField extends ClearableTextField {
         } else if (val instanceof Byte b) {
             this.setValue(new byte[]{b});
         }
+    }
+
+    public static String format(byte[] bytes) {
+        return NumUtil.byteToBitStr(bytes);
     }
 }

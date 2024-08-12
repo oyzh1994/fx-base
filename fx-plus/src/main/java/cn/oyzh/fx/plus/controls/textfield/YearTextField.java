@@ -27,8 +27,20 @@ public class YearTextField extends NumberTextField {
             }
         } else if (value instanceof Date date) {
             this.value(1900 + date.getYear());
-        } else if (value instanceof java.sql.Date date) {
-            this.value(1900 + date.getYear());
         }
+    }
+
+    public static String format(Object value) {
+        if (value instanceof CharSequence sequence) {
+            String str = sequence.toString();
+            if (str.contains("-")) {
+                return NumberUtil.parseNumber(str.split("-")[0]).intValue() + "";
+            } else {
+                return NumberUtil.parseNumber(str).intValue() + "";
+            }
+        } else if (value instanceof Date date) {
+            return 1900 + date.getYear() + "";
+        }
+        return null;
     }
 }
