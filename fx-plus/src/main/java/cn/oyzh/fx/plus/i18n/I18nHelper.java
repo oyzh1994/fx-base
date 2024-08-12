@@ -411,6 +411,8 @@ public class I18nHelper {
 
     public static final String RESET = "base.reset";
 
+    public static final String RESULT = "base.result";
+
     public static final String STOP = "base.stop";
 
     public static final String SUBMIT = "base.submit";
@@ -1499,6 +1501,10 @@ public class I18nHelper {
 
     public static String reset() {
         return I18nResourceBundle.i18nString(RESET);
+    }
+
+    public static String result() {
+        return I18nResourceBundle.i18nString(RESULT);
     }
 
     public static String save() {
