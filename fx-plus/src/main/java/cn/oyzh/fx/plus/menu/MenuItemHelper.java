@@ -44,6 +44,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.openView(), new OpenSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem openQuery(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.openQuery(), new OpenSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem viewInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.viewInfo(), new InfoSVGGlyph(iconSize), null, action);
     }
@@ -288,6 +292,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.renameTable(), new RenameSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem renameQuery(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.renameQuery(), new RenameSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem clearTable(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.clearTable(), new ClearSVGGlyph(iconSize), null, action);
     }
@@ -298,6 +306,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem deleteTable(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteTable(), new DeleteSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem deleteQuery(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteQuery(), new DeleteSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem tableInfo(String iconSize, Runnable action) {

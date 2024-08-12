@@ -425,6 +425,8 @@ public class I18nHelper {
 
     public static final String DESIGN = "base.design";
 
+    public static final String QUERY = "base.query";
+
     public static final String EXPAND = "base.expand";
 
     public static final String NEXT = "base.next";
@@ -2101,5 +2103,17 @@ public class I18nHelper {
 
     public static String design() {
         return I18nResourceBundle.i18nString(DESIGN);
+    }
+
+    public static String deleteQuery() {
+        return I18nResourceBundle.i18nString(DELETE, QUERY);
+    }
+
+    public static String openQuery() {
+        return I18nResourceBundle.i18nString(OPEN, QUERY);
+    }
+
+    public static String renameQuery() {
+        return I18nResourceBundle.i18nString(RENAME, QUERY);
     }
 }
