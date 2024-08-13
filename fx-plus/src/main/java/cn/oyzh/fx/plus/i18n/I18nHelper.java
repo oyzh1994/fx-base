@@ -433,6 +433,8 @@ public class I18nHelper {
 
     public static final String TOTAL_DATA = "base.totalData";
 
+    public static final String PRETTY = "base.pretty";
+
     public static final String EXPAND = "base.expand";
 
     public static final String NEXT = "base.next";
@@ -2137,5 +2139,9 @@ public class I18nHelper {
 
     public static String totalData() {
         return I18nResourceBundle.i18nString(TOTAL_DATA);
+    }
+
+    public static String pretty() {
+        return I18nResourceBundle.i18nString(PRETTY);
     }
 }
