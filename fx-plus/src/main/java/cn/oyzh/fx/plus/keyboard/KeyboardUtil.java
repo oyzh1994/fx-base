@@ -27,6 +27,19 @@ public class KeyboardUtil {
     }
 
     /**
+     * 是否按下ctrl slash
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isCtrlSlash(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return event.isControlDown() && event.getCode() == KeyCode.SLASH;
+    }
+
+    /**
      * 是否按下ctrl r
      *
      * @param event 事件

@@ -3,6 +3,7 @@ package cn.oyzh.fx.rich.control;
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -17,6 +18,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.Labeled;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -26,6 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -33,7 +36,11 @@ import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
 
 /**
@@ -315,7 +322,15 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void selectRange(int anchor, int caretPosition) {
-        FXUtil.runWait(() -> super.selectRange(anchor, caretPosition));
+        if (caretPosition >= this.getLength()) {
+            caretPosition = this.getLength() - 1;
+        }
+        if (anchor > caretPosition) {
+            anchor = caretPosition;
+        }
+        int finalAnchor = anchor;
+        int finalCaretPosition = caretPosition;
+        FXUtil.runWait(() -> super.selectRange(finalAnchor, finalCaretPosition));
     }
 
     @Override
@@ -360,5 +375,31 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
     @Override
     public void changeLocale(Locale locale) {
         this.setLocale(locale);
+    }
+
+    /**
+     * 获取选区行
+     *
+     * @return 选区行 键: 行号 值: 行内容
+     */
+    public Map<Integer, String> getSelectionLines() {
+        IndexRange range = this.getSelection();
+        if (range == null) {
+            return Collections.emptyMap();
+        }
+        Map<Integer, String> map = new HashMap<>();
+        AtomicInteger count = new AtomicInteger();
+        AtomicInteger line = new AtomicInteger();
+        this.getText().lines().forEach(str -> {
+            int len = str.length();
+            long lineStart = count.get();
+            long lineEnd = count.get() + len + 1;
+            if (NumUtil.checkBound(lineStart, lineEnd, range.getStart(), range.getEnd())) {
+                map.put(line.get(), str);
+            }
+            line.incrementAndGet();
+            count.addAndGet(len + 1);
+        });
+        return map;
     }
 }

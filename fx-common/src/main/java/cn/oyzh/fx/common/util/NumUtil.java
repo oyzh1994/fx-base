@@ -133,4 +133,41 @@ public class NumUtil {
         val = Math.min(val, max);
         return val;
     }
+
+    /**
+     * 检查边距
+     *
+     * @param start       开始
+     * @param end         结束
+     * @param targetStart 目标开始
+     * @param targetEnd   目标结束
+     * @return 是否交叉
+     */
+    public static boolean checkBound(double start, double end, double targetStart, double targetEnd) {
+        // 单点
+        if (targetStart == targetEnd && start == targetStart) {
+            return true;
+        }
+        // 相同
+        if (start == targetStart && end == targetEnd) {
+            return true;
+        }
+        // 包含
+        if (start < targetStart && end > targetEnd) {
+            return true;
+        }
+        // 被包含
+        if (start > targetStart && end < targetEnd) {
+            return true;
+        }
+        // 左交叉
+        if (start > targetStart && end >= targetEnd && start < targetEnd) {
+            return true;
+        }
+        // 右交叉
+        if (start <= targetStart && end < targetEnd && end > targetStart) {
+            return true;
+        }
+        return false;
+    }
 }
