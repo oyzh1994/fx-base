@@ -37,6 +37,7 @@ import org.reactfx.value.Val;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -50,11 +51,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     {
         NodeManager.init(this);
-        this.addTextChangeListener((observable, oldValue, newValue) -> {
-            if (newValue != null && !newValue.endsWith("\n")) {
-                this.setText(newValue + "\n");
-            }
-        });
     }
 
     /**
@@ -126,13 +122,38 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      */
     public void setText(String text) {
         if (text != null) {
-            if (!text.endsWith("\n")) {
-                text = text + "\n";
-            }
-            String finalText = text;
-            FXUtil.runWait(() -> this.replaceText(finalText));
+            FXUtil.runWait(() -> this.replaceText(text));
         }
     }
+
+    @Override
+    public void replaceText(int start, int end, String text) {
+        if (start < 0) {
+            start = 0;
+        }
+        if (end < 0) {
+            end = 0;
+        }
+        if (start > end) {
+            start = end;
+        }
+        if (end > this.getLength()) {
+            end = this.getLength();
+        }
+        int finalStart = start;
+        int finalEnd = end;
+        FXUtil.runWait(() -> super.replaceText(finalStart, finalEnd, text));
+    }
+
+    // @Override
+    // public Position offsetToPosition(int charOffset, Bias bias) {
+    //     try {
+    //         return super.offsetToPosition(charOffset, bias);
+    //     } catch (Exception ex) {
+    //         ex.printStackTrace();
+    //     }
+    //     return null;
+    // }
 
     @Override
     public String getText() {
@@ -250,7 +271,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
     public int getLength() {
         String text = super.getText();
         if (text == null) {
-            return super.getLength();
+            return Math.max(super.getLength(), 0);
         }
         return text.length();
     }
@@ -313,6 +334,21 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
         }
     }
 
+    /**
+     * 设置样式
+     *
+     * @param styles 富文本样式
+     */
+    public void setStyles(List<RichTextStyle> styles) {
+        if (CollUtil.isNotEmpty(styles)) {
+            FXUtil.runWait(() -> {
+                for (RichTextStyle style : styles) {
+                    this.setStyle(style.start(), style.end(), style.style());
+                }
+            });
+        }
+    }
+
     @Override
     public void setStateManager(StateManager manager) {
         StateAdapter.super.stateManager(manager);
@@ -325,20 +361,25 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void replaceSelection(String replacement) {
+        // if (this.getSelection() == null) {
+        //     this.setText(replacement);
+        // } else {
         FXUtil.runWait(() -> super.replaceSelection(replacement));
+        // }
     }
 
     @Override
     public void selectRange(int anchor, int caretPosition) {
-        if (caretPosition >= this.getLength()) {
-            caretPosition = this.getLength() - 1;
-        }
-        if (anchor > caretPosition) {
-            anchor = caretPosition;
-        }
-        int finalAnchor = anchor;
-        int finalCaretPosition = caretPosition;
-        FXUtil.runWait(() -> super.selectRange(finalAnchor, finalCaretPosition));
+        // if (caretPosition > this.getLength()) {
+        //     caretPosition = this.getLength();
+        // }
+        // if (anchor > caretPosition) {
+        //     anchor = caretPosition;
+        // }
+        // int finalAnchor = anchor;
+        // int finalCaretPosition = caretPosition;
+        // FXUtil.runWait(() -> super.selectRange(finalAnchor, finalCaretPosition));
+        FXUtil.runWait(() -> super.selectRange(anchor, caretPosition));
     }
 
     @Override
