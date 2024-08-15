@@ -28,7 +28,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -51,6 +50,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     {
         NodeManager.init(this);
+        this.addTextChangeListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.endsWith("\n")) {
+                this.setText(newValue + "\n");
+            }
+        });
     }
 
     /**
@@ -122,7 +126,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      */
     public void setText(String text) {
         if (text != null) {
-            FXUtil.runWait(() -> this.replaceText(text));
+            if (!text.endsWith("\n")) {
+                text = text + "\n";
+            }
+            String finalText = text;
+            FXUtil.runWait(() -> this.replaceText(finalText));
         }
     }
 
