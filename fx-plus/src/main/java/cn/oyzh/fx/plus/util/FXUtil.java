@@ -4,6 +4,7 @@ import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
 import cn.oyzh.fx.common.thread.TaskManager;
+import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
@@ -231,5 +232,12 @@ public class FXUtil {
             }
         };
         timer.start();
+    }
+
+    /**
+     * 禁用css日志
+     */
+    public static void disableCSSLogger() {
+        Logging.getCSSLogger().disableLogging();
     }
 }
