@@ -3,7 +3,7 @@ package cn.oyzh.fx.terminal;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.richtextfx.RichTextStyle;
+import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.terminal.RichTerminalTextAreaPane;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
