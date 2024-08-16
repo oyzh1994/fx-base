@@ -1,8 +1,8 @@
-package cn.oyzh.fx.rich.control;
+package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.RichTextStyle;
+import cn.oyzh.fx.rich.richtextfx.RichTextStyle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ContextMenu;

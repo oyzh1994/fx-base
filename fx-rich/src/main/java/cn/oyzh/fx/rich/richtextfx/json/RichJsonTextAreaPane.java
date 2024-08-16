@@ -1,12 +1,12 @@
-package cn.oyzh.fx.rich.json;
+package cn.oyzh.fx.rich.richtextfx.json;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.common.util.RegexHelper;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.control.FlexRichTextArea;
-import cn.oyzh.fx.rich.control.RichTextAreaPane;
+import cn.oyzh.fx.rich.richtextfx.RichTextStyle;
+import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
+import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 
 import java.util.ArrayList;
 import java.util.List;

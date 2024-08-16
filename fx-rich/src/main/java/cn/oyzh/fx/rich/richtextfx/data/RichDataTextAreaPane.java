@@ -1,6 +1,6 @@
-package cn.oyzh.fx.rich.data;
+package cn.oyzh.fx.rich.richtextfx.data;
 
-import cn.oyzh.fx.rich.control.RichTextAreaPane;
+import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 
 /**
  * @author oyzh

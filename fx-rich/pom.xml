@@ -22,6 +22,13 @@
             <artifactId>fx-plus</artifactId>
         </dependency>
 
+        <!-- fx富文本域 -->
+        <dependency>
+            <groupId>com.gluonhq</groupId>
+            <artifactId>rich-text-area</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
         <!-- fx富文本 -->
         <!-- https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx -->
         <dependency>

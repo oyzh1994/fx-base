@@ -1,4 +1,4 @@
-package cn.oyzh.fx.rich.control;
+package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;

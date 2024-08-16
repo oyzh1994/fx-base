@@ -1,6 +1,6 @@
-package cn.oyzh.fx.rich.util;
+package cn.oyzh.fx.rich.richtextfx.util;
 
-import cn.oyzh.fx.rich.data.RichDataTextAreaPane;
+import cn.oyzh.fx.rich.richtextfx.data.RichDataTextAreaPane;
 import lombok.experimental.UtilityClass;
 import org.fxmisc.richtext.StyledTextArea;
 

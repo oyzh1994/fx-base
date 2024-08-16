@@ -1,4 +1,4 @@
-package cn.oyzh.fx.rich.data;
+package cn.oyzh.fx.rich.richtextfx.data;
 
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.RegexHelper;
@@ -7,8 +7,8 @@ import cn.oyzh.fx.common.util.TextUtil;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.control.FlexRichTextArea;
+import cn.oyzh.fx.rich.richtextfx.RichTextStyle;
+import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
 import javafx.beans.value.ChangeListener;
 import lombok.Getter;
 import lombok.NonNull;

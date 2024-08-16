@@ -1,7 +1,7 @@
-package cn.oyzh.fx.rich.terminal;
+package cn.oyzh.fx.rich.richtextfx.terminal;
 
-import cn.oyzh.fx.rich.control.FlexRichTextArea;
-import cn.oyzh.fx.rich.control.RichTextAreaPane;
+import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
+import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 
 /**
  * @author oyzh
