@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.thread.RenderService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import javafx.geometry.Insets;
@@ -127,22 +128,22 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
     }
 
     @Override
-    public void replaceText(int start, int end, String text) {
+    public synchronized void replaceText(int start, int end, String text) {
         if (start < 0) {
             start = 0;
         }
         if (end < 0) {
             end = 0;
         }
-        if (start > end) {
-            start = end;
-        }
         if (end > this.getLength()) {
             end = this.getLength();
         }
+        if (start > end) {
+            start = end;
+        }
         int finalStart = start;
         int finalEnd = end;
-        FXUtil.runWait(() -> super.replaceText(finalStart, finalEnd, text));
+        RenderService.submitFX(() -> super.replaceText(finalStart, finalEnd, text));
     }
 
     // @Override
