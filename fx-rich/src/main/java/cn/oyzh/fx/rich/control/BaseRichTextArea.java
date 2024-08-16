@@ -308,7 +308,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      * 清除文字样式
      */
     public void clearTextStyle() {
-        FXUtil.runWait(() -> this.setStyle(0, this.getLength(), ""));
+        RenderService.submitFX(() -> this.setStyle(0, this.getLength(), ""));
     }
 
     /**
@@ -333,6 +333,20 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
         if (style != null) {
             FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
         }
+    }
+
+    @Override
+    public void setStyle(int from, int to, String style) {
+        if (from < 0) {
+            from = 0;
+        }
+        if (to < from) {
+            to = from;
+        }
+        if (to > this.getLength()) {
+            to = this.getLength();
+        }
+        super.setStyle(from, to, style);
     }
 
     /**

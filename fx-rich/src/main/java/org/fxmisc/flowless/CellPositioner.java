@@ -215,11 +215,16 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
      * index.
      */
     C getSizedCell(int itemIndex) {
-        C cell = cellManager.getCell(itemIndex);
-        double breadth = sizeTracker.breadthFor(itemIndex);
-        double length = sizeTracker.lengthFor(itemIndex);
-        orientation.resize(cell, breadth, length);
-        return cell;
+        try {
+            C cell = cellManager.getCell(itemIndex);
+            double breadth = sizeTracker.breadthFor(itemIndex);
+            double length = sizeTracker.lengthFor(itemIndex);
+            orientation.resize(cell, breadth, length);
+            return cell;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     private void relocate(C cell, double breadth0, double length0) {
