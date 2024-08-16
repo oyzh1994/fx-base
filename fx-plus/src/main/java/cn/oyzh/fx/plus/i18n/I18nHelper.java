@@ -223,6 +223,8 @@ public class I18nHelper {
 
     public static final String ADD = "base.add";
 
+    public static final String EXPLAIN = "base.explain";
+
     public static final String FIELD = "base.field";
 
     public static final String PRIMARY_KEY = "base.primaryKey";
@@ -1099,6 +1101,10 @@ public class I18nHelper {
 
     public static String add() {
         return I18nResourceBundle.i18nString(ADD);
+    }
+
+    public static String explain() {
+        return I18nResourceBundle.i18nString(EXPLAIN);
     }
 
     public static String addField() {
