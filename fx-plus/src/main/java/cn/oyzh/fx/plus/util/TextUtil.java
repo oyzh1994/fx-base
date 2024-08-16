@@ -63,4 +63,10 @@ public class TextUtil {
             return var0.compareTo(var2) > 0 ? var1 : var0;
         }
     }
+
+    public static String delete(String str, int start, int end) {
+        StringBuilder builder = new StringBuilder(str);
+        builder.delete(start, end);
+        return builder.toString();
+    }
 }
