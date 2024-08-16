@@ -31,8 +31,6 @@ import com.gluonhq.emoji.Emoji;
 import com.gluonhq.emoji.EmojiData;
 import com.gluonhq.emoji.EmojiSkinTone;
 import com.gluonhq.emoji.util.TextUtils;
-import com.gluonhq.richtextarea.ParagraphTile;
-import com.gluonhq.richtextarea.RichTextAreaSkin;
 import com.gluonhq.richtextarea.model.Block;
 import com.gluonhq.richtextarea.model.BlockUnit;
 import com.gluonhq.richtextarea.model.EmojiUnit;
@@ -77,7 +75,7 @@ class RichListCell extends ListCell<Paragraph> {
     private final static Map<String, Color> COLOR_MAP = new HashMap<>();
 
     private final RichTextAreaSkin richTextAreaSkin;
-    private final com.gluonhq.richtextarea.ParagraphTile paragraphTile;
+    private final ParagraphTile paragraphTile;
 
     RichListCell(RichTextAreaSkin richTextAreaSkin) {
         this.richTextAreaSkin = richTextAreaSkin;
@@ -86,7 +84,7 @@ class RichListCell extends ListCell<Paragraph> {
         // TODO: control paragraph spacing
         setFont(MIN_LF_FONT);
 
-        paragraphTile = new com.gluonhq.richtextarea.ParagraphTile(richTextAreaSkin);
+        paragraphTile = new ParagraphTile(richTextAreaSkin);
         setText(null);
 
         addEventHandler(MouseEvent.DRAG_DETECTED, event -> {
@@ -157,7 +155,7 @@ class RichListCell extends ListCell<Paragraph> {
         super.updateItem(item, empty);
         if (item != null && !empty) {
             var fragments = new ArrayList<Node>();
-            var backgroundIndexRanges = new ArrayList<com.gluonhq.richtextarea.IndexRangeColor>();
+            var backgroundIndexRanges = new ArrayList<IndexRangeColor>();
             var length = new AtomicInteger();
             var positions = new ArrayList<Integer>();
             positions.add(item.getStart());
@@ -203,7 +201,7 @@ class RichListCell extends ListCell<Paragraph> {
                         String background = ((TextDecoration) decoration).getBackground();
                         Color backgroundColor = COLOR_MAP.computeIfAbsent(background, s -> parseColorOrDefault(background, Color.TRANSPARENT));
                         if (!Color.TRANSPARENT.equals(backgroundColor)) {
-                            backgroundIndexRanges.add(new com.gluonhq.richtextarea.IndexRangeColor(
+                            backgroundIndexRanges.add(new IndexRangeColor(
                                     length.get(), length.get() + unit.length(), backgroundColor));
                         }
                     }
@@ -336,12 +334,12 @@ class RichListCell extends ListCell<Paragraph> {
 
     public boolean hasCaret() {
         return getParagraphTile()
-                .map(com.gluonhq.richtextarea.ParagraphTile::hasCaret)
+                .map(ParagraphTile::hasCaret)
                 .orElse(false);
     }
 
     public void resetCaret() {
-        getParagraphTile().ifPresent(com.gluonhq.richtextarea.ParagraphTile::resetCaret);
+        getParagraphTile().ifPresent(ParagraphTile::resetCaret);
     }
 
     public int getNextRowPosition(double x, boolean down) {
@@ -356,8 +354,8 @@ class RichListCell extends ListCell<Paragraph> {
                 .orElse(-1);
     }
 
-    private Optional<com.gluonhq.richtextarea.ParagraphTile> getParagraphTile() {
-        if (getGraphic() instanceof com.gluonhq.richtextarea.ParagraphTile) {
+    private Optional<ParagraphTile> getParagraphTile() {
+        if (getGraphic() instanceof ParagraphTile) {
             return Optional.of((ParagraphTile) getGraphic());
         }
         return Optional.empty();

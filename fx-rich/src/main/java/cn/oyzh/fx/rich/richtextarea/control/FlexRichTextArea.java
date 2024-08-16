@@ -1,24 +1,22 @@
 package cn.oyzh.fx.rich.richtextarea.control;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.ResourceUtil;
-import cn.oyzh.fx.rich.richtextarea.RichTextColor;
-import com.gluonhq.richtextarea.DefaultParagraphGraphicFactory;
+import cn.oyzh.fx.rich.RichTextStyle;
 import com.gluonhq.richtextarea.RichTextArea;
 import com.gluonhq.richtextarea.Selection;
+import com.gluonhq.richtextarea.model.Block;
 import com.gluonhq.richtextarea.model.DecorationModel;
 import com.gluonhq.richtextarea.model.Document;
-import com.gluonhq.richtextarea.model.ParagraphDecoration;
 import com.gluonhq.richtextarea.model.TextDecoration;
 import javafx.event.ActionEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
@@ -171,13 +169,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     }
 
     public void append(String text) {
-        String oldText = this.getText();
-        String newText = oldText + text;
-        List<DecorationModel> decorationList = new ArrayList<>();
-        DecorationModel model = DecorationModel.createDefaultDecorationModel(newText.length());
-        decorationList.add(model);
-        Document document = new Document(newText, decorationList, 0);
-        this.getActionFactory().open(document).execute(new ActionEvent());
+        this.getActionFactory().appendText(text).execute(new ActionEvent());
     }
 
     public void appendLine(String text) {
@@ -185,25 +177,34 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     }
 
     public void clear() {
-        this.setText("");
+        this.getActionFactory().clearText().execute(new ActionEvent());
     }
 
     /**
      * 设置样式
      *
-     * @param color 富文本样式
+     * @param style 富文本样式
      */
-    public void setColor(RichTextColor color) {
-        if (color != null) {
-            if (color.colorType() == 1) {
-                FXUtil.runWait(() -> this.setForegroundColor(color.start(), color.end(), color.color()));
-            } else {
-                FXUtil.runWait(() -> this.setForegroundColor(color.start(), color.end(), color.color()));
+    public void setStyle(RichTextStyle style) {
+        if (style != null) {
+            this.setStyle(style.start(), style.end(), style.style());
+        }
+    }
+
+    /**
+     * 设置样式
+     *
+     * @param styles 富文本样式
+     */
+    public void setStyles(List<RichTextStyle> styles) {
+        if (CollUtil.isNotEmpty(styles)) {
+            for (RichTextStyle style : styles) {
+                this.setStyle(style.start(), style.end(), style.style());
             }
         }
     }
 
-    public void setForegroundColor(int from, int to, Color color) {
+    public void setStyle(int from, int to, String color) {
         if (from < 0) {
             from = 0;
         }
@@ -213,36 +214,31 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
         if (to > this.getTextLength()) {
             to = this.getTextLength();
         }
-        // Document document = this.getDocument();
-        TextDecoration decoration = TextDecoration
-                .builder()
-                .presets()
-                .foreground(ThemeUtil.getColorHex(color))
-                .build();
-        this.getActionFactory().selectAndDecorate(new Selection(from, to), decoration).execute(new ActionEvent());
+        TextDecoration decoration = TextDecoration.builder().presets().foreground(color).build();
+        this.getActionFactory().selectAndDecorate2(new Selection(from, to), decoration).execute(new ActionEvent());
+    }
 
-        // TextDecoration decoration1 = TextDecoration
-        //         .builder()
-        //         .presets()
-        //         .foreground("black")
-        //         .build();
-        // ParagraphDecoration paragraphDecoration = ParagraphDecoration.builder().presets().build();
-        // DecorationModel model = new DecorationModel(from, to, decoration, paragraphDecoration);
-        // int len = this.getTextLength();
-        // // DecorationModel model1 = new DecorationModel(5, len - 5, decoration1, paragraphDecoration);
-        // List<DecorationModel> models = new ArrayList<>(document.getDecorations());
-        // models.add(model);
-        // // models.add(model1);
-        // String text = document.getText();
-        //
-        // // document.getDecorations().add(model);
-        // Document newDocument = new Document(text, models, 0);
-        // Document newDocument = new Document(text, document.getDecorations(), 0);
+    public void clearTextStyle() {
+        TextDecoration decoration = TextDecoration.builder().presets().build();
+        this.getActionFactory().selectAndDecorate2(new Selection(0, this.getTextLength()), decoration).execute(new ActionEvent());
+    }
 
+    /**
+     * 初始化文字样式
+     */
+    public void initTextStyle() {
     }
 
     @Override
     public String getUserAgentStylesheet() {
         return ResourceUtil.getResource("/com/gluonhq/richtextarea/rich-text-area.css").toExternalForm();
+    }
+
+    public void undo() {
+        this.getActionFactory().undo().execute(new ActionEvent());
+    }
+
+    public void redo() {
+        this.getActionFactory().redo().execute(new ActionEvent());
     }
 }

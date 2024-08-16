@@ -1,4 +1,4 @@
-package cn.oyzh.fx.rich.richtextfx;
+package cn.oyzh.fx.rich;
 
 /**
  * @author oyzh

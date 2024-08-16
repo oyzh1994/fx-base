@@ -3,8 +3,7 @@ package cn.oyzh.fx.rich.test;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.information.MessageBox;
-import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.rich.richtextarea.RichTextColor;
+import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextarea.control.FlexRichTextArea;
 import com.gluonhq.richtextarea.RichTextArea;
 import com.gluonhq.richtextarea.model.DecorationModel;
@@ -44,7 +43,7 @@ public class AppMain extends Application {
         FlexRichTextArea editor = new FlexRichTextArea();
         editor.setAutoSave(true);
         editor.setFlexWidth("100%");
-        editor.setFlexHeight("100% - 50");
+        editor.setFlexHeight("100% - 100");
 
         FlexHBox hbox = new FlexHBox();
         hbox.setFlexWidth("100%");
@@ -70,28 +69,33 @@ public class AppMain extends Application {
         btn5.setOnAction(event -> editor.clear());
         hbox.addChild(btn5);
 
-        RichTextColor textColor1 = new RichTextColor(0, 5, Color.RED, 1);
+        RichTextStyle style1 = new RichTextStyle(0, 5, "red");
         Button btn6 = new Button("设置颜色1");
-        btn6.setOnAction(event -> editor.setColor(textColor1));
+        btn6.setOnAction(event -> editor.setStyle(style1));
         hbox.addChild(btn6);
 
-        RichTextColor textColor2 = new RichTextColor(6, 10, Color.BLUE, 1);
+        RichTextStyle style2 = new RichTextStyle(4, 10, "blue");
         Button btn7 = new Button("设置颜色2");
-        btn7.setOnAction(event -> editor.setColor(textColor2));
+        btn7.setOnAction(event -> editor.setStyle(style2));
         hbox.addChild(btn7);
 
-        VBox vbox = new VBox(editor);
-        vbox.setPrefHeight(200);
-        vbox.setPrefWidth(200);
-        VBox vbox1 = new VBox(vbox);
-        vbox1.setPrefHeight(200);
-        vbox1.setPrefWidth(200);
-        FlexVBox root = new FlexVBox(hbox, vbox1){
+        Button btn8 = new Button("清除颜色");
+        btn8.setOnAction(event -> editor.clearTextStyle());
+        hbox.addChild(btn8);
 
-            // @Override
-            // public void changeTheme(ThemeStyle style) {
-            // }
-        };
+        FlexHBox hbox2 = new FlexHBox();
+        hbox2.setFlexWidth("100%");
+        hbox2.setRealHeight(50);
+
+        Button btn10 = new Button("取消");
+        btn10.setOnAction(event -> editor.undo());
+        hbox2.addChild(btn10);
+
+        Button btn11 = new Button("重做");
+        btn11.setOnAction(event -> editor.redo());
+        hbox2.addChild(btn11);
+
+        FlexVBox root = new FlexVBox(hbox, hbox2, editor);
 
         root.setPrefHeight(500);
         root.setPrefWidth(800);
