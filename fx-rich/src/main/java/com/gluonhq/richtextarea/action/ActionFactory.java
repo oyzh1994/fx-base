@@ -38,6 +38,8 @@ import com.gluonhq.richtextarea.viewmodel.ActionCmdAppendText;
 import com.gluonhq.richtextarea.viewmodel.ActionCmdClearText;
 import com.gluonhq.richtextarea.viewmodel.ActionCmdFactory;
 import com.gluonhq.richtextarea.viewmodel.ActionCmdSelectAndDecorate2;
+import com.gluonhq.richtextarea.viewmodel.ActionCmdSetText;
+import com.gluonhq.richtextarea.viewmodel.SetTextCmd;
 
 public class ActionFactory {
 
@@ -137,14 +139,18 @@ public class ActionFactory {
         return new BasicAction(control, action -> ACTION_CMD_FACTORY.selectAndDecorate(selection, decoration));
     }
 
+
     public Action selectAndDecorate2(Selection selection, Decoration decoration) {
         return new BasicAction(control, action -> new ActionCmdSelectAndDecorate2(selection, decoration));
+    }
+
+    public Action setText(String text) {
+        return new BasicAction(control, action -> new ActionCmdSetText(text));
     }
 
     public Action clearText() {
         return new BasicAction(control, action -> new ActionCmdClearText());
     }
-
     public Action insertText(String text) {
         return new BasicAction(control, action -> ACTION_CMD_FACTORY.insertText(text));
     }

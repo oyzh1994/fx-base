@@ -17,7 +17,7 @@ class AppendTextCmd extends AbstractEditCmd {
     @Override
     public void doRedo(RichTextAreaViewModel viewModel) {
         if (this.content != null) {
-            viewModel.getTextBuffer().append(this.content);
+            viewModel.getTextBuffer().insert(this.content, viewModel.getTextLength());
         }
     }
 

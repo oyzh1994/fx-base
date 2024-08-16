@@ -160,8 +160,9 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     }
 
     public void setText(String text) {
-        Document document = new Document(text);
-        this.getActionFactory().open(document).execute(new ActionEvent());
+//        Document document = new Document(text);
+//        this.getActionFactory().open(document).execute(new ActionEvent());
+        this.getActionFactory().setText(text).execute(new ActionEvent());
     }
 
     public String getText() {
