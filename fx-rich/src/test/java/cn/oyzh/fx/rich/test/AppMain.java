@@ -99,6 +99,14 @@ public class AppMain extends Application {
         btn12.setOnAction(event -> editor.deleteText(0, 10));
         hbox2.addChild(btn12);
 
+        Button btn13 = new Button("移动光标");
+        btn13.setOnAction(event -> editor.positionCaret(10));
+        hbox2.addChild(btn13);
+
+        Button btn14 = new Button("插入文字");
+        btn14.setOnAction(event -> editor.insertText("插入内容"));
+        hbox2.addChild(btn14);
+
         FlexVBox root = new FlexVBox(hbox, hbox2, editor);
 
         root.setPrefHeight(500);

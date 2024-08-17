@@ -247,4 +247,26 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     public void deleteText(int start, int end) {
         this.actionFactory.deleteText(start, end).execute(new ActionEvent());
     }
+
+    public int getLength() {
+        return Math.max(super.getTextLength(), 0);
+    }
+
+    /**
+     * 是否为空
+     *
+     * @return 结果
+     */
+    public boolean isEmpty() {
+        return this.getLength() <= 0;
+    }
+
+    public void positionCaret(int caretPosition) {
+        this.actionFactory.positionCaret(caretPosition).execute(new ActionEvent());
+        this.requestFocus();
+    }
+
+    public void insertText(String text) {
+        this.actionFactory.insertText(text).execute(new ActionEvent());
+    }
 }

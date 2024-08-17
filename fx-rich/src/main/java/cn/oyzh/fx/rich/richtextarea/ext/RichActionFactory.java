@@ -35,4 +35,12 @@ public class RichActionFactory extends ActionFactory {
     public Action deleteText(int start, int end) {
         return new BasicAction(control, action -> new ActionCmdDeleteText(start, end));
     }
+
+    public Action positionCaret(int caretPosition) {
+        return new BasicAction(control, action -> new ActionCmdPositionCaret(caretPosition));
+    }
+
+    public Action insertText(String text) {
+        return new BasicAction(control, action -> new ActionCmdInsertText(text));
+    }
 }
