@@ -16,31 +16,39 @@ public class RichActionFactory extends ActionFactory {
         this.control = control;
     }
 
-    public Action selectAndDecorate2(Selection selection, Decoration decoration) {
-        return new BasicAction(control, action -> new ActionCmdSelectAndDecorate2(selection, decoration));
+    public Action setStyle(Selection selection, Decoration decoration) {
+        return new BasicAction(this.control, action -> new ActionCmdSetStyle(selection, decoration));
     }
 
     public Action setText(String text) {
-        return new BasicAction(control, action -> new ActionCmdSetText(text));
+        return new BasicAction(this.control, action -> new ActionCmdSetText(text));
     }
 
     public Action clearText() {
-        return new BasicAction(control, action -> new ActionCmdClearText());
+        return new BasicAction(this.control, action -> new ActionCmdClearText());
     }
 
     public Action appendText(String text) {
-        return new BasicAction(control, action -> new ActionCmdAppendText(text));
+        return new BasicAction(this.control, action -> new ActionCmdAppendText(text));
     }
 
     public Action deleteText(int start, int end) {
-        return new BasicAction(control, action -> new ActionCmdDeleteText(start, end));
+        return new BasicAction(this.control, action -> new ActionCmdDeleteText(start, end));
     }
 
     public Action positionCaret(int caretPosition) {
-        return new BasicAction(control, action -> new ActionCmdPositionCaret(caretPosition));
+        return new BasicAction(this.control, action -> new ActionCmdPositionCaret(caretPosition));
     }
 
     public Action insertText(String text) {
-        return new BasicAction(control, action -> new ActionCmdInsertText(text));
+        return new BasicAction(this.control, action -> new ActionCmdInsertText(text));
+    }
+
+    public Action forgetHistory() {
+        return new BasicAction(this.control, action -> new ActionCmdForgetHistory());
+    }
+
+    public Action replaceText(String text) {
+        return new BasicAction(this.control, action -> new ActionCmdReplaceText(text));
     }
 }

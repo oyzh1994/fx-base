@@ -1,10 +1,11 @@
 
 package cn.oyzh.fx.rich.richtextarea.ext;
 
+import com.gluonhq.richtextarea.undo.AbstractCommand;
 import com.gluonhq.richtextarea.viewmodel.AbstractEditCmd;
 import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 
-class ClearTextCmd extends AbstractEditCmd {
+public class ClearTextCmd extends AbstractEditCmd {
 
     @Override
     public void doRedo(RichTextAreaViewModel viewModel) {

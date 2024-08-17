@@ -217,12 +217,12 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
             to = this.getTextLength();
         }
         TextDecoration decoration = TextDecoration.builder().presets().foreground(color).build();
-        this.actionFactory.selectAndDecorate2(new Selection(from, to), decoration).execute(new ActionEvent());
+        this.actionFactory.setStyle(new Selection(from, to), decoration).execute(new ActionEvent());
     }
 
     public void clearTextStyle() {
         TextDecoration decoration = TextDecoration.builder().presets().build();
-        this.actionFactory.selectAndDecorate2(new Selection(0, this.getTextLength()), decoration).execute(new ActionEvent());
+        this.actionFactory.setStyle(new Selection(0, this.getTextLength()), decoration).execute(new ActionEvent());
     }
 
     /**
@@ -268,5 +268,16 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     public void insertText(String text) {
         this.actionFactory.insertText(text).execute(new ActionEvent());
+    }
+
+    /**
+     * 忘记历史记录
+     */
+    public void forgetHistory() {
+        this.actionFactory.forgetHistory().execute(new ActionEvent());
+    }
+
+    public void replaceSelection(String text) {
+        this.actionFactory.replaceText(text).execute(new ActionEvent());
     }
 }

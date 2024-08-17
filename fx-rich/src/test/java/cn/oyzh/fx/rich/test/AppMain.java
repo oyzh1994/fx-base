@@ -107,6 +107,14 @@ public class AppMain extends Application {
         btn14.setOnAction(event -> editor.insertText("插入内容"));
         hbox2.addChild(btn14);
 
+        Button btn15 = new Button("替换文字");
+        btn15.setOnAction(event -> editor.replaceSelection("替换内容"));
+        hbox2.addChild(btn15);
+
+        Button btn16 = new Button("清除历史");
+        btn16.setOnAction(event -> editor.forgetHistory());
+        hbox2.addChild(btn16);
+
         FlexVBox root = new FlexVBox(hbox, hbox2, editor);
 
         root.setPrefHeight(500);

@@ -5,6 +5,7 @@
 
 package cn.oyzh.fx.rich.richtextarea.ext;
 
+import com.gluonhq.richtextarea.undo.AbstractCommand;
 import com.gluonhq.richtextarea.viewmodel.AbstractEditCmd;
 import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 
@@ -16,12 +17,13 @@ public class InsertTextCmd extends AbstractEditCmd {
     }
 
     @Override
-    public void doRedo(RichTextAreaViewModel viewModel) {
-        viewModel.getTextBuffer().insert(this.content, viewModel.getCaretPosition());
+    public void doUndo(RichTextAreaViewModel viewModel) {
+        viewModel.undo();
     }
 
     @Override
-    public void doUndo(RichTextAreaViewModel viewModel) {
-        viewModel.undo();
+    public void doRedo(RichTextAreaViewModel viewModel) {
+        viewModel.getTextBuffer().insert(this.content, viewModel.getCaretPosition());
+        viewModel.setCaretPosition(viewModel.getCaretPosition() + this.content.length());
     }
 }

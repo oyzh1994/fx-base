@@ -393,7 +393,7 @@ public class RichTextAreaViewModel {
         }
     }
 
-    void decorate(Decoration decoration) {
+    public void decorate(Decoration decoration) {
         if (decoration instanceof TextDecoration) {
             if (getSelection().isDefined()) {
                 Selection selection = getSelection();

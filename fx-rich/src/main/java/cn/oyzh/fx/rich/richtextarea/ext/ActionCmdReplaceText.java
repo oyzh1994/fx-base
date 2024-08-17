@@ -4,20 +4,18 @@ import com.gluonhq.richtextarea.viewmodel.ActionCmd;
 import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 import javafx.beans.binding.BooleanBinding;
 
-import java.util.Objects;
-
-public class ActionCmdAppendText implements ActionCmd {
+public class ActionCmdReplaceText implements ActionCmd {
 
     private final String content;
 
-    public ActionCmdAppendText(String content) {
+    public ActionCmdReplaceText(String content) {
         this.content = content;
     }
 
     @Override
     public void apply(RichTextAreaViewModel viewModel) {
         if (this.content != null) {
-            viewModel.getCommandManager().execute(new AppendTextCmd(this.content));
+            viewModel.getCommandManager().execute(new ReplaceTextCmd(this.content));
         }
     }
 
