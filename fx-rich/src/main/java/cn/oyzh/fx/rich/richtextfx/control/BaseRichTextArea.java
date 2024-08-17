@@ -7,6 +7,7 @@ import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
@@ -144,18 +145,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
         }
         int finalStart = start;
         int finalEnd = end;
-        RenderService.submitFX(() -> super.replaceText(finalStart, finalEnd, text));
+        FXUtil.runWait(() -> super.replaceText(finalStart, finalEnd, text));
     }
-
-    // @Override
-    // public Position offsetToPosition(int charOffset, Bias bias) {
-    //     try {
-    //         return super.offsetToPosition(charOffset, bias);
-    //     } catch (Exception ex) {
-    //         ex.printStackTrace();
-    //     }
-    //     return null;
-    // }
 
     @Override
     public String getText() {

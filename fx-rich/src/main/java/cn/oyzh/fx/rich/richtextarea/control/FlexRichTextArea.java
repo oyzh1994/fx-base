@@ -1,39 +1,31 @@
 package cn.oyzh.fx.rich.richtextarea.control;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeUtil;
 import cn.oyzh.fx.plus.util.ColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextarea.ext.RichActionFactory;
+import com.gluonhq.richtextarea.DefaultParagraphGraphicFactory;
 import com.gluonhq.richtextarea.RichTextArea;
 import com.gluonhq.richtextarea.RichTextAreaSkin;
 import com.gluonhq.richtextarea.Selection;
-import com.gluonhq.richtextarea.model.Block;
-import com.gluonhq.richtextarea.model.DecorationModel;
-import com.gluonhq.richtextarea.model.Document;
 import com.gluonhq.richtextarea.model.TextDecoration;
 import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Label;
 import javafx.scene.text.FontWeight;
-import lombok.Getter;
 import lombok.NonNull;
-import org.fxmisc.richtext.LineNumberFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +36,11 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     {
         NodeManager.init(this);
+//        ParagraphDecoration table = ParagraphDecoration.builder().presets().graphicType(ParagraphDecoration.GraphicType.NUMBERED_LIST)
+//                .build();
+//        DecorationModel model = new DecorationModel(0, 0, null, table);
+//        Document document = new Document("", List.of(model), 0);
+//        this.getActionFactory().open(document);
     }
 
     private final RichActionFactory actionFactory = new RichActionFactory(this);
@@ -357,11 +354,15 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
      * 显示行号
      */
     public void showLineNum() {
+        if (this.getParagraphGraphicFactory() == DefaultParagraphGraphicFactory.getFactory()) {
+            this.setParagraphGraphicFactory((integer, graphicType) -> new Label(integer.intValue() + ""));
+        }
     }
 
     /**
      * 隐藏行号
      */
     public void hideLineNum() {
+        this.setParagraphGraphicFactory(DefaultParagraphGraphicFactory.getFactory());
     }
 }
