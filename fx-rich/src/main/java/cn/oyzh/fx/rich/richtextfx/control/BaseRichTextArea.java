@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.thread.RenderService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
@@ -308,7 +309,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      * 清除文字样式
      */
     public void clearTextStyle() {
-        RenderService.submitFX(() -> this.setStyle(0, this.getLength(), ""));
+        FXUtil.runWait(() -> this.setStyle(0, this.getLength(), ""));
     }
 
     /**

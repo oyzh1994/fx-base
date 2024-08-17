@@ -370,7 +370,7 @@ public class RichTextAreaViewModel {
      * Smart enough to distinguish between append and insert operations
      * @param text text to insert
      */
-    void insert(String text) {
+    public void insert(String text) {
         removeSelection();
         int caretPosition = getCaretPosition();
         if (caretPosition >= getTextLength()) {

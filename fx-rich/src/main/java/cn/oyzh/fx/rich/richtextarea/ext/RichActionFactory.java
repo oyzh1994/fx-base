@@ -51,4 +51,8 @@ public class RichActionFactory extends ActionFactory {
     public Action replaceText(String text) {
         return new BasicAction(this.control, action -> new ActionCmdReplaceText(text));
     }
+
+    public Action selectRange(int anchor, int caretPosition) {
+        return new BasicAction(this.control, action -> new ActionCmdSelectRange(anchor, caretPosition));
+    }
 }

@@ -6,7 +6,7 @@ import com.gluonhq.richtextarea.undo.AbstractCommand;
 import com.gluonhq.richtextarea.viewmodel.AbstractEditCmd;
 import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 
-public class ReplaceTextCmd extends AbstractCommand<RichTextAreaViewModel> {
+public class ReplaceTextCmd extends AbstractEditCmd {
 
     private final String content;
 
@@ -21,15 +21,16 @@ public class ReplaceTextCmd extends AbstractCommand<RichTextAreaViewModel> {
 
     @Override
     public void doRedo(RichTextAreaViewModel viewModel) {
-        Selection selection = viewModel.getSelection();
-        if (selection.isDefined() && selection.getLength() > 0) {
-            viewModel.getTextBuffer().delete(selection.getStart(), selection.getEnd() - 1);
-            viewModel.clearSelection();
-        }
-        if (selection.isDefined()) {
-            viewModel.getTextBuffer().insert(this.content, selection.getStart());
-        } else {
-            viewModel.getTextBuffer().insert(this.content, viewModel.getCaretPosition());
-        }
+//        Selection selection = viewModel.getSelection();
+//        if (selection.isDefined() && selection.getLength() > 0) {
+//            viewModel.getTextBuffer().delete(selection.getStart(), selection.getEnd() - 1);
+//            viewModel.clearSelection();
+//        }
+//        if (selection.isDefined()) {
+//            viewModel.getTextBuffer().insert(this.content, selection.getStart());
+//        } else {
+//            viewModel.getTextBuffer().insert(this.content, viewModel.getCaretPosition());
+//        }
+        viewModel.insert(this.content);
     }
 }

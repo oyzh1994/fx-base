@@ -11,6 +11,8 @@ import com.gluonhq.richtextarea.model.Document;
 import com.gluonhq.richtextarea.model.ParagraphDecoration;
 import com.gluonhq.richtextarea.model.TextDecoration;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -115,7 +117,15 @@ public class AppMain extends Application {
         btn16.setOnAction(event -> editor.forgetHistory());
         hbox2.addChild(btn16);
 
+        Button btn17 = new Button("选中区间");
+        btn17.setOnAction(event -> editor.selectRange(2, 8));
+        hbox2.addChild(btn17);
+
         FlexVBox root = new FlexVBox(hbox, hbox2, editor);
+
+        editor.addTextChangeListener((observableValue, s, t1) -> {
+            System.out.println(t1);
+        });
 
         root.setPrefHeight(500);
         root.setPrefWidth(800);

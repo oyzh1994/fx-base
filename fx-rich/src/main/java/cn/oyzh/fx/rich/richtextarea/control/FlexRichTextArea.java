@@ -1,25 +1,37 @@
 package cn.oyzh.fx.rich.richtextarea.control;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeUtil;
+import cn.oyzh.fx.plus.util.ColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextarea.ext.RichActionFactory;
 import com.gluonhq.richtextarea.RichTextArea;
+import com.gluonhq.richtextarea.RichTextAreaSkin;
 import com.gluonhq.richtextarea.Selection;
 import com.gluonhq.richtextarea.model.Block;
 import com.gluonhq.richtextarea.model.DecorationModel;
 import com.gluonhq.richtextarea.model.Document;
 import com.gluonhq.richtextarea.model.TextDecoration;
+import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import lombok.Getter;
 import lombok.NonNull;
+import org.fxmisc.richtext.LineNumberFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,14 +176,21 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     public void setText(String text) {
         this.actionFactory.setText(text).execute(new ActionEvent());
+        this.updateText();
     }
 
     public String getText() {
+        RichTextAreaSkin skin = (RichTextAreaSkin) this.getSkin();
+        if (skin != null) {
+            RichTextAreaViewModel viewModel = skin.getViewModel();
+            return viewModel.getTextBuffer().getText();
+        }
         return this.getDocument().getText();
     }
 
     public void append(String text) {
         this.actionFactory.appendText(text).execute(new ActionEvent());
+        this.updateText();
     }
 
     public void appendLine(String text) {
@@ -180,6 +199,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     public void clear() {
         this.actionFactory.clearText().execute(new ActionEvent());
+        this.updateText();
     }
 
     /**
@@ -216,6 +236,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
         if (to > this.getTextLength()) {
             to = this.getTextLength();
         }
+        color = ColorUtil.styleColorToWebColor(color);
         TextDecoration decoration = TextDecoration.builder().presets().foreground(color).build();
         this.actionFactory.setStyle(new Selection(from, to), decoration).execute(new ActionEvent());
     }
@@ -238,14 +259,17 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     public void undo() {
         this.getActionFactory().undo().execute(new ActionEvent());
+        this.updateText();
     }
 
     public void redo() {
         this.getActionFactory().redo().execute(new ActionEvent());
+        this.updateText();
     }
 
     public void deleteText(int start, int end) {
         this.actionFactory.deleteText(start, end).execute(new ActionEvent());
+        this.updateText();
     }
 
     public int getLength() {
@@ -268,6 +292,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     public void insertText(String text) {
         this.actionFactory.insertText(text).execute(new ActionEvent());
+        this.updateText();
     }
 
     /**
@@ -279,5 +304,64 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     public void replaceSelection(String text) {
         this.actionFactory.replaceText(text).execute(new ActionEvent());
+        this.updateText();
+    }
+
+    private StringProperty textProperty;
+
+    public StringProperty textProperty() {
+        if (this.textProperty == null) {
+            this.textProperty = new SimpleStringProperty();
+            this.textLengthProperty().addListener((observableValue, number, t1) -> this.updateText());
+            this.modifiedProperty().addListener((observableValue, oldValue, newValue) -> this.updateText());
+            this.updateText();
+        }
+        return this.textProperty;
+    }
+
+    @Override
+    public void addTextChangeListener(ChangeListener<String> listener) {
+        this.textProperty().addListener(listener);
+    }
+
+    private void updateText() {
+        FXUtil.runPulse(() -> this.textProperty().set(this.getText()));
+    }
+
+    public void selectRange(int anchor, int caretPosition) {
+        this.actionFactory.selectRange(anchor, caretPosition).execute(new ActionEvent());
+    }
+
+    /**
+     * 设置是否显示行号
+     *
+     * @param showLine 是否显示行号
+     */
+    public void setShowLine(boolean showLine) {
+        this.setProp("showLine", showLine);
+        if (showLine) {
+            this.showLineNum();
+        } else {
+            this.hideLineNum();
+        }
+    }
+
+    /**
+     * 获取设置是否显示行号
+     */
+    public boolean isShowLine() {
+        return this.getProp("showLine");
+    }
+
+    /**
+     * 显示行号
+     */
+    public void showLineNum() {
+    }
+
+    /**
+     * 隐藏行号
+     */
+    public void hideLineNum() {
     }
 }

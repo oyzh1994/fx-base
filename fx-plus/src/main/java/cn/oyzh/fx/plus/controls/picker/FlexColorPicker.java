@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeUtil;
+import cn.oyzh.fx.plus.util.ColorUtil;
 import javafx.scene.Cursor;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
@@ -152,7 +153,7 @@ public class FlexColorPicker extends ColorPicker implements FlexAdapter, TipAdap
 
     public String getColor() {
         try {
-            return ThemeUtil.getColorHex(this.getValue());
+            return ColorUtil.getColorHex(this.getValue());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

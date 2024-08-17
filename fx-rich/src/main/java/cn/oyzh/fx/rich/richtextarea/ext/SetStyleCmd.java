@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package cn.oyzh.fx.rich.richtextarea.ext;
 
 import com.gluonhq.richtextarea.Selection;

@@ -24,6 +24,7 @@ public class InsertTextCmd extends AbstractEditCmd {
     @Override
     public void doRedo(RichTextAreaViewModel viewModel) {
         viewModel.getTextBuffer().insert(this.content, viewModel.getCaretPosition());
+        viewModel.clearSelection();
         viewModel.setCaretPosition(viewModel.getCaretPosition() + this.content.length());
     }
 }
