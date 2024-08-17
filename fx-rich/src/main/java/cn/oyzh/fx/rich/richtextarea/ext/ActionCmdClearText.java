@@ -25,23 +25,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.gluonhq.richtextarea.viewmodel;
+package cn.oyzh.fx.rich.richtextarea.ext;
 
+import com.gluonhq.richtextarea.viewmodel.ActionCmd;
+import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 import javafx.beans.binding.BooleanBinding;
 
-import java.util.Objects;
-
-public class ActionCmdSetText implements ActionCmd {
-
-    private final String content;
-
-    public ActionCmdSetText(String content) {
-        this.content = Objects.requireNonNull(content);
-    }
+public class ActionCmdClearText implements ActionCmd {
 
     @Override
     public void apply(RichTextAreaViewModel viewModel) {
-        viewModel.getCommandManager().execute(new SetTextCmd(this.content));
+        viewModel.getCommandManager().execute(new ClearTextCmd());
     }
 
     @Override

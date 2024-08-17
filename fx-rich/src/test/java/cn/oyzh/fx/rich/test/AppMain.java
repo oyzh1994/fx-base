@@ -87,13 +87,17 @@ public class AppMain extends Application {
         hbox2.setFlexWidth("100%");
         hbox2.setRealHeight(50);
 
-        Button btn10 = new Button("取消");
+        Button btn10 = new Button("撤销");
         btn10.setOnAction(event -> editor.undo());
         hbox2.addChild(btn10);
 
         Button btn11 = new Button("重做");
         btn11.setOnAction(event -> editor.redo());
         hbox2.addChild(btn11);
+
+        Button btn12 = new Button("删除文字");
+        btn12.setOnAction(event -> editor.deleteText(0, 10));
+        hbox2.addChild(btn12);
 
         FlexVBox root = new FlexVBox(hbox, hbox2, editor);
 

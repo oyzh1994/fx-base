@@ -1,17 +1,20 @@
 
-package com.gluonhq.richtextarea.viewmodel;
+package cn.oyzh.fx.rich.richtextarea.ext;
 
-import java.util.Objects;
+import com.gluonhq.richtextarea.viewmodel.AbstractEditCmd;
+import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 
 class ClearTextCmd extends AbstractEditCmd {
 
+    @Override
     public void doRedo(RichTextAreaViewModel viewModel) {
         viewModel.setCaretPosition(0);
         viewModel.remove(0, viewModel.getTextLength());
+        viewModel.setCaretPosition(0);
     }
 
+    @Override
     public void doUndo(RichTextAreaViewModel viewModel) {
-        Objects.requireNonNull(viewModel);
         viewModel.undo();
     }
 }

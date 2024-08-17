@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
+import cn.oyzh.fx.rich.richtextarea.ext.RichActionFactory;
 import com.gluonhq.richtextarea.RichTextArea;
 import com.gluonhq.richtextarea.Selection;
 import com.gluonhq.richtextarea.model.Block;
@@ -32,6 +33,8 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     {
         NodeManager.init(this);
     }
+
+    private final RichActionFactory actionFactory = new RichActionFactory(this);
 
     @Override
     public void resize(double width, double height) {
@@ -160,9 +163,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     }
 
     public void setText(String text) {
-//        Document document = new Document(text);
-//        this.getActionFactory().open(document).execute(new ActionEvent());
-        this.getActionFactory().setText(text).execute(new ActionEvent());
+        this.actionFactory.setText(text).execute(new ActionEvent());
     }
 
     public String getText() {
@@ -170,7 +171,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     }
 
     public void append(String text) {
-        this.getActionFactory().appendText(text).execute(new ActionEvent());
+        this.actionFactory.appendText(text).execute(new ActionEvent());
     }
 
     public void appendLine(String text) {
@@ -178,7 +179,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
     }
 
     public void clear() {
-        this.getActionFactory().clearText().execute(new ActionEvent());
+        this.actionFactory.clearText().execute(new ActionEvent());
     }
 
     /**
@@ -216,12 +217,12 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
             to = this.getTextLength();
         }
         TextDecoration decoration = TextDecoration.builder().presets().foreground(color).build();
-        this.getActionFactory().selectAndDecorate2(new Selection(from, to), decoration).execute(new ActionEvent());
+        this.actionFactory.selectAndDecorate2(new Selection(from, to), decoration).execute(new ActionEvent());
     }
 
     public void clearTextStyle() {
         TextDecoration decoration = TextDecoration.builder().presets().build();
-        this.getActionFactory().selectAndDecorate2(new Selection(0, this.getTextLength()), decoration).execute(new ActionEvent());
+        this.actionFactory.selectAndDecorate2(new Selection(0, this.getTextLength()), decoration).execute(new ActionEvent());
     }
 
     /**
@@ -241,5 +242,9 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
 
     public void redo() {
         this.getActionFactory().redo().execute(new ActionEvent());
+    }
+
+    public void deleteText(int start, int end) {
+        this.actionFactory.deleteText(start, end).execute(new ActionEvent());
     }
 }

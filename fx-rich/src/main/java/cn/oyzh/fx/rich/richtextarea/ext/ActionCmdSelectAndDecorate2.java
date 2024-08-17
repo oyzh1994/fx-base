@@ -1,7 +1,10 @@
-package com.gluonhq.richtextarea.viewmodel;
+package cn.oyzh.fx.rich.richtextarea.ext;
 
 import com.gluonhq.richtextarea.Selection;
 import com.gluonhq.richtextarea.model.Decoration;
+import com.gluonhq.richtextarea.viewmodel.ActionCmdSelectAndDecorate;
+import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
+import com.gluonhq.richtextarea.viewmodel.SelectAndDecorateCmd;
 
 import java.util.Objects;
 

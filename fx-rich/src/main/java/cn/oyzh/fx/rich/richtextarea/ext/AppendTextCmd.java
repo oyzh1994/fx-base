@@ -3,9 +3,10 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.gluonhq.richtextarea.viewmodel;
+package cn.oyzh.fx.rich.richtextarea.ext;
 
-import com.gluonhq.richtextarea.model.UnitBuffer;
+import com.gluonhq.richtextarea.viewmodel.AbstractEditCmd;
+import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 
 class AppendTextCmd extends AbstractEditCmd {
     private final String content;
@@ -16,9 +17,8 @@ class AppendTextCmd extends AbstractEditCmd {
 
     @Override
     public void doRedo(RichTextAreaViewModel viewModel) {
-        if (this.content != null) {
-            viewModel.getTextBuffer().insert(this.content, viewModel.getTextLength());
-        }
+        viewModel.getTextBuffer().insert(this.content, viewModel.getTextLength());
+        viewModel.setCaretPosition(viewModel.getTextLength());
     }
 
     @Override

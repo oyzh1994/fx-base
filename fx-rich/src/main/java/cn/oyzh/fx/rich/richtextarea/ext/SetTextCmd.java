@@ -1,9 +1,8 @@
 
-package com.gluonhq.richtextarea.viewmodel;
+package cn.oyzh.fx.rich.richtextarea.ext;
 
-import com.gluonhq.richtextarea.Selection;
-
-import java.util.Objects;
+import com.gluonhq.richtextarea.viewmodel.AbstractEditCmd;
+import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 
 public class SetTextCmd extends AbstractEditCmd {
 
@@ -16,7 +15,8 @@ public class SetTextCmd extends AbstractEditCmd {
     @Override
     public void doRedo(RichTextAreaViewModel viewModel) {
         viewModel.getTextBuffer().delete(0, viewModel.getTextLength());
-        viewModel.getTextBuffer().insert(this.content, 0);
+        viewModel.setCaretPosition(0);
+        viewModel.getTextBuffer().append(this.content);
     }
 
     @Override
