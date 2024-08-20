@@ -141,6 +141,28 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 获取首个节点
+     *
+     * @return 节点
+     */
+    default Node firstChild() {
+        switch (this) {
+            case Pane pane -> {
+                return pane.getChildren().getFirst();
+            }
+            case Group group -> {
+                return group.getChildren().getFirst();
+            }
+            case Parent parent -> {
+                return parent.getChildrenUnmodifiable().getFirst();
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+
+    /**
      * 清除子节点
      */
     default void clearChild() {
