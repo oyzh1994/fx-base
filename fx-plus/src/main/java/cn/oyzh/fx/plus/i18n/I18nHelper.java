@@ -2162,4 +2162,8 @@ public class I18nHelper {
     public static String structure() {
         return I18nResourceBundle.i18nString(STRUCTURE);
     }
+
+    public static String saveFile() {
+        return I18nResourceBundle.i18nString(SAVE, FILE);
+    }
 }

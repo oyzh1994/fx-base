@@ -144,12 +144,24 @@ public class FileChooserUtil {
      * @param extensionFilter 过滤器
      */
     public static File save(String title, String initFileName, FileChooser.ExtensionFilter[] extensionFilter) {
+        return save(title, initFileName, extensionFilter, new Stage());
+    }
+
+    /**
+     * 保存文件
+     *
+     * @param title           标题
+     * @param initFileName    初始文件名称
+     * @param extensionFilter 过滤器
+     * @param owner           父窗口
+     */
+    public static File save(String title, String initFileName, FileChooser.ExtensionFilter[] extensionFilter, Window owner) {
         AtomicReference<File> file = new AtomicReference<>();
         FXUtil.runWait(() -> {
             FileChooserUtil builder = FileChooserUtil.builder();
             builder.title(title).extensionFilters(extensionFilter).initialFileName(initFileName);
             FileChooser fileChooser = builder.build();
-            file.set(fileChooser.showSaveDialog(new Stage()));
+            file.set(fileChooser.showSaveDialog(owner));
         });
         return file.get();
     }
