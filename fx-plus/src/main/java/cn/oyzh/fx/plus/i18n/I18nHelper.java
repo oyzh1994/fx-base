@@ -65,6 +65,10 @@ public class I18nHelper {
 
     public static final String DATA = "base.data";
 
+    public static final String AND = "base.and";
+
+    public static final String STRUCTURE = "base.structure";
+
     public static final String CONTENT = "base.content";
 
     public static final String COMMENT = "base.comment";
@@ -2149,5 +2153,13 @@ public class I18nHelper {
 
     public static String pretty() {
         return I18nResourceBundle.i18nString(PRETTY);
+    }
+
+    public static String dataAndStructure() {
+        return I18nResourceBundle.i18nString(DATA, AND, STRUCTURE);
+    }
+
+    public static String structure() {
+        return I18nResourceBundle.i18nString(STRUCTURE);
     }
 }
