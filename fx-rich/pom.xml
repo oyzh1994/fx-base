@@ -27,6 +27,7 @@
             <groupId>com.gluonhq</groupId>
             <artifactId>rich-text-area</artifactId>
             <version>1.2.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- fx富文本 -->

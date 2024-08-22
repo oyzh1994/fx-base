@@ -15,9 +15,12 @@
     </FlexHBox>
     <FlexTabPane flexWidth="100%" flexHeight="100% - 30">
         <FXTab text="系统页">
+            <FlexVBox flexWidth="100%" flexHeight="100%">
+
             <WebViewPane fx:id="control" flexWidth="100%" flexHeight="100%">
 
             </WebViewPane>
+            </FlexVBox>
         </FXTab>
     </FlexTabPane>
 </FlexVBox>
