@@ -51,6 +51,16 @@ public class Counter {
     private String extraMsg;
 
     /**
+     * 递增成功数量
+     *
+     * @param successCount 成功数量
+     */
+    public void incrSuccess(int successCount) {
+        this.successCount += successCount;
+        this.update(1);
+    }
+
+    /**
      * 更新
      *
      * @param type 类型 0:失败 1:成功 2:忽略

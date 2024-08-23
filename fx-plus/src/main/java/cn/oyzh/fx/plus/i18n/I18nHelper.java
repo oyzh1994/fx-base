@@ -61,6 +61,8 @@ public class I18nHelper {
 
     public static final String EXPORT = "base.export";
 
+    public static final String EXPORT_IN_PROGRESS = "base.exportInProgress";
+
     public static final String IMPORT = "base.import";
 
     public static final String DATA = "base.data";
@@ -102,6 +104,8 @@ public class I18nHelper {
     public static final String DRAG_TIP1 = "base.dragTip1";
 
     public static final String FINISH = "base.finish";
+
+    public static final String FINISHED = "base.finished";
 
     public static final String FILE = "base.file";
 
@@ -174,6 +178,8 @@ public class I18nHelper {
     public static final String CURRENT = "base.current";
 
     public static final String START = "base.start";
+
+    public static final String STARTING = "base.starting";
 
     public static final String COPY = "base.copy";
 
@@ -835,6 +841,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(FILE, PROCESS, ING);
     }
 
+    public static String exportStarting() {
+        return I18nResourceBundle.i18nString(EXPORT, STARTING);
+    }
+
     public static String all() {
         return I18nResourceBundle.i18nString(ALL);
     }
@@ -877,6 +887,18 @@ public class I18nHelper {
 
     public static String transportFinish() {
         return I18nResourceBundle.i18nString(TRANSPORT, FINISH);
+    }
+
+    public static String exportFinish() {
+        return I18nResourceBundle.i18nString(EXPORT, FINISH);
+    }
+
+    public static String exportFinished() {
+        return I18nResourceBundle.i18nString(EXPORT, FINISHED);
+    }
+
+    public static String exportInProgress() {
+        return I18nResourceBundle.i18nString(EXPORT_IN_PROGRESS);
     }
 
     public static String initFail() {

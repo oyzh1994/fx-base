@@ -58,4 +58,8 @@ public class MsgTextArea extends FlexTextArea {
             }
         }
     }
+
+    // public void replaceLastLine(){
+    //     this.replaceText();
+    // }
 }
