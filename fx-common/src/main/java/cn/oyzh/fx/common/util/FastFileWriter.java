@@ -1,12 +1,16 @@
 package cn.oyzh.fx.common.util;
 
+import cn.oyzh.fx.common.thread.ThreadUtil;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author oyzh
@@ -14,7 +18,11 @@ import java.util.List;
  */
 public class FastFileWriter {
 
-    private FileWriter writer;
+    // private Queue<String> queue;
+    //
+    // private AtomicBoolean running;
+
+    private final FileWriter writer;
 
     public FastFileWriter(File file) throws IOException {
         this(file, StandardCharsets.UTF_8);
@@ -25,16 +33,27 @@ public class FastFileWriter {
     }
 
     public void appendLine(String line) throws IOException {
+        this.appendLine(line, false);
+    }
+
+    public void appendLine(String line, boolean async) throws IOException {
         if (line != null) {
-            if (line.endsWith("\n")) {
-                this.writer.append(line);
-            } else {
-                this.writer.append(line + "\n");
+            if (!line.endsWith("\n")) {
+                line += "\n";
             }
+            // if (async) {
+            //     this.appendAsync(line);
+            // } else {
+                this.writer.append(line);
+            // }
         }
     }
 
     public void appendLines(Collection<String> lines) throws IOException {
+        this.appendLines(lines, false);
+    }
+
+    public void appendLines(Collection<String> lines, boolean async) throws IOException {
         if (lines != null) {
             StringBuilder sb = new StringBuilder();
             for (String line : lines) {
@@ -44,7 +63,11 @@ public class FastFileWriter {
                     sb.append(line).append("\n");
                 }
             }
-            this.writer.append(sb.toString());
+            // if (async) {
+            //     this.appendAsync(sb.toString());
+            // } else {
+                this.writer.append(sb.toString());
+            // }
         }
     }
 
@@ -59,7 +82,7 @@ public class FastFileWriter {
         }
     }
 
-    public void writeLines(List<String> lines) throws IOException {
+    public void writeLines(Collection<String> lines) throws IOException {
         if (lines != null) {
             StringBuilder sb = new StringBuilder();
             for (String line : lines) {
@@ -73,9 +96,39 @@ public class FastFileWriter {
         }
     }
 
+    // public void waitingComplete() {
+    //     if (this.queue != null && !this.queue.isEmpty()) {
+    //         while (!this.queue.isEmpty()) {
+    //             ThreadUtil.sleep(10);
+    //         }
+    //     }
+    // }
+
     public void close() throws IOException {
         if (this.writer != null) {
             this.writer.close();
         }
     }
+
+    // private void appendAsync(String line) {
+    //     if (this.queue == null) {
+    //         this.queue = new LinkedBlockingDeque<>();
+    //         this.running = new AtomicBoolean(false);
+    //     }
+    //     this.queue.add(line);
+    //     if (!this.running.get()) {
+    //         this.running.set(true);
+    //         ThreadUtil.start(() -> {
+    //             do {
+    //                 String text = this.queue.poll();
+    //                 try {
+    //                     this.appendLine(text);
+    //                 } catch (Exception ex) {
+    //                     ex.printStackTrace();
+    //                 }
+    //             } while (!this.queue.isEmpty());
+    //             this.running.set(false);
+    //         });
+    //     }
+    // }
 }
