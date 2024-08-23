@@ -65,62 +65,6 @@ public class NumUtil {
     }
 
     /**
-     * byte转bit字符串
-     *
-     * @param bytes 数据
-     * @return bit字符串
-     */
-    public static String byteToBitStr(byte[] bytes) {
-        if (bytes == null || bytes.length == 0) {
-            return null;
-        }
-        StringBuilder builder = new StringBuilder();
-        for (byte aByte : bytes) {
-            builder.append(byteToBitStr(aByte));
-        }
-        return builder.toString();
-    }
-
-    /**
-     * byte转bit字符串
-     *
-     * @param b 数据
-     * @return bit字符串
-     */
-    public static String byteToBitStr(byte b) {
-        StringBuilder builder = new StringBuilder();
-        // 将字节与0xFF进行按位与运算，保留最低8位
-        int bitValue = b & 0xFF;
-        for (int i = 7; i >= 0; i--) {
-            builder.append((bitValue & (1 << i)) != 0 ? "1" : "0");
-        }
-        return builder.toString();
-    }
-
-    /**
-     * bit字符串转byte
-     *
-     * @param bitStr bit字符串
-     * @return byte数组
-     */
-    public static byte[] bitStrToByte(String bitStr) {
-        if (bitStr == null || bitStr.isEmpty()) {
-            return null;
-        }
-        String[] bits = StrUtil.split(bitStr, 8);
-        byte[] bytes = new byte[bits.length];
-        int i = 0;
-        for (String bit : bits) {
-            // 将二进制字符串转换为十进制整数
-            int decimalValue = Integer.parseInt(bit, 2);
-            // 将十进制整数转换为字节
-            byte byteValue = Byte.parseByte(String.valueOf(decimalValue));
-            bytes[i++] = byteValue;
-        }
-        return bytes;
-    }
-
-    /**
      * 限制大小
      *
      * @param val 值

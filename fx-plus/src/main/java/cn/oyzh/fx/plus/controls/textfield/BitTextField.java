@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.common.util.TextUtil;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
@@ -64,7 +65,7 @@ public class BitTextField extends ClearableTextField {
         if (val == null || val.isEmpty()) {
             return null;
         }
-        return NumUtil.bitStrToByte(val);
+        return TextUtil.bitStrToByte(val);
     }
 
     /**
@@ -88,6 +89,6 @@ public class BitTextField extends ClearableTextField {
     }
 
     public static String format(byte[] bytes) {
-        return NumUtil.byteToBitStr(bytes);
+        return TextUtil.byteToBitStr(bytes);
     }
 }
