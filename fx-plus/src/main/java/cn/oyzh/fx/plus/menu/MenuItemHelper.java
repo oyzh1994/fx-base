@@ -27,6 +27,7 @@ import cn.oyzh.fx.plus.controls.svg.TerminalSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.TransportSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.TruncateSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.UnLockSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.database.DumpSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import lombok.experimental.UtilityClass;
@@ -134,6 +135,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem exportData(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.exportData(), new ExportSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem dumpData(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.dumpData(), new DumpSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem exportConnect(String iconSize, Runnable action) {

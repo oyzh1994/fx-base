@@ -61,6 +61,8 @@ public class I18nHelper {
 
     public static final String EXPORT = "base.export";
 
+    public static final String DUMP = "base.dump";
+
     public static final String EXPORT_IN_PROGRESS = "base.exportInProgress";
 
     public static final String IMPORT = "base.import";
@@ -675,6 +677,10 @@ public class I18nHelper {
 
     public static String exportData() {
         return I18nResourceBundle.i18nString(EXPORT, DATA);
+    }
+
+    public static String dumpData() {
+        return I18nResourceBundle.i18nString(DUMP, DATA);
     }
 
     public static String content() {
@@ -2187,5 +2193,9 @@ public class I18nHelper {
 
     public static String saveFile() {
         return I18nResourceBundle.i18nString(SAVE, FILE);
+    }
+
+    public static String dump() {
+        return I18nResourceBundle.i18nString(DUMP);
     }
 }
