@@ -63,6 +63,10 @@ public class I18nHelper {
 
     public static final String DUMP = "base.dump";
 
+    public static final String NEXT_STEP = "base.nextStep";
+
+    public static final String PREV_STEP = "base.prevStep";
+
     public static final String EXPORT_IN_PROGRESS = "base.exportInProgress";
 
     public static final String IMPORT = "base.import";
@@ -452,6 +456,8 @@ public class I18nHelper {
     public static final String EXPAND = "base.expand";
 
     public static final String NEXT = "base.next";
+
+    public static final String STEP = "base.step";
 
     public static final String PASTE = "base.paste";
 
@@ -2197,5 +2203,13 @@ public class I18nHelper {
 
     public static String dump() {
         return I18nResourceBundle.i18nString(DUMP);
+    }
+
+    public static String nextStep() {
+        return I18nResourceBundle.i18nString(NEXT_STEP);
+    }
+
+    public static String prevStep() {
+        return I18nResourceBundle.i18nString(PREV_STEP);
     }
 }
