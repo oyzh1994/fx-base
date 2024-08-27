@@ -1,16 +1,11 @@
 package cn.oyzh.fx.common.util;
 
-import cn.oyzh.fx.common.thread.ThreadUtil;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author oyzh
@@ -44,7 +39,7 @@ public class FastFileWriter {
             // if (async) {
             //     this.appendAsync(line);
             // } else {
-                this.writer.append(line);
+            this.writer.append(line);
             // }
         }
     }
@@ -66,7 +61,7 @@ public class FastFileWriter {
             // if (async) {
             //     this.appendAsync(sb.toString());
             // } else {
-                this.writer.append(sb.toString());
+            this.writer.append(sb.toString());
             // }
         }
     }
@@ -104,9 +99,13 @@ public class FastFileWriter {
     //     }
     // }
 
-    public void close() throws IOException {
-        if (this.writer != null) {
-            this.writer.close();
+    public void close() {
+        try {
+            if (this.writer != null) {
+                this.writer.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

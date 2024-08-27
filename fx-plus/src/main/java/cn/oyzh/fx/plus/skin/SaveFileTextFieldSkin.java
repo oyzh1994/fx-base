@@ -1,12 +1,14 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
+import cn.oyzh.fx.plus.file.FileChooserUtil;
+import cn.oyzh.fx.plus.file.FileExtension;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.util.FileChooserUtil;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.File;
 
@@ -16,29 +18,35 @@ import java.io.File;
  * @author oyzh
  * @since 2024/07/04
  */
-public class FileTextFieldSkin extends ActionTextFieldSkinExt {
+public class SaveFileTextFieldSkin extends ActionTextFieldSkinExt {
 
-    /**
-     * 文件
-     */
     @Getter
-    protected File file;
+    @Setter
+    private FileExtension extension;
+
+    @Getter
+    @Setter
+    private String initFileName;
 
     @Override
     protected void onButtonClicked(MouseEvent e) {
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("All", "*.*");
-        File file1 = FileChooserUtil.choose(I18nHelper.chooseFile(), new FileChooser.ExtensionFilter[]{filter});
+        FileChooser.ExtensionFilter filter;
+        if (this.extension == null) {
+            filter = new FileChooser.ExtensionFilter("All", "*.*");
+        } else {
+            filter = new FileChooser.ExtensionFilter(this.extension.getDesc(), this.extension.getDesc());
+        }
+        File file1 = FileChooserUtil.save(I18nHelper.chooseFile(), this.initFileName, new FileChooser.ExtensionFilter[]{filter});
         if (file1 != null) {
-            this.file = file1;
-            this.setText(this.file.getName());
-            this.setTipText(this.file.getPath());
+            this.setText(file1.getPath());
+            this.setTipText(file1.getPath());
         }
     }
 
-    public FileTextFieldSkin(TextField textField) {
+    public SaveFileTextFieldSkin(TextField textField) {
         super(textField, new ChooseSVGGlyph("13"));
         this.button.disappear();
-        this.button.setTipText(I18nHelper.choose());
+        this.button.setTipText(I18nHelper.save());
     }
 
     @Override

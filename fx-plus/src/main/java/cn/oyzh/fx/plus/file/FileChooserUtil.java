@@ -1,6 +1,7 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.plus.file;
 
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.WindowManager;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -25,7 +26,7 @@ public class FileChooserUtil {
     /**
      * 桌面路径
      */
-    private static final File desktopDir = FileSystemView.getFileSystemView().getHomeDirectory();
+    public static final File DESKTOP_DIR = FileSystemView.getFileSystemView().getHomeDirectory();
 
     /**
      * 扩展名过滤器
@@ -121,7 +122,7 @@ public class FileChooserUtil {
         if (this.initDir != null) {
             fileChooser.setInitialDirectory(this.initDir);
         } else {
-            fileChooser.setInitialDirectory(desktopDir);
+            fileChooser.setInitialDirectory(DESKTOP_DIR);
         }
         fileChooser.getExtensionFilters().addAll(this.extensionFilters);
         return fileChooser;

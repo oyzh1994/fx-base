@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.toggle;
 
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
 /**
@@ -27,7 +28,7 @@ public class FXToggleGroup extends ToggleGroup {
      * @param <T> 泛型
      * @return 选中节点
      */
-    public <T> T selectedToggle() {
+    public <T extends RadioButton> T selectedToggle() {
         return (T) this.getSelectedToggle();
     }
 }

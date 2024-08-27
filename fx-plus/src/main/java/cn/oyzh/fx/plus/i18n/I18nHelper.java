@@ -2021,6 +2021,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, SELECT, CONTENT);
     }
 
+    public static String pleaseSelectType() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, TYPE);
+    }
+
     public static String collation() {
         return I18nResourceBundle.i18nString(COLLATION);
     }
@@ -2211,5 +2215,9 @@ public class I18nHelper {
 
     public static String prevStep() {
         return I18nResourceBundle.i18nString(PREV_STEP);
+    }
+
+    public static String pleaseSelectTable() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, TABLE);
     }
 }
