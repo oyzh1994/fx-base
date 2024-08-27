@@ -13,10 +13,6 @@ import java.util.Collection;
  */
 public class FastFileWriter {
 
-    // private Queue<String> queue;
-    //
-    // private AtomicBoolean running;
-
     private final FileWriter writer;
 
     public FastFileWriter(File file) throws IOException {
@@ -28,27 +24,15 @@ public class FastFileWriter {
     }
 
     public void appendLine(String line) throws IOException {
-        this.appendLine(line, false);
-    }
-
-    public void appendLine(String line, boolean async) throws IOException {
         if (line != null) {
             if (!line.endsWith("\n")) {
                 line += "\n";
             }
-            // if (async) {
-            //     this.appendAsync(line);
-            // } else {
             this.writer.append(line);
-            // }
         }
     }
 
     public void appendLines(Collection<String> lines) throws IOException {
-        this.appendLines(lines, false);
-    }
-
-    public void appendLines(Collection<String> lines, boolean async) throws IOException {
         if (lines != null) {
             StringBuilder sb = new StringBuilder();
             for (String line : lines) {
@@ -58,11 +42,7 @@ public class FastFileWriter {
                     sb.append(line).append("\n");
                 }
             }
-            // if (async) {
-            //     this.appendAsync(sb.toString());
-            // } else {
             this.writer.append(sb.toString());
-            // }
         }
     }
 
@@ -91,14 +71,6 @@ public class FastFileWriter {
         }
     }
 
-    // public void waitingComplete() {
-    //     if (this.queue != null && !this.queue.isEmpty()) {
-    //         while (!this.queue.isEmpty()) {
-    //             ThreadUtil.sleep(10);
-    //         }
-    //     }
-    // }
-
     public void close() {
         try {
             if (this.writer != null) {
@@ -109,25 +81,9 @@ public class FastFileWriter {
         }
     }
 
-    // private void appendAsync(String line) {
-    //     if (this.queue == null) {
-    //         this.queue = new LinkedBlockingDeque<>();
-    //         this.running = new AtomicBoolean(false);
-    //     }
-    //     this.queue.add(line);
-    //     if (!this.running.get()) {
-    //         this.running.set(true);
-    //         ThreadUtil.start(() -> {
-    //             do {
-    //                 String text = this.queue.poll();
-    //                 try {
-    //                     this.appendLine(text);
-    //                 } catch (Exception ex) {
-    //                     ex.printStackTrace();
-    //                 }
-    //             } while (!this.queue.isEmpty());
-    //             this.running.set(false);
-    //         });
-    //     }
-    // }
+    @Override
+    protected void finalize() throws Throwable {
+        this.close();
+        super.finalize();
+    }
 }
