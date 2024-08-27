@@ -25,15 +25,6 @@ public class FlexCheckBox extends FXCheckBox implements FlexAdapter {
         this.resizeNode();
     }
 
-    /**
-     * 选中变更事件
-     *
-     * @param listener 监听器
-     */
-    public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
-        this.selectedProperty().addListener(listener);
-    }
-
     @Override
     public String getFlexWidth() {
         return FlexAdapter.super.flexWidth();
