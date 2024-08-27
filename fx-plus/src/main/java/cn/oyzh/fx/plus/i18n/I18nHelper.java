@@ -2220,4 +2220,8 @@ public class I18nHelper {
     public static String pleaseSelectTable() {
         return I18nResourceBundle.i18nString(PLEASE, SELECT, TABLE);
     }
+
+    public static String start() {
+        return I18nResourceBundle.i18nString(START);
+    }
 }

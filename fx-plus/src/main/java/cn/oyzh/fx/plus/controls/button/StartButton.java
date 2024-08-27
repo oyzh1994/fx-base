@@ -6,16 +6,16 @@ import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 /**
  * @author oyzh
- * @since 2020/10/29
+ * @since 2024/08/27
  */
-public class SubmitButton extends IconButton {
+public class StartButton extends IconButton {
 
     @Override
     public void initNode() {
         this.setPrefHeight(25);
         this.addClass("accent");
-        this.setText(I18nHelper.submit());
-        this.setTipText(I18nHelper.submit());
+        this.setText(I18nHelper.start());
+        this.setTipText(I18nHelper.start());
         this.init(new SubmitSVGGlyph(), 0.7);
         super.initNode();
     }

@@ -13,7 +13,7 @@ public class SimpleStringConverter<T> extends StringConverter<T> {
 
     @Override
     public String toString(T o) {
-        return null;
+        return o.toString();
     }
 
     @Override
