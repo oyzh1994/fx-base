@@ -67,6 +67,8 @@ public class I18nHelper {
 
     public static final String TXT_TYPE = "base.txtType";
 
+    public static final String XML_TYPE = "base.xmlType";
+
     public static final String ALL_TYPE = "base.allType";
 
     public static final String JSON_TYPE = "base.jsonType";
@@ -2257,6 +2259,10 @@ public class I18nHelper {
 
     public static String txtType() {
         return I18nResourceBundle.i18nString(TXT_TYPE);
+    }
+
+    public static String xmlType() {
+        return I18nResourceBundle.i18nString(XML_TYPE);
     }
 
     public static String allType() {

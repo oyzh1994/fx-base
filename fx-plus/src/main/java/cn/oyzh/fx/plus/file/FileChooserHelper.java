@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.file;
 
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -116,12 +117,32 @@ public class FileChooserHelper {
         return chooser.showOpenDialog(owner);
     }
 
+    public static FileExtensionFilter extensionFilter(String type) {
+        if (StrUtil.equalsAnyIgnoreCase("sql", type)) {
+            return sqlExtensionFilter();
+        }
+        if (StrUtil.equalsAnyIgnoreCase("txt", type)) {
+            return txtExtensionFilter();
+        }
+        if (StrUtil.equalsAnyIgnoreCase("json", type)) {
+            return jsonExtensionFilter();
+        }
+        if (StrUtil.equalsAnyIgnoreCase("xml", type)) {
+            return xmlExtensionFilter();
+        }
+        return allExtensionFilter();
+    }
+
     public static FileExtensionFilter sqlExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.sqlType(), "*.sql");
     }
 
     public static FileExtensionFilter txtExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.txtType(), "*.txt");
+    }
+
+    public static FileExtensionFilter xmlExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.xmlType(), "*.xml");
     }
 
     public static FileExtensionFilter allExtensionFilter() {
