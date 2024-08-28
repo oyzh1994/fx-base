@@ -1,11 +1,10 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
+import cn.oyzh.fx.plus.file.FileChooserHelper;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
-import cn.oyzh.fx.plus.file.FileChooserUtil;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 import lombok.Getter;
 
 import java.io.File;
@@ -26,8 +25,7 @@ public class ChooseFileTextFieldSkin extends ActionTextFieldSkinExt {
 
     @Override
     protected void onButtonClicked(MouseEvent e) {
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("All", "*.*");
-        File file1 = FileChooserUtil.choose(I18nHelper.chooseFile(), new FileChooser.ExtensionFilter[]{filter});
+        File file1 = FileChooserHelper.choose(I18nHelper.chooseFile(), "All", "*.*");
         if (file1 != null) {
             this.file = file1;
             this.setText(this.file.getName());

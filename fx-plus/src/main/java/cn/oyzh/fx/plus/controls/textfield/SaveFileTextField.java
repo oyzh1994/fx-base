@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.plus.file.FileExtension;
+import cn.oyzh.fx.plus.file.FileExtensionFilter;
 import cn.oyzh.fx.plus.skin.SaveFileTextFieldSkin;
 import javafx.scene.control.Skin;
 
@@ -34,7 +34,7 @@ public class SaveFileTextField extends LimitTextField {
         this.skin().setInitFileName(initFileName);
     }
 
-    public void setExtension(FileExtension extension) {
+    public void setExtension(FileExtensionFilter extension) {
         this.skin().setExtension(extension);
     }
 

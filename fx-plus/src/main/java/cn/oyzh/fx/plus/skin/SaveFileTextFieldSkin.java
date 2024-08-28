@@ -1,12 +1,11 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
-import cn.oyzh.fx.plus.file.FileChooserUtil;
-import cn.oyzh.fx.plus.file.FileExtension;
+import cn.oyzh.fx.plus.file.FileChooserHelper;
+import cn.oyzh.fx.plus.file.FileExtensionFilter;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkinExt {
 
     @Getter
     @Setter
-    private FileExtension extension;
+    private FileExtensionFilter extension;
 
     @Getter
     @Setter
@@ -30,13 +29,10 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkinExt {
 
     @Override
     protected void onButtonClicked(MouseEvent e) {
-        FileChooser.ExtensionFilter filter;
         if (this.extension == null) {
-            filter = new FileChooser.ExtensionFilter("All", "*.*");
-        } else {
-            filter = new FileChooser.ExtensionFilter(this.extension.getDesc(), this.extension.getDesc());
+            this.extension = new FileExtensionFilter("All", "*.*");
         }
-        File file1 = FileChooserUtil.save(I18nHelper.chooseFile(), this.initFileName, new FileChooser.ExtensionFilter[]{filter});
+        File file1 = FileChooserHelper.save(I18nHelper.chooseFile(), this.initFileName, this.extension);
         if (file1 != null) {
             this.setText(file1.getPath());
             this.setTipText(file1.getPath());

@@ -69,6 +69,8 @@ public class I18nHelper {
 
     public static final String EXPORT_IN_PROGRESS = "base.exportInProgress";
 
+    public static final String DUMP_IN_PROGRESS = "base.dumpInProgress";
+
     public static final String IMPORT = "base.import";
 
     public static final String DATA = "base.data";
@@ -857,6 +859,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(EXPORT, STARTING);
     }
 
+    public static String dumpStarting() {
+        return I18nResourceBundle.i18nString(DUMP, STARTING);
+    }
+
     public static String all() {
         return I18nResourceBundle.i18nString(ALL);
     }
@@ -909,8 +915,16 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(EXPORT, FINISHED);
     }
 
+    public static String dumpFinished() {
+        return I18nResourceBundle.i18nString(DUMP, FINISHED);
+    }
+
     public static String exportInProgress() {
         return I18nResourceBundle.i18nString(EXPORT_IN_PROGRESS);
+    }
+
+    public static String dumpInProgress() {
+        return I18nResourceBundle.i18nString(DUMP_IN_PROGRESS);
     }
 
     public static String initFail() {
@@ -2223,5 +2237,9 @@ public class I18nHelper {
 
     public static String start() {
         return I18nResourceBundle.i18nString(START);
+    }
+
+    public static String dumpProcessing() {
+        return I18nResourceBundle.i18nString(DUMP, PROCESS, ING);
     }
 }
