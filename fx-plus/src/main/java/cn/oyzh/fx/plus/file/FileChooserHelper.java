@@ -130,6 +130,9 @@ public class FileChooserHelper {
         if (StrUtil.equalsAnyIgnoreCase("xml", type)) {
             return xmlExtensionFilter();
         }
+        if (StrUtil.equalsAnyIgnoreCase("csv", type)) {
+            return csvExtensionFilter();
+        }
         return allExtensionFilter();
     }
 
@@ -143,6 +146,10 @@ public class FileChooserHelper {
 
     public static FileExtensionFilter xmlExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.xmlType(), "*.xml");
+    }
+
+    public static FileExtensionFilter csvExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.xmlType(), "*.csv");
     }
 
     public static FileExtensionFilter allExtensionFilter() {
