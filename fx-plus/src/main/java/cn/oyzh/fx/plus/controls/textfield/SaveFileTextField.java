@@ -4,6 +4,9 @@ import cn.oyzh.fx.plus.file.FileExtensionFilter;
 import cn.oyzh.fx.plus.skin.SaveFileTextFieldSkin;
 import javafx.scene.control.Skin;
 
+import java.io.File;
+import java.util.function.Consumer;
+
 /**
  * 文件保存框
  *
@@ -36,6 +39,10 @@ public class SaveFileTextField extends LimitTextField {
 
     public void setExtension(FileExtensionFilter extension) {
         this.skin().setExtension(extension);
+    }
+
+    public void setOnSelectedFile(Consumer<File> onSelectedFile) {
+        this.skin().setOnFileSelected(onSelectedFile);
     }
 
     @Override

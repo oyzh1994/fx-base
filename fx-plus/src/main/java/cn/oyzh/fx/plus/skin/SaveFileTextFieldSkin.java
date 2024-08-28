@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.util.function.Consumer;
 
 /**
  * 文件文本输入框皮肤
@@ -21,11 +22,15 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkinExt {
 
     @Getter
     @Setter
+    private String initFileName;
+
+    @Getter
+    @Setter
     private FileExtensionFilter extension;
 
     @Getter
     @Setter
-    private String initFileName;
+    private Consumer<File> onFileSelected;
 
     @Override
     protected void onButtonClicked(MouseEvent e) {
@@ -34,8 +39,12 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkinExt {
         }
         File file1 = FileChooserHelper.save(I18nHelper.chooseFile(), this.initFileName, this.extension);
         if (file1 != null) {
-            this.setText(file1.getPath());
-            this.setTipText(file1.getPath());
+            if (this.onFileSelected != null) {
+                this.onFileSelected.accept(file1);
+            } else {
+                this.setText(file1.getPath());
+                this.setTipText(file1.getPath());
+            }
         }
     }
 
