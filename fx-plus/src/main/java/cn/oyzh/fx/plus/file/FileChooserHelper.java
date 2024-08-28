@@ -133,6 +133,9 @@ public class FileChooserHelper {
         if (StrUtil.equalsAnyIgnoreCase("csv", type)) {
             return csvExtensionFilter();
         }
+        if (StrUtil.equalsAnyIgnoreCase("html", type)) {
+            return htmlExtensionFilter();
+        }
         return allExtensionFilter();
     }
 
@@ -149,7 +152,11 @@ public class FileChooserHelper {
     }
 
     public static FileExtensionFilter csvExtensionFilter() {
-        return new FileExtensionFilter(I18nHelper.xmlType(), "*.csv");
+        return new FileExtensionFilter(I18nHelper.csvType(), "*.csv");
+    }
+
+    public static FileExtensionFilter htmlExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.htmlType(), "*.html");
     }
 
     public static FileExtensionFilter allExtensionFilter() {

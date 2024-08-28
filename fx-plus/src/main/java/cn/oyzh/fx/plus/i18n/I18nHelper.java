@@ -71,6 +71,8 @@ public class I18nHelper {
 
     public static final String CSV_TYPE = "base.csvType";
 
+    public static final String HTML_TYPE = "base.htmlType";
+
     public static final String ALL_TYPE = "base.allType";
 
     public static final String JSON_TYPE = "base.jsonType";
@@ -2269,6 +2271,10 @@ public class I18nHelper {
 
     public static String csvType() {
         return I18nResourceBundle.i18nString(CSV_TYPE);
+    }
+
+    public static String htmlType() {
+        return I18nResourceBundle.i18nString(HTML_TYPE);
     }
 
     public static String allType() {
