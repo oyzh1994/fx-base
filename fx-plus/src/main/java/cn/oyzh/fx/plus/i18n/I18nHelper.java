@@ -63,6 +63,14 @@ public class I18nHelper {
 
     public static final String DUMP = "base.dump";
 
+    public static final String SQL_TYPE = "base.sqlType";
+
+    public static final String TXT_TYPE = "base.txtType";
+
+    public static final String ALL_TYPE = "base.allType";
+
+    public static final String JSON_TYPE = "base.jsonType";
+
     public static final String NEXT_STEP = "base.nextStep";
 
     public static final String PREV_STEP = "base.prevStep";
@@ -2241,5 +2249,21 @@ public class I18nHelper {
 
     public static String dumpProcessing() {
         return I18nResourceBundle.i18nString(DUMP, PROCESS, ING);
+    }
+
+    public static String sqlType() {
+        return I18nResourceBundle.i18nString(SQL_TYPE);
+    }
+
+    public static String txtType() {
+        return I18nResourceBundle.i18nString(TXT_TYPE);
+    }
+
+    public static String allType() {
+        return I18nResourceBundle.i18nString(ALL_TYPE);
+    }
+
+    public static String jsonType() {
+        return I18nResourceBundle.i18nString(JSON_TYPE);
     }
 }

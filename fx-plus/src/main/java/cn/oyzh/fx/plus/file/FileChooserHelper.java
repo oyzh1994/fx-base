@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.file;
 
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -114,4 +115,21 @@ public class FileChooserHelper {
         chooser.title(title).addFilters(filters);
         return chooser.showOpenDialog(owner);
     }
+
+    public static FileExtensionFilter sqlExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.sqlType(), "*.sql");
+    }
+
+    public static FileExtensionFilter txtExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.txtType(), "*.txt");
+    }
+
+    public static FileExtensionFilter allExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.allType(), "*.*");
+    }
+
+    public static FileExtensionFilter jsonExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.jsonType(), "*.json");
+    }
+
 }

@@ -30,7 +30,7 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkinExt {
     @Override
     protected void onButtonClicked(MouseEvent e) {
         if (this.extension == null) {
-            this.extension = new FileExtensionFilter("All", "*.*");
+            this.extension = FileChooserHelper.allExtensionFilter();
         }
         File file1 = FileChooserHelper.save(I18nHelper.chooseFile(), this.initFileName, this.extension);
         if (file1 != null) {
