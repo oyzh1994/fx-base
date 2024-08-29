@@ -85,9 +85,13 @@ public class I18nHelper {
 
     public static final String PREV_STEP = "base.prevStep";
 
+    public static final String RUN_SQL_FILE = "base.runSqlFile";
+
     public static final String EXPORT_IN_PROGRESS = "base.exportInProgress";
 
     public static final String DUMP_IN_PROGRESS = "base.dumpInProgress";
+
+    public static final String IN_PROGRESS = "base.inProgress";
 
     public static final String IMPORT = "base.import";
 
@@ -2057,6 +2061,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, SELECT, TYPE);
     }
 
+    public static String pleaseSelectFile() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, FILE);
+    }
+
     public static String collation() {
         return I18nResourceBundle.i18nString(COLLATION);
     }
@@ -2295,5 +2303,25 @@ public class I18nHelper {
 
     public static String jsonType() {
         return I18nResourceBundle.i18nString(JSON_TYPE);
+    }
+
+    public static String runSqlFile() {
+        return I18nResourceBundle.i18nString(RUN_SQL_FILE);
+    }
+
+    public static String execProcessing() {
+        return I18nResourceBundle.i18nString(EXECUTE, PROCESS, ING);
+    }
+
+    public static String execStarting() {
+        return I18nResourceBundle.i18nString(EXECUTE, STARTING);
+    }
+
+    public static String execFinished() {
+        return I18nResourceBundle.i18nString(EXECUTE, FINISHED);
+    }
+
+    public static String execInProgress() {
+        return I18nResourceBundle.i18nString(EXECUTE, IN_PROGRESS);
     }
 }

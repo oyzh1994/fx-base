@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.plus.file.FileExtensionFilter;
 import cn.oyzh.fx.plus.skin.ChooseFileTextFieldSkin;
 import javafx.scene.control.Skin;
 
@@ -58,9 +59,17 @@ public class ChooseFileTextField extends LimitTextField {
         }
     }
 
+    public void setFilter(FileExtensionFilter filter) {
+        this.skin().setFilter(filter);
+    }
+
+    public File getFile() {
+        return this.skin().getFile();
+    }
 
     @Override
     protected Skin<?> createDefaultSkin() {
         return new ChooseFileTextFieldSkin(this);
     }
+
 }
