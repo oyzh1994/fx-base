@@ -63,6 +63,14 @@ public class ChooseFileTextField extends LimitTextField {
         this.skin().setFilter(filter);
     }
 
+    public boolean isAlwaysShowGraphic( ) {
+       return this.skin().isAlwaysShowGraphic();
+    }
+
+    public void setAlwaysShowGraphic(boolean alwaysShowGraphic) {
+        this.skin().setAlwaysShowGraphic(alwaysShowGraphic);
+    }
+
     public File getFile() {
         return this.skin().getFile();
     }

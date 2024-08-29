@@ -26,11 +26,17 @@ public class ChooseFileTextFieldSkin extends ActionTextFieldSkinExt {
     protected File file;
 
     /**
+     * 是否一直显示图标
+     */
+    @Getter
+    protected boolean alwaysShowGraphic;
+
+    /**
      * 过滤器
      */
     @Setter
     @Getter
-    public FileExtensionFilter filter;
+    protected FileExtensionFilter filter;
 
     @Override
     protected void onButtonClicked(MouseEvent e) {
@@ -53,10 +59,19 @@ public class ChooseFileTextFieldSkin extends ActionTextFieldSkinExt {
 
     @Override
     protected void updateButtonVisibility() {
-        boolean visible = this.getSkinnable().isVisible();
-        boolean disable = this.getSkinnable().isDisable();
-        boolean hasFocus = this.getSkinnable().isFocused();
-        boolean shouldBeVisible = !disable && visible && hasFocus;
-        this.button.setVisible(shouldBeVisible);
+        if (this.alwaysShowGraphic) {
+            this.button.display();
+        } else {
+            boolean visible = this.getSkinnable().isVisible();
+            boolean disable = this.getSkinnable().isDisable();
+            boolean hasFocus = this.getSkinnable().isFocused();
+            boolean shouldBeVisible = !disable && visible && hasFocus;
+            this.button.setVisible(shouldBeVisible);
+        }
+    }
+
+    public void setAlwaysShowGraphic(boolean alwaysShowGraphic) {
+        this.alwaysShowGraphic = alwaysShowGraphic;
+        this.updateButtonVisibility();
     }
 }
