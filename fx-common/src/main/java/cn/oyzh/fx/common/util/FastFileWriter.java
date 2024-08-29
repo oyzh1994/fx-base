@@ -1,5 +1,6 @@
 package cn.oyzh.fx.common.util;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,9 +12,13 @@ import java.util.Collection;
  * @author oyzh
  * @since 2024/08/23
  */
-public class FastFileWriter {
+public class FastFileWriter implements Closeable {
 
     private final FileWriter writer;
+
+    public FastFileWriter(String filePath) throws IOException {
+        this(new File(filePath), StandardCharsets.UTF_8);
+    }
 
     public FastFileWriter(File file) throws IOException {
         this(file, StandardCharsets.UTF_8);
@@ -71,6 +76,7 @@ public class FastFileWriter {
         }
     }
 
+    @Override
     public void close() {
         try {
             if (this.writer != null) {

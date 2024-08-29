@@ -136,6 +136,12 @@ public class FileChooserHelper {
         if (StrUtil.equalsAnyIgnoreCase("html", type)) {
             return htmlExtensionFilter();
         }
+        if (StrUtil.equalsAnyIgnoreCase("xls", type)) {
+            return xlsExtensionFilter();
+        }
+        if (StrUtil.equalsAnyIgnoreCase("xlsx", type)) {
+            return xlsxExtensionFilter();
+        }
         return allExtensionFilter();
     }
 
@@ -157,6 +163,14 @@ public class FileChooserHelper {
 
     public static FileExtensionFilter htmlExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.htmlType(), "*.html");
+    }
+
+    public static FileExtensionFilter xlsExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.xlsType(), "*.xls");
+    }
+
+    public static FileExtensionFilter xlsxExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.xlsxType(), "*.xlsx");
     }
 
     public static FileExtensionFilter allExtensionFilter() {
