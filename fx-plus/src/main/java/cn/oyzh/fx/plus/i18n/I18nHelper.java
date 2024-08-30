@@ -2324,4 +2324,16 @@ public class I18nHelper {
     public static String execInProgress() {
         return I18nResourceBundle.i18nString(EXECUTE, IN_PROGRESS);
     }
+
+    public static String importInProgress() {
+        return I18nResourceBundle.i18nString(IMPORT, IN_PROGRESS);
+    }
+
+    public static String importStarting() {
+        return I18nResourceBundle.i18nString(IMPORT, STARTING);
+    }
+
+    public static String importFinished() {
+        return I18nResourceBundle.i18nString(IMPORT, FINISHED);
+    }
 }

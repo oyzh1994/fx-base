@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.skin.ChooseFileTextFieldSkin;
 import javafx.scene.control.Skin;
 
 import java.io.File;
+import java.util.function.Consumer;
 
 /**
  * 文件选择框
@@ -63,8 +64,8 @@ public class ChooseFileTextField extends LimitTextField {
         this.skin().setFilter(filter);
     }
 
-    public boolean isAlwaysShowGraphic( ) {
-       return this.skin().isAlwaysShowGraphic();
+    public boolean isAlwaysShowGraphic() {
+        return this.skin().isAlwaysShowGraphic();
     }
 
     public void setAlwaysShowGraphic(boolean alwaysShowGraphic) {
@@ -80,4 +81,7 @@ public class ChooseFileTextField extends LimitTextField {
         return new ChooseFileTextFieldSkin(this);
     }
 
+    public void setOnSelectedFile(Consumer<File> onSelectedFile) {
+        this.skin().setOnSelectedFile(onSelectedFile);
+    }
 }

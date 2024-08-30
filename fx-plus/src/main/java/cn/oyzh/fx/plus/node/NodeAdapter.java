@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.stage.Window;
@@ -132,10 +133,10 @@ public interface NodeAdapter extends EventTarget {
      * @return 结果
      */
     default boolean isChildEmpty() {
-        if (this instanceof Pane pane) {
-            return pane.getChildren().isEmpty();
-        } else if (this instanceof Group group) {
-            return group.getChildren().isEmpty();
+        if (this instanceof Pane node) {
+            return node.getChildren().isEmpty();
+        } else if (this instanceof Group node) {
+            return node.getChildren().isEmpty();
         }
         return true;
     }
