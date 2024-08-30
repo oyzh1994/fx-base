@@ -50,7 +50,7 @@ public class ThreadUtil {
                     future.get();
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                throw new RuntimeException(ex);
             }
         }
     }

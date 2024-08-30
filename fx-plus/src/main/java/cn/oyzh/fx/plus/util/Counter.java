@@ -51,6 +51,16 @@ public class Counter {
     private String extraMsg;
 
     /**
+     * 递增失败数量
+     *
+     * @param failCount 失败数量
+     */
+    public void incrFail(int failCount) {
+        this.failCount += failCount;
+        this.update(0);
+    }
+
+    /**
      * 递增成功数量
      *
      * @param successCount 成功数量
