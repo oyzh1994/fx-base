@@ -137,6 +137,8 @@ public class I18nHelper {
 
     public static final String FINISHED = "base.finished";
 
+    public static final String CURRENT_TIME = "base.currentTime";
+
     public static final String FILE = "base.file";
 
     public static final String NOT = "base.not";
@@ -2335,5 +2337,9 @@ public class I18nHelper {
 
     public static String importFinished() {
         return I18nResourceBundle.i18nString(IMPORT, FINISHED);
+    }
+
+    public static String currentTime() {
+        return I18nResourceBundle.i18nString(CURRENT_TIME);
     }
 }
