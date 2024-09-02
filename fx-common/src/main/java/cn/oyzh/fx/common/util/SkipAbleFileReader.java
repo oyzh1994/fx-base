@@ -87,4 +87,8 @@ public class SkipAbleFileReader implements AutoCloseable {
             }
         }
     }
+
+    public int read() throws IOException {
+        return this.reader.read();
+    }
 }
