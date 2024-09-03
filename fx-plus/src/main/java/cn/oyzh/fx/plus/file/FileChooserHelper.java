@@ -142,6 +142,9 @@ public class FileChooserHelper {
         if (StrUtil.equalsAnyIgnoreCase("xlsx", type)) {
             return xlsxExtensionFilter();
         }
+        if (StrUtil.equalsAnyIgnoreCase("excel", type)) {
+            return excelExtensionFilter();
+        }
         return allExtensionFilter();
     }
 
@@ -171,6 +174,10 @@ public class FileChooserHelper {
 
     public static FileExtensionFilter xlsxExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.xlsxType(), "*.xlsx");
+    }
+
+    public static FileExtensionFilter excelExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.excelType(), "*.xls", "*.xlsx");
     }
 
     public static FileExtensionFilter allExtensionFilter() {

@@ -77,6 +77,8 @@ public class I18nHelper {
 
     public static final String XLSX_TYPE = "base.xlsxType";
 
+    public static final String EXCEL_TYPE = "base.excelType";
+
     public static final String ALL_TYPE = "base.allType";
 
     public static final String JSON_TYPE = "base.jsonType";
@@ -2297,6 +2299,10 @@ public class I18nHelper {
 
     public static String xlsxType() {
         return I18nResourceBundle.i18nString(XLSX_TYPE);
+    }
+
+    public static String excelType() {
+        return I18nResourceBundle.i18nString(EXCEL_TYPE);
     }
 
     public static String allType() {
