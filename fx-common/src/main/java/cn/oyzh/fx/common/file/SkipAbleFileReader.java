@@ -1,4 +1,4 @@
-package cn.oyzh.fx.common.util;
+package cn.oyzh.fx.common.file;
 
 import cn.hutool.core.io.FileUtil;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SkipAbleFileReader implements AutoCloseable {
 
-    private BufferedReader reader;
+    protected BufferedReader reader;
 
     @Getter
     private int currentLine = 0;
