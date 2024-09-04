@@ -3,6 +3,8 @@ package cn.oyzh.fx.common.file;
 import cn.hutool.core.io.FileUtil;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +23,13 @@ public class SkipAbleFileReader implements AutoCloseable {
     protected BufferedReader reader;
 
     @Getter
+    @Accessors(fluent = true, chain = true)
     private int currentLine = 0;
+
+    @Getter
+    @Setter
+    @Accessors(fluent = true, chain = true)
+    private String lineBreak;
 
     public SkipAbleFileReader(@NonNull String filePath) {
         this(new File(filePath), StandardCharsets.UTF_8);
@@ -58,8 +66,45 @@ public class SkipAbleFileReader implements AutoCloseable {
         }
     }
 
+    private String _readLine() throws IOException {
+        if (this.lineBreak == null) {
+            return this.reader.readLine();
+        }
+        StringBuilder builder = new StringBuilder();
+        char lineChar1 = this.lineBreak.charAt(0);
+        if (this.lineBreak.length() == 1) {
+            while (true) {
+                int i = this.reader.read();
+                if (i == -1) {
+                    break;
+                }
+                char c = (char) i;
+                if (c == lineChar1) {
+                    break;
+                }
+                builder.append(c);
+            }
+        } else {
+            Character prevChar = null;
+            char lineChar2 = this.lineBreak.charAt(1);
+            while (true) {
+                int i = this.reader.read();
+                if (i == -1) {
+                    break;
+                }
+                char c = (char) i;
+                if (prevChar != null && prevChar == lineChar1 && c == lineChar2) {
+                    break;
+                }
+                builder.append(c);
+                prevChar = c;
+            }
+        }
+        return builder.toString();
+    }
+
     public String readLine() throws IOException {
-        String line = this.reader.readLine();
+        String line = this._readLine();
         this.currentLine++;
         return line;
     }
