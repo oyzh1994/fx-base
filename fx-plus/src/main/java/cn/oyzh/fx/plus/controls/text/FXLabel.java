@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.event.EventHandler;
@@ -21,7 +22,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXLabel extends Label implements ThemeAdapter, MouseAdapter, TextAdapter, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
+public class FXLabel extends Label implements NodeGroup, ThemeAdapter, MouseAdapter, TextAdapter, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
 
     {
         NodeManager.init(this);
@@ -137,6 +138,16 @@ public class FXLabel extends Label implements ThemeAdapter, MouseAdapter, TextAd
     @Override
     public void setEnableTheme(boolean enableTheme) {
         ThemeAdapter.super.setEnableTheme(enableTheme);
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 
     @Override

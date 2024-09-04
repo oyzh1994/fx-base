@@ -141,6 +141,12 @@ public class I18nHelper {
 
     public static final String CURRENT_TIME = "base.currentTime";
 
+    public static final String COMMA = "base.comma";
+
+    public static final String SEMICOLON = "base.semicolon";
+
+    public static final String SPACE = "base.space";
+
     public static final String FILE = "base.file";
 
     public static final String NOT = "base.not";
@@ -2347,5 +2353,17 @@ public class I18nHelper {
 
     public static String currentTime() {
         return I18nResourceBundle.i18nString(CURRENT_TIME);
+    }
+
+    public static String semicolon() {
+        return I18nResourceBundle.i18nString(SEMICOLON);
+    }
+
+    public static String comma() {
+        return I18nResourceBundle.i18nString(COMMA);
+    }
+
+    public static String space() {
+        return I18nResourceBundle.i18nString(SPACE);
     }
 }
