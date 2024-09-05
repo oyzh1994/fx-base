@@ -8,10 +8,12 @@ import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
@@ -230,7 +232,7 @@ public class NodeUtil {
      * @param height 高度
      */
     public static void setHeight(Object target, Double height) {
-        if (target == null || height == null || Double.isNaN(height) || height <= 0) {
+        if (target == null || height == null || Double.isNaN(height) || height < 0) {
             return;
         }
         switch (target) {
@@ -238,6 +240,17 @@ public class NodeUtil {
                 if (!image.fitHeightProperty().isBound()) {
                     image.setFitHeight(height);
                 }
+            }
+            case TitledPane labeled -> {
+                if (!labeled.prefHeightProperty().isBound()) {
+                    labeled.setPrefHeight(height);
+                }
+                // if (!labeled.minHeightProperty().isBound()) {
+                //     labeled.setMinHeight(height);
+                // }
+                // if (!labeled.maxHeightProperty().isBound()) {
+                //     labeled.setMaxHeight(height);
+                // }
             }
             case Region region -> {
                 if (!region.prefHeightProperty().isBound()) {

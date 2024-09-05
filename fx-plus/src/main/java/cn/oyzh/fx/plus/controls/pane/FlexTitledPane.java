@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.pane;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
+import javafx.scene.Node;
 
 /**
  * @author oyzh

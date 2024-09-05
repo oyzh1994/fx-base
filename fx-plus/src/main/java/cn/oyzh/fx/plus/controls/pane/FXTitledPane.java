@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Cursor;
@@ -16,10 +17,11 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/11/21
  */
-public class FXTitledPane extends TitledPane implements NodeAdapter, TipAdapter, StateAdapter, FontAdapter, ThemeAdapter {
+public class FXTitledPane extends TitledPane implements NodeGroup, NodeAdapter, TipAdapter, StateAdapter, FontAdapter, ThemeAdapter {
 
     {
         NodeManager.init(this);
+        this.setAnimated(true);
     }
 
     @Override
@@ -78,5 +80,15 @@ public class FXTitledPane extends TitledPane implements NodeAdapter, TipAdapter,
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
         this.setFocusTraversable(false);
+    }
+
+    @Override
+    public void setGroupId(String groupId) {
+        NodeGroup.super.groupId(groupId);
+    }
+
+    @Override
+    public String getGroupId() {
+        return NodeGroup.super.groupId();
     }
 }

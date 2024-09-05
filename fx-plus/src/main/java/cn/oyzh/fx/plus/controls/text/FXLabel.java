@@ -154,4 +154,8 @@ public class FXLabel extends Label implements NodeGroup, ThemeAdapter, MouseAdap
     public void initNode() {
 
     }
+
+    public void clear() {
+        this.setText("");
+    }
 }

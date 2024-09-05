@@ -2071,6 +2071,22 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, SELECT, TYPE);
     }
 
+    public static String pleaseSelectSourceDatabase() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, SOURCE, DATABASE);
+    }
+
+    public static String pleaseSelectTargetDatabase() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, TARGET, DATABASE);
+    }
+
+    public static String pleaseSelectSourceConnect() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, SOURCE, CONNECT);
+    }
+
+    public static String pleaseSelectTargetConnect() {
+        return I18nResourceBundle.i18nString(PLEASE, SELECT, TARGET, CONNECT);
+    }
+
     public static String pleaseSelectFile() {
         return I18nResourceBundle.i18nString(PLEASE, SELECT, FILE);
     }
