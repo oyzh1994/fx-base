@@ -33,6 +33,8 @@ public class I18nHelper {
 
     public static final String TRANSPORT = "base.transport";
 
+    public static final String CHECK = "base.check";
+
     public static final String NODE = "base.node";
 
     public static final String KEY = "base.key";
@@ -2385,5 +2387,13 @@ public class I18nHelper {
 
     public static String transportInProgress() {
         return I18nResourceBundle.i18nString(TRANSPORT, IN_PROGRESS);
+    }
+
+    public static String pleaseCheckDatabase() {
+        return I18nResourceBundle.i18nString(PLEASE, CHECK, DATABASE);
+    }
+
+    public static String transportFinished() {
+        return I18nResourceBundle.i18nString(TRANSPORT, FINISHED);
     }
 }
