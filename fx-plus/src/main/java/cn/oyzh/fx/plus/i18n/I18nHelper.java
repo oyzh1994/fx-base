@@ -2382,4 +2382,8 @@ public class I18nHelper {
     public static String space() {
         return I18nResourceBundle.i18nString(SPACE);
     }
+
+    public static String transportInProgress() {
+        return I18nResourceBundle.i18nString(TRANSPORT, IN_PROGRESS);
+    }
 }
