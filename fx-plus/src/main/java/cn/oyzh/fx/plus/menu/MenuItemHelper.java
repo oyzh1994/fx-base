@@ -95,12 +95,20 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.designProcedure(), new DesignSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem designEvent(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.designEvent(), new DesignSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem addProcedure(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.addProcedure(), new AddSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem procedureInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.procedureInfo(), new InfoSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem eventInfo(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.eventInfo(), new InfoSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem addFunction(String iconSize, Runnable action) {
@@ -289,6 +297,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem deleteProcedure(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteProcedure(), new DeleteSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem deleteEvent(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteEvent(), new DeleteSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem openTable(String iconSize, Runnable action) {

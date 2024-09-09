@@ -61,6 +61,8 @@ public class I18nHelper {
 
     public static final String PROCEDURE = "base.procedure";
 
+    public static final String EVENT = "base.event";
+
     public static final String FUNCTION = "base.function";
 
     public static final String EXPORT = "base.export";
@@ -1963,8 +1965,16 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PROCEDURE, INFO);
     }
 
+    public static String eventInfo() {
+        return I18nResourceBundle.i18nString(EVENT, INFO);
+    }
+
     public static String procedure() {
         return I18nResourceBundle.i18nString(PROCEDURE);
+    }
+
+    public static String event() {
+        return I18nResourceBundle.i18nString(EVENT);
     }
 
     public static String function() {
@@ -2001,6 +2011,10 @@ public class I18nHelper {
 
     public static String deleteProcedure() {
         return I18nResourceBundle.i18nString(DELETE, PROCEDURE);
+    }
+
+    public static String deleteEvent() {
+        return I18nResourceBundle.i18nString(DELETE, EVENT);
     }
 
     public static String unnamedProcedure() {
@@ -2401,5 +2415,9 @@ public class I18nHelper {
 
     public static String serviceName() {
         return I18nResourceBundle.i18nString(SERVICE_NAME);
+    }
+
+    public static String designEvent() {
+        return I18nResourceBundle.i18nString(DESIGN, EVENT);
     }
 }
