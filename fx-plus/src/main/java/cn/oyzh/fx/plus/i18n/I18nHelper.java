@@ -1309,6 +1309,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, PROCEDURE, NAME);
     }
 
+    public static String pleaseInputEventName() {
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, EVENT, NAME);
+    }
+
     public static String pleaseInputFunctionName() {
         return I18nResourceBundle.i18nString(PLEASE, INPUT, FUNCTION, NAME);
     }
@@ -1961,6 +1965,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(ADD, PROCEDURE);
     }
 
+    public static String addEvent() {
+        return I18nResourceBundle.i18nString(ADD, EVENT);
+    }
+
     public static String procedureInfo() {
         return I18nResourceBundle.i18nString(PROCEDURE, INFO);
     }
@@ -2019,6 +2027,10 @@ public class I18nHelper {
 
     public static String unnamedProcedure() {
         return I18nResourceBundle.i18nString(UNNAMED, PROCEDURE);
+    }
+
+    public static String unnamedEvent() {
+        return I18nResourceBundle.i18nString(UNNAMED, EVENT);
     }
 
     public static String unnamedFunction() {

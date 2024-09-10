@@ -103,6 +103,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.addProcedure(), new AddSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem addEvent(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.addEvent(), new AddSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem procedureInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.procedureInfo(), new InfoSVGGlyph(iconSize), null, action);
     }
