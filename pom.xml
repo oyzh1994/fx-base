@@ -30,7 +30,7 @@
         <spring.version>6.0.18</spring.version>
         <hutool.version>5.8.26</hutool.version>
         <lombok.version>1.18.32</lombok.version>
-        <javafx.version>23-ea+22</javafx.version>
+        <javafx.version>24-ea+5</javafx.version>
         <guava.version>33.1.0-jre</guava.version>
         <fastjson.version>2.0.52</fastjson.version>
         <spring.boot.version>3.1.12</spring.boot.version>
