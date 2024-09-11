@@ -157,6 +157,15 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
     /**
      * 移除tab
      *
+     * @param tabIndex tab索引
+     */
+    public void removeTab( int tabIndex) {
+        FXUtil.runLater(() -> this.getTabs().remove(tabIndex));
+    }
+
+    /**
+     * 移除tab
+     *
      * @param tabs tabs
      */
     public void removeTab(List<? extends Tab> tabs) {

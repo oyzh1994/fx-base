@@ -2173,6 +2173,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(DELETE, INDEX);
     }
 
+    public static String deleteCheck() {
+        return I18nResourceBundle.i18nString(DELETE, CHECK);
+    }
+
     public static String foreignKey() {
         return I18nResourceBundle.i18nString(FOREIGN_KEY);
     }
