@@ -21,7 +21,7 @@ public class FXConst {
     /**
      * 页面地址
      */
-    public final static String MODULE_VIEW_PATH = "/module/";
+    public final static String MODULE_PATH = "/module/";
 
     /**
      * popup地址
