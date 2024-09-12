@@ -2436,4 +2436,8 @@ public class I18nHelper {
     public static String designEvent() {
         return I18nResourceBundle.i18nString(DESIGN, EVENT);
     }
+
+    public static String query() {
+        return I18nResourceBundle.i18nString(QUERY);
+    }
 }
