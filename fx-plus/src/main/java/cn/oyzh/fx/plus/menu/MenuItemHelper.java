@@ -375,12 +375,24 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.closeDatabase(), new CloseSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem closeSchema(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.closeSchema(), new CloseSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem editDatabase(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.editDatabase(), new EditSVGGlyph(iconSize), null, action);
     }
 
+    public static FXMenuItem editSchema(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.editSchema(), new EditSVGGlyph(iconSize), null, action);
+    }
+
     public static FXMenuItem deleteDatabase(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteDatabase(), new DeleteSVGGlyph(iconSize), null, action);
+    }
+
+    public static FXMenuItem dropSchema(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.dropSchema(), new DeleteSVGGlyph(iconSize), null, action);
     }
 
     public static FXMenuItem databaseInfo(String iconSize, Runnable action) {

@@ -211,6 +211,10 @@ public class I18nHelper {
 
     public static final String DELETE = "base.delete";
 
+    public static final String DROP = "base.drop";
+
+    public static final String SCHEMA = "base.schema";
+
     public static final String KEYS = "base.keys";
 
     public static final String DELETED = "base.deleted";
@@ -1801,6 +1805,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(DELETE, CONNECT);
     }
 
+    public static String deleteSchema() {
+        return I18nResourceBundle.i18nString(DELETE, SCHEMA);
+    }
+
     public static String deleteGroup() {
         return I18nResourceBundle.i18nString(DELETE, GROUP);
     }
@@ -2257,6 +2265,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(DELETE, DATABASE);
     }
 
+    public static String dropSchema() {
+        return I18nResourceBundle.i18nString(DROP, SCHEMA);
+    }
+
     public static String databaseInfo() {
         return I18nResourceBundle.i18nString(DATABASE, INFO);
     }
@@ -2439,5 +2451,13 @@ public class I18nHelper {
 
     public static String query() {
         return I18nResourceBundle.i18nString(QUERY);
+    }
+
+    public static String editSchema() {
+        return I18nResourceBundle.i18nString(EDIT, SCHEMA);
+    }
+
+    public static String closeSchema() {
+        return I18nResourceBundle.i18nString(CLOSE, SCHEMA);
     }
 }
