@@ -353,4 +353,12 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
     public String getGroupId() {
         return NodeGroup.super.groupId();
     }
+
+    public boolean isSelectedTab(String tabId) {
+        if (tabId == null) {
+            return false;
+        }
+        Tab tab = this.getSelectedItem();
+        return tab != null && StrUtil.equals(tabId, tab.getId());
+    }
 }
