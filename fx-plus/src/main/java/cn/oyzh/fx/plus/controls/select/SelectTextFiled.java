@@ -26,6 +26,12 @@ public class SelectTextFiled extends LimitTextField {
         return (SelectTextFiledSkin) this.getSkin();
     }
 
+    public void clearData( ) {
+        if (this.getDataList() != null) {
+            this.getDataList().clear();
+        }
+    }
+
     public void addData(String data) {
         if (this.getDataList() == null) {
             this.setDataList(new ArrayList<>());
