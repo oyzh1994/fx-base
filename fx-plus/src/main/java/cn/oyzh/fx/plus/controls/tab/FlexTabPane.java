@@ -159,8 +159,36 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      *
      * @param tabIndex tab索引
      */
-    public void removeTab( int tabIndex) {
+    public void removeTab(int tabIndex) {
         FXUtil.runLater(() -> this.getTabs().remove(tabIndex));
+    }
+
+    /**
+     * 移除tab
+     *
+     * @param tabId tabId
+     */
+    public void removeTab(String tabId) {
+        for (Tab tab : this.getTabs()) {
+            if (StrUtil.equals(tabId, tab.getId())) {
+                this.removeTab(tab);
+                break;
+            }
+        }
+    }
+
+    /**
+     * 选择tab
+     *
+     * @param tabId tabId
+     */
+    public void selectTab(String tabId) {
+        for (Tab tab : this.getTabs()) {
+            if (StrUtil.equals(tabId, tab.getId())) {
+                this.select(tab);
+                break;
+            }
+        }
     }
 
     /**
@@ -171,6 +199,22 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
     public void removeTab(List<? extends Tab> tabs) {
         if (CollUtil.isNotEmpty(tabs)) {
             FXUtil.runLater(() -> this.getTabs().removeAll(tabs));
+        }
+    }
+
+    /**
+     * tab选中事件
+     *
+     * @param tabId tabId
+     * @param task  业务
+     */
+    public void onTabSelected(String tabId, Runnable task) {
+        if (tabId != null && task != null) {
+            this.selectedTabChanged((observable, oldValue, newValue) -> {
+                if (newValue != null && StrUtil.equals(tabId, newValue.getId())) {
+                    task.run();
+                }
+            });
         }
     }
 
