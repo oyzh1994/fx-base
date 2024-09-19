@@ -1,12 +1,13 @@
 package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.plus.controls.view.FlexListView;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SelectSVGGlyph;
+import cn.oyzh.fx.plus.controls.view.FlexListView;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.ListCell;
@@ -17,7 +18,6 @@ import javafx.util.Callback;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,19 +36,6 @@ public class SelectTextFiledSkin extends ActionTextFieldSkinExt {
     protected double lineHeight = 25;
 
     /**
-     * 选中的索引位
-     */
-    @Getter
-    protected int selectedIndex = -1;
-
-    /**
-     * 数据列表
-     */
-    @Getter
-    @Setter
-    protected List<String> dataList;
-
-    /**
      * 行高
      */
     @Getter
@@ -63,49 +50,50 @@ public class SelectTextFiledSkin extends ActionTextFieldSkinExt {
     @Override
     protected void onButtonClicked(MouseEvent event) {
         if (this.popup == null) {
-            this.popup = new FXPopup();
+            this.initPopup();
         }
         if (this.popup.isShowing()) {
             this.popup.hide();
         } else {
-            if (this.dataList == null) {
-                this.dataList = new ArrayList<>();
-            }
             TextField textField = this.getSkinnable();
-            FlexListView<String> listView = new FlexListView<>();
-            listView.setItem(this.dataList);
-            listView.setRealWidth(NodeUtil.getWidth(textField));
-            listView.selectedItemChanged((observable, oldValue, newValue) -> {
-                textField.setText(newValue);
-                this.selectedIndex = listView.getSelectedIndex();
-                this.popup.hide();
-            });
-            if (this.selectIndexChanged != null) {
-                listView.selectedIndexChanged(this.selectIndexChanged);
-            }
-            listView.setCellFactory(new Callback<>() {
-                @Override
-                public ListCell<String> call(ListView<String> param) {
-                    return new ListCell<>() {
-                        @Override
-                        protected void updateItem(String item, boolean empty) {
-                            super.updateItem(item, empty);
-                            if (empty || item == null) {
-                                this.setText(null);
-                            } else {
-                                this.setText(item);
-                                this.setPrefHeight(lineHeight);
-                                ListViewUtil.highlightCell(this);
-                            }
-                        }
-                    };
-                }
-            });
-            listView.setRealHeight(this.dataList.size() * this.lineHeight + 2);
-            textField.widthProperty().addListener((observable, oldValue, newValue) -> listView.setRealWidth(NodeUtil.getWidth(textField)));
-            this.popup.setContent(listView);
             this.popup.showFixed(textField, -2, 0);
         }
+    }
+
+    private void initPopup() {
+        this.popup = new FXPopup();
+        TextField textField = this.getSkinnable();
+        FlexListView<String> listView = new FlexListView<>();
+        listView.setRealWidth(NodeUtil.getWidth(textField));
+        listView.selectedIndexChanged((observable, oldValue, newValue) -> {
+            if (this.selectIndexChanged != null) {
+                this.selectIndexChanged.changed(observable, oldValue, newValue);
+            }
+            textField.setText(listView.getSelectedItem());
+            this.popup.hide();
+        });
+        listView.setCellFactory(new Callback<>() {
+            @Override
+            public ListCell<String> call(ListView<String> param) {
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            this.setText(null);
+                        } else {
+                            this.setText(item);
+                            this.setPrefHeight(lineHeight);
+                            ListViewUtil.highlightCell(this);
+                        }
+                    }
+                };
+            }
+        });
+        // 监听节点变化
+        listView.getItems().addListener((ListChangeListener<String>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 2));
+        textField.widthProperty().addListener((observable, oldValue, newValue) -> listView.setRealWidth(NodeUtil.getWidth(textField)));
+        this.popup.content(listView);
     }
 
     public SelectTextFiledSkin(TextField textField) {
@@ -136,5 +124,37 @@ public class SelectTextFiledSkin extends ActionTextFieldSkinExt {
         boolean hasFocus = this.getSkinnable().isFocused();
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
+    }
+
+    private FlexListView<String> getListView() {
+        if (this.popup == null) {
+            this.initPopup();
+        }
+        return (FlexListView<String>) this.popup.content();
+    }
+
+    public void selectItem(String item) {
+        if (item != null && this.popup != null && this.popup.isShowing()) {
+            this.getListView().select(item);
+        }
+    }
+
+    public void selectIndex(int index) {
+        this.getListView().select(index);
+    }
+
+    public List<String> getItemList() {
+        return this.getListView().getItems();
+    }
+
+    public void setItemList(List<String> itemList) {
+        if (itemList == null) {
+            return;
+        }
+        this.getListView().setItem(itemList);
+    }
+
+    public int getItemSize() {
+        return this.getListView().getItemSize();
     }
 }

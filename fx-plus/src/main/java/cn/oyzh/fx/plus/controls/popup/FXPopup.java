@@ -24,8 +24,15 @@ public class FXPopup extends Popup implements ThemeAdapter {
         });
     }
 
-    public void setContent(Node content) {
+    public void content(Node content) {
         this.getContent().setAll(content);
+    }
+
+    public Node content() {
+        if (this.getContent().isEmpty()) {
+            return null;
+        }
+        return this.getContent().getFirst();
     }
 
     /**

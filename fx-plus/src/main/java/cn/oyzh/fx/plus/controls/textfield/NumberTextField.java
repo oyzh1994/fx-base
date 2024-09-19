@@ -115,7 +115,7 @@ public class NumberTextField extends DigitalTextField {
     protected Number value() {
         String text = this.getText();
         if (StrUtil.equalsAny(text, "", "+", "-")) {
-            return 0L;
+            return null;
         }
         return super.value();
     }

@@ -27,24 +27,28 @@ public class SelectTextFiled extends LimitTextField {
     }
 
     public void clearData( ) {
-        if (this.getDataList() != null) {
-            this.getDataList().clear();
+        if (this.getItemList() != null) {
+            this.getItemList().clear();
         }
     }
 
     public void addData(String data) {
-        if (this.getDataList() == null) {
-            this.setDataList(new ArrayList<>());
+        if (this.getItemList() == null) {
+            this.setItemList(new ArrayList<>());
         }
-        this.getDataList().add(data);
+        this.getItemList().add(data);
     }
 
-    public void setDataList(List<String> dataList) {
-        this.skin().setDataList(dataList);
+    public void setItemList(List<String> itemList) {
+        this.skin().setItemList(itemList);
     }
 
-    public List<String> getDataList() {
-        return this.skin().getDataList();
+    public List<String> getItemList() {
+        return this.skin().getItemList();
+    }
+
+    public int getItemSize() {
+        return this.skin().getItemSize();
     }
 
     public void setLineHeight(double lineHeight) {
@@ -59,7 +63,11 @@ public class SelectTextFiled extends LimitTextField {
         this.skin().setSelectIndexChanged(listener);
     }
 
-    public int selectedIndex() {
-        return this.skin().getSelectedIndex();
+    public void selectItem(String item) {
+        this.skin().selectItem(item);
+    }
+
+    public void selectIndex(int index) {
+        this.skin().selectIndex(index);
     }
 }

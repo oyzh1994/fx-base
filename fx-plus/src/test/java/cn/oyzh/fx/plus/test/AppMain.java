@@ -985,7 +985,7 @@ public class AppMain extends Application {
 
     private void test26(Stage stage) {
         SelectTextFiled filed = new SelectTextFiled();
-        filed.setDataList(List.of("a1", "b1", "c1"));
+        filed.setItemList(List.of("a1", "b1", "c1"));
         stage.setScene(new Scene(filed));
         stage.show();
     }

@@ -67,7 +67,7 @@ public class SearchHistoryPopup extends FXPopup {
         FXListView<String> listView = this.listView();
         if (listView == null) {
             listView = new FXListView<>();
-            this.setContent(listView);
+            this.content(listView);
             listView.setFontSize(11);
             listView.setCursor(Cursor.HAND);
             listView.selectedItemChanged((observableValue, s, t1) -> {
