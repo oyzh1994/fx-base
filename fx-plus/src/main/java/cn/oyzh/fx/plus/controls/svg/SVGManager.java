@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.scene.shape.SVGPath;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -34,5 +35,17 @@ public class SVGManager {
             glyph.setWaiting(false);
             FXUtil.runLater(glyph::initContent);
         }
+    }
+
+    public static SVGPath load(String url) {
+        return SVGLoader.INSTANCE.load(url);
+    }
+
+    public static void setLoading(SVGPath svgPath) {
+        svgPath.getProperties().put("loading", true);
+    }
+
+    public static boolean isLoading(SVGPath svgPath) {
+        return svgPath.hasProperties() && svgPath.getProperties().containsKey("loading");
     }
 }

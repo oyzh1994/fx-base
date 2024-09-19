@@ -16,7 +16,7 @@ import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.search.SearchTextField;
 import cn.oyzh.fx.plus.controls.select.SelectTextFiled;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGPathExt;
+// import cn.oyzh.fx.plus.controls.svg.SVGPathExt;
 import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.information.MessageBox;
@@ -640,31 +640,31 @@ public class AppMain extends Application {
 
     }
 
-    private void test16(Stage stage) throws InterruptedException {
-        SVGPathExt SVGPathExt = new SVGPathExt("/fx-plus/font/check.svg");
-        // fxsvgPath.setScaleX(0.1);
-        // fxsvgPath.setScaleY(0.1);
-        SVGPathExt.setTranslateX(0.1);
-        SVGPathExt.setTranslateY(0.1);
-
-        // fxsvgPath.getTransforms().add(new Scale(2, 2));
-        ExecutorUtil.start(() -> {
-            System.out.println(SVGPathExt.maxWidth(-1));
-            System.out.println(SVGPathExt.maxHeight(-1));
-        }, 2000);
-
-        SVGGlyph glyph = new SVGGlyph("/fx-plus/font/check.svg");
-        // // 设置HBox的间距
-        FlexVBox vBox = new FlexVBox(glyph);
-        // FlexVBox vBox = new FlexVBox(fxsvgPath);
-        vBox.setFlexWidth("100%");
-        vBox.setFlexHeight("100%");
-
-
-        stage.setScene(new Scene(vBox, 500, 500));
-        stage.show();
-
-    }
+    // private void test16(Stage stage) throws InterruptedException {
+    //     SVGPathExt SVGPathExt = new SVGPathExt("/fx-plus/font/check.svg");
+    //     // fxsvgPath.setScaleX(0.1);
+    //     // fxsvgPath.setScaleY(0.1);
+    //     SVGPathExt.setTranslateX(0.1);
+    //     SVGPathExt.setTranslateY(0.1);
+    //
+    //     // fxsvgPath.getTransforms().add(new Scale(2, 2));
+    //     ExecutorUtil.start(() -> {
+    //         System.out.println(SVGPathExt.maxWidth(-1));
+    //         System.out.println(SVGPathExt.maxHeight(-1));
+    //     }, 2000);
+    //
+    //     SVGGlyph glyph = new SVGGlyph("/fx-plus/font/check.svg");
+    //     // // 设置HBox的间距
+    //     FlexVBox vBox = new FlexVBox(glyph);
+    //     // FlexVBox vBox = new FlexVBox(fxsvgPath);
+    //     vBox.setFlexWidth("100%");
+    //     vBox.setFlexHeight("100%");
+    //
+    //
+    //     stage.setScene(new Scene(vBox, 500, 500));
+    //     stage.show();
+    //
+    // }
 
     private void test17(Stage stage) throws InterruptedException {
         MessageBox.okToast("测试1");

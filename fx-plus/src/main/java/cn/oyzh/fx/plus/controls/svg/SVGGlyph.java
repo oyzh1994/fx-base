@@ -22,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.SVGPath;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -108,15 +109,18 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      */
     private void updateContent() {
         // 获取图标
-        SVGPathExt svgPath = (SVGPathExt) this.getShape();
+        SVGPath svgPath = (SVGPath) this.getShape();
         if (svgPath != null) {
-            // 更新颜色
-            Paint paint = ControlUtil.backgroundFill(this);
-            if (paint != svgPath.getColor()) {
-                svgPath.setColor(paint);
-            }
+            // // 更新颜色
+            // Paint paint = ControlUtil.backgroundFill(this);
+            // if (paint != svgPath.getColor()) {
+            //     svgPath.setColor(paint);
+            // }
+            // if (paint != svgPath.getFill()) {
+            //     svgPath.setFill(paint);
+            // }
             // 更新鼠标
-            if (!svgPath.isLoading() && this.getCursor() != svgPath.getCursor()) {
+            if (!SVGManager.isLoading(svgPath) && this.getCursor() != svgPath.getCursor()) {
                 svgPath.setCursor(this.getCursor());
             }
         }
@@ -137,8 +141,9 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         // 初始化角度
         this.setRotate(0);
         // 创建图标
-        SVGPathExt svgPath = new SVGPathExt(this.url);
-        svgPath.setColor(this.color);
+        SVGPath svgPath =  SVGManager.load(this.url);
+        // svgPath.setColor(this.color);
+        // svgPath.setFill(this.color);
         svgPath.setCursor(this.getCursor());
         this.setShape(svgPath);
     }
@@ -153,8 +158,10 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      */
     public void initWaiting() {
         // 创建图标
-        SVGPathExt svgPath = new SVGPathExt("/fx-plus/font/loading.svg");
-        svgPath.setColor(this.color);
+        SVGPath svgPath = SVGManager.load("/fx-plus/font/loading.svg");
+        SVGManager.setLoading(svgPath);
+        // svgPath.setColor(this.color);
+        // svgPath.setFill(this.color);
         svgPath.setCursor(Cursor.NONE);
         this.setShape(svgPath);
         // 初始化动画

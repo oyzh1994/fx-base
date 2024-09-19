@@ -48,19 +48,33 @@ public interface PropAdapter {
      */
     default <T> T getProp(String key) {
         if (this instanceof Node node) {
-            return (T) node.getProperties().get(key);
+            if (node.hasProperties()) {
+                return (T) node.getProperties().get(key);
+            }
         } else if (this instanceof Tab tab) {
-            return (T) tab.getProperties().get(key);
+            if (tab.hasProperties()) {
+                return (T) tab.getProperties().get(key);
+            }
         } else if (this instanceof TableColumnBase<?, ?> columnBase) {
-            return (T) columnBase.getProperties().get(key);
+            if (columnBase.hasProperties()) {
+                return (T) columnBase.getProperties().get(key);
+            }
         } else if (this instanceof Scene scene) {
-            return (T) scene.getProperties().get(key);
+            if (scene.hasProperties()) {
+                return (T) scene.getProperties().get(key);
+            }
         } else if (this instanceof Window window) {
-            return (T) window.getProperties().get(key);
+            if (window.hasProperties()) {
+                return (T) window.getProperties().get(key);
+            }
         } else if (this instanceof PopupAdapter wrapper) {
-            return (T) wrapper.popup().getProperties().get(key);
+            if (wrapper.popup().hasProperties()) {
+                return (T) wrapper.popup().getProperties().get(key);
+            }
         } else if (this instanceof StageAdapter stage && stage.stage() != null) {
-            return (T) stage.stage().getProperties().get(key);
+            if (stage.stage().hasProperties()) {
+                return (T) stage.stage().getProperties().get(key);
+            }
         }
         return null;
     }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,18 +18,20 @@ import java.util.List;
  */
 public interface ThemeAdapter extends PropAdapter {
 
+    static final String ENABLE_THEME_KEY = "_enable_theme";
+
     /**
      * 禁用主题
      */
     default void disableTheme() {
-        this.setProp("_enableTheme", false);
+        this.setProp(ENABLE_THEME_KEY, false);
     }
 
     /**
      * 启用主题
      */
     default void enableTheme() {
-        this.removeProp("_enableTheme");
+        this.removeProp(ENABLE_THEME_KEY);
     }
 
     /**
@@ -37,7 +40,7 @@ public interface ThemeAdapter extends PropAdapter {
      * @param enableTheme 启用主题
      */
     default void setEnableTheme(boolean enableTheme) {
-        this.setProp("_enableTheme", enableTheme);
+        this.setProp(ENABLE_THEME_KEY, enableTheme);
     }
 
     /**
@@ -46,7 +49,7 @@ public interface ThemeAdapter extends PropAdapter {
      * @return 结果
      */
     default boolean isEnableTheme() {
-        Boolean b = this.getProp("_enableTheme");
+        Boolean b = this.getProp(ENABLE_THEME_KEY);
         return b == null || b;
     }
 
@@ -58,6 +61,7 @@ public interface ThemeAdapter extends PropAdapter {
     default void changeTheme(ThemeStyle style) {
         if (this.isEnableTheme() && style != null) {
             switch (this) {
+                case SVGGlyph glyph -> this.handleStyle(glyph, style);
                 case Parent node -> this.handleStyle(node, style);
                 case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
                 case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);

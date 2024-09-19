@@ -111,10 +111,6 @@ public interface ThemeStyle {
                     removes.add(FXStyle.FX_BASE);
                     removes.add(ThemeManager.currentTheme().getUserAgentStylesheet());
                     parent.getStylesheets().removeAll(removes);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                try {
                     parent.getStylesheets().addAll(this.getUserAgentStylesheet(), FXStyle.FX_BASE);
                 } catch (Exception ex) {
                     ex.printStackTrace();

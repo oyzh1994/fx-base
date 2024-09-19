@@ -5,6 +5,7 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.plus.util.ResourceUtil;
+import javafx.scene.shape.SVGPath;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -28,34 +29,34 @@ public class SVGLoader {
     /**
      * 缓存
      */
-    private final TimedCache<String, String> cache = CacheUtil.newTimedCache(60 * 1000L);
+    private final TimedCache<String, SVGPath> cache = CacheUtil.newTimedCache(60 * 1000L);
 
     /**
      * 加载svg内容
      *
-     * @param svgPath svg路径
+     * @param url 路径
      * @return 结果
      */
-    public String load(String svgPath) {
-        if (svgPath == null) {
+    public SVGPath load(String url) {
+        if (url == null) {
             return null;
         }
-        svgPath = svgPath.trim();
+        url = url.trim();
         // 缓存
-        if (this.cache.containsKey(svgPath)) {
-            return this.cache.get(svgPath);
+        if (this.cache.containsKey(url)) {
+            return this.cache.get(url);
         }
         // 获取路径
-        URL url = ResourceUtil.getResource(svgPath);
-        if (url == null) {
-            StaticLog.warn("svgPath: {} is not found.", svgPath);
+        URL u = ResourceUtil.getResource(url);
+        if (u == null) {
+            StaticLog.warn("svg file: {} is not found.", url);
             return null;
         }
-        String svg = null;
+        SVGPath svgPath = null;
         try {
             // 解析内容
             SAXReader reader = new SAXReader();
-            Document document = reader.read(url.openStream());
+            Document document = reader.read(u.openStream());
             Element root = document.getRootElement();
             Iterator<Element> iterator = root.elementIterator("path");
             if (iterator == null || !iterator.hasNext()) {
@@ -64,22 +65,32 @@ public class SVGLoader {
                     iterator = element.elementIterator("path");
                 }
             }
+            StringBuilder content = new StringBuilder();
             if (iterator != null) {
-                StringBuilder data = new StringBuilder();
+                boolean first = true;
                 while (iterator.hasNext()) {
                     Element element = iterator.next();
                     String d = element.attributeValue("d");
                     if (StrUtil.isNotBlank(d)) {
-                        data.append(d);
+                        if (first) {
+                            first = false;
+                            content.append(d);
+                        } else {
+                            content.append(" ").append(d);
+                        }
                     }
                 }
-                svg = data.toString().trim();
             }
+            if (content.isEmpty()) {
+                return null;
+            }
+            svgPath = new SVGPath();
+            svgPath.setContent(content.toString());
             // 添加到缓存
-            this.cache.put(svgPath, svg);
+            this.cache.put(url, svgPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return svg;
+        return svgPath;
     }
 }

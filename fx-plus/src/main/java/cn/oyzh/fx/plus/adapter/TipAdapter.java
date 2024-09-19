@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.util.TooltipUtil;
 import javafx.event.EventTarget;
 
 /**
@@ -24,7 +25,7 @@ public interface TipAdapter extends EventTarget {
      * @return 提示标题
      */
     default String tipText() {
-        return ControlUtil.getTipText(this);
+        return TooltipUtil.getTipText(this);
     }
 
     /**
@@ -40,6 +41,6 @@ public interface TipAdapter extends EventTarget {
      * @param tipText 提示标题
      */
     default void tipText(String tipText) {
-        ControlUtil.setTipText(this, tipText);
+        TooltipUtil.setTipText(this, tipText);
     }
 }

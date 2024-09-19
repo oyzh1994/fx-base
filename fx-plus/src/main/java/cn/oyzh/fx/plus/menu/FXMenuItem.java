@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.util.TooltipUtil;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 
@@ -47,7 +48,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
         }
         // 设置提示文字
         if (tipText != null) {
-            ControlUtil.setTipText(this, tipText);
+            TooltipUtil.setTipText(this, tipText);
         }
     }
 
@@ -116,7 +117,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
         FXMenuItem item = new FXMenuItem(label);
         // 设置提示文字
         if (tipText != null) {
-            ControlUtil.setTipText(item.getGraphic(), tipText);
+            TooltipUtil.setTipText(item.getGraphic(), tipText);
         }
         // 设置操作
         if (action != null) {

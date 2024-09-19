@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.TooltipUtil;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -263,7 +264,7 @@ public class MessageBox {
             // 获取字体
             Font font = FontUtil.getFont(node);
             // 初始化提示条
-            ControlUtil.initTooltip(tooltip);
+            TooltipUtil.initStyle(tooltip);
             // 安装提示条
             Tooltip.install(node, tooltip);
             // 设置消息内容
