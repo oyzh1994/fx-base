@@ -69,4 +69,12 @@ public class StringUtil {
         }
         return binary.toString();
     }
+
+    public static void deleteLast(StringBuilder builder, String str) {
+        if (builder != null && str != null) {
+            if (builder.toString().endsWith(str)) {
+                builder.deleteCharAt(builder.length() - 1);
+            }
+        }
+    }
 }
