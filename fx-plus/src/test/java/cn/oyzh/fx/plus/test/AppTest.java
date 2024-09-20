@@ -10,7 +10,11 @@ public class AppTest {
         // AppMain.main(args);
         // AppMain2.main(args);
 //        LabelListExample.main(args);
-        TreeViewMain.main(args);
+//         TreeViewMain.main(args);
+        // Memory1Main.main(args);
+        // Memory2Main.main(args);
+        // Memory3Main.main(args);
+        Memory4Main.main(args);
     }
 
 }

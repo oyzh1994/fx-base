@@ -54,4 +54,12 @@ public class SystemUtil {
     public static void gcLater() {
         ThreadUtil.startVirtual(SystemUtil::gc);
     }
+
+    public static double getUsedMemory() {
+        MemoryMXBean mxBean = ManagementFactory.getMemoryMXBean();
+        MemoryUsage heapMemoryUsage = mxBean.getHeapMemoryUsage();
+        MemoryUsage nonHeapMemoryUsage = mxBean.getNonHeapMemoryUsage();
+        long usedMemory = heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
+        return usedMemory / 1024 / 1024.0;
+    }
 }
