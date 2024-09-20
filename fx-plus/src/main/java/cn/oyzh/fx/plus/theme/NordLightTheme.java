@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.NordLight;
 import atlantafx.base.theme.Theme;
+import cn.oyzh.fx.plus.FXStyle;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -21,17 +23,23 @@ public class NordLightTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        if (locale == Locale.TRADITIONAL_CHINESE) {
-            return "明亮北歐";
-        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-            return "明亮北欧";
-        }
-        return "Nord Light";
+        // if (locale == Locale.TRADITIONAL_CHINESE) {
+        //     return "明亮北歐";
+        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+        //     return "明亮北欧";
+        // }
+        // return "Nord Light";
+        return I18nHelper.themeNordLight();
     }
 
     @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
+    }
+
+    @Override
+    public String getCompressedUserAgentStylesheet() {
+        return FXStyle.ATLANTA_FX_NORD_LIGHT;
     }
 
     @Override

@@ -98,6 +98,11 @@ public class CustomTheme implements Theme, ThemeStyle {
     }
 
     @Override
+    public String getCompressedUserAgentStylesheet() {
+        return this.getUserAgentStylesheet();
+    }
+
+    @Override
     public String getUserAgentStylesheetBSS() {
         return null;
     }

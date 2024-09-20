@@ -7,8 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -99,19 +97,28 @@ public interface ThemeStyle {
     String getUserAgentStylesheet();
 
     /**
+     * 获取压缩样式文件
+     *
+     * @return 压缩样式文件
+     */
+    String getCompressedUserAgentStylesheet();
+
+    /**
      * 处理样式
      *
      * @param node 节点
      */
     default void handleStyle(Node node) {
-        FXUtil.runWait(() -> {
+        FXUtil.runLater(() -> {
             if (node instanceof Parent parent) {
                 try {
-                    List<String> removes = new ArrayList<>();
-                    removes.add(FXStyle.FX_BASE);
-                    removes.add(ThemeManager.currentTheme().getUserAgentStylesheet());
-                    parent.getStylesheets().removeAll(removes);
-                    parent.getStylesheets().addAll(this.getUserAgentStylesheet(), FXStyle.FX_BASE);
+                    parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentCompressedUserAgentStylesheet());
+                    parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
+                    // List<String> removes = new ArrayList<>();
+                    // removes.add(FXStyle.FX_BASE);
+                    // removes.add(ThemeManager.currentTheme().getCompressedUserAgentStylesheet());
+                    // parent.getStylesheets().removeAll(removes);
+                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

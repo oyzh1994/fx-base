@@ -90,11 +90,6 @@ public class ThemeManager {
             return;
         }
         try {
-            // 变更颜色
-            List<StageAdapter> wrappers = StageManager.allStages();
-            for (StageAdapter wrapper : wrappers) {
-                applyCycle(wrapper.root(), style);
-            }
             // 监听系统主题
             if (style == Themes.SYSTEM) {
                 Themes.SYSTEM.listener();
@@ -103,6 +98,11 @@ public class ThemeManager {
             }
             // 设置当前主题
             currentTheme = style;
+            // 变更颜色
+            List<StageAdapter> wrappers = StageManager.allStages();
+            for (StageAdapter wrapper : wrappers) {
+                applyCycle(wrapper.root(), style);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -151,5 +151,9 @@ public class ThemeManager {
 
     public static Color currentForegroundColor() {
         return currentTheme().getForegroundColor();
+    }
+
+    public static String currentCompressedUserAgentStylesheet() {
+        return currentTheme().getCompressedUserAgentStylesheet();
     }
 }

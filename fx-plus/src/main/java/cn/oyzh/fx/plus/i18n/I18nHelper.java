@@ -573,6 +573,20 @@ public class I18nHelper {
 
     public static final String MINUTE = "base.minute";
 
+    public static final String THEME_PRIMER_LIGHT = "base.theme.primerlight";
+
+    public static final String THEME_PRIMER_DARK = "base.theme.primerdark";
+
+    public static final String THEME_NORD_LIGHT = "base.theme.nordlight";
+
+    public static final String THEME_NORD_DARK = "base.theme.norddark";
+
+    public static final String THEME_CUPERTINO_LIGHT = "base.theme.cupertinolight";
+
+    public static final String THEME_CUPERTINO_DARK  = "base.theme.cupertinodark";
+
+    public static final String THEME_DRACULA  = "base.theme.dracula";
+
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
     }
@@ -2459,5 +2473,33 @@ public class I18nHelper {
 
     public static String closeSchema() {
         return I18nResourceBundle.i18nString(CLOSE, SCHEMA);
+    }
+
+    public static String themePrimerDark() {
+        return I18nResourceBundle.i18nString(THEME_PRIMER_DARK);
+    }
+
+    public static String themePrimerLight() {
+        return I18nResourceBundle.i18nString(THEME_PRIMER_LIGHT);
+    }
+
+    public static String themeNordLight() {
+        return I18nResourceBundle.i18nString(THEME_NORD_LIGHT);
+    }
+
+    public static String themeNordDark() {
+        return I18nResourceBundle.i18nString(THEME_NORD_DARK);
+    }
+
+    public static String themeCupertinoLight() {
+        return I18nResourceBundle.i18nString(THEME_CUPERTINO_LIGHT);
+    }
+
+    public static String themeCupertinoDark() {
+        return I18nResourceBundle.i18nString(THEME_CUPERTINO_DARK);
+    }
+
+    public static String themeDracula() {
+        return I18nResourceBundle.i18nString(THEME_DRACULA);
     }
 }

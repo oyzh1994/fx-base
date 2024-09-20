@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.Dracula;
 import atlantafx.base.theme.Theme;
+import cn.oyzh.fx.plus.FXStyle;
+import cn.oyzh.fx.plus.i18n.I18nHelper;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -21,17 +23,23 @@ public class DraculaTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        if (locale == Locale.TRADITIONAL_CHINESE) {
-            return "暗黑德古拉";
-        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-            return "暗黑德古拉";
-        }
-        return "Dracula";
+        // if (locale == Locale.TRADITIONAL_CHINESE) {
+        //     return "暗黑德古拉";
+        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+        //     return "暗黑德古拉";
+        // }
+        // return "Dracula";
+        return I18nHelper.themeDracula();
     }
 
     @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
+    }
+
+    @Override
+    public String getCompressedUserAgentStylesheet() {
+        return FXStyle.ATLANTA_FX_DRACULA;
     }
 
     @Override
