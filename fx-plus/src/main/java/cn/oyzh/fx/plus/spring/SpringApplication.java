@@ -25,7 +25,10 @@ public abstract class SpringApplication extends ApplicationExt implements Comman
     public static void launchSpring(@NonNull Class<? extends Application> appClass, String... args) {
         try {
             SpringApplicationBuilder builder = new SpringApplicationBuilder(appClass);
-            builder.web(WebApplicationType.NONE).headless(false).run(args);
+            builder.lazyInitialization(true)
+                    .headless(false)
+                    .web(WebApplicationType.NONE)
+                    .run(args);
             launch(appClass, args);
         } catch (Exception ex) {
             ex.printStackTrace();
