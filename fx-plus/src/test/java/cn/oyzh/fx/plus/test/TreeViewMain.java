@@ -1,10 +1,9 @@
-package cn.oyzh.fx.plus.test.treelist;
+package cn.oyzh.fx.plus.test;
 
 import cn.oyzh.fx.plus.controls.svg.AddSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGManager;
 import cn.oyzh.fx.plus.controls.text.FXLabel;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
@@ -19,34 +18,17 @@ import javafx.stage.Stage;
  * @author oyzh
  * @since 2022/5/18
  */
-public class TreeListMain extends Application {
+public class TreeViewMain extends Application {
 
     public static void main(String[] args) {
-        launch(TreeListMain.class, args);
+        launch(TreeViewMain.class, args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        // test1(stage);
         // test2(stage);
         test3(stage);
         // test4(stage);
-    }
-
-    private void test1(Stage stage) {
-        FXTreeList list = new FXTreeList();
-        for (int i = 0; i < 10_000; i++) {
-            FXTreeNode root = new FXTreeNode();
-            // root.setGraphic(new FXLabel("Aaa" + i));
-            AddSVGGlyph glyph = new AddSVGGlyph();
-            glyph.setColor(Color.BLACK);
-            root.setGraphic(glyph);
-            root.setText(new FXLabel("11"));
-            list.setRoot(root);
-        }
-
-        stage.setScene(new Scene(list, 500, 500));
-        stage.show();
     }
 
     private void test2(Stage stage) {

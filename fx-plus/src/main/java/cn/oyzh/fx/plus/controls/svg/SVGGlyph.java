@@ -11,6 +11,8 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.AnimationUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -110,43 +112,53 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
     private void updateContent() {
         // 获取图标
         SVGPath svgPath = (SVGPath) this.getShape();
-        if (svgPath != null) {
-            // // 更新颜色
-            // Paint paint = ControlUtil.backgroundFill(this);
-            // if (paint != svgPath.getColor()) {
-            //     svgPath.setColor(paint);
-            // }
-            // if (paint != svgPath.getFill()) {
-            //     svgPath.setFill(paint);
-            // }
-            // 更新鼠标
-            if (!SVGManager.isLoading(svgPath) && this.getCursor() != svgPath.getCursor()) {
-                svgPath.setCursor(this.getCursor());
-            }
+        // 无内容
+        if (svgPath == null) {
+            return;
+        }
+        // loading图标
+        if (SVGManager.isLoadingSvgPath(svgPath)) {
+            return;
+        }
+        // 更新鼠标
+        if (this.getCursor() != svgPath.getCursor()) {
+            svgPath.setCursor(this.getCursor());
+        }
+        // 更新透明度
+        if (this.isDisabled() || this.isDisabled()) {
+            this.setOpacity(0.4);
+        } else {
+            this.setOpacity(1.0);
+        }
+        // 更新颜色
+        if (this.active) {
+            this.setBackground(ControlUtil.background(Color.ORANGERED));
+        } else if (this.isEnableTheme()) {
+            this.setBackground(ControlUtil.background(ThemeManager.currentForegroundColor()));
+        } else if (this.color != null) {
+            this.setBackground(ControlUtil.background(this.color));
         }
     }
 
-    /**
-     * 初始化内容
-     */
-    public void initContent() {
-        if (this.url == null) {
-            return;
-        }
-        // 结束动画
-        if (this.waitingTransition != null) {
-            this.waitingTransition.stop();
-            this.waitingTransition = null;
-        }
-        // 初始化角度
-        this.setRotate(0);
-        // 创建图标
-        SVGPath svgPath =  SVGManager.load(this.url);
-        // svgPath.setColor(this.color);
-        // svgPath.setFill(this.color);
-        svgPath.setCursor(this.getCursor());
-        this.setShape(svgPath);
-    }
+    // /**
+    //  * 初始化内容
+    //  */
+    // public void initContent() {
+    //     if (this.url == null) {
+    //         return;
+    //     }
+    //     // 结束动画
+    //     if (this.waitingTransition != null) {
+    //         this.waitingTransition.stop();
+    //         this.waitingTransition = null;
+    //     }
+    //     // 初始化角度
+    //     this.setRotate(0);
+    //     // 创建图标
+    //     SVGPath svgPath = SVGManager.load(this.url);
+    //     svgPath.setCursor(this.getCursor());
+    //     this.setShape(svgPath);
+    // }
 
     /**
      * 等待动画
@@ -154,19 +166,40 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
     private RotateTransition waitingTransition;
 
     /**
-     * 初始化等待
+     * 原始svg组件
      */
-    public void initWaiting() {
-        // 创建图标
-        SVGPath svgPath = SVGManager.load("/fx-plus/font/loading.svg");
-        SVGManager.setLoading(svgPath);
-        // svgPath.setColor(this.color);
-        // svgPath.setFill(this.color);
-        svgPath.setCursor(Cursor.NONE);
-        this.setShape(svgPath);
+    private SVGPath original;
+
+    /**
+     * 开始动画
+     */
+    public void startWaiting() {
+        if (this.isWaiting()) {
+            return;
+        }
+        this.setWaiting(true);
+        // 记录原始图标
+        this.original = (SVGPath) this.getShape();
+        // 设置loading图标
+        this.setShape(SVGManager.getLoadingSvgPath());
         // 初始化动画
         this.waitingTransition = AnimationUtil.rotate(this);
         this.waitingTransition.play();
+    }
+
+    /**
+     * 结束动画
+     */
+    public void stopWaiting() {
+        // 结束动画
+        if (this.waitingTransition != null) {
+            FXUtil.runWait(this.waitingTransition::stop);
+            this.waitingTransition = null;
+        }
+        this.setShape(this.original);
+        this.setRotate(0);
+        this.setWaiting(false);
+        this.original = null;
     }
 
     @Override
@@ -234,8 +267,11 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      * @param url svg地址
      */
     public void setUrl(@NonNull String url) {
-        this.url = url;
-        this.initContent();
+        this.url = url.intern();
+        // 创建图标
+        SVGPath svgPath = SVGManager.load(this.url);
+        svgPath.setCursor(this.getCursor());
+        this.setShape(svgPath);
     }
 
     /**
@@ -260,25 +296,27 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      */
     public void setColor(Paint color) {
         this.color = color;
-        this._setColor(color);
+        this.updateContent();
     }
 
-    /**
-     * 设置颜色
-     *
-     * @param color 颜色
-     */
-    private void _setColor(Paint color) {
-        // 默认颜色
-        if (color == null) {
-            this.addClass("svg-glyph");
-        } else {// 自定义颜色
-            this.removeClass("svg-glyph");
-        }
-        if (!this.isDisabled() && color != null) {
-            FXUtil.runLater(() -> this.setBackground(ControlUtil.background(color)), 50);
-        }
-    }
+    // /**
+    //  * 设置颜色
+    //  *
+    //  * @param color 颜色
+    //  */
+    // private void _setColor(Paint color) {
+    //     // // 默认颜色
+    //     // if (color == null) {
+    //     //     this.addClass("svg-glyph");
+    //     // } else {// 自定义颜色
+    //     //     this.removeClass("svg-glyph");
+    //     // }
+    //     if (!this.isDisabled() && color != null) {
+    //         this.setBackground(ControlUtil.background(color));
+    //         // FXUtil.runLater(() -> this.setBackground(ControlUtil.background(color)), 50);
+    //     }
+    //
+    // }
 
     /**
      * 设置大小
@@ -328,7 +366,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
             } else {
                 w = h = Double.parseDouble(size);    // 解析大小字符串作为宽度和高度
             }
-            this.setMinSize(w, h);    // 设置最小大小为宽度和高度
+            // this.setMinSize(w, h);    // 设置最小大小为宽度和高度
             this.setMaxSize(w, h);    // 设置最大大小为宽度和高度
             this.setPrefSize(w, h);    // 设置首选大小为宽度和高度
         } catch (Exception ex) {
@@ -356,19 +394,19 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         TaskManager.startDelay(task, 20);
     }
 
-    /**
-     * 开始等待动画
-     */
-    public void startWaiting() {
-        SVGManager.startWaiting(this);
-    }
+    // /**
+    //  * 开始等待动画
+    //  */
+    // public void startWaiting() {
+    //     SVGManager.startWaiting(this);
+    // }
 
-    /**
-     * 停止等待动画
-     */
-    public void stopWaiting() {
-        SVGManager.stopWaiting(this);
-    }
+    // /**
+    //  * 停止等待动画
+    //  */
+    // public void stopWaiting() {
+    //     SVGManager.stopWaiting(this);
+    // }
 
     @Override
     public void setStateManager(StateManager manager) {
@@ -397,9 +435,34 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setCursor(Cursor.HAND);
         this.setFocusTraversable(false);
         this.setPadding(new Insets(0));
-        this.cursorProperty().addListener((obs, t0, t1) -> this.updateContent());
-        this.backgroundProperty().addListener((obs, t0, t1) -> this.updateContent());
-        this.addClass("svg-glyph");
+        // this.cursorProperty().addListener((obs, t0, t1) -> this.updateContent());
+        // this.backgroundProperty().addListener((obs, t0, t1) -> this.updateContent());
+        // this.addClass("svg-glyph");
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        if (style != null && this.isEnableTheme() && !this.isActive()) {
+            this.updateContent();
+        }
+    }
+
+    @Override
+    public void setCursor(Cursor value) {
+        super.setCursor(value);
+        this.updateContent();
+    }
+
+    @Override
+    public void setDisable(boolean value) {
+        super.setDisable(value);
+        this.updateContent();
+    }
+
+    @Override
+    public void setDisabled(boolean value) {
+        super.setDisabled(value);
+        this.updateContent();
     }
 
     /**
@@ -416,12 +479,13 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      */
     public void setActive(boolean active) {
         this.active = active;
-        // 设置高亮颜色
-        if (active) {
-            this._setColor(Color.ORANGERED);
-        } else {// 设置预设颜色
-            this._setColor(this.color);
-        }
+        // // 设置高亮颜色
+        // if (active) {
+        //     this._setColor(Color.ORANGERED);
+        // } else {// 设置预设颜色
+        //     this._setColor(this.color);
+        // }
+        this.updateContent();
     }
 
     @Override

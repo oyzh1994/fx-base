@@ -9,6 +9,7 @@ import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -146,5 +147,9 @@ public class ThemeManager {
                 }
             }
         }
+    }
+
+    public static Color currentForegroundColor() {
+        return currentTheme().getForegroundColor();
     }
 }

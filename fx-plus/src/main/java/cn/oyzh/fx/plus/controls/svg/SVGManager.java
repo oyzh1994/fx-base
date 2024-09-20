@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.scene.Cursor;
 import javafx.scene.shape.SVGPath;
 import lombok.experimental.UtilityClass;
+
+import java.lang.ref.WeakReference;
 
 /**
  * svg管理器
@@ -13,39 +15,71 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class SVGManager {
 
-    /**
-     * 执行等待中动画
-     *
-     * @param glyph svg图标
-     */
-    public static void startWaiting(SVGGlyph glyph) {
-        if (glyph != null) {
-            glyph.setWaiting(true);
-            FXUtil.runWait(glyph::initWaiting);
-        }
-    }
+    // /**
+    //  * 执行等待中动画
+    //  *
+    //  * @param glyph svg图标
+    //  */
+    // public static void startWaiting(SVGGlyph glyph) {
+    //     if (glyph != null) {
+    //         glyph.setWaiting(true);
+    //         FXUtil.runWait(glyph::initWaiting);
+    //     }
+    // }
+    //
+    // /**
+    //  * 停止等待中动画
+    //  *
+    //  * @param glyph svg图标
+    //  */
+    // public static void stopWaiting(SVGGlyph glyph) {
+    //     if (glyph != null) {
+    //         glyph.setWaiting(false);
+    //         // FXUtil.runLater(() -> {
+    //         //     glyph.setRotate(0);
+    //         //     SVGPath svgPath = (SVGPath) glyph.getShape();
+    //         //     SVGGlyph original = (SVGGlyph) svgPath.getProperties().get("original");
+    //         //     original.setCursor(glyph.getCursor());
+    //         //     glyph.setShape(svgPath);
+    //         // });
+    //     }
+    // }
 
     /**
-     * 停止等待中动画
-     *
-     * @param glyph svg图标
+     * loading的svg路径引用
      */
-    public static void stopWaiting(SVGGlyph glyph) {
-        if (glyph != null) {
-            glyph.setWaiting(false);
-            FXUtil.runLater(glyph::initContent);
-        }
-    }
+    private static WeakReference<SVGPath> loadingSvgPathReference;
 
+    /**
+     * 加载svg路径
+     * @param url 地址
+     * @return svg路径
+     */
     public static SVGPath load(String url) {
         return SVGLoader.INSTANCE.load(url);
     }
 
-    public static void setLoading(SVGPath svgPath) {
-        svgPath.getProperties().put("loading", true);
+    /**
+     * 是否loading的svg路径
+     *
+     * @param svgPath svg路径
+     * @return 结果
+     */
+    public static boolean isLoadingSvgPath(SVGPath svgPath) {
+        return loadingSvgPathReference != null && svgPath != null && svgPath == loadingSvgPathReference.get();
     }
 
-    public static boolean isLoading(SVGPath svgPath) {
-        return svgPath.hasProperties() && svgPath.getProperties().containsKey("loading");
+    /**
+     * 获取loading的svg路径
+     *
+     * @return loading的svg路径
+     */
+    public static SVGPath getLoadingSvgPath() {
+        if (loadingSvgPathReference == null || loadingSvgPathReference.get() == null) {
+            SVGPath svgPath = SVGManager.load("/fx-plus/font/loading.svg");
+            svgPath.setCursor(Cursor.NONE);
+            loadingSvgPathReference = new WeakReference<>(svgPath);
+        }
+        return loadingSvgPathReference.get();
     }
 }

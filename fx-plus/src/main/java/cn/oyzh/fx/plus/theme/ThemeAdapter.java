@@ -61,7 +61,6 @@ public interface ThemeAdapter extends PropAdapter {
     default void changeTheme(ThemeStyle style) {
         if (this.isEnableTheme() && style != null) {
             switch (this) {
-                case SVGGlyph glyph -> this.handleStyle(glyph, style);
                 case Parent node -> this.handleStyle(node, style);
                 case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
                 case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);

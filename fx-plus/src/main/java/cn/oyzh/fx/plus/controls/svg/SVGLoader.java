@@ -41,7 +41,8 @@ public class SVGLoader {
         if (url == null) {
             return null;
         }
-        url = url.trim();
+        // 返回常量池地址
+        url = url.trim().intern();
         // 缓存
         if (this.cache.containsKey(url)) {
             return this.cache.get(url);
