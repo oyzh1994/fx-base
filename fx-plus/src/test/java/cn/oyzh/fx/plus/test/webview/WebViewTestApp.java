@@ -4,14 +4,14 @@ import cn.hutool.extra.spring.EnableSpringUtil;
 import cn.oyzh.fx.plus.spring.SpringApplication;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.stage.Stage;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author oyzh
  * @since 2023/11/21
  */
 @EnableSpringUtil
-@SpringBootApplication
+//@SpringBootApplication
 public class WebViewTestApp extends SpringApplication {
 
     public static void main(String[] args) {

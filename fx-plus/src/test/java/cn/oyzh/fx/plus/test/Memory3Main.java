@@ -37,14 +37,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
-import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
-import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration;
-import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
-import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
+//import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
+//import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
+//import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+//import org.springframework.boot.autoconfigure.sql.init.SqlInitializationAutoConfiguration;
+//import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
+//import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
 
 import java.util.List;
 
@@ -53,17 +53,17 @@ import java.util.List;
  * @author oyzh
  * @since 2022/5/18
  */
-@SpringBootApplication(scanBasePackages = "cn.oyzh",
-        exclude = {
-                AopAutoConfiguration.class,
-                CacheAutoConfiguration.class,
-                DataSourceAutoConfiguration.class,
-                MessageSourceAutoConfiguration.class,
-                TaskExecutionAutoConfiguration.class,
-                TaskSchedulingAutoConfiguration.class,
-                SqlInitializationAutoConfiguration.class,
-        }
-)
+//@SpringBootApplication(scanBasePackages = "cn.oyzh",
+//        exclude = {
+//                AopAutoConfiguration.class,
+//                CacheAutoConfiguration.class,
+//                DataSourceAutoConfiguration.class,
+//                MessageSourceAutoConfiguration.class,
+//                TaskExecutionAutoConfiguration.class,
+//                TaskSchedulingAutoConfiguration.class,
+//                SqlInitializationAutoConfiguration.class,
+//        }
+//)
 @EnableSpringUtil
 public class Memory3Main extends SpringApplication {
 

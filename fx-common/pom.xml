@@ -25,6 +25,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- 扩展工具类库 -->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -56,13 +63,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Spring boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- ssh类库 -->
         <!-- https://mvnrepository.com/artifact/com.github.mwiede/jsch -->
         <dependency>
@@ -70,6 +70,27 @@
             <artifactId>jsch</artifactId>
             <version>0.2.13</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.dagger/dagger -->
+        <dependency>
+            <groupId>com.google.dagger</groupId>
+            <artifactId>dagger</artifactId>
+            <version>2.52</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler -->
+        <dependency>
+            <groupId>com.google.dagger</groupId>
+            <artifactId>dagger-compiler</artifactId>
+            <version>2.52</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/jakarta.inject/jakarta.inject-api -->
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <version>2.0.1</version>
         </dependency>
 
         <!-- Apache POI -->
