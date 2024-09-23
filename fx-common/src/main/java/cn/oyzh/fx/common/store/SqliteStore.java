@@ -302,7 +302,7 @@ public abstract class SqliteStore<M extends Serializable> {
             for (ColumnDefinition columnDefinition : tableDefinition.columnDefinitions) {
                 String columnName = columnDefinition.columnName;
                 if (resultSet.findColumn(columnName) >= 0) {
-                    record.put(columnName, resultSet.getString(columnName));
+                    record.put(columnName, resultSet.getObject(columnName));
                 }
             }
         }
@@ -341,7 +341,7 @@ public abstract class SqliteStore<M extends Serializable> {
             for (ColumnDefinition columnDefinition : tableDefinition.columnDefinitions) {
                 String columnName = columnDefinition.columnName;
                 if (resultSet.findColumn(columnName) >= 0) {
-                    record.put(columnName, resultSet.getString(columnName));
+                    record.put(columnName, resultSet.getObject(columnName));
                 }
             }
             records.add(record);

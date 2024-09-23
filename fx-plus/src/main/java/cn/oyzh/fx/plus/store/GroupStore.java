@@ -19,14 +19,14 @@ public abstract class GroupStore<E extends TreeGroup> extends SqliteStore<E> {
         definition.setTableName("t_group");
         ColumnDefinition gid = new ColumnDefinition();
         gid.setColumnName("gid");
-        gid.setColumnType("char");
+        gid.setColumnType("text");
         gid.setPrimaryKey(true);
         ColumnDefinition name = new ColumnDefinition();
         name.setColumnName("name");
-        name.setColumnType("char");
+        name.setColumnType("text");
         ColumnDefinition extend = new ColumnDefinition();
         extend.setColumnName("extend");
-        extend.setColumnType("bit");
+        extend.setColumnType("integer");
         definition.addColumnDefinition(gid);
         definition.addColumnDefinition(name);
         definition.addColumnDefinition(extend);
@@ -48,11 +48,7 @@ public abstract class GroupStore<E extends TreeGroup> extends SqliteStore<E> {
         model.setGid((String) record.get("gid"));
         model.setName((String) record.get("name"));
         Object extend = record.get("extend");
-        if (extend instanceof String) {
-            model.setExpand("1".equals(extend));
-        } else if (extend instanceof Boolean b) {
-            model.setExpand(b);
-        } else if (extend instanceof Number b) {
+        if (extend instanceof Number b) {
             model.setExpand(b.intValue() == 1);
         }
         return model;

@@ -22,23 +22,23 @@ public abstract class SettingStore<E extends Setting> extends SqliteStore<E> {
 
         ColumnDefinition uid = new ColumnDefinition();
         uid.setColumnName("uid");
-        uid.setColumnType("char");
+        uid.setColumnType("text");
         uid.setPrimaryKey(true);
         definition.addColumnDefinition(uid);
 
         // 主题
         ColumnDefinition theme = new ColumnDefinition();
         theme.setColumnName("theme");
-        theme.setColumnType("char");
+        theme.setColumnType("text");
         ColumnDefinition bgColor = new ColumnDefinition();
         bgColor.setColumnName("bgColor");
-        bgColor.setColumnType("char");
+        bgColor.setColumnType("text");
         ColumnDefinition fgColor = new ColumnDefinition();
         fgColor.setColumnName("fgColor");
-        fgColor.setColumnType("char");
+        fgColor.setColumnType("text");
         ColumnDefinition accentColor = new ColumnDefinition();
         accentColor.setColumnName("accentColor");
-        accentColor.setColumnType("char");
+        accentColor.setColumnType("text");
         definition.addColumnDefinition(theme);
         definition.addColumnDefinition(bgColor);
         definition.addColumnDefinition(fgColor);
@@ -47,7 +47,7 @@ public abstract class SettingStore<E extends Setting> extends SqliteStore<E> {
         // 基本
         ColumnDefinition locale = new ColumnDefinition();
         locale.setColumnName("locale");
-        locale.setColumnType("char");
+        locale.setColumnType("text");
         ColumnDefinition exitMode = new ColumnDefinition();
         exitMode.setColumnName("exitMode");
         exitMode.setColumnType("integer");
@@ -64,7 +64,7 @@ public abstract class SettingStore<E extends Setting> extends SqliteStore<E> {
         tabLimit.setColumnType("integer");
         ColumnDefinition tabStrategy = new ColumnDefinition();
         tabStrategy.setColumnName("tabStrategy");
-        tabStrategy.setColumnType("char");
+        tabStrategy.setColumnType("text");
         definition.addColumnDefinition(tabLimit);
         definition.addColumnDefinition(tabStrategy);
 
@@ -77,7 +77,7 @@ public abstract class SettingStore<E extends Setting> extends SqliteStore<E> {
         fontWeight.setColumnType("integer");
         ColumnDefinition fontFamily = new ColumnDefinition();
         fontFamily.setColumnName("fontFamily");
-        fontFamily.setColumnType("char");
+        fontFamily.setColumnType("text");
         definition.addColumnDefinition(fontSize);
         definition.addColumnDefinition(fontWeight);
         definition.addColumnDefinition(fontFamily);
@@ -91,7 +91,7 @@ public abstract class SettingStore<E extends Setting> extends SqliteStore<E> {
         rememberPageResize.setColumnType("integer");
         ColumnDefinition rememberPageLocation = new ColumnDefinition();
         rememberPageLocation.setColumnName("rememberPageLocation");
-        rememberPageLocation.setColumnType("char");
+        rememberPageLocation.setColumnType("integer");
         definition.addColumnDefinition(rememberPageSize);
         definition.addColumnDefinition(rememberPageResize);
         definition.addColumnDefinition(rememberPageLocation);
