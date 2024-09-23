@@ -18,7 +18,7 @@ public abstract class SettingStore<E extends Setting> extends SqliteStore<E> {
     @Override
     protected TableDefinition getTableDefinition() {
         TableDefinition definition = new TableDefinition();
-        definition.setTableName("setting");
+        definition.setTableName("t_setting");
 
         ColumnDefinition uid = new ColumnDefinition();
         uid.setColumnName("uid");

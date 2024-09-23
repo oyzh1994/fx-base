@@ -1,10 +1,14 @@
 package cn.oyzh.fx.plus.domain;
 
+import cn.oyzh.fx.common.util.ObjectComparator;
+import cn.oyzh.fx.common.util.ObjectCopier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  * 树分组
@@ -15,7 +19,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class TreeGroup implements Comparable<TreeGroup> {
+public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, Serializable {
 
     /**
      * 分组id
@@ -53,5 +57,14 @@ public class TreeGroup implements Comparable<TreeGroup> {
      */
     public boolean isExpand() {
         return Boolean.TRUE == this.expand;
+    }
+
+    @Override
+    public void copy(Object obj) {
+        if (obj instanceof TreeGroup t1) {
+            this.gid = t1.gid;
+            this.name = t1.name;
+            this.expand = t1.expand;
+        }
     }
 }

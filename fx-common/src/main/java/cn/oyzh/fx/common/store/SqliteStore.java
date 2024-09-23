@@ -1,6 +1,8 @@
 package cn.oyzh.fx.common.store;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.log.StaticLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +43,10 @@ public abstract class SqliteStore<M extends Serializable> {
 
     protected static synchronized Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:sqlite:" + filePath);
+    }
+
+    protected String uid() {
+        return UUID.fastUUID().toString(true);
     }
 
     protected abstract TableDefinition getTableDefinition();
@@ -149,6 +155,7 @@ public abstract class SqliteStore<M extends Serializable> {
         sql.append("?,".repeat(record.size()));
         sql.deleteCharAt(sql.length() - 1);
         sql.append(")");
+        StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
         int index = 1;
@@ -172,6 +179,7 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public int update(Map<String, Object> record, PrimaryKeyColumn primaryKey) throws Exception {
+        record.remove(primaryKey.columnName);
         TableDefinition tableDefinition = getTableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("UPDATE ");
@@ -223,11 +231,48 @@ public abstract class SqliteStore<M extends Serializable> {
         sql.append(" WHERE ");
         sql.append(primaryKey.columnName);
         sql.append("=?");
+        StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
         statement.setObject(1, primaryKey.columnData);
         ResultSet resultSet = statement.executeQuery();
-        boolean exists = resultSet.next();
+        boolean exists = false;
+        if (resultSet.next()) {
+            exists = resultSet.getInt(1) > 0;
+        }
+        resultSet.close();
+        statement.close();
+        connection.close();
+        return exists;
+    }
+
+    public boolean exist(Map<String, Object> params) throws SQLException {
+        TableDefinition tableDefinition = getTableDefinition();
+        String tableName = tableDefinition.getTableName();
+        StringBuilder sql = new StringBuilder("SELECT * FROM ");
+        sql.append(tableName);
+        if (CollUtil.isEmpty(params)) {
+            boolean first = true;
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (first) {
+                    first = false;
+                    sql.append(" WHERE");
+                } else {
+                    sql.append(" AND ");
+                }
+                sql.append(entry.getKey());
+                sql.append("=");
+                sql.append(entry.getValue());
+            }
+        }
+        StaticLog.info(sql.toString());
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        ResultSet resultSet = statement.executeQuery();
+        boolean exists = false;
+        if (resultSet.next()) {
+            exists = resultSet.getInt(1) > 0;
+        }
         resultSet.close();
         statement.close();
         connection.close();
@@ -247,8 +292,8 @@ public abstract class SqliteStore<M extends Serializable> {
         sql.append(" WHERE ");
         sql.append(primaryKey.columnName);
         sql.append("=?");
-        Connection connection = getConnection();
         StaticLog.info(sql.toString());
+        Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
         statement.setObject(1, primaryKey.columnData);
         ResultSet resultSet = statement.executeQuery();
@@ -272,18 +317,21 @@ public abstract class SqliteStore<M extends Serializable> {
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT * FROM ");
         sql.append(tableName);
-        boolean first = true;
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            if (first) {
-                first = false;
-                sql.append(" WHERE");
-            } else {
-                sql.append(" AND ");
+        if (CollUtil.isNotEmpty(params)) {
+            boolean first = true;
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (first) {
+                    first = false;
+                    sql.append(" WHERE");
+                } else {
+                    sql.append(" AND ");
+                }
+                sql.append(entry.getKey());
+                sql.append("=");
+                sql.append(entry.getValue());
             }
-            sql.append(entry.getKey());
-            sql.append("=");
-            sql.append(entry.getValue());
         }
+        StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
         ResultSet resultSet = statement.executeQuery();
@@ -317,6 +365,7 @@ public abstract class SqliteStore<M extends Serializable> {
         sql.append(" WHERE ");
         sql.append(primaryKey.columnName);
         sql.append("=?");
+        StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
         statement.setObject(1, primaryKey.columnData);
