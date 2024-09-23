@@ -1,8 +1,12 @@
 package cn.oyzh.fx.plus.domain;
 
+import cn.oyzh.fx.common.util.ObjectCopier;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
 import lombok.Data;
+
+import java.io.Serializable;
+
 
 /**
  * zk设置
@@ -11,7 +15,7 @@ import lombok.Data;
  * @since 2022/8/26
  */
 @Data
-public class Setting {
+public class Setting implements Serializable, ObjectCopier<Object> {
 
     /**
      * 透明度
@@ -71,7 +75,7 @@ public class Setting {
      * 0|null 不记住
      * 1 记住
      */
-    private Integer pageInfo;
+    private Integer rememberPageSize;
 
     /**
      * 记住页面拉伸
@@ -169,7 +173,7 @@ public class Setting {
      * @return 结果
      */
     public boolean isRememberPageSize() {
-        return this.pageInfo != null && this.pageInfo == 1;
+        return this.rememberPageSize != null && this.rememberPageSize == 1;
     }
 
     /**
@@ -221,5 +225,35 @@ public class Setting {
         config.setWeight(this.fontWeight);
         config.setFamily(this.fontFamily);
         return config;
+    }
+
+    @Override
+    public void copy(Object obj) {
+        if (obj instanceof Setting t1) {
+            // 主题
+            this.theme = t1.theme;
+            this.fgColor = t1.fgColor;
+            this.bgColor = t1.bgColor;
+            this.accentColor = t1.accentColor;
+
+            // 基本
+            this.locale = t1.locale;
+            this.opacity = t1.opacity;
+            this.exitMode = t1.exitMode;
+
+            // tab
+            this.tabLimit = t1.tabLimit;
+            this.tabStrategy = t1.tabStrategy;
+
+            // 字体
+            this.fontSize = t1.fontSize;
+            this.fontWeight = t1.fontWeight;
+            this.fontFamily = t1.fontFamily;
+
+            // 页面
+            this.rememberPageSize = t1.rememberPageSize;
+            this.rememberPageResize = t1.rememberPageResize;
+            this.rememberPageLocation = t1.rememberPageLocation;
+        }
     }
 }

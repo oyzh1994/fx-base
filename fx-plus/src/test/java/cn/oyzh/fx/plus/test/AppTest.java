@@ -12,9 +12,9 @@ public class AppTest {
 //        LabelListExample.main(args);
 //         TreeViewMain.main(args);
         // Memory1Main.main(args);
-         Memory2Main.main(args);
+        //  Memory2Main.main(args);
 //         Memory3Main.main(args);
-//        Memory4Main.main(args);
+       Memory4Main.main(args);
     }
 
 }

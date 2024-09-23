@@ -39,7 +39,7 @@ public abstract class FileStore<T> {
      *
      * @return 结果
      */
-    protected synchronized boolean init() {
+    public synchronized boolean init() {
         // 初始化路径
         this.storeFile = FileUtil.touch(this.filePath);
         return this.storeFile != null;

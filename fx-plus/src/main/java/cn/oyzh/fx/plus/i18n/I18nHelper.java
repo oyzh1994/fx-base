@@ -195,6 +195,10 @@ public class I18nHelper {
 
     public static final String INIT = "base.init";
 
+    public static final String CONFIG = "base.config";
+
+    public static final String STORE = "base.store";
+
     public static final String TARGET = "base.target";
 
     public static final String SOURCE = "base.source";
@@ -583,9 +587,9 @@ public class I18nHelper {
 
     public static final String THEME_CUPERTINO_LIGHT = "base.theme.cupertinolight";
 
-    public static final String THEME_CUPERTINO_DARK  = "base.theme.cupertinodark";
+    public static final String THEME_CUPERTINO_DARK = "base.theme.cupertinodark";
 
-    public static final String THEME_DRACULA  = "base.theme.dracula";
+    public static final String THEME_DRACULA = "base.theme.dracula";
 
     public static String operationFail() {
         return I18nResourceBundle.i18nString(OPERATION, FAIL);
@@ -985,6 +989,14 @@ public class I18nHelper {
 
     public static String initFail() {
         return I18nResourceBundle.i18nString(INIT, ING);
+    }
+
+    public static String initConfigFail() {
+        return I18nResourceBundle.i18nString(INIT, CONFIG, ING);
+    }
+
+    public static String initStoreFail() {
+        return I18nResourceBundle.i18nString(INIT, STORE, ING);
     }
 
     public static String target() {

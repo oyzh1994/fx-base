@@ -72,25 +72,33 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.dagger/dagger -->
-        <dependency>
-            <groupId>com.google.dagger</groupId>
-            <artifactId>dagger</artifactId>
-            <version>2.52</version>
-        </dependency>
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/com.google.dagger/dagger &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.google.dagger</groupId> -->
+        <!--     <artifactId>dagger</artifactId> -->
+        <!--     <version>2.52</version> -->
+        <!-- </dependency> -->
 
-        <!-- https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler -->
-        <dependency>
-            <groupId>com.google.dagger</groupId>
-            <artifactId>dagger-compiler</artifactId>
-            <version>2.52</version>
-        </dependency>
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.google.dagger</groupId> -->
+        <!--     <artifactId>dagger-compiler</artifactId> -->
+        <!--     <version>2.52</version> -->
+        <!-- </dependency> -->
 
-        <!-- https://mvnrepository.com/artifact/jakarta.inject/jakarta.inject-api -->
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/jakarta.inject/jakarta.inject-api &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>jakarta.inject</groupId> -->
+        <!--     <artifactId>jakarta.inject-api</artifactId> -->
+        <!--     <version>2.0.1</version> -->
+        <!-- </dependency> -->
+
+        <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
         <dependency>
-            <groupId>jakarta.inject</groupId>
-            <artifactId>jakarta.inject-api</artifactId>
-            <version>2.0.1</version>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.46.1.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Apache POI -->
