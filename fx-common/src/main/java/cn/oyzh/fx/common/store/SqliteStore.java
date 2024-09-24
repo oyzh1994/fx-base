@@ -354,6 +354,39 @@ public abstract class SqliteStore<M extends Serializable> {
         return records;
     }
 
+    public long selectCount(String kw, List<String> columns) throws SQLException {
+        TableDefinition tableDefinition = getTableDefinition();
+        String tableName = tableDefinition.getTableName();
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
+        sql.append(tableName);
+        if (StrUtil.isNotBlank(kw) && CollUtil.isNotEmpty(columns)) {
+            boolean first = true;
+            for (String column : columns) {
+                if (first) {
+                    first = false;
+                    sql.append(" WHERE ");
+                } else {
+                    sql.append(" OR ");
+                }
+                sql.append(column);
+                sql.append(" LIKE ");
+                sql.append(SqlDataUtil.wrapData("%" + kw + "%"));
+            }
+        }
+        StaticLog.info(sql.toString());
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        ResultSet resultSet = statement.executeQuery();
+        long count=0;
+        if (resultSet.next()) {
+            count=resultSet.getLong(1);
+        }
+        resultSet.close();
+        statement.close();
+        connection.close();
+        return count;
+    }
+
     public List<Map<String, Object>> selectPage(String kw, List<String> columns, PageParam pageParam) throws SQLException {
         TableDefinition tableDefinition = getTableDefinition();
         String tableName = tableDefinition.getTableName();
@@ -498,15 +531,28 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class QueryParam {
 
         private String name;
 
-        private String data;
+        private Object data;
 
         private String operator = "=";
+
+        public QueryParam(){
+
+        }
+
+        public QueryParam(String name, Object data) {
+            this.name = name;
+            this.data = data;
+        }
+
+        public QueryParam(String name, Object data, String operator) {
+            this.name = name;
+            this.data = data;
+            this.operator = operator;
+        }
     }
 
     @Data
