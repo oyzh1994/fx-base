@@ -2,6 +2,7 @@ package cn.oyzh.fx.common.store;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -309,25 +310,73 @@ public abstract class SqliteStore<M extends Serializable> {
         return record;
     }
 
-    public List<Map<String, Object>> selectList(Map<String, Object> params) throws SQLException {
+    public List<Map<String, Object>> selectList() throws SQLException {
+        return this.selectList(null);
+    }
+
+    public List<Map<String, Object>> selectList(List<QueryParam> params) throws SQLException {
         TableDefinition tableDefinition = getTableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT * FROM ");
         sql.append(tableName);
         if (CollUtil.isNotEmpty(params)) {
             boolean first = true;
-            for (Map.Entry<String, Object> entry : params.entrySet()) {
+            for (QueryParam param : params) {
                 if (first) {
                     first = false;
                     sql.append(" WHERE ");
                 } else {
                     sql.append(" AND ");
                 }
-                sql.append(entry.getKey());
-                sql.append("=");
-                sql.append(SqlDataUtil.wrapData(entry.getValue()));
+                sql.append(param.getName());
+                sql.append(param.getOperator());
+                sql.append(SqlDataUtil.wrapData(param.getData()));
             }
         }
+        StaticLog.info(sql.toString());
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        ResultSet resultSet = statement.executeQuery();
+        List<Map<String, Object>> records = new ArrayList<>();
+        while (resultSet.next()) {
+            Map<String, Object> record = new HashMap<>();
+            for (ColumnDefinition columnDefinition : tableDefinition.columnDefinitions) {
+                String columnName = columnDefinition.columnName;
+                if (resultSet.findColumn(columnName) >= 0) {
+                    record.put(columnName, resultSet.getObject(columnName));
+                }
+            }
+            records.add(record);
+        }
+        resultSet.close();
+        statement.close();
+        connection.close();
+        return records;
+    }
+
+    public List<Map<String, Object>> selectPage(String kw, List<String> columns, PageParam pageParam) throws SQLException {
+        TableDefinition tableDefinition = getTableDefinition();
+        String tableName = tableDefinition.getTableName();
+        StringBuilder sql = new StringBuilder("SELECT * FROM ");
+        sql.append(tableName);
+        if (StrUtil.isNotBlank(kw) && CollUtil.isNotEmpty(columns)) {
+            boolean first = true;
+            for (String column : columns) {
+                if (first) {
+                    first = false;
+                    sql.append(" WHERE ");
+                } else {
+                    sql.append(" OR ");
+                }
+                sql.append(column);
+                sql.append(" LIKE ");
+                sql.append(SqlDataUtil.wrapData("%" + kw + "%"));
+            }
+        }
+        sql.append(" LIMIT ")
+                .append(pageParam.limit)
+                .append(" OFFSET ")
+                .append(pageParam.start);
         StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
@@ -445,6 +494,29 @@ public abstract class SqliteStore<M extends Serializable> {
         private String columnName;
 
         private Object columnData;
+
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class QueryParam {
+
+        private String name;
+
+        private String data;
+
+        private String operator = "=";
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PageParam {
+
+        private long limit;
+
+        private long start;
 
     }
 }

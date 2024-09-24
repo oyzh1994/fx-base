@@ -4,6 +4,7 @@ import cn.oyzh.fx.common.store.SqliteStore;
 import org.junit.Test;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,8 @@ public class SqliteStoreTest {
     public void test3() throws Exception {
         SqliteStore.initStore("d://test2.db");
         SqliteStore1 store1 = new SqliteStore1();
-        Map<String, Object> param = new HashMap<>();
-        List<Map<String, Object>> records = store1.selectList(param);
+        List<SqliteStore.QueryParam> params = new ArrayList<>();
+        List<Map<String, Object>> records = store1.selectList(params);
         System.out.println(records);
     }
 
