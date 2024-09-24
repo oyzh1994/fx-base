@@ -106,6 +106,11 @@ public class SqliteStoreTest {
         }
 
         @Override
+        protected Serializable newModel() {
+            return null;
+        }
+
+        @Override
         protected TableDefinition getTableDefinition() {
             TableDefinition definition = new TableDefinition();
             definition.setTableName("users");

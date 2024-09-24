@@ -2,7 +2,6 @@ package cn.oyzh.fx.common.store;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.log.StaticLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,9 +44,7 @@ public abstract class SqliteStore<M extends Serializable> {
         return DriverManager.getConnection("jdbc:sqlite:" + filePath);
     }
 
-    protected String uid() {
-        return UUID.fastUUID().toString(true);
-    }
+    protected abstract M newModel();
 
     protected abstract TableDefinition getTableDefinition();
 
@@ -249,20 +246,20 @@ public abstract class SqliteStore<M extends Serializable> {
     public boolean exist(Map<String, Object> params) throws SQLException {
         TableDefinition tableDefinition = getTableDefinition();
         String tableName = tableDefinition.getTableName();
-        StringBuilder sql = new StringBuilder("SELECT * FROM ");
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(tableName);
-        if (CollUtil.isEmpty(params)) {
+        if (CollUtil.isNotEmpty(params)) {
             boolean first = true;
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 if (first) {
                     first = false;
-                    sql.append(" WHERE");
+                    sql.append(" WHERE ");
                 } else {
                     sql.append(" AND ");
                 }
                 sql.append(entry.getKey());
                 sql.append("=");
-                sql.append(entry.getValue());
+                sql.append(SqlDataUtil.wrapData(entry.getValue()));
             }
         }
         StaticLog.info(sql.toString());
@@ -322,13 +319,13 @@ public abstract class SqliteStore<M extends Serializable> {
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 if (first) {
                     first = false;
-                    sql.append(" WHERE");
+                    sql.append(" WHERE ");
                 } else {
                     sql.append(" AND ");
                 }
                 sql.append(entry.getKey());
                 sql.append("=");
-                sql.append(entry.getValue());
+                sql.append(SqlDataUtil.wrapData(entry.getValue()));
             }
         }
         StaticLog.info(sql.toString());
@@ -369,6 +366,35 @@ public abstract class SqliteStore<M extends Serializable> {
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
         statement.setObject(1, primaryKey.columnData);
+        int update = statement.executeUpdate();
+        statement.close();
+        connection.close();
+        return update;
+    }
+
+    public int delete(Map<String, Object> params) throws Exception {
+        if (CollUtil.isEmpty(params)) {
+            return 0;
+        }
+        TableDefinition tableDefinition = getTableDefinition();
+        String tableName = tableDefinition.getTableName();
+        StringBuilder sql = new StringBuilder("DELETE FROM ");
+        sql.append(tableName);
+        boolean first = true;
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if (first) {
+                first = false;
+                sql.append(" WHERE ");
+            } else {
+                sql.append(" AND ");
+            }
+            sql.append(entry.getKey());
+            sql.append("=");
+            sql.append(SqlDataUtil.wrapData(entry.getValue()));
+        }
+        StaticLog.info(sql.toString());
+        Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql.toString());
         int update = statement.executeUpdate();
         statement.close();
         connection.close();

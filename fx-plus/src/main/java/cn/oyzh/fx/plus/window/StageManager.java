@@ -25,7 +25,7 @@ public class StageManager {
     /**
      * 引用属性
      */
-    public static final String REF_ATTR = "_stage_window_reference";
+    public static final String REF_ATTR = "_stage_ref";
 
     /**
      * 主舞台
@@ -58,9 +58,8 @@ public class StageManager {
     public static List<StageAdapter> allStages() {
         List<StageAdapter> list = new ArrayList<>();
         for (Window window : Window.getWindows()) {
-            Object reference = window.getProperties().get(REF_ATTR);
-            if (reference instanceof StageAdapter wrapper) {
-                list.add(wrapper);
+            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
+                list.add((StageAdapter) window.getProperties().get(REF_ATTR));
             }
         }
         return list;
@@ -74,9 +73,11 @@ public class StageManager {
      */
     public static StageAdapter getStage(@NonNull Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
-            Object reference = window.getProperties().get(REF_ATTR);
-            if (reference instanceof StageAdapter wrapper && wrapper.controllerClass() == controllerClass) {
-                return wrapper;
+            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
+                StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
+                if (adapter.controllerClass() == controllerClass) {
+                    return adapter;
+                }
             }
         }
         return null;

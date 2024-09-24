@@ -133,7 +133,7 @@ public abstract class SettingStore<E extends Setting> extends SqliteStore<E> {
 
     @Override
     protected E toModel(Map<String, Object> record) {
-        E model = (E) new Setting();
+        E model = this.newModel();
 
         // 主题
         model.setTheme((String) record.get("theme"));

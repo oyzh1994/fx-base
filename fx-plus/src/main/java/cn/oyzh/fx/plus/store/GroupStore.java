@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.store;
 
+import cn.oyzh.fx.common.store.SqlDataUtil;
 import cn.oyzh.fx.common.store.SqliteStore;
 import cn.oyzh.fx.plus.domain.TreeGroup;
 
@@ -44,13 +45,10 @@ public abstract class GroupStore<E extends TreeGroup> extends SqliteStore<E> {
 
     @Override
     protected E toModel(Map<String, Object> record) {
-        E model = (E) new TreeGroup();
+        E model = this.newModel();
         model.setGid((String) record.get("gid"));
         model.setName((String) record.get("name"));
-        Object extend = record.get("extend");
-        if (extend instanceof Number b) {
-            model.setExpand(b.intValue() == 1);
-        }
+        model.setExpand(SqlDataUtil.toBool(record.get("extend")));
         return model;
     }
 }
