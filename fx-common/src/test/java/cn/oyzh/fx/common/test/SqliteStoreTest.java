@@ -1,6 +1,10 @@
 package cn.oyzh.fx.common.test;
 
-import cn.oyzh.fx.common.store.SqliteStore;
+import cn.oyzh.fx.common.sqlite.ColumnDefinition;
+import cn.oyzh.fx.common.sqlite.PrimaryKeyColumn;
+import cn.oyzh.fx.common.sqlite.QueryParam;
+import cn.oyzh.fx.common.sqlite.SqliteStore;
+import cn.oyzh.fx.common.sqlite.TableDefinition;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -40,7 +44,7 @@ public class SqliteStoreTest {
     public void test3() throws Exception {
         SqliteStore.initStore("d://test2.db");
         SqliteStore1 store1 = new SqliteStore1();
-        List<SqliteStore.QueryParam> params = new ArrayList<>();
+        List<QueryParam> params = new ArrayList<>();
         List<Map<String, Object>> records = store1.selectList(params);
         System.out.println(records);
     }
@@ -49,7 +53,7 @@ public class SqliteStoreTest {
     public void test4() throws Exception {
         SqliteStore.initStore("d://test2.db");
         SqliteStore1 store1 = new SqliteStore1();
-        SqliteStore.PrimaryKeyColumn column = new SqliteStore.PrimaryKeyColumn();
+        PrimaryKeyColumn column = new PrimaryKeyColumn();
         column.setColumnName("id");
         column.setColumnData(3);
         Map<String, Object> record = store1.selectOne(column);
@@ -60,7 +64,7 @@ public class SqliteStoreTest {
     public void test5() throws Exception {
         SqliteStore.initStore("d://test2.db");
         SqliteStore1 store1 = new SqliteStore1();
-        SqliteStore.PrimaryKeyColumn column = new SqliteStore.PrimaryKeyColumn();
+        PrimaryKeyColumn column = new PrimaryKeyColumn();
         column.setColumnName("id");
         column.setColumnData(3);
         boolean exist = store1.exist(column);
@@ -95,7 +99,7 @@ public class SqliteStoreTest {
     public void test9() throws Exception {
         SqliteStore.initStore("d://test2.db");
         SqliteStore1 store1 = new SqliteStore1();
-        SqliteStore.PrimaryKeyColumn column = new SqliteStore.PrimaryKeyColumn("id", 4);
+        PrimaryKeyColumn column = new PrimaryKeyColumn("id", 4);
         int result = store1.delete(column);
         System.out.println(result);
     }
@@ -112,7 +116,12 @@ public class SqliteStoreTest {
         }
 
         @Override
-        protected TableDefinition getTableDefinition() {
+        protected Class modelClass() {
+            return null;
+        }
+
+        @Override
+        protected TableDefinition tableDefinition() {
             TableDefinition definition = new TableDefinition();
             definition.setTableName("users");
 

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.domain;
 
+import cn.oyzh.fx.common.sqlite.Column;
+import cn.oyzh.fx.common.sqlite.PrimaryKey;
 import cn.oyzh.fx.common.util.ObjectCopier;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
@@ -17,49 +19,62 @@ import java.io.Serializable;
 @Data
 public class Setting implements Serializable, ObjectCopier<Object> {
 
+    @Column
+    @PrimaryKey
+    private String uid;
+
     /**
      * 透明度
      */
+    @Column
     private Double opacity;
 
     /**
      * 主题
      */
+    @Column
     private String theme;
 
     /**
      * 自定义前景色
      */
+    @Column
     private String fgColor;
 
     /**
      * 自定义背景色
      */
+    @Column
     private String bgColor;
 
     /**
      * 自定义强调色
      */
+    @Column
     private String accentColor;
 
     /**
      * 字体大小
      */
+    @Column
     private Integer fontSize;
 
     /**
      * 字体名称
      */
+    @Column
     private String fontFamily;
 
     /**
      * 字体粗细
      */
+    @Column
     private Integer fontWeight;
 
     /**
      * 区域
      */
+    @Column
     private String locale;
 
     /**
@@ -68,6 +83,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 1 每次询问
      * 2 直接关闭程序
      */
+    @Column
     private Integer exitMode;
 
     /**
@@ -75,6 +91,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 0|null 不记住
      * 1 记住
      */
+    @Column
     private Integer rememberPageSize;
 
     /**
@@ -89,6 +106,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 0|null 不记住
      * 1 记住
      */
+    @Column
     private Integer rememberPageLocation;
 
     /**
@@ -102,6 +120,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 标签数量限制
      * 0代表无限，null或者1代表1个
      */
+    @Column
     private Integer tabLimit;
 
     /**

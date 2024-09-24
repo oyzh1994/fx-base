@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.store;
 
-import cn.oyzh.fx.common.store.SqlDataUtil;
-import cn.oyzh.fx.common.store.SqliteStore;
+import cn.oyzh.fx.common.sqlite.ColumnDefinition;
+import cn.oyzh.fx.common.sqlite.SqlLiteUtil;
+import cn.oyzh.fx.common.sqlite.SqliteStore;
+import cn.oyzh.fx.common.sqlite.TableDefinition;
 import cn.oyzh.fx.plus.domain.TreeGroup;
 
 import java.util.HashMap;
@@ -15,7 +17,7 @@ import java.util.Map;
 public abstract class GroupStore<E extends TreeGroup> extends SqliteStore<E> {
 
     @Override
-    protected TableDefinition getTableDefinition() {
+    protected TableDefinition tableDefinition() {
         TableDefinition definition = new TableDefinition();
         definition.setTableName("t_group");
         ColumnDefinition gid = new ColumnDefinition();
@@ -48,7 +50,7 @@ public abstract class GroupStore<E extends TreeGroup> extends SqliteStore<E> {
         E model = this.newModel();
         model.setGid((String) record.get("gid"));
         model.setName((String) record.get("name"));
-        model.setExpand(SqlDataUtil.toBool(record.get("extend")));
+        model.setExpand(SqlLiteUtil.toBool(record.get("extend")));
         return model;
     }
 }

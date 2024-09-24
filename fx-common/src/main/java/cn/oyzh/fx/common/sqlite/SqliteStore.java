@@ -1,15 +1,15 @@
-package cn.oyzh.fx.common.store;
+package cn.oyzh.fx.common.sqlite;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import cn.oyzh.fx.common.util.ReflectUtil;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.security.InvalidParameterException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.JDBCType;
@@ -47,17 +47,45 @@ public abstract class SqliteStore<M extends Serializable> {
 
     protected abstract M newModel();
 
-    protected abstract TableDefinition getTableDefinition();
+    protected abstract Class<M> modelClass();
 
-    protected abstract M toModel(Map<String, Object> record);
+    protected TableDefinition tableDefinition() {
+        return TableDefinition.ofClass(this.modelClass());
+    }
 
-    protected abstract Map<String, Object> toRecord(M model);
+    protected M toModel(Map<String, Object> record) throws Exception {
+        TableDefinition definition = this.tableDefinition();
+        if (definition != null) {
+            M model = this.newModel();
+            for (ColumnDefinition columnDefinition : definition.getColumnDefinitions()) {
+                Field field = model.getClass().getDeclaredField(columnDefinition.getFieldName());
+                field.setAccessible(true);
+                field.set(model, SqlLiteUtil.toJavaValue(field, record.get(columnDefinition.getColumnName())));
+            }
+            return model;
+        }
+        return null;
+    }
+
+    protected Map<String, Object> toRecord(M model) throws Exception {
+        TableDefinition definition = this.tableDefinition();
+        if (definition != null) {
+            Map<String, Object> record = new HashMap<>();
+            for (ColumnDefinition columnDefinition : definition.getColumnDefinitions()) {
+                Field field = ReflectUtil.getField(model.getClass(), columnDefinition.getFieldName(), true);
+                field.setAccessible(true);
+                record.put(columnDefinition.getColumnName(), field.get(model));
+            }
+            return record;
+        }
+        return null;
+    }
 
     private PrimaryKeyColumn getPrimaryKeyColumn(Object primaryKey) {
-        TableDefinition tableDefinition = this.getTableDefinition();
-        String primaryKeyName = tableDefinition.primaryKeyColumn();
-        if (primaryKeyName != null) {
-            return new PrimaryKeyColumn(primaryKeyName, primaryKey);
+        TableDefinition tableDefinition = this.tableDefinition();
+        ColumnDefinition columnDefinition = tableDefinition.primaryKeyColumn();
+        if (columnDefinition != null) {
+            return new PrimaryKeyColumn(columnDefinition.getColumnName(), primaryKey);
         }
         return null;
     }
@@ -67,9 +95,12 @@ public abstract class SqliteStore<M extends Serializable> {
      *
      * @return 结果
      */
-    protected synchronized boolean init() throws Exception {
+    protected boolean init() throws Exception {
         try {
-            TableDefinition definition = getTableDefinition();
+            TableDefinition definition = this.tableDefinition();
+            if (definition == null || definition.getTableName() == null || definition.getColumnDefinitions() == null) {
+                throw new InvalidParameterException();
+            }
             String tableName = definition.getTableName();
             Connection conn = this.getConnection();
             String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
@@ -84,13 +115,13 @@ public abstract class SqliteStore<M extends Serializable> {
                 sql1.append("ALTER TABLE ").append(tableName);
                 boolean changed = false;
                 for (ColumnDefinition columnDefinition : definition.getColumnDefinitions()) {
-                    ResultSet resultSet1 = conn.getMetaData().getColumns(null, null, tableName, columnDefinition.columnName);
+                    ResultSet resultSet1 = conn.getMetaData().getColumns(null, null, tableName, columnDefinition.getColumnName());
                     if (!resultSet1.next()) {
                         sql1.append(" ADD COLUMN ")
-                                .append(columnDefinition.columnName)
+                                .append(columnDefinition.getColumnName())
                                 .append(" ")
-                                .append(columnDefinition.columnType);
-                        if (columnDefinition.primaryKey) {
+                                .append(columnDefinition.getColumnType());
+                        if (columnDefinition.isPrimaryKey()) {
                             sql1.append(" primary key");
                         }
                         sql1.append(",");
@@ -106,10 +137,10 @@ public abstract class SqliteStore<M extends Serializable> {
             } else {
                 sql1.append("CREATE TABLE ").append(tableName).append(" (");
                 for (ColumnDefinition columnDefinition : definition.getColumnDefinitions()) {
-                    sql1.append(columnDefinition.columnName)
+                    sql1.append(columnDefinition.getColumnName())
                             .append(" ")
-                            .append(columnDefinition.columnType);
-                    if (columnDefinition.primaryKey) {
+                            .append(columnDefinition.getColumnType());
+                    if (columnDefinition.isPrimaryKey()) {
                         sql1.append(" primary key");
                     }
                     sql1.append(",");
@@ -139,8 +170,26 @@ public abstract class SqliteStore<M extends Serializable> {
         }
     }
 
+    public int insert(M model) throws Exception {
+        Map<String, Object> record = this.toRecord(model);
+        TableDefinition tableDefinition = this.tableDefinition();
+        ColumnDefinition columnDefinition = tableDefinition.primaryKeyColumn();
+        if (columnDefinition == null) {
+            return 0;
+        }
+        Object primaryVal = record.get(columnDefinition.getColumnName());
+        if (primaryVal == null && columnDefinition.isAutoGeneration()) {
+            primaryVal = KeyGenerator.generatorKey(columnDefinition.getColumnType());
+        }
+        if (primaryVal == null) {
+            return 0;
+        }
+        record.put(columnDefinition.getColumnName(), primaryVal);
+        return this.insert(record);
+    }
+
     public int insert(Map<String, Object> record) throws Exception {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("INSERT INTO ");
         sql.append(tableName);
@@ -171,14 +220,26 @@ public abstract class SqliteStore<M extends Serializable> {
         return update;
     }
 
+    public int update(M model) throws Exception {
+        TableDefinition tableDefinition = this.tableDefinition();
+        ColumnDefinition columnDefinition = tableDefinition.primaryKeyColumn();
+        if (columnDefinition == null) {
+            return 0;
+        }
+        String primaryKeyName = columnDefinition.getColumnName();
+        Map<String, Object> record = this.toRecord(model);
+        PrimaryKeyColumn primaryKey = new PrimaryKeyColumn(primaryKeyName, record.get(primaryKeyName));
+        return this.update(record, primaryKey);
+    }
+
     public int update(Map<String, Object> record, Object primaryKey) throws Exception {
         PrimaryKeyColumn primaryKeyColumn = this.getPrimaryKeyColumn(primaryKey);
         return primaryKeyColumn == null ? 0 : this.update(record, primaryKeyColumn);
     }
 
     public int update(Map<String, Object> record, PrimaryKeyColumn primaryKey) throws Exception {
-        record.remove(primaryKey.columnName);
-        TableDefinition tableDefinition = getTableDefinition();
+        record.remove(primaryKey.getColumnName());
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("UPDATE ");
         sql.append(tableName);
@@ -188,7 +249,7 @@ public abstract class SqliteStore<M extends Serializable> {
         }
         sql.deleteCharAt(sql.length() - 1);
         sql.append(" WHERE ");
-        sql.append(primaryKey.columnName);
+        sql.append(primaryKey.getColumnName());
         sql.append("=?");
         StaticLog.info(sql.toString());
         Connection connection = null;
@@ -205,7 +266,7 @@ public abstract class SqliteStore<M extends Serializable> {
                     statement.setObject(index++, value);
                 }
             }
-            statement.setObject(index, primaryKey.columnData);
+            statement.setObject(index, primaryKey.getColumnData());
             int update = statement.executeUpdate();
             statement.close();
             connection.close();
@@ -222,17 +283,17 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public boolean exist(PrimaryKeyColumn primaryKey) throws Exception {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(tableName);
         sql.append(" WHERE ");
-        sql.append(primaryKey.columnName);
+        sql.append(primaryKey.getColumnName());
         sql.append("=?");
         StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
-        statement.setObject(1, primaryKey.columnData);
+        statement.setObject(1, primaryKey.getColumnData());
         ResultSet resultSet = statement.executeQuery();
         boolean exists = false;
         if (resultSet.next()) {
@@ -245,7 +306,7 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public boolean exist(Map<String, Object> params) throws SQLException {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(tableName);
@@ -260,7 +321,7 @@ public abstract class SqliteStore<M extends Serializable> {
                 }
                 sql.append(entry.getKey());
                 sql.append("=");
-                sql.append(SqlDataUtil.wrapData(entry.getValue()));
+                sql.append(SqlLiteUtil.wrapData(entry.getValue()));
             }
         }
         StaticLog.info(sql.toString());
@@ -283,22 +344,22 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public Map<String, Object> selectOne(PrimaryKeyColumn primaryKey) throws Exception {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT * FROM ");
         sql.append(tableName);
         sql.append(" WHERE ");
-        sql.append(primaryKey.columnName);
+        sql.append(primaryKey.getColumnName());
         sql.append("=?");
         StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
-        statement.setObject(1, primaryKey.columnData);
+        statement.setObject(1, primaryKey.getColumnData());
         ResultSet resultSet = statement.executeQuery();
         Map<String, Object> record = new HashMap<>();
         while (resultSet.next()) {
-            for (ColumnDefinition columnDefinition : tableDefinition.columnDefinitions) {
-                String columnName = columnDefinition.columnName;
+            for (ColumnDefinition columnDefinition : tableDefinition.getColumnDefinitions()) {
+                String columnName = columnDefinition.getColumnName();
                 if (resultSet.findColumn(columnName) >= 0) {
                     record.put(columnName, resultSet.getObject(columnName));
                 }
@@ -315,7 +376,7 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public List<Map<String, Object>> selectList(List<QueryParam> params) throws SQLException {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT * FROM ");
         sql.append(tableName);
@@ -330,7 +391,7 @@ public abstract class SqliteStore<M extends Serializable> {
                 }
                 sql.append(param.getName());
                 sql.append(param.getOperator());
-                sql.append(SqlDataUtil.wrapData(param.getData()));
+                sql.append(SqlLiteUtil.wrapData(param.getData()));
             }
         }
         StaticLog.info(sql.toString());
@@ -340,8 +401,8 @@ public abstract class SqliteStore<M extends Serializable> {
         List<Map<String, Object>> records = new ArrayList<>();
         while (resultSet.next()) {
             Map<String, Object> record = new HashMap<>();
-            for (ColumnDefinition columnDefinition : tableDefinition.columnDefinitions) {
-                String columnName = columnDefinition.columnName;
+            for (ColumnDefinition columnDefinition : tableDefinition.getColumnDefinitions()) {
+                String columnName = columnDefinition.getColumnName();
                 if (resultSet.findColumn(columnName) >= 0) {
                     record.put(columnName, resultSet.getObject(columnName));
                 }
@@ -355,7 +416,7 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public long selectCount(String kw, List<String> columns) throws SQLException {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(tableName);
@@ -370,16 +431,16 @@ public abstract class SqliteStore<M extends Serializable> {
                 }
                 sql.append(column);
                 sql.append(" LIKE ");
-                sql.append(SqlDataUtil.wrapData("%" + kw + "%"));
+                sql.append(SqlLiteUtil.wrapData("%" + kw + "%"));
             }
         }
         StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
         ResultSet resultSet = statement.executeQuery();
-        long count=0;
+        long count = 0;
         if (resultSet.next()) {
-            count=resultSet.getLong(1);
+            count = resultSet.getLong(1);
         }
         resultSet.close();
         statement.close();
@@ -388,7 +449,7 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public List<Map<String, Object>> selectPage(String kw, List<String> columns, PageParam pageParam) throws SQLException {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT * FROM ");
         sql.append(tableName);
@@ -403,13 +464,13 @@ public abstract class SqliteStore<M extends Serializable> {
                 }
                 sql.append(column);
                 sql.append(" LIKE ");
-                sql.append(SqlDataUtil.wrapData("%" + kw + "%"));
+                sql.append(SqlLiteUtil.wrapData("%" + kw + "%"));
             }
         }
         sql.append(" LIMIT ")
-                .append(pageParam.limit)
+                .append(pageParam.getLimit())
                 .append(" OFFSET ")
-                .append(pageParam.start);
+                .append(pageParam.getStart());
         StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
@@ -417,8 +478,8 @@ public abstract class SqliteStore<M extends Serializable> {
         List<Map<String, Object>> records = new ArrayList<>();
         while (resultSet.next()) {
             Map<String, Object> record = new HashMap<>();
-            for (ColumnDefinition columnDefinition : tableDefinition.columnDefinitions) {
-                String columnName = columnDefinition.columnName;
+            for (ColumnDefinition columnDefinition : tableDefinition.getColumnDefinitions()) {
+                String columnName = columnDefinition.getColumnName();
                 if (resultSet.findColumn(columnName) >= 0) {
                     record.put(columnName, resultSet.getObject(columnName));
                 }
@@ -437,17 +498,17 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public int delete(PrimaryKeyColumn primaryKey) throws Exception {
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(tableName);
         sql.append(" WHERE ");
-        sql.append(primaryKey.columnName);
+        sql.append(primaryKey.getColumnName());
         sql.append("=?");
         StaticLog.info(sql.toString());
         Connection connection = getConnection();
         PreparedStatement statement = connection.prepareStatement(sql.toString());
-        statement.setObject(1, primaryKey.columnData);
+        statement.setObject(1, primaryKey.getColumnData());
         int update = statement.executeUpdate();
         statement.close();
         connection.close();
@@ -458,7 +519,7 @@ public abstract class SqliteStore<M extends Serializable> {
         if (CollUtil.isEmpty(params)) {
             return 0;
         }
-        TableDefinition tableDefinition = getTableDefinition();
+        TableDefinition tableDefinition = this.tableDefinition();
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(tableName);
@@ -472,7 +533,7 @@ public abstract class SqliteStore<M extends Serializable> {
             }
             sql.append(entry.getKey());
             sql.append("=");
-            sql.append(SqlDataUtil.wrapData(entry.getValue()));
+            sql.append(SqlLiteUtil.wrapData(entry.getValue()));
         }
         StaticLog.info(sql.toString());
         Connection connection = getConnection();
@@ -483,86 +544,5 @@ public abstract class SqliteStore<M extends Serializable> {
         return update;
     }
 
-    @Data
-    public static class TableDefinition {
 
-        private String tableName;
-
-        private List<ColumnDefinition> columnDefinitions;
-
-        public void addColumnDefinition(ColumnDefinition columnDefinition) {
-            if (this.columnDefinitions == null) {
-                this.columnDefinitions = new ArrayList<>();
-            }
-            this.columnDefinitions.add(columnDefinition);
-        }
-
-        public String primaryKeyColumn() {
-            for (ColumnDefinition columnDefinition : columnDefinitions) {
-                if (columnDefinition.primaryKey) {
-                    return columnDefinition.columnName;
-                }
-            }
-            return null;
-        }
-    }
-
-    @Data
-    public static class ColumnDefinition {
-
-        private String columnName;
-
-        private String columnType;
-
-        private boolean primaryKey;
-
-        private boolean autoIncrement;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PrimaryKeyColumn {
-
-        private String columnName;
-
-        private Object columnData;
-
-    }
-
-    @Data
-    public static class QueryParam {
-
-        private String name;
-
-        private Object data;
-
-        private String operator = "=";
-
-        public QueryParam(){
-
-        }
-
-        public QueryParam(String name, Object data) {
-            this.name = name;
-            this.data = data;
-        }
-
-        public QueryParam(String name, Object data, String operator) {
-            this.name = name;
-            this.data = data;
-            this.operator = operator;
-        }
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PageParam {
-
-        private long limit;
-
-        private long start;
-
-    }
 }

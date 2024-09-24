@@ -1,5 +1,8 @@
 package cn.oyzh.fx.plus.domain;
 
+import cn.oyzh.fx.common.sqlite.Column;
+import cn.oyzh.fx.common.sqlite.PrimaryKey;
+import cn.oyzh.fx.common.sqlite.Table;
 import cn.oyzh.fx.common.util.ObjectComparator;
 import cn.oyzh.fx.common.util.ObjectCopier;
 import lombok.AllArgsConstructor;
@@ -26,6 +29,8 @@ public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, S
      */
     @Getter
     @Setter
+    @Column
+    @PrimaryKey
     private String gid;
 
     /**
@@ -33,6 +38,7 @@ public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, S
      */
     @Getter
     @Setter
+    @Column
     private String name;
 
     /**
@@ -40,6 +46,7 @@ public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, S
      */
     @Getter
     @Setter
+    @Column
     private Boolean expand;
 
     @Override
