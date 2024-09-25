@@ -2,7 +2,7 @@ package cn.oyzh.fx.common.sqlite;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.jdbc.JdbcResultSet;
 import cn.oyzh.fx.common.jdbc.JdbcUtil;
 import lombok.Getter;
@@ -50,41 +50,29 @@ public class SqliteOperator {
             boolean exists = resultSet.next();
             resultSet.close();
             if (exists) {
-                for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
-                    ResultSet resultSet1 = connection.getMetaData().getColumns(null, null, tableName, columnDefinition.getColumnName());
+                boolean changed = false;
+                for (ColumnDefinition column : this.tableDefinition.getColumns()) {
+                    ResultSet resultSet1 = connection.getMetaData().getColumns(null, null, tableName, column.getColumnName());
+                    // 字段不存在
                     if (!resultSet1.next()) {
-                        StringBuilder sql1 = new StringBuilder();
-                        sql1.append("ALTER TABLE ")
-                                .append(SqlLiteUtil.wrap(tableName))
-                                .append(" ADD COLUMN ")
-                                .append(SqlLiteUtil.wrap(columnDefinition.getColumnName()))
-                                .append(" ")
-                                .append(columnDefinition.getColumnType());
-                        if (columnDefinition.isPrimaryKey()) {
-                            sql1.append(" primary key not null");
+                        changed = true;
+                    } else {
+                        // 字段类型不相同
+                        String typeName = resultSet1.getString("TYPE_NAME");
+                        if (!StrUtil.equalsIgnoreCase(typeName, column.getColumnType())) {
+                            changed = true;
                         }
-                        sql1.append(";");
-                        JdbcUtil.executeUpdate(connection, sql1.toString());
                     }
                     resultSet1.close();
+                    if (changed) {
+                        break;
+                    }
+                }
+                if (changed) {
+                    this.alterTable();
                 }
             } else {
-                StringBuilder sql1 = new StringBuilder();
-                sql1.append("CREATE TABLE ")
-                        .append(SqlLiteUtil.wrap(tableName))
-                        .append(" (");
-                for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
-                    sql1.append(SqlLiteUtil.wrap(columnDefinition.getColumnName()))
-                            .append(" ")
-                            .append(columnDefinition.getColumnType());
-                    if (columnDefinition.isPrimaryKey()) {
-                        sql1.append(" primary key");
-                    }
-                    sql1.append(",");
-                }
-                sql1.deleteCharAt(sql1.length() - 1);
-                sql1.append(")");
-                JdbcUtil.executeUpdate(connection, sql1.toString());
+                this.createTable();
             }
             return true;
         } catch (Exception e) {
@@ -93,6 +81,91 @@ public class SqliteOperator {
             SqliteConnManager.giveback(connection);
         }
         return false;
+    }
+
+    protected void alterTable() throws SQLException {
+        Connection connection = SqliteConnManager.takeoff();
+        try {
+            // 旧表更名
+            String tableName = this.tableDefinition.getTableName();
+            String oldTableName = tableName + "_" + DateUtil.format("yyyyMMdd") + "_temp_table";
+            StringBuilder sql = new StringBuilder("ALTER TABLE ");
+            sql.append(SqlLiteUtil.wrap(tableName))
+                    .append(" RENAME TO ")
+                    .append(SqlLiteUtil.wrap(oldTableName));
+            JdbcUtil.executeUpdate(connection, sql.toString());
+
+            // 创建新表
+            this.createTable();
+
+            // 查询新表字段
+            ResultSet resultSet1 = connection.getMetaData().getColumns(null, null, tableName, null);
+            List<String> cols1 = new ArrayList<>();
+            while (resultSet1.next()) {
+                cols1.add(resultSet1.getString("COLUMN_NAME"));
+            }
+            resultSet1.close();
+
+            // 查询旧表字段
+            ResultSet resultSet2 = connection.getMetaData().getColumns(null, null, oldTableName, null);
+            List<String> cols2 = new ArrayList<>();
+            while (resultSet2.next()) {
+                cols2.add(resultSet2.getString("COLUMN_NAME"));
+            }
+            resultSet2.close();
+
+            // 获取交集
+            List<String> cols3 = cols1.stream().filter(cols2::contains).toList();
+
+            // 交集为空则直接返回
+            if (cols3.isEmpty()) {
+                return;
+            }
+
+            // 转移数据
+            StringBuilder sql1 = new StringBuilder("INSERT INTO ");
+            sql1.append(SqlLiteUtil.wrap(tableName))
+                    .append("(");
+            for (String col : cols3) {
+                sql1.append(SqlLiteUtil.wrap(col)).append(",");
+            }
+            sql1.deleteCharAt(sql1.length() - 1);
+            sql1.append(") SELECT");
+            for (String col : cols3) {
+                sql1.append(SqlLiteUtil.wrap(col)).append(",");
+            }
+            sql1.deleteCharAt(sql1.length() - 1);
+            sql1.append(" FROM ")
+                    .append(SqlLiteUtil.wrap(oldTableName));
+            JdbcUtil.execute(connection, sql1.toString());
+        } finally {
+            SqliteConnManager.giveback(connection);
+        }
+    }
+
+    protected void createTable() throws SQLException {
+        Connection connection = SqliteConnManager.takeoff();
+        try {
+            String tableName = this.tableDefinition.getTableName();
+            StringBuilder sql1 = new StringBuilder();
+            sql1.append("CREATE TABLE ")
+                    .append(SqlLiteUtil.wrap(tableName))
+                    .append(" (");
+            for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
+                sql1.append(SqlLiteUtil.wrap(columnDefinition.getColumnName()))
+                        .append(" ")
+                        .append(columnDefinition.getColumnType());
+                if (columnDefinition.isPrimaryKey()) {
+                    sql1.append(" primary key");
+                }
+                sql1.append(",");
+            }
+            sql1.deleteCharAt(sql1.length() - 1);
+            sql1.append(")");
+            JdbcUtil.executeUpdate(connection, sql1.toString());
+        } finally {
+            SqliteConnManager.giveback(connection);
+        }
     }
 
     public int insert(Map<String, Object> record) throws Exception {
@@ -127,7 +200,7 @@ public class SqliteOperator {
 
     public int update(Map<String, Object> record, PrimaryKeyColumn primaryKey) throws Exception {
         record.remove(primaryKey.getColumnName());
-        String tableName = tableDefinition.getTableName();
+        String tableName = this.tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("UPDATE ");
         sql.append(tableName);
         sql.append(" SET ");
@@ -279,6 +352,38 @@ public class SqliteOperator {
         }
     }
 
+    public long selectCount(List<QueryParam> params) throws SQLException {
+        String tableName = tableDefinition.getTableName();
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
+        sql.append(tableName);
+        if (CollUtil.isNotEmpty(params)) {
+            boolean first = true;
+            for (QueryParam param : params) {
+                if (first) {
+                    first = false;
+                    sql.append(" WHERE ");
+                } else {
+                    sql.append(" AND ");
+                }
+                sql.append(param.getName());
+                sql.append(param.getOperator());
+                sql.append(SqlLiteUtil.wrapData(param.getData()));
+            }
+        }
+        Connection connection = SqliteConnManager.takeoff();
+        try {
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString());
+            long count = 0;
+            if (resultSet.next()) {
+                count = resultSet.getLong(1);
+            }
+            resultSet.close();
+            return count;
+        } finally {
+            SqliteConnManager.giveback(connection);
+        }
+    }
+
     public long selectCount(String kw, List<String> columns) throws SQLException {
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
@@ -374,24 +479,35 @@ public class SqliteOperator {
         }
     }
 
-    public int delete(Map<String, Object> params) throws SQLException {
-        if (CollUtil.isEmpty(params)) {
-            return 0;
-        }
+    public int delete(Map<String, Object> params, Long limit) throws SQLException {
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(tableName);
-        boolean first = true;
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            if (first) {
-                first = false;
+        if (CollUtil.isNotEmpty(params)) {
+            boolean first = true;
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (first) {
+                    first = false;
+                    sql.append(" WHERE ");
+                } else {
+                    sql.append(" AND ");
+                }
+                sql.append(entry.getKey());
+                sql.append("=");
+                sql.append(SqlLiteUtil.wrapData(entry.getValue()));
+            }
+        }
+        if (limit != null && limit > 1) {
+            if (CollUtil.isEmpty(params)) {
                 sql.append(" WHERE ");
             } else {
                 sql.append(" AND ");
             }
-            sql.append(entry.getKey());
-            sql.append("=");
-            sql.append(SqlLiteUtil.wrapData(entry.getValue()));
+            sql.append(" rowid IN ( SELECT rowid FROM ")
+                    .append(tableName)
+                    .append(" LIMIT ")
+                    .append(limit)
+                    .append(")");
         }
         Connection connection = SqliteConnManager.takeoff();
         try {

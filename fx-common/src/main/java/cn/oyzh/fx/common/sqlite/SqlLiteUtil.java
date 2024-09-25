@@ -194,7 +194,7 @@ public class SqlLiteUtil {
     }
 
     public static String wrap(String obj) {
-        return "'" + obj + "'";
+        return "\"" + obj + "\"";
     }
 
     public static Object wrapData(Object data) {

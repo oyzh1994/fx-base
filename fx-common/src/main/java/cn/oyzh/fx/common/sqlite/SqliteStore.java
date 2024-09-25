@@ -162,6 +162,15 @@ public abstract class SqliteStore<M extends Serializable> {
         return Collections.emptyList();
     }
 
+    public long selectCount(List<QueryParam> params) {
+        try {
+            return this.operator.selectCount(params);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0L;
+    }
+
     public long selectCount(String kw, List<String> columns) {
         try {
             return this.operator.selectCount(kw, columns);
@@ -197,8 +206,12 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public boolean delete(Map<String, Object> params) {
+        return this.delete(params, 1L);
+    }
+
+    public boolean delete(Map<String, Object> params, long limit) {
         try {
-            return this.operator.delete(params) > 0;
+            return this.operator.delete(params, limit) > 0;
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -3,6 +3,7 @@ package cn.oyzh.fx.common.date;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,5 +19,9 @@ public class DateUtil {
 
     public static Date of(long l) {
         return new Date(l);
+    }
+
+    public static String format(String format) {
+        return new SimpleDateFormat(format).format(System.currentTimeMillis());
     }
 }

@@ -9,6 +9,7 @@ import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 
 /**
@@ -17,6 +18,13 @@ import java.util.Collection;
  */
 @UtilityClass
 public class JdbcUtil {
+
+    public static void execute(Connection connection, String sql) throws SQLException {
+        StaticLog.info(sql);
+        Statement statement = connection.createStatement();
+        statement.execute(sql);
+        statement.close();
+    }
 
     public static int executeUpdate(Connection connection, String sql, Collection<?> collection) throws SQLException {
         return executeUpdate(connection, sql, collection.toArray());
