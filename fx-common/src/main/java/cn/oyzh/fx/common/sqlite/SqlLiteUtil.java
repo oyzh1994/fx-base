@@ -193,6 +193,10 @@ public class SqlLiteUtil {
         return null;
     }
 
+    public static String wrap(String obj) {
+        return "'" + obj + "'";
+    }
+
     public static Object wrapData(Object data) {
         if (data instanceof Number) {
             return data;
@@ -309,4 +313,6 @@ public class SqlLiteUtil {
         }
         return null;
     }
+
+
 }

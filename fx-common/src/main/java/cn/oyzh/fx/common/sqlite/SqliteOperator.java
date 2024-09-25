@@ -3,11 +3,11 @@ package cn.oyzh.fx.common.sqlite;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.jdbc.JdbcResultSet;
+import cn.oyzh.fx.common.jdbc.JdbcUtil;
 import lombok.Getter;
 
 import java.sql.Connection;
-import java.sql.JDBCType;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,44 +42,39 @@ public class SqliteOperator {
      * @return 结果
      */
     public boolean initTable() throws Exception {
-        Connection conn = SqliteConnManager.takeoff();
+        Connection connection = SqliteConnManager.takeoff();
         try {
             String tableName = this.tableDefinition.getTableName();
             String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, tableName);
-            ResultSet resultSet = statement.executeQuery();
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql, tableName);
             boolean exists = resultSet.next();
             resultSet.close();
-            statement.close();
-            StringBuilder sql1 = new StringBuilder();
             if (exists) {
-                sql1.append("ALTER TABLE ").append(tableName);
-                boolean changed = false;
                 for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
-                    ResultSet resultSet1 = conn.getMetaData().getColumns(null, null, tableName, columnDefinition.getColumnName());
+                    ResultSet resultSet1 = connection.getMetaData().getColumns(null, null, tableName, columnDefinition.getColumnName());
                     if (!resultSet1.next()) {
-                        sql1.append(" ADD COLUMN ")
-                                .append(columnDefinition.getColumnName())
+                        StringBuilder sql1 = new StringBuilder();
+                        sql1.append("ALTER TABLE ")
+                                .append(SqlLiteUtil.wrap(tableName))
+                                .append(" ADD COLUMN ")
+                                .append(SqlLiteUtil.wrap(columnDefinition.getColumnName()))
                                 .append(" ")
                                 .append(columnDefinition.getColumnType());
                         if (columnDefinition.isPrimaryKey()) {
                             sql1.append(" primary key not null");
                         }
-                        sql1.append(",");
-                        changed = true;
+                        sql1.append(";");
+                        JdbcUtil.executeUpdate(connection, sql1.toString());
                     }
                     resultSet1.close();
                 }
-                if (changed) {
-                    sql1.deleteCharAt(sql1.length() - 1);
-                } else {
-                    sql1.delete(0, sql1.length());
-                }
             } else {
-                sql1.append("CREATE TABLE ").append(tableName).append(" (");
+                StringBuilder sql1 = new StringBuilder();
+                sql1.append("CREATE TABLE ")
+                        .append(SqlLiteUtil.wrap(tableName))
+                        .append(" (");
                 for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
-                    sql1.append(columnDefinition.getColumnName())
+                    sql1.append(SqlLiteUtil.wrap(columnDefinition.getColumnName()))
                             .append(" ")
                             .append(columnDefinition.getColumnType());
                     if (columnDefinition.isPrimaryKey()) {
@@ -89,19 +84,13 @@ public class SqliteOperator {
                 }
                 sql1.deleteCharAt(sql1.length() - 1);
                 sql1.append(")");
+                JdbcUtil.executeUpdate(connection, sql1.toString());
             }
-            if (!sql1.isEmpty()) {
-                StaticLog.info(sql1.toString());
-                PreparedStatement statement1 = conn.prepareStatement(sql1.toString());
-                statement1.executeUpdate();
-                statement1.close();
-            }
-            conn.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            SqliteConnManager.giveback(conn);
+            SqliteConnManager.giveback(connection);
         }
         return false;
     }
@@ -119,23 +108,13 @@ public class SqliteOperator {
         sql.append("?,".repeat(record.size()));
         sql.deleteCharAt(sql.length() - 1);
         sql.append(")");
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            int index = 1;
-            for (Object value : record.values()) {
-                if (value == null) {
-                    statement.setNull(index++, JDBCType.NULL.ordinal());
-                } else {
-                    statement.setObject(index++, value);
-                }
+            List<Object> values = new ArrayList<>();
+            for (String key : record.keySet()) {
+                values.add(record.get(key));
             }
-            StaticLog.info(sql.toString());
-            int update = statement.executeUpdate();
-            statement.close();
-            connection.close();
-            return update;
+            return JdbcUtil.executeUpdate(connection, sql.toString(), values);
         } finally {
             SqliteConnManager.giveback(connection);
         }
@@ -159,23 +138,14 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            int index = 1;
+            List<Object> values = new ArrayList<>();
             for (String key : record.keySet()) {
-                Object value = record.get(key);
-                if (value == null) {
-                    statement.setNull(index++, JDBCType.NULL.ordinal());
-                } else {
-                    statement.setObject(index++, value);
-                }
+                values.add(record.get(key));
             }
-            statement.setObject(index, primaryKey.getColumnData());
-            int update = statement.executeUpdate();
-            statement.close();
-            return update;
+            values.add(primaryKey.getColumnData());
+            return JdbcUtil.executeUpdate(connection, sql.toString(), values);
         } finally {
             SqliteConnManager.giveback(connection);
         }
@@ -193,18 +163,14 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            statement.setObject(1, primaryKey.getColumnData());
-            ResultSet resultSet = statement.executeQuery();
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString(), primaryKey.getColumnData());
             boolean exists = false;
             if (resultSet.next()) {
                 exists = resultSet.getInt(1) > 0;
             }
             resultSet.close();
-            statement.close();
             return exists;
         } finally {
             SqliteConnManager.giveback(connection);
@@ -229,17 +195,14 @@ public class SqliteOperator {
                 sql.append(SqlLiteUtil.wrapData(entry.getValue()));
             }
         }
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            ResultSet resultSet = statement.executeQuery();
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString());
             boolean exists = false;
             if (resultSet.next()) {
                 exists = resultSet.getInt(1) > 0;
             }
             resultSet.close();
-            statement.close();
             return exists;
         } finally {
             SqliteConnManager.giveback(connection);
@@ -258,12 +221,9 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            statement.setObject(1, primaryKey.getColumnData());
-            ResultSet resultSet = statement.executeQuery();
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString(), primaryKey.getColumnData());
             Map<String, Object> record = new HashMap<>();
             while (resultSet.next()) {
                 for (ColumnDefinition columnDefinition : tableDefinition.getColumns()) {
@@ -274,7 +234,6 @@ public class SqliteOperator {
                 }
             }
             resultSet.close();
-            statement.close();
             return record;
         } finally {
             SqliteConnManager.giveback(connection);
@@ -299,11 +258,9 @@ public class SqliteOperator {
                 sql.append(SqlLiteUtil.wrapData(param.getData()));
             }
         }
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            ResultSet resultSet = statement.executeQuery();
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString());
             List<Map<String, Object>> records = new ArrayList<>();
             while (resultSet.next()) {
                 Map<String, Object> record = new HashMap<>();
@@ -316,7 +273,6 @@ public class SqliteOperator {
                 records.add(record);
             }
             resultSet.close();
-            statement.close();
             return records;
         } finally {
             SqliteConnManager.giveback(connection);
@@ -341,17 +297,14 @@ public class SqliteOperator {
                 sql.append(SqlLiteUtil.wrapData("%" + kw + "%"));
             }
         }
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            ResultSet resultSet = statement.executeQuery();
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString());
             long count = 0;
             if (resultSet.next()) {
                 count = resultSet.getLong(1);
             }
             resultSet.close();
-            statement.close();
             return count;
         } finally {
             SqliteConnManager.giveback(connection);
@@ -380,11 +333,9 @@ public class SqliteOperator {
                 .append(pageParam.getLimit())
                 .append(" OFFSET ")
                 .append(pageParam.getStart());
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            ResultSet resultSet = statement.executeQuery();
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString());
             List<Map<String, Object>> records = new ArrayList<>();
             while (resultSet.next()) {
                 Map<String, Object> record = new HashMap<>();
@@ -397,7 +348,6 @@ public class SqliteOperator {
                 records.add(record);
             }
             resultSet.close();
-            statement.close();
             return records;
         } finally {
             SqliteConnManager.giveback(connection);
@@ -416,14 +366,9 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            statement.setObject(1, primaryKey.getColumnData());
-            int update = statement.executeUpdate();
-            statement.close();
-            return update;
+            return JdbcUtil.executeUpdate(connection, sql.toString(), primaryKey.getColumnData());
         } finally {
             SqliteConnManager.giveback(connection);
         }
@@ -448,17 +393,11 @@ public class SqliteOperator {
             sql.append("=");
             sql.append(SqlLiteUtil.wrapData(entry.getValue()));
         }
-        StaticLog.info(sql.toString());
         Connection connection = SqliteConnManager.takeoff();
         try {
-            PreparedStatement statement = connection.prepareStatement(sql.toString());
-            int update = statement.executeUpdate();
-            statement.close();
-            return update;
+            return JdbcUtil.executeUpdate(connection, sql.toString());
         } finally {
             SqliteConnManager.giveback(connection);
         }
     }
-
-
 }

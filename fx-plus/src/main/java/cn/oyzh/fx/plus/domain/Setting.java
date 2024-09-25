@@ -19,9 +19,12 @@ import java.io.Serializable;
 @Data
 public class Setting implements Serializable, ObjectCopier<Object> {
 
+    /**
+     * 数据id
+     */
     @Column
-    @PrimaryKey
-    private String uid;
+    @PrimaryKey(autoGeneration = false)
+    private String uid = "DEFAULT";
 
     /**
      * 透明度
@@ -99,6 +102,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 0 不记住
      * 1|null 记住
      */
+    @Column
     private Integer rememberPageResize;
 
     /**
@@ -114,6 +118,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * null或者ALL_CONNECT 代表所有连接
      * SINGLE_CONNECT 代表单个连接
      */
+    @Column
     private String tabStrategy;
 
     /**
@@ -122,6 +127,42 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      */
     @Column
     private Integer tabLimit;
+
+    /**
+     * 页面宽
+     */
+    @Column
+    private Double pageWidth;
+
+    /**
+     * 页面高
+     */
+    @Column
+    private Double pageHeight;
+
+    /**
+     * 屏幕x
+     */
+    @Column
+    private Double pageScreenX;
+
+    /**
+     * 屏幕y
+     */
+    @Column
+    private Double pageScreenY;
+
+    /**
+     * 是否最大化
+     */
+    @Column
+    private Boolean pageMaximized;
+
+    /**
+     * 主页左侧宽
+     */
+    @Column
+    private Double pageLeftWidth;
 
     /**
      * 标签策略是否限制全部连接
@@ -214,6 +255,42 @@ public class Setting implements Serializable, ObjectCopier<Object> {
     }
 
     /**
+     * 获取页面宽
+     *
+     * @return 页面宽
+     */
+    public Double getPageWidth() {
+        return this.pageWidth == null ? null : this.pageWidth < 100 ? null : this.pageWidth;
+    }
+
+    /**
+     * 获取页面高
+     *
+     * @return 页面高
+     */
+    public Double getPageHeight() {
+        return this.pageHeight == null ? null : this.pageHeight < 100 ? null : this.pageHeight;
+    }
+
+    /**
+     * 是否最大化
+     *
+     * @return 结果
+     */
+    public Boolean isPageMaximized() {
+        return this.pageMaximized != null && this.pageMaximized;
+    }
+
+    /**
+     * 获取主页左侧宽
+     *
+     * @return 主页左侧宽
+     */
+    public Double getPageLeftWidth() {
+        return this.pageLeftWidth == null ? null : this.pageLeftWidth < 100 ? null : this.pageLeftWidth;
+    }
+
+    /**
      * 获取主题配置
      *
      * @return 主题配置
@@ -270,6 +347,12 @@ public class Setting implements Serializable, ObjectCopier<Object> {
             this.fontFamily = t1.fontFamily;
 
             // 页面
+            this.pageWidth = t1.pageWidth;
+            this.pageHeight = t1.pageHeight;
+            this.pageScreenX = t1.pageScreenX;
+            this.pageScreenY = t1.pageScreenY;
+            this.pageMaximized = t1.pageMaximized;
+            this.pageLeftWidth = t1.pageLeftWidth;
             this.rememberPageSize = t1.rememberPageSize;
             this.rememberPageResize = t1.rememberPageResize;
             this.rememberPageLocation = t1.rememberPageLocation;

@@ -156,6 +156,17 @@ public interface StageAdapter extends WindowAdapter {
     }
 
     /**
+     * 设置位置
+     *
+     * @param x x值
+     * @param y y值
+     */
+    default void setLocation(double x, double y) {
+        this.setX(x);
+        this.setY(y);
+    }
+
+    /**
      * 获取宽
      *
      * @return 宽
@@ -171,6 +182,17 @@ public interface StageAdapter extends WindowAdapter {
      */
     default void setWidth(double width) {
         this.stage().setWidth(width);
+    }
+
+    /**
+     * 设置大小
+     *
+     * @param width  宽
+     * @param height 高
+     */
+    default void setSize(double width, double height) {
+        this.setWidth(width);
+        this.setHeight(height);
     }
 
     /**

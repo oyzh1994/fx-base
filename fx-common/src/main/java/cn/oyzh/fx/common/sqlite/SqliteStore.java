@@ -51,7 +51,7 @@ public abstract class SqliteStore<M extends Serializable> {
         }
         M model = this.newModel();
         for (ColumnDefinition column : definition.getColumns()) {
-            Field field = model.getClass().getDeclaredField(column.getFieldName());
+            Field field = ReflectUtil.getField(model.getClass(), column.getFieldName(), true);
             field.setAccessible(true);
             Object sqlData = record.get(column.getColumnName());
             Object javaValue = SqlLiteUtil.toJavaValue(field.getType(), sqlData);

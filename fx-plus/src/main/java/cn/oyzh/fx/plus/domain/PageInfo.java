@@ -7,7 +7,9 @@ import lombok.Setter;
  *
  * @author oyzh
  * @since 2023/1/17
+ * @see Setting
  */
+@Deprecated
 public class PageInfo {
 
     /**
