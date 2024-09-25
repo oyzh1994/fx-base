@@ -1,4 +1,4 @@
-package cn.oyzh.fx.common.util;
+package cn.oyzh.fx.common.date;
 
 import lombok.experimental.UtilityClass;
 

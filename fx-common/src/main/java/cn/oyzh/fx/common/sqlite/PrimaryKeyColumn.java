@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public  class PrimaryKeyColumn {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PrimaryKeyColumn {
 
-        private String columnName;
+    private String columnName;
 
-        private Object columnData;
+    private Object columnData;
 
-    }
+}

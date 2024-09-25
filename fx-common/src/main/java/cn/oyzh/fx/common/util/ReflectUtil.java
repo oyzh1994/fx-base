@@ -2,6 +2,7 @@ package cn.oyzh.fx.common.util;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
+import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Field;
 
@@ -9,6 +10,7 @@ import java.lang.reflect.Field;
  * @author oyzh
  * @since 2024-09-24
  */
+@UtilityClass
 public class ReflectUtil {
 
     public static Field getField(Class<?> beanClass, String fieldName) throws SecurityException {

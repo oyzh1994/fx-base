@@ -13,22 +13,27 @@ public class TableDefinition {
 
     private String tableName;
 
-    private List<ColumnDefinition> columnDefinitions;
+    private List<ColumnDefinition> columns;
 
-    public void addColumnDefinition(ColumnDefinition columnDefinition) {
-        if (this.columnDefinitions == null) {
-            this.columnDefinitions = new ArrayList<>();
+    public void addColumn(ColumnDefinition columnDefinition) {
+        if (this.columns == null) {
+            this.columns = new ArrayList<>();
         }
-        this.columnDefinitions.add(columnDefinition);
+        this.columns.add(columnDefinition);
     }
 
     public ColumnDefinition primaryKeyColumn() {
-        for (ColumnDefinition columnDefinition : columnDefinitions) {
+        for (ColumnDefinition columnDefinition : columns) {
             if (columnDefinition.isPrimaryKey()) {
                 return columnDefinition;
             }
         }
         return null;
+    }
+
+    public String primaryKeyName() {
+        ColumnDefinition primaryKeyColumn = this.primaryKeyColumn();
+        return primaryKeyColumn == null ? null : primaryKeyColumn.getColumnName();
     }
 
     public static TableDefinition ofClass(Class<?> clazz) {
@@ -44,32 +49,10 @@ public class TableDefinition {
             }
             Field[] fields = ReflectUtil.getFieldsDirectly(clazz, true);
             for (Field field : fields) {
-                int modifiers = field.getModifiers();
-                if (!Modifier.isPrivate(modifiers)) {
-                    continue;
+                ColumnDefinition columnDefinition =ColumnDefinition.ofField(field);
+                if (columnDefinition!=null){
+                    definition.addColumn(columnDefinition);
                 }
-                Column column = field.getAnnotation(Column.class);
-                if (column == null) {
-                    continue;
-                }
-                ColumnDefinition columnDefinition = new ColumnDefinition();
-                if (column.value().isEmpty()) {
-                    columnDefinition.setColumnName(field.getName());
-                } else {
-                    columnDefinition.setColumnName(column.value());
-                }
-                if (column.type().isEmpty()) {
-                    columnDefinition.setColumnType(SqlLiteUtil.toSqlType(field));
-                } else {
-                    columnDefinition.setColumnType(column.type());
-                }
-                columnDefinition.setFieldName(field.getName());
-                PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
-                if (primaryKey != null) {
-                    columnDefinition.setPrimaryKey(true);
-                    columnDefinition.setAutoGeneration(primaryKey.autoGeneration());
-                }
-                definition.addColumnDefinition(columnDefinition);
             }
             return definition;
         }

@@ -2,6 +2,9 @@ package cn.oyzh.fx.common.sqlite;
 
 import lombok.Data;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 @Data
 public class ColumnDefinition {
 
@@ -14,4 +17,36 @@ public class ColumnDefinition {
     private boolean primaryKey;
 
     private boolean autoGeneration;
+
+    public static ColumnDefinition ofField(Field field) {
+        if (field != null) {
+            int modifiers = field.getModifiers();
+            if (!Modifier.isPrivate(modifiers) || Modifier.isStatic(modifiers)) {
+                return null;
+            }
+            Column column = field.getAnnotation(Column.class);
+            if (column == null) {
+                return null;
+            }
+            ColumnDefinition columnDefinition = new ColumnDefinition();
+            if (column.value().isEmpty()) {
+                columnDefinition.setColumnName(field.getName());
+            } else {
+                columnDefinition.setColumnName(column.value());
+            }
+            if (column.type().isEmpty()) {
+                columnDefinition.setColumnType(SqlLiteUtil.toSqlType(field.getType()));
+            } else {
+                columnDefinition.setColumnType(column.type());
+            }
+            columnDefinition.setFieldName(field.getName());
+            PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
+            if (primaryKey != null) {
+                columnDefinition.setPrimaryKey(true);
+                columnDefinition.setAutoGeneration(primaryKey.autoGeneration());
+            }
+            return columnDefinition;
+        }
+        return null;
+    }
 }

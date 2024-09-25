@@ -1,21 +1,27 @@
 package cn.oyzh.fx.common.sqlite;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.date.DateUtil;
+import cn.oyzh.fx.common.date.LocalDateTimeUtil;
+import cn.oyzh.fx.common.date.LocalDateUtil;
+import cn.oyzh.fx.common.date.LocalTimeUtil;
+import cn.oyzh.fx.common.date.ZonedDateTimeUtil;
+import lombok.experimental.UtilityClass;
 
-import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author oyzh
  * @since 2024-09-24
  */
+@UtilityClass
 public class SqlLiteUtil {
-
-    public static String generateUid() {
-        return UUID.fastUUID().toString(true);
-    }
 
     public static Boolean toBool(Object sqlData) {
         if (sqlData instanceof Boolean) {
@@ -54,6 +60,14 @@ public class SqlLiteUtil {
         return sqlData == null ? null : sqlData.toString();
     }
 
+    public static StringBuffer toStringBuffer(Object sqlData) {
+        return sqlData == null ? null : new StringBuffer(sqlData.toString());
+    }
+
+    public static StringBuilder toStringBuilder(Object sqlData) {
+        return sqlData == null ? null : new StringBuilder(sqlData.toString());
+    }
+
     public static int toInt(Object sqlData) {
         if (sqlData instanceof Number n) {
             return n.intValue();
@@ -71,6 +85,9 @@ public class SqlLiteUtil {
     public static long toLong(Object sqlData) {
         if (sqlData instanceof Number n) {
             return n.longValue();
+        }
+        if (sqlData instanceof Date n) {
+            return n.getTime();
         }
         return Integer.parseInt(sqlData.toString());
     }
@@ -124,6 +141,58 @@ public class SqlLiteUtil {
         return toShort(sqlData);
     }
 
+    public static char toChar(Object sqlData) {
+        if (sqlData instanceof String n) {
+            return n.charAt(0);
+        }
+        return 0;
+    }
+
+    public static Character toCharVal(Object sqlData) {
+        if (sqlData == null) {
+            return null;
+        }
+        return toChar(sqlData);
+    }
+
+    public static Date toDate(Object sqlData) {
+        if (sqlData instanceof Date date) {
+            return date;
+        }
+        if (sqlData instanceof Number n) {
+            return DateUtil.of(n);
+        }
+        return null;
+    }
+
+    public static LocalTime toLocalTime(Object sqlData) {
+        if (sqlData instanceof Date date) {
+            return LocalTimeUtil.of(date);
+        }
+        return null;
+    }
+
+    public static LocalDate toLocalDate(Object sqlData) {
+        if (sqlData instanceof Date date) {
+            return LocalDateUtil.of(date);
+        }
+        return null;
+    }
+
+    public static LocalDateTime toLocalDateTime(Object sqlData) {
+        if (sqlData instanceof Date date) {
+            return LocalDateTimeUtil.of(date);
+        }
+        return null;
+    }
+
+    public static ZonedDateTime toZonedDateTime(Object sqlData) {
+        if (sqlData instanceof Date date) {
+            return ZonedDateTimeUtil.of(date);
+        }
+        return null;
+    }
+
     public static Object wrapData(Object data) {
         if (data instanceof Number) {
             return data;
@@ -134,79 +203,109 @@ public class SqlLiteUtil {
         return "'" + data.toString() + "'";
     }
 
-    public static String toSqlType(Field field) {
-        Class<?> aClass = field.getType();
+    public static String toSqlType(Class<?> javaType) {
         if (CollUtil.contains(List.of(
                 Long.class, long.class,
                 Integer.class, int.class,
                 Short.class, short.class,
                 Byte.class, byte.class,
                 Boolean.class, boolean.class
-        ), aClass)) {
+        ), javaType)) {
             return "integer";
         }
 
         if (CollUtil.contains(List.of(
                 String.class, StringBuilder.class, StringBuilder.class,
                 Character.class, char.class
-        ), aClass)) {
+        ), javaType)) {
             return "text";
         }
 
-        if (CollUtil.contains(List.of(Float.class, Double.class, float.class, double.class), aClass)) {
+        if (CollUtil.contains(List.of(
+                Float.class, float.class,
+                Double.class, double.class
+        ), javaType)) {
             return "double";
         }
+
         return "text";
     }
 
-    public static Object toJavaValue(Field field, Object sqlData) {
+    public static Object toJavaValue(Class<?> javaType, Object sqlData) {
         if (sqlData == null) {
             return null;
         }
-        if (field.getType() == boolean.class) {
+        if (javaType == boolean.class) {
             return toBoolVal(sqlData);
         }
-        if (field.getType() == Boolean.class) {
+        if (javaType == Boolean.class) {
             return toBool(sqlData);
         }
-        if (field.getType() == byte.class) {
+        if (javaType == byte.class) {
             return toByteVal(sqlData);
         }
-        if (field.getType() == Byte.class) {
+        if (javaType == Byte.class) {
             return toByte(sqlData);
         }
-        if (field.getType() == String.class) {
-            return toString(sqlData);
-        }
-        if (field.getType() == int.class) {
+        if (javaType == int.class) {
             return toInt(sqlData);
         }
-        if (field.getType() == Integer.class) {
+        if (javaType == Integer.class) {
             return toIntVal(sqlData);
         }
-        if (field.getType() == long.class) {
+        if (javaType == long.class) {
             return toLong(sqlData);
         }
-        if (field.getType() == Long.class) {
+        if (javaType == Long.class) {
             return toLongVal(sqlData);
         }
-        if (field.getType() == double.class) {
+        if (javaType == double.class) {
             return toDouble(sqlData);
         }
-        if (field.getType() == Double.class) {
+        if (javaType == Double.class) {
             return toDoubleVal(sqlData);
         }
-        if (field.getType() == float.class) {
+        if (javaType == float.class) {
             return toFloat(sqlData);
         }
-        if (field.getType() == Float.class) {
+        if (javaType == Float.class) {
             return toFloatVal(sqlData);
         }
-        if (field.getType() == short.class) {
+        if (javaType == short.class) {
             return toShort(sqlData);
         }
-        if (field.getType() == Short.class) {
+        if (javaType == Short.class) {
             return toShortVal(sqlData);
+        }
+        if (javaType == char.class) {
+            return toChar(sqlData);
+        }
+        if (javaType == Character.class) {
+            return toCharVal(sqlData);
+        }
+        if (javaType == String.class) {
+            return toString(sqlData);
+        }
+        if (javaType == StringBuffer.class) {
+            return toStringBuffer(sqlData);
+        }
+        if (javaType == StringBuilder.class) {
+            return toStringBuilder(sqlData);
+        }
+        if (javaType == Date.class) {
+            return toDate(sqlData);
+        }
+        if (javaType == LocalTime.class) {
+            return toLocalTime(sqlData);
+        }
+        if (javaType == LocalDate.class) {
+            return toLocalDate(sqlData);
+        }
+        if (javaType == LocalDateTime.class) {
+            return toLocalDateTime(sqlData);
+        }
+        if (javaType == ZonedDateTime.class) {
+            return toZonedDateTime(sqlData);
         }
         return null;
     }

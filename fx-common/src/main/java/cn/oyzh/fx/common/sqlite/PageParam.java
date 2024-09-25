@@ -5,12 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public  class PageParam {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PageParam {
 
-        private long limit;
+    private long limit;
 
-        private long start;
+    private long start;
 
-    }
+}
