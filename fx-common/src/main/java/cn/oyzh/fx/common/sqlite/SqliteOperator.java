@@ -28,8 +28,12 @@ public class SqliteOperator {
         this.tableDefinition = tableDefinition;
     }
 
+    private String tableName() {
+        return this.tableDefinition.getTableName();
+    }
+
     private PrimaryKeyColumn getPrimaryKeyColumn(Object primaryKey) {
-        ColumnDefinition columnDefinition = this.tableDefinition.primaryKeyColumn();
+        ColumnDefinition columnDefinition = this.tableDefinition.primaryKey();
         if (columnDefinition == null) {
             return null;
         }
@@ -87,8 +91,8 @@ public class SqliteOperator {
         Connection connection = SqliteConnManager.takeoff();
         try {
             // 旧表更名
-            String tableName = this.tableDefinition.getTableName();
-            String oldTableName = tableName + "_" + DateUtil.format("yyyyMMdd") + "_temp_table";
+            String tableName = this.tableName();
+            String oldTableName = tableName + "_" + DateUtil.format("yyyyMMdd") + "_old_table";
             StringBuilder sql = new StringBuilder("ALTER TABLE ");
             sql.append(SqlLiteUtil.wrap(tableName))
                     .append(" RENAME TO ")
@@ -146,7 +150,7 @@ public class SqliteOperator {
     protected void createTable() throws SQLException {
         Connection connection = SqliteConnManager.takeoff();
         try {
-            String tableName = this.tableDefinition.getTableName();
+            String tableName = this.tableName();
             StringBuilder sql1 = new StringBuilder();
             sql1.append("CREATE TABLE ")
                     .append(SqlLiteUtil.wrap(tableName))
@@ -169,7 +173,7 @@ public class SqliteOperator {
     }
 
     public int insert(Map<String, Object> record) throws Exception {
-        String tableName = tableDefinition.getTableName();
+        String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("INSERT INTO ");
         sql.append(tableName);
         sql.append("(");
@@ -200,7 +204,7 @@ public class SqliteOperator {
 
     public int update(Map<String, Object> record, PrimaryKeyColumn primaryKey) throws Exception {
         record.remove(primaryKey.getColumnName());
-        String tableName = this.tableDefinition.getTableName();
+        String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("UPDATE ");
         sql.append(tableName);
         sql.append(" SET ");
@@ -230,7 +234,7 @@ public class SqliteOperator {
     }
 
     public boolean exist(PrimaryKeyColumn primaryKey) throws SQLException {
-        String tableName = this.tableDefinition.getTableName();
+        String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(tableName);
         sql.append(" WHERE ");
@@ -251,7 +255,7 @@ public class SqliteOperator {
     }
 
     public boolean exist(Map<String, Object> params) throws SQLException {
-        String tableName = this.tableDefinition.getTableName();
+        String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(tableName);
         if (CollUtil.isNotEmpty(params)) {
@@ -288,7 +292,7 @@ public class SqliteOperator {
     }
 
     public Map<String, Object> selectOne(PrimaryKeyColumn primaryKey) throws SQLException {
-        String tableName = this.tableDefinition.getTableName();
+        String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT * FROM ");
         sql.append(tableName);
         sql.append(" WHERE ");
@@ -299,7 +303,34 @@ public class SqliteOperator {
             JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString(), primaryKey.getColumnData());
             Map<String, Object> record = new HashMap<>();
             while (resultSet.next()) {
-                for (ColumnDefinition columnDefinition : tableDefinition.getColumns()) {
+                for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
+                    String columnName = columnDefinition.getColumnName();
+                    if (resultSet.findColumn(columnName) >= 0) {
+                        record.put(columnName, resultSet.getObject(columnName));
+                    }
+                }
+            }
+            resultSet.close();
+            return record;
+        } finally {
+            SqliteConnManager.giveback(connection);
+        }
+    }
+
+    public Map<String, Object> selectOne(QueryParam param) throws SQLException {
+        String tableName = this.tableName();
+        StringBuilder sql = new StringBuilder("SELECT * FROM ");
+        sql.append(tableName);
+        sql.append(" WHERE ");
+        sql.append(param.getName());
+        sql.append("=");
+        sql.append(SqlLiteUtil.wrapData(param.getData()));
+        Connection connection = SqliteConnManager.takeoff();
+        try {
+            JdbcResultSet resultSet = JdbcUtil.executeQuery(connection, sql.toString());
+            Map<String, Object> record = new HashMap<>();
+            while (resultSet.next()) {
+                for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
                     String columnName = columnDefinition.getColumnName();
                     if (resultSet.findColumn(columnName) >= 0) {
                         record.put(columnName, resultSet.getObject(columnName));
@@ -465,7 +496,7 @@ public class SqliteOperator {
     }
 
     public int delete(PrimaryKeyColumn primaryKey) throws SQLException {
-        String tableName = tableDefinition.getTableName();
+        String tableName = this.tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(tableName);
         sql.append(" WHERE ");
@@ -480,7 +511,7 @@ public class SqliteOperator {
     }
 
     public int delete(Map<String, Object> params, Long limit) throws SQLException {
-        String tableName = tableDefinition.getTableName();
+        String tableName = this.tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(tableName);
         if (CollUtil.isNotEmpty(params)) {

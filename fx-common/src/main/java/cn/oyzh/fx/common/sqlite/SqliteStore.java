@@ -25,9 +25,14 @@ public abstract class SqliteStore<M extends Serializable> {
             TableDefinition tableDefinition = this.tableDefinition();
             this.operator = new SqliteOperator(tableDefinition);
             this.operator.initTable();
+            this.init();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected void init() {
+
     }
 
     protected abstract M newModel();
@@ -77,49 +82,42 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public boolean insert(M model) {
-        try {
-            Map<String, Object> record = this.toRecord(model);
-            TableDefinition tableDefinition = this.tableDefinition();
-            ColumnDefinition columnDefinition = tableDefinition.primaryKeyColumn();
-            if (columnDefinition == null) {
-                return false;
+        if (model != null) {
+            try {
+                // 处理主键值
+                this.tableDefinition().handlePrimaryKeyValue(model);
+                return this.operator.insert(this.toRecord(model)) > 0;
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            Object primaryVal = record.get(columnDefinition.getColumnName());
-            if (primaryVal == null && columnDefinition.isAutoGeneration()) {
-                primaryVal = KeyGenerator.generatorKey(columnDefinition.getColumnType());
-            }
-            if (primaryVal == null) {
-                return false;
-            }
-            record.put(columnDefinition.getColumnName(), primaryVal);
-            return this.operator.insert(record) > 0;
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
         return false;
     }
 
     public boolean update(M model) {
-        try {
-            TableDefinition tableDefinition = this.tableDefinition();
-            String primaryKeyName = tableDefinition.primaryKeyName();
-            if (primaryKeyName == null) {
-                return false;
+        if (model != null) {
+            try {
+                TableDefinition tableDefinition = this.tableDefinition();
+                PrimaryKeyColumn primaryKey = tableDefinition.primaryKeyColumn(model);
+                if (primaryKey == null) {
+                    return false;
+                }
+                Map<String, Object> record = this.toRecord(model);
+                return this.operator.update(record, primaryKey) > 0;
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            Map<String, Object> record = this.toRecord(model);
-            PrimaryKeyColumn primaryKey = new PrimaryKeyColumn(primaryKeyName, record.get(primaryKeyName));
-            return this.operator.update(record, primaryKey) > 0;
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
         return false;
     }
 
     public boolean exist(Object primaryKey) {
-        try {
-            return this.operator.exist(primaryKey);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        if (primaryKey != null) {
+            try {
+                return this.operator.exist(primaryKey);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
         return false;
     }
@@ -142,8 +140,21 @@ public abstract class SqliteStore<M extends Serializable> {
         return null;
     }
 
+    public M selectOne(QueryParam param) {
+        try {
+            return this.toModel(this.operator.selectOne(param));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public List<M> selectList() {
-        return this.selectList(null);
+        return this.selectList(Collections.emptyList());
+    }
+
+    public List<M> selectList(QueryParam param) {
+        return this.selectList(List.of(param));
     }
 
     public List<M> selectList(List<QueryParam> params) {
@@ -197,10 +208,12 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public boolean delete(Object primaryKey) {
-        try {
-            return this.operator.delete(primaryKey) > 0;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (primaryKey != null) {
+            try {
+                return this.operator.delete(primaryKey) > 0;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return false;
     }
