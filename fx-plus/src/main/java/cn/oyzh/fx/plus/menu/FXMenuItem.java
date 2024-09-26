@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.fx.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
@@ -7,8 +8,6 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.util.ControlUtil;
-import cn.oyzh.fx.plus.util.TooltipUtil;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 
@@ -18,7 +17,7 @@ import javafx.scene.control.MenuItem;
  * @author oyzh
  * @since 2023/3/3
  */
-public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
+public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, Destroyable {
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
@@ -30,25 +29,21 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
         NodeManager.init(this);
     }
 
-    public FXMenuItem(Node graphic) {
-        super("", graphic);
-    }
+    // public FXMenuItem(Node graphic) {
+    //     super("", graphic);
+    // }
 
-    public FXMenuItem(Node graphic, String text, String tipText, Runnable action) {
-        super(text, graphic);
+    public FXMenuItem(Node graphic, String text, Runnable action) {
+        // super(text, graphic);
+        if (text != null) {
+            super.setText(text);
+        }
+        if (graphic != null) {
+            super.setGraphic(graphic);
+        }
         // 设置操作代理
         if (action != null) {
-            this.setOnAction(event -> {
-                try {
-                    action.run();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-        }
-        // 设置提示文字
-        if (tipText != null) {
-            TooltipUtil.setTipText(this, tipText);
+            this.setOnAction(event -> action.run());
         }
     }
 
@@ -70,36 +65,12 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
     /**
      * 使用svg和文字来生成菜单项
      *
-     * @param text  文字
-     * @param glyph svg内容
-     * @return 菜单项
-     */
-    public static FXMenuItem newItem(String text, SVGGlyph glyph) {
-        return newItem(text, glyph, null, null);
-    }
-
-    /**
-     * 使用svg和文字来生成菜单项
-     *
      * @param text   文字
      * @param glyph  svg内容
      * @param action 执行业务
      * @return 菜单项
      */
     public static FXMenuItem newItem(String text, SVGGlyph glyph, Runnable action) {
-        return newItem(text, glyph, null, action);
-    }
-
-    /**
-     * 使用svg和文字来生成菜单项
-     *
-     * @param text    文字
-     * @param glyph   svg内容
-     * @param tipText 提示文字
-     * @param action  执行业务
-     * @return 菜单项
-     */
-    public static FXMenuItem newItem(String text, SVGGlyph glyph, String tipText, Runnable action) {
         // 生成标签
         SVGLabel label = new SVGLabel(text, glyph);
         // 设置边距
@@ -114,34 +85,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
         label.setMinWidth(w);
         label.setPrefWidth(w);
         // 生成菜单项
-        FXMenuItem item = new FXMenuItem(label);
-        // 设置提示文字
-        if (tipText != null) {
-            TooltipUtil.setTipText(item.getGraphic(), tipText);
-        }
-        // 设置操作
-        if (action != null) {
-            item.setOnAction(e -> action.run());
-        }
-        return item;
-    }
-
-    /**
-     * 使用文字来生成菜单项
-     *
-     * @param text    文字
-     * @param tipText 提示文字
-     * @param action  执行业务
-     * @return 菜单项
-     */
-    public static FXMenuItem newItem(String text, String tipText, Runnable action) {
-        // 生成菜单项
-        FXMenuItem item = new FXMenuItem(null, text, tipText, action);
-        // 设置操作
-        if (action != null) {
-            item.setOnAction(e -> action.run());
-        }
-        return item;
+        return new FXMenuItem(label, null, action);
     }
 
     /**
@@ -152,13 +96,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
      * @return 菜单项
      */
     public static FXMenuItem newItem(String text, Runnable action) {
-        // 生成菜单项
-        FXMenuItem item = new FXMenuItem(null, text, null, action);
-        // 设置操作
-        if (action != null) {
-            item.setOnAction(e -> action.run());
-        }
-        return item;
+        return new FXMenuItem(null, text, action);
     }
 
     @Override
@@ -169,5 +107,13 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter {
     @Override
     public StateManager getStateManager() {
         return StateAdapter.super.stateManager();
+    }
+
+    @Override
+    public void destroy() {
+        this.setText(null);
+        this.setGraphic(null);
+        this.setOnAction(null);
+        this.clearProps();
     }
 }

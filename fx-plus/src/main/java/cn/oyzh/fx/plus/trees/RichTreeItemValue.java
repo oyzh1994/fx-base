@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.trees;
 
+import cn.oyzh.fx.common.util.Destroyable;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FXText;
@@ -20,7 +21,7 @@ import java.util.Objects;
  * @author oyzh
  * @since 2023/11/10
  */
-public class RichTreeItemValue extends FXHBox {
+public class RichTreeItemValue extends FXHBox implements Destroyable {
 
     {
         this.setCache(false);
@@ -130,5 +131,11 @@ public class RichTreeItemValue extends FXHBox {
             // 移除等待动画设置的颜色，避免被重复覆盖
             glyph.removeProp("_color");
         }
+    }
+
+    @Override
+    public void destroy() {
+        this.clearChild();
+        // this.clearProps();
     }
 }

@@ -215,6 +215,7 @@ public class FlexTreeView extends TreeView implements NodeAdapter, ThemeAdapter,
         TaskManager.startDelay("tree:flushLocal:" + this.hashCode(), () -> FXUtil.runLater(() -> {
             this.layoutChildren();
             this.localToScreen(this.getBoundsInLocal());
+            this.refresh();
         }), 100);
     }
 

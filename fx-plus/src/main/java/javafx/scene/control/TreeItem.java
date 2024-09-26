@@ -384,11 +384,11 @@ public class TreeItem<T> implements EventTarget { //, Comparable<TreeItem<T>> {
     // It is important that interactions with this list go directly into the
     // children property, rather than via getChildren(), as this may be
     // a very expensive call.
-    ObservableList<TreeItem<T>> children;
+    protected ObservableList<TreeItem<T>> children;
 
     // Made static based on findings of RT-18344 - EventHandlerManager is an
     // expensive class and should be reused amongst classes if at all possible.
-    private final EventHandlerManager eventHandlerManager =
+    protected EventHandlerManager eventHandlerManager =
             new EventHandlerManager(this);
 
 
@@ -420,7 +420,7 @@ public class TreeItem<T> implements EventTarget { //, Comparable<TreeItem<T>> {
      **************************************************************************/
 
     // called whenever the contents of the children sequence changes
-    private ListChangeListener<TreeItem<T>> childrenListener = c -> {
+    protected ListChangeListener<TreeItem<T>> childrenListener = c -> {
         expandedDescendentCountDirty = true;
         updateChildren(c);
     };
@@ -613,7 +613,7 @@ public class TreeItem<T> implements EventTarget { //, Comparable<TreeItem<T>> {
 
     // --- Parent
     private ReadOnlyObjectWrapper<TreeItem<T>> parent = new ReadOnlyObjectWrapper<>(this, "parent");
-    private void setParent(TreeItem<T> value) { parent.setValue(value); }
+    public void setParent(TreeItem<T> value) { parent.setValue(value); }
 
     /**
      * The parent of this TreeItem. Each TreeItem can have no more than one

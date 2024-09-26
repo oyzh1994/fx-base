@@ -5,11 +5,8 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
-import cn.oyzh.fx.plus.menu.CloseAllTabMenuItem;
-import cn.oyzh.fx.plus.menu.CloseCurrTabMenuItem;
-import cn.oyzh.fx.plus.menu.CloseLeftTabMenuItem;
-import cn.oyzh.fx.plus.menu.CloseOtherTabMenuItem;
-import cn.oyzh.fx.plus.menu.CloseRightTabMenuItem;
+import cn.oyzh.fx.plus.menu.FXMenuItem;
+import cn.oyzh.fx.plus.menu.MenuItemHelper;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -140,11 +137,11 @@ public abstract class DynamicTab extends FXTab {
     @Override
     public List<MenuItem> getMenuItems() {
         List<MenuItem> items = new ArrayList<>();
-        CloseCurrTabMenuItem closeTab = new CloseCurrTabMenuItem(this::closeTab);
-        CloseLeftTabMenuItem closeLeftTab = new CloseLeftTabMenuItem(this::closeLeftTab);
-        CloseRightTabMenuItem closeRightTab = new CloseRightTabMenuItem(this::closeRightTab);
-        CloseOtherTabMenuItem closeOtherTab = new CloseOtherTabMenuItem(this::closeOtherTab);
-        CloseAllTabMenuItem closeAllTab = new CloseAllTabMenuItem(this::closeAllTab);
+        FXMenuItem closeTab = MenuItemHelper.closeCurrTab(this::closeTab);
+        FXMenuItem closeLeftTab = MenuItemHelper.closeLeftTab(this::closeLeftTab);
+        FXMenuItem closeRightTab = MenuItemHelper.closeRightTab(this::closeRightTab);
+        FXMenuItem closeOtherTab =  MenuItemHelper.closeOtherTab(this::closeAllTab);
+        FXMenuItem closeAllTab =  MenuItemHelper.closeAllTab(this::closeAllTab);
         items.add(closeTab);
         items.add(closeLeftTab);
         items.add(closeRightTab);

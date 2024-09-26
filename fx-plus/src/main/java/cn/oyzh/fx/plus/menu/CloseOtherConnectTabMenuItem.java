@@ -1,14 +1,14 @@
-package cn.oyzh.fx.plus.menu;
-
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
-
-/**
- * @author oyzh
- * @since 2024/4/12
- */
-public class CloseOtherConnectTabMenuItem extends FXMenuItem {
-
-    public CloseOtherConnectTabMenuItem(Runnable action) {
-        super(null, I18nResourceBundle.i18nString("base.closeOtherConnectTab"), null, action);
-    }
-}
+// package cn.oyzh.fx.plus.menu;
+//
+// import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
+//
+// /**
+//  * @author oyzh
+//  * @since 2024/4/12
+//  */
+// public class CloseOtherConnectTabMenuItem extends FXMenuItem {
+//
+//     public CloseOtherConnectTabMenuItem(Runnable action) {
+//         super(null, I18nResourceBundle.i18nString("base.closeOtherConnectTab"), null, action);
+//     }
+// }

@@ -102,7 +102,7 @@ public class KeyListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(keyHandler);
-            StaticLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyCode(), keyHandler.keyCode());
+            StaticLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
         }
     }
 

@@ -21,7 +21,7 @@ import java.util.Properties;
  * @author oyzh
  * @since 2021/8/19
  */
-public abstract class ApplicationExt extends Application {
+public abstract class ApplicationExt extends Preloader {
 
     @Override
     public void start(Stage primaryStage) {
@@ -31,6 +31,7 @@ public abstract class ApplicationExt extends Application {
             StaticLog.warn("3D加速不支持.");
         }
         StageManager.setPrimaryStage(primaryStage);
+
     }
 
     @Override
@@ -59,14 +60,14 @@ public abstract class ApplicationExt extends Application {
                 }
                 System.out.println("=============args end---------->");
             }
-            System.out.println("=============props start---------->");
             Properties properties = System.getProperties();
-            for (String key : properties.stringPropertyNames()) {
-                if (key.startsWith("-")) {
-                    System.out.println(key + "=" + System.getProperty(key));
+            if (!properties.isEmpty()) {
+                System.out.println("=============props start---------->");
+                for (String key : properties.stringPropertyNames()) {
+                        System.out.println(key + "=" + System.getProperty(key));
                 }
+                System.out.println("=============props end---------->");
             }
-            System.out.println("=============props end---------->");
             LauncherImpl.launchApplication(appClass, ApplicationPreloader.class, args);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -90,4 +91,15 @@ public abstract class ApplicationExt extends Application {
         }
     }
 
+
+    @Override
+    public void handleStateChangeNotification(StateChangeNotification info) {
+        super.handleStateChangeNotification(info);
+    }
+
+    @Override
+    public void handleProgressNotification(ProgressNotification info) {
+        super.handleProgressNotification(info);
+        System.out.println(info.getProgress()+"------------------------------------");
+    }
 }

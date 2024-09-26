@@ -86,26 +86,26 @@ public interface PropAdapter {
      * @return 结果
      */
     default boolean hasProp(String key) {
-        if (this instanceof Node node) {
-            return node.getProperties().containsKey(key);
+        if (this instanceof Node obj) {
+            return obj.hasProperties() && obj.getProperties().containsKey(key);
         }
-        if (this instanceof Tab tab) {
-            return tab.getProperties().containsKey(key);
+        if (this instanceof Tab obj) {
+            return obj.hasProperties() && obj.getProperties().containsKey(key);
         }
-        if (this instanceof TableColumnBase<?, ?> columnBase) {
-            return columnBase.getProperties().containsKey(key);
+        if (this instanceof TableColumnBase<?, ?> obj) {
+            return obj.hasProperties() && obj.getProperties().containsKey(key);
         }
-        if (this instanceof Scene scene) {
-            return scene.getProperties().containsKey(key);
+        if (this instanceof Scene obj) {
+            return obj.hasProperties() && obj.getProperties().containsKey(key);
         }
-        if (this instanceof Window window) {
-            return window.getProperties().containsKey(key);
+        if (this instanceof Window obj) {
+            return obj.hasProperties() && obj.getProperties().containsKey(key);
         }
-        if (this instanceof PopupAdapter wrapper) {
-            return wrapper.popup().getProperties().containsKey(key);
+        if (this instanceof PopupAdapter obj && obj.popup() != null) {
+            return obj.popup().hasProperties() && obj.popup().getProperties().containsKey(key);
         }
-        if (this instanceof StageAdapter stage && stage.stage() != null) {
-            return stage.stage().getProperties().containsKey(key);
+        if (this instanceof StageAdapter obj && obj.stage() != null) {
+            return obj.stage().hasProperties() && obj.stage().getProperties().containsKey(key);
         }
         return false;
     }

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.DestroyUtil;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
@@ -64,16 +66,22 @@ public interface ContextMenuAdapter {
      * @return ContextMenu
      */
     default ContextMenu initContextMenu(List<? extends MenuItem> menuItems) {
-        if (menuItems != null && !menuItems.isEmpty()) {
-            ContextMenu contextMenu = this.contextMenu();
+        ContextMenu contextMenu = this.contextMenu();
+        if (CollUtil.isNotEmpty(menuItems)) {
             if (contextMenu == null) {
                 contextMenu = new ContextMenu();
                 this.contextMenu(contextMenu);
+            } else {
+                DestroyUtil.destroy(contextMenu.getItems());
             }
             contextMenu.getItems().setAll(menuItems);
             return contextMenu;
         }
-        this.contextMenu(null);
+
+        if (contextMenu != null) {
+            DestroyUtil.destroy(contextMenu.getItems());
+            this.contextMenu(null);
+        }
         return null;
     }
 
@@ -112,6 +120,7 @@ public interface ContextMenuAdapter {
         ContextMenu menu = this.contextMenu();
         if (menu != null) {
             menu.hide();
+            DestroyUtil.destroy(menu.getItems());
             this.contextMenu(null);
         }
     }

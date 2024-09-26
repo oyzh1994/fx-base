@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.trees;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
+import cn.oyzh.fx.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
@@ -15,12 +16,14 @@ import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.stage.Window;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 /**
  * 富功能树节点
@@ -29,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 2023/11/10
  */
 @Getter
-public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object> {
+public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 
     /**
      * 加载完成标志位
@@ -110,7 +113,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     @Setter
     private volatile boolean filterable;
 
-    public RichTreeItem(RichTreeView treeView) {
+    public RichTreeItem(@NonNull RichTreeView treeView) {
         this.treeView = treeView;
     }
 
@@ -120,7 +123,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 渲染服务
      */
     private RichTreeViewService service() {
-        return this.getTreeView().service();
+        return this.treeView.service();
     }
 
     @Override
@@ -295,7 +298,37 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 清除子节点
      */
     public void clearChild() {
-        this.service().submitFX(this.getRealChildren()::clear);
+        if (this.isChildEmpty()) {
+            return;
+        }
+        // 清理子节点
+        Consumer<TreeItem<?>> clearChildren = (treeItem) -> {
+            ObservableList<? extends TreeItem<?>> children;
+            if (treeItem instanceof RichTreeItem<?> richTreeItem) {
+                children = richTreeItem.getRealChildren();
+            } else {
+                children = treeItem.getChildren();
+            }
+            for (TreeItem<?> child : children) {
+                if (child instanceof RichTreeItem<?> item) {
+                    item.clearChild();
+                } else {
+                    child.getChildren().clear();
+                }
+            }
+            children.clear();
+            if (treeItem instanceof Destroyable destroyable) {
+                destroyable.destroy();
+            }
+        };
+        this.service().submitFXLater(() -> {
+            ObservableList<TreeItem<V>> children = super.getChildren();
+            for (TreeItem<?> child : children) {
+                clearChildren.accept(child);
+            }
+            children.clear();
+            this.treeView.flushLocal();
+        });
     }
 
     /**
@@ -639,5 +672,30 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     public boolean supportFilter() {
         return false;
+    }
+
+    @Override
+    public void destroy() {
+        for (TreeItem<V> child : super.getChildren()) {
+            if (child instanceof Destroyable destroyable) {
+                destroyable.destroy();
+            }
+        }
+        Object value = this.getValue();
+        if (value instanceof Destroyable destroyable) {
+            destroyable.destroy();
+        }
+        this.setValue(null);
+        this.setParent(null);
+        this.setGraphic(null);
+        this.treeView = null;
+        this.visibleProperty = null;
+        if (this.children != null) {
+            this.children.removeListener(this.childrenListener);
+            this.children = null;
+        }
+        this.childrenListener = null;
+        this.eventHandlerManager = null;
+        System.err.println("-------------");
     }
 }
