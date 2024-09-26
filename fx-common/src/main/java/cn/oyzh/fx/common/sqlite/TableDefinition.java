@@ -64,6 +64,16 @@ public class TableDefinition {
         }
     }
 
+    public Object getPrimaryKeyValue(Object model) throws IllegalAccessException {
+        ColumnDefinition columnDefinition = this.primaryKey();
+        if (columnDefinition != null) {
+            Field field = ReflectUtil.getField(model.getClass(), columnDefinition.getFieldName(), true);
+            field.setAccessible(true);
+           return field.get(model);
+        }
+        return null;
+    }
+
     public static TableDefinition ofClass(Class<?> clazz) {
         if (clazz != null) {
             TableDefinition definition = new TableDefinition();

@@ -150,16 +150,18 @@ public abstract class SqliteStore<M extends Serializable> {
     }
 
     public List<M> selectList() {
-        return this.selectList(Collections.emptyList());
+        return this.selectList(SelectListParam.EMPTY);
     }
 
-    public List<M> selectList(QueryParam param) {
-        return this.selectList(List.of(param));
+    public List<M> selectList(QueryParam queryParam) {
+        SelectListParam param = new SelectListParam();
+        param.addQueryParam(queryParam);
+        return this.selectList(param);
     }
 
-    public List<M> selectList(List<QueryParam> params) {
+    public List<M> selectList(SelectListParam param) {
         try {
-            List<Map<String, Object>> list = this.operator.selectList(params);
+            List<Map<String, Object>> list = this.operator.selectList(param);
             if (CollUtil.isNotEmpty(list)) {
                 List<M> models = new ArrayList<>();
                 for (Map<String, Object> map : list) {
@@ -171,6 +173,15 @@ public abstract class SqliteStore<M extends Serializable> {
             ex.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    public long selectCount(QueryParam queryParam) {
+        try {
+            return this.operator.selectCount(List.of(queryParam));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0L;
     }
 
     public long selectCount(List<QueryParam> params) {
@@ -205,6 +216,18 @@ public abstract class SqliteStore<M extends Serializable> {
             ex.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    public boolean delete(M model) {
+        if (model != null) {
+            try {
+                Object primaryKeyValue = this.tableDefinition().getPrimaryKeyValue(model);
+                return this.operator.delete(primaryKeyValue) > 0;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public boolean delete(Object primaryKey) {

@@ -344,22 +344,31 @@ public class SqliteOperator {
         }
     }
 
-    public List<Map<String, Object>> selectList(List<QueryParam> params) throws SQLException {
+    public List<Map<String, Object>> selectList(SelectListParam param) throws SQLException {
         String tableName = tableDefinition.getTableName();
-        StringBuilder sql = new StringBuilder("SELECT * FROM ");
+        StringBuilder sql = new StringBuilder("SELECT ");
+        if(CollUtil.isEmpty(param.getQueryColumns())){
+            sql.append("*");
+        }else{
+            for (String queryColumn : param.getQueryColumns()) {
+                sql.append(queryColumn).append(",");
+            }
+            sql.deleteCharAt(sql.lastIndexOf(","));
+        }
+        sql.append(" FROM ");
         sql.append(tableName);
-        if (CollUtil.isNotEmpty(params)) {
+        if (CollUtil.isNotEmpty(param.getQueryParams())) {
             boolean first = true;
-            for (QueryParam param : params) {
+            for (QueryParam queryParam : param.getQueryParams()) {
                 if (first) {
                     first = false;
                     sql.append(" WHERE ");
                 } else {
                     sql.append(" AND ");
                 }
-                sql.append(param.getName());
-                sql.append(param.getOperator());
-                sql.append(SqlLiteUtil.wrapData(param.getData()));
+                sql.append(queryParam.getName());
+                sql.append(queryParam.getOperator());
+                sql.append(SqlLiteUtil.wrapData(queryParam.getData()));
             }
         }
         Connection connection = SqliteConnManager.takeoff();

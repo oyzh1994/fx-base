@@ -1,6 +1,7 @@
 package cn.oyzh.fx.common.sqlite;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.date.LocalDateTimeUtil;
@@ -9,6 +10,10 @@ import cn.oyzh.fx.common.date.LocalTimeUtil;
 import cn.oyzh.fx.common.date.ZonedDateTimeUtil;
 import lombok.experimental.UtilityClass;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -155,6 +160,19 @@ public class SqlLiteUtil {
         return toChar(sqlData);
     }
 
+    public static byte[] toBytes(Object sqlData) throws SQLException, IOException {
+        if (sqlData instanceof Blob blob) {
+            InputStream inputStream = blob.getBinaryStream();
+            byte[] bytes = blob.getBinaryStream().readAllBytes();
+            IoUtil.close(inputStream);
+            return bytes;
+        }
+        if (sqlData instanceof byte[] bytes) {
+            return bytes;
+        }
+        return null;
+    }
+
     public static Date toDate(Object sqlData) {
         if (sqlData instanceof Date date) {
             return date;
@@ -198,6 +216,12 @@ public class SqlLiteUtil {
     }
 
     public static Object wrapData(Object data) {
+        if (data instanceof byte[] bytes) {
+            return data;
+        }
+        if (data instanceof Byte[] bytes) {
+            return data;
+        }
         if (data instanceof Number) {
             return data;
         }
@@ -232,10 +256,16 @@ public class SqlLiteUtil {
             return "double";
         }
 
+        if (CollUtil.contains(List.of(
+                Byte[].class, byte[].class
+        ), javaType)) {
+            return "blob";
+        }
+
         return "text";
     }
 
-    public static Object toJavaValue(Class<?> javaType, Object sqlData) {
+    public static Object toJavaValue(Class<?> javaType, Object sqlData) throws SQLException, IOException {
         if (sqlData == null) {
             return null;
         }
@@ -310,6 +340,12 @@ public class SqlLiteUtil {
         }
         if (javaType == ZonedDateTime.class) {
             return toZonedDateTime(sqlData);
+        }
+        if (javaType == Byte[].class) {
+            return toBytes(sqlData);
+        }
+        if (javaType == byte[].class) {
+            return toBytes(sqlData);
         }
         return null;
     }
