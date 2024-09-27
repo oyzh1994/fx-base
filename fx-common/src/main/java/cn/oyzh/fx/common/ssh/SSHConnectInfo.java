@@ -1,6 +1,6 @@
 package cn.oyzh.fx.common.ssh;
 
-import cn.oyzh.fx.common.sqlite.Column;
+import cn.oyzh.fx.common.jdbc.Column;
 import lombok.Data;
 
 /**

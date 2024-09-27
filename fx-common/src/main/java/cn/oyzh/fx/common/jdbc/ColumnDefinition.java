@@ -1,5 +1,6 @@
-package cn.oyzh.fx.common.sqlite;
+package cn.oyzh.fx.common.jdbc;
 
+import cn.oyzh.fx.common.sqlite.SqlLiteUtil;
 import lombok.Data;
 
 import java.lang.reflect.Field;

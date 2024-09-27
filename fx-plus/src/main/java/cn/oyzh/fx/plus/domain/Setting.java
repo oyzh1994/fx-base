@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.domain;
 
-import cn.oyzh.fx.common.sqlite.Column;
-import cn.oyzh.fx.common.sqlite.PrimaryKey;
+import cn.oyzh.fx.common.jdbc.Column;
+import cn.oyzh.fx.common.jdbc.PrimaryKey;
 import cn.oyzh.fx.common.util.ObjectCopier;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;

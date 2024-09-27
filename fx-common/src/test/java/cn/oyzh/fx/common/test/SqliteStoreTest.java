@@ -1,16 +1,10 @@
 package cn.oyzh.fx.common.test;
 
-import cn.oyzh.fx.common.sqlite.ColumnDefinition;
-import cn.oyzh.fx.common.sqlite.PrimaryKeyColumn;
-import cn.oyzh.fx.common.sqlite.QueryParam;
+import cn.oyzh.fx.common.jdbc.ColumnDefinition;
 import cn.oyzh.fx.common.sqlite.SqliteStore;
-import cn.oyzh.fx.common.sqlite.TableDefinition;
-import org.junit.Test;
+import cn.oyzh.fx.common.jdbc.TableDefinition;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

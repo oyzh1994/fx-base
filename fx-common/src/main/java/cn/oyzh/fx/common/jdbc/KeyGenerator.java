@@ -1,4 +1,4 @@
-package cn.oyzh.fx.common.sqlite;
+package cn.oyzh.fx.common.jdbc;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;

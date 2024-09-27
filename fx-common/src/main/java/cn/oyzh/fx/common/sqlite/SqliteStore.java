@@ -1,6 +1,12 @@
 package cn.oyzh.fx.common.sqlite;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.jdbc.ColumnDefinition;
+import cn.oyzh.fx.common.jdbc.PageParam;
+import cn.oyzh.fx.common.jdbc.PrimaryKeyColumn;
+import cn.oyzh.fx.common.jdbc.QueryParam;
+import cn.oyzh.fx.common.jdbc.SelectListParam;
+import cn.oyzh.fx.common.jdbc.TableDefinition;
 import cn.oyzh.fx.common.util.ReflectUtil;
 
 import java.io.Serializable;

@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.domain;
 
-import cn.oyzh.fx.common.sqlite.Column;
-import cn.oyzh.fx.common.sqlite.PrimaryKey;
-import cn.oyzh.fx.common.sqlite.Table;
-import cn.oyzh.fx.common.util.ObjectComparator;
+import cn.oyzh.fx.common.jdbc.Column;
+import cn.oyzh.fx.common.jdbc.PrimaryKey;
 import cn.oyzh.fx.common.util.ObjectCopier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
