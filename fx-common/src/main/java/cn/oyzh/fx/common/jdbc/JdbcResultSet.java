@@ -44,6 +44,4 @@ public class JdbcResultSet implements AutoCloseable {
     public Object getObject(String columnLabel) throws SQLException {
         return this.resultSet.getObject(columnLabel);
     }
-
-
 }

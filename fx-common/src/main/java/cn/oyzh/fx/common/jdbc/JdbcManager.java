@@ -32,16 +32,24 @@ public class JdbcManager {
         JdbcManager.dialect = JdbcDialect.valueOf(dialect);
     }
 
+    public static boolean isH2Dialect() {
+        return JdbcDialect.H2==dialect;
+    }
+
+    public static boolean isSqliteDialect() {
+        return JdbcDialect.SQLITE==dialect;
+    }
+
     /**
      * 获取连接
      *
      * @return Connection
      * @throws SQLException 异常
      */
-    public static Connection takeoff() throws SQLException {
+    public static JdbcConn takeoff() throws SQLException {
         for (JdbcConn connection : CONNECTIONS) {
             if (connection.isUsable()) {
-                return connection.takeoff();
+                return connection;
             }
         }
         String dbFile = System.getProperty(JdbcConst.DB_FILE);
@@ -51,8 +59,9 @@ public class JdbcManager {
         } else {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
         }
-        CONNECTIONS.add(new JdbcConn(connection));
-        return connection;
+        JdbcConn jdbcConn = new JdbcConn(connection);
+        CONNECTIONS.add(jdbcConn);
+        return jdbcConn;
     }
 
     /**
@@ -73,6 +82,29 @@ public class JdbcManager {
                 if (sqlConnection.getConnection() == connection) {
                     sqlConnection.giveback();
                     break;
+                }
+            }
+            if (CollUtil.isNotEmpty(invalid)) {
+                CONNECTIONS.removeAll(invalid);
+            }
+        }
+    }
+
+    /**
+     * 归还连接
+     *
+     * @param connection 连接
+     */
+    public static void giveback(JdbcConn connection) {
+        if (connection != null) {
+            connection.giveback();
+            List<JdbcConn> invalid = null;
+            for (JdbcConn sqlConnection : CONNECTIONS) {
+                if (sqlConnection.isInvalid()) {
+                    if (invalid == null) {
+                        invalid = new ArrayList<>();
+                    }
+                    invalid.add(sqlConnection);
                 }
             }
             if (CollUtil.isNotEmpty(invalid)) {

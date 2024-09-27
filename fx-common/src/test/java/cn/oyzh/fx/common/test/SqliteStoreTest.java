@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.test;
 
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
-import cn.oyzh.fx.common.sqlite.SqliteStore;
+import cn.oyzh.fx.common.jdbc.JdbcStore;
 import cn.oyzh.fx.common.jdbc.TableDefinition;
 
 import java.io.Serializable;
@@ -98,7 +98,7 @@ public class SqliteStoreTest {
     //     System.out.println(result);
     // }
 
-    public class SqliteStore1 extends SqliteStore {
+    public class SqliteStore1 extends JdbcStore {
 
         public SqliteStore1() throws Exception {
             super();

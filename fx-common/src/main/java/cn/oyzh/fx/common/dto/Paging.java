@@ -264,4 +264,13 @@ public class Paging<T> {
         long end = Math.min(start + this.limit, this.count);
         return this.dataList.subList((int) start, (int) end);
     }
+
+    public long fixPageNo(long pageNo) {
+        if (pageNo >= this.countPage) {
+            pageNo = this.countPage - 1;
+        } else if (pageNo < 0) {
+            pageNo = 0;
+        }
+        return pageNo;
+    }
 }

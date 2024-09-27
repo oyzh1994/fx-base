@@ -1,13 +1,8 @@
-package cn.oyzh.fx.common.h2;
+package cn.oyzh.fx.common.jdbc;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.common.jdbc.ColumnDefinition;
-import cn.oyzh.fx.common.jdbc.JdbcUtil;
-import cn.oyzh.fx.common.jdbc.PageParam;
-import cn.oyzh.fx.common.jdbc.PrimaryKeyColumn;
-import cn.oyzh.fx.common.jdbc.QueryParam;
-import cn.oyzh.fx.common.jdbc.SelectListParam;
-import cn.oyzh.fx.common.jdbc.TableDefinition;
+import cn.oyzh.fx.common.h2.H2Operator;
+import cn.oyzh.fx.common.sqlite.SqliteOperator;
 import cn.oyzh.fx.common.util.ReflectUtil;
 
 import java.io.Serializable;
@@ -23,14 +18,18 @@ import java.util.Map;
  * @author oyzh
  * @since 2024-09-23
  */
-public abstract class H2Store<M extends Serializable> {
+public abstract class JdbcStore<M extends Serializable> {
 
-    private final H2Operator operator;
+    private final JdbcOperator operator;
 
-    public H2Store() {
+    public JdbcStore() {
         try {
             TableDefinition tableDefinition = this.tableDefinition();
-            this.operator = new H2Operator(tableDefinition);
+            if (JdbcManager.dialect == JdbcDialect.H2) {
+                this.operator = new H2Operator(tableDefinition);
+            } else {
+                this.operator = new SqliteOperator(tableDefinition);
+            }
             this.operator.initTable();
             this.init();
         } catch (Exception e) {

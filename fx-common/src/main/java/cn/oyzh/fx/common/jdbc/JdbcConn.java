@@ -4,6 +4,11 @@ import cn.hutool.core.lang.Assert;
 import lombok.Getter;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -81,4 +86,48 @@ public class JdbcConn {
         return this.status.get() == 2;
     }
 
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        return this.connection.prepareStatement(sql);
+    }
+
+    public Statement createStatement() throws SQLException {
+        return this.connection.createStatement();
+    }
+
+    public DatabaseMetaData getMetaData() throws SQLException {
+        return this.connection.getMetaData();
+    }
+
+    public ResultSet getColumns(String tableNamePattern, String columnNamePattern) throws SQLException {
+        return this.getColumns(null, null, tableNamePattern, columnNamePattern);
+    }
+
+    public ResultSet getColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern) throws SQLException {
+        if (JdbcManager.isH2Dialect()) {
+            if (tableNamePattern != null) {
+                tableNamePattern = tableNamePattern.toUpperCase();
+            }
+            if (columnNamePattern != null) {
+                columnNamePattern = columnNamePattern.toUpperCase();
+            }
+        }
+        return this.getMetaData().getColumns(catalog, schemaPattern, tableNamePattern, columnNamePattern);
+    }
+
+    public ResultSet getTables(String tableNamePattern) throws SQLException {
+        return this.getTables(null, null, tableNamePattern, null);
+    }
+
+    public ResultSet getTables(String tableNamePattern, String[] types) throws SQLException {
+        return this.getTables(null, null, tableNamePattern, types);
+    }
+
+    public ResultSet getTables(String catalog, String schemaPattern,String tableNamePattern, String[] types) throws SQLException {
+        if (JdbcManager.isH2Dialect()) {
+            if (tableNamePattern != null) {
+                tableNamePattern = tableNamePattern.toUpperCase();
+            }
+        }
+        return this.getMetaData().getTables(catalog, schemaPattern, tableNamePattern, types);
+    }
 }

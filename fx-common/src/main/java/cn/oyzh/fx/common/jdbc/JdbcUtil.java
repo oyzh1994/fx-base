@@ -7,6 +7,8 @@ import cn.oyzh.fx.common.date.LocalDateTimeUtil;
 import cn.oyzh.fx.common.date.LocalDateUtil;
 import cn.oyzh.fx.common.date.LocalTimeUtil;
 import cn.oyzh.fx.common.date.ZonedDateTimeUtil;
+import cn.oyzh.fx.common.h2.H2Util;
+import cn.oyzh.fx.common.sqlite.SqlLiteUtil;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
@@ -292,5 +294,19 @@ public class JdbcUtil {
             return toBytes(sqlData);
         }
         return null;
+    }
+
+    public static Object wrap(String data) {
+        if (JdbcManager.dialect == JdbcDialect.H2) {
+            return H2Util.wrap(data);
+        }
+        return SqlLiteUtil.wrap(data);
+    }
+
+    public static Object wrapData(Object data) {
+        if (JdbcManager.dialect == JdbcDialect.H2) {
+            return H2Util.wrapData(data);
+        }
+        return SqlLiteUtil.wrapData(data);
     }
 }

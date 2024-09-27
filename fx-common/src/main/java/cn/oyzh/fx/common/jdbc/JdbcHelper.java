@@ -4,7 +4,6 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.log.JulLog;
 import lombok.experimental.UtilityClass;
 
-import java.sql.Connection;
 import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,18 +18,18 @@ import java.util.Collection;
 @UtilityClass
 public class JdbcHelper {
 
-    public static void execute(Connection connection, String sql) throws SQLException {
+    public static void execute(JdbcConn connection, String sql) throws SQLException {
         JulLog.info(sql);
         Statement statement = connection.createStatement();
         statement.execute(sql);
         statement.close();
     }
 
-    public static int executeUpdate(Connection connection, String sql, Collection<?> collection) throws SQLException {
+    public static int executeUpdate(JdbcConn connection, String sql, Collection<?> collection) throws SQLException {
         return executeUpdate(connection, sql, collection.toArray());
     }
 
-    public static int executeUpdate(Connection connection, String sql, Object... params) throws SQLException {
+    public static int executeUpdate(JdbcConn connection, String sql, Object... params) throws SQLException {
         JulLog.info(sql);
         PreparedStatement statement = connection.prepareStatement(sql);
         setParams(statement, params);
@@ -39,11 +38,11 @@ public class JdbcHelper {
         return update;
     }
 
-    public static JdbcResultSet executeQuery(Connection connection, String sql, Collection<?> collection) throws SQLException {
+    public static JdbcResultSet executeQuery(JdbcConn connection, String sql, Collection<?> collection) throws SQLException {
         return executeQuery(connection, sql, collection.toArray());
     }
 
-    public static JdbcResultSet executeQuery(Connection connection, String sql, Object... params) throws SQLException {
+    public static JdbcResultSet executeQuery(JdbcConn connection, String sql, Object... params) throws SQLException {
         JulLog.info(sql);
         if (ArrayUtil.isNotEmpty(params)) {
             PreparedStatement statement = connection.prepareStatement(sql);
