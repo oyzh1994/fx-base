@@ -1,4 +1,4 @@
-package cn.oyzh.fx.common.sqlite;
+package cn.oyzh.fx.common.h2;
 
 import cn.hutool.core.collection.CollUtil;
 import lombok.experimental.UtilityClass;
@@ -10,7 +10,7 @@ import java.util.List;
  * @since 2024-09-24
  */
 @UtilityClass
-public class SqlLiteUtil {
+public class H2Util {
 
     public static String wrap(String obj) {
         return "\"" + obj + "\"";
