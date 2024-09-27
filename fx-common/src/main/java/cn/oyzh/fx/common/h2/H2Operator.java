@@ -53,18 +53,18 @@ public class H2Operator extends JdbcOperator {
             List<ColumnDefinition> addedColumns = new ArrayList<>();
             List<ColumnDefinition> changedColumns = new ArrayList<>();
             for (ColumnDefinition column : this.columns()) {
-                ResultSet resultSet1 = connection.getColumns(tableName, column.getColumnName());
+                ResultSet resultSet = connection.getColumns(tableName, column.getColumnName());
                 // 字段不存在
-                if (!resultSet1.next()) {
+                if (!resultSet.next()) {
                     addedColumns.add(column);
                 } else {
                     // 字段类型不相同
-                    String typeName = resultSet1.getString("TYPE_NAME");
-                    if (!StrUtil.equalsIgnoreCase(typeName, column.getColumnType())) {
+                    String typeName = resultSet.getString("TYPE_NAME");
+                    if (!H2Util.checkSqlType(column.getColumnType(), typeName)) {
                         changedColumns.add(column);
                     }
                 }
-                resultSet1.close();
+                resultSet.close();
             }
             if (!addedColumns.isEmpty() || !changedColumns.isEmpty()) {
                 for (ColumnDefinition column : addedColumns) {

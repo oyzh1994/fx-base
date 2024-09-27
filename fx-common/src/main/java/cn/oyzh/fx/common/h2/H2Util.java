@@ -39,7 +39,7 @@ public class H2Util {
         if (CollUtil.contains(List.of(Integer.class, int.class, Short.class, short.class), javaType)) {
             return "integer";
         }
-        if (CollUtil.contains(List.of( Short.class, short.class), javaType)) {
+        if (CollUtil.contains(List.of(Short.class, short.class), javaType)) {
             return "ALLINT";
         }
         if (CollUtil.contains(List.of(Byte.class, byte.class, Boolean.class, boolean.class), javaType)) {
@@ -58,5 +58,21 @@ public class H2Util {
             return "blob";
         }
         return "varchar";
+    }
+
+    public static boolean checkSqlType(String sqlType, String typeName) {
+        if (sqlType.equalsIgnoreCase(typeName)) {
+            return true;
+        }
+        if (sqlType.equalsIgnoreCase("varchar") && typeName.equalsIgnoreCase("CHARACTER VARYING")) {
+            return true;
+        }
+        if (sqlType.equalsIgnoreCase("blob") && typeName.equalsIgnoreCase("BINARY LARGE OBJECT")) {
+            return true;
+        }
+        if (sqlType.equalsIgnoreCase("double") && typeName.equalsIgnoreCase("DOUBLE PRECISION")) {
+            return true;
+        }
+        return false;
     }
 }
