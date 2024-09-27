@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.jdeps;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -82,7 +83,7 @@ public class JDepsHandler implements PreHandler {
                 if (!JarUtil.isJar(file)) {
                     continue;
                 }
-                StaticLog.info("jdeps jar: {}.", file.getName());
+                JulLog.info("jdeps jar: {}.", file.getName());
                 // 被过滤
                 if (!fileFilter.apply(file.getName())) {
                     continue;

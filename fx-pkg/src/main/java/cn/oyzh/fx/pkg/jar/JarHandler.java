@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.jar;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -87,7 +88,7 @@ public class JarHandler implements PreHandler {
             accept = this.filter.apply(name);
         }
         if (!accept) {
-            StaticLog.info("文件:{}被过滤.", name);
+            JulLog.info("文件:{}被过滤.", name);
         }
         return accept;
     }
@@ -98,7 +99,7 @@ public class JarHandler implements PreHandler {
      * @param jarUnDir 主jar解压目录
      */
     private void handleLibs(String jarUnDir) {
-        StaticLog.info("handleLibs start, jarUnDir: {}.", jarUnDir);
+        JulLog.info("handleLibs start, jarUnDir: {}.", jarUnDir);
         List<File> files = FileUtil.loopFiles(jarUnDir);
         for (File file : files) {
             try {
@@ -109,24 +110,24 @@ public class JarHandler implements PreHandler {
                 // 符合排除jar，删除文件
                 if (!this.filter.apply(file.getName())) {
                     FileUtil.del(file);
-                    StaticLog.warn("类库:{}被排除, 已删除.", file.getName());
+                    JulLog.warn("类库:{}被排除, 已删除.", file.getName());
                     continue;
                 }
                 // 内容为空
                 if (!JarUtil.hasClass(file.getPath())) {
                     FileUtil.del(file);
-                    StaticLog.warn("类库:{}内容为空, 已删除.", file.getName());
+                    JulLog.warn("类库:{}内容为空, 已删除.", file.getName());
                     continue;
                 }
                 // 替换路径
-                StaticLog.info("minimize jar: {}.", file.getName());
+                JulLog.info("minimize jar: {}.", file.getName());
                 // 裁剪类库
                 JarUtil.minimize(file.getPath(), file.getPath(), this::jarFilter);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        StaticLog.info("handleLibs finish.");
+        JulLog.info("handleLibs finish.");
     }
 
     /**
@@ -137,7 +138,7 @@ public class JarHandler implements PreHandler {
      * @param jdkPath  jdk路径
      */
     private void mergeLibs(String jarUnDir, String mainJar, String jdkPath) throws Exception {
-        StaticLog.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
+        JulLog.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
         // 新jar文件
         File mainJarNewFile = new File(jarUnDir, "temp.jar");
         // 复制解压目录
@@ -162,7 +163,7 @@ public class JarHandler implements PreHandler {
         }
         // 移动主jar文件到原始目录
         FileUtil.move(mainJarNewFile, new File(mainJar), true);
-        StaticLog.info("mergeLibs finish.");
+        JulLog.info("mergeLibs finish.");
     }
 
 }

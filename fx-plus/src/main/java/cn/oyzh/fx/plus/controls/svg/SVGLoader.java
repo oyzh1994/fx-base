@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.shape.SVGPath;
 import org.dom4j.Document;
@@ -50,7 +50,7 @@ public class SVGLoader {
         // 获取路径
         URL u = ResourceUtil.getResource(url);
         if (u == null) {
-            StaticLog.warn("svg file: {} is not found.", url);
+            JulLog.warn("svg file: {} is not found.", url);
             return null;
         }
         SVGPath svgPath = null;

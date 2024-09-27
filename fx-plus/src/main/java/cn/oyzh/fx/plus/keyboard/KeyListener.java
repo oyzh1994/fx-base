@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.keyboard;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
@@ -102,7 +103,7 @@ public class KeyListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(keyHandler);
-            StaticLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
+            JulLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
         }
     }
 
@@ -116,7 +117,7 @@ public class KeyListener {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyHandler.keyCode(), keyHandler.keyType());
-            StaticLog.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
+            JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
         }
     }
 
@@ -131,7 +132,7 @@ public class KeyListener {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyCode, keyType);
-            StaticLog.debug("removeHandler, keyType:{} keyCode:{}", keyType, keyCode);
+            JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyType, keyCode);
         }
     }
 

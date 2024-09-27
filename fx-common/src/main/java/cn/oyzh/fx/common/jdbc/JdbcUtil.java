@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.jdbc;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import lombok.experimental.UtilityClass;
 
 import java.sql.Connection;
@@ -20,7 +20,7 @@ import java.util.Collection;
 public class JdbcUtil {
 
     public static void execute(Connection connection, String sql) throws SQLException {
-        StaticLog.info(sql);
+        JulLog.info(sql);
         Statement statement = connection.createStatement();
         statement.execute(sql);
         statement.close();
@@ -31,7 +31,7 @@ public class JdbcUtil {
     }
 
     public static int executeUpdate(Connection connection, String sql, Object... params) throws SQLException {
-        StaticLog.info(sql);
+        JulLog.info(sql);
         PreparedStatement statement = connection.prepareStatement(sql);
         setParams(statement, params);
         int update = statement.executeUpdate();
@@ -44,7 +44,7 @@ public class JdbcUtil {
     }
 
     public static JdbcResultSet executeQuery(Connection connection, String sql, Object... params) throws SQLException {
-        StaticLog.info(sql);
+        JulLog.info(sql);
         PreparedStatement statement = connection.prepareStatement(sql);
         setParams(statement, params);
         ResultSet resultSet = statement.executeQuery();

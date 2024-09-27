@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.packr;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.compressors.CompressorException;
 
@@ -16,6 +17,6 @@ public class PackrPackager extends Packr {
     @Override
     public void pack(PackrConfig config) throws IOException, CompressorException, ArchiveException {
         super.pack(config);
-        StaticLog.info("outDir: {}", config.outDir);
+        JulLog.info("outDir: {}", config.outDir);
     }
 }

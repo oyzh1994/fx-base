@@ -59,7 +59,7 @@
 //         this.addExcludeClasses(config.getExcludeClasses());
 //         String src = config.getSrc();
 //         String dest = config.getDest();
-//         StaticLog.info("clip start.");
+//         JulLog.info("clip start.");
 //         long start = System.currentTimeMillis();
 //         this.clip(src, dest);
 //         // jar解压目录
@@ -79,7 +79,7 @@
 //         FileUtil.del(jarUnDir);
 //         // }
 //         long end = System.currentTimeMillis();
-//         StaticLog.info("clip end, used time: {}ms.", end - start);
+//         JulLog.info("clip end, used time: {}ms.", end - start);
 //     }
 //
 //     @Override

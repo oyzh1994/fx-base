@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.event;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.google.common.eventbus.EventBus;
@@ -102,13 +103,13 @@ public class EventUtil {
             // 打印日志
             if (config.isVerbose()) {
                 startTime = System.currentTimeMillis();
-                StaticLog.debug("post event[type={}] start.", event.getClass());
+                JulLog.debug("post event[type={}] start.", event.getClass());
             }
             eventBus().post(event);
             // 打印日志
             if (startTime != null) {
                 long endTime = System.currentTimeMillis();
-                StaticLog.debug("post event:[type={}] finish, cost:{}ms.", event.getClass(), (endTime - startTime));
+                JulLog.debug("post event:[type={}] finish, cost:{}ms.", event.getClass(), (endTime - startTime));
             }
         };
         // 延迟、异步、fx线程

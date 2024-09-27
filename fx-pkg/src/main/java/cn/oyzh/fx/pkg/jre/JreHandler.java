@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.SingleHandler;
@@ -58,7 +59,7 @@ public class JreHandler implements PreHandler, SingleHandler {
         for (File file : fileList) {
             if (!filter.apply(file.getName())) {
                 FileUtil.del(file);
-                StaticLog.info("文件:{}被过滤.", file.getName());
+                JulLog.info("文件:{}被过滤.", file.getName());
             }
         }
         // 设置最小化后的jre

@@ -21,14 +21,14 @@ import lombok.Getter;
 //@Slf4j
 public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
 
+    {
+        this.setCursor(Cursor.HAND);
+    }
+
     /**
      * 拖动处理
      */
     private DragNodeHandler dragNodeHandler;
-
-    {
-        this.setCursor(Cursor.HAND);
-    }
 
     @Override
     public Node initGraphic() {

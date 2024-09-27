@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -51,7 +52,7 @@ public class Tray implements ThemeAdapter {
         // 创建新系统托盘图标
         URL url = ResourceUtil.getResource(iconPath);
         if (url == null) {
-            StaticLog.error("iconPath: {} is invalid.", iconPath);
+            JulLog.error("iconPath: {} is invalid.", iconPath);
             return false;
         }
         return this.initIcon(url);

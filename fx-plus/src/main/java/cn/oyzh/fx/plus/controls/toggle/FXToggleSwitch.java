@@ -34,7 +34,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapte
     private String unselectedText;
 
     {
-        this.setCache(true);
+        this.setCache(false);
         this.setCacheShape(true);
         this.setCursor(Cursor.HAND);
         this.setCacheHint(CacheHint.QUALITY);

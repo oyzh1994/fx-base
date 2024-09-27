@@ -15,6 +15,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
 
         <!--Spring 注解支持-->
@@ -29,6 +30,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>${spring.boot.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -68,7 +70,6 @@
         <dependency>
             <groupId>com.github.mwiede</groupId>
             <artifactId>jsch</artifactId>
-            <version>0.2.13</version>
             <scope>provided</scope>
         </dependency>
 
@@ -97,7 +98,7 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.46.1.0</version>
+            <version>${sqllit.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -118,6 +119,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

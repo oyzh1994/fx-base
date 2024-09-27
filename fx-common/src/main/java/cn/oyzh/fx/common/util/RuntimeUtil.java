@@ -2,6 +2,7 @@ package cn.oyzh.fx.common.util;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import lombok.experimental.UtilityClass;
 
 import java.io.BufferedReader;
@@ -88,7 +89,7 @@ public class RuntimeUtil {
             if (charset == null) {
                 charset = Charset.defaultCharset();
             }
-            StaticLog.info("execAndWait start cmd:{} dir:{} printInput:{} printError:{}", cmd, dir, printInput, printError);
+            JulLog.info("execAndWait start cmd:{} dir:{} printInput:{} printError:{}", cmd, dir, printInput, printError);
             Process process;
             if (FileUtil.isDirectory(dir)) {
                 process = Runtime.getRuntime().exec(cmd, null, dir);
@@ -99,31 +100,31 @@ public class RuntimeUtil {
                 process.waitFor(1000, TimeUnit.MILLISECONDS);
             }
             if (printInput && process.getInputStream().available() > 0) {
-                StaticLog.info("process input--->start");
+                JulLog.info("process input--->start");
                 // 获取进程的标准输出流
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), charset));
                 // 读取输出并打印到控制台
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    StaticLog.info(line);
+                    JulLog.info(line);
                 }
-                StaticLog.info("process input--->start");
+                JulLog.info("process input--->start");
             }
             if (printError && process.getErrorStream().available() > 0) {
-                StaticLog.info("process error--->start");
+                JulLog.info("process error--->start");
                 // 获取进程的标准输出流
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream(), charset));
                 // 读取输出并打印到控制台
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    StaticLog.info(line);
+                    JulLog.info(line);
                 }
-                StaticLog.info("process error--->end");
+                JulLog.info("process error--->end");
             }
             // 等待进程执行完成
             return code = process.waitFor();
         } finally {
-            StaticLog.info("execAndWait finish code:{}", code);
+            JulLog.info("execAndWait finish code:{}", code);
         }
     }
 

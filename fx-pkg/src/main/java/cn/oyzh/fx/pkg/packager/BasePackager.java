@@ -155,41 +155,41 @@
 //      */
 //     protected void packBefore() throws Exception {
 //         if (!this.platformConfig.isEnable()) {
-//             StaticLog.warn("platform is disable, skip pack.");
+//             JulLog.warn("platform is disable, skip pack.");
 //             return;
 //         }
 //         if (this.jLinkConfig() != null && this.jLinkConfig().isEnable()) {
-//             StaticLog.info("jlink start, platform:{}------------------------------------------------>", this.getPlatform());
+//             JulLog.info("jlink start, platform:{}------------------------------------------------>", this.getPlatform());
 //             ThreadUtil.sleep(1500);
 //             // 删除旧的jlink目录
 //             FileUtil.del(this.jLinkConfig().getOutput());
 //             this.jLinkHandler.exec(this.jLinkConfig(), this.platformConfig.getJdkPath());
 //             this.packageConfig().setJrePath(this.jLinkConfig().getOutput());
 //             this.jreJLinkDir = this.jLinkConfig().getOutput();
-//             StaticLog.info("jlink finish jreJLinkDir:{}------------------------------------------------>", this.jreJLinkDir);
+//             JulLog.info("jlink finish jreJLinkDir:{}------------------------------------------------>", this.jreJLinkDir);
 //         } else {
-//             StaticLog.warn("jLinkConfig is null or jLinkConfig.enable is false, skip jlink.");
+//             JulLog.warn("jLinkConfig is null or jLinkConfig.enable is false, skip jlink.");
 //         }
 //         if (this.jreClipConfig() != null && this.jreClipConfig().isEnable()) {
-//             StaticLog.info("jreClip start, platform:{}------------------------------------------------>", this.getPlatform());
+//             JulLog.info("jreClip start, platform:{}------------------------------------------------>", this.getPlatform());
 //             ThreadUtil.sleep(1500);
 //             this.jreClipper.clip(this.jreClipConfig());
 //             this.packageConfig().setJrePath(this.jreClipConfig().getDest());
 //             this.jreClipDir = this.jreClipConfig().getDest();
-//             StaticLog.info("jreClip finish jreClipDir:{}------------------------------------------------>", this.jreClipDir);
+//             JulLog.info("jreClip finish jreClipDir:{}------------------------------------------------>", this.jreClipDir);
 //         } else {
-//             StaticLog.warn("jreClipConfig is null or jreClipConfig.enable is false, skip jre clip.");
+//             JulLog.warn("jreClipConfig is null or jreClipConfig.enable is false, skip jre clip.");
 //         }
 //         if (this.jarClipConfig() != null && this.jarClipConfig().isEnable()) {
-//             StaticLog.info("jarClip start, platform:{}------------------------------------------------>", this.getPlatform());
+//             JulLog.info("jarClip start, platform:{}------------------------------------------------>", this.getPlatform());
 //             ThreadUtil.sleep(1500);
 //             this.jarClipper.clip(this.jarClipConfig(), this.platformConfig.getJdkPath());
 //             this.packageConfig().setJarPath(this.jarClipConfig().getDest());
 //             this.clapJar = this.jarClipConfig().getDest();
-//             StaticLog.info("jarClip finish clapJar:{}------------------------------------------------>", this.clapJar);
+//             JulLog.info("jarClip finish clapJar:{}------------------------------------------------>", this.clapJar);
 //         } else {
 //             this.packageConfig().setJarPath(this.jarClipConfig().getSrc());
-//             StaticLog.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
+//             JulLog.warn("jarClipConfig is null or jarClipConfig.enable is false, skip jar clip.");
 //         }
 //     }
 //
@@ -198,10 +198,10 @@
 //      */
 //     protected void packAfter() {
 //         if (!this.platformConfig.isEnable()) {
-//             StaticLog.warn("platform is disable, skip pack.");
+//             JulLog.warn("platform is disable, skip pack.");
 //             return;
 //         }
-//         StaticLog.info("pack after start.");
+//         JulLog.info("pack after start.");
 //         if (StrUtil.isNotBlank(this.packageConfig().getCompressType()) && this.packageConfig().isEnable()) {
 //             this.destFile = switch (this.packageConfig().getCompressType().toLowerCase()) {
 //                 case "zip" -> {
@@ -222,30 +222,30 @@
 //             // 删除裁剪的jar
 //             if (this.clapJar != null) {
 //                 FileUtil.del(this.clapJar);
-//                 StaticLog.info("delete ClapJar:{}.", this.clapJar);
+//                 JulLog.info("delete ClapJar:{}.", this.clapJar);
 //             }
 //             // 删除打包目录
 //             if (this.packageConfig().getAppDest() != null) {
 //                 FileUtil.del(this.packageConfig().getAppDest());
-//                 StaticLog.info("delete AppDest:{}.", this.packageConfig().getAppDest());
+//                 JulLog.info("delete AppDest:{}.", this.packageConfig().getAppDest());
 //             }
 //             // 删除jre裁剪目录
 //             if (this.jreClipDir != null) {
 //                 FileUtil.del(this.jreClipDir);
-//                 StaticLog.info("delete JreClipDir:{}.", this.jreClipDir);
+//                 JulLog.info("delete JreClipDir:{}.", this.jreClipDir);
 //             }
 //             // 删除jlink目录
 //             if (this.jreJLinkDir != null) {
 //                 FileUtil.del(this.jreJLinkDir);
-//                 StaticLog.info("delete JreJLinkDir:{}.", this.jreJLinkDir);
+//                 JulLog.info("delete JreJLinkDir:{}.", this.jreJLinkDir);
 //             }
 //             // 删除jlink目录
 //             if (this.jPackageInputDir != null) {
 //                 FileUtil.del(this.jPackageInputDir);
-//                 StaticLog.info("delete jPackageInputDir:{}.", this.jPackageInputDir);
+//                 JulLog.info("delete jPackageInputDir:{}.", this.jPackageInputDir);
 //             }
 //         }
-//         StaticLog.info("pack after finish, dest:{}", this.destFile);
+//         JulLog.info("pack after finish, dest:{}", this.destFile);
 //     }
 //
 //     /**
@@ -264,10 +264,10 @@
 //      */
 //     protected void packByJPackage() throws Exception {
 //         if (!this.packageConfig().isEnable() || !this.platformConfig.isEnable()) {
-//             StaticLog.warn("package or platform is disable, skip pack.");
+//             JulLog.warn("package or platform is disable, skip pack.");
 //             return;
 //         }
-//         StaticLog.info("pack with JPackage, platform:{}================================", this.getPlatform());
+//         JulLog.info("pack with JPackage, platform:{}================================", this.getPlatform());
 //         // copy主jar到输出目录
 //         File mainJar = PkgUtil.copyJarToJpackageInputDir(this.packageConfig().getDestPath(), this.platformConfig.getPlatform(), this.packageConfig().getJarFile());
 //         // jPackage输出目录
@@ -289,10 +289,10 @@
 //      */
 //     protected void packByPackr() throws Exception {
 //         if (!this.packageConfig().isEnable() || !this.platformConfig.isEnable()) {
-//             StaticLog.warn("package or platform is disable, skip pack.");
+//             JulLog.warn("package or platform is disable, skip pack.");
 //             return;
 //         }
-//         StaticLog.info("pack with Packr, platform:{}================================", this.getPlatform());
+//         JulLog.info("pack with Packr, platform:{}================================", this.getPlatform());
 //         // 删除旧的打包目录
 //         FileUtil.del(this.packageConfig().getAppDest());
 //         PackrConfigExt config = PackrConfigExt.form(this.packageConfig());

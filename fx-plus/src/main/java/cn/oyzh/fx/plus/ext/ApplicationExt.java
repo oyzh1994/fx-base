@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.ext;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.WindowManager;
 import com.sun.javafx.application.LauncherImpl;
@@ -26,9 +27,9 @@ public abstract class ApplicationExt extends Preloader {
     @Override
     public void start(Stage primaryStage) {
         if (Platform.isSupported(ConditionalFeature.SCENE3D)) {
-            StaticLog.info("3D加速已开启.");
+            JulLog.info("3D加速已开启.");
         } else {
-            StaticLog.warn("3D加速不支持.");
+            JulLog.warn("3D加速不支持.");
         }
         StageManager.setPrimaryStage(primaryStage);
 

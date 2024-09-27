@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
 import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
 import cn.oyzh.fx.pkg.config.AppConfigHandler;
@@ -223,9 +224,9 @@ public class Packer {
      */
     private void doHandle(Handler handler, PackConfig packConfig) throws Exception {
         long start = System.currentTimeMillis();
-        StaticLog.info("开始执行任务-{}", handler.name());
+        JulLog.info("开始执行任务-{}", handler.name());
         handler.handle(packConfig);
         long end = System.currentTimeMillis();
-        StaticLog.info("任务执行结束-{}, 耗时:{}毫秒", handler.name(), (end - start));
+        JulLog.info("任务执行结束-{}, 耗时:{}毫秒", handler.name(), (end - start));
     }
 }

@@ -17,6 +17,7 @@
 package cn.oyzh.fx.pkg.packr;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
@@ -103,7 +104,7 @@ public class ArchiveUtils {
             try {
                 compressorType = CompressorStreamFactory.detect(jdkInputStream);
             } catch (CompressorException exception) {
-                StaticLog.debug("Didn't detect any compression for archive " + archivePath + ": " + exception.getMessage());
+                JulLog.debug("Didn't detect any compression for archive " + archivePath + ": " + exception.getMessage());
             }
             InputStream decompressedJdkInputStream = jdkInputStream;
             if (compressorType != null) {
@@ -114,7 +115,7 @@ public class ArchiveUtils {
             switch (ArchiveStreamFactory.detect(decompressedJdkInputStream)) {
                 case ArchiveStreamFactory.ZIP:
                     if (compressorType != null) {
-                        StaticLog.error("Cannot extract Zip archives that are wrapped in additional compression");
+                        JulLog.error("Cannot extract Zip archives that are wrapped in additional compression");
                     } else {
                         extractZipArchive(archivePath, extractToDirectory);
                     }
@@ -126,7 +127,7 @@ public class ArchiveUtils {
                     extractTarArchive(decompressedJdkInputStream, extractToDirectory);
                     break;
                 default:
-                    StaticLog.error("No special handling for archive type " + archivePath
+                    JulLog.error("No special handling for archive type " + archivePath
                             + ". Permissions and links will not be properly handled.");
                     extractGenericArchive(decompressedJdkInputStream, extractToDirectory);
                     break;
@@ -150,7 +151,7 @@ public class ArchiveUtils {
         ArchiveEntry entry;
         while ((entry = archiveInputStream.getNextEntry()) != null) {
             if (!archiveInputStream.canReadEntryData(entry)) {
-                StaticLog.error("Failed to read archive entry " + entry);
+                JulLog.error("Failed to read archive entry " + entry);
                 continue;
             }
 
@@ -179,7 +180,7 @@ public class ArchiveUtils {
         TarArchiveEntry entry;
         while ((entry = archiveInputStream.getNextTarEntry()) != null) {
             if (!archiveInputStream.canReadEntryData(entry)) {
-                StaticLog.error("Failed to read archive entry " + entry);
+                JulLog.error("Failed to read archive entry " + entry);
                 continue;
             }
 
@@ -305,7 +306,7 @@ public class ArchiveUtils {
         JarArchiveEntry entry;
         while ((entry = archiveInputStream.getNextJarEntry()) != null) {
             if (!archiveInputStream.canReadEntryData(entry)) {
-                StaticLog.error("Failed to read archive entry " + entry);
+                JulLog.error("Failed to read archive entry " + entry);
                 continue;
             }
             extractZipEntry(extractToDirectory, archiveInputStream, entry);
@@ -503,7 +504,7 @@ public class ArchiveUtils {
         if (permissions.contains(PosixFilePermission.OTHERS_EXECUTE)) {
             mode |= OTHERS_EXECUTE_BIT_MASK;
         }
-        StaticLog.trace("Unix mode of file=" + file + ", mode=" + Integer.toOctalString(mode) + ", permissions=" + permissions);
+        JulLog.trace("Unix mode of file=" + file + ", mode=" + Integer.toOctalString(mode) + ", permissions=" + permissions);
         return mode;
     }
 
@@ -516,7 +517,7 @@ public class ArchiveUtils {
      */
     private static String getRelativePathString(Path path, Path rootDirectory) {
         String relativePathString = rootDirectory.relativize(path).toString().replaceAll("\\\\", "/");
-        StaticLog.trace("Creating relative path from path=" + path + ", rootDirectory=" + rootDirectory + ", relativePathString=" + relativePathString);
+        JulLog.trace("Creating relative path from path=" + path + ", rootDirectory=" + rootDirectory + ", relativePathString=" + relativePathString);
         return relativePathString;
     }
 

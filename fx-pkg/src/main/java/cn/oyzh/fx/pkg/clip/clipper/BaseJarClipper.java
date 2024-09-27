@@ -46,7 +46,7 @@
 //     @Override
 //     public void clip(@NonNull String src, String dest) throws Exception {
 //         super.clip(src, dest);
-//         StaticLog.info("clipJar start, src:{}", src);
+//         JulLog.info("clipJar start, src:{}", src);
 //         JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)));
 //         Manifest manifest = jarIn.getManifest();
 //         JarOutputStream jarOut;
@@ -80,7 +80,7 @@
 //             jarOut.finish();
 //             IoUtil.close(jarOut);
 //         }
-//         StaticLog.info("clipJar finish dest:{}", dest);
+//         JulLog.info("clipJar finish dest:{}", dest);
 //     }
 //
 //     @Override
@@ -95,7 +95,7 @@
 //             accept = super.fileFilter.accept(name);
 //         }
 //         if (!accept) {
-//             StaticLog.info("file:{} filtered.", name);
+//             JulLog.info("file:{} filtered.", name);
 //         }
 //         return accept;
 //     }

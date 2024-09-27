@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import javafx.scene.image.Image;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -40,10 +41,10 @@ public class ResourceUtil {
     public static List<Image> getImages(@NonNull List<String> imgUrls) {
         List<Image> icons = new ArrayList<>(imgUrls.size());
         for (String url : imgUrls) {
-            StaticLog.info("load imgUrl:{}", url);
+            JulLog.info("load imgUrl:{}", url);
             InputStream stream = getResourceAsStream(url);
             if (stream == null) {
-                StaticLog.warn("img stream is null.");
+                JulLog.warn("img stream is null.");
             } else {
                 icons.add(new Image(stream));
             }
@@ -58,10 +59,10 @@ public class ResourceUtil {
      * @return 图片
      */
     public static Image getImage(@NonNull String imgUrl) {
-        StaticLog.info("load imgUrl:{}", imgUrl);
+        JulLog.info("load imgUrl:{}", imgUrl);
         InputStream stream = getResourceAsStream(imgUrl);
         if (stream == null) {
-            StaticLog.warn("img stream is null.");
+            JulLog.warn("img stream is null.");
             return null;
         }
         return new Image(stream);
@@ -119,7 +120,7 @@ public class ResourceUtil {
      * @return 物理地址
      */
     public static String toExternalUrl(@NonNull String url) {
-        StaticLog.info("url:{}", url);
+        JulLog.info("url:{}", url);
         URL u = getResource(url);
         return u == null ? null : u.toExternalForm();
     }

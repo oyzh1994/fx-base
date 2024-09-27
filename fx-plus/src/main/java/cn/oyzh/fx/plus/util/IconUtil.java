@@ -4,6 +4,7 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import javafx.scene.image.Image;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -73,7 +74,7 @@ public class IconUtil {
             }
         } else {
             stream = IoUtil.toStream(reference.get());
-            StaticLog.info("load icon form cache.");
+            JulLog.info("load icon form cache.");
         }
         return stream == null ? null : new Image(stream);
     }

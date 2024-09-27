@@ -31,17 +31,17 @@
 //
 //             // 文件夹排除
 //             if (exclude.endsWith("/") && name.equals(exclude.toLowerCase())) {
-//                 StaticLog.warn("{} acceptExclude by exclude:{} equals folder.", name, exclude);
+//                 JulLog.warn("{} acceptExclude by exclude:{} equals folder.", name, exclude);
 //                 return true;
 //             }
 //             // 类型排除
 //             if (exclude.startsWith(".") && name.endsWith(exclude.toLowerCase())) {
-//                 StaticLog.warn("{} acceptExclude by exclude:{} endsWith type.", name, exclude);
+//                 JulLog.warn("{} acceptExclude by exclude:{} endsWith type.", name, exclude);
 //                 return true;
 //             }
 //             // 包含排除
 //             if (name.contains(exclude.toLowerCase())) {
-//                 StaticLog.warn("{} acceptExclude by exclude:{} contains.", name, exclude);
+//                 JulLog.warn("{} acceptExclude by exclude:{} contains.", name, exclude);
 //                 return true;
 //             }
 //         }

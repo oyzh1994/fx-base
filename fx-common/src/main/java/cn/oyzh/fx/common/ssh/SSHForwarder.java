@@ -1,6 +1,6 @@
 package cn.oyzh.fx.common.ssh;
 
-import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -52,7 +52,7 @@ public class SSHForwarder {
             this.session.setTimeout(this.connectInfo.getTimeout());
             this.session.setPassword(this.connectInfo.getPassword());
             this.session.connect();
-            StaticLog.info("ssh连接成功 connectInfo:{}", this.connectInfo);
+            JulLog.info("ssh连接成功 connectInfo:{}", this.connectInfo);
         }
     }
 
@@ -92,7 +92,7 @@ public class SSHForwarder {
                 this.session.setPortForwardingL(localPort, forwardInfo.getHost(), forwardInfo.getPort());
                 forwardInfo.setLocalPort(localPort);
                 this.forwardInfos.add(forwardInfo);
-                StaticLog.info("ssh端口转发成功 localPort:{} forwardInfo:{}", localPort, forwardInfo);
+                JulLog.info("ssh端口转发成功 localPort:{} forwardInfo:{}", localPort, forwardInfo);
                 return localPort;
             } catch (JSchException ex) {
                 throw new SSHException(ex);
@@ -116,6 +116,6 @@ public class SSHForwarder {
             }
             this.forwardInfos.clear();
         }
-        StaticLog.info("ssh端口转发已清理");
+        JulLog.info("ssh端口转发已清理");
     }
 }

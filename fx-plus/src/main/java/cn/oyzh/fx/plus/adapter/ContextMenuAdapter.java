@@ -77,11 +77,7 @@ public interface ContextMenuAdapter {
             contextMenu.getItems().setAll(menuItems);
             return contextMenu;
         }
-
-        if (contextMenu != null) {
-            DestroyUtil.destroy(contextMenu.getItems());
-            this.contextMenu(null);
-        }
+        this.clearContextMenu();
         return null;
     }
 

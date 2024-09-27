@@ -5,6 +5,7 @@ import cn.hutool.core.util.ArrayUtil;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * @author oyzh
@@ -12,6 +13,21 @@ import java.lang.reflect.Field;
  */
 @UtilityClass
 public class ReflectUtil {
+
+    public static <T> T getFieldValue(Field field, Object object) throws SecurityException, IllegalAccessException {
+        field.setAccessible(true);
+        return (T) field.get(object);
+    }
+
+    public static void setFieldValue(Field field, Object value, Object object) throws SecurityException, IllegalAccessException {
+        field.setAccessible(true);
+        field.set(object, value);
+    }
+
+    public static void clearFieldValue(Field field , Object object) throws SecurityException, IllegalAccessException {
+        field.setAccessible(true);
+        field.set(object, null);
+    }
 
     public static Field getField(Class<?> beanClass, String fieldName) throws SecurityException {
         return getField(beanClass, fieldName, false);
@@ -56,5 +72,29 @@ public class ReflectUtil {
             searchType = withSuperClassFields ? searchType.getSuperclass() : null;
         }
         return allFields;
+    }
+
+    public static Method getMethod(Class<?> beanClass, String methodName, Class<?>... paramTypes) throws SecurityException {
+        return getMethod(beanClass, methodName, false, paramTypes);
+    }
+
+    public static Method getMethod(Class<?> beanClass, String methodName, boolean withSuperClassFields, Class<?>... paramTypes) throws SecurityException {
+        Assert.notNull(beanClass);
+        Class<?> searchType = beanClass;
+        Method method = null;
+        while (searchType != null) {
+            try {
+                method = searchType.getMethod(methodName, paramTypes);
+            } catch (NoSuchMethodException ignore) {
+            }
+            if (null == method) {
+                try {
+                    method = searchType.getDeclaredMethod(methodName, paramTypes);
+                } catch (NoSuchMethodException ignore) {
+                }
+            }
+            searchType = withSuperClassFields ? searchType.getSuperclass() : null;
+        }
+        return method;
     }
 }

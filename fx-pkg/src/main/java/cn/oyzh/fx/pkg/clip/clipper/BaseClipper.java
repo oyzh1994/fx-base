@@ -42,7 +42,7 @@
 //     public boolean filterName(String name) {
 //         boolean accept = this.fileFilter.accept(name);
 //         if (!accept) {
-//             StaticLog.info("file:{} filtered.", name);
+//             JulLog.info("file:{} filtered.", name);
 //         }
 //         return accept;
 //     }

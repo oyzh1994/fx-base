@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.TaskManager;
 import javafx.scene.Node;
 import lombok.NonNull;
@@ -130,7 +131,7 @@ public class TrayManager {
      */
     public static SystemTray systemTray() {
         if (!SystemTray.isSupported()) {
-            StaticLog.warn("SystemTray is not supported.");
+            JulLog.warn("SystemTray is not supported.");
             throw new RuntimeException("SystemTray is not supported.");
         }
         System.setProperty("java.awt.headless", "false");

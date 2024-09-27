@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
 import cn.oyzh.fx.common.thread.TaskManager;
@@ -154,7 +155,7 @@ public class FXUtil {
                 if (timeout <= 0) {
                     latch.await();
                 } else if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
-                    StaticLog.warn("latch.await fail!");
+                    JulLog.warn("latch.await fail!");
                 }
                 // 抛出异常(如果有)
                 task1.throwRuntimeException();

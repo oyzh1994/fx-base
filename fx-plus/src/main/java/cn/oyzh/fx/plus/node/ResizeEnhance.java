@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -129,7 +130,7 @@ public class ResizeEnhance {
             }
             event.consume();
 //            if (log.isDebugEnabled()) {
-//                StaticLog.debug("MouseMoved");
+//                JulLog.debug("MouseMoved");
 //            }
         };
     }
@@ -158,11 +159,11 @@ public class ResizeEnhance {
             }
             this.setNodeCursor(this.originalCursor);
 //            if (log.isDebugEnabled()) {
-            StaticLog.debug("Cursor recover.");
+            JulLog.debug("Cursor recover.");
 //            }
             event.consume();
 //            if (log.isDebugEnabled()) {
-            StaticLog.debug("MouseExited");
+            JulLog.debug("MouseExited");
 //            }
         };
     }
@@ -190,7 +191,7 @@ public class ResizeEnhance {
             this.resizeIng(true);
             event.consume();
 //            if (log.isDebugEnabled()) {
-            StaticLog.debug("MousePressed");
+            JulLog.debug("MousePressed");
 //            }
         };
     }
@@ -218,7 +219,7 @@ public class ResizeEnhance {
             this.setNodeCursor(this.originalCursor);
             event.consume();
 //            if (log.isDebugEnabled()) {
-            StaticLog.debug("MouseReleased");
+            JulLog.debug("MouseReleased");
 //            }
         };
     }

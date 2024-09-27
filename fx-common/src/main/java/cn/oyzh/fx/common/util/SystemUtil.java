@@ -1,6 +1,7 @@
 package cn.oyzh.fx.common.util;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.common.thread.ThreadUtil;
 import lombok.experimental.UtilityClass;
@@ -30,10 +31,10 @@ public class SystemUtil {
             // 获取非堆内存信息
             MemoryUsage nonHeapMemoryUsage = mxBean.getNonHeapMemoryUsage();
             long usedMemory = heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
-            StaticLog.info("gc之前预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
+            JulLog.info("gc之前预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
             System.gc();
             usedMemory = heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
-            StaticLog.info("gc之后预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
+            JulLog.info("gc之后预估使用内存:{}Mb", usedMemory / 1024 / 1024.0 + 256);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -43,7 +44,7 @@ public class SystemUtil {
      * 定期gc
      */
     public static void gcInterval(int interval) {
-        StaticLog.debug("gc interval in {}ms", interval);
+        JulLog.debug("gc interval in {}ms", interval);
         TaskManager.cancelInterval("gc:task");
         TaskManager.startInterval("gc:task", SystemUtil::gc, interval);
     }

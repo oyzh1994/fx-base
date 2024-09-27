@@ -46,7 +46,7 @@
 //     @Override
 //     public void clip(@NonNull String src, String dest) {
 //         this.checkPath(src, dest);
-//         StaticLog.info("clip start.");
+//         JulLog.info("clip start.");
 //         long start = System.currentTimeMillis();
 //         // 删除旧文件
 //         FileUtil.del(dest);
@@ -58,6 +58,6 @@
 //             }
 //         }
 //         long end = System.currentTimeMillis();
-//         StaticLog.info("clip end, used time: {}ms.", end - start);
+//         JulLog.info("clip end, used time: {}ms.", end - start);
 //     }
 // }

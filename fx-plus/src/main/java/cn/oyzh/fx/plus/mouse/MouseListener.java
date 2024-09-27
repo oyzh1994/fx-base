@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.mouse;
 
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
@@ -78,7 +79,7 @@ public class MouseListener {
         if (eventHandler != null) {
             eventHandler.addHandler(mouseHandler);
 //            if (log.isDebugEnabled()) {
-                StaticLog.debug("addHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
+                JulLog.debug("addHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
 //            }
         }
     }
@@ -106,7 +107,7 @@ public class MouseListener {
         if (eventHandler != null) {
             eventHandler.removeHandler(mouseHandler);
 //            if (log.isDebugEnabled()) {
-                StaticLog.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
+                JulLog.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
 //            }
         }
     }

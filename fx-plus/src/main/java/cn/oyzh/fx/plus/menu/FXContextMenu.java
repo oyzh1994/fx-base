@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.DestroyUtil;
+import cn.oyzh.fx.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -8,15 +10,21 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
+import java.util.Collection;
+
 /**
  * @author oyzh
  * @since 2023/3/7
  */
-public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAdapter {
+public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAdapter, Destroyable {
+
+    private ListChangeListener<MenuItem> itemsListener = c -> {
+        this.calcWidth();
+    };
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
-        this.getItems().addListener((ListChangeListener<MenuItem>) c -> this.calcWidth());
+        this.getItems().addListener(this.itemsListener);
         NodeManager.init(this);
     }
 
@@ -66,9 +74,36 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
         LayoutAdapter.super.realHeight(height);
     }
 
-    public void addItem(MenuItem menuItem) {
-        if (menuItem != null) {
-            this.getItems().add(menuItem);
+    public void addItem(MenuItem item) {
+        if (item != null) {
+            this.getItems().add(item);
         }
+    }
+
+    public void setItem(MenuItem item) {
+        if (item != null) {
+            this.getItems().setAll(item);
+        }
+    }
+
+    public void setItem(Collection<? extends MenuItem> items) {
+        if (items != null) {
+            DestroyUtil.destroy(this.getItems());
+            this.getItems().setAll(items);
+        }
+    }
+
+    public void cleaItem() {
+        DestroyUtil.destroy(this.getItems());
+        this.getItems().clear();
+    }
+
+    @Override
+    public void destroy() {
+        this.getItems().removeListener(this.itemsListener);
+        this.cleaItem();
+        this.itemsListener = null;
+        this.setStyle(null);
+        this.clearProps();
     }
 }

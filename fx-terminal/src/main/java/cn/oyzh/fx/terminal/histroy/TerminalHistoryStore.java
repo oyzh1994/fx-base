@@ -5,6 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.store.ArrayFileStore;
 import lombok.NonNull;
 
@@ -51,7 +52,7 @@ public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistor
             // 更新数据
             return this.save(this.histories);
         } catch (Exception e) {
-            StaticLog.warn("add error,err:{}", e.getMessage());
+            JulLog.warn("add error,err:{}", e.getMessage());
         }
         return false;
     }

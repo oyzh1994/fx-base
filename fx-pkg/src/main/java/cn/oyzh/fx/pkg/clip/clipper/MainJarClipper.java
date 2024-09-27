@@ -38,7 +38,7 @@
 //         if (!FileUtil.isFile(mainJar)) {
 //             throw new RuntimeException("mainJar " + mainJar + " is not file.");
 //         }
-//         StaticLog.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
+//         JulLog.info("mergeLibs start, jarUnDir: {} mainJar: {}.", jarUnDir, mainJar);
 //         // jar文件
 //         File mainJarFile = new File(mainJar);
 //         // 新jar文件
@@ -80,6 +80,6 @@
 //         }
 //         // 移动主jar文件到原始目录
 //         FileUtil.move(mainJarNewFile, mainJarFile, true);
-//         StaticLog.info("mergeLibs finish.");
+//         JulLog.info("mergeLibs finish.");
 //     }
 // }

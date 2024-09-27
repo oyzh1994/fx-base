@@ -8,8 +8,11 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+
+import java.lang.ref.Cleaner;
 
 /**
  * 菜单项
@@ -19,22 +22,19 @@ import javafx.scene.control.MenuItem;
  */
 public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, Destroyable {
 
+    private ChangeListener<Boolean> disableListener = (observable, oldValue, newValue) -> {
+        if (this.getGraphic() != null) {
+            this.getGraphic().setDisable(newValue);
+        }
+    };
+
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
-        this.disableProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.getGraphic() != null) {
-                this.getGraphic().setDisable(newValue);
-            }
-        });
+        this.disableProperty().addListener(this.disableListener);
         NodeManager.init(this);
     }
 
-    // public FXMenuItem(Node graphic) {
-    //     super("", graphic);
-    // }
-
     public FXMenuItem(Node graphic, String text, Runnable action) {
-        // super(text, graphic);
         if (text != null) {
             super.setText(text);
         }
@@ -111,7 +111,10 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
 
     @Override
     public void destroy() {
+        this.disableProperty().removeListener(this.disableListener);
+        this.disableListener = null;
         this.setText(null);
+        this.setStyle(null);
         this.setGraphic(null);
         this.setOnAction(null);
         this.clearProps();

@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.pack;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
@@ -55,9 +56,9 @@ public class EndHandler implements PostHandler {
         long endTime = System.currentTimeMillis();
         long cost = endTime - startTime;
         if (packConfig.getCompressFile() != null) {
-            StaticLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件:{} 大小:{}Mb", cost, packConfig.outPath(), packConfig.getCompressFile().length() / 1024.0 / 1024);
+            JulLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件:{} 大小:{}Mb", cost, packConfig.outPath(), packConfig.getCompressFile().length() / 1024.0 / 1024);
         } else {
-            StaticLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件目录:{}", cost, packConfig.outPath());
+            JulLog.info("打包执行结束, 总耗时:{}毫秒, 最终文件目录:{}", cost, packConfig.outPath());
         }
     }
 

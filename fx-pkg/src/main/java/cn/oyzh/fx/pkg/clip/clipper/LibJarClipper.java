@@ -29,7 +29,7 @@
 //         if (!FileUtil.isDirectory(jarUnDir)) {
 //             throw new RuntimeException("jarUnDir " + jarUnDir + " is not dir.");
 //         }
-//         StaticLog.info("clipLibs start, jarUnDir: {}.", jarUnDir);
+//         JulLog.info("clipLibs start, jarUnDir: {}.", jarUnDir);
 //         List<File> files = FileUtil.loopFiles(jarUnDir);
 //         for (File file : files) {
 //             try {
@@ -44,7 +44,7 @@
 //                 }
 //                 // 替换路径
 //                 String dest = file.getPath().replace("\\", "/");
-//                 StaticLog.info("clipLibJar jar: {}.", file.getName());
+//                 JulLog.info("clipLibJar jar: {}.", file.getName());
 //                 // 文件名
 //                 dest = dest.replace(".jar", "_clip.jar");
 //                 // 裁剪类库
@@ -53,7 +53,7 @@
 //                 ex.printStackTrace();
 //             }
 //         }
-//         StaticLog.info("clipLibs finish.");
+//         JulLog.info("clipLibs finish.");
 //     }
 //
 //     /**
@@ -68,7 +68,7 @@
 //         if (!FileUtil.isDirectory(jarUnDir)) {
 //             throw new RuntimeException("jarUnDir " + jarUnDir + " is not dir.");
 //         }
-//         StaticLog.info("coverLibs start, jarUnDir: {}.", jarUnDir);
+//         JulLog.info("coverLibs start, jarUnDir: {}.", jarUnDir);
 //         List<File> files = FileUtil.loopFiles(jarUnDir);
 //         for (File file : files) {
 //             try {
@@ -81,7 +81,7 @@
 //                 ex.printStackTrace();
 //             }
 //         }
-//         StaticLog.info("coverLibs finish.");
+//         JulLog.info("coverLibs finish.");
 //     }
 //
 //     /**
@@ -96,7 +96,7 @@
 //         if (!FileUtil.isDirectory(jarUnDir)) {
 //             throw new RuntimeException("jarUnDir " + jarUnDir + " is not dir.");
 //         }
-//         StaticLog.info("delEmptyLibs start, jarUnDir: {}.", jarUnDir);
+//         JulLog.info("delEmptyLibs start, jarUnDir: {}.", jarUnDir);
 //         List<File> files = FileUtil.loopFiles(jarUnDir);
 //         for (File file : files) {
 //             try {
@@ -107,12 +107,12 @@
 //                 // 没有class文件则删除此jar
 //                 if (!JarUtil.hasClass(file.getPath())) {
 //                     FileUtil.del(file);
-//                     StaticLog.warn("lib {} is empty, deleted.", file.getName());
+//                     JulLog.warn("lib {} is empty, deleted.", file.getName());
 //                 }
 //             } catch (Exception ex) {
 //                 ex.printStackTrace();
 //             }
 //         }
-//         StaticLog.info("delEmptyLibs finish.");
+//         JulLog.info("delEmptyLibs finish.");
 //     }
 // }

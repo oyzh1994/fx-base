@@ -5,6 +5,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -136,7 +137,7 @@ public class JarUtil {
      * @throws IOException 异常
      */
     public static void minimize(String src, String dest, Function<String, Boolean> function) throws IOException {
-        StaticLog.info("minimize jar start, src:{}", src);
+        JulLog.info("minimize jar start, src:{}", src);
         File destFile = new File(dest);
         File tempFile = FileUtil.createTempFile(destFile.getName(), true);
         JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)));
@@ -172,7 +173,7 @@ public class JarUtil {
             jarOut.finish();
             IoUtil.close(jarOut);
         }
-        StaticLog.info("minimize jar finish dest:{}", dest);
+        JulLog.info("minimize jar finish dest:{}", dest);
         FileUtil.move(tempFile, destFile, true);
     }
 }

@@ -29,13 +29,13 @@
 //     public boolean acceptExclude(String name) {
 //         // 排除的class
 //         if (this.getExcludes().contains(name)) {
-//             StaticLog.warn("{} acceptExclude by excludes contains.", name);
+//             JulLog.warn("{} acceptExclude by excludes contains.", name);
 //             return true;
 //         }
 //         // 排除的class子类或者包
 //         for (String exclude : this.getExcludes()) {
 //             if (name.startsWith(exclude)) {
-//                 StaticLog.warn("{} acceptExclude by exclude:{} startsWith.", name, exclude);
+//                 JulLog.warn("{} acceptExclude by exclude:{} startsWith.", name, exclude);
 //                 return true;
 //             }
 //         }

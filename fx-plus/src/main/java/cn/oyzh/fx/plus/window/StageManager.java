@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.window;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.log.StaticLog;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.OSUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -39,15 +40,15 @@ public class StageManager {
         for (StageAdapter wrapper : allStages()) {
             if (wrapper.controller() instanceof StageListener listener) {
                 try {
-                    StaticLog.info("listener:{} exit...", listener.getClass());
+                    JulLog.info("listener:{} exit...", listener.getClass());
                     listener.onSystemExit();
-                    StaticLog.info("listener:{} success...", listener.getClass());
+                    JulLog.info("listener:{} success...", listener.getClass());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         }
-        StaticLog.warn("system exit...");
+        JulLog.warn("system exit...");
         Platform.exit();
         System.exit(0);
     }
