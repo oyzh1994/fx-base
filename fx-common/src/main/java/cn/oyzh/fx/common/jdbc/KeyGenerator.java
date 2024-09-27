@@ -12,10 +12,10 @@ public class KeyGenerator {
     public static final KeyGenerator INSTANCE = new KeyGenerator();
 
     public Object generator(String columnType) {
-        if (StrUtil.equalsAnyIgnoreCase(columnType, "text", "char")) {
+        if (StrUtil.containsAnyIgnoreCase(columnType, "text", "LONGVARCHAR", "NVARCHAR", "NCHAR", "varchar", "char")) {
             return UUID.fastUUID().toString(true);
         }
-        if (StrUtil.equalsAnyIgnoreCase(columnType, "integer")) {
+        if (StrUtil.equalsAnyIgnoreCase(columnType, "integer", "int", "bigint", "TINYINT", "ALLINT")) {
             return System.currentTimeMillis() + Math.round(Math.random() * 1000);
         }
         return null;

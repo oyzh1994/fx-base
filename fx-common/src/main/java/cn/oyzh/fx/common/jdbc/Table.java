@@ -1,5 +1,7 @@
 package cn.oyzh.fx.common.jdbc;
 
+import org.sqlite.core.DB;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,4 +16,5 @@ import java.lang.annotation.Target;
 public @interface Table {
 
     String value() default "";
+
 }

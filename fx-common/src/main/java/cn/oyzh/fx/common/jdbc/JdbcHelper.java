@@ -45,9 +45,14 @@ public class JdbcHelper {
 
     public static JdbcResultSet executeQuery(Connection connection, String sql, Object... params) throws SQLException {
         JulLog.info(sql);
-        PreparedStatement statement = connection.prepareStatement(sql);
-        setParams(statement, params);
-        ResultSet resultSet = statement.executeQuery();
+        if (ArrayUtil.isNotEmpty(params)) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            setParams(statement, params);
+            ResultSet resultSet = statement.executeQuery();
+            return new JdbcResultSet(resultSet, statement);
+        }
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
         return new JdbcResultSet(resultSet, statement);
     }
 

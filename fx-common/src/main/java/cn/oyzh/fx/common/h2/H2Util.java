@@ -13,7 +13,7 @@ import java.util.List;
 public class H2Util {
 
     public static String wrap(String obj) {
-        return "\"" + obj + "\"";
+        return "`" + obj.toUpperCase() + "`";
     }
 
     public static Object wrapData(Object data) {
@@ -47,7 +47,7 @@ public class H2Util {
                 String.class, StringBuilder.class, StringBuilder.class,
                 Character.class, char.class
         ), javaType)) {
-            return "text";
+            return "varchar";
         }
 
         if (CollUtil.contains(List.of(
@@ -63,6 +63,6 @@ public class H2Util {
             return "blob";
         }
 
-        return "text";
+        return "varchar";
     }
 }

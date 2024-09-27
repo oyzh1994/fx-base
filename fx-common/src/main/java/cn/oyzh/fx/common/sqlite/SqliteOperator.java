@@ -10,7 +10,7 @@ import cn.oyzh.fx.common.jdbc.PageParam;
 import cn.oyzh.fx.common.jdbc.PrimaryKeyColumn;
 import cn.oyzh.fx.common.jdbc.QueryParam;
 import cn.oyzh.fx.common.jdbc.SelectListParam;
-import cn.oyzh.fx.common.jdbc.JdbcConnManager;
+import cn.oyzh.fx.common.jdbc.JdbcManager;
 import cn.oyzh.fx.common.jdbc.TableDefinition;
 import lombok.Getter;
 
@@ -53,7 +53,7 @@ public class SqliteOperator {
      * @return 结果
      */
     public boolean initTable() throws Exception {
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             String tableName = this.tableDefinition.getTableName();
             String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
@@ -89,13 +89,13 @@ public class SqliteOperator {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
         return false;
     }
 
     protected void alterTable() throws SQLException {
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             // 旧表更名
             String tableName = this.tableName();
@@ -150,12 +150,12 @@ public class SqliteOperator {
                     .append(SqlLiteUtil.wrap(oldTableName));
             JdbcHelper.execute(connection, sql1.toString());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
     protected void createTable() throws SQLException {
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             String tableName = this.tableName();
             StringBuilder sql1 = new StringBuilder();
@@ -175,7 +175,7 @@ public class SqliteOperator {
             sql1.append(")");
             JdbcHelper.executeUpdate(connection, sql1.toString());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -192,7 +192,7 @@ public class SqliteOperator {
         sql.append("?,".repeat(record.size()));
         sql.deleteCharAt(sql.length() - 1);
         sql.append(")");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             List<Object> values = new ArrayList<>();
             for (String key : record.keySet()) {
@@ -200,7 +200,7 @@ public class SqliteOperator {
             }
             return JdbcHelper.executeUpdate(connection, sql.toString(), values);
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -222,7 +222,7 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             List<Object> values = new ArrayList<>();
             for (String key : record.keySet()) {
@@ -231,7 +231,7 @@ public class SqliteOperator {
             values.add(primaryKey.getColumnData());
             return JdbcHelper.executeUpdate(connection, sql.toString(), values);
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -247,7 +247,7 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString(), primaryKey.getColumnData());
             boolean exists = false;
@@ -257,7 +257,7 @@ public class SqliteOperator {
             resultSet.close();
             return exists;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -279,7 +279,7 @@ public class SqliteOperator {
                 sql.append(SqlLiteUtil.wrapData(entry.getValue()));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             boolean exists = false;
@@ -289,7 +289,7 @@ public class SqliteOperator {
             resultSet.close();
             return exists;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -305,7 +305,7 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString(), primaryKey.getColumnData());
             Map<String, Object> record = new HashMap<>();
@@ -320,7 +320,7 @@ public class SqliteOperator {
             resultSet.close();
             return record;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -332,7 +332,7 @@ public class SqliteOperator {
         sql.append(param.getName());
         sql.append("=");
         sql.append(SqlLiteUtil.wrapData(param.getData()));
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             Map<String, Object> record = new HashMap<>();
@@ -347,7 +347,7 @@ public class SqliteOperator {
             resultSet.close();
             return record;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -378,7 +378,7 @@ public class SqliteOperator {
                 sql.append(SqlLiteUtil.wrapData(queryParam.getData()));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             List<Map<String, Object>> records = new ArrayList<>();
@@ -395,7 +395,7 @@ public class SqliteOperator {
             resultSet.close();
             return records;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -417,7 +417,7 @@ public class SqliteOperator {
                 sql.append(SqlLiteUtil.wrapData(param.getData()));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             long count = 0;
@@ -427,7 +427,7 @@ public class SqliteOperator {
             resultSet.close();
             return count;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -449,7 +449,7 @@ public class SqliteOperator {
                 sql.append(SqlLiteUtil.wrapData("%" + kw + "%"));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             long count = 0;
@@ -459,7 +459,7 @@ public class SqliteOperator {
             resultSet.close();
             return count;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -485,7 +485,7 @@ public class SqliteOperator {
                 .append(pageParam.getLimit())
                 .append(" OFFSET ")
                 .append(pageParam.getStart());
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             List<Map<String, Object>> records = new ArrayList<>();
@@ -502,7 +502,7 @@ public class SqliteOperator {
             resultSet.close();
             return records;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -518,11 +518,11 @@ public class SqliteOperator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             return JdbcHelper.executeUpdate(connection, sql.toString(), primaryKey.getColumnData());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -556,11 +556,11 @@ public class SqliteOperator {
                     .append(limit)
                     .append(")");
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             return JdbcHelper.executeUpdate(connection, sql.toString());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 }

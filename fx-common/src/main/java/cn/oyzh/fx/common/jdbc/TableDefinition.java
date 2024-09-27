@@ -69,7 +69,7 @@ public class TableDefinition {
         if (columnDefinition != null) {
             Field field = ReflectUtil.getField(model.getClass(), columnDefinition.getFieldName(), true);
             field.setAccessible(true);
-           return field.get(model);
+            return field.get(model);
         }
         return null;
     }

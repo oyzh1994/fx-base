@@ -2,9 +2,8 @@ package cn.oyzh.fx.common.h2;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
-import cn.oyzh.fx.common.jdbc.JdbcConnManager;
+import cn.oyzh.fx.common.jdbc.JdbcManager;
 import cn.oyzh.fx.common.jdbc.JdbcHelper;
 import cn.oyzh.fx.common.jdbc.JdbcResultSet;
 import cn.oyzh.fx.common.jdbc.PageParam;
@@ -53,35 +52,14 @@ public class H2Operator {
      * @return 结果
      */
     public boolean initTable() throws Exception {
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             String tableName = this.tableDefinition.getTableName();
-            String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
-            JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql, tableName);
+            ResultSet resultSet = connection.getMetaData().getTables(null, null, tableName.toUpperCase(), null);
             boolean exists = resultSet.next();
             resultSet.close();
             if (exists) {
-                boolean changed = false;
-                for (ColumnDefinition column : this.tableDefinition.getColumns()) {
-                    ResultSet resultSet1 = connection.getMetaData().getColumns(null, null, tableName, column.getColumnName());
-                    // 字段不存在
-                    if (!resultSet1.next()) {
-                        changed = true;
-                    } else {
-                        // 字段类型不相同
-                        String typeName = resultSet1.getString("TYPE_NAME");
-                        if (!StrUtil.equalsIgnoreCase(typeName, column.getColumnType())) {
-                            changed = true;
-                        }
-                    }
-                    resultSet1.close();
-                    if (changed) {
-                        break;
-                    }
-                }
-                if (changed) {
-                    this.alterTable();
-                }
+                this.alterTable();
             } else {
                 this.createTable();
             }
@@ -89,93 +67,86 @@ public class H2Operator {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
         return false;
     }
 
     protected void alterTable() throws SQLException {
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
-            // 旧表更名
             String tableName = this.tableName();
-            String oldTableName = tableName + "_" + DateUtil.format("yyyyMMdd") + "_old_table";
-            StringBuilder sql = new StringBuilder("ALTER TABLE ");
-            sql.append(H2Util.wrap(tableName))
-                    .append(" RENAME TO ")
-                    .append(H2Util.wrap(oldTableName));
-            JdbcHelper.executeUpdate(connection, sql.toString());
-
-            // 创建新表
-            this.createTable();
-
-            // 查询新表字段
-            ResultSet resultSet1 = connection.getMetaData().getColumns(null, null, tableName, null);
-            List<String> cols1 = new ArrayList<>();
-            while (resultSet1.next()) {
-                cols1.add(resultSet1.getString("COLUMN_NAME"));
+            List<ColumnDefinition> addedColumns = new ArrayList<>();
+            List<ColumnDefinition> changedColumns = new ArrayList<>();
+            for (ColumnDefinition column : this.tableDefinition.getColumns()) {
+                ResultSet resultSet1 = connection.getMetaData().getColumns(null, null, tableName.toUpperCase(), column.getColumnName().toUpperCase());
+                // 字段不存在
+                if (!resultSet1.next()) {
+                    addedColumns.add(column);
+                } else {
+                    // 字段类型不相同
+                    String typeName = resultSet1.getString("TYPE_NAME");
+                    if (!StrUtil.equalsIgnoreCase(typeName, column.getColumnType())) {
+                        changedColumns.add(column);
+                    }
+                }
+                resultSet1.close();
             }
-            resultSet1.close();
-
-            // 查询旧表字段
-            ResultSet resultSet2 = connection.getMetaData().getColumns(null, null, oldTableName, null);
-            List<String> cols2 = new ArrayList<>();
-            while (resultSet2.next()) {
-                cols2.add(resultSet2.getString("COLUMN_NAME"));
+            if (!addedColumns.isEmpty() || !changedColumns.isEmpty()) {
+                for (ColumnDefinition column : addedColumns) {
+                    StringBuilder sql = new StringBuilder();
+                    sql.append("ALTER TABLE ");
+                    sql.append(tableName.toUpperCase());
+                    sql.append(" ADD COLUMN ");
+                    sql.append(H2Util.wrap(column.getColumnName()));
+                    sql.append(" ");
+                    sql.append(column.getColumnType().toUpperCase());
+                    if (column.isPrimaryKey()) {
+                        sql.append(" PRIMARY KEY");
+                    }
+                    JdbcHelper.executeUpdate(connection, sql.toString());
+                }
+                for (ColumnDefinition column : changedColumns) {
+                    StringBuilder sql = new StringBuilder();
+                    sql.append("ALTER TABLE ");
+                    sql.append(tableName.toUpperCase());
+                    sql.append(" ALTER COLUMN ");
+                    sql.append(H2Util.wrap(column.getColumnName()));
+                    sql.append(" ");
+                    sql.append(column.getColumnType().toUpperCase());
+                    if (column.isPrimaryKey()) {
+                        sql.append(" NOT NULL");
+                    }
+                    JdbcHelper.executeUpdate(connection, sql.toString());
+                }
             }
-            resultSet2.close();
-
-            // 获取交集
-            List<String> cols3 = cols1.stream().filter(cols2::contains).toList();
-
-            // 交集为空则直接返回
-            if (cols3.isEmpty()) {
-                return;
-            }
-
-            // 转移数据
-            StringBuilder sql1 = new StringBuilder("INSERT INTO ");
-            sql1.append(H2Util.wrap(tableName))
-                    .append("(");
-            for (String col : cols3) {
-                sql1.append(H2Util.wrap(col)).append(",");
-            }
-            sql1.deleteCharAt(sql1.length() - 1);
-            sql1.append(") SELECT");
-            for (String col : cols3) {
-                sql1.append(H2Util.wrap(col)).append(",");
-            }
-            sql1.deleteCharAt(sql1.length() - 1);
-            sql1.append(" FROM ")
-                    .append(H2Util.wrap(oldTableName));
-            JdbcHelper.execute(connection, sql1.toString());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
     protected void createTable() throws SQLException {
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             String tableName = this.tableName();
-            StringBuilder sql1 = new StringBuilder();
-            sql1.append("CREATE TABLE ")
+            StringBuilder sql = new StringBuilder();
+            sql.append("CREATE TABLE ")
                     .append(H2Util.wrap(tableName))
                     .append(" (");
-            for (ColumnDefinition columnDefinition : this.tableDefinition.getColumns()) {
-                sql1.append(H2Util.wrap(columnDefinition.getColumnName()))
+            for (ColumnDefinition column : this.tableDefinition.getColumns()) {
+                sql.append(H2Util.wrap(column.getColumnName()))
                         .append(" ")
-                        .append(columnDefinition.getColumnType());
-                if (columnDefinition.isPrimaryKey()) {
-                    sql1.append(" primary key");
+                        .append(column.getColumnType().toUpperCase());
+                if (column.isPrimaryKey()) {
+                    sql.append(" PRIMARY KEY");
                 }
-                sql1.append(",");
+                sql.append(",");
             }
-            sql1.deleteCharAt(sql1.length() - 1);
-            sql1.append(")");
-            JdbcHelper.executeUpdate(connection, sql1.toString());
+            sql.deleteCharAt(sql.length() - 1);
+            sql.append(")");
+            JdbcHelper.executeUpdate(connection, sql.toString());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -185,14 +156,14 @@ public class H2Operator {
         sql.append(tableName);
         sql.append("(");
         for (String column : record.keySet()) {
-            sql.append(column).append(",");
+            sql.append(H2Util.wrap(column)).append(",");
         }
         sql.deleteCharAt(sql.length() - 1);
         sql.append(") VALUES(");
         sql.append("?,".repeat(record.size()));
         sql.deleteCharAt(sql.length() - 1);
         sql.append(")");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             List<Object> values = new ArrayList<>();
             for (String key : record.keySet()) {
@@ -200,7 +171,7 @@ public class H2Operator {
             }
             return JdbcHelper.executeUpdate(connection, sql.toString(), values);
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -222,7 +193,7 @@ public class H2Operator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             List<Object> values = new ArrayList<>();
             for (String key : record.keySet()) {
@@ -231,7 +202,7 @@ public class H2Operator {
             values.add(primaryKey.getColumnData());
             return JdbcHelper.executeUpdate(connection, sql.toString(), values);
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -247,7 +218,7 @@ public class H2Operator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString(), primaryKey.getColumnData());
             boolean exists = false;
@@ -257,7 +228,7 @@ public class H2Operator {
             resultSet.close();
             return exists;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -279,7 +250,7 @@ public class H2Operator {
                 sql.append(H2Util.wrapData(entry.getValue()));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             boolean exists = false;
@@ -289,7 +260,7 @@ public class H2Operator {
             resultSet.close();
             return exists;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -305,7 +276,7 @@ public class H2Operator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString(), primaryKey.getColumnData());
             Map<String, Object> record = new HashMap<>();
@@ -320,7 +291,7 @@ public class H2Operator {
             resultSet.close();
             return record;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -332,7 +303,7 @@ public class H2Operator {
         sql.append(param.getName());
         sql.append("=");
         sql.append(H2Util.wrapData(param.getData()));
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             Map<String, Object> record = new HashMap<>();
@@ -347,16 +318,16 @@ public class H2Operator {
             resultSet.close();
             return record;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
     public List<Map<String, Object>> selectList(SelectListParam param) throws SQLException {
         String tableName = tableDefinition.getTableName();
         StringBuilder sql = new StringBuilder("SELECT ");
-        if(CollUtil.isEmpty(param.getQueryColumns())){
+        if (CollUtil.isEmpty(param.getQueryColumns())) {
             sql.append("*");
-        }else{
+        } else {
             for (String queryColumn : param.getQueryColumns()) {
                 sql.append(queryColumn).append(",");
             }
@@ -378,7 +349,7 @@ public class H2Operator {
                 sql.append(H2Util.wrapData(queryParam.getData()));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             List<Map<String, Object>> records = new ArrayList<>();
@@ -395,7 +366,7 @@ public class H2Operator {
             resultSet.close();
             return records;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -417,7 +388,7 @@ public class H2Operator {
                 sql.append(H2Util.wrapData(param.getData()));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             long count = 0;
@@ -427,7 +398,7 @@ public class H2Operator {
             resultSet.close();
             return count;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -449,7 +420,7 @@ public class H2Operator {
                 sql.append(H2Util.wrapData("%" + kw + "%"));
             }
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             long count = 0;
@@ -459,7 +430,7 @@ public class H2Operator {
             resultSet.close();
             return count;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -485,7 +456,7 @@ public class H2Operator {
                 .append(pageParam.getLimit())
                 .append(" OFFSET ")
                 .append(pageParam.getStart());
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             JdbcResultSet resultSet = JdbcHelper.executeQuery(connection, sql.toString());
             List<Map<String, Object>> records = new ArrayList<>();
@@ -502,7 +473,7 @@ public class H2Operator {
             resultSet.close();
             return records;
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -518,11 +489,11 @@ public class H2Operator {
         sql.append(" WHERE ");
         sql.append(primaryKey.getColumnName());
         sql.append("=?");
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             return JdbcHelper.executeUpdate(connection, sql.toString(), primaryKey.getColumnData());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 
@@ -556,11 +527,11 @@ public class H2Operator {
                     .append(limit)
                     .append(")");
         }
-        Connection connection = JdbcConnManager.takeoff();
+        Connection connection = JdbcManager.takeoff();
         try {
             return JdbcHelper.executeUpdate(connection, sql.toString());
         } finally {
-            JdbcConnManager.giveback(connection);
+            JdbcManager.giveback(connection);
         }
     }
 }

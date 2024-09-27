@@ -1,5 +1,6 @@
 package cn.oyzh.fx.common.jdbc;
 
+import cn.oyzh.fx.common.h2.H2Util;
 import cn.oyzh.fx.common.sqlite.SqlLiteUtil;
 import lombok.Data;
 
@@ -36,7 +37,13 @@ public class ColumnDefinition {
                 columnDefinition.setColumnName(column.value());
             }
             if (column.type().isEmpty()) {
-                columnDefinition.setColumnType(SqlLiteUtil.toSqlType(field.getType()));
+                String columnType = "";
+                if (JdbcManager.dialect == JdbcDialect.H2) {
+                    columnType = H2Util.toSqlType(field.getType());
+                } else if (JdbcManager.dialect == JdbcDialect.SQLITE) {
+                    columnType = SqlLiteUtil.toSqlType(field.getType());
+                }
+                columnDefinition.setColumnType(columnType);
             } else {
                 columnDefinition.setColumnType(column.type());
             }

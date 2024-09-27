@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.jdbc;
 
 import cn.hutool.core.collection.CollUtil;
-import lombok.Getter;
 import lombok.experimental.UtilityClass;
 
 import java.sql.Connection;
@@ -16,22 +15,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 2024-09-25
  */
 @UtilityClass
-public class JdbcConnManager {
+public class JdbcManager {
 
     /**
-     * db文件
+     * 方言
      */
-    @Getter
-    private static String dbFile;
+    public static JdbcDialect dialect;
 
     /**
      * 连接列表
      */
     private static final List<JdbcConn> CONNECTIONS = new CopyOnWriteArrayList<>();
 
-    public static void initDb(String dbFile) throws Exception {
-        JdbcConnManager.dbFile = dbFile;
-        takeoff();
+    static {
+        String dialect = System.getProperty(JdbcConst.DB_DIALECT);
+        JdbcManager.dialect = JdbcDialect.valueOf(dialect);
     }
 
     /**
@@ -46,7 +44,13 @@ public class JdbcConnManager {
                 return connection.takeoff();
             }
         }
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+        String dbFile = System.getProperty(JdbcConst.DB_FILE);
+        Connection connection;
+        if (dialect == JdbcDialect.H2) {
+            connection = DriverManager.getConnection("jdbc:h2:" + dbFile);
+        } else {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+        }
         CONNECTIONS.add(new JdbcConn(connection));
         return connection;
     }

@@ -23,24 +23,25 @@
 
     <properties>
         <fx.version>1.3.2</fx.version>
-        <lombok.version>1.18.34</lombok.version>
-        <junit.version>4.13.2</junit.version>
-        <snakeyaml.version>2.3</snakeyaml.version>
         <poi.version>5.3.0</poi.version>
+        <h2.version>2.3.232</h2.version>
         <jsch.version>0.2.17</jsch.version>
         <zxing.version>3.5.3</zxing.version>
         <dom4j.version>2.1.3</dom4j.version>
         <log4j.version>2.24.0</log4j.version>
+        <junit.version>4.13.2</junit.version>
         <spring.version>6.0.18</spring.version>
         <hutool.version>5.8.26</hutool.version>
+        <lombok.version>1.18.34</lombok.version>
         <lombok.version>1.18.32</lombok.version>
         <javafx.version>24-ea+5</javafx.version>
         <guava.version>33.1.0-jre</guava.version>
         <sqllit.version>3.46.1.0</sqllit.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
         <fastjson.version>2.0.52</fastjson.version>
-        <spring.boot.version>3.1.12</spring.boot.version>
         <richtextfx.version>0.11.3</richtextfx.version>
         <maven.compiler.source>21</maven.compiler.source>
+        <spring.boot.version>3.1.12</spring.boot.version>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
