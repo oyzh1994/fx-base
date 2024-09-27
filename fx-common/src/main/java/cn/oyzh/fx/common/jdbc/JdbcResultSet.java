@@ -41,6 +41,14 @@ public class JdbcResultSet implements AutoCloseable {
         return this.resultSet.findColumn(columnLabel);
     }
 
+    public boolean containsColumn(String columnLabel) {
+        try {
+            return this.resultSet.findColumn(columnLabel) >= 0;
+        } catch (SQLException ignored) {
+        }
+        return false;
+    }
+
     public Object getObject(String columnLabel) throws SQLException {
         return this.resultSet.getObject(columnLabel);
     }

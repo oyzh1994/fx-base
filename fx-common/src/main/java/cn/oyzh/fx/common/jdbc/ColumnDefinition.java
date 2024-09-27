@@ -57,4 +57,11 @@ public class ColumnDefinition {
         }
         return null;
     }
+
+    public String getColumnName() {
+        if (JdbcManager.dialect == JdbcDialect.H2) {
+            return this.columnName.toUpperCase();
+        }
+        return this.columnName;
+    }
 }

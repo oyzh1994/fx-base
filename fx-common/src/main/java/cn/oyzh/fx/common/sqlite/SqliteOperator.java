@@ -1,5 +1,6 @@
 package cn.oyzh.fx.common.sqlite;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
@@ -7,12 +8,14 @@ import cn.oyzh.fx.common.jdbc.JdbcConn;
 import cn.oyzh.fx.common.jdbc.JdbcHelper;
 import cn.oyzh.fx.common.jdbc.JdbcManager;
 import cn.oyzh.fx.common.jdbc.JdbcOperator;
+import cn.oyzh.fx.common.jdbc.JdbcUtil;
 import cn.oyzh.fx.common.jdbc.TableDefinition;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author oyzh
@@ -28,7 +31,7 @@ public class SqliteOperator extends JdbcOperator {
     public boolean initTable() throws Exception {
         JdbcConn connection = JdbcManager.takeoff();
         try {
-            String tableName = this.tableDefinition.getTableName();
+            String tableName = this.tableName();
             ResultSet resultSet = connection.getTables(tableName);
             boolean exists = resultSet.next();
             resultSet.close();
@@ -145,6 +148,45 @@ public class SqliteOperator extends JdbcOperator {
             sql1.deleteCharAt(sql1.length() - 1);
             sql1.append(")");
             JdbcHelper.executeUpdate(connection, sql1.toString());
+        } finally {
+            JdbcManager.giveback(connection);
+        }
+    }
+
+    @Override
+    public int delete(Map<String, Object> params, Long limit) throws SQLException {
+        String tableName = this.tableName();
+        StringBuilder sql = new StringBuilder("DELETE FROM ");
+        sql.append(JdbcUtil.wrap(tableName));
+        if (CollUtil.isNotEmpty(params)) {
+            boolean first = true;
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (first) {
+                    first = false;
+                    sql.append(" WHERE ");
+                } else {
+                    sql.append(" AND ");
+                }
+                sql.append(entry.getKey());
+                sql.append("=");
+                sql.append(JdbcUtil.wrapData(entry.getValue()));
+            }
+        }
+        if (limit != null && limit > 0) {
+            if (CollUtil.isEmpty(params)) {
+                sql.append(" WHERE ");
+            } else {
+                sql.append(" AND ");
+            }
+            sql.append(" rowid IN ( SELECT rowid FROM ")
+                    .append(tableName)
+                    .append(" LIMIT ")
+                    .append(limit)
+                    .append(")");
+        }
+        JdbcConn connection = JdbcManager.takeoff();
+        try {
+            return JdbcHelper.executeUpdate(connection, sql.toString());
         } finally {
             JdbcManager.giveback(connection);
         }

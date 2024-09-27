@@ -145,10 +145,18 @@ public abstract class JdbcStore<M extends Serializable> {
         }
         return null;
     }
-
-    public M selectOne(QueryParam param) {
+    public M selectOne(SelectParam selectParam) {
         try {
-            return this.toModel(this.operator.selectOne(param));
+            return this.toModel(this.operator.selectOne(selectParam));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public M selectOne(QueryParam queryParam) {
+        try {
+            return this.toModel(this.operator.selectOne(queryParam));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -156,16 +164,16 @@ public abstract class JdbcStore<M extends Serializable> {
     }
 
     public List<M> selectList() {
-        return this.selectList(SelectListParam.EMPTY);
+        return this.selectList(SelectParam.EMPTY);
     }
 
     public List<M> selectList(QueryParam queryParam) {
-        SelectListParam param = new SelectListParam();
+        SelectParam param = new SelectParam();
         param.addQueryParam(queryParam);
         return this.selectList(param);
     }
 
-    public List<M> selectList(SelectListParam param) {
+    public List<M> selectList(SelectParam param) {
         try {
             List<Map<String, Object>> list = this.operator.selectList(param);
             if (CollUtil.isNotEmpty(list)) {

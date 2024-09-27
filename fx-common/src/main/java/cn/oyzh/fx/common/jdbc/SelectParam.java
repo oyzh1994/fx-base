@@ -10,13 +10,13 @@ import java.util.List;
  * @since 2024-09-26
  */
 @Data
-public class SelectListParam {
+public class SelectParam {
 
-    public static SelectListParam EMPTY = new SelectListParam();
-
-    private List<QueryParam> queryParams;
+    public static SelectParam EMPTY = new SelectParam();
 
     private List<String> queryColumns;
+
+    private List<QueryParam> queryParams;
 
     public void addQueryParam(QueryParam queryParam) {
         if (this.queryParams == null) {
@@ -32,16 +32,15 @@ public class SelectListParam {
         this.queryColumns.add(column);
     }
 
-
-    public SelectListParam() {
+    public SelectParam() {
 
     }
 
-    public SelectListParam(List<QueryParam> queryParams) {
+    public SelectParam(List<QueryParam> queryParams) {
         this.queryParams = queryParams;
     }
 
-    public SelectListParam(List<QueryParam> queryParams, List<String> queryColumns) {
+    public SelectParam(List<QueryParam> queryParams, List<String> queryColumns) {
         this.queryParams = queryParams;
         this.queryColumns = queryColumns;
     }

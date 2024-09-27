@@ -29,11 +29,11 @@ import java.util.Date;
 public class JdbcUtil {
 
     public static Boolean toBool(Object sqlData) {
-        if (sqlData instanceof Boolean) {
-            return (Boolean) sqlData;
+        if (sqlData instanceof Boolean b) {
+            return b;
         }
         if (sqlData instanceof Number n) {
-            return n.intValue() == 1;
+            return n.byteValue() == 1;
         }
         if (sqlData instanceof CharSequence n) {
             return StrUtil.equalsAnyIgnoreCase(n, "1", "y", "yes", "true");
