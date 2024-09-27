@@ -17,7 +17,7 @@ import java.util.Collection;
  * @since 2024-09-25
  */
 @UtilityClass
-public class JdbcUtil {
+public class JdbcHelper {
 
     public static void execute(Connection connection, String sql) throws SQLException {
         JulLog.info(sql);
