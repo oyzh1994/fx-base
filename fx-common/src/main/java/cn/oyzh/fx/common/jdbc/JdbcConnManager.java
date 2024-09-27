@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 2024-09-25
  */
 @UtilityClass
-public class SqliteConnManager {
+public class JdbcConnManager {
 
     /**
      * db文件
@@ -27,10 +27,10 @@ public class SqliteConnManager {
     /**
      * 连接列表
      */
-    private static final List<SqliteConn> CONNECTIONS = new CopyOnWriteArrayList<>();
+    private static final List<JdbcConn> CONNECTIONS = new CopyOnWriteArrayList<>();
 
     public static void initDb(String dbFile) throws Exception {
-        SqliteConnManager.dbFile = dbFile;
+        JdbcConnManager.dbFile = dbFile;
         takeoff();
     }
 
@@ -41,13 +41,13 @@ public class SqliteConnManager {
      * @throws SQLException 异常
      */
     public static Connection takeoff() throws SQLException {
-        for (SqliteConn connection : CONNECTIONS) {
+        for (JdbcConn connection : CONNECTIONS) {
             if (connection.isUsable()) {
                 return connection.takeoff();
             }
         }
         Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-        CONNECTIONS.add(new SqliteConn(connection));
+        CONNECTIONS.add(new JdbcConn(connection));
         return connection;
     }
 
@@ -58,8 +58,8 @@ public class SqliteConnManager {
      */
     public static void giveback(Connection connection) {
         if (connection != null) {
-            List<SqliteConn> invalid = null;
-            for (SqliteConn sqlConnection : CONNECTIONS) {
+            List<JdbcConn> invalid = null;
+            for (JdbcConn sqlConnection : CONNECTIONS) {
                 if (sqlConnection.isInvalid()) {
                     if (invalid == null) {
                         invalid = new ArrayList<>();

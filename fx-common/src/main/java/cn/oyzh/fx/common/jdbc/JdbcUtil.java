@@ -1,30 +1,22 @@
 package cn.oyzh.fx.common.jdbc;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.date.LocalDateTimeUtil;
 import cn.oyzh.fx.common.date.LocalDateUtil;
 import cn.oyzh.fx.common.date.LocalTimeUtil;
 import cn.oyzh.fx.common.date.ZonedDateTimeUtil;
-import cn.oyzh.fx.common.log.JulLog;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.JDBCType;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -32,7 +24,7 @@ import java.util.Date;
  * @since 2024-09-25
  */
 @UtilityClass
-public class JdbcDataUtil {
+public class JdbcUtil {
 
     public static Boolean toBool(Object sqlData) {
         if (sqlData instanceof Boolean) {

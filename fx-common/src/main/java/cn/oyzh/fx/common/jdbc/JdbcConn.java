@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2024-09-25
  */
-public class SqliteConn {
+public class JdbcConn {
 
     /**
      * 0 正常
@@ -25,7 +25,7 @@ public class SqliteConn {
     @Getter
     private final Connection connection;
 
-    public SqliteConn(Connection connection) {
+    public JdbcConn(Connection connection) {
         Assert.notNull(connection);
         this.connection = connection;
         this.status = new AtomicInteger(0);

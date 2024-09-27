@@ -2,6 +2,7 @@ package cn.oyzh.fx.common.sqlite;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
+import cn.oyzh.fx.common.jdbc.JdbcUtil;
 import cn.oyzh.fx.common.jdbc.PageParam;
 import cn.oyzh.fx.common.jdbc.PrimaryKeyColumn;
 import cn.oyzh.fx.common.jdbc.QueryParam;
@@ -65,7 +66,7 @@ public abstract class SqliteStore<M extends Serializable> {
             Field field = ReflectUtil.getField(model.getClass(), column.getFieldName(), true);
             field.setAccessible(true);
             Object sqlData = record.get(column.getColumnName());
-            Object javaValue = SqlLiteUtil.toJavaValue(field.getType(), sqlData);
+            Object javaValue = JdbcUtil.toJavaValue(field.getType(), sqlData);
             if (javaValue != null) {
                 field.set(model, javaValue);
             }
