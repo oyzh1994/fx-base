@@ -2,8 +2,8 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
+import cn.oyzh.fx.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

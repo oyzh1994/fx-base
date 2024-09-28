@@ -1,8 +1,6 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.common.util;
 
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
-import javafx.scene.image.Image;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -18,55 +16,8 @@ import java.util.List;
  * @author oyzh
  * @since 2023/02/28
  */
-//@Slf4j
 @UtilityClass
 public class ResourceUtil {
-
-    /**
-     * 获取图片
-     *
-     * @param imgUrls 图片列表地址
-     * @return 图片列表
-     */
-    public static List<Image> getImages(@NonNull String[] imgUrls) {
-        return getImages(Arrays.asList(imgUrls));
-    }
-
-    /**
-     * 获取图片
-     *
-     * @param imgUrls 图片列表地址
-     * @return 图片列表
-     */
-    public static List<Image> getImages(@NonNull List<String> imgUrls) {
-        List<Image> icons = new ArrayList<>(imgUrls.size());
-        for (String url : imgUrls) {
-            JulLog.info("load imgUrl:{}", url);
-            InputStream stream = getResourceAsStream(url);
-            if (stream == null) {
-                JulLog.warn("img stream is null.");
-            } else {
-                icons.add(new Image(stream));
-            }
-        }
-        return icons;
-    }
-
-    /**
-     * 获取图片
-     *
-     * @param imgUrl 图片地址
-     * @return 图片
-     */
-    public static Image getImage(@NonNull String imgUrl) {
-        JulLog.info("load imgUrl:{}", imgUrl);
-        InputStream stream = getResourceAsStream(imgUrl);
-        if (stream == null) {
-            JulLog.warn("img stream is null.");
-            return null;
-        }
-        return new Image(stream);
-    }
 
     /**
      * 获取资源

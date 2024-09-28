@@ -4,7 +4,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.util.ResourceUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
@@ -60,7 +60,7 @@ public class FlexImageView extends ImageView implements FlexAdapter, TipAdapter 
 
     public void setUrl(@NonNull String url) {
         this.url = url;
-        super.setImage(ResourceUtil.getImage(url));
+        super.setImage(FXUtil.getImage(url));
     }
 
     @Override

@@ -5,12 +5,14 @@ import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
 import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.fx.common.util.ResourceUtil;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.robot.Robot;
 import javafx.stage.Window;
 import lombok.Getter;
@@ -18,6 +20,10 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -240,5 +246,51 @@ public class FXUtil {
      */
     public static void disableCSSLogger() {
         Logging.getCSSLogger().disableLogging();
+    }
+
+    /**
+     * 获取图片
+     *
+     * @param imgUrls 图片列表地址
+     * @return 图片列表
+     */
+    public static List<Image> getImages(@NonNull String[] imgUrls) {
+        return getImages(Arrays.asList(imgUrls));
+    }
+
+    /**
+     * 获取图片
+     *
+     * @param imgUrls 图片列表地址
+     * @return 图片列表
+     */
+    public static List<Image> getImages(@NonNull List<String> imgUrls) {
+        List<Image> icons = new ArrayList<>(imgUrls.size());
+        for (String url : imgUrls) {
+            JulLog.info("load imgUrl:{}", url);
+            InputStream stream =ResourceUtil. getResourceAsStream(url);
+            if (stream == null) {
+                JulLog.warn("img stream is null.");
+            } else {
+                icons.add(new Image(stream));
+            }
+        }
+        return icons;
+    }
+
+    /**
+     * 获取图片
+     *
+     * @param imgUrl 图片地址
+     * @return 图片
+     */
+    public static Image getImage(@NonNull String imgUrl) {
+        JulLog.info("load imgUrl:{}", imgUrl);
+        InputStream stream = ResourceUtil.getResourceAsStream(imgUrl);
+        if (stream == null) {
+            JulLog.warn("img stream is null.");
+            return null;
+        }
+        return new Image(stream);
     }
 }

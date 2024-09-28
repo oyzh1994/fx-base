@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.changelog;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONUtil;
-import cn.oyzh.fx.plus.util.ResourceUtil;
+import cn.oyzh.fx.common.util.ResourceUtil;
 import lombok.experimental.UtilityClass;
 
 import java.net.URL;

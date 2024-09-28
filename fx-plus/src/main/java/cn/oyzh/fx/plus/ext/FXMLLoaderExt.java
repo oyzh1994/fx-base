@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.ext;
 
+import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.fx.plus.controller.ControllerFactory;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
-import cn.oyzh.fx.plus.spring.SpringControllerFactory;
-import cn.oyzh.fx.plus.util.ResourceUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import lombok.NonNull;
@@ -19,7 +19,7 @@ public class FXMLLoaderExt extends FXMLLoader {
 
     {
         this.setBuilderFactory(new JavaFXBuilderFactory());
-        this.setControllerFactory(new SpringControllerFactory());
+        this.setControllerFactory(new ControllerFactory());
     }
 
     /**

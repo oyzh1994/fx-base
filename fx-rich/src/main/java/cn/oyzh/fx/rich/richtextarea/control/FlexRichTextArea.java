@@ -1,6 +1,7 @@
 package cn.oyzh.fx.rich.richtextarea.control;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -9,7 +10,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.ColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.ResourceUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextarea.ext.RichActionFactory;
 import com.gluonhq.richtextarea.DefaultParagraphGraphicFactory;
