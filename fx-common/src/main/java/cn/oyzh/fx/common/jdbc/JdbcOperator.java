@@ -426,5 +426,5 @@ public abstract class JdbcOperator {
         }
     }
 
-    public abstract int delete(Map<String, Object> params, Long limit) throws SQLException;
+    public abstract int delete(DeleteParam deleteParam) throws SQLException;
 }

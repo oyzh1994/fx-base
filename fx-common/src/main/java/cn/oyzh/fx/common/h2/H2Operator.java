@@ -3,11 +3,13 @@ package cn.oyzh.fx.common.h2;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
+import cn.oyzh.fx.common.jdbc.DeleteParam;
 import cn.oyzh.fx.common.jdbc.JdbcConn;
 import cn.oyzh.fx.common.jdbc.JdbcHelper;
 import cn.oyzh.fx.common.jdbc.JdbcManager;
 import cn.oyzh.fx.common.jdbc.JdbcOperator;
 import cn.oyzh.fx.common.jdbc.JdbcUtil;
+import cn.oyzh.fx.common.jdbc.QueryParam;
 import cn.oyzh.fx.common.jdbc.TableDefinition;
 
 import java.sql.ResultSet;
@@ -126,26 +128,26 @@ public class H2Operator extends JdbcOperator {
     }
 
     @Override
-    public int delete(Map<String, Object> params, Long limit) throws SQLException {
+    public int delete(DeleteParam deleteParam) throws SQLException {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (CollUtil.isNotEmpty(params)) {
+        if (CollUtil.isNotEmpty(deleteParam.getQueryParams())) {
             boolean first = true;
-            for (Map.Entry<String, Object> entry : params.entrySet()) {
+            for (QueryParam queryParam : deleteParam.getQueryParams()) {
                 if (first) {
                     first = false;
                     sql.append(" WHERE ");
                 } else {
                     sql.append(" AND ");
                 }
-                sql.append(entry.getKey());
-                sql.append("=");
-                sql.append(JdbcUtil.wrapData(entry.getValue()));
+                sql.append(queryParam.getName());
+                sql.append(queryParam.getOperator());
+                sql.append(JdbcUtil.wrapData(queryParam.getData()));
             }
         }
-        if (limit != null && limit > 0) {
-            sql.append(" LIMIT ").append(limit);
+        if (deleteParam.getLimit() != null && deleteParam.getLimit() > 0) {
+            sql.append(" LIMIT ").append(deleteParam.getLimit());
         }
         JdbcConn connection = JdbcManager.takeoff();
         try {

@@ -255,13 +255,9 @@ public abstract class JdbcStore<M extends Serializable> {
         return false;
     }
 
-    public boolean delete(Map<String, Object> params) {
-        return this.delete(params, 1L);
-    }
-
-    public boolean delete(Map<String, Object> params, long limit) {
+    public boolean delete(DeleteParam deleteParam) {
         try {
-            return this.operator.delete(params, limit) > 0;
+            return this.operator.delete(deleteParam) > 0;
         } catch (Exception ex) {
             ex.printStackTrace();
         }

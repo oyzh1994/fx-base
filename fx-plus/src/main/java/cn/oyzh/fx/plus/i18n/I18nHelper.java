@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.i18n;
 
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -228,6 +229,8 @@ public class I18nHelper {
     public static final String UPDATED = "base.updated";
 
     public static final String FOUND = "base.found";
+
+    public static final String NOT_FOUND = "base.notFound";
 
     public static final String CURRENT = "base.current";
 
@@ -2513,5 +2516,9 @@ public class I18nHelper {
 
     public static String themeDracula() {
         return I18nResourceBundle.i18nString(THEME_DRACULA);
+    }
+
+    public static String notFoundData() {
+        return I18nResourceBundle.i18nString(NOT_FOUND, DATA);
     }
 }

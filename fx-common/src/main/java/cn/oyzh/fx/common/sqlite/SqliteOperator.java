@@ -4,11 +4,13 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
+import cn.oyzh.fx.common.jdbc.DeleteParam;
 import cn.oyzh.fx.common.jdbc.JdbcConn;
 import cn.oyzh.fx.common.jdbc.JdbcHelper;
 import cn.oyzh.fx.common.jdbc.JdbcManager;
 import cn.oyzh.fx.common.jdbc.JdbcOperator;
 import cn.oyzh.fx.common.jdbc.JdbcUtil;
+import cn.oyzh.fx.common.jdbc.QueryParam;
 import cn.oyzh.fx.common.jdbc.TableDefinition;
 
 import java.sql.ResultSet;
@@ -154,26 +156,26 @@ public class SqliteOperator extends JdbcOperator {
     }
 
     @Override
-    public int delete(Map<String, Object> params, Long limit) throws SQLException {
+    public int delete(DeleteParam deleteParam) throws SQLException {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (CollUtil.isNotEmpty(params)) {
+        if (CollUtil.isNotEmpty(deleteParam.getQueryParams())) {
             boolean first = true;
-            for (Map.Entry<String, Object> entry : params.entrySet()) {
+            for (QueryParam queryParam : deleteParam.getQueryParams()) {
                 if (first) {
                     first = false;
                     sql.append(" WHERE ");
                 } else {
                     sql.append(" AND ");
                 }
-                sql.append(entry.getKey());
-                sql.append("=");
-                sql.append(JdbcUtil.wrapData(entry.getValue()));
+                sql.append(queryParam.getName());
+                sql.append(queryParam.getOperator());
+                sql.append(JdbcUtil.wrapData(queryParam.getData()));
             }
         }
-        if (limit != null && limit > 0) {
-            if (CollUtil.isEmpty(params)) {
+        if (deleteParam.getLimit() != null && deleteParam.getLimit() > 0) {
+            if (CollUtil.isEmpty(deleteParam.getQueryParams())) {
                 sql.append(" WHERE ");
             } else {
                 sql.append(" AND ");
@@ -181,7 +183,7 @@ public class SqliteOperator extends JdbcOperator {
             sql.append(" rowid IN ( SELECT rowid FROM ")
                     .append(tableName)
                     .append(" LIMIT ")
-                    .append(limit)
+                    .append(deleteParam.getLimit())
                     .append(")");
         }
         JdbcConn connection = JdbcManager.takeoff();
