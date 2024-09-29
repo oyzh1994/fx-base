@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.util;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
-import cn.hutool.core.io.IoUtil;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.ResourceUtil;
 import javafx.scene.image.Image;

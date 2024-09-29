@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.event.EventTarget;

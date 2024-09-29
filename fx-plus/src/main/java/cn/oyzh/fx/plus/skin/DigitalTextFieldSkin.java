@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -118,7 +118,7 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
         // 按钮大小，规则 组件高*0.5-3
         double size = (this.getSkinnable().getHeight() * 0.5 - 2);
         // 限制按钮大小
-        size = NumUtil.limit(size, 6, 15);
+        size = NumberUtil.limit(size, 6, 15);
         this.incrButton.setSize(size);
         this.decrButton.setSize(size);
         // 计算按钮实际大小

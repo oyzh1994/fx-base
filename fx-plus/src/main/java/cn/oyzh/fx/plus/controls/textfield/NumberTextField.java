@@ -1,8 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import javafx.scene.control.TextFormatter;
 
@@ -84,12 +83,12 @@ public class NumberTextField extends DigitalTextField {
                     }
                     Number number = NumberUtil.parseNumber(text);
                     // 如果超过了最大值，则将组件值设置为最大值
-                    if (this.maxVal != null && NumUtil.isGT(number.longValue(), this.maxVal)) {
+                    if (this.maxVal != null && cn.oyzh.fx.common.util.NumberUtil.isGT(number.longValue(), this.maxVal)) {
                         this.setValue(this.maxVal.longValue());
                         return null;
                     }
                     // 如果小于了最小值，则将组件值设置为最小值
-                    if (this.minVal != null && NumUtil.isLT(number.longValue(), this.minVal)) {
+                    if (this.minVal != null && cn.oyzh.fx.common.util.NumberUtil.isLT(number.longValue(), this.minVal)) {
                         this.setValue(this.minVal.longValue());
                         return null;
                     }

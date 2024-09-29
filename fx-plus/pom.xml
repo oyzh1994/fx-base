@@ -70,27 +70,27 @@
             <classifier>mac</classifier>
         </dependency>
 
-        <!--  缓存工具类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-cache</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
+        <!-- &lt;!&ndash;  缓存工具类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>cn.hutool</groupId> -->
+        <!--     <artifactId>hutool-cache</artifactId> -->
+        <!--     <version>${hutool.version}</version> -->
+        <!-- </dependency> -->
 
-        <!--  缓存工具类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-            <version>${hutool.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash;  缓存工具类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>cn.hutool</groupId> -->
+        <!--     <artifactId>hutool-extra</artifactId> -->
+        <!--     <version>${hutool.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
-        <!--  json工具类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-json</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
+        <!-- &lt;!&ndash;  json工具类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>cn.hutool</groupId> -->
+        <!--     <artifactId>hutool-json</artifactId> -->
+        <!--     <version>${hutool.version}</version> -->
+        <!-- </dependency> -->
 
         <!-- xml类库 -->
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
@@ -105,27 +105,27 @@
             <artifactId>fx-common</artifactId>
         </dependency>
 
-        <!--Spring 注解支持-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash;Spring 注解支持&ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.springframework</groupId> -->
+        <!--     <artifactId>spring-context</artifactId> -->
+        <!--     <version>${spring.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
-        <!-- Spring boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring.boot.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-autoconfigure</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash; Spring boot &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.springframework.boot</groupId> -->
+        <!--     <artifactId>spring-boot-starter</artifactId> -->
+        <!--     <version>${spring.boot.version}</version> -->
+        <!--     <exclusions> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.springframework.boot</groupId> -->
+        <!--             <artifactId>spring-boot-autoconfigure</artifactId> -->
+        <!--         </exclusion> -->
+        <!--     </exclusions> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx -->
         <dependency>

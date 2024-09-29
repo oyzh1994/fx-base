@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.util.CollectionUtil;
 import lombok.Data;
 

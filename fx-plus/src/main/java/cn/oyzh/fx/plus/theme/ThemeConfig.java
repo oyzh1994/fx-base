@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.theme;
 
 
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.Data;
 
 

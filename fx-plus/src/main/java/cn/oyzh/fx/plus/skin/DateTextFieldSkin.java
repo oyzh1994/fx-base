@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.skin;
 
 import atlantafx.base.controls.Calendar;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.controls.svg.CancelSVGGlyph;

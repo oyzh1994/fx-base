@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus;
 
-import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import javafx.scene.control.TextFormatter;
 
 /**
@@ -23,11 +23,11 @@ public interface LimitLenControl {
         if (this.getMaxLen() != null) {
             try {
                 // 新增
-                if (change.isAdded() && NumUtil.isGTEq(text.length(), this.getMaxLen())) {
+                if (change.isAdded() && NumberUtil.isGTEq(text.length(), this.getMaxLen())) {
                     return false;
                 }
                 // 替换
-                if (change.isReplaced() && NumUtil.isGTEq(text.length(), this.getMaxLen())) {
+                if (change.isReplaced() && NumberUtil.isGTEq(text.length(), this.getMaxLen())) {
                     return false;
                 }
             } catch (Exception ignore) {

@@ -3,7 +3,6 @@ package cn.oyzh.fx.common.h2;
 import cn.oyzh.fx.common.util.CollectionUtil;
 import lombok.experimental.UtilityClass;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

@@ -3,7 +3,7 @@ package cn.oyzh.fx.rich.richtextfx.control;
 import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.ExecutorUtil;
 import cn.oyzh.fx.common.thread.TaskManager;
-import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -447,7 +447,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
             int len = str.length();
             long lineStart = count.get();
             long lineEnd = count.get() + len + 1;
-            if (NumUtil.checkBound(lineStart, lineEnd, range.getStart(), range.getEnd())) {
+            if (NumberUtil.checkBound(lineStart, lineEnd, range.getStart(), range.getEnd())) {
                 map.put(line.get(), str);
             }
             line.incrementAndGet();

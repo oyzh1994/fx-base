@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.common.util.DestroyUtil;
 import cn.oyzh.fx.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;

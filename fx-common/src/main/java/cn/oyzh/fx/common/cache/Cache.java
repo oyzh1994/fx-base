@@ -14,4 +14,6 @@ public abstract class Cache<K,V> {
     public abstract void remove(K key) ;
 
     public abstract void clear() ;
+
+    public abstract boolean containsKey(K key) ;
 }

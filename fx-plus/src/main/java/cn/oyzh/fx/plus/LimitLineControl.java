@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus;
 
-import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import javafx.scene.control.TextFormatter;
 
 /**
@@ -24,11 +24,11 @@ public interface LimitLineControl {
             try {
                 var count = text.lines().count();
                 // 新增
-                if (change.isAdded() && NumUtil.isGTEq(count, this.getMaxLine())) {
+                if (change.isAdded() && NumberUtil.isGTEq(count, this.getMaxLine())) {
                     return false;
                 }
                 // 替换
-                if (change.isReplaced() && NumUtil.isGTEq(text.length(), this.getMaxLine())) {
+                if (change.isReplaced() && NumberUtil.isGTEq(text.length(), this.getMaxLine())) {
                     return false;
                 }
             } catch (Exception ignore) {

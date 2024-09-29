@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.trees;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.thread.Task;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;

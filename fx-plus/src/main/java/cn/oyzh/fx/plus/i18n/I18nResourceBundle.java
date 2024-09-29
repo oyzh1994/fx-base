@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.i18n;
 
-import cn.hutool.core.util.StrUtil;
-
 import javax.annotation.Nonnull;
 import java.util.Enumeration;
 import java.util.HashMap;

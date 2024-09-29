@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.TimedCache;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.cache.CacheUtil;
+import cn.oyzh.fx.common.cache.TimedCache;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import javafx.scene.shape.SVGPath;
 import org.dom4j.Document;
 import org.dom4j.Element;

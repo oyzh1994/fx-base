@@ -7,7 +7,7 @@ import lombok.experimental.UtilityClass;
  * @since 2023/8/29
  */
 @UtilityClass
-public class NumUtil {
+public class NumberUtil {
 
     /**
      * 格式化大小
@@ -112,5 +112,20 @@ public class NumUtil {
             return true;
         }
         return false;
+    }
+
+    public static boolean isLong(String str) {
+        return RegexUtil.isNumber(str);
+    }
+
+    public static boolean isNumber(String str) {
+        return RegexUtil.isNumber(str);
+    }
+
+    public static Long parseLong(String str) {
+        if (str != null && RegexUtil.isNumber(str)) {
+            return Long.parseLong(str);
+        }
+        return null;
     }
 }

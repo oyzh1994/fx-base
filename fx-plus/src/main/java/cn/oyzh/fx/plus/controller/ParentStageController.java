@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controller;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.WindowEvent;
 import lombok.NonNull;

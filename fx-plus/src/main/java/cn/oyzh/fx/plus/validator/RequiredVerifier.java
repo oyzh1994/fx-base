@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.validator;
 
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 

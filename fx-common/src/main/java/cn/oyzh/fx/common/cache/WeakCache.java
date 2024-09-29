@@ -25,4 +25,9 @@ public class WeakCache<K, V> extends Cache<K, V> {
     public void clear() {
 
     }
+
+    @Override
+    public boolean containsKey(K key) {
+        return false;
+    }
 }

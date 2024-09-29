@@ -68,4 +68,11 @@ public class CollectionUtil {
     public static boolean contains(List<?> list, Object t) {
         return list != null && list.contains(t);
     }
+
+    public static <T> T getFirst(List<T> list) {
+        if (list != null && !list.isEmpty()) {
+            return list.getFirst();
+        }
+        return null;
+    }
 }

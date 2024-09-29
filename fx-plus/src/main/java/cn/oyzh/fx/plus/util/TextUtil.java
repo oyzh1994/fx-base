@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.util;
 
 
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;

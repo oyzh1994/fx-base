@@ -10,7 +10,7 @@ public class CacheUtil {
         return new WeakCache<>();
     }
 
-    public static <K, V> TimedCache<K, V> newTimedCache(int timeout) {
+    public static <K, V> TimedCache<K, V> newTimedCache(long timeout) {
         return new TimedCache<>(timeout);
     }
 

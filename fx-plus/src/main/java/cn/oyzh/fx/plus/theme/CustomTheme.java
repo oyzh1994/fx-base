@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.Theme;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 

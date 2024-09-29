@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.jpackage;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackHandler;

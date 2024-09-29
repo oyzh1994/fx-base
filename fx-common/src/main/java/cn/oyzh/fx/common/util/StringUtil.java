@@ -187,7 +187,7 @@ public class StringUtil {
     }
 
     public static String replace(String src, String search, String replace) {
-        if (!isBlank(src) && !isEmpty(search) && !isEmpty(replace) {
+        if (!isEmpty(src) && !isEmpty(search) && !isEmpty(replace)) {
             return src.replace(search, replace);
         }
         return src;

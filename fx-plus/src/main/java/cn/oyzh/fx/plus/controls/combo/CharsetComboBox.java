@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.combo;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 import java.nio.charset.Charset;

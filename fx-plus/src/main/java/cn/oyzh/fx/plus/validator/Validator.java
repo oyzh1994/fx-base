@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.validator;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.scene.Node;
 

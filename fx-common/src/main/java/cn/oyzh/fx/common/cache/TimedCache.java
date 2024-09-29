@@ -10,9 +10,9 @@ public class TimedCache<K, V>  extends Cache<K,V>{
 
     private Map<K,V> cache;
 
-    private Integer timeout;
+    private long timeout;
 
-    public TimedCache(int timeout) {
+    public TimedCache(long timeout) {
         this.timeout = timeout;
     }
 
@@ -37,5 +37,10 @@ public class TimedCache<K, V>  extends Cache<K,V>{
     @Override
     public void clear() {
 
+    }
+
+    @Override
+    public boolean containsKey(K key) {
+        return false;
     }
 }

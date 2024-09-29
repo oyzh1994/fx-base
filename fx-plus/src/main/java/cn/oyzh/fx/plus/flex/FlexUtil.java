@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.flex;
 
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.experimental.UtilityClass;
 
 /**

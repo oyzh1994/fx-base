@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.handler;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.WeakCache;
+import cn.oyzh.fx.common.cache.CacheUtil;
+import cn.oyzh.fx.common.cache.WeakCache;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import javafx.event.EventTarget;
 import javafx.scene.input.KeyCode;
@@ -20,7 +20,7 @@ public class EscHideHandler {
     /**
      * 缓存列表
      */
-    private static final WeakCache<EventTarget, EscHideHandler> CACHE = CacheUtil.newWeakCache(-1);
+    private static final WeakCache<EventTarget, EscHideHandler> CACHE = CacheUtil.newWeakCache();
 
     /**
      * 执行初始化

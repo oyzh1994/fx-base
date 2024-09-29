@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;

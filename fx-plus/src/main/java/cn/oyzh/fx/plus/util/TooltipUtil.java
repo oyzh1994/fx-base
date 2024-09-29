@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.util;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.HashUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;

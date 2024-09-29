@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.common.util.NumUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
@@ -50,7 +50,7 @@ public class ActionTextFieldSkinExt extends TextFieldSkinExt {
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
         // 按钮大小，组件高度/2，最大20，最小10
-        double size = NumUtil.limit(h * 0.5, this.getButtonSizeMin(), this.getButtonSizeMax());
+        double size = NumberUtil.limit(h * 0.5, this.getButtonSizeMin(), this.getButtonSizeMax());
         // 设置按钮大小
         this.button.setSize(size);
         // 计算组件大小
