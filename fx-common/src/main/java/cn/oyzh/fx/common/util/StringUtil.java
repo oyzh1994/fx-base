@@ -81,7 +81,7 @@ public class StringUtil {
     }
 
     public static boolean isBlank(String string) {
-        return string == null || !string.isBlank();
+        return string == null || string.isBlank();
     }
 
     public static boolean isNotBlank(String string) {
@@ -89,7 +89,7 @@ public class StringUtil {
     }
 
     public static boolean isEmpty(String string) {
-        return string == null || !string.isEmpty();
+        return string == null || string.isEmpty();
     }
 
     public static boolean isNotEmpty(String string) {

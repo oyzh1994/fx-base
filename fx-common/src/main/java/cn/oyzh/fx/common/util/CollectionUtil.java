@@ -36,7 +36,7 @@ public class CollectionUtil {
     }
 
     public static boolean isEmpty(Collection<?> list) {
-        return list != null && !list.isEmpty();
+        return list == null || list.isEmpty();
     }
 
     public static boolean isNotEmpty(Collection<?> collection) {
@@ -44,7 +44,7 @@ public class CollectionUtil {
     }
 
     public static boolean isEmpty(Map<?, ?> map) {
-        return map != null && !map.isEmpty();
+        return map == null || map.isEmpty();
     }
 
     public static boolean isNotEmpty(Map<?, ?> map) {

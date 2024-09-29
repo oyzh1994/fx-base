@@ -270,6 +270,9 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.url = url.intern();
         // 创建图标
         SVGPath svgPath = SVGManager.load(this.url);
+        if (svgPath == null) {
+            throw new RuntimeException("SVG path " + this.url + " is not found");
+        }
         svgPath.setCursor(this.getCursor());
         this.setShape(svgPath);
     }

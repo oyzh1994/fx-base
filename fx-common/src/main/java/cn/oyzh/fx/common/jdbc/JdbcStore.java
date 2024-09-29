@@ -32,8 +32,9 @@ public abstract class JdbcStore<M extends Serializable> {
             }
             this.operator.initTable();
             this.init();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
     }
 

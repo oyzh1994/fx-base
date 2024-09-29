@@ -129,7 +129,12 @@ public class RuntimeUtil {
     public static String execForStr(String... cmdArr) {
         try {
             // 执行命令
-            Process process = Runtime.getRuntime().exec(cmdArr);
+            Process process;
+            if (cmdArr.length == 1) {
+                process = Runtime.getRuntime().exec(cmdArr[0], null);
+            } else {
+                process = Runtime.getRuntime().exec(cmdArr, null);
+            }
             // 读取命令的输出
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
