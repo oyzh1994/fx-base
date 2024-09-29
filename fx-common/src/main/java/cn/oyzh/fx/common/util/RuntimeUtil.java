@@ -146,4 +146,8 @@ public class RuntimeUtil {
         }
         return null;
     }
+
+    public static int getProcessorCount() {
+        return Runtime.getRuntime().availableProcessors();
+    }
 }

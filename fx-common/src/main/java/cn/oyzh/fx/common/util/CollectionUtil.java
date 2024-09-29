@@ -75,4 +75,11 @@ public class CollectionUtil {
         }
         return null;
     }
+
+    public static String getLast(List<String> list) {
+        if (list != null && !list.isEmpty()) {
+            return list.getLast();
+        }
+        return null;
+    }
 }

@@ -192,4 +192,10 @@ public class StringUtil {
         }
         return src;
     }
+
+    public static String delete(String str, int start, int end) {
+        StringBuilder builder = new StringBuilder(str);
+        builder.delete(start, end);
+        return builder.toString();
+    }
 }

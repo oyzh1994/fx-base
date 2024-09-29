@@ -4,14 +4,19 @@ import lombok.NonNull;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author oyzh
@@ -76,5 +81,48 @@ public class FileUtil {
             }
         }
         return false;
+    }
+
+    public static byte[] readBytes(File file) {
+        if (file == null || !file.exists() || file.isDirectory()) {
+            return null;
+        }
+        byte[] bytes;
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try (fis; bos) {
+                byte[] buffer = new byte[1024];
+                while (fis.read(buffer) != -1) {
+                    bos.write(buffer, 0, buffer.length);
+                }
+                bytes = bos.toByteArray();
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return bytes;
+    }
+
+
+    public static boolean exist(File file) {
+        return file != null && file.exists();
+    }
+
+    public static List<String> readLines(URL url, Charset charset) {
+        try {
+            InputStreamReader reader = new InputStreamReader(url.openStream(), charset);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            try (reader; bufferedReader) {
+                List<String> list = new ArrayList<>();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    list.add(line);
+                }
+                return list;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,12 +1,12 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.UUID;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.fx.common.util.UUIDUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.common.util.FileUtil;
 import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +18,6 @@ import java.util.List;
  * @author oyzh
  * @since 2024/4/3
  */
-@Slf4j
 @UtilityClass
 public class ThemeUtil {
 
@@ -86,7 +85,7 @@ public class ThemeUtil {
     public String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
         // 读取资源
         URL url = ResourceUtil.getResource(style.getUserAgentStylesheet());
-        log.info("style url:{}", url);
+        JulLog.info("style url:{}", url);
         // 读取内容
         List<String> lines = FileUtil.readLines(url, StandardCharsets.UTF_8);
         // 替换颜色
@@ -103,7 +102,7 @@ public class ThemeUtil {
             }
         }
         // 生成文件名
-        String path = FXUtil.getAppStorePath() + "theme_" + UUID.fastUUID().toString(true) + ".css";
+        String path = FXUtil.getAppStorePath() + "theme_" + UUIDUtil.uuidSimple() + ".css";
         // 写入文件
         FileUtil.writeUtf8String(content.toString(), path);
         // 替换特殊符号

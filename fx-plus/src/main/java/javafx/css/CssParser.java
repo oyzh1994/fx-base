@@ -25,7 +25,6 @@
 
 package javafx.css;
 
-import cn.hutool.core.io.FileUtil;
 import com.sun.javafx.css.Combinator;
 import com.sun.javafx.css.FontFaceImpl;
 import com.sun.javafx.css.ParsedValueImpl;
