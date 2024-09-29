@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.event.EventHandler;

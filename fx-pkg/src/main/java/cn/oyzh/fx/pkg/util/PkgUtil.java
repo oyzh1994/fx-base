@@ -5,7 +5,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.FileNameUtil;
 import cn.oyzh.fx.common.util.OSUtil;
@@ -187,11 +186,11 @@ public class PkgUtil {
         if (config.isStripJavaDebugAttributes()) {
             cmdStr += " --strip-java-debug-attributes";
         }
-        if (CollUtil.isNotEmpty(config.getAddModules())) {
-            cmdStr += " --add-modules " + CollUtil.join(config.getAddModules(), ",");
+        if (CollectionUtil.isNotEmpty(config.getAddModules())) {
+            cmdStr += " --add-modules " + CollectionUtil.join(config.getAddModules(), ",");
         }
-        if (CollUtil.isNotEmpty(config.getExcludeFiles())) {
-            cmdStr += " --exclude-files=" + CollUtil.join(config.getExcludeFiles(), ",");
+        if (CollectionUtil.isNotEmpty(config.getExcludeFiles())) {
+            cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
         }
         cmdStr += " --output " + config.getOutput();
         return cmdStr;

@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.util;
 
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

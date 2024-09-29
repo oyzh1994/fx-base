@@ -1,8 +1,6 @@
 package cn.oyzh.fx.common.util;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.HexUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.experimental.UtilityClass;
 
@@ -124,7 +122,7 @@ public class TextUtil {
         if (list == null || lineItemLimit <= 0) {
             return "";
         }
-        List<List<String>> lists = CollUtil.split(list, lineItemLimit);
+        List<List<String>> lists = CollectionUtil.split(list, lineItemLimit);
         // 记录单行的最大字符宽
         Map<Integer, Integer> lenMap = new HashMap<>();
         for (List<String> subList : lists) {
@@ -331,7 +329,7 @@ public class TextUtil {
         if (bitStr == null || bitStr.isEmpty()) {
             return null;
         }
-        String[] bits = StrUtil.split(bitStr, 8);
+        String[] bits = StringUtil.split(bitStr, 8);
         byte[] bytes = new byte[bits.length];
         int i = 0;
         for (String bit : bits) {

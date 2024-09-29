@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.i18n;
 
-import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import cn.oyzh.fx.plus.window.StageManager;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;

@@ -68,7 +68,7 @@ public class FXFileChooser {
     }
 
     public FXFileChooser addFilters(List<FileExtensionFilter> filters) {
-        if (CollUtil.isNotEmpty(filters)) {
+        if (CollectionUtil.isNotEmpty(filters)) {
             for (FileExtensionFilter filter : filters) {
                 this.addFilter(filter);
             }

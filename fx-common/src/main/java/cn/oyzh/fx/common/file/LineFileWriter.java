@@ -1,10 +1,11 @@
 package cn.oyzh.fx.common.file;
 
-import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.common.util.FileUtil;
 import lombok.NonNull;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -17,15 +18,15 @@ public class LineFileWriter implements AutoCloseable {
 
     protected BufferedWriter writer;
 
-    public LineFileWriter(@NonNull String filePath) {
+    public LineFileWriter(@NonNull String filePath) throws FileNotFoundException {
         this(new File(filePath), StandardCharsets.UTF_8);
     }
 
-    public LineFileWriter(@NonNull File file) {
+    public LineFileWriter(@NonNull File file) throws FileNotFoundException {
         this(file, StandardCharsets.UTF_8);
     }
 
-    public LineFileWriter(@NonNull File file, Charset charset) {
+    public LineFileWriter(@NonNull File file, Charset charset) throws FileNotFoundException {
         this.writer = FileUtil.getWriter(file, charset, false);
     }
 
@@ -56,19 +57,19 @@ public class LineFileWriter implements AutoCloseable {
         }
     }
 
-    public static LineFileWriter create(@NonNull String filePath, String charset) {
+    public static LineFileWriter create(@NonNull String filePath, String charset) throws FileNotFoundException {
         return new LineFileWriter(new File(filePath), Charset.forName(charset));
     }
 
-    public static LineFileWriter create(@NonNull String filePath, Charset charset) {
+    public static LineFileWriter create(@NonNull String filePath, Charset charset) throws FileNotFoundException {
         return new LineFileWriter(new File(filePath), charset);
     }
 
-    public static LineFileWriter create(@NonNull File file, String charset) {
+    public static LineFileWriter create(@NonNull File file, String charset) throws FileNotFoundException {
         return new LineFileWriter(file, Charset.forName(charset));
     }
 
-    public static LineFileWriter create(@NonNull File file, Charset charset) {
+    public static LineFileWriter create(@NonNull File file, Charset charset) throws FileNotFoundException {
         return new LineFileWriter(file, charset);
     }
 }

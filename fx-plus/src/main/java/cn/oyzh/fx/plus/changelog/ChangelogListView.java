@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.changelog;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.oyzh.fx.plus.controls.view.FlexListView;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
+import cn.oyzh.fx.plus.controls.view.FlexListView;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -27,7 +27,7 @@ public class ChangelogListView extends FlexListView<Node> {
      * @param list 更新日志
      */
     public void init(List<Changelog> list) {
-        if (CollUtil.isEmpty(list)) {
+        if (CollectionUtil.isEmpty(list)) {
             this.clearItems();
         } else {
             for (Changelog changelog : list) {
@@ -48,7 +48,7 @@ public class ChangelogListView extends FlexListView<Node> {
         this.addItem(title);
 
         // 特性
-        if (CollUtil.isNotEmpty(changelog.getFeatures())) {
+        if (CollectionUtil.isNotEmpty(changelog.getFeatures())) {
             FlexLabel label = this.initItem("全新功能");
             label.addClass("success");
             this.addItem(label);
@@ -60,7 +60,7 @@ public class ChangelogListView extends FlexListView<Node> {
         }
 
         // 优化
-        if (CollUtil.isNotEmpty(changelog.getOptimize())) {
+        if (CollectionUtil.isNotEmpty(changelog.getOptimize())) {
             FlexLabel label = this.initItem("优化内容");
             label.addClass("accent");
             this.addItem(label);
@@ -72,7 +72,7 @@ public class ChangelogListView extends FlexListView<Node> {
         }
 
         // 问题处理
-        if (CollUtil.isNotEmpty(changelog.getBugfix())) {
+        if (CollectionUtil.isNotEmpty(changelog.getBugfix())) {
             FlexLabel label = this.initItem("问题修复");
             label.addClass("danger");
             this.addItem(label);

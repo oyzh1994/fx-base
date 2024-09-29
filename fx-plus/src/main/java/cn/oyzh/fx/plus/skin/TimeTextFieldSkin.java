@@ -143,7 +143,7 @@ public class TimeTextFieldSkin extends ActionTextFieldSkinExt {
 
     protected LocalTime getLocalTime() {
         String text = this.getText();
-        if (StrUtil.isNotBlank(text)) {
+        if (StringUtil.isNotBlank(text)) {
             try {
                 return LocalTime.parse(text, this.formatter());
             } catch (Exception e) {

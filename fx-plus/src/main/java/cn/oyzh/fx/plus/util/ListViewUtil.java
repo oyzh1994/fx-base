@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.util.CollectionUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -51,7 +50,7 @@ public class ListViewUtil {
             return;
         }
         ObservableList<?> list = listView.getItems();
-        Object object = CollUtil.get(list, index + 1);
+        Object object = cn.hutool.core.collection.CollectionUtil.get(list, index + 1);
         if (object != null) {
             Collections.swap(list, index, index + 1);
             listView.getSelectionModel().select(index + 1);

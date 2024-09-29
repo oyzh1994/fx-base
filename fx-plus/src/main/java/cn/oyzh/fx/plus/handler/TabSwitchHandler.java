@@ -170,7 +170,7 @@ public class TabSwitchHandler {
         }
         // 节点为空，获取首个节点
         if (next == null) {
-            next = CollUtil.getFirst(nodeList);
+            next = CollectionUtil.getFirst(nodeList);
         }
         // 获取焦点
         if (next != null) {

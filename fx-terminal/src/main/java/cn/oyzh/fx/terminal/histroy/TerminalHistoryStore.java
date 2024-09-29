@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.store.ArrayFileStore;
 import lombok.NonNull;
@@ -30,7 +29,7 @@ public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistor
     public List<TerminalHistory> load() {
         if (this.histories.isEmpty()) {
             String text = FileUtil.readString(this.storeFile(), this.charset());
-            if (StrUtil.isBlank(text)) {
+            if (StringUtil.isBlank(text)) {
                 return new ArrayList<>();
             }
             this.histories.addAll(JSONUtil.toList(text, TerminalHistory.class));
@@ -42,7 +41,7 @@ public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistor
     public synchronized boolean add(@NonNull TerminalHistory history) {
         try {
             List<TerminalHistory> list = this.load();
-            TerminalHistory last = CollUtil.getLast(list);
+            TerminalHistory last = CollectionUtil.getLast(list);
             if (last != null && last.getLine().equals(history.getLine())) {
                 last.setSaveTime(System.currentTimeMillis());
             } else {

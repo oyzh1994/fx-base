@@ -91,8 +91,8 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
      * @param list 文本列表
      */
     public void appendLines(Collection<String> list) {
-        if (CollUtil.isNotEmpty(list)) {
-            String str = CollUtil.join(list, FXTextArea.LINE_SEPARATOR);
+        if (CollectionUtil.isNotEmpty(list)) {
+            String str = CollectionUtil.join(list, FXTextArea.LINE_SEPARATOR);
             this.appendText(str + FXTextArea.LINE_SEPARATOR);
         }
     }

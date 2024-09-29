@@ -23,7 +23,7 @@ public class RequiredVerifier extends BaseVerifier {
     @Override
     public boolean doVerify(Object obj) {
         if (obj instanceof String str) {
-            return StrUtil.isNotBlank(str);
+            return StringUtil.isNotBlank(str);
         }
         return obj != null;
     }

@@ -33,7 +33,7 @@ public class CharsetComboBox extends FlexComboBox<String> {
      */
     public Charset getCharset() {
         String value = this.getValue();
-        return StrUtil.isBlank(value) ? CharsetUtil.defaultCharset() : Charset.forName(value);
+        return StringUtil.isBlank(value) ? CharsetUtil.defaultCharset() : Charset.forName(value);
     }
 
     /**
@@ -43,13 +43,13 @@ public class CharsetComboBox extends FlexComboBox<String> {
      */
     public String getCharsetName() {
         String value = this.getValue();
-        return StrUtil.isBlank(value) ? CharsetUtil.defaultCharsetName() : value;
+        return StringUtil.isBlank(value) ? CharsetUtil.defaultCharsetName() : value;
     }
 
     @Override
     public void select(String charset) {
         this.setIgnoreChanged(true);
-        if (StrUtil.isBlank(charset) || "跟随系统".equals(charset)) {
+        if (StringUtil.isBlank(charset) || "跟随系统".equals(charset)) {
             this.selectFirst();
         } else {
             charset = charset.toLowerCase().replace("_", "-");

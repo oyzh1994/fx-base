@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.font;
 
 import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import cn.oyzh.fx.plus.window.StageManager;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -54,7 +54,7 @@ public class FontManager {
      * @param config 字体配置
      */
     public static void apply(FontConfig config) {
-        if (config != null && StrUtil.isNotEmpty(config.getFamily()) && config.getWeight() != null && config.getSize() != null) {
+        if (config != null && StringUtil.isNotEmpty(config.getFamily()) && config.getWeight() != null && config.getSize() != null) {
             try {
                 apply(Font.font(config.getFamily(), FontWeight.findByWeight(config.getWeight()), config.getSize()));
             } catch (Exception ex) {

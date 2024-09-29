@@ -14,7 +14,7 @@
 //     @Override
 //     public String parseName(String name) {
 //         // 非jar，不过滤
-//         if (StrUtil.isBlank(name) || !name.endsWith(".jar")) {
+//         if (StringUtil.isBlank(name) || !name.endsWith(".jar")) {
 //             return null;
 //         }
 //         return name;

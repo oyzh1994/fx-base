@@ -118,31 +118,31 @@ public class FileChooserHelper {
     }
 
     public static FileExtensionFilter extensionFilter(String type) {
-        if (StrUtil.equalsAnyIgnoreCase("sql", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("sql", type)) {
             return sqlExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("txt", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("txt", type)) {
             return txtExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("json", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("json", type)) {
             return jsonExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("xml", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("xml", type)) {
             return xmlExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("csv", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("csv", type)) {
             return csvExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("html", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("html", type)) {
             return htmlExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("xls", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("xls", type)) {
             return xlsExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("xlsx", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("xlsx", type)) {
             return xlsxExtensionFilter();
         }
-        if (StrUtil.equalsAnyIgnoreCase("excel", type)) {
+        if (StringUtil.equalsAnyIgnoreCase("excel", type)) {
             return excelExtensionFilter();
         }
         return allExtensionFilter();

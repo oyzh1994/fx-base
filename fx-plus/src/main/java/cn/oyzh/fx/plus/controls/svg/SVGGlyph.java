@@ -281,7 +281,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      */
     public void setColor(String color) {
         try {
-            if (StrUtil.isNotBlank(color)) {
+            if (StringUtil.isNotBlank(color)) {
                 this.setColor(Color.valueOf(color.trim()));
             }
         } catch (Exception ex) {
@@ -353,7 +353,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      * @param size 大小字符串形式
      */
     public void setSizeStr(String size) {
-        if (StrUtil.isBlank(size)) {    // 判断大小字符串是否为空
+        if (StringUtil.isBlank(size)) {    // 判断大小字符串是否为空
             return;
         }
         try {

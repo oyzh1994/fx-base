@@ -524,7 +524,7 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @param items 子节点列表
      */
     default void removeItem(List<?> items) {
-        if (CollUtil.isNotEmpty(items)) {
+        if (CollectionUtil.isNotEmpty(items)) {
             if (this instanceof TableView<?> node) {
                 FXUtil.runWait(() -> node.getItems().removeAll(items));
             } else if (this instanceof ComboBox<?> node) {

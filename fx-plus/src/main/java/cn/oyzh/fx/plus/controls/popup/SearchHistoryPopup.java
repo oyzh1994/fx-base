@@ -105,7 +105,7 @@ public class SearchHistoryPopup extends FXPopup {
      * @return 列表组件
      */
     public FXListView<String> listView() {
-        return (FXListView<String>) CollUtil.getFirst(this.getContent());
+        return (FXListView<String>) CollectionUtil.getFirst(this.getContent());
     }
 
     /**
@@ -151,12 +151,12 @@ public class SearchHistoryPopup extends FXPopup {
         String kw;
         // 获取首个
         if (currKW == null) {
-            kw = CollUtil.getFirst(list);
+            kw = CollectionUtil.getFirst(list);
         } else {
             int index = list.indexOf(currKW) + 1;
             // 获取最后一个
             if (index >= list.size()) {
-                kw = CollUtil.getLast(list);
+                kw = CollectionUtil.getLast(list);
             } else {// 获取目标索引数据
                 kw = list.get(index);
             }
@@ -177,13 +177,13 @@ public class SearchHistoryPopup extends FXPopup {
         }
         String kw;
         // 获取最后一个
-        if (StrUtil.isEmpty(currKW)) {
-            kw = CollUtil.getLast(list);
+        if (StringUtil.isEmpty(currKW)) {
+            kw = CollectionUtil.getLast(list);
         } else {
             int index = list.indexOf(currKW) - 1;
             // 获取首个
             if (index <= 0) {
-                kw = CollUtil.getFirst(list);
+                kw = CollectionUtil.getFirst(list);
             } else {// 获取目标索引数据
                 kw = list.get(index);
             }
@@ -201,7 +201,7 @@ public class SearchHistoryPopup extends FXPopup {
         }
         List<String> list = this.getHistories();
         // 无数据设置默认宽高
-        if (CollUtil.isEmpty(list)) {
+        if (CollectionUtil.isEmpty(list)) {
             listView.setRealWidth(50);
             listView.setRealHeight(120);
         } else {

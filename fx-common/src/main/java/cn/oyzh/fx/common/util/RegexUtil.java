@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.util;
 
 import cn.hutool.core.lang.PatternPool;
-import cn.hutool.core.util.StrUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.regex.Matcher;
@@ -22,7 +21,7 @@ public class RegexUtil {
      * @return 结果
      */
     public static boolean isDecimal(String str) {
-        if (StrUtil.isBlank(str)) {
+        if (StringUtil.isBlank(str)) {
             return false;
         }
         try {
@@ -40,7 +39,7 @@ public class RegexUtil {
      * @return 结果
      */
     public static boolean isNumber(String str) {
-        if (StrUtil.isBlank(str)) {
+        if (StringUtil.isBlank(str)) {
             return false;
         }
         Matcher m = PatternPool.NUMBERS.matcher(str);
@@ -54,6 +53,6 @@ public class RegexUtil {
      * @return 结果
      */
     public static boolean isIPV4(String str) {
-        return StrUtil.isNotBlank(str) && PatternPool.IPV4.matcher(str).matches();
+        return StringUtil.isNotBlank(str) && PatternPool.IPV4.matcher(str).matches();
     }
 }

@@ -16,7 +16,6 @@
 
 package cn.oyzh.fx.pkg.packr;
 
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
@@ -40,7 +39,6 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;

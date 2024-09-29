@@ -1,15 +1,10 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.hutool.core.util.StrUtil;
-import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import javafx.event.EventTarget;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -20,7 +15,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -75,7 +69,7 @@ public class ControlUtil {
     //  */
     // public static void setTipText(@NonNull EventTarget target, String text) {
     //     Tooltip tooltip = getTooltip(target);
-    //     if (StrUtil.isNotBlank(text)) {
+    //     if (StringUtil.isNotBlank(text)) {
     //         // if (tooltip != null) {
     //         //     tooltip.setText(text);
     //         // } else {

@@ -203,6 +203,6 @@ public class PackrConfig {
     }
 
     public String jrePath() {
-        return StrUtil.blankToDefault(this.jrePath, Packr.DEFAULT_JRE_PATH);
+        return StringUtil.blankToDefault(this.jrePath, Packr.DEFAULT_JRE_PATH);
     }
 }

@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.keyboard.KeyListener;
 import javafx.event.EventTarget;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.NonNull;
 

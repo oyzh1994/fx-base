@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.jdbc;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import lombok.Getter;
 
 import java.sql.SQLException;
@@ -140,7 +139,7 @@ public abstract class JdbcOperator {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (CollUtil.isNotEmpty(params)) {
+        if (CollectionUtil.isNotEmpty(params)) {
             boolean first = true;
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 if (first) {
@@ -208,7 +207,7 @@ public abstract class JdbcOperator {
     public Map<String, Object> selectOne(SelectParam selectParam) throws SQLException {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT ");
-        if (CollUtil.isEmpty(selectParam.getQueryColumns())) {
+        if (CollectionUtil.isEmpty(selectParam.getQueryColumns())) {
             sql.append("*");
         } else {
             for (String queryColumn : selectParam.getQueryColumns()) {
@@ -218,7 +217,7 @@ public abstract class JdbcOperator {
         }
         sql.append(" FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (CollUtil.isNotEmpty(selectParam.getQueryParams())) {
+        if (CollectionUtil.isNotEmpty(selectParam.getQueryParams())) {
             boolean first = true;
             for (QueryParam queryParam : selectParam.getQueryParams()) {
                 if (first) {
@@ -254,7 +253,7 @@ public abstract class JdbcOperator {
     public List<Map<String, Object>> selectList(SelectParam param) throws SQLException {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT ");
-        if (CollUtil.isEmpty(param.getQueryColumns())) {
+        if (CollectionUtil.isEmpty(param.getQueryColumns())) {
             sql.append("*");
         } else {
             for (String queryColumn : param.getQueryColumns()) {
@@ -264,7 +263,7 @@ public abstract class JdbcOperator {
         }
         sql.append(" FROM ");
         sql.append(tableName);
-        if (CollUtil.isNotEmpty(param.getQueryParams())) {
+        if (CollectionUtil.isNotEmpty(param.getQueryParams())) {
             boolean first = true;
             for (QueryParam queryParam : param.getQueryParams()) {
                 if (first) {
@@ -303,7 +302,7 @@ public abstract class JdbcOperator {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (CollUtil.isNotEmpty(params)) {
+        if (CollectionUtil.isNotEmpty(params)) {
             boolean first = true;
             for (QueryParam param : params) {
                 if (first) {
@@ -335,7 +334,7 @@ public abstract class JdbcOperator {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (StrUtil.isNotBlank(kw) && CollUtil.isNotEmpty(columns)) {
+        if (StringUtil.isNotBlank(kw) && CollectionUtil.isNotEmpty(columns)) {
             boolean first = true;
             for (String column : columns) {
                 if (first) {
@@ -367,7 +366,7 @@ public abstract class JdbcOperator {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("SELECT * FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (StrUtil.isNotBlank(kw) && CollUtil.isNotEmpty(columns)) {
+        if (StringUtil.isNotBlank(kw) && CollectionUtil.isNotEmpty(columns)) {
             boolean first = true;
             for (String column : columns) {
                 if (first) {

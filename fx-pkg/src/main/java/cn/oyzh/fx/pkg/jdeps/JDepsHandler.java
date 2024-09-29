@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.jdeps;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -56,11 +55,11 @@ public class JDepsHandler implements PreHandler {
         }
 
         String jdkPath = packConfig.getJdkPath();
-        if (StrUtil.isBlank(jdkPath)) {
+        if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
         }
         String jarUnDir = packConfig.getJarUnDir();
-        if (StrUtil.isBlank(jarUnDir)) {
+        if (StringUtil.isBlank(jarUnDir)) {
             throw new Exception("jarUnDir为空！");
         }
         // 列举系统模块
@@ -69,7 +68,7 @@ public class JDepsHandler implements PreHandler {
         String result = RuntimeUtil.execForStr(cmdStr.toString());
         System.out.println(result);
         result.lines().forEach(r -> {
-            if (StrUtil.isNotBlank(r)) {
+            if (StringUtil.isNotBlank(r)) {
                 modules.add(r.split("@")[0]);
             }
         });

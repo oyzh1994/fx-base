@@ -7,7 +7,6 @@ import cn.oyzh.fx.common.util.NumUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
@@ -15,8 +14,6 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.plus.thread.BackgroundService;
-import cn.oyzh.fx.plus.thread.RenderService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import javafx.geometry.Insets;
@@ -219,8 +216,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      * @param list 文本列表
      */
     public void appendLines(Collection<String> list) {
-        if (CollUtil.isNotEmpty(list)) {
-            String str = CollUtil.join(list, "\n");
+        if (CollectionUtil.isNotEmpty(list)) {
+            String str = CollectionUtil.join(list, "\n");
             this.appendText(str + "\n");
         }
     }
@@ -347,7 +344,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      * @param styles 富文本样式
      */
     public void setStyles(List<RichTextStyle> styles) {
-        if (CollUtil.isNotEmpty(styles)) {
+        if (CollectionUtil.isNotEmpty(styles)) {
             FXUtil.runWait(() -> {
                 for (RichTextStyle style : styles) {
                     this.setStyle(style.start(), style.end(), style.style());

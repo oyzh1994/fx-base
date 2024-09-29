@@ -68,7 +68,7 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      * @param className class名称
      */
     public void removeTabClass(String className) {
-        if (StrUtil.isNotBlank(className)) {
+        if (StringUtil.isNotBlank(className)) {
             this.getTabs().forEach(t -> t.getStyleClass().remove(className));
         }
     }
@@ -89,7 +89,7 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      * @param className class名称
      */
     public void addTabClass(Tab tab, String className) {
-        if (StrUtil.isNotBlank(className) && tab != null) {
+        if (StringUtil.isNotBlank(className) && tab != null) {
             if (!tab.getStyleClass().contains("tab-active")) {
                 tab.getStyleClass().add("tab-active");
             }
@@ -170,7 +170,7 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      */
     public void removeTab(String tabId) {
         for (Tab tab : this.getTabs()) {
-            if (StrUtil.equals(tabId, tab.getId())) {
+            if (StringUtil.equals(tabId, tab.getId())) {
                 this.removeTab(tab);
                 break;
             }
@@ -184,7 +184,7 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      */
     public void selectTab(String tabId) {
         for (Tab tab : this.getTabs()) {
-            if (StrUtil.equals(tabId, tab.getId())) {
+            if (StringUtil.equals(tabId, tab.getId())) {
                 this.select(tab);
                 break;
             }
@@ -197,7 +197,7 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      * @param tabs tabs
      */
     public void removeTab(List<? extends Tab> tabs) {
-        if (CollUtil.isNotEmpty(tabs)) {
+        if (CollectionUtil.isNotEmpty(tabs)) {
             FXUtil.runLater(() -> this.getTabs().removeAll(tabs));
         }
     }
@@ -211,7 +211,7 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
     public void onTabSelected(String tabId, Runnable task) {
         if (tabId != null && task != null) {
             this.selectedTabChanged((observable, oldValue, newValue) -> {
-                if (newValue != null && StrUtil.equals(tabId, newValue.getId())) {
+                if (newValue != null && StringUtil.equals(tabId, newValue.getId())) {
                     task.run();
                 }
             });
@@ -359,6 +359,6 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
             return false;
         }
         Tab tab = this.getSelectedItem();
-        return tab != null && StrUtil.equals(tabId, tab.getId());
+        return tab != null && StringUtil.equals(tabId, tab.getId());
     }
 }

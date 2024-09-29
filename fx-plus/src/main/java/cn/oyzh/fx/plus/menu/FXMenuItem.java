@@ -12,8 +12,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 
-import java.lang.ref.Cleaner;
-
 /**
  * 菜单项
  *

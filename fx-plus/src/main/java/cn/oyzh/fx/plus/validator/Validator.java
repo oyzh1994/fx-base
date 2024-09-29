@@ -22,7 +22,7 @@ public interface Validator {
      * @return 结果
      */
     default boolean doVerify() {
-        if (CollUtil.isNotEmpty(this.getVerifiers()) && this.getValue() != null) {
+        if (CollectionUtil.isNotEmpty(this.getVerifiers()) && this.getValue() != null) {
             Object obj = this.getValue().get();
             for (cn.oyzh.fx.plus.validator.Verifier verifier : this.getVerifiers()) {
                 if (!verifier.doVerify(obj)) {

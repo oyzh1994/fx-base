@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.table.FXTableView;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
@@ -57,7 +56,7 @@ public class TableViewUtil {
             return;
         }
         ObservableList<?> list = tableView.getItems();
-        Object object = CollUtil.get(list, index + 1);
+        Object object = cn.hutool.core.collection.CollectionUtil.get(list, index + 1);
         if (object != null) {
             Collections.swap(list, index, index + 1);
             tableView.getSelectionModel().select(index + 1);
@@ -86,7 +85,7 @@ public class TableViewUtil {
      */
     public Object getSelectCellData(TableView<?> tableView) {
         ObservableList<TablePosition> positions = tableView.getSelectionModel().getSelectedCells();
-        if (CollUtil.isNotEmpty(positions)) {
+        if (cn.hutool.core.collection.CollectionUtil.isNotEmpty(positions)) {
             TablePosition<?, ?> position = positions.get(0);
             TableColumn<?, ?> column = position.getTableColumn();
             return column.getCellData(position.getRow());

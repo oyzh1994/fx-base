@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.file;
 
-import cn.oyzh.fx.plus.i18n.I18nHelper;
 import lombok.Getter;
 import lombok.Setter;
 

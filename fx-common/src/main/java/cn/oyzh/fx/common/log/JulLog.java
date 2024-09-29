@@ -2,7 +2,6 @@ package cn.oyzh.fx.common.log;
 
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.logging.Level;
@@ -65,7 +64,7 @@ public class JulLog {
     }
 
     private static LogRecord format(Level level, String format, Throwable throwable, Object... args) {
-        if (StrUtil.isNotBlank(format) && ArrayUtil.isNotEmpty(args)) {
+        if (StringUtil.isNotBlank(format) && ArrayUtil.isNotEmpty(args)) {
             int index = 0;
             while (format.contains("{}") && index < args.length) {
                 format = format.replace("{}", "{" + index++ + "}");

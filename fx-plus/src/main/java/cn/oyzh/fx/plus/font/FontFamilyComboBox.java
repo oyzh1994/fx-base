@@ -30,7 +30,7 @@ public class FontFamilyComboBox extends FlexComboBox<String> {
      */
     @Override
     public void select(String fontFamily) {
-        if (StrUtil.isEmpty(fontFamily)) {
+        if (StringUtil.isEmpty(fontFamily)) {
             super.select(this.getDefault());
         } else {
             try {

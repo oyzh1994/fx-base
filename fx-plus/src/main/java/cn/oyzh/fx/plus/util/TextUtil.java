@@ -21,9 +21,9 @@ public class TextUtil {
 
     public static boolean checkNumber(KeyEvent event, TextField field) {
         String text0 = null;
-        if (StrUtil.isNotEmpty(event.getText())) {
+        if (StringUtil.isNotEmpty(event.getText())) {
             text0 = event.getText();
-        } else if (StrUtil.isNotEmpty(event.getCharacter())) {
+        } else if (StringUtil.isNotEmpty(event.getCharacter())) {
             text0 = event.getCharacter();
         }
         String text1 = field.getText();
@@ -33,7 +33,7 @@ public class TextUtil {
 
         String nText = text2 + text0 + text3;
         System.out.println("nText==========" + nText);
-        if (StrUtil.equalsAny(nText, "+", "-", "")) {
+        if (StringUtil.equalsAny(nText, "+", "-", "")) {
             return true;
         }
         return NumberUtil.isNumber(nText);
@@ -41,14 +41,14 @@ public class TextUtil {
 
     public static boolean checkDecimal(KeyEvent event, String text, Double max, Double min) {
         StringBuilder textNew = new StringBuilder();
-        if (StrUtil.isNotEmpty(event.getText())) {
+        if (StringUtil.isNotEmpty(event.getText())) {
             textNew.append(event.getText());
-        } else if (StrUtil.isNotEmpty(event.getCharacter())) {
+        } else if (StringUtil.isNotEmpty(event.getCharacter())) {
             textNew.append(event.getCharacter());
         }
         textNew.append(text);
         String nText = textNew.toString();
-        if (StrUtil.equalsAny(nText, ".", "+", "-")) {
+        if (StringUtil.equalsAny(nText, ".", "+", "-")) {
             return true;
         }
         return NumberUtil.isNumber(textNew);

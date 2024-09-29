@@ -44,6 +44,6 @@ public class TerminalUtil {
      * @return 结果
      */
     public static boolean hasHelp(String input) {
-        return StrUtil.endWith(input, " -?");
+        return StringUtil.endWith(input, " -?");
     }
 }

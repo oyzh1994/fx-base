@@ -1,6 +1,6 @@
 package cn.oyzh.fx.common.jdbc;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import lombok.experimental.UtilityClass;
 
 import java.sql.Connection;
@@ -84,7 +84,7 @@ public class JdbcManager {
                     break;
                 }
             }
-            if (CollUtil.isNotEmpty(invalid)) {
+            if (CollectionUtil.isNotEmpty(invalid)) {
                 CONNECTIONS.removeAll(invalid);
             }
         }
@@ -107,7 +107,7 @@ public class JdbcManager {
                     invalid.add(sqlConnection);
                 }
             }
-            if (CollUtil.isNotEmpty(invalid)) {
+            if (CollectionUtil.isNotEmpty(invalid)) {
                 CONNECTIONS.removeAll(invalid);
             }
         }

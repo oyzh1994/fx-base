@@ -45,15 +45,15 @@ public class ThemeConfig {
             return false;
         }
 
-        if (StrUtil.isEmpty(fgColor) || StrUtil.isEmpty(bgColor) || StrUtil.isEmpty(accentColor)) {
+        if (StringUtil.isEmpty(fgColor) || StringUtil.isEmpty(bgColor) || StringUtil.isEmpty(accentColor)) {
             return false;
         }
-        if (!StrUtil.equalsIgnoreCase(fgColor, style.getForegroundColorHex())) {
+        if (!StringUtil.equalsIgnoreCase(fgColor, style.getForegroundColorHex())) {
             return true;
         }
-        if (!StrUtil.equalsIgnoreCase(bgColor, style.getBackgroundColorHex())) {
+        if (!StringUtil.equalsIgnoreCase(bgColor, style.getBackgroundColorHex())) {
             return true;
         }
-        return !StrUtil.equalsIgnoreCase(accentColor, style.getAccentColorHex());
+        return !StringUtil.equalsIgnoreCase(accentColor, style.getAccentColorHex());
     }
 }

@@ -121,7 +121,7 @@
 //      * @return app目标目录
 //      */
 //     public String getAppDest() {
-//         if (StrUtil.startWithIgnoreCase(this.platform, "macos")) {
+//         if (StringUtil.startWithIgnoreCase(this.platform, "macos")) {
 //             return FileNameUtil.concat(this.destPath, this.appName + ".app");
 //         }
 //         return FileNameUtil.concat(this.destPath, this.appName);

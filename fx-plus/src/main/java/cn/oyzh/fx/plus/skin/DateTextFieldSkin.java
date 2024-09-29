@@ -97,7 +97,7 @@ public class DateTextFieldSkin extends ActionTextFieldSkinExt {
     }
 
     protected LocalDateTime getLocalDateTime() {
-        if (StrUtil.isNotBlank(this.getText())) {
+        if (StringUtil.isNotBlank(this.getText())) {
             try {
                 return LocalDateTime.parse(this.getText(), this.formatter());
             } catch (Exception e) {

@@ -86,7 +86,7 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected void valueChanged(String newVal) {
         // 检查新值是否有效
-        if (StrUtil.isNotBlank(newVal)) {
+        if (StringUtil.isNotBlank(newVal)) {
             // 获取当前皮肤
             DigitalTextFieldSkin skin = this.skin();
             // 解析值
@@ -192,7 +192,7 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected Number value() {
         String text = this.getText();
-        if (StrUtil.isBlank(text)) {
+        if (StringUtil.isBlank(text)) {
             return null;
         }
         return NumberUtil.parseNumber(text);

@@ -7,7 +7,6 @@ import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jre.JreConfig;
-import cn.oyzh.fx.pkg.packr.Packr;
 import cn.oyzh.fx.pkg.packr.PackrConfig;
 import lombok.Getter;
 import lombok.Setter;
@@ -228,14 +227,14 @@ public class PackConfig {
     }
 
     public boolean isPlatformMacos() {
-        return StrUtil.containsAnyIgnoreCase(this.platform, "macos");
+        return StringUtil.containsAnyIgnoreCase(this.platform, "macos");
     }
 
     public boolean isPlatformWindows() {
-        return StrUtil.containsAnyIgnoreCase(this.platform, "win");
+        return StringUtil.containsAnyIgnoreCase(this.platform, "win");
     }
 
     public boolean isPlatformLinux() {
-        return StrUtil.containsAnyIgnoreCase(this.platform, "linux");
+        return StringUtil.containsAnyIgnoreCase(this.platform, "linux");
     }
 }

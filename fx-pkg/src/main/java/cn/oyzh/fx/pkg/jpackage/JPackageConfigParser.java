@@ -1,8 +1,6 @@
 package cn.oyzh.fx.pkg.jpackage;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
 import lombok.Data;
 

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.util;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ArrayUtil;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Field;
@@ -33,8 +32,7 @@ public class ReflectUtil {
         return getField(beanClass, fieldName, false);
     }
 
-    public static Field getField(Class<?> beanClass, String fieldName, boolean withSuperClassFields) throws SecurityException {
-        Assert.notNull(beanClass);
+    public static Field getField(@NonNull Class<?> beanClass, String fieldName, boolean withSuperClassFields) throws SecurityException {
         Class<?> searchType = beanClass;
         Field field = null;
         while (searchType != null) {
@@ -57,8 +55,7 @@ public class ReflectUtil {
         return getFields(beanClass, false);
     }
 
-    public static Field[] getFields(Class<?> beanClass, boolean withSuperClassFields) throws SecurityException {
-        Assert.notNull(beanClass);
+    public static Field[] getFields(@NonNull Class<?> beanClass, boolean withSuperClassFields) throws SecurityException {
         Field[] allFields = null;
         Class<?> searchType = beanClass;
         Field[] declaredFields;
@@ -78,8 +75,7 @@ public class ReflectUtil {
         return getMethod(beanClass, methodName, false, paramTypes);
     }
 
-    public static Method getMethod(Class<?> beanClass, String methodName, boolean withSuperClassFields, Class<?>... paramTypes) throws SecurityException {
-        Assert.notNull(beanClass);
+    public static Method getMethod(@NonNull Class<?> beanClass, String methodName, boolean withSuperClassFields, Class<?>... paramTypes) throws SecurityException {
         Class<?> searchType = beanClass;
         Method method = null;
         while (searchType != null) {

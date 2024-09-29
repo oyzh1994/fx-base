@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.jdbc;
 
-import cn.hutool.core.lang.Assert;
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -30,8 +30,7 @@ public class JdbcConn {
     @Getter
     private final Connection connection;
 
-    public JdbcConn(Connection connection) {
-        Assert.notNull(connection);
+    public JdbcConn(@NonNull Connection connection) {
         this.connection = connection;
         this.status = new AtomicInteger(0);
     }

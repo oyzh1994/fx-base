@@ -89,7 +89,7 @@ public class DecimalTextField extends DigitalTextField {
                 try {
                     String text = change.getControlNewText();
                     // 如果文本为空、"+"、"."，则不进行任何操作，直接返回原change对象
-                    if (StrUtil.isEmpty(text) || text.equals("+") || ".".equals(text)) {
+                    if (StringUtil.isEmpty(text) || text.equals("+") || ".".equals(text)) {
                         return change;
                     }
                     // 无符号判断
@@ -144,7 +144,7 @@ public class DecimalTextField extends DigitalTextField {
         // 获取文本内容
         String text = this.getText();
         // 如果文本为空，或者为"-"，或者为"+"，或者为"."，则返回0.D
-        if (StrUtil.equalsAny(text, "", "-", "+", ".")) {
+        if (StringUtil.equalsAny(text, "", "-", "+", ".")) {
             return 0D;
         }
         return super.value();

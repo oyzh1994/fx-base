@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.store;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.dto.Paging;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.common.util.ObjectComparator;
 import lombok.NonNull;
 
@@ -76,7 +76,7 @@ public abstract class ArrayFileStore<T extends ObjectComparator<T>> extends File
     public synchronized boolean update(@NonNull T t) {
         // 加载数据
         List<T> list = this.load();
-        if (CollUtil.isNotEmpty(list)) {
+        if (CollectionUtil.isNotEmpty(list)) {
             for (T t1 : list) {
                 if (t1.compare(t)) {
                     return this.saveData(list);
@@ -95,7 +95,7 @@ public abstract class ArrayFileStore<T extends ObjectComparator<T>> extends File
     public synchronized boolean delete(@NonNull T t) {
         // 加载数据
         List<T> list = this.load();
-        if (CollUtil.isNotEmpty(list)) {
+        if (CollectionUtil.isNotEmpty(list)) {
             if (list.removeIf(h -> h.compare(t))) {
                 return this.saveData(list);
             }
@@ -117,7 +117,7 @@ public abstract class ArrayFileStore<T extends ObjectComparator<T>> extends File
         // 分页对象
         Paging<T> paging = new Paging<>(list, limit);
         // 数据为空
-        if (CollUtil.isEmpty(list)) {
+        if (CollectionUtil.isEmpty(list)) {
             paging.dataList(new ArrayList<>());
         }
         return paging;

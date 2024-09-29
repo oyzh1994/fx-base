@@ -49,7 +49,7 @@ public class DigitalDecimalFormat extends DecimalFormat {
     }
 
     public String format(CharSequence sequence) {
-        if (StrUtil.isNotBlank(sequence)) {
+        if (StringUtil.isNotBlank(sequence)) {
             try {
                 Number number = NumberUtil.parseNumber(sequence.toString());
                 return this.format(number);

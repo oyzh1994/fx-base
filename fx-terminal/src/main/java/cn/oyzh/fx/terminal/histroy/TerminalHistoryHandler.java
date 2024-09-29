@@ -31,7 +31,7 @@ public interface TerminalHistoryHandler {
      * @param input 内容
      */
     default void saveHistory(String input) {
-        if (StrUtil.isNotEmpty(input) && this.historyStore() != null) {
+        if (StringUtil.isNotEmpty(input) && this.historyStore() != null) {
             TerminalHistory history = new TerminalHistory();
             history.setLine(input);
             this.historyStore().add(history);

@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.BaseTerminalCommandHandler;
 import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;
-import cn.oyzh.fx.terminal.util.TerminalManager;
 
 /**
  * @author oyzh
@@ -60,7 +59,7 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
 
     @Override
     protected ClearTerminalCommand parseCommand(String line, String[] words) throws RuntimeException {
-        if (words.length == 2 && StrUtil.equalsIgnoreCase(words[1], "-his")) {
+        if (words.length == 2 && StringUtil.equalsIgnoreCase(words[1], "-his")) {
             ClearTerminalCommand command = new ClearTerminalCommand();
             command.setClearHis(true);
             return command;

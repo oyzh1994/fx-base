@@ -1,7 +1,5 @@
 package cn.oyzh.fx.common.sqlite;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
 import cn.oyzh.fx.common.jdbc.DeleteParam;
@@ -12,6 +10,7 @@ import cn.oyzh.fx.common.jdbc.JdbcOperator;
 import cn.oyzh.fx.common.jdbc.JdbcUtil;
 import cn.oyzh.fx.common.jdbc.QueryParam;
 import cn.oyzh.fx.common.jdbc.TableDefinition;
+import cn.oyzh.fx.common.util.CollectionUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,7 +45,7 @@ public class SqliteOperator extends JdbcOperator {
                     } else {
                         // 字段类型不相同
                         String typeName = resultSet1.getString("TYPE_NAME");
-                        if (!StrUtil.equalsIgnoreCase(typeName, column.getColumnType())) {
+                        if (!StringUtil.equalsIgnoreCase(typeName, column.getColumnType())) {
                             changed = true;
                         }
                     }
@@ -159,7 +158,7 @@ public class SqliteOperator extends JdbcOperator {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (CollUtil.isNotEmpty(deleteParam.getQueryParams())) {
+        if (CollectionUtil.isNotEmpty(deleteParam.getQueryParams())) {
             boolean first = true;
             for (QueryParam queryParam : deleteParam.getQueryParams()) {
                 if (first) {
@@ -174,7 +173,7 @@ public class SqliteOperator extends JdbcOperator {
             }
         }
         if (deleteParam.getLimit() != null && deleteParam.getLimit() > 0) {
-            if (CollUtil.isEmpty(deleteParam.getQueryParams())) {
+            if (CollectionUtil.isEmpty(deleteParam.getQueryParams())) {
                 sql.append(" WHERE ");
             } else {
                 sql.append(" AND ");

@@ -279,7 +279,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         // 处理高度，y轴
         if (changeHeight) {
             this.setRealHeight(height);
-            if (StrUtil.isNotBlank(this.getFlexY())) {
+            if (StringUtil.isNotBlank(this.getFlexY())) {
                 this.setLayoutY(this.computeY());
             }
         }

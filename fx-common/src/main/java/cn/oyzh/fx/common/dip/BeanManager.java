@@ -17,7 +17,7 @@
 //
 //    public static Object getBean(String beanName) throws Exception {
 //        for (BeanObject bean : beans) {
-//            if (StrUtil.equals(bean.getBeanName(), beanName)) {
+//            if (StringUtil.equals(bean.getBeanName(), beanName)) {
 //                return bean.getBean();
 //            }
 //        }

@@ -7,7 +7,6 @@ import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.SingleHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
-import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +44,7 @@ public class JLinkHandler implements PreHandler, SingleHandler {
             return;
         }
         String jdkPath = packConfig.getJdkPath();
-        if (StrUtil.isBlank(jdkPath)) {
+        if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
         }
         if (FileUtil.exist(jLinkConfig.getOutput())) {

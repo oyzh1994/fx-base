@@ -219,7 +219,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
 
     @Override
     public String getInput() {
-        String text = CollUtil.getLast(this.getText().lines().toList());
+        String text = CollectionUtil.getLast(this.getText().lines().toList());
         if (text == null || text.isEmpty() || text.equals(this.prompt())) {
             return "";
         }
@@ -294,12 +294,12 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
 
     @Override
     public String prompt() {
-        return StrUtil.nullToDefault(this.prompt, "");
+        return StringUtil.nullToDefault(this.prompt, "");
     }
 
     @Override
     public void prompt(String prompt) {
-        if (!StrUtil.equals(prompt, this.prompt)) {
+        if (!StringUtil.equals(prompt, this.prompt)) {
             if (prompt != null) {
                 prompt = prompt.replaceAll("\r", "").replaceAll("\n", "");
             }
@@ -311,9 +311,9 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     public void outputPrompt() {
         String text = this.getText();
         String prompt = this.prompt();
-        if (StrUtil.equals(text, "\n")) {
+        if (StringUtil.equals(text, "\n")) {
             this.setText(prompt);
-        } else if (!StrUtil.endWith(text, prompt)) {
+        } else if (!StringUtil.endWith(text, prompt)) {
             this.appendText(prompt);
         }
         this.flushNOP();
@@ -452,10 +452,10 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
         Collection<TerminalCommandHandler<?,?>> handlers = TerminalManager.listHandler();
         Set<String> set = new HashSet<>();
         for (TerminalCommandHandler<?,?> handler : handlers) {
-            if (StrUtil.isNotBlank(handler.commandName())) {
+            if (StringUtil.isNotBlank(handler.commandName())) {
                 set.add(handler.commandName());
             }
-            if (StrUtil.isNotBlank(handler.commandSubName())) {
+            if (StringUtil.isNotBlank(handler.commandSubName())) {
                 set.add(handler.commandSubName());
             }
         }

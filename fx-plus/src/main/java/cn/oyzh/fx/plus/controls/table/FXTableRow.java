@@ -18,7 +18,7 @@ public class FXTableRow<T> extends TableRow<T> implements ContextMenuAdapter, Me
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
-            if (CollUtil.isNotEmpty(items)) {
+            if (CollectionUtil.isNotEmpty(items)) {
                 this.showContextMenu(items, e.getScreenX() - 10, e.getScreenY() - 10);
             } else {
                 this.clearContextMenu();

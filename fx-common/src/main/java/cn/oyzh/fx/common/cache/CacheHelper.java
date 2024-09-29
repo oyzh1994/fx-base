@@ -1,7 +1,5 @@
-package cn.oyzh.fx.common.util;
+package cn.oyzh.fx.common.cache;
 
-import cn.hutool.cache.Cache;
-import cn.hutool.cache.CacheUtil;
 import lombok.experimental.UtilityClass;
 
 /**

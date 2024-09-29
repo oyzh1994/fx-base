@@ -1,7 +1,6 @@
 package cn.oyzh.fx.pkg.pack;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;

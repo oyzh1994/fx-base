@@ -84,7 +84,7 @@ public class TooltipUtil {
      * @param text   提示文本
      */
     public static void setTipText(@NonNull EventTarget target, String text) {
-        if (StrUtil.isNotBlank(text)) {
+        if (StringUtil.isNotBlank(text)) {
             if (target instanceof Node node) {
                 EventHandler<MouseEvent> handler = event -> {
                     if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {

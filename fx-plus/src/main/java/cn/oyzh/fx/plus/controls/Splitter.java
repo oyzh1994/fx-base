@@ -63,7 +63,7 @@ public class Splitter extends FlexText {
         //}
 
         // 处理标题文字宽度
-        if (StrUtil.isNotBlank(this.titleText)) {
+        if (StringUtil.isNotBlank(this.titleText)) {
             // 计算标题的宽度
             //int titleWidth = this.fontMetrics.stringWidth(this.titleText);
             double titleWidth = FontUtil.stringWidth(this.titleText);
@@ -73,7 +73,7 @@ public class Splitter extends FlexText {
         }
 
         // 处理切割文字
-        if (StrUtil.isNotBlank(this.splitText)) {
+        if (StringUtil.isNotBlank(this.splitText)) {
             // 计算分割字符的宽度
             double splitWidth = FontUtil.stringWidth(this.splitText);
             //splitWidth = splitWidth * Screen.getPrimary().getOutputScaleX();

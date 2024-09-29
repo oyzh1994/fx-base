@@ -165,7 +165,7 @@ public class RichDataTextArea extends FlexRichTextArea {
         FXUtil.runWait(() -> {
             this.clearTextStyle();
             // 搜索
-            if (StrUtil.isNotBlank(this.searchText)) {
+            if (StringUtil.isNotBlank(this.searchText)) {
                 String text = this.getText();
                 Matcher matcher = this.searchPattern().matcher(text);
                 List<RichTextStyle> styles = new ArrayList<>();

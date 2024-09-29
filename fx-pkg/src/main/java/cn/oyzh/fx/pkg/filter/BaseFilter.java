@@ -61,7 +61,7 @@
 //         if (this.getExcludes() == null) {
 //             return;
 //         }
-//         if (StrUtil.isNotBlank(exclude)) {
+//         if (StringUtil.isNotBlank(exclude)) {
 //             this.getExcludes().add(exclude.trim());
 //         }
 //     }
@@ -75,7 +75,7 @@
 //         if (this.getExcludes() == null) {
 //             return;
 //         }
-//         if (CollUtil.isEmpty(list)) {
+//         if (CollectionUtil.isEmpty(list)) {
 //             return;
 //         }
 //         for (String s : list) {

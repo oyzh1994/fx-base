@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -98,7 +97,7 @@ public class JarUtil {
      * @param name 名称
      */
     public static boolean isJar(String name) {
-        if (StrUtil.isBlank(name)) {
+        if (StringUtil.isBlank(name)) {
             return false;
         }
         return name.toLowerCase().endsWith(FileUtil.JAR_FILE_EXT);
@@ -122,7 +121,7 @@ public class JarUtil {
      * @param name 名称
      */
     public static boolean isClass(String name) {
-        if (StrUtil.isBlank(name)) {
+        if (StringUtil.isBlank(name)) {
             return false;
         }
         return name.toLowerCase().endsWith(".class");

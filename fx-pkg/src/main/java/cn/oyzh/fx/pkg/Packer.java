@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
 import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
@@ -121,7 +120,7 @@ public class Packer {
      */
     public void registerHandler(Handler handler) {
         if (handler != null) {
-            if (this.handlers.parallelStream().anyMatch(h -> h.unique() && (h == handler || StrUtil.equals(h.name(), handler.name())))) {
+            if (this.handlers.parallelStream().anyMatch(h -> h.unique() && (h == handler || StringUtil.equals(h.name(), handler.name())))) {
                 throw new RuntimeException("处理器:" + handler.name() + "已存在");
             }
             this.handlers.add(handler);
@@ -194,7 +193,7 @@ public class Packer {
     public void pack(String configFile, Map<String, Object> properties) throws Exception {
         // 解析配置
         PackConfig packConfig = this.configParser.parse(configFile);
-        if (CollUtil.isNotEmpty(properties)) {
+        if (CollectionUtil.isNotEmpty(properties)) {
             for (Map.Entry<String, Object> entry : properties.entrySet()) {
                 packConfig.putProperty(entry.getKey(), entry.getValue());
             }

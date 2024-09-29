@@ -202,7 +202,7 @@
 //             return;
 //         }
 //         JulLog.info("pack after start.");
-//         if (StrUtil.isNotBlank(this.packageConfig().getCompressType()) && this.packageConfig().isEnable()) {
+//         if (StringUtil.isNotBlank(this.packageConfig().getCompressType()) && this.packageConfig().isEnable()) {
 //             this.destFile = switch (this.packageConfig().getCompressType().toLowerCase()) {
 //                 case "zip" -> {
 //                     if (this.getPlatform() == PackrConfig.Platform.MacOS) {

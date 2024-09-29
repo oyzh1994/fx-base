@@ -15,7 +15,7 @@
 //
 //     @Override
 //     public String parseName(String name) {
-//         if (StrUtil.isBlank(name)) {
+//         if (StringUtil.isBlank(name)) {
 //             return null;
 //         }
 //         // 替换路径

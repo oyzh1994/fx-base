@@ -15,7 +15,7 @@
 //     @Override
 //     public String parseName(String name) {
 //         // 非class，不过滤
-//         if (StrUtil.isBlank(name) || !name.endsWith(".class")) {
+//         if (StringUtil.isBlank(name) || !name.endsWith(".class")) {
 //             return null;
 //         }
 //         // 处理class

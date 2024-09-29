@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.i18n;
 
-import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**

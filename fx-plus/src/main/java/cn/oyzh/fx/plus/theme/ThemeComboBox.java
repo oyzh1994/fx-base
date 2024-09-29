@@ -30,7 +30,7 @@ public class ThemeComboBox extends FlexComboBox<ThemeStyle> {
      * @param themeName 主题名称
      */
     public void select(String themeName) {
-        if (StrUtil.isEmpty(themeName)) {
+        if (StringUtil.isEmpty(themeName)) {
             this.select(0);
         } else {
             try {

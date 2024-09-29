@@ -1,8 +1,8 @@
 package cn.oyzh.fx.common.jdbc;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.h2.H2Operator;
 import cn.oyzh.fx.common.sqlite.SqliteOperator;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.common.util.ReflectUtil;
 
 import java.io.Serializable;
@@ -53,7 +53,7 @@ public abstract class JdbcStore<M extends Serializable> {
     }
 
     protected M toModel(Map<String, Object> record) throws Exception {
-        if (CollUtil.isEmpty(record)) {
+        if (CollectionUtil.isEmpty(record)) {
             return null;
         }
         TableDefinition definition = this.tableDefinition();
@@ -176,7 +176,7 @@ public abstract class JdbcStore<M extends Serializable> {
     public List<M> selectList(SelectParam param) {
         try {
             List<Map<String, Object>> list = this.operator.selectList(param);
-            if (CollUtil.isNotEmpty(list)) {
+            if (CollectionUtil.isNotEmpty(list)) {
                 List<M> models = new ArrayList<>();
                 for (Map<String, Object> map : list) {
                     models.add(this.toModel(map));
@@ -219,7 +219,7 @@ public abstract class JdbcStore<M extends Serializable> {
     public List<M> selectPage(String kw, List<String> columns, PageParam pageParam) {
         try {
             List<Map<String, Object>> list = this.operator.selectPage(kw, columns, pageParam);
-            if (CollUtil.isNotEmpty(list)) {
+            if (CollectionUtil.isNotEmpty(list)) {
                 List<M> models = new ArrayList<>();
                 for (Map<String, Object> map : list) {
                     models.add(this.toModel(map));

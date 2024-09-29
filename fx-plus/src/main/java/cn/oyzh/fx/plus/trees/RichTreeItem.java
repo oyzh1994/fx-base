@@ -291,7 +291,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 首个子节点
      */
     public TreeItem<?> firstChild() {
-        return CollUtil.getFirst(this.getRealChildren());
+        return CollectionUtil.getFirst(this.getRealChildren());
     }
 
     /**
@@ -361,7 +361,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param items 节点列表
      */
     public void setChild(List<TreeItem<?>> items) {
-        if (CollUtil.isNotEmpty(items)) {
+        if (CollectionUtil.isNotEmpty(items)) {
             this.service().submitFX(() -> this.getRealChildren().setAll(items));
         }
     }
@@ -383,7 +383,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param items 节点列表
      */
     public void addChild(List<TreeItem<?>> items) {
-        if (CollUtil.isNotEmpty(items)) {
+        if (CollectionUtil.isNotEmpty(items)) {
             this.service().submitFX(() -> this.getRealChildren().addAll(items));
         }
     }
@@ -405,7 +405,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param items 节点列表
      */
     public void removeChild(List<TreeItem<?>> items) {
-        if (CollUtil.isNotEmpty(items)) {
+        if (CollectionUtil.isNotEmpty(items)) {
             this.service().submitFX(() -> this.getRealChildren().removeAll(items));
         }
     }

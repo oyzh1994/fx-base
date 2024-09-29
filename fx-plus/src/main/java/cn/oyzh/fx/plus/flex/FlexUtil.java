@@ -44,7 +44,7 @@ public class FlexUtil {
      * @return 计算后的流式值
      */
     public static double compute(String flexValue, Double value) {
-        if (value != null && StrUtil.isNotBlank(flexValue) && !Double.isNaN(value)) {
+        if (value != null && StringUtil.isNotBlank(flexValue) && !Double.isNaN(value)) {
             try {
                 flexValue = flexValue.trim();
                 Double fixed = null;

@@ -19,7 +19,7 @@ public class ParentStageController extends StageController {
     @Override
     protected void setWindow(@NonNull StageAdapter stage) {
         super.setWindow(stage);
-        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.setWindow(stage);
                 if (controller instanceof SubStageController subController) {
@@ -32,7 +32,7 @@ public class ParentStageController extends StageController {
     @Override
     public void onWindowShowing(WindowEvent event) {
         super.onWindowShowing(event);
-        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.onWindowShowing(event);
             }
@@ -42,7 +42,7 @@ public class ParentStageController extends StageController {
     @Override
     public void onStageShown(WindowEvent event) {
         super.onStageShown(event);
-        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.onStageShown(event);
             }
@@ -52,7 +52,7 @@ public class ParentStageController extends StageController {
     @Override
     public void onStageCloseRequest(WindowEvent event) {
         super.onStageCloseRequest(event);
-        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.onStageCloseRequest(event);
             }
@@ -62,7 +62,7 @@ public class ParentStageController extends StageController {
     @Override
     public void onWindowHiding(WindowEvent event) {
         super.onWindowHiding(event);
-        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.onWindowHiding(event);
             }
@@ -72,7 +72,7 @@ public class ParentStageController extends StageController {
     @Override
     public void onWindowHidden(WindowEvent event) {
         super.onWindowHidden(event);
-        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.onWindowHidden(event);
             }
@@ -82,7 +82,7 @@ public class ParentStageController extends StageController {
     @Override
     public void onSystemExit() {
         super.onSystemExit();
-        if (CollUtil.isNotEmpty(this.getSubControllers())) {
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.onSystemExit();
             }

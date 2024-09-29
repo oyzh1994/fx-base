@@ -49,7 +49,7 @@ public class ColorUtil {
      * @return web颜色
      */
     public static String styleColorToWebColor(String styleColor) {
-        if (StrUtil.startWithIgnoreCase(styleColor, "-fx-fill:")) {
+        if (StringUtil.startWithIgnoreCase(styleColor, "-fx-fill:")) {
             styleColor = styleColor.substring(9).trim();
             if (styleColor.startsWith("#")) {
                 styleColor = styleColor.substring(1).trim();

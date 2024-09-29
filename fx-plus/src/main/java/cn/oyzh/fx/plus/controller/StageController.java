@@ -3,8 +3,8 @@ package cn.oyzh.fx.plus.controller;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.window.StageListener;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import cn.oyzh.fx.plus.window.StageListener;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.NonNull;
@@ -37,7 +37,7 @@ public class StageController extends Controller implements StageListener, EventL
         // 设置页面
         this.setWindow(stage);
         // 处理标题
-        if (StrUtil.isEmpty(this.stage.getTitleExt())) {
+        if (StringUtil.isEmpty(this.stage.getTitleExt())) {
             String title = this.getViewTitle();
             if (title != null) {
                 this.stage.setTitleExt(title);

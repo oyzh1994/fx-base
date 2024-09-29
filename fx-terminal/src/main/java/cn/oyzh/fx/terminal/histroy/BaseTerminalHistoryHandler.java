@@ -38,7 +38,7 @@ public class BaseTerminalHistoryHandler implements TerminalHistoryHandler {
         List<TerminalHistory> histories = this.historyStore().load();
         // 重置命令
         TerminalHistory commandHistory = null;
-        if (StrUtil.isEmpty(terminal.getInput())) {
+        if (StringUtil.isEmpty(terminal.getInput())) {
             this.history = null;
         }
         // 寻找命令
@@ -48,7 +48,7 @@ public class BaseTerminalHistoryHandler implements TerminalHistoryHandler {
                 commandHistory = histories.get(index - 1);
             }
         } else {
-            commandHistory = CollUtil.getLast(histories);
+            commandHistory = CollectionUtil.getLast(histories);
         }
         if (commandHistory != null) {
             this.history = commandHistory;
@@ -65,7 +65,7 @@ public class BaseTerminalHistoryHandler implements TerminalHistoryHandler {
             return null;
         }
         // 重置命令
-        if (StrUtil.isEmpty(terminal.getInput())) {
+        if (StringUtil.isEmpty(terminal.getInput())) {
             this.history = null;
         }
         // 寻找命令

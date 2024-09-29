@@ -1,6 +1,5 @@
 package cn.oyzh.fx.common.h2;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
 import cn.oyzh.fx.common.jdbc.DeleteParam;
 import cn.oyzh.fx.common.jdbc.JdbcConn;
@@ -10,6 +9,7 @@ import cn.oyzh.fx.common.jdbc.JdbcOperator;
 import cn.oyzh.fx.common.jdbc.JdbcUtil;
 import cn.oyzh.fx.common.jdbc.QueryParam;
 import cn.oyzh.fx.common.jdbc.TableDefinition;
+import cn.oyzh.fx.common.util.CollectionUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -153,7 +153,7 @@ public class H2Operator extends JdbcOperator {
         String tableName = this.tableName();
         StringBuilder sql = new StringBuilder("DELETE FROM ");
         sql.append(JdbcUtil.wrap(tableName));
-        if (CollUtil.isNotEmpty(deleteParam.getQueryParams())) {
+        if (CollectionUtil.isNotEmpty(deleteParam.getQueryParams())) {
             boolean first = true;
             for (QueryParam queryParam : deleteParam.getQueryParams()) {
                 if (first) {

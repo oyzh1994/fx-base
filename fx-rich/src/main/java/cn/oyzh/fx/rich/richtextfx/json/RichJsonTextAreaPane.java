@@ -54,7 +54,7 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
     }
 
     public void setJsonStr(String jsonStr) {
-        if (StrUtil.isEmpty(jsonStr)) {
+        if (StringUtil.isEmpty(jsonStr)) {
             return;
         }
         if (!JSONUtil.isTypeJSON(jsonStr)) {
@@ -66,7 +66,7 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
 
     public String getJsonStr() {
         String text = this.getText();
-        if (StrUtil.isEmpty(text)) {
+        if (StringUtil.isEmpty(text)) {
             return null;
         }
         if (!JSONUtil.isTypeJSON(text)) {

@@ -124,11 +124,11 @@ public class TerminalManager {
         List<TerminalCommandHandler<?, ?>> commands = new ArrayList<>();
         for (TerminalCommandHandler<?, ?> value : COMMAND_HANDLERS) {
             String command = value.commandFullName();
-            if (matchType == 1 && StrUtil.startWithIgnoreCase(command, commandText)) {
+            if (matchType == 1 && StringUtil.startWithIgnoreCase(command, commandText)) {
                 commands.add(value);
-            } else if (matchType == 2 && StrUtil.equalsIgnoreCase(command, commandText)) {
+            } else if (matchType == 2 && StringUtil.equalsIgnoreCase(command, commandText)) {
                 commands.add(value);
-            } else if (matchType == 3 && (StrUtil.startWithIgnoreCase(command, commandText) || StrUtil.startWithIgnoreCase(commandText, command))) {
+            } else if (matchType == 3 && (StringUtil.startWithIgnoreCase(command, commandText) || StringUtil.startWithIgnoreCase(commandText, command))) {
                 commands.add(value);
             }
         }
@@ -153,7 +153,7 @@ public class TerminalManager {
     // public static List<String> findCommands(String commandText) {
     //     List<String> commands = new ArrayList<>();
     //     for (TerminalCommandHandler value : COMMAND_HANDLERS) {
-    //         if (StrUtil.startWithIgnoreCase(value.commandName(), commandText)) {
+    //         if (StringUtil.startWithIgnoreCase(value.commandName(), commandText)) {
     //             commands.add(value.commandName());
     //         }
     //     }
@@ -169,10 +169,10 @@ public class TerminalManager {
     public static TerminalCommandHandler<?, ?> findHandler(String input) {
         if (input != null) {
             String[] words = TerminalUtil.split(input);
-            List<TerminalCommandHandler<?, ?>> list = COMMAND_HANDLERS.parallelStream().filter(s -> StrUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
+            List<TerminalCommandHandler<?, ?>> list = COMMAND_HANDLERS.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
             if (!list.isEmpty()) {
                 if (words.length >= 2) {
-                    List<TerminalCommandHandler<?, ?>> list1 = list.parallelStream().filter(s -> StrUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
+                    List<TerminalCommandHandler<?, ?>> list1 = list.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
                     if (!list1.isEmpty()) {
                         return list1.getFirst();
                     }

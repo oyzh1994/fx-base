@@ -39,7 +39,7 @@ public class JPackageHandler implements PackHandler {
             return;
         }
         String jdkPath = packConfig.getJdkPath();
-        if (StrUtil.isBlank(jdkPath)) {
+        if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
         }
         if (jPackageConfig.getInput() == null) {

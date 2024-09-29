@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.OSUtil;
 import javafx.application.Platform;

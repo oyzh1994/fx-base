@@ -30,9 +30,9 @@ public class CompressHandler implements PostHandler {
         if (compressConfig == null) {
             return;
         }
-        if (StrUtil.isNotBlank(compressConfig.getType())) {
+        if (StringUtil.isNotBlank(compressConfig.getType())) {
             String compressName = compressConfig.getName();
-            if (StrUtil.isBlank(compressName)) {
+            if (StringUtil.isBlank(compressName)) {
                 throw new Exception("compressName为空！");
             }
             String dest = packConfig.getDest();

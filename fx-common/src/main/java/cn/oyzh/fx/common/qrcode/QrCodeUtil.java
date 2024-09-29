@@ -10,7 +10,6 @@ import cn.hutool.core.lang.ansi.AnsiElement;
 import cn.hutool.core.lang.ansi.AnsiEncoder;
 import cn.hutool.core.lang.ansi.ForeOrBack;
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Binarizer;
@@ -612,7 +611,7 @@ public class QrCodeUtil {
 
 		}
 
-		StringBuilder result = StrUtil.builder();
+		StringBuilder result = StringUtil.builder();
 		result.append("<svg width=\"").append(qrWidth).append("\" height=\"").append(qrHeight).append("\" \n");
 		if (backColor != null) {
 			Color back = new Color(backColor, true);
@@ -627,7 +626,7 @@ public class QrCodeUtil {
 			result.append("stroke=\"rgba(").append(fore.getRed()).append(",").append(fore.getGreen()).append(",").append(fore.getBlue()).append(",").append(fore.getAlpha()).append(")\"");
 		}
 		result.append(" /> \n");
-		if (StrUtil.isNotBlank(logoBase64)) {
+		if (StringUtil.isNotBlank(logoBase64)) {
 			result.append("<image xlink:href=\"").append(logoBase64).append("\" height=\"").append(logoHeight).append("\" width=\"").append(logoWidth).append("\" y=\"").append(logoY).append("\" x=\"").append(logoX).append("\" />\n");
 		}
 		result.append("</svg>");

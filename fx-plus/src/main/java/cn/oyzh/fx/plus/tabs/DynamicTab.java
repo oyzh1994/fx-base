@@ -210,7 +210,7 @@ public abstract class DynamicTab extends FXTab {
     @Override
     public void flushTitle() {
         super.flushTitle();
-        if (StrUtil.isEmpty(this.getTitle())) {
+        if (StringUtil.isEmpty(this.getTitle())) {
             String title = this.getTabTitle();
             if (title != null) {
                 this.setTitle(title);

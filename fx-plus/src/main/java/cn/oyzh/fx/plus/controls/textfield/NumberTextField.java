@@ -67,7 +67,7 @@ public class NumberTextField extends DigitalTextField {
                 try {
                     String text = change.getControlNewText();
                     // 如果文本为空、"+"，则不进行任何操作，直接返回原change对象
-                    if (StrUtil.isEmpty(text) || text.equals("+")) {
+                    if (StringUtil.isEmpty(text) || text.equals("+")) {
                         return change;
                     }
                     // 无符号判断
@@ -114,7 +114,7 @@ public class NumberTextField extends DigitalTextField {
     @Override
     protected Number value() {
         String text = this.getText();
-        if (StrUtil.equalsAny(text, "", "+", "-")) {
+        if (StringUtil.equalsAny(text, "", "+", "-")) {
             return null;
         }
         return super.value();

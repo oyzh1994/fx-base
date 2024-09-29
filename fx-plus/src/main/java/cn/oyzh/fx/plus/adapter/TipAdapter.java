@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.TooltipUtil;
 import javafx.event.EventTarget;
 

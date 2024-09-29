@@ -41,7 +41,7 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
      * 计算菜单宽度
      */
     private void calcWidth() {
-        if (CollUtil.isNotEmpty(this.getItems())) {
+        if (CollectionUtil.isNotEmpty(this.getItems())) {
             double maxWidth = 0.d;
             for (MenuItem item : this.getItems()) {
                 if (item instanceof FXMenuItem item1 && item1.getWidth() > maxWidth) {

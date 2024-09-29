@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.jar;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.RuntimeUtil;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -45,7 +44,7 @@ public class JarHandler implements PreHandler {
             return;
         }
         String jdkPath = packConfig.getJdkPath();
-        if (StrUtil.isBlank(jdkPath)) {
+        if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
         }
         this.filter = new RegFilter(jarConfig.getExcludes());

@@ -77,6 +77,14 @@
             <version>${hutool.version}</version>
         </dependency>
 
+        <!--  缓存工具类库 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+            <version>${hutool.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!--  json工具类库 -->
         <dependency>
             <groupId>cn.hutool</groupId>

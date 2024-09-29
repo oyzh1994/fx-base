@@ -67,7 +67,7 @@ public interface ContextMenuAdapter {
      */
     default ContextMenu initContextMenu(List<? extends MenuItem> menuItems) {
         ContextMenu contextMenu = this.contextMenu();
-        if (CollUtil.isNotEmpty(menuItems)) {
+        if (CollectionUtil.isNotEmpty(menuItems)) {
             if (contextMenu == null) {
                 contextMenu = new ContextMenu();
                 this.contextMenu(contextMenu);

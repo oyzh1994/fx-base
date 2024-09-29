@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import javafx.beans.value.ChangeListener;
-import lombok.NonNull;
 
 /**
  * @author oyzh

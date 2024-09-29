@@ -79,10 +79,10 @@ public class FontUtil {
      * @return 结果
      */
     public static boolean isSameFont(javafx.scene.text.Font font1, javafx.scene.text.Font font2) {
-        if (!StrUtil.equalsIgnoreCase(font1.getFamily(), font2.getFamily())) {
+        if (!StringUtil.equalsIgnoreCase(font1.getFamily(), font2.getFamily())) {
             return false;
         }
-        if (!StrUtil.equalsIgnoreCase(font1.getStyle(), font2.getStyle())) {
+        if (!StringUtil.equalsIgnoreCase(font1.getStyle(), font2.getStyle())) {
             return false;
         }
         return font1.getSize() == font2.getSize();
@@ -96,7 +96,7 @@ public class FontUtil {
      * @return 字符宽度
      */
     public static double stringWidth(String str) {
-        if (StrUtil.isBlank(str)) {
+        if (StringUtil.isBlank(str)) {
             return 0;
         }
         FontMetrics fontMetrics = fontMetrics();
@@ -111,7 +111,7 @@ public class FontUtil {
      * @return 字符宽度
      */
     public static double stringWidth(String str, javafx.scene.text.Font font) {
-        if (StrUtil.isBlank(str)) {
+        if (StringUtil.isBlank(str)) {
             return 0;
         }
         FontMetrics fontMetrics = fontMetrics(font);
@@ -225,8 +225,8 @@ public class FontUtil {
         if (target instanceof Node node) {
             try {
                 String style = node.getStyle();
-                if (StrUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-size")) {
-                    List<String> list = StrUtil.split(style, ";");
+                if (StringUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-size")) {
+                    List<String> list = StringUtil.split(style, ";");
                     Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-size")).findAny();
                     if (fontSize.isPresent()) {
                         String size = fontSize.get().toLowerCase().trim().replace("-fx-font-size", "");
@@ -260,8 +260,8 @@ public class FontUtil {
         if (target instanceof Node node) {
             try {
                 String style = node.getStyle();
-                if (StrUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-family")) {
-                    List<String> list = StrUtil.split(style, ";");
+                if (StringUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-family")) {
+                    List<String> list = StringUtil.split(style, ";");
                     Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-family")).findAny();
                     if (fontSize.isPresent()) {
                         String family = fontSize.get().toLowerCase().trim().replace("-fx-font-family", "");

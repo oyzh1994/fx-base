@@ -216,7 +216,7 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
      * @param styles 富文本样式
      */
     public void setStyles(List<RichTextStyle> styles) {
-        if (CollUtil.isNotEmpty(styles)) {
+        if (CollectionUtil.isNotEmpty(styles)) {
             for (RichTextStyle style : styles) {
                 this.setStyle(style.start(), style.end(), style.style());
             }

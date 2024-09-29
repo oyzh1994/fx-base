@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.opacity;
 
-import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.WindowManager;
 import javafx.stage.Window;
 import lombok.experimental.UtilityClass;

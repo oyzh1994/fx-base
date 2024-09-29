@@ -35,7 +35,7 @@ public class MsgTextArea extends FlexTextArea {
                 // 检测最大行
                 if (this.lineLimit != -1) {
                     // 追加文本计数
-                    long count = StrUtil.count(s, LINE_SEPARATOR);
+                    long count = StringUtil.count(s, LINE_SEPARATOR);
                     // 拼接文本已经大于最大限制，直接清除文本
                     if (count >= this.lineLimit) {
                         super.clear();

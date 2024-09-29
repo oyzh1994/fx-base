@@ -2,9 +2,7 @@ package cn.oyzh.fx.terminal.command;
 
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.exception.TerminalException;
-import cn.oyzh.fx.terminal.util.TerminalManager;
 import cn.oyzh.fx.terminal.util.TerminalUtil;
-import org.checkerframework.checker.units.qual.C;
 
 /**
  * 基础终端命令处理实现

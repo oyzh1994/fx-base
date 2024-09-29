@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.TaskManager;
 import javafx.scene.Node;

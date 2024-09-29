@@ -8,9 +8,9 @@ public class xx2 {
 
     public boolean check(KeyEvent event, String text) {
         StringBuilder textNew = new StringBuilder();
-        if (StrUtil.isNotEmpty(event.getText())) {
+        if (StringUtil.isNotEmpty(event.getText())) {
             textNew.append(event.getText());
-        } else if (StrUtil.isNotEmpty(event.getCharacter())) {
+        } else if (StringUtil.isNotEmpty(event.getCharacter())) {
             textNew.append(event.getCharacter());
         }
         textNew.append(text);

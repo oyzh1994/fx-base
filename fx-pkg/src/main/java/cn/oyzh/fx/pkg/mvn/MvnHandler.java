@@ -57,10 +57,10 @@ public class MvnHandler implements PreHandler, SingleHandler {
             return;
         }
         String mvnHome = System.getenv("MAVEN_HOME");
-        if (StrUtil.isBlank(mvnHome)) {
+        if (StringUtil.isBlank(mvnHome)) {
             mvnHome = System.getenv("M2_HOME");
         }
-        if (StrUtil.isBlank(mvnHome)) {
+        if (StringUtil.isBlank(mvnHome)) {
             throw new RuntimeException("maven主目录未找到!");
         }
         String mvnExe;
@@ -72,7 +72,7 @@ public class MvnHandler implements PreHandler, SingleHandler {
             mvnExe = mvnHome + "/bin/mvn";
         }
         // 安装依赖工程
-        if (CollUtil.isNotEmpty(this.dependencies)) {
+        if (CollectionUtil.isNotEmpty(this.dependencies)) {
             for (String dependency : this.dependencies) {
                 String mvnCommand = mvnExe + " -X install -DskipTests";
                 RuntimeUtil.execAndWait(mvnCommand, new File(dependency));

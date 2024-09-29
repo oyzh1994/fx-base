@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.date;
 
-import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.common.SysConst;
+import cn.oyzh.fx.common.util.FileUtil;
 import cn.oyzh.fx.common.util.ReflectUtil;
 
 import java.io.BufferedInputStream;

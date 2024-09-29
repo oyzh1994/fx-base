@@ -67,7 +67,7 @@ public class JLinkConfig {
     private List<String> excludeFiles;
 
     public void margeAddModules(Collection<String> addModules) {
-        if (CollUtil.isNotEmpty(addModules)) {
+        if (CollectionUtil.isNotEmpty(addModules)) {
             if (this.addModules == null || this.addModules.isEmpty()) {
                 this.addModules = new ArrayList<>(addModules);
             } else {

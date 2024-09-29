@@ -136,7 +136,7 @@ public abstract class SearchHandler {
             // 更新搜索信息
             this.searchResult().setCount(matchItems.size());
             // 内容为空
-            if (CollUtil.isEmpty(matchItems)) {
+            if (CollectionUtil.isEmpty(matchItems)) {
                 // 更新节点
                 this.updateCurrentItem(null);
                 return;

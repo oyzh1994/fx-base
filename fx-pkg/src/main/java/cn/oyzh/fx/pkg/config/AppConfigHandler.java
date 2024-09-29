@@ -31,7 +31,7 @@ public class AppConfigHandler implements PostHandler {
     @Override
     public void handle(PackConfig packConfig) throws Exception {
         if (packConfig.isParkByPackr()) {
-            if (StrUtil.isBlank(packConfig.mainJar())) {
+            if (StringUtil.isBlank(packConfig.mainJar())) {
                 throw new Exception("mainJar参数缺失！");
             }
             String jre = packConfig.getPackrConfig().jrePath();

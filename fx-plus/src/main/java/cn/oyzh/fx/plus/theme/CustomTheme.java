@@ -49,17 +49,17 @@ public class CustomTheme implements Theme, ThemeStyle {
      */
     public void updateTheme(String themeName, String bgColor, String fgColor, String accentColor) {
         this.theme = Themes.getTheme(themeName);
-        if (StrUtil.isNotEmpty(accentColor)) {
+        if (StringUtil.isNotEmpty(accentColor)) {
             this.accentColor = Color.valueOf(accentColor);
         } else {
             this.accentColor = null;
         }
-        if (StrUtil.isNotEmpty(bgColor)) {
+        if (StringUtil.isNotEmpty(bgColor)) {
             this.backgroundColor = Color.valueOf(bgColor);
         } else {
             this.backgroundColor = null;
         }
-        if (StrUtil.isNotEmpty(fgColor)) {
+        if (StringUtil.isNotEmpty(fgColor)) {
             this.foregroundColor = Color.valueOf(fgColor);
         } else {
             this.foregroundColor = null;

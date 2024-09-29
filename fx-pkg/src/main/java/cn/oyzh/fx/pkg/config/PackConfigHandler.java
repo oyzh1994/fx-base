@@ -27,19 +27,19 @@ public class PackConfigHandler implements PreHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        if (StrUtil.equals(packConfig.getJdkPath(), "$SYSTEM")) {
+        if (StringUtil.equals(packConfig.getJdkPath(), "$SYSTEM")) {
             String javaHome = System.getenv("JAVA_HOME");
             packConfig.setJdkPath(javaHome);
         }
         String appVersion = packConfig.appVersion();
         if (appVersion != null) {
-            packConfig.setDest(StrUtil.replace(packConfig.getDest(), "${appVersion}", appVersion));
-            packConfig.setMainJar(StrUtil.replace(packConfig.getMainJar(), "${appVersion}", appVersion));
+            packConfig.setDest(StringUtil.replace(packConfig.getDest(), "${appVersion}", appVersion));
+            packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${appVersion}", appVersion));
         }
         String projectPath = (String) packConfig.getProperty("projectPath");
         if (projectPath != null) {
-            packConfig.setMainJar(StrUtil.replace(packConfig.getMainJar(), "${projectPath}", projectPath));
-            packConfig.setAppIcon(StrUtil.replace(packConfig.getAppIcon(), "${projectPath}", projectPath));
+            packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${projectPath}", projectPath));
+            packConfig.setAppIcon(StringUtil.replace(packConfig.getAppIcon(), "${projectPath}", projectPath));
         }
     }
 }

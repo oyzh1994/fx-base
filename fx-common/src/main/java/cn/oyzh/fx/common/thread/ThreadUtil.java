@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.thread;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ExecutorBuilder;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -40,7 +40,7 @@ public class ThreadUtil {
      * @param tasks 任务列表
      */
     public static void submitVirtual(List<Runnable> tasks) {
-        if (CollUtil.isNotEmpty(tasks)) {
+        if (CollectionUtil.isNotEmpty(tasks)) {
             try (ExecutorService service = Executors.newVirtualThreadPerTaskExecutor()) {
                 List<Future<?>> futures = new ArrayList<>(tasks.size());
                 for (Runnable task : tasks) {
@@ -63,7 +63,7 @@ public class ThreadUtil {
      */
     public static <V> List<V> invokeVirtual(List<Callable<V>> tasks) {
         List<V> results = new ArrayList<>();
-        if (CollUtil.isNotEmpty(tasks)) {
+        if (CollectionUtil.isNotEmpty(tasks)) {
             try (ExecutorService service = Executors.newVirtualThreadPerTaskExecutor()) {
                 List<Future<V>> futures = service.invokeAll(tasks);
                 for (Future<V> future : futures) {
@@ -108,7 +108,7 @@ public class ThreadUtil {
      * @param tasks 任务列表
      */
     public static void submit(List<Runnable> tasks) {
-        if (CollUtil.isNotEmpty(tasks)) {
+        if (CollectionUtil.isNotEmpty(tasks)) {
             ExecutorService service = Executors.newCachedThreadPool();
             try {
                 List<Future<?>> futures = new ArrayList<>(tasks.size());
@@ -137,7 +137,7 @@ public class ThreadUtil {
      * @return 结果列表
      */
     public static <V> List<V> invoke(List<Callable<V>> tasks) {
-        if (CollUtil.isNotEmpty(tasks)) {
+        if (CollectionUtil.isNotEmpty(tasks)) {
             try (ExecutorService service = Executors.newCachedThreadPool()) {
                 List<Future<V>> futures = service.invokeAll(tasks);
                 List<V> results = new ArrayList<>(futures.size());

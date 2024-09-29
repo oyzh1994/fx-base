@@ -72,7 +72,7 @@ public class SVGLoader {
                 while (iterator.hasNext()) {
                     Element element = iterator.next();
                     String d = element.attributeValue("d");
-                    if (StrUtil.isNotBlank(d)) {
+                    if (StringUtil.isNotBlank(d)) {
                         if (first) {
                             first = false;
                             content.append(d);

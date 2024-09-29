@@ -4,8 +4,6 @@ import com.gluonhq.richtextarea.viewmodel.ActionCmd;
 import com.gluonhq.richtextarea.viewmodel.RichTextAreaViewModel;
 import javafx.beans.binding.BooleanBinding;
 
-import java.util.Objects;
-
 public class ActionCmdAppendText implements ActionCmd {
 
     private final String content;

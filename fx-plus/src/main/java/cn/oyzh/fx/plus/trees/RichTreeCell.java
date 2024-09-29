@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.trees;
 
-import cn.hutool.extra.spring.SpringUtil;
 import cn.oyzh.fx.plus.controls.tree.FXTreeCell;
 import cn.oyzh.fx.plus.drag.DragNodeHandler;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
@@ -36,8 +35,9 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         RichTreeView treeView = (RichTreeView) this.getTreeView();
         // 初始化拖动
         if (item instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
+            this.dragNodeHandler = new DragNodeHandler();
             BackgroundService.submit(() -> {
-                this.dragNodeHandler = SpringUtil.getBean(DragNodeHandler.class);
+                // this.dragNodeHandler = SpringUtil.getBean(DragNodeHandler.class);
                 DragUtil.initDragNode(this.dragNodeHandler, this, treeView.dragContent());
             });
         }

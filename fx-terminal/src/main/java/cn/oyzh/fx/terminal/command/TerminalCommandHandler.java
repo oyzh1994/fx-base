@@ -84,10 +84,10 @@ public interface TerminalCommandHandler<C extends TerminalCommand, T extends Ter
      */
     default String commandHelp(T terminal) {
         StringBuilder builder = new StringBuilder();
-        if (StrUtil.isNotBlank(this.commandName())) {
+        if (StringUtil.isNotBlank(this.commandName())) {
             builder.append(" ").append(this.commandName());
         }
-        if (StrUtil.isNotBlank(this.commandArg())) {
+        if (StringUtil.isNotBlank(this.commandArg())) {
             builder.append(" ").append(this.commandArg());
         }
         return builder.isEmpty() ? "" : builder.substring(1);

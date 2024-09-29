@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.jdbc;
 
 
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.ReflectUtil;
 import lombok.Data;
 
@@ -25,7 +24,7 @@ public class TableDefinition {
 
     public boolean hasColumn(String columnName) {
         for (ColumnDefinition column : this.columns) {
-            if (StrUtil.equalsIgnoreCase(column.getColumnName(), columnName)) {
+            if (StringUtil.equalsIgnoreCase(column.getColumnName(), columnName)) {
 
                 return true;
             }

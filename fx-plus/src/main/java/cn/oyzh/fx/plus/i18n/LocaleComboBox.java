@@ -31,7 +31,7 @@ public class LocaleComboBox extends FlexComboBox<Locale> {
      * @param localeName 区域名称
      */
     public void select(String localeName) {
-        if (StrUtil.isEmpty(localeName)) {
+        if (StringUtil.isEmpty(localeName)) {
             this.select(I18nManager.defaultLocale);
         } else {
             try {

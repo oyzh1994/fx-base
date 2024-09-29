@@ -14,7 +14,7 @@ public class TipVerifyFailHandler implements VerifyFailHandler {
 
     @Override
     public void onVerifyFail(String failMsg, Node node) {
-        if (StrUtil.isNotBlank(failMsg) && node != null) {
+        if (StringUtil.isNotBlank(failMsg) && node != null) {
             MessageBox.tipMsg(failMsg, node);
         }
     }

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.common.file;
 
-import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.common.util.FileUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -31,15 +32,15 @@ public class SkipAbleFileReader implements AutoCloseable {
     @Accessors(fluent = true, chain = true)
     private String lineBreak;
 
-    public SkipAbleFileReader(@NonNull String filePath) {
+    public SkipAbleFileReader(@NonNull String filePath) throws FileNotFoundException {
         this(new File(filePath), StandardCharsets.UTF_8);
     }
 
-    public SkipAbleFileReader(@NonNull File file) {
+    public SkipAbleFileReader(@NonNull File file) throws FileNotFoundException {
         this(file, StandardCharsets.UTF_8);
     }
 
-    public SkipAbleFileReader(@NonNull File file, Charset charset) {
+    public SkipAbleFileReader(@NonNull File file, Charset charset) throws FileNotFoundException {
         this.reader = FileUtil.getReader(file, charset);
     }
 

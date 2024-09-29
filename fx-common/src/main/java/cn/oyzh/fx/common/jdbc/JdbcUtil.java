@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.jdbc;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.date.LocalDateTimeUtil;
 import cn.oyzh.fx.common.date.LocalDateUtil;
@@ -36,7 +35,7 @@ public class JdbcUtil {
             return n.byteValue() == 1;
         }
         if (sqlData instanceof CharSequence n) {
-            return StrUtil.equalsAnyIgnoreCase(n, "1", "y", "yes", "true");
+            return StringUtil.equalsAnyIgnoreCase(n, "1", "y", "yes", "true");
         }
         return null;
     }

@@ -105,6 +105,13 @@
             <version>${snakeyaml.version}</version>
         </dependency>
 
+        <!-- 扩展工具类库 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
         <!-- 测试类库 -->
         <dependency>
             <groupId>junit</groupId>

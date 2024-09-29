@@ -128,7 +128,7 @@ public class Test1 {
     @Test
     public void test10() {
         String bit = "0001010101100101";
-        String[] bits = StrUtil.split(bit, 8);
+        String[] bits = StringUtil.split(bit, 8);
 
         for (String s : bits) {
             int decimalValue = Integer.parseInt(s, 2); // 将二进制字符串转换为十进制整数

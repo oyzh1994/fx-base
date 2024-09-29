@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeUtil;
 import cn.oyzh.fx.plus.util.ColorUtil;
 import javafx.scene.Cursor;
 import javafx.scene.control.ColorPicker;
@@ -142,7 +141,7 @@ public class FlexColorPicker extends ColorPicker implements FlexAdapter, TipAdap
     }
 
     public void setColor(String color) {
-        if (StrUtil.isNotEmpty(color)) {
+        if (StringUtil.isNotEmpty(color)) {
             try {
                 this.setValue(Color.valueOf(color));
             } catch (Exception ex) {

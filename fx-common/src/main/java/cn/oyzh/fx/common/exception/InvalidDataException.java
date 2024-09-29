@@ -1,6 +1,7 @@
 package cn.oyzh.fx.common.exception;
 
-import cn.hutool.core.util.ArrayUtil;
+
+import cn.oyzh.fx.common.util.ArrayUtil;
 
 /**
  * @author oyzh

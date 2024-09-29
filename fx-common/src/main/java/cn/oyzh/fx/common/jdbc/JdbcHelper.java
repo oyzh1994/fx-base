@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.jdbc;
 
-import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.common.log.JulLog;
+import cn.oyzh.fx.common.util.ArrayUtil;
 import lombok.experimental.UtilityClass;
 
 import java.sql.JDBCType;

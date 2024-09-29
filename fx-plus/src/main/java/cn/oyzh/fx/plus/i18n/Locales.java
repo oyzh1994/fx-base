@@ -72,13 +72,13 @@ public class Locales {
      * @return 区域
      */
     public static Locale getLocale(String localeName) {
-        if (StrUtil.equals(localeName, "zh_cn")) {
+        if (StringUtil.equals(localeName, "zh_cn")) {
             return Locale.PRC;
         }
-        if (StrUtil.equals(localeName, "zh_tw")) {
+        if (StringUtil.equals(localeName, "zh_tw")) {
             return Locale.TAIWAN;
         }
-        if (StrUtil.equals(localeName, "en")) {
+        if (StringUtil.equals(localeName, "en")) {
             return Locale.ENGLISH;
         }
         return Locale.PRC;

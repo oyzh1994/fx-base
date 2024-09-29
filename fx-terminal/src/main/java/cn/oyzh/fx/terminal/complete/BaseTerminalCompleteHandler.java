@@ -30,7 +30,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
 
     @Override
     public boolean completion(String line, T terminal) {
-        if (StrUtil.isEmpty(line)) {
+        if (StringUtil.isEmpty(line)) {
             HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(HelpTerminalCommandHandler.class);
             TerminalExecuteResult result = commandHandler.execute(null, terminal);
             terminal.outputLine((String) result.getResult());
@@ -66,7 +66,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
      * @param handler  处理器
      */
     protected void oneMatch(String input, T terminal, TerminalCommandHandler handler) {
-        if (!StrUtil.startWithIgnoreCase(input, handler.commandFullName())) {
+        if (!StringUtil.startWithIgnoreCase(input, handler.commandFullName())) {
             terminal.coverInput(handler.commandFullName());
         } else {
             handler.completion(input, terminal);

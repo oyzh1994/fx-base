@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.dto;
 
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.PropertiesFile;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.Data;
 
 import java.io.IOException;
@@ -56,23 +56,23 @@ public class Project {
                 PropertiesFile propFile = new PropertiesFile("/project.properties");
                 Project project = new Project();
                 String name = propFile.getProperty("project.name");
-                if (StrUtil.isNotBlank(name)) {
+                if (StringUtil.isNotBlank(name)) {
                     project.setName(name);
                 }
                 String type = propFile.getProperty("project.type");
-                if (StrUtil.isNotBlank(type)) {
+                if (StringUtil.isNotBlank(type)) {
                     project.setType(type);
                 }
                 String version = propFile.getProperty("project.version");
-                if (StrUtil.isNotBlank(version)) {
+                if (StringUtil.isNotBlank(version)) {
                     project.setVersion(version);
                 }
                 String updateDate = propFile.getProperty("project.updateDate");
-                if (StrUtil.isNotBlank(updateDate)) {
+                if (StringUtil.isNotBlank(updateDate)) {
                     project.setUpdateDate(updateDate);
                 }
                 String copyright = propFile.getProperty("project.copyright");
-                if (StrUtil.isNotBlank(copyright)) {
+                if (StringUtil.isNotBlank(copyright)) {
                     project.setCopyright(copyright);
                 }
                 propFile.clear();

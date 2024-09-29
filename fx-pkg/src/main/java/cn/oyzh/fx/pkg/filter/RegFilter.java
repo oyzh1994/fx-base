@@ -38,7 +38,7 @@ public class RegFilter implements Function<String, Boolean> {
      * @param exclude 排除参数
      */
     public void addExclude(@NonNull String exclude) {
-        if (StrUtil.isNotBlank(exclude)) {
+        if (StringUtil.isNotBlank(exclude)) {
             this.excludes.add(exclude.trim());
         }
     }
@@ -49,7 +49,7 @@ public class RegFilter implements Function<String, Boolean> {
      * @param collection 排除集合
      */
     public void addExcludes(Collection<String> collection) {
-        if (CollUtil.isEmpty(collection)) {
+        if (CollectionUtil.isEmpty(collection)) {
             return;
         }
         for (String s : collection) {

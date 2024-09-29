@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.qrcode;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.util.StrUtil;
 
 /**
  * Qrcode异常
@@ -20,7 +19,7 @@ public class QrCodeException extends RuntimeException {
 	}
 
 	public QrCodeException(String messageTemplate, Object... params) {
-		super(StrUtil.format(messageTemplate, params));
+		super(StringUtil.format(messageTemplate, params));
 	}
 
 	public QrCodeException(String message, Throwable throwable) {
@@ -32,6 +31,6 @@ public class QrCodeException extends RuntimeException {
 	}
 
 	public QrCodeException(Throwable throwable, String messageTemplate, Object... params) {
-		super(StrUtil.format(messageTemplate, params), throwable);
+		super(StringUtil.format(messageTemplate, params), throwable);
 	}
 }

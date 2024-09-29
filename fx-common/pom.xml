@@ -18,21 +18,21 @@
             <version>${lombok.version}</version>
         </dependency>
 
-        <!--Spring 注解支持-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash;Spring 注解支持&ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.springframework</groupId> -->
+        <!--     <artifactId>spring-context</artifactId> -->
+        <!--     <version>${spring.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
-        <!-- Spring boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring.boot.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash; Spring boot &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.springframework.boot</groupId> -->
+        <!--     <artifactId>spring-boot-starter</artifactId> -->
+        <!--     <version>${spring.boot.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <!-- &lt;!&ndash; 扩展工具类库 &ndash;&gt; -->
         <!-- <dependency> -->
@@ -42,21 +42,21 @@
         <!--     <scope>provided</scope> -->
         <!-- </dependency> -->
 
-        <!-- 缓存工具类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-cache</artifactId>
-            <version>${hutool.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash; 缓存工具类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>cn.hutool</groupId> -->
+        <!--     <artifactId>hutool-cache</artifactId> -->
+        <!--     <version>${hutool.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
-        <!-- json工具类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-json</artifactId>
-            <version>${hutool.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- &lt;!&ndash; json工具类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>cn.hutool</groupId> -->
+        <!--     <artifactId>hutool-json</artifactId> -->
+        <!--     <version>${hutool.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <!-- 二维码工具 -->
         <dependency>

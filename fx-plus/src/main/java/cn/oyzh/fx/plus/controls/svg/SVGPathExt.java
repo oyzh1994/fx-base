@@ -54,6 +54,6 @@
 //     }
 //
 //     public boolean isLoading() {
-//         return StrUtil.contains(this.url, "loading.svg");
+//         return StringUtil.contains(this.url, "loading.svg");
 //     }
 // }
