@@ -23,20 +23,18 @@ public class TimedCache<K, V> extends Cache<K, V> {
         this.cache = new ConcurrentHashMap<>();
     }
 
-
     @Override
     public V get(K key) {
         TimedValue<V> value = this.cache.get(key);
         if (value == null) {
             return null;
         }
-        // 没有设置超时时间或者未超时，则返回值
-        if (!this.checkTimeout(value)) {
-            return value.value;
+        // 检查值
+        if (this.checkTimeout(value)) {
+            this.cache.remove(key);
+            return null;
         }
-        // 移除值
-        this.cache.remove(key);
-        return null;
+        return value.value;
     }
 
     @Override
@@ -69,9 +67,9 @@ public class TimedCache<K, V> extends Cache<K, V> {
     }
 
     private boolean checkTimeout(TimedValue<V> value) {
-        if (value == null) {
-            return false;
+        if (value != null && this.timeout > 0) {
+            return System.currentTimeMillis() - value.putTime > this.timeout;
         }
-        return this.timeout > 0 && System.currentTimeMillis() - value.putTime >= this.timeout;
+        return false;
     }
 }

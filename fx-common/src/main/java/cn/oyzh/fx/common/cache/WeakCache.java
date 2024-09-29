@@ -18,12 +18,12 @@ public class WeakCache<K, V> extends Cache<K, V> {
 
     @Override
     public V get(K key) {
-        WeakReference<V> ref = cache.get(key);
+        WeakReference<V> ref = this.cache.get(key);
         if (ref == null) {
             return null;
         }
         if (ref.get() == null) {
-            cache.remove(key);
+            this.cache.remove(key);
             return null;
         }
         return ref.get();
@@ -31,22 +31,22 @@ public class WeakCache<K, V> extends Cache<K, V> {
 
     @Override
     public void put(K key, V value) {
-        cache.put(key, new WeakReference<>(value));
+        this.cache.put(key, new WeakReference<>(value));
     }
 
     @Override
     public void remove(K key) {
-        cache.remove(key);
+        this.cache.remove(key);
     }
 
     @Override
     public void clear() {
-        cache.clear();
+        this.cache.clear();
     }
 
     @Override
     public boolean containsKey(K key) {
-        WeakReference<V> ref = cache.get(key);
+        WeakReference<V> ref = this.cache.get(key);
         return ref != null && ref.get() != null;
     }
 }
