@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.h2;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.jdbc.ColumnDefinition;
 import cn.oyzh.fx.common.jdbc.DeleteParam;
 import cn.oyzh.fx.common.jdbc.JdbcConn;
@@ -16,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author oyzh
@@ -52,36 +50,45 @@ public class H2Operator extends JdbcOperator {
         JdbcConn connection = JdbcManager.takeoff();
         try {
             String tableName = this.tableName();
+            List<String> deletedColumns = new ArrayList<>();
             List<ColumnDefinition> addedColumns = new ArrayList<>();
             List<ColumnDefinition> changedColumns = new ArrayList<>();
             for (ColumnDefinition column : this.columns()) {
                 ResultSet resultSet = connection.getColumns(tableName, column.getColumnName());
-                // 字段不存在
-                if (!resultSet.next()) {
-                    addedColumns.add(column);
-                } else {
+                try (resultSet) {
+                    // 字段不存在
+                    if (!resultSet.next()) {
+                        addedColumns.add(column);
+                        continue;
+                    }
                     // 字段类型不相同
                     String typeName = resultSet.getString("TYPE_NAME");
                     if (!H2Util.checkSqlType(column.getColumnType(), typeName)) {
                         changedColumns.add(column);
                     }
                 }
-                resultSet.close();
             }
-            if (!addedColumns.isEmpty() || !changedColumns.isEmpty()) {
-                for (ColumnDefinition column : addedColumns) {
+            ResultSet resultSet = connection.getColumns(tableName, null);
+            try (resultSet) {
+                while (resultSet.next()) {
+                    // 字段被删除
+                    String columnName = resultSet.getString("COLUMN_NAME");
+                    if (!this.tableDefinition.hasColumn(columnName)) {
+                        deletedColumns.add(columnName);
+                    }
+                }
+            }
+            if (!deletedColumns.isEmpty() || !addedColumns.isEmpty() || !changedColumns.isEmpty()) {
+                // 删除
+                for (String column : deletedColumns) {
                     StringBuilder sql = new StringBuilder();
                     sql.append("ALTER TABLE ");
                     sql.append(JdbcUtil.wrap(tableName));
-                    sql.append(" ADD COLUMN ");
-                    sql.append(H2Util.wrap(column.getColumnName()));
-                    sql.append(" ");
-                    sql.append(column.getColumnType().toUpperCase());
-                    if (column.isPrimaryKey()) {
-                        sql.append(" PRIMARY KEY");
-                    }
+                    sql.append(" DROP COLUMN ");
+                    sql.append(H2Util.wrap(column));
                     JdbcHelper.executeUpdate(connection, sql.toString());
                 }
+                // 修改
                 for (ColumnDefinition column : changedColumns) {
                     StringBuilder sql = new StringBuilder();
                     sql.append("ALTER TABLE ");
@@ -92,6 +99,20 @@ public class H2Operator extends JdbcOperator {
                     sql.append(column.getColumnType().toUpperCase());
                     if (column.isPrimaryKey()) {
                         sql.append(" NOT NULL");
+                    }
+                    JdbcHelper.executeUpdate(connection, sql.toString());
+                }
+                // 新增
+                for (ColumnDefinition column : addedColumns) {
+                    StringBuilder sql = new StringBuilder();
+                    sql.append("ALTER TABLE ");
+                    sql.append(JdbcUtil.wrap(tableName));
+                    sql.append(" ADD COLUMN ");
+                    sql.append(H2Util.wrap(column.getColumnName()));
+                    sql.append(" ");
+                    sql.append(column.getColumnType().toUpperCase());
+                    if (column.isPrimaryKey()) {
+                        sql.append(" PRIMARY KEY");
                     }
                     JdbcHelper.executeUpdate(connection, sql.toString());
                 }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.common.jdbc;
 
 
+import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.ReflectUtil;
 import lombok.Data;
 
@@ -20,6 +21,16 @@ public class TableDefinition {
             this.columns = new ArrayList<>();
         }
         this.columns.add(columnDefinition);
+    }
+
+    public boolean hasColumn(String columnName) {
+        for (ColumnDefinition column : this.columns) {
+            if (StrUtil.equalsIgnoreCase(column.getColumnName(), columnName)) {
+
+                return true;
+            }
+        }
+        return false;
     }
 
     public ColumnDefinition primaryKey() {
