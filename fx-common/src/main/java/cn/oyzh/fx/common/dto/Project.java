@@ -3,13 +3,8 @@ package cn.oyzh.fx.common.dto;
 import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.PropertiesFile;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * 项目信息

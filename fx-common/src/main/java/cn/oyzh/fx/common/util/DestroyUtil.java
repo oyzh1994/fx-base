@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.util;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * @author oyzh

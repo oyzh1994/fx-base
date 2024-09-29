@@ -1,8 +1,5 @@
 package cn.oyzh.fx.common.util;
 
-import jakarta.annotation.Resource;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.util;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.log.StaticLog;
 import cn.oyzh.fx.common.log.JulLog;
 import lombok.experimental.UtilityClass;
 

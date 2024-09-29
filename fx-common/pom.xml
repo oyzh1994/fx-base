@@ -34,12 +34,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- 扩展工具类库 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
+        <!-- &lt;!&ndash; 扩展工具类库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>cn.hutool</groupId> -->
+        <!--     <artifactId>hutool-extra</artifactId> -->
+        <!--     <version>${hutool.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <!-- 缓存工具类库 -->
         <dependency>
