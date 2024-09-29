@@ -82,4 +82,11 @@ public class CollectionUtil {
         }
         return null;
     }
+
+    public static String join(Collection<String> collection, String lineSeparator) {
+        if (collection == null || lineSeparator == null) {
+            return null;
+        }
+        return String.join(lineSeparator, collection);
+    }
 }

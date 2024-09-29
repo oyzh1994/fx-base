@@ -145,10 +145,17 @@ public class StringUtil {
         if (source != null && strings != null) {
             source = source.toLowerCase();
             for (String string : strings) {
-                if (source.contains(string.toUpperCase())) {
+                if (source.contains(string.toLowerCase())) {
                     return true;
                 }
             }
+        }
+        return false;
+    }
+
+    public static boolean startWithIgnoreCase(String source, String target) {
+        if (source != null && target != null) {
+            return source.toLowerCase().startsWith(target.toLowerCase());
         }
         return false;
     }
@@ -198,4 +205,13 @@ public class StringUtil {
         builder.delete(start, end);
         return builder.toString();
     }
+
+    public static long count(String s, String lineSeparator) {
+        if (s == null || lineSeparator == null) {
+            return 0;
+        }
+        return s.split(lineSeparator).length;
+    }
+
+
 }

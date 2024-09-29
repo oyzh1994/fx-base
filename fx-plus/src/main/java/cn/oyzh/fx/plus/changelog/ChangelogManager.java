@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.changelog;
 
 import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.fx.common.util.FileUtil;
+import cn.oyzh.fx.common.json.JSONUtil;
 import lombok.experimental.UtilityClass;
 
 import java.net.URL;

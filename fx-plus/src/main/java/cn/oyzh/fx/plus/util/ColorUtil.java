@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.oyzh.fx.common.util.StringUtil;
 import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
 

@@ -11,10 +11,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +69,10 @@ public class FileUtil {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void writeUtf8String(String content, String file) {
+        writeString(content, new File(file), StandardCharsets.UTF_8);
     }
 
     public static boolean isDirectory(File dir) {
@@ -124,5 +130,55 @@ public class FileUtil {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String readString(InputStream stream, Charset charset) {
+        try {
+            InputStreamReader reader = new InputStreamReader(stream, charset);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            try (reader; bufferedReader) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+                return sb.toString();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String readString(URL url, Charset charset) {
+        try {
+            return readString(url.openStream(), charset);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String readString(File file, Charset charset) {
+        try {
+            return readString(new FileInputStream(file), charset);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String readUtf8String(File file) {
+        return readString(file, StandardCharsets.UTF_8);
+    }
+
+    public static File[] ls(String dir) {
+        if (dir == null) {
+            return null;
+        }
+        File dirFile = new File(dir);
+        if (!dirFile.exists() || !dirFile.isDirectory()) {
+            return null;
+        }
+        return dirFile.listFiles();
     }
 }

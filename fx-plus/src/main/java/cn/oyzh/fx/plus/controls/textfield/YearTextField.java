@@ -23,9 +23,9 @@ public class YearTextField extends NumberTextField {
         if (value instanceof CharSequence sequence) {
             String str = sequence.toString();
             if (str.contains("-")) {
-                this.value(RegexUtil.parseNumber(str.split("-")[0]));
+                this.value(NumberUtil.parseNumber(str.split("-")[0]));
             } else {
-                this.value(RegexUtil.parseNumber(str));
+                this.value(NumberUtil.parseNumber(str));
             }
         } else if (value instanceof Date date) {
             this.value(1900 + date.getYear());
