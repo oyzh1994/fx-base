@@ -195,6 +195,13 @@ public class StringUtil {
         return List.of(str.split(regex));
     }
 
+    public static String emptyToDefault(String str, String defaultValue) {
+        if (isEmpty(str)) {
+            return defaultValue;
+        }
+        return str;
+    }
+
     public static String blankToDefault(String str, String defaultValue) {
         if (isBlank(str)) {
             return defaultValue;
@@ -242,4 +249,6 @@ public class StringUtil {
     public static boolean endWith(String str, String endText) {
         return str!=null && str.endsWith(endText);
     }
+
+
 }

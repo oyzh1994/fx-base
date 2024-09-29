@@ -79,6 +79,16 @@ public class FileUtil {
         writeString(content, new File(file), StandardCharsets.UTF_8);
     }
 
+    public static void writeBytes(byte[] data, String fileName) {
+        try {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            fos.write(data);
+            fos.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static boolean isDirectory(File dir) {
         return dir != null && dir.isDirectory();
     }
@@ -221,4 +231,6 @@ public class FileUtil {
         }
         return source.renameTo(target);
     }
+
+
 }
