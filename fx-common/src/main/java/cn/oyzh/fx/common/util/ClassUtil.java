@@ -65,7 +65,7 @@ public class ClassUtil {
             String protocol = resource.getProtocol();
             if ("file".equals(protocol)) {
                 String filePath = URLDecoder.decode(resource.getFile(), StandardCharsets.UTF_8);
-                findClassesInDirectory(new File(filePath), packageName, classes);
+                findClassesInDirectory(new File(filePath), packageName, classes, predicate);
             } else if ("jar".equals(protocol)) {
                 JarFile jar = ((JarURLConnection) resource.openConnection()).getJarFile();
                 Enumeration<JarEntry> entries = jar.entries();
@@ -78,8 +78,9 @@ public class ClassUtil {
                     if (name.startsWith(packagePath) && name.length() > packagePath.length() + 1) {
                         String className = name.substring(packagePath.length() + 1, name.lastIndexOf('.')).replace('/', '.');
                         Class<?> clazz = Class.forName(packageName + '.' + className);
-
-                        classes.add(clazz);
+                        if (predicate == null || predicate.test(clazz)) {
+                            classes.add(clazz);
+                        }
                     }
                 }
             }
@@ -87,7 +88,7 @@ public class ClassUtil {
         return classes;
     }
 
-    private static void findClassesInDirectory(File directory, String packageName, List<Class<?>> classes) throws ClassNotFoundException {
+    private static void findClassesInDirectory(File directory, String packageName, List<Class<?>> classes, Predicate<Class<?>> predicate) throws ClassNotFoundException {
         if (!directory.exists() || !directory.isDirectory()) {
             return;
         }
@@ -96,10 +97,12 @@ public class ClassUtil {
             for (File file : files) {
                 if (file.isFile()) {
                     String className = packageName + '.' + file.getName().substring(0, file.getName().length() - 6);
-                    Class<?> clazz = Class.forName(packageName + '.' + className);
-                    classes.add(clazz);
+                    Class<?> clazz = Class.forName(className);
+                    if (predicate == null || predicate.test(clazz)) {
+                        classes.add(clazz);
+                    }
                 } else {
-                    findClassesInDirectory(file, packageName + "." + file.getName(), classes);
+                    findClassesInDirectory(file, packageName + "." + file.getName(), classes, predicate);
                 }
             }
         }

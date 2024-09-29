@@ -14,9 +14,9 @@ import cn.oyzh.fx.terminal.util.TerminalManager;
 // @Component
 public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<ClearTerminalCommand, Terminal> {
 
-    static {
-        TerminalManager.registerHandler(ClearTerminalCommandHandler.class);
-    }
+    // static {
+    //     TerminalManager.registerHandler(ClearTerminalCommandHandler.class);
+    // }
 
     @Override
     public String commandName() {

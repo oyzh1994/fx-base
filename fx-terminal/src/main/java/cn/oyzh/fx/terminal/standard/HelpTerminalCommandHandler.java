@@ -20,9 +20,9 @@ import java.util.List;
 // @Component
 public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<TerminalCommand, Terminal> {
 
-    static {
-        TerminalManager.registerHandler(ClearTerminalCommandHandler.class);
-    }
+    // static {
+    //     TerminalManager.registerHandler(HelpTerminalCommandHandler.class);
+    // }
 
     @Override
     public String commandName() {
