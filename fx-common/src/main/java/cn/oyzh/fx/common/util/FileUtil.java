@@ -190,4 +190,17 @@ public class FileUtil {
         }
         return null;
     }
+
+    public static void appendLines(List<String> content, String file, String charset) {
+        try {
+            BufferedWriter writer = getWriter(new File(file), Charset.forName(charset), true);
+            try (writer) {
+                for (String s : content) {
+                    writer.write(s);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

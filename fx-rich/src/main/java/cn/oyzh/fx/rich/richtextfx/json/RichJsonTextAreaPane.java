@@ -1,8 +1,8 @@
 package cn.oyzh.fx.rich.richtextfx.json;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import cn.oyzh.fx.common.json.JSONUtil;
 import cn.oyzh.fx.common.util.RegexHelper;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
@@ -73,6 +73,6 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
             this.requestFocus();
             throw new RuntimeException("invalid json text!");
         }
-        return JSONUtil.toJsonStr(JSONUtil.parse(text));
+        return JSONUtil.toJsonStr(text);
     }
 }

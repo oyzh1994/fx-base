@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.RegexUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import javafx.scene.input.KeyEvent;
 
 public class xx2 {
@@ -14,6 +14,6 @@ public class xx2 {
             textNew.append(event.getCharacter());
         }
         textNew.append(text);
-        return NumberUtil.isNumber(textNew);
+        return RegexUtil.isNumber(textNew.toString());
     }
 }

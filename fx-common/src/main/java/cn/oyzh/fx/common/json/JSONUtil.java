@@ -22,4 +22,8 @@ public class JSONUtil {
 
         return null;
     }
+
+    public static boolean isTypeJSON(String jsonStr) {
+        return false;
+    }
 }

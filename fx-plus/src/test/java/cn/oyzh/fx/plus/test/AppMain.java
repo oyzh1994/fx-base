@@ -27,7 +27,6 @@ import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.trees.RichTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.TextUtil;
 // import cn.oyzh.fx.plus.value.DoubleTextValueFactory;
 import javafx.animation.Timeline;
 import javafx.application.Application;

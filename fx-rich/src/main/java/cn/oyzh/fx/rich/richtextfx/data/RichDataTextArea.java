@@ -1,6 +1,5 @@
 package cn.oyzh.fx.rich.richtextfx.data;
 
-import cn.hutool.core.util.StrUtil;
 import cn.oyzh.fx.common.util.RegexHelper;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.common.util.TextUtil;

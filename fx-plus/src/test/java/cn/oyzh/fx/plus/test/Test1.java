@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.event.EventUtil;
 import org.junit.Test;
 

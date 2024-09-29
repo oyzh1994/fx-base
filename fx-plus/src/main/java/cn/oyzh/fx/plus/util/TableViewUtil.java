@@ -56,7 +56,7 @@ public class TableViewUtil {
             return;
         }
         ObservableList<?> list = tableView.getItems();
-        Object object = cn.hutool.core.collection.CollectionUtil.get(list, index + 1);
+        Object object = CollectionUtil.get(list, index + 1);
         if (object != null) {
             Collections.swap(list, index, index + 1);
             tableView.getSelectionModel().select(index + 1);

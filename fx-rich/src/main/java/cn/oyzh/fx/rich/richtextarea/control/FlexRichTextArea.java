@@ -1,6 +1,6 @@
 package cn.oyzh.fx.rich.richtextarea.control;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;

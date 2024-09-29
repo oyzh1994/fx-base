@@ -153,4 +153,11 @@ public class NumberUtil {
         decimal = decimal.setScale(scaleLen, RoundingMode.HALF_UP);
         return decimal.doubleValue();
     }
+
+    public static boolean isLess(BigDecimal b1, BigDecimal b2) {
+        if (b1 == null || b2 == null) {
+            return false;
+        }
+        return b1.compareTo(b2) < 0;
+    }
 }
