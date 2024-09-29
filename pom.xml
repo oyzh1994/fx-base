@@ -83,6 +83,7 @@
                 <groupId>cn.oyzh</groupId>
                 <artifactId>fx-pkg</artifactId>
                 <version>${fx.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- 自定义类库，终端相关 -->
@@ -104,6 +105,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
                 <version>${spring.boot.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl -->
@@ -111,6 +113,7 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j2-impl</artifactId>
                 <version>${log4j.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

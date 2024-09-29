@@ -449,9 +449,9 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
      */
     protected void initContentPrompts() {
         // 设置内容提示符
-        Collection<TerminalCommandHandler> handlers = TerminalManager.listHandler();
+        Collection<TerminalCommandHandler<?,?>> handlers = TerminalManager.listHandler();
         Set<String> set = new HashSet<>();
-        for (TerminalCommandHandler handler : handlers) {
+        for (TerminalCommandHandler<?,?> handler : handlers) {
             if (StrUtil.isNotBlank(handler.commandName())) {
                 set.add(handler.commandName());
             }

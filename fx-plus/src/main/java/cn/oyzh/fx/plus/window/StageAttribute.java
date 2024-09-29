@@ -18,9 +18,9 @@ import java.lang.annotation.Target;
  * @author oyzh
  * @since 2023/10/12
  */
-@Lazy
-@Component
-@Scope("prototype")
+// @Lazy
+// @Component
+// @Scope("prototype")
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StageAttribute {

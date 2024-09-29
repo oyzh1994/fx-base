@@ -2,13 +2,13 @@ package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.Theme;
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.ColorScheme;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Locale;
 
@@ -18,7 +18,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-@Slf4j
+// @Slf4j
 public class SystemTheme implements Theme, ThemeStyle {
 
     /**
@@ -136,7 +136,7 @@ public class SystemTheme implements Theme, ThemeStyle {
      * 变更主题
      */
     protected void changeTheme() {
-        log.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
+        JulLog.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
         TaskManager.startDelay("changeTheme", () -> FXUtil.runLater(() -> {
             this.updateThemeCss();
             ThemeManager.apply(this);

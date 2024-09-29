@@ -1,7 +1,6 @@
 package cn.oyzh.fx.terminal.complete;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import cn.oyzh.fx.common.util.TextUtil;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
@@ -19,8 +18,8 @@ import java.util.List;
  */
 public class BaseTerminalCompleteHandler<T extends Terminal> implements TerminalCompleteHandler<T> {
 
-    protected List<TerminalCommandHandler> findCommandHandlers(String line) {
-        List<TerminalCommandHandler> handlers;
+    protected List<TerminalCommandHandler<?,?>> findCommandHandlers(String line) {
+        List<TerminalCommandHandler<?,?>> handlers;
         if (line.contains(" ")) {
             handlers = TerminalManager.findHandlers(line, 3);
         } else {
@@ -32,12 +31,12 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
     @Override
     public boolean completion(String line, T terminal) {
         if (StrUtil.isEmpty(line)) {
-            HelpTerminalCommandHandler commandHandler = SpringUtil.getBean(HelpTerminalCommandHandler.class);
+            HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(HelpTerminalCommandHandler.class);
             TerminalExecuteResult result = commandHandler.execute(null, terminal);
             terminal.outputLine((String) result.getResult());
             terminal.outputPrompt();
         } else {
-            List<TerminalCommandHandler> handlers = this.findCommandHandlers(line);
+            List<TerminalCommandHandler<?,?>> handlers = this.findCommandHandlers(line);
             if (handlers.isEmpty()) {
                 this.noMatch(line, terminal);
             } else if (handlers.size() == 1) {
@@ -81,7 +80,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
      * @param terminal 终端
      * @param handlers 处理器列表
      */
-    protected void multiMatch(String input, T terminal, List<TerminalCommandHandler> handlers) {
+    protected void multiMatch(String input, T terminal, List<TerminalCommandHandler<?,?>> handlers) {
         List<String> commands = handlers.parallelStream().map(TerminalCommandHandler::commandFullName).toList();
         String formatText = TextUtil.beautifyFormat(commands, 4, 0);
         terminal.outputByPrompt(formatText);

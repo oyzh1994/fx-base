@@ -102,6 +102,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Spring boot -->
@@ -115,6 +116,7 @@
                     <artifactId>spring-boot-autoconfigure</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx -->

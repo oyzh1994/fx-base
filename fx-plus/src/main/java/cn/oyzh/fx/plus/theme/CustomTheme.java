@@ -5,7 +5,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import javafx.scene.paint.Color;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Locale;
 
@@ -15,7 +14,6 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/4
  */
-@Slf4j
 public class CustomTheme implements Theme, ThemeStyle {
 
     /**

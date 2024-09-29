@@ -8,7 +8,6 @@ import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;
 import cn.oyzh.fx.terminal.util.TerminalManager;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,8 +17,12 @@ import java.util.List;
  * @author oyzh
  * @since 2023/7/22
  */
-@Component
+// @Component
 public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<TerminalCommand, Terminal> {
+
+    static {
+        TerminalManager.registerHandler(ClearTerminalCommandHandler.class);
+    }
 
     @Override
     public String commandName() {
@@ -35,7 +38,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
     public TerminalExecuteResult execute(TerminalCommand command, Terminal terminal) {
         TerminalExecuteResult result = new TerminalExecuteResult();
         try {
-            Collection<TerminalCommandHandler> handlers = TerminalManager.listHandler();
+            Collection<TerminalCommandHandler<?,?>> handlers = TerminalManager.listHandler();
             List<String> list = new ArrayList<>();
             // list.add("序号");
             list.add(I18nResourceBundle.i18nString("base.orderNo"));
@@ -48,7 +51,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
             // list.add("描述");
             list.add(I18nResourceBundle.i18nString("base.desc"));
             int index = 0;
-            for (TerminalCommandHandler handler : handlers) {
+            for (TerminalCommandHandler<?,?> handler : handlers) {
                 list.add(++index + ")");
                 list.add(handler.commandFullName());
                 String version = handler.commandSupportedVersion();
