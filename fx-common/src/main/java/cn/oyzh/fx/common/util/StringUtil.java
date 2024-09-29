@@ -247,8 +247,10 @@ public class StringUtil {
     }
 
     public static boolean endWith(String str, String endText) {
-        return str!=null && str.endsWith(endText);
+        return str != null && str.endsWith(endText);
     }
 
-
+    public static boolean contains(String str, String target) {
+        return str != null && target != null && str.contains(target);
+    }
 }

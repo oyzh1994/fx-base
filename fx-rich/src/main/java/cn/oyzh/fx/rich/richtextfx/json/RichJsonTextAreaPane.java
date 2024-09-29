@@ -57,7 +57,7 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
         if (StringUtil.isEmpty(jsonStr)) {
             return;
         }
-        if (!JSONUtil.isTypeJSON(jsonStr)) {
+        if (!JSONUtil.isJsonText(jsonStr)) {
             this.requestFocus();
             throw new RuntimeException("invalid json text!");
         }
@@ -69,7 +69,7 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
         if (StringUtil.isEmpty(text)) {
             return null;
         }
-        if (!JSONUtil.isTypeJSON(text)) {
+        if (!JSONUtil.isJsonText(text)) {
             this.requestFocus();
             throw new RuntimeException("invalid json text!");
         }
