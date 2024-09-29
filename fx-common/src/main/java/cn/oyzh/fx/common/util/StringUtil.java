@@ -93,4 +93,103 @@ public class StringUtil {
     public static boolean isNotEmpty(String string) {
         return !isEmpty(string);
     }
+
+    public static boolean equals(String source, String target) {
+        if (source != null && target != null) {
+            return source.equals(target);
+        }
+        return false;
+    }
+
+    public static boolean equalsIgnoreCase(String source, String target) {
+        if (source != null && target != null) {
+            return source.equalsIgnoreCase(target);
+        }
+        return false;
+    }
+
+    public static boolean equalsAny(String source, String... strings) {
+        if (source != null && strings != null) {
+            for (String string : strings) {
+                if (source.equals(string)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean equalsAnyIgnoreCase(String source, String... strings) {
+        if (source != null && strings != null) {
+            for (String string : strings) {
+                if (source.equalsIgnoreCase(string)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean containsAny(String source, String... strings) {
+        if (source != null && strings != null) {
+            for (String string : strings) {
+                if (source.contains(string)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean containsAnyIgnoreCase(String source, String... strings) {
+        if (source != null && strings != null) {
+            source = source.toLowerCase();
+            for (String string : strings) {
+                if (source.contains(string.toUpperCase())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static String[] split(String str, int len) {
+        if (str == null) {
+            return null;
+        }
+        if (len <= 0) {
+            return new String[]{str};
+        }
+        int mod = str.length() % len;
+
+        int arrLen = mod == 0 ? mod : mod + 1;
+        String[] arr = new String[arrLen];
+
+        int aIndex = 0;
+        int idx = 0;
+        while (true) {
+            if (idx + len < str.length()) {
+                idx = idx + len;
+                arr[aIndex++] = str.substring(idx, idx);
+                continue;
+            }
+            arr[aIndex] = str.substring(idx);
+            break;
+        }
+        return arr;
+    }
+
+    public static String blankToDefault(String str, String defaultValue) {
+        if (isBlank(str)) {
+            return defaultValue;
+        }
+        return str;
+    }
+
+    public static String replace(String src, String search, String replace) {
+        if (!isBlank(src) && !isEmpty(search) && !isEmpty(replace) {
+            return src.replace(search, replace);
+        }
+        return src;
+    }
 }

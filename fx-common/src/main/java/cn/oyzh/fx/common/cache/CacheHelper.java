@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class CacheHelper {
 
-    private static final Cache<String, Object> CACHE = CacheUtil.newTimedCache(-1);
+    private static final TimedCache<String, Object> CACHE = CacheUtil.newTimedCache(-1);
 
     public static <T> T get(String key) {
         return (T) CACHE.get(key);

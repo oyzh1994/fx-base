@@ -1,7 +1,8 @@
 package cn.oyzh.fx.common.log;
 
 
-import cn.hutool.core.util.ArrayUtil;
+import cn.oyzh.fx.common.util.ArrayUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.logging.Level;

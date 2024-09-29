@@ -1,7 +1,6 @@
 package cn.oyzh.fx.common.util;
 
-import cn.hutool.core.util.HexUtil;
-import cn.hutool.json.JSONUtil;
+import cn.oyzh.fx.common.json.JSONUtil;
 import lombok.experimental.UtilityClass;
 
 import java.io.UnsupportedEncodingException;
@@ -260,10 +259,10 @@ public class TextUtil {
             return "";
         }
         if (rawData instanceof CharSequence sequence) {
-            return HexUtil.encodeHexStr(sequence.toString().getBytes(), false);
+            return HexUtil.bytesToHex(sequence.toString().getBytes(), false);
         }
         if (rawData instanceof byte[] bytes) {
-            return HexUtil.encodeHexStr(bytes, false);
+            return HexUtil.bytesToHex(bytes, false);
         }
         return null;
     }

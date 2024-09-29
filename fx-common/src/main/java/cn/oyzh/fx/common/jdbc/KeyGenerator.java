@@ -1,6 +1,7 @@
 package cn.oyzh.fx.common.jdbc;
 
-import cn.hutool.core.lang.UUID;
+import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.fx.common.util.UUIDUtil;
 
 /**
  * @author oyzh
@@ -12,7 +13,7 @@ public class KeyGenerator {
 
     public Object generator(String columnType) {
         if (StringUtil.containsAnyIgnoreCase(columnType, "text", "LONGVARCHAR", "NVARCHAR", "NCHAR", "varchar", "char")) {
-            return UUID.fastUUID().toString(true);
+            return UUIDUtil.uuid();
         }
         if (StringUtil.equalsAnyIgnoreCase(columnType, "integer", "int", "bigint", "TINYINT", "ALLINT")) {
             return System.currentTimeMillis() + Math.round(Math.random() * 1000);

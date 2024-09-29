@@ -1,5 +1,6 @@
 package cn.oyzh.fx.common.sqlite;
 
+import cn.oyzh.fx.common.util.CollectionUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;

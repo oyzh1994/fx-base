@@ -1,6 +1,5 @@
 package cn.oyzh.fx.common.jdbc;
 
-import cn.hutool.core.io.IoUtil;
 import cn.oyzh.fx.common.date.DateUtil;
 import cn.oyzh.fx.common.date.LocalDateTimeUtil;
 import cn.oyzh.fx.common.date.LocalDateUtil;
@@ -8,6 +7,8 @@ import cn.oyzh.fx.common.date.LocalTimeUtil;
 import cn.oyzh.fx.common.date.ZonedDateTimeUtil;
 import cn.oyzh.fx.common.h2.H2Util;
 import cn.oyzh.fx.common.sqlite.SqlLiteUtil;
+import cn.oyzh.fx.common.util.IOUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class JdbcUtil {
         if (sqlData instanceof Number n) {
             return n.byteValue() == 1;
         }
-        if (sqlData instanceof CharSequence n) {
+        if (sqlData instanceof String n) {
             return StringUtil.equalsAnyIgnoreCase(n, "1", "y", "yes", "true");
         }
         return null;
@@ -163,7 +164,7 @@ public class JdbcUtil {
         if (sqlData instanceof Blob blob) {
             InputStream inputStream = blob.getBinaryStream();
             byte[] bytes = blob.getBinaryStream().readAllBytes();
-            IoUtil.close(inputStream);
+            IOUtil.close(inputStream);
             return bytes;
         }
         if (sqlData instanceof byte[] bytes) {

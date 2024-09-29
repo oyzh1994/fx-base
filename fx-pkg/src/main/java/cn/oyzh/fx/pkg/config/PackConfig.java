@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.config;
 
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.pkg.comporess.CompressConfig;
 import cn.oyzh.fx.pkg.jar.JarConfig;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;

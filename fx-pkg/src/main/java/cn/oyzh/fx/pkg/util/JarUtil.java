@@ -5,6 +5,8 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.oyzh.fx.common.log.JulLog;
+import cn.oyzh.fx.common.util.IOUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -168,9 +170,9 @@ public class JarUtil {
                 }
             }
         } finally {
-            IoUtil.close(jarIn);
+            IOUtil.close(jarIn);
             jarOut.finish();
-            IoUtil.close(jarOut);
+            IOUtil.close(jarOut);
         }
         JulLog.info("minimize jar finish dest:{}", dest);
         FileUtil.move(tempFile, destFile, true);

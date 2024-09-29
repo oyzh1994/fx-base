@@ -1,6 +1,5 @@
 package cn.oyzh.fx.common.util;
 
-import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.common.log.JulLog;
 import lombok.experimental.UtilityClass;
 
@@ -128,6 +127,23 @@ public class RuntimeUtil {
     }
 
     public static String execForStr(String... cmdArr) {
-        return cn.hutool.core.util.RuntimeUtil.execForStr(cmdArr);
+        try {
+            // 执行命令
+            Process process = Runtime.getRuntime().exec(cmdArr);
+            // 读取命令的输出
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            // 等待命令执行完成
+            int exitCode = process.waitFor();
+            JulLog.debug("Runtime executed with exit code:{}", exitCode);
+            return sb.toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

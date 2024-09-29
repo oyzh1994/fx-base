@@ -68,12 +68,12 @@ public class IconUtil {
         if (reference == null || reference.get() == null) {
             stream = ResourceUtil.getResourceAsStream(iconUrl);
             if (stream != null) {
-                byte[] bytes = IoUtil.readBytes(stream);
+                byte[] bytes = IOUtil.readBytes(stream);
                 ICON_CACHE.put(iconUrl, new WeakReference<>(bytes));
-                stream = IoUtil.toStream(bytes);
+                stream = IOUtil.toStream(bytes);
             }
         } else {
-            stream = IoUtil.toStream(reference.get());
+            stream = IOUtil.toStream(reference.get());
             JulLog.info("load icon form cache.");
         }
         return stream == null ? null : new Image(stream);

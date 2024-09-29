@@ -2,6 +2,7 @@ package cn.oyzh.fx.common.jdbc;
 
 
 import cn.oyzh.fx.common.util.ReflectUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import lombok.Data;
 
 import java.lang.reflect.Field;
@@ -25,7 +26,6 @@ public class TableDefinition {
     public boolean hasColumn(String columnName) {
         for (ColumnDefinition column : this.columns) {
             if (StringUtil.equalsIgnoreCase(column.getColumnName(), columnName)) {
-
                 return true;
             }
         }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.thread;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.WeakCache;
+import cn.oyzh.fx.common.cache.CacheUtil;
+import cn.oyzh.fx.common.cache.WeakCache;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -23,12 +23,12 @@ public class TaskManager {
     /**
      * 延迟任务列表
      */
-    private static final WeakCache<String, Future<?>> DELAY_TASKS = CacheUtil.newWeakCache(-1);
+    private static final WeakCache<String, Future<?>> DELAY_TASKS = CacheUtil.newWeakCache();
 
     /**
      * 循环任务列表
      */
-    private static final WeakCache<String, Future<?>> INTERVAL_TASKS = CacheUtil.newWeakCache(-1);
+    private static final WeakCache<String, Future<?>> INTERVAL_TASKS = CacheUtil.newWeakCache();
 
     /**
      * 开始延迟任务

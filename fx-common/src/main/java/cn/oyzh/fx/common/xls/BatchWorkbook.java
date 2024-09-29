@@ -1,6 +1,6 @@
 package cn.oyzh.fx.common.xls;
 
-import cn.hutool.core.io.IoUtil;
+import cn.oyzh.fx.common.util.IOUtil;
 import lombok.NonNull;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -110,7 +110,7 @@ public class BatchWorkbook implements Workbook {
         FileOutputStream xlsOutput = new FileOutputStream(this.file);
         this.workbook.write(xlsOutput);
         this.closeWorkbook();
-        IoUtil.close(xlsOutput);
+        IOUtil.close(xlsOutput);
         this.firstAppend = false;
     }
 

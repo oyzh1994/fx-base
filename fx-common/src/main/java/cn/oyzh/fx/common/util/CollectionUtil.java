@@ -1,12 +1,12 @@
 package cn.oyzh.fx.common.util;
 
 import lombok.experimental.UtilityClass;
-import org.apache.poi.ss.formula.functions.T;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author oyzh
@@ -42,11 +42,30 @@ public class CollectionUtil {
         return !isEmpty(collection);
     }
 
-    public static boolean isEmpty(Map<?,?> map) {
+    public static boolean isEmpty(Map<?, ?> map) {
         return map != null && !map.isEmpty();
     }
 
-    public static boolean isNotEmpty(Map<?,?> map) {
+    public static boolean isNotEmpty(Map<?, ?> map) {
         return !isEmpty(map);
+    }
+
+    public static <T> List<List<T>> split(Collection<T> collection, int limit) {
+        if (collection == null) {
+            return Collections.emptyList();
+        }
+        if (collection.size() <= limit) {
+            return Collections.singletonList(new ArrayList<>(collection));
+        }
+        List<List<T>> result = new ArrayList<>();
+        for (int i = 0; i < collection.size(); i += limit) {
+            int end = Math.min(i + limit, collection.size());
+            result.add(new ArrayList<>(new ArrayList<>(collection).subList(i, end)));
+        }
+        return result;
+    }
+
+    public static boolean contains(List<?> list, Object t) {
+        return list != null && list.contains(t);
     }
 }

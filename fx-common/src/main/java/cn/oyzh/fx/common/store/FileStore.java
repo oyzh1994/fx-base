@@ -1,7 +1,7 @@
 package cn.oyzh.fx.common.store;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.json.JSONUtil;
+import cn.oyzh.fx.common.json.JSONUtil;
+import cn.oyzh.fx.common.util.FileUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

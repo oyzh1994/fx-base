@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.comporess;
 
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
