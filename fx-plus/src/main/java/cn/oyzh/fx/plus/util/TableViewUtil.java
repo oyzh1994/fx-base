@@ -85,7 +85,7 @@ public class TableViewUtil {
      */
     public Object getSelectCellData(TableView<?> tableView) {
         ObservableList<TablePosition> positions = tableView.getSelectionModel().getSelectedCells();
-        if (cn.hutool.core.collection.CollectionUtil.isNotEmpty(positions)) {
+        if (CollectionUtil.isNotEmpty(positions)) {
             TablePosition<?, ?> position = positions.get(0);
             TableColumn<?, ?> column = position.getTableColumn();
             return column.getCellData(position.getRow());

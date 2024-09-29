@@ -181,4 +181,13 @@ public class FileUtil {
         }
         return dirFile.listFiles();
     }
+
+    public static InputStream getInputStream(String file) {
+        try {
+            return new FileInputStream(file);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

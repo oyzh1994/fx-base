@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.i18n;
 
+import cn.oyzh.fx.common.util.StringUtil;
+
 import javax.annotation.Nonnull;
 import java.util.Enumeration;
 import java.util.HashMap;

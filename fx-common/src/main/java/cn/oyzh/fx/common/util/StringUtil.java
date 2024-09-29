@@ -3,6 +3,9 @@ package cn.oyzh.fx.common.util;
 
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * String工具类
  *
@@ -186,6 +189,13 @@ public class StringUtil {
         return arr;
     }
 
+    public static List<String> split(String str, String regex) {
+        if (str == null || regex == null) {
+            return null;
+        }
+        return List.of(str.split(regex));
+    }
+
     public static String blankToDefault(String str, String defaultValue) {
         if (isBlank(str)) {
             return defaultValue;
@@ -213,5 +223,13 @@ public class StringUtil {
         return s.split(lineSeparator).length;
     }
 
-
+    public static String lowerFirst(String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(str.substring(0, 1).toLowerCase());
+        builder.append(str.substring(1));
+        return builder.toString();
+    }
 }

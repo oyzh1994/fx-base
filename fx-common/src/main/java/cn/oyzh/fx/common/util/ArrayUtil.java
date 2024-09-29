@@ -64,6 +64,17 @@ public class ArrayUtil {
         return Arrays.toString(arr);
     }
 
+    public static <T> boolean contains(T[] arr, T obj) {
+        if (arr != null && arr.length > 0 && obj != null) {
+            for (T t : arr) {
+                if (t.equals(obj)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // /**
     //  * 获取子数组
     //  *
