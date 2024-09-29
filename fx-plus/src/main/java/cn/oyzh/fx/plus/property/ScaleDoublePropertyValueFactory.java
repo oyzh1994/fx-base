@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.property;
 
-import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
@@ -35,7 +35,7 @@ public class ScaleDoublePropertyValueFactory<S> extends PropertyValueFactory<S, 
                 public Double get() {
                     Double d = super.get();
                     if (d != null) {
-                        return NumberUtil.round(d, scaleLen).doubleValue();
+                        return NumberUtil.round(d, scaleLen);
                     }
                     return null;
                 }

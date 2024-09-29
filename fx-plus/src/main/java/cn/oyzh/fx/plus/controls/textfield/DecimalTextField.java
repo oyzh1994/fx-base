@@ -1,7 +1,8 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 
-import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.fx.common.util.RegexUtil;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.plus.format.DigitalDecimalFormat;
@@ -96,7 +97,7 @@ public class DecimalTextField extends DigitalTextField {
                         return null;
                     }
                     // 数字判断
-                    if (!NumberUtil.isDouble(text) && !NumberUtil.isNumber(text)) {
+                    if (!RegexUtil.isDecimal(text) && !RegexUtil.isNumber(text)) {
                         return null;
                     }
                     // 长度判断

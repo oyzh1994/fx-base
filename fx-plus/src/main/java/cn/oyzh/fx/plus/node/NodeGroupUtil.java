@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.hutool.core.util.ArrayUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;

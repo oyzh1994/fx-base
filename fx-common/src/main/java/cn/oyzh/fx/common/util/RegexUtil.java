@@ -41,7 +41,7 @@ public class RegexUtil {
     /**
      * 匹配小数的Pattern对象
      */
-    public static   Pattern DECIMAL_PATTERN = Pattern.compile(DECIMAL_REGEX);
+    public static Pattern DECIMAL_PATTERN = Pattern.compile(DECIMAL_REGEX);
 
     /**
      * 是否数字
@@ -52,6 +52,9 @@ public class RegexUtil {
     public static boolean isDecimal(String str) {
         if (StringUtil.isBlank(str)) {
             return false;
+        }
+        if (str.startsWith("-") || str.startsWith("+")) {
+            str = str.substring(1);
         }
         return DECIMAL_PATTERN.matcher(str).matches();
     }
@@ -65,6 +68,9 @@ public class RegexUtil {
     public static boolean isNumber(String str) {
         if (StringUtil.isBlank(str)) {
             return false;
+        }
+        if (str.startsWith("-") || str.startsWith("+")) {
+            str = str.substring(1);
         }
         return NUMBER_PATTERN.matcher(str).matches();
     }

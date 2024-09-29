@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.TimedCache;
-import cn.hutool.core.util.HashUtil;
+import cn.oyzh.fx.common.cache.CacheUtil;
+import cn.oyzh.fx.common.cache.TimedCache;
+import cn.oyzh.fx.common.util.MD5Util;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
 import javafx.event.EventHandler;
@@ -25,7 +25,7 @@ public class TooltipUtil {
     /**
      * 缓存
      */
-    private final static TimedCache<Integer, Tooltip> CACHE = CacheUtil.newTimedCache(60 * 1000L);
+    private final static TimedCache<String, Tooltip> CACHE = CacheUtil.newTimedCache(60 * 1000L);
 
     /**
      * 初始化提示组件
@@ -34,7 +34,7 @@ public class TooltipUtil {
      * @return 组件
      */
     public static Tooltip initTooltip(String text) {
-        int hash = HashUtil.pjwHash(text);
+        String hash = MD5Util.md5Hex(text);
         if (CACHE.containsKey(hash)) {
             return CACHE.get(hash);
         }

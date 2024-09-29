@@ -10,8 +10,6 @@ import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.stage.Stage;
 import lombok.NonNull;
-import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.util.Properties;
 
@@ -83,8 +81,6 @@ public abstract class ApplicationExt extends Preloader {
      */
     public static void launch(@NonNull Class<? extends Application> appClass, Class<? extends Preloader> preloaderClass, String... args) {
         try {
-            SpringApplicationBuilder builder = new SpringApplicationBuilder(appClass);
-            builder.web(WebApplicationType.NONE).headless(false).run(args);
             LauncherImpl.launchApplication(appClass, preloaderClass, args);
         } catch (Exception ex) {
             ex.printStackTrace();

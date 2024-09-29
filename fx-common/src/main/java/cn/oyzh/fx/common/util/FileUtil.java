@@ -67,4 +67,14 @@ public class FileUtil {
     public static boolean isDirectory(File dir) {
         return dir != null && dir.isDirectory();
     }
+
+    public static boolean del(String file) {
+        if (file != null) {
+            File file1 = new File(file);
+            if (file1.exists()) {
+                return file1.delete();
+            }
+        }
+        return false;
+    }
 }

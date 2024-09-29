@@ -2,6 +2,9 @@ package cn.oyzh.fx.common.util;
 
 import lombok.experimental.UtilityClass;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * @author oyzh
  * @since 2023/8/29
@@ -114,18 +117,40 @@ public class NumberUtil {
         return false;
     }
 
-    public static boolean isLong(String str) {
-        return RegexUtil.isNumber(str);
-    }
-
-    public static boolean isNumber(String str) {
-        return RegexUtil.isNumber(str);
-    }
-
     public static Long parseLong(String str) {
-        if (str != null && RegexUtil.isNumber(str)) {
+        if (str != null) {
             return Long.parseLong(str);
         }
         return null;
+    }
+
+    public static Number parseNumber(String str) {
+        if (RegexUtil.isDecimal(str)) {
+            return Double.parseDouble(str);
+        }
+        if (RegexUtil.isNumber(str)) {
+            return Long.parseLong(str);
+        }
+        return null;
+    }
+
+    public static BigDecimal toBigDecimal(String str) {
+        if (str != null) {
+            return new BigDecimal(str);
+        }
+        return null;
+    }
+
+    public static Double parseDouble(String str) {
+        if (str != null) {
+            return Double.parseDouble(str);
+        }
+        return null;
+    }
+
+    public static double round(double d, int scaleLen) {
+        BigDecimal decimal = new BigDecimal(d);
+        decimal = decimal.setScale(scaleLen, RoundingMode.HALF_UP);
+        return decimal.doubleValue();
     }
 }

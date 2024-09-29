@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;

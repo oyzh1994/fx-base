@@ -2,9 +2,9 @@ package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
 import javafx.stage.PopupWindow;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+// import org.springframework.context.annotation.Lazy;
+// import org.springframework.context.annotation.Scope;
+// import org.springframework.stereotype.Component;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,9 +18,9 @@ import java.lang.annotation.Target;
  * @author oyzh
  * @since 2024/07/12
  */
-@Lazy
-@Component
-@Scope("prototype")
+// @Lazy
+// @Component
+// @Scope("prototype")
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PopupAttribute {

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.skin;
 
 import atlantafx.base.controls.Calendar;
-import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.oyzh.fx.common.date.LocalDateTimeUtil;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
@@ -24,6 +24,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -125,8 +126,8 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkinExt {
             if (date == null) {
                 this.setText("");
             } else {
-                LocalDateTime time = LocalDateTimeUtil.of(date).withHour(hour.getSelectedIndex())
-                        .withMinute(minute.getSelectedIndex()).withSecond(second.getSelectedIndex());
+                LocalTime localTime = LocalTime.of(hour.getSelectedIndex(), minute.getSelectedIndex(), second.getSelectedIndex());
+                LocalDateTime time = LocalDateTimeUtil.of(date, localTime);
                 this.setText(this.formatter().format(time));
             }
             this.handleHide();
@@ -184,7 +185,7 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkinExt {
     }
 
     public DateTimeTextFieldSkin(TextField textField) {
-        super(textField,new DateSVGGlyph("13"));
+        super(textField, new DateSVGGlyph("13"));
         this.button.disappear();
         this.button.setTipText(I18nHelper.choose());
     }

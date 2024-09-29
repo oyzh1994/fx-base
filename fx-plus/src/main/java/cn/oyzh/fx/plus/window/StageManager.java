@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.window;
 
-import cn.hutool.core.util.ReflectUtil;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.util.OSUtil;
+import cn.oyzh.fx.common.util.ReflectUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -186,14 +186,14 @@ public class StageManager {
         Primary_Stage = primaryStage;
     }
 
-    /**
-     * 是否显示过
-     *
-     * @param window 窗口
-     */
-    public static boolean hasBeenVisible(@NonNull Window window) {
-        return (Boolean) ReflectUtil.getFieldValue(window, "hasBeenVisible");
-    }
+    // /**
+    //  * 是否显示过
+    //  *
+    //  * @param window 窗口
+    //  */
+    // public static boolean hasBeenVisible(@NonNull Window window) {
+    //     return ReflectUtil.getFieldValue(window, "hasBeenVisible");
+    // }
 
     /**
      * 窗口隐藏在任务栏

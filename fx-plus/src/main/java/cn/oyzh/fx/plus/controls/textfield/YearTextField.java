@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.hutool.core.util.NumberUtil;
+
+import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.fx.common.util.RegexUtil;
 
 import java.util.Date;
 
@@ -21,9 +23,9 @@ public class YearTextField extends NumberTextField {
         if (value instanceof CharSequence sequence) {
             String str = sequence.toString();
             if (str.contains("-")) {
-                this.value(NumberUtil.parseNumber(str.split("-")[0]));
+                this.value(RegexUtil.parseNumber(str.split("-")[0]));
             } else {
-                this.value(NumberUtil.parseNumber(str));
+                this.value(RegexUtil.parseNumber(str));
             }
         } else if (value instanceof Date date) {
             this.value(1900 + date.getYear());

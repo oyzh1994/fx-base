@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.fx.common.util.RegexUtil;
 import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import javafx.scene.control.TextFormatter;
@@ -74,7 +75,7 @@ public class NumberTextField extends DigitalTextField {
                         return null;
                     }
                     // 数字判断
-                    if (!NumberUtil.isNumber(text)) {
+                    if (!RegexUtil.isNumber(text)) {
                         return null;
                     }
                     // 长度判断

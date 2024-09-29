@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.converter;
 
-import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.fx.common.util.RegexUtil;
 import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ public class BigDecimalConverter extends StringConverter<BigDecimal> {
 
     @Override
     public BigDecimal fromString(String s) {
-        if (NumberUtil.isNumber(s)) {
+        if (RegexUtil.isNumber(s)) {
             return NumberUtil.toBigDecimal(s);
         }
         return null;

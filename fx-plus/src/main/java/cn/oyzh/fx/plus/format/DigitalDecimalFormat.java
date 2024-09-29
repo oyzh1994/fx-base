@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.format;
 
-import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
 import cn.oyzh.fx.common.util.StringUtil;
 import lombok.Getter;
 
@@ -48,10 +48,10 @@ public class DigitalDecimalFormat extends DecimalFormat {
         return this.format;
     }
 
-    public String format(CharSequence sequence) {
+    public String format(String sequence) {
         if (StringUtil.isNotBlank(sequence)) {
             try {
-                Number number = NumberUtil.parseNumber(sequence.toString());
+                Number number = NumberUtil.parseNumber(sequence);
                 return this.format(number);
             } catch (Exception ex) {
                 ex.printStackTrace();

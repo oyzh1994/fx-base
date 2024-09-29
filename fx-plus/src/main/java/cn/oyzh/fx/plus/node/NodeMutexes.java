@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.hutool.core.util.BooleanUtil;
+import cn.oyzh.fx.common.util.BooleanUtil;
 import javafx.scene.Node;
 import lombok.Getter;
 import lombok.NonNull;

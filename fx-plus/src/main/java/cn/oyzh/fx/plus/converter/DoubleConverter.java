@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.converter;
 
-import cn.hutool.core.util.NumberUtil;
+import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.fx.common.util.RegexUtil;
 import javafx.util.StringConverter;
 
 /**
@@ -16,7 +17,7 @@ public class DoubleConverter extends StringConverter<Double> {
 
     @Override
     public Double fromString(String s) {
-        if (NumberUtil.isDouble(s) || NumberUtil.isNumber(s)) {
+        if (RegexUtil.isDecimal(s) || RegexUtil.isNumber(s)) {
             return NumberUtil.parseDouble(s);
         }
         return null;

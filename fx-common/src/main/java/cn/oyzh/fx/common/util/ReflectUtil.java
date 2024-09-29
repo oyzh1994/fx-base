@@ -13,9 +13,18 @@ import java.lang.reflect.Method;
 @UtilityClass
 public class ReflectUtil {
 
-    public static <T> T getFieldValue(Field field, Object object) throws SecurityException, IllegalAccessException {
-        field.setAccessible(true);
-        return (T) field.get(object);
+    public static <T> T getFieldValue(Object object, String fieldName) {
+        Field field = getField(object.getClass(), fieldName);
+        return getFieldValue(field, object);
+    }
+
+    public static <T> T getFieldValue(Field field, Object object) {
+        try {
+            field.setAccessible(true);
+            return (T) field.get(object);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public static void setFieldValue(Field field, Object value, Object object) throws SecurityException, IllegalAccessException {
@@ -23,7 +32,7 @@ public class ReflectUtil {
         field.set(object, value);
     }
 
-    public static void clearFieldValue(Field field , Object object) throws SecurityException, IllegalAccessException {
+    public static void clearFieldValue(Field field, Object object) throws SecurityException, IllegalAccessException {
         field.setAccessible(true);
         field.set(object, null);
     }
