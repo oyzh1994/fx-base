@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.complete;
 
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.common.util.TextUtil;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;

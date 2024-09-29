@@ -1,6 +1,7 @@
 package cn.oyzh.fx.common.util;
 
 import lombok.experimental.UtilityClass;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +77,7 @@ public class CollectionUtil {
         return null;
     }
 
-    public static String getLast(List<String> list) {
+    public static <T>T getLast(List<T> list) {
         if (list != null && !list.isEmpty()) {
             return list.getLast();
         }

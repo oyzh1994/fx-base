@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.command;
 
-import cn.hutool.core.util.ArrayUtil;
+import cn.oyzh.fx.common.util.ArrayUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

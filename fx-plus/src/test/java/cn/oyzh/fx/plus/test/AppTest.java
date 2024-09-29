@@ -14,7 +14,7 @@ public class AppTest {
         // Memory1Main.main(args);
         //  Memory2Main.main(args);
 //         Memory3Main.main(args);
-       Memory4Main.main(args);
+//        Memory4Main.main(args);
     }
 
 }

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.histroy;
 
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.terminal.Terminal;
 
 /**

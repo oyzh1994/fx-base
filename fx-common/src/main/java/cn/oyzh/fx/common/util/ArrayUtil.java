@@ -75,6 +75,13 @@ public class ArrayUtil {
         return false;
     }
 
+    public static <T> T[] sub(T[] arr, int start, int end) {
+        if (arr == null || start < 0 || end < start || arr.length <= end) {
+            return arr;
+        }
+        return Arrays.copyOfRange(arr, start, end);
+    }
+
     // /**
     //  * 获取子数组
     //  *

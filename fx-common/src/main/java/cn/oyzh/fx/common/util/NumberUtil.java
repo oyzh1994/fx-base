@@ -160,4 +160,8 @@ public class NumberUtil {
         }
         return b1.compareTo(b2) < 0;
     }
+
+    public static String getBinaryStr(int i) {
+        return Integer.toBinaryString(i);
+    }
 }

@@ -32,7 +32,7 @@ public class QRCodeUtil {
      * @return 返回二维码图牿
      * @throws Exception
      */
-    private static BufferedImage createImage(String content, String charset, int imgW, int imgH) throws Exception {
+    public static BufferedImage createImage(String content, String charset, int imgW, int imgH) throws Exception {
         Map<EncodeHintType,Object> hints = new HashMap<>();
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         hints.put(EncodeHintType.CHARACTER_SET, charset);

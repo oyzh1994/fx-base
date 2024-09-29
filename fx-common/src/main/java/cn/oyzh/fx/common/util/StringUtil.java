@@ -3,7 +3,6 @@ package cn.oyzh.fx.common.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -203,6 +202,13 @@ public class StringUtil {
         return str;
     }
 
+    public static String nullToDefault(String str, String defaultValue) {
+        if (str == null) {
+            return defaultValue;
+        }
+        return str;
+    }
+
     public static String replace(String src, String search, String replace) {
         if (!isEmpty(src) && !isEmpty(search) && !isEmpty(replace)) {
             return src.replace(search, replace);
@@ -231,5 +237,9 @@ public class StringUtil {
         builder.append(str.substring(0, 1).toLowerCase());
         builder.append(str.substring(1));
         return builder.toString();
+    }
+
+    public static boolean endWith(String str, String endText) {
+        return str!=null && str.endsWith(endText);
     }
 }

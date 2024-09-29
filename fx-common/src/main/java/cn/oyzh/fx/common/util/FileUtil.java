@@ -71,6 +71,10 @@ public class FileUtil {
         return null;
     }
 
+    public static void writeUtf8String(String content, File file) {
+        writeString(content, file, StandardCharsets.UTF_8);
+    }
+
     public static void writeUtf8String(String content, String file) {
         writeString(content, new File(file), StandardCharsets.UTF_8);
     }
@@ -87,6 +91,10 @@ public class FileUtil {
             }
         }
         return false;
+    }
+
+    public static byte[] readBytes(String file) {
+        return file == null ? null : readBytes(new File(file));
     }
 
     public static byte[] readBytes(File file) {
@@ -110,6 +118,9 @@ public class FileUtil {
         return bytes;
     }
 
+    public static boolean exist(String file) {
+        return file != null && exist(new File(file));
+    }
 
     public static boolean exist(File file) {
         return file != null && file.exists();
@@ -202,5 +213,12 @@ public class FileUtil {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static boolean move(File source, File target, boolean override) {
+        if (target.exists() && !override) {
+            return false;
+        }
+        return source.renameTo(target);
     }
 }

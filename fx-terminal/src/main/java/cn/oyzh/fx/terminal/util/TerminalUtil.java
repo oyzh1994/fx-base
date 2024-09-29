@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.util;
 
-import cn.hutool.core.util.StrUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 
 /**
  * 终端工具类

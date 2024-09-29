@@ -4,6 +4,7 @@ import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.thread.TaskBuilder;
 import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.fx.common.util.IOUtil;
 import cn.oyzh.fx.common.util.ResourceUtil;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
@@ -19,6 +20,11 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -291,5 +297,19 @@ public class FXUtil {
             return null;
         }
         return new Image(stream);
+    }
+
+    public static Image toImage(BufferedImage bufferedImage){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+            byteArrayOutputStream.flush();
+            return new Image(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            IOUtil.close(byteArrayOutputStream);
+        }
     }
 }
