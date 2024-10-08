@@ -803,9 +803,7 @@ public class AppMain extends Application {
                 }
             }
         }
-        treeView.root(rootItem);
-
-
+        treeView.setRoot(rootItem);
         VBox vBox = new VBox(hBox, treeView);
         stage.setScene(new Scene(vBox, 500, 500));
         stage.show();
