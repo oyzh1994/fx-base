@@ -56,21 +56,6 @@ public class FlexTreeView extends TreeView implements NodeAdapter, ThemeAdapter,
         return MouseAdapter.super.getOnMouseSecondClicked();
     }
 
-    @Override
-    public RichTreeItem getRoot() {
-        return (RichTreeItem) super.getRoot();
-    }
-
-    @Override
-    public void setRoot(TreeItem root) {
-        if (root instanceof RichTreeItem item) {
-            FXUtil.runWait(() -> super.setRoot(root));
-            item.doFilter();
-        } else {
-            throw new IllegalArgumentException("Root is not a RichTreeItem");
-        }
-    }
-
     /**
      * 重新选择节点
      */

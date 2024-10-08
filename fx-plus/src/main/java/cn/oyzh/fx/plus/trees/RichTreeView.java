@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.trees;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
@@ -153,6 +154,21 @@ public class RichTreeView extends FlexTreeView {
         // 重新选中此节点
         this.select(item);
         this.flushLocal();
+    }
+
+    @Override
+    public RichTreeItem getRoot() {
+        return (RichTreeItem) super.getRoot();
+    }
+
+    @Override
+    public void setRoot(TreeItem root) {
+        if (root instanceof RichTreeItem item) {
+            FXUtil.runWait(() -> super.setRoot(root));
+            item.doFilter();
+        } else if (root != null) {
+            throw new IllegalArgumentException("Root is not a RichTreeItem");
+        }
     }
 
     /**

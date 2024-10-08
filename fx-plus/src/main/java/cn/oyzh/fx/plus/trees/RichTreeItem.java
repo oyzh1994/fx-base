@@ -696,6 +696,5 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         }
         this.childrenListener = null;
         this.eventHandlerManager = null;
-        System.err.println("-------------");
     }
 }
