@@ -18,6 +18,11 @@ public class JSONUtil {
         return JSON.toJSONString(obj, JSONWriter.Feature.PrettyFormat);
     }
 
+    public static String toJsonPrettyStr(String obj) {
+        Object json = JSON.parse(obj);
+        return JSON.toJSONString(json, JSONWriter.Feature.PrettyFormat);
+    }
+
     public static String toJsonStr(Object obj) {
         return JSON.toJSONString(obj);
     }
@@ -39,6 +44,6 @@ public class JSONUtil {
     }
 
     public static <T> T toBean(String text, Class<T> beanClass) {
-        return JSON.to(beanClass,text);
+        return JSON.to(beanClass, text);
     }
 }
