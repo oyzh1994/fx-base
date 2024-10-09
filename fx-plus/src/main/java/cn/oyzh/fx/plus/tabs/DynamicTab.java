@@ -13,8 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.paint.Paint;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +30,13 @@ public abstract class DynamicTab extends FXTab {
         this.loadContent();
         this.setClosable(true);
     }
-
-    /**
-     * controller
-     */
-    @Getter
-    @Accessors(fluent = true, chain = false)
-    protected DynamicTabController controller;
+    //
+    // /**
+    //  * controller
+    //  */
+    // @Getter
+    // @Accessors(fluent = true, chain = false)
+    // protected DynamicTabController controller;
 
     /**
      * 加载内容
@@ -49,10 +47,15 @@ public abstract class DynamicTab extends FXTab {
             FXMLLoaderExt loaderExt = new FXMLLoaderExt();
             Node content = loaderExt.load(url);
             this.setContent(content);
-            this.controller = loaderExt.getController();
-            this.controller.onTabInit(this);
-            this.setOnClosed(e -> this.controller.onTabClose(this, e));
+            DynamicTabController controller = loaderExt.getController();
+            this.setProp("_controller", controller);
+            controller.onTabInit(this);
+            this.setOnClosed(e -> controller.onTabClose(this, e));
         }
+    }
+
+    protected <T extends DynamicTabController> T controller() {
+        return this.getProp("_controller");
     }
 
     /**
@@ -140,8 +143,8 @@ public abstract class DynamicTab extends FXTab {
         FXMenuItem closeTab = MenuItemHelper.closeCurrTab(this::closeTab);
         FXMenuItem closeLeftTab = MenuItemHelper.closeLeftTab(this::closeLeftTab);
         FXMenuItem closeRightTab = MenuItemHelper.closeRightTab(this::closeRightTab);
-        FXMenuItem closeOtherTab =  MenuItemHelper.closeOtherTab(this::closeAllTab);
-        FXMenuItem closeAllTab =  MenuItemHelper.closeAllTab(this::closeAllTab);
+        FXMenuItem closeOtherTab = MenuItemHelper.closeOtherTab(this::closeAllTab);
+        FXMenuItem closeAllTab = MenuItemHelper.closeAllTab(this::closeAllTab);
         items.add(closeTab);
         items.add(closeLeftTab);
         items.add(closeRightTab);
@@ -209,13 +212,12 @@ public abstract class DynamicTab extends FXTab {
 
     @Override
     public void flushTitle() {
-        super.flushTitle();
-        if (StringUtil.isEmpty(this.getTitle())) {
-            String title = this.getTabTitle();
-            if (title != null) {
-                this.setTitle(title);
-            }
+        String title1 = this.getTitle();
+        String title2 = this.getTabTitle();
+        if (StringUtil.notEquals(title1, title2)) {
+            this.setTitle(title2);
         }
+        super.flushTitle();
     }
 
     protected String getTabTitle() {

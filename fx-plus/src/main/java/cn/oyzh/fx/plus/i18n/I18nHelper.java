@@ -2,8 +2,6 @@ package cn.oyzh.fx.plus.i18n;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
-
 /**
  * @author oyzh
  * @since 2024/5/13
@@ -2532,7 +2530,7 @@ public class I18nHelper {
     }
 
     public static String persistentNode() {
-        return I18nResourceBundle.i18nString(PERSISTENT,NODE);
+        return I18nResourceBundle.i18nString(PERSISTENT, NODE);
     }
 
     public static String temporary() {
@@ -2540,10 +2538,14 @@ public class I18nHelper {
     }
 
     public static String temporaryNode() {
-        return I18nResourceBundle.i18nString(TEMPORARY,NODE);
+        return I18nResourceBundle.i18nString(TEMPORARY, NODE);
+    }
+
+    public static String collectNode() {
+        return I18nResourceBundle.i18nString(COLLECT, NODE);
     }
 
     public static String allNode() {
-        return I18nResourceBundle.i18nString(ALL,NODE);
+        return I18nResourceBundle.i18nString(ALL, NODE);
     }
 }

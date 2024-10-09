@@ -21,6 +21,8 @@ public class SearchEvent extends Event {
      */
     public static final EventType<SearchEvent> SEARCH_HISTORY_SELECTED_EVENT = new EventType<>("SEARCH_HISTORY_SELECTED_EVENT");
 
+    public static final EventType<SearchEvent> SEARCH_SETTING_EVENT = new EventType<>("SEARCH_SETTING_EVENT");
+
     public SearchEvent(String text, EventType<SearchEvent> type) {
         super(text, null, type);
     }
@@ -48,5 +50,9 @@ public class SearchEvent extends Event {
      */
     public static SearchEvent historySelected(String history) {
         return new SearchEvent(history, SEARCH_HISTORY_SELECTED_EVENT);
+    }
+
+    public static SearchEvent searchSetting(String type) {
+        return new SearchEvent(type, SEARCH_SETTING_EVENT);
     }
 }

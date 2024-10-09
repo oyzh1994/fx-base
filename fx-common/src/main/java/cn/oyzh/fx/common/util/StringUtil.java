@@ -254,7 +254,23 @@ public class StringUtil {
         return str != null && str.endsWith(endText);
     }
 
-    public static boolean contains(String str, String target) {
-        return str != null && target != null && str.contains(target);
+    public static boolean contains(String source, String target) {
+        return source != null && target != null && source.contains(target);
     }
+
+    public static boolean containsReverse(String str, String target) {
+        return contains(str, target) || contains(target, str);
+    }
+
+    public static boolean containsIgnoreCase(String source, String target) {
+        if (source != null && target != null) {
+            return source.toLowerCase().contains(target.toLowerCase());
+        }
+        return false;
+    }
+
+    public static boolean containsIgnoreCaseReverse(String source, String target) {
+        return containsIgnoreCase(source, target) || containsIgnoreCase(target, source);
+    }
+
 }
