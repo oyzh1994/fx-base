@@ -103,6 +103,10 @@ public class StringUtil {
         return false;
     }
 
+    public static boolean notEquals(String source, String target) {
+        return !equals(source, target);
+    }
+
     public static boolean equalsIgnoreCase(String source, String target) {
         if (source != null && target != null) {
             return source.equalsIgnoreCase(target);

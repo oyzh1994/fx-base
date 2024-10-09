@@ -243,7 +243,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setUrl(url);
     }
 
-    public SVGGlyph(@NonNull String url, @NonNull Color color) {
+    public SVGGlyph(@NonNull String url, @NonNull Paint color) {
         this();
         this.setUrl(url);
         this.setColor(color);
@@ -505,5 +505,12 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
     @Override
     public String getGroupId() {
         return NodeGroup.super.groupId();
+    }
+
+    @Override
+    public SVGGlyph clone() {
+        SVGGlyph glyph = new SVGGlyph(this.url, this.color);
+        glyph.setSizeStr(this.getSizeStr());
+        return glyph;
     }
 }
