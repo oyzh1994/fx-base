@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.i18n;
 
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
+
 /**
  * @author oyzh
  * @since 2024/5/13
@@ -104,6 +106,10 @@ public class I18nHelper {
     public static final String IMPORT = "base.import";
 
     public static final String DATA = "base.data";
+
+    public static final String PERSISTENT = "base.persistent";
+
+    public static final String TEMPORARY = "base.temporary";
 
     public static final String AND = "base.and";
 
@@ -2519,5 +2525,25 @@ public class I18nHelper {
 
     public static String notFoundData() {
         return I18nResourceBundle.i18nString(NOT_FOUND, DATA);
+    }
+
+    public static String persistent() {
+        return I18nResourceBundle.i18nString(PERSISTENT);
+    }
+
+    public static String persistentNode() {
+        return I18nResourceBundle.i18nString(PERSISTENT,NODE);
+    }
+
+    public static String temporary() {
+        return I18nResourceBundle.i18nString(TEMPORARY);
+    }
+
+    public static String temporaryNode() {
+        return I18nResourceBundle.i18nString(TEMPORARY,NODE);
+    }
+
+    public static String allNode() {
+        return I18nResourceBundle.i18nString(ALL,NODE);
     }
 }
