@@ -132,12 +132,17 @@ public class RichTreeView extends FlexTreeView {
     public synchronized void sortAsc() {
         // 获取选中节点
         TreeItem<?> item = this.getSelectedItem();
-        // 执行排序
-        if (item instanceof RichTreeItem<?> treeItem) {
-            treeItem.sortAsc();
+        if (item == null) {
+            // 执行排序
+            this.getRoot().sortAsc();
+        } else {
+            // 执行排序
+            if (item instanceof RichTreeItem<?> treeItem) {
+                treeItem.sortAsc();
+            }
+            // 重新选中此节点
+            this.select(item);
         }
-        // 重新选中此节点
-        this.select(item);
         this.flushLocal();
     }
 
@@ -147,12 +152,17 @@ public class RichTreeView extends FlexTreeView {
     public synchronized void sortDesc() {
         // 获取选中节点
         TreeItem<?> item = this.getSelectedItem();
-        // 执行排序
-        if (item instanceof RichTreeItem<?> treeItem) {
-            treeItem.sortDesc();
+        if (item == null) {
+            // 执行排序
+            this.getRoot().sortDesc();
+        } else {
+            // 执行排序
+            if (item instanceof RichTreeItem<?> treeItem) {
+                treeItem.sortDesc();
+            }
+            // 重新选中此节点
+            this.select(item);
         }
-        // 重新选中此节点
-        this.select(item);
         this.flushLocal();
     }
 
