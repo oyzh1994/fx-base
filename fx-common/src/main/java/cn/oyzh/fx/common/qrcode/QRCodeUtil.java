@@ -57,12 +57,8 @@ public class QRCodeUtil {
      * @param needCompress
      * @throws Exception
      */
-    public static void insertImage(BufferedImage source, String imgPath, int imgW, int imgH, boolean needCompress) throws Exception {
-        File file = new File(imgPath);
-        if (!file.exists()) {
-            throw new FileNotFoundException(imgPath);
-        }
-        Image src = ImageIO.read(new File(imgPath));
+    public static void insertImage(BufferedImage source, File imgPath, int imgW, int imgH, boolean needCompress) throws Exception {
+        Image src = ImageIO.read(imgPath);
         int width = src.getWidth(null);
         int height = src.getHeight(null);
         // 压缩LOGO
