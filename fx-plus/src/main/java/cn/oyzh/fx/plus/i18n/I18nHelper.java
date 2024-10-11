@@ -195,6 +195,14 @@ public class I18nHelper {
 
     public static final String ALL = "base.all";
 
+    public static final String CONTAINS = "base.contains";
+
+    public static final String CONTAINS_CASE_SENSITIVE = "base.containsCaseSensitive";
+
+    public static final String MATCH_WHOLE_WORD = "base.matchWholeWord";
+
+    public static final String MATCH_WHOLE_WORD_CASE_SENSITIVE = "base.matchWholeWordCaseSensitive";
+
     public static final String DATABASE = "base.database";
 
     public static final String INIT = "base.init";
@@ -2547,5 +2555,21 @@ public class I18nHelper {
 
     public static String allNode() {
         return I18nResourceBundle.i18nString(ALL, NODE);
+    }
+
+    public static String contains() {
+        return I18nResourceBundle.i18nString(CONTAINS);
+    }
+
+    public static String containsCaseSensitive() {
+        return I18nResourceBundle.i18nString(CONTAINS_CASE_SENSITIVE);
+    }
+
+    public static String matchWholeWord() {
+        return I18nResourceBundle.i18nString(MATCH_WHOLE_WORD);
+    }
+
+    public static String matchWholeWordCaseSensitive() {
+        return I18nResourceBundle.i18nString(MATCH_WHOLE_WORD_CASE_SENSITIVE);
     }
 }
