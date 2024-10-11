@@ -74,6 +74,22 @@ public class TextUtil {
     /**
      * 更换内容字符集
      *
+     * @param bytes         内容
+     * @param fromCharset   原始字符集
+     * @param targetCharset 目标字符集
+     * @return 处理字符集后的内容
+     */
+    public static byte[] changeCharset(byte[] bytes, Charset fromCharset, Charset targetCharset) {
+        if (bytes == null || bytes.length == 0) {
+            return bytes;
+        }
+        // 转换字符集
+        return new String(bytes, fromCharset).getBytes(targetCharset);
+    }
+
+    /**
+     * 更换内容字符集
+     *
      * @param str           内容
      * @param fromCharset   原始字符集
      * @param targetCharset 目标字符集
