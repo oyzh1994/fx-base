@@ -50,6 +50,20 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
         }
     }
 
+    public void flushTabGraphic() {
+        DynamicTab tab = this.getTab();
+        if (tab != null) {
+            tab.flushGraphic();
+        }
+    }
+
+    public void flushTabGraphicColor() {
+        DynamicTab tab = this.getTab();
+        if (tab != null) {
+            tab.flushGraphicColor();
+        }
+    }
+
     /**
      * 绑定监听器
      */
