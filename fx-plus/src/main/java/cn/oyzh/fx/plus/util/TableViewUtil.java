@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.table.FXTableView;
+import cn.oyzh.fx.plus.controls.table.LineHeightTableCell;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -23,6 +24,12 @@ import java.util.Collections;
  */
 @UtilityClass
 public class TableViewUtil {
+
+    public <S, T> LineHeightTableCell<S, T> lineHeightCell(double lineHeight) {
+        LineHeightTableCell<S, T> cell = new LineHeightTableCell<>();
+        cell.setLineHeight(lineHeight);
+        return cell;
+    }
 
     /**
      * 上移行
@@ -72,7 +79,7 @@ public class TableViewUtil {
         // 双击时，复制数据到粘贴板
         tableView.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             if (cn.oyzh.fx.plus.util.MouseUtil.isDubboClick(event) && MouseUtil.isPrimaryButton(event)) {
-                ClipboardUtil.setStringAndTip((String) getSelectCellData(tableView), "数据");
+                ClipboardUtil.setStringAndTip((String) getSelectCellData(tableView));
             }
         });
     }

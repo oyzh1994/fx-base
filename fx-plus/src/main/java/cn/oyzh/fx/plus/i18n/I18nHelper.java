@@ -203,6 +203,14 @@ public class I18nHelper {
 
     public static final String MATCH_WHOLE_WORD_CASE_SENSITIVE = "base.matchWholeWordCaseSensitive";
 
+    public static final String CREATE = "base.create";
+
+    public static final String READ = "base.read";
+
+    public static final String WRITE = "base.write";
+
+    public static final String ADMIN = "base.admin";
+
     public static final String DATABASE = "base.database";
 
     public static final String INIT = "base.init";
@@ -2571,5 +2579,21 @@ public class I18nHelper {
 
     public static String matchWholeWordCaseSensitive() {
         return I18nResourceBundle.i18nString(MATCH_WHOLE_WORD_CASE_SENSITIVE);
+    }
+
+    public static String create() {
+        return I18nResourceBundle.i18nString(CREATE);
+    }
+
+    public static String read() {
+        return I18nResourceBundle.i18nString(READ);
+    }
+
+    public static String write() {
+        return I18nResourceBundle.i18nString(WRITE);
+    }
+
+    public static String admin() {
+        return I18nResourceBundle.i18nString(ADMIN);
     }
 }

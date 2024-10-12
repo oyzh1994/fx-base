@@ -12,7 +12,7 @@ import javafx.scene.control.TableCell;
  * @author oyzh
  * @since 2022/12/21
  */
-public abstract class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
+public abstract class GraphicTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
 
     {
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);

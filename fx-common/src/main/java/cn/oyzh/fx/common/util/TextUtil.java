@@ -80,7 +80,7 @@ public class TextUtil {
      * @return 处理字符集后的内容
      */
     public static byte[] changeCharset(byte[] bytes, Charset fromCharset, Charset targetCharset) {
-        if (bytes == null || bytes.length == 0) {
+        if (bytes == null || bytes.length == 0 || fromCharset == targetCharset) {
             return bytes;
         }
         // 转换字符集
