@@ -621,7 +621,7 @@ public class TreeItem<T> implements EventTarget { //, Comparable<TreeItem<T>> {
      *
      * @return The parent of this TreeItem, or null if the TreeItem has no parent.
      */
-    public final TreeItem<T> getParent() { return parent == null ? null : parent.getValue(); }
+    public TreeItem<T> getParent() { return parent == null ? null : parent.getValue(); }
 
     /**
      * A property that represents the parent of this TreeItem.

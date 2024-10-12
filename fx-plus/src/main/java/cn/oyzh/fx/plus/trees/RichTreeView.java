@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.trees;
 
-import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -49,15 +48,6 @@ public class RichTreeView extends FlexTreeView {
     protected void initTreeView() {
         // 选中模式
         this.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        // 右键菜单事件
-        this.setOnContextMenuRequested(e -> {
-            TreeItem<?> item = this.getSelectedItem();
-            if (item instanceof MenuItemAdapter treeItem) {
-                this.showContextMenu(treeItem.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
-            } else {
-                this.clearContextMenu();
-            }
-        });
         this.initEvenListener();
     }
 
@@ -65,30 +55,39 @@ public class RichTreeView extends FlexTreeView {
      * 初始化事件监听器
      */
     protected void initEvenListener() {
+        // 右键菜单事件
+        this.setOnContextMenuRequested(e -> {
+            RichTreeItem<?> item = this.getSelectedItem();
+            if (item != null) {
+                this.showContextMenu(item.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+            } else {
+                this.clearContextMenu();
+            }
+        });
         // f2按键处理
         KeyListener.listenReleased(this, KeyCode.F2, event -> {
-            TreeItem<?> item = this.getSelectedItem();
-            if (item instanceof RichTreeItem<?> treeItem) {
-                treeItem.rename();
+            RichTreeItem<?> item = this.getSelectedItem();
+            if (item != null) {
+                item.rename();
             }
         });
         // 删除按键处理
         KeyListener.listenReleased(this, KeyCode.DELETE, event -> {
-            TreeItem<?> item = this.getSelectedItem();
-            if (item instanceof RichTreeItem<?> treeItem) {
-                treeItem.delete();
+            RichTreeItem<?> item = this.getSelectedItem();
+            if (item != null) {
+                item.delete();
             }
         });
         // 鼠标按键处理
         this.setOnMousePrimaryClicked(event -> {
             if (MouseUtil.isPrimaryButton(event)) {
                 this.clearContextMenu();
-                TreeItem<?> item = this.getSelectedItem();
-                if (item instanceof RichTreeItem<?> treeItem) {
+                RichTreeItem<?> item = this.getSelectedItem();
+                if (item != null) {
                     if (event.getClickCount() == 1) {
-                        treeItem.onPrimarySingleClick();
+                        item.onPrimarySingleClick();
                     } else if (event.getClickCount() >= 2) {
-                        treeItem.onPrimaryDoubleClick();
+                        item.onPrimaryDoubleClick();
                     }
                 }
             }
@@ -126,20 +125,23 @@ public class RichTreeView extends FlexTreeView {
         }
     }
 
+    @Override
+    public RichTreeItem getSelectedItem() {
+        return (RichTreeItem) super.getSelectedItem();
+    }
+
     /**
      * 对节点排序，正序
      */
     public synchronized void sortAsc() {
         // 获取选中节点
-        TreeItem<?> item = this.getSelectedItem();
+        RichTreeItem item = this.getSelectedItem();
         if (item == null) {
             // 执行排序
             this.getRoot().sortAsc();
         } else {
             // 执行排序
-            if (item instanceof RichTreeItem<?> treeItem) {
-                treeItem.sortAsc();
-            }
+            item.sortAsc();
             // 重新选中此节点
             this.select(item);
         }
@@ -151,15 +153,13 @@ public class RichTreeView extends FlexTreeView {
      */
     public synchronized void sortDesc() {
         // 获取选中节点
-        TreeItem<?> item = this.getSelectedItem();
+        RichTreeItem item = this.getSelectedItem();
         if (item == null) {
             // 执行排序
             this.getRoot().sortDesc();
         } else {
             // 执行排序
-            if (item instanceof RichTreeItem<?> treeItem) {
-                treeItem.sortDesc();
-            }
+            item.sortDesc();
             // 重新选中此节点
             this.select(item);
         }
@@ -200,40 +200,34 @@ public class RichTreeView extends FlexTreeView {
      * 展开节点
      */
     public synchronized void expand() {
-        TreeItem<?> item = this.getSelectedItem();
-        if (item instanceof RichTreeItem<?> treeItem) {
-            treeItem.extend();
-        }
+        RichTreeItem item = this.getSelectedItem();
         if (item != null) {
+            item.extend();
             this.select(item);
+            this.flushLocal();
         }
-        this.flushLocal();
     }
 
     /**
      * 收缩节点
      */
     public synchronized void collapse() {
-        TreeItem<?> item = this.getSelectedItem();
-        if (item instanceof RichTreeItem<?> treeItem) {
-            treeItem.collapse();
-        }
+        RichTreeItem item = this.getSelectedItem();
         if (item != null) {
+            item.collapse();
             this.select(item);
+            this.flushLocal();
         }
-        this.flushLocal();
     }
 
     /**
      * 重新载入
      */
     public synchronized void reload() {
-        TreeItem<?> item = this.getSelectedItem();
-        if (item instanceof RichTreeItem<?> treeItem) {
-            treeItem.reloadChild();
+        RichTreeItem item = this.getSelectedItem();
+        if (item != null) {
+            item.reloadChild();
+            this.flushLocal();
         }
-        this.flushLocal();
     }
-
-
 }
