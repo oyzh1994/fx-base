@@ -211,6 +211,8 @@ public class I18nHelper {
 
     public static final String ADMIN = "base.admin";
 
+    public static final String ACL = "base.acl";
+
     public static final String DATABASE = "base.database";
 
     public static final String INIT = "base.init";
@@ -2595,5 +2597,9 @@ public class I18nHelper {
 
     public static String admin() {
         return I18nResourceBundle.i18nString(ADMIN);
+    }
+
+    public static String deleteACL() {
+        return I18nResourceBundle.i18nString(DELETE, ACL);
     }
 }

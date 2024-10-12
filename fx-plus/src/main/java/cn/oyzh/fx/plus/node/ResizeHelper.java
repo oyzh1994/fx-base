@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.val;
 
 /**
  * 组件大小改变增强
@@ -18,13 +19,19 @@ import lombok.experimental.Accessors;
  * @since 2023/5/15
  */
 @Accessors(chain = true, fluent = true)
-public class ResizeEnhance {
+public class ResizeHelper {
 
     /**
-     * 拉伸节点
+     * 事件节点
      */
     @Getter
-    private final Node node;
+    private final Node eventNode;
+
+    /**
+     * 触发节点
+     */
+    @Getter
+    private final Node triggerNode;
 
     /**
      * 最小宽度
@@ -55,7 +62,7 @@ public class ResizeEnhance {
      * 触发阈值
      */
     @Setter
-    private Double triggerThreshold;
+    private Double triggerThreshold = 10.d;
 
     /**
      * 鼠标移动事件
@@ -88,13 +95,11 @@ public class ResizeEnhance {
     @Setter
     private EventHandler<MouseEvent> mouseReleased;
 
-    public ResizeEnhance(@NonNull Node node) {
-        this.node = node;
-        this.originalCursor = node.getCursor();
-    }
-
-    public ResizeEnhance(@NonNull Node node, @NonNull Cursor originalCursor) {
-        this.node = node;
+    public ResizeHelper(@NonNull Node eventNode, @NonNull Node triggerNode, double minWidth, double maxWidth, @NonNull Cursor originalCursor) {
+        this.minWidth = minWidth;
+        this.maxWidth = maxWidth;
+        this.eventNode = eventNode;
+        this.triggerNode = triggerNode;
         this.originalCursor = originalCursor;
     }
 
@@ -121,16 +126,15 @@ public class ResizeEnhance {
                 return;
             }
             // 设置鼠标样式
-            double xVal = this.node.minWidth(-1) - event.getSceneX();
+            double xVal = NodeUtil.getWidth(this.eventNode) - event.getSceneX();
+            System.out.println(xVal);
             if (this.triggerAble(xVal)) {
                 this.setNodeCursor(Cursor.W_RESIZE);
             } else {
                 this.setNodeCursor(this.originalCursor);
             }
             event.consume();
-//            if (log.isDebugEnabled()) {
-//                JulLog.debug("MouseMoved");
-//            }
+            JulLog.debug("MouseMoved");
         };
     }
 
@@ -157,13 +161,9 @@ public class ResizeEnhance {
                 return;
             }
             this.setNodeCursor(this.originalCursor);
-//            if (log.isDebugEnabled()) {
             JulLog.debug("Cursor recover.");
-//            }
             event.consume();
-//            if (log.isDebugEnabled()) {
             JulLog.debug("MouseExited");
-//            }
         };
     }
 
@@ -189,9 +189,7 @@ public class ResizeEnhance {
             // 设置拉伸中标志位
             this.resizeIng(true);
             event.consume();
-//            if (log.isDebugEnabled()) {
             JulLog.debug("MousePressed");
-//            }
         };
     }
 
@@ -217,9 +215,7 @@ public class ResizeEnhance {
             this.resizeIng(null);
             this.setNodeCursor(this.originalCursor);
             event.consume();
-//            if (log.isDebugEnabled()) {
             JulLog.debug("MouseReleased");
-//            }
         };
     }
 
@@ -228,19 +224,20 @@ public class ResizeEnhance {
      */
     public void initResizeEvent() {
         if (this.mouseMoved() != null) {
-            this.node.setOnMouseMoved(this.mouseMoved());
+            this.eventNode.setOnMouseMoved(this.mouseMoved());
+            this.triggerNode.setOnMouseMoved(this.mouseMoved());
         }
         if (this.mouseExited() != null) {
-            this.node.setOnMouseExited(this.mouseExited());
+            this.eventNode.setOnMouseExited(this.mouseExited());
         }
         if (this.mousePressed() != null) {
-            this.node.setOnMousePressed(this.mousePressed());
+            this.eventNode.setOnMousePressed(this.mousePressed());
         }
         if (this.mouseDragged() != null) {
-            this.node.setOnMouseDragged(this.mouseDragged());
+            this.eventNode.setOnMouseDragged(this.mouseDragged());
         }
         if (this.mouseReleased() != null) {
-            this.node.setOnMouseReleased(this.mouseReleased());
+            this.eventNode.setOnMouseReleased(this.mouseReleased());
         }
     }
 
@@ -303,6 +300,16 @@ public class ResizeEnhance {
     /**
      * 是否可拉伸宽度
      *
+     * @param event 鼠标事件
+     * @return 结果
+     */
+    public boolean resizeWidthAble(MouseEvent event) {
+        return this.resizeWidthAble(event.getSceneX());
+    }
+
+    /**
+     * 是否可拉伸宽度
+     *
      * @param val 当前值
      * @return 结果
      */
@@ -313,7 +320,7 @@ public class ResizeEnhance {
         if (val >= this.maxWidth()) {
             return false;
         }
-        double sceneW = NodeUtil.getWidth(this.node.getScene());
+        double sceneW = NodeUtil.getWidth(this.eventNode.getScene());
         return val < sceneW - 50;
     }
 
@@ -323,8 +330,8 @@ public class ResizeEnhance {
      * @param cursor 鼠标样式
      */
     private void setNodeCursor(Cursor cursor) {
-        if (this.node.getCursor() != cursor) {
-            this.node.setCursor(cursor);
+        if (this.eventNode.getCursor() != cursor) {
+            this.eventNode.setCursor(cursor);
         }
     }
 }
