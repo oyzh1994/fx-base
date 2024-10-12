@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.node;
 import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -10,7 +11,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.val;
 
 /**
  * 组件大小改变增强
@@ -26,12 +26,6 @@ public class ResizeHelper {
      */
     @Getter
     private final Node eventNode;
-
-    /**
-     * 触发节点
-     */
-    @Getter
-    private final Node triggerNode;
 
     /**
      * 最小宽度
@@ -95,11 +89,10 @@ public class ResizeHelper {
     @Setter
     private EventHandler<MouseEvent> mouseReleased;
 
-    public ResizeHelper(@NonNull Node eventNode, @NonNull Node triggerNode, double minWidth, double maxWidth, @NonNull Cursor originalCursor) {
+    public ResizeHelper(@NonNull Node eventNode, double minWidth, double maxWidth, @NonNull Cursor originalCursor) {
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
         this.eventNode = eventNode;
-        this.triggerNode = triggerNode;
         this.originalCursor = originalCursor;
     }
 
@@ -125,15 +118,14 @@ public class ResizeHelper {
             if (this.isResizeIng()) {
                 return;
             }
+            // 计算偏移
+            double xOffset = this.calcXOffset(event);
             // 设置鼠标样式
-            double xVal = NodeUtil.getWidth(this.eventNode) - event.getSceneX();
-            System.out.println(xVal);
-            if (this.triggerAble(xVal)) {
+            if (this.triggerAble(xOffset)) {
                 this.setNodeCursor(Cursor.W_RESIZE);
             } else {
                 this.setNodeCursor(this.originalCursor);
             }
-            event.consume();
             JulLog.debug("MouseMoved");
         };
     }
@@ -160,9 +152,8 @@ public class ResizeHelper {
             if (this.isResizeIng()) {
                 return;
             }
-            this.setNodeCursor(this.originalCursor);
             JulLog.debug("Cursor recover.");
-            event.consume();
+            this.setNodeCursor(this.originalCursor);
             JulLog.debug("MouseExited");
         };
     }
@@ -188,7 +179,6 @@ public class ResizeHelper {
         return event -> {
             // 设置拉伸中标志位
             this.resizeIng(true);
-            event.consume();
             JulLog.debug("MousePressed");
         };
     }
@@ -214,7 +204,6 @@ public class ResizeHelper {
         return event -> {
             this.resizeIng(null);
             this.setNodeCursor(this.originalCursor);
-            event.consume();
             JulLog.debug("MouseReleased");
         };
     }
@@ -224,20 +213,19 @@ public class ResizeHelper {
      */
     public void initResizeEvent() {
         if (this.mouseMoved() != null) {
-            this.eventNode.setOnMouseMoved(this.mouseMoved());
-            this.triggerNode.setOnMouseMoved(this.mouseMoved());
+            this.eventNode.addEventFilter(MouseEvent.MOUSE_MOVED, this.mouseMoved());
         }
         if (this.mouseExited() != null) {
-            this.eventNode.setOnMouseExited(this.mouseExited());
+            this.eventNode.addEventFilter(MouseEvent.MOUSE_EXITED, this.mouseExited());
         }
         if (this.mousePressed() != null) {
-            this.eventNode.setOnMousePressed(this.mousePressed());
+            this.eventNode.addEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressed());
         }
         if (this.mouseDragged() != null) {
-            this.eventNode.setOnMouseDragged(this.mouseDragged());
+            this.eventNode.addEventFilter(MouseEvent.MOUSE_DRAGGED, this.mouseDragged());
         }
         if (this.mouseReleased() != null) {
-            this.eventNode.setOnMouseReleased(this.mouseReleased());
+            this.eventNode.addEventFilter(MouseEvent.MOUSE_RELEASED, this.mouseReleased());
         }
     }
 
@@ -297,31 +285,32 @@ public class ResizeHelper {
         return Math.abs(val) <= this.triggerThreshold();
     }
 
+    public double calcXOffset(MouseEvent event) {
+        // 计算距离
+        Point2D point2D = this.eventNode.localToScreen(this.eventNode.getLayoutX(), this.eventNode.getLayoutY());
+        double nodeX = point2D.getX();
+        double nodeW = NodeUtil.getWidth(this.eventNode);
+        double screenX = event.getScreenX();
+        return screenX - nodeX - nodeW;
+    }
+
+    public double calcNodeWidth(MouseEvent event) {
+        // 计算距离
+        Point2D point2D = this.eventNode.localToScreen(this.eventNode.getLayoutX(), this.eventNode.getLayoutY());
+        double nodeX = point2D.getX();
+        double screenX = event.getScreenX();
+        return screenX - nodeX;
+    }
+
     /**
-     * 是否可拉伸宽度
+     * 是否可拉伸
      *
      * @param event 鼠标事件
      * @return 结果
      */
-    public boolean resizeWidthAble(MouseEvent event) {
-        return this.resizeWidthAble(event.getSceneX());
-    }
-
-    /**
-     * 是否可拉伸宽度
-     *
-     * @param val 当前值
-     * @return 结果
-     */
-    public boolean resizeWidthAble(double val) {
-        if (val <= this.minWidth()) {
-            return false;
-        }
-        if (val >= this.maxWidth()) {
-            return false;
-        }
-        double sceneW = NodeUtil.getWidth(this.eventNode.getScene());
-        return val < sceneW - 50;
+    public boolean resizeAble(MouseEvent event) {
+        double nodeW = this.calcNodeWidth(event);
+        return nodeW > this.minWidth && nodeW < this.maxWidth;
     }
 
     /**
