@@ -12,6 +12,8 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.function.Consumer;
+
 /**
  * 组件大小改变增强
  *
@@ -89,11 +91,22 @@ public class ResizeHelper {
     @Setter
     private EventHandler<MouseEvent> mouseReleased;
 
-    public ResizeHelper(@NonNull Node eventNode, double minWidth, double maxWidth, @NonNull Cursor originalCursor) {
-        this.minWidth = minWidth;
-        this.maxWidth = maxWidth;
+    /**
+     * 鼠标拖动事件
+     */
+    @Getter
+    @Setter
+    private Consumer<Double> resizeTriggered;
+
+    public ResizeHelper(@NonNull Node eventNode, @NonNull Cursor originalCursor, Consumer<Double> resizeTriggered) {
         this.eventNode = eventNode;
         this.originalCursor = originalCursor;
+        this.resizeTriggered = resizeTriggered;
+    }
+
+    public void widthLimit(double minWidth, double maxWidth) {
+        this.minWidth = minWidth;
+        this.maxWidth = maxWidth;
     }
 
     /**
@@ -180,6 +193,31 @@ public class ResizeHelper {
             // 设置拉伸中标志位
             this.resizeIng(true);
             JulLog.debug("MousePressed");
+        };
+    }
+
+    /**
+     * 获取鼠标拖动事件
+     *
+     * @return 鼠标动事件
+     */
+    public EventHandler<MouseEvent> mouseDragged() {
+        if (this.mouseDragged == null) {
+            this.mouseDragged = this.defaultMouseDragged();
+        }
+        return this.mouseDragged;
+    }
+
+    /**
+     * 获取默认鼠标拖动事件
+     *
+     * @return 鼠标拖动事件
+     */
+    public EventHandler<MouseEvent> defaultMouseDragged() {
+        return event -> {
+            if (this.resizeTriggered != null && this.resizeAble(event)) {
+                this.resizeTriggered.accept(this.calcNodeWidth(event));
+            }
         };
     }
 
