@@ -42,9 +42,9 @@ public class ResizeHelper {
     private Double maxWidth;
 
     /**
-     * 是否大小改变钟
+     * 大小改变中标志位
      */
-    @Setter
+    @Getter
     private Boolean resizeIng;
 
     /**
@@ -81,7 +81,6 @@ public class ResizeHelper {
     /**
      * 鼠标拖动事件
      */
-    @Getter
     @Setter
     private EventHandler<MouseEvent> mouseDragged;
 
@@ -191,7 +190,7 @@ public class ResizeHelper {
     public EventHandler<MouseEvent> defaultMousePressed() {
         return event -> {
             // 设置拉伸中标志位
-            this.resizeIng(true);
+            this.resizeIng = true;
             JulLog.debug("MousePressed");
         };
     }
@@ -240,7 +239,7 @@ public class ResizeHelper {
      */
     public EventHandler<MouseEvent> defaultMouseReleased() {
         return event -> {
-            this.resizeIng(null);
+            this.resizeIng = null;
             this.setNodeCursor(this.originalCursor);
             JulLog.debug("MouseReleased");
         };
@@ -301,7 +300,7 @@ public class ResizeHelper {
      * @return 触发阈值
      */
     public Double triggerThreshold() {
-        return this.triggerThreshold == null ? 0.d : this.triggerThreshold;
+        return this.triggerThreshold == null ? 10.d : this.triggerThreshold;
     }
 
     /**

@@ -1,10 +1,11 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.fx.common.util.CollectionUtil;
+import cn.oyzh.fx.plus.controls.table.FXTableCell;
 import cn.oyzh.fx.plus.controls.table.FXTableView;
-import cn.oyzh.fx.plus.controls.table.LineHeightTableCell;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
@@ -25,8 +26,15 @@ import java.util.Collections;
 @UtilityClass
 public class TableViewUtil {
 
-    public <S, T> LineHeightTableCell<S, T> lineHeightCell(double lineHeight) {
-        LineHeightTableCell<S, T> cell = new LineHeightTableCell<>();
+    public <S, T> FXTableCell<S, T> newCell(double lineHeight) {
+        FXTableCell<S, T> cell = new FXTableCell<>();
+        cell.setLineHeight(lineHeight);
+        return cell;
+    }
+
+    public <S, T> FXTableCell<S, T> newCell(double lineHeight, Pos pos) {
+        FXTableCell<S, T> cell = new FXTableCell<>();
+        cell.setAlignment(pos);
         cell.setLineHeight(lineHeight);
         return cell;
     }

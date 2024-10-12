@@ -1,10 +1,7 @@
 package cn.oyzh.fx.plus.controls.table;
 
-import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.TableCell;
 
 /**
  * 表单列
@@ -12,11 +9,10 @@ import javafx.scene.control.TableCell;
  * @author oyzh
  * @since 2022/12/21
  */
-public abstract class GraphicTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
+public abstract class GraphicTableCell<S, T> extends FXTableCell<S, T> {
 
     {
         this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        NodeManager.init(this);
     }
 
     /**
@@ -27,15 +23,6 @@ public abstract class GraphicTableCell<S, T> extends TableCell<S, T> implements 
     public abstract Node initGraphic();
 
     /**
-     * 获取表单内容
-     *
-     * @return 内容
-     */
-    public S getTableItem() {
-        return this.getTableRow() == null ? null : this.getTableRow().getItem();
-    }
-
-    /**
      * 更新节点信息
      *
      * @param item  节点
@@ -43,11 +30,11 @@ public abstract class GraphicTableCell<S, T> extends TableCell<S, T> implements 
      */
     @Override
     protected final void updateItem(T item, boolean empty) {
-        super.updateItem(item, empty);
         if (empty) {
-            this.setGraphic(null);
+            super.updateItem(item, empty);
         } else {
-            this.setGraphic(this.initGraphic());
+            Object obj = this.initGraphic();
+            super.updateItem((T) obj, empty);
         }
     }
 }

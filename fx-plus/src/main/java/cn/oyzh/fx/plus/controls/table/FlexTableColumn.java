@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 
@@ -94,6 +95,48 @@ public class FlexTableColumn<S, T> extends TableColumn<S, T> implements NodeAdap
      */
     public void setCell(TableCell<S, T> cell) {
         this.setCellFactory((c) -> cell);
+        this.getTableView().getProperties().put("cell", cell);
+    }
+
+    /**
+     * 设置列处理器
+     */
+    public TableCell<S, T> getCell() {
+        return (TableCell<S, T>) this.getTableView().getProperties().get("cell");
+    }
+
+    public void setLineHeight(double lineHeight) {
+        FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
+        if (cell == null) {
+            cell = new FXTableCell<>();
+            this.setCell(cell);
+        }
+        cell.setLineHeight(lineHeight);
+    }
+
+    public double getLineHeight() {
+        FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
+        if (cell != null) {
+            return cell.getLineHeight();
+        }
+        return Double.NaN;
+    }
+
+    public void setAlignment(Pos pos) {
+        FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
+        if (cell == null) {
+            cell = new FXTableCell<>();
+            this.setCell(cell);
+        }
+        cell.setAlignment(pos);
+    }
+
+    public Pos getAlignment( ) {
+        FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
+        if (cell != null) {
+            return cell.getAlignment();
+        }
+        return null;
     }
 
     @Override
