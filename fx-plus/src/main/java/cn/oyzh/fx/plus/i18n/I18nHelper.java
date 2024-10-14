@@ -2602,4 +2602,8 @@ public class I18nHelper {
     public static String deleteACL() {
         return I18nResourceBundle.i18nString(DELETE, ACL);
     }
+
+    public static String canNotEmpty() {
+        return I18nResourceBundle.i18nString(CAN_NOT, EMPTY);
+    }
 }
