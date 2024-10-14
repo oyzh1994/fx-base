@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Window;
@@ -46,8 +45,8 @@ public class RichTreeView extends FlexTreeView {
      * 初始化组件
      */
     protected void initTreeView() {
-        // 选中模式
-        this.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        // // 选中模式
+        // this.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         this.initEvenListener();
     }
 
@@ -126,8 +125,8 @@ public class RichTreeView extends FlexTreeView {
     }
 
     @Override
-    public RichTreeItem getSelectedItem() {
-        return (RichTreeItem) super.getSelectedItem();
+    public RichTreeItem<?> getSelectedItem() {
+        return (RichTreeItem<?>) super.getSelectedItem();
     }
 
     /**
@@ -135,7 +134,7 @@ public class RichTreeView extends FlexTreeView {
      */
     public synchronized void sortAsc() {
         // 获取选中节点
-        RichTreeItem item = this.getSelectedItem();
+        RichTreeItem<?> item = this.getSelectedItem();
         if (item == null) {
             // 执行排序
             this.getRoot().sortAsc();
@@ -153,7 +152,7 @@ public class RichTreeView extends FlexTreeView {
      */
     public synchronized void sortDesc() {
         // 获取选中节点
-        RichTreeItem item = this.getSelectedItem();
+        RichTreeItem<?> item = this.getSelectedItem();
         if (item == null) {
             // 执行排序
             this.getRoot().sortDesc();
@@ -167,13 +166,13 @@ public class RichTreeView extends FlexTreeView {
     }
 
     @Override
-    public RichTreeItem getRoot() {
-        return (RichTreeItem) super.getRoot();
+    public RichTreeItem<?> getRoot() {
+        return (RichTreeItem<?>) super.getRoot();
     }
 
     @Override
     public void setRoot(TreeItem root) {
-        if (root instanceof RichTreeItem item) {
+        if (root instanceof RichTreeItem<?> item) {
             FXUtil.runWait(() -> super.setRoot(root));
             item.doFilter();
         } else if (root != null) {
@@ -200,7 +199,7 @@ public class RichTreeView extends FlexTreeView {
      * 展开节点
      */
     public synchronized void expand() {
-        RichTreeItem item = this.getSelectedItem();
+        RichTreeItem<?> item = this.getSelectedItem();
         if (item != null) {
             item.extend();
             this.select(item);
@@ -212,7 +211,7 @@ public class RichTreeView extends FlexTreeView {
      * 收缩节点
      */
     public synchronized void collapse() {
-        RichTreeItem item = this.getSelectedItem();
+        RichTreeItem<?> item = this.getSelectedItem();
         if (item != null) {
             item.collapse();
             this.select(item);
@@ -224,7 +223,7 @@ public class RichTreeView extends FlexTreeView {
      * 重新载入
      */
     public synchronized void reload() {
-        RichTreeItem item = this.getSelectedItem();
+        RichTreeItem<?> item = this.getSelectedItem();
         if (item != null) {
             item.reloadChild();
             this.flushLocal();

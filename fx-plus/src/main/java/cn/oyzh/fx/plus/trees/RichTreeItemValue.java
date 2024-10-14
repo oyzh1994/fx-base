@@ -30,6 +30,15 @@ public class RichTreeItemValue extends FXHBox implements Destroyable {
     }
 
     /**
+     * 刷新内容
+     */
+    public void flush() {
+        this.flushGraphic();
+        this.flushText();
+        this.flushGraphicColor();
+    }
+
+    /**
      * 获取当前名称
      *
      * @return 当前名称

@@ -236,18 +236,18 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         return this.getValue().graphic();
     }
 
-    /**
-     * 自由处理
-     * 如果是展开状态，则收缩节点
-     * 如果是收缩状态，则展开节点
-     */
-    public void free() {
-        if (this.isExpanded()) {
-            this.collapse();
-        } else {
-            this.extend();
-        }
-    }
+    // /**
+    //  * 自由处理
+    //  * 如果是展开状态，则收缩节点
+    //  * 如果是收缩状态，则展开节点
+    //  */
+    // public void free() {
+    //     if (this.isExpanded()) {
+    //         this.collapse();
+    //     } else {
+    //         this.extend();
+    //     }
+    // }
 
     /**
      * 重新展开
@@ -696,5 +696,19 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         }
         this.childrenListener = null;
         this.eventHandlerManager = null;
+    }
+
+    public boolean isSelected() {
+        return this.getTreeView().isSelected(this);
+    }
+
+    /**
+     * 刷新值
+     */
+    public void flushValue() {
+        RichTreeItemValue value = this.getValue();
+        if (value != null) {
+            value.flush();
+        }
     }
 }
