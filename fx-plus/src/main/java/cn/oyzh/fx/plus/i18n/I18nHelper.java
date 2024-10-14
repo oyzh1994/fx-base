@@ -783,6 +783,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(CONTENT, ALREADY_EXISTS);
     }
 
+    public static String nodeAlreadyExists() {
+        return I18nResourceBundle.i18nString(NODE, ALREADY_EXISTS);
+    }
+
     public static String groupAlreadyExists() {
         return I18nResourceBundle.i18nString(GROUP, ALREADY_EXISTS);
     }
@@ -1481,6 +1485,10 @@ public class I18nHelper {
 
     public static String contentTip1() {
         return I18nResourceBundle.i18nString(CONTENT_TIP1);
+    }
+
+    public static String pleaseInputNodeName() {
+        return I18nResourceBundle.i18nString(PLEASE,INPUT,NODE,NAME);
     }
 
     public static String keyFilter() {
