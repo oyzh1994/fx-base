@@ -76,9 +76,9 @@ public class JulLog {
         LogRecord logRecord = new LogRecord(level, format);
         logRecord.setParameters(args);
         logRecord.setThrown(throwable);
-        logRecord.setSourceClassName(element.getClassName());
+        logRecord.setSourceClassName(element.getClassName() + "#" + element.getMethodName());
         logRecord.setLongThreadID(Thread.currentThread().threadId());
-        logRecord.setSourceMethodName(element.getMethodName() + " " + element.getLineNumber());
+        logRecord.setSourceMethodName(element.getLineNumber()+"");
         return logRecord;
     }
 }
