@@ -18,21 +18,21 @@ public class Task implements Runnable {
      */
     @Setter
     @Getter
-    private Runnable start;
+    private IRunnable start;
 
     /**
      * 结束操作
      */
     @Setter
     @Getter
-    private Runnable finish;
+    private IRunnable finish;
 
     /**
      * 成功操作
      */
     @Setter
     @Getter
-    private Runnable success;
+    private IRunnable success;
 
     /**
      * 错误操作
@@ -52,13 +52,13 @@ public class Task implements Runnable {
         }
     }
 
-    public void onSuccess() {
+    public void onSuccess() throws Exception {
         if (this.success != null) {
             this.success.run();
         }
     }
 
-    public void onFinish() {
+    public void onFinish() throws Exception {
         if (this.finish != null) {
             this.finish.run();
         }
@@ -79,7 +79,11 @@ public class Task implements Runnable {
             this.exception = ex;
             this.onError(ex);
         } finally {
-            this.onFinish();
+            try {
+                this.onFinish();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

@@ -32,7 +32,7 @@ public class RichTreeViewService {
      */
     public void submit(Runnable task) {
         if (task != null) {
-            tasks.add(new RichTreeViewTask(task, (byte) 0));
+            this.tasks.add(new RichTreeViewTask(task, (byte) 0));
             this.doRender();
         }
     }
@@ -44,7 +44,7 @@ public class RichTreeViewService {
      */
     public void submitFX(Runnable task) {
         if (task != null) {
-            tasks.add(new RichTreeViewTask(task, (byte) 1));
+            this.tasks.add(new RichTreeViewTask(task, (byte) 1));
             this.doRender();
         }
     }
@@ -56,7 +56,7 @@ public class RichTreeViewService {
      */
     public void submitFXLater(Runnable task) {
         if (task != null) {
-            tasks.add(new RichTreeViewTask(task, (byte) 2));
+            this.tasks.add(new RichTreeViewTask(task, (byte) 2));
             this.doRender();
         }
     }
@@ -68,8 +68,8 @@ public class RichTreeViewService {
         if (!this.rendering.get()) {
             this.rendering.set(true);
             try {
-                while (!tasks.isEmpty()) {
-                    RichTreeViewTask task = tasks.poll();
+                while (!this.tasks.isEmpty()) {
+                    RichTreeViewTask task = this.tasks.poll();
                     if (task != null) {
                         if (task.getType() == 2) {
                             FXUtil.runLater(task.getTask());

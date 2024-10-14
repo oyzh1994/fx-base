@@ -161,7 +161,7 @@ public class FXUtil {
             CountDownLatch latch = new CountDownLatch(1);
             try {
                 // 包装线程
-                Task task1 = TaskBuilder.newBuilder().onStart(task).onFinish(latch::countDown).build();
+                Task task1 = TaskBuilder.newBuilder().onStart(task::run).onFinish(latch::countDown).build();
                 Platform.runLater(task1);
                 if (timeout <= 0) {
                     latch.await();
@@ -273,7 +273,7 @@ public class FXUtil {
         List<Image> icons = new ArrayList<>(imgUrls.size());
         for (String url : imgUrls) {
             JulLog.info("load imgUrl:{}", url);
-            InputStream stream =ResourceUtil. getResourceAsStream(url);
+            InputStream stream = ResourceUtil.getResourceAsStream(url);
             if (stream == null) {
                 JulLog.warn("img stream is null.");
             } else {
@@ -299,7 +299,7 @@ public class FXUtil {
         return new Image(stream);
     }
 
-    public static Image toImage(BufferedImage bufferedImage){
+    public static Image toImage(BufferedImage bufferedImage) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             ImageIO.write(bufferedImage, "png", byteArrayOutputStream);

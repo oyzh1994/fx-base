@@ -228,4 +228,11 @@ public class FlexTreeView extends TreeView implements Destroyable, NodeAdapter, 
             this.setRoot(null);
         }
     }
+
+    /**
+     * 定位节点
+     */
+    public void positionItem() {
+        this.scrollTo(this.getSelectedItem());
+    }
 }

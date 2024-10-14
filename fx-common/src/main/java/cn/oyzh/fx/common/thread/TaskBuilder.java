@@ -13,17 +13,17 @@ public class TaskBuilder {
     /**
      * 开始业务
      */
-    private Runnable start;
+    private IRunnable start;
 
     /**
      * 结束业务
      */
-    private Runnable finish;
+    private IRunnable finish;
 
     /**
      * 成功业务
      */
-    private Runnable success;
+    private IRunnable success;
 
     /**
      * 异常处理
@@ -52,10 +52,21 @@ public class TaskBuilder {
      * @param start start业务
      * @return TaskBuilder
      */
-    public TaskBuilder onStart(Runnable start) {
+    public TaskBuilder onStart(IRunnable start) {
         this.start = start;
         return this;
     }
+
+    // /**
+    //  * 设置start业务
+    //  *
+    //  * @param start start业务
+    //  * @return TaskBuilder
+    //  */
+    // public TaskBuilder onStart(Runnable start) {
+    //     this.start = start::run;
+    //     return this;
+    // }
 
     /**
      * 设置success业务
@@ -63,10 +74,21 @@ public class TaskBuilder {
      * @param success finish业务
      * @return TaskBuilder
      */
-    public TaskBuilder onSuccess(Runnable success) {
+    public TaskBuilder onSuccess(IRunnable success) {
         this.success = success;
         return this;
     }
+
+    // /**
+    //  * 设置success业务
+    //  *
+    //  * @param success finish业务
+    //  * @return TaskBuilder
+    //  */
+    // public TaskBuilder onSuccess(Runnable success) {
+    //     this.success = success::run;
+    //     return this;
+    // }
 
     /**
      * 设置finish业务
@@ -74,10 +96,21 @@ public class TaskBuilder {
      * @param finish finish业务
      * @return TaskBuilder
      */
-    public TaskBuilder onFinish(Runnable finish) {
+    public TaskBuilder onFinish(IRunnable finish) {
         this.finish = finish;
         return this;
     }
+
+    // /**
+    //  * 设置finish业务
+    //  *
+    //  * @param finish finish业务
+    //  * @return TaskBuilder
+    //  */
+    // public TaskBuilder onFinish(Runnable finish) {
+    //     this.finish = finish::run;
+    //     return this;
+    // }
 
     /**
      * 设置error业务
