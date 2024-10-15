@@ -591,6 +591,10 @@ public class I18nHelper {
 
     public static final String AUTH = "base.auth";
 
+    public static final String LIST = "base.list";
+
+    public static final String TOOLS = "base.tools";
+
     public static final String REVERSE = "base.reverse";
 
     public static final String REDUCE = "base.reduce";
@@ -2613,5 +2617,25 @@ public class I18nHelper {
 
     public static String canNotEmpty() {
         return I18nResourceBundle.i18nString(CAN_NOT, EMPTY);
+    }
+
+    public static String addAuth() {
+        return I18nResourceBundle.i18nString(ADD, AUTH);
+    }
+
+    public static String addACL() {
+        return I18nResourceBundle.i18nString(ADD, ACL);
+    }
+
+    public static String updateACL() {
+        return I18nResourceBundle.i18nString(UPDATED, ACL);
+    }
+
+    public static String authList() {
+        return I18nResourceBundle.i18nString(AUTH, LIST);
+    }
+
+    public static String tools() {
+        return I18nResourceBundle.i18nString(TOOLS);
     }
 }

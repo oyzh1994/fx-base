@@ -25,7 +25,7 @@ public interface DestroyAdapter extends Destroyable {
             ChangeListener<Scene> listener = (observable, oldValue, newValue) -> {
                 if (newValue == null) {
                     this.destroy();
-                    JulLog.error("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
+                    JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
                 }
             };
             node.sceneProperty().addListener(listener);
@@ -33,7 +33,7 @@ public interface DestroyAdapter extends Destroyable {
             ChangeListener<TreeItem<?>> listener = (observable, oldValue, newValue) -> {
                 if (newValue == null) {
                     this.destroy();
-                    JulLog.error("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
+                    JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
                 }
             };
             node.parentProperty().addListener(listener);
@@ -41,7 +41,7 @@ public interface DestroyAdapter extends Destroyable {
             ChangeListener<ContextMenu> listener = (observable, oldValue, newValue) -> {
                 if (newValue == null) {
                     this.destroy();
-                    JulLog.error("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
+                    JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
                 }
             };
             node.parentPopupProperty().addListener(listener);
