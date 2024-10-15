@@ -3,9 +3,11 @@ package cn.oyzh.fx.plus.trees;
 import cn.oyzh.fx.common.thread.Task;
 import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.common.util.Destroyable;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
+import cn.oyzh.fx.plus.node.NodeManager;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -32,7 +34,11 @@ import java.util.function.Consumer;
  * @since 2023/11/10
  */
 @Getter
-public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
+public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+
+    {
+        NodeManager.init(this);
+    }
 
     /**
      * 加载完成标志位
@@ -317,9 +323,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                 }
             }
             children.clear();
-            if (treeItem instanceof Destroyable destroyable) {
-                destroyable.destroy();
-            }
+            // if (treeItem instanceof Destroyable destroyable) {
+            //     destroyable.destroy();
+            // }
         };
         this.service().submitFXLater(() -> {
             ObservableList<TreeItem<V>> children = super.getChildren();
@@ -676,11 +682,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     @Override
     public void destroy() {
-        for (TreeItem<V> child : super.getChildren()) {
-            if (child instanceof Destroyable destroyable) {
-                destroyable.destroy();
-            }
-        }
+        // for (TreeItem<V> child : super.getChildren()) {
+        //     if (child instanceof Destroyable destroyable) {
+        //         destroyable.destroy();
+        //     }
+        // }
         Object value = this.getValue();
         if (value instanceof Destroyable destroyable) {
             destroyable.destroy();
@@ -690,12 +696,12 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         this.setGraphic(null);
         this.treeView = null;
         this.visibleProperty = null;
-        if (this.children != null) {
-            this.children.removeListener(this.childrenListener);
-            this.children = null;
-        }
-        this.childrenListener = null;
-        this.eventHandlerManager = null;
+        // if (this.children != null) {
+        //     this.children.removeListener(this.childrenListener);
+        //     this.children = null;
+        // }
+        // this.childrenListener = null;
+        // this.eventHandlerManager = null;
     }
 
     public boolean isSelected() {

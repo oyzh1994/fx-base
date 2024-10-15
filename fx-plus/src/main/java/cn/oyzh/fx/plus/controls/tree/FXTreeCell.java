@@ -37,15 +37,12 @@ public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter,
     @Override
     protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
-        this.setText(null);
-        // this.setDisclosureNode(null);
-        if (empty) {
+        if (empty || item == null) {
             this.setGraphic(null);
+        } else if (this.getGraphic() == null) {
+            this.setGraphic(this.initGraphic());
         } else {
-            Node node = this.initGraphic();
-            if (node != this.getGraphic()) {
-                this.setGraphic(node);
-            }
+            this.setGraphic(this.initGraphic());
         }
     }
 

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
@@ -26,6 +27,9 @@ public class NodeManager {
      * @param node 节点
      */
     public static void init(Object node) {
+        if (node instanceof DestroyAdapter adapter) {
+            adapter.initDestroyListener();
+        }
         if (node instanceof NodeAdapter adapter) {
             adapter.initNode();
         }

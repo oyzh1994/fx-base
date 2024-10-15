@@ -145,5 +145,6 @@ public class RichTreeItemValue extends FXHBox implements Destroyable {
     @Override
     public void destroy() {
         this.clearChild();
+        this.clearProps();
     }
 }

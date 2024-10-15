@@ -4,6 +4,7 @@ import cn.oyzh.fx.common.log.JulLog;
 import cn.oyzh.fx.common.thread.TaskManager;
 import cn.oyzh.fx.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -30,7 +31,7 @@ import java.util.function.Consumer;
  * @since 2022/1/19
  */
 @ToString
-public class FlexTreeView extends TreeView implements Destroyable, NodeAdapter, ThemeAdapter, ContextMenuAdapter, FlexAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FlexTreeView extends TreeView implements DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, FlexAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
         NodeManager.init(this);

@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.common.util.CollectionUtil;
 import cn.oyzh.fx.common.util.DestroyUtil;
-import cn.oyzh.fx.common.util.Destroyable;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -16,16 +16,17 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/3/7
  */
-public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAdapter, Destroyable {
+public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAdapter, DestroyAdapter {
 
-    private ListChangeListener<MenuItem> itemsListener = c -> {
-        this.calcWidth();
-    };
+    {
+        NodeManager.init(this);
+    }
+
+    private ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
         this.getItems().addListener(this.itemsListener);
-        NodeManager.init(this);
     }
 
     public FXContextMenu() {

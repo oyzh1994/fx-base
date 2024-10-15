@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.common.util.Destroyable;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
@@ -18,7 +18,11 @@ import javafx.scene.control.MenuItem;
  * @author oyzh
  * @since 2023/3/3
  */
-public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, Destroyable {
+public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, DestroyAdapter {
+
+    {
+        NodeManager.init(this);
+    }
 
     private ChangeListener<Boolean> disableListener = (observable, oldValue, newValue) -> {
         if (this.getGraphic() != null) {
@@ -29,7 +33,6 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
         this.disableProperty().addListener(this.disableListener);
-        NodeManager.init(this);
     }
 
     public FXMenuItem(Node graphic, String text, Runnable action) {
@@ -109,8 +112,10 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
 
     @Override
     public void destroy() {
-        this.disableProperty().removeListener(this.disableListener);
-        this.disableListener = null;
+        if (this.disableListener != null) {
+            this.disableProperty().removeListener(this.disableListener);
+            this.disableListener = null;
+        }
         this.setText(null);
         this.setStyle(null);
         this.setGraphic(null);
