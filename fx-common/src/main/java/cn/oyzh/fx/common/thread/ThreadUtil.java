@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -213,6 +214,13 @@ public class ThreadUtil {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public static void await(CountDownLatch latch) {
+        try {
+            latch.await();
+        } catch (InterruptedException ignore) {
         }
     }
 
