@@ -595,6 +595,10 @@ public class I18nHelper {
 
     public static final String TOOLS = "base.tools";
 
+    public static final String CHILD_NUMBER = "base.childNumber";
+
+    public static final String BYTES = "base.bytes";
+
     public static final String REVERSE = "base.reverse";
 
     public static final String REDUCE = "base.reduce";
@@ -2637,5 +2641,13 @@ public class I18nHelper {
 
     public static String tools() {
         return I18nResourceBundle.i18nString(TOOLS);
+    }
+
+    public static String childNumber() {
+        return I18nResourceBundle.i18nString(CHILD_NUMBER);
+    }
+
+    public static String bytes() {
+        return I18nResourceBundle.i18nString(BYTES);
     }
 }
