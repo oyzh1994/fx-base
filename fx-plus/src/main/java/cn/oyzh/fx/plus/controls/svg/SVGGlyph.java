@@ -298,8 +298,10 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      * @param color 颜色
      */
     public void setColor(Paint color) {
-        this.color = color;
-        this.updateContent();
+        if (color != this.color) {
+            this.color = color;
+            this.updateContent();
+        }
     }
 
     // /**
