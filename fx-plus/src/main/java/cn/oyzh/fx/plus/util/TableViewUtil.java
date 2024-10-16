@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.table.FXTableCell;
 import cn.oyzh.fx.plus.controls.table.FXTableView;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -82,14 +83,20 @@ public class TableViewUtil {
      * 双击时，复制列数据到粘贴板
      *
      * @param tableView 表格组件
+     * @return EventHandler<MouseEvent>
      */
-    public static void copyCellOnDoubleClicked(TableView<?> tableView) {
-        // 双击时，复制数据到粘贴板
-        tableView.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-            if (cn.oyzh.fx.plus.util.MouseUtil.isDubboClick(event) && MouseUtil.isPrimaryButton(event)) {
-                ClipboardUtil.setStringAndTip((String) getSelectCellData(tableView));
+    public static EventHandler<MouseEvent> copyCellDataOnDoubleClicked(TableView<?> tableView) {
+        EventHandler<MouseEvent> handler = event -> {
+            if (MouseUtil.isDubboClick(event) && MouseUtil.isPrimaryButton(event)) {
+                Object object = getSelectCellData(tableView);
+                if (object instanceof String || object instanceof Number) {
+                    ClipboardUtil.setStringAndTip(object.toString());
+                }
             }
-        });
+        };
+        // 双击时，复制数据到粘贴板
+        tableView.addEventFilter(MouseEvent.MOUSE_CLICKED, handler);
+        return handler;
     }
 
     /**
@@ -101,7 +108,7 @@ public class TableViewUtil {
     public Object getSelectCellData(TableView<?> tableView) {
         ObservableList<TablePosition> positions = tableView.getSelectionModel().getSelectedCells();
         if (CollectionUtil.isNotEmpty(positions)) {
-            TablePosition<?, ?> position = positions.get(0);
+            TablePosition<?, ?> position = positions.getFirst();
             TableColumn<?, ?> column = position.getTableColumn();
             return column.getCellData(position.getRow());
         }

@@ -5,17 +5,15 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.TableViewUtil;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
+import javafx.event.EventHandler;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 /**
  * @author oyzh
@@ -132,5 +130,21 @@ public class FXTableView<S> extends TableView<S> implements NodeAdapter, ThemeAd
 
     public ObservableList<S> itemList() {
         return this.itemsProperty().get();
+    }
+
+    public void setCopyCellDataOnDoubleClicked(boolean copyCellDataOnDoubleClicked) {
+        if (copyCellDataOnDoubleClicked) {
+            EventHandler<MouseEvent> handler = TableViewUtil.copyCellDataOnDoubleClicked(this);
+            this.setProp("_copyCellDataOnDoubleClicked", handler);
+        } else {
+            EventHandler<MouseEvent> handler = this.getProp("_copyCellDataOnDoubleClicked");
+            if (handler != null) {
+                this.removeEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+            }
+        }
+    }
+
+    public boolean isCopyCellDataOnDoubleClicked() {
+        return this.hasProp("_copyCellDataOnDoubleClicked");
     }
 }
