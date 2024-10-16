@@ -153,6 +153,10 @@ public class ThemeManager {
         return currentTheme().getForegroundColor();
     }
 
+    public static String currentUserAgentStylesheet() {
+        return currentTheme().getUserAgentStylesheet();
+    }
+
     public static String currentCompressedUserAgentStylesheet() {
         return currentTheme().getCompressedUserAgentStylesheet();
     }

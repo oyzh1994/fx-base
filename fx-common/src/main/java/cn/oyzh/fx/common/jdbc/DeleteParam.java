@@ -25,6 +25,13 @@ public class DeleteParam {
         this.queryParams.add(queryParam);
     }
 
+    public void addQueryParams(List<QueryParam> queryParams) {
+        if (this.queryParams == null) {
+            this.queryParams = new ArrayList<>();
+        }
+        this.queryParams.addAll(queryParams);
+    }
+
     public void addOrderByParam(OrderByParam orderByParam) {
         if (this.orderByParams == null) {
             this.orderByParams = new ArrayList<>();

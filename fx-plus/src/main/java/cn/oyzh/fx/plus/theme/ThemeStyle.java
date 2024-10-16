@@ -112,8 +112,10 @@ public interface ThemeStyle {
         FXUtil.runLater(() -> {
             if (node instanceof Parent parent) {
                 try {
-                    parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentCompressedUserAgentStylesheet());
-                    parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
+                    parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentUserAgentStylesheet());
+                    parent.getStylesheets().addAll(this.getUserAgentStylesheet(), FXStyle.FX_BASE);
+                    // parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentCompressedUserAgentStylesheet());
+                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
                     // List<String> removes = new ArrayList<>();
                     // removes.add(FXStyle.FX_BASE);
                     // removes.add(ThemeManager.currentTheme().getCompressedUserAgentStylesheet());

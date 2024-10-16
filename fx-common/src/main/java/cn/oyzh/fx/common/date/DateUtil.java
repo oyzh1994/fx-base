@@ -22,6 +22,10 @@ public class DateUtil {
     }
 
     public static String format(String format) {
-        return new SimpleDateFormat(format).format(System.currentTimeMillis());
+        return format(format, System.currentTimeMillis());
+    }
+
+    public static String format(String format, long time) {
+        return new SimpleDateFormat(format).format(time);
     }
 }

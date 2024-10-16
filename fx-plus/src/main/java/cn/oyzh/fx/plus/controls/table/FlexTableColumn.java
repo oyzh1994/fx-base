@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * @author oyzh
@@ -131,7 +132,7 @@ public class FlexTableColumn<S, T> extends TableColumn<S, T> implements NodeAdap
         cell.setAlignment(pos);
     }
 
-    public Pos getAlignment( ) {
+    public Pos getAlignment() {
         FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
         if (cell != null) {
             return cell.getAlignment();
@@ -142,5 +143,14 @@ public class FlexTableColumn<S, T> extends TableColumn<S, T> implements NodeAdap
     @Override
     public void initNode() {
 
+    }
+
+    public void setValueName(String valueName) {
+        this.setCellValueFactory(new PropertyValueFactory<>(valueName));
+        this.setProp("_valueName", valueName);
+    }
+
+    public String getValueName() {
+        return this.getProp("_valueName");
     }
 }

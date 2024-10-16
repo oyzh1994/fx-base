@@ -40,6 +40,7 @@ public class CupertinoDarkTheme implements Theme, ThemeStyle {
     @Override
     public String getCompressedUserAgentStylesheet() {
         return FXStyle.ATLANTA_FX_CUPERTINO_DARK;
+        // return FXStyle.ATLANTA_FX_CUPERTINO_DARK;
     }
 
     @Override
