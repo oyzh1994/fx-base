@@ -64,8 +64,14 @@ public class TextUtil {
      * @return 处理字符集后的内容
      */
     public static byte[] changeCharset(byte[] bytes, String fromCharset, String targetCharset) {
-        if (bytes == null || bytes.length == 0) {
+        if (bytes == null || bytes.length == 0 || StringUtil.equalsIgnoreCase(fromCharset, targetCharset)) {
             return bytes;
+        }
+        if (fromCharset == null) {
+            fromCharset = Charset.defaultCharset().name();
+        }
+        if (targetCharset == null) {
+            targetCharset = Charset.defaultCharset().name();
         }
         // 转换字符集
         return new String(bytes, getCharset(fromCharset)).getBytes(getCharset(targetCharset));
@@ -82,6 +88,12 @@ public class TextUtil {
     public static byte[] changeCharset(byte[] bytes, Charset fromCharset, Charset targetCharset) {
         if (bytes == null || bytes.length == 0 || fromCharset == targetCharset) {
             return bytes;
+        }
+        if (fromCharset == null) {
+            fromCharset = Charset.defaultCharset();
+        }
+        if (targetCharset == null) {
+            targetCharset = Charset.defaultCharset();
         }
         // 转换字符集
         return new String(bytes, fromCharset).getBytes(targetCharset);

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.combo;
 
-import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.common.util.CharsetUtil;
+import cn.oyzh.fx.common.util.StringUtil;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 import java.nio.charset.Charset;
@@ -22,8 +22,20 @@ public class CharsetComboBox extends FlexComboBox<String> {
         this.getItems().add("gb2312");
         this.getItems().add(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
         this.getItems().add(StandardCharsets.US_ASCII.displayName().toLowerCase());
-        this.select(Charset.defaultCharset());
-        this.setTipText(I18nHelper.charset());
+    }
+
+    public void setInitDefault(boolean initDefault) {
+        if (initDefault) {
+            this.select(Charset.defaultCharset());
+            this.setTipText(I18nHelper.charset());
+        } else {
+            this.clearSelection();
+            this.setTipText(null);
+        }
+    }
+
+    public boolean isInitDefault() {
+        return false;
     }
 
     /**
@@ -49,7 +61,7 @@ public class CharsetComboBox extends FlexComboBox<String> {
     @Override
     public void select(String charset) {
         this.setIgnoreChanged(true);
-        if (StringUtil.isBlank(charset) || "跟随系统".equals(charset)) {
+        if (StringUtil.isBlank(charset)) {
             this.selectFirst();
         } else {
             charset = charset.toLowerCase().replace("_", "-");

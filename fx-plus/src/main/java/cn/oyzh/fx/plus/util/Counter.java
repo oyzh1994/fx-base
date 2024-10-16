@@ -56,6 +56,7 @@ public class Counter {
      * @param failCount 失败数量
      */
     public void incrFail(int failCount) {
+        failCount = Math.abs(failCount);
         this.failCount += failCount;
         this.update(0);
     }
@@ -66,8 +67,20 @@ public class Counter {
      * @param successCount 成功数量
      */
     public void incrSuccess(int successCount) {
+        successCount = Math.abs(successCount);
         this.successCount += successCount;
         this.update(1);
+    }
+
+    /**
+     * 递增忽略数量
+     *
+     * @param ignoreCount 忽略
+     */
+    public void incrIgnore(int ignoreCount) {
+        ignoreCount = Math.abs(ignoreCount);
+        this.ignoreCount += ignoreCount;
+        this.update(2);
     }
 
     /**
