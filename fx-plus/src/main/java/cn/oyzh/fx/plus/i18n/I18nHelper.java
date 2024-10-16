@@ -21,6 +21,8 @@ public class I18nHelper {
 
     public static final String SUCCESS = "base.success";
 
+    public static final String SUCCEED = "base.succeed";
+
     public static final String BINARY = "base.binary";
 
     public static final String JSON = "base.json";
@@ -1231,6 +1233,10 @@ public class I18nHelper {
         return I18nResourceBundle.i18nString(CONNECTION, CONNECTED);
     }
 
+    public static String connectionSucceed() {
+        return I18nResourceBundle.i18nString(CONNECTION, SUCCEED);
+    }
+
     public static String connectionDisconnected() {
         return I18nResourceBundle.i18nString(CONNECTION, DISCONNECTED);
     }
@@ -1496,7 +1502,7 @@ public class I18nHelper {
     }
 
     public static String pleaseInputNodeName() {
-        return I18nResourceBundle.i18nString(PLEASE,INPUT,NODE,NAME);
+        return I18nResourceBundle.i18nString(PLEASE, INPUT, NODE, NAME);
     }
 
     public static String keyFilter() {
@@ -2649,5 +2655,17 @@ public class I18nHelper {
 
     public static String bytes() {
         return I18nResourceBundle.i18nString(BYTES);
+    }
+
+    public static String nodeAdded() {
+        return I18nResourceBundle.i18nString(NODE, ADDED);
+    }
+
+    public static String nodeDeleted() {
+        return I18nResourceBundle.i18nString(NODE, DELETED);
+    }
+
+    public static String nodeUpdated() {
+        return I18nResourceBundle.i18nString(NODE, UPDATED);
     }
 }
