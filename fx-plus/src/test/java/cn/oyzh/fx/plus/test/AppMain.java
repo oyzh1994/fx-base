@@ -833,7 +833,7 @@ public class AppMain extends Application {
     private void test23(Stage stage) {
         LongAdder adder = new LongAdder();
         MsgTextArea textArea = new MsgTextArea();
-        textArea.setLineLimit(100L);
+        textArea.setLineLimit(100);
         AtomicReference<ScheduledFuture<?>> scheduledFuture = new AtomicReference<>();
         Button start = new Button("开始");
         start.setOnAction(event -> {

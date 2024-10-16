@@ -67,11 +67,6 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
         }
     }
 
-    /**
-     * 行分隔符
-     */
-    public static final String LINE_SEPARATOR = "\n";
-
     @Override
     public void setTipText(String tipText) {
         TipAdapter.super.tipText(tipText);
@@ -92,8 +87,8 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
      */
     public void appendLines(Collection<String> list) {
         if (CollectionUtil.isNotEmpty(list)) {
-            String str = CollectionUtil.join(list, FXTextArea.LINE_SEPARATOR);
-            this.appendText(str + FXTextArea.LINE_SEPARATOR);
+            String str = CollectionUtil.join(list, System.lineSeparator());
+            this.appendText(str + System.lineSeparator());
         }
     }
 
@@ -105,11 +100,11 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
     public void appendLine(String s) {
         if (s != null) {
             String text = s;
-            if (this.getLength() > 0 && !this.getText().endsWith(FXTextArea.LINE_SEPARATOR) && !text.startsWith(FXTextArea.LINE_SEPARATOR)) {
-                text = FXTextArea.LINE_SEPARATOR + text;
+            if (this.getLength() > 0 && !this.getText().endsWith(System.lineSeparator()) && !text.startsWith(System.lineSeparator())) {
+                text = System.lineSeparator() + text;
             }
-            if (!text.endsWith(FXTextArea.LINE_SEPARATOR)) {
-                text = text + FXTextArea.LINE_SEPARATOR;
+            if (!text.endsWith(System.lineSeparator())) {
+                text = text + System.lineSeparator();
             }
             this.appendText(text);
         }
@@ -245,5 +240,9 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
     @Override
     public String getGroupId() {
         return NodeGroup.super.groupId();
+    }
+
+    public long lineCount() {
+        return this.getText().lines().count();
     }
 }
