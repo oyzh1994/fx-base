@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.tabs;
 
 import cn.oyzh.fx.plus.event.EventListener;
+import cn.oyzh.fx.plus.event.EventUtil;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
@@ -87,6 +88,7 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
      */
     public void onTabClose(DynamicTab tab, Event event) {
         EventListener.super.unregister();
+        EventUtil.post(new TabClosedEvent(tab));
     }
 
     @Override

@@ -193,7 +193,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 开始等待
      */
     public void startWaiting() {
-        if (this.graphic() instanceof SVGGlyph glyph) {
+        if (this.valueGraphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
         }
     }
@@ -204,7 +204,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param task 待执行业务
      */
     public void startWaiting(Task task) {
-        if (this.graphic() instanceof SVGGlyph glyph) {
+        if (this.valueGraphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting(task);
         }
     }
@@ -213,7 +213,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 取消等待
      */
     public void stopWaiting() {
-        if (this.graphic() instanceof SVGGlyph glyph) {
+        if (this.valueGraphic() instanceof SVGGlyph glyph) {
             glyph.stopWaiting();
         }
     }
@@ -224,7 +224,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 结果
      */
     public boolean isWaiting() {
-        if (this.graphic() instanceof SVGGlyph glyph) {
+        if (this.valueGraphic() instanceof SVGGlyph glyph) {
             return glyph.isWaiting();
         }
         return false;
@@ -235,25 +235,12 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @return 图标组件
      */
-    public Node graphic() {
+    public Node valueGraphic() {
         if (this.getValue() == null) {
             return null;
         }
         return this.getValue().graphic();
     }
-
-    // /**
-    //  * 自由处理
-    //  * 如果是展开状态，则收缩节点
-    //  * 如果是收缩状态，则展开节点
-    //  */
-    // public void free() {
-    //     if (this.isExpanded()) {
-    //         this.collapse();
-    //     } else {
-    //         this.extend();
-    //     }
-    // }
 
     /**
      * 重新展开
