@@ -669,11 +669,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
 
     @Override
     public void destroy() {
-        // for (TreeItem<V> child : super.getChildren()) {
-        //     if (child instanceof Destroyable destroyable) {
-        //         destroyable.destroy();
-        //     }
-        // }
+        for (TreeItem<V> child : super.getChildren()) {
+            if (child instanceof Destroyable destroyable) {
+                destroyable.destroy();
+            }
+        }
         Object value = this.getValue();
         if (value instanceof Destroyable destroyable) {
             destroyable.destroy();
@@ -681,6 +681,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         this.setValue(null);
         this.setParent(null);
         this.setGraphic(null);
+        this.clearChild();
         this.treeView = null;
         this.visibleProperty = null;
         // if (this.children != null) {
