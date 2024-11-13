@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2011, 2024, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,12 +27,31 @@ package javafx.css;
 
 import cn.oyzh.common.util.FileUtil;
 import com.sun.javafx.css.Combinator;
+import com.sun.javafx.css.CompoundSelector;
 import com.sun.javafx.css.FontFaceImpl;
+import com.sun.javafx.css.InterpolatorConverter;
 import com.sun.javafx.css.ParsedValueImpl;
+import com.sun.javafx.css.SimpleSelector;
 import com.sun.javafx.css.StyleManager;
+import com.sun.javafx.css.TransitionDefinition;
+import com.sun.javafx.css.TransitionDefinitionConverter;
+import com.sun.javafx.util.Utils;
+import javafx.animation.Interpolator;
+import javafx.css.converter.BooleanConverter;
+import javafx.css.converter.DurationConverter;
+import javafx.css.converter.EffectConverter;
+import javafx.css.converter.EnumConverter;
+import javafx.css.converter.FontConverter;
+import javafx.css.converter.InsetsConverter;
+import javafx.css.converter.PaintConverter;
+import javafx.css.converter.SizeConverter;
+import javafx.css.converter.SizeConverter.SequenceConverter;
+import javafx.css.converter.StringConverter;
+import javafx.css.converter.URLConverter;
+import javafx.css.converter.DeriveColorConverter;
+import javafx.css.converter.LadderConverter;
+import javafx.css.converter.StopConverter;
 import com.sun.javafx.css.parser.Token;
-import com.sun.javafx.logging.PlatformLogger;
-import com.sun.javafx.logging.PlatformLogger.Level;
 import com.sun.javafx.scene.layout.region.BackgroundPositionConverter;
 import com.sun.javafx.scene.layout.region.BackgroundSizeConverter;
 import com.sun.javafx.scene.layout.region.BorderImageSliceConverter;
@@ -51,22 +70,7 @@ import com.sun.javafx.scene.layout.region.RepeatStruct;
 import com.sun.javafx.scene.layout.region.RepeatStructConverter;
 import com.sun.javafx.scene.layout.region.SliceSequenceConverter;
 import com.sun.javafx.scene.layout.region.StrokeBorderPaintConverter;
-import com.sun.javafx.util.Utils;
 import javafx.collections.ObservableList;
-import javafx.css.converter.BooleanConverter;
-import javafx.css.converter.DeriveColorConverter;
-import javafx.css.converter.DurationConverter;
-import javafx.css.converter.EffectConverter;
-import javafx.css.converter.EnumConverter;
-import javafx.css.converter.FontConverter;
-import javafx.css.converter.InsetsConverter;
-import javafx.css.converter.LadderConverter;
-import javafx.css.converter.PaintConverter;
-import javafx.css.converter.SizeConverter;
-import javafx.css.converter.SizeConverter.SequenceConverter;
-import javafx.css.converter.StopConverter;
-import javafx.css.converter.StringConverter;
-import javafx.css.converter.URLConverter;
 import javafx.geometry.Insets;
 import javafx.scene.effect.BlurType;
 import javafx.scene.layout.BackgroundPosition;
@@ -85,6 +89,10 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
+import com.sun.javafx.logging.PlatformLogger;
+import com.sun.javafx.logging.PlatformLogger.Level;
+
 
 import java.io.BufferedReader;
 import java.io.CharArrayReader;
@@ -98,6 +106,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -107,7 +116,6 @@ import java.util.Stack;
 
 /**
  * A parser for a CSS document string.
- *
  * @since 9
  */
 final public class CssParser {
@@ -122,11 +130,11 @@ final public class CssParser {
     // stylesheet as a string from parse method. This will be null if the
     // stylesheet is being parsed from a file; otherwise, the parser is parsing
     // a string and this is that string.
-    private String stylesheetAsText;
+    private String     stylesheetAsText;
 
     // the url of the stylesheet file. This will
     // be null if the source is not a file.
-    private String sourceOfStylesheet;
+    private String        sourceOfStylesheet;
 
     // the Styleable from the node with an in-line style. This will be null
     // unless the source of the styles is a Node's styleProperty. In this case,
@@ -158,9 +166,8 @@ final public class CssParser {
 
     private static final class ParseException extends Exception {
         ParseException(String message) {
-            this(message, null, null);
+            this(message,null,null);
         }
-
         ParseException(String message, Token tok, CssParser parser) {
             super(message);
             this.tok = tok;
@@ -174,15 +181,12 @@ final public class CssParser {
                 source = "?";
             }
         }
-
-        @Override
-        public String toString() {
+        @Override public String toString() {
             StringBuilder builder = new StringBuilder(super.getMessage());
             builder.append(source);
             if (tok != null) builder.append(": ").append(tok.toString());
             return builder.toString();
         }
-
         private final Token tok;
         private final String source;
     }
@@ -210,7 +214,7 @@ final public class CssParser {
      * Creates a {@code Stylesheet} from a CSS document string using docbase as the base
      * URL for resolving references within {@code Stylesheet}.
      *
-     * @param docbase        the doc base for resolving URL references
+     * @param docbase the doc base for resolving URL references
      * @param stylesheetText the CSS document to parse
      * @return the Stylesheet
      * @throws java.io.IOException the exception
@@ -230,9 +234,9 @@ final public class CssParser {
      * Updates the given stylesheet by reading a CSS document from a URL,
      * assuming UTF-8 encoding.
      *
-     * @param url URL of the stylesheet to parse
-     * @return the stylesheet
-     * @throws IOException the exception
+     *@param  url URL of the stylesheet to parse
+     *@return the stylesheet
+     *@throws IOException the exception
      */
     public Stylesheet parse(final URL url) throws IOException {
 
@@ -273,7 +277,6 @@ final public class CssParser {
 
     /**
      * Parse an in-line style from a {@code Node}.
-     *
      * @param node the styleable node
      * @return the style sheet
      */
@@ -317,9 +320,8 @@ final public class CssParser {
 
     /**
      * Convenience method for unit tests.
-     *
      * @param property the property
-     * @param expr     the expression
+     * @param expr the expression
      * @return the parsed value
      */
     ParsedValue parseExpr(String property, String expr) {
@@ -329,7 +331,7 @@ final public class CssParser {
         setInputSource(null, property + ": " + expr);
         char buf[] = new char[expr.length() + 1];
         System.arraycopy(expr.toCharArray(), 0, buf, 0, expr.length());
-        buf[buf.length - 1] = ';';
+        buf[buf.length-1] = ';';
 
         try (Reader reader = new CharArrayReader(buf)) {
             CssLexer lex = new CssLexer();
@@ -341,7 +343,7 @@ final public class CssParser {
         } catch (IOException ioe) {
         } catch (ParseException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("\"" + property + ": " + expr + "\" " + e.toString());
+                LOGGER.warning("\"" +property + ": " + expr  + "\" " + e.toString());
             }
         } catch (Exception ex) {
             // Sometimes bad syntax causes an exception. The code should be
@@ -352,12 +354,11 @@ final public class CssParser {
         }
         return value;
     }
-
     /*
      * Map of property names found while parsing. If a value matches a
      * property name, then the value is a lookup.
      */
-    private final Map<String, String> properties;
+    private final Map<String,String> properties;
 
     /*
      * While parsing a declaration, tokens from parsing value (that is,
@@ -403,7 +404,6 @@ final public class CssParser {
         Term nextLayer;
         Term firstArg;
         Term nextArg;
-
         Term(Token token) {
             this.token = token;
             this.nextLayer = null;
@@ -411,13 +411,11 @@ final public class CssParser {
             this.firstArg = null;
             this.nextArg = null;
         }
-
         Term() {
             this(null);
         }
 
-        @Override
-        public String toString() {
+        @Override public String toString() {
             StringBuilder buf = new StringBuilder();
             if (token != null) buf.append(String.valueOf(token.getText()));
             if (nextInSeries != null) {
@@ -467,7 +465,7 @@ final public class CssParser {
     private void error(final Term root, final String msg) throws ParseException {
 
         final Token token = root != null ? root.token : null;
-        final ParseException pe = new ParseException(msg, token, this);
+        final ParseException pe = new ParseException(msg,token,this);
         reportError(createError(pe.toString()));
         throw pe;
     }
@@ -482,7 +480,7 @@ final public class CssParser {
                 buf.append(exception.getClass().getName())
                         .append(" at:");
                 int end = 0;
-                while (end < stea.length) {
+                while(end < stea.length) {
                     // only report parser part of the stack trace.
                     if (!getClass().getName().equals(stea[end].getClassName())) {
                         break;
@@ -499,7 +497,7 @@ final public class CssParser {
         final StringBuilder buf =
                 new StringBuilder("Using deprecated syntax for ");
         buf.append(syntax);
-        if (sourceOfStylesheet != null) {
+        if (sourceOfStylesheet != null){
             buf.append(" at ")
                     .append(sourceOfStylesheet)
                     .append("[")
@@ -513,9 +511,9 @@ final public class CssParser {
     }
 
     // Assumes string is not a lookup!
-    private ParsedValueImpl<Color, Color> colorValueOfString(String str) {
+    private ParsedValueImpl<Color,Color> colorValueOfString(String str) {
 
-        if (str.startsWith("#") || str.startsWith("0x")) {
+        if(str.startsWith("#") || str.startsWith("0x")) {
 
             double a = 1.0f;
             String c = str;
@@ -523,15 +521,15 @@ final public class CssParser {
 
             final int len = c.length();
             // rgba or rrggbbaa - trim off the alpha
-            if ((len - prefixLength) == 4) {
-                a = Integer.parseInt(c.substring(len - 1), 16) / 15.0f;
-                c = c.substring(0, len - 1);
-            } else if ((len - prefixLength) == 8) {
-                a = Integer.parseInt(c.substring(len - 2), 16) / 255.0f;
-                c = c.substring(0, len - 2);
+            if ( (len-prefixLength) == 4) {
+                a = Integer.parseInt(c.substring(len-1), 16) / 15.0f;
+                c = c.substring(0,len-1);
+            } else if ((len-prefixLength) == 8) {
+                a = Integer.parseInt(c.substring(len-2), 16) / 255.0f;
+                c = c.substring(0,len-2);
             }
             // else color was rgb or rrggbb (no alpha)
-            return new ParsedValueImpl<>(Color.web(c, a), null);
+            return new ParsedValueImpl<>(Color.web(c,a), null);
         }
 
         try {
@@ -646,15 +644,52 @@ final public class CssParser {
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.finest("Expected \'<number>\'");
                 }
-                ParseException re = new ParseException("Expected \'<number>\'", token, this);
+                ParseException re = new ParseException("Expected \'<number>\'",token, this);
                 reportError(createError(re.toString()));
                 throw re;
         }
         // TODO: Handle NumberFormatException
         return new Size(
-                Double.parseDouble(sval.substring(0, len - trim)),
+                Double.parseDouble(sval.substring(0,len-trim)),
                 units
         );
+    }
+
+    // Return true if the token is a time type or an identifier
+    // (which would indicate a lookup).
+    private boolean isTime(Token token) {
+        switch (token.getType()) {
+            case CssLexer.SECONDS:
+            case CssLexer.MS:
+                return true;
+            default:
+                return token.getType() == CssLexer.IDENT;
+        }
+    }
+
+    private Size time(Token token) throws ParseException {
+        return switch (token.getType()) {
+            case CssLexer.SECONDS -> {
+                String sval = token.getText().trim();
+                double v = Double.parseDouble(sval.substring(0, sval.length() - 1).trim());
+                yield new Size(v, SizeUnits.S);
+            }
+
+            case CssLexer.MS -> {
+                String sval = token.getText().trim();
+                double v = Double.parseDouble(sval.substring(0, sval.length() - 2).trim());
+                yield new Size(v, SizeUnits.MS);
+            }
+
+            default -> {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.finest("Expected \'<duration>\'");
+                }
+                ParseException re = new ParseException("Expected \'<duration>\'", token, this);
+                reportError(createError(re.toString()));
+                throw re;
+            }
+        };
     }
 
     // Count the number of terms in a series
@@ -710,11 +745,11 @@ final public class CssParser {
         return term.nextLayer;
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
     //
     // Parsing routines
     //
-    ////////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
     ParsedValueImpl valueFor(String property, Term root, CssLexer lexer) throws ParseException {
         final String prop = property.toLowerCase(Locale.ROOT);
@@ -726,10 +761,10 @@ final public class CssParser {
         if (root.token.getType() == CssLexer.IDENT) {
             final String txt = root.token.getText();
             if ("inherit".equalsIgnoreCase(txt)) {
-                return new ParsedValueImpl<String, String>("inherit", null);
+                return new ParsedValueImpl<String,String>("inherit", null);
             } else if ("null".equalsIgnoreCase(txt)
                     || "none".equalsIgnoreCase(txt)) {
-                return new ParsedValueImpl<String, String>("null", null);
+                return new ParsedValueImpl<String,String>("null", null);
             }
         }
         if ("-fx-fill".equals(prop)) {
@@ -737,10 +772,11 @@ final public class CssParser {
             if (pv.getConverter() == StyleConverter.getUrlConverter()) {
                 // ImagePatternConverter expects array of ParsedValue where element 0 is the URL
                 // Pending RT-33574
-                pv = new ParsedValueImpl(new ParsedValue[]{pv}, PaintConverter.ImagePatternConverter.getInstance());
+                pv = new ParsedValueImpl(new ParsedValue[] {pv},PaintConverter.ImagePatternConverter.getInstance());
             }
             return pv;
-        } else if ("-fx-background-color".equals(prop)) {
+        }
+        else if ("-fx-background-color".equals(prop)) {
             return parsePaintLayers(root);
         } else if ("-fx-background-image".equals(prop)) {
             return parseURILayers(root);
@@ -777,10 +813,10 @@ final public class CssParser {
         } else if ("-fx-border-image-width".equals(prop)) {
             return parseBorderImageWidthLayers(root);
         } else if ("-fx-padding".equals(prop)) {
-            ParsedValueImpl<?, Size>[] sides = parseSize1to4(root);
+            ParsedValueImpl<?,Size>[] sides = parseSize1to4(root);
             return new ParsedValueImpl<>(sides, InsetsConverter.getInstance());
         } else if ("-fx-label-padding".equals(prop)) {
-            ParsedValueImpl<?, Size>[] sides = parseSize1to4(root);
+            ParsedValueImpl<?,Size>[] sides = parseSize1to4(root);
             return new ParsedValueImpl<>(sides, InsetsConverter.getInstance());
         } else if (prop.endsWith("font-family")) {
             return parseFontFamily(root);
@@ -803,14 +839,14 @@ final public class CssParser {
             // special cased.
             Term term = root;
             int nArgs = numberOfTerms(term);
-            ParsedValueImpl<?, Size>[] segments = new ParsedValueImpl[nArgs];
+            ParsedValueImpl<?,Size>[] segments = new ParsedValueImpl[nArgs];
             int segment = 0;
-            while (term != null) {
+            while(term != null) {
                 segments[segment++] = parseSize(term);
                 term = term.nextInSeries;
             }
 
-            return new ParsedValueImpl<>(segments, SequenceConverter.getInstance());
+            return new ParsedValueImpl<>(segments,SequenceConverter.getInstance());
 
         } else if ("-fx-stroke-line-join".equals(prop)) {
             // TODO: Figure out a way that these properties don't need to be
@@ -841,9 +877,19 @@ final public class CssParser {
                     && ttype != CssLexer.IDENT)
                     || (str = root.token.getText()) == null
                     || str.isEmpty()) {
-                error(root, "Expected STRING or IDENT");
+                error(root,  "Expected STRING or IDENT");
             }
             return new ParsedValueImpl<String, String>(stripQuotes(str), null, false);
+        } else if ("transition".equals(prop)) {
+            return parseTransitionLayers(root);
+        } else if ("transition-duration".equals(prop)) {
+            return parseDurationLayers(root, false);
+        } else if ("transition-delay".equals(prop)) {
+            return parseDurationLayers(root, true);
+        } else if ("transition-timing-function".equals(prop)) {
+            return parseEasingFunctionLayers(root);
+        } else if ("transition-property".equals(prop)) {
+            return parseTransitionPropertyLayers(root);
         }
         return parse(root);
     }
@@ -871,10 +917,10 @@ final public class CssParser {
             case CssLexer.RAD:
             case CssLexer.TURN:
                 if (root.nextInSeries == null) {
-                    ParsedValueImpl sizeValue = new ParsedValueImpl<Size, Number>(size(token), null);
-                    value = new ParsedValueImpl<ParsedValue<?, Size>, Number>(sizeValue, SizeConverter.getInstance());
+                    ParsedValueImpl sizeValue = new ParsedValueImpl<Size,Number>(size(token), null);
+                    value = new ParsedValueImpl<ParsedValue<?,Size>, Number>(sizeValue, SizeConverter.getInstance());
                 } else {
-                    ParsedValueImpl<Size, Size>[] sizeValue = parseSizeSeries(root);
+                    ParsedValueImpl<Size,Size>[] sizeValue = parseSizeSeries(root);
                     value = new ParsedValueImpl<>(sizeValue, SizeConverter.SequenceConverter.getInstance());
                 }
                 break;
@@ -899,41 +945,41 @@ final public class CssParser {
                     value = radialGradient(root);
                 } else if ("infinity".equals(text)) {
                     Size size = new Size(Double.MAX_VALUE, SizeUnits.PX);
-                    ParsedValueImpl sizeValue = new ParsedValueImpl<Size, Number>(size, null);
-                    value = new ParsedValueImpl<ParsedValue<?, Size>, Number>(sizeValue, SizeConverter.getInstance());
+                    ParsedValueImpl sizeValue = new ParsedValueImpl<Size,Number>(size, null);
+                    value = new ParsedValueImpl<ParsedValue<?,Size>,Number>(sizeValue, SizeConverter.getInstance());
                 } else if ("indefinite".equals(text)) {
                     Size size = new Size(Double.POSITIVE_INFINITY, SizeUnits.PX);
-                    ParsedValueImpl<Size, Size> sizeValue = new ParsedValueImpl<>(size, null);
+                    ParsedValueImpl<Size,Size> sizeValue = new ParsedValueImpl<>(size, null);
                     value = new ParsedValueImpl<>(sizeValue, DurationConverter.getInstance());
                 } else if ("true".equals(text)) {
                     // TODO: handling of boolean is really bogus
-                    value = new ParsedValueImpl<>("true", BooleanConverter.getInstance());
+                    value = new ParsedValueImpl<>("true",BooleanConverter.getInstance());
                 } else if ("false".equals(text)) {
                     // TODO: handling of boolean is really bogus
-                    value = new ParsedValueImpl<>("false", BooleanConverter.getInstance());
+                    value = new ParsedValueImpl<>("false",BooleanConverter.getInstance());
                 } else {
                     // if the property value is another property, then it needs to be looked up.
                     boolean needsLookup = isIdent && properties.containsKey(text);
-                    if (needsLookup || ((value = colorValueOfString(str)) == null)) {
+                    if (needsLookup || ((value = colorValueOfString(str)) == null )) {
                         // If the value is a lookup, make sure to use the lower-case text so it matches the property
                         // in the Declaration. If the value is not a lookup, then use str since the value might
                         // be a string which could have some case sensitive meaning
                         //
                         // TODO: isIdent is needed here because of RT-38345. This effectively undoes RT-38201
-                        value = new ParsedValueImpl<String, String>(needsLookup ? text : str, null, isIdent || needsLookup);
+                        value = new ParsedValueImpl<String,String>(needsLookup ? text : str, null, isIdent || needsLookup);
                     }
                 }
                 break;
             case CssLexer.HASH:
                 final String clr = token.getText();
                 try {
-                    value = new ParsedValueImpl<Color, Color>(Color.web(clr), null);
+                    value = new ParsedValueImpl<Color,Color>(Color.web(clr), null);
                 } catch (final IllegalArgumentException e) {
                     error(root, e.getMessage());
                 }
                 break;
             case CssLexer.FUNCTION:
-                return parseFunction(root);
+                return  parseFunction(root);
             case CssLexer.URL:
                 return parseURI(root);
             default:
@@ -947,11 +993,11 @@ final public class CssParser {
     /* Parse size.
      * @throw RecongnitionExcpetion if the token is not a size type or a lookup.
      */
-    private ParsedValueImpl<?, Size> parseSize(final Term root) throws ParseException {
+    private ParsedValueImpl<?,Size> parseSize(final Term root) throws ParseException {
 
         if (root.token == null || !isSize(root.token)) error(root, "Expected \'<size>\'");
 
-        ParsedValueImpl<?, Size> value = null;
+        ParsedValueImpl<?,Size> value = null;
 
         if (root.token.getType() != CssLexer.IDENT) {
 
@@ -968,9 +1014,51 @@ final public class CssParser {
         return value;
     }
 
-    private ParsedValueImpl<?, Color> parseColor(final Term root) throws ParseException {
+    private ParsedValueImpl<?, Size> parseTime(final Term root) throws ParseException {
+        if (root.token == null || !isTime(root.token)) {
+            error(root, "Expected \'<duration>\'");
+        }
 
-        ParsedValueImpl<?, Color> color = null;
+        if (root.token.getType() != CssLexer.IDENT) {
+            Size time = time(root.token);
+            return new ParsedValueImpl<>(time, null);
+        }
+
+        String key = root.token.getText();
+        return switch (key) {
+            case "initial", "inherit" -> new ParsedValueImpl<>(new Size(0, SizeUnits.S), null);
+            case "indefinite" -> new ParsedValueImpl<>(new Size(Double.POSITIVE_INFINITY, SizeUnits.S), null);
+            default -> new ParsedValueImpl<>(key, null, true);
+        };
+    }
+
+    private ParsedValueImpl<ParsedValue<?, Size>, Duration> parseDuration(
+            Term term, boolean allowNegative) throws ParseException {
+        ParsedValue<?, Size> time = parseTime(term);
+        if (!allowNegative && time.getValue() instanceof Size size && size.getValue() < 0) {
+            error(term, "Invalid \'<duration>\'");
+        }
+
+        return new ParsedValueImpl<>(time, DurationConverter.getInstance());
+    }
+
+    private ParsedValueImpl<ParsedValue<ParsedValue<?, Size>, Duration>[], Duration[]>
+    parseDurationLayers(Term term, boolean allowNegative) throws ParseException {
+        int nLayers = numberOfLayers(term);
+        ParsedValue<ParsedValue<?, Size>, Duration>[] layers = new ParsedValueImpl[nLayers];
+
+        for (int i = 0; i < nLayers; ++i) {
+            layers[i] = parseDuration(term, allowNegative);
+            term = nextLayer(term);
+        }
+
+        return new ParsedValueImpl<ParsedValue<ParsedValue<?, Size>, Duration>[], Duration[]>(
+                layers, DurationConverter.SequenceConverter.getInstance());
+    }
+
+    private ParsedValueImpl<?,Color> parseColor(final Term root) throws ParseException {
+
+        ParsedValueImpl<?,Color> color = null;
         if (root.token != null &&
                 (root.token.getType() == CssLexer.IDENT ||
                         root.token.getType() == CssLexer.HASH ||
@@ -979,7 +1067,7 @@ final public class CssParser {
             color = parse(root);
 
         } else {
-            error(root, "Expected \'<color>\'");
+            error(root,  "Expected \'<color>\'");
         }
         return color;
     }
@@ -1046,15 +1134,15 @@ final public class CssParser {
             gval = clamp(0.0f, Double.parseDouble(gtext) / 255.0f, 1.0f);
             bval = clamp(0.0f, Double.parseDouble(btext) / 255.0f, 1.0f);
         } else {
-            rval = clamp(0.0f, Double.parseDouble(rtext.substring(0, rtext.length() - 1)) / 100.0f, 1.0f);
-            gval = clamp(0.0f, Double.parseDouble(gtext.substring(0, gtext.length() - 1)) / 100.0f, 1.0f);
-            bval = clamp(0.0f, Double.parseDouble(btext.substring(0, btext.length() - 1)) / 100.0f, 1.0f);
+            rval = clamp(0.0f, Double.parseDouble(rtext.substring(0,rtext.length()-1)) / 100.0f, 1.0f);
+            gval = clamp(0.0f, Double.parseDouble(gtext.substring(0,gtext.length()-1)) / 100.0f, 1.0f);
+            bval = clamp(0.0f, Double.parseDouble(btext.substring(0,btext.length()-1)) / 100.0f, 1.0f);
         }
 
         final String atext = (atok != null) ? atok.getText() : null;
-        final double aval = (atext != null) ? clamp(0.0f, Double.parseDouble(atext), 1.0f) : 1.0;
+        final double aval =  (atext != null) ? clamp(0.0f, Double.parseDouble(atext), 1.0f) : 1.0;
 
-        return new ParsedValueImpl<Color, Color>(Color.color(rval, gval, bval, aval), null);
+        return new ParsedValueImpl<Color,Color>(Color.color(rval,gval,bval,aval), null);
 
     }
 
@@ -1102,13 +1190,13 @@ final public class CssParser {
         final double brightness = clamp(0.0f, bval.pixels(), 1.0f);
 
         final Size aval = (atok != null) ? size(atok) : null;
-        final double opacity = (aval != null) ? clamp(0.0f, aval.pixels(), 1.0f) : 1.0;
+        final double opacity =  (aval != null) ? clamp(0.0f, aval.pixels(), 1.0f) : 1.0;
 
-        return new ParsedValueImpl<Color, Color>(Color.hsb(hue, saturation, brightness, opacity), null);
+        return new ParsedValueImpl<Color,Color>(Color.hsb(hue, saturation, brightness, opacity), null);
     }
 
     // derive(color, pct)
-    private ParsedValueImpl<ParsedValue[], Color> derive(final Term root)
+    private ParsedValueImpl<ParsedValue[],Color> derive(final Term root)
             throws ParseException {
 
         // first term in the chain is the function name...
@@ -1121,19 +1209,19 @@ final public class CssParser {
         Term arg = root;
         if ((arg = arg.firstArg) == null) error(root, "Expected \'<color>\'");
 
-        final ParsedValueImpl<?, Color> color = parseColor(arg);
+        final ParsedValueImpl<?,Color> color = parseColor(arg);
 
         final Term prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<percent\'");
 
-        final ParsedValueImpl<?, Size> brightness = parseSize(arg);
+        final ParsedValueImpl<?,Size> brightness = parseSize(arg);
 
-        ParsedValueImpl[] values = new ParsedValueImpl[]{color, brightness};
+        ParsedValueImpl[] values = new ParsedValueImpl[] { color, brightness };
         return new ParsedValueImpl<>(values, DeriveColorConverter.getInstance());
     }
 
     // 'ladder' color 'stops' stop+
-    private ParsedValueImpl<ParsedValue[], Color> ladder(final Term root) throws ParseException {
+    private ParsedValueImpl<ParsedValue[],Color> ladder(final Term root) throws ParseException {
 
         // first term in the chain is the function name...
         final String fn = (root.token != null) ? root.token.getText() : null;
@@ -1149,14 +1237,14 @@ final public class CssParser {
         Term term = root;
 
         if ((term = term.nextInSeries) == null) error(root, "Expected \'<color>\'");
-        final ParsedValueImpl<?, Color> color = parse(term);
+        final ParsedValueImpl<?,Color> color = parse(term);
 
         Term prev = term;
 
-        if ((term = term.nextInSeries) == null) error(prev, "Expected \'stops\'");
+        if ((term = term.nextInSeries) == null) error(prev,  "Expected \'stops\'");
         if (term.token == null ||
                 term.token.getType() != CssLexer.IDENT ||
-                !"stops".equalsIgnoreCase(term.token.getText())) error(term, "Expected \'stops\'");
+                !"stops".equalsIgnoreCase(term.token.getText())) error(term,  "Expected \'stops\'");
 
         prev = term;
 
@@ -1170,14 +1258,14 @@ final public class CssParser {
         } while (((temp = temp.nextInSeries) != null) &&
                 ((temp.token != null) && (temp.token.getType() == CssLexer.LPAREN)));
 
-        ParsedValueImpl[] values = new ParsedValueImpl[nStops + 1];
+        ParsedValueImpl[] values = new ParsedValueImpl[nStops+1];
         values[0] = color;
         int stopIndex = 1;
         do {
-            ParsedValueImpl<ParsedValue[], Stop> stop = stop(term);
+            ParsedValueImpl<ParsedValue[],Stop> stop = stop(term);
             if (stop != null) values[stopIndex++] = stop;
             prev = term;
-        } while (((term = term.nextInSeries) != null) &&
+        } while(((term = term.nextInSeries) != null) &&
                 (term.token.getType() == CssLexer.LPAREN));
 
         // if term is not null and the last term was not an lparen,
@@ -1200,7 +1288,7 @@ final public class CssParser {
     }
 
     // <ladder> = ladder(<color>, <color-stop>[, <color-stop>]+ )
-    private ParsedValueImpl<ParsedValue[], Color> parseLadder(final Term root) throws ParseException {
+    private ParsedValueImpl<ParsedValue[],Color> parseLadder(final Term root) throws ParseException {
 
         // first term in the chain is the function name...
         final String fn = (root.token != null) ? root.token.getText() : null;
@@ -1212,16 +1300,16 @@ final public class CssParser {
         Term term = root;
 
         if ((term = term.firstArg) == null) error(root, "Expected \'<color>\'");
-        final ParsedValueImpl<?, Color> color = parse(term);
+        final ParsedValueImpl<?,Color> color = parse(term);
 
         Term prev = term;
 
         if ((term = term.nextArg) == null)
-            error(prev, "Expected \'<color-stop>[, <color-stop>]+\'");
+            error(prev,  "Expected \'<color-stop>[, <color-stop>]+\'");
 
-        ParsedValueImpl<ParsedValue[], Stop>[] stops = parseColorStops(term);
+        ParsedValueImpl<ParsedValue[],Stop>[] stops = parseColorStops(term);
 
-        ParsedValueImpl[] values = new ParsedValueImpl[stops.length + 1];
+        ParsedValueImpl[] values = new ParsedValueImpl[stops.length+1];
         values[0] = color;
         System.arraycopy(stops, 0, values, 1, stops.length);
         return new ParsedValueImpl<>(values, LadderConverter.getInstance());
@@ -1242,16 +1330,16 @@ final public class CssParser {
 
         Term arg = null;
 
-        if ((arg = root.firstArg) == null) error(root, "Expected \'<number>\'");
+        if ((arg = root.firstArg) == null) error(root,  "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> size = parseSize(arg);
+        ParsedValueImpl<?,Size> size = parseSize(arg);
 
         Term prev = arg;
-        if ((arg = arg.nextArg) == null) error(prev, "Expected \'<color>\'");
+        if ((arg = arg.nextArg) == null) error(prev,  "Expected \'<color>\'");
 
-        ParsedValueImpl<?, Color> color = parseColor(arg);
+        ParsedValueImpl<?,Color> color = parseColor(arg);
 
-        ParsedValueImpl[] values = new ParsedValueImpl[]{size, color};
+        ParsedValueImpl[] values = new ParsedValueImpl[] { size, color };
         return new ParsedValueImpl<>(values, StopConverter.getInstance());
 
     }
@@ -1263,7 +1351,7 @@ final public class CssParser {
 
         int nArgs = 1;
         Term temp = root;
-        while (temp != null) {
+        while(temp != null) {
             if (temp.nextArg != null) {
                 nArgs += 1;
                 temp = temp.nextArg;
@@ -1278,14 +1366,14 @@ final public class CssParser {
             error(root, "Expected \'<color-stop>\'");
         }
 
-        ParsedValueImpl<?, Color>[] colors = new ParsedValueImpl[nArgs];
+        ParsedValueImpl<?,Color>[] colors = new ParsedValueImpl[nArgs];
         Size[] positions = new Size[nArgs];
         java.util.Arrays.fill(positions, null);
 
         Term stop = root;
         Term prev = root;
         SizeUnits units = null;
-        for (int n = 0; n < nArgs; n++) {
+        for (int n = 0; n<nArgs; n++) {
 
             colors[n] = parseColor(stop);
 
@@ -1319,15 +1407,15 @@ final public class CssParser {
         // position to 0%. If the last color-stop does not have a position,
         // set its position to 100%.
         if (positions[0] == null) positions[0] = new Size(0, SizeUnits.PERCENT);
-        if (positions[nArgs - 1] == null) positions[nArgs - 1] = new Size(100, SizeUnits.PERCENT);
+        if (positions[nArgs-1] == null) positions[nArgs-1] = new Size(100, SizeUnits.PERCENT);
 
         // If a color-stop has a position that is less than the specified
         // position of any color-stop before it in the list, set its
         // position to be equal to the largest specified position of any
         // color-stop before it.
         Size max = null;
-        for (int n = 1; n < nArgs; n++) {
-            Size pos0 = positions[n - 1];
+        for (int n = 1 ; n<nArgs; n++) {
+            Size pos0 = positions[n-1];
             if (pos0 == null) continue;
             if (max == null || max.getValue() < pos0.getValue()) {
                 // TODO: this doesn't work with mixed length and percent
@@ -1345,7 +1433,7 @@ final public class CssParser {
         // preceding and following color-stops with positions.
         Size preceding = null;
         int withoutIndex = -1;
-        for (int n = 0; n < nArgs; n++) {
+        for (int n = 0 ; n<nArgs; n++) {
             Size pos = positions[n];
             if (pos == null) {
                 if (withoutIndex == -1) withoutIndex = n;
@@ -1357,7 +1445,7 @@ final public class CssParser {
                     double delta =
                             (pos.getValue() - precedingValue) / (nWithout + 1);
 
-                    while (withoutIndex < n) {
+                    while(withoutIndex < n) {
                         precedingValue += delta;
                         positions[withoutIndex++] =
                                 new Size(precedingValue, pos.getUnits());
@@ -1370,11 +1458,11 @@ final public class CssParser {
             }
         }
 
-        ParsedValueImpl<ParsedValue[], Stop>[] stops = new ParsedValueImpl[nArgs];
-        for (int n = 0; n < nArgs; n++) {
+        ParsedValueImpl<ParsedValue[],Stop>[] stops = new ParsedValueImpl[nArgs];
+        for (int n=0; n<nArgs; n++) {
             stops[n] = new ParsedValueImpl<>(
-                    new ParsedValueImpl[]{
-                            new ParsedValueImpl<Size, Size>(positions[n], null),
+                    new ParsedValueImpl[] {
+                            new ParsedValueImpl<Size,Size>(positions[n], null),
                             colors[n]
                     },
                     StopConverter.getInstance()
@@ -1400,17 +1488,17 @@ final public class CssParser {
         Term arg = null;
 
         // no <number>
-        if ((arg = root.firstArg) == null) error(root, "Expected \'<number>\'");
+        if ((arg = root.firstArg) == null)  error(root, "Expected \'<number>\'");
 
-        final ParsedValueImpl<?, Size> ptX = parseSize(arg);
+        final ParsedValueImpl<?,Size> ptX = parseSize(arg);
 
         final Term prev = arg;
 
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        final ParsedValueImpl<?, Size> ptY = parseSize(arg);
+        final ParsedValueImpl<?,Size> ptY = parseSize(arg);
 
-        return new ParsedValueImpl[]{ptX, ptY};
+        return new ParsedValueImpl[] { ptX, ptY };
     }
 
     private ParsedValueImpl parseFunction(final Term root) throws ParseException {
@@ -1447,7 +1535,7 @@ final public class CssParser {
         return null;
     }
 
-    private ParsedValueImpl<String, BlurType> blurType(final Term root) throws ParseException {
+    private ParsedValueImpl<String,BlurType> blurType(final Term root) throws ParseException {
 
         if (root == null) return null;
         if (root.token == null ||
@@ -1487,34 +1575,34 @@ final public class CssParser {
         Term arg;
 
         if ((arg = root.firstArg) == null) error(root, "Expected \'<blur-type>\'");
-        ParsedValueImpl<String, BlurType> blurVal = blurType(arg);
+        ParsedValueImpl<String,BlurType> blurVal = blurType(arg);
 
         Term prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<color>\'");
 
-        ParsedValueImpl<?, Color> colorVal = parseColor(arg);
+        ParsedValueImpl<?,Color> colorVal = parseColor(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> radiusVal = parseSize(arg);
+        ParsedValueImpl<?,Size> radiusVal = parseSize(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> chokeVal = parseSize(arg);
+        ParsedValueImpl<?,Size> chokeVal = parseSize(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> offsetXVal = parseSize(arg);
+        ParsedValueImpl<?,Size> offsetXVal = parseSize(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> offsetYVal = parseSize(arg);
+        ParsedValueImpl<?,Size> offsetYVal = parseSize(arg);
 
-        ParsedValueImpl[] values = new ParsedValueImpl[]{
+        ParsedValueImpl[] values = new ParsedValueImpl[] {
                 blurVal,
                 colorVal,
                 radiusVal,
@@ -1538,34 +1626,34 @@ final public class CssParser {
         Term arg;
 
         if ((arg = root.firstArg) == null) error(root, "Expected \'<blur-type>\'");
-        ParsedValueImpl<String, BlurType> blurVal = blurType(arg);
+        ParsedValueImpl<String,BlurType> blurVal = blurType(arg);
 
         Term prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<color>\'");
 
-        ParsedValueImpl<?, Color> colorVal = parseColor(arg);
+        ParsedValueImpl<?,Color> colorVal = parseColor(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> radiusVal = parseSize(arg);
+        ParsedValueImpl<?,Size> radiusVal = parseSize(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> spreadVal = parseSize(arg);
+        ParsedValueImpl<?,Size> spreadVal = parseSize(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> offsetXVal = parseSize(arg);
+        ParsedValueImpl<?,Size> offsetXVal = parseSize(arg);
 
         prev = arg;
         if ((arg = arg.nextArg) == null) error(prev, "Expected \'<number>\'");
 
-        ParsedValueImpl<?, Size> offsetYVal = parseSize(arg);
+        ParsedValueImpl<?,Size> offsetYVal = parseSize(arg);
 
-        ParsedValueImpl[] values = new ParsedValueImpl[]{
+        ParsedValueImpl[] values = new ParsedValueImpl[] {
                 blurVal,
                 colorVal,
                 radiusVal,
@@ -1597,7 +1685,7 @@ final public class CssParser {
     }
 
     // linear <point> TO <point> STOPS <stop>+ cycleMethod?
-    private ParsedValueImpl<ParsedValue[], Paint> linearGradient(final Term root) throws ParseException {
+    private ParsedValueImpl<ParsedValue[],Paint> linearGradient(final Term root) throws ParseException {
 
         final String fn = (root.token != null) ? root.token.getText() : null;
         if (fn == null || !"linear".equalsIgnoreCase(fn)) {
@@ -1613,7 +1701,7 @@ final public class CssParser {
 
         if ((term = term.nextInSeries) == null) error(root, "Expected \'(<number>, <number>)\'");
 
-        final ParsedValueImpl<?, Size>[] startPt = point(term);
+        final ParsedValueImpl<?,Size>[] startPt = point(term);
 
         Term prev = term;
         if ((term = term.nextInSeries) == null) error(prev, "Expected \'to\'");
@@ -1624,7 +1712,7 @@ final public class CssParser {
         prev = term;
         if ((term = term.nextInSeries) == null) error(prev, "Expected \'(<number>, <number>)\'");
 
-        final ParsedValueImpl<?, Size>[] endPt = point(term);
+        final ParsedValueImpl<?,Size>[] endPt = point(term);
 
         prev = term;
         if ((term = term.nextInSeries) == null) error(prev, "Expected \'stops\'");
@@ -1646,14 +1734,14 @@ final public class CssParser {
         ParsedValueImpl[] stops = new ParsedValueImpl[nStops];
         int stopIndex = 0;
         do {
-            ParsedValueImpl<ParsedValue[], Stop> stop = stop(term);
+            ParsedValueImpl<ParsedValue[],Stop> stop = stop(term);
             if (stop != null) stops[stopIndex++] = stop;
             prev = term;
-        } while (((term = term.nextInSeries) != null) &&
+        } while(((term = term.nextInSeries) != null) &&
                 (term.token.getType() == CssLexer.LPAREN));
 
         // term is either null or is a cycle method, or the start of another Paint.
-        ParsedValueImpl<String, CycleMethod> cycleMethod = cycleMethod(term);
+        ParsedValueImpl<String,CycleMethod> cycleMethod = cycleMethod(term);
 
         if (cycleMethod == null) {
 
@@ -1691,7 +1779,7 @@ final public class CssParser {
         values[index++] = (endPt != null) ? endPt[0] : null;
         values[index++] = (endPt != null) ? endPt[1] : null;
         values[index++] = cycleMethod;
-        for (int n = 0; n < stops.length; n++) values[index++] = stops[n];
+        for (int n=0; n<stops.length; n++) values[index++] = stops[n];
         return new ParsedValueImpl<>(values, PaintConverter.LinearGradientConverter.getInstance());
     }
 
@@ -1731,22 +1819,22 @@ final public class CssParser {
 
         Term prev = arg;
 //        ParsedValueImpl<Size,Size> angleVal = null;
-        ParsedValueImpl<?, Size>[] startPt = null;
-        ParsedValueImpl<?, Size>[] endPt = null;
+        ParsedValueImpl<?,Size>[] startPt = null;
+        ParsedValueImpl<?,Size>[] endPt = null;
 
         if ("from".equalsIgnoreCase(arg.token.getText())) {
 
             prev = arg;
             if ((arg = arg.nextInSeries) == null) error(prev, "Expected \'<point>\'");
 
-            ParsedValueImpl<?, Size> ptX = parseSize(arg);
+            ParsedValueImpl<?,Size> ptX = parseSize(arg);
 
             prev = arg;
             if ((arg = arg.nextInSeries) == null) error(prev, "Expected \'<point>\'");
 
-            ParsedValueImpl<?, Size> ptY = parseSize(arg);
+            ParsedValueImpl<?,Size> ptY = parseSize(arg);
 
-            startPt = new ParsedValueImpl[]{ptX, ptY};
+            startPt = new ParsedValueImpl[] { ptX, ptY };
 
             prev = arg;
             if ((arg = arg.nextInSeries) == null) error(prev, "Expected \'to\'");
@@ -1764,19 +1852,19 @@ final public class CssParser {
 
             ptY = parseSize(arg);
 
-            endPt = new ParsedValueImpl[]{ptX, ptY};
+            endPt = new ParsedValueImpl[] { ptX, ptY };
 
             prev = arg;
             arg = arg.nextArg;
 
-        } else if ("to".equalsIgnoreCase(arg.token.getText())) {
+        } else if("to".equalsIgnoreCase(arg.token.getText())) {
 
             prev = arg;
             if ((arg = arg.nextInSeries) == null ||
                     arg.token == null ||
                     arg.token.getType() != CssLexer.IDENT ||
                     arg.token.getText().isEmpty()) {
-                error(prev, "Expected \'<side-or-corner>\'");
+                error (prev, "Expected \'<side-or-corner>\'");
             }
 
 
@@ -1835,7 +1923,7 @@ final public class CssParser {
 
                         // if top or bottom has already been given,
                         // then either startY or endY will not be zero.
-                    } else if ("top".equals(sideOrCorner2) &&
+                    } else if("top".equals(sideOrCorner2) &&
                             startY == 0 && endY == 0) {
                         // start bottom, end top
                         startY = 100;
@@ -1851,19 +1939,19 @@ final public class CssParser {
                     }
 
                 } else {
-                    error(prev, "Expected \'<side-or-corner>\'");
+                    error (prev, "Expected \'<side-or-corner>\'");
                 }
             }
 
 
-            startPt = new ParsedValueImpl[]{
-                    new ParsedValueImpl<Size, Size>(new Size(startX, SizeUnits.PERCENT), null),
-                    new ParsedValueImpl<Size, Size>(new Size(startY, SizeUnits.PERCENT), null)
+            startPt = new ParsedValueImpl[] {
+                    new ParsedValueImpl<Size,Size>(new Size(startX, SizeUnits.PERCENT), null),
+                    new ParsedValueImpl<Size,Size>(new Size(startY, SizeUnits.PERCENT), null)
             };
 
-            endPt = new ParsedValueImpl[]{
-                    new ParsedValueImpl<Size, Size>(new Size(endX, SizeUnits.PERCENT), null),
-                    new ParsedValueImpl<Size, Size>(new Size(endY, SizeUnits.PERCENT), null)
+            endPt = new ParsedValueImpl[] {
+                    new ParsedValueImpl<Size,Size>(new Size(endX, SizeUnits.PERCENT), null),
+                    new ParsedValueImpl<Size,Size>(new Size(endY, SizeUnits.PERCENT), null)
             };
 
             prev = arg;
@@ -1872,14 +1960,14 @@ final public class CssParser {
 
         if (startPt == null && endPt == null) {
             // spec says defaults to bottom
-            startPt = new ParsedValueImpl[]{
-                    new ParsedValueImpl<Size, Size>(new Size(0, SizeUnits.PERCENT), null),
-                    new ParsedValueImpl<Size, Size>(new Size(0, SizeUnits.PERCENT), null)
+            startPt = new ParsedValueImpl[] {
+                    new ParsedValueImpl<Size,Size>(new Size(0, SizeUnits.PERCENT), null),
+                    new ParsedValueImpl<Size,Size>(new Size(0, SizeUnits.PERCENT), null)
             };
 
-            endPt = new ParsedValueImpl[]{
-                    new ParsedValueImpl<Size, Size>(new Size(0, SizeUnits.PERCENT), null),
-                    new ParsedValueImpl<Size, Size>(new Size(100, SizeUnits.PERCENT), null)
+            endPt = new ParsedValueImpl[] {
+                    new ParsedValueImpl<Size,Size>(new Size(0, SizeUnits.PERCENT), null),
+                    new ParsedValueImpl<Size,Size>(new Size(100, SizeUnits.PERCENT), null)
             };
         }
 
@@ -1900,13 +1988,13 @@ final public class CssParser {
             arg = arg.nextArg;
         }
 
-        if (arg == null ||
+        if (arg == null  ||
                 arg.token == null ||
                 arg.token.getText().isEmpty()) {
             error(prev, "Expected \'<color-stop>\'");
         }
 
-        ParsedValueImpl<ParsedValue[], Stop>[] stops = parseColorStops(arg);
+        ParsedValueImpl<ParsedValue[],Stop>[] stops = parseColorStops(arg);
 
         ParsedValueImpl[] values = new ParsedValueImpl[5 + stops.length];
         int index = 0;
@@ -1915,7 +2003,7 @@ final public class CssParser {
         values[index++] = (endPt != null) ? endPt[0] : null;
         values[index++] = (endPt != null) ? endPt[1] : null;
         values[index++] = new ParsedValueImpl<>(cycleMethod.name(), new EnumConverter<>(CycleMethod.class));
-        for (int n = 0; n < stops.length; n++) values[index++] = stops[n];
+        for (int n=0; n<stops.length; n++) values[index++] = stops[n];
         return new ParsedValueImpl<>(values, PaintConverter.LinearGradientConverter.getInstance());
 
     }
@@ -1938,13 +2026,11 @@ final public class CssParser {
         Term term = root;
         Term prev = root;
 
-        if ((term = term.nextInSeries) == null)
-            error(root, "Expected \'focus-angle <number>\', \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
-        if (term.token == null)
-            error(term, "Expected \'focus-angle <number>\', \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
+        if ((term = term.nextInSeries) == null) error(root, "Expected \'focus-angle <number>\', \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
+        if (term.token == null) error(term, "Expected \'focus-angle <number>\', \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
 
 
-        ParsedValueImpl<?, Size> focusAngle = null;
+        ParsedValueImpl<?,Size> focusAngle = null;
         if (term.token.getType() == CssLexer.IDENT) {
             final String keyword = term.token.getText().toLowerCase(Locale.ROOT);
             if ("focus-angle".equals(keyword)) {
@@ -1956,14 +2042,12 @@ final public class CssParser {
                 focusAngle = parseSize(term);
 
                 prev = term;
-                if ((term = term.nextInSeries) == null)
-                    error(prev, "Expected \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
-                if (term.token == null)
-                    error(term, "Expected \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
+                if ((term = term.nextInSeries) == null) error(prev, "Expected \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
+                if (term.token == null) error(term,  "Expected \'focus-distance <number>\', \'center (<number>,<number>)\' or \'<size>\'");
             }
         }
 
-        ParsedValueImpl<?, Size> focusDistance = null;
+        ParsedValueImpl<?,Size> focusDistance = null;
         if (term.token.getType() == CssLexer.IDENT) {
             final String keyword = term.token.getText().toLowerCase(Locale.ROOT);
             if ("focus-distance".equals(keyword)) {
@@ -1975,13 +2059,12 @@ final public class CssParser {
                 focusDistance = parseSize(term);
 
                 prev = term;
-                if ((term = term.nextInSeries) == null)
-                    error(prev, "Expected  \'center (<number>,<number>)\' or \'<size>\'");
-                if (term.token == null) error(term, "Expected  \'center (<number>,<number>)\' or \'<size>\'");
+                if ((term = term.nextInSeries) == null) error(prev, "Expected  \'center (<number>,<number>)\' or \'<size>\'");
+                if (term.token == null) error(term,  "Expected  \'center (<number>,<number>)\' or \'<size>\'");
             }
         }
 
-        ParsedValueImpl<?, Size>[] centerPoint = null;
+        ParsedValueImpl<?,Size>[] centerPoint = null;
         if (term.token.getType() == CssLexer.IDENT) {
             final String keyword = term.token.getText().toLowerCase(Locale.ROOT);
             if ("center".equals(keyword)) {
@@ -1995,11 +2078,11 @@ final public class CssParser {
 
                 prev = term;
                 if ((term = term.nextInSeries) == null) error(prev, "Expected \'<size>\'");
-                if (term.token == null) error(term, "Expected \'<size>\'");
+                if (term.token == null) error(term,  "Expected \'<size>\'");
             }
         }
 
-        ParsedValueImpl<?, Size> radius = parseSize(term);
+        ParsedValueImpl<?,Size> radius = parseSize(term);
 
         prev = term;
         if ((term = term.nextInSeries) == null) error(prev, "Expected \'stops\' keyword");
@@ -2022,14 +2105,14 @@ final public class CssParser {
         ParsedValueImpl[] stops = new ParsedValueImpl[nStops];
         int stopIndex = 0;
         do {
-            ParsedValueImpl<ParsedValue[], Stop> stop = stop(term);
+            ParsedValueImpl<ParsedValue[],Stop> stop = stop(term);
             if (stop != null) stops[stopIndex++] = stop;
             prev = term;
-        } while (((term = term.nextInSeries) != null) &&
+        } while(((term = term.nextInSeries) != null) &&
                 (term.token.getType() == CssLexer.LPAREN));
 
         // term is either null or is a cycle method, or the start of another Paint.
-        ParsedValueImpl<String, CycleMethod> cycleMethod = cycleMethod(term);
+        ParsedValueImpl<String,CycleMethod> cycleMethod = cycleMethod(term);
 
         if (cycleMethod == null) {
 
@@ -2068,7 +2151,7 @@ final public class CssParser {
         values[index++] = (centerPoint != null) ? centerPoint[1] : null;
         values[index++] = radius;
         values[index++] = cycleMethod;
-        for (int n = 0; n < stops.length; n++) values[index++] = stops[n];
+        for (int n=0; n<stops.length; n++) values[index++] = stops[n];
         return new ParsedValueImpl<>(values, PaintConverter.RadialGradientConverter.getInstance());
     }
 
@@ -2105,10 +2188,10 @@ final public class CssParser {
         }
 
         Term prev = arg;
-        ParsedValueImpl<?, Size> focusAngle = null;
-        ParsedValueImpl<?, Size> focusDistance = null;
-        ParsedValueImpl<?, Size>[] centerPoint = null;
-        ParsedValueImpl<?, Size> radius = null;
+        ParsedValueImpl<?,Size>focusAngle = null;
+        ParsedValueImpl<?,Size>focusDistance = null;
+        ParsedValueImpl<?,Size>[] centerPoint = null;
+        ParsedValueImpl<?,Size>radius = null;
 
         if ("focus-angle".equalsIgnoreCase(arg.token.getText())) {
 
@@ -2117,7 +2200,7 @@ final public class CssParser {
                     !isSize(arg.token)) error(prev, "Expected \'<angle>\'");
 
             Size angle = size(arg.token);
-            switch (angle.getUnits()) {
+            switch(angle.getUnits()) {
                 case DEG:
                 case RAD:
                 case GRAD:
@@ -2147,7 +2230,7 @@ final public class CssParser {
 
             // "The focus point is always specified relative to the center
             // point by an angle and a distance relative to the radius."
-            switch (distance.getUnits()) {
+            switch(distance.getUnits()) {
                 case PERCENT:
                     break;
                 default:
@@ -2167,14 +2250,14 @@ final public class CssParser {
             prev = arg;
             if ((arg = arg.nextInSeries) == null) error(prev, "Expected \'<point>\'");
 
-            ParsedValueImpl<?, Size> ptX = parseSize(arg);
+            ParsedValueImpl<?,Size> ptX = parseSize(arg);
 
             prev = arg;
             if ((arg = arg.nextInSeries) == null) error(prev, "Expected \'<point>\'");
 
-            ParsedValueImpl<?, Size> ptY = parseSize(arg);
+            ParsedValueImpl<?,Size> ptY = parseSize(arg);
 
-            centerPoint = new ParsedValueImpl[]{ptX, ptY};
+            centerPoint = new ParsedValueImpl[] { ptX, ptY };
 
             prev = arg;
             if ((arg = arg.nextArg) == null)
@@ -2205,13 +2288,13 @@ final public class CssParser {
             arg = arg.nextArg;
         }
 
-        if (arg == null ||
+        if (arg == null  ||
                 arg.token == null ||
                 arg.token.getText().isEmpty()) {
             error(prev, "Expected \'<color-stop>\'");
         }
 
-        ParsedValueImpl<ParsedValue[], Stop>[] stops = parseColorStops(arg);
+        ParsedValueImpl<ParsedValue[],Stop>[] stops = parseColorStops(arg);
 
         ParsedValueImpl[] values = new ParsedValueImpl[6 + stops.length];
         int index = 0;
@@ -2221,7 +2304,7 @@ final public class CssParser {
         values[index++] = (centerPoint != null) ? centerPoint[1] : null;
         values[index++] = radius;
         values[index++] = new ParsedValueImpl<>(cycleMethod.name(), new EnumConverter<>(CycleMethod.class));
-        for (int n = 0; n < stops.length; n++) values[index++] = stops[n];
+        for (int n=0; n<stops.length; n++) values[index++] = stops[n];
         return new ParsedValueImpl<>(values, PaintConverter.RadialGradientConverter.getInstance());
 
     }
@@ -2250,7 +2333,7 @@ final public class CssParser {
         Term prev = arg;
 
         final String uri = arg.token.getText();
-        ParsedValueImpl[] uriValues = new ParsedValueImpl[]{
+        ParsedValueImpl[] uriValues = new ParsedValueImpl[] {
                 new ParsedValueImpl<>(uri, StringConverter.getInstance()),
                 null // placeholder for Stylesheet URL
         };
@@ -2326,7 +2409,7 @@ final public class CssParser {
         }
 
         final String uri = arg.token.getText();
-        ParsedValueImpl[] uriValues = new ParsedValueImpl[]{
+        ParsedValueImpl[] uriValues = new ParsedValueImpl[] {
                 new ParsedValueImpl<>(uri, StringConverter.getInstance()),
                 null // placeholder for Stylesheet URL
         };
@@ -2338,13 +2421,13 @@ final public class CssParser {
 
     // parse a series of paint values separated by commas.
     // i.e., <paint> [, <paint>]*
-    private ParsedValueImpl<ParsedValue<?, Paint>[], Paint[]> parsePaintLayers(Term root)
+    private ParsedValueImpl<ParsedValue<?,Paint>[],Paint[]> parsePaintLayers(Term root)
             throws ParseException {
 
         // how many paints in the series?
         int nPaints = numberOfLayers(root);
 
-        ParsedValueImpl<?, Paint>[] paints = new ParsedValueImpl[nPaints];
+        ParsedValueImpl<?,Paint>[] paints = new ParsedValueImpl[nPaints];
 
         Term temp = root;
         int paint = 0;
@@ -2365,11 +2448,11 @@ final public class CssParser {
 
     // An size or a series of four size values
     // <size> | <size> <size> <size> <size>
-    private ParsedValueImpl<?, Size>[] parseSize1to4(final Term root)
+    private ParsedValueImpl<?,Size>[] parseSize1to4(final Term root)
             throws ParseException {
 
         Term temp = root;
-        ParsedValueImpl<?, Size>[] sides = new ParsedValueImpl[4];
+        ParsedValueImpl<?,Size>[] sides = new ParsedValueImpl[4];
         int side = 0;
 
         while (side < 4 && temp != null) {
@@ -2386,19 +2469,19 @@ final public class CssParser {
 
     // A series of inset or sets of four inset values
     // <size> | <size> <size> <size> <size> [ , [ <size> | <size> <size> <size> <size>] ]*
-    private ParsedValueImpl<ParsedValue<ParsedValue[], Insets>[], Insets[]> parseInsetsLayers(Term root)
+    private ParsedValueImpl<ParsedValue<ParsedValue[],Insets>[], Insets[]> parseInsetsLayers(Term root)
             throws ParseException {
 
         int nLayers = numberOfLayers(root);
 
         Term temp = root;
         int layer = 0;
-        ParsedValueImpl<ParsedValue[], Insets>[] layers = new ParsedValueImpl[nLayers];
+        ParsedValueImpl<ParsedValue[],Insets>[] layers = new ParsedValueImpl[nLayers];
 
-        while (temp != null) {
-            ParsedValueImpl<?, Size>[] sides = parseSize1to4(temp);
+        while(temp != null) {
+            ParsedValueImpl<?,Size>[] sides = parseSize1to4(temp);
             layers[layer++] = new ParsedValueImpl<>(sides, InsetsConverter.getInstance());
-            while (temp.nextInSeries != null) {
+            while(temp.nextInSeries != null) {
                 temp = temp.nextInSeries;
             }
             temp = nextLayer(temp);
@@ -2409,16 +2492,16 @@ final public class CssParser {
 
     // A single inset (1, 2, 3, or 4 digits)
     // <size> | <size> <size> <size> <size>
-    private ParsedValueImpl<ParsedValue[], Insets> parseInsetsLayer(Term root)
+    private ParsedValueImpl<ParsedValue[],Insets> parseInsetsLayer(Term root)
             throws ParseException {
 
         Term temp = root;
-        ParsedValueImpl<ParsedValue[], Insets> layer = null;
+        ParsedValueImpl<ParsedValue[],Insets> layer = null;
 
-        while (temp != null) {
-            ParsedValueImpl<?, Size>[] sides = parseSize1to4(temp);
+        while(temp != null) {
+            ParsedValueImpl<?,Size>[] sides = parseSize1to4(temp);
             layer = new ParsedValueImpl<>(sides, InsetsConverter.getInstance());
-            while (temp.nextInSeries != null) {
+            while(temp.nextInSeries != null) {
                 temp = temp.nextInSeries;
             }
             temp = nextLayer(temp);
@@ -2427,19 +2510,19 @@ final public class CssParser {
     }
 
     // <size> | <size> <size> <size> <size>
-    private ParsedValueImpl<ParsedValue<ParsedValue[], Margins>[], Margins[]> parseMarginsLayers(Term root)
+    private ParsedValueImpl<ParsedValue<ParsedValue[],Margins>[], Margins[]> parseMarginsLayers(Term root)
             throws ParseException {
 
         int nLayers = numberOfLayers(root);
 
         Term temp = root;
         int layer = 0;
-        ParsedValueImpl<ParsedValue[], Margins>[] layers = new ParsedValueImpl[nLayers];
+        ParsedValueImpl<ParsedValue[],Margins>[] layers = new ParsedValueImpl[nLayers];
 
-        while (temp != null) {
-            ParsedValueImpl<?, Size>[] sides = parseSize1to4(temp);
+        while(temp != null) {
+            ParsedValueImpl<?,Size>[] sides = parseSize1to4(temp);
             layers[layer++] = new ParsedValueImpl<>(sides, Margins.Converter.getInstance());
-            while (temp.nextInSeries != null) {
+            while(temp.nextInSeries != null) {
                 temp = temp.nextInSeries;
             }
             temp = nextLayer(temp);
@@ -2454,10 +2537,10 @@ final public class CssParser {
 
         if (root.token == null) error(root, "Parse error");
 
-        List<ParsedValueImpl<Size, Size>> sizes = new ArrayList<>();
+        List<ParsedValueImpl<Size,Size>> sizes = new ArrayList<>();
 
         Term term = root;
-        while (term != null) {
+        while(term != null) {
             Token token = term.token;
             final int ttype = token.getType();
             switch (ttype) {
@@ -2479,7 +2562,7 @@ final public class CssParser {
                     sizes.add(sizeValue);
                     break;
                 default:
-                    error(root, "expected series of <size>");
+                    error (root, "expected series of <size>");
             }
             term = term.nextInSeries;
         }
@@ -2489,7 +2572,7 @@ final public class CssParser {
 
     // http://www.w3.org/TR/css3-background/#the-border-radius
     // <size>{1,4} [ '/' <size>{1,4}]? [',' <size>{1,4} [ '/' <size>{1,4}]?]?
-    private ParsedValueImpl<ParsedValue<ParsedValue<?, Size>[][], CornerRadii>[], CornerRadii[]> parseCornerRadius(Term root)
+    private ParsedValueImpl<ParsedValue<ParsedValue<?,Size>[][],CornerRadii>[], CornerRadii[]> parseCornerRadius(Term root)
             throws ParseException {
 
 
@@ -2497,9 +2580,9 @@ final public class CssParser {
 
         Term term = root;
         int layer = 0;
-        ParsedValueImpl<ParsedValue<?, Size>[][], CornerRadii>[] layers = new ParsedValueImpl[nLayers];
+        ParsedValueImpl<ParsedValue<?,Size>[][],CornerRadii>[] layers = new ParsedValueImpl[nLayers];
 
-        while (term != null) {
+        while(term != null) {
 
             int nHorizontalTerms = 0;
             Term temp = term;
@@ -2530,13 +2613,10 @@ final public class CssParser {
             int orientation = 0;
 
             // at most, there should be four radii in the horizontal orientation and four in the vertical.
-            ParsedValueImpl<?, Size>[][] radii = new ParsedValueImpl[2][4];
+            ParsedValueImpl<?,Size>[][] radii = new ParsedValueImpl[2][4];
 
-            ParsedValueImpl<?, Size> zero = new ParsedValueImpl<>(new Size(0, SizeUnits.PX), null);
-            for (int r = 0; r < 4; r++) {
-                radii[0][r] = zero;
-                radii[1][r] = zero;
-            }
+            ParsedValueImpl<?,Size> zero = new ParsedValueImpl<>(new Size(0,SizeUnits.PX), null);
+            for (int r=0; r<4; r++) { radii[0][r] = zero; radii[1][r] = zero; }
 
             int hr = 0;
             int vr = 0;
@@ -2546,8 +2626,8 @@ final public class CssParser {
 
                 if (term.token.getType() == CssLexer.SOLIDUS) {
                     orientation += 1;
-                } else {
-                    ParsedValueImpl<?, Size> parsedValue = parseSize(term);
+                } else  {
+                    ParsedValueImpl<?,Size> parsedValue = parseSize(term);
                     if (orientation == 0) {
                         radii[orientation][hr++] = parsedValue;
                     } else {
@@ -2575,7 +2655,7 @@ final public class CssParser {
                 if (hr < 3) radii[0][2] = radii[0][0]; // bottom-right = top-left
                 if (hr < 4) radii[0][3] = radii[0][1]; // bottom-left = top-right
             } else {
-                assert (false);
+                assert(false);
             }
 
             // if vr == 0, then there were no vertical radii
@@ -2592,18 +2672,10 @@ final public class CssParser {
             }
 
             // if either is zero, both are zero
-            if (zero.equals(radii[0][0]) || zero.equals(radii[1][0])) {
-                radii[1][0] = radii[0][0] = zero;
-            }
-            if (zero.equals(radii[0][1]) || zero.equals(radii[1][1])) {
-                radii[1][1] = radii[0][1] = zero;
-            }
-            if (zero.equals(radii[0][2]) || zero.equals(radii[1][2])) {
-                radii[1][2] = radii[0][2] = zero;
-            }
-            if (zero.equals(radii[0][3]) || zero.equals(radii[1][3])) {
-                radii[1][3] = radii[0][3] = zero;
-            }
+            if (zero.equals(radii[0][0]) || zero.equals(radii[1][0])) { radii[1][0] = radii[0][0] = zero; }
+            if (zero.equals(radii[0][1]) || zero.equals(radii[1][1])) { radii[1][1] = radii[0][1] = zero; }
+            if (zero.equals(radii[0][2]) || zero.equals(radii[1][2])) { radii[1][2] = radii[0][2] = zero; }
+            if (zero.equals(radii[0][3]) || zero.equals(radii[1][3])) { radii[1][3] = radii[0][3] = zero; }
 
             layers[layer++] = new ParsedValueImpl<>(radii, null);
 
@@ -2613,13 +2685,13 @@ final public class CssParser {
     }
 
     /* Constant for background position */
-    private final static ParsedValueImpl<Size, Size> ZERO_PERCENT =
+    private final static ParsedValueImpl<Size,Size> ZERO_PERCENT =
             new ParsedValueImpl<>(new Size(0f, SizeUnits.PERCENT), null);
     /* Constant for background position */
-    private final static ParsedValueImpl<Size, Size> FIFTY_PERCENT =
+    private final static ParsedValueImpl<Size,Size> FIFTY_PERCENT =
             new ParsedValueImpl<>(new Size(50f, SizeUnits.PERCENT), null);
     /* Constant for background position */
-    private final static ParsedValueImpl<Size, Size> ONE_HUNDRED_PERCENT =
+    private final static ParsedValueImpl<Size,Size> ONE_HUNDRED_PERCENT =
             new ParsedValueImpl<>(new Size(100f, SizeUnits.PERCENT), null);
 
     private static boolean isPositionKeyWord(String value) {
@@ -2651,10 +2723,10 @@ final public class CssParser {
                 term.token.getText() == null ||
                 term.token.getText().isEmpty()) error(term, "Expected \'<bg-position>\'");
 
-        Term termOne = term;
+        Term  termOne = term;
         Token valueOne = term.token;
 
-        Term termTwo = termOne.nextInSeries;
+        Term  termTwo = termOne.nextInSeries;
         Token valueTwo = (termTwo != null) ? termTwo.token : null;
 
         Term termThree = (termTwo != null) ? termTwo.nextInSeries : null;
@@ -2664,12 +2736,12 @@ final public class CssParser {
         Token valueFour = (termFour != null) ? termFour.token : null;
 
         // are the horizontal and vertical exchanged
-        if (valueOne != null && valueTwo != null && valueThree == null && valueFour == null) {
+        if( valueOne != null && valueTwo != null && valueThree == null && valueFour == null ) {
             // 2 values filled
             String v1 = valueOne.getText();
             String v2 = valueTwo.getText();
-            if (("top".equals(v1) || "bottom".equals(v1))
-                    && ("left".equals(v2) || "right".equals(v2) || "center".equals(v2))) {
+            if( ("top".equals(v1) || "bottom".equals(v1))
+                    && ("left".equals(v2) || "right".equals(v2) || "center".equals(v2)) ) {
                 {
                     Token tmp = valueTwo;
                     valueTwo = valueOne;
@@ -2682,32 +2754,32 @@ final public class CssParser {
                     termOne = tmp;
                 }
             }
-        } else if (valueOne != null && valueTwo != null && valueThree != null) {
+        } else if( valueOne != null && valueTwo != null && valueThree != null ) {
             Term[] termArray = null;
             Token[] tokeArray = null;
             // 4 values filled
-            if (valueFour != null) {
-                if (("top".equals(valueOne.getText()) || "bottom".equals(valueOne.getText()))
-                        && ("left".equals(valueThree.getText()) || "right".equals(valueThree.getText()))) {
+            if( valueFour != null ) {
+                if( ("top".equals(valueOne.getText()) || "bottom".equals(valueOne.getText()))
+                        && ("left".equals(valueThree.getText()) || "right".equals(valueThree.getText())) ) {
                     // e.g. top 50 left 20
-                    termArray = new Term[]{termThree, termFour, termOne, termTwo};
-                    tokeArray = new Token[]{valueThree, valueFour, valueOne, valueTwo};
+                    termArray = new Term[] { termThree, termFour, termOne, termTwo };
+                    tokeArray = new Token[] { valueThree, valueFour, valueOne, valueTwo };
                 }
             } else {
-                if (("top".equals(valueOne.getText()) || "bottom".equals(valueOne.getText()))) {
-                    if (("left".equals(valueTwo.getText()) || "right".equals(valueTwo.getText()))) {
+                if( ("top".equals(valueOne.getText()) || "bottom".equals(valueOne.getText())) ) {
+                    if( ("left".equals(valueTwo.getText()) || "right".equals(valueTwo.getText())) ) {
                         // e.g. top left 50
-                        termArray = new Term[]{termTwo, termThree, termOne, null};
-                        tokeArray = new Token[]{valueTwo, valueThree, valueOne, null};
+                        termArray = new Term[] { termTwo, termThree, termOne, null };
+                        tokeArray = new Token[] { valueTwo, valueThree, valueOne, null };
                     } else {
                         // e.g. top 50 left
-                        termArray = new Term[]{termThree, termOne, termTwo, null};
-                        tokeArray = new Token[]{valueThree, valueOne, valueTwo, null};
+                        termArray = new Term[] { termThree, termOne, termTwo, null };
+                        tokeArray = new Token[] { valueThree, valueOne, valueTwo, null };
                     }
                 }
             }
 
-            if (termArray != null) {
+            if( termArray != null ) {
                 termOne = termArray[0];
                 termTwo = termArray[1];
                 termThree = termArray[2];
@@ -2721,44 +2793,44 @@ final public class CssParser {
         }
 
 
-        ParsedValueImpl<?, Size> top, right, bottom, left;
+        ParsedValueImpl<?,Size> top, right, bottom, left;
         top = right = bottom = left = ZERO_PERCENT;
         {
-            if (valueOne == null && valueTwo == null && valueThree == null && valueFour == null) {
+            if(valueOne == null && valueTwo == null && valueThree == null && valueFour == null) {
                 error(term, "No value found for background-position");
-            } else if (valueOne != null && valueTwo == null && valueThree == null && valueFour == null) {
+            } else if( valueOne != null && valueTwo == null && valueThree == null && valueFour == null ) {
                 // Only one value
                 String v1 = valueOne.getText();
 
-                if ("center".equals(v1)) {
+                if( "center".equals(v1) ) {
                     left = FIFTY_PERCENT;
                     right = ZERO_PERCENT;
 
                     top = FIFTY_PERCENT;
                     bottom = ZERO_PERCENT;
 
-                } else if ("left".equals(v1)) {
+                } else if("left".equals(v1)) {
                     left = ZERO_PERCENT;
                     right = ZERO_PERCENT;
 
                     top = FIFTY_PERCENT;
                     bottom = ZERO_PERCENT;
 
-                } else if ("right".equals(v1)) {
+                } else if( "right".equals(v1) ) {
                     left = ONE_HUNDRED_PERCENT;
                     right = ZERO_PERCENT;
 
                     top = FIFTY_PERCENT;
                     bottom = ZERO_PERCENT;
 
-                } else if ("top".equals(v1)) {
+                } else if( "top".equals(v1) ) {
                     left = FIFTY_PERCENT;
                     right = ZERO_PERCENT;
 
                     top = ZERO_PERCENT;
                     bottom = ZERO_PERCENT;
 
-                } else if ("bottom".equals(v1)) {
+                } else if( "bottom".equals(v1) ) {
                     left = FIFTY_PERCENT;
                     right = ZERO_PERCENT;
 
@@ -2770,42 +2842,42 @@ final public class CssParser {
                     top = FIFTY_PERCENT;
                     bottom = ZERO_PERCENT;
                 }
-            } else if (valueOne != null && valueTwo != null && valueThree == null && valueFour == null) {
+            } else if( valueOne != null && valueTwo != null && valueThree == null && valueFour == null ) {
                 // 2 values
                 String v1 = valueOne.getText().toLowerCase(Locale.ROOT);
                 String v2 = valueTwo.getText().toLowerCase(Locale.ROOT);
 
-                if (!isPositionKeyWord(v1)) {
+                if( ! isPositionKeyWord(v1) ) {
                     left = parseSize(termOne);
                     right = ZERO_PERCENT;
 
-                    if ("top".equals(v2)) {
+                    if( "top".equals(v2) ) {
                         top = ZERO_PERCENT;
                         bottom = ZERO_PERCENT;
-                    } else if ("bottom".equals(v2)) {
+                    } else if( "bottom".equals(v2) ) {
                         top = ONE_HUNDRED_PERCENT;
                         bottom = ZERO_PERCENT;
-                    } else if ("center".equals(v2)) {
+                    } else if( "center".equals(v2) ) {
                         top = FIFTY_PERCENT;
                         bottom = ZERO_PERCENT;
-                    } else if (!isPositionKeyWord(v2)) {
+                    } else if( !isPositionKeyWord(v2) ) {
                         top = parseSize(termTwo);
                         bottom = ZERO_PERCENT;
                     } else {
-                        error(termTwo, "Expected 'top', 'bottom', 'center' or <size>");
+                        error(termTwo,"Expected 'top', 'bottom', 'center' or <size>");
                     }
-                } else if (v1.equals("left") || v1.equals("right")) {
+                } else if( v1.equals("left") || v1.equals("right") ) {
                     left = v1.equals("right") ? ONE_HUNDRED_PERCENT : ZERO_PERCENT;
                     right = ZERO_PERCENT;
 
-                    if (!isPositionKeyWord(v2)) {
+                    if( ! isPositionKeyWord(v2) ) {
                         top = parseSize(termTwo);
                         bottom = ZERO_PERCENT;
-                    } else if (v2.equals("top") || v2.equals("bottom") || v2.equals("center")) {
-                        if (v2.equals("top")) {
+                    } else if( v2.equals("top") || v2.equals("bottom") || v2.equals("center") ) {
+                        if( v2.equals("top") ) {
                             top = ZERO_PERCENT;
                             bottom = ZERO_PERCENT;
-                        } else if (v2.equals("center")) {
+                        } else if(v2.equals("center")) {
                             top = FIFTY_PERCENT;
                             bottom = ZERO_PERCENT;
                         } else {
@@ -2813,61 +2885,61 @@ final public class CssParser {
                             bottom = ZERO_PERCENT;
                         }
                     } else {
-                        error(termTwo, "Expected 'top', 'bottom', 'center' or <size>");
+                        error(termTwo,"Expected 'top', 'bottom', 'center' or <size>");
                     }
-                } else if (v1.equals("center")) {
+                } else if( v1.equals("center") ) {
                     left = FIFTY_PERCENT;
                     right = ZERO_PERCENT;
 
-                    if (v2.equals("top")) {
+                    if( v2.equals("top") ) {
                         top = ZERO_PERCENT;
                         bottom = ZERO_PERCENT;
-                    } else if (v2.equals("bottom")) {
+                    } else if( v2.equals("bottom") ) {
                         top = ONE_HUNDRED_PERCENT;
                         bottom = ZERO_PERCENT;
-                    } else if (v2.equals("center")) {
+                    } else if( v2.equals("center") ) {
                         top = FIFTY_PERCENT;
                         bottom = ZERO_PERCENT;
-                    } else if (!isPositionKeyWord(v2)) {
+                    } else if( ! isPositionKeyWord(v2) ) {
                         top = parseSize(termTwo);
                         bottom = ZERO_PERCENT;
                     } else {
-                        error(termTwo, "Expected 'top', 'bottom', 'center' or <size>");
+                        error(termTwo,"Expected 'top', 'bottom', 'center' or <size>");
                     }
                 }
-            } else if (valueOne != null && valueTwo != null && valueThree != null && valueFour == null) {
+            } else if( valueOne != null && valueTwo != null && valueThree != null && valueFour == null ) {
                 String v1 = valueOne.getText().toLowerCase(Locale.ROOT);
                 String v2 = valueTwo.getText().toLowerCase(Locale.ROOT);
                 String v3 = valueThree.getText().toLowerCase(Locale.ROOT);
 
-                if (!isPositionKeyWord(v1) || "center".equals(v1)) {
+                if( ! isPositionKeyWord(v1) || "center".equals(v1) ) {
                     // 1 is horizontal
                     // means 2 & 3 are vertical
-                    if ("center".equals(v1)) {
+                    if( "center".equals(v1) ) {
                         left = FIFTY_PERCENT;
                     } else {
                         left = parseSize(termOne);
                     }
                     right = ZERO_PERCENT;
 
-                    if (!isPositionKeyWord(v3)) {
-                        if ("top".equals(v2)) {
+                    if( !isPositionKeyWord(v3) ) {
+                        if( "top".equals(v2) ) {
                             top = parseSize(termThree);
                             bottom = ZERO_PERCENT;
-                        } else if ("bottom".equals(v2)) {
+                        } else if( "bottom".equals(v2) ) {
                             top = ZERO_PERCENT;
                             bottom = parseSize(termThree);
                         } else {
-                            error(termTwo, "Expected 'top' or 'bottom'");
+                            error(termTwo,"Expected 'top' or 'bottom'");
                         }
                     } else {
-                        error(termThree, "Expected <size>");
+                        error(termThree,"Expected <size>");
                     }
-                } else if ("left".equals(v1) || "right".equals(v1)) {
-                    if (!isPositionKeyWord(v2)) {
+                } else if( "left".equals(v1) || "right".equals(v1)  ) {
+                    if( ! isPositionKeyWord(v2) ) {
                         // 1 & 2 are horizontal
                         // 3 is vertical
-                        if ("left".equals(v1)) {
+                        if( "left".equals(v1) ) {
                             left = parseSize(termTwo);
                             right = ZERO_PERCENT;
                         } else {
@@ -2875,22 +2947,22 @@ final public class CssParser {
                             right = parseSize(termTwo);
                         }
 
-                        if ("top".equals(v3)) {
+                        if( "top".equals(v3) ) {
                             top = ZERO_PERCENT;
                             bottom = ZERO_PERCENT;
-                        } else if ("bottom".equals(v3)) {
+                        } else if( "bottom".equals(v3) ) {
                             top = ONE_HUNDRED_PERCENT;
                             bottom = ZERO_PERCENT;
-                        } else if ("center".equals(v3)) {
+                        } else if( "center".equals(v3) ) {
                             top = FIFTY_PERCENT;
                             bottom = ZERO_PERCENT;
                         } else {
-                            error(termThree, "Expected 'top', 'bottom' or 'center'");
+                            error(termThree,"Expected 'top', 'bottom' or 'center'");
                         }
                     } else {
                         // 1 is horizontal
                         // 2 & 3 are vertical
-                        if ("left".equals(v1)) {
+                        if( "left".equals(v1) ) {
                             left = ZERO_PERCENT;
                             right = ZERO_PERCENT;
                         } else {
@@ -2898,18 +2970,18 @@ final public class CssParser {
                             right = ZERO_PERCENT;
                         }
 
-                        if (!isPositionKeyWord(v3)) {
-                            if ("top".equals(v2)) {
+                        if( ! isPositionKeyWord(v3) ) {
+                            if( "top".equals(v2) ) {
                                 top = parseSize(termThree);
                                 bottom = ZERO_PERCENT;
-                            } else if ("bottom".equals(v2)) {
+                            } else if( "bottom".equals(v2) ) {
                                 top = ZERO_PERCENT;
                                 bottom = parseSize(termThree);
                             } else {
-                                error(termTwo, "Expected 'top' or 'bottom'");
+                                error(termTwo,"Expected 'top' or 'bottom'");
                             }
                         } else {
-                            error(termThree, "Expected <size>");
+                            error(termThree,"Expected <size>");
                         }
                     }
                 }
@@ -2919,8 +2991,8 @@ final public class CssParser {
                 String v3 = valueThree.getText().toLowerCase(Locale.ROOT);
                 String v4 = valueFour.getText().toLowerCase(Locale.ROOT);
 
-                if ((v1.equals("left") || v1.equals("right")) && (v3.equals("top") || v3.equals("bottom")) && !isPositionKeyWord(v2) && !isPositionKeyWord(v4)) {
-                    if (v1.equals("left")) {
+                if( (v1.equals("left") || v1.equals("right")) && (v3.equals("top") || v3.equals("bottom") ) && ! isPositionKeyWord(v2) && ! isPositionKeyWord(v4) ) {
+                    if( v1.equals("left") ) {
                         left = parseSize(termTwo);
                         right = ZERO_PERCENT;
                     } else {
@@ -2928,7 +3000,7 @@ final public class CssParser {
                         right = parseSize(termTwo);
                     }
 
-                    if (v3.equals("top")) {
+                    if( v3.equals("top") ) {
                         top = parseSize(termFour);
                         bottom = ZERO_PERCENT;
                     } else {
@@ -2937,12 +3009,12 @@ final public class CssParser {
                     }
 
                 } else {
-                    error(term, "Expected 'left' or 'right' followed by <size> followed by 'top' or 'bottom' followed by <size>");
+                    error(term,"Expected 'left' or 'right' followed by <size> followed by 'top' or 'bottom' followed by <size>");
                 }
             }
         }
 
-        ParsedValueImpl<?, Size>[] values = new ParsedValueImpl[]{top, right, bottom, left};
+        ParsedValueImpl<?,Size>[] values = new ParsedValueImpl[] {top, right, bottom, left};
         return new ParsedValueImpl<>(values, BackgroundPositionConverter.getInstance());
     }
 
@@ -3029,13 +3101,13 @@ final public class CssParser {
             }
         }
 
-        return new ParsedValueImpl[]{
+        return new ParsedValueImpl[] {
                 new ParsedValueImpl<>(xAxis.name(), new EnumConverter<>(BackgroundRepeat.class)),
                 new ParsedValueImpl<>(yAxis.name(), new EnumConverter<>(BackgroundRepeat.class))
         };
     }
 
-    private ParsedValueImpl<ParsedValue<String, BackgroundRepeat>[][], RepeatStruct[]>
+    private ParsedValueImpl<ParsedValue<String, BackgroundRepeat>[][],RepeatStruct[]>
     parseBorderImageRepeatStyleLayers(final Term root) throws ParseException {
 
         int nLayers = numberOfLayers(root);
@@ -3071,7 +3143,7 @@ final public class CssParser {
     private ParsedValueImpl<ParsedValue[], BackgroundSize> parseBackgroundSize(final Term root)
             throws ParseException {
 
-        ParsedValueImpl<?, Size> height = null, width = null;
+        ParsedValueImpl<?,Size> height = null, width = null;
         boolean cover = false, contain = false;
 
         Term term = root;
@@ -3126,7 +3198,7 @@ final public class CssParser {
 
         }
 
-        ParsedValueImpl[] values = new ParsedValueImpl[]{
+        ParsedValueImpl[] values = new ParsedValueImpl[] {
                 width,
                 height,
                 // TODO: handling of booleans is really bogus
@@ -3136,7 +3208,7 @@ final public class CssParser {
         return new ParsedValueImpl<>(values, BackgroundSizeConverter.getInstance());
     }
 
-    private ParsedValueImpl<ParsedValue<ParsedValue[], BackgroundSize>[], BackgroundSize[]>
+    private ParsedValueImpl<ParsedValue<ParsedValue[], BackgroundSize>[],  BackgroundSize[]>
     parseBackgroundSizeLayers(final Term root) throws ParseException {
 
         int nLayers = numberOfLayers(root);
@@ -3150,14 +3222,14 @@ final public class CssParser {
         return new ParsedValueImpl<>(layers, LayeredBackgroundSizeConverter.getInstance());
     }
 
-    private ParsedValueImpl<ParsedValue<?, Paint>[], Paint[]> parseBorderPaint(final Term root)
+    private ParsedValueImpl<ParsedValue<?,Paint>[], Paint[]> parseBorderPaint(final Term root)
             throws ParseException {
 
         Term term = root;
-        ParsedValueImpl<?, Paint>[] paints = new ParsedValueImpl[4];
+        ParsedValueImpl<?,Paint>[] paints = new ParsedValueImpl[4];
         int paint = 0;
 
-        while (term != null) {
+        while(term != null) {
             if (term.token == null || paints.length <= paint) error(term, "Expected \'<paint>\'");
             paints[paint++] = parse(term);
             term = term.nextInSeries;
@@ -3170,11 +3242,11 @@ final public class CssParser {
         return new ParsedValueImpl<>(paints, StrokeBorderPaintConverter.getInstance());
     }
 
-    private ParsedValueImpl<ParsedValue<ParsedValue<?, Paint>[], Paint[]>[], Paint[][]> parseBorderPaintLayers(final Term root)
+    private ParsedValueImpl<ParsedValue<ParsedValue<?,Paint>[],Paint[]>[], Paint[][]> parseBorderPaintLayers(final Term root)
             throws ParseException {
 
         int nLayers = numberOfLayers(root);
-        ParsedValueImpl<ParsedValue<?, Paint>[], Paint[]>[] layers = new ParsedValueImpl[nLayers];
+        ParsedValueImpl<ParsedValue<?,Paint>[],Paint[]>[] layers = new ParsedValueImpl[nLayers];
         int layer = 0;
         Term term = root;
         while (term != null) {
@@ -3185,11 +3257,11 @@ final public class CssParser {
     }
 
     // borderStyle (borderStyle (borderStyle borderStyle?)?)?
-    private ParsedValueImpl<ParsedValue<ParsedValue[], BorderStrokeStyle>[], BorderStrokeStyle[]> parseBorderStyleSeries(final Term root)
+    private ParsedValueImpl<ParsedValue<ParsedValue[],BorderStrokeStyle>[],BorderStrokeStyle[]> parseBorderStyleSeries(final Term root)
             throws ParseException {
 
         Term term = root;
-        ParsedValueImpl<ParsedValue[], BorderStrokeStyle>[] borders = new ParsedValueImpl[4];
+        ParsedValueImpl<ParsedValue[],BorderStrokeStyle>[] borders = new ParsedValueImpl[4];
         int border = 0;
         while (term != null) {
             borders[border++] = parseBorderStyle(term);
@@ -3204,11 +3276,11 @@ final public class CssParser {
     }
 
 
-    private ParsedValueImpl<ParsedValue<ParsedValue<ParsedValue[], BorderStrokeStyle>[], BorderStrokeStyle[]>[], BorderStrokeStyle[][]>
+    private ParsedValueImpl<ParsedValue<ParsedValue<ParsedValue[],BorderStrokeStyle>[],BorderStrokeStyle[]>[], BorderStrokeStyle[][]>
     parseBorderStyleLayers(final Term root) throws ParseException {
 
         int nLayers = numberOfLayers(root);
-        ParsedValueImpl<ParsedValue<ParsedValue[], BorderStrokeStyle>[], BorderStrokeStyle[]>[] layers = new ParsedValueImpl[nLayers];
+        ParsedValueImpl<ParsedValue<ParsedValue[],BorderStrokeStyle>[],BorderStrokeStyle[]>[] layers = new ParsedValueImpl[nLayers];
         int layer = 0;
         Term term = root;
         while (term != null) {
@@ -3236,16 +3308,16 @@ final public class CssParser {
     //      <dash-style> [centered | inside | outside]? [line-join [miter <number> | bevel | round]]? [line-cap [square | butt | round]]?
     // where <dash-style> =
     //      [ none | solid | dotted | dashed ]
-    private ParsedValueImpl<ParsedValue[], BorderStrokeStyle> parseBorderStyle(final Term root)
+    private ParsedValueImpl<ParsedValue[],BorderStrokeStyle> parseBorderStyle(final Term root)
             throws ParseException {
 
 
-        ParsedValue<ParsedValue[], Number[]> dashStyle = null;
-        ParsedValue<ParsedValue<?, Size>, Number> dashPhase = null;
-        ParsedValue<String, StrokeType> strokeType = null;
-        ParsedValue<String, StrokeLineJoin> strokeLineJoin = null;
-        ParsedValue<ParsedValue<?, Size>, Number> strokeMiterLimit = null;
-        ParsedValue<String, StrokeLineCap> strokeLineCap = null;
+        ParsedValue<ParsedValue[],Number[]> dashStyle = null;
+        ParsedValue<ParsedValue<?,Size>,Number> dashPhase = null;
+        ParsedValue<String,StrokeType> strokeType = null;
+        ParsedValue<String,StrokeLineJoin> strokeLineJoin = null;
+        ParsedValue<ParsedValue<?,Size>,Number> strokeMiterLimit = null;
+        ParsedValue<String,StrokeLineCap> strokeLineCap = null;
 
         Term term = root;
 
@@ -3263,8 +3335,8 @@ final public class CssParser {
                     term.token == null ||
                     !isSize(term.token)) error(term, "Expected \'<size>\'");
 
-            ParsedValueImpl<?, Size> sizeVal = parseSize(term);
-            dashPhase = new ParsedValueImpl<>(sizeVal, SizeConverter.getInstance());
+            ParsedValueImpl<?,Size> sizeVal = parseSize(term);
+            dashPhase = new ParsedValueImpl<>(sizeVal,SizeConverter.getInstance());
 
             prev = term;
             term = term.nextInSeries;
@@ -3337,13 +3409,13 @@ final public class CssParser {
     //
     // segments(<size> [, <size>]+) | <border-style>
     //
-    private ParsedValue<ParsedValue[], Number[]> dashStyle(final Term root) throws ParseException {
+    private ParsedValue<ParsedValue[],Number[]> dashStyle(final Term root) throws ParseException {
 
         if (root.token == null) error(root, "Expected \'<dash-style>\'");
 
         final int ttype = root.token.getType();
 
-        ParsedValue<ParsedValue[], Number[]> segments = null;
+        ParsedValue<ParsedValue[],Number[]>  segments = null;
         if (ttype == CssLexer.IDENT) {
             segments = borderStyle(root);
         } else if (ttype == CssLexer.FUNCTION) {
@@ -3358,7 +3430,7 @@ final public class CssParser {
     /*
     <border-style> = none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset
     */
-    private ParsedValue<ParsedValue[], Number[]> borderStyle(Term root)
+    private ParsedValue<ParsedValue[],Number[]>  borderStyle(Term root)
             throws ParseException {
 
         if (root.token == null ||
@@ -3398,31 +3470,31 @@ final public class CssParser {
         return BorderStyleConverter.SOLID;
     }
 
-    private ParsedValueImpl<ParsedValue[], Number[]> segments(Term root)
+    private ParsedValueImpl<ParsedValue[],Number[]> segments(Term root)
             throws ParseException {
 
         // first term in the chain is the function name...
         final String fn = (root.token != null) ? root.token.getText() : null;
         if (!"segments".regionMatches(true, 0, fn, 0, 8)) {
-            error(root, "Expected \'segments\'");
+            error(root,"Expected \'segments\'");
         }
 
         Term arg = root.firstArg;
         if (arg == null) error(null, "Expected \'<size>\'");
 
         int nArgs = numberOfArgs(root);
-        ParsedValueImpl<?, Size>[] segments = new ParsedValueImpl[nArgs];
+        ParsedValueImpl<?,Size>[] segments = new ParsedValueImpl[nArgs];
         int segment = 0;
-        while (arg != null) {
+        while(arg != null) {
             segments[segment++] = parseSize(arg);
             arg = arg.nextArg;
         }
 
-        return new ParsedValueImpl<>(segments, SizeConverter.SequenceConverter.getInstance());
+        return new ParsedValueImpl<>(segments,SizeConverter.SequenceConverter.getInstance());
 
     }
 
-    private ParsedValueImpl<String, StrokeType> parseStrokeType(final Term root) {
+    private ParsedValueImpl<String,StrokeType> parseStrokeType(final Term root) {
 
         final String keyword = getKeyword(root);
 
@@ -3431,7 +3503,7 @@ final public class CssParser {
                 "inside".equals(keyword) ||
                 "outside".equals(keyword)) {
 
-            return new ParsedValueImpl<String, StrokeType>(keyword, new EnumConverter(StrokeType.class));
+            return new ParsedValueImpl<String,StrokeType>(keyword, new EnumConverter(StrokeType.class));
 
         }
         return null;
@@ -3451,10 +3523,10 @@ final public class CssParser {
                 "bevel".equals(keyword) ||
                 "round".equals(keyword)) {
 
-            ParsedValueImpl<String, StrokeLineJoin> strokeLineJoin =
-                    new ParsedValueImpl<String, StrokeLineJoin>(keyword, new EnumConverter(StrokeLineJoin.class));
+            ParsedValueImpl<String,StrokeLineJoin> strokeLineJoin =
+                    new ParsedValueImpl<String,StrokeLineJoin>(keyword, new EnumConverter(StrokeLineJoin.class));
 
-            ParsedValueImpl<ParsedValue<?, Size>, Number> strokeMiterLimit = null;
+            ParsedValueImpl<ParsedValue<?,Size>,Number> strokeMiterLimit = null;
             if ("miter".equals(keyword)) {
 
                 Term next = root.nextInSeries;
@@ -3463,20 +3535,20 @@ final public class CssParser {
                         isSize(next.token)) {
 
                     root.nextInSeries = next.nextInSeries;
-                    ParsedValueImpl<?, Size> sizeVal = parseSize(next);
-                    strokeMiterLimit = new ParsedValueImpl<>(sizeVal, SizeConverter.getInstance());
+                    ParsedValueImpl<?,Size> sizeVal = parseSize(next);
+                    strokeMiterLimit = new ParsedValueImpl<>(sizeVal,SizeConverter.getInstance());
                 }
 
             }
 
-            return new ParsedValueImpl[]{strokeLineJoin, strokeMiterLimit};
+            return new ParsedValueImpl[] { strokeLineJoin, strokeMiterLimit };
         }
         return null;
     }
 
     // Root term is the term just after the line-cap keyword
     // If the token is not a StrokeLineCap, then null is returned.
-    private ParsedValueImpl<String, StrokeLineCap> parseStrokeLineCap(final Term root) {
+    private ParsedValueImpl<String,StrokeLineCap> parseStrokeLineCap(final Term root) {
 
         final String keyword = getKeyword(root);
 
@@ -3484,7 +3556,7 @@ final public class CssParser {
                 "butt".equals(keyword) ||
                 "round".equals(keyword)) {
 
-            return new ParsedValueImpl<String, StrokeLineCap>(keyword, new EnumConverter(StrokeLineCap.class));
+            return new ParsedValueImpl<String,StrokeLineCap>(keyword, new EnumConverter(StrokeLineCap.class));
         }
         return null;
     }
@@ -3493,14 +3565,14 @@ final public class CssParser {
      * http://www.w3.org/TR/css3-background/#the-border-image-slice
      * [<number> | <percentage>]{1,4} && fill?
      */
-    private ParsedValueImpl<ParsedValue[], BorderImageSlices> parseBorderImageSlice(final Term root)
+    private ParsedValueImpl<ParsedValue[],BorderImageSlices> parseBorderImageSlice(final Term root)
             throws ParseException {
 
         Term term = root;
         if (term.token == null || !isSize(term.token))
             error(term, "Expected \'<size>\'");
 
-        ParsedValueImpl<?, Size>[] insets = new ParsedValueImpl[4];
+        ParsedValueImpl<?,Size>[] insets = new ParsedValueImpl[4];
         Boolean fill = Boolean.FALSE;
 
         int inset = 0;
@@ -3511,7 +3583,7 @@ final public class CssParser {
                     term.token != null &&
                     term.token.getType() == CssLexer.IDENT) {
 
-                if ("fill".equalsIgnoreCase(term.token.getText())) {
+                if("fill".equalsIgnoreCase(term.token.getText())) {
                     fill = Boolean.TRUE;
                     break;
                 }
@@ -3522,14 +3594,14 @@ final public class CssParser {
         if (inset < 3) insets[2] = insets[0]; // bottom = top
         if (inset < 4) insets[3] = insets[1]; // left = right
 
-        ParsedValueImpl[] values = new ParsedValueImpl[]{
+        ParsedValueImpl[] values = new ParsedValueImpl[] {
                 new ParsedValueImpl<>(insets, InsetsConverter.getInstance()),
-                new ParsedValueImpl<Boolean, Boolean>(fill, null)
+                new ParsedValueImpl<Boolean,Boolean>(fill, null)
         };
         return new ParsedValueImpl<>(values, BorderImageSliceConverter.getInstance());
     }
 
-    private ParsedValueImpl<ParsedValue<ParsedValue[], BorderImageSlices>[], BorderImageSlices[]>
+    private ParsedValueImpl<ParsedValue<ParsedValue[],BorderImageSlices>[],BorderImageSlices[]>
     parseBorderImageSliceLayers(final Term root) throws ParseException {
 
         int nLayers = numberOfLayers(root);
@@ -3540,7 +3612,7 @@ final public class CssParser {
             layers[layer++] = parseBorderImageSlice(term);
             term = nextLayer(term);
         }
-        return new ParsedValueImpl<>(layers, SliceSequenceConverter.getInstance());
+        return new ParsedValueImpl<> (layers, SliceSequenceConverter.getInstance());
     }
 
     /*
@@ -3554,7 +3626,7 @@ final public class CssParser {
         if (term.token == null || !isSize(term.token))
             error(term, "Expected \'<size>\'");
 
-        ParsedValueImpl<?, Size>[] insets = new ParsedValueImpl[4];
+        ParsedValueImpl<?,Size>[] insets = new ParsedValueImpl[4];
 
         int inset = 0;
         while (inset < 4 && term != null) {
@@ -3573,7 +3645,7 @@ final public class CssParser {
         return new ParsedValueImpl<>(insets, BorderImageWidthConverter.getInstance());
     }
 
-    private ParsedValueImpl<ParsedValue<ParsedValue[], BorderWidths>[], BorderWidths[]>
+    private ParsedValueImpl<ParsedValue<ParsedValue[],BorderWidths>[],BorderWidths[]>
     parseBorderImageWidthLayers(final Term root) throws ParseException {
 
         int nLayers = numberOfLayers(root);
@@ -3590,13 +3662,12 @@ final public class CssParser {
     // parse a Region value
     // i.e., region(".styleClassForRegion") or region("#idForRegion")
     private static final String SPECIAL_REGION_URL_PREFIX = "SPECIAL-REGION-URL:";
-
-    private ParsedValueImpl<String, String> parseRegion(Term root)
+    private ParsedValueImpl<String,String> parseRegion(Term root)
             throws ParseException {
         // first term in the chain is the function name...
         final String fn = (root.token != null) ? root.token.getText() : null;
         if (!"region".regionMatches(true, 0, fn, 0, 6)) {
-            error(root, "Expected \'region\'");
+            error(root,"Expected \'region\'");
         }
 
         Term arg = root.firstArg;
@@ -3605,14 +3676,14 @@ final public class CssParser {
         if (arg.token == null ||
                 arg.token.getType() != CssLexer.STRING ||
                 arg.token.getText() == null ||
-                arg.token.getText().isEmpty()) error(root, "Expected \'region(\"<styleclass-or-id-string>\")\'");
+                arg.token.getText().isEmpty())  error(root, "Expected \'region(\"<styleclass-or-id-string>\")\'");
 
-        final String styleClassOrId = SPECIAL_REGION_URL_PREFIX + Utils.stripQuotes(arg.token.getText());
+        final String styleClassOrId = SPECIAL_REGION_URL_PREFIX+ Utils.stripQuotes(arg.token.getText());
         return new ParsedValueImpl<>(styleClassOrId, StringConverter.getInstance());
     }
 
     // url("<uri>") is tokenized by the lexer, so the root arg should be a URL token.
-    private ParsedValueImpl<ParsedValue[], String> parseURI(Term root)
+    private ParsedValueImpl<ParsedValue[],String> parseURI(Term root)
             throws ParseException {
 
         if (root == null) error(root, "Expected \'url(\"<uri-string>\")\'");
@@ -3623,7 +3694,7 @@ final public class CssParser {
                 root.token.getText().isEmpty()) error(root, "Expected \'url(\"<uri-string>\")\'");
 
         final String uri = root.token.getText();
-        ParsedValueImpl[] uriValues = new ParsedValueImpl[]{
+        ParsedValueImpl[] uriValues = new ParsedValueImpl[] {
                 new ParsedValueImpl<>(uri, StringConverter.getInstance()),
                 null // placeholder for Stylesheet URL
         };
@@ -3632,16 +3703,16 @@ final public class CssParser {
 
     // parse a series of URI values separated by commas.
     // i.e., <uri> [, <uri>]*
-    private ParsedValueImpl<ParsedValue<ParsedValue[], String>[], String[]> parseURILayers(Term root)
+    private ParsedValueImpl<ParsedValue<ParsedValue[],String>[],String[]> parseURILayers(Term root)
             throws ParseException {
 
         int nLayers = numberOfLayers(root);
 
         Term temp = root;
         int layer = 0;
-        ParsedValueImpl<ParsedValue[], String>[] layers = new ParsedValueImpl[nLayers];
+        ParsedValueImpl<ParsedValue[],String>[] layers = new ParsedValueImpl[nLayers];
 
-        while (temp != null) {
+        while(temp != null) {
             layers[layer++] = parseURI(temp);
             temp = nextLayer(temp);
         }
@@ -3649,14 +3720,14 @@ final public class CssParser {
         return new ParsedValueImpl<>(layers, URLConverter.SequenceConverter.getInstance());
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
     //
     // http://www.w3.org/TR/css3-fonts
     //
-    ////////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
     /* http://www.w3.org/TR/css3-fonts/#font-size-the-font-size-property */
-    private ParsedValueImpl<ParsedValue<?, Size>, Number> parseFontSize(final Term root) throws ParseException {
+    private ParsedValueImpl<ParsedValue<?,Size>,Number> parseFontSize(final Term root) throws ParseException {
 
         if (root == null) return null;
         final Token token = root.token;
@@ -3698,12 +3769,12 @@ final public class CssParser {
             size = size(token);
         }
 
-        ParsedValueImpl<?, Size> svalue = new ParsedValueImpl<>(size, null);
+        ParsedValueImpl<?,Size> svalue = new ParsedValueImpl<>(size, null);
         return new ParsedValueImpl<>(svalue, FontConverter.FontSizeConverter.getInstance());
     }
 
     /* http://www.w3.org/TR/css3-fonts/#font-style-the-font-style-property */
-    private ParsedValueImpl<String, FontPosture> parseFontStyle(Term root) throws ParseException {
+    private ParsedValueImpl<String,FontPosture> parseFontStyle(Term root) throws ParseException {
 
         if (root == null) return null;
         final Token token = root.token;
@@ -3776,7 +3847,7 @@ final public class CssParser {
         return new ParsedValueImpl<>(weight, FontConverter.FontWeightConverter.getInstance());
     }
 
-    private ParsedValueImpl<String, String> parseFontFamily(Term root) throws ParseException {
+    private ParsedValueImpl<String,String>  parseFontFamily(Term root) throws ParseException {
 
         if (root == null) return null;
         final Token token = root.token;
@@ -3802,7 +3873,7 @@ final public class CssParser {
     }
 
     // (fontStyle || fontVariant || fontWeight)* fontSize (SOLIDUS size)? fontFamily
-    private ParsedValueImpl<ParsedValue[], Font> parseFont(Term root) throws ParseException {
+    private ParsedValueImpl<ParsedValue[],Font> parseFont(Term root) throws ParseException {
 
         // Because style, variant, weight, size and family can inherit
         // AND style, variant and weight are optional, parsing this backwards
@@ -3821,7 +3892,7 @@ final public class CssParser {
         int ttype = token.getType();
         if (ttype != CssLexer.IDENT &&
                 ttype != CssLexer.STRING) error(root, "Expected \'<font-family>\'");
-        ParsedValueImpl<String, String> ffamily = parseFontFamily(root);
+        ParsedValueImpl<String,String> ffamily = parseFontFamily(root);
 
         Term term = root;
         if ((term = term.nextInSeries) == null) error(root, "Expected \'<size>\'");
@@ -3841,11 +3912,11 @@ final public class CssParser {
             token = term.token;
         }
 
-        ParsedValueImpl<ParsedValue<?, Size>, Number> fsize = parseFontSize(term);
+        ParsedValueImpl<ParsedValue<?,Size>,Number> fsize = parseFontSize(term);
         if (fsize == null) error(root, "Expected \'<size>\'");
 
-        ParsedValueImpl<String, FontPosture> fstyle = null;
-        ParsedValueImpl<String, FontWeight> fweight = null;
+        ParsedValueImpl<String,FontPosture> fstyle = null;
+        ParsedValueImpl<String,FontWeight> fweight = null;
         String fvariant = null;
 
         while ((term = term.nextInSeries) != null) {
@@ -3865,8 +3936,200 @@ final public class CssParser {
             }
         }
 
-        ParsedValueImpl[] values = new ParsedValueImpl[]{ffamily, fsize, fweight, fstyle};
+        ParsedValueImpl[] values = new ParsedValueImpl[]{ ffamily, fsize, fweight, fstyle };
         return new ParsedValueImpl<>(values, FontConverter.getInstance());
+    }
+
+    // https://www.w3.org/TR/css-transitions-1/#transition-shorthand-property
+    private ParsedValueImpl<ParsedValue<ParsedValue[], TransitionDefinition>[], TransitionDefinition[]>
+    parseTransitionLayers(Term term) throws ParseException {
+        int nLayers = numberOfLayers(term);
+        ParsedValue<ParsedValue[], TransitionDefinition>[] layers = new ParsedValue[nLayers];
+
+        for (int i = 0; i < nLayers; ++i) {
+            layers[i] = parseTransition(term);
+            term = nextLayer(term);
+        }
+
+        return new ParsedValueImpl<ParsedValue<ParsedValue[], TransitionDefinition>[], TransitionDefinition[]>(
+                layers, TransitionDefinitionConverter.SequenceConverter.getInstance());
+    }
+
+    private ParsedValueImpl<ParsedValue[], TransitionDefinition> parseTransition(Term term)
+            throws ParseException {
+        ParsedValue<?, String> parsedProperty = null;
+        ParsedValue<ParsedValue<?, Size>, Duration> parsedDuration = null;
+        ParsedValue<ParsedValue<?, Size>, Duration> parsedDelay = null;
+        ParsedValue<?, Interpolator> parsedTimingFunction = null;
+
+        for (int i = 0; i < 4; ++i) {
+            if (term == null) {
+                break;
+            }
+
+            if (isEasingFunction(term.token)) {
+                if (parsedTimingFunction != null) {
+                    error(term, "Expected \'<single-transition-property>\' or \'<duration>\'");
+                }
+
+                parsedTimingFunction = parseEasingFunction(term);
+            } else if (isTransitionProperty(term.token)) {
+                if (parsedProperty != null) {
+                    error(term, "Expected \'<easing-function>\' or \'<duration>\'");
+                }
+
+                parsedProperty = parseTransitionProperty(term);
+            } else if (isTime(term.token)) {
+                if (parsedDuration == null) {
+                    parsedDuration = parseDuration(term, false);
+                } else if (parsedDelay == null) {
+                    parsedDelay = parseDuration(term, true);
+                }
+            } else {
+                List<String> args = new ArrayList<>();
+                if (parsedTimingFunction == null) args.add("\'<easing-function>\'");
+                if (parsedProperty == null) args.add("\'<single-transition-property>\'");
+                if (parsedDuration == null || parsedDelay == null) args.add("\'<duration>\'");
+                error(term, "Expected " + String.join(" or ", args));
+            }
+
+            term = term.nextInSeries;
+        }
+
+        if (parsedProperty == null && parsedDuration == null && parsedTimingFunction == null) {
+            error(term, "Expected \'<single-transition>#\'");
+        }
+
+        return new ParsedValueImpl<ParsedValue[], TransitionDefinition>(new ParsedValue[] {
+                parsedProperty, parsedDuration, parsedDelay, parsedTimingFunction
+        }, TransitionDefinitionConverter.getInstance());
+    }
+
+    /*
+     * https://www.w3.org/TR/css-transitions-1/#transition-property-property
+     */
+    private ParsedValueImpl<ParsedValue<String, String>[], String[]> parseTransitionPropertyLayers(Term term)
+            throws ParseException {
+        int nLayers = numberOfLayers(term);
+        ParsedValue<String, String>[] layers = new ParsedValue[nLayers];
+
+        for (int i = 0; i < nLayers; ++i) {
+            layers[i] = parseTransitionProperty(term);
+            term = nextLayer(term);
+        }
+
+        return new ParsedValueImpl<ParsedValue<String, String>[], String[]>(
+                layers, StringConverter.SequenceConverter.getInstance());
+    }
+
+    private ParsedValueImpl<String, String> parseTransitionProperty(Term term) throws ParseException {
+        if (term == null || !isTransitionProperty(term.token)) {
+            error(term,  "Expected \'<transition-property>\'");
+        }
+
+        return new ParsedValueImpl<String, String>(term.token.getText(), null);
+    }
+
+    private boolean isTransitionProperty(Token token) {
+        int ttype;
+        String str;
+        return token != null
+                && ((ttype = token.getType()) == CssLexer.STRING || ttype == CssLexer.IDENT)
+                && (str = token.getText()) != null
+                && !str.isEmpty();
+    }
+
+    /*
+     * https://www.w3.org/TR/css-easing-1/#easing-functions
+     */
+    private ParsedValueImpl<ParsedValue<?, Interpolator>[], Interpolator[]>
+    parseEasingFunctionLayers(Term term) throws ParseException {
+        int nLayers = numberOfLayers(term);
+        ParsedValue<?, Interpolator>[] layers = new ParsedValue[nLayers];
+
+        for (int i = 0; i < nLayers; ++i) {
+            layers[i] = parseEasingFunction(term);
+            term = nextLayer(term);
+        }
+
+        return new ParsedValueImpl<ParsedValue<?, Interpolator>[], Interpolator[]>(
+                layers, InterpolatorConverter.SequenceConverter.getInstance());
+    }
+
+    private ParsedValueImpl<?, Interpolator> parseEasingFunction(Term term) throws ParseException {
+        if (term == null || !isEasingFunction(term.token)) {
+            error(term,  "Expected \'<easing-function>\'");
+        }
+
+        return switch (term.token.getText()) {
+            case "cubic-bezier(" -> {
+                Double[] args = new Double[4];
+                Term arg = term.firstArg;
+
+                for (int j = 0; j < 4; ++j, arg = arg.nextArg) {
+                    if (arg == null || arg.token == null || arg.token.getType() != CssLexer.NUMBER
+                            || (args[j] = Double.parseDouble(arg.token.getText())) < 0 || args[j] > 1) {
+                        error(arg != null ? arg : term,  "Expected \'<number [0,1]>\'");
+                    }
+                }
+
+                yield new ParsedValueImpl<>(new ParsedValueImpl[] {
+                        new ParsedValueImpl(term.token.getText(), null),
+                        new ParsedValueImpl(Arrays.asList(args), null)
+                }, InterpolatorConverter.getInstance());
+            }
+
+            case "steps(" -> {
+                Object[] args = new Object[2];
+                Term arg = term.firstArg;
+                if (arg == null || arg.token == null || arg.token.getType() != CssLexer.NUMBER) {
+                    error(arg,  "Expected \'<integer>\'");
+                } else {
+                    args[0] = Integer.parseInt(arg.token.getText());
+                }
+
+                arg = arg.nextArg;
+                if (arg != null) {
+                    if (isStepPosition(arg.token)) {
+                        args[1] = arg.token.getText();
+                    } else {
+                        error(arg != null ? arg : term, "Expected \'<step-position>\'");
+                    }
+                }
+
+                yield new ParsedValueImpl<>(new ParsedValueImpl[] {
+                        new ParsedValueImpl(term.token.getText(), null),
+                        new ParsedValueImpl(Arrays.asList(args), null)
+                }, InterpolatorConverter.getInstance());
+            }
+
+            default -> {
+                yield new ParsedValueImpl<>(
+                        new ParsedValueImpl(term.token.getText(), null),
+                        InterpolatorConverter.getInstance());
+            }
+        };
+    }
+
+    // https://www.w3.org/TR/css-easing-1/#easing-functions
+    // <easing-function> = linear | <cubic-bezier-easing-function> | <step-easing-function>
+    private boolean isEasingFunction(Token token) throws ParseException {
+        return token != null && switch (token.getText()) {
+            case "linear" -> true;
+            case "ease", "ease-in", "ease-out", "ease-in-out", "cubic-bezier(" -> true;
+            case "step-start", "step-end", "steps(" -> true;
+            case "-fx-ease-in", "-fx-ease-out", "-fx-ease-both" -> true;
+            default -> false;
+        };
+    }
+
+    // https://www.w3.org/TR/css-easing-1/#step-easing-functions
+    // <step-position> = jump-start | jump-end | jump-none | jump-both | start | end
+    private boolean isStepPosition(Token token) throws ParseException {
+        return token != null && switch (token.getText()) {
+            case "jump-start", "jump-end", "jump-none", "jump-both", "start", "end" -> true;
+            default -> false;
+        };
     }
 
     //
@@ -3901,7 +4164,7 @@ final public class CssParser {
         // need to read the first token
         currentToken = nextToken(lexer);
 
-        while ((currentToken != null) &&
+        while((currentToken != null) &&
                 (currentToken.getType() == CssLexer.AT_KEYWORD)) {
 
             currentToken = nextToken(lexer);
@@ -4036,9 +4299,9 @@ final public class CssParser {
     }
 
     private FontFace fontFace(CssLexer lexer) {
-        final Map<String, String> descriptors = new HashMap<>();
+        final Map<String,String> descriptors = new HashMap<>();
         final List<FontFaceImpl.FontFaceSrc> sources = new ArrayList<>();
-        while (true) {
+        while(true) {
             currentToken = nextToken(lexer);
             if (currentToken.getType() == CssLexer.IDENT) {
                 String key = currentToken.getText();
@@ -4048,22 +4311,22 @@ final public class CssParser {
                 currentToken = nextToken(lexer);
                 // ignore all but "src"
                 if ("src".equalsIgnoreCase(key)) {
-                    while (true) {
-                        if ((currentToken != null) &&
+                    while(true) {
+                        if((currentToken != null) &&
                                 (currentToken.getType() != CssLexer.SEMI) &&
                                 (currentToken.getType() != CssLexer.RBRACE) &&
                                 (currentToken.getType() != Token.EOF)) {
 
                             if (currentToken.getType() == CssLexer.IDENT) {
                                 // simple reference to other font-family
-                                sources.add(new FontFaceImpl.FontFaceSrc(FontFaceImpl.FontFaceSrcType.REFERENCE, currentToken.getText()));
+                                sources.add(new FontFaceImpl.FontFaceSrc(FontFaceImpl.FontFaceSrcType.REFERENCE,currentToken.getText()));
 
                             } else if (currentToken.getType() == CssLexer.URL) {
 
                                 // let URLConverter do the conversion
-                                ParsedValueImpl[] uriValues = new ParsedValueImpl[]{
+                                ParsedValueImpl[] uriValues = new ParsedValueImpl[] {
                                         new ParsedValueImpl<>(currentToken.getText(), StringConverter.getInstance()),
-                                        new ParsedValueImpl<String, String>(sourceOfStylesheet, null)
+                                        new ParsedValueImpl<String,String>(sourceOfStylesheet, null)
                                 };
                                 ParsedValue<ParsedValue[], String> parsedValue =
                                         new ParsedValueImpl<>(uriValues, URLConverter.getInstance());
@@ -4073,7 +4336,7 @@ final public class CssParser {
                                 try {
                                     URI fontUri = new URI(urlStr);
                                     url = fontUri.toURL();
-                                } catch (URISyntaxException | MalformedURLException malf) {
+                                } catch (URISyntaxException |  MalformedURLException malf) {
 
                                     final int line = currentToken.getLine();
                                     final int pos = currentToken.getOffset();
@@ -4085,7 +4348,7 @@ final public class CssParser {
                                     reportError(error);
 
                                     // skip the rest.
-                                    while (currentToken != null) {
+                                    while(currentToken != null) {
                                         int ttype = currentToken.getType();
                                         if (ttype == CssLexer.RBRACE ||
                                                 ttype == Token.EOF) {
@@ -4096,7 +4359,7 @@ final public class CssParser {
                                 }
 
                                 String format = null;
-                                while (true) {
+                                while(true) {
                                     currentToken = nextToken(lexer);
                                     final int ttype = (currentToken != null) ? currentToken.getType() : Token.EOF;
                                     if (ttype == CssLexer.FUNCTION) {
@@ -4115,7 +4378,7 @@ final public class CssParser {
                                         break;
                                     }
                                 }
-                                sources.add(new FontFaceImpl.FontFaceSrc(FontFaceImpl.FontFaceSrcType.URL, url.toExternalForm(), format));
+                                sources.add(new FontFaceImpl.FontFaceSrc(FontFaceImpl.FontFaceSrcType.URL,url.toExternalForm(), format));
 
                             } else if (currentToken.getType() == CssLexer.FUNCTION) {
                                 if ("local(".equalsIgnoreCase(currentToken.getText())) {
@@ -4123,8 +4386,8 @@ final public class CssParser {
                                     currentToken = nextToken(lexer);
                                     // parse function contents
                                     final StringBuilder localSb = new StringBuilder();
-                                    while (true) {
-                                        if ((currentToken != null) && (currentToken.getType() != CssLexer.RPAREN) &&
+                                    while(true) {
+                                        if((currentToken != null) && (currentToken.getType() != CssLexer.RPAREN) &&
                                                 (currentToken.getType() != Token.EOF)) {
                                             localSb.append(currentToken.getText());
                                         } else {
@@ -4133,10 +4396,10 @@ final public class CssParser {
                                         currentToken = nextToken(lexer);
                                     }
                                     int start = 0, end = localSb.length();
-                                    if (localSb.charAt(start) == '\'' || localSb.charAt(start) == '\"') start++;
-                                    if (localSb.charAt(end - 1) == '\'' || localSb.charAt(end - 1) == '\"') end--;
-                                    final String local = localSb.substring(start, end);
-                                    sources.add(new FontFaceImpl.FontFaceSrc(FontFaceImpl.FontFaceSrcType.LOCAL, local));
+                                    if (localSb.charAt(start) == '\'' || localSb.charAt(start) == '\"') start ++;
+                                    if (localSb.charAt(end-1) == '\'' || localSb.charAt(end-1) == '\"') end --;
+                                    final String local = localSb.substring(start,end);
+                                    sources.add(new FontFaceImpl.FontFaceSrc(FontFaceImpl.FontFaceSrcType.LOCAL,local));
                                 } else {
                                     // error unknown fontface src type
                                     final int line = currentToken.getLine();
@@ -4149,7 +4412,7 @@ final public class CssParser {
                                     reportError(error);
 
                                 }
-                            } else if (currentToken.getType() == CssLexer.COMMA) {
+                            } else  if (currentToken.getType() == CssLexer.COMMA) {
                                 // ignore
                             } else {
                                 // error unexpected token
@@ -4169,8 +4432,8 @@ final public class CssParser {
                     }
                 } else {
                     StringBuilder descriptorVal = new StringBuilder();
-                    while (true) {
-                        if ((currentToken != null) && (currentToken.getType() != CssLexer.SEMI) &&
+                    while(true) {
+                        if((currentToken != null) && (currentToken.getType() != CssLexer.SEMI) &&
                                 (currentToken.getType() != Token.EOF)) {
                             descriptorVal.append(currentToken.getText());
                         } else {
@@ -4178,7 +4441,7 @@ final public class CssParser {
                         }
                         currentToken = nextToken(lexer);
                     }
-                    descriptors.put(key, descriptorVal.toString());
+                    descriptors.put(key,descriptorVal.toString());
                 }
 //                continue;
             }
@@ -4212,9 +4475,9 @@ final public class CssParser {
 
         if (fname != null) {
             // let URLConverter do the conversion
-            ParsedValueImpl[] uriValues = new ParsedValueImpl[]{
+            ParsedValueImpl[] uriValues = new ParsedValueImpl[] {
                     new ParsedValueImpl<>(fname, StringConverter.getInstance()),
-                    new ParsedValueImpl<String, String>(sourceOfStylesheet, null)
+                    new ParsedValueImpl<String,String>(sourceOfStylesheet, null)
             };
             ParsedValue<ParsedValue[], String> parsedValue =
                     new ParsedValueImpl<>(uriValues, URLConverter.getInstance());
@@ -4244,7 +4507,7 @@ final public class CssParser {
 
         List<Selector> selectors = new ArrayList<>();
 
-        while (true) {
+        while(true) {
             Selector selector = selector(lexer);
             if (selector == null) {
                 // some error happened, skip the rule...
@@ -4283,6 +4546,7 @@ final public class CssParser {
         return selectors;
     }
 
+    @SuppressWarnings("removal")
     private Selector selector(CssLexer lexer) {
 
         List<Combinator> combinators = null;
@@ -4321,11 +4585,12 @@ final public class CssParser {
         if (sels == null) {
             return ancestor;
         } else {
-            return new CompoundSelector(sels, combinators);
+            return new CompoundSelector(sels,combinators);
         }
 
     }
 
+    @SuppressWarnings("removal")
     private SimpleSelector simpleSelector(CssLexer lexer) {
 
         String esel = "*"; // element selector. default to universal
@@ -4338,7 +4603,7 @@ final public class CssParser {
             final int ttype =
                     (currentToken != null) ? currentToken.getType() : Token.INVALID;
 
-            switch (ttype) {
+            switch(ttype) {
                 // element selector
                 case CssLexer.STAR:
                 case CssLexer.IDENT:
@@ -4373,7 +4638,7 @@ final public class CssParser {
 
                     if (currentToken.getType() == CssLexer.IDENT) {
                         pclasses.add(currentToken.getText());
-                    } else if (currentToken.getType() == CssLexer.FUNCTION) {
+                    } else if (currentToken.getType() == CssLexer.FUNCTION){
                         String pclass = functionalPseudo(lexer);
                         pclasses.add(pclass);
                     } else {
@@ -4423,11 +4688,11 @@ final public class CssParser {
 
         StringBuilder pclass = new StringBuilder(currentToken.getText());
 
-        while (true) {
+        while(true) {
 
             currentToken = nextToken(lexer);
 
-            switch (currentToken.getType()) {
+            switch(currentToken.getType()) {
 
                 // TODO: lexer doesn't really scan right and isn't CSS3,
                 // so PLUS, '-', NUMBER, etc are all useless at this point.
@@ -4457,7 +4722,7 @@ final public class CssParser {
             final int ttype =
                     (currentToken != null) ? currentToken.getType() : Token.INVALID;
 
-            switch (ttype) {
+            switch(ttype) {
 
                 case CssLexer.WS:
                     // need to check if combinator is null since child token
@@ -4591,7 +4856,7 @@ final public class CssParser {
             final int pos = badToken != null ? badToken.getOffset() : -1;
             final String msg =
                     MessageFormat.format("{2} while parsing ''{3}'' at [{0,number,#},{1,number,#}]",
-                            line, pos, re.getMessage(), property);
+                            line,pos,re.getMessage(),property);
             ParseError error = createError(msg);
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning(error.toString());
@@ -4613,7 +4878,7 @@ final public class CssParser {
         final Term expr = term(lexer);
         Term current = expr;
 
-        while (true) {
+        while(true) {
 
             // if current is null, then term returned null
             final int ttype =
@@ -4643,7 +4908,7 @@ final public class CssParser {
 
     private void skipExpr(CssLexer lexer) {
 
-        while (true) {
+        while(true) {
 
             currentToken = nextToken(lexer);
 
@@ -4700,7 +4965,7 @@ final public class CssParser {
                 Term arg = term(lexer);
                 function.firstArg = arg;
 
-                while (true) {
+                while(true) {
 
                     final int operator =
                             currentToken != null ? currentToken.getType() : Token.INVALID;
@@ -4733,7 +4998,7 @@ final public class CssParser {
                 final String text = currentToken != null ? currentToken.getText() : "";
                 final String msg =
                         MessageFormat.format("Unexpected token {0}{1}{0} at [{2,number,#},{3,number,#}]",
-                                "\'", text, line, pos);
+                                "\'",text,line,pos);
                 ParseError error = createError(msg);
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.warning(error.toString());
@@ -4752,7 +5017,6 @@ final public class CssParser {
 
     /**
      * List of errors that may have occurred during CSS processing.
-     *
      * @return an {@code ObservableList} of {@code ParseError}
      */
     public static ObservableList<ParseError> errorsProperty() {
@@ -4760,15 +5024,15 @@ final public class CssParser {
     }
 
 
+
     /**
      * A class that encapsulates information about the source and nature
-     * of errors encountered while parsing CSS or applying styles to Nodes.
+     *  of errors encountered while parsing CSS or applying styles to Nodes.
      */
     public static class ParseError {
 
         /**
          * Returns the error message.
-         *
          * @return the error message
          */
         public final String getMessage() {
@@ -4777,7 +5041,6 @@ final public class CssParser {
 
         /**
          * Constructs a {@code ParseError} object with the message.
-         *
          * @param message the message
          */
         public ParseError(String message) {
@@ -4786,14 +5049,11 @@ final public class CssParser {
 
         final String message;
 
-        @Override
-        public String toString() {
+        @Override public String toString() {
             return "CSS Error: " + message;
         }
 
-        /**
-         * Encapsulate errors arising from parsing of stylesheet files
-         */
+        /** Encapsulate errors arising from parsing of stylesheet files */
         public final static class StylesheetParsingError extends ParseError {
 
             StylesheetParsingError(String url, String message) {
@@ -4807,8 +5067,7 @@ final public class CssParser {
 
             private final String url;
 
-            @Override
-            public String toString() {
+            @Override public String toString() {
                 final String path = url != null ? url : "?";
                 // TBD: i18n
                 return "CSS Error parsing " + path + ": " + message;
@@ -4816,9 +5075,7 @@ final public class CssParser {
 
         }
 
-        /**
-         * Encapsulate errors arising from parsing of Node's style property
-         */
+        /** Encapsulate errors arising from parsing of Node's style property */
         public final static class InlineStyleParsingError extends ParseError {
 
             InlineStyleParsingError(Styleable styleable, String message) {
@@ -4832,8 +5089,7 @@ final public class CssParser {
 
             private final Styleable styleable;
 
-            @Override
-            public String toString() {
+            @Override public String toString() {
                 final String inlineStyle = styleable.getStyle();
                 final String source = styleable.toString();
                 // TBD: i18n
@@ -4859,26 +5115,22 @@ final public class CssParser {
                 return style;
             }
 
-            @Override
-            public String toString() {
+            @Override public String toString() {
                 // TBD: i18n
                 return "CSS Error parsing \'" + style + ": " + message;
             }
         }
 
-        /**
-         * Encapsulates errors arising from applying a style to a Node.
-         */
+        /** Encapsulates errors arising from applying a style to a Node. */
         public final static class PropertySetError extends ParseError {
             private final CssMetaData styleableProperty;
             private final Styleable styleable;
 
             /**
              * Constructs a {@code PropertySetError} object.
-             *
              * @param styleableProperty CSS meta data
-             * @param styleable         styleable node
-             * @param message           parse error message
+             * @param styleable styleable node
+             * @param message parse error message
              */
             public PropertySetError(CssMetaData styleableProperty,
                                     Styleable styleable, String message) {
@@ -4895,8 +5147,7 @@ final public class CssParser {
                 return styleableProperty;
             }
 
-            @Override
-            public String toString() {
+            @Override public String toString() {
                 // TBD: i18n
                 return "CSS Error parsing \'" + styleableProperty + ": " + message;
             }
