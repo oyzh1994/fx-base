@@ -60,8 +60,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>compile</scope>
         </dependency>
 
 <!--        &lt;!&ndash; 常用工具扩展类库 &ndash;&gt;-->
