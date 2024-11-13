@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.oyzh.fx.common.cache.CacheUtil;
-import cn.oyzh.fx.common.cache.TimedCache;
-import cn.oyzh.fx.common.util.MD5Util;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.cache.CacheUtil;
+import cn.oyzh.common.cache.TimedCache;
+import cn.oyzh.common.util.MD5Util;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;

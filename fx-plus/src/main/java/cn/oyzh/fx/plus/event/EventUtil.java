@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.event;
 
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionHandler;

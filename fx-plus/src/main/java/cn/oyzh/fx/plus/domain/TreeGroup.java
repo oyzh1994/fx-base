@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.domain;
 
-import cn.oyzh.fx.common.jdbc.Column;
-import cn.oyzh.fx.common.jdbc.PrimaryKey;
-import cn.oyzh.fx.common.util.ObjectCopier;
+import cn.oyzh.common.util.ObjectCopier;
+import cn.oyzh.store.jdbc.Column;
+import cn.oyzh.store.jdbc.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

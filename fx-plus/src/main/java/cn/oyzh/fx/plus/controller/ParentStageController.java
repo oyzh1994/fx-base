@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controller;
 
-import cn.oyzh.fx.common.util.CollectionUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.WindowEvent;
 import lombok.NonNull;

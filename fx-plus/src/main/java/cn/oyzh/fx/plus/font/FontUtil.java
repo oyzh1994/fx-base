@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.StringUtil;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;

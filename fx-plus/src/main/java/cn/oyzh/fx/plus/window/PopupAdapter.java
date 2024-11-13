@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
-import cn.oyzh.fx.common.util.ArrayUtil;
+import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.converter;
 
-import cn.oyzh.fx.common.util.NumberUtil;
-import cn.oyzh.fx.common.util.RegexUtil;
+import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.RegexUtil;
 import javafx.util.StringConverter;
 
 import java.math.BigDecimal;

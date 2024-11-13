@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.ext;
 
-import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.controller.ControllerFactory;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import javafx.fxml.FXMLLoader;

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.search;
 
-import cn.oyzh.fx.common.util.CollectionUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.trees.RichTreeItem;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import cn.oyzh.fx.plus.util.ControlUtil;

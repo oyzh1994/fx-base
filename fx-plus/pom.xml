@@ -102,7 +102,13 @@
         <!-- 自定义类库，通用 -->
         <dependency>
             <groupId>cn.oyzh</groupId>
-            <artifactId>fx-common</artifactId>
+            <artifactId>common</artifactId>
+        </dependency>
+
+        <!-- 自定义类库，通用 -->
+        <dependency>
+            <groupId>cn.oyzh</groupId>
+            <artifactId>store</artifactId>
         </dependency>
 
         <!-- &lt;!&ndash;Spring 注解支持&ndash;&gt; -->

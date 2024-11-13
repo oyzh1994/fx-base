@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg.packr;
 
-import cn.oyzh.fx.common.log.JulLog;
+import cn.oyzh.common.log.JulLog;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.compressors.CompressorException;
 

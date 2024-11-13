@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal;
 
-import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
 import cn.oyzh.fx.terminal.help.TerminalHelpHandler;
 import cn.oyzh.fx.terminal.histroy.TerminalHistoryHandler;

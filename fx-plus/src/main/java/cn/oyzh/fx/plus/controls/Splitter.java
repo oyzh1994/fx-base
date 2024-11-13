@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls;
 
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.text.FlexText;
 import cn.oyzh.fx.plus.font.FontUtil;
 import javafx.scene.CacheHint;

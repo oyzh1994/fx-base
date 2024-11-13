@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.common.util.TextUtil;
+import cn.oyzh.common.util.TextUtil;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;

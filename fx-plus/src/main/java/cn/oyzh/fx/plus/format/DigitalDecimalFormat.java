@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.format;
 
-import cn.oyzh.fx.common.util.NumberUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.StringUtil;
 import lombok.Getter;
 
 import java.text.DecimalFormat;

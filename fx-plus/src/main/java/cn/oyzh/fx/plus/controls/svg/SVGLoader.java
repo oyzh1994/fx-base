@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.fx.common.cache.CacheUtil;
-import cn.oyzh.fx.common.cache.TimedCache;
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.util.ResourceUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.cache.CacheUtil;
+import cn.oyzh.common.cache.TimedCache;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.common.util.StringUtil;
 import javafx.scene.shape.SVGPath;
 import org.dom4j.Document;
 import org.dom4j.Element;

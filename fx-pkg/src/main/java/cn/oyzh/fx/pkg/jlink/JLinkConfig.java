@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.oyzh.fx.common.util.CollectionUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import lombok.Data;
 
 import java.util.ArrayList;

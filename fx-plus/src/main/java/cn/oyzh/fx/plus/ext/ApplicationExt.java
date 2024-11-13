@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.ext;
 
-import cn.oyzh.fx.common.log.JulLog;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.WindowManager;
 import com.sun.javafx.application.LauncherImpl;

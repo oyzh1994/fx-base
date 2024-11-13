@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.command;
 
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
 import cn.oyzh.fx.terminal.execute.TerminalExecuteHandler;

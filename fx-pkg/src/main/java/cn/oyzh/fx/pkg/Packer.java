@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg;
 
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.util.CollectionUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
 import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
 import cn.oyzh.fx.pkg.config.AppConfigHandler;

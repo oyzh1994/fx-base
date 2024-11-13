@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.domain;
 
-import cn.oyzh.fx.common.jdbc.Column;
-import cn.oyzh.fx.common.jdbc.PrimaryKey;
-import cn.oyzh.fx.common.util.ObjectCopier;
+import cn.oyzh.common.util.ObjectCopier;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
+import cn.oyzh.store.jdbc.Column;
+import cn.oyzh.store.jdbc.PrimaryKey;
 import lombok.Data;
 
 import java.io.Serializable;

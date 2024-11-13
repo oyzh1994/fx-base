@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controller;
 
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.event.EventListener;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.StageAdapter;

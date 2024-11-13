@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.property;
 
-import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.common.util.NumberUtil;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;

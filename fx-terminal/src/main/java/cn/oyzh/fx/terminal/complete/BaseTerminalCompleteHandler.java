@@ -1,7 +1,7 @@
 package cn.oyzh.fx.terminal.complete;
 
-import cn.oyzh.fx.common.util.StringUtil;
-import cn.oyzh.fx.common.util.TextUtil;
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;

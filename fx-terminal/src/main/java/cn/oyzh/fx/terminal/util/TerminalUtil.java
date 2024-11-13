@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.util;
 
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.StringUtil;
 
 /**
  * 终端工具类

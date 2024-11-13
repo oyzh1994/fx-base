@@ -1,8 +1,8 @@
 package cn.oyzh.fx.rich.richtextfx.json;
 
-import cn.oyzh.fx.common.json.JSONUtil;
-import cn.oyzh.fx.common.util.RegexHelper;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.json.JSONUtil;
+import cn.oyzh.common.util.RegexHelper;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;

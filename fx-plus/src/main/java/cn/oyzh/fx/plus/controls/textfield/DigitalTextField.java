@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
-import cn.oyzh.fx.common.util.NumberUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;
 import javafx.scene.control.Skin;

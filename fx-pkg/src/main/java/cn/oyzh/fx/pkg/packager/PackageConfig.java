@@ -2,7 +2,7 @@
 //
 // import cn.hutool.core.util.StrUtil;
 // import cn.hutool.json.JSONObject;
-// import cn.oyzh.fx.common.util.FileNameUtil;
+// import cn.oyzh.common.util.FileNameUtil;
 // import cn.oyzh.fx.pkg.config.BaseConfig;
 // import lombok.Data;
 // import lombok.EqualsAndHashCode;

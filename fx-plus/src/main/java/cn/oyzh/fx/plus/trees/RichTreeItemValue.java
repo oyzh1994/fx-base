@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.trees;
 
-import cn.oyzh.fx.common.util.Destroyable;
+import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FXText;

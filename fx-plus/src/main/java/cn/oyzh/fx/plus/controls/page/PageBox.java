@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.page;
 
-import cn.oyzh.fx.common.dto.Paging;
+import cn.oyzh.common.dto.Paging;
 import cn.oyzh.fx.plus.controls.FlexFlowPane;
 import cn.oyzh.fx.plus.controls.svg.page.PageFirstSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.page.PageLastSVGGlyph;

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.oyzh.fx.common.util.ArrayUtil;
-import cn.oyzh.fx.common.util.FileUtil;
+import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.FileUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;

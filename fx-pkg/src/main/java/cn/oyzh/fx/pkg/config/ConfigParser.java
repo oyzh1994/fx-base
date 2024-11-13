@@ -1,6 +1,6 @@
 // package cn.oyzh.fx.pkg.config;
 //
-// import cn.oyzh.fx.common.util.FileNameUtil;
+// import cn.oyzh.common.util.FileNameUtil;
 // import cn.oyzh.fx.pkg.clip.clipper.JarClipConfig;
 // import cn.oyzh.fx.pkg.clip.clipper.JreClipConfig;
 // import cn.oyzh.fx.pkg.jlink.JLinkConfig;

@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.util.ResourceUtil;
-import cn.oyzh.fx.common.util.UUIDUtil;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.common.util.FileUtil;
+import cn.oyzh.common.util.FileUtil;
 import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
 

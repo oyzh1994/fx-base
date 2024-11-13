@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus;
 
-import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.common.util.NumberUtil;
 import javafx.scene.control.TextFormatter;
 
 /**

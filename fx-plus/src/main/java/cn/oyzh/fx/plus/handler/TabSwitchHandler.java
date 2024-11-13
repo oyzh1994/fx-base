@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.handler;
 
-import cn.oyzh.fx.common.cache.CacheUtil;
-import cn.oyzh.fx.common.cache.WeakCache;
-import cn.oyzh.fx.common.util.CollectionUtil;
+import cn.oyzh.common.cache.CacheUtil;
+import cn.oyzh.common.cache.WeakCache;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import javafx.event.EventTarget;
 import javafx.scene.Node;

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.validator;
 
-import cn.oyzh.fx.common.util.RegexUtil;
+import cn.oyzh.common.util.RegexUtil;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.page;
 
-import cn.oyzh.fx.common.dto.Paging;
+import cn.oyzh.common.dto.Paging;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FlexText;

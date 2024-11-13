@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.standard;
 
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.BaseTerminalCommandHandler;

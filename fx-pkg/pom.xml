@@ -82,7 +82,7 @@
         <!-- 自定义类库，通用 -->
         <dependency>
             <groupId>cn.oyzh</groupId>
-            <artifactId>fx-common</artifactId>
+            <artifactId>common</artifactId>
         </dependency>
 
         <!-- &lt;!&ndash; json类库 &ndash;&gt; -->

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.filter;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.StringUtil;
 import lombok.NonNull;
 
 import java.util.Collection;

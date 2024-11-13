@@ -1,7 +1,7 @@
 // package cn.oyzh.fx.pkg.packager;
 //
 // import cn.hutool.core.io.FileUtil;
-// import cn.oyzh.fx.common.util.OSUtil;
+// import cn.oyzh.common.util.OSUtil;
 // import cn.oyzh.fx.pkg.packr.PackrConfig;
 //
 // /**

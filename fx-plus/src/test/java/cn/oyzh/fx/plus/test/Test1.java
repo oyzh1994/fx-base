@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.common.util.NumberUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.event.EventUtil;
 import org.junit.Test;
 
@@ -69,8 +69,8 @@ public class Test1 {
         System.out.println(d2 < d3);
         System.out.println(Double.compare(d1, d3));
         System.out.println(Double.compare(d2, d3));
-        System.out.println(cn.oyzh.fx.common.util.NumberUtil.isLT(d1, d3));
-        System.out.println(cn.oyzh.fx.common.util.NumberUtil.isLT(d2, d3));
+        System.out.println(cn.oyzh.common.util.NumberUtil.isLT(d1, d3));
+        System.out.println(cn.oyzh.common.util.NumberUtil.isLT(d2, d3));
 
     }
 

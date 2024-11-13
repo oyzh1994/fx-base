@@ -1,7 +1,7 @@
 package cn.oyzh.fx.rich.richtextarea.control;
 
-import cn.oyzh.fx.common.util.CollectionUtil;
-import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;

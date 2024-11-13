@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.util.Destroyable;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.Destroyable;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;

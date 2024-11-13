@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.common.util.CollectionUtil;
-import cn.oyzh.fx.common.util.DestroyUtil;
+import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.DestroyUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;

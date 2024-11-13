@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.util.ArrayUtil;
-import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;

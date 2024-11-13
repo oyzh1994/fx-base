@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.keyboard;
 
-import cn.oyzh.fx.common.log.JulLog;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.information;
 
-import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;

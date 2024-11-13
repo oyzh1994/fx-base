@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.validator;
 
-import cn.oyzh.fx.common.util.BooleanUtil;
+import cn.oyzh.common.util.BooleanUtil;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBoxBase;

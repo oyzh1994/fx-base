@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.thread.TaskManager;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.TaskManager;
 import javafx.scene.Node;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

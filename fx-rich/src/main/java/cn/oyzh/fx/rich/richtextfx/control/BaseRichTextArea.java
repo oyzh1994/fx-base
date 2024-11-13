@@ -1,9 +1,9 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
-import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.common.thread.TaskManager;
-import cn.oyzh.fx.common.util.CollectionUtil;
-import cn.oyzh.fx.common.util.NumberUtil;
+import cn.oyzh.common.thread.ExecutorUtil;
+import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;

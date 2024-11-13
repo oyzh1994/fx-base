@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.common.util.RegexUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.RegexUtil;
+import cn.oyzh.common.util.StringUtil;
 import javafx.scene.input.KeyEvent;
 
 public class xx2 {

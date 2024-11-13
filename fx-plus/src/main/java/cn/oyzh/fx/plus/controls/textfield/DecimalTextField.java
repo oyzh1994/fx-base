@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 
-import cn.oyzh.fx.common.util.NumberUtil;
-import cn.oyzh.fx.common.util.RegexUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.RegexUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.plus.format.DigitalDecimalFormat;
 import javafx.scene.control.TextFormatter;
@@ -112,12 +112,12 @@ public class DecimalTextField extends DigitalTextField {
                         return null;
                     }
                     // 如果超过了最大值，则将组件值设置为最大值
-                    if (this.maxVal != null && cn.oyzh.fx.common.util.NumberUtil.isGT(decimal.doubleValue(), this.maxVal)) {
+                    if (this.maxVal != null && cn.oyzh.common.util.NumberUtil.isGT(decimal.doubleValue(), this.maxVal)) {
                         this.setValue(this.maxVal.doubleValue());
                         return null;
                     }
                     // 如果小于了最小值，则将组件值设置为最小值
-                    if (this.minVal != null && cn.oyzh.fx.common.util.NumberUtil.isLT(decimal.doubleValue(), this.minVal)) {
+                    if (this.minVal != null && cn.oyzh.common.util.NumberUtil.isLT(decimal.doubleValue(), this.minVal)) {
                         this.setValue(this.minVal.doubleValue());
                         return null;
                     }

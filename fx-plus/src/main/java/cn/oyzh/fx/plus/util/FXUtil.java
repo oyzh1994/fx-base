@@ -1,11 +1,11 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.oyzh.fx.common.log.JulLog;
-import cn.oyzh.fx.common.thread.Task;
-import cn.oyzh.fx.common.thread.TaskBuilder;
-import cn.oyzh.fx.common.thread.TaskManager;
-import cn.oyzh.fx.common.util.IOUtil;
-import cn.oyzh.fx.common.util.ResourceUtil;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.Task;
+import cn.oyzh.common.thread.TaskBuilder;
+import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.IOUtil;
+import cn.oyzh.common.util.ResourceUtil;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;

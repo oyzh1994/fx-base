@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.oyzh.fx.common.util.ArrayUtil;
+import cn.oyzh.common.util.ArrayUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;

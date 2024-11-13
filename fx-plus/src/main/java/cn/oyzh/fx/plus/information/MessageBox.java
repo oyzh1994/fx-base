@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.information;
 
-import cn.oyzh.fx.common.thread.ExecutorUtil;
+import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.i18n.I18nHelper;

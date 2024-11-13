@@ -1,8 +1,8 @@
 // package cn.oyzh.fx.plus.store;
 //
-// import cn.oyzh.fx.common.jdbc.ColumnDefinition;
-// import cn.oyzh.fx.common.sqlite.SqliteStore;
-// import cn.oyzh.fx.common.jdbc.TableDefinition;
+// import cn.oyzh.common.jdbc.ColumnDefinition;
+// import cn.oyzh.common.sqlite.SqliteStore;
+// import cn.oyzh.common.jdbc.TableDefinition;
 // import cn.oyzh.fx.plus.domain.Setting;
 //
 // import java.util.HashMap;

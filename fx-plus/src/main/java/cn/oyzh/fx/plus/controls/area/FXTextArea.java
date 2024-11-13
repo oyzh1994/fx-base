@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controls.area;
 
-import cn.oyzh.fx.common.thread.ExecutorUtil;
-import cn.oyzh.fx.common.thread.TaskManager;
-import cn.oyzh.fx.common.util.CollectionUtil;
+import cn.oyzh.common.thread.ExecutorUtil;
+import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.LimitLenControl;
 import cn.oyzh.fx.plus.LimitLineControl;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;

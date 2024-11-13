@@ -1,7 +1,7 @@
 package cn.oyzh.fx.terminal;
 
-import cn.oyzh.fx.common.util.CollectionUtil;
-import cn.oyzh.fx.common.util.StringUtil;
+import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.terminal.RichTerminalTextAreaPane;

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.thread;
 
-import cn.oyzh.fx.common.util.RuntimeUtil;
+import cn.oyzh.common.util.RuntimeUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import lombok.experimental.UtilityClass;
 
