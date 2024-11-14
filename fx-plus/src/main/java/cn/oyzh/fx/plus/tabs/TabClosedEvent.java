@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.tabs;
 
-import cn.oyzh.fx.plus.event.Event;
+import cn.oyzh.event.Event;
 import javafx.scene.control.Tab;
 
 /**

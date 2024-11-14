@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.event.Event;
-import cn.oyzh.fx.plus.event.EventFormatter;
-import cn.oyzh.fx.plus.event.EventListener;
+import cn.oyzh.event.Event;
+import cn.oyzh.event.EventFormatter;
+import cn.oyzh.event.EventListener;
 import com.google.common.eventbus.Subscribe;
 
 /**

@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.test;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.event.EventUtil;
+import cn.oyzh.event.EventUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;

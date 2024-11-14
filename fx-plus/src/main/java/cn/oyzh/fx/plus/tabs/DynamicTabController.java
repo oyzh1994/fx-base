@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.tabs;
 
-import cn.oyzh.fx.plus.event.EventListener;
-import cn.oyzh.fx.plus.event.EventUtil;
+import cn.oyzh.event.EventListener;
+import cn.oyzh.event.EventUtil;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import javafx.event.Event;
 import javafx.fxml.Initializable;

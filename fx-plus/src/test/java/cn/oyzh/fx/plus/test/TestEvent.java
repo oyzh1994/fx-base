@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.event.Event;
+import cn.oyzh.event.Event;
 
 /**
  * @author oyzh

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.changelog;
 
-import cn.oyzh.fx.plus.event.Event;
+
+import cn.oyzh.event.Event;
 
 /**
  * 更新日志事件
