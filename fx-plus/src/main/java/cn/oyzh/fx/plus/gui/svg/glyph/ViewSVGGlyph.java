@@ -1,10 +1,12 @@
-package cn.oyzh.fx.plus.controls.svg;
+package cn.oyzh.fx.plus.gui.svg.glyph;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 
 /**
  * @author oyzh
  * @since 2024/5/14
  */
-public class ViewSVGGlyph extends SVGGlyph{
+public class ViewSVGGlyph extends SVGGlyph {
 
     public ViewSVGGlyph() {
         this.setUrl("/fx-plus/font/view.svg");

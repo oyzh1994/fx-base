@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.button;
 
 
-import cn.oyzh.fx.plus.controls.svg.UnLockSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.UnLockSVGGlyph;
 
 /**
  * 取消按钮
