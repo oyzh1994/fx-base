@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.text;
+package cn.oyzh.fx.plus.controls.label;
 
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;

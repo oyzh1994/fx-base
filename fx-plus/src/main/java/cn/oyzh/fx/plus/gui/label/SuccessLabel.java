@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.controls.text;
+package cn.oyzh.fx.plus.gui.label;
 
+import cn.oyzh.fx.plus.controls.label.FlexLabel;
 import javafx.scene.Node;
 
 /**

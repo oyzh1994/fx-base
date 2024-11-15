@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.fx.plus.controls.text.FXLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Paint;
 import lombok.NonNull;

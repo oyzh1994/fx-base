@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.plus.controls.text.FXLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;

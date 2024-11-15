@@ -10,7 +10,7 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.plus.gui.svg.glyph.DateSVGGlyph;
 import cn.oyzh.fx.plus.gui.svg.glyph.SubmitSVGGlyph;
-import cn.oyzh.fx.plus.controls.text.FXLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.window.PopupExt;
 import javafx.geometry.Insets;
