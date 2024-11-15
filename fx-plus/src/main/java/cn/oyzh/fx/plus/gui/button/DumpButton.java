@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.controls.button;
+package cn.oyzh.fx.plus.gui.button;
 
+import cn.oyzh.fx.plus.controls.button.IconButton;
 import cn.oyzh.fx.plus.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 
@@ -7,7 +8,7 @@ import cn.oyzh.fx.plus.i18n.I18nHelper;
  * @author oyzh
  * @since 2024/08/28
  */
-public class DumpButton extends IconButton{
+public class DumpButton extends IconButton {
 
     @Override
     public void initNode() {

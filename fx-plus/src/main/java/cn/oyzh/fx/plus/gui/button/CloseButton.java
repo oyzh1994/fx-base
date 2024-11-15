@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.button;
+package cn.oyzh.fx.plus.gui.button;
 
 
 import cn.oyzh.fx.plus.i18n.I18nHelper;
