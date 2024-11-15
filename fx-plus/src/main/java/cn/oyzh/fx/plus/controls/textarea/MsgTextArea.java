@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.area;
+package cn.oyzh.fx.plus.controls.textarea;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.area;
+package cn.oyzh.fx.plus.controls.textarea;
 
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;

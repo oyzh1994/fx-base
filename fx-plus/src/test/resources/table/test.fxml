@@ -1,5 +1,5 @@
 <?import atlantafx.base.controls.ToggleSwitch?>
-<?import cn.oyzh.fx.plus.controls.area.FlexTextArea?>
+<?import cn.oyzh.fx.plus.controls.textarea.FlexTextArea?>
 <?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
 <?import cn.oyzh.fx.plus.controls.button.IconButton?>

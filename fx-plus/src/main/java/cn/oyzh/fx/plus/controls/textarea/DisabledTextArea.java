@@ -1,12 +1,13 @@
-package cn.oyzh.fx.plus.controls.area;
+package cn.oyzh.fx.plus.controls.textarea;
 
 /**
  * @author oyzh
- * @since 2022/1/20
+ * @since 2023/11/14
  */
-public class ReadOnlyTextArea extends FlexTextArea {
+public class DisabledTextArea extends FlexTextArea {
 
     {
+        this.setDisable(true);
         this.setRequire(false);
         this.setEditable(false);
         this.setPickOnBounds(true);
