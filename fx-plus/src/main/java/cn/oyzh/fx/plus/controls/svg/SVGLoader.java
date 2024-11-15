@@ -3,8 +3,13 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.oyzh.common.cache.CacheUtil;
 import cn.oyzh.common.cache.TimedCache;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.xml.XMLDocument;
+import cn.oyzh.common.xml.XMLElement;
+import cn.oyzh.common.xml.XMLReader;
+import javafx.scene.shape.FillRule;
 import javafx.scene.shape.SVGPath;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -56,12 +61,12 @@ public class SVGLoader {
         SVGPath svgPath = null;
         try {
             // 解析内容
-            SAXReader reader = new SAXReader();
-            Document document = reader.read(u.openStream());
-            Element root = document.getRootElement();
-            Iterator<Element> iterator = root.elementIterator("path");
+            XMLReader reader = new XMLReader();
+            XMLDocument document = reader.read(u.openStream());
+            XMLElement root = document.getRootElement();
+            Iterator<XMLElement> iterator = root.elementIterator("path");
             if (iterator == null || !iterator.hasNext()) {
-                Element element = root.element("g");
+                XMLElement element = root.element("g");
                 if (element != null) {
                     iterator = element.elementIterator("path");
                 }
@@ -70,7 +75,7 @@ public class SVGLoader {
             if (iterator != null) {
                 boolean first = true;
                 while (iterator.hasNext()) {
-                    Element element = iterator.next();
+                    XMLElement element = iterator.next();
                     String d = element.attributeValue("d");
                     if (StringUtil.isNotBlank(d)) {
                         if (first) {
