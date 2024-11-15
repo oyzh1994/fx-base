@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.CloseSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;

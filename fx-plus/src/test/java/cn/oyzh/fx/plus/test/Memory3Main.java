@@ -20,9 +20,9 @@
 // import cn.oyzh.fx.plus.controls.button.TestButton;
 // import cn.oyzh.fx.plus.controls.button.TransportButton;
 // import cn.oyzh.fx.plus.controls.button.UnLockButton;
-// import cn.oyzh.fx.plus.controls.svg.AddSVGGlyph;
-// import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
-// import cn.oyzh.fx.plus.controls.svg.CloseSVGGlyph;
+// import cn.oyzh.fx.plus.gui.svg.glyph.AddSVGGlyph;
+// import cn.oyzh.fx.plus.gui.svg.glyph.ChooseSVGGlyph;
+// import cn.oyzh.fx.plus.gui.svg.glyph.CloseSVGGlyph;
 // import cn.oyzh.fx.plus.controls.tab.FXTab;
 // import cn.oyzh.fx.plus.controls.tab.FlexTabPane;
 // import cn.oyzh.fx.plus.controls.tree.FlexTreeView;

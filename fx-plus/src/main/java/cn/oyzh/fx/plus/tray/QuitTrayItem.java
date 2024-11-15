@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.plus.controls.svg.QuitSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.QuitSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 /**

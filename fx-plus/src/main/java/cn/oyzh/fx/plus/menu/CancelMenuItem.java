@@ -1,6 +1,6 @@
 // package cn.oyzh.fx.plus.menu;
 //
-// import cn.oyzh.fx.plus.controls.svg.CancelSVGGlyph;
+// import cn.oyzh.fx.plus.gui.svg.glyph.CancelSVGGlyph;
 //
 // /**
 //  * @author oyzh

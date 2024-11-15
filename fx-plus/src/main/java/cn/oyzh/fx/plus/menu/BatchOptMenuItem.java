@@ -1,6 +1,6 @@
 // package cn.oyzh.fx.plus.menu;
 //
-// import cn.oyzh.fx.plus.controls.svg.BatchOptSVGGlyph;
+// import cn.oyzh.fx.plus.gui.svg.glyph.BatchOptSVGGlyph;
 //
 // /**
 //  * @author oyzh

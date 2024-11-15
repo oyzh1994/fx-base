@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
-import cn.oyzh.fx.plus.controls.svg.SelectSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.view.FlexListView;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.util.ListViewUtil;

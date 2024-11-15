@@ -1,9 +1,8 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.controls.svg.AddSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.AddSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGLoader;
 import cn.oyzh.fx.plus.controls.svg.SVGManager;
 import javafx.application.Application;
 import javafx.scene.Scene;

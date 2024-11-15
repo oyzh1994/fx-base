@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.skin;
 
-import cn.oyzh.fx.plus.controls.svg.ChooseSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.file.FileChooserHelper;
 import cn.oyzh.fx.plus.file.FileExtensionFilter;
 import cn.oyzh.fx.plus.i18n.I18nHelper;

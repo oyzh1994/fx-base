@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.plus.controls.svg.DesktopSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.DesktopSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 /**

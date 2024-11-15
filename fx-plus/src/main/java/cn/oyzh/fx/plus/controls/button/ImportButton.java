@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
-import cn.oyzh.fx.plus.controls.svg.ImportSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.ImportSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 /**
