@@ -4,7 +4,7 @@ import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.controls.view.FXListView;
+import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;

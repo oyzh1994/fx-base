@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.plus.controls.FXVBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;

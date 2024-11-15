@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.changelog;
 
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.label.FlexLabel;
-import cn.oyzh.fx.plus.controls.view.FlexListView;
+import cn.oyzh.fx.plus.controls.list.FlexListView;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
