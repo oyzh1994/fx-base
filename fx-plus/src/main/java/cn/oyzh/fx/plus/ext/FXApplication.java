@@ -116,6 +116,8 @@ public abstract class FXApplication extends Preloader {
                 }
                 JulLog.info("=============launch args end---------->");
             }
+            // 移除可选属性
+            SystemUtil.removeOptionalProperties();
             Properties properties = System.getProperties();
             if (!properties.isEmpty()) {
                 JulLog.info("=============System Properties start---------->");
