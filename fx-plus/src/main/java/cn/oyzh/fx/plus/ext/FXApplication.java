@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.ext;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.SystemUtil;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.WindowManager;
 import com.sun.javafx.application.LauncherImpl;
@@ -11,6 +12,7 @@ import javafx.application.Preloader;
 import javafx.stage.Stage;
 import lombok.NonNull;
 
+import java.awt.*;
 import java.util.Properties;
 
 /**
@@ -19,22 +21,54 @@ import java.util.Properties;
  * @author oyzh
  * @since 2021/8/19
  */
-public abstract class ApplicationExt extends Preloader {
+public abstract class FXApplication extends Preloader {
+
+    /**
+     * 系统托盘
+     */
+    protected SystemTray systemTray;
+
+    /**
+     * 启动时间
+     */
+    protected final long startAt = System.currentTimeMillis();
 
     @Override
     public void start(Stage primaryStage) {
-        if (Platform.isSupported(ConditionalFeature.SCENE3D)) {
-            JulLog.info("3D加速已开启.");
-        } else {
-            JulLog.warn("3D加速不支持.");
-        }
+        // 设置stage全部关闭后不自动销毁进程
+        Platform.setImplicitExit(false);
+        // 设置主stage
         StageManager.setPrimaryStage(primaryStage);
+        // 启动耗时
+        long startCost = System.currentTimeMillis() - this.startAt;
+        JulLog.info("启动耗时:{}ms-------------------------------", startCost);
+        // 内存消耗
+        double usedMemory = SystemUtil.getUsedMemory();
+        JulLog.info("内存消耗:{}mb-------------------------------", usedMemory);
+        // 启动结束以后业务
+        this.afterStart();
+    }
 
+    /**
+     * 启动完成之后的业务
+     */
+    protected void afterStart() {
+        // 打印特性支持情况
+        for (ConditionalFeature feature : ConditionalFeature.values()) {
+            JulLog.info("{}={}", feature.name(), Platform.isSupported(feature) ? "支持" : "不支持");
+        }
+        // 初始化系统托盘
+        this.systemTray = this.initSystemTray();
+        // 开启定期gc
+        SystemUtil.gcInterval(60_000);
     }
 
     @Override
     public void stop() {
         try {
+            // 运行时间
+            long runAlive = System.currentTimeMillis() - this.startAt;
+            JulLog.info("运行时间:{}ms-------------------------------", runAlive);
             super.stop();
             WindowManager.closeWindows();
             System.exit(0);
@@ -42,6 +76,29 @@ public abstract class ApplicationExt extends Preloader {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public void handleStateChangeNotification(StateChangeNotification info) {
+        super.handleStateChangeNotification(info);
+    }
+
+    @Override
+    public void handleProgressNotification(ProgressNotification info) {
+        super.handleProgressNotification(info);
+        System.out.println(info.getProgress() + "------------------------------------");
+    }
+
+    /**
+     * 初始化系统托盘
+     */
+    protected abstract SystemTray initSystemTray();
+
+    /**
+     * app图标
+     *
+     * @return app图标
+     */
+    protected abstract String appIcon();
 
     /**
      * 启动
@@ -62,7 +119,7 @@ public abstract class ApplicationExt extends Preloader {
             if (!properties.isEmpty()) {
                 System.out.println("=============props start---------->");
                 for (String key : properties.stringPropertyNames()) {
-                        System.out.println(key + "=" + System.getProperty(key));
+                    System.out.println(key + "=" + System.getProperty(key));
                 }
                 System.out.println("=============props end---------->");
             }
@@ -87,15 +144,4 @@ public abstract class ApplicationExt extends Preloader {
         }
     }
 
-
-    @Override
-    public void handleStateChangeNotification(StateChangeNotification info) {
-        super.handleStateChangeNotification(info);
-    }
-
-    @Override
-    public void handleProgressNotification(ProgressNotification info) {
-        super.handleProgressNotification(info);
-        System.out.println(info.getProgress()+"------------------------------------");
-    }
 }

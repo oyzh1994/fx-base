@@ -27,12 +27,12 @@ public class TrayManager {
     /**
      * 初始化
      *
-     * @param url 图标地址
+     * @param icon 图标地址
      * @return 托盘
      */
-    public static Tray init(String url) {
+    public static Tray init(String icon) {
         if (tray == null) {
-            TrayManager.tray = new Tray(url);
+            TrayManager.tray = new Tray(icon);
         }
         return tray;
     }

@@ -40,13 +40,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
-            <dependency>
-                <groupId>org.dom4j</groupId>
-                <artifactId>dom4j</artifactId>
-                <version>${dom4j.version}</version>
-            </dependency>
-
             <!-- ssh类库 -->
             <!-- https://mvnrepository.com/artifact/com.github.mwiede/jsch -->
             <dependency>

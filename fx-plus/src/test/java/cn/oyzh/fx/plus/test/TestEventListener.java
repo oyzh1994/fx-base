@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.test;
 import cn.oyzh.event.Event;
 import cn.oyzh.event.EventFormatter;
 import cn.oyzh.event.EventListener;
-import com.google.common.eventbus.Subscribe;
+import cn.oyzh.event.EventSubscribe;
 
 /**
  * @author oyzh
@@ -11,22 +11,22 @@ import com.google.common.eventbus.Subscribe;
  */
 public class TestEventListener implements EventListener {
 
-    @Subscribe
+    @EventSubscribe
     public void test(TestEvent event) {
         System.out.println(event.data());
     }
 
-    @Subscribe
+    @EventSubscribe
     private void test1(TestEvent event) {
         System.out.println(event.data());
     }
 
-    @Subscribe
+    @EventSubscribe
     private void test2(Event<?> event) {
         System.out.println(event.data());
     }
 
-    @Subscribe
+    @EventSubscribe
     private void test3(EventFormatter formatter) {
         System.out.println(formatter.eventFormat());
     }

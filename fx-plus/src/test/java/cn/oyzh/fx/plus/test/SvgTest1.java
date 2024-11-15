@@ -18,8 +18,8 @@ public class SvgTest1 extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        SVGGlyph glyph = new SVGGlyph("/minus.svg");
-        // SVGGlyph glyph = new SVGGlyph("/folder.svg");
+        // SVGGlyph glyph = new SVGGlyph("/minus.svg");
+        SVGGlyph glyph = new SVGGlyph("/folder.svg");
 
 
         FXHBox box = new FXHBox(glyph);

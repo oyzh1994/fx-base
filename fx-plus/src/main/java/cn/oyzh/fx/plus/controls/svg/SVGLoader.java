@@ -3,17 +3,12 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.oyzh.common.cache.CacheUtil;
 import cn.oyzh.common.cache.TimedCache;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.xml.XMLDocument;
 import cn.oyzh.common.xml.XMLElement;
 import cn.oyzh.common.xml.XMLReader;
-import javafx.scene.shape.FillRule;
 import javafx.scene.shape.SVGPath;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 import java.net.URL;
 import java.util.Iterator;
