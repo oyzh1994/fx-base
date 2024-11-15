@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.ext;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.SystemUtil;
 import cn.oyzh.fx.plus.window.StageManager;
-import cn.oyzh.fx.plus.window.WindowManager;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
@@ -12,7 +11,6 @@ import javafx.application.Preloader;
 import javafx.stage.Stage;
 import lombok.NonNull;
 
-import java.awt.*;
 import java.util.Properties;
 
 /**
@@ -24,43 +22,50 @@ import java.util.Properties;
 public abstract class FXApplication extends Preloader {
 
     /**
-     * 系统托盘
-     */
-    protected SystemTray systemTray;
-
-    /**
      * 启动时间
      */
     protected final long startAt = System.currentTimeMillis();
 
     @Override
-    public void start(Stage primaryStage) {
+    public void init() throws Exception {
+        super.init();
         // 设置stage全部关闭后不自动销毁进程
         Platform.setImplicitExit(false);
-        // 设置主stage
-        StageManager.setPrimaryStage(primaryStage);
-        // 启动耗时
-        long startCost = System.currentTimeMillis() - this.startAt;
-        JulLog.info("启动耗时:{}ms-------------------------------", startCost);
-        // 内存消耗
-        double usedMemory = SystemUtil.getUsedMemory();
-        JulLog.info("内存消耗:{}mb-------------------------------", usedMemory);
-        // 启动结束以后业务
-        this.afterStart();
+        JulLog.info("{} init.", this.appName());
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            // 设置主stage
+            StageManager.setPrimaryStage(primaryStage);
+            // 显示主窗口
+            this.showMainView();
+            // 启动耗时
+            long startCost = System.currentTimeMillis() - this.startAt;
+            JulLog.info("启动耗时:{}ms-------------------------------", startCost);
+            // 内存消耗
+            double usedMemory = SystemUtil.getUsedMemory();
+            JulLog.info("内存消耗:{}mb-------------------------------", usedMemory);
+            // 打印特性支持情况
+            for (ConditionalFeature feature : ConditionalFeature.values()) {
+                JulLog.info("{}={}", feature.name(), Platform.isSupported(feature) ? "支持" : "不支持");
+            }
+            // 初始化系统托盘
+            this.initSystemTray();
+            // 开启定期gc
+            SystemUtil.gcInterval(60_000);
+            JulLog.info("{} start.", this.appName());
+        } catch (Exception ex) {
+            JulLog.error("start fail", ex);
+        }
     }
 
     /**
-     * 启动完成之后的业务
+     * 显示主窗口
      */
-    protected void afterStart() {
-        // 打印特性支持情况
-        for (ConditionalFeature feature : ConditionalFeature.values()) {
-            JulLog.info("{}={}", feature.name(), Platform.isSupported(feature) ? "支持" : "不支持");
-        }
-        // 初始化系统托盘
-        this.systemTray = this.initSystemTray();
-        // 开启定期gc
-        SystemUtil.gcInterval(60_000);
+    protected void showMainView() {
+
     }
 
     @Override
@@ -70,28 +75,11 @@ public abstract class FXApplication extends Preloader {
             long runAlive = System.currentTimeMillis() - this.startAt;
             JulLog.info("运行时间:{}ms-------------------------------", runAlive);
             super.stop();
-            WindowManager.closeWindows();
-            System.exit(0);
+            JulLog.info("{} stop.", this.appName());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-
-    @Override
-    public void handleStateChangeNotification(StateChangeNotification info) {
-        super.handleStateChangeNotification(info);
-    }
-
-    @Override
-    public void handleProgressNotification(ProgressNotification info) {
-        super.handleProgressNotification(info);
-        System.out.println(info.getProgress() + "------------------------------------");
-    }
-
-    /**
-     * 初始化系统托盘
-     */
-    protected abstract SystemTray initSystemTray();
 
     /**
      * app图标
@@ -99,6 +87,18 @@ public abstract class FXApplication extends Preloader {
      * @return app图标
      */
     protected abstract String appIcon();
+
+    /**
+     * app名称
+     *
+     * @return app名称
+     */
+    protected abstract String appName();
+
+    /**
+     * 初始化系统托盘
+     */
+    protected abstract void initSystemTray();
 
     /**
      * 启动
@@ -109,39 +109,54 @@ public abstract class FXApplication extends Preloader {
     public static void launch(@NonNull Class<? extends Application> appClass, String... args) {
         try {
             if (args != null && args.length > 0) {
-                System.out.println("=============args start---------->");
+                JulLog.info("=============launch args start---------->");
                 for (String arg : args) {
-                    System.out.println("arg: " + arg);
+                    JulLog.info("launch arg={}", arg);
                 }
-                System.out.println("=============args end---------->");
+                JulLog.info("=============launch args end---------->");
             }
             Properties properties = System.getProperties();
             if (!properties.isEmpty()) {
-                System.out.println("=============props start---------->");
+                JulLog.info("=============System Properties start---------->");
                 for (String key : properties.stringPropertyNames()) {
-                    System.out.println(key + "=" + System.getProperty(key));
+                    JulLog.info("System Property {}={}", key, System.getProperty(key));
                 }
-                System.out.println("=============props end---------->");
+                JulLog.info("=============System Properties end---------->");
             }
-            LauncherImpl.launchApplication(appClass, ApplicationPreloader.class, args);
+            // 启动工程
+            if (Preloader.class.isAssignableFrom(appClass)) {
+                Class<Preloader> preloaderClass = (Class<Preloader>) appClass;
+                LauncherImpl.launchApplication(appClass, preloaderClass, args);
+            } else {
+                LauncherImpl.launchApplication(appClass, args);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    /**
-     * 启动
-     *
-     * @param appClass       app类
-     * @param preloaderClass 预加载类
-     * @param args           参数
-     */
-    public static void launch(@NonNull Class<? extends Application> appClass, Class<? extends Preloader> preloaderClass, String... args) {
-        try {
-            LauncherImpl.launchApplication(appClass, preloaderClass, args);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    @Override
+    public void handleApplicationNotification(PreloaderNotification info) {
+        super.handleApplicationNotification(info);
     }
 
+    @Override
+    public void handleStateChangeNotification(StateChangeNotification info) {
+        super.handleStateChangeNotification(info);
+    }
+
+    @Override
+    public void handleProgressNotification(ProgressNotification info) {
+        super.handleProgressNotification(info);
+    }
+
+    @Override
+    public boolean handleErrorNotification(ErrorNotification info) {
+        Throwable throwable = info == null ? null : info.getCause();
+        if (throwable != null) {
+            throwable.printStackTrace();
+            return false;
+        }
+        return super.handleErrorNotification(info);
+    }
 }

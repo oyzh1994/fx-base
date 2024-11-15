@@ -457,4 +457,12 @@ public interface StageAdapter extends WindowAdapter {
     default boolean isShowing() {
         return this.stage().isShowing();
     }
+
+    default void setIconified(boolean b) {
+        this.stage().setIconified(b);
+    }
+
+    default boolean isIconified() {
+        return this.stage().isIconified();
+    }
 }
