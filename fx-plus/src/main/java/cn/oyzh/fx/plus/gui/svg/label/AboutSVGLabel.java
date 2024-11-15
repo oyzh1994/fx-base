@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.gui.svg.glyph;
+package cn.oyzh.fx.plus.gui.svg.label;
 
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
