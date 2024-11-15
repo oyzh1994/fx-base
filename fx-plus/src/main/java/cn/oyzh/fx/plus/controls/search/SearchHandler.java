@@ -21,6 +21,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/11/24
  */
+@Deprecated
 @Accessors(chain = true, fluent = true)
 public abstract class SearchHandler {
 

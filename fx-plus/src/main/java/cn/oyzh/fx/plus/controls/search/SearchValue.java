@@ -12,6 +12,7 @@ import java.util.Objects;
  * @since 2023/11/24
  */
 @Data
+@Deprecated
 public class SearchValue {
 
     /**

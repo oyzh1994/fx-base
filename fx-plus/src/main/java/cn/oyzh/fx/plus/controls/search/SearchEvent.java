@@ -9,6 +9,7 @@ import javafx.event.EventType;
  * @author oyzh
  * @since 2023/10/23
  */
+@Deprecated
 public class SearchEvent extends Event {
 
     /**

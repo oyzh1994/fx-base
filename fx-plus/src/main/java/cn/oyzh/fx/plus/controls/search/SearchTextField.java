@@ -14,6 +14,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/10/24
  */
+@Deprecated
 public class SearchTextField extends LimitTextField {
 
     /**

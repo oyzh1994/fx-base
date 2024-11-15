@@ -10,6 +10,7 @@ import java.util.Objects;
  * @author oyzh
  * @since 2023/11/24
  */
+@Deprecated
 @Data
 public class SearchParam {
 
