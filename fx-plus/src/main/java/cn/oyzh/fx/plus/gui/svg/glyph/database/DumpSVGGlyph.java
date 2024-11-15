@@ -1,19 +1,19 @@
-package cn.oyzh.fx.plus.controls.svg.database;
+package cn.oyzh.fx.plus.gui.svg.glyph.database;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
 
 /**
  * @author oyzh
- * @since 2024/09/05
+ * @since 2024/08/26
  */
-public class DatabaseSVGGlyph extends SVGGlyph {
+public class DumpSVGGlyph extends SVGGlyph {
 
-    public DatabaseSVGGlyph() {
-        this.setUrl("/fx-plus/font/database/database.svg");
+    public DumpSVGGlyph() {
+        this.setUrl("/fx-plus/font/database/dump.svg");
     }
 
-    public DatabaseSVGGlyph(String size) {
+    public DumpSVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }

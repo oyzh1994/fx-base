@@ -2,11 +2,11 @@ package cn.oyzh.fx.plus.controls.page;
 
 import cn.oyzh.common.dto.Paging;
 import cn.oyzh.fx.plus.controls.FlexFlowPane;
-import cn.oyzh.fx.plus.controls.svg.page.PageFirstSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.page.PageLastSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.page.PageNextSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.page.PagePrevSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.page.PageSettingSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.page.PageFirstSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.page.PageLastSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.page.PageNextSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.page.PagePrevSVGGlyph;
+import cn.oyzh.fx.plus.gui.svg.glyph.page.PageSettingSVGGlyph;
 import cn.oyzh.fx.plus.controls.text.FlexLabel;
 import cn.oyzh.fx.plus.controls.textfield.NumberTextField;
 import cn.oyzh.fx.plus.i18n.I18nManager;

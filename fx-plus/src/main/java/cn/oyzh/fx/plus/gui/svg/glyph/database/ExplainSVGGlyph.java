@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.svg.database;
+package cn.oyzh.fx.plus.gui.svg.glyph.database;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nHelper;
