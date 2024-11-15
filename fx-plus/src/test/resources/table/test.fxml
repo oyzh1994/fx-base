@@ -32,7 +32,7 @@
 <?import atlantafx.base.layout.DeckPane?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ListView?>
-<?import cn.oyzh.fx.plus.controls.textfield.BitTextField?>
+<?import cn.oyzh.fx.plus.gui.textfield.BitTextField?>
 <?import javafx.scene.shape.SVGPath?>
 <FlexTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
              fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">

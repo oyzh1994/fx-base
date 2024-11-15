@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.controls.textfield;
+package cn.oyzh.fx.plus.gui.textfield;
 
+import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 import cn.oyzh.fx.plus.skin.SelectTextFiledSkin;
 import javafx.beans.value.ChangeListener;
 
