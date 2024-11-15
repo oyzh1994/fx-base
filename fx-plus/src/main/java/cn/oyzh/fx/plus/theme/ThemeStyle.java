@@ -109,23 +109,38 @@ public interface ThemeStyle {
      * @param node 节点
      */
     default void handleStyle(Node node) {
-        FXUtil.runLater(() -> {
-            if (node instanceof Parent parent) {
+        if (node != null) {
+            FXUtil.runLater(() -> {
                 try {
-                    parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentUserAgentStylesheet());
-                    parent.getStylesheets().addAll(this.getUserAgentStylesheet(), FXStyle.FX_BASE);
-                    // parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentCompressedUserAgentStylesheet());
-                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
-                    // List<String> removes = new ArrayList<>();
-                    // removes.add(FXStyle.FX_BASE);
-                    // removes.add(ThemeManager.currentTheme().getCompressedUserAgentStylesheet());
-                    // parent.getStylesheets().removeAll(removes);
-                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
+                    // 更新fx-base样式文件
+                    if (node instanceof Parent parent) {
+                        parent.getStylesheets().remove(FXStyle.FX_BASE);
+                        parent.getStylesheets().add(FXStyle.FX_BASE);
+                    }
+                    // 重新应用样式
+                    node.reapplyCss();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            }
-        });
+            });
+        }
+//        FXUtil.runLater(() -> {
+//            if (node instanceof Parent parent) {
+//                try {
+//                    parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentUserAgentStylesheet());
+//                    parent.getStylesheets().addAll(this.getUserAgentStylesheet(), FXStyle.FX_BASE);
+//                    // parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentCompressedUserAgentStylesheet());
+//                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
+//                    // List<String> removes = new ArrayList<>();
+//                    // removes.add(FXStyle.FX_BASE);
+//                    // removes.add(ThemeManager.currentTheme().getCompressedUserAgentStylesheet());
+//                    // parent.getStylesheets().removeAll(removes);
+//                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     /**

@@ -31,8 +31,6 @@ public abstract class FXApplication extends Preloader {
     public void init() throws Exception {
         // 设置stage全部关闭后不自动销毁进程
         Platform.setImplicitExit(false);
-        // 设置应用样式
-        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
         super.init();
         JulLog.info("{} init.", this.appName());
     }

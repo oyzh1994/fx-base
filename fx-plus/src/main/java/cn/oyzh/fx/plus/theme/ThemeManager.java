@@ -5,6 +5,7 @@ import cn.oyzh.common.util.FileUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
+import javafx.application.Application;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -98,7 +99,9 @@ public class ThemeManager {
             }
             // 设置当前主题
             currentTheme = style;
-            // 变更颜色
+            // 设置应用样式
+            Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+            // 变更样式
             List<StageAdapter> wrappers = StageManager.allStages();
             for (StageAdapter wrapper : wrappers) {
                 applyCycle(wrapper.root(), style);
