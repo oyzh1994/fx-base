@@ -131,4 +131,5 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
     public String getGroupId() {
         return NodeGroup.super.groupId();
     }
+
 }

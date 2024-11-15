@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface ThemeAdapter extends PropAdapter {
 
-    static final String ENABLE_THEME_KEY = "_enable_theme";
+    String ENABLE_THEME_KEY = "_enable_theme";
 
     /**
      * 禁用主题
@@ -58,16 +58,16 @@ public interface ThemeAdapter extends PropAdapter {
      * @param style 主题风格
      */
     default void changeTheme(ThemeStyle style) {
-        if (this.isEnableTheme() && style != null) {
-            switch (this) {
-                case Parent node -> this.handleStyle(node, style);
-                case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
-                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);
-                case Popup popup -> this.handleStyle(popup.getContent(), style);
-                default -> {
-                }
-            }
-        }
+        // if (this.isEnableTheme() && style != null) {
+        //     switch (this) {
+        //         case Parent node -> this.handleStyle(node, style);
+        //         case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
+        //         case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);
+        //         case Popup popup -> this.handleStyle(popup.getContent(), style);
+        //         default -> {
+        //         }
+        //     }
+        // }
     }
 
     /**

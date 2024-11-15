@@ -29,7 +29,27 @@ public class SVGLoader {
     /**
      * 缓存
      */
-    private final TimedCache<String, SVGPath> cache = CacheUtil.newTimedCache(60 * 1000L);
+    private final TimedCache<String, String> cache = CacheUtil.newTimedCache(60 * 1000L);
+
+    /**
+     * 加载svg路径
+     *
+     * @param url 路径
+     * @return 结果
+     */
+    public SVGPath load(String url) {
+        try {
+            String content = this.loadContent(url);
+            if (content != null) {
+                SVGPath    svgPath = new SVGPath();
+                svgPath.setContent(content);
+                return svgPath;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 加载svg内容
@@ -37,7 +57,7 @@ public class SVGLoader {
      * @param url 路径
      * @return 结果
      */
-    public SVGPath load(String url) {
+    public String loadContent(String url) {
         if (url == null) {
             return null;
         }
@@ -53,7 +73,7 @@ public class SVGLoader {
             JulLog.warn("svg file: {} is not found.", url);
             return null;
         }
-        SVGPath svgPath = null;
+        String svgPath = null;
         try {
             // 解析内容
             XMLReader reader = new XMLReader();
@@ -85,8 +105,7 @@ public class SVGLoader {
             if (content.isEmpty()) {
                 return null;
             }
-            svgPath = new SVGPath();
-            svgPath.setContent(content.toString());
+            svgPath = content.toString();
             // 添加到缓存
             this.cache.put(url, svgPath);
         } catch (Exception e) {

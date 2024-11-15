@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.ext;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.SystemUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.window.StageManager;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
@@ -28,9 +29,11 @@ public abstract class FXApplication extends Preloader {
 
     @Override
     public void init() throws Exception {
-        super.init();
         // 设置stage全部关闭后不自动销毁进程
         Platform.setImplicitExit(false);
+        // 设置应用样式
+        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+        super.init();
         JulLog.info("{} init.", this.appName());
     }
 
