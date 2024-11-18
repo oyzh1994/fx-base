@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.fx.plus.window.PopupExt;
 import javafx.geometry.Insets;

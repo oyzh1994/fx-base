@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.SimpleStringConverter;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
-import cn.oyzh.fx.plus.i18n.I18nManager;
+import cn.oyzh.i18n.I18nManager;
 import javafx.scene.paint.Color;
 
 /**

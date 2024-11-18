@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.oyzh.fx.plus.i18n.I18nHelper;
 import cn.oyzh.fx.plus.information.MessageBox;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.Clipboard;
 import lombok.NonNull;

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.tray;
 
 import cn.oyzh.fx.gui.svg.glyph.SettingSVGGlyph;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import cn.oyzh.fx.plus.tray.TrayItem;
 
 /**

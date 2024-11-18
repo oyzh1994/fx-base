@@ -81,10 +81,14 @@
             <artifactId>event</artifactId>
         </dependency>
 
-        <!-- 自定义类库，通用 -->
         <dependency>
             <groupId>cn.oyzh</groupId>
             <artifactId>store</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.oyzh</groupId>
+            <artifactId>i18n</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/de.codecentric.centerdevice/javafxsvg -->

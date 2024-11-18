@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.button;
 
 import cn.oyzh.fx.plus.controls.button.IconButton;
 import cn.oyzh.fx.gui.svg.glyph.StopSVGGlyph;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 
 /**
  * 取消按钮

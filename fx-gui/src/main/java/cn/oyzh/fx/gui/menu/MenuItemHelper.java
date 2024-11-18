@@ -31,7 +31,7 @@ import cn.oyzh.fx.gui.svg.glyph.TruncateSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import lombok.experimental.UtilityClass;

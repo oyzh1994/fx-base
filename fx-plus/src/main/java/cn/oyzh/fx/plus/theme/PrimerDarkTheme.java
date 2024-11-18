@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.Theme;
 import cn.oyzh.fx.plus.FXStyle;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -23,12 +23,6 @@ public class PrimerDarkTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        // if (locale == Locale.TRADITIONAL_CHINESE) {
-        //     return "暗黑基礎";
-        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-        //     return "暗黑基础";
-        // }
-        // return "Primer Light";
         return I18nHelper.themePrimerDark();
     }
 

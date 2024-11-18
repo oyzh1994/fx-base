@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.i18n;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
+import cn.oyzh.i18n.I18nResourceBundle;
 
 import java.util.Locale;
 

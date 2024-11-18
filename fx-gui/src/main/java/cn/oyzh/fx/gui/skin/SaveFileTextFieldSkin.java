@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.file.FileChooserHelper;
 import cn.oyzh.fx.plus.file.FileExtensionFilter;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;

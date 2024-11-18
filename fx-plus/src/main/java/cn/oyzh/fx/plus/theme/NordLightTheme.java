@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import atlantafx.base.theme.NordLight;
 import atlantafx.base.theme.Theme;
 import cn.oyzh.fx.plus.FXStyle;
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;

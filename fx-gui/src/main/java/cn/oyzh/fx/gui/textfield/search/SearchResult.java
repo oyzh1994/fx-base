@@ -1,6 +1,6 @@
 package cn.oyzh.fx.gui.textfield.search;
 
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 import lombok.Data;
 
 import java.util.Objects;

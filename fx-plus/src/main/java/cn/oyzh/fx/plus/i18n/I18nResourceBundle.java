@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.i18n;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.i18n.I18nManager;
 import lombok.NonNull;
 
 import java.util.Enumeration;

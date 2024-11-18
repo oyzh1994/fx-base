@@ -1,6 +1,6 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
-import cn.oyzh.fx.plus.i18n.I18nHelper;
+import cn.oyzh.i18n.I18nHelper;
 
 /**
  * @author oyzh
