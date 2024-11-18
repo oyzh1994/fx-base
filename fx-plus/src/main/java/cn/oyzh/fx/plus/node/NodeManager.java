@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import cn.oyzh.fx.plus.opacity.OpacityManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import javafx.scene.Node;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -47,6 +48,17 @@ public class NodeManager {
         }
         if (node instanceof I18nSelectAdapter<?> adapter) {
             adapter.values(I18nManager.currentLocale());
+        }
+        if (node instanceof NodeLifeCycle lifeCycle) {
+            if (node instanceof Node node1) {
+                node1.parentProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue == null) {
+                        lifeCycle.onNodeDestroy();
+                    } else {
+                        lifeCycle.onNodeInitialize();
+                    }
+                });
+            }
         }
     }
 }

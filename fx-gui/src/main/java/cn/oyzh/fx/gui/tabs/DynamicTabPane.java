@@ -15,6 +15,7 @@ import javafx.scene.control.Tab;
 public class DynamicTabPane extends FlexTabPane {
 
     {
+        super.setTabHeight(25);
         this.setCache(false);
         this.setCacheHint(CacheHint.QUALITY);
         this.initTabPane();
