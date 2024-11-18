@@ -38,6 +38,10 @@ import lombok.Setter;
  */
 public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
+    {
+        NodeManager.init(this);
+    }
+
     /**
      * 图标地址
      */
@@ -54,24 +58,28 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      * 是否激活态
      */
     @Getter
-    private boolean active;
+    private Boolean active;
 
     /**
      * 是否等待中
      */
     @Getter
     @Setter
-    private boolean waiting;
+    private Boolean waiting;
 
     /**
      * 是否开启动画功能
      */
     @Setter
     @Getter
-    private boolean enableWaiting = true;
+    private Boolean enableWaiting = true;
 
-    {
-        NodeManager.init(this);
+    public boolean isActive() {
+        return this.active != null && this.active;
+    }
+
+    public boolean isWaiting() {
+        return this.waiting != null && this.waiting;
     }
 
     @Override
@@ -131,7 +139,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
             this.setOpacity(1.0);
         }
         // 更新颜色
-        if (this.active) {
+        if (this.isActive()) {
             this.setBackground(ControlUtil.background(Color.ORANGERED));
         } else if (this.isEnableTheme()) {
             this.setBackground(ControlUtil.background(ThemeManager.currentForegroundColor()));
@@ -333,7 +341,6 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
                 this.setPrefSize(w, h);
             } catch (Exception ex) {
                 ex.printStackTrace();
-
             }
         }
     }
