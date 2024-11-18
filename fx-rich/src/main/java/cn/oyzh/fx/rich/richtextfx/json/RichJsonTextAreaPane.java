@@ -57,11 +57,11 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
         if (StringUtil.isEmpty(jsonStr)) {
             return;
         }
-        if (!JSONUtil.isJsonText(jsonStr)) {
+        if (!JSONUtil.isJson(jsonStr)) {
             this.requestFocus();
             throw new RuntimeException("invalid json text!");
         }
-        this.setText(JSONUtil.toJsonPrettyStr(jsonStr));
+        this.setText(JSONUtil.toPretty(jsonStr));
     }
 
     public String getJsonStr() {
@@ -69,10 +69,10 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
         if (StringUtil.isEmpty(text)) {
             return null;
         }
-        if (!JSONUtil.isJsonText(text)) {
+        if (!JSONUtil.isJson(text)) {
             this.requestFocus();
             throw new RuntimeException("invalid json text!");
         }
-        return JSONUtil.toJsonStr(text);
+        return JSONUtil.toJson(text);
     }
 }

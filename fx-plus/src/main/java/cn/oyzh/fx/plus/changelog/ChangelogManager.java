@@ -36,6 +36,6 @@ public class ChangelogManager {
     public static List<Changelog> load(String url) {
         URL url1 = ResourceUtil.getResource(url);
         String json = FileUtil.readString(url1, StandardCharsets.UTF_8);
-        return JSONUtil.toList(json, Changelog.class);
+        return JSONUtil.toBeanList(json, Changelog.class);
     }
 }

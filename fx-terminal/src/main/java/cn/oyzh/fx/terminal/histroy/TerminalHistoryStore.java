@@ -32,7 +32,7 @@ public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistor
             if (StringUtil.isBlank(text)) {
                 return new ArrayList<>();
             }
-            this.histories.addAll(JSONUtil.toList(text, TerminalHistory.class));
+            this.histories.addAll(JSONUtil.toBeanList(text, TerminalHistory.class));
         }
         return this.histories;
     }
