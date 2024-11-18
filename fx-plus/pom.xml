@@ -150,6 +150,7 @@
         <!--            <version>2.0.1</version>-->
         <!--        </dependency>-->
 
+        <!-- 测试类库 -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

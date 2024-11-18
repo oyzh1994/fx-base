@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.textfield;
 
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.plus.controls.textfield.ClearableTextField;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
