@@ -20,19 +20,19 @@
 <?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
 <?import cn.oyzh.fx.plus.controls.text.FXText?>
 <?import cn.oyzh.fx.plus.controls.textfield.ClearableTextField?>
-<?import cn.oyzh.fx.plus.controls.search.SearchTextField?>
+<?import cn.oyzh.fx.gui.textfield.search.SearchTextField?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.HBox?>
 <?import java.lang.String?>
 <?import javafx.scene.control.Pagination?>
-<?import cn.oyzh.fx.plus.controls.page.PagePane?>
-<?import cn.oyzh.fx.plus.controls.page.PageBox?>
+<?import cn.oyzh.fx.gui.page.PagePane?>
+<?import cn.oyzh.fx.gui.page.PageBox?>
 <?import atlantafx.base.layout.DeckPane?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ListView?>
-<?import cn.oyzh.fx.plus.gui.textfield.BitTextField?>
+<?import cn.oyzh.fx.gui.textfield.BitTextField?>
 <?import javafx.scene.shape.SVGPath?>
 <FlexTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
              fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">

@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>fx-pkg</module>
+        <module>fx-gui</module>
         <module>fx-plus</module>
         <module>fx-rich</module>
         <module>fx-terminal</module>
@@ -30,18 +31,17 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- 自定义类库，fx相关 -->
+            <!-- 自定义类库，fx增强 -->
             <dependency>
                 <groupId>cn.oyzh</groupId>
                 <artifactId>fx-plus</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
-            <!-- 打包工具 -->
+            <!-- 自定义类库，fx组件 -->
             <dependency>
                 <groupId>cn.oyzh</groupId>
-                <artifactId>fx-pkg</artifactId>
+                <artifactId>fx-gui</artifactId>
                 <version>${fx-base.version}</version>
-                <scope>test</scope>
             </dependency>
             <!-- 自定义类库，终端相关 -->
             <dependency>
@@ -54,6 +54,13 @@
                 <groupId>cn.oyzh</groupId>
                 <artifactId>fx-rich</artifactId>
                 <version>${fx-base.version}</version>
+            </dependency>
+            <!-- 打包工具 -->
+            <dependency>
+                <groupId>cn.oyzh</groupId>
+                <artifactId>fx-pkg</artifactId>
+                <version>${fx-base.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
