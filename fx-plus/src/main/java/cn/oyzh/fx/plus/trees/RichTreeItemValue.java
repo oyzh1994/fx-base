@@ -132,13 +132,14 @@ public class RichTreeItemValue extends FXHBox implements Destroyable {
      */
     public void flushGraphicColor() {
         if (this.graphic() instanceof SVGGlyph glyph) {
+            // 移除等待动画设置的颜色，避免被重复覆盖
+            glyph.removeProp("_color");
+            // 设置颜色
             if (ThemeManager.isDarkMode()) {
                 glyph.setColor(Color.WHITE);
             } else {
                 glyph.setColor(Color.BLACK);
             }
-            // 移除等待动画设置的颜色，避免被重复覆盖
-            glyph.removeProp("_color");
         }
     }
 

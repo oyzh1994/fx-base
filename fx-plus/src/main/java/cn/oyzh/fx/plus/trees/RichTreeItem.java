@@ -204,7 +204,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param task 待执行业务
      */
-    public void startWaiting(Task task) {
+    public void startWaiting(Runnable task) {
         if (this.valueGraphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
             TaskManager.startDelay(() -> {
