@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.trees;
 
 import cn.oyzh.common.thread.Task;
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
@@ -205,18 +206,25 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void startWaiting(Task task) {
         if (this.valueGraphic() instanceof SVGGlyph glyph) {
-            glyph.startWaiting(task);
+            glyph.startWaiting();
+            TaskManager.startDelay(() -> {
+                try {
+                    task.run();
+                } finally {
+                    glyph.stopWaiting();
+                }
+            }, 20);
         }
     }
 
-    /**
-     * 取消等待
-     */
-    public void stopWaiting() {
-        if (this.valueGraphic() instanceof SVGGlyph glyph) {
-            glyph.stopWaiting();
-        }
-    }
+    // /**
+    //  * 取消等待
+    //  */
+    // public void stopWaiting() {
+    //     if (this.valueGraphic() instanceof SVGGlyph glyph) {
+    //         glyph.stopWaiting();
+    //     }
+    // }
 
     /**
      * 是否等待中

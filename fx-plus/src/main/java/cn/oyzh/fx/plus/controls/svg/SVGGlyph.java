@@ -345,25 +345,25 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         }
     }
 
-    /**
-     * 开始等待动画
-     *
-     * @param task 任务
-     */
-    public void startWaiting(@NonNull Runnable task) {
-        this.startWaiting();
-        TaskManager.startDelay(task, 20);
-    }
-
-    /**
-     * 开始等待动画
-     *
-     * @param task 任务
-     */
-    public void startWaiting(@NonNull Task task) {
-        this.startWaiting();
-        TaskManager.startDelay(task, 20);
-    }
+    // /**
+    //  * 开始等待动画
+    //  *
+    //  * @param task 任务
+    //  */
+    // public void startWaiting(@NonNull Runnable task) {
+    //     this.startWaiting();
+    //     TaskManager.startDelay(task, 20);
+    // }
+    //
+    // /**
+    //  * 开始等待动画
+    //  *
+    //  * @param task 任务
+    //  */
+    // public void startWaiting(@NonNull Task task) {
+    //     this.startWaiting();
+    //     TaskManager.startDelay(task, 20);
+    // }
 
     @Override
     public void setStateManager(StateManager manager) {
