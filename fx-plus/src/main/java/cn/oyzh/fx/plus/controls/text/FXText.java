@@ -103,8 +103,11 @@ public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapt
 
     }
 
-    public void setTextExt(String text) {
+    public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }
 
+    public void clear() {
+        this.setText("");
+    }
 }
