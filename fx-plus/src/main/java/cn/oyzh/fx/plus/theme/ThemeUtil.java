@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.theme;
 
+import cn.oyzh.common.SysConst;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.UUIDUtil;
@@ -102,7 +103,7 @@ public class ThemeUtil {
             }
         }
         // 生成文件名
-        String path = FXUtil.getAppStorePath() + "theme_" + UUIDUtil.uuidSimple() + ".css";
+        String path = SysConst.storeDir() + "theme_" + UUIDUtil.uuidSimple() + ".css";
         // 写入文件
         FileUtil.writeUtf8String(content.toString(), path);
         // 替换特殊符号

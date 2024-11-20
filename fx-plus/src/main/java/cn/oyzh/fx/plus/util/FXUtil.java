@@ -44,13 +44,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FXUtil {
 
     /**
-     * app存储路径
-     */
-    @Getter
-    @Setter
-    private static String appStorePath;
-
-    /**
      * 当前机器对象
      */
     private static Robot robot;

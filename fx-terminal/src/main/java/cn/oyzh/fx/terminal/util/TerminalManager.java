@@ -30,7 +30,7 @@ public class TerminalManager {
     }
 
     private static void scanHandler() {
-        String packageBase = System.getProperty(TerminalConst.SCAN_BASE);
+        String packageBase = TerminalConst.scanBase();
         if (packageBase != null) {
             try {
                 ClassUtil.scanClasses(packageBase, c -> {
@@ -78,7 +78,7 @@ public class TerminalManager {
             if (findHandler(commandHandlerClass) != null) {
                 throw new TerminalException("Multiple Command Handler for: " + commandHandlerClass);
             }
-            Object object = commandHandlerClass.getDeclaredConstructor().newInstance();
+            Object object = ClassUtil.newInstance(commandHandlerClass);
             registerHandler((TerminalCommandHandler<?, ?>) object);
         } catch (Exception ex) {
             ex.printStackTrace();

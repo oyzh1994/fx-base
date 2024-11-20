@@ -1,8 +1,7 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.SysConst;
 import cn.oyzh.common.util.FileUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.Application;
@@ -142,8 +141,8 @@ public class ThemeManager {
      * 清理临时主题文件
      */
     public static void clearThemeTmp() {
-        File[] files = FileUtil.ls(FXUtil.getAppStorePath());
-        if (ArrayUtil.isNotEmpty(files)) {
+        File[] files = FileUtil.ls(SysConst.storeDir());
+        if (files != null) {
             for (File file : files) {
                 if (file.getName().startsWith("theme") && file.getName().endsWith(".css")) {
                     file.delete();
