@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.trees;
+package cn.oyzh.fx.gui.treeTable;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  * @since 2023/11/10
  */
 @Getter
-public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+public class RichTreeTableItem<V extends RichTreeTableItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
     {
         NodeManager.init(this);
@@ -59,7 +59,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 当前树组件
      */
     @Setter
-    protected RichTreeView treeView;
+    protected RichTreeTableView treeView;
 
     /**
      * 当前排序类型
@@ -120,7 +120,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     @Setter
     private volatile boolean filterable;
 
-    public RichTreeItem(@NonNull RichTreeView treeView) {
+    public RichTreeTableItem(@NonNull RichTreeTableView treeView) {
         this.treeView = treeView;
     }
 
@@ -167,9 +167,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @return 子节点列表
      */
-    public ObservableList<RichTreeItem<?>> getRichChildren() {
+    public ObservableList<RichTreeTableItem<?>> getRichChildren() {
         List list = super.getChildren();
-        return (ObservableList<RichTreeItem<?>>) list;
+        return (ObservableList<RichTreeTableItem<?>>) list;
     }
 
     /**
@@ -273,7 +273,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      */
     public void remove() {
         TreeItem<?> parent = this.getParent();
-        if (parent instanceof RichTreeItem<?> treeItem) {
+        if (parent instanceof RichTreeTableItem<?> treeItem) {
             treeItem.getRealChildren().remove(this);
         } else if (parent != null) {
             parent.getChildren().remove(this);
@@ -305,13 +305,13 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         // 清理子节点
         Consumer<TreeItem<?>> clearChildren = (treeItem) -> {
             ObservableList<? extends TreeItem<?>> children;
-            if (treeItem instanceof RichTreeItem<?> richTreeItem) {
+            if (treeItem instanceof RichTreeTableItem<?> richTreeItem) {
                 children = richTreeItem.getRealChildren();
             } else {
                 children = treeItem.getChildren();
             }
             for (TreeItem<?> child : children) {
-                if (child instanceof RichTreeItem<?> item) {
+                if (child instanceof RichTreeTableItem<?> item) {
                     item.clearChild();
                 } else {
                     child.getChildren().clear();
@@ -430,7 +430,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 刷新图标
      */
     public void flushGraphic() {
-        RichTreeItemValue value = this.getValue();
+        RichTreeTableItemValue value = this.getValue();
         if (value != null) {
             value.flushText();
             value.flushGraphic();
@@ -504,13 +504,13 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     protected void sortChild() {
         this.service().submitFX(() -> {
             // 执行排序
-            ObservableList<RichTreeItem<?>> children = this.getRichChildren();
+            ObservableList<RichTreeTableItem<?>> children = this.getRichChildren();
             if (!children.isEmpty()) {
                 try {
                     this.sorting = true;
                     // asc
                     if (this.isSortAsc()) {
-                        children.sort(RichTreeItem::compareTo);
+                        children.sort(RichTreeTableItem::compareTo);
                     } else {// desc
                         children.sort(Comparator.reverseOrder());
                     }
@@ -533,11 +533,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @param itemFilter 节点过滤器
      */
-    public void doFilter(RichTreeItemFilter itemFilter) {
+    public void doFilter(RichTreeTableItemFilter itemFilter) {
         try {
-            List<RichTreeItem<?>> richChildren = new CopyOnWriteArrayList<>(this.getRichChildren());
+            List<RichTreeTableItem<?>> richChildren = new CopyOnWriteArrayList<>(this.getRichChildren());
             if (this.filterable) {
-                for (RichTreeItem<?> child : richChildren) {
+                for (RichTreeTableItem<?> child : richChildren) {
                     if (itemFilter != null) {
                         child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
@@ -546,7 +546,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                     }
                 }
             } else {
-                for (RichTreeItem<?> child : richChildren) {
+                for (RichTreeTableItem<?> child : richChildren) {
                     child.doFilter(itemFilter);
                 }
             }
@@ -572,14 +572,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param item 节点
      * @return 结果
      */
-    public boolean itemVisible(RichTreeItem<?> item) {
+    public boolean itemVisible(RichTreeTableItem<?> item) {
         if (item.isVisible()) {
             return true;
         }
         if (item.isLeaf() || item.isChildEmpty()) {
             return false;
         }
-        return item.getRichChildren().parallelStream().anyMatch(RichTreeItem::itemVisible);
+        return item.getRichChildren().parallelStream().anyMatch(RichTreeTableItem::itemVisible);
     }
 
     /**
@@ -648,7 +648,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         if (o == null) {
             return 1;
         }
-        if (o instanceof RichTreeItem<?> item) {
+        if (o instanceof RichTreeTableItem<?> item) {
             if (item.getValue() == this.getValue() || item.getValue() == null || this.getValue() == null) {
                 return 0;
             }
@@ -708,7 +708,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 刷新值
      */
     public void flushValue() {
-        RichTreeItemValue value = this.getValue();
+        RichTreeTableItemValue value = this.getValue();
         if (value != null) {
             value.flush();
         }
