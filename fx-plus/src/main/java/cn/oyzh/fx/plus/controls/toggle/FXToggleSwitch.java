@@ -4,7 +4,6 @@ import atlantafx.base.controls.ToggleSwitch;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.CacheHint;
@@ -92,15 +91,15 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapte
         return TipAdapter.super.tipText();
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     StateAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return StateAdapter.super.stateManager();
+    // }
 
     @Override
     public void setFontSize(double fontSize) {

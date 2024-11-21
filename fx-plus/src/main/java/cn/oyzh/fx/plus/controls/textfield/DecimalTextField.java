@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.textfield;
 
 
-import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;

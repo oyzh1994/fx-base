@@ -1,12 +1,12 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
-import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.list.FlexListView;
-import cn.oyzh.i18n.I18nHelper;
+import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.HPos;

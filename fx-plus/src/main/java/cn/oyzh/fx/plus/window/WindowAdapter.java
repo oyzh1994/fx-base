@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 
 /**
@@ -93,13 +92,13 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
      */
     boolean isSwitchOnTab();
 
-    @Override
-    default void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    default StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
-    }
+    // @Override
+    // default void setStateManager(StateManager manager) {
+    //     StateAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // default StateManager getStateManager() {
+    //     return StateAdapter.super.stateManager();
+    // }
 }

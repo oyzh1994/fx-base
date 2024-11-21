@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.thread.BackgroundService;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
-import lombok.Getter;
 
 /**
  * 富功能树节点工厂

@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -160,13 +159,13 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
         this.scrollTo(this.getSelectedItem());
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return null;
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return null;
+    // }
 }

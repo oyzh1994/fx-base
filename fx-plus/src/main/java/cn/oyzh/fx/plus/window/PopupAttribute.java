@@ -2,9 +2,6 @@ package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
 import javafx.stage.PopupWindow;
-// import org.springframework.context.annotation.Lazy;
-// import org.springframework.context.annotation.Scope;
-// import org.springframework.stereotype.Component;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

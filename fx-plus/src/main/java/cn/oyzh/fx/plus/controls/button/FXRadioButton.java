@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -54,15 +53,15 @@ public class FXRadioButton extends RadioButton implements NodeGroup, NodeAdapter
         LayoutAdapter.super.realHeight(height);
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     StateAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return StateAdapter.super.stateManager();
+    // }
 
     @Override
     public void setFontSize(double fontSize) {

@@ -15,36 +15,6 @@ import java.lang.ref.WeakReference;
 @UtilityClass
 public class SVGManager {
 
-    // /**
-    //  * 执行等待中动画
-    //  *
-    //  * @param glyph svg图标
-    //  */
-    // public static void startWaiting(SVGGlyph glyph) {
-    //     if (glyph != null) {
-    //         glyph.setWaiting(true);
-    //         FXUtil.runWait(glyph::initWaiting);
-    //     }
-    // }
-    //
-    // /**
-    //  * 停止等待中动画
-    //  *
-    //  * @param glyph svg图标
-    //  */
-    // public static void stopWaiting(SVGGlyph glyph) {
-    //     if (glyph != null) {
-    //         glyph.setWaiting(false);
-    //         // FXUtil.runLater(() -> {
-    //         //     glyph.setRotate(0);
-    //         //     SVGPath svgPath = (SVGPath) glyph.getShape();
-    //         //     SVGGlyph original = (SVGGlyph) svgPath.getProperties().get("original");
-    //         //     original.setCursor(glyph.getCursor());
-    //         //     glyph.setShape(svgPath);
-    //         // });
-    //     }
-    // }
-
     /**
      * loading的svg路径引用
      */

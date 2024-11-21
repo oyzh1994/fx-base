@@ -2,9 +2,7 @@ package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import lombok.Getter;
 import lombok.Setter;

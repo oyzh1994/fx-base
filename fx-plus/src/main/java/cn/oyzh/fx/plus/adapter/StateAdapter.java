@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
@@ -80,57 +79,57 @@ public interface StateAdapter extends PropAdapter {
         }
     }
 
-    /**
-     * 设置状态管理器
-     *
-     * @param manager 状态管理器
-     */
-    void setStateManager(StateManager manager);
-
-    /**
-     * 获取状态管理器
-     *
-     * @return 状态管理器
-     */
-    StateManager getStateManager();
-
-    /**
-     * 设置状态管理器
-     *
-     * @param manager 状态管理器
-     */
-    default void stateManager(StateManager manager) {
-        if (manager == null) {
-            return;
-        }
-        Node node;
-        if (this instanceof Node node1) {
-            node = node1;
-        } else if (this instanceof Tab tab) {
-            node = tab.getContent();
-        } else {
-            node = null;
-        }
-        if (node != null) {
-            if (!node.visibleProperty().isBound()) {
-                node.visibleProperty().bind(manager.visibleProperty());
-            }
-            if (!node.managedProperty().isBound()) {
-                node.managedProperty().bind(manager.managedProperty());
-            }
-            if (!node.disableProperty().isBound()) {
-                node.disableProperty().bind(manager.disableProperty());
-            }
-        }
-        this.setProp("_stateManager", manager);
-    }
-
-    /**
-     * 获取状态管理器
-     *
-     * @return 状态管理器
-     */
-    default StateManager stateManager() {
-        return this.getProp("_stateManager");
-    }
+    // /**
+    //  * 设置状态管理器
+    //  *
+    //  * @param manager 状态管理器
+    //  */
+    // void setStateManager(StateManager manager);
+    //
+    // /**
+    //  * 获取状态管理器
+    //  *
+    //  * @return 状态管理器
+    //  */
+    // StateManager getStateManager();
+    //
+    // /**
+    //  * 设置状态管理器
+    //  *
+    //  * @param manager 状态管理器
+    //  */
+    // default void stateManager(StateManager manager) {
+    //     if (manager == null) {
+    //         return;
+    //     }
+    //     Node node;
+    //     if (this instanceof Node node1) {
+    //         node = node1;
+    //     } else if (this instanceof Tab tab) {
+    //         node = tab.getContent();
+    //     } else {
+    //         node = null;
+    //     }
+    //     if (node != null) {
+    //         if (!node.visibleProperty().isBound()) {
+    //             node.visibleProperty().bind(manager.visibleProperty());
+    //         }
+    //         if (!node.managedProperty().isBound()) {
+    //             node.managedProperty().bind(manager.managedProperty());
+    //         }
+    //         if (!node.disableProperty().isBound()) {
+    //             node.disableProperty().bind(manager.disableProperty());
+    //         }
+    //     }
+    //     this.setProp("_stateManager", manager);
+    // }
+    //
+    // /**
+    //  * 获取状态管理器
+    //  *
+    //  * @return 状态管理器
+    //  */
+    // default StateManager stateManager() {
+    //     return this.getProp("_stateManager");
+    // }
 }

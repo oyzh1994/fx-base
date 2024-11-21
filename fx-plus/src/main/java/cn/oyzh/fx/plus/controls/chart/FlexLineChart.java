@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.controls.chart;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -142,15 +141,15 @@ public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter,
         FlexAdapter.super.realHeight(height);
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        FlexAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return FlexAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     FlexAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return FlexAdapter.super.stateManager();
+    // }
 
     @Override
     public void initNode() {

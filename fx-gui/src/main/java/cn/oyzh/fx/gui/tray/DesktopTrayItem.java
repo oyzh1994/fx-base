@@ -1,8 +1,8 @@
 package cn.oyzh.fx.gui.tray;
 
 import cn.oyzh.fx.gui.svg.glyph.DesktopSVGGlyph;
-import cn.oyzh.i18n.I18nHelper;
 import cn.oyzh.fx.plus.tray.TrayItem;
+import cn.oyzh.i18n.I18nHelper;
 
 /**
  * 托盘菜单项

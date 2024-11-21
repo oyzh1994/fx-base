@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.web;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
@@ -78,15 +77,15 @@ public class WebViewPane extends Pane implements FlexAdapter {
         FlexAdapter.super.realHeight(height);
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        FlexAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return FlexAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     FlexAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return FlexAdapter.super.stateManager();
+    // }
 
     @Override
     public void initNode() {

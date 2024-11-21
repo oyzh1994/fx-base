@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -101,13 +100,13 @@ public class FlexTableView<S> extends FXTableView<S> implements FlexAdapter {
         FlexAdapter.super.realHeight(height);
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        FlexAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return FlexAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     FlexAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return FlexAdapter.super.stateManager();
+    // }
 }

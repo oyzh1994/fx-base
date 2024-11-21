@@ -1,12 +1,9 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import cn.oyzh.common.thread.Task;
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -345,35 +342,15 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         }
     }
 
-    // /**
-    //  * 开始等待动画
-    //  *
-    //  * @param task 任务
-    //  */
-    // public void startWaiting(@NonNull Runnable task) {
-    //     this.startWaiting();
-    //     TaskManager.startDelay(task, 20);
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     StateAdapter.super.stateManager(manager);
     // }
     //
-    // /**
-    //  * 开始等待动画
-    //  *
-    //  * @param task 任务
-    //  */
-    // public void startWaiting(@NonNull Task task) {
-    //     this.startWaiting();
-    //     TaskManager.startDelay(task, 20);
+    // @Override
+    // public StateManager getStateManager() {
+    //     return StateAdapter.super.stateManager();
     // }
-
-    @Override
-    public void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
-    }
 
     @Override
     public boolean isEnableTheme() {

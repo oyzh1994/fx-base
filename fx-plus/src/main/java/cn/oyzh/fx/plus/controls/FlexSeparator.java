@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.control.Separator;
@@ -82,15 +81,15 @@ public class FlexSeparator extends Separator implements FlexAdapter, ThemeAdapte
         FlexAdapter.super.realHeight(height);
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        FlexAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return FlexAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     FlexAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return FlexAdapter.super.stateManager();
+    // }
 
     @Override
     public void initNode() {

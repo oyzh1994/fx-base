@@ -5,7 +5,6 @@ import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.ColorUtil;
@@ -156,15 +155,15 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
         return AreaAdapter.super.fontWeight();
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        FlexAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return FlexAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     FlexAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return FlexAdapter.super.stateManager();
+    // }
 
     @Override
     public void initNode() {

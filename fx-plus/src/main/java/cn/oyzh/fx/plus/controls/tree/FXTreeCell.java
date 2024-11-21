@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.tree;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Node;
@@ -46,13 +45,13 @@ public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter,
         }
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     StateAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return StateAdapter.super.stateManager();
+    // }
 }

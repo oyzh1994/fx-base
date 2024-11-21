@@ -38,15 +38,11 @@ public class SVGLoader {
      * @return 结果
      */
     public SVGPath load(String url) {
-        try {
-            String content = this.loadContent(url);
-            if (content != null) {
-                SVGPath    svgPath = new SVGPath();
-                svgPath.setContent(content);
-                return svgPath;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String content = this.loadContent(url);
+        if (content != null) {
+            SVGPath svgPath = new SVGPath();
+            svgPath.setContent(content);
+            return svgPath;
         }
         return null;
     }

@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
-import cn.oyzh.fx.plus.handler.StateManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
@@ -100,15 +99,15 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         return new FXMenuItem(null, text, action);
     }
 
-    @Override
-    public void setStateManager(StateManager manager) {
-        StateAdapter.super.stateManager(manager);
-    }
-
-    @Override
-    public StateManager getStateManager() {
-        return StateAdapter.super.stateManager();
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //     StateAdapter.super.stateManager(manager);
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return StateAdapter.super.stateManager();
+    // }
 
     @Override
     public void destroy() {

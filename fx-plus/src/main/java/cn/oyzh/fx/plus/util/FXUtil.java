@@ -15,9 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.robot.Robot;
 import javafx.stage.Window;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
 import javax.imageio.ImageIO;

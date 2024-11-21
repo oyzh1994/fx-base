@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.event;
 
 import cn.oyzh.event.EventConfig;
-import lombok.Getter;
 import lombok.Setter;
 
 /**
