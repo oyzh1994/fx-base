@@ -432,7 +432,7 @@ public class RichTreeTableItem<V extends RichTreeTableItemValue> extends TreeIte
     public void flushGraphic() {
         RichTreeTableItemValue value = this.getValue();
         if (value != null) {
-            value.flushText();
+            value.flushColumn();
             value.flushGraphic();
             value.flushGraphicColor();
         }
@@ -652,7 +652,7 @@ public class RichTreeTableItem<V extends RichTreeTableItemValue> extends TreeIte
             if (item.getValue() == this.getValue() || item.getValue() == null || this.getValue() == null) {
                 return 0;
             }
-            return CharSequence.compare(this.getValue().name(), item.getValue().name());
+            return -1;
         }
         return 0;
     }
