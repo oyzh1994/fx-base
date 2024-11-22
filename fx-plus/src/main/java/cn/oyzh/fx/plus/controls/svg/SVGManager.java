@@ -57,7 +57,7 @@ public class SVGManager {
      */
     public static SVGPath getLoadingSvgPath() {
         if (loadingSvgPathReference == null || loadingSvgPathReference.get() == null) {
-            SVGPath svgPath = SVGManager.load("/fx-gui/font/loading.svg");
+            SVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
             svgPath.setCursor(Cursor.NONE);
             loadingSvgPathReference = new WeakReference<>(svgPath);
         }

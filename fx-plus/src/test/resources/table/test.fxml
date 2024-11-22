@@ -53,7 +53,7 @@
                 <ClearableTextField promptText="测试内容"></ClearableTextField>
                 <NumberTextField promptText="测试内容"></NumberTextField>
                 <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
-                <SVGGlyph url="/fx-gui/font/clear.svg" enableTheme="false"></SVGGlyph>
+                <SVGGlyph url="/fx-svg/clear.svg" enableTheme="false"></SVGGlyph>
                 <FXText text="测试内容"></FXText>
                 <ComboBox>
                     <items>
@@ -112,15 +112,15 @@
             <FlexTabPane focusTraversable="true" flexWidth="100%" realHeight="200">
                 <FXTab text="测试tab">
                     <HBox>
-                        <SVGGlyph url="/fx-gui/font/clear.svg"></SVGGlyph>
+                        <SVGGlyph url="/fx-svg/clear.svg"></SVGGlyph>
                         <IconButton text="测试内容">
                             <graphic>
-                                <SVGGlyph url="/fx-gui/font/clear.svg"/>
+                                <SVGGlyph url="/fx-svg/clear.svg"/>
                             </graphic>
                         </IconButton>
                         <IconButton text="测试内容1" styleClass="success">
                             <graphic>
-                                <SVGGlyph url="/fx-gui/font/clear.svg"/>
+                                <SVGGlyph url="/fx-svg/clear.svg"/>
                             </graphic>
                         </IconButton>
                         <SearchTextField>
@@ -164,7 +164,7 @@
     </FXTab>
     <FXTab text="测试4">
         <FlexVBox>
-           <SVGGlyph disable="true" url="/fx-gui/font/clear.svg"></SVGGlyph>
+           <SVGGlyph disable="true" url="/fx-svg/clear.svg"></SVGGlyph>
         </FlexVBox>
     </FXTab>
 </FlexTabPane>
