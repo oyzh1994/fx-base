@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.thread.BackgroundService;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.paint.Color;
 
@@ -41,23 +40,26 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
             return;
         }
         TreeItem<?> treeItem = this.getTreeItem();
-        RichTreeView treeView = (RichTreeView) this.getTreeView();
         // 初始化拖动
         if (treeItem instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
             this.dragNodeHandler = new DragNodeHandler();
+            RichTreeView treeView = (RichTreeView) this.getTreeView();
             BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.dragContent()));
         }
         // 获取图标
-        Node graphic = value.graphic();
-        // 更新图标颜色
-        if (graphic instanceof SVGGlyph glyph) {
-            Color color = value.graphicColor();
-            if (color != glyph.getColor()) {
-                glyph.setColor(color);
-            }
-        }
+        SVGGlyph glyph = value.graphic();
+        SVGGlyph graphic = (SVGGlyph) this.getGraphic();
         // 更新图标
-        this.setGraphic(graphic);
+        if (graphic == null || graphic != glyph) {
+            this.setGraphic(glyph);
+
+            graphic = glyph;
+        }
+        // 更新图标颜色
+        Color color = value.graphicColor();
+        if (graphic.getColor() != color) {
+            graphic.setColor(color);
+        }
         // 刷新文本
         this.setText(value.text());
     }

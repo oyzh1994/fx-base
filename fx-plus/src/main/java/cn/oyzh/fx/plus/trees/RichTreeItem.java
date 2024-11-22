@@ -193,9 +193,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     /**
      * 开始等待
      */
-    public void startWaiting() {
+    public void stopWaiting() {
         if (this.valueGraphic() instanceof SVGGlyph glyph) {
-            glyph.startWaiting();
+            glyph.stopWaiting();
         }
     }
 
@@ -205,26 +205,49 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param task 待执行业务
      */
     public void startWaiting(Runnable task) {
+        this.startWaiting(task, true);
+    }
+
+    /**
+     * 开始等待
+     *
+     * @param task 待执行业务
+     */
+    public void startWaiting(Runnable task, boolean autoClose) {
         if (this.valueGraphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
             TaskManager.startDelay(() -> {
                 try {
-                    task.run();
+                    if (task != null) {
+                        task.run();
+                    }
                 } finally {
-                    glyph.stopWaiting();
+                    if (autoClose) {
+                        glyph.stopWaiting();
+                    }
                 }
-            }, 20);
+            }, 50);
         }
     }
-
-    // /**
-    //  * 取消等待
-    //  */
-    // public void stopWaiting() {
-    //     if (this.valueGraphic() instanceof SVGGlyph glyph) {
-    //         glyph.stopWaiting();
-    //     }
-    // }
+    /**
+     * 开始等待
+     *
+     * @param task 待执行业务
+     */
+    public void startWaiting(Runnable task, int timeout) {
+        if (this.valueGraphic() instanceof SVGGlyph glyph) {
+            glyph.startWaiting();
+            TaskManager.startDelay(() -> {
+                try {
+                    if (task != null) {
+                        task.run();
+                    }
+                }finally {
+                    TaskManager.startDelay(glyph::stopWaiting, timeout);
+                }
+            }, 50);
+        }
+    }
 
     /**
      * 是否等待中
@@ -424,18 +447,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 重载子节点
      */
     public void reloadChild() {
-    }
-
-    /**
-     * 刷新图标
-     */
-    public void flushGraphic() {
-        RichTreeItemValue value = this.getValue();
-        if (value != null) {
-            // value.flushText();
-            // value.flushGraphic();
-            // value.flushGraphicColor();
-        }
     }
 
     @Override

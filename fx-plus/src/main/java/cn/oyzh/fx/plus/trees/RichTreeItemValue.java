@@ -14,7 +14,9 @@ import javafx.scene.paint.Color;
  */
 public class RichTreeItemValue implements Destroyable {
 
-    private RichTreeItem<?> item;
+    protected SVGGlyph graphic;
+
+    protected RichTreeItem<?> item;
 
     public RichTreeItemValue() {
     }
@@ -50,18 +52,13 @@ public class RichTreeItemValue implements Destroyable {
      * 刷新图标颜色
      */
     public SVGGlyph graphic() {
-        return null;
+        return this.graphic;
     }
 
     /**
      * 刷新图标颜色
      */
     public Color graphicColor() {
-        if (this.graphic() instanceof SVGGlyph glyph) {
-            // 移除等待动画设置的颜色，避免被重复覆盖
-            glyph.removeProp("_color");
-        }
-        // 设置颜色
         if (ThemeManager.isDarkMode()) {
             return Color.WHITE;
         }

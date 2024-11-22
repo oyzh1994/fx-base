@@ -138,10 +138,10 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         // 更新颜色
         if (this.isActive()) {
             this.setBackground(ControlUtil.background(Color.ORANGERED));
-        } else if (this.isEnableTheme()) {
-            this.setBackground(ControlUtil.background(ThemeManager.currentForegroundColor()));
         } else if (this.color != null) {
             this.setBackground(ControlUtil.background(this.color));
+        } else if (this.isEnableTheme()) {
+            this.setBackground(ControlUtil.background(ThemeManager.currentForegroundColor()));
         }
     }
 
