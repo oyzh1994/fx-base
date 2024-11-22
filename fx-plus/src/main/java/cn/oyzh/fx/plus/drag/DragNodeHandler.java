@@ -11,8 +11,6 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/5/14
  */
-// @Lazy
-// @Component
 @Accessors(chain = true, fluent = true)
 public class DragNodeHandler {
 

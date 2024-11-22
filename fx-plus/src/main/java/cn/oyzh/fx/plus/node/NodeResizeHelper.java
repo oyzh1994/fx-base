@@ -12,6 +12,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -21,7 +22,7 @@ import java.util.function.Consumer;
  * @since 2023/5/15
  */
 @Accessors(chain = true, fluent = true)
-public class ResizeHelper {
+public class NodeResizeHelper {
 
     /**
      * 事件节点
@@ -33,13 +34,13 @@ public class ResizeHelper {
      * 最小宽度
      */
     @Setter
-    private Double minWidth;
+    private Float minWidth;
 
     /**
      * 最大宽度
      */
     @Setter
-    private Double maxWidth;
+    private Float maxWidth;
 
     /**
      * 大小改变中标志位
@@ -58,7 +59,7 @@ public class ResizeHelper {
      * 触发阈值
      */
     @Setter
-    private Double triggerThreshold = 10.d;
+    private Float triggerThreshold = 5.f;
 
     /**
      * 鼠标移动事件
@@ -95,15 +96,21 @@ public class ResizeHelper {
      */
     @Getter
     @Setter
-    private Consumer<Double> resizeTriggered;
+    private Consumer<Float> resizeTriggered;
 
-    public ResizeHelper(@NonNull Node eventNode, @NonNull Cursor originalCursor, Consumer<Double> resizeTriggered) {
+    public NodeResizeHelper(@NonNull Node eventNode, @NonNull Cursor originalCursor, Consumer<Float> resizeTriggered) {
         this.eventNode = eventNode;
         this.originalCursor = originalCursor;
         this.resizeTriggered = resizeTriggered;
     }
 
-    public void widthLimit(double minWidth, double maxWidth) {
+    /**
+     * 限制宽度
+     *
+     * @param minWidth 最小宽
+     * @param maxWidth 最大宽
+     */
+    public void widthLimit(float minWidth, float maxWidth) {
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
     }
@@ -131,7 +138,7 @@ public class ResizeHelper {
                 return;
             }
             // 计算偏移
-            double xOffset = this.calcXOffset(event);
+            float xOffset = this.calcXOffset(event);
             // 设置鼠标样式
             if (this.triggerAble(xOffset)) {
                 this.setNodeCursor(Cursor.W_RESIZE);
@@ -281,8 +288,8 @@ public class ResizeHelper {
      *
      * @return 最小宽度
      */
-    public Double minWidth() {
-        return this.minWidth == null ? 0.d : this.minWidth;
+    public Float minWidth() {
+        return this.minWidth == null ? 0.f : this.minWidth;
     }
 
     /**
@@ -290,8 +297,8 @@ public class ResizeHelper {
      *
      * @return 最大宽度
      */
-    public Double maxWidth() {
-        return this.maxWidth == null ? 0.d : this.maxWidth;
+    public Float maxWidth() {
+        return this.maxWidth == null ? 0.f : this.maxWidth;
     }
 
     /**
@@ -299,8 +306,8 @@ public class ResizeHelper {
      *
      * @return 触发阈值
      */
-    public Double triggerThreshold() {
-        return this.triggerThreshold == null ? 10.d : this.triggerThreshold;
+    public Float triggerThreshold() {
+        return this.triggerThreshold == null ? 5.0f : this.triggerThreshold;
     }
 
     /**
@@ -318,25 +325,37 @@ public class ResizeHelper {
      * @param val 值
      * @return 结果
      */
-    public boolean triggerAble(double val) {
-        return Math.abs(val) <= this.triggerThreshold();
+    public boolean triggerAble(float val) {
+        return val <= 0 && val <= this.triggerThreshold();
     }
 
-    public double calcXOffset(MouseEvent event) {
+    /**
+     * 计算x偏移
+     *
+     * @param event 事件
+     * @return x偏移
+     */
+    public float calcXOffset(MouseEvent event) {
         // 计算距离
         Point2D point2D = this.eventNode.localToScreen(this.eventNode.getLayoutX(), this.eventNode.getLayoutY());
         double nodeX = point2D.getX();
         double nodeW = NodeUtil.getWidth(this.eventNode);
         double screenX = event.getScreenX();
-        return screenX - nodeX - nodeW;
+        return (float) (screenX - nodeX - nodeW);
     }
 
-    public double calcNodeWidth(MouseEvent event) {
+    /**
+     * 计算节点宽
+     *
+     * @param event 事件
+     * @return 节点宽
+     */
+    public float calcNodeWidth(MouseEvent event) {
         // 计算距离
         Point2D point2D = this.eventNode.localToScreen(this.eventNode.getLayoutX(), this.eventNode.getLayoutY());
         double nodeX = point2D.getX();
         double screenX = event.getScreenX();
-        return screenX - nodeX;
+        return (float) (screenX - nodeX);
     }
 
     /**

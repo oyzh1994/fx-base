@@ -162,7 +162,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 主页左侧宽
      */
     @Column
-    private Double pageLeftWidth;
+    private Float pageLeftWidth;
 
     /**
      * 标签策略是否限制全部连接
@@ -286,7 +286,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      *
      * @return 主页左侧宽
      */
-    public Double getPageLeftWidth() {
+    public Float getPageLeftWidth() {
         return this.pageLeftWidth == null ? null : this.pageLeftWidth < 100 ? null : this.pageLeftWidth;
     }
 

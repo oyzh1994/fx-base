@@ -46,7 +46,7 @@ public class PageInfo {
      * 主页左侧宽
      */
     @Setter
-    private Double mainLeftWidth;
+    private Float mainLeftWidth;
 
     /**
      * 获取页面宽
@@ -98,7 +98,7 @@ public class PageInfo {
      *
      * @return 主页左侧宽
      */
-    public Double getMainLeftWidth() {
-        return this.mainLeftWidth == null ? null : this.mainLeftWidth < 100 ? null : this.mainLeftWidth;
+    public Float getMainLeftWidth() {
+        return this.mainLeftWidth == null ? null : this.mainLeftWidth < 100f ? null : this.mainLeftWidth;
     }
 }
