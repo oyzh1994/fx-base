@@ -39,28 +39,29 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         if (empty || value == null) {
             return;
         }
-        TreeItem<?> treeItem = this.getTreeItem();
-        // 初始化拖动
-        if (treeItem instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
-            this.dragNodeHandler = new DragNodeHandler();
-            RichTreeView treeView = (RichTreeView) this.getTreeView();
-            BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.dragContent()));
-        }
         // 获取图标
         SVGGlyph glyph = value.graphic();
         SVGGlyph graphic = (SVGGlyph) this.getGraphic();
         // 更新图标
         if (graphic == null || graphic != glyph) {
             this.setGraphic(glyph);
-
             graphic = glyph;
         }
         // 更新图标颜色
-        Color color = value.graphicColor();
-        if (graphic.getColor() != color) {
-            graphic.setColor(color);
+        if (graphic != null) {
+            Color color = value.graphicColor();
+            if (graphic.getColor() != color) {
+                graphic.setColor(color);
+            }
         }
         // 刷新文本
         this.setText(value.text());
+
+        // 初始化拖动
+        if (this.getTreeItem() instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
+            this.dragNodeHandler = new DragNodeHandler();
+            RichTreeView treeView = (RichTreeView) this.getTreeView();
+            BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.dragContent()));
+        }
     }
 }

@@ -4,6 +4,8 @@ import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.paint.Color;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
 
 /**
@@ -14,6 +16,8 @@ import javafx.scene.paint.Color;
  */
 public class RichTreeItemValue implements Destroyable {
 
+    @Getter
+    @Accessors(fluent = true, chain = false)
     protected SVGGlyph graphic;
 
     protected RichTreeItem<?> item;
@@ -43,16 +47,9 @@ public class RichTreeItemValue implements Destroyable {
         if (text == null) {
             text = extra;
         } else if (extra != null) {
-            text += extra;
+            text = text + " " + extra;
         }
         return text;
-    }
-
-    /**
-     * 刷新图标颜色
-     */
-    public SVGGlyph graphic() {
-        return this.graphic;
     }
 
     /**
@@ -68,5 +65,6 @@ public class RichTreeItemValue implements Destroyable {
     @Override
     public void destroy() {
         this.item = null;
+        this.graphic = null;
     }
 }

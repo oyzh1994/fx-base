@@ -46,8 +46,6 @@ public class RichTreeView extends FlexTreeView {
      * 初始化组件
      */
     protected void initTreeView() {
-        // // 选中模式
-        // this.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         this.initEvenListener();
     }
 
