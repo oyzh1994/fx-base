@@ -8,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeView;
 import lombok.NonNull;
 
@@ -30,6 +31,9 @@ public interface SelectAdapter<T> extends PropAdapter {
             if (this instanceof TreeView<?> node) {
                 node.getRoot().getChildren().clear();
                 node.setRoot(null);
+            } else if (this instanceof TreeTableView<?> node) {
+                node.getRoot().getChildren().clear();
+                node.setRoot(null);
             } else if (this instanceof TableView<?> node) {
                 node.getItems().clear();
             } else if (this instanceof TabPane node) {
@@ -48,6 +52,8 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void selectFirst() {
         FXUtil.runWait(() -> {
             if (this instanceof TreeView<?> node) {
+                node.getSelectionModel().selectFirst();
+            } else if (this instanceof TreeTableView<?> node) {
                 node.getSelectionModel().selectFirst();
             } else if (this instanceof TableView<?> node) {
                 node.getSelectionModel().selectFirst();
@@ -70,6 +76,8 @@ public interface SelectAdapter<T> extends PropAdapter {
         FXUtil.runWait(() -> {
             if (this instanceof TreeView<?> node) {
                 node.getSelectionModel().select(index);
+            } else if (this instanceof TreeTableView<?> node) {
+                node.getSelectionModel().select(index);
             } else if (this instanceof TableView<?> node) {
                 node.getSelectionModel().select(index);
             } else if (this instanceof TabPane node) {
@@ -90,6 +98,8 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void select(T obj) {
         FXUtil.runWait(() -> {
             if (this instanceof TreeView node) {
+                node.getSelectionModel().select(obj);
+            } else if (this instanceof TreeTableView node) {
                 node.getSelectionModel().select(obj);
             } else if (this instanceof TableView node) {
                 node.getSelectionModel().select(obj);
@@ -125,6 +135,8 @@ public interface SelectAdapter<T> extends PropAdapter {
         FXUtil.runWait(() -> {
             if (this instanceof TreeView node) {
                 node.getSelectionModel().select(obj);
+            } else if (this instanceof TreeTableView node) {
+                node.getSelectionModel().select(obj);
             } else if (this instanceof TableView node) {
                 node.getSelectionModel().select(obj);
             } else if (this instanceof TabPane node) {
@@ -145,6 +157,8 @@ public interface SelectAdapter<T> extends PropAdapter {
     default T getSelectedItem() {
         Object o = null;
         if (this instanceof TreeView<?> node) {
+            o = node.getSelectionModel().getSelectedItem();
+        } else if (this instanceof TreeTableView<?> node) {
             o = node.getSelectionModel().getSelectedItem();
         } else if (this instanceof TableView<?> node) {
             o = node.getSelectionModel().getSelectedItem();
@@ -167,6 +181,8 @@ public interface SelectAdapter<T> extends PropAdapter {
         List<?> o = null;
         if (this instanceof TreeView<?> node) {
             o = node.getSelectionModel().getSelectedItems();
+        } else if (this instanceof TreeTableView<?> node) {
+            o = node.getSelectionModel().getSelectedItems();
         } else if (this instanceof TableView<?> node) {
             o = node.getSelectionModel().getSelectedItems();
         } else if (this instanceof ListView<?> node) {
@@ -182,6 +198,8 @@ public interface SelectAdapter<T> extends PropAdapter {
      */
     default int getSelectedIndex() {
         if (this instanceof TreeView<?> node) {
+            return node.getSelectionModel().getSelectedIndex();
+        } else if (this instanceof TreeTableView<?> node) {
             return node.getSelectionModel().getSelectedIndex();
         } else if (this instanceof TableView<?> node) {
             return node.getSelectionModel().getSelectedIndex();
@@ -225,6 +243,12 @@ public interface SelectAdapter<T> extends PropAdapter {
                     listener.changed(observableValue, t, t1);
                 }
             });
+        } else if (this instanceof TreeTableView<?> node) {
+            node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
+                if (!this.isIgnoreChanged()) {
+                    listener.changed(observableValue, t, t1);
+                }
+            });
         } else if (this instanceof TableView<?> node) {
             node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
@@ -258,6 +282,8 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void clearSelection() {
         FXUtil.runWait(() -> {
             if (this instanceof TreeView<?> view) {
+                view.getSelectionModel().clearSelection();
+            } else if (this instanceof TreeTableView<?> view) {
                 view.getSelectionModel().clearSelection();
             } else if (this instanceof TableView<?> view) {
                 view.getSelectionModel().clearSelection();

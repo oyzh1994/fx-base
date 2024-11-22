@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TreeTableColumn;
 import lombok.ToString;
 
@@ -15,7 +14,7 @@ import lombok.ToString;
  * @since 2022/1/19
  */
 @ToString
-public class FlexTreeTableView extends FXTreeTableView implements  FlexAdapter {
+public class FlexTreeTableView extends FXTreeTableView implements FlexAdapter {
 
     @Override
     public void resize(double width, double height) {

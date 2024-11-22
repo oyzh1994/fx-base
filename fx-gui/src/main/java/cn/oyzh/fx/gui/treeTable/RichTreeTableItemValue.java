@@ -49,7 +49,7 @@ public abstract class RichTreeTableItemValue implements Destroyable {
      */
     public void graphic(Node graphic) {
         if (graphic != null) {
-            this.item.setGraphic(graphic);
+            this.item().setGraphic(graphic);
         }
     }
 
