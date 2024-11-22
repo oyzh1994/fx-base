@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class DiscardSVGGlyph extends SVGGlyph {
 
     public DiscardSVGGlyph() {
-        this.setUrl("/fx-plus/font/close.svg");
+        this.setUrl("/fx-gui/font/close.svg");
     }
 
     public DiscardSVGGlyph(String size) {

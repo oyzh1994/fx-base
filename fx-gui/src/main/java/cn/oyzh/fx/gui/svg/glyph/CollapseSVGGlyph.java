@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class CollapseSVGGlyph extends SVGGlyph {
 
     public CollapseSVGGlyph() {
-        this.setUrl("/fx-plus/font/left-arrow-to-left.svg");
+        this.setUrl("/fx-gui/font/left-arrow-to-left.svg");
     }
 
     public CollapseSVGGlyph(String size) {

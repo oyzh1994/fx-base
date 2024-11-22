@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class CopySVGGlyph extends SVGGlyph {
 
     public CopySVGGlyph() {
-        this.setUrl("/fx-plus/font/copy.svg");
+        this.setUrl("/fx-gui/font/copy.svg");
     }
 
     public CopySVGGlyph(String size) {

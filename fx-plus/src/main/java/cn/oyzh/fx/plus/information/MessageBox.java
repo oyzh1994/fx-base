@@ -308,7 +308,7 @@ public class MessageBox {
      * @param owner 父窗口
      */
     public static void okToast(@NonNull String msg, Window owner) {
-        showToast(msg, new SVGGlyph("/fx-plus/font/check-circle.svg", Color.GREEN), owner);
+        showToast(msg, new SVGGlyph("/fx-gui/font/check-circle.svg", Color.GREEN), owner);
     }
 
     /**
@@ -327,7 +327,7 @@ public class MessageBox {
      * @param owner 父窗口
      */
     public static void warnToast(@NonNull String msg, Window owner) {
-        showToast(msg, new SVGGlyph("/fx-plus/font/warning-circle.svg", Color.ORANGE), owner);
+        showToast(msg, new SVGGlyph("/fx-gui/font/warning-circle.svg", Color.ORANGE), owner);
     }
 
     /**
@@ -346,7 +346,7 @@ public class MessageBox {
      * @param owner 父窗口
      */
     public static void questionToast(@NonNull String msg, Window owner) {
-        showToast(msg, new SVGGlyph("/fx-plus/font/question-circle.svg", Color.ORANGE), owner);
+        showToast(msg, new SVGGlyph("/fx-gui/font/question-circle.svg", Color.ORANGE), owner);
     }
 
     /**

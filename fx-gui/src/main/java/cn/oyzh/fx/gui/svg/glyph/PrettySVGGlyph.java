@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class PrettySVGGlyph extends SVGGlyph {
 
     public PrettySVGGlyph() {
-        this.setUrl("/fx-plus/font/pretty.svg");
+        this.setUrl("/fx-gui/font/pretty.svg");
     }
 
     public PrettySVGGlyph(String size) {

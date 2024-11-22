@@ -55,7 +55,7 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
             h = 10;
         }
         // 初始化增加、减少按钮
-        this.incrButton = new SVGGlyph("/fx-plus/font/arrow-up-filling.svg");
+        this.incrButton = new SVGGlyph("/fx-gui/font/arrow-up-filling.svg");
         this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
         this.incrButton.setTipText(I18nHelper.addValue());
@@ -64,7 +64,7 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
         this.incrButton.setFocusTraversable(false);
         this.incrButton.setPadding(new Insets(0));
 
-        this.decrButton = new SVGGlyph("/fx-plus/font/arrow-down-filling.svg");
+        this.decrButton = new SVGGlyph("/fx-gui/font/arrow-down-filling.svg");
         this.decrButton.setSize(h);
         this.decrButton.setVisible(false);
         this.decrButton.setColor(this.getButtonColor());

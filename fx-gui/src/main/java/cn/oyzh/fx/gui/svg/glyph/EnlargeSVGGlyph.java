@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class EnlargeSVGGlyph extends SVGGlyph {
 
     public EnlargeSVGGlyph() {
-        this.setUrl("/fx-plus/font/enlarge.svg");
+        this.setUrl("/fx-gui/font/enlarge.svg");
     }
 
     public EnlargeSVGGlyph(String size) {

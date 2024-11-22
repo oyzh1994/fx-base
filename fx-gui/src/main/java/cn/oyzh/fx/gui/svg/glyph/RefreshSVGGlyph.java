@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class RefreshSVGGlyph extends SVGGlyph {
 
     public RefreshSVGGlyph() {
-        this.setUrl("/fx-plus/font/reload.svg");
+        this.setUrl("/fx-gui/font/reload.svg");
     }
 
     public RefreshSVGGlyph(String size) {

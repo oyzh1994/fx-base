@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class RunSqlFileSVGGlyph extends SVGGlyph {
 
     public RunSqlFileSVGGlyph() {
-        this.setUrl("/fx-plus/font/database/runSqlFile.svg");
+        this.setUrl("/fx-gui/font/database/runSqlFile.svg");
     }
 
     public RunSqlFileSVGGlyph(String size) {

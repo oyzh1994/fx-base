@@ -10,7 +10,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class JSONSVGGlyph extends SVGGlyph {
 
     public JSONSVGGlyph() {
-        this.setUrl("/fx-plus/font/json.svg");
+        this.setUrl("/fx-gui/font/json.svg");
     }
 
     public JSONSVGGlyph(String size) {

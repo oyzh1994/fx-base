@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class PositioningSVGGlyph  extends SVGGlyph {
 
     public PositioningSVGGlyph() {
-        this.setUrl("/fx-plus/font/positioning.svg");
+        this.setUrl("/fx-gui/font/positioning.svg");
     }
 
     public PositioningSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class PageSettingSVGGlyph extends SVGGlyph {
 
     public PageSettingSVGGlyph() {
-        this.setUrl("/fx-plus/font/page/page-setting.svg");
+        this.setUrl("/fx-gui/font/page/page-setting.svg");
     }
 
     public PageSettingSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ResetSVGGlyph extends SVGGlyph {
 
     public ResetSVGGlyph() {
-        this.setUrl("/fx-plus/font/reset.svg");
+        this.setUrl("/fx-gui/font/reset.svg");
     }
 
     public ResetSVGGlyph(String size) {

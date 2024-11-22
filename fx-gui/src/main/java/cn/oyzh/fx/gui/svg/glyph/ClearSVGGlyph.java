@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ClearSVGGlyph extends SVGGlyph {
 
     public ClearSVGGlyph() {
-        this.setUrl("/fx-plus/font/clear2.svg");
+        this.setUrl("/fx-gui/font/clear2.svg");
     }
 
     public ClearSVGGlyph(String size) {

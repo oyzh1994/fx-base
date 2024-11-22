@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class DumpSVGGlyph extends SVGGlyph {
 
     public DumpSVGGlyph() {
-        this.setUrl("/fx-plus/font/database/dump.svg");
+        this.setUrl("/fx-gui/font/database/dump.svg");
     }
 
     public DumpSVGGlyph(String size) {

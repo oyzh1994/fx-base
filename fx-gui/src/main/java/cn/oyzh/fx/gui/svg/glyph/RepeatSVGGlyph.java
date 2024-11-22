@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RepeatSVGGlyph extends SVGGlyph {
 
     public RepeatSVGGlyph() {
-        this.setUrl("/fx-plus/font/repeated.svg");
+        this.setUrl("/fx-gui/font/repeated.svg");
     }
 
     public RepeatSVGGlyph(String size) {

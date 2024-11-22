@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class DatabaseSVGGlyph extends SVGGlyph {
 
     public DatabaseSVGGlyph() {
-        this.setUrl("/fx-plus/font/database/database.svg");
+        this.setUrl("/fx-gui/font/database/database.svg");
     }
 
     public DatabaseSVGGlyph(String size) {

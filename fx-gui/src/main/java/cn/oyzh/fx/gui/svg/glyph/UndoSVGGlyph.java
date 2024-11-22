@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class UndoSVGGlyph extends SVGGlyph {
 
     public UndoSVGGlyph() {
-        this.setUrl("/fx-plus/font/data_revoke.svg");
+        this.setUrl("/fx-gui/font/data_revoke.svg");
     }
 
     public UndoSVGGlyph(String size) {

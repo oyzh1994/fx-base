@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ChangelogSVGGlyph extends SVGGlyph {
 
     public ChangelogSVGGlyph() {
-        this.setUrl("/fx-plus/font/changelog.svg");
+        this.setUrl("/fx-gui/font/changelog.svg");
     }
 
     public ChangelogSVGGlyph(String size) {

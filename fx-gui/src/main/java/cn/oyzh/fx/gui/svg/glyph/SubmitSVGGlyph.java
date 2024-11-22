@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class SubmitSVGGlyph extends SVGGlyph {
 
     public SubmitSVGGlyph() {
-        this.setUrl("/fx-plus/font/check.svg");
+        this.setUrl("/fx-gui/font/check.svg");
     }
 
     public SubmitSVGGlyph(String size) {

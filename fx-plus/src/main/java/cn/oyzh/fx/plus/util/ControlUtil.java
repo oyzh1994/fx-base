@@ -231,10 +231,10 @@ public class ControlUtil {
         // 初始化增加、减少按钮
         SVGGlyph svgGlyph;
         if (type == 1) {
-            svgGlyph = new SVGGlyph("/fx-plus/font/switch-ON.svg");
+            svgGlyph = new SVGGlyph("/fx-gui/font/switch-ON.svg");
             svgGlyph.setColor("#0e932e");
         } else {
-            svgGlyph = new SVGGlyph("/fx-plus/font/switch-OFF.svg");
+            svgGlyph = new SVGGlyph("/fx-gui/font/switch-OFF.svg");
             svgGlyph.setColor("#000000");
         }
         svgGlyph.managedBindVisible();

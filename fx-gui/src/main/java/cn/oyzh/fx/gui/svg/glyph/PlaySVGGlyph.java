@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PlaySVGGlyph extends SVGGlyph {
 
     public PlaySVGGlyph() {
-        this.setUrl("/fx-plus/font/play-circle.svg");
+        this.setUrl("/fx-gui/font/play-circle.svg");
     }
 
     public PlaySVGGlyph(String size) {

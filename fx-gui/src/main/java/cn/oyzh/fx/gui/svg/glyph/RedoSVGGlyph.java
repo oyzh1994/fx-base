@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class RedoSVGGlyph extends SVGGlyph {
 
     public RedoSVGGlyph() {
-        this.setUrl("/fx-plus/font/data_redo.svg");
+        this.setUrl("/fx-gui/font/data_redo.svg");
     }
 
     public RedoSVGGlyph(String size) {

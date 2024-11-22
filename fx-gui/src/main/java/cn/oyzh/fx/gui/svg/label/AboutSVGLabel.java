@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class AboutSVGLabel extends SVGLabel {
 
     public AboutSVGLabel() {
-        this.setUrl("/fx-plus/font/info-circle.svg");
+        this.setUrl("/fx-gui/font/info-circle.svg");
     }
 
     public AboutSVGLabel(String size) {

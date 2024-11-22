@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class StopSVGGlyph extends SVGGlyph {
 
     public StopSVGGlyph() {
-        this.setUrl("/fx-plus/font/stop-circle-line.svg");
+        this.setUrl("/fx-gui/font/stop-circle-line.svg");
     }
 
     public StopSVGGlyph(String size) {

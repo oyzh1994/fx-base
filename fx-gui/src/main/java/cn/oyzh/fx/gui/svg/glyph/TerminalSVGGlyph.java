@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class TerminalSVGGlyph extends SVGGlyph {
 
     public TerminalSVGGlyph() {
-        this.setUrl("/fx-plus/font/code library.svg");
+        this.setUrl("/fx-gui/font/code library.svg");
     }
 
     public TerminalSVGGlyph(String size) {

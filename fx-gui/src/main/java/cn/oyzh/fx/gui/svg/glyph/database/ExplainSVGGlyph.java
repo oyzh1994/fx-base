@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ExplainSVGGlyph extends SVGGlyph {
 
     public ExplainSVGGlyph() {
-        this.setUrl("/fx-plus/font/database/explain.svg");
+        this.setUrl("/fx-gui/font/database/explain.svg");
     }
 
     public ExplainSVGGlyph(String size) {

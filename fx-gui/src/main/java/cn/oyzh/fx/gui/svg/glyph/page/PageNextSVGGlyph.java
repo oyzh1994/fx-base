@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class PageNextSVGGlyph extends SVGGlyph {
 
     public PageNextSVGGlyph() {
-        this.setUrl("/fx-plus/font/page/page-next.svg");
+        this.setUrl("/fx-gui/font/page/page-next.svg");
     }
 
     public PageNextSVGGlyph(String size) {

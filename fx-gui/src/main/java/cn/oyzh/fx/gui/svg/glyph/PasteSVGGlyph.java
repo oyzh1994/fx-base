@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class PasteSVGGlyph extends SVGGlyph {
 
     public PasteSVGGlyph() {
-        this.setUrl("/fx-plus/font/file-paste.svg");
+        this.setUrl("/fx-gui/font/file-paste.svg");
     }
 
     public PasteSVGGlyph(String size) {

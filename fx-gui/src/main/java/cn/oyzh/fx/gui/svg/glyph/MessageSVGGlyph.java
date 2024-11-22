@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class MessageSVGGlyph extends SVGGlyph {
 
     public MessageSVGGlyph() {
-        this.setUrl("/fx-plus/font/message.svg");
+        this.setUrl("/fx-gui/font/message.svg");
     }
 
     public MessageSVGGlyph(String size) {

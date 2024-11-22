@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class HistorySVGGlyph extends SVGGlyph {
 
     public HistorySVGGlyph() {
-        this.setUrl("/fx-plus/font/history.svg");
+        this.setUrl("/fx-gui/font/history.svg");
     }
 
     public HistorySVGGlyph(String size) {

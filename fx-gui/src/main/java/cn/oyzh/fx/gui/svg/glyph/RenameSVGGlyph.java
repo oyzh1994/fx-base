@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class RenameSVGGlyph extends SVGGlyph {
 
     public RenameSVGGlyph() {
-        this.setUrl("/fx-plus/font/edit-square.svg");
+        this.setUrl("/fx-gui/font/edit-square.svg");
     }
 
     public RenameSVGGlyph(String size) {

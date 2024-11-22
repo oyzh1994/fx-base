@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class BatchOptSVGGlyph extends SVGGlyph {
 
     public BatchOptSVGGlyph() {
-        this.setUrl("/fx-plus/font/mml-batch-command-16.svg");
+        this.setUrl("/fx-gui/font/mml-batch-command-16.svg");
     }
 
     public BatchOptSVGGlyph(String size) {

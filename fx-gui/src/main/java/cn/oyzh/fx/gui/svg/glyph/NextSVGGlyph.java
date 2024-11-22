@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class NextSVGGlyph extends SVGGlyph {
 
     public NextSVGGlyph() {
-        this.setUrl("/fx-plus/font/direction-down.svg");
+        this.setUrl("/fx-gui/font/direction-down.svg");
     }
 
     public NextSVGGlyph(String size) {

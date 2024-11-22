@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class TruncateSVGGlyph extends SVGGlyph {
 
     public TruncateSVGGlyph() {
-        this.setUrl("/fx-plus/font/truncate.svg");
+        this.setUrl("/fx-gui/font/truncate.svg");
     }
 
     public TruncateSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ReverseSVGGlyph extends SVGGlyph {
 
     public ReverseSVGGlyph() {
-        this.setUrl("/fx-plus/font/reverse.svg");
+        this.setUrl("/fx-gui/font/reverse.svg");
     }
 
     public ReverseSVGGlyph(String size) {
