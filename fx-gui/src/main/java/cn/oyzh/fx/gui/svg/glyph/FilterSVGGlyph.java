@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class FilterSVGGlyph extends SVGGlyph {
 
     public FilterSVGGlyph() {
-        this.setUrl("/fx-gui/font/filter.svg");
+        this.setUrl("/fx-svg/filter.svg");
     }
 
     public FilterSVGGlyph(String size) {

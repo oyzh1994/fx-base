@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class MinusSVGGlyph extends SVGGlyph {
 
     public MinusSVGGlyph() {
-        this.setUrl("/fx-gui/font/minus.svg");
+        this.setUrl("/fx-svg/minus.svg");
     }
 
     public MinusSVGGlyph(String size) {

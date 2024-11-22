@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class CollapseAllSVGGlyph extends SVGGlyph {
 
     public CollapseAllSVGGlyph() {
-        this.setUrl("/fx-gui/font/vertical-align-middl.svg");
+        this.setUrl("/fx-svg/vertical-align-middl.svg");
     }
 
     public CollapseAllSVGGlyph(String size) {

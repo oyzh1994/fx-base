@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class UnCollectSVGGlyph extends SVGGlyph {
 
     public UnCollectSVGGlyph() {
-        this.setUrl("/fx-gui/font/star.svg");
+        this.setUrl("/fx-svg/star.svg");
     }
 
     public UnCollectSVGGlyph(String size) {

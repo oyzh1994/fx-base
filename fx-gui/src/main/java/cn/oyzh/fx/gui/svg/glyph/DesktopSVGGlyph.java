@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DesktopSVGGlyph extends SVGGlyph {
 
     public DesktopSVGGlyph() {
-        this.setUrl("/fx-gui/font/desktop.svg");
+        this.setUrl("/fx-svg/desktop.svg");
     }
 
     public DesktopSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class QuitSVGGlyph extends SVGGlyph {
 
     public QuitSVGGlyph() {
-        this.setUrl("/fx-gui/font/poweroff.svg");
+        this.setUrl("/fx-svg/poweroff.svg");
     }
 
     public QuitSVGGlyph(String size) {

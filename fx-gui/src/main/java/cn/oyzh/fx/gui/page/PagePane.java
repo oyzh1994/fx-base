@@ -123,10 +123,10 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
 //        this.setCache(true);
 //        this.setCacheShape(true);
 //        this.setCacheHint(CacheHint.QUALITY);
-        this.firstSVG = new SVGGlyph("/fx-gui/font/page-first.svg");
-        this.prevSVG = new SVGGlyph("/fx-gui/font/arrow-left-line.svg");
-        this.nextSVG = new SVGGlyph("/fx-gui/font/arrow-right-line.svg");
-        this.lastSVG = new SVGGlyph("/fx-gui/font/page-last.svg");
+        this.firstSVG = new SVGGlyph("/fx-svg/page-first.svg");
+        this.prevSVG = new SVGGlyph("/fx-svg/arrow-left-line.svg");
+        this.nextSVG = new SVGGlyph("/fx-svg/arrow-right-line.svg");
+        this.lastSVG = new SVGGlyph("/fx-svg/page-last.svg");
         this.firstSVG.setTipText("首页");
         this.prevSVG.setTipText("上一页");
         this.nextSVG.setTipText("下一页");

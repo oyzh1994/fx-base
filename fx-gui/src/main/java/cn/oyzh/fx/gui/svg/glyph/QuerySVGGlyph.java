@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class QuerySVGGlyph extends SVGGlyph {
 
     public QuerySVGGlyph() {
-        this.setUrl("/fx-gui/font/query.svg");
+        this.setUrl("/fx-svg/query.svg");
     }
 
     public QuerySVGGlyph(String size) {

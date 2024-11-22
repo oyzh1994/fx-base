@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class QRCodeSVGGlyph extends SVGGlyph {
 
     public QRCodeSVGGlyph() {
-        this.setUrl("/fx-gui/font/qrcode.svg");
+        this.setUrl("/fx-svg/qrcode.svg");
     }
 
     public QRCodeSVGGlyph(String size) {

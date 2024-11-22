@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class LoadAllSVGGlyph extends SVGGlyph {
 
     public LoadAllSVGGlyph() {
-        this.setUrl("/fx-gui/font/reload time.svg");
+        this.setUrl("/fx-svg/reload time.svg");
     }
 
     public LoadAllSVGGlyph(String size) {

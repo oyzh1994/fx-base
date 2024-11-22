@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ExpandAllSVGGlyph extends SVGGlyph {
 
     public ExpandAllSVGGlyph() {
-        this.setUrl("/fx-gui/font/colum-height.svg");
+        this.setUrl("/fx-svg/colum-height.svg");
     }
 
     public ExpandAllSVGGlyph(String size) {

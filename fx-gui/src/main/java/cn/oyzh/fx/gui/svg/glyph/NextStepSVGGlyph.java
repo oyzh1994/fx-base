@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class NextStepSVGGlyph extends SVGGlyph {
 
     public NextStepSVGGlyph() {
-        this.setUrl("/fx-gui/font/next-step.svg");
+        this.setUrl("/fx-svg/next-step.svg");
     }
 
     public NextStepSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class RunSVGGlyph extends SVGGlyph {
 
     public RunSVGGlyph() {
-        this.setUrl("/fx-gui/font/run-solid.svg");
+        this.setUrl("/fx-svg/run-solid.svg");
     }
 
     public RunSVGGlyph(String size) {

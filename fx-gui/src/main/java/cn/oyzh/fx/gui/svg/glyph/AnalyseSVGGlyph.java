@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class AnalyseSVGGlyph extends SVGGlyph {
 
     public AnalyseSVGGlyph() {
-        this.setUrl("/fx-gui/font/NLP_text.svg");
+        this.setUrl("/fx-svg/NLP_text.svg");
     }
 
     public AnalyseSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class DeleteSVGGlyph extends SVGGlyph {
 
     public DeleteSVGGlyph() {
-        this.setUrl("/fx-gui/font/delete.svg");
+        this.setUrl("/fx-svg/delete.svg");
     }
 
     public DeleteSVGGlyph(String size) {

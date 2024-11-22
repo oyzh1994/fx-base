@@ -10,6 +10,6 @@ import javafx.scene.shape.SVGPath;
 public class HistorySVGPath extends SVGPath {
 
     {
-        super.setContent(SVGManager.loadContent("/fx-gui/font/history.svg"));
+        super.setContent(SVGManager.loadContent("/fx-svg/history.svg"));
     }
 }

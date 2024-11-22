@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class FileSVGGlyph extends SVGGlyph {
 
     public FileSVGGlyph() {
-        this.setUrl("/fx-gui/font/file.svg");
+        this.setUrl("/fx-svg/file.svg");
     }
 
     public FileSVGGlyph(String size) {

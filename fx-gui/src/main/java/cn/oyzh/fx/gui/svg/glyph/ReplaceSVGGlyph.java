@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ReplaceSVGGlyph extends SVGGlyph {
 
     public ReplaceSVGGlyph() {
-        this.setUrl("/fx-gui/font/financial_replace.svg");
+        this.setUrl("/fx-svg/financial_replace.svg");
     }
 
     public ReplaceSVGGlyph(String size) {

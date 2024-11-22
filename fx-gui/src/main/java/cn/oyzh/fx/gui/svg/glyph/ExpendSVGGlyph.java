@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ExpendSVGGlyph extends SVGGlyph {
 
     public ExpendSVGGlyph() {
-        this.setUrl("/fx-gui/font/arrow-to-right.svg");
+        this.setUrl("/fx-svg/arrow-to-right.svg");
     }
 
     public ExpendSVGGlyph(String size) {

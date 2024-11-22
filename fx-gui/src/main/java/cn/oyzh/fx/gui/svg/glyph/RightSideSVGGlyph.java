@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class RightSideSVGGlyph extends SVGGlyph {
 
     public RightSideSVGGlyph() {
-        this.setUrl("/fx-gui/font/rightside.svg");
+        this.setUrl("/fx-svg/rightside.svg");
     }
 
     public RightSideSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ProcedureSVGGlyph extends SVGGlyph {
 
     public ProcedureSVGGlyph() {
-        this.setUrl("/fx-gui/font/procedure.svg");
+        this.setUrl("/fx-svg/procedure.svg");
     }
 
     public ProcedureSVGGlyph(String size) {

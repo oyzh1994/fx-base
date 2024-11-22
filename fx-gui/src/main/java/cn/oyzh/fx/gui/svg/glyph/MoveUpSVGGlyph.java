@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class MoveUpSVGGlyph extends SVGGlyph {
 
     public MoveUpSVGGlyph() {
-        this.setUrl("/fx-gui/font/direction-up.svg");
+        this.setUrl("/fx-svg/direction-up.svg");
     }
 
     public MoveUpSVGGlyph(String size) {

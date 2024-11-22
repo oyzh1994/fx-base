@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class GroupSVGGlyph extends SVGGlyph {
 
     public GroupSVGGlyph() {
-        this.setUrl("/fx-gui/font/group.svg");
+        this.setUrl("/fx-svg/group.svg");
     }
 
     public GroupSVGGlyph(String size) {

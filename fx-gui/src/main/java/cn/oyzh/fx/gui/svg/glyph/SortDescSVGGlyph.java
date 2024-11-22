@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class SortDescSVGGlyph extends SVGGlyph {
 
     public SortDescSVGGlyph() {
-        this.setUrl("/fx-gui/font/sort-descending.svg");
+        this.setUrl("/fx-svg/sort-descending.svg");
     }
 
     public SortDescSVGGlyph(String size) {

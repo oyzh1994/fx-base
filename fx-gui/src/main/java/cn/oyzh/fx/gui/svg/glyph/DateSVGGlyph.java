@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DateSVGGlyph extends SVGGlyph {
 
     public DateSVGGlyph() {
-        this.setUrl("/fx-gui/font/date.svg");
+        this.setUrl("/fx-svg/date.svg");
     }
 
     public DateSVGGlyph(String size) {
