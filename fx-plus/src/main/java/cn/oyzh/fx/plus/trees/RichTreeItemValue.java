@@ -1,18 +1,9 @@
 package cn.oyzh.fx.plus.trees;
 
 import cn.oyzh.common.util.Destroyable;
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.geometry.Insets;
-import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-
-import java.util.Objects;
 
 
 /**
@@ -21,136 +12,64 @@ import java.util.Objects;
  * @author oyzh
  * @since 2023/11/10
  */
-public class RichTreeItemValue extends FXHBox implements Destroyable {
+public class RichTreeItemValue implements Destroyable {
 
-    {
-        this.setCache(false);
-        this.setCacheShape(false);
-        this.setCursor(Cursor.HAND);
+    private RichTreeItem<?> item;
+
+    public RichTreeItemValue() {
     }
 
-    /**
-     * 刷新内容
-     */
-    public void flush() {
-        this.flushGraphic();
-        this.flushText();
-        this.flushGraphicColor();
+    public RichTreeItemValue(RichTreeItem<?> item) {
+        this.item = item;
     }
 
-    /**
-     * 获取当前名称
-     *
-     * @return 当前名称
-     */
+    protected RichTreeItem<?> item() {
+        return this.item;
+    }
+
     public String name() {
-        String name = this.getProp("name");
-        if (name != null) {
-            return name;
-        }
-        Text text = this.text();
-        if (text != null) {
-            return text.getText();
-        }
         return null;
     }
 
-    /**
-     * 设置当前名称
-     *
-     * @param name 名称
-     */
-    public void name(String name) {
-        this.setProp("name", name);
-        this.flushText();
+    public String extra() {
+        return null;
     }
 
-    /**
-     * 获取当前文本
-     *
-     * @return 文本组件
-     */
-    public FXText text() {
-        return (FXText) this.lookup("#name");
-    }
-
-    /**
-     * 获取当前图标
-     *
-     * @return 当前图标
-     */
-    public Node graphic() {
-        return this.lookup("#graphic");
-    }
-
-    /**
-     * 设置当前图标
-     *
-     * @param graphic 当前图标
-     */
-    public void graphic(Node graphic) {
-        if (graphic != null) {
-            graphic.setId("graphic");
-            this.setChild(0, graphic);
-            HBox.setMargin(graphic, new Insets(0, 3, 0, 0));
-        }
-    }
-
-    /**
-     * 刷新文本
-     */
-    public void flushText() {
-        FXText text = this.text();
-        String name = this.name();
+    public String text() {
+        String text = this.name();
+        String extra = this.extra();
         if (text == null) {
-            text = new FXText(name);
-            text.setId("name");
-            text.setFontSize(11);
-            this.setChild(1, text);
-            this.removeProp("name");
-        } else if (name != null && !Objects.equals(text.getText(), name)) {
-            text.setText(name);
+            text = extra;
+        } else if (extra != null) {
+            text += extra;
         }
-        if (ThemeManager.isDarkMode()) {
-            if (text.getFill() != Color.WHITE) {
-                text.setFill(Color.WHITE);
-            }
-        } else if (text.getFill() != Color.BLACK) {
-            text.setFill(Color.BLACK);
-        }
-    }
-
-    /**
-     * 刷新图标
-     */
-    public void flushGraphic() {
-
+        return text;
     }
 
     /**
      * 刷新图标颜色
      */
-    public void flushGraphicColor() {
+    public SVGGlyph graphic() {
+        return null;
+    }
+
+    /**
+     * 刷新图标颜色
+     */
+    public Color graphicColor() {
         if (this.graphic() instanceof SVGGlyph glyph) {
             // 移除等待动画设置的颜色，避免被重复覆盖
             glyph.removeProp("_color");
-            // 设置颜色
-            if (ThemeManager.isDarkMode()) {
-                glyph.setColor(Color.WHITE);
-            } else {
-                glyph.setColor(Color.BLACK);
-            }
         }
+        // 设置颜色
+        if (ThemeManager.isDarkMode()) {
+            return Color.WHITE;
+        }
+        return Color.BLACK;
     }
 
     @Override
     public void destroy() {
-        for (Node node : this.getChildren()) {
-            if (node instanceof Text text) {
-                text.setText(null);
-            }
-        }
-        this.clearChild();
-        this.clearProps();
+        this.item = null;
     }
 }

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.trees;
 
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.tree.FXTreeCell;
 import cn.oyzh.fx.plus.drag.DragNodeHandler;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
@@ -8,6 +9,7 @@ import cn.oyzh.fx.plus.thread.BackgroundService;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
+import javafx.scene.paint.Color;
 
 /**
  * 富功能树节点工厂
@@ -26,20 +28,37 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
      */
     private DragNodeHandler dragNodeHandler;
 
+    /**
+     * 更新节点信息
+     *
+     * @param value 节点
+     * @param empty 是否为空
+     */
     @Override
-    public Node initGraphic() {
-        TreeItem<?> item = this.getTreeItem();
+    protected void updateItem(T value, boolean empty) {
+        super.updateItem(value, empty);
+        if (empty || value == null) {
+            return;
+        }
+        TreeItem<?> treeItem = this.getTreeItem();
         RichTreeView treeView = (RichTreeView) this.getTreeView();
         // 初始化拖动
-        if (item instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
+        if (treeItem instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
             this.dragNodeHandler = new DragNodeHandler();
             BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.dragContent()));
         }
-        // 刷新图标
-        if (item instanceof RichTreeItem<?> treeItem) {
-            treeItem.flushGraphic();
-            return treeItem.getValue();
+        // 获取图标
+        Node graphic = value.graphic();
+        // 更新图标颜色
+        if (graphic instanceof SVGGlyph glyph) {
+            Color color = value.graphicColor();
+            if (color != glyph.getColor()) {
+                glyph.setColor(color);
+            }
         }
-        return null;
+        // 更新图标
+        this.setGraphic(graphic);
+        // 刷新文本
+        this.setText(value.text());
     }
 }

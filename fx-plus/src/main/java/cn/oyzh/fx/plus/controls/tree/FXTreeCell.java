@@ -16,16 +16,8 @@ import javafx.scene.control.TreeCell;
 public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter, ThemeAdapter {
 
     {
-        this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         NodeManager.init(this);
     }
-
-    /**
-     * 初始化图形
-     *
-     * @return 图形
-     */
-    public abstract Node initGraphic();
 
     /**
      * 更新节点信息
@@ -37,21 +29,8 @@ public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter,
     protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
         if (empty || item == null) {
+            this.setText(null);
             this.setGraphic(null);
-        } else if (this.getGraphic() == null) {
-            this.setGraphic(this.initGraphic());
-        } else {
-            this.setGraphic(this.initGraphic());
         }
     }
-
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
 }

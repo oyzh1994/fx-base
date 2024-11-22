@@ -432,9 +432,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     public void flushGraphic() {
         RichTreeItemValue value = this.getValue();
         if (value != null) {
-            value.flushText();
-            value.flushGraphic();
-            value.flushGraphicColor();
+            // value.flushText();
+            // value.flushGraphic();
+            // value.flushGraphicColor();
         }
     }
 
@@ -710,7 +710,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     public void flushValue() {
         RichTreeItemValue value = this.getValue();
         if (value != null) {
-            value.flush();
+            // value.flush();
         }
     }
 }
