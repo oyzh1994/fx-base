@@ -6,6 +6,7 @@ import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.tree.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.thread.QueueService;
@@ -35,11 +36,7 @@ import java.util.function.Consumer;
  * @since 2023/11/10
  */
 @Getter
-public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
-
-    {
-        NodeManager.init(this);
-    }
+public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
     /**
      * 加载完成标志位
@@ -54,12 +51,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     @Getter
     @Accessors(chain = true, fluent = true)
     protected boolean loading;
-
-    /**
-     * 当前树组件
-     */
-    @Setter
-    protected RichTreeView treeView;
 
     /**
      * 当前排序类型
@@ -121,16 +112,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     private volatile boolean filterable;
 
     public RichTreeItem(@NonNull RichTreeView treeView) {
-        this.treeView = treeView;
+        super(treeView);
     }
 
-    /**
-     * 获取渲染服务
-     *
-     * @return 渲染服务
-     */
-    private QueueService service() {
-        return this.treeView.service();
+    public RichTreeView getTreeView() {
+        return (RichTreeView) super.getTreeView();
     }
 
     @Override
@@ -173,15 +159,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
-     * 获取子节点大小
-     *
-     * @return 子节点大小
-     */
-    public int getChildrenSize() {
-        return this.getChildren().size();
-    }
-
-    /**
      * 获取真实子节点大小
      *
      * @return 真实子节点大小
@@ -190,142 +167,21 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         return this.getRealChildren().size();
     }
 
-    /**
-     * 开始等待
-     */
-    public void stopWaiting() {
-        if (this.itemGraphic() instanceof SVGGlyph glyph) {
-            glyph.stopWaiting();
-        }
-    }
-
-    /**
-     * 开始等待
-     *
-     * @param task 待执行业务
-     */
-    public void startWaiting(Runnable task) {
-        this.startWaiting(task, true);
-    }
-
-    /**
-     * 开始等待
-     *
-     * @param task 待执行业务
-     */
-    public void startWaiting(Runnable task, boolean autoClose) {
-        if (this.itemGraphic() instanceof SVGGlyph glyph) {
-            glyph.startWaiting();
-            TaskManager.startDelay(() -> {
-                try {
-                    if (task != null) {
-                        task.run();
-                    }
-                } finally {
-                    if (autoClose) {
-                        glyph.stopWaiting();
-                    }
-                }
-            }, 50);
-        }
-    }
-
-    /**
-     * 开始等待
-     *
-     * @param task 待执行业务
-     */
-    public void startWaiting(Runnable task, int timeout) {
-        if (this.itemGraphic() instanceof SVGGlyph glyph) {
-            glyph.startWaiting();
-            TaskManager.startDelay(() -> {
-                try {
-                    if (task != null) {
-                        task.run();
-                    }
-                } finally {
-                    TaskManager.startDelay(glyph::stopWaiting, timeout);
-                }
-            }, 50);
-        }
-    }
-
-    /**
-     * 是否等待中
-     *
-     * @return 结果
-     */
-    public boolean isWaiting() {
-        if (this.itemGraphic() instanceof SVGGlyph glyph) {
-            return glyph.isWaiting();
-        }
-        return false;
-    }
-
-    /**
-     * 获取当前图标
-     *
-     * @return 图标组件
-     */
-    public SVGGlyph itemGraphic() {
-        SVGGlyph glyph = null;
-        if (this.getValue() != null) {
-            glyph = this.getValue().graphic();
-        }
-        if (glyph == null) {
-            glyph = (SVGGlyph) this.getGraphic();
-        }
-        return glyph;
-    }
-
-    /**
-     * 重新展开
-     */
-    public void reExpanded() {
-        if (this.isExpanded()) {
-            this.service().submitFX(() -> {
-                this.setExpanded(false);
-                this.setExpanded(true);
-            });
-        }
-    }
-
-    /**
-     * 删除节点
-     */
-    public void delete() {
-    }
-
-    /**
-     * 移除节点
-     */
+    @Override
     public void remove() {
-        TreeItem<?> parent = this.getParent();
-        if (parent instanceof RichTreeItem<?> treeItem) {
+        if (this.parent() instanceof RichTreeItem<?> treeItem) {
             treeItem.getRealChildren().remove(this);
-        } else if (parent != null) {
-            parent.getChildren().remove(this);
+        } else {
+           super.remove();
         }
     }
 
-    /**
-     * 节点更名
-     */
-    public void rename() {
-    }
-
-    /**
-     * 获取首个子节点
-     *
-     * @return 首个子节点
-     */
+    @Override
     public TreeItem<?> firstChild() {
         return CollectionUtil.getFirst(this.getRealChildren());
     }
 
-    /**
-     * 清除子节点
-     */
+    @Override
     public void clearChild() {
         if (this.isChildEmpty()) {
             return;
@@ -356,16 +212,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                 clearChildren.accept(child);
             }
             children.clear();
-            this.treeView.flushLocal();
+            this.flushLocal();
         });
     }
 
-    /**
-     * 是否包含节点
-     *
-     * @param item 节点
-     * @return 结果
-     */
+    @Override
     public boolean containsChild(TreeItem<?> item) {
         if (item != null) {
             return this.getRealChildren().contains(item);
@@ -373,103 +224,51 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         return false;
     }
 
-    /**
-     * 设置子节点
-     *
-     * @param item 节点
-     */
+    @Override
     public void setChild(TreeItem<?> item) {
         if (item != null) {
             this.service().submitFX(() -> this.getRealChildren().setAll(item));
         }
     }
 
-    /**
-     * 设置子节点
-     *
-     * @param items 节点列表
-     */
+    @Override
     public void setChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
             this.service().submitFX(() -> this.getRealChildren().setAll(items));
         }
     }
 
-    /**
-     * 添加子节点
-     *
-     * @param item 节点
-     */
+    @Override
     public void addChild(TreeItem<?> item) {
         if (item != null) {
             this.service().submitFX(() -> this.getRealChildren().add(item));
         }
     }
 
-    /**
-     * 设置多个子节点
-     *
-     * @param items 节点列表
-     */
+    @Override
     public void addChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
             this.service().submitFX(() -> this.getRealChildren().addAll(items));
         }
     }
 
-    /**
-     * 移除子节点
-     *
-     * @param item 节点
-     */
+    @Override
     public void removeChild(TreeItem<?> item) {
         if (item != null) {
             this.service().submitFX(() -> this.getRealChildren().remove(item));
         }
     }
 
-    /**
-     * 移除多个子节点
-     *
-     * @param items 节点列表
-     */
+    @Override
     public void removeChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
             this.service().submitFX(() -> this.getRealChildren().removeAll(items));
         }
     }
 
-    /**
-     * 子节点是否为空
-     *
-     * @return 结果
-     */
+    @Override
     public boolean isChildEmpty() {
         return this.getRealChildren().isEmpty();
-    }
-
-    /**
-     * 重载子节点
-     */
-    public void reloadChild() {
-    }
-
-    @Override
-    public Effect getDragEffect() {
-        DropShadow shadow = new DropShadow();
-        shadow.setOffsetY(3);
-        shadow.setOffsetX(3);
-        shadow.setColor(Color.RED);
-        return shadow;
-    }
-
-    @Override
-    public Effect getDropEffect() {
-        DropShadow shadow = new DropShadow();
-        shadow.setOffsetY(3);
-        shadow.setOffsetX(3);
-        shadow.setColor(Color.DARKRED);
-        return shadow;
     }
 
     /**
@@ -541,7 +340,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 执行过滤
      */
     public void doFilter() {
-        this.service().submit(() -> this.doFilter(this.treeView.itemFilter));
+        this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter));
     }
 
     /**
@@ -598,71 +397,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         return item.getRichChildren().parallelStream().anyMatch(RichTreeItem::itemVisible);
     }
 
-    /**
-     * 展开节点
-     */
-    public void expend() {
-        if (!this.isExpanded()) {
-            this.service().submitFX(() -> this.setExpanded(true));
-        }
-    }
-
-    /**
-     * 收缩节点
-     */
-    public void collapse() {
-        if (this.isExpanded()) {
-            this.service().submitFX(() -> this.setExpanded(false));
-        }
-    }
-
-    /**
-     * 收缩所有节点
-     *
-     * @param item 待收缩节点
-     */
-    public void collapseAll(TreeItem<?> item) {
-        item.setExpanded(false);
-        for (TreeItem<?> child : item.getChildren()) {
-            this.collapseAll(child);
-        }
-    }
-
-    /**
-     * 展开所有节点
-     *
-     * @param item 待展开节点
-     */
-    public void expandAll(TreeItem<?> item) {
-        item.setExpanded(true);
-        for (TreeItem<?> child : item.getChildren()) {
-            this.expandAll(child);
-        }
-    }
-
-    /**
-     * 刷新坐标，防止出现白屏
-     */
-    public void flushLocal() {
-        this.service().submit(() -> this.getTreeView().flushLocal());
-    }
-
-    /**
-     * 刷新treeview
-     */
-    public void refresh() {
-        this.service().submitFXLater(() -> this.getTreeView().refresh());
-    }
-
-    /**
-     * 获取窗口
-     *
-     * @return 窗口
-     */
-    public Window window() {
-        return this.getTreeView().window();
-    }
-
     @Override
     public int compareTo(Object o) {
         if (this == o) {
@@ -680,53 +414,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         return 0;
     }
 
-    /**
-     * 鼠标主按钮单击事件
-     */
-    public void onPrimarySingleClick() {
-
-    }
-
-    /**
-     * 鼠标主按钮双击事件
-     */
-    public void onPrimaryDoubleClick() {
-
-    }
-
     public boolean supportFilter() {
         return false;
     }
 
     @Override
     public void destroy() {
-        for (TreeItem<V> child : super.getChildren()) {
-            if (child instanceof Destroyable destroyable) {
-                destroyable.destroy();
-            }
-        }
-        Object value = this.getValue();
-        if (value instanceof Destroyable destroyable) {
-            destroyable.destroy();
-        }
-        this.setValue(null);
-        this.setParent(null);
-        this.setGraphic(null);
-        this.clearChild();
-        this.treeView = null;
+        super.destroy();
+        this.sortType = null;
         this.visibleProperty = null;
-    }
-
-    public boolean isSelected() {
-        return this.getTreeView().isSelected(this);
-    }
-
-    /**
-     * 当前节点的父节点
-     *
-     * @return 父节点
-     */
-    public TreeItem<?> parent() {
-        return this.getParent();
     }
 }

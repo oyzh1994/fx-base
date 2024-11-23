@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
@@ -159,13 +160,20 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
         this.scrollTo(this.getSelectedItem());
     }
 
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return null;
-    // }
+    /**
+     * 渲染服务
+     */
+    protected QueueService service;
+
+    /**
+     * 获取渲染服务
+     *
+     * @return 渲染服务
+     */
+    public QueueService service() {
+        if (this.service == null) {
+            this.service = new QueueService();
+        }
+        return this.service;
+    }
 }

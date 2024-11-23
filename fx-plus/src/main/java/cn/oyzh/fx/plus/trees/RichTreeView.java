@@ -26,23 +26,6 @@ public class RichTreeView extends FlexTreeView {
     }
 
     /**
-     * 渲染服务
-     */
-    protected QueueService service;
-
-    /**
-     * 获取渲染服务
-     *
-     * @return 渲染服务
-     */
-    public QueueService service() {
-        if (this.service == null) {
-            this.service = new QueueService();
-        }
-        return this.service;
-    }
-
-    /**
      * 初始化组件
      */
     protected void initTreeView() {
