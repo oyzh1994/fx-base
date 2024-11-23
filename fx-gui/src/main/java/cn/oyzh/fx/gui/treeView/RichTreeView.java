@@ -78,7 +78,7 @@ public class RichTreeView extends FlexTreeView {
         if (root instanceof RichTreeItem<?> item) {
             FXUtil.runWait(() -> super.setRoot(root));
             item.doFilter();
-        } else {
+        } else if (root != null) {
             throw new IllegalArgumentException("Root is not a RichTreeItem");
         }
     }
