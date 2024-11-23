@@ -17,93 +17,15 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/11/10
  */
-@Accessors(chain = true, fluent = true)
 public class RichTreeView extends FlexTreeView {
-
-    {
-        this.initTreeView();
-    }
-
-    /**
-     * 初始化组件
-     */
-    protected void initTreeView() {
-        this.initEvenListener();
-    }
-
-    /**
-     * 初始化事件监听器
-     */
-    protected void initEvenListener() {
-        // 右键菜单事件
-        this.setOnContextMenuRequested(e -> {
-            RichTreeItem<?> item = this.getSelectedItem();
-            if (item != null) {
-                this.showContextMenu(item.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
-            } else {
-                this.clearContextMenu();
-            }
-        });
-        // f2按键处理
-        KeyListener.listenReleased(this, KeyCode.F2, event -> {
-            RichTreeItem<?> item = this.getSelectedItem();
-            if (item != null) {
-                item.rename();
-            }
-        });
-        // 删除按键处理
-        KeyListener.listenReleased(this, KeyCode.DELETE, event -> {
-            RichTreeItem<?> item = this.getSelectedItem();
-            if (item != null) {
-                item.delete();
-            }
-        });
-        // 鼠标按键处理
-        this.setOnMousePrimaryClicked(event -> {
-            if (MouseUtil.isPrimaryButton(event)) {
-                this.clearContextMenu();
-                RichTreeItem<?> item = this.getSelectedItem();
-                if (item != null) {
-                    if (event.getClickCount() == 1) {
-                        item.onPrimarySingleClick();
-                    } else if (event.getClickCount() >= 2) {
-                        item.onPrimaryDoubleClick();
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * 拖动内容
-     */
-    @Getter
-    protected String dragContent = "rich_drag";
 
     /**
      * 节点过滤器
      */
     @Setter
     @Getter
+    @Accessors(chain = true, fluent = true)
     protected RichTreeItemFilter itemFilter;
-
-    /**
-     * 获取窗口
-     *
-     * @return 窗口
-     */
-    public Window window() {
-        return this.getScene().getWindow();
-    }
-
-    @Override
-    public void selectAndScroll(TreeItem<?> item) {
-        if (item != null) {
-            super.selectAndScroll(item);
-        } else {
-            this.clearSelection();
-        }
-    }
 
     @Override
     public RichTreeItem<?> getSelectedItem() {
@@ -125,7 +47,7 @@ public class RichTreeView extends FlexTreeView {
             // 重新选中此节点
             this.select(item);
         }
-        this.flushLocal();
+        this.refresh();
     }
 
     /**
@@ -143,7 +65,7 @@ public class RichTreeView extends FlexTreeView {
             // 重新选中此节点
             this.select(item);
         }
-        this.flushLocal();
+        this.refresh();
     }
 
     @Override
@@ -156,7 +78,7 @@ public class RichTreeView extends FlexTreeView {
         if (root instanceof RichTreeItem<?> item) {
             FXUtil.runWait(() -> super.setRoot(root));
             item.doFilter();
-        } else if (root != null) {
+        } else {
             throw new IllegalArgumentException("Root is not a RichTreeItem");
         }
     }
@@ -173,41 +95,7 @@ public class RichTreeView extends FlexTreeView {
         this.getRoot().doFilter();
         // 选中并滚动节点
         this.selectAndScroll(item);
-        this.flushLocal();
-    }
-
-    /**
-     * 展开节点
-     */
-    public synchronized void expand() {
-        RichTreeItem<?> item = this.getSelectedItem();
-        if (item != null) {
-            item.expend();
-            this.select(item);
-            this.flushLocal();
-        }
-    }
-
-    /**
-     * 收缩节点
-     */
-    public synchronized void collapse() {
-        RichTreeItem<?> item = this.getSelectedItem();
-        if (item != null) {
-            item.collapse();
-            this.select(item);
-            this.flushLocal();
-        }
-    }
-
-    /**
-     * 重新载入
-     */
-    public synchronized void reload() {
-        RichTreeItem<?> item = this.getSelectedItem();
-        if (item != null) {
-            item.reloadChild();
-            this.flushLocal();
-        }
+        // 刷新
+        this.refresh();
     }
 }

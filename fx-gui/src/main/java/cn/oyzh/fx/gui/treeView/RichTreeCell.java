@@ -60,7 +60,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         if (this.getTreeItem() instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
             this.dragNodeHandler = new DragNodeHandler();
             RichTreeView treeView = (RichTreeView) this.getTreeView();
-            BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.dragContent()));
+            BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
         }
     }
 }

@@ -10,7 +10,7 @@ import lombok.ToString;
  * @since 2022/1/19
  */
 @ToString
-public class FlexTreeView extends FXTreeView implements  FlexAdapter {
+public class FlexTreeView extends FXTreeView implements FlexAdapter {
 
     @Override
     public void resize(double width, double height) {
