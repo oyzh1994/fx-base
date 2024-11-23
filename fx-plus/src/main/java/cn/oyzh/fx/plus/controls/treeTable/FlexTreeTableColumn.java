@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.tree;
+package cn.oyzh.fx.plus.controls.treeTable;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 

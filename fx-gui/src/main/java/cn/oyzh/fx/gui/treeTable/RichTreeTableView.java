@@ -1,6 +1,6 @@
 package cn.oyzh.fx.gui.treeTable;
 
-import cn.oyzh.fx.plus.controls.tree.FlexTreeTableView;
+import cn.oyzh.fx.plus.controls.treeTable.FlexTreeTableView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
