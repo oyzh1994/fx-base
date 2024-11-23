@@ -194,7 +194,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 开始等待
      */
     public void stopWaiting() {
-        if (this.valueGraphic() instanceof SVGGlyph glyph) {
+        if (this.itemGraphic() instanceof SVGGlyph glyph) {
             glyph.stopWaiting();
         }
     }
@@ -214,7 +214,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param task 待执行业务
      */
     public void startWaiting(Runnable task, boolean autoClose) {
-        if (this.valueGraphic() instanceof SVGGlyph glyph) {
+        if (this.itemGraphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
             TaskManager.startDelay(() -> {
                 try {
@@ -236,7 +236,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @param task 待执行业务
      */
     public void startWaiting(Runnable task, int timeout) {
-        if (this.valueGraphic() instanceof SVGGlyph glyph) {
+        if (this.itemGraphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
             TaskManager.startDelay(() -> {
                 try {
@@ -256,7 +256,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * @return 结果
      */
     public boolean isWaiting() {
-        if (this.valueGraphic() instanceof SVGGlyph glyph) {
+        if (this.itemGraphic() instanceof SVGGlyph glyph) {
             return glyph.isWaiting();
         }
         return false;
@@ -267,11 +267,15 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      *
      * @return 图标组件
      */
-    public Node valueGraphic() {
-        if (this.getValue() == null) {
-            return null;
+    public SVGGlyph itemGraphic() {
+        SVGGlyph glyph = null;
+        if (this.getValue() != null) {
+            glyph = this.getValue().graphic();
         }
-        return this.getValue().graphic();
+        if (glyph == null) {
+            glyph = (SVGGlyph) this.getGraphic();
+        }
+        return glyph;
     }
 
     /**
@@ -640,7 +644,14 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
      * 刷新坐标，防止出现白屏
      */
     public void flushLocal() {
-        this.service().submitFX(() -> this.getTreeView().flushLocal());
+        this.service().submit(() -> this.getTreeView().flushLocal());
+    }
+
+    /**
+     * 刷新treeview
+     */
+    public void refresh() {
+        this.service().submitFXLater(() -> this.getTreeView().refresh());
     }
 
     /**

@@ -30,13 +30,6 @@ public abstract class DynamicTab extends FXTab {
         this.loadContent();
         this.setClosable(true);
     }
-    //
-    // /**
-    //  * controller
-    //  */
-    // @Getter
-    // @Accessors(fluent = true, chain = false)
-    // protected DynamicTabController controller;
 
     /**
      * 加载内容
@@ -54,7 +47,7 @@ public abstract class DynamicTab extends FXTab {
         }
     }
 
-    protected <T extends DynamicTabController> T controller() {
+    protected DynamicTabController controller() {
         return this.getProp("_controller");
     }
 
