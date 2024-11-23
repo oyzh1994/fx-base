@@ -1,4 +1,4 @@
-package cn.oyzh.fx.gui.trees;
+package cn.oyzh.fx.gui.treeView;
 
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
