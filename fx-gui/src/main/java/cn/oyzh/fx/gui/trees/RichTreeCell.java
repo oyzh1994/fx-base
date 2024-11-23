@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.trees;
+package cn.oyzh.fx.gui.trees;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.treeView.FXTreeCell;
