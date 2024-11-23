@@ -200,7 +200,7 @@ public class RichTreeView extends FlexTreeView {
     public synchronized void expand() {
         RichTreeItem<?> item = this.getSelectedItem();
         if (item != null) {
-            item.extend();
+            item.expend();
             this.select(item);
             this.flushLocal();
         }

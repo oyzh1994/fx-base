@@ -229,6 +229,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
             }, 50);
         }
     }
+
     /**
      * 开始等待
      *
@@ -242,7 +243,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
                     if (task != null) {
                         task.run();
                     }
-                }finally {
+                } finally {
                     TaskManager.startDelay(glyph::stopWaiting, timeout);
                 }
             }, 50);
@@ -596,7 +597,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     /**
      * 展开节点
      */
-    public void extend() {
+    public void expend() {
         if (!this.isExpanded()) {
             this.service().submitFX(() -> this.setExpanded(true));
         }
@@ -703,12 +704,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
         this.clearChild();
         this.treeView = null;
         this.visibleProperty = null;
-        // if (this.children != null) {
-        //     this.children.removeListener(this.childrenListener);
-        //     this.children = null;
-        // }
-        // this.childrenListener = null;
-        // this.eventHandlerManager = null;
     }
 
     public boolean isSelected() {
@@ -716,12 +711,11 @@ public class RichTreeItem<V extends RichTreeItemValue> extends TreeItem<V> imple
     }
 
     /**
-     * 刷新值
+     * 当前节点的父节点
+     *
+     * @return 父节点
      */
-    public void flushValue() {
-        RichTreeItemValue value = this.getValue();
-        if (value != null) {
-            // value.flush();
-        }
+    public TreeItem<?> parent() {
+        return this.getParent();
     }
 }
