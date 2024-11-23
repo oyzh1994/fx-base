@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.treeView;
 
+import cn.oyzh.common.util.BitUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
@@ -10,8 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
+import java.util.BitSet;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,36 +27,14 @@ import java.util.function.Consumer;
 @Getter
 public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
-    /**
-     * 加载完成标志位
-     */
-    private Boolean loaded;
+    private BitSet bitValue;
 
-    /**
-     * 加载中标志位
-     */
-    private Boolean loading;
-
-    /**
-     * 当前排序类型
-     * 0 asc 1 desc -1 无
-     */
-    private Byte sortType;
-
-    /**
-     * 排序中标志位
-     */
-    private Boolean sorting;
-
-    /**
-     * 是否可排序
-     */
-    private Boolean sortable;
-
-    /**
-     * 可见属性
-     */
-    private Boolean visible;
+    protected BitSet bitValue() {
+        if (this.bitValue == null) {
+            this.bitValue = new BitSet(0b00100101);
+        }
+        return bitValue;
+    }
 
     /**
      * 设置可见状态
@@ -63,7 +42,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      * @param visible 可见状态
      */
     public void setVisible(boolean visible) {
-        this.visible = visible;
+        this.bitValue().set(0, visible);
     }
 
     /**
@@ -72,46 +51,61 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      * @return 结果
      */
     public boolean isVisible() {
-        return this.visible == null || this.visible;
+        return this.bitValue == null || this.bitValue().get(0);
     }
 
     public void setSorting(boolean sorting) {
-        this.sorting = sorting;
+        this.bitValue().set(1, sorting);
     }
 
     public boolean isSorting() {
-        return this.sorting != null && this.visible;
+        return this.bitValue().get(1);
     }
 
     public void setSortable(boolean sortable) {
-        this.sortable = sortable;
+        this.bitValue().set(2, sortable);
     }
 
     public boolean isSortable() {
-        return this.sortable == null || this.sortable;
+        return this.bitValue == null || this.bitValue().get(2);
     }
 
     public void setLoaded(boolean loaded) {
-        this.loaded = loaded;
+        this.bitValue().set(3, loaded);
     }
 
     public boolean isLoaded() {
-        return this.loaded != null && this.loaded;
+        return this.bitValue().get(3);
     }
 
     public void setLoading(boolean loading) {
-        this.loading = loading;
+        this.bitValue().set(4, loading);
     }
 
     public boolean isLoading() {
-        return this.loading != null && this.loading;
+        return this.bitValue().get(4);
+    }
+
+    public void setFilterable(boolean filterable) {
+        this.bitValue().set(5, filterable);
+    }
+
+    public boolean isFilterable() {
+        return this.bitValue == null || this.bitValue().get(5);
+    }
+
+    public void setSortAsc(boolean sortAsc) {
+        this.bitValue().set(6, sortAsc);
     }
 
     /**
-     * 是否可过滤
+     * 是否asc排序
+     *
+     * @return 结果
      */
-    @Setter
-    private volatile boolean filterable;
+    public boolean isSortAsc() {
+        return this.bitValue().get(6);
+    }
 
     public RichTreeItem(@NonNull RichTreeView treeView) {
         super(treeView);
@@ -132,7 +126,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
     @Override
     public ObservableList getChildren() {
         return super.getChildren().filtered(item -> {
-            if (item instanceof RichTreeItem<?> richItem && richItem.filterable) {
+            if (item instanceof RichTreeItem<?> richItem && richItem.isFilterable()) {
                 return richItem.itemVisible();
             }
             return true;
@@ -202,7 +196,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
                 clearChildren.accept(child);
             }
             children.clear();
-            this.flushLocal();
+            this.refresh();
         });
     }
 
@@ -265,7 +259,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      * 按照类型排序
      */
     public void sort() {
-        if (this.isSortable() && this.sortType != null) {
+        if (this.isSortable()) {
             if (this.isSortAsc()) {
                 this.sortAsc();
             } else {
@@ -279,7 +273,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      */
     public void sortAsc() {
         if (this.isSortable()) {
-            this.sortType = 0;
+            this.setSortAsc(true);
             this.sortChild();
         }
     }
@@ -289,18 +283,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      */
     public void sortDesc() {
         if (this.isSortable()) {
-            this.sortType = 1;
+            this.setSortAsc(false);
             this.sortChild();
         }
-    }
-
-    /**
-     * 是否asc排序
-     *
-     * @return 结果
-     */
-    protected boolean isSortAsc() {
-        return this.sortType != null && this.sortType == 0;
     }
 
     /**
@@ -341,7 +326,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
     public synchronized void doFilter(RichTreeItemFilter itemFilter) {
         try {
             List<RichTreeItem<?>> richChildren = new CopyOnWriteArrayList<>(this.richChildren());
-            if (this.filterable) {
+            if (this.isFilterable()) {
                 richChildren.parallelStream().forEach(child -> {
                     if (itemFilter != null) {
                         child.setVisible(itemFilter.test(child));
@@ -405,7 +390,6 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
     @Override
     public void destroy() {
         super.destroy();
-        this.sortType = null;
-        this.visible = null;
+        this.bitValue = null;
     }
 }
