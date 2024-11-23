@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.thread.QueueService;
-import cn.oyzh.fx.plus.trees.RichTreeItemValue;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -27,7 +26,7 @@ import java.util.List;
  * @since 2023/11/10
  */
 @Getter
-public abstract class FXTreeItem<V extends RichTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
     {
         NodeManager.init(this);
