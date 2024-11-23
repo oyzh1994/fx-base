@@ -1,8 +1,7 @@
 package cn.oyzh.fx.plus.trees;
 
-import cn.oyzh.fx.plus.controls.tree.FlexTreeView;
+import cn.oyzh.fx.plus.controls.treeView.FlexTreeView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
-import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.scene.control.TreeItem;

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.tree;
+package cn.oyzh.fx.plus.controls.treeView;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
@@ -10,9 +10,7 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.trees.RichTreeItemValue;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;

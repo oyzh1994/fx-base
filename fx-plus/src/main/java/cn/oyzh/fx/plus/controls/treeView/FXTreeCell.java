@@ -1,10 +1,8 @@
-package cn.oyzh.fx.plus.controls.tree;
+package cn.oyzh.fx.plus.controls.treeView;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.scene.Node;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TreeCell;
 
 /**

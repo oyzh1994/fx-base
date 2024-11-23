@@ -1,24 +1,14 @@
 package cn.oyzh.fx.plus.trees;
 
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.tree.FXTreeItem;
+import cn.oyzh.fx.plus.controls.treeView.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
-import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.thread.QueueService;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
-import javafx.scene.paint.Color;
-import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
