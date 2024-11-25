@@ -30,7 +30,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 透明度
      */
     @Column
-    private Double opacity;
+    private Float opacity;
 
     /**
      * 主题
@@ -60,7 +60,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 字体大小
      */
     @Column
-    private Integer fontSize;
+    private Byte fontSize;
 
     /**
      * 字体名称
@@ -72,7 +72,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 字体粗细
      */
     @Column
-    private Integer fontWeight;
+    private Short fontWeight;
 
     /**
      * 区域
@@ -87,7 +87,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 2 直接关闭程序
      */
     @Column
-    private Integer exitMode;
+    private Byte exitMode;
 
     /**
      * 记住页面大小
@@ -95,7 +95,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
-    private Integer rememberPageSize;
+    private Byte rememberPageSize;
 
     /**
      * 记住页面拉伸
@@ -103,7 +103,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 1|null 记住
      */
     @Column
-    private Integer rememberPageResize;
+    private Byte rememberPageResize;
 
     /**
      * 记住页面位置
@@ -111,7 +111,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
-    private Integer rememberPageLocation;
+    private Byte rememberPageLocation;
 
     /**
      * 标签策略
@@ -119,6 +119,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * SINGLE_CONNECT 代表单个连接
      */
     @Column
+    @Deprecated
     private String tabStrategy;
 
     /**
@@ -126,6 +127,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 0代表无限，null或者1代表1个
      */
     @Column
+    @Deprecated
     private Integer tabLimit;
 
     /**
@@ -169,6 +171,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      *
      * @return 结果
      */
+    @Deprecated
     public boolean isAllTabLimitStrategy() {
         return this.tabStrategy == null || "ALL_CONNECT".equals(this.tabStrategy);
     }
@@ -178,6 +181,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      *
      * @return 结果
      */
+    @Deprecated
     public boolean isSingleTabLimitStrategy() {
         return "SINGLE_CONNECT".equals(this.tabStrategy);
     }
@@ -187,6 +191,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      *
      * @return 标签数量限制
      */
+    @Deprecated
     public int getTabLimit() {
         return this.tabLimit == null ? 1 : this.tabLimit;
     }
@@ -196,6 +201,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      *
      * @return 标签数量限制
      */
+    @Deprecated
     public boolean isTabUnLimit() {
         return this.tabLimit != null && this.tabLimit == 0;
     }
@@ -317,8 +323,8 @@ public class Setting implements Serializable, ObjectCopier<Object> {
             return null;
         }
         FontConfig config = new FontConfig();
-        config.setSize(this.fontSize);
-        config.setWeight(this.fontWeight);
+        config.setSize(Integer.valueOf(this.fontSize));
+        config.setWeight(Integer.valueOf(this.fontWeight));
         config.setFamily(this.fontFamily);
         return config;
     }

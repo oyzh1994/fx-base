@@ -20,12 +20,12 @@ public class OpacityManager {
     /**
      * 默认透明度
      */
-    public static double defaultOpacity = 1.0;
+    public static float defaultOpacity = 1.f;
 
     /**
      * 当前透明度
      */
-    private static Double currentOpacity;
+    private static Float currentOpacity;
 
     /**
      * 获取当前透明度
@@ -44,8 +44,8 @@ public class OpacityManager {
      *
      * @param opacity 透明度
      */
-    public static void apply(Double opacity) {
-        if (opacity != null && !Double.isNaN(opacity)) {
+    public static void apply(Float opacity) {
+        if (opacity != null && !Float.isNaN(opacity)) {
             try {
                 opacity /= 100;
                 // 变更透明度
