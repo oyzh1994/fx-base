@@ -36,7 +36,7 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      *
      * @return BitSet
      */
-    protected BitSet bitValue() {
+    private BitSet bitValue() {
         if (this.bitValue == null) {
             this.bitValue = new BitSet(0b00100101);
         }
