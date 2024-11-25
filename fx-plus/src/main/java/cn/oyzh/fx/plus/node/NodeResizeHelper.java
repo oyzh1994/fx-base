@@ -12,7 +12,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -198,6 +197,7 @@ public class NodeResizeHelper {
         return event -> {
             // 设置拉伸中标志位
             this.resizeIng = true;
+            // event.consume();
             JulLog.debug("MousePressed");
         };
     }
@@ -326,7 +326,7 @@ public class NodeResizeHelper {
      * @return 结果
      */
     public boolean triggerAble(float val) {
-        return val <= 0 && val <= this.triggerThreshold();
+        return Math.abs(val) <= this.triggerThreshold();
     }
 
     /**
