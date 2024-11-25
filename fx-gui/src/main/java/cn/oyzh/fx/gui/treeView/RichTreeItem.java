@@ -1,6 +1,5 @@
 package cn.oyzh.fx.gui.treeView;
 
-import cn.oyzh.common.util.BitUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
@@ -27,8 +26,16 @@ import java.util.function.Consumer;
 @Getter
 public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
+    /**
+     * bit值设置，减少内存占用
+     */
     private BitSet bitValue;
 
+    /**
+     * bit值设置
+     *
+     * @return BitSet
+     */
     protected BitSet bitValue() {
         if (this.bitValue == null) {
             this.bitValue = new BitSet(0b00100101);
@@ -37,9 +44,9 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
     }
 
     /**
-     * 设置可见状态
+     * 设置可见
      *
-     * @param visible 可见状态
+     * @param visible 可见
      */
     public void setVisible(boolean visible) {
         this.bitValue().set(0, visible);
@@ -54,46 +61,101 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
         return this.bitValue == null || this.bitValue().get(0);
     }
 
+    /**
+     * 设置排序中
+     *
+     * @param sorting 排序中
+     */
     public void setSorting(boolean sorting) {
         this.bitValue().set(1, sorting);
     }
 
+    /**
+     * 是否排序中
+     *
+     * @return 结果
+     */
     public boolean isSorting() {
         return this.bitValue().get(1);
     }
 
+    /**
+     * 设置可排序
+     *
+     * @param sortable 可排序
+     */
     public void setSortable(boolean sortable) {
         this.bitValue().set(2, sortable);
     }
 
+    /**
+     * 是否可排序
+     *
+     * @return 结果
+     */
     public boolean isSortable() {
         return this.bitValue == null || this.bitValue().get(2);
     }
 
+    /**
+     * 设置已加载
+     *
+     * @param loaded 已加载
+     */
     public void setLoaded(boolean loaded) {
         this.bitValue().set(3, loaded);
     }
 
+    /**
+     * 是否已加载
+     *
+     * @return 结果
+     */
     public boolean isLoaded() {
         return this.bitValue().get(3);
     }
 
+    /**
+     * 设置加载中
+     *
+     * @param loading 加载中
+     */
     public void setLoading(boolean loading) {
         this.bitValue().set(4, loading);
     }
 
+    /**
+     * 是否加载中
+     *
+     * @return 结果
+     */
     public boolean isLoading() {
         return this.bitValue().get(4);
     }
 
+    /**
+     * 设置可过滤
+     *
+     * @param filterable 可过滤
+     */
     public void setFilterable(boolean filterable) {
         this.bitValue().set(5, filterable);
     }
 
+    /**
+     * 是否可过滤
+     *
+     * @return 结果
+     */
     public boolean isFilterable() {
         return this.bitValue == null || this.bitValue().get(5);
     }
 
+    /**
+     * 设置asr排序
+     *
+     * @param sortAsc asr排序
+     */
     public void setSortAsc(boolean sortAsc) {
         this.bitValue().set(6, sortAsc);
     }
@@ -315,7 +377,16 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      * 执行过滤
      */
     public void doFilter() {
-        this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter));
+        List<RichTreeItem<?>> items = this.richChildren();
+        this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter, items));
+    }
+
+    /**
+     * 执行过滤
+     */
+    public void doFilter(RichTreeItemFilter itemFilter) {
+        List<RichTreeItem<?>> items = this.richChildren();
+        this.service().submit(() -> this.doFilter(itemFilter, items));
     }
 
     /**
@@ -323,18 +394,18 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      *
      * @param itemFilter 节点过滤器
      */
-    public synchronized void doFilter(RichTreeItemFilter itemFilter) {
+    public void doFilter(RichTreeItemFilter itemFilter, List<RichTreeItem<?>> items) {
         try {
-            List<RichTreeItem<?>> richChildren = new CopyOnWriteArrayList<>(this.richChildren());
+            List<RichTreeItem<?>> richChildren = new CopyOnWriteArrayList<>(items);
             if (this.isFilterable()) {
-                richChildren.parallelStream().forEach(child -> {
-                    if (itemFilter != null) {
+                if (itemFilter != null) {
+                    richChildren.parallelStream().forEach(child -> {
                         child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
-                    } else {
-                        child.setVisible(true);
-                    }
-                });
+                    });
+                } else {
+                    richChildren.parallelStream().forEach(child -> child.setVisible(true));
+                }
             } else {
                 richChildren.parallelStream().forEach(child -> child.doFilter(itemFilter));
             }
