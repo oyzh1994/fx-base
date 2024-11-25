@@ -1,8 +1,10 @@
 package cn.oyzh.fx.terminal.histroy;
 
 import cn.oyzh.common.util.ObjectComparator;
+import cn.oyzh.store.jdbc.Column;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,16 +14,18 @@ import java.util.Objects;
  * @since 2023/5/29
  */
 @Data
-public class TerminalHistory implements ObjectComparator<TerminalHistory> {
+public class TerminalHistory implements ObjectComparator<TerminalHistory>, Serializable {
 
     /**
      * 命令行
      */
+    @Column
     private String line;
 
     /**
      * 保存时间
      */
+    @Column
     private long saveTime;
 
     @Override

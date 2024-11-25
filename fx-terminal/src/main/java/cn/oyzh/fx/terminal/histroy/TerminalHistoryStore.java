@@ -17,7 +17,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/5/29
  */
-//@Slf4j
+@Deprecated
 public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistory> {
 
     /**
