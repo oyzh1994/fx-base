@@ -4,6 +4,7 @@ import cn.oyzh.common.util.ObjectCopier;
 import cn.oyzh.store.jdbc.Column;
 import cn.oyzh.store.jdbc.PrimaryKey;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import java.io.Serializable;
  * @author oyzh
  * @since 2023/6/16
  */
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, Serializable {
@@ -25,8 +26,6 @@ public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, S
     /**
      * 分组id
      */
-    @Getter
-    @Setter
     @Column
     @PrimaryKey
     private String gid;
@@ -34,16 +33,12 @@ public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, S
     /**
      * 分组名称
      */
-    @Getter
-    @Setter
     @Column
     private String name;
 
     /**
      * 是否展开分组
      */
-    @Getter
-    @Setter
     @Column
     private Boolean expand;
 
