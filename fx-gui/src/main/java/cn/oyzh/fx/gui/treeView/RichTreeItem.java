@@ -14,7 +14,6 @@ import lombok.NonNull;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 /**
@@ -378,15 +377,8 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      */
     public void doFilter() {
         List<RichTreeItem<?>> items = this.richChildren();
-        this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter, items));
-    }
-
-    /**
-     * 执行过滤
-     */
-    public void doFilter(RichTreeItemFilter itemFilter) {
-        List<RichTreeItem<?>> items = this.richChildren();
-        this.service().submit(() -> this.doFilter(itemFilter, items));
+        this.doFilter(this.getTreeView().itemFilter, items);
+        // this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter, items));
     }
 
     /**
@@ -394,20 +386,31 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
      *
      * @param itemFilter 节点过滤器
      */
+    public void doFilter(RichTreeItemFilter itemFilter) {
+        List<RichTreeItem<?>> items = this.richChildren();
+        this.doFilter(itemFilter, items);
+        // this.service().submit(() -> this.doFilter(itemFilter, items));
+    }
+
+    /**
+     * 执行过滤
+     *
+     * @param itemFilter 节点过滤器
+     * @param items      节点列表
+     */
     public void doFilter(RichTreeItemFilter itemFilter, List<RichTreeItem<?>> items) {
         try {
-            List<RichTreeItem<?>> richChildren = new CopyOnWriteArrayList<>(items);
             if (this.isFilterable()) {
                 if (itemFilter != null) {
-                    richChildren.parallelStream().forEach(child -> {
+                    items.forEach(child -> {
                         child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
                     });
                 } else {
-                    richChildren.parallelStream().forEach(child -> child.setVisible(true));
+                    items.forEach(child -> child.setVisible(true));
                 }
             } else {
-                richChildren.parallelStream().forEach(child -> child.doFilter(itemFilter));
+                items.forEach(child -> child.doFilter(itemFilter));
             }
             this.sort();
             this.reExpanded();
