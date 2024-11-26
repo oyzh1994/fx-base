@@ -27,7 +27,7 @@ public class FontSizeComboBox extends FlexComboBox<Integer> {
         this.addItem(34);
         this.addItem(36);
 
-        this.select(null);
+        this.selectSize(null);
         this.setTipText(I18nHelper.fontSizeTip());
     }
 
@@ -35,12 +35,11 @@ public class FontSizeComboBox extends FlexComboBox<Integer> {
         return 10;
     }
 
-    @Override
-    public void select(Integer obj) {
-        if (obj == null) {
+    public void selectSize(Integer size) {
+        if (size == null) {
             this.clearSelection();
         } else {
-            super.select(obj);
+            super.select(size);
         }
     }
 }
