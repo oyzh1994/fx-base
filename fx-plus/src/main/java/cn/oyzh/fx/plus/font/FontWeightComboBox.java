@@ -38,11 +38,11 @@ public class FontWeightComboBox extends FlexComboBox<FontWeight> {
         }
     }
 
-    public int getWeight() {
-        return this.getSelectedItem().getWeight();
+    public short getWeight() {
+        return (short) this.getSelectedItem().getWeight();
     }
 
-    public void selectWeight(Integer fontWeight) {
+    public void selectWeight(Short fontWeight) {
         if (fontWeight == null) {
             this.select(null);
         } else {
