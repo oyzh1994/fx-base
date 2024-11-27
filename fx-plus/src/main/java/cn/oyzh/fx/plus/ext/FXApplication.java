@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.ext;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.SystemUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageManager;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
@@ -30,6 +31,9 @@ public abstract class FXApplication extends Preloader {
     public void init() throws Exception {
         // 设置stage全部关闭后不自动销毁进程
         Platform.setImplicitExit(false);
+        // 禁用css日志
+        FXUtil.disableCSSLogger();
+        // 调用父类
         super.init();
         JulLog.info("{} init.", this.appName());
     }
