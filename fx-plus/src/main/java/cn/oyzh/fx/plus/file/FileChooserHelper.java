@@ -117,6 +117,12 @@ public class FileChooserHelper {
         return chooser.showOpenDialog(owner);
     }
 
+    /**
+     * 获取类型过滤器
+     *
+     * @param type 类型
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter extensionFilter(String type) {
         if (StringUtil.equalsAnyIgnoreCase("sql", type)) {
             return sqlExtensionFilter();
@@ -187,5 +193,4 @@ public class FileChooserHelper {
     public static FileExtensionFilter jsonExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.jsonType(), "*.json");
     }
-
 }
