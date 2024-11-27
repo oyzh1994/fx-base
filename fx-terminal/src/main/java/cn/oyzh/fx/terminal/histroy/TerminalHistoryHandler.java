@@ -3,6 +3,8 @@ package cn.oyzh.fx.terminal.histroy;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.terminal.Terminal;
 
+import java.util.List;
+
 /**
  * @author oyzh
  * @since 2023/08/28
@@ -31,34 +33,29 @@ public interface TerminalHistoryHandler {
      * @param input 内容
      */
     default void saveHistory(String input) {
-        if (StringUtil.isNotEmpty(input) && this.historyStore() != null) {
+        if (StringUtil.isNotEmpty(input)) {
             TerminalHistory history = new TerminalHistory();
             history.setLine(input);
-            this.historyStore().add(history);
+            this.addHistory(history);
         }
     }
 
     /**
      * 清除历史
      */
-    default void clearHistory() {
-        if (this.historyStore() != null) {
-            this.historyStore().clear();
-        }
-    }
+    void clearHistory();
 
     /**
-     * 设置历史储存器
+     * 加载历史
      *
-     * @param historyStore 历史储存器
+     * @return 历史记录
      */
-    void historyStore(TerminalHistoryStore historyStore);
+    List<? extends TerminalHistory> listHistory();
 
     /**
-     * 获取历史储存器
+     * 添加历史
      *
-     * @return 历史储存器
+     * @param history 历史
      */
-    TerminalHistoryStore historyStore();
-
+    void addHistory(TerminalHistory history);
 }

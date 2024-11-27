@@ -3,9 +3,6 @@ package cn.oyzh.fx.terminal.histroy;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.terminal.Terminal;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -13,29 +10,17 @@ import java.util.List;
  * @author oyzh
  * @since 2023/08/28
  */
-public class BaseTerminalHistoryHandler implements TerminalHistoryHandler {
+public abstract class BaseTerminalHistoryHandler implements TerminalHistoryHandler {
 
     /**
      * 当前命令
      */
     private TerminalHistory history;
 
-    /**
-     * 历史储存
-     */
-    @Getter
-    @Setter
-    @Accessors(fluent = true, chain = false)
-    private TerminalHistoryStore historyStore;
-
-    public BaseTerminalHistoryHandler(TerminalHistoryStore historyStore) {
-        this.historyStore = historyStore;
-    }
-
     @Override
     public String prevCommand(Terminal terminal) {
         // 获取命令历史
-        List<TerminalHistory> histories = this.historyStore().load();
+        List<? extends TerminalHistory> histories = this.listHistory();
         // 重置命令
         TerminalHistory commandHistory = null;
         if (StringUtil.isEmpty(terminal.getInput())) {
@@ -60,7 +45,7 @@ public class BaseTerminalHistoryHandler implements TerminalHistoryHandler {
     @Override
     public String nextCommand(Terminal terminal) {
         // 获取命令历史
-        List<TerminalHistory> histories = this.historyStore().load();
+        List<? extends TerminalHistory> histories = this.listHistory();
         if (histories.isEmpty()) {
             return null;
         }
