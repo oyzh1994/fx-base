@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 
@@ -74,15 +75,13 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         // 生成标签
         SVGLabel label = new SVGLabel(text, glyph);
         // 设置边距
-        label.setStyle("-fx-padding: 0 0 0 0;");
+        label.setPadding(new Insets(0, 0, 0, 0));
         // 计算宽度
         double w = FontUtil.stringWidth(text);
         if (glyph != null) {
-            w += glyph.getWidth() + 20;
+            w += glyph.getWidth() + 25;
         }
         // 设置宽度
-        label.setMaxWidth(w);
-        label.setMinWidth(w);
         label.setPrefWidth(w);
         // 生成菜单项
         return new FXMenuItem(label, null, action);
@@ -98,16 +97,6 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
     public static FXMenuItem newItem(String text, Runnable action) {
         return new FXMenuItem(null, text, action);
     }
-
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
 
     @Override
     public void destroy() {

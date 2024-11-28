@@ -7,10 +7,12 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author oyzh
@@ -35,23 +37,31 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
 
     public FXContextMenu(FXMenuItem... items) {
         super();
-        this.getItems().addAll(items);
+        this.setItem(items);
+    }
+
+    public FXContextMenu(List<? extends MenuItem> items) {
+        super();
+        this.setItem(items);
     }
 
     /**
      * 计算菜单宽度
      */
-    private void calcWidth() {
-        if (CollectionUtil.isNotEmpty(this.getItems())) {
+    protected void calcWidth() {
+        ObservableList<MenuItem> items = this.getItems();
+        if (CollectionUtil.isNotEmpty(items)) {
             double maxWidth = 0.d;
-            for (MenuItem item : this.getItems()) {
-                if (item instanceof FXMenuItem item1 && item1.getWidth() > maxWidth) {
-                    maxWidth = item1.getWidth();
+            for (MenuItem item : items) {
+                if (item instanceof FXMenuItem menuItem) {
+                    double w = menuItem.getWidth();
+                    if (w > maxWidth) {
+                        maxWidth = w;
+                    }
                 }
             }
             // 设置宽度
-            this.setWidth(maxWidth);
-            this.setRealWidth(maxWidth);
+            this.setPrefWidth(maxWidth);
         }
     }
 
@@ -84,6 +94,13 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
     public void setItem(MenuItem item) {
         if (item != null) {
             this.getItems().setAll(item);
+        }
+    }
+
+    public void setItem(MenuItem... items) {
+        if (items != null) {
+            DestroyUtil.destroy(this.getItems());
+            this.getItems().setAll(items);
         }
     }
 
