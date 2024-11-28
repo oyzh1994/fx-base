@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * 计数器
  *
@@ -21,28 +23,25 @@ public class Counter {
     private Integer sum;
 
     /**
-     * 失败计数
-     */
-    @Getter
-    private int failCount;
-
-    /**
      * 开始时间
      */
     @Getter
-    private long startTime;
+    private Long startTime;
+
+    /**
+     * 失败计数
+     */
+    private final AtomicInteger failCount = new AtomicInteger(0);
 
     /**
      * 忽略计数
      */
-    @Getter
-    private int ignoreCount;
+    private final AtomicInteger ignoreCount = new AtomicInteger(0);
 
     /**
      * 成功计数
      */
-    @Getter
-    private int successCount;
+    private final AtomicInteger successCount = new AtomicInteger(0);
 
     /**
      * 额外信息
@@ -56,9 +55,7 @@ public class Counter {
      * @param failCount 失败数量
      */
     public void incrFail(int failCount) {
-        failCount = Math.abs(failCount);
-        this.failCount += failCount;
-        this.update(0);
+        this.update(0, Math.abs(failCount));
     }
 
     /**
@@ -67,9 +64,7 @@ public class Counter {
      * @param successCount 成功数量
      */
     public void incrSuccess(int successCount) {
-        successCount = Math.abs(successCount);
-        this.successCount += successCount;
-        this.update(1);
+        this.update(1, Math.abs(successCount));
     }
 
     /**
@@ -78,9 +73,7 @@ public class Counter {
      * @param ignoreCount 忽略
      */
     public void incrIgnore(int ignoreCount) {
-        ignoreCount = Math.abs(ignoreCount);
-        this.ignoreCount += ignoreCount;
-        this.update(2);
+        this.update(2, Math.abs(ignoreCount));
     }
 
     /**
@@ -89,15 +82,25 @@ public class Counter {
      * @param type 类型 0:失败 1:成功 2:忽略
      */
     public void update(int type) {
-        if (this.startTime == 0) {
+        this.update(type, 1);
+    }
+
+    /**
+     * 更新
+     *
+     * @param type 类型 0:失败 1:成功 2:忽略
+     * @param val  递增值
+     */
+    public void update(int type, int val) {
+        if (this.startTime == null) {
             this.startTime = System.currentTimeMillis();
         }
         if (type == 0) {
-            this.failCount++;
+            this.failCount.addAndGet(val);
         } else if (type == 1) {
-            this.successCount++;
+            this.successCount.addAndGet(val);
         } else if (type == 2) {
-            this.ignoreCount++;
+            this.ignoreCount.addAndGet(val);
         }
     }
 
@@ -127,10 +130,10 @@ public class Counter {
      */
     public void reset() {
         this.sum = null;
-        this.failCount = 0;
-        this.startTime = 0;
-        this.ignoreCount = 0;
-        this.successCount = 0;
+        this.startTime = null;
+        this.failCount.set(0);
+        this.ignoreCount.set(0);
+        this.successCount.set(0);
         this.extraMsg = null;
     }
 
@@ -140,7 +143,7 @@ public class Counter {
      * @return 耗时毫秒值
      */
     public long getElapsed() {
-        if (this.startTime == 0) {
+        if (this.startTime == null) {
             return 0;
         }
         return System.currentTimeMillis() - this.startTime;
@@ -152,7 +155,7 @@ public class Counter {
      * @return 处理总数
      */
     public int getTotalCount() {
-        return this.failCount + this.successCount + this.ignoreCount;
+        return this.failCount.get() + this.successCount.get() + this.ignoreCount.get();
     }
 
     /**
