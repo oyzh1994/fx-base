@@ -17,12 +17,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/7/22
  */
-// @Component
 public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<TerminalCommand, Terminal> {
-
-    // static {
-    //     TerminalManager.registerHandler(HelpTerminalCommandHandler.class);
-    // }
 
     @Override
     public String commandName() {
@@ -40,15 +35,10 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
         try {
             Collection<TerminalCommandHandler<?,?>> handlers = TerminalManager.listHandler();
             List<String> list = new ArrayList<>();
-            // list.add("序号");
             list.add(I18nResourceBundle.i18nString("base.orderNo"));
-            // list.add("命令");
             list.add(I18nResourceBundle.i18nString("base.cmd"));
-            // list.add("版本要求");
             list.add(I18nResourceBundle.i18nString("base.version"));
-            // list.add("状态");
             list.add(I18nResourceBundle.i18nString("base.status"));
-            // list.add("描述");
             list.add(I18nResourceBundle.i18nString("base.desc"));
             int index = 0;
             for (TerminalCommandHandler<?,?> handler : handlers) {
@@ -63,7 +53,6 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
                     list.add(version);
                 }
                 list.add(handler.commandDeprecated() ? I18nResourceBundle.i18nString("base.deprecated") : I18nResourceBundle.i18nString("base.normal"));
-                // list.add(handler.commandDeprecated() ? "过时" : "正常");
                 list.add(handler.commandDesc());
             }
             result.setResult(TextUtil.beautifyFormat(list, 5, 2));

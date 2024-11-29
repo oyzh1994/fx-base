@@ -178,6 +178,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
                         }
                     }
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     this.onError(ex);
                 }
             });

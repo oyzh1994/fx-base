@@ -15,4 +15,8 @@ public class TerminalConst {
     public static String scanBase() {
         return System.getProperty(SCAN_BASE);
     }
+    
+    public static String standard() {
+        return "cn.oyzh.fx.terminal.standard";
+    }
 }

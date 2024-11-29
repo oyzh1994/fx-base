@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -30,26 +31,32 @@ public class TerminalManager {
     }
 
     private static void scanHandler() {
-        String packageBase = TerminalConst.scanBase();
-        if (packageBase != null) {
-            try {
-                ClassUtil.scanClasses(packageBase, c -> {
-                    if (c.isArray() || c.isAnnotation() || c.isEnum() || c.isHidden() || c.isInterface() || c.isRecord()) {
-                        return false;
-                    }
-                    int modifiers = c.getModifiers();
-                    if (Modifier.isAbstract(modifiers)) {
-                        return false;
-                    }
-                    if (TerminalCommandHandler.class.isAssignableFrom(c)) {
-                        registerHandler(c);
-                        return true;
-                    }
-                    return false;
-                });
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        // 类过滤器
+        Predicate<Class<?>> filter = c -> {
+            if (c.isArray() || c.isAnnotation() || c.isEnum() || c.isHidden() || c.isInterface() || c.isRecord()) {
+                return false;
             }
+            int modifiers = c.getModifiers();
+            if (Modifier.isAbstract(modifiers)) {
+                return false;
+            }
+            if (TerminalCommandHandler.class.isAssignableFrom(c)) {
+                registerHandler(c);
+                return true;
+            }
+            return false;
+        };
+        try {
+            // 标准命令
+            String standard = TerminalConst.standard();
+            ClassUtil.scanClasses(standard, filter);
+            // 扩展命令
+            String packageBase = TerminalConst.scanBase();
+            if (packageBase != null) {
+                ClassUtil.scanClasses(packageBase, filter);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -5,17 +5,13 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.BaseTerminalCommandHandler;
 import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;
+import cn.oyzh.fx.terminal.util.TerminalManager;
 
 /**
  * @author oyzh
  * @since 2023/7/22
  */
-// @Component
 public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<ClearTerminalCommand, Terminal> {
-
-    // static {
-    //     TerminalManager.registerHandler(ClearTerminalCommandHandler.class);
-    // }
 
     @Override
     public String commandName() {
