@@ -47,7 +47,7 @@ public class FXTreeItemValue implements Destroyable {
         if (text == null) {
             text = extra;
         } else if (extra != null) {
-            text = text + " " + extra;
+            text = text + extra;
         }
         return text;
     }
