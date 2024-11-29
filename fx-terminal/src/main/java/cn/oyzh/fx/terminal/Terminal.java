@@ -356,4 +356,13 @@ public interface Terminal {
      * @param end   结束位置
      */
     void selectContent(int start, int end);
+
+    /**
+     * 清除历史
+     */
+    default void clearHistory() {
+        if (this.historyHandler() != null) {
+            this.historyHandler().clearHistory();
+        }
+    }
 }

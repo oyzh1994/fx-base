@@ -352,36 +352,13 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
         }
     }
 
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
-
     @Override
     public void replaceSelection(String replacement) {
-        // if (this.getSelection() == null) {
-        //     this.setText(replacement);
-        // } else {
         FXUtil.runWait(() -> super.replaceSelection(replacement));
-        // }
     }
 
     @Override
     public void selectRange(int anchor, int caretPosition) {
-        // if (caretPosition > this.getLength()) {
-        //     caretPosition = this.getLength();
-        // }
-        // if (anchor > caretPosition) {
-        //     anchor = caretPosition;
-        // }
-        // int finalAnchor = anchor;
-        // int finalCaretPosition = caretPosition;
-        // FXUtil.runWait(() -> super.selectRange(finalAnchor, finalCaretPosition));
         FXUtil.runWait(() -> super.selectRange(anchor, caretPosition));
     }
 

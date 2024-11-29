@@ -8,6 +8,7 @@ import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;
 import cn.oyzh.fx.terminal.util.TerminalManager;
+import cn.oyzh.i18n.I18nHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,11 +36,11 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
         try {
             Collection<TerminalCommandHandler<?,?>> handlers = TerminalManager.listHandler();
             List<String> list = new ArrayList<>();
-            list.add(I18nResourceBundle.i18nString("base.orderNo"));
-            list.add(I18nResourceBundle.i18nString("base.cmd"));
-            list.add(I18nResourceBundle.i18nString("base.version"));
-            list.add(I18nResourceBundle.i18nString("base.status"));
-            list.add(I18nResourceBundle.i18nString("base.desc"));
+            list.add(I18nHelper.orderNo());
+            list.add(I18nHelper.cmd());
+            list.add(I18nHelper.version());
+            list.add(I18nHelper.status());
+            list.add(I18nHelper.desc());
             int index = 0;
             for (TerminalCommandHandler<?,?> handler : handlers) {
                 list.add(++index + ")");
@@ -52,7 +53,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
                 } else {
                     list.add(version);
                 }
-                list.add(handler.commandDeprecated() ? I18nResourceBundle.i18nString("base.deprecated") : I18nResourceBundle.i18nString("base.normal"));
+                list.add(handler.commandDeprecated() ? I18nHelper.deprecated() : I18nHelper.normal());
                 list.add(handler.commandDesc());
             }
             result.setResult(TextUtil.beautifyFormat(list, 5, 2));

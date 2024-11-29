@@ -110,4 +110,8 @@ public class TerminalExecuteResult {
         result.exception = exception;
         return result;
     }
+
+    public String result() {
+        return this.result == null ? "" : this.result.toString();
+    }
 }

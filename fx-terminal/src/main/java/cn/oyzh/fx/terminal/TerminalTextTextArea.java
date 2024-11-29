@@ -1,5 +1,6 @@
 package cn.oyzh.fx.terminal;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -29,6 +30,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,13 +41,11 @@ import java.util.regex.Pattern;
  * @since 2023/05/28
  */
 public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Terminal {
-// public class TerminalTextArea extends FlexTextArea implements Terminal {
 
     /**
      * 不可操作边界
      */
-    @Getter
-    private int NOP;
+    private final AtomicInteger NOP = new AtomicInteger(0);
 
     /**
      * 提示符号
@@ -92,11 +92,16 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
 
     {
         // 保证字符等宽
-        this.getStyleClass().add("terminal-text-area");
+        this.addClass("terminal-text-area");
         this.setFontFamily("Monospaced");
         this.setContextMenu(new ContextMenu());
         this.caretPositionProperty().addListener((observableValue, number, t1) -> {
-            if (t1.longValue() < this.NOP) {
+            // 对边界做检查
+            if (this.getNOP() > this.contentLength()) {
+                this.flushNOP();
+            }
+            JulLog.debug("nop:{}, length:{}", this.getNOP(), this.contentLength());
+            if (t1.longValue() < this.getNOP()) {
                 this.disableInput();
             } else {
                 this.enableInput();
@@ -210,12 +215,12 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     @Override
     public boolean checkNop() {
         int pos = this.getCaretPosition();
-        return pos <= this.NOP;
+        return pos <= this.getNOP();
     }
 
     @Override
     public void flushNOP() {
-        this.NOP = this.contentLength();
+        this.NOP.set(this.contentLength());
     }
 
     @Override
@@ -232,18 +237,18 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
 
     @Override
     public void clearInput() {
-        this.deleteText(this.NOP, this.getLength());
+        this.deleteText(this.getNOP(), this.getLength());
     }
 
     @Override
     public void coverInput(@NonNull String input) {
-        this.replaceText(this.NOP, this.getLength(), input);
+        this.replaceText(this.getNOP(), this.getLength(), input);
     }
 
     @Override
     public void output(String output) {
         if (output != null) {
-            this.replaceText(this.NOP, this.getLength(), output);
+            this.replaceText(this.getNOP(), this.getLength(), output);
             this.scrollToEnd();
         }
     }
@@ -318,10 +323,6 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
             this.appendText(prompt);
         }
         this.flushNOP();
-        // ExecutorUtil.start(() -> FXUtil.runLater(() -> {
-        //     super._scrollToEnd();
-        //     this._flushCaret();
-        // }), 20);
         super.scrollToEnd();
     }
 
@@ -359,7 +360,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
 
     @Override
     public void pasteContent() {
-        if (this.getCaretPosition() >= this.NOP) {
+        if (this.getCaretPosition() >= this.getNOP()) {
             this.paste();
         }
     }
@@ -380,11 +381,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
             } else if (!result.isSuccess()) {
                 this.outputByPrompt(result.getErrMsg());
             } else if (!result.isIgnoreOutput()) {
-                if (result.getResult() == null) {
-                    this.outputByPrompt("");
-                } else {
-                    this.outputByPrompt(String.valueOf(result.getResult()));
-                }
+                this.outputByPrompt(result.result());
             }
         }
     }
@@ -395,7 +392,6 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
 
     @Override
     public void flushCaret() {
-        // FXUtil.runWait(this::_flushCaret);
         this.caretPosition(this.getNOP());
         this.requestFocus();
     }
@@ -409,11 +405,6 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     public void fontSizeDecr() {
         super.fontSizeDecr();
     }
-
-    // protected void _flushCaret() {
-    //     this.caretPosition(this.getNOP());
-    //     this.requestFocus();
-    // }
 
     @Override
     public void moveCaretEnd() {
@@ -450,9 +441,9 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
      */
     protected void initContentPrompts() {
         // 设置内容提示符
-        Collection<TerminalCommandHandler<?,?>> handlers = TerminalManager.listHandler();
+        Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
         Set<String> set = new HashSet<>();
-        for (TerminalCommandHandler<?,?> handler : handlers) {
+        for (TerminalCommandHandler<?, ?> handler : handlers) {
             if (StringUtil.isNotBlank(handler.commandName())) {
                 set.add(handler.commandName());
             }
@@ -476,6 +467,12 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
             for (RichTextStyle style : styles) {
                 this.setStyle(style);
             }
+            this.forgetHistory();
         }
+    }
+
+    @Override
+    public int getNOP() {
+        return this.NOP.get();
     }
 }
