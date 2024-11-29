@@ -205,6 +205,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
         return (ObservableList<TreeItem<?>>) list;
     }
 
+    public int unfilteredChildrenSize() {
+        return super.getChildren().size();
+    }
+
     /**
      * 获取富功能子节点列表
      *
@@ -467,3 +471,5 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
         this.bitValue = null;
     }
 }
+
+

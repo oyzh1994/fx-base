@@ -12,6 +12,7 @@
 // import lombok.NonNull;
 // import lombok.experimental.Accessors;
 //
+// import javax.naming.directory.SearchResult;
 // import java.util.ArrayList;
 // import java.util.List;
 //
