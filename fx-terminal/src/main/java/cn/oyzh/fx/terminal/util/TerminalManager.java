@@ -53,12 +53,6 @@ public class TerminalManager {
         }
     }
 
-    // /**
-    //  * 命令处理器列表
-    //  */
-    // private static final Map<String, TerminalCommandHandler<?,?>> CACHE = new ConcurrentHashMap<>();
-    //
-
     /**
      * 列表命令处理器
      *
