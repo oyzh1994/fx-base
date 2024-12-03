@@ -18,6 +18,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -142,6 +143,24 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      */
     public void addTab(@NonNull Tab tab) {
         FXUtil.runWait(() -> this.getTabs().add(tab));
+    }
+
+    /**
+     * 设置tab
+     *
+     * @param tab tab
+     */
+    public void setTab(@NonNull Tab tab) {
+        FXUtil.runWait(() -> this.getTabs().setAll(tab));
+    }
+
+    /**
+     * 设置tab
+     *
+     * @param tabs tab列表
+     */
+    public void setTab(@NonNull Collection<Tab> tabs) {
+        FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
 
     /**
