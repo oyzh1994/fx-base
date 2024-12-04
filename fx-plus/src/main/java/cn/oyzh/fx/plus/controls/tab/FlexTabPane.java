@@ -159,6 +159,15 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
      *
      * @param tabs tab列表
      */
+    public void setTab(@NonNull Tab... tabs) {
+        FXUtil.runWait(() -> this.getTabs().setAll(tabs));
+    }
+
+    /**
+     * 设置tab
+     *
+     * @param tabs tab列表
+     */
     public void setTab(@NonNull Collection<Tab> tabs) {
         FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
