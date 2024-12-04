@@ -430,6 +430,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
             }
             this.sort();
             this.reExpanded();
+            // this.refresh();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
