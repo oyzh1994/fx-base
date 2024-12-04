@@ -393,4 +393,11 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
         this.setTabMaxHeight(height);
         this.setTabMinHeight(height);
     }
+
+    public <T extends Tab> T getTab(int index) {
+        if (index < this.getTabs().size()) {
+            return (T) this.getTabs().get(index);
+        }
+        return null;
+    }
 }
