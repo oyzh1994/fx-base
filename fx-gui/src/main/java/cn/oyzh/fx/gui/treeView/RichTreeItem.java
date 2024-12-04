@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.treeView;
 
+import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
  * @since 2023/11/10
  */
 @Getter
-public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
     /**
      * bit值设置，减少内存占用
@@ -172,6 +173,10 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
         super(treeView);
     }
 
+    public void loadChild() {
+
+    }
+
     public RichTreeView getTreeView() {
         return (RichTreeView) super.getTreeView();
     }
@@ -277,6 +282,13 @@ public class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> imp
     public void setChild(TreeItem<?> item) {
         if (item != null) {
             this.service().submitFX(() -> this.unfilteredChildren().setAll(item));
+        }
+    }
+
+    @Override
+    public void setChild(TreeItem<?>... items) {
+        if (ArrayUtil.isEmpty(items)) {
+            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
         }
     }
 

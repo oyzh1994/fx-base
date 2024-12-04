@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.treeView;
 
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
@@ -17,6 +18,7 @@ import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -227,6 +229,18 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     public void setChild(TreeItem<?> item) {
         if (item != null) {
             this.getChildren().setAll((TreeItem) item);
+        }
+    }
+
+    /**
+     * 设置子节点
+     *
+     * @param items 节点列表
+     */
+    public void setChild(TreeItem<?>... items) {
+        if (ArrayUtil.isNotEmpty(items)) {
+            TreeItem[] treeItems = items;
+            this.service().submitFX(() -> this.getChildren().setAll(treeItems));
         }
     }
 
