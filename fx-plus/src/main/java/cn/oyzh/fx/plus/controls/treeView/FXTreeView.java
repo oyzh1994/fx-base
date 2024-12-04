@@ -39,6 +39,7 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
     {
         NodeManager.init(this);
         this.initTreeView();
+        this.initRoot();
     }
 
     /**
@@ -52,6 +53,12 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
      */
     protected void initTreeView() {
         this.initEvenListener();
+    }
+
+    /**
+     * 初始化根节点
+     */
+    protected void initRoot() {
     }
 
     /**
