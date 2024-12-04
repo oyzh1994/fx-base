@@ -11,6 +11,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.i18n.I18nManager;
 import javafx.scene.Node;
+import javafx.scene.control.TreeItem;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -51,6 +52,14 @@ public class NodeManager {
         }
         if (node instanceof NodeLifeCycle lifeCycle) {
             if (node instanceof Node node1) {
+                node1.parentProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue == null) {
+                        lifeCycle.onNodeDestroy();
+                    } else {
+                        lifeCycle.onNodeInitialize();
+                    }
+                });
+            } else if (node instanceof TreeItem<?> node1) {
                 node1.parentProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue == null) {
                         lifeCycle.onNodeDestroy();
