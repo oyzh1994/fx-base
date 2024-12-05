@@ -24,7 +24,7 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
      */
     @Getter
     @Setter
-    protected double lineHeight ;
+    protected double lineHeight;
 
     /**
      * 获取表单内容
@@ -36,7 +36,7 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
     }
 
     @Override
-    protected  void updateItem(T item, boolean empty) {
+    protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
         if (empty || item == null) {
             this.setText(null);
@@ -50,7 +50,7 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
                 this.setGraphic(null);
             }
             if (this.lineHeight > 0) {
-                this.getTableRow().setMinHeight(this.lineHeight);
+                // this.getTableRow().setMinHeight(this.lineHeight);
                 this.getTableRow().setMaxHeight(this.lineHeight);
                 this.getTableRow().setPrefHeight(this.lineHeight);
             }
