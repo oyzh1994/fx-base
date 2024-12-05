@@ -166,6 +166,26 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
     /**
      * 设置tab
      *
+     * @param index 索引
+     * @param tab   tab
+     */
+    public void setTab(int index, Tab tab) {
+        FXUtil.runWait(() -> this.getTabs().set(index, tab));
+    }
+
+    /**
+     * 添加tab
+     *
+     * @param index 索引
+     * @param tab   tab
+     */
+    public void addTab(int index, Tab tab) {
+        FXUtil.runWait(() -> this.getTabs().add(index, tab));
+    }
+
+    /**
+     * 设置tab
+     *
      * @param tabs tab列表
      */
     public void setTab(@NonNull Collection<Tab> tabs) {
@@ -399,5 +419,9 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
             return (T) this.getTabs().get(index);
         }
         return null;
+    }
+
+    public int tabSize() {
+        return this.getTabs().size();
     }
 }
