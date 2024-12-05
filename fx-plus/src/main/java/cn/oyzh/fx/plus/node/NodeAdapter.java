@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.node;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -404,5 +405,18 @@ public interface NodeAdapter extends EventTarget {
             }
         }
         return null;
+    }
+
+    default String getCursorType() {
+        if (this instanceof Node node) {
+            return node.getCursor().toString();
+        }
+        return null;
+    }
+
+    default void setCursorType(String cursorType) {
+        if (this instanceof Node node) {
+            node.setCursor(Cursor.cursor(cursorType));
+        }
     }
 }
