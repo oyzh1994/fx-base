@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -156,5 +157,11 @@ public class FXLabel extends Label implements NodeGroup, ThemeAdapter, MouseAdap
 
     public void clear() {
         this.setText("");
+    }
+
+    public void text(String text) {
+        if (text != null) {
+            FXUtil.runWait(() -> super.setText(text));
+        }
     }
 }

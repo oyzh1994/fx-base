@@ -25,7 +25,7 @@ public class FXTableView<S> extends TableView<S> implements NodeAdapter, ThemeAd
         NodeManager.init(this);
     }
 
-    private Callback<TableColumn, TableCell> defCellFactory;
+    // private Callback<TableColumn, TableCell> defCellFactory;
 
     public FXTableView() {
         // this.initCellFactory();
