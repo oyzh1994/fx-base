@@ -5,13 +5,11 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.TableViewUtil;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -146,5 +144,9 @@ public class FXTableView<S> extends TableView<S> implements NodeAdapter, ThemeAd
 
     public boolean isCopyCellDataOnDoubleClicked() {
         return this.hasProp("_copyCellDataOnDoubleClicked");
+    }
+
+    public void selectedItemChanged(ChangeListener<S> listener) {
+        this.getSelectionModel().selectedItemProperty().addListener(listener);
     }
 }

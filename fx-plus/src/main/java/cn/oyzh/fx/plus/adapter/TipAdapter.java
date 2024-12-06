@@ -16,7 +16,9 @@ public interface TipAdapter extends EventTarget {
      *
      * @return 提示标题
      */
-    String getTipText();
+    default String getTipText() {
+        return this.tipText();
+    }
 
     /**
      * 获取提示标题实现
@@ -32,7 +34,9 @@ public interface TipAdapter extends EventTarget {
      *
      * @param tipText 提示标题
      */
-    void setTipText(String tipText);
+    default void setTipText(String tipText) {
+        this.tipText(tipText);
+    }
 
     /**
      * 设置提示标题实现

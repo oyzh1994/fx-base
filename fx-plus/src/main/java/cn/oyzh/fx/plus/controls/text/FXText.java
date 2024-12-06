@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.text;
 
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
+import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -17,7 +18,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/04/25
  */
-public class FXText extends Text implements ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
+public class FXText extends Text implements TipAdapter, ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
 
     {
         NodeManager.init(this);
