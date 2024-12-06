@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * @author oyzh
  * @since 2024/04/05
  */
-public class FontSizeComboBox extends FlexComboBox<Byte> {
+public class FontSizeComboBox extends FlexComboBox<Integer> {
 
     {
         this.addItem(10);
@@ -35,20 +35,11 @@ public class FontSizeComboBox extends FlexComboBox<Byte> {
         return 10;
     }
 
-    @Override
-    public void select(Byte obj) {
-        if (obj == null) {
-            super.select(this.getDefault());
-        } else {
-            super.select(obj);
-        }
-    }
-
     public void selectSize(Byte size) {
         if (size == null) {
             this.clearSelection();
         } else {
-            super.select(size);
+            super.selectObj(size);
         }
     }
 }
