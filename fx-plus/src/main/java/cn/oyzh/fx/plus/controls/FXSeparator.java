@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.controls.text.FlexText;
 import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
 import lombok.NonNull;
 
 /**
@@ -18,17 +19,13 @@ public class FXSeparator extends FlexVBox {
      */
     private FlexText text;
 
-    /**
-     * 分割器
-     */
-    private final FlexSeparator separator;
-
     {
         // 初始化分割器
-        this.separator = new FlexSeparator();
-        this.separator.setFlexWidth("100%");
-        this.separator.setFlexHeight("50%");
-        this.getChildren().add(this.separator);
+        FlexSeparator separator = new FlexSeparator();
+        separator.setFlexWidth("100%");
+        separator.setFlexHeight("50%");
+        separator.setPadding(Insets.EMPTY);
+        this.addChild(separator);
     }
 
     /**
@@ -40,8 +37,8 @@ public class FXSeparator extends FlexVBox {
         if (this.text == null) {
             this.text = new FlexText();
             this.text.setFlexHeight("50%");
-            this.getChildren().add(0, this.text);
-            setMargin(this.text, new Insets(0, 0, 0, 5));
+            this.addChild(0, this.text);
+            HBox.setMargin(this.text, new Insets(0, 0, 0, 5));
         }
         this.text.setText(text);
     }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.data;
 
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
+import javafx.beans.property.BooleanProperty;
 
 /**
  * @author oyzh
@@ -34,5 +35,9 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> {
 
     public String setSearchText() {
         return this.getContent().getSearchText();
+    }
+
+    public BooleanProperty editableProperty() {
+        return this.getContent().editableProperty();
     }
 }
