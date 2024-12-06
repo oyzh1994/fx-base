@@ -39,7 +39,11 @@ public class FontSizeComboBox extends FlexComboBox<Integer> {
         if (size == null) {
             this.clearSelection();
         } else {
-            super.selectObj(size);
+            super.selectObj(size.intValue());
         }
+    }
+
+    public Byte byteValue() {
+        return this.getValue() == null ? null : this.getValue().byteValue();
     }
 }
