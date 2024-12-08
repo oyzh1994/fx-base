@@ -325,26 +325,26 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
 //    public void setFlexY(String flexY) {
 //        FlexAdapter.super.flexY(flexY);
 //    }
-
-    @Override
-    public double getRealWidth() {
-        return FlexAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        FlexAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return FlexAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        FlexAdapter.super.realHeight(height);
-    }
+//
+//    @Override
+//    public double getRealWidth() {
+//        return FlexAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        FlexAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return FlexAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        FlexAdapter.super.realHeight(height);
+//    }
 
     // @Override
     // public void setStateManager(StateManager manager) {
@@ -356,50 +356,50 @@ public class FlexTabPane extends TabPane implements NodeGroup, ThemeAdapter, Fon
     //     return FlexAdapter.super.stateManager();
     // }
 
-    @Override
-    public void setFontSize(double fontSize) {
-        FontAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return FontAdapter.super.fontSize();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public String getFontFamily() {
-        return FontAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        FontAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return FontAdapter.super.fontWeight();
-    }
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        FontAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return FontAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        FontAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return FontAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        FontAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return FontAdapter.super.fontWeight();
+//    }
 
     @Override
     public void initNode() {
 
     }
 
-    @Override
-    public void setGroupId(String groupId) {
-        NodeGroup.super.groupId(groupId);
-    }
-
-    @Override
-    public String getGroupId() {
-        return NodeGroup.super.groupId();
-    }
+//    @Override
+//    public void setGroupId(String groupId) {
+//        NodeGroup.super.groupId(groupId);
+//    }
+//
+//    @Override
+//    public String getGroupId() {
+//        return NodeGroup.super.groupId();
+//    }
 
     public boolean isSelectedTab(String tabId) {
         if (tabId == null) {

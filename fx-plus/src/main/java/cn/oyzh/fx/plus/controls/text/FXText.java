@@ -38,55 +38,55 @@ public class FXText extends Text implements StateAdapter, TipAdapter, ThemeAdapt
         return true;
     }
 
-    @Override
-    public void setFontSize(double fontSize) {
-        FontAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return FontAdapter.super.fontSize();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public String getFontFamily() {
-        return FontAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        FontAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return FontAdapter.super.fontWeight();
-    }
-
-    @Override
-    public double getRealWidth() {
-        return LayoutAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        LayoutAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return LayoutAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        LayoutAdapter.super.realHeight(height);
-    }
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        FontAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return FontAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        FontAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return FontAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        FontAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return FontAdapter.super.fontWeight();
+//    }
+//
+//    @Override
+//    public double getRealWidth() {
+//        return LayoutAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        LayoutAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return LayoutAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        LayoutAdapter.super.realHeight(height);
+//    }
 
     @Override
     public void changeTheme(ThemeStyle style) {

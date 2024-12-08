@@ -74,10 +74,10 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
         }
     }
 
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
+//    @Override
+//    public String getTipText() {
+//        return TipAdapter.super.tipText();
+//    }
 
     /**
      * 追加多行
@@ -151,35 +151,35 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
         }
     }
 
-    @Override
-    public void setFontSize(double fontSize) {
-        AreaAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return AreaAdapter.super.fontSize();
-    }
-
-    @Override
-    public String getFontFamily() {
-        return AreaAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        AreaAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        AreaAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return AreaAdapter.super.fontWeight();
-    }
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        AreaAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return AreaAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return AreaAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        AreaAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        AreaAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return AreaAdapter.super.fontWeight();
+//    }
 
     private Boolean require;
 
@@ -230,16 +230,16 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
     public void requestFocus() {
         TaskManager.startDelay(() -> FXUtil.runWait(super::requestFocus), 1);
     }
-
-    @Override
-    public void setGroupId(String groupId) {
-        NodeGroup.super.groupId(groupId);
-    }
-
-    @Override
-    public String getGroupId() {
-        return NodeGroup.super.groupId();
-    }
+//
+//    @Override
+//    public void setGroupId(String groupId) {
+//        NodeGroup.super.groupId(groupId);
+//    }
+//
+//    @Override
+//    public String getGroupId() {
+//        return NodeGroup.super.groupId();
+//    }
 
     public long lineCount() {
         return this.getText().lines().count();

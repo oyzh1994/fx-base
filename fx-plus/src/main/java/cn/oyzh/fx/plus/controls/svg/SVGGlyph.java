@@ -419,15 +419,15 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setActive(false);
     }
 
-    @Override
-    public void setGroupId(String groupId) {
-        NodeGroup.super.groupId(groupId);
-    }
-
-    @Override
-    public String getGroupId() {
-        return NodeGroup.super.groupId();
-    }
+//    @Override
+//    public void setGroupId(String groupId) {
+//        NodeGroup.super.groupId(groupId);
+//    }
+//
+//    @Override
+//    public String getGroupId() {
+//        return NodeGroup.super.groupId();
+//    }
 
     @Override
     public SVGGlyph clone() {

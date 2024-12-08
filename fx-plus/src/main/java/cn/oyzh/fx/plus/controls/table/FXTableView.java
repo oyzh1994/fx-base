@@ -99,15 +99,15 @@ public class FXTableView<S> extends TableView<S> implements NodeAdapter, ThemeAd
         return TableViewUtil.getSelectCellData(this);
     }
 
-    @Override
-    public void setInitIndex(int initIndex) {
-        SelectAdapter.super.setInitIndex(initIndex);
-    }
-
-    @Override
-    public int getInitIndex() {
-        return SelectAdapter.super.getInitIndex();
-    }
+//    @Override
+//    public void setInitIndex(int initIndex) {
+//        SelectAdapter.super.setInitIndex(initIndex);
+//    }
+//
+//    @Override
+//    public int getInitIndex() {
+//        return SelectAdapter.super.getInitIndex();
+//    }
 
     @Override
     public void initNode() {

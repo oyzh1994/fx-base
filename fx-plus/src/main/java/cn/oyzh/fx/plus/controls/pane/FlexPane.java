@@ -19,35 +19,35 @@ public class FlexPane extends Pane implements NodeAdapter, ThemeAdapter, FontAda
         NodeManager.init(this);
     }
 
-    @Override
-    public void setFontSize(double fontSize) {
-        FontAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return FontAdapter.super.fontSize();
-    }
-
-    @Override
-    public String getFontFamily() {
-        return FontAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        FontAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return FontAdapter.super.fontWeight();
-    }
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        FontAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return FontAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return FontAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        FontAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        FontAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return FontAdapter.super.fontWeight();
+//    }
 
     @Override
     public void resize(double width, double height) {
@@ -95,25 +95,25 @@ public class FlexPane extends Pane implements NodeAdapter, ThemeAdapter, FontAda
 //        FlexAdapter.super.flexY(flexY);
 //    }
 
-    @Override
-    public double getRealWidth() {
-        return FlexAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        FlexAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return FlexAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        FlexAdapter.super.realHeight(height);
-    }
+//    @Override
+//    public double getRealWidth() {
+//        return FlexAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        FlexAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return FlexAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        FlexAdapter.super.realHeight(height);
+//    }
 
     // @Override
     // public void setStateManager(StateManager manager) {

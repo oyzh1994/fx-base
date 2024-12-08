@@ -57,25 +57,25 @@ public class WebViewPane extends Pane implements FlexAdapter {
 //        FlexAdapter.super.flexY(flexY);
 //    }
 
-    @Override
-    public double getRealWidth() {
-        return FlexAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        FlexAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return FlexAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        FlexAdapter.super.realHeight(height);
-    }
+//    @Override
+//    public double getRealWidth() {
+//        return FlexAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        FlexAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return FlexAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        FlexAdapter.super.realHeight(height);
+//    }
 
     // @Override
     // public void setStateManager(StateManager manager) {
