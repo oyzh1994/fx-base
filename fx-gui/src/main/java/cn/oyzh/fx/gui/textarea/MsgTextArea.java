@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.controls.textarea;
+package cn.oyzh.fx.gui.textarea;
 
+import cn.oyzh.fx.plus.controls.textarea.FlexTextArea;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
