@@ -27,35 +27,35 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
         area.onKeyPressedProperty().bind(this.onKeyPressedProperty());
     }
 
-//    @Override
-//    public void setFontSize(double fontSize) {
-//        this.getContent().setFontSize(fontSize);
-//    }
-//
-//    @Override
-//    public double getFontSize() {
-//        return this.getContent().getFontSize();
-//    }
-//
-//    @Override
-//    public void setFontFamily(@NonNull String fontFamily) {
-//        this.getContent().setFontFamily(fontFamily);
-//    }
-//
-//    @Override
-//    public String getFontFamily() {
-//        return this.getContent().getFontFamily();
-//    }
-//
-//    @Override
-//    public void setFontWeight(FontWeight fontWeight) {
-//        this.getContent().setFontWeight(fontWeight);
-//    }
-//
-//    @Override
-//    public FontWeight getFontWeight() {
-//        return this.getContent().getFontWeight();
-//    }
+    @Override
+    public void setFontSize(double fontSize) {
+        this.getContent().setFontSize(fontSize);
+    }
+
+    @Override
+    public double getFontSize() {
+        return this.getContent().getFontSize();
+    }
+
+    @Override
+    public void setFontFamily(@NonNull String fontFamily) {
+        this.getContent().setFontFamily(fontFamily);
+    }
+
+    @Override
+    public String getFontFamily() {
+        return this.getContent().getFontFamily();
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        this.getContent().setFontWeight(fontWeight);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return this.getContent().getFontWeight();
+    }
 
     public void setEditable(boolean editable) {
         this.getContent().setEditable(editable);

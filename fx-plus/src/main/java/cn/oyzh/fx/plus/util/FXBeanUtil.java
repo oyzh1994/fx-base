@@ -16,6 +16,10 @@ public class FXBeanUtil {
         return BeanUtil.getSetterMethod(clazz, name, null, true);
     }
 
+    public static Method getGetterMethod(Class<?> clazz, String name) {
+        return BeanUtil.getGetterMethod(clazz, name, true);
+    }
+
     public void setValue(Method method, Object bean, String value) {
         try {
             method.setAccessible(true);

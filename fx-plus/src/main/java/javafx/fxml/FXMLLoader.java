@@ -357,16 +357,16 @@ public class FXMLLoader {
                     BeanAdapter valueAdapter = getValueAdapter();
                     Class<?> type = valueAdapter.getType(propertyName);
 
-                    // TODO: 用于处理fxml不支持接口默认方法的问题
-                    if (type == null) {
-                        Class<?> beanType = valueAdapter.getBean().getClass();
-                        Method method = FXBeanUtil.getSetterMethod(beanType, propertyName);
-                        if (method != null) {
-                            FXBeanUtil.setValue(method, this.value, aValue);
-                            type = beanType;
-                            processed = true;
-                        }
-                    }
+//                    // TODO: 用于处理fxml不支持接口默认方法的问题
+//                    if (type == null) {
+//                        Class<?> beanType = valueAdapter.getBean().getClass();
+//                        Method method = FXBeanUtil.getSetterMethod(beanType, propertyName);
+//                        if (method != null) {
+//                            FXBeanUtil.setValue(method, this.value, aValue);
+//                            type = beanType;
+//                            processed = true;
+//                        }
+//                    }
 
                     if (type == null) {
                         throw new PropertyNotFoundException("Property \"" + propertyName
