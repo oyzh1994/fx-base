@@ -1,4 +1,6 @@
-package cn.oyzh.fx.plus.controls.table;
+package cn.oyzh.fx.gui.table;
+
+import cn.oyzh.fx.plus.controls.table.FlexTableView;
 
 /**
  * @author oyzh

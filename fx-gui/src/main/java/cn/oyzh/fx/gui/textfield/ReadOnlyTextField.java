@@ -1,4 +1,6 @@
-package cn.oyzh.fx.plus.controls.textfield;
+package cn.oyzh.fx.gui.textfield;
+
+import cn.oyzh.fx.plus.controls.textfield.FlexTextField;
 
 /**
  * 只读文本控件

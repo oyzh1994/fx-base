@@ -9,7 +9,7 @@
 <?import cn.oyzh.fx.plus.controls.calendar.YearPicker?>
 <?import cn.oyzh.fx.plus.controls.digital.FloatTextField?>
 <?import cn.oyzh.fx.plus.controls.digital.IntTextField?>
-<?import cn.oyzh.fx.plus.controls.textfield.NumberTextField?>
+<?import cn.oyzh.fx.gui.textfield.NumberTextField?>
 <?import cn.oyzh.fx.plus.controls.box.FlexHBox?>
 <?import cn.oyzh.fx.plus.controls.box.FlexVBox?>
 <?import cn.oyzh.fx.rich.control.FlexRichTextArea?>

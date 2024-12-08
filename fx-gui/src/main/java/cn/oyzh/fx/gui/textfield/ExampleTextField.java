@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.textfield;
 
 import cn.oyzh.fx.gui.skin.ExampleTextFieldSkin;
-import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
 import javafx.scene.control.Skin;
 
 /**

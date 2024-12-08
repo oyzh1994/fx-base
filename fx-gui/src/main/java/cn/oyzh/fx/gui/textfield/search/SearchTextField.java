@@ -2,7 +2,7 @@ package cn.oyzh.fx.gui.textfield.search;
 
 import cn.oyzh.fx.gui.skin.SearchTextFieldSkin;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
-import cn.oyzh.fx.plus.controls.textfield.LimitTextField;
+import cn.oyzh.fx.gui.textfield.LimitTextField;
 import javafx.event.EventHandler;
 import javafx.scene.control.Skin;
 import lombok.Getter;

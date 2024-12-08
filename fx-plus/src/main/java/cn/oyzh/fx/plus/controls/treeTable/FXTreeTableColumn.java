@@ -59,15 +59,15 @@ public class FXTreeTableColumn<S, T> extends TreeTableColumn<S, T> implements Th
         return FontAdapter.super.fontWeight();
     }
 
-    @Override
-    public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
-    }
-
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
+//    @Override
+//    public void setTipText(String tipText) {
+//        TipAdapter.super.tipText(tipText);
+//    }
+//
+//    @Override
+//    public String getTipText() {
+//        return TipAdapter.super.tipText();
+//    }
 
     @Override
     public double getRealWidth() {
