@@ -1,8 +1,7 @@
-package cn.oyzh.fx.plus.adapter;
+package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.DestroyUtil;
-import cn.oyzh.fx.plus.menu.FXContextMenu;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;

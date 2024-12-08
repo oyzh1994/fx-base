@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
-import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
+import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableRow;
 

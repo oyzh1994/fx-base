@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.adapter;
+package cn.oyzh.fx.plus.menu;
 
 import javafx.scene.control.MenuItem;
 

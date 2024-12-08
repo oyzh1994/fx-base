@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controls.tab;
 
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.ContextMenuAdapter;
+import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
@@ -15,7 +15,6 @@ import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 import java.util.Collection;

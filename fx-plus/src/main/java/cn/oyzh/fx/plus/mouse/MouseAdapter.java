@@ -1,7 +1,6 @@
-package cn.oyzh.fx.plus.adapter;
+package cn.oyzh.fx.plus.mouse;
 
-import cn.oyzh.fx.plus.mouse.MouseEventHandler;
-import cn.oyzh.fx.plus.mouse.MouseHandler;
+import cn.oyzh.fx.plus.adapter.PropAdapter;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;

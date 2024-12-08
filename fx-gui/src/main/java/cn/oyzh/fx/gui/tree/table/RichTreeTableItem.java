@@ -4,7 +4,7 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
-import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.node.NodeManager;
