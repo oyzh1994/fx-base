@@ -6,7 +6,7 @@ import cn.oyzh.fx.gui.svg.glyph.page.PageLastSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageNextSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PagePrevSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageSettingSVGGlyph;
-import cn.oyzh.fx.plus.controls.FlexFlowPane;
+import cn.oyzh.fx.plus.controls.pane.FlexFlowPane;
 import cn.oyzh.fx.plus.controls.label.FlexLabel;
 import cn.oyzh.fx.gui.textfield.NumberTextField;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;

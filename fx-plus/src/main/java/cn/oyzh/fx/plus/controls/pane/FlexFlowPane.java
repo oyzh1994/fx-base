@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.pane;
 
+import cn.oyzh.fx.plus.controls.FXFlowPane;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 
 /**

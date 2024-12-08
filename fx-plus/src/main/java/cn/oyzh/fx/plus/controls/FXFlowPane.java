@@ -52,15 +52,15 @@ public class FXFlowPane extends FlowPane implements NodeGroup, ThemeAdapter, Fon
         return FontAdapter.super.fontWeight();
     }
 
-    @Override
-    public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
-    }
-
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
+//    @Override
+//    public void setTipText(String tipText) {
+//        TipAdapter.super.tipText(tipText);
+//    }
+//
+//    @Override
+//    public String getTipText() {
+//        return TipAdapter.super.tipText();
+//    }
 
     // @Override
     // public void setStateManager(StateManager manager) {
