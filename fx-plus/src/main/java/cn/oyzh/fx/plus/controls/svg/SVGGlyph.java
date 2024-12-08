@@ -91,25 +91,25 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.getStyleClass().remove("svg-glyph");
     }
 
-    /**
-     * 设置初始鼠标
-     *
-     * @param initCursor 鼠标类型
-     */
-    public void setInitCursor(String initCursor) {
-        if (initCursor != null) {
-            this.setCursor(Cursor.cursor(initCursor));
-        }
-    }
-
-    /**
-     * 获取初始鼠标
-     *
-     * @return 初始鼠标
-     */
-    public String getInitCursor() {
-        return this.getCursor().toString();
-    }
+//    /**
+//     * 设置初始鼠标
+//     *
+//     * @param initCursor 鼠标类型
+//     */
+//    public void setInitCursor(String initCursor) {
+//        if (initCursor != null) {
+//            this.setCursor(Cursor.cursor(initCursor));
+//        }
+//    }
+//
+//    /**
+//     * 获取初始鼠标
+//     *
+//     * @return 初始鼠标
+//     */
+//    public String getInitCursor() {
+//        return this.getCursor().toString();
+//    }
 
     /**
      * 更新内容

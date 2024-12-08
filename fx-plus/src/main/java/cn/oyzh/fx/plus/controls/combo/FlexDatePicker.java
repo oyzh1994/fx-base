@@ -12,15 +12,15 @@ public class FlexDatePicker extends DatePicker implements ThemeAdapter, FlexAdap
         NodeManager.init(this);
     }
 
-    @Override
-    public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
-    }
-
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
+//    @Override
+//    public void setTipText(String tipText) {
+//        TipAdapter.super.tipText(tipText);
+//    }
+//
+//    @Override
+//    public String getTipText() {
+//        return TipAdapter.super.tipText();
+//    }
 
     @Override
     public void resize(double width, double height) {
@@ -29,44 +29,44 @@ public class FlexDatePicker extends DatePicker implements ThemeAdapter, FlexAdap
         this.resizeNode();
     }
 
-    @Override
-    public String getFlexWidth() {
-        return FlexAdapter.super.flexWidth();
-    }
-
-    @Override
-    public void setFlexWidth(String flexWidth) {
-        FlexAdapter.super.flexWidth(flexWidth);
-    }
-
-    public String getFlexHeight() {
-        return FlexAdapter.super.flexHeight();
-    }
-
-    @Override
-    public void setFlexHeight(String flexHeight) {
-        FlexAdapter.super.flexHeight(flexHeight);
-    }
-
-    @Override
-    public String getFlexX() {
-        return FlexAdapter.super.flexX();
-    }
-
-    @Override
-    public void setFlexX(String flexX) {
-        FlexAdapter.super.flexX(flexX);
-    }
-
-    @Override
-    public String getFlexY() {
-        return FlexAdapter.super.flexY();
-    }
-
-    @Override
-    public void setFlexY(String flexY) {
-        FlexAdapter.super.flexY(flexY);
-    }
+//    @Override
+//    public String getFlexWidth() {
+//        return FlexAdapter.super.flexWidth();
+//    }
+//
+//    @Override
+//    public void setFlexWidth(String flexWidth) {
+//        FlexAdapter.super.flexWidth(flexWidth);
+//    }
+//
+//    public String getFlexHeight() {
+//        return FlexAdapter.super.flexHeight();
+//    }
+//
+//    @Override
+//    public void setFlexHeight(String flexHeight) {
+//        FlexAdapter.super.flexHeight(flexHeight);
+//    }
+//
+//    @Override
+//    public String getFlexX() {
+//        return FlexAdapter.super.flexX();
+//    }
+//
+//    @Override
+//    public void setFlexX(String flexX) {
+//        FlexAdapter.super.flexX(flexX);
+//    }
+//
+//    @Override
+//    public String getFlexY() {
+//        return FlexAdapter.super.flexY();
+//    }
+//
+//    @Override
+//    public void setFlexY(String flexY) {
+//        FlexAdapter.super.flexY(flexY);
+//    }
 
     @Override
     public double getRealWidth() {

@@ -1,4 +1,6 @@
-package cn.oyzh.fx.plus.controls.combo;
+package cn.oyzh.fx.gui.combobox;
+
+import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
 
 import java.util.List;
 

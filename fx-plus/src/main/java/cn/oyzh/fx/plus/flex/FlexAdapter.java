@@ -18,7 +18,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @return 流式宽度值
      */
-    String getFlexWidth();
+    default String getFlexWidth() {
+        return this.flexWidth();
+    }
 
     /**
      * 获取流式宽度值实现
@@ -34,7 +36,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @param flexWidth 流式宽度值
      */
-    void setFlexWidth(String flexWidth);
+    default void setFlexWidth(String flexWidth) {
+        this.flexWidth(flexWidth);
+    }
 
     /**
      * 设置流式宽度值实现
@@ -51,7 +55,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @return 流式高度
      */
-    String getFlexHeight();
+    default String getFlexHeight() {
+        return this.flexHeight();
+    }
 
     /**
      * 获取流式高度实现
@@ -67,7 +73,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @param flexHeight 流式高度值
      */
-    void setFlexHeight(String flexHeight);
+    default void setFlexHeight(String flexHeight) {
+        this.flexHeight(flexHeight);
+    }
 
     /**
      * 设置流式高度值实现
@@ -84,7 +92,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @return 流式x值
      */
-    String getFlexX();
+    default String getFlexX() {
+        return this.flexX();
+    }
 
     /**
      * 获取流式x值实现
@@ -100,7 +110,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @param flexX 流式x值
      */
-    void setFlexX(String flexX);
+    default void setFlexX(String flexX) {
+        this.flexX(flexX);
+    }
 
     /**
      * 设置流式x值实现
@@ -117,7 +129,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @return 流式y值
      */
-    String getFlexY();
+    default String getFlexY() {
+        return this.flexY();
+    }
 
     /**
      * 获取流式y值实现
@@ -133,7 +147,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      *
      * @param flexY 流式y值
      */
-    void setFlexY(String flexY);
+    default void setFlexY(String flexY) {
+        this.flexY(flexY);
+    }
 
     /**
      * 设置流式y值实现

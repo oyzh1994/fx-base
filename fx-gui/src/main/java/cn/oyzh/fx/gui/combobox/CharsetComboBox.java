@@ -1,7 +1,8 @@
-package cn.oyzh.fx.plus.controls.combo;
+package cn.oyzh.fx.gui.combobox;
 
 import cn.oyzh.common.util.CharsetUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
 import cn.oyzh.i18n.I18nHelper;
 
 import java.nio.charset.Charset;
