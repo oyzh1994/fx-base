@@ -75,7 +75,9 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontSize 字体大小
      */
-    void setFontSize(double fontSize);
+    default void setFontSize(double fontSize) {
+        this.fontSize(fontSize);
+    }
 
     /**
      * 设置字体实现
@@ -100,7 +102,9 @@ public interface FontAdapter extends PropAdapter {
      *
      * @return 字体大小
      */
-    double getFontSize();
+    default double getFontSize() {
+        return this.fontSize();
+    }
 
     /**
      * 获取字体大小实现
@@ -135,7 +139,9 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontFamily 字体类型
      */
-    void setFontFamily(@NonNull String fontFamily);
+    default void setFontFamily(@NonNull String fontFamily) {
+        this.fontFamily(fontFamily);
+    }
 
     /**
      * 设置字体类型实现
@@ -161,7 +167,9 @@ public interface FontAdapter extends PropAdapter {
      *
      * @return 字体类型
      */
-    String getFontFamily();
+    default String getFontFamily() {
+        return this.fontFamily();
+    }
 
     /**
      * 获取字体类型实现
@@ -196,7 +204,9 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontWeight 字体粗细
      */
-    void setFontWeight(FontWeight fontWeight);
+    default void setFontWeight(FontWeight fontWeight) {
+        this.fontWeight(fontWeight);
+    }
 
     /**
      * 设置字体粗细实现
@@ -222,7 +232,9 @@ public interface FontAdapter extends PropAdapter {
      *
      * @return 字体粗细
      */
-    FontWeight getFontWeight();
+    default FontWeight getFontWeight() {
+        return this.fontWeight();
+    }
 
     /**
      * 获取字体粗细实现

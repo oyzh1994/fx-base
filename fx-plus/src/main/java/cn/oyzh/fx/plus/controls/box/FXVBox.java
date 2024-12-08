@@ -30,35 +30,35 @@ public class FXVBox extends VBox implements NodeGroup, ThemeAdapter, FontAdapter
         super(children);
     }
 
-    @Override
-    public void setFontSize(double fontSize) {
-        FontAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return FontAdapter.super.fontSize();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public String getFontFamily() {
-        return FontAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        FontAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return FontAdapter.super.fontWeight();
-    }
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        FontAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return FontAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        FontAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return FontAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        FontAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return FontAdapter.super.fontWeight();
+//    }
 
     // @Override
     // public void setStateManager(StateManager manager) {
@@ -69,39 +69,39 @@ public class FXVBox extends VBox implements NodeGroup, ThemeAdapter, FontAdapter
     // public StateManager getStateManager() {
     //     return StateAdapter.super.stateManager();
     // }
-
-    @Override
-    public double getRealWidth() {
-        return LayoutAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        LayoutAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return LayoutAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        LayoutAdapter.super.realHeight(height);
-    }
+//
+//    @Override
+//    public double getRealWidth() {
+//        return LayoutAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        LayoutAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return LayoutAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        LayoutAdapter.super.realHeight(height);
+//    }
 
     @Override
     public void initNode() {
 
     }
 
-    @Override
-    public void setGroupId(String groupId) {
-        NodeGroup.super.groupId(groupId);
-    }
-
-    @Override
-    public String getGroupId() {
-        return NodeGroup.super.groupId();
-    }
+//    @Override
+//    public void setGroupId(String groupId) {
+//        NodeGroup.super.groupId(groupId);
+//    }
+//
+//    @Override
+//    public String getGroupId() {
+//        return NodeGroup.super.groupId();
+//    }
 }

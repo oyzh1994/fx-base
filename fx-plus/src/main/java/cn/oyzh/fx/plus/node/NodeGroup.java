@@ -15,13 +15,18 @@ public interface NodeGroup extends PropAdapter {
      *
      * @param groupId 分组id
      */
-    void setGroupId(String groupId);
+    default void setGroupId(String groupId) {
+        this.groupId(groupId);
+    }
 
     /**
      * 获取分组id
+     *
      * @return 分组id
      */
-    String getGroupId();
+    default String getGroupId() {
+        return this.groupId();
+    }
 
     /**
      * 设置分组id
@@ -34,6 +39,7 @@ public interface NodeGroup extends PropAdapter {
 
     /**
      * 获取分组id
+     *
      * @return 分组id
      */
     default String groupId() {

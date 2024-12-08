@@ -149,45 +149,45 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
         return super.getText();
     }
 
-    @Override
-    public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
-    }
-
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
-
-    @Override
-    public void setFontSize(double fontSize) {
-        FontAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return FontAdapter.super.fontSize();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public String getFontFamily() {
-        return FontAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        FontAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return FontAdapter.super.fontWeight();
-    }
+//    @Override
+//    public void setTipText(String tipText) {
+//        TipAdapter.super.tipText(tipText);
+//    }
+//
+//    @Override
+//    public String getTipText() {
+//        return TipAdapter.super.tipText();
+//    }
+//
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        FontAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return FontAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        FontAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return FontAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        FontAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return FontAdapter.super.fontWeight();
+//    }
 
     public void setPromptText(String prompt) {
         FXUtil.runLater(() -> this.setPlaceholder(new Text(prompt)));

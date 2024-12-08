@@ -39,30 +39,30 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
     @Setter
     private BaseValidator validator = new BaseValidator(this);
 
-    @Override
-    public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
-    }
-
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
+//    @Override
+//    public void setTipText(String tipText) {
+//        TipAdapter.super.tipText(tipText);
+//    }
+//
+//    @Override
+//    public String getTipText() {
+//        return TipAdapter.super.tipText();
+//    }
 
     public void setRequire(Boolean require) {
         this.require = require;
         this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
     }
 
-    @Override
-    public void setInitIndex(int initIndex) {
-        SelectAdapter.super.setInitIndex(initIndex);
-    }
-
-    @Override
-    public int getInitIndex() {
-        return SelectAdapter.super.getInitIndex();
-    }
+//    @Override
+//    public void setInitIndex(int initIndex) {
+//        SelectAdapter.super.setInitIndex(initIndex);
+//    }
+//
+//    @Override
+//    public int getInitIndex() {
+//        return SelectAdapter.super.getInitIndex();
+//    }
 
     /**
      * 选中内容变化事件
@@ -104,55 +104,55 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
         FXUtil.runWait(() -> this.getItems().addAll(items));
     }
 
-    @Override
-    public void setFontSize(double fontSize) {
-        FontAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return FontAdapter.super.fontSize();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        FontAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public String getFontFamily() {
-        return FontAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        FontAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return FontAdapter.super.fontWeight();
-    }
-
-    @Override
-    public double getRealWidth() {
-        return LayoutAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        LayoutAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return LayoutAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        LayoutAdapter.super.realHeight(height);
-    }
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        FontAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return FontAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        FontAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return FontAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        FontAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return FontAdapter.super.fontWeight();
+//    }
+//
+//    @Override
+//    public double getRealWidth() {
+//        return LayoutAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        LayoutAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return LayoutAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        LayoutAdapter.super.realHeight(height);
+//    }
 
     // @Override
     // public void setStateManager(StateManager manager) {
@@ -171,13 +171,13 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
         this.setFocusTraversable(false);
     }
 
-    @Override
-    public void setGroupId(String groupId) {
-        NodeGroup.super.groupId(groupId);
-    }
-
-    @Override
-    public String getGroupId() {
-        return NodeGroup.super.groupId();
-    }
+//    @Override
+//    public void setGroupId(String groupId) {
+//        NodeGroup.super.groupId(groupId);
+//    }
+//
+//    @Override
+//    public String getGroupId() {
+//        return NodeGroup.super.groupId();
+//    }
 }

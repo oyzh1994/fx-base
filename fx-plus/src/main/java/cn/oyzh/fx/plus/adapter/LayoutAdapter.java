@@ -16,7 +16,9 @@ public interface LayoutAdapter extends EventTarget {
      *
      * @return 真实宽度
      */
-    double getRealWidth();
+    default double getRealWidth() {
+        return this.realWidth();
+    }
 
     /**
      * 获取真实宽度实现
@@ -32,7 +34,9 @@ public interface LayoutAdapter extends EventTarget {
      *
      * @param width 真实宽度
      */
-    void setRealWidth(double width);
+    default void setRealWidth(double width) {
+        this.realWidth(width);
+    }
 
     /**
      * 设置真实宽度实现
@@ -48,7 +52,9 @@ public interface LayoutAdapter extends EventTarget {
      *
      * @return 真实高度
      */
-    double getRealHeight();
+    default double getRealHeight() {
+        return this.realHeight();
+    }
 
     /**
      * 获取真实高度实现
@@ -64,7 +70,9 @@ public interface LayoutAdapter extends EventTarget {
      *
      * @param height 真实高度
      */
-    void setRealHeight(double height);
+    default void setRealHeight(double height) {
+        this.realHeight(height);
+    }
 
     /**
      * 设置真实高度实现
