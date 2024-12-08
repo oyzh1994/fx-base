@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.treeView;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.treeView.FXTreeCell;
+import cn.oyzh.fx.plus.controls.tree.view.FXTreeCell;
 import cn.oyzh.fx.plus.drag.DragNodeHandler;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.drag.DragUtil;

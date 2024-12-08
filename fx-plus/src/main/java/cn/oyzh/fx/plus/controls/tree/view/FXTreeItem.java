@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.treeView;
+package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
@@ -18,7 +18,6 @@ import javafx.stage.Window;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

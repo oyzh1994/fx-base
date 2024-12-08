@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.textfield;
 
 import cn.oyzh.fx.plus.LimitLenControl;
-import cn.oyzh.fx.plus.controls.textfield.FlexTextField;
+import cn.oyzh.fx.plus.controls.text.field.FlexTextField;
 import cn.oyzh.fx.plus.operator.LimitOperator;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;

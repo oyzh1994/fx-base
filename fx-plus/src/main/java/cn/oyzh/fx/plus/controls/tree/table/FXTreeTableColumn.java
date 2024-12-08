@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.treeTable;
+package cn.oyzh.fx.plus.controls.tree.table;
 
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;

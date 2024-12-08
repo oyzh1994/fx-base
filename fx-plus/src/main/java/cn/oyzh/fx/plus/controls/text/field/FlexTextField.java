@@ -1,14 +1,23 @@
-package cn.oyzh.fx.plus.controls.textarea;
+package cn.oyzh.fx.plus.controls.text.field;
+
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 
 /**
- * 文本域
+ * 基础文本域
  *
  * @author oyzh
- * @since 2022/1/20
+ * @since 2023/08/15
  */
-public class FlexTextArea extends FXTextArea implements FlexAdapter {
+public class FlexTextField extends FXTextField implements FlexAdapter {
+
+    public FlexTextField() {
+        super.setText("");
+    }
+
+    public FlexTextField(String text) {
+        super.setText(text);
+    }
 
     @Override
     public void resize(double width, double height) {

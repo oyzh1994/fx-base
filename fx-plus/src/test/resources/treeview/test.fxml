@@ -3,7 +3,7 @@
 <?import cn.oyzh.fx.plus.controls.table.FlexTableColumn?>
 <?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
 <?import javafx.scene.control.Button?>
-<?import cn.oyzh.fx.plus.controls.treeView.FlexTreeView?>
+<?import cn.oyzh.fx.plus.controls.tree.view.FlexTreeView?>
 <FlexVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.treeview.TreeViewTestController">
     <FlexHBox realHeight="50">
@@ -11,6 +11,6 @@
         <Button text="测试2" onAction="#test2"></Button>
     </FlexHBox>
     <FlexTreeView focusTraversable="true" flexWidth="100%" flexHeight="100% - 50" fx:id="tree"
-                   fixedCellSize="30">
+                  fixedCellSize="30">
     </FlexTreeView>
 </FlexVBox>

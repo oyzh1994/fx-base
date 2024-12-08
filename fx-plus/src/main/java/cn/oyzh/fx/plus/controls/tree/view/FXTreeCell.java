@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.treeView;
+package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;

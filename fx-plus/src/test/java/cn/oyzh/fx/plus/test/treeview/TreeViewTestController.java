@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test.treeview;
 
 import cn.oyzh.fx.plus.controller.StageController;
-import cn.oyzh.fx.plus.controls.treeView.FlexTreeView;
+import cn.oyzh.fx.plus.controls.tree.view.FlexTreeView;
 import cn.oyzh.fx.plus.window.StageAttribute;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

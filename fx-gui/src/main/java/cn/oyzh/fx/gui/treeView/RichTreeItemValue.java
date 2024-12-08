@@ -1,12 +1,6 @@
 package cn.oyzh.fx.gui.treeView;
 
-import cn.oyzh.common.util.Destroyable;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.treeView.FXTreeItemValue;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import javafx.scene.paint.Color;
-import lombok.Getter;
-import lombok.experimental.Accessors;
+import cn.oyzh.fx.plus.controls.tree.view.FXTreeItemValue;
 
 
 /**

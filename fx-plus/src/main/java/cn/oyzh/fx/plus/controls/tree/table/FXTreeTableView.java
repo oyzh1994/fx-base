@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.treeView;
+package cn.oyzh.fx.plus.controls.tree.table;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
@@ -8,20 +8,15 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.input.KeyCode;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -34,74 +29,10 @@ import java.util.function.Consumer;
  * @since 2022/1/19
  */
 @ToString
-public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FXTreeTableView extends TreeTableView implements DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
         NodeManager.init(this);
-        this.initTreeView();
-        this.initRoot();
-    }
-
-    /**
-     * 拖动内容
-     */
-    @Getter
-    protected String dragContent = "tree_view_drag";
-
-    /**
-     * 初始化组件
-     */
-    protected void initTreeView() {
-        this.initEvenListener();
-    }
-
-    /**
-     * 初始化根节点
-     */
-    protected void initRoot() {
-    }
-
-    /**
-     * 初始化事件监听器
-     */
-    protected void initEvenListener() {
-        // 右键菜单事件
-        this.setOnContextMenuRequested(e -> {
-            FXTreeItem<?> item = this.getSelectedItem();
-            if (item != null) {
-                this.showContextMenu(item.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
-            } else {
-                this.clearContextMenu();
-            }
-        });
-        // f2按键处理
-        KeyListener.listenReleased(this, KeyCode.F2, event -> {
-            FXTreeItem<?> item = this.getSelectedItem();
-            if (item != null) {
-                item.rename();
-            }
-        });
-        // 删除按键处理
-        KeyListener.listenReleased(this, KeyCode.DELETE, event -> {
-            FXTreeItem<?> item = this.getSelectedItem();
-            if (item != null) {
-                item.delete();
-            }
-        });
-        // 鼠标按键处理
-        this.setOnMousePrimaryClicked(event -> {
-            if (MouseUtil.isPrimaryButton(event)) {
-                this.clearContextMenu();
-                FXTreeItem<?> item = this.getSelectedItem();
-                if (item != null) {
-                    if (event.getClickCount() == 1) {
-                        item.onPrimarySingleClick();
-                    } else if (event.getClickCount() >= 2) {
-                        item.onPrimaryDoubleClick();
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -177,12 +108,8 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
      * @param item 节点
      */
     public void selectAndScroll(TreeItem<?> item) {
-        if (item == null) {
-            this.clearSelection();
-        } else {
-            this.select(item);
-            this.scrollTo(item);
-        }
+        this.select(item);
+        this.scrollTo(item);
     }
 
     /**
@@ -232,60 +159,13 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
         this.scrollTo(this.getSelectedItem());
     }
 
-    /**
-     * 渲染服务
-     */
-    protected QueueService service;
-
-    /**
-     * 获取渲染服务
-     *
-     * @return 渲染服务
-     */
-    public QueueService service() {
-        if (this.service == null) {
-            this.service = new QueueService();
-        }
-        return this.service;
-    }
-
-    @Override
-    public FXTreeItem<?> getSelectedItem() {
-        return (FXTreeItem<?>) SelectAdapter.super.getSelectedItem();
-    }
-
-    /**
-     * 展开节点
-     */
-    public synchronized void expand() {
-        FXTreeItem<?> item = this.getSelectedItem();
-        if (item != null) {
-            item.expend();
-            this.select(item);
-            this.flushLocal();
-        }
-    }
-
-    /**
-     * 收缩节点
-     */
-    public synchronized void collapse() {
-        FXTreeItem<?> item = this.getSelectedItem();
-        if (item != null) {
-            item.collapse();
-            this.select(item);
-            this.flushLocal();
-        }
-    }
-
-    /**
-     * 重新载入
-     */
-    public synchronized void reload() {
-        FXTreeItem<?> item = this.getSelectedItem();
-        if (item != null) {
-            item.reloadChild();
-            this.refresh();
-        }
-    }
+    // @Override
+    // public void setStateManager(StateManager manager) {
+    //
+    // }
+    //
+    // @Override
+    // public StateManager getStateManager() {
+    //     return null;
+    // }
 }

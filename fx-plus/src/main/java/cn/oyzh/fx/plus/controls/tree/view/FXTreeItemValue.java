@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.controls.treeView;
+package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;

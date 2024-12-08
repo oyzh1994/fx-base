@@ -1,19 +1,22 @@
-package cn.oyzh.fx.plus.controls.treeTable;
+package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import lombok.ToString;
 
 /**
+ * 树形结构
+ *
  * @author oyzh
- * @since 2024-11-21
+ * @since 2022/1/19
  */
-public class FlexTreeTableColumn<S,T> extends FXTreeTableColumn<S,T> implements FlexAdapter {
+@ToString
+public class FlexTreeView extends FXTreeView implements FlexAdapter {
 
-    public FlexTreeTableColumn( ) {
-        super();
-    }
-
-    public FlexTreeTableColumn(String text) {
-        super(text);
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
     }
 
 //    @Override

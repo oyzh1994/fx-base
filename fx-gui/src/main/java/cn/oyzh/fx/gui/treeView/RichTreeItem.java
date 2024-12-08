@@ -4,7 +4,7 @@ import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.MenuItemAdapter;
-import cn.oyzh.fx.plus.controls.treeView.FXTreeItem;
+import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
