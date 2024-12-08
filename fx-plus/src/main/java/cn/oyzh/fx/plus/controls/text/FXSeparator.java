@@ -1,7 +1,6 @@
-package cn.oyzh.fx.plus.controls;
+package cn.oyzh.fx.plus.controls.text;
 
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
-import cn.oyzh.fx.plus.controls.text.FlexText;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import lombok.NonNull;

@@ -1,6 +1,6 @@
 // package cn.oyzh.fx.plus.test;
 //
-// import cn.oyzh.fx.plus.controls.FlexImageView;
+// import cn.oyzh.fx.plus.controls.image.FlexImageView;
 // import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 // import cn.oyzh.fx.plus.tree.AvdTreeItem;
 // import cn.oyzh.fx.plus.tree.AvdTreeView;
