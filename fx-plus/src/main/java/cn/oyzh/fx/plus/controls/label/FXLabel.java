@@ -40,25 +40,25 @@ public class FXLabel extends Label implements NodeGroup, ThemeAdapter, MouseAdap
         super(text, graphic);
     }
 
-    @Override
-    public void setOnMousePrimaryClicked(EventHandler<? super MouseEvent> handler) {
-        MouseAdapter.super.setOnMousePrimaryClicked(handler);
-    }
-
-    @Override
-    public EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
-        return MouseAdapter.super.getOnMousePrimaryClicked();
-    }
-
-    @Override
-    public void setOnMouseSecondClicked(EventHandler<? super MouseEvent> handler) {
-        MouseAdapter.super.setOnMouseSecondClicked(handler);
-    }
-
-    @Override
-    public EventHandler<? super MouseEvent> getOnMouseSecondClicked() {
-        return MouseAdapter.super.getOnMouseSecondClicked();
-    }
+//    @Override
+//    public void setOnMousePrimaryClicked(EventHandler<? super MouseEvent> handler) {
+//        MouseAdapter.super.setOnMousePrimaryClicked(handler);
+//    }
+//
+//    @Override
+//    public EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
+//        return MouseAdapter.super.getOnMousePrimaryClicked();
+//    }
+//
+//    @Override
+//    public void setOnMouseSecondClicked(EventHandler<? super MouseEvent> handler) {
+//        MouseAdapter.super.setOnMouseSecondClicked(handler);
+//    }
+//
+//    @Override
+//    public EventHandler<? super MouseEvent> getOnMouseSecondClicked() {
+//        return MouseAdapter.super.getOnMouseSecondClicked();
+//    }
 
 //    @Override
 //    public void setTipText(String tipText) {

@@ -35,25 +35,25 @@ public class FXTreeTableView extends TreeTableView implements DestroyAdapter, No
         NodeManager.init(this);
     }
 
-    @Override
-    public void setOnMousePrimaryClicked(EventHandler<? super MouseEvent> handler) {
-        MouseAdapter.super.setOnMousePrimaryClicked(handler);
-    }
-
-    @Override
-    public EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
-        return MouseAdapter.super.getOnMousePrimaryClicked();
-    }
-
-    @Override
-    public void setOnMouseSecondClicked(EventHandler<? super MouseEvent> handler) {
-        MouseAdapter.super.setOnMouseSecondClicked(handler);
-    }
-
-    @Override
-    public EventHandler<? super MouseEvent> getOnMouseSecondClicked() {
-        return MouseAdapter.super.getOnMouseSecondClicked();
-    }
+//    @Override
+//    public void setOnMousePrimaryClicked(EventHandler<? super MouseEvent> handler) {
+//        MouseAdapter.super.setOnMousePrimaryClicked(handler);
+//    }
+//
+//    @Override
+//    public EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
+//        return MouseAdapter.super.getOnMousePrimaryClicked();
+//    }
+//
+//    @Override
+//    public void setOnMouseSecondClicked(EventHandler<? super MouseEvent> handler) {
+//        MouseAdapter.super.setOnMouseSecondClicked(handler);
+//    }
+//
+//    @Override
+//    public EventHandler<? super MouseEvent> getOnMouseSecondClicked() {
+//        return MouseAdapter.super.getOnMouseSecondClicked();
+//    }
 
     /**
      * 重新选择节点

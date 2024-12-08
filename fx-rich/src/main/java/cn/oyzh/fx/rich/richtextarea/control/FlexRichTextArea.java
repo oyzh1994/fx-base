@@ -51,109 +51,109 @@ public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, Flex
         this.resizeNode();
     }
 
-    @Override
-    public String getFlexWidth() {
-        return FlexAdapter.super.flexWidth();
-    }
-
-    @Override
-    public void setFlexWidth(String flexWidth) {
-        FlexAdapter.super.flexWidth(flexWidth);
-    }
-
-    public String getFlexHeight() {
-        return FlexAdapter.super.flexHeight();
-    }
-
-    @Override
-    public void setFlexHeight(String flexHeight) {
-        FlexAdapter.super.flexHeight(flexHeight);
-    }
-
-    @Override
-    public String getFlexX() {
-        return FlexAdapter.super.flexX();
-    }
-
-    @Override
-    public void setFlexX(String flexX) {
-        FlexAdapter.super.flexX(flexX);
-    }
-
-    @Override
-    public String getFlexY() {
-        return FlexAdapter.super.flexY();
-    }
-
-    @Override
-    public void setFlexY(String flexY) {
-        FlexAdapter.super.flexY(flexY);
-    }
-
-    @Override
-    public double getRealWidth() {
-        return FlexAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        FlexAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return FlexAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        FlexAdapter.super.realHeight(height);
-    }
+//    @Override
+//    public String getFlexWidth() {
+//        return FlexAdapter.super.flexWidth();
+//    }
+//
+//    @Override
+//    public void setFlexWidth(String flexWidth) {
+//        FlexAdapter.super.flexWidth(flexWidth);
+//    }
+//
+//    public String getFlexHeight() {
+//        return FlexAdapter.super.flexHeight();
+//    }
+//
+//    @Override
+//    public void setFlexHeight(String flexHeight) {
+//        FlexAdapter.super.flexHeight(flexHeight);
+//    }
+//
+//    @Override
+//    public String getFlexX() {
+//        return FlexAdapter.super.flexX();
+//    }
+//
+//    @Override
+//    public void setFlexX(String flexX) {
+//        FlexAdapter.super.flexX(flexX);
+//    }
+//
+//    @Override
+//    public String getFlexY() {
+//        return FlexAdapter.super.flexY();
+//    }
+//
+//    @Override
+//    public void setFlexY(String flexY) {
+//        FlexAdapter.super.flexY(flexY);
+//    }
+//
+//    @Override
+//    public double getRealWidth() {
+//        return FlexAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        FlexAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return FlexAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        FlexAdapter.super.realHeight(height);
+//    }
 
     @Override
     public void flushCaret() {
 
     }
 
-    @Override
-    public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
-    }
-
-    @Override
-    public String getTipText() {
-        return TipAdapter.super.tipText();
-    }
-
-    @Override
-    public void setFontSize(double fontSize) {
-        AreaAdapter.super.fontSize(fontSize);
-    }
-
-    @Override
-    public double getFontSize() {
-        return AreaAdapter.super.fontSize();
-    }
-
-    @Override
-    public void setFontFamily(@NonNull String fontFamily) {
-        AreaAdapter.super.fontFamily(fontFamily);
-    }
-
-    @Override
-    public String getFontFamily() {
-        return AreaAdapter.super.fontFamily();
-    }
-
-    @Override
-    public void setFontWeight(FontWeight fontWeight) {
-        AreaAdapter.super.fontWeight(fontWeight);
-    }
-
-    @Override
-    public FontWeight getFontWeight() {
-        return AreaAdapter.super.fontWeight();
-    }
+//    @Override
+//    public void setTipText(String tipText) {
+//        TipAdapter.super.tipText(tipText);
+//    }
+//
+//    @Override
+//    public String getTipText() {
+//        return TipAdapter.super.tipText();
+//    }
+//
+//    @Override
+//    public void setFontSize(double fontSize) {
+//        AreaAdapter.super.fontSize(fontSize);
+//    }
+//
+//    @Override
+//    public double getFontSize() {
+//        return AreaAdapter.super.fontSize();
+//    }
+//
+//    @Override
+//    public void setFontFamily(@NonNull String fontFamily) {
+//        AreaAdapter.super.fontFamily(fontFamily);
+//    }
+//
+//    @Override
+//    public String getFontFamily() {
+//        return AreaAdapter.super.fontFamily();
+//    }
+//
+//    @Override
+//    public void setFontWeight(FontWeight fontWeight) {
+//        AreaAdapter.super.fontWeight(fontWeight);
+//    }
+//
+//    @Override
+//    public FontWeight getFontWeight() {
+//        return AreaAdapter.super.fontWeight();
+//    }
 
     // @Override
     // public void setStateManager(StateManager manager) {

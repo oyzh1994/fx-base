@@ -279,23 +279,23 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
         this.lastSVG.setVisible(showLast);
     }
 
-    @Override
-    public double getRealWidth() {
-        return LayoutAdapter.super.realWidth();
-    }
-
-    @Override
-    public void setRealWidth(double width) {
-        LayoutAdapter.super.realWidth(width);
-    }
-
-    @Override
-    public double getRealHeight() {
-        return LayoutAdapter.super.realHeight();
-    }
-
-    @Override
-    public void setRealHeight(double height) {
-        LayoutAdapter.super.realHeight(height);
-    }
+//    @Override
+//    public double getRealWidth() {
+//        return LayoutAdapter.super.realWidth();
+//    }
+//
+//    @Override
+//    public void setRealWidth(double width) {
+//        LayoutAdapter.super.realWidth(width);
+//    }
+//
+//    @Override
+//    public double getRealHeight() {
+//        return LayoutAdapter.super.realHeight();
+//    }
+//
+//    @Override
+//    public void setRealHeight(double height) {
+//        LayoutAdapter.super.realHeight(height);
+//    }
 }

@@ -28,7 +28,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      * @return 流式宽度值
      */
     default String flexWidth() {
-        return this.getProp("flexWidth");
+        return this.getProp("flex_w");
     }
 
     /**
@@ -47,7 +47,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      */
     default void flexWidth(String flexWidth) {
         this.clearComputeSize();
-        this.setProp("flexWidth", flexWidth);
+        this.setProp("flex_w", flexWidth);
     }
 
     /**
@@ -65,7 +65,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      * @return 流式高度
      */
     default String flexHeight() {
-        return this.getProp("flexHeight");
+        return this.getProp("flex_h");
     }
 
     /**
@@ -84,7 +84,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      */
     default void flexHeight(String flexHeight) {
         this.clearComputeSize();
-        this.setProp("flexHeight", flexHeight);
+        this.setProp("flex_h", flexHeight);
     }
 
     /**
@@ -102,7 +102,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      * @return 流式x值
      */
     default String flexX() {
-        return this.getProp("flexX");
+        return this.getProp("flex_x");
     }
 
     /**
@@ -121,7 +121,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      */
     default void flexX(String flexX) {
         this.clearComputeSize();
-        this.setProp("flexX", flexX);
+        this.setProp("flex_x", flexX);
     }
 
     /**
@@ -139,7 +139,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      * @return 流式y值
      */
     default String flexY() {
-        return this.getProp("flexY");
+        return this.getProp("flex_y");
     }
 
     /**
@@ -158,21 +158,21 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
      */
     default void flexY(String flexY) {
         this.clearComputeSize();
-        this.setProp("flexY", flexY);
+        this.setProp("flex_y", flexY);
     }
 
     /**
      * 获取计算宽度值
      */
     default Double computeWidth() {
-        return this.getProp("_computeWidth");
+        return this.getProp("compute_w");
     }
 
     /**
      * 获取计算高度值
      */
     default Double computeHeight() {
-        return this.getProp("_computeHeight");
+        return this.getProp("compute_h");
     }
 
     /**
@@ -181,10 +181,10 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
     private void clearComputeSize() {
         this.removeProp("_width");
         this.removeProp("_parentWidth");
-        this.removeProp("_computeWidth");
+        this.removeProp("compute_w");
         this.removeProp("_height");
         this.removeProp("_parentHeight");
-        this.removeProp("_computeHeight");
+        this.removeProp("compute_h");
     }
 
     /**
@@ -211,7 +211,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
                 // 设置属性
                 this.setProp("_width", width);
                 this.setProp("_parentWidth", parentWidth);
-                this.setProp("_computeWidth", flexValue);
+                this.setProp("compute_w", flexValue);
                 size[0] = flexValue;
             }
         } else {
@@ -233,7 +233,7 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
                 // 设置属性
                 this.setProp("_height", height);
                 this.setProp("_parentHeight", parentHeight);
-                this.setProp("_computeHeight", flexValue);
+                this.setProp("compute_h", flexValue);
                 size[1] = flexValue;
             }
         } else {
