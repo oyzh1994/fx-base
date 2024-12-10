@@ -84,4 +84,20 @@ public class StageController extends Controller implements StageListener, EventL
     public String getViewTitle() {
         return null;
     }
+
+    protected void disable() {
+        this.stage.disable();
+    }
+
+    protected void enable() {
+        this.stage.enable();
+    }
+
+    protected void restoreTitle() {
+        this.stage.restoreTitle();
+    }
+
+    protected void appendTitle(String title) {
+        this.stage.appendTitle(title);
+    }
 }
