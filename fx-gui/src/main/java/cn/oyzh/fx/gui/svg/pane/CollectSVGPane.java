@@ -37,9 +37,9 @@ public class CollectSVGPane extends HBox implements MouseAdapter {
 
     public void setCollect(boolean collect) {
         if (collect) {
-            this.unCollect();
-        } else {
             this.collect();
+        } else {
+            this.unCollect();
         }
     }
 }
