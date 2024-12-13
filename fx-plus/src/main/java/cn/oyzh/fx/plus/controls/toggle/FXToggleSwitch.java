@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.HorizontalDirection;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.text.FontWeight;
@@ -34,9 +35,11 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapte
 
     {
         this.setCache(false);
-        this.setCacheShape(true);
+        // this.setCacheShape(true);
         this.setCursor(Cursor.HAND);
-        this.setCacheHint(CacheHint.QUALITY);
+        // this.setCacheHint(CacheHint.QUALITY);
+        // 设置文字靠右
+        this.setLabelPosition(HorizontalDirection.RIGHT);
         // 选中变化事件
         this.selectedChanged((observable, oldValue, t1) -> {
             if (t1) {

@@ -398,8 +398,8 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      */
     public void doFilter() {
         List<RichTreeItem<?>> items = this.richChildren();
-        this.doFilter(this.getTreeView().itemFilter, items);
-        // this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter, items));
+        // this.doFilter(this.getTreeView().itemFilter, items);
+        this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter, items));
     }
 
     /**
