@@ -22,26 +22,6 @@ public class BaseRichTextField extends InlineCssTextField implements NodeAdapter
         NodeManager.init(this);
     }
 
-//    @Override
-//    public void setTipText(String tipText) {
-//        TipAdapter.super.tipText(tipText);
-//    }
-//
-//    @Override
-//    public String getTipText() {
-//        return TipAdapter.super.tipText();
-//    }
-
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
-
     @Override
     public void changeTheme(ThemeStyle style) {
         if (this.isEnableTheme()) {

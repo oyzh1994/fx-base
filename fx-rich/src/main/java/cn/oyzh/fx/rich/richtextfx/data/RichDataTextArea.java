@@ -165,6 +165,7 @@ public class RichDataTextArea extends FlexRichTextArea {
             this.clearTextStyle();
             // 搜索
             if (StringUtil.isNotBlank(this.searchText)) {
+                super.changeTheme(ThemeManager.currentTheme());
                 String text = this.getText();
                 Matcher matcher = this.searchPattern().matcher(text);
                 List<RichTextStyle> styles = new ArrayList<>();
@@ -175,6 +176,7 @@ public class RichDataTextArea extends FlexRichTextArea {
                     this.setStyle(style);
                 }
             } else if (this.dataType == RichDataType.JSON) { // json
+                super.changeTheme(ThemeManager.currentTheme());
                 String text = this.getText();
                 Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
                 List<RichTextStyle> styles = new ArrayList<>();
