@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -58,16 +57,16 @@ public interface ThemeAdapter extends PropAdapter {
      * @param style 主题风格
      */
     default void changeTheme(ThemeStyle style) {
-         if (this.isEnableTheme() && style != null) {
-             switch (this) {
-                 case Parent node -> this.handleStyle(node, style);
-                 case Popup popup -> this.handleStyle(popup.getContent(), style);
-                 case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
-                 case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);
-                 default -> {
-                 }
-             }
-         }
+        if (this.isEnableTheme() && style != null) {
+            switch (this) {
+                case Parent node -> this.handleStyle(node, style);
+                case Popup popup -> this.handleStyle(popup.getContent(), style);
+                case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
+                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);
+                default -> {
+                }
+            }
+        }
     }
 
     /**
@@ -76,9 +75,11 @@ public interface ThemeAdapter extends PropAdapter {
      * @param nodes 节点列表
      * @param style 主题风格
      */
-    private void handleStyle(List<Node> nodes, ThemeStyle style) {
-        for (Node node : nodes) {
-            style.handleStyle(node);
+    private void handleStyle(List<?> nodes, ThemeStyle style) {
+        for (Object node : nodes) {
+            if (node instanceof Parent parent) {
+                style.handleStyle(parent);
+            }
         }
     }
 
@@ -88,7 +89,7 @@ public interface ThemeAdapter extends PropAdapter {
      * @param node  节点
      * @param style 主题风格
      */
-    private void handleStyle(Node node, ThemeStyle style) {
+    private void handleStyle(Parent node, ThemeStyle style) {
         style.handleStyle(node);
     }
 }

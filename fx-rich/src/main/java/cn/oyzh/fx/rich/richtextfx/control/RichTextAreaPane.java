@@ -1,6 +1,8 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import javafx.beans.value.ChangeListener;
@@ -14,7 +16,7 @@ import org.reactfx.value.Val;
  * @author oyzh
  * @since 2024/5/17
  */
-public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexVirtualizedScrollPane<E> implements FontAdapter {
+public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexVirtualizedScrollPane<E> implements FontAdapter, ThemeAdapter {
 
     public RichTextAreaPane(E content) {
         super(content);
@@ -196,5 +198,10 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
 
     public void setPromptText(String promptText) {
         this.getContent().setPromptText(promptText);
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        this.getContent().changeTheme(style);
     }
 }

@@ -3,6 +3,7 @@ package cn.oyzh.fx.terminal;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.terminal.RichTerminalTextAreaPane;
@@ -457,6 +458,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     @Override
     public void initTextStyle() {
         this.clearTextStyle();
+        this.changeTheme(ThemeManager.currentTheme());
         if (this.contentPrompts != null) {
             String text = this.getText();
             Matcher matcher1 = this.contentPrompts.matcher(text);

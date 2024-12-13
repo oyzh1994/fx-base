@@ -10,6 +10,7 @@ import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 public abstract class RichTerminalTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
 
     public RichTerminalTextAreaPane() {
-        super(new FlexRichTextArea());
+        super(new RichTerminalTextArea());
     }
+
 }

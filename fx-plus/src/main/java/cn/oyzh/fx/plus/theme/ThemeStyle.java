@@ -4,7 +4,6 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.ColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 
@@ -109,15 +108,13 @@ public interface ThemeStyle {
      *
      * @param node 节点
      */
-    default void handleStyle(Node node) {
+    default void handleStyle(Parent node) {
         if (node != null) {
             TaskManager.startDelay(this.hashCode() + ":reapplyCss", () -> FXUtil.runLater(() -> {
                 try {
                     // 更新fx-base样式文件
-                    if (node instanceof Parent parent) {
-                        parent.getStylesheets().remove(FXStyle.FX_BASE);
-                        parent.getStylesheets().add(FXStyle.FX_BASE);
-                    }
+                    node.getStylesheets().remove(FXStyle.FX_BASE);
+                    node.getStylesheets().add(FXStyle.FX_BASE);
                     // 重新应用样式
                     node.reapplyCss();
                 } catch (Exception ex) {
@@ -125,23 +122,24 @@ public interface ThemeStyle {
                 }
             }), 50);
         }
-//        FXUtil.runLater(() -> {
-//            if (node instanceof Parent parent) {
-//                try {
-//                    parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentUserAgentStylesheet());
-//                    parent.getStylesheets().addAll(this.getUserAgentStylesheet(), FXStyle.FX_BASE);
-//                    // parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentCompressedUserAgentStylesheet());
-//                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
-//                    // List<String> removes = new ArrayList<>();
-//                    // removes.add(FXStyle.FX_BASE);
-//                    // removes.add(ThemeManager.currentTheme().getCompressedUserAgentStylesheet());
-//                    // parent.getStylesheets().removeAll(removes);
-//                    // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//        });
+        // FXUtil.runLater(() -> {
+        //     // if (node instanceof Parent parent) {
+        //         try {
+        //             node.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentUserAgentStylesheet());
+        //             // node.getStylesheets().addAll(this.getUserAgentStylesheet(), FXStyle.FX_BASE);
+        //             node.getStylesheets().addAll(ThemeManager.currentUserAgentStylesheet(), FXStyle.FX_BASE);
+        //             // parent.getStylesheets().removeAll(FXStyle.FX_BASE, ThemeManager.currentCompressedUserAgentStylesheet());
+        //             // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
+        //             // List<String> removes = new ArrayList<>();
+        //             // removes.add(FXStyle.FX_BASE);
+        //             // removes.add(ThemeManager.currentTheme().getCompressedUserAgentStylesheet());
+        //             // parent.getStylesheets().removeAll(removes);
+        //             // parent.getStylesheets().addAll(this.getCompressedUserAgentStylesheet(), FXStyle.FX_BASE);
+        //         } catch (Exception ex) {
+        //             ex.printStackTrace();
+        //         }
+        //     // }
+        // });
     }
 
     /**
