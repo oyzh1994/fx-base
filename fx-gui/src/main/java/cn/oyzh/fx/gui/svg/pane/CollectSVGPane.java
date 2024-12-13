@@ -1,4 +1,4 @@
-package cn.oyzh.fx.gui.svg;
+package cn.oyzh.fx.gui.svg.pane;
 
 import cn.oyzh.fx.gui.svg.glyph.CollectSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
@@ -12,13 +12,13 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024-12-09
  */
-public class CollectPane extends HBox implements MouseAdapter {
+public class CollectSVGPane extends HBox implements MouseAdapter {
 
     @Getter
     @Setter
     private String size;
 
-    public CollectPane() {
+    public CollectSVGPane() {
         this.unCollect();
     }
 

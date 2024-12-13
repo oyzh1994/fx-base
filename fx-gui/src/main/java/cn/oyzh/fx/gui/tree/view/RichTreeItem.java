@@ -38,9 +38,14 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      */
     private BitSet bitValue() {
         if (this.bitValue == null) {
-            this.bitValue = new BitSet(0b00100101);
+            // 8位
+            this.bitValue = BitSet.valueOf(new byte[]{0b00100101});
+            // this.bitValue = new BitSet();
+            // this.bitValue.set(0, true);
+            // this.bitValue.set(2, true);
+            // this.bitValue.set(5, true);
         }
-        return bitValue;
+        return this.bitValue;
     }
 
     /**
