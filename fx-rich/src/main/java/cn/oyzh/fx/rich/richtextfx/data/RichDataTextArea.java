@@ -63,6 +63,29 @@ public class RichDataTextArea extends FlexRichTextArea {
     }
 
     /**
+     * 显示检测后的数据
+     *
+     * @param rawData 显示数据
+     * @return  RichDataType
+     */
+    public RichDataType showDetectData(Object rawData) {
+        // 检测类型
+        byte detectType = TextUtil.detectType(rawData);
+        RichDataType dataType;
+        if (detectType == 1) {
+            dataType = RichDataType.JSON;
+        } else if (detectType == 2) {
+            dataType = RichDataType.BINARY;
+        } else if (detectType == 3) {
+            dataType = RichDataType.STRING;
+        } else {
+            dataType = RichDataType.RAW;
+        }
+        this.showData(dataType, rawData);
+        return dataType;
+    }
+
+    /**
      * 显示数据
      *
      * @param rawData 显示数据
@@ -183,11 +206,11 @@ public class RichDataTextArea extends FlexRichTextArea {
                 while (matcher1.find()) {
                     styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
                 }
-                Matcher matcher2 =  RegexHelper.jsonKeyPattern().matcher(text);
+                Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
                 while (matcher2.find()) {
                     styles.add(new RichTextStyle(matcher2.start(), matcher2.end() - 1, "-fx-fill: #EE2C2C;"));
                 }
-                Matcher matcher3 =  RegexHelper.jsonValuePattern().matcher(text);
+                Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);
                 while (matcher3.find()) {
                     styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
                 }

@@ -3,9 +3,9 @@ package cn.oyzh.fx.gui.tree.view;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
-import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -23,23 +23,22 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/11/10
  */
-@Getter
 public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
     /**
      * bit值设置，减少内存占用
      */
-    private BitSet bitValue;
+    protected BitSet bitValue;
 
     /**
      * bit值设置
      *
      * @return BitSet
      */
-    private BitSet bitValue() {
+    protected BitSet bitValue() {
         if (this.bitValue == null) {
-            // 8位
-            this.bitValue = BitSet.valueOf(new byte[]{0b01100101});
+            // 18位
+            this.bitValue = BitSet.valueOf(new byte[]{0b000_000_000_001_100_101});
         }
         return this.bitValue;
     }
@@ -350,9 +349,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 对节点排序，正序
      */
     public void sortAsc() {
-        if (this.isSortable()) {
+        if (this.isSortable() && !this.isSorting()) {
             this.setSortAsc(true);
-            this.sortChild();
+            this.sortChild(true);
         }
     }
 
@@ -360,33 +359,33 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 对节点排序，倒序
      */
     public void sortDesc() {
-        if (this.isSortable()) {
+        if (this.isSortable() && !this.isSorting()) {
             this.setSortAsc(false);
-            this.sortChild();
+            this.sortChild(false);
         }
     }
 
     /**
      * 子节点排序
      */
-    protected void sortChild() {
-        this.service().submitFX(() -> {
+    protected void sortChild(boolean sortAsc) {
+        // this.service().submitFX(() -> {
+        this.setSorting(true);
+        try {
             // 执行排序
             ObservableList<RichTreeItem<?>> children = this.richChildren();
             if (!children.isEmpty()) {
-                try {
-                    this.setSorting(true);
-                    // asc
-                    if (this.isSortAsc()) {
-                        children.sort(RichTreeItem::compareTo);
-                    } else {// desc
-                        children.sort(Comparator.reverseOrder());
-                    }
-                } finally {
-                    this.setSorting(false);
+                // asc
+                if (sortAsc) {
+                    children.sort(RichTreeItem::compareTo);
+                } else {// desc
+                    children.sort(Comparator.reverseOrder());
                 }
             }
-        });
+        } finally {
+            this.setSorting(false);
+        }
+        // });
     }
 
     /**
@@ -416,24 +415,26 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * @param items      节点列表
      */
     public void doFilter(RichTreeItemFilter itemFilter, List<RichTreeItem<?>> items) {
-        try {
-            if (this.isFilterable()) {
-                if (itemFilter != null) {
+        if (itemFilter != null) {
+            try {
+                if (this.isFilterable()) {
+                    // if (itemFilter != null) {
                     items.forEach(child -> {
                         child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
                     });
+                    // } else {
+                    //     items.forEach(child -> child.setVisible(true));
+                    // }
                 } else {
-                    items.forEach(child -> child.setVisible(true));
+                    items.forEach(child -> child.doFilter(itemFilter));
                 }
-            } else {
-                items.forEach(child -> child.doFilter(itemFilter));
+                this.sort();
+                // this.reExpanded();
+                this.refresh();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            this.sort();
-            this.reExpanded();
-            // this.refresh();
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 

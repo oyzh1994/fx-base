@@ -8,8 +8,8 @@ package cn.oyzh.fx.rich.richtextfx.data;
  */
 public enum RichDataType {
     JSON,
-    RAW,
     STRING,
+    RAW,
     BINARY,
     HEX
 }
