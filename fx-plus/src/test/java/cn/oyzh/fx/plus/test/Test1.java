@@ -22,7 +22,7 @@ public class Test1 {
 
     @Test
     public void test2() {
-        System.out.println(NumberUtil.toBigDecimal("11.11xxsdada撒旦撒啊实打实"));
+        System.out.println(NumberUtil.parseBigDecimal("11.11xxsdada撒旦撒啊实打实"));
     }
 
 

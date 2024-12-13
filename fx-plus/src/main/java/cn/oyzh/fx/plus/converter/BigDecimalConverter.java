@@ -20,7 +20,7 @@ public class BigDecimalConverter extends StringConverter<BigDecimal> {
     @Override
     public BigDecimal fromString(String s) {
         if (RegexUtil.isNumber(s)) {
-            return NumberUtil.toBigDecimal(s);
+            return NumberUtil.parseBigDecimal(s);
         }
         return null;
     }
