@@ -48,6 +48,7 @@ public class TitleBar extends FlexHBox {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 this.maximum(!this.maximum);
             }
+                event.consume();
         });
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             // 位置追踪
@@ -87,12 +88,15 @@ public class TitleBar extends FlexHBox {
                     }
                 }, 1);
             }
+            event.consume();
         });
         this.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
             TaskManager.cancelInterval("mouse:position:track");
+            event.consume();
         });
         this.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
             TaskManager.cancelInterval("mouse:position:track");
+            event.consume();
         });
     }
 

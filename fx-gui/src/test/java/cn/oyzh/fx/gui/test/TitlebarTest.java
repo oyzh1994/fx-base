@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -35,6 +36,10 @@ public class TitlebarTest extends Application {
         vbox.setPrefHeight(300);
 
         vbox.setOpacity(1);
+
+        FXHBox hbox = new FXHBox(new Button("测试1"),new Button("测试2"));
+
+        vbox.setContent(hbox);
 
 //        vbox.setOnMouseMoved(new EventHandler<MouseEvent>() {
 //            @Override
