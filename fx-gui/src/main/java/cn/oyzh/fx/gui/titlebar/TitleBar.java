@@ -21,6 +21,7 @@ public class TitleBar extends FlexHBox {
     {
         this.realHeight(30);
         this.setMaxHeight(30);
+        this.setFlexWidth("100%");
     }
 
     private boolean maximum;
