@@ -13,13 +13,21 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class MouseUtil {
 
-
     public static double getMouseX() {
         return FXUtil.getRobot().getMouseX();
     }
 
     public static double getMouseY() {
         return FXUtil.getRobot().getMouseY();
+    }
+
+    public static double[] getMousePosition() {
+        double[] position = new double[2];
+        FXUtil.runWait(()->{
+            position[0] = FXUtil.getRobot().getMouseX();
+            position[1] = FXUtil.getRobot().getMouseY();
+        });
+        return position;
     }
 
     /**
