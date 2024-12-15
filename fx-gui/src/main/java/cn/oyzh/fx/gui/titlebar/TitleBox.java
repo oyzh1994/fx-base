@@ -45,10 +45,18 @@ public class TitleBox extends FlexVBox {
         this.setBorder(border);
     }
 
-    private boolean xChange;
-    private boolean yChange;
+//    private boolean xChange;
+//    private boolean yChange;
     private boolean widthResize;
     private boolean heightResize;
+
+    private final AtomicReference<Double> originalX = new AtomicReference<>();
+
+    private final AtomicReference<Double> originalY = new AtomicReference<>();
+
+    private final AtomicReference<Double> originalW = new AtomicReference<>();
+
+    private final AtomicReference<Double> originalH = new AtomicReference<>();
 
     protected void initEvents() {
         this.addEventFilter(MouseEvent.MOUSE_MOVED, event -> {
@@ -56,70 +64,65 @@ public class TitleBox extends FlexVBox {
             double y = event.getY();
             double w = this.realWidth();
             double h = this.realHeight();
-//            System.out.println("w: " + w);
-//            System.out.println("h: " + h);
-//            System.out.println("x: " + x);
-//            System.out.println("y: " + y);
-            // 左上
-            if (x <= Threshold && y <= Threshold) {
-                this.setCursor(Cursor.NW_RESIZE);
-                this.widthResize = this.heightResize = this.xChange = this.yChange = true;
-                return;
-            }
-            // 左下
-            if (x <= Threshold && Math.abs(h - y) <= Threshold) {
-                this.setCursor(Cursor.SW_RESIZE);
-                this.widthResize = this.heightResize = true;
-                this.xChange = this.yChange = false;
-                return;
-            }
-            // 右上
-            if (Math.abs(w - x) <= Threshold && y <= Threshold) {
-                this.setCursor(Cursor.SW_RESIZE);
-                this.widthResize = this.heightResize = this.xChange = this.yChange = true;
-                return;
-            }
+//            // 左上
+//            if (x <= Threshold && y <= Threshold) {
+//                this.setCursor(Cursor.NW_RESIZE);
+//                this.widthResize = this.heightResize = this.xChange = this.yChange = true;
+//                return;
+//            }
+//            // 左下
+//            if (x <= Threshold && Math.abs(h - y) <= Threshold) {
+//                this.setCursor(Cursor.SW_RESIZE);
+//                this.widthResize = this.heightResize = true;
+//                this.xChange = this.yChange = false;
+//                return;
+//            }
+//            // 右上
+//            if (Math.abs(w - x) <= Threshold && y <= Threshold) {
+//                this.setCursor(Cursor.SW_RESIZE);
+//                this.widthResize = this.heightResize = this.xChange = this.yChange = true;
+//                return;
+//            }
             // 右下
             if (Math.abs(w - x) <= Threshold && Math.abs(h - y) <= Threshold) {
                 this.setCursor(Cursor.NW_RESIZE);
                 this.widthResize = this.heightResize = true;
-                this.xChange = this.yChange = false;
+//                this.xChange = this.yChange = false;
                 return;
             }
             // 右边
             if (Math.abs(w - x) <= Threshold) {
                 this.setCursor(Cursor.W_RESIZE);
                 this.widthResize = true;
-                this.heightResize = this.xChange = this.yChange = false;
+                this.heightResize = false;
+//                this.heightResize = this.xChange = this.yChange = false;
                 return;
             }
-            // 左边
-            if (x <= Threshold) {
-                this.setCursor(Cursor.W_RESIZE);
-                this.widthResize = this.xChange = true;
-                this.heightResize = this.yChange = false;
-                return;
-            }
-            // 上边
-            if (y <= Threshold) {
-                this.setCursor(Cursor.S_RESIZE);
-                this.heightResize = this.yChange = true;
-                this.widthResize = this.xChange = false;
-                return;
-            }
+//            // 左边
+//            if (x <= Threshold) {
+//                this.setCursor(Cursor.W_RESIZE);
+//                this.widthResize = this.xChange = true;
+//                this.heightResize = this.yChange = false;
+//                return;
+//            }
+//            // 上边
+//            if (y <= Threshold) {
+//                this.setCursor(Cursor.S_RESIZE);
+//                this.heightResize = this.yChange = true;
+//                this.widthResize = this.xChange = false;
+//                return;
+//            }
             // 下边
             if ((h - y) <= Threshold) {
                 this.setCursor(Cursor.S_RESIZE);
                 this.heightResize = true;
-                this.widthResize = this.xChange = this.yChange = false;
+                this.widthResize = false;
+//                this.widthResize = this.xChange = this.yChange = false;
                 return;
             }
             // 正常
-            this.widthResize = this.heightResize = this.xChange = this.yChange = false;
-            this.setCursor(Cursor.DEFAULT);
-        });
-        this.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
-            // 正常
+//            this.widthResize = this.heightResize = this.xChange = this.yChange = false;
+            this.widthResize = this.heightResize = false;
             this.setCursor(Cursor.DEFAULT);
         });
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
@@ -127,37 +130,44 @@ public class TitleBox extends FlexVBox {
             if (event.getButton() == MouseButton.PRIMARY) {
                 TaskManager.cancelInterval("mouse:resize:track");
                 Window window = this.window();
-                // 原始位置
+                // 记录原始位置
                 double[] originalPosition = MouseUtil.getMousePosition();
-                AtomicReference<Double> originalX = new AtomicReference<>(originalPosition[0]);
-                AtomicReference<Double> originalY = new AtomicReference<>(originalPosition[1]);
-                double originalW = window.getWidth();
-                double originalH = window.getHeight();
+                this.originalX.set(originalPosition[0]);
+                this.originalY.set(originalPosition[1]);
+                // 记录原始大小
+                this.originalW.set(window.getWidth());
+                this.originalH.set(window.getHeight());
                 // 追踪位置
                 TaskManager.startInterval("mouse:resize:track", () -> {
-                    try {
-                        double[] position = MouseUtil.getMousePosition();
-                        if (this.widthResize) {
-                            double mouseX = position[0];
-                            double x1 = mouseX - originalX.get();
-                            if (x1 != 0) {
-                                window.setWidth(originalW + x1);
-                            }
+                    // 更新宽度
+                    double[] position = MouseUtil.getMousePosition();
+                    if (this.widthResize) {
+                        double mouseX = position[0];
+                        double x1 = mouseX - originalX.get();
+                        if (x1 != 0) {
+                            window.setWidth(originalW.get() + x1);
                         }
-                        if (this.heightResize) {
-                            double mouseY = position[1];
-                            double y1 = mouseY - originalY.get();
-                            if (y1 != 0) {
-                                window.setHeight(originalH + y1);
-                            }
-                        }
-                    } finally {
-
                     }
+                    // 更新高度
+                    if (this.heightResize) {
+                        double mouseY = position[1];
+                        double y1 = mouseY - originalY.get();
+                        if (y1 != 0) {
+                            window.setHeight(originalH.get() + y1);
+                        }
+                    }
+//
+//                    // 更新x坐标
+//                    if (this.xChange) {
+//                        double mouseX = position[0];
+//                        double x1 = mouseX - originalX.get();
+//                        if (x1 != 0) {
+//                            window.setX(originalX.get() + x1);
+//                        }
+//                    }
                 }, 1);
             }
         });
-
         this.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
             TaskManager.cancelInterval("mouse:resize:track");
         });
