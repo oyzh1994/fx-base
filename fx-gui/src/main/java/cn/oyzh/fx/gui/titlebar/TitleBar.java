@@ -1,19 +1,19 @@
 package cn.oyzh.fx.gui.titlebar;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.util.MouseUtil;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TitleBar extends FlexHBox {
@@ -24,13 +24,9 @@ public class TitleBar extends FlexHBox {
         this.setFlexWidth("100%");
     }
 
-    private boolean maximum;
+    private final AtomicReference<Double> originalX = new AtomicReference<>();
 
-    private final AtomicReference<Double> originalX = new AtomicReference<>(0.d);
-
-    private final AtomicReference<Double> originalY = new AtomicReference<>(0.d);
-
-    private final AtomicReference<Boolean> positionUpdated = new AtomicReference<>(false);
+    private final AtomicReference<Double> originalY = new AtomicReference<>();
 
     public TitleBar(TitleBarConfig config) {
         if (config.getShowType() == 1) {
@@ -49,68 +45,28 @@ public class TitleBar extends FlexHBox {
             }
             this.getChildren().addAll(actions);
         }
-//        this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-//            // 最大化监听
-//            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-//                this.maximum(!this.maximum);
-//                event.consume();
-//                System.out.println("-------3");
-//            }
-//        });
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            // 位置追踪
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                // 清除任务
-                TaskManager.cancelInterval("mouse:position:track");
-                // 记录原始位置
-                double[] originalPosition = MouseUtil.getMousePosition();
-                this.originalX.set(originalPosition[0]);
-                this.originalY.set(originalPosition[1]);
-                // 追踪位置并更新
-                TaskManager.startInterval("mouse:position:track", ()->{
-                    this.positionUpdated.set(true);
-                    this.doUpdateLocation();
-                }, 5, 150);
-                System.out.println("-------1");
-                event.consume();
-            } else if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                // 清除任务
-                TaskManager.cancelInterval("mouse:position:track");
-                this.maximum(!this.maximum);
-                event.consume();
-                System.out.println("-------4");
-            }
-        });
-        this.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            TaskManager.cancelInterval("mouse:position:track");
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                // 清除任务
-                if (this.positionUpdated.get()) {
-                    // 更新位置
-                    this.doUpdateLocation();
-                    // 更新位置信息
+            if (event.getButton() == MouseButton.PRIMARY) {
+                // 记录位置
+                if (event.getClickCount() == 1) {
                     double[] originalPosition = MouseUtil.getMousePosition();
                     this.originalX.set(originalPosition[0]);
                     this.originalY.set(originalPosition[1]);
-                    System.out.println("-------2");
-                    this.positionUpdated.set(false);
+                    event.consume();
+                } else if (event.getClickCount() == 2) {// 最大化
+                    Stage stage = this.stage();
+                    if (stage != null) {
+                        this.maximum(!stage.isMaximized());
+                    }
+                    event.consume();
                 }
-                event.consume();
             }
         });
-//        this.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
-//            // 清除任务
-//            TaskManager.cancelInterval("mouse:position:track");
-//            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-//                // 更新位置
-//                this.doUpdateLocation();
-//                // 更新位置信息
-//                double[] originalPosition = MouseUtil.getMousePosition();
-//                this.originalX.set(originalPosition[0]);
-//                this.originalY.set(originalPosition[1]);
-//            }
-//            event.consume();
-//        });
+        this.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                this.doUpdateLocation();
+            }
+        });
     }
 
     private Stage stage() {
@@ -131,17 +87,17 @@ public class TitleBar extends FlexHBox {
     }
 
     public void maximum(boolean maximum) {
-        this.maximum = maximum;
         Stage stage = this.stage();
         if (stage != null) {
             stage.setMaximized(maximum);
+            // 最大化设置高度不超过显示边界
+            if (maximum) {
+                Rectangle2D rectangle2D = Screen.getPrimary().getVisualBounds();
+                stage.setHeight(rectangle2D.getHeight());
+            }
         } else {
             JulLog.warn("window is null!");
         }
-//        // 更新位置信息
-//        double[] originalPosition = MouseUtil.getMousePosition();
-//        this.originalX.set(originalPosition[0]);
-//        this.originalY.set(originalPosition[1]);
     }
 
     public void minimum(boolean minimum) {
@@ -151,10 +107,6 @@ public class TitleBar extends FlexHBox {
         } else {
             JulLog.warn("window is null!");
         }
-//        // 更新位置信息
-//        double[] originalPosition = MouseUtil.getMousePosition();
-//        this.originalX.set(originalPosition[0]);
-//        this.originalY.set(originalPosition[1]);
     }
 
     private void doUpdateLocation() {

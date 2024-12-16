@@ -57,7 +57,7 @@ public class TitlebarTest extends Application {
 //        });
         Scene scene = new Scene(vbox);
         primaryStage.setScene(scene);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.show();
     }
 
@@ -65,7 +65,7 @@ public class TitlebarTest extends Application {
         Application.launch(TitlebarTest.class, args);
     }
 
-    public static class TitlebarMain {
+    public static class TitleBarMain {
         public static void main(String[] args) {
             TitlebarTest.main(args);
         }

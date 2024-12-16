@@ -1,6 +1,5 @@
 package cn.oyzh.fx.gui.titlebar;
 
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.scene.Cursor;
@@ -12,17 +11,18 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TitleBox extends FlexVBox {
 
+    public static byte Threshold = 5;
+
     {
         this.init();
     }
-
-    public static byte Threshold = 5;
 
     public void setTitleBar(TitleBar titleBar) {
         this.setChild(0, titleBar);
@@ -30,6 +30,70 @@ public class TitleBox extends FlexVBox {
 
     public void setContent(Node content) {
         this.setChild(1, content);
+    }
+
+    private boolean xChange;
+
+    private boolean yChange;
+
+    private boolean widthResize;
+
+    private boolean heightResize;
+
+    // 原始x
+    private AtomicReference<Double> originalX;
+
+    // 原始y
+    private AtomicReference<Double> originalY;
+
+    // 原始宽
+    private AtomicReference<Double> originalW = new AtomicReference<>();
+
+    // 原始高
+    private AtomicReference<Double> originalH = new AtomicReference<>();
+
+    protected void setOriginalX(double x) {
+        if (this.originalX == null) {
+            this.originalX = new AtomicReference<>();
+        }
+        this.originalX.set(x);
+    }
+
+    protected Double getOriginalX() {
+        return this.originalX == null ? null : this.originalX.get();
+    }
+
+    protected void setOriginalY(double y) {
+        if (this.originalY == null) {
+            this.originalY = new AtomicReference<>();
+        }
+        this.originalY.set(y);
+    }
+
+    protected Double getOriginalY() {
+        return this.originalY == null ? null : this.originalY.get();
+    }
+
+    protected void setOriginalW(double w) {
+        if (this.originalW == null) {
+            this.originalW = new AtomicReference<>();
+        }
+        this.originalW.set(w);
+    }
+
+    protected Double getOriginalW() {
+        return this.originalW == null ? null : this.originalW.get();
+    }
+
+    protected void setOriginalH(double h) {
+        if (this.originalH == null) {
+            this.originalH = new AtomicReference<>();
+        }
+        this.originalH.set(h);
+    }
+
+    protected Double getOriginalH() {
+        return this.originalH == null ? null : this.originalH.get();
     }
 
     protected void init() {
@@ -45,135 +109,186 @@ public class TitleBox extends FlexVBox {
         this.setBorder(border);
     }
 
-//    private boolean xChange;
-//    private boolean yChange;
-    private boolean widthResize;
-    private boolean heightResize;
-
-    private final AtomicReference<Double> originalX = new AtomicReference<>();
-
-    private final AtomicReference<Double> originalY = new AtomicReference<>();
-
-    private final AtomicReference<Double> originalW = new AtomicReference<>();
-
-    private final AtomicReference<Double> originalH = new AtomicReference<>();
-
     protected void initEvents() {
+        // 鼠标移动事件
         this.addEventFilter(MouseEvent.MOUSE_MOVED, event -> {
-            double x = event.getX();
-            double y = event.getY();
-            double w = this.realWidth();
-            double h = this.realHeight();
-//            // 左上
-//            if (x <= Threshold && y <= Threshold) {
-//                this.setCursor(Cursor.NW_RESIZE);
-//                this.widthResize = this.heightResize = this.xChange = this.yChange = true;
-//                return;
-//            }
-//            // 左下
-//            if (x <= Threshold && Math.abs(h - y) <= Threshold) {
-//                this.setCursor(Cursor.SW_RESIZE);
-//                this.widthResize = this.heightResize = true;
-//                this.xChange = this.yChange = false;
-//                return;
-//            }
-//            // 右上
-//            if (Math.abs(w - x) <= Threshold && y <= Threshold) {
-//                this.setCursor(Cursor.SW_RESIZE);
-//                this.widthResize = this.heightResize = this.xChange = this.yChange = true;
-//                return;
-//            }
-            // 右下
-            if (Math.abs(w - x) <= Threshold && Math.abs(h - y) <= Threshold) {
-                this.setCursor(Cursor.NW_RESIZE);
-                this.widthResize = this.heightResize = true;
-//                this.xChange = this.yChange = false;
-                return;
+            // 检查状态
+            if (!this.checkInvalid()) {
+                this.doUpdateCursor(event.getX(),event.getY());
             }
-            // 右边
-            if (Math.abs(w - x) <= Threshold) {
-                this.setCursor(Cursor.W_RESIZE);
-                this.widthResize = true;
-                this.heightResize = false;
-//                this.heightResize = this.xChange = this.yChange = false;
-                return;
-            }
-//            // 左边
-//            if (x <= Threshold) {
-//                this.setCursor(Cursor.W_RESIZE);
-//                this.widthResize = this.xChange = true;
-//                this.heightResize = this.yChange = false;
-//                return;
-//            }
-//            // 上边
-//            if (y <= Threshold) {
-//                this.setCursor(Cursor.S_RESIZE);
-//                this.heightResize = this.yChange = true;
-//                this.widthResize = this.xChange = false;
-//                return;
-//            }
-            // 下边
-            if ((h - y) <= Threshold) {
-                this.setCursor(Cursor.S_RESIZE);
-                this.heightResize = true;
-                this.widthResize = false;
-//                this.widthResize = this.xChange = this.yChange = false;
-                return;
-            }
-            // 正常
-//            this.widthResize = this.heightResize = this.xChange = this.yChange = false;
-            this.widthResize = this.heightResize = false;
-            this.setCursor(Cursor.DEFAULT);
         });
+        // 鼠标按下事件
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
+                // 检查状态
+                if (!this.checkInvalid()) {
+                    this.doRecordLocationAndSize();
+                }
+            }
+        });
+        // 鼠标拖动事件
+        this.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
             // 位置追踪
             if (event.getButton() == MouseButton.PRIMARY) {
-                TaskManager.cancelInterval("mouse:resize:track");
-                Window window = this.window();
-                // 记录原始位置
-                double[] originalPosition = MouseUtil.getMousePosition();
-                this.originalX.set(originalPosition[0]);
-                this.originalY.set(originalPosition[1]);
-                // 记录原始大小
-                this.originalW.set(window.getWidth());
-                this.originalH.set(window.getHeight());
-                // 追踪位置
-                TaskManager.startInterval("mouse:resize:track", () -> {
-                    // 更新宽度
-                    double[] position = MouseUtil.getMousePosition();
-                    if (this.widthResize) {
-                        double mouseX = position[0];
-                        double x1 = mouseX - originalX.get();
-                        if (x1 != 0) {
-                            window.setWidth(originalW.get() + x1);
-                        }
-                    }
-                    // 更新高度
-                    if (this.heightResize) {
-                        double mouseY = position[1];
-                        double y1 = mouseY - originalY.get();
-                        if (y1 != 0) {
-                            window.setHeight(originalH.get() + y1);
-                        }
-                    }
-//
-//                    // 更新x坐标
-//                    if (this.xChange) {
-//                        double mouseX = position[0];
-//                        double x1 = mouseX - originalX.get();
-//                        if (x1 != 0) {
-//                            window.setX(originalX.get() + x1);
-//                        }
-//                    }
-                }, 1);
+                // 检查状态
+                if (!this.checkInvalid()) {
+                    this.doUpdateLocationAndSize();
+
+                }
             }
         });
+        // 鼠标释放事件
         this.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            TaskManager.cancelInterval("mouse:resize:track");
+            if (event.getButton() == MouseButton.PRIMARY) {
+                // 检查状态
+                if (!this.checkInvalid()) {
+                    this.doClearLocationAndSize();
+                }
+            }
         });
-//        this.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
-//            TaskManager.cancelInterval("mouse:resize:track");
-//        });
+    }
+
+    protected void doUpdateCursor(double x, double y) {
+        double w = this.realWidth();
+        double h = this.realHeight();
+        // // 左上
+        // if (x <= Threshold && y <= Threshold) {
+        //     this.setCursor(Cursor.NW_RESIZE);
+        //     this.widthResize = this.heightResize = this.xChange = this.yChange = true;
+        //     return;
+        // }
+        // // 左下
+        // if (x <= Threshold && Math.abs(h - y) <= Threshold) {
+        //     this.setCursor(Cursor.SW_RESIZE);
+        //     this.widthResize = this.heightResize = this.xChange = this.yChange = true;
+        //     return;
+        // // }
+        // // 右上
+        // if (Math.abs(w - x) <= Threshold && y <= Threshold) {
+        //     this.setCursor(Cursor.SW_RESIZE);
+        //     this.widthResize = this.heightResize = this.xChange = this.yChange = true;
+        //     return;
+        // }
+        // 右下
+        if (Math.abs(w - x) <= Threshold && Math.abs(h - y) <= Threshold) {
+            this.setCursor(Cursor.NW_RESIZE);
+            this.widthResize = this.heightResize = true;
+            this.xChange = this.yChange = false;
+            return;
+        }
+        // 右边
+        if (Math.abs(w - x) <= Threshold) {
+            this.setCursor(Cursor.W_RESIZE);
+            this.widthResize = true;
+            this.heightResize = this.xChange = this.yChange = false;
+            return;
+        }
+        // 左边
+        if (x <= Threshold) {
+            this.setCursor(Cursor.W_RESIZE);
+            this.widthResize = this.xChange = true;
+            this.heightResize = this.yChange = false;
+            return;
+        }
+        // 上边
+        if (y <= Threshold) {
+            this.setCursor(Cursor.S_RESIZE);
+            this.heightResize = this.yChange = true;
+            this.widthResize = this.xChange = false;
+            return;
+        }
+        // 下边
+        if ((h - y) <= Threshold) {
+            this.setCursor(Cursor.S_RESIZE);
+            this.heightResize = true;
+            this.widthResize = this.xChange = this.yChange = false;
+            return;
+        }
+        // 正常
+        this.widthResize = this.heightResize = this.xChange = this.yChange = false;
+        this.setCursor(Cursor.DEFAULT);
+    }
+
+    protected void doRecordLocationAndSize() {
+        // 记录原始位置
+        double[] originalPosition = MouseUtil.getMousePosition();
+        this.setOriginalX(originalPosition[0]);
+        this.setOriginalY(originalPosition[1]);
+        // 记录原始大小
+        Window window = this.window();
+        this.setOriginalW(window.getWidth());
+        this.setOriginalH(window.getHeight());
+    }
+
+    protected void doClearLocationAndSize() {
+        if (this.originalH != null) {
+            this.originalH.set(null);
+        }
+        if (this.originalW != null) {
+            this.originalW.set(null);
+        }
+        if (this.originalX != null) {
+            this.originalX.set(null);
+        }
+        if (this.originalY != null) {
+            this.originalY.set(null);
+        }
+    }
+
+    protected void doUpdateLocationAndSize() {
+        Window window = this.window();
+        // 窗口位置
+        Double originalX = this.getOriginalX();
+        Double originalY = this.getOriginalY();
+        Double originalW = this.getOriginalW();
+        Double originalH = this.getOriginalH();
+        double[] position = MouseUtil.getMousePosition();
+        // 鼠标位置
+        double mouseX = position[0];
+        double mouseY = position[0];
+        // 更新宽度
+        if (this.widthResize && originalX != null && originalW != null) {
+            double x1 = mouseX - originalX;
+            if (x1 != 0) {
+                if (this.xChange) {
+                    window.setWidth(originalW - x1);
+                } else {
+                    window.setWidth(originalW + x1);
+                }
+            }
+        }
+        // 更新高度
+        if (this.heightResize && originalY != null && originalH != null) {
+            double y1 = mouseY - originalY;
+            if (y1 != 0) {
+                if (this.yChange) {
+                    window.setHeight(originalH - y1);
+                } else {
+                    window.setHeight(originalH + y1);
+                }
+            }
+        }
+        // 更新x坐标
+        if (this.xChange && originalX != null) {
+            double x1 = mouseX - originalX;
+            if (x1 != 0) {
+                window.setX(originalX + x1);
+            }
+        }
+        // 更新y坐标
+        if (this.yChange && originalY != null) {
+            double y1 = mouseY - originalY;
+            if (y1 != 0) {
+                window.setY(originalY + y1);
+            }
+        }
+    }
+
+
+    private boolean checkInvalid() {
+        Stage stage = this.stage();
+        // 最大化、最小化、全屏情况下不执行操作
+        return stage == null || stage.isMaximized() || stage.isIconified() || stage.isFullScreen();
     }
 
 }

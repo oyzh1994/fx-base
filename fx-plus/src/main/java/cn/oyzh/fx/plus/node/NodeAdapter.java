@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.util.List;
@@ -390,6 +391,16 @@ public interface NodeAdapter extends EventTarget {
             return !node.isDisable() && !node.isDisabled();
         }
         return false;
+    }
+
+    /**
+     * 获取节点的舞台
+     *
+     * @return 舞台对象
+     */
+    default Stage stage() {
+        Window window = this.window();
+        return window instanceof Stage ? (Stage) window : null;
     }
 
     /**
