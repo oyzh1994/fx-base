@@ -1,0 +1,48 @@
+package cn.oyzh.fx.gui.svg.pane;
+
+import cn.oyzh.fx.gui.svg.glyph.SortAscSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SortDescSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarMaximumSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarRestoreSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.mouse.MouseAdapter;
+import javafx.scene.layout.HBox;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * @author oyzh
+ * @since 2024-12-09
+ */
+public class TitleBarMaximumSVGPane extends HBox implements MouseAdapter {
+
+    @Getter
+    @Setter
+    private String size;
+
+    public TitleBarMaximumSVGPane(String size) {
+        this.size = size;
+        this.maximize();
+    }
+
+    public void restore() {
+        this.getChildren().setAll(new TitleBarRestoreSVGGlyph(this.size));
+    }
+
+    public void maximize() {
+        this.getChildren().setAll(new TitleBarMaximumSVGGlyph(this.size));
+    }
+
+    public boolean isMaximize() {
+        SVGGlyph svgGlyph = (SVGGlyph) this.getChildren().getFirst();
+        return svgGlyph.getUrl().contains("restore.svg");
+    }
+
+    public void setMaximize(boolean maximize) {
+        if (maximize) {
+            this.maximize();
+        } else {
+            this.restore();
+        }
+    }
+}

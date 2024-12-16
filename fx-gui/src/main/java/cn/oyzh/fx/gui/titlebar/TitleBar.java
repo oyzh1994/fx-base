@@ -3,8 +3,8 @@ package cn.oyzh.fx.gui.titlebar;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.OSUtil;
 import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarCloseSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarMaximumSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarMinimumSVGGlyph;
+import cn.oyzh.fx.gui.svg.pane.TitleBarMaximumSVGPane;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
 import cn.oyzh.fx.plus.controls.text.FXText;
@@ -102,10 +102,13 @@ public class TitleBar extends FlexPane {
             // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
         if (config.isShowMaximum()) {
-            TitleBarMaximumSVGGlyph glyph = new TitleBarMaximumSVGGlyph("20");
-            glyph.setId("maximize");
-            glyph.setOnMousePrimaryClicked(e -> this.maximize());
-            nodes.add(glyph);
+            TitleBarMaximumSVGPane pane = new TitleBarMaximumSVGPane("20");
+            pane.setId("maximize");
+            pane.setOnMousePrimaryClicked(e -> {
+                this.maximize();
+                pane.setMaximize(!this.stage().isMaximized());
+            });
+            nodes.add(pane);
             // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
         if (config.isShowClose()) {
