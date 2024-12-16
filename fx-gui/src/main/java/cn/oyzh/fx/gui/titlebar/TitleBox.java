@@ -47,10 +47,10 @@ public class TitleBox extends FlexVBox {
     private AtomicReference<Double> originalY;
 
     // 原始宽
-    private AtomicReference<Double> originalW = new AtomicReference<>();
+    private AtomicReference<Double> originalW;
 
     // 原始高
-    private AtomicReference<Double> originalH = new AtomicReference<>();
+    private AtomicReference<Double> originalH;
 
     protected void setOriginalX(double x) {
         if (this.originalX == null) {
@@ -113,16 +113,18 @@ public class TitleBox extends FlexVBox {
         // 鼠标移动事件
         this.addEventFilter(MouseEvent.MOUSE_MOVED, event -> {
             // 检查状态
-            if (!this.checkInvalid()) {
-                this.doUpdateCursor(event.getX(),event.getY());
+            if (this.checkNotInvalid()) {
+                this.doUpdateCursor(event.getX(), event.getY());
+                // event.consume();
             }
         });
         // 鼠标按下事件
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                 // 检查状态
-                if (!this.checkInvalid()) {
+                if (this.checkNotInvalid()) {
                     this.doRecordLocationAndSize();
+                    event.consume();
                 }
             }
         });
@@ -131,9 +133,9 @@ public class TitleBox extends FlexVBox {
             // 位置追踪
             if (event.getButton() == MouseButton.PRIMARY) {
                 // 检查状态
-                if (!this.checkInvalid()) {
+                if (this.checkNotInvalid()) {
                     this.doUpdateLocationAndSize();
-
+                    event.consume();
                 }
             }
         });
@@ -141,8 +143,9 @@ public class TitleBox extends FlexVBox {
         this.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 // 检查状态
-                if (!this.checkInvalid()) {
+                if (this.checkNotInvalid()) {
                     this.doClearLocationAndSize();
+                    event.consume();
                 }
             }
         });
@@ -210,10 +213,10 @@ public class TitleBox extends FlexVBox {
     }
 
     protected void doRecordLocationAndSize() {
+        double[] position = MouseUtil.getMousePosition();
         // 记录原始位置
-        double[] originalPosition = MouseUtil.getMousePosition();
-        this.setOriginalX(originalPosition[0]);
-        this.setOriginalY(originalPosition[1]);
+        this.setOriginalX(position[0]);
+        this.setOriginalY(position[1]);
         // 记录原始大小
         Window window = this.window();
         this.setOriginalW(window.getWidth());
@@ -243,11 +246,11 @@ public class TitleBox extends FlexVBox {
         Double originalW = this.getOriginalW();
         Double originalH = this.getOriginalH();
         double[] position = MouseUtil.getMousePosition();
-        // 鼠标位置
+        // // 鼠标位置
         double mouseX = position[0];
-        double mouseY = position[0];
+        double mouseY = position[1];
         // 更新宽度
-        if (this.widthResize && originalX != null && originalW != null) {
+            if (this.widthResize && originalX != null && originalW != null) {
             double x1 = mouseX - originalX;
             if (x1 != 0) {
                 if (this.xChange) {
@@ -258,7 +261,7 @@ public class TitleBox extends FlexVBox {
             }
         }
         // 更新高度
-        if (this.heightResize && originalY != null && originalH != null) {
+            if (this.heightResize && originalY != null && originalH != null) {
             double y1 = mouseY - originalY;
             if (y1 != 0) {
                 if (this.yChange) {
@@ -269,14 +272,14 @@ public class TitleBox extends FlexVBox {
             }
         }
         // 更新x坐标
-        if (this.xChange && originalX != null) {
+            if (this.xChange && originalX != null) {
             double x1 = mouseX - originalX;
             if (x1 != 0) {
                 window.setX(originalX + x1);
             }
         }
         // 更新y坐标
-        if (this.yChange && originalY != null) {
+            if (this.yChange && originalY != null) {
             double y1 = mouseY - originalY;
             if (y1 != 0) {
                 window.setY(originalY + y1);
@@ -284,11 +287,9 @@ public class TitleBox extends FlexVBox {
         }
     }
 
-
-    private boolean checkInvalid() {
+    protected boolean checkNotInvalid() {
         Stage stage = this.stage();
         // 最大化、最小化、全屏情况下不执行操作
-        return stage == null || stage.isMaximized() || stage.isIconified() || stage.isFullScreen();
+        return stage != null && !stage.isMaximized() && !stage.isIconified() && !stage.isFullScreen();
     }
-
 }
