@@ -271,7 +271,6 @@ public interface StageAdapter extends WindowAdapter {
         }
         TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
         config.setMaximized(attribute.maximized());
-        config.setResizable(attribute.resizable());
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
             config.setIcon(attribute.iconUrl());
         }
@@ -279,18 +278,27 @@ public interface StageAdapter extends WindowAdapter {
         TitleBar titleBar = new TitleBar(config);
         titleBox.setTitleBar(titleBar);
         titleBox.setContent(root);
-        // 设置scene
-        FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
+        // 绑定大小
+        titleBox.prefWidthProperty().bind(this.stage().widthProperty());
+        titleBox.prefHeightProperty().bind(this.stage().widthProperty());
+        // 不可拉伸
+        if (!attribute.resizable()) {
+            config.setShowMaximum(false);
+            config.setShowMinimum(false);
+        }
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
             if (owner != null) {
                 this.stage().initOwner(owner);
+                // 不显示最小化
                 config.setShowMinimum(false);
             }
             // 初始化模态
             this.stage().initModality(attribute.modality());
         }
+        // 设置scene
+        FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));

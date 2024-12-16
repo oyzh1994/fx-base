@@ -355,9 +355,6 @@ public class TitleBar extends FlexPane {
         // 当前是否最大化
         private boolean maximized;
 
-        private boolean resizable;
-
-
         private List<Node> actions;
 
         private boolean showClose = true;

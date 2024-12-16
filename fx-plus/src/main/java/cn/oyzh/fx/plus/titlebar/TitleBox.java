@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.titlebar;
 
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.MouseUtil;
@@ -17,7 +18,7 @@ import javafx.stage.Window;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TitleBox extends FlexVBox {
+public class TitleBox extends FXVBox {
 
     public static byte Threshold = 5;
 
@@ -103,8 +104,6 @@ public class TitleBox extends FlexVBox {
     }
 
     protected void init() {
-        this.setFlexWidth("100%");
-        this.setFlexHeight("100%");
         this.initBorder();
         this.initEvents();
     }
