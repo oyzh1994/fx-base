@@ -1,9 +1,5 @@
-package cn.oyzh.fx.gui.svg.pane;
+package cn.oyzh.fx.plus.titlebar;
 
-import cn.oyzh.fx.gui.svg.glyph.SortAscSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.SortDescSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarMaximumSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarRestoreSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import javafx.scene.layout.HBox;

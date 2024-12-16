@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.test;
 
-import cn.oyzh.fx.gui.titlebar.TitleBar;
-import cn.oyzh.fx.gui.titlebar.TitleBox;
+import cn.oyzh.fx.plus.titlebar.TitleBar;
+import cn.oyzh.fx.plus.titlebar.TitleBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import javafx.application.Application;
 import javafx.scene.Scene;

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.gui.svg.glyph.titlebar;
+package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 

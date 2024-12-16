@@ -1,10 +1,7 @@
-package cn.oyzh.fx.gui.titlebar;
+package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.OSUtil;
-import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarCloseSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarMinimumSVGGlyph;
-import cn.oyzh.fx.gui.svg.pane.TitleBarMaximumSVGPane;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
 import cn.oyzh.fx.plus.controls.text.FXText;

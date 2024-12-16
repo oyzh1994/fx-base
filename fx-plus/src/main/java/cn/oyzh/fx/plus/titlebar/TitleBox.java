@@ -1,4 +1,4 @@
-package cn.oyzh.fx.gui.titlebar;
+package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.util.MouseUtil;
