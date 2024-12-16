@@ -3,12 +3,15 @@ package cn.oyzh.fx.plus.window;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.titlebar.TitleBar;
+import cn.oyzh.fx.plus.titlebar.TitleBox;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
@@ -19,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import lombok.NonNull;
 
@@ -231,13 +235,18 @@ public interface StageAdapter extends WindowAdapter {
         this.stage().setMaximized(maximized);
     }
 
+    default void init(@NonNull StageAttribute attribute, Window owner) {
+        this.initByCustom(attribute, owner);
+        // this.initByPlatform(attribute, owner);
+    }
+
     /**
-     * 初始化舞台
+     * 初始化舞台，自定义
      *
      * @param attribute 舞台属性
      * @param owner     父窗口
      */
-    default void init(@NonNull StageAttribute attribute, Window owner) {
+    private void initByCustom(StageAttribute attribute, Window owner) {
         // 初始化加载器
         FXMLLoaderExt loader = new FXMLLoaderExt();
         // 加载根节点
@@ -248,8 +257,77 @@ public interface StageAdapter extends WindowAdapter {
         // 设置controller
         this.setProp("_controller", loader.getController());
         // 设置窗口样式
-        if (this.hasBeenVisible()) {
-            this.stage().initStyle(attribute.stageStyle());
+        if (!this.hasBeenVisible()) {
+            this.stage().initStyle(StageStyle.UNDECORATED);
+        }
+        TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
+        config.setTitle(attribute.title());
+        config.setMaximized(attribute.maximized());
+        config.setResizable(attribute.resizable());
+        if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+            config.setIcon(attribute.iconUrl());
+        }
+        TitleBox titleBox = new TitleBox();
+        TitleBar titleBar = new TitleBar(config);
+        titleBox.setTitleBar(titleBar);
+        titleBox.setContent(root);
+        // this.stage().setTitle(attribute.title());
+        // this.stage().setMaximized(attribute.maximized());
+        // this.stage().setResizable(attribute.resizeable());
+        // // 设置icon
+        // if (ArrayUtil.isNotEmpty(attribute.iconUrls())) {
+        //     this.stage().getIcons().addAll(IconUtil.getIcons(attribute.iconUrls()));
+        // }
+        // 设置scene
+        FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
+        // 非主窗口
+        if (!attribute.usePrimary() && !this.hasBeenVisible()) {
+            // 初始化父窗口
+            if (owner != null) {
+                this.stage().initOwner(owner);
+                config.setShowMinimum(false);
+            }
+            // 初始化模态
+            this.stage().initModality(attribute.modality());
+        }
+        // 加载自定义css文件
+        if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
+            root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
+        }
+        // 设置事件
+        if (this.controller() instanceof StageListener listener) {
+            this.initListener(listener);
+        }
+        // 监听显示属性
+        this.stage().showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                this.onWindowClosed();
+            }
+        });
+        NodeManager.init(this);
+        // 监听最大化，处理内置内容大小
+        this.stage().maximizedProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay("_stage_resize", () -> this.root().resize(NodeUtil.getWidth(this.stage()) - 15, NodeUtil.getHeight(this.stage()) - 40), 1));
+    }
+
+    /**
+     * 初始化舞台，平台
+     *
+     * @param attribute 舞台属性
+     * @param owner     父窗口
+     */
+    private void initByPlatform(StageAttribute attribute, Window owner) {
+        // 初始化加载器
+        FXMLLoaderExt loader = new FXMLLoaderExt();
+        // 加载根节点
+        Parent root = loader.load(attribute.value());
+        if (root == null) {
+            throw new RuntimeException("load root fail");
+        }
+        // 设置controller
+        this.setProp("_controller", loader.getController());
+        // 设置窗口样式
+        if (!this.hasBeenVisible()) {
+            this.stage().initStyle(StageStyle.DECORATED);
         }
         // 初始化stage
         this.stage().setTitle(attribute.title());
@@ -465,4 +543,6 @@ public interface StageAdapter extends WindowAdapter {
     default boolean isIconified() {
         return this.stage().isIconified();
     }
+
+
 }

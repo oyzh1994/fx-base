@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
 import javafx.stage.Modality;
-import javafx.stage.StageStyle;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -48,7 +47,15 @@ public @interface StageAttribute {
      *
      * @return 图标地址
      */
+    @Deprecated
     String[] iconUrls() default {};
+
+    /**
+     * 图标地址
+     *
+     * @return 图标地址
+     */
+    String iconUrl() default "";
 
     /**
      * 窗口模态
@@ -69,14 +76,22 @@ public @interface StageAttribute {
      *
      * @return 是否可拉伸
      */
+    @Deprecated
     boolean resizeable() default true;
+
+    /**
+     * 是否可拉伸
+     *
+     * @return 是否可拉伸
+     */
+    boolean resizable() default true;
 
     /**
      * 装饰样式
      *
      * @return 装饰样式
      */
-    StageStyle stageStyle() default StageStyle.DECORATED;
+    FXStageStyle stageStyle() default FXStageStyle.CUSTOM;
 
     /**
      * 是否使用主要的stage

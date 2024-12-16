@@ -339,15 +339,19 @@ public class TitleBar extends FlexPane {
 
         private String title;
 
-        private Node content;
+        // 当前是否最大化
+        private boolean maximized;
 
-        private boolean showClose;
+        private boolean resizable;
+
 
         private List<Node> actions;
 
-        private boolean showMaximum;
+        private boolean showClose = true;
 
-        private boolean showMinimum;
+        private boolean showMaximum = true;
+
+        private boolean showMinimum = true;
 
         public TitleBarConfig() {
 

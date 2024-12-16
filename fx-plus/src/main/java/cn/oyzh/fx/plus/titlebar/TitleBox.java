@@ -24,6 +24,11 @@ public class TitleBox extends FlexVBox {
         this.init();
     }
 
+    public void initChild(TitleBar titleBar,Node content) {
+        this.setChild(0, titleBar);
+        this.setChild(1, content);
+    }
+
     public void setTitleBar(TitleBar titleBar) {
         this.setChild(0, titleBar);
     }
