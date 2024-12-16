@@ -78,11 +78,11 @@ public class NodeUtil {
             return Math.max(w1, w2);
         }
 
-        if (target instanceof Parent parent) {
-            double w1 = parent.prefWidth(-1);
-            double w2 = parent.minWidth(-1);
-            return Math.max(w1, w2);
-        }
+        // if (target instanceof Parent parent) {
+        //     double w1 = parent.prefWidth(-1);
+        //     double w2 = parent.minWidth(-1);
+        //     return Math.max(w1, w2);
+        // }
 
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             double w1 = columnBase.getWidth();
@@ -90,9 +90,11 @@ public class NodeUtil {
             return Math.max(w1, w2);
         }
 
-        if (target instanceof Shape shape) {
-            return shape.getStrokeWidth();
-        }
+        // if (target instanceof Shape shape) {
+        //     double w1 = shape.prefWidth(-1);
+        //     double w2 = shape.minWidth(-1);
+        //     return Math.max(w1, w2);
+        // }
 
         if (target instanceof Scene scene) {
             return scene.getWidth();
@@ -114,6 +116,12 @@ public class NodeUtil {
             return window.getWidth();
         }
 
+        if (target instanceof Node node) {
+            double w1 = node.prefWidth(-1);
+            double w2 = node.minWidth(-1);
+            return Math.max(w1, w2);
+        }
+
         return Double.NaN;
     }
 
@@ -132,11 +140,11 @@ public class NodeUtil {
             return Math.max(Math.max(w1, w2), Math.max(w3, w4));
         }
 
-        if (target instanceof Parent parent) {
-            double w1 = parent.prefHeight(-1);
-            double w2 = parent.minHeight(-1);
-            return Math.max(w1, w2);
-        }
+        // if (target instanceof Parent parent) {
+        //     double w1 = parent.prefHeight(-1);
+        //     double w2 = parent.minHeight(-1);
+        //     return Math.max(w1, w2);
+        // }
 
         if (target instanceof Scene scene) {
             return scene.getHeight();
@@ -156,6 +164,12 @@ public class NodeUtil {
 
         if (target instanceof Window window) {
             return window.getHeight();
+        }
+
+        if (target instanceof Node node) {
+            double w1 = node.prefHeight(-1);
+            double w2 = node.minHeight(-1);
+            return Math.max(w1, w2);
         }
 
         return Double.NaN;

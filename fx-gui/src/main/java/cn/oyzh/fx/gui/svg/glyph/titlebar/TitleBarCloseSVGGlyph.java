@@ -1,0 +1,19 @@
+package cn.oyzh.fx.gui.svg.glyph.titlebar;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/08/06
+ */
+public class TitleBarCloseSVGGlyph extends SVGGlyph {
+
+    public TitleBarCloseSVGGlyph() {
+        this.setUrl("/fx-svg/titlebar/close.svg");
+    }
+
+    public TitleBarCloseSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+}

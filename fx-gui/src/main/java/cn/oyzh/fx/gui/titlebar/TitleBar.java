@@ -1,9 +1,17 @@
 package cn.oyzh.fx.gui.titlebar;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarCloseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarMaximumSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.titlebar.TitleBarMinimumSVGGlyph;
+import cn.oyzh.fx.plus.controls.image.FXImageView;
+import cn.oyzh.fx.plus.controls.pane.FlexPane;
+import cn.oyzh.fx.plus.controls.text.FXText;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
+import cn.oyzh.fx.plus.util.NodeUtil;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -11,12 +19,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TitleBar extends FlexHBox {
+public class TitleBar extends FlexPane {
 
     {
         this.realHeight(30);
@@ -61,25 +71,119 @@ public class TitleBar extends FlexHBox {
     }
 
     protected void init(TitleBarConfig config) {
+        this.setPadding(new Insets(0));
         this.initNodes(config);
         this.initEvents();
     }
 
     protected void initNodes(TitleBarConfig config) {
-        List<Node> actions = config.getActions();
-        if (actions == null) {
-            actions = new ArrayList<>();
+        List<Node> nodes = config.getActions();
+        if (nodes == null) {
+            nodes = new ArrayList<>();
+        }
+        if (config.getIcon() != null) {
+            FXImageView imageView = new FXImageView(config.getIcon(), 20);
+            imageView.setId("icon");
+            nodes.add(imageView);
+            // HBox.setMargin(imageView, new Insets(5, 5, 5, 5));
+        }
+        if (config.getTitle() != null) {
+            FXText text = new FXText(config.getTitle());
+            text.setFontSize(12);
+            text.setId("title");
+            nodes.add(text);
+            // HBox.setMargin(text, new Insets(6, 5, 0, 5));
         }
         if (config.isShowMinimum()) {
-            actions.add(new SVGGlyph("/fx-svg/titlebar/minimum.svg"));
+            TitleBarMinimumSVGGlyph glyph = new TitleBarMinimumSVGGlyph("20");
+            glyph.setOnMousePrimaryClicked(e -> this.minimize());
+            glyph.setId("minimize");
+            nodes.add(glyph);
+            // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
         if (config.isShowMaximum()) {
-            actions.add(new SVGGlyph("/fx-svg/titlebar/maximum.svg"));
+            TitleBarMaximumSVGGlyph glyph = new TitleBarMaximumSVGGlyph("20");
+            glyph.setId("maximize");
+            glyph.setOnMousePrimaryClicked(e -> this.maximize());
+            nodes.add(glyph);
+            // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
         if (config.isShowClose()) {
-            actions.add(new SVGGlyph("/fx-svg/titlebar/close.svg"));
+            TitleBarCloseSVGGlyph glyph = new TitleBarCloseSVGGlyph("20");
+            glyph.setId("close");
+            glyph.setOnMousePrimaryClicked(e -> this.close());
+            nodes.add(glyph);
+            // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
-        this.addChild(actions);
+        this.addChild(nodes);
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        super.resize(width, height);
+        this.updateNodeLocation();
+    }
+
+    protected void updateNodeLocation() {
+        double width = this.realWidth();
+        double height = this.realHeight();
+        double layoutX = 10;
+        double actionW = 0;
+        Node close = null;
+        Node maximize = null;
+        Node minimize = null;
+        for (Node child : this.getChildren()) {
+            if ("icon".equals(child.getId())) {
+                double nWidth = NodeUtil.getWidth(child);
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                child.setLayoutX(layoutX);
+                layoutX += nWidth + 5;
+                continue;
+            }
+            if ("title".equals(child.getId())) {
+                FXText text = (FXText) child;
+                double nWidth = FontUtil.stringWidth(text.getText());
+                child.setLayoutY(20);
+                child.setLayoutX(layoutX);
+                layoutX += nWidth + 5;
+                continue;
+            }
+            if ("minimize".equals(child.getId())) {
+                minimize = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+            if ("maximize".equals(child.getId())) {
+                maximize = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+            if ("close".equals(child.getId())) {
+                close = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+        }
+
+        if (close != null) {
+            double nWidth = NodeUtil.getWidth(close);
+            close.setLayoutX(width - nWidth - 10);
+            actionW = nWidth + 10;
+        }
+        if (maximize != null) {
+            double nWidth = NodeUtil.getWidth(maximize);
+            maximize.setLayoutX(width - actionW - nWidth - 10);
+            actionW = actionW + nWidth + 10;
+        }
+        if (minimize != null) {
+            double nWidth = NodeUtil.getWidth(minimize);
+            minimize.setLayoutX(width - actionW - nWidth - 10);
+            actionW = actionW + nWidth + 10;
+        }
     }
 
     protected void initEvents() {
@@ -94,11 +198,8 @@ public class TitleBar extends FlexHBox {
                     }
                 } else if (event.getClickCount() == 2) {
                     // 最大化
-                    Stage stage = this.stage();
-                    if (stage != null) {
-                        this.maximum(!stage.isMaximized());
-                        event.consume();
-                    }
+                    this.maximize();
+                    event.consume();
                 }
             }
         });
@@ -193,6 +294,13 @@ public class TitleBar extends FlexHBox {
         }
     }
 
+    public void maximize() {
+        Stage stage = this.stage();
+        if (stage != null) {
+            this.maximum(!stage.isMaximized());
+        }
+    }
+
     public void maximum(boolean maximum) {
         Stage stage = this.stage();
         if (stage != null) {
@@ -207,12 +315,54 @@ public class TitleBar extends FlexHBox {
         }
     }
 
+    public void minimize() {
+        Stage stage = this.stage();
+        if (stage != null) {
+            this.minimum(!stage.isIconified());
+        }
+    }
+
     public void minimum(boolean minimum) {
         Stage stage = this.stage();
         if (stage != null) {
             stage.setIconified(minimum);
         } else {
             JulLog.warn("window is null!");
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class TitleBarConfig {
+
+        private String icon;
+
+        private String title;
+
+        private Node content;
+
+        private boolean showClose;
+
+        private List<Node> actions;
+
+        private boolean showMaximum;
+
+        private boolean showMinimum;
+
+        public TitleBarConfig() {
+
+        }
+
+        public static TitleBarConfig ofPlatformCommon(String icon, String title) {
+            TitleBarConfig config = new TitleBarConfig();
+            if (OSUtil.isWindows()) {
+                config.icon = icon;
+            }
+            config.title = title;
+            config.showClose = true;
+            config.showMaximum = true;
+            config.showMinimum = true;
+            return config;
         }
     }
 }

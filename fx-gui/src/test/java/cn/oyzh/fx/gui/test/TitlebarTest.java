@@ -1,22 +1,11 @@
 package cn.oyzh.fx.gui.test;
 
 import cn.oyzh.fx.gui.titlebar.TitleBar;
-import cn.oyzh.fx.gui.titlebar.TitleBarConfig;
 import cn.oyzh.fx.gui.titlebar.TitleBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
-import cn.oyzh.fx.plus.controls.box.FXVBox;
-import cn.oyzh.fx.plus.ext.FXApplication;
-import cn.oyzh.fx.plus.mouse.MouseEventHandler;
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -28,7 +17,7 @@ public class TitlebarTest extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        TitleBarConfig config = TitleBarConfig.ofPlatformCommon("", "");
+        TitleBar.TitleBarConfig config = TitleBar.TitleBarConfig.ofPlatformCommon("/zoo_no_bg.png", "测试标题");
         TitleBar bar = new TitleBar(config);
         TitleBox vbox = new TitleBox();
         vbox.setTitleBar(bar);
