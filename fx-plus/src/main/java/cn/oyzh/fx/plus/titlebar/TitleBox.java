@@ -1,9 +1,10 @@
 package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.fx.plus.controls.box.FXVBox;
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.MouseUtil;
+import cn.oyzh.fx.plus.util.NodeUtil;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -22,7 +23,12 @@ public class TitleBox extends FXVBox {
 
     public static byte Threshold = 5;
 
-    {
+    public TitleBox() {
+        this.init();
+    }
+
+    public TitleBox(TitleBar titleBar, Node content) {
+        this.initChild(titleBar, content);
         this.init();
     }
 
@@ -35,8 +41,16 @@ public class TitleBox extends FXVBox {
         this.setChild(0, titleBar);
     }
 
+    public TitleBar getTitleBar() {
+        return (TitleBar) this.getChild(0);
+    }
+
     public void setContent(Node content) {
         this.setChild(1, content);
+    }
+
+    public Node getContent() {
+        return this.getChild(1);
     }
 
     private boolean xChange;
@@ -104,6 +118,21 @@ public class TitleBox extends FXVBox {
     }
 
     protected void init() {
+        // 监听宽
+        this.widthProperty().addListener((observable, oldValue, newValue) -> {
+            Node node = this.getContent();
+            if (node != null && newValue != null) {
+                NodeUtil.setWidth(node, newValue.doubleValue() - 2);
+            }
+        });
+        // 监听高
+        this.heightProperty().addListener((observable, oldValue, newValue) -> {
+            Node node = this.getContent();
+            if (node != null && newValue != null) {
+                NodeUtil.setHeight(node, newValue.doubleValue() - 32);
+            }
+        });
+        this.setPadding(new Insets(0));
         this.initBorder();
         this.initEvents();
     }
@@ -121,7 +150,6 @@ public class TitleBox extends FXVBox {
             // 检查状态
             if (this.checkNotInvalid()) {
                 this.doUpdateCursor(event.getX(), event.getY());
-                // event.consume();
             }
         });
         // 鼠标按下事件
@@ -130,7 +158,6 @@ public class TitleBox extends FXVBox {
                 // 检查状态
                 if (this.checkNotInvalid()) {
                     this.doRecordLocationAndSize();
-                    // event.consume();
                 }
             }
         });
@@ -141,7 +168,6 @@ public class TitleBox extends FXVBox {
                 // 检查状态
                 if (this.checkNotInvalid()) {
                     this.doUpdateLocationAndSize();
-                    // event.consume();
                 }
             }
         });
@@ -151,7 +177,6 @@ public class TitleBox extends FXVBox {
                 // 检查状态
                 if (this.checkNotInvalid()) {
                     this.doClearLocationAndSize();
-                    // event.consume();
                 }
             }
         });
@@ -297,5 +322,37 @@ public class TitleBox extends FXVBox {
         Stage stage = this.stage();
         // 最大化、最小化、全屏情况下不执行操作
         return stage != null && !stage.isMaximized() && !stage.isIconified() && !stage.isFullScreen();
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        super.resize(width, height);
+        // 更新内容的宽高
+        Node node = this.getContent();
+        if (node != null) {
+            NodeUtil.setWidth(node, width - 2);
+            NodeUtil.setHeight(node, height - 32);
+            System.out.println(width);
+            System.out.println(height);
+            System.out.println(this.realWidth());
+            System.out.println(this.realHeight());
+            System.out.println("-------------3");
+        }
+    }
+
+    public void updateContent() {
+        Node node = this.getContent();
+        if (node != null) {
+            System.out.println(this.realWidth());
+            System.out.println(this.realHeight());
+            this.resize(this.stage().getWidth()+1, this.stage().getHeight()+1);
+            this.resize(this.stage().getWidth()-1, this.stage().getHeight()-1);
+            System.out.println(this.realWidth());
+            System.out.println(this.realHeight());
+            System.out.println("-------------2");
+            // NodeUtil.setWidth(node, this.realWidth() - 2);
+            // NodeUtil.setHeight(node, this.realHeight() - 32);
+            this.requestLayout();
+        }
     }
 }

@@ -277,30 +277,29 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 不可拉伸
         if (!attribute.resizable()) {
-            config.setShowMaximum(false);
-            config.setShowMinimum(false);
+            config.setShowMaximum(false).setShowMinimum(false);
         }
+        // 舞台
+        Stage stage = this.stage();
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
             if (owner != null) {
-                this.stage().initOwner(owner);
+                stage.initOwner(owner);
                 // 不显示最小化
                 config.setShowMinimum(false);
             }
             // 初始化模态
-            this.stage().initModality(attribute.modality());
+            stage.initModality(attribute.modality());
         }
         // 初始化容器
-        TitleBox titleBox = new TitleBox();
         TitleBar titleBar = new TitleBar(config);
-        titleBox.setTitleBar(titleBar);
-        titleBox.setContent(root);
+        TitleBox titleBox = new TitleBox(titleBar, root);
         // 绑定大小
-        titleBox.prefWidthProperty().bind(this.stage().widthProperty());
-        titleBox.prefHeightProperty().bind(this.stage().widthProperty());
-        // 设置scene
-        FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
+        titleBox.prefWidthProperty().bind(stage.widthProperty());
+        titleBox.prefHeightProperty().bind(stage.heightProperty());
+        // 更新标题
+        stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
@@ -309,15 +308,26 @@ public interface StageAdapter extends WindowAdapter {
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
         }
-        // 监听显示属性
-        this.stage().showingProperty().addListener((observable, oldValue, newValue) -> {
+        stage.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 this.onWindowClosed();
             }
         });
-        NodeManager.init(this);
         // 监听最大化，处理内置内容大小
-        this.stage().maximizedProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay("_stage_resize", () -> this.root().resize(NodeUtil.getWidth(this.stage()) - 15, NodeUtil.getHeight(this.stage()) - 40), 1));
+        stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> {
+            // 更新内容
+            TaskManager.startDelay(()->{
+                titleBox.updateContent();
+            },10);
+            System.out.println("-----------1");
+            // TaskManager.startDelay("_stage_resize", () -> this.root().resize(NodeUtil.getWidth(this.stage()) - 15, NodeUtil.getHeight(this.stage()) - 40), 1);
+        });
+        // 初始化
+        NodeManager.init(this);
+        // 设置scene
+        FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
+        // 初始化标题
+        titleBar.initTitle();
     }
 
     /**
@@ -341,13 +351,16 @@ public interface StageAdapter extends WindowAdapter {
             this.stage().initStyle(StageStyle.DECORATED);
         }
         // 初始化stage
-        this.stage().setTitle(attribute.title());
+        // this.stage().setTitle(attribute.title());
         this.stage().setMaximized(attribute.maximized());
-        this.stage().setResizable(attribute.resizeable());
+        this.stage().setResizable(attribute.resizable());
         // 设置icon
-        if (ArrayUtil.isNotEmpty(attribute.iconUrls())) {
-            this.stage().getIcons().addAll(IconUtil.getIcons(attribute.iconUrls()));
+        if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+            this.stage().getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         }
+        // if (ArrayUtil.isNotEmpty(attribute.iconUrls())) {
+        //     this.stage().getIcons().setAll(IconUtil.getIcons(attribute.iconUrls()));
+        // }
         // 设置scene
         FXUtil.runWait(() -> this.stage().setScene(new Scene(root)));
         // 非主窗口

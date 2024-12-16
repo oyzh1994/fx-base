@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
@@ -19,18 +18,13 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TitleBar extends FlexPane {
-
-    {
-        this.realHeight(30);
-        this.setMaxHeight(30);
-        this.setFlexWidth("100%");
-    }
 
     /**
      * 原始x
@@ -68,7 +62,17 @@ public class TitleBar extends FlexPane {
         this.init(config);
     }
 
+    @Override
+    public void resize(double width, double height) {
+        super.resize(width, height);
+        this.updateNodeLocation();
+    }
+
     protected void init(TitleBarConfig config) {
+        this.realHeight(30);
+        this.setMaxHeight(30);
+        this.setFlexWidth("100%");
+        this.setBorder(null);
         this.setPadding(new Insets(0));
         this.initNodes(config);
         this.initEvents();
@@ -108,7 +112,10 @@ public class TitleBar extends FlexPane {
         this.addChild(nodes);
     }
 
-    private void initTitle() {
+    /**
+     * 初始化标题
+     */
+    public void initTitle() {
         Stage stage = this.stage();
         if (stage != null) {
             if (stage.getTitle() != null) {
@@ -132,13 +139,9 @@ public class TitleBar extends FlexPane {
         }
     }
 
-    @Override
-    public void resize(double width, double height) {
-        super.resize(width, height);
-        this.initTitle();
-        this.updateNodeLocation();
-    }
-
+    /**
+     * 更新节点位置
+     */
     protected void updateNodeLocation() {
         double width = this.realWidth();
         double height = this.realHeight();
@@ -201,6 +204,9 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 初始化事件
+     */
     protected void initEvents() {
         // 鼠标按下事件
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
@@ -240,6 +246,9 @@ public class TitleBar extends FlexPane {
         });
     }
 
+    /**
+     * 记录位置
+     */
     protected void doRecordLocation() {
         // 记录原始位置
         double[] originalPosition = MouseUtil.getMousePosition();
@@ -313,6 +322,8 @@ public class TitleBar extends FlexPane {
         Stage stage = this.stage();
         if (stage != null) {
             this.maximum(!stage.isMaximized());
+        } else {
+            JulLog.warn("stage is null!");
         }
     }
 
@@ -320,13 +331,18 @@ public class TitleBar extends FlexPane {
         Stage stage = this.stage();
         if (stage != null) {
             stage.setMaximized(maximum);
+            // 处理按钮
+            TitleBarMaximumSVGPane maximizePane = (TitleBarMaximumSVGPane) this.lookup("#maximize");
+            if (maximizePane != null) {
+                maximizePane.setMaximize(!maximum);
+            }
             // 最大化设置高度不超过显示边界
             if (maximum) {
                 Rectangle2D rectangle2D = Screen.getPrimary().getVisualBounds();
                 stage.setHeight(rectangle2D.getHeight());
             }
         } else {
-            JulLog.warn("window is null!");
+            JulLog.warn("stage is null!");
         }
     }
 
@@ -334,6 +350,8 @@ public class TitleBar extends FlexPane {
         Stage stage = this.stage();
         if (stage != null) {
             this.minimum(!stage.isIconified());
+        } else {
+            JulLog.warn("stage is null!");
         }
     }
 
@@ -342,12 +360,16 @@ public class TitleBar extends FlexPane {
         if (stage != null) {
             stage.setIconified(minimum);
         } else {
-            JulLog.warn("window is null!");
+            JulLog.warn("stage is null!");
         }
     }
 
+    /**
+     * 标题栏配置
+     */
     @Getter
     @Setter
+    @Accessors(chain = true)
     public static class TitleBarConfig {
 
         /**
