@@ -25,13 +25,6 @@ public class TitleBarConfig {
 
     private boolean showMinimum;
 
-    /**
-     * 1 window模式
-     * 2 linux模式
-     * 3 macos模式
-     */
-    private byte showType = 1;
-
     public TitleBarConfig() {
 
     }

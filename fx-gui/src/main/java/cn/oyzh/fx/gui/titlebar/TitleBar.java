@@ -57,32 +57,43 @@ public class TitleBar extends FlexHBox {
     }
 
     public TitleBar(TitleBarConfig config) {
-        if (config.getShowType() == 1) {
-            List<Node> actions = config.getActions();
-            if (actions == null) {
-                actions = new ArrayList<>();
-            }
-            if (config.isShowMinimum()) {
-                actions.add(new SVGGlyph("/fx-svg/titlebar/minimum.svg"));
-            }
-            if (config.isShowMaximum()) {
-                actions.add(new SVGGlyph("/fx-svg/titlebar/maximum.svg"));
-            }
-            if (config.isShowClose()) {
-                actions.add(new SVGGlyph("/fx-svg/titlebar/close.svg"));
-            }
-            this.getChildren().addAll(actions);
+        this.init(config);
+    }
+
+    protected void init(TitleBarConfig config) {
+        this.initNodes(config);
+        this.initEvents();
+    }
+
+    protected void initNodes(TitleBarConfig config) {
+        List<Node> actions = config.getActions();
+        if (actions == null) {
+            actions = new ArrayList<>();
         }
+        if (config.isShowMinimum()) {
+            actions.add(new SVGGlyph("/fx-svg/titlebar/minimum.svg"));
+        }
+        if (config.isShowMaximum()) {
+            actions.add(new SVGGlyph("/fx-svg/titlebar/maximum.svg"));
+        }
+        if (config.isShowClose()) {
+            actions.add(new SVGGlyph("/fx-svg/titlebar/close.svg"));
+        }
+        this.addChild(actions);
+    }
+
+    protected void initEvents() {
         // 鼠标按下事件
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-                // 记录位置
                 if (event.getClickCount() == 1) {
+                    // 记录位置
                     if (this.checkNotInvalid()) {
                         this.doRecordLocation();
                         event.consume();
                     }
-                } else if (event.getClickCount() == 2) {// 最大化
+                } else if (event.getClickCount() == 2) {
+                    // 最大化
                     Stage stage = this.stage();
                     if (stage != null) {
                         this.maximum(!stage.isMaximized());
@@ -104,7 +115,7 @@ public class TitleBar extends FlexHBox {
         // 鼠标释放事件
         this.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-                // 检查状态
+                // 清除位置
                 if (this.checkNotInvalid()) {
                     this.doClearLocation();
                     event.consume();
@@ -141,19 +152,27 @@ public class TitleBar extends FlexHBox {
             double mouseY = position[1];
             double nodeX = window.getX();
             double nodeY = window.getY();
-            // 计算x差值，不等于0时则更新组件x位置，并更新x值
-            double x1 = mouseX - this.originalX.get();
-            if (x1 != 0) {
-                window.setX(nodeX + x1);
-                this.originalX.set(mouseX);
+            Double originalX = this.getOriginalX();
+            Double originalY = this.getOriginalY();
+            // 更新x位置
+            if (originalX != null) {
+                // 计算x差值，不等于0时则更新组件x位置，并更新x值
+                double x1 = mouseX - this.getOriginalX();
+                if (x1 != 0) {
+                    window.setX(nodeX + x1);
+                    this.setOriginalX(mouseX);
+                }
             }
-            // 计算y差值，不等于0时则更新组件x位置，并更新y值
-            double y1 = mouseY - this.originalY.get();
-            if (y1 != 0) {
-                window.setY(nodeY + y1);
-                this.originalY.set(mouseY);
+            // 更新y位置
+            if (originalY != null) {
+                // 计算y差值，不等于0时则更新组件x位置，并更新y值
+                double y1 = mouseY - originalY;
+                if (y1 != 0) {
+                    window.setY(nodeY + y1);
+                    this.setOriginalY(mouseY);
+                }
             }
-            JulLog.debug("doUpdateLocation mouseX:{} mouseY:{} nodeX:{} nodeY:{}", mouseX, mouseY, nodeX, nodeY);
+            // JulLog.debug("doUpdateLocation mouseX:{} mouseY:{} nodeX:{} nodeY:{}", mouseX, mouseY, nodeX, nodeY);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -115,7 +115,7 @@ public class TitleBox extends FlexVBox {
             // 检查状态
             if (this.checkNotInvalid()) {
                 this.doUpdateCursor(event.getX(), event.getY());
-                // event.consume();
+                event.consume();
             }
         });
         // 鼠标按下事件
