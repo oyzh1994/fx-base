@@ -1,4 +1,4 @@
-package cn.oyzh.fx.gui.test;
+package cn.oyzh.fx.plus.test;
 
 import cn.oyzh.fx.plus.titlebar.TitleBar;
 import cn.oyzh.fx.plus.titlebar.TitleBox;
@@ -13,11 +13,12 @@ import javafx.stage.StageStyle;
  * @author oyzh
  * @since 2024-11-15
  */
-public class TitlebarTest extends Application {
+public class TitleBarTest extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        TitleBar.TitleBarConfig config = TitleBar.TitleBarConfig.ofPlatformCommon("/zoo_no_bg.png", "测试标题");
+        TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
+        config.setIcon( "/zoo_no_bg.png");
         TitleBar bar = new TitleBar(config);
         TitleBox vbox = new TitleBox();
         vbox.setTitleBar(bar);
@@ -51,12 +52,12 @@ public class TitlebarTest extends Application {
     }
 
     public static void main(String[] args) {
-        Application.launch(TitlebarTest.class, args);
+        Application.launch(TitleBarTest.class, args);
     }
 
     public static class TitleBarMain {
         public static void main(String[] args) {
-            TitlebarTest.main(args);
+            TitleBarTest.main(args);
         }
 
     }

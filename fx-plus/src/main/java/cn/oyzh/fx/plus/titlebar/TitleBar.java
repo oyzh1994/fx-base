@@ -350,33 +350,34 @@ public class TitleBar extends FlexPane {
     @Setter
     public static class TitleBarConfig {
 
+        /**
+         * 图标
+         */
         private String icon;
 
-        // 当前是否最大化
+        /**
+         * 当前是否最大化
+         */
         private boolean maximized;
 
+        /**
+         * 操作
+         */
         private List<Node> actions;
 
+        /**
+         * 显示close
+         */
         private boolean showClose = true;
 
+        /**
+         * 显示最大化
+         */
         private boolean showMaximum = true;
 
+        /**
+         * 显示最小化
+         */
         private boolean showMinimum = true;
-
-        public TitleBarConfig() {
-
-        }
-
-        public static TitleBarConfig ofPlatformCommon(String icon, String title) {
-            TitleBarConfig config = new TitleBarConfig();
-            if (OSUtil.isWindows()) {
-                config.icon = icon;
-            }
-            // config.title = title;
-            config.showClose = true;
-            config.showMaximum = true;
-            config.showMinimum = true;
-            return config;
-        }
     }
 }

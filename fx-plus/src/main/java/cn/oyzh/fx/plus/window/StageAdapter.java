@@ -269,18 +269,12 @@ public interface StageAdapter extends WindowAdapter {
         if (!this.hasBeenVisible()) {
             this.stage().initStyle(StageStyle.UNDECORATED);
         }
+        // 创建配置
         TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
         config.setMaximized(attribute.maximized());
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
             config.setIcon(attribute.iconUrl());
         }
-        TitleBox titleBox = new TitleBox();
-        TitleBar titleBar = new TitleBar(config);
-        titleBox.setTitleBar(titleBar);
-        titleBox.setContent(root);
-        // 绑定大小
-        titleBox.prefWidthProperty().bind(this.stage().widthProperty());
-        titleBox.prefHeightProperty().bind(this.stage().widthProperty());
         // 不可拉伸
         if (!attribute.resizable()) {
             config.setShowMaximum(false);
@@ -297,6 +291,14 @@ public interface StageAdapter extends WindowAdapter {
             // 初始化模态
             this.stage().initModality(attribute.modality());
         }
+        // 初始化容器
+        TitleBox titleBox = new TitleBox();
+        TitleBar titleBar = new TitleBar(config);
+        titleBox.setTitleBar(titleBar);
+        titleBox.setContent(root);
+        // 绑定大小
+        titleBox.prefWidthProperty().bind(this.stage().widthProperty());
+        titleBox.prefHeightProperty().bind(this.stage().widthProperty());
         // 设置scene
         FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
         // 加载自定义css文件
