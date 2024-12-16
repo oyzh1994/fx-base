@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
 import cn.oyzh.fx.plus.controls.text.FXText;
@@ -79,48 +80,62 @@ public class TitleBar extends FlexPane {
             nodes = new ArrayList<>();
         }
         if (config.getIcon() != null) {
-            FXImageView imageView = new FXImageView(config.getIcon(), 20);
+            FXImageView imageView = new FXImageView(config.getIcon(), 16);
             imageView.setId("icon");
             nodes.add(imageView);
-            // HBox.setMargin(imageView, new Insets(5, 5, 5, 5));
-        }
-        if (config.getTitle() != null) {
-            FXText text = new FXText(config.getTitle());
-            text.setFontSize(12);
-            text.setId("title");
-            nodes.add(text);
-            // HBox.setMargin(text, new Insets(6, 5, 0, 5));
         }
         if (config.isShowMinimum()) {
-            TitleBarMinimumSVGGlyph glyph = new TitleBarMinimumSVGGlyph("20");
+            TitleBarMinimumSVGGlyph glyph = new TitleBarMinimumSVGGlyph("18");
             glyph.setOnMousePrimaryClicked(e -> this.minimize());
             glyph.setId("minimize");
             nodes.add(glyph);
-            // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
         if (config.isShowMaximum()) {
-            TitleBarMaximumSVGPane pane = new TitleBarMaximumSVGPane("20");
+            TitleBarMaximumSVGPane pane = new TitleBarMaximumSVGPane("18");
             pane.setId("maximize");
             pane.setOnMousePrimaryClicked(e -> {
                 this.maximize();
                 pane.setMaximize(!this.stage().isMaximized());
             });
             nodes.add(pane);
-            // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
         if (config.isShowClose()) {
-            TitleBarCloseSVGGlyph glyph = new TitleBarCloseSVGGlyph("20");
+            TitleBarCloseSVGGlyph glyph = new TitleBarCloseSVGGlyph("18");
             glyph.setId("close");
             glyph.setOnMousePrimaryClicked(e -> this.close());
             nodes.add(glyph);
-            // HBox.setMargin(glyph, new Insets(5, 5, 5, 5));
         }
         this.addChild(nodes);
+    }
+
+    private void initTitle() {
+        Stage stage = this.stage();
+        if (stage != null) {
+            if (stage.getTitle() != null) {
+                String title = stage.getTitle();
+                FXText text = (FXText) this.lookup("#title");
+                // 创建
+                if (text == null) {
+                    text = new FXText(title);
+                    text.setFontSize(12);
+                    text.setId("title");
+                    this.addChild(1, text);
+                } else if (StringUtil.equals(text.getText(), title)) {// 更新
+                    text.setText(title);
+                }
+            } else {
+                FXText text = (FXText) this.lookup("#title");
+                if (text != null) {// 移除
+                    this.removeChild(text);
+                }
+            }
+        }
     }
 
     @Override
     public void resize(double width, double height) {
         super.resize(width, height);
+        this.initTitle();
         this.updateNodeLocation();
     }
 
@@ -194,12 +209,12 @@ public class TitleBar extends FlexPane {
                     // 记录位置
                     if (this.checkNotInvalid()) {
                         this.doRecordLocation();
-                        event.consume();
+                        // event.consume();
                     }
                 } else if (event.getClickCount() == 2) {
                     // 最大化
                     this.maximize();
-                    event.consume();
+                    // event.consume();
                 }
             }
         });
@@ -209,7 +224,7 @@ public class TitleBar extends FlexPane {
                 // 更新位置
                 if (this.checkNotInvalid()) {
                     this.doUpdateLocation();
-                    event.consume();
+                    // event.consume();
                 }
             }
         });
@@ -219,7 +234,7 @@ public class TitleBar extends FlexPane {
                 // 清除位置
                 if (this.checkNotInvalid()) {
                     this.doClearLocation();
-                    event.consume();
+                    // event.consume();
                 }
             }
         });
@@ -337,8 +352,6 @@ public class TitleBar extends FlexPane {
 
         private String icon;
 
-        private String title;
-
         // 当前是否最大化
         private boolean maximized;
 
@@ -362,7 +375,7 @@ public class TitleBar extends FlexPane {
             if (OSUtil.isWindows()) {
                 config.icon = icon;
             }
-            config.title = title;
+            // config.title = title;
             config.showClose = true;
             config.showMaximum = true;
             config.showMinimum = true;

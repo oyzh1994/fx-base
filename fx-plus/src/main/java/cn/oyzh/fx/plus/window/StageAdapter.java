@@ -235,9 +235,18 @@ public interface StageAdapter extends WindowAdapter {
         this.stage().setMaximized(maximized);
     }
 
+    /**
+     * 初始化舞台
+     *
+     * @param attribute 舞台属性
+     * @param owner     父窗口
+     */
     default void init(@NonNull StageAttribute attribute, Window owner) {
-        this.initByCustom(attribute, owner);
-        // this.initByPlatform(attribute, owner);
+        if (attribute.stageStyle().isCustom()) {
+            this.initByCustom(attribute, owner);
+        } else {
+            this.initByPlatform(attribute, owner);
+        }
     }
 
     /**
@@ -261,7 +270,6 @@ public interface StageAdapter extends WindowAdapter {
             this.stage().initStyle(StageStyle.UNDECORATED);
         }
         TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
-        config.setTitle(attribute.title());
         config.setMaximized(attribute.maximized());
         config.setResizable(attribute.resizable());
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
@@ -271,13 +279,6 @@ public interface StageAdapter extends WindowAdapter {
         TitleBar titleBar = new TitleBar(config);
         titleBox.setTitleBar(titleBar);
         titleBox.setContent(root);
-        // this.stage().setTitle(attribute.title());
-        // this.stage().setMaximized(attribute.maximized());
-        // this.stage().setResizable(attribute.resizeable());
-        // // 设置icon
-        // if (ArrayUtil.isNotEmpty(attribute.iconUrls())) {
-        //     this.stage().getIcons().addAll(IconUtil.getIcons(attribute.iconUrls()));
-        // }
         // 设置scene
         FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
         // 非主窗口

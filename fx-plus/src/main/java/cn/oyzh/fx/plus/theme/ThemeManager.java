@@ -151,6 +151,10 @@ public class ThemeManager {
         }
     }
 
+    public static Color currentAccentColor() {
+        return currentTheme().getAccentColor();
+    }
+
     public static Color currentForegroundColor() {
         return currentTheme().getForegroundColor();
     }

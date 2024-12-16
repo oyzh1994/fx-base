@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -24,7 +25,7 @@ public class TitleBox extends FlexVBox {
         this.init();
     }
 
-    public void initChild(TitleBar titleBar,Node content) {
+    public void initChild(TitleBar titleBar, Node content) {
         this.setChild(0, titleBar);
         this.setChild(1, content);
     }
@@ -109,7 +110,8 @@ public class TitleBox extends FlexVBox {
     }
 
     protected void initBorder() {
-        BorderStroke stroke = new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        Color color = ThemeManager.currentAccentColor();
+        BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Border border = new Border(stroke);
         this.setBorder(border);
     }
@@ -120,7 +122,7 @@ public class TitleBox extends FlexVBox {
             // 检查状态
             if (this.checkNotInvalid()) {
                 this.doUpdateCursor(event.getX(), event.getY());
-                event.consume();
+                // event.consume();
             }
         });
         // 鼠标按下事件
@@ -129,7 +131,7 @@ public class TitleBox extends FlexVBox {
                 // 检查状态
                 if (this.checkNotInvalid()) {
                     this.doRecordLocationAndSize();
-                    event.consume();
+                    // event.consume();
                 }
             }
         });
@@ -140,7 +142,7 @@ public class TitleBox extends FlexVBox {
                 // 检查状态
                 if (this.checkNotInvalid()) {
                     this.doUpdateLocationAndSize();
-                    event.consume();
+                    // event.consume();
                 }
             }
         });
@@ -150,7 +152,7 @@ public class TitleBox extends FlexVBox {
                 // 检查状态
                 if (this.checkNotInvalid()) {
                     this.doClearLocationAndSize();
-                    event.consume();
+                    // event.consume();
                 }
             }
         });
@@ -255,7 +257,7 @@ public class TitleBox extends FlexVBox {
         double mouseX = position[0];
         double mouseY = position[1];
         // 更新宽度
-            if (this.widthResize && originalX != null && originalW != null) {
+        if (this.widthResize && originalX != null && originalW != null) {
             double x1 = mouseX - originalX;
             if (x1 != 0) {
                 if (this.xChange) {
@@ -266,7 +268,7 @@ public class TitleBox extends FlexVBox {
             }
         }
         // 更新高度
-            if (this.heightResize && originalY != null && originalH != null) {
+        if (this.heightResize && originalY != null && originalH != null) {
             double y1 = mouseY - originalY;
             if (y1 != 0) {
                 if (this.yChange) {
@@ -277,14 +279,14 @@ public class TitleBox extends FlexVBox {
             }
         }
         // 更新x坐标
-            if (this.xChange && originalX != null) {
+        if (this.xChange && originalX != null) {
             double x1 = mouseX - originalX;
             if (x1 != 0) {
                 window.setX(originalX + x1);
             }
         }
         // 更新y坐标
-            if (this.yChange && originalY != null) {
+        if (this.yChange && originalY != null) {
             double y1 = mouseY - originalY;
             if (y1 != 0) {
                 window.setY(originalY + y1);

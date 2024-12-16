@@ -33,6 +33,7 @@ public @interface StageAttribute {
      *
      * @return 页面标题
      */
+    @Deprecated
     String title() default "";
 
     /**
@@ -99,5 +100,4 @@ public @interface StageAttribute {
      * @return 结果
      */
     boolean usePrimary() default false;
-
 }
