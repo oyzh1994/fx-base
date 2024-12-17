@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.titlebar;
 
+import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import javafx.scene.layout.HBox;
@@ -10,7 +11,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024-12-09
  */
-public class TitleBarMaximumSVGPane extends HBox implements MouseAdapter {
+public class TitleBarMaximumSVGPane extends HBox implements MouseAdapter, StateAdapter {
 
     @Getter
     @Setter

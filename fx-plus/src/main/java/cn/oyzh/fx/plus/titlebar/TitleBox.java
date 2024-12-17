@@ -19,8 +19,17 @@ import javafx.stage.Window;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * 标题组件
+ *
+ * @author oyzh
+ * @since 2024/12/14
+ */
 public class TitleBox extends FXVBox {
 
+    /**
+     * 触发阈值
+     */
     public static byte Threshold = 5;
 
     public TitleBox() {
@@ -53,24 +62,44 @@ public class TitleBox extends FXVBox {
         return this.getChild(1);
     }
 
+    /**
+     * x轴变化标志位
+     */
     private boolean xChange;
 
+    /**
+     * y轴变化标志位
+     */
     private boolean yChange;
 
+    /**
+     * 宽度拉伸标志位
+     */
     private boolean widthResize;
 
+    /**
+     * 高度拉伸标志位
+     */
     private boolean heightResize;
 
-    // 原始x
+    /**
+     * 原始x
+     */
     private AtomicReference<Double> originalX;
 
-    // 原始y
+    /**
+     * 原始y
+     */
     private AtomicReference<Double> originalY;
 
-    // 原始宽
+    /**
+     * 原始宽
+     */
     private AtomicReference<Double> originalW;
 
-    // 原始高
+    /**
+     * 原始高
+     */
     private AtomicReference<Double> originalH;
 
     protected void setOriginalX(double x) {
@@ -123,6 +152,9 @@ public class TitleBox extends FXVBox {
         this.initEvents();
     }
 
+    /**
+     * 初始化边框
+     */
     protected void initBorder() {
         Color color = ThemeManager.currentAccentColor();
         BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
@@ -130,6 +162,9 @@ public class TitleBox extends FXVBox {
         this.setBorder(border);
     }
 
+    /**
+     * 初始化事件
+     */
     protected void initEvents() {
         // 鼠标移动事件
         this.addEventFilter(MouseEvent.MOUSE_MOVED, event -> {
@@ -168,6 +203,12 @@ public class TitleBox extends FXVBox {
         });
     }
 
+    /**
+     * 更新光标
+     *
+     * @param x 鼠标x位置
+     * @param y 鼠标y位置
+     */
     protected void doUpdateCursor(double x, double y) {
         double w = this.realWidth();
         double h = this.realHeight();
@@ -226,9 +267,13 @@ public class TitleBox extends FXVBox {
         }
         // 正常
         this.widthResize = this.heightResize = this.xChange = this.yChange = false;
+        // 默认光标
         this.setCursor(Cursor.DEFAULT);
     }
 
+    /**
+     * 记录位置和大小
+     */
     protected void doRecordLocationAndSize() {
         double[] position = MouseUtil.getMousePosition();
         // 记录原始位置
@@ -240,6 +285,9 @@ public class TitleBox extends FXVBox {
         this.setOriginalH(window.getHeight());
     }
 
+    /**
+     * 清除位置和大小
+     */
     protected void doClearLocationAndSize() {
         if (this.originalH != null) {
             this.originalH.set(null);
@@ -255,6 +303,9 @@ public class TitleBox extends FXVBox {
         }
     }
 
+    /**
+     * 更新位置和大小
+     */
     protected void doUpdateLocationAndSize() {
         Window window = this.window();
         // 窗口位置
@@ -304,6 +355,11 @@ public class TitleBox extends FXVBox {
         }
     }
 
+    /**
+     * 检查非异常
+     *
+     * @return 结果
+     */
     protected boolean checkNotInvalid() {
         Stage stage = this.stage();
         // 最大化、最小化、全屏情况下不执行操作

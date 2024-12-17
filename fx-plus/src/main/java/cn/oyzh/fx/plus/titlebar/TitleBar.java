@@ -26,6 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * 标题栏
+ *
+ * @author oyzh
+ * @since 2024/12/14
+ */
 public class TitleBar extends FlexPane {
 
     /**
@@ -70,6 +76,11 @@ public class TitleBar extends FlexPane {
         this.updateNodeLocation();
     }
 
+    /**
+     * 初始化
+     *
+     * @param config 标题栏配置
+     */
     protected void init(TitleBarConfig config) {
         this.setId("titleBar");
         this.realHeight(30);
@@ -81,11 +92,15 @@ public class TitleBar extends FlexPane {
         this.initEvents();
     }
 
+    /**
+     * 初始化组件
+     *
+     * @param config 标题栏配置类
+     */
     protected void initNodes(TitleBarConfig config) {
-        List<Node> nodes = config.getActions();
-        if (nodes == null) {
-            nodes = new ArrayList<>();
-        }
+        List<Node> nodes = new ArrayList<>();
+
+        // 图标
         if (config.getIcon() != null) {
             Image image = IconUtil.getIcon(config.getIcon());
             if (image != null) {
@@ -96,26 +111,38 @@ public class TitleBar extends FlexPane {
                 JulLog.warn("load icon failed");
             }
         }
+
+        // 最小化
+        TitleBarMinimumSVGGlyph minimize = new TitleBarMinimumSVGGlyph("18");
+        minimize.setId("minimize");
+        nodes.add(minimize);
         if (config.isMinimum()) {
-            TitleBarMinimumSVGGlyph glyph = new TitleBarMinimumSVGGlyph("18");
-            glyph.setOnMousePrimaryClicked(e -> this.minimize());
-            glyph.setId("minimize");
-            nodes.add(glyph);
+            minimize.setOnMousePrimaryClicked(e -> this.minimize());
+        } else {
+            minimize.disable();
         }
+
+        // 最大化
+        TitleBarMaximumSVGPane maximize = new TitleBarMaximumSVGPane("18");
+        maximize.setId("maximize");
+        nodes.add(maximize);
         if (config.isMaximum()) {
-            TitleBarMaximumSVGPane pane = new TitleBarMaximumSVGPane("18");
-            pane.setId("maximize");
-            pane.setOnMousePrimaryClicked(e -> {
+            maximize.setOnMousePrimaryClicked(e -> {
                 this.maximize();
-                pane.setMaximize(!this.stage().isMaximized());
+                maximize.setMaximize(!this.stage().isMaximized());
             });
-            nodes.add(pane);
+        } else {
+            maximize.disable();
         }
+
+        // 关闭
+        TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("18");
+        close.setId("close");
+        nodes.add(close);
         if (config.isClose()) {
-            TitleBarCloseSVGGlyph glyph = new TitleBarCloseSVGGlyph("18");
-            glyph.setId("close");
-            glyph.setOnMousePrimaryClicked(e -> this.close());
-            nodes.add(glyph);
+            close.setOnMousePrimaryClicked(e -> this.close());
+        } else {
+            close.disable();
         }
         this.addChild(nodes);
     }
@@ -344,7 +371,7 @@ public class TitleBar extends FlexPane {
             // 处理按钮
             TitleBarMaximumSVGPane maximizePane = (TitleBarMaximumSVGPane) this.lookup("#maximize");
             if (maximizePane != null) {
-                maximizePane.setMaximize(maximized);
+                maximizePane.setMaximize(!maximized);
             }
             // 最大化设置高度不超过显示边界
             if (maximized) {
@@ -386,11 +413,6 @@ public class TitleBar extends FlexPane {
          * 图标
          */
         private String icon;
-
-        /**
-         * 操作
-         */
-        private List<Node> actions;
 
         /**
          * 显示close
