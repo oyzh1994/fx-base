@@ -1,31 +1,30 @@
 package cn.oyzh.fx.plus.controls.image;
 
+import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 /**
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXImageView extends ImageView implements NodeAdapter, TipAdapter {
+public class FXImageView extends ImageView implements NodeAdapter, PropAdapter, TipAdapter {
 
     {
         NodeManager.init(this);
     }
 
-    @Getter
-    private String url;
-
-    @Getter
-    @Setter
-    private String name;
+    // @Getter
+    // private String url;
+    //
+    // @Getter
+    // @Setter
+    // private String name;
 
     public FXImageView() {
         super();
@@ -58,8 +57,12 @@ public class FXImageView extends ImageView implements NodeAdapter, TipAdapter {
     }
 
     public void setUrl(@NonNull String url) {
-        this.url = url;
+        this.setProp("url", url);
         super.setImage(FXUtil.getImage(url));
+    }
+
+    public String getUrl() {
+        return this.getProp("url");
     }
 
     @Override
@@ -68,5 +71,4 @@ public class FXImageView extends ImageView implements NodeAdapter, TipAdapter {
         this.setPreserveRatio(true);
         this.setFocusTraversable(false);
     }
-
 }

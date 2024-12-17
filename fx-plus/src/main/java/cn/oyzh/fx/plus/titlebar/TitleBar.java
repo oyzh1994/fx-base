@@ -237,7 +237,6 @@ public class TitleBar extends FlexPane {
                 // 更新位置
                 if (this.checkNotInvalid()) {
                     this.doUpdateLocation();
-                    // event.consume();
                 }
             }
         });
@@ -247,7 +246,6 @@ public class TitleBar extends FlexPane {
                 // 清除位置
                 if (this.checkNotInvalid()) {
                     this.doClearLocation();
-                    // event.consume();
                 }
             }
         });
@@ -274,8 +272,10 @@ public class TitleBar extends FlexPane {
 
     private void doUpdateLocation() {
         try {
-            if (this.originalX.get() == null || this.originalY.get() == null) {
-                JulLog.warn("originalX or originalY is null!");
+            Double originalX = this.getOriginalX();
+            Double originalY = this.getOriginalY();
+            if (originalX == null || originalY == null) {
+                // JulLog.warn("originalX or originalY is null!");
                 return;
             }
             Window window = this.window();
@@ -284,25 +284,20 @@ public class TitleBar extends FlexPane {
             double mouseY = position[1];
             double nodeX = window.getX();
             double nodeY = window.getY();
-            Double originalX = this.getOriginalX();
-            Double originalY = this.getOriginalY();
+
             // 更新x位置
-            if (originalX != null) {
-                // 计算x差值，不等于0时则更新组件x位置，并更新x值
-                double x1 = mouseX - this.getOriginalX();
-                if (x1 != 0) {
-                    window.setX(nodeX + x1);
-                    this.setOriginalX(mouseX);
-                }
+            // 计算x差值，不等于0时则更新组件x位置，并更新x值
+            double x1 = mouseX - this.getOriginalX();
+            if (x1 != 0) {
+                window.setX(nodeX + x1);
+                this.setOriginalX(mouseX);
             }
             // 更新y位置
-            if (originalY != null) {
-                // 计算y差值，不等于0时则更新组件x位置，并更新y值
-                double y1 = mouseY - originalY;
-                if (y1 != 0) {
-                    window.setY(nodeY + y1);
-                    this.setOriginalY(mouseY);
-                }
+            // 计算y差值，不等于0时则更新组件x位置，并更新y值
+            double y1 = mouseY - originalY;
+            if (y1 != 0) {
+                window.setY(nodeY + y1);
+                this.setOriginalY(mouseY);
             }
             // JulLog.debug("doUpdateLocation mouseX:{} mouseY:{} nodeX:{} nodeY:{}", mouseX, mouseY, nodeX, nodeY);
         } catch (Exception ex) {

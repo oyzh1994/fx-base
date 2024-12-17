@@ -322,7 +322,7 @@ public interface StageAdapter extends WindowAdapter {
         stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> {
             // 更新内容
             if (BooleanUtil.isFalse(t1)) {
-                TaskManager.startDelay(titleBox::updateContent, 1);
+                TaskManager.startDelay(titleBox::updateContent, 10);
             }
         });
         // 初始化

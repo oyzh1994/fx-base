@@ -118,20 +118,6 @@ public class TitleBox extends FXVBox {
     }
 
     protected void init() {
-        // // 监听宽
-        // this.widthProperty().addListener((observable, oldValue, newValue) -> {
-        //     Node node = this.getContent();
-        //     if (node != null && newValue != null) {
-        //         NodeUtil.setWidth(node, newValue.doubleValue() - 2);
-        //     }
-        // });
-        // // 监听高
-        // this.heightProperty().addListener((observable, oldValue, newValue) -> {
-        //     Node node = this.getContent();
-        //     if (node != null && newValue != null) {
-        //         NodeUtil.setHeight(node, newValue.doubleValue() - 32);
-        //     }
-        // });
         this.setPadding(new Insets(0));
         this.initBorder();
         this.initEvents();
@@ -338,16 +324,10 @@ public class TitleBox extends FXVBox {
     public void updateContent() {
         Node node = this.getContent();
         if (node != null) {
-            // System.out.println(this.realWidth());
-            // System.out.println(this.realHeight());
-            this.resize(this.stage().getWidth() , this.stage().getHeight()-1);
-            this.resize(this.stage().getWidth() , this.stage().getHeight()+1);
-            // System.out.println(this.realWidth());
-            // System.out.println(this.realHeight());
-            // System.out.println("-------------2");
-            // NodeUtil.setWidth(node, this.realWidth() - 2);
-            // NodeUtil.setHeight(node, this.realHeight() - 32);
-            // this.requestLayout();
+            double width = this.realWidth();
+            double height = this.getHeight();
+            this.resize(width - 1, height - 1);
+            this.resize(width + 1, height + 1);
         }
     }
 }
