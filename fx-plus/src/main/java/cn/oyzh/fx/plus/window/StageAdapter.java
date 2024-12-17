@@ -242,6 +242,21 @@ public interface StageAdapter extends WindowAdapter {
     }
 
     /**
+     * 获取自定义标题栏
+     *
+     * @return 标题栏
+     */
+    default TitleBar getTitleBar() {
+        if (BooleanUtil.isTrue(this.getProp("_custom"))) {
+            Parent parent = this.root();
+            if (parent != null) {
+                return (TitleBar) parent.lookup("#titleBar");
+            }
+        }
+        return null;
+    }
+
+    /**
      * 初始化舞台
      *
      * @param attribute 舞台属性

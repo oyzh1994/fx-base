@@ -5,18 +5,18 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
 import cn.oyzh.fx.plus.controls.text.FXText;
+import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.font.FontUtil;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -163,28 +163,78 @@ public class TitleBar extends FlexPane {
     }
 
     /**
+     * 是否有内容
+     */
+    @Getter
+    private boolean hasContent;
+
+    /**
+     * 加载内容
+     *
+     * @param fxmlUrl fxml地址
+     */
+    public void loadContent(String fxmlUrl) {
+        // 初始化加载器
+        FXMLLoaderExt loader = new FXMLLoaderExt();
+        // 加载根节点
+        Parent header = loader.load(fxmlUrl);
+        // 设置内容
+        this.setContent(header);
+    }
+
+    /**
+     * 设置内容
+     *
+     * @param content 内容
+     */
+    public void setContent(Node content) {
+        if (content != null) {
+            this.hasContent = true;
+            content.setId("content");
+            Node node = this.lookup("#content");
+            Node title = this.lookup("#title");
+            // 覆盖旧内容组件或者标题组件
+            if (node != null || title != null) {
+                this.setChild(1, content);
+            } else {// 添加组件
+                this.addChild(1, content);
+            }
+        } else {
+            this.hasContent = false;
+            Node node = this.lookup("#content");
+            // 移除内容组件
+            if (node != null) {
+                this.removeChild(node);
+            }
+        }
+        // 更新节点位置
+        this.updateNodeLocation();
+    }
+
+    /**
      * 初始化标题
      */
     public void initTitle() {
         Stage stage = this.stage();
-        if (stage != null) {
-            if (stage.getTitle() != null) {
-                String title = stage.getTitle();
-                FXText text = (FXText) this.lookup("#title");
-                // 创建
-                if (text == null) {
-                    text = new FXText(title);
-                    text.setFontSize(12);
-                    text.setId("title");
-                    this.addChild(1, text);
-                } else if (StringUtil.equals(text.getText(), title)) {// 更新
-                    text.setText(title);
-                }
-            } else {
-                FXText text = (FXText) this.lookup("#title");
-                if (text != null) {// 移除
-                    this.removeChild(text);
-                }
+        if (stage == null || this.hasContent) {
+            return;
+        }
+        if (stage.getTitle() != null) {
+            String title = stage.getTitle();
+            FXText text = (FXText) this.lookup("#title");
+            // 创建
+            if (text == null) {
+                text = new FXText(title);
+                text.setFontSize(12);
+                text.setId("title");
+                this.addChild(1, text);
+            } else if (StringUtil.equals(text.getText(), title)) {// 更新
+                text.setText(title);
+            }
+        } else {
+            FXText text = (FXText) this.lookup("#title");
+            if (text != null) {// 移除
+                this.removeChild(text);
             }
         }
     }
@@ -209,6 +259,14 @@ public class TitleBar extends FlexPane {
                 child.setLayoutY((height - nHeight) / 2);
                 child.setLayoutX(layoutX);
                 layoutX += nWidth + 5;
+                continue;
+            }
+            if ("content".equals(child.getId())) {
+                double nWidth = NodeUtil.getWidth(child);
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                child.setLayoutX(layoutX);
+                layoutX += nWidth;
                 continue;
             }
             if ("title".equals(child.getId())) {
