@@ -21,7 +21,7 @@ public class TitleBarMaximumSVGPane extends FXHBox implements MouseAdapter {
         this.maximize();
     }
 
-    public void restore() {
+    public void unMaximize() {
         this.setChild(new TitleBarUnMaximumSVGGlyph(this.size));
     }
 
@@ -38,7 +38,7 @@ public class TitleBarMaximumSVGPane extends FXHBox implements MouseAdapter {
         if (maximize) {
             this.maximize();
         } else {
-            this.restore();
+            this.unMaximize();
         }
     }
 }

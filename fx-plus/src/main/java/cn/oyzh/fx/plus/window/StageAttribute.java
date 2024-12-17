@@ -14,9 +14,6 @@ import java.lang.annotation.Target;
  * @author oyzh
  * @since 2023/10/12
  */
-// @Lazy
-// @Component
-// @Scope("prototype")
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StageAttribute {
@@ -43,13 +40,13 @@ public @interface StageAttribute {
      */
     String[] cssUrls() default {};
 
-    /**
-     * 图标地址
-     *
-     * @return 图标地址
-     */
-    @Deprecated
-    String[] iconUrls() default {};
+    // /**
+    //  * 图标地址
+    //  *
+    //  * @return 图标地址
+    //  */
+    // @Deprecated
+    // String[] iconUrls() default {};
 
     /**
      * 图标地址
@@ -65,21 +62,21 @@ public @interface StageAttribute {
      */
     Modality modality() default Modality.NONE;
 
-    /**
-     * 是否可最大化
-     *
-     * @return 是否可最大化
-     */
-    @Deprecated
-    boolean maximized() default false;
+    // /**
+    //  * 是否可最大化
+    //  *
+    //  * @return 是否可最大化
+    //  */
+    // @Deprecated
+    // boolean maximized() default false;
 
-    /**
-     * 是否可拉伸
-     *
-     * @return 是否可拉伸
-     */
-    @Deprecated
-    boolean resizeable() default true;
+    // /**
+    //  * 是否可拉伸
+    //  *
+    //  * @return 是否可拉伸
+    //  */
+    // @Deprecated
+    // boolean resizeable() default true;
 
     /**
      * 是否可最大化

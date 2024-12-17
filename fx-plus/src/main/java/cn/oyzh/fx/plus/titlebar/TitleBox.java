@@ -41,23 +41,49 @@ public class TitleBox extends FXVBox {
         this.init();
     }
 
+    /**
+     * 初始化子节点
+     *
+     * @param titleBar 标题组件
+     * @param content  内容组件
+     */
     public void initChild(TitleBar titleBar, Node content) {
         this.setChild(0, titleBar);
         this.setChild(1, content);
     }
 
+    /**
+     * 设置标题组件
+     *
+     * @param titleBar 标题组件
+     */
     public void setTitleBar(TitleBar titleBar) {
         this.setChild(0, titleBar);
     }
 
+    /**
+     * 获取标题组件
+     *
+     * @return 标题组件
+     */
     public TitleBar getTitleBar() {
         return (TitleBar) this.getChild(0);
     }
 
+    /**
+     * 设置内容组件
+     *
+     * @param content 内容组件
+     */
     public void setContent(Node content) {
         this.setChild(1, content);
     }
 
+    /**
+     * 获取内容组件
+     *
+     * @return 内容组件
+     */
     public Node getContent() {
         return this.getChild(1);
     }
@@ -146,8 +172,11 @@ public class TitleBox extends FXVBox {
         return this.originalH == null ? null : this.originalH.get();
     }
 
+    /**
+     * 初始化
+     */
     protected void init() {
-        this.setPadding(new Insets(0));
+        this.setPadding(Insets.EMPTY);
         this.initBorder();
         this.initEvents();
     }
@@ -372,8 +401,7 @@ public class TitleBox extends FXVBox {
         // 更新内容的宽高
         Node node = this.getContent();
         if (node != null) {
-            NodeUtil.setWidth(node, width - 2);
-            NodeUtil.setHeight(node, height - 32);
+            NodeUtil.setSize(node, width, height - 30);
         }
     }
 

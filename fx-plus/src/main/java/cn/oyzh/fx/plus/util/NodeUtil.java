@@ -175,6 +175,18 @@ public class NodeUtil {
     }
 
     /**
+     * 设置大小
+     *
+     * @param target 对象
+     * @param width  宽度
+     * @param height 高度
+     */
+    public static void setSize(Object target, Double width, Double height) {
+        setWidth(target, width);
+        setHeight(target, height);
+    }
+
+    /**
      * 设置宽度
      *
      * @param target 对象

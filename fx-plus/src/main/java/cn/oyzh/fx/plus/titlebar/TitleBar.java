@@ -89,7 +89,7 @@ public class TitleBar extends FlexPane {
         this.setMaxHeight(30);
         this.setFlexWidth("100%");
         this.setBorder(null);
-        this.setPadding(new Insets(0));
+        this.setPadding(Insets.EMPTY);
         this.initNodes(config);
         this.initEvents();
     }

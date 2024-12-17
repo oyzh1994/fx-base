@@ -392,7 +392,7 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 初始化stage
         // this.stage().setTitle(attribute.title());
-        this.stage().setMaximized(attribute.maximized());
+        // this.stage().setMaximized(attribute.maximized());
         this.stage().setResizable(attribute.resizable());
         // 设置icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {

@@ -21,7 +21,7 @@ public class TitleBarFullScreenSVGPane extends FXHBox implements MouseAdapter {
         this.fullScreen();
     }
 
-    public void exit() {
+    public void exitFullScreen() {
         this.setChild(new TitleBarExitFullScreenSVGGlyph(this.size));
     }
 
@@ -38,7 +38,7 @@ public class TitleBarFullScreenSVGPane extends FXHBox implements MouseAdapter {
         if (fullScreen) {
             this.fullScreen();
         } else {
-            this.exit();
+            this.exitFullScreen();
         }
     }
 }
