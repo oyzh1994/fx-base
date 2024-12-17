@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
 import javafx.stage.StageStyle;
 import lombok.Setter;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 

@@ -11,8 +11,6 @@ import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.TitledPane;
-import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 
 /**
  * @author oyzh

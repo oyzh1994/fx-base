@@ -10,8 +10,6 @@ import javafx.beans.NamedArg;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 
 /**
  * @author oyzh

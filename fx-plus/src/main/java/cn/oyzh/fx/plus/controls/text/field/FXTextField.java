@@ -10,9 +10,7 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.control.TextField;
-import javafx.scene.text.FontWeight;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 /**

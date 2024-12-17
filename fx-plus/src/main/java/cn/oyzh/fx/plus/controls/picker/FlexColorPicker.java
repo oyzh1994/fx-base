@@ -10,8 +10,6 @@ import cn.oyzh.fx.plus.util.ColorUtil;
 import javafx.scene.Cursor;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
-import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 
 /**
  * @author oyzh

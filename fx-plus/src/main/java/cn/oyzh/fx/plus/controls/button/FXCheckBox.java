@@ -10,7 +10,6 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
-import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 
 /**

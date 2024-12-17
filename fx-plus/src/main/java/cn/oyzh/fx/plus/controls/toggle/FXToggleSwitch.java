@@ -7,9 +7,7 @@ import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HorizontalDirection;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
-import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
 

@@ -15,7 +15,6 @@ import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ComboBox;
-import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;

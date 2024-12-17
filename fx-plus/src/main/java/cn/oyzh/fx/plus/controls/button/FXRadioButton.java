@@ -10,8 +10,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Cursor;
 import javafx.scene.control.RadioButton;
-import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 
 /**
  * @author oyzh

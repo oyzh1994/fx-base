@@ -9,8 +9,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 
 /**
  * @author oyzh

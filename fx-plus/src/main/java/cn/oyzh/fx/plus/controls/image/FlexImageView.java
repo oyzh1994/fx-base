@@ -1,14 +1,6 @@
 package cn.oyzh.fx.plus.controls.image;
 
-import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 /**
  * @author oyzh
