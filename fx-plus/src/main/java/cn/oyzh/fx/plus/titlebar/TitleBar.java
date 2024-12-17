@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -387,6 +388,9 @@ public class TitleBar extends FlexPane {
         this.setOriginalY(originalPosition[1]);
     }
 
+    /**
+     * 清除位置
+     */
     protected void doClearLocation() {
         if (this.originalX != null) {
             this.originalX.set(null);
@@ -396,6 +400,9 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 更新位置
+     */
     private void doUpdateLocation() {
         try {
             Double originalX = this.getOriginalX();
@@ -431,12 +438,20 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 检查非异常
+     *
+     * @return 结果
+     */
     protected boolean checkNotInvalid() {
         Stage stage = this.stage();
         // 最大化、最小化、全屏情况下不执行操作
         return stage != null && !stage.isMaximized() && !stage.isIconified() && !stage.isFullScreen();
     }
 
+    /**
+     * 关闭窗口
+     */
     public void close() {
         Window window = this.window();
         if (window != null) {
@@ -446,6 +461,9 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 最大化窗口
+     */
     public void maximum() {
         Stage stage = this.stage();
         if (stage != null) {
@@ -455,6 +473,11 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 最大化窗口
+     *
+     * @param maximum 是否最大化
+     */
     public void maximum(boolean maximum) {
         Stage stage = this.stage();
         if (stage != null) {
@@ -465,6 +488,11 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 执行最大化窗口业务
+     *
+     * @param maximum 是否最大化
+     */
     public void doMaximum(boolean maximum) {
         Stage stage = this.stage();
         if (stage != null) {
@@ -475,8 +503,26 @@ public class TitleBar extends FlexPane {
             }
             // 最大化设置高度不超过显示边界
             if (maximum) {
-                Rectangle2D rectangle2D = Screen.getPrimary().getVisualBounds();
-                stage.setHeight(rectangle2D.getHeight());
+                // 获取所有屏幕的列表
+                ObservableList<Screen> screens = Screen.getScreens();
+                // 是否更新
+                boolean update = false;
+                double xPos = stage.getX() + stage.getWidth();
+                double yPos = stage.getY();
+                // 遍历屏幕列表，检查舞台是否在当前屏幕的边界内
+                for (Screen screen : screens) {
+                    Rectangle2D screenBounds = screen.getVisualBounds();
+                    if (screenBounds.contains(xPos, yPos)) {
+                        stage.setHeight(screenBounds.getHeight());
+                        update = true;
+                        break;
+                    }
+                }
+                // 兜底设置
+                if (!update) {
+                    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                    stage.setHeight(screenBounds.getHeight());
+                }
             }
         } else {
             JulLog.warn("stage is null!");
