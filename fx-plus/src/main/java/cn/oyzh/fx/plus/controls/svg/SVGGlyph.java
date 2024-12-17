@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -55,7 +55,14 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      * 是否激活态
      */
     @Getter
-    private Boolean active;
+    protected Boolean active;
+
+    /**
+     * 激活时的颜色
+     */
+    @Getter
+    @Setter
+    protected Color activeColor = Color.ORANGERED;
 
     /**
      * 是否等待中
@@ -137,7 +144,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         }
         // 更新颜色
         if (this.isActive()) {
-            this.setBackground(ControlUtil.background(Color.ORANGERED));
+            this.setBackground(ControlUtil.background(this.activeColor));
         } else if (this.color != null) {
             this.setBackground(ControlUtil.background(this.color));
         } else if (this.isEnableTheme()) {

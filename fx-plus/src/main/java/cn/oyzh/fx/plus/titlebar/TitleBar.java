@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
 import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
@@ -13,9 +14,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -113,6 +114,14 @@ public class TitleBar extends FlexPane {
             }
         }
 
+        // 置顶
+        if (config.isAlwaysOnTop()) {
+            TitleBarTopSVGGlyph alwaysOnTop = new TitleBarTopSVGGlyph("16");
+            alwaysOnTop.setId("alwaysOnTop");
+            nodes.add(alwaysOnTop);
+            alwaysOnTop.setOnMousePrimaryClicked(e -> this.alwaysOnTop());
+        }
+
         // 全屏
         if (config.isFullScreen()) {
             TitleBarFullScreenSVGPane fullScreen = new TitleBarFullScreenSVGPane("16");
@@ -192,6 +201,7 @@ public class TitleBar extends FlexPane {
         Node maximum = null;
         Node minimum = null;
         Node fullScreen = null;
+        Node alwaysOnTop = null;
         for (Node child : this.getChildren()) {
             if ("icon".equals(child.getId())) {
                 double nWidth = NodeUtil.getWidth(child);
@@ -215,6 +225,12 @@ public class TitleBar extends FlexPane {
                 child.setLayoutY((height - nHeight) / 2);
                 continue;
             }
+            if ("alwaysOnTop".equals(child.getId())) {
+                alwaysOnTop = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
             if ("minimum".equals(child.getId())) {
                 minimum = child;
                 double nHeight = NodeUtil.getHeight(child);
@@ -231,29 +247,37 @@ public class TitleBar extends FlexPane {
                 close = child;
                 double nHeight = NodeUtil.getHeight(child);
                 child.setLayoutY((height - nHeight) / 2);
-                continue;
             }
         }
 
+        // 关闭按钮处理
         if (close != null) {
             double nWidth = NodeUtil.getWidth(close);
             close.setLayoutX(width - nWidth - 10);
             actionW = nWidth + 10;
         }
+        // 最大化按钮处理
         if (maximum != null) {
             double nWidth = NodeUtil.getWidth(maximum);
             maximum.setLayoutX(width - actionW - nWidth - 10);
             actionW = actionW + nWidth + 10;
         }
+        // 最小化按钮处理
         if (minimum != null) {
             double nWidth = NodeUtil.getWidth(minimum);
             minimum.setLayoutX(width - actionW - nWidth - 10);
             actionW = actionW + nWidth + 10;
         }
+        // 全屏按钮处理
         if (fullScreen != null) {
             double nWidth = NodeUtil.getWidth(fullScreen);
             fullScreen.setLayoutX(width - actionW - nWidth - 10);
             actionW = actionW + nWidth + 10;
+        }
+        // 置顶按钮处理
+        if (alwaysOnTop != null) {
+            double nWidth = NodeUtil.getWidth(alwaysOnTop);
+            alwaysOnTop.setLayoutX(width - actionW - nWidth - 10);
         }
     }
 
@@ -387,9 +411,9 @@ public class TitleBar extends FlexPane {
         Stage stage = this.stage();
         if (stage != null) {
             // 处理按钮
-            TitleBarMaximumSVGPane maximizePane = (TitleBarMaximumSVGPane) this.lookup("#maximum");
-            if (maximizePane != null) {
-                maximizePane.setMaximize(!maximum);
+            TitleBarMaximumSVGPane pane = (TitleBarMaximumSVGPane) this.lookup("#maximum");
+            if (pane != null) {
+                pane.setMaximize(!maximum);
             }
             // 最大化设置高度不超过显示边界
             if (maximum) {
@@ -451,6 +475,38 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    public void alwaysOnTop() {
+        Stage stage = this.stage();
+        if (stage != null) {
+            this.alwaysOnTop(!stage.isAlwaysOnTop());
+        } else {
+            JulLog.warn("stage is null!");
+        }
+    }
+
+    public void doAlwaysOnTop(boolean alwaysOnTop) {
+        Stage stage = this.stage();
+        if (stage != null) {
+            // 处理按钮
+            TitleBarTopSVGGlyph glyph = (TitleBarTopSVGGlyph) this.lookup("#alwaysOnTop");
+            if (glyph != null) {
+                glyph.setActive(alwaysOnTop);
+            }
+        } else {
+            JulLog.warn("stage is null!");
+        }
+    }
+
+    public void alwaysOnTop(boolean alwaysOnTop) {
+        Stage stage = this.stage();
+        if (stage != null) {
+            stage.setAlwaysOnTop(alwaysOnTop);
+            this.doAlwaysOnTop(alwaysOnTop);
+        } else {
+            JulLog.warn("stage is null!");
+        }
+    }
+
     /**
      * 标题栏配置
      */
@@ -483,5 +539,10 @@ public class TitleBar extends FlexPane {
          * 全屏
          */
         private boolean fullScreen;
+
+        /**
+         * 置顶
+         */
+        private boolean alwaysOnTop;
     }
 }

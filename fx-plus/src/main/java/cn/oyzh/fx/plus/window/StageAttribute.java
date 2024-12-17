@@ -103,6 +103,13 @@ public @interface StageAttribute {
     boolean fullScreenAble() default false;
 
     /**
+     * 是否可置顶
+     *
+     * @return 是否可置顶
+     */
+    boolean alwaysOnTopAble() default false;
+
+    /**
      * 装饰样式
      *
      * @return 装饰样式

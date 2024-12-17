@@ -23,7 +23,7 @@ public class TitleBarMaximumSVGPane extends HBox implements MouseAdapter, StateA
     }
 
     public void restore() {
-        this.getChildren().setAll(new TitleBarRestoreSVGGlyph(this.size));
+        this.getChildren().setAll(new TitleBarUnMaximumSVGGlyph(this.size));
     }
 
     public void maximize() {
@@ -32,7 +32,7 @@ public class TitleBarMaximumSVGPane extends HBox implements MouseAdapter, StateA
 
     public boolean isMaximize() {
         SVGGlyph svgGlyph = (SVGGlyph) this.getChildren().getFirst();
-        return svgGlyph.getUrl().contains("restore.svg");
+        return svgGlyph.getUrl().contains("un-maximum.svg");
     }
 
     public void setMaximize(boolean maximize) {

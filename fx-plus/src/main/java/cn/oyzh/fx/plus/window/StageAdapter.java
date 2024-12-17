@@ -285,6 +285,10 @@ public interface StageAdapter extends WindowAdapter {
         if (attribute.fullScreenAble()) {
             config.setFullScreen(true);
         }
+        // 可置顶
+        if (attribute.alwaysOnTopAble()) {
+            config.setAlwaysOnTop(true);
+        }
         // 舞台
         Stage stage = this.stage();
         // 设置窗口样式

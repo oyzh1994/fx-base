@@ -377,6 +377,9 @@ public class TitleBox extends FXVBox {
         }
     }
 
+    /**
+     * 更新内容
+     */
     public void updateContent() {
         Node node = this.getContent();
         if (node != null) {
