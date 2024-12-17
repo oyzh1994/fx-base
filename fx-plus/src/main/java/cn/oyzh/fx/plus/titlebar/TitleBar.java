@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
@@ -112,27 +113,32 @@ public class TitleBar extends FlexPane {
             }
         }
 
+        // 全屏
+        if (config.isFullScreen()) {
+            TitleBarFullScreenSVGPane fullScreen = new TitleBarFullScreenSVGPane("16");
+            fullScreen.setId("fullScreen");
+            nodes.add(fullScreen);
+            fullScreen.setOnMousePrimaryClicked(e -> this.fullScreen());
+        }
+
         // 最小化
-        TitleBarMinimumSVGGlyph minimize = new TitleBarMinimumSVGGlyph("18");
-        minimize.setId("minimize");
-        nodes.add(minimize);
+        TitleBarMinimumSVGGlyph minimum = new TitleBarMinimumSVGGlyph("18");
+        minimum.setId("minimum");
+        nodes.add(minimum);
         if (config.isMinimum()) {
-            minimize.setOnMousePrimaryClicked(e -> this.minimize());
+            minimum.setOnMousePrimaryClicked(e -> this.minimum());
         } else {
-            minimize.disable();
+            minimum.disable();
         }
 
         // 最大化
-        TitleBarMaximumSVGPane maximize = new TitleBarMaximumSVGPane("18");
-        maximize.setId("maximize");
-        nodes.add(maximize);
+        TitleBarMaximumSVGPane maximum = new TitleBarMaximumSVGPane("18");
+        maximum.setId("maximum");
+        nodes.add(maximum);
         if (config.isMaximum()) {
-            maximize.setOnMousePrimaryClicked(e -> {
-                this.maximize();
-                maximize.setMaximize(!this.stage().isMaximized());
-            });
+            maximum.setOnMousePrimaryClicked(e -> this.maximum());
         } else {
-            maximize.disable();
+            maximum.disable();
         }
 
         // 关闭
@@ -183,8 +189,9 @@ public class TitleBar extends FlexPane {
         double layoutX = 10;
         double actionW = 0;
         Node close = null;
-        Node maximize = null;
-        Node minimize = null;
+        Node maximum = null;
+        Node minimum = null;
+        Node fullScreen = null;
         for (Node child : this.getChildren()) {
             if ("icon".equals(child.getId())) {
                 double nWidth = NodeUtil.getWidth(child);
@@ -202,14 +209,20 @@ public class TitleBar extends FlexPane {
                 layoutX += nWidth + 5;
                 continue;
             }
-            if ("minimize".equals(child.getId())) {
-                minimize = child;
+            if ("fullScreen".equals(child.getId())) {
+                fullScreen = child;
                 double nHeight = NodeUtil.getHeight(child);
                 child.setLayoutY((height - nHeight) / 2);
                 continue;
             }
-            if ("maximize".equals(child.getId())) {
-                maximize = child;
+            if ("minimum".equals(child.getId())) {
+                minimum = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+            if ("maximum".equals(child.getId())) {
+                maximum = child;
                 double nHeight = NodeUtil.getHeight(child);
                 child.setLayoutY((height - nHeight) / 2);
                 continue;
@@ -227,14 +240,19 @@ public class TitleBar extends FlexPane {
             close.setLayoutX(width - nWidth - 10);
             actionW = nWidth + 10;
         }
-        if (maximize != null) {
-            double nWidth = NodeUtil.getWidth(maximize);
-            maximize.setLayoutX(width - actionW - nWidth - 10);
+        if (maximum != null) {
+            double nWidth = NodeUtil.getWidth(maximum);
+            maximum.setLayoutX(width - actionW - nWidth - 10);
             actionW = actionW + nWidth + 10;
         }
-        if (minimize != null) {
-            double nWidth = NodeUtil.getWidth(minimize);
-            minimize.setLayoutX(width - actionW - nWidth - 10);
+        if (minimum != null) {
+            double nWidth = NodeUtil.getWidth(minimum);
+            minimum.setLayoutX(width - actionW - nWidth - 10);
+            actionW = actionW + nWidth + 10;
+        }
+        if (fullScreen != null) {
+            double nWidth = NodeUtil.getWidth(fullScreen);
+            fullScreen.setLayoutX(width - actionW - nWidth - 10);
             actionW = actionW + nWidth + 10;
         }
     }
@@ -253,7 +271,7 @@ public class TitleBar extends FlexPane {
                     }
                 } else if (event.getClickCount() == 2) {
                     // 最大化
-                    this.maximize();
+                    this.maximum();
                 }
             }
         });
@@ -346,7 +364,7 @@ public class TitleBar extends FlexPane {
         }
     }
 
-    public void maximize() {
+    public void maximum() {
         Stage stage = this.stage();
         if (stage != null) {
             this.maximum(!stage.isMaximized());
@@ -359,22 +377,22 @@ public class TitleBar extends FlexPane {
         Stage stage = this.stage();
         if (stage != null) {
             stage.setMaximized(maximum);
-            this.doMaximized(maximum);
+            this.doMaximum(maximum);
         } else {
             JulLog.warn("stage is null!");
         }
     }
 
-    public void doMaximized(boolean maximized) {
+    public void doMaximum(boolean maximum) {
         Stage stage = this.stage();
         if (stage != null) {
             // 处理按钮
-            TitleBarMaximumSVGPane maximizePane = (TitleBarMaximumSVGPane) this.lookup("#maximize");
+            TitleBarMaximumSVGPane maximizePane = (TitleBarMaximumSVGPane) this.lookup("#maximum");
             if (maximizePane != null) {
-                maximizePane.setMaximize(!maximized);
+                maximizePane.setMaximize(!maximum);
             }
             // 最大化设置高度不超过显示边界
-            if (maximized) {
+            if (maximum) {
                 Rectangle2D rectangle2D = Screen.getPrimary().getVisualBounds();
                 stage.setHeight(rectangle2D.getHeight());
             }
@@ -383,7 +401,7 @@ public class TitleBar extends FlexPane {
         }
     }
 
-    public void minimize() {
+    public void minimum() {
         Stage stage = this.stage();
         if (stage != null) {
             this.minimum(!stage.isIconified());
@@ -396,6 +414,38 @@ public class TitleBar extends FlexPane {
         Stage stage = this.stage();
         if (stage != null) {
             stage.setIconified(minimum);
+        } else {
+            JulLog.warn("stage is null!");
+        }
+    }
+
+    public void fullScreen() {
+        Stage stage = this.stage();
+        if (stage != null) {
+            this.fullScreen(!stage.isFullScreen());
+        } else {
+            JulLog.warn("stage is null!");
+        }
+    }
+
+    public void doFullScreen(boolean fullScreen) {
+        Stage stage = this.stage();
+        if (stage != null) {
+            // 处理按钮
+            TitleBarFullScreenSVGPane pane = (TitleBarFullScreenSVGPane) this.lookup("#fullScreen");
+            if (pane != null) {
+                pane.setFullScreen(!fullScreen);
+            }
+        } else {
+            JulLog.warn("stage is null!");
+        }
+    }
+
+    public void fullScreen(boolean fullScreen) {
+        Stage stage = this.stage();
+        if (stage != null) {
+            stage.setFullScreen(fullScreen);
+            this.doFullScreen(fullScreen);
         } else {
             JulLog.warn("stage is null!");
         }
@@ -415,18 +465,23 @@ public class TitleBar extends FlexPane {
         private String icon;
 
         /**
-         * 显示close
+         * 关闭
          */
         private boolean close = true;
 
         /**
-         * 显示最大化
+         * 最大化
          */
         private boolean maximum = true;
 
         /**
-         * 显示最小化
+         * 最小化
          */
         private boolean minimum = true;
+
+        /**
+         * 全屏
+         */
+        private boolean fullScreen;
     }
 }

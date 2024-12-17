@@ -278,6 +278,12 @@ public interface StageAdapter extends WindowAdapter {
         // 不可拉伸
         if (!attribute.resizable()) {
             config.setMaximum(false).setMinimum(false);
+        } else if (!attribute.maximumAble()) {// 不可最大化
+            config.setMaximum(false);
+        }
+        // 可全屏
+        if (attribute.fullScreenAble()) {
+            config.setFullScreen(true);
         }
         // 舞台
         Stage stage = this.stage();
@@ -309,7 +315,7 @@ public interface StageAdapter extends WindowAdapter {
                 this.onWindowClosed();
             } else {
                 // 最大化处理
-                titleBar.doMaximized(stage.isMaximized());
+                titleBar.doMaximum(stage.isMaximized());
                 // 初始化标题
                 titleBar.initTitle();
             }
@@ -319,13 +325,17 @@ public interface StageAdapter extends WindowAdapter {
         // 绑定大小，因为有边框，需要总高度/宽度+2
         titleBox.prefWidthProperty().bind(stage.widthProperty().add(2));
         titleBox.prefHeightProperty().bind(stage.heightProperty().add(2));
-        // 更新标题
+        // 标题
         stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
-        // 更新内容
+        // 最大化
         stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
             if (BooleanUtil.isFalse(newValue)) {
                 TaskManager.startDelay(titleBox::updateContent, 10);
             }
+        });
+        // 全屏
+        stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+            TaskManager.startDelay(titleBox::updateContent, 10);
         });
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {

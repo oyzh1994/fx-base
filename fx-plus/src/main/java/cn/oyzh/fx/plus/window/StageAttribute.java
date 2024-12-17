@@ -82,11 +82,25 @@ public @interface StageAttribute {
     boolean resizeable() default true;
 
     /**
+     * 是否可最大化
+     *
+     * @return 是否可最大化
+     */
+    boolean maximumAble() default true;
+
+    /**
      * 是否可拉伸
      *
      * @return 是否可拉伸
      */
     boolean resizable() default true;
+
+    /**
+     * 是否可全屏
+     *
+     * @return 是否可全屏
+     */
+    boolean fullScreenAble() default false;
 
     /**
      * 装饰样式
