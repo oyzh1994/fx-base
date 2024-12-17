@@ -1,9 +1,8 @@
 package cn.oyzh.fx.plus.titlebar;
 
-import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
-import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024-12-09
  */
-public class TitleBarMaximumSVGPane extends HBox implements MouseAdapter, StateAdapter {
+public class TitleBarMaximumSVGPane extends FXHBox implements MouseAdapter {
 
     @Getter
     @Setter
@@ -23,11 +22,11 @@ public class TitleBarMaximumSVGPane extends HBox implements MouseAdapter, StateA
     }
 
     public void restore() {
-        this.getChildren().setAll(new TitleBarUnMaximumSVGGlyph(this.size));
+        this.setChild(new TitleBarUnMaximumSVGGlyph(this.size));
     }
 
     public void maximize() {
-        this.getChildren().setAll(new TitleBarMaximumSVGGlyph(this.size));
+        this.setChild(new TitleBarMaximumSVGGlyph(this.size));
     }
 
     public boolean isMaximize() {

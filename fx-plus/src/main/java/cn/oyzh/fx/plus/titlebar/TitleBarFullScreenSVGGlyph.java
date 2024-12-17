@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * @author oyzh
  * @since 2024/08/06
  */
-public class TitleBarFullScreenSVGGlyph extends SVGGlyph {
+public class TitleBarFullScreenSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarFullScreenSVGGlyph() {
         this.setUrl("/fx-svg/titlebar/fullscreen.svg");

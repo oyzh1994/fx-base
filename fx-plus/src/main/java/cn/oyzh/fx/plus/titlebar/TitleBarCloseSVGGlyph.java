@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * @author oyzh
  * @since 2024/08/06
  */
-public class TitleBarCloseSVGGlyph extends SVGGlyph {
+public class TitleBarCloseSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarCloseSVGGlyph() {
         this.setUrl("/fx-svg/titlebar/close.svg");

@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * @author oyzh
  * @since 2024/08/06
  */
-public class TitleBarUnMaximumSVGGlyph extends SVGGlyph {
+public class TitleBarUnMaximumSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarUnMaximumSVGGlyph() {
         this.setUrl("/fx-svg/titlebar/un-maximum.svg");

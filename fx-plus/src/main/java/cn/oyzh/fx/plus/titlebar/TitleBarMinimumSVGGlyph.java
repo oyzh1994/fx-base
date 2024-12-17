@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * @author oyzh
  * @since 2024/08/06
  */
-public class TitleBarMinimumSVGGlyph extends SVGGlyph {
+public class TitleBarMinimumSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarMinimumSVGGlyph() {
         this.setUrl("/fx-svg/titlebar/minimum.svg");
