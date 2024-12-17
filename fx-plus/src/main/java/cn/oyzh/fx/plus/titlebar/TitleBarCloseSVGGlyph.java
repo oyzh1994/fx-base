@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.titlebar;
 
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import javafx.scene.paint.Color;
 
 /**
  * @author oyzh
@@ -15,5 +16,11 @@ public class TitleBarCloseSVGGlyph extends ActionSVGGlyph {
     public TitleBarCloseSVGGlyph(String size) {
         this();
         this.setSizeStr(size);
+    }
+
+    @Override
+    protected void initEvents() {
+        this.setOnMouseEntered(event -> this.setColor(Color.RED));
+        this.setOnMouseExited(event -> this.setColor(ThemeManager.currentForegroundColor()));
     }
 }
