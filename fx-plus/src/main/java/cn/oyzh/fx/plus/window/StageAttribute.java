@@ -70,6 +70,7 @@ public @interface StageAttribute {
      *
      * @return 是否可最大化
      */
+    @Deprecated
     boolean maximized() default false;
 
     /**

@@ -233,7 +233,12 @@ public interface StageAdapter extends WindowAdapter {
      * @param maximized 最大化
      */
     default void setMaximized(boolean maximized) {
+        // if (BooleanUtil.isTrue(this.getProp("_custom"))) {
+        //     TitleBar titleBar = (TitleBar) this.root().lookup("#titleBar");
+        //     titleBar.maximum(maximized);
+        // } else {
         this.stage().setMaximized(maximized);
+        // }
     }
 
     /**
@@ -266,15 +271,13 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 设置controller
         this.setProp("_controller", loader.getController());
+        // 定制的
+        this.setProp("_custom", true);
         // 创建配置
         TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
-        config.setMaximized(attribute.maximized());
-        if (StringUtil.isNotEmpty(attribute.iconUrl())) {
-            config.setIcon(attribute.iconUrl());
-        }
         // 不可拉伸
         if (!attribute.resizable()) {
-            config.setShowMaximum(false).setShowMinimum(false);
+            config.setMaximum(false).setMinimum(false);
         }
         // 舞台
         Stage stage = this.stage();
@@ -284,6 +287,7 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 设置icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+            config.setIcon(attribute.iconUrl());
             stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         }
         // 非主窗口
@@ -292,19 +296,37 @@ public interface StageAdapter extends WindowAdapter {
             if (owner != null) {
                 stage.initOwner(owner);
                 // 不显示最小化
-                config.setShowMinimum(false);
+                config.setMinimum(false);
             }
             // 初始化模态
             stage.initModality(attribute.modality());
         }
-        // 初始化容器
+        // 标题栏
         TitleBar titleBar = new TitleBar(config);
+        // 显示监听
+        stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                this.onWindowClosed();
+            } else {
+                // 最大化处理
+                titleBar.doMaximized(stage.isMaximized());
+                // 初始化标题
+                titleBar.initTitle();
+            }
+        });
+        // 标题组件
         TitleBox titleBox = new TitleBox(titleBar, root);
-        // 绑定大小
-        titleBox.prefWidthProperty().bind(stage.widthProperty());
-        titleBox.prefHeightProperty().bind(stage.heightProperty());
+        // 绑定大小，因为有边框，需要总高度/宽度+2
+        titleBox.prefWidthProperty().bind(stage.widthProperty().add(2));
+        titleBox.prefHeightProperty().bind(stage.heightProperty().add(2));
         // 更新标题
         stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
+        // 更新内容
+        stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+            if (BooleanUtil.isFalse(newValue)) {
+                TaskManager.startDelay(titleBox::updateContent, 10);
+            }
+        });
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
@@ -313,24 +335,10 @@ public interface StageAdapter extends WindowAdapter {
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
         }
-        stage.showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onWindowClosed();
-            }
-        });
-        // 监听最大化，处理内置内容大小
-        stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> {
-            // 更新内容
-            if (BooleanUtil.isFalse(t1)) {
-                TaskManager.startDelay(titleBox::updateContent, 10);
-            }
-        });
         // 初始化
         NodeManager.init(this);
         // 设置scene
-        FXUtil.runWait(() -> this.stage().setScene(new Scene(titleBox)));
-        // 初始化标题
-        titleBar.initTitle();
+        FXUtil.runWait(() -> stage.setScene(new Scene(titleBox)));
     }
 
     /**

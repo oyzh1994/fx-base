@@ -71,6 +71,7 @@ public class TitleBar extends FlexPane {
     }
 
     protected void init(TitleBarConfig config) {
+        this.setId("titleBar");
         this.realHeight(30);
         this.setMaxHeight(30);
         this.setFlexWidth("100%");
@@ -95,13 +96,13 @@ public class TitleBar extends FlexPane {
                 JulLog.warn("load icon failed");
             }
         }
-        if (config.isShowMinimum()) {
+        if (config.isMinimum()) {
             TitleBarMinimumSVGGlyph glyph = new TitleBarMinimumSVGGlyph("18");
             glyph.setOnMousePrimaryClicked(e -> this.minimize());
             glyph.setId("minimize");
             nodes.add(glyph);
         }
-        if (config.isShowMaximum()) {
+        if (config.isMaximum()) {
             TitleBarMaximumSVGPane pane = new TitleBarMaximumSVGPane("18");
             pane.setId("maximize");
             pane.setOnMousePrimaryClicked(e -> {
@@ -110,7 +111,7 @@ public class TitleBar extends FlexPane {
             });
             nodes.add(pane);
         }
-        if (config.isShowClose()) {
+        if (config.isClose()) {
             TitleBarCloseSVGGlyph glyph = new TitleBarCloseSVGGlyph("18");
             glyph.setId("close");
             glyph.setOnMousePrimaryClicked(e -> this.close());
@@ -222,12 +223,10 @@ public class TitleBar extends FlexPane {
                     // 记录位置
                     if (this.checkNotInvalid()) {
                         this.doRecordLocation();
-                        // event.consume();
                     }
                 } else if (event.getClickCount() == 2) {
                     // 最大化
                     this.maximize();
-                    // event.consume();
                 }
             }
         });
@@ -333,13 +332,22 @@ public class TitleBar extends FlexPane {
         Stage stage = this.stage();
         if (stage != null) {
             stage.setMaximized(maximum);
+            this.doMaximized(maximum);
+        } else {
+            JulLog.warn("stage is null!");
+        }
+    }
+
+    public void doMaximized(boolean maximized) {
+        Stage stage = this.stage();
+        if (stage != null) {
             // 处理按钮
             TitleBarMaximumSVGPane maximizePane = (TitleBarMaximumSVGPane) this.lookup("#maximize");
             if (maximizePane != null) {
-                maximizePane.setMaximize(!maximum);
+                maximizePane.setMaximize(maximized);
             }
             // 最大化设置高度不超过显示边界
-            if (maximum) {
+            if (maximized) {
                 Rectangle2D rectangle2D = Screen.getPrimary().getVisualBounds();
                 stage.setHeight(rectangle2D.getHeight());
             }
@@ -380,11 +388,6 @@ public class TitleBar extends FlexPane {
         private String icon;
 
         /**
-         * 当前是否最大化
-         */
-        private boolean maximized;
-
-        /**
          * 操作
          */
         private List<Node> actions;
@@ -392,16 +395,16 @@ public class TitleBar extends FlexPane {
         /**
          * 显示close
          */
-        private boolean showClose = true;
+        private boolean close = true;
 
         /**
          * 显示最大化
          */
-        private boolean showMaximum = true;
+        private boolean maximum = true;
 
         /**
          * 显示最小化
          */
-        private boolean showMinimum = true;
+        private boolean minimum = true;
     }
 }
