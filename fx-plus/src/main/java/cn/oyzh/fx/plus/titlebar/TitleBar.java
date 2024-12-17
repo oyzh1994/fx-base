@@ -6,11 +6,13 @@ import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
 import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
@@ -84,9 +86,14 @@ public class TitleBar extends FlexPane {
             nodes = new ArrayList<>();
         }
         if (config.getIcon() != null) {
-            FXImageView imageView = new FXImageView(config.getIcon(), 16);
-            imageView.setId("icon");
-            nodes.add(imageView);
+            Image image = IconUtil.getIcon(config.getIcon());
+            if (image != null) {
+                FXImageView imageView = new FXImageView(image, 16);
+                imageView.setId("icon");
+                nodes.add(imageView);
+            } else {
+                JulLog.warn("load icon failed");
+            }
         }
         if (config.isShowMinimum()) {
             TitleBarMinimumSVGGlyph glyph = new TitleBarMinimumSVGGlyph("18");

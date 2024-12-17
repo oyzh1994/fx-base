@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.window;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
@@ -265,10 +266,6 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 设置controller
         this.setProp("_controller", loader.getController());
-        // 设置窗口样式
-        if (!this.hasBeenVisible()) {
-            this.stage().initStyle(StageStyle.UNDECORATED);
-        }
         // 创建配置
         TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
         config.setMaximized(attribute.maximized());
@@ -281,6 +278,14 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 舞台
         Stage stage = this.stage();
+        // 设置窗口样式
+        if (!this.hasBeenVisible()) {
+            stage.initStyle(StageStyle.UNDECORATED);
+        }
+        // 设置icon
+        if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+            stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
+        }
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
@@ -316,11 +321,9 @@ public interface StageAdapter extends WindowAdapter {
         // 监听最大化，处理内置内容大小
         stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> {
             // 更新内容
-            TaskManager.startDelay(()->{
-                titleBox.updateContent();
-            },10);
-            System.out.println("-----------1");
-            // TaskManager.startDelay("_stage_resize", () -> this.root().resize(NodeUtil.getWidth(this.stage()) - 15, NodeUtil.getHeight(this.stage()) - 40), 1);
+            if (BooleanUtil.isFalse(t1)) {
+                TaskManager.startDelay(titleBox::updateContent, 1);
+            }
         });
         // 初始化
         NodeManager.init(this);

@@ -9862,7 +9862,7 @@ public abstract class Node implements EventTarget, Styleable {
     // There is no check of the CSS state of a child since reapply takes precedence
     // over other CSS states.
     //
-    public void reapplyCss() {
+    public synchronized void reapplyCss() {
 
         // Hang on to current styleHelper so we can know whether
         // createStyleHelper returned the same styleHelper
