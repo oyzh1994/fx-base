@@ -15,13 +15,13 @@
 /* tree-cell，修复atlantafx的样式异常问题 */
 .tree-cell:expanded > .tree-disclosure-node > .arrow,
 .tree-table-row-cell:expanded > .tree-disclosure-node > .arrow {
-    -fx-padding: 0.2em 0.5em 0 0;
+    -fx-padding: 0.5em 0.5em 0 0;
     -fx-rotate: 0;
 }
 
 .tree-cell > .tree-disclosure-node > .arrow,
 .tree-table-row-cell > .tree-disclosure-node > .arrow {
-    -fx-padding: 0.2em 0.5em 0 0;
+    -fx-padding: 0.5em 0.5em 0 0;
 }
 
 /* tree-cell，修复atlantafx的样式异常问题 */
