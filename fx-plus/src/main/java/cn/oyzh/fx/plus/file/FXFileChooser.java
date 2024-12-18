@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.file;
 
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.WindowManager;
 import javafx.stage.FileChooser;

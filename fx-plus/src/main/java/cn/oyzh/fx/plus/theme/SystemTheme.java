@@ -3,7 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import atlantafx.base.theme.Theme;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.common.util.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.ColorScheme;
 import javafx.application.Platform;

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.gui.text.field;
 
-import cn.oyzh.common.util.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.gui.skin.ChooseFileTextFieldSkin;
 import cn.oyzh.fx.plus.file.FileExtensionFilter;
 import javafx.scene.control.Skin;

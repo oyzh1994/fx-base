@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.Theme;
-import cn.oyzh.common.util.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
 import lombok.Getter;

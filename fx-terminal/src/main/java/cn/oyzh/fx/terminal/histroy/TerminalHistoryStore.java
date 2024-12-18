@@ -3,7 +3,7 @@ package cn.oyzh.fx.terminal.histroy;
 import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.store.json.ArrayFileStore;
 import lombok.NonNull;

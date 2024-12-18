@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.SysConst;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import javafx.scene.paint.Color;
