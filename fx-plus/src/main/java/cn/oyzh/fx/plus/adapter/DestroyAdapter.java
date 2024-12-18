@@ -26,14 +26,6 @@ public interface DestroyAdapter extends Destroyable {
                 }
             };
             node.sceneProperty().addListener(listener);
-        // } else if (this instanceof TreeItem<?> node) {
-        //     ChangeListener<TreeItem<?>> listener = (observable, oldValue, newValue) -> {
-        //         if (newValue == null) {
-        //             this.destroy();
-        //             JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
-        //         }
-        //     };
-        //     node.parentProperty().addListener(listener);
         } else if (this instanceof MenuItem node) {
             ChangeListener<ContextMenu> listener = (observable, oldValue, newValue) -> {
                 if (newValue == null) {

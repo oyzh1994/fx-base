@@ -53,14 +53,14 @@ public interface StateAdapter extends PropAdapter {
         if (managedBindVisible) {
             this.managedBindVisible();
         }
-        this.setProp("managedBindVisible", managedBindVisible);
+        this.setProp("_managed_bind_visible", managedBindVisible);
     }
 
     /**
      * 是否managed属性绑定visible属性
      */
     default boolean isManagedBindVisible() {
-        return this.getProp("managedBindVisible");
+        return this.getProp("_managed_bind_visible");
     }
 
     /**

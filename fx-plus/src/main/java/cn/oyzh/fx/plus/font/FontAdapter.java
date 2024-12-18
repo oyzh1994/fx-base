@@ -264,18 +264,20 @@ public interface FontAdapter extends PropAdapter {
         return FontWeight.findByName(Font.getDefault().getStyle());
     }
 
+    String ENABLE_FONT_KEY = "_enable_font";
+
     /**
      * 禁用字体
      */
     default void disableFont() {
-        this.setProp("_enableFont", false);
+        this.setProp(ENABLE_FONT_KEY, false);
     }
 
     /**
      * 启用字体
      */
     default void enableFont() {
-        this.removeProp("_enableFont");
+        this.removeProp(ENABLE_FONT_KEY);
     }
 
     /**
@@ -284,7 +286,7 @@ public interface FontAdapter extends PropAdapter {
      * @param enableFont 启用字体
      */
     default void setEnableFont(boolean enableFont) {
-        this.setProp("_enableFont", enableFont);
+        this.setProp(ENABLE_FONT_KEY, enableFont);
     }
 
     /**
@@ -293,7 +295,7 @@ public interface FontAdapter extends PropAdapter {
      * @return 结果
      */
     default boolean isEnableFont() {
-        Boolean b = this.getProp("_enableFont");
+        Boolean b = this.getProp(ENABLE_FONT_KEY);
         return b == null || b;
     }
 
