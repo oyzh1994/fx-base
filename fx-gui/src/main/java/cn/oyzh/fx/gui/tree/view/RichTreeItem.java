@@ -14,6 +14,7 @@ import lombok.NonNull;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 /**
@@ -368,23 +369,23 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 子节点排序
      */
     protected void sortChild(boolean sortAsc) {
-        // this.service().submitFX(() -> {
-        this.setSorting(true);
-        try {
-            // 执行排序
-            ObservableList<RichTreeItem<?>> children = this.richChildren();
-            if (!children.isEmpty()) {
-                // asc
-                if (sortAsc) {
-                    children.sort(RichTreeItem::compareTo);
-                } else {// desc
-                    children.sort(Comparator.reverseOrder());
+        this.service().submitFX(() -> {
+            this.setSorting(true);
+            try {
+                // 执行排序
+                ObservableList<RichTreeItem<?>> children = this.richChildren();
+                if (!children.isEmpty()) {
+                    // asc
+                    if (sortAsc) {
+                        children.sort(RichTreeItem::compareTo);
+                    } else {// desc
+                        children.sort(Comparator.reverseOrder());
+                    }
                 }
+            } finally {
+                this.setSorting(false);
             }
-        } finally {
-            this.setSorting(false);
-        }
-        // });
+        });
     }
 
     /**
@@ -393,7 +394,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void doFilter() {
         List<RichTreeItem<?>> items = this.richChildren();
         // this.doFilter(this.getTreeView().itemFilter, items);
-        this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter, items));
+        this.service().submit(() -> this.doFilter(this.getTreeView().itemFilter(), items));
     }
 
     /**
@@ -403,8 +404,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      */
     public void doFilter(RichTreeItemFilter itemFilter) {
         List<RichTreeItem<?>> items = this.richChildren();
-        this.doFilter(itemFilter, items);
-        // this.service().submit(() -> this.doFilter(itemFilter, items));
+        List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
+        // this.doFilter(itemFilter, items);
+        this.service().submit(() -> this.doFilter(itemFilter, list));
     }
 
     /**
@@ -418,15 +420,22 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
             try {
                 if (this.isFilterable()) {
                     // if (itemFilter != null) {
-                    items.forEach(child -> {
+                    for (RichTreeItem<?> child : items) {
                         child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
-                    });
+                    }
+                    // items.forEach(child -> {
+                    //     child.setVisible(itemFilter.test(child));
+                    //     child.doFilter(itemFilter);
+                    // });
                     // } else {
                     //     items.forEach(child -> child.setVisible(true));
                     // }
                 } else {
-                    items.forEach(child -> child.doFilter(itemFilter));
+                    for (RichTreeItem<?> child : items) {
+                        child.doFilter(itemFilter);
+                    }
+                    // items.forEach(child -> child.doFilter(itemFilter));
                 }
                 this.sort();
                 // this.reExpanded();
