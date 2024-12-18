@@ -75,8 +75,12 @@ public class MessageBox {
         FXUtil.runWait(() -> reference.set(new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2)));
         reference.get().setTitle(title);
         reference.get().setHeaderText(null);
-        Optional<ButtonType> optional = reference.get().showAndWait();
-        return optional.map(b -> b.equals(button1)).orElse(false);
+        AtomicReference<Boolean> result = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            Optional<ButtonType> optional = reference.get().showAndWait();
+            result.set(optional.map(b -> b.equals(button1)).orElse(false));
+        });
+        return result.get();
     }
 
     /**
