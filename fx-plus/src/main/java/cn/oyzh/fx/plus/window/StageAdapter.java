@@ -288,11 +288,14 @@ public interface StageAdapter extends WindowAdapter {
         this.setProp("_controller", loader.getController());
         // 定制的
         this.setProp("_custom", true);
+        // 舞台
+        Stage stage = this.stage();
         // 创建配置
         TitleBar.TitleBarConfig config = new TitleBar.TitleBarConfig();
         // 不可拉伸
         if (!attribute.resizable()) {
             config.setMaximum(false).setMinimum(false);
+            stage.setResizable(false);
         } else if (!attribute.maximumAble()) {// 不可最大化
             config.setMaximum(false);
         }
@@ -304,8 +307,6 @@ public interface StageAdapter extends WindowAdapter {
         if (attribute.alwaysOnTopAble()) {
             config.setAlwaysOnTop(true);
         }
-        // 舞台
-        Stage stage = this.stage();
         // 设置窗口样式
         if (!this.hasBeenVisible()) {
             stage.initStyle(StageStyle.UNDECORATED);

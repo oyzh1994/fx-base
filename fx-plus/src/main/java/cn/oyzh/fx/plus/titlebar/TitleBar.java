@@ -466,7 +466,7 @@ public class TitleBar extends FlexPane {
      */
     public void maximum() {
         Stage stage = this.stage();
-        if (stage != null) {
+        if (stage != null && stage.isResizable()) {
             this.maximum(!stage.isMaximized());
         } else {
             JulLog.warn("stage is null!");

@@ -13,6 +13,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -186,7 +187,8 @@ public class TitleBox extends FXVBox {
      */
     protected void initBorder() {
         Color color = ThemeManager.currentAccentColor();
-        BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        CornerRadii radii = new CornerRadii(3);
+        BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, radii, new BorderWidths(1));
         Border border = new Border(stroke);
         this.setBorder(border);
     }
@@ -391,8 +393,8 @@ public class TitleBox extends FXVBox {
      */
     protected boolean checkNotInvalid() {
         Stage stage = this.stage();
-        // 最大化、最小化、全屏情况下不执行操作
-        return stage != null && !stage.isMaximized() && !stage.isIconified() && !stage.isFullScreen();
+        // 不可拉伸、最大化、最小化、全屏情况下不执行操作
+        return stage != null && stage.isResizable() && !stage.isMaximized() && !stage.isIconified() && !stage.isFullScreen();
     }
 
     @Override
