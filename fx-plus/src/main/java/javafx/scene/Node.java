@@ -1940,7 +1940,7 @@ public abstract class Node implements EventTarget, Styleable {
      */
     private ReadOnlyBooleanWrapper disabled;
 
-    protected final void setDisabled(boolean value) {
+    protected void setDisabled(boolean value) {
         disabledPropertyImpl().set(value);
     }
 
@@ -9878,7 +9878,7 @@ public abstract class Node implements EventTarget, Styleable {
     // There is no check of the CSS state of a child since reapply takes precedence
     // over other CSS states.
     //
-    private void reapplyCss() {
+    public synchronized void reapplyCss() {
 
         // Hang on to current styleHelper so we can know whether
         // createStyleHelper returned the same styleHelper

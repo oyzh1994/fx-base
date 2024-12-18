@@ -341,9 +341,9 @@ public interface StageAdapter extends WindowAdapter {
         });
         // 标题组件
         TitleBox titleBox = new TitleBox(titleBar, root);
-        // 绑定大小，因为有边框，需要总高度/宽度+2
-        titleBox.prefWidthProperty().bind(stage.widthProperty().add(2));
-        titleBox.prefHeightProperty().bind(stage.heightProperty().add(2));
+        // 绑定大小，因为有边框，需要总高度/宽度+4
+        titleBox.prefWidthProperty().bind(stage.widthProperty().add(4));
+        titleBox.prefHeightProperty().bind(stage.heightProperty().add(4));
         // 标题
         stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
         // 最大化

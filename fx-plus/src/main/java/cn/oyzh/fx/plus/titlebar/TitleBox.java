@@ -401,7 +401,7 @@ public class TitleBox extends FXVBox {
         // 更新内容的宽高
         Node node = this.getContent();
         if (node != null) {
-            NodeUtil.setSize(node, width, height - 30);
+            NodeUtil.setSize(node, width - 4, height - 34);
         }
     }
 
