@@ -35,7 +35,7 @@ public abstract class FXApplication extends Preloader {
         FXUtil.disableCSSLogger();
         // 调用父类
         super.init();
-        JulLog.info("{} init.", this.appName());
+        JulLog.info("{} init finish.", this.appName());
     }
 
     @Override
@@ -112,6 +112,7 @@ public abstract class FXApplication extends Preloader {
      */
     public static void launch(@NonNull Class<? extends Application> appClass, String... args) {
         try {
+            JulLog.info("appClass:{}", appClass.getName());
             if (args != null && args.length > 0) {
                 JulLog.info("=============launch args start---------->");
                 for (String arg : args) {
@@ -130,13 +131,16 @@ public abstract class FXApplication extends Preloader {
                 JulLog.info("=============System Properties end---------->");
             }
             // 启动工程
+            JulLog.info("=============launchApplication start---------->");
             if (Preloader.class.isAssignableFrom(appClass)) {
                 Class<Preloader> preloaderClass = (Class<Preloader>) appClass;
                 LauncherImpl.launchApplication(appClass, preloaderClass, args);
             } else {
                 LauncherImpl.launchApplication(appClass, args);
             }
+            JulLog.info("=============launchApplication finish---------->");
         } catch (Exception ex) {
+            JulLog.error("launch fail", ex);
             ex.printStackTrace();
         }
     }

@@ -35,8 +35,8 @@ public class StageManager {
      * 退出系统
      */
     public static void exit() {
-        for (StageAdapter wrapper : allStages()) {
-            if (wrapper.controller() instanceof StageListener listener) {
+        for (StageAdapter adapter : allStages()) {
+            if (adapter.controller() instanceof StageListener listener) {
                 try {
                     JulLog.info("exit listener:{}", listener.getClass());
                     listener.onSystemExit();
@@ -185,15 +185,6 @@ public class StageManager {
         Primary_Stage = primaryStage;
     }
 
-    // /**
-    //  * 是否显示过
-    //  *
-    //  * @param window 窗口
-    //  */
-    // public static boolean hasBeenVisible(@NonNull Window window) {
-    //     return ReflectUtil.getFieldValue(window, "hasBeenVisible");
-    // }
-
     /**
      * 窗口隐藏在任务栏
      *
@@ -238,17 +229,4 @@ public class StageManager {
         transparentStage.setY(-1000);
         return transparentStage;
     }
-
-    // private static LoadingStage LoadingStage;
-    //
-    // public static void showWithLoading(StageAdapter adapter) {
-    //     // if (LoadingStage == null) {
-    //         LoadingStage = new LoadingStage();
-    //     // }
-    //     LoadingStage.display();
-    //     FXUtil.runLater(() -> {
-    //         adapter.display();
-    //         LoadingStage.disappear();
-    //     }, 200);
-    // }
 }

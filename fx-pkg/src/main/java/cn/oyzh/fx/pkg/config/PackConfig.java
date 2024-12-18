@@ -56,7 +56,7 @@ public class PackConfig {
 
     /**
      * 打包方式
-     * jpackage
+     * jpackage win打包的exe不能重启，mac打包的不能启动，不建议使用
      * packr
      */
     @Setter
