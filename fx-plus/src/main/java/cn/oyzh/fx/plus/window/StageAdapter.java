@@ -45,7 +45,7 @@ public interface StageAdapter extends WindowAdapter {
         try {
             WindowAdapter.super.onWindowClosed();
             DragUtil.clearDragFile(this.scene());
-            this.setTitleExt(null);
+            this.title(null);
             this.scene(null);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -451,7 +451,7 @@ public interface StageAdapter extends WindowAdapter {
      *
      * @param title 标题
      */
-    default void setTitleExt(String title) {
+    default void title(String title) {
         if (title != null) {
             FXUtil.runWait(() -> this.stage().setTitle(title));
         }
@@ -460,7 +460,7 @@ public interface StageAdapter extends WindowAdapter {
     /**
      * 获取标题，扩展
      */
-    default String getTitleExt() {
+    default String title() {
         return this.stage() == null ? null : this.stage().getTitle();
     }
 
@@ -487,7 +487,7 @@ public interface StageAdapter extends WindowAdapter {
                 this.setProp("_title", title);
             }
             String newTitle = title + append;
-            this.setTitleExt(newTitle);
+            this.title(newTitle);
             if (liveTime >= 0) {
                 ExecutorUtil.start(this::restoreTitle, liveTime);
             }
@@ -498,7 +498,7 @@ public interface StageAdapter extends WindowAdapter {
      * 恢复标题
      */
     default void restoreTitle() {
-        this.setTitleExt(this.getProp("_title"));
+        this.title(this.getProp("_title"));
     }
 
     /**

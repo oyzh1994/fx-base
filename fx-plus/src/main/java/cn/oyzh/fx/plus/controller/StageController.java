@@ -37,10 +37,10 @@ public class StageController extends Controller implements StageListener, EventL
         // 设置页面
         this.setWindow(stage);
         // 处理标题
-        if (StringUtil.isEmpty(this.stage.getTitleExt())) {
+        if (StringUtil.isEmpty(this.stage.title())) {
             String title = this.getViewTitle();
             if (title != null) {
-                this.stage.setTitleExt(title);
+                this.stage.title(title);
             }
         }
         NodeManager.init(this);
