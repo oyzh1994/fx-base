@@ -1,6 +1,5 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
-import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.NumberUtil;
@@ -24,9 +23,7 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import lombok.NonNull;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;

@@ -22,8 +22,6 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
-import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 
 import java.util.List;
 

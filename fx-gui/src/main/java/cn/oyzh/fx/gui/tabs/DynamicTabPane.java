@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.tabs;
 
-import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.controls.tab.FlexTabPane;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Tab;

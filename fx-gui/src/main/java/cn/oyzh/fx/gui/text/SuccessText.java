@@ -1,6 +1,5 @@
 package cn.oyzh.fx.gui.text;
 
-import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.controls.text.FlexText;
 
 /**

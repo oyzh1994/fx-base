@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
-import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.BitSet;

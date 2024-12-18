@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.svg.label;
 
 import cn.oyzh.fx.gui.svg.glyph.MigrationSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ToolsSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.i18n.I18nHelper;
 
