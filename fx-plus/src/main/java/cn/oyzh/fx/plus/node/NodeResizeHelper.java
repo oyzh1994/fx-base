@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.NonNull;
@@ -58,7 +59,7 @@ public class NodeResizeHelper {
      * 触发阈值
      */
     @Setter
-    private Float triggerThreshold = 5.f;
+    private Float triggerThreshold = 1.f;
 
     /**
      * 鼠标移动事件
@@ -167,12 +168,11 @@ public class NodeResizeHelper {
      */
     public EventHandler<MouseEvent> defaultMouseExited() {
         return event -> {
-            if (this.isResizeIng()) {
-                return;
+            if (!this.isResizeIng()) {
+                JulLog.debug("Cursor recover.");
+                this.setNodeCursor(this.originalCursor);
+                JulLog.debug("MouseExited");
             }
-            JulLog.debug("Cursor recover.");
-            this.setNodeCursor(this.originalCursor);
-            JulLog.debug("MouseExited");
         };
     }
 
@@ -195,10 +195,11 @@ public class NodeResizeHelper {
      */
     public EventHandler<MouseEvent> defaultMousePressed() {
         return event -> {
-            // 设置拉伸中标志位
-            this.resizeIng = true;
-            // event.consume();
-            JulLog.debug("MousePressed");
+            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
+                // 设置拉伸中标志位
+                this.resizeIng = true;
+                JulLog.debug("MousePressed");
+            }
         };
     }
 
@@ -221,7 +222,7 @@ public class NodeResizeHelper {
      */
     public EventHandler<MouseEvent> defaultMouseDragged() {
         return event -> {
-            if (this.resizeTriggered != null && this.resizeAble(event)) {
+            if (event.getButton() == MouseButton.PRIMARY && this.resizeTriggered != null && this.resizeAble(event)) {
                 this.resizeTriggered.accept(this.calcNodeWidth(event));
             }
         };
@@ -246,9 +247,11 @@ public class NodeResizeHelper {
      */
     public EventHandler<MouseEvent> defaultMouseReleased() {
         return event -> {
-            this.resizeIng = null;
-            this.setNodeCursor(this.originalCursor);
-            JulLog.debug("MouseReleased");
+            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
+                this.resizeIng = null;
+                this.setNodeCursor(this.originalCursor);
+                JulLog.debug("MouseReleased");
+            }
         };
     }
 
