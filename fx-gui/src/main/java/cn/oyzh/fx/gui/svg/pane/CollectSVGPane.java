@@ -2,6 +2,7 @@ package cn.oyzh.fx.gui.svg.pane;
 
 import cn.oyzh.fx.gui.svg.glyph.CollectSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import javafx.scene.layout.HBox;
@@ -12,7 +13,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024-12-09
  */
-public class CollectSVGPane extends HBox implements MouseAdapter {
+public class CollectSVGPane extends FXHBox implements MouseAdapter {
 
     @Getter
     @Setter
@@ -23,11 +24,11 @@ public class CollectSVGPane extends HBox implements MouseAdapter {
     }
 
     public void collect() {
-        this.getChildren().setAll(new UnCollectSVGGlyph(this.size));
+        this.setChild(new UnCollectSVGGlyph(this.size));
     }
 
     public void unCollect() {
-        this.getChildren().setAll(new CollectSVGGlyph(this.size));
+        this.setChild(new CollectSVGGlyph(this.size));
     }
 
     public boolean isCollect() {
