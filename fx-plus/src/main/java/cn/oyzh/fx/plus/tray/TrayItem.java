@@ -50,13 +50,9 @@ public class TrayItem extends FXLabel {
         });
     }
 
-    /**
-     * 获取真实宽度
-     *
-     * @return 真实宽度
-     */
+    @Override
     public double getRealWidth() {
-        double tLen = FontUtil.stringWidth(this.getText());
+        double tLen = FontUtil.stringWidth(this.getText(), this.getFont());
         if (this.getGraphic() != null) {
             return this.getGraphic().maxWidth(-1) + 3 + tLen;
         }

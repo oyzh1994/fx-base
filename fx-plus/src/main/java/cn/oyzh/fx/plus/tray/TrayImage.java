@@ -262,8 +262,6 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
         if (this.stage == null) {
             this.stage = StageManager.newStage(null);
             this.stage.setScene(new Scene(this.menu));
-            this.stage.setWidth(this.menu.getPrefWidth());
-            this.stage.setHeight(this.menu.getPrefHeight());
             this.stage.setMaximized(false);
             this.stage.setResizable(false);
             this.stage.initStyle(StageStyle.TRANSPARENT);
@@ -274,16 +272,27 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
                     this.stage.hide();
                 }
             });
+            this.stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    this.menu.init();
+                    Robot robot = FXUtil.getRobot();
+                    this.stage.setX(robot.getMouseX() - 2);
+                    this.stage.setY(robot.getMouseY() - this.stage.getHeight() - 12);
+                    this.stage.setWidth(this.menu.realWidth());
+                    this.stage.setHeight(this.menu.realHeight());
+                    this.stage.setAlwaysOnTop(true);
+                }
+            });
             // 隐藏窗口的任务栏图标
             StageManager.hideTaskbar(this.stage);
         }
         // 显示窗口
         if (!this.stage.isShowing()) {
-            Robot robot = FXUtil.getRobot();
-            this.stage.setX(robot.getMouseX() - 5);
-            this.stage.setY(robot.getMouseY() - this.stage.getHeight() - 15);
-            this.stage.setAlwaysOnTop(true);
-            this.menu.changeTheme(ThemeManager.currentTheme());
+            // Robot robot = FXUtil.getRobot();
+            // this.stage.setX(robot.getMouseX() - 5);
+            // this.stage.setY(robot.getMouseY() - this.stage.getHeight() - 15);
+            // this.stage.setAlwaysOnTop(true);
+            // this.menu.changeTheme(ThemeManager.currentTheme());
             this.stage.show();
         }
     }
