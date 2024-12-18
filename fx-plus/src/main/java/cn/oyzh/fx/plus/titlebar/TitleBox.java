@@ -31,7 +31,7 @@ public class TitleBox extends FXVBox {
     /**
      * 触发阈值
      */
-    public static byte Threshold = 5;
+    public static byte Threshold = 1;
 
     public TitleBox() {
         this.init();

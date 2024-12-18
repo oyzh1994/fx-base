@@ -18,7 +18,6 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-// @Slf4j
 public class SystemTheme implements Theme, ThemeStyle {
 
     /**
@@ -63,7 +62,7 @@ public class SystemTheme implements Theme, ThemeStyle {
     @Override
     public String getDesc(Locale locale) {
         if (locale == Locale.TRADITIONAL_CHINESE) {
-            return "暗黑基礎";
+            return "跟隨系統";
         } else if (locale == Locale.SIMPLIFIED_CHINESE) {
             return "跟随系统";
         }

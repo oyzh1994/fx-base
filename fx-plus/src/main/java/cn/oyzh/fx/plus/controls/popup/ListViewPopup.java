@@ -205,7 +205,4 @@ public class ListViewPopup<E> extends FXPopup {
     public void show(@NonNull Node ownerNode, @NonNull MouseEvent event) {
         this.show(ownerNode, event.getScreenX(), event.getScreenY());
     }
-
-
-
 }

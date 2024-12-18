@@ -23,12 +23,6 @@ public class CupertinoLightTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        // if (locale == Locale.TRADITIONAL_CHINESE) {
-        //     return "明亮庫比蒂諾";
-        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-        //     return "明亮库比蒂诺";
-        // }
-        // return "Cupertino Light";
         return I18nHelper.themeCupertinoLight();
     }
 

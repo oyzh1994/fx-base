@@ -98,26 +98,6 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.getStyleClass().remove("svg-glyph");
     }
 
-//    /**
-//     * 设置初始鼠标
-//     *
-//     * @param initCursor 鼠标类型
-//     */
-//    public void setInitCursor(String initCursor) {
-//        if (initCursor != null) {
-//            this.setCursor(Cursor.cursor(initCursor));
-//        }
-//    }
-//
-//    /**
-//     * 获取初始鼠标
-//     *
-//     * @return 初始鼠标
-//     */
-//    public String getInitCursor() {
-//        return this.getCursor().toString();
-//    }
-
     /**
      * 更新内容
      */
@@ -349,16 +329,6 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         }
     }
 
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
-
     @Override
     public boolean isEnableTheme() {
         return ThemeAdapter.super.isEnableTheme();
@@ -425,16 +395,6 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         StateAdapter.super.disable();
         this.setActive(false);
     }
-
-//    @Override
-//    public void setGroupId(String groupId) {
-//        NodeGroup.super.groupId(groupId);
-//    }
-//
-//    @Override
-//    public String getGroupId() {
-//        return NodeGroup.super.groupId();
-//    }
 
     @Override
     public SVGGlyph clone() {

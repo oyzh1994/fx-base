@@ -23,12 +23,6 @@ public class NordLightTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        // if (locale == Locale.TRADITIONAL_CHINESE) {
-        //     return "明亮北歐";
-        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-        //     return "明亮北欧";
-        // }
-        // return "Nord Light";
         return I18nHelper.themeNordLight();
     }
 

@@ -15,9 +15,6 @@ import java.lang.annotation.Target;
  * @author oyzh
  * @since 2024/07/12
  */
-// @Lazy
-// @Component
-// @Scope("prototype")
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PopupAttribute {

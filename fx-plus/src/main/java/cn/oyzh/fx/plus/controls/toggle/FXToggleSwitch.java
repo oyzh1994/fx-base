@@ -33,9 +33,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapte
 
     {
         this.setCache(false);
-        // this.setCacheShape(true);
         this.setCursor(Cursor.HAND);
-        // this.setCacheHint(CacheHint.QUALITY);
         // 设置文字靠右
         this.setLabelPosition(HorizontalDirection.RIGHT);
         // 选中变化事件

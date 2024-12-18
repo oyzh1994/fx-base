@@ -45,11 +45,6 @@ public class FXTextField extends TextField implements NodeGroup, NodeAdapter, Th
         }
     }
 
-//    @Override
-//    public String getTipText() {
-//        return TipAdapter.super.tipText();
-//    }
-
     /**
      * 是否为空
      *
@@ -72,61 +67,11 @@ public class FXTextField extends TextField implements NodeGroup, NodeAdapter, Th
         return true;
     }
 
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
-
-//    @Override
-//    public void setFontSize(double fontSize) {
-//        FontAdapter.super.fontSize(fontSize);
-//    }
-//
-//    @Override
-//    public double getFontSize() {
-//        return FontAdapter.super.fontSize();
-//    }
-//
-//    @Override
-//    public void setFontFamily(@NonNull String fontFamily) {
-//        FontAdapter.super.fontFamily(fontFamily);
-//    }
-//
-//    @Override
-//    public String getFontFamily() {
-//        return FontAdapter.super.fontFamily();
-//    }
-//
-//    @Override
-//    public void setFontWeight(FontWeight fontWeight) {
-//        FontAdapter.super.fontWeight(fontWeight);
-//    }
-//
-//    @Override
-//    public FontWeight getFontWeight() {
-//        return FontAdapter.super.fontWeight();
-//    }
-
     @Override
     public void initNode() {
         this.setPickOnBounds(true);
         this.setFocusTraversable(false);
     }
-
-//    @Override
-//    public void setGroupId(String groupId) {
-//        NodeGroup.super.groupId(groupId);
-//    }
-//
-//    @Override
-//    public String getGroupId() {
-//        return NodeGroup.super.groupId();
-//    }
 
     /**
      * 设置值

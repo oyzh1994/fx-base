@@ -52,26 +52,6 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
         }
     }
 
-//    @Override
-//    public void setTipText(String tipText) {
-//        TipAdapter.super.tipText(tipText);
-//    }
-//
-//    @Override
-//    public String getTipText() {
-//        return TipAdapter.super.tipText();
-//    }
-
-    // @Override
-    // public void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // public StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
-
     /**
      * 关闭当前tab
      */
@@ -120,15 +100,4 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
     protected void onTabCloseRequest(Event event) {
 
     }
-
-//    @Override
-//    public void setGroupId(String groupId) {
-//        NodeGroup.super.groupId(groupId);
-//    }
-//
-//    @Override
-//    public String getGroupId() {
-//        return NodeGroup.super.groupId();
-//    }
-
 }

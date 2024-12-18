@@ -40,14 +40,6 @@ public @interface StageAttribute {
      */
     String[] cssUrls() default {};
 
-    // /**
-    //  * 图标地址
-    //  *
-    //  * @return 图标地址
-    //  */
-    // @Deprecated
-    // String[] iconUrls() default {};
-
     /**
      * 图标地址
      *
@@ -61,22 +53,6 @@ public @interface StageAttribute {
      * @return 窗口模态
      */
     Modality modality() default Modality.NONE;
-
-    // /**
-    //  * 是否可最大化
-    //  *
-    //  * @return 是否可最大化
-    //  */
-    // @Deprecated
-    // boolean maximized() default false;
-
-    // /**
-    //  * 是否可拉伸
-    //  *
-    //  * @return 是否可拉伸
-    //  */
-    // @Deprecated
-    // boolean resizeable() default true;
 
     /**
      * 是否可最大化

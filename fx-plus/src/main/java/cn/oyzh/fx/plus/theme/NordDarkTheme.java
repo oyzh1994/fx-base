@@ -23,12 +23,6 @@ public class NordDarkTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        // if (locale == Locale.TRADITIONAL_CHINESE) {
-        //     return "暗黑北歐";
-        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-        //     return "暗黑北欧";
-        // }
-        // return "Nord Dark";
         return I18nHelper.themeNordDark();
     }
 

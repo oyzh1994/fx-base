@@ -239,11 +239,7 @@ public class SearchHistoryPopup extends FXPopup {
         this.show(ownerNode, event.getScreenX(), event.getScreenY());
     }
 
-    /**
-     * 显示组件
-     *
-     * @param ownerNode 父节点
-     */
+    @Override
     public void show(@NonNull Node ownerNode) {
         Point2D point2D = ownerNode.localToScreen(ownerNode.getScaleX(), ownerNode.getScaleY());
         double height = ControlUtil.boundedHeight(ownerNode);

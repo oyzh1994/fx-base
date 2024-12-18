@@ -15,14 +15,14 @@ public interface OpacityAdapter extends PropAdapter {
      * 禁用透明度
      */
     default void disableOpacity() {
-        this.setProp("_enableOpacity", false);
+        this.setProp("_enable_opacity", false);
     }
 
     /**
      * 启用透明度
      */
     default void enableOpacity() {
-        this.removeProp("_enableOpacity");
+        this.removeProp("_enable_opacity");
     }
 
     /**
@@ -31,7 +31,7 @@ public interface OpacityAdapter extends PropAdapter {
      * @param enableOpacity 启用透明度
      */
     default void setEnableOpacity(boolean enableOpacity) {
-        this.setProp("_enableOpacity", enableOpacity);
+        this.setProp("_enable_opacity", enableOpacity);
     }
 
     /**
@@ -40,7 +40,7 @@ public interface OpacityAdapter extends PropAdapter {
      * @return 结果
      */
     default boolean isEnableOpacity() {
-        Boolean b = this.getProp("_enableOpacity");
+        Boolean b = this.getProp("_enable_opacity");
         return b == null || b;
     }
 

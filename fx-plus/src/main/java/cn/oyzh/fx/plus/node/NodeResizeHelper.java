@@ -59,7 +59,7 @@ public class NodeResizeHelper {
      * 触发阈值
      */
     @Setter
-    private Float triggerThreshold = 1.f;
+    private Byte triggerThreshold = 1;
 
     /**
      * 鼠标移动事件
