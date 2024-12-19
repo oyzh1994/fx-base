@@ -453,6 +453,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
             }
         }
         this.setContentPrompts(set);
+        super.forgetHistory();
     }
 
     @Override
