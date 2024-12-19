@@ -1,5 +1,6 @@
 package cn.oyzh.fx.rich.richtextfx.data;
 
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import javafx.beans.property.BooleanProperty;
 
@@ -7,7 +8,7 @@ import javafx.beans.property.BooleanProperty;
  * @author oyzh
  * @since 2024/5/17
  */
-public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> {
+public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> implements NodeGroup {
 
     public RichDataTextAreaPane() {
         super(new RichDataTextArea());
