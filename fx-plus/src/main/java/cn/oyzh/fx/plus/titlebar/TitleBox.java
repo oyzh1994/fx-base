@@ -289,8 +289,8 @@ public class TitleBox extends FXVBox {
             this.widthResize = this.xChange = false;
             return;
         }
-        // 下边
-        if ((h - y) <= Threshold) {
+        // 下边，要多一点判断边距
+        if (Math.abs(h - y) <= (Threshold + 5)) {
             this.setCursor(Cursor.S_RESIZE);
             this.heightResize = true;
             this.widthResize = this.xChange = this.yChange = false;
