@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.file;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -8,6 +9,7 @@ import javafx.stage.Window;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 文件选择器
@@ -42,7 +44,12 @@ public class FileChooserHelper {
      * @param filter       过滤器
      */
     public static File save(String title, String initFileName, FileExtensionFilter filter) {
-        return save(title, initFileName, List.of(filter), new Stage());
+        AtomicReference<File> reference = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            File file = save(title, initFileName, List.of(filter), new Stage());
+            reference.set(file);
+        });
+        return reference.get();
     }
 
     /**
@@ -53,7 +60,12 @@ public class FileChooserHelper {
      * @param filters      过滤器
      */
     public static File save(String title, String initFileName, FileExtensionFilter... filters) {
-        return save(title, initFileName, List.of(filters), new Stage());
+        AtomicReference<File> reference = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            File file = save(title, initFileName, List.of(filters), new Stage());
+            reference.set(file);
+        });
+        return reference.get();
     }
 
     /**
