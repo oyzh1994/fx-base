@@ -17,8 +17,8 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> {
         this.getContent().showData(data);
     }
 
-    public RichDataType showDetectData( Object rawData) {
-        return this.getContent().showDetectData( rawData);
+    public RichDataType showDetectData(Object rawData) {
+        return this.getContent().showDetectData(rawData);
     }
 
     public void showData(RichDataType dataType, Object rawData) {
@@ -43,5 +43,9 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> {
 
     public BooleanProperty editableProperty() {
         return this.getContent().editableProperty();
+    }
+
+    public RichDataType getRealType() {
+        return this.getContent().getRealType();
     }
 }

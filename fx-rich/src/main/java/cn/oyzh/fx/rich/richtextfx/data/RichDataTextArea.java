@@ -38,6 +38,11 @@ public class RichDataTextArea extends FlexRichTextArea {
     @Setter
     private RichDataType dataType = RichDataType.STRING;
 
+    /**
+     * 实际类型类型
+     */
+    private RichDataType realType = RichDataType.STRING;
+
     @Override
     public void addTextChangeListener(ChangeListener<String> listener) {
         this.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -166,8 +171,10 @@ public class RichDataTextArea extends FlexRichTextArea {
     public void showRawData(Object rawData) {
         if (rawData instanceof CharSequence sequence) {
             this.setText(sequence.toString());
+            this.realType = RichDataType.STRING;
         } else if (rawData instanceof byte[] bytes) {
             this.setText(StringUtil.toBinary(bytes));
+            this.realType = RichDataType.BINARY;
         }
         this.initTextStyle();
         this.dataType = RichDataType.RAW;
