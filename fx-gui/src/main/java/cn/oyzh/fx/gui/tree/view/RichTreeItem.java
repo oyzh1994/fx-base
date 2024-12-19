@@ -419,26 +419,14 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         if (itemFilter != null) {
             try {
                 if (this.isFilterable()) {
-                    // if (itemFilter != null) {
-                    for (RichTreeItem<?> child : items) {
+                    items.forEach(child -> {
                         child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
-                    }
-                    // items.forEach(child -> {
-                    //     child.setVisible(itemFilter.test(child));
-                    //     child.doFilter(itemFilter);
-                    // });
-                    // } else {
-                    //     items.forEach(child -> child.setVisible(true));
-                    // }
+                    });
                 } else {
-                    for (RichTreeItem<?> child : items) {
-                        child.doFilter(itemFilter);
-                    }
-                    // items.forEach(child -> child.doFilter(itemFilter));
+                    items.forEach(child -> child.doFilter(itemFilter));
                 }
                 this.sort();
-                // this.reExpanded();
                 this.refresh();
             } catch (Exception ex) {
                 ex.printStackTrace();
