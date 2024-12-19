@@ -110,7 +110,9 @@ public class TableViewUtil {
         if (CollectionUtil.isNotEmpty(positions)) {
             TablePosition<?, ?> position = positions.getFirst();
             TableColumn<?, ?> column = position.getTableColumn();
-            return column.getCellData(position.getRow());
+            if (column != null) {
+                return column.getCellData(position.getRow());
+            }
         }
         return null;
     }
