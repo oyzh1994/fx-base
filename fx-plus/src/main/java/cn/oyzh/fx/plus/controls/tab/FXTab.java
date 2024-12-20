@@ -11,6 +11,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 
 /**
  * @author oyzh
@@ -57,7 +58,10 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
      */
     public void closeTab() {
         if (this.isClosable()) {
-            FXUtil.runLater(() -> this.getTabPane().getTabs().remove(this));
+            TabPane tabPane = this.getTabPane();
+            if (tabPane != null) {
+                FXUtil.runLater(() -> tabPane.getTabs().remove(this));
+            }
         }
     }
 

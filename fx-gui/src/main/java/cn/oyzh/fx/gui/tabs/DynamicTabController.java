@@ -30,6 +30,13 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
         return this.tabReference != null ? this.tabReference.get() : null;
     }
 
+    public void closeTab() {
+        DynamicTab tab = this.getTab();
+        if (tab != null) {
+            tab.closeTab();
+        }
+    }
+
     public void disableTab() {
         DynamicTab tab = this.getTab();
         if (tab != null) {
