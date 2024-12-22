@@ -333,9 +333,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     }
 
     /**
-     * 按照类型排序
+     * 执行排序
      */
-    public void sort() {
+    public void doSort() {
         if (this.isSortable()) {
             if (this.isSortAsc()) {
                 this.sortAsc();
@@ -379,7 +379,12 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                     if (sortAsc) {
                         children.sort(RichTreeItem::compareTo);
                     } else {// desc
-                        children.sort(Comparator.reverseOrder());
+                        children.sort((o1, o2) -> {
+                            if (!o2.isSortable()) {
+                                return -1;
+                            }
+                            return o2.compareTo(o1);
+                        });
                     }
                 }
             } finally {
@@ -423,7 +428,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                 } else {
                     items.forEach(child -> child.doFilter(itemFilter));
                 }
-                this.sort();
+                this.doSort();
                 this.refresh();
             } catch (Exception ex) {
                 ex.printStackTrace();
