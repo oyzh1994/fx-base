@@ -19,12 +19,12 @@ import java.io.Serializable;
 @Data
 public class Setting implements Serializable, ObjectCopier<Object> {
 
-    /**
-     * 数据id
-     */
-    @Column
-    @PrimaryKey(autoGeneration = false)
-    private String uid = "DEFAULT";
+//    /**
+//     * 数据id
+//     */
+//    @Column
+//    @PrimaryKey(autoGeneration = false)
+//    private String uid = "DEFAULT";
 
     /**
      * 透明度
