@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class ImportSVGGlyph extends SVGGlyph {
 
     public ImportSVGGlyph() {
-        this.setUrl("/fx-svg/Import.svg");
+        this.setUrl("/fx-svg/import.svg");
     }
 
     public ImportSVGGlyph(String size) {
