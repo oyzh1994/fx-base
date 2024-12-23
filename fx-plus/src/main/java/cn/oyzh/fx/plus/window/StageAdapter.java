@@ -318,7 +318,7 @@ public interface StageAdapter extends WindowAdapter {
             stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {// 全局icon
             config.setIcon(FXConst.appIcon());
-            stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
+            stage.getIcons().setAll(IconUtil.getIcon(FXConst.appIcon()));
         }
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
