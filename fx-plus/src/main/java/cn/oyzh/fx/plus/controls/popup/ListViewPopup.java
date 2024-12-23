@@ -30,15 +30,9 @@ import java.util.function.Consumer;
 public class ListViewPopup<E> extends FXPopup {
 
     {
-        this.showingProperty().addListener((observableValue, windowEventEventHandler, t1) -> {
-            if (BooleanUtil.isTrue(t1)) {
-                this.initContent();
-                this.calcListViewSize();
-            } else {
-                ExecutorUtil.start(this::clearItems, 100);
-            }
-        });
+
         NodeManager.init(this);
+        this.initPopup();
     }
 
     /**
@@ -46,15 +40,24 @@ public class ListViewPopup<E> extends FXPopup {
      */
     @Getter
     @Setter
-    protected Consumer<Integer> onIndexSelected;
-
-    @Getter
-    @Setter
     protected Consumer<E> onItemSelected;
 
+    /**
+     * 索引选中事件
+     */
+    @Getter
+    @Setter
+    protected Consumer<Integer> onIndexSelected;
+
+    /**
+     * 选中的模式
+     */
     @Getter
     private E selectedItem;
 
+    /**
+     * 选中的索引
+     */
     @Getter
     @Setter
     private Integer selectedIndex;
@@ -65,6 +68,20 @@ public class ListViewPopup<E> extends FXPopup {
     @Getter
     @Setter
     protected double cellLineHeight = 20;
+
+    /**
+     * 初始化弹窗
+     */
+    protected void initPopup() {
+        this.showingProperty().addListener((observableValue, windowEventEventHandler, t1) -> {
+            if (BooleanUtil.isTrue(t1)) {
+                this.initContent();
+                this.calcListViewSize();
+            } else {
+                ExecutorUtil.start(this::clearItems, 100);
+            }
+        });
+    }
 
     /**
      * 初始化内容

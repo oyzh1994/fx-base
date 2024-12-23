@@ -40,4 +40,8 @@ public class FXListView<T> extends ListView<T> implements NodeAdapter, TipAdapte
             }
         });
     }
+
+    public void selectIndex(int index) {
+        this.getSelectionModel().select(index);
+    }
 }

@@ -17,12 +17,13 @@ import java.nio.charset.StandardCharsets;
 public class CharsetComboBox extends FlexComboBox<String> {
 
     {
-        this.getItems().add(StandardCharsets.UTF_8.displayName().toLowerCase());
-        this.getItems().add("gbk");
-        this.getItems().add("gb18030");
-        this.getItems().add("gb2312");
-        this.getItems().add(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
-        this.getItems().add(StandardCharsets.US_ASCII.displayName().toLowerCase());
+        this.addItem("");
+        this.addItem(StandardCharsets.UTF_8.displayName().toLowerCase());
+        this.addItem("gbk");
+        this.addItem("gb18030");
+        this.addItem("gb2312");
+        this.addItem(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
+        this.addItem(StandardCharsets.US_ASCII.displayName().toLowerCase());
     }
 
     public void setInitDefault(boolean initDefault) {
