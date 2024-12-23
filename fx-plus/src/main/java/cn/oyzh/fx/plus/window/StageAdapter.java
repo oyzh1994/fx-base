@@ -5,6 +5,7 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
@@ -311,9 +312,12 @@ public interface StageAdapter extends WindowAdapter {
         if (!this.hasBeenVisible()) {
             stage.initStyle(StageStyle.UNDECORATED);
         }
-        // 设置icon
+        // 自定义icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
             config.setIcon(attribute.iconUrl());
+            stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
+        } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {// 全局icon
+            config.setIcon(FXConst.appIcon());
             stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         }
         // 非主窗口

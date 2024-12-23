@@ -32,4 +32,28 @@ public class FXConst {
      * 提示标题属性
      */
     public final static String TOOLTIP_PROP_KEY = "javafx.scene.control.Tooltip";
+
+    /**
+     * app图标
+     */
+    public final static String APP_ICON = "app.icon";
+
+    /**
+     * 获取app图标
+     *
+     * @return app图标
+     */
+    public static String appIcon() {
+        return System.getProperty(APP_ICON);
+    }
+
+    /**
+     * 设置app图标
+     *
+     * @param appIcon app图标
+     */
+    public static void appIcon(String appIcon) {
+        System.setProperty(APP_ICON, appIcon);
+    }
+
 }
