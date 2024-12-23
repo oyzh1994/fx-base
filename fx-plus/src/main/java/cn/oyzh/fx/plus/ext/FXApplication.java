@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.ext;
 
+import cn.oyzh.common.SysConst;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.SystemUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -35,7 +36,7 @@ public abstract class FXApplication extends Preloader {
         FXUtil.disableCSSLogger();
         // 调用父类
         super.init();
-        JulLog.info("{} init finish.", this.appName());
+        JulLog.info("{} init finish.", SysConst.projectName());
     }
 
     @Override
@@ -59,7 +60,7 @@ public abstract class FXApplication extends Preloader {
             this.initSystemTray();
             // 开启定期gc
             SystemUtil.gcInterval(60_000);
-            JulLog.info("{} start.", this.appName());
+            JulLog.info("{} start.", SysConst.projectName());
         } catch (Exception ex) {
             JulLog.error("start fail", ex);
         }
@@ -79,25 +80,25 @@ public abstract class FXApplication extends Preloader {
             long runAlive = System.currentTimeMillis() - this.startAt;
             JulLog.info("运行时间:{}ms-------------------------------", runAlive);
             super.stop();
-            JulLog.info("{} stop.", this.appName());
+            JulLog.info("{} stop.", SysConst.projectName());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    /**
-     * app图标
-     *
-     * @return app图标
-     */
-    protected abstract String appIcon();
+    // /**
+    //  * app图标
+    //  *
+    //  * @return app图标
+    //  */
+    // protected abstract String appIcon();
 
-    /**
-     * app名称
-     *
-     * @return app名称
-     */
-    protected abstract String appName();
+    // /**
+    //  * app名称
+    //  *
+    //  * @return app名称
+    //  */
+    // protected abstract String appName();
 
     /**
      * 初始化系统托盘
