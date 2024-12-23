@@ -1,5 +1,8 @@
 package cn.oyzh.fx.plus;
 
+import javafx.application.Application;
+import javafx.application.HostServices;
+
 /**
  * fx常量
  *
@@ -8,30 +11,35 @@ package cn.oyzh.fx.plus;
  */
 public class FXConst {
 
-    /**
-     * tab地址
-     */
-    public final static String TAB_PATH = "/tabs/";
+    // /**
+    //  * tab地址
+    //  */
+    // public final static String TAB_PATH = "/tabs/";
 
     /**
      * 页面地址
      */
     public final static String VIEW_PATH = "/views/";
 
-    /**
-     * 页面地址
-     */
-    public final static String MODULE_PATH = "/module/";
-
-    /**
-     * popup地址
-     */
-    public final static String POPUP_PATH = "/popups/";
+    // /**
+    //  * 页面地址
+    //  */
+    // public final static String MODULE_PATH = "/module/";
+    //
+    // /**
+    //  * popup地址
+    //  */
+    // public final static String POPUP_PATH = "/popups/";
 
     /**
      * 提示标题属性
      */
     public final static String TOOLTIP_PROP_KEY = "javafx.scene.control.Tooltip";
+
+    /**
+     * 应用实例
+     */
+    public static Application INSTANCE;
 
     /**
      * app图标
@@ -56,4 +64,12 @@ public class FXConst {
         System.setProperty(APP_ICON, appIcon);
     }
 
+    /**
+     * 获取host服务
+     *
+     * @return HostServices
+     */
+    public static HostServices getHostServices() {
+        return INSTANCE == null ? null : INSTANCE.getHostServices();
+    }
 }
