@@ -19,7 +19,7 @@ public class FXConst {
     /**
      * 页面地址
      */
-    public final static String VIEW_PATH = "/views/";
+    public final static String FXML_PATH = "/fxml/";
 
     // /**
     //  * 页面地址
