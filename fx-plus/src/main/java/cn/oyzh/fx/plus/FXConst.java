@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus;
 
+import cn.oyzh.common.log.JulLog;
 import javafx.application.Application;
 import javafx.application.HostServices;
 
@@ -61,6 +62,7 @@ public class FXConst {
      * @param appIcon app图标
      */
     public static void appIcon(String appIcon) {
+        JulLog.info("appIcon: {}", appIcon);
         System.setProperty(APP_ICON, appIcon);
     }
 
