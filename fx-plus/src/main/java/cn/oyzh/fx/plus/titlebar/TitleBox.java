@@ -415,8 +415,9 @@ public class TitleBox extends FXVBox {
         if (node != null) {
             double width = this.realWidth();
             double height = this.getHeight();
-            this.resize(width + 1, height + 1);
+            // 先减再加，因为全屏和最大化这个宽高已经最大了
             this.resize(width - 1, height - 1);
+            this.resize(width + 1, height + 1);
         }
     }
 }

@@ -311,7 +311,7 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 设置窗口样式
         if (!this.hasBeenVisible()) {
-            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.initStyle(StageStyle.UNDECORATED);
         }
         // 自定义icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
@@ -360,7 +360,9 @@ public interface StageAdapter extends WindowAdapter {
         });
         // 全屏
         stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
-            TaskManager.startDelay(titleBox::updateContent, 10);
+            if (BooleanUtil.isFalse(newValue)) {
+                TaskManager.startDelay(titleBox::updateContent, 10);
+            }
         });
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
@@ -574,7 +576,7 @@ public interface StageAdapter extends WindowAdapter {
      */
     default void initDragFile(@NonNull String dragBoardContent, @NonNull Consumer<List<File>> onDragFile) {
         // 文件拖拽初始化
-        DragFileHandler dragFileHandler=new DragFileHandler(){
+        DragFileHandler dragFileHandler = new DragFileHandler() {
 
             @Override
             protected boolean checkDragboard(Dragboard dragboard) {

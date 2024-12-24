@@ -44,6 +44,11 @@ public class TitleBar extends FlexPane {
     private boolean hasContent;
 
     /**
+     * 标题栏配置
+     */
+    private final TitleBarConfig config;
+
+    /**
      * 原始x
      */
     private AtomicReference<Double> originalX;
@@ -76,7 +81,8 @@ public class TitleBar extends FlexPane {
     }
 
     public TitleBar(TitleBarConfig config) {
-        this.init(config);
+        this.config = config;
+        this.init();
     }
 
     @Override
@@ -87,31 +93,27 @@ public class TitleBar extends FlexPane {
 
     /**
      * 初始化
-     *
-     * @param config 标题栏配置
      */
-    protected void init(TitleBarConfig config) {
+    protected void init() {
         this.setId("titleBar");
         this.realHeight(30);
         this.setMaxHeight(30);
         this.setFlexWidth("100%");
         this.setBorder(null);
         this.setPadding(Insets.EMPTY);
-        this.initNodes(config);
+        this.initNodes();
         this.initEvents();
     }
 
     /**
      * 初始化组件
-     *
-     * @param config 标题栏配置类
      */
-    protected void initNodes(TitleBarConfig config) {
+    protected void initNodes() {
         List<Node> nodes = new ArrayList<>();
 
         // 图标
-        if (config.getIcon() != null) {
-            Image image = IconUtil.getIcon(config.getIcon());
+        if (this.config.getIcon() != null) {
+            Image image = IconUtil.getIcon(this.config.getIcon());
             if (image != null) {
                 FXImageView imageView = new FXImageView(image, 16);
                 imageView.setId("icon");
@@ -122,7 +124,7 @@ public class TitleBar extends FlexPane {
         }
 
         // 置顶
-        if (config.isAlwaysOnTop()) {
+        if (this.config.isAlwaysOnTop()) {
             TitleBarTopSVGGlyph alwaysOnTop = new TitleBarTopSVGGlyph("14");
             alwaysOnTop.setId("alwaysOnTop");
             alwaysOnTop.setOnMousePrimaryClicked(e -> this.alwaysOnTop());
@@ -130,7 +132,7 @@ public class TitleBar extends FlexPane {
         }
 
         // 全屏
-        if (config.isFullScreen()) {
+        if (this.config.isFullScreen()) {
             TitleBarFullScreenSVGPane fullScreen = new TitleBarFullScreenSVGPane("14");
             fullScreen.setId("fullScreen");
             fullScreen.setOnMousePrimaryClicked(e -> this.fullScreen());
@@ -140,7 +142,7 @@ public class TitleBar extends FlexPane {
         // 最小化
         TitleBarMinimumSVGGlyph minimum = new TitleBarMinimumSVGGlyph("14");
         minimum.setId("minimum");
-        if (config.isMinimum()) {
+        if (this.config.isMinimum()) {
             minimum.setOnMousePrimaryClicked(e -> this.minimum());
         } else {
             minimum.disable();
@@ -150,7 +152,7 @@ public class TitleBar extends FlexPane {
         // 最大化
         TitleBarMaximumSVGPane maximum = new TitleBarMaximumSVGPane("14");
         maximum.setId("maximum");
-        if (config.isMaximum()) {
+        if (this.config.isMaximum()) {
             maximum.setOnMousePrimaryClicked(e -> this.maximum());
         } else {
             maximum.disable();
@@ -160,7 +162,7 @@ public class TitleBar extends FlexPane {
         // 关闭
         TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("14");
         close.setId("close");
-        if (config.isClose()) {
+        if (this.config.isClose()) {
             close.setOnMousePrimaryClicked(e -> this.close());
         } else {
             close.disable();
@@ -239,7 +241,7 @@ public class TitleBar extends FlexPane {
     protected void updateNodeLocation() {
         double width = this.realWidth();
         double height = this.realHeight();
-        double layoutX = 10;
+        double layoutX = 5;
         double actionW = 0;
         Node close = null;
         Node maximum = null;
@@ -459,7 +461,7 @@ public class TitleBar extends FlexPane {
      */
     public void maximum() {
         Stage stage = this.stage();
-        if (stage != null && stage.isResizable()) {
+        if (stage != null && stage.isResizable() && !stage.isFullScreen()) {
             this.maximum(!stage.isMaximized());
         } else {
             JulLog.warn("stage is null!");
@@ -473,7 +475,7 @@ public class TitleBar extends FlexPane {
      */
     public void maximum(boolean maximum) {
         Stage stage = this.stage();
-        if (stage != null) {
+        if (stage != null&& stage.isResizable() && !stage.isFullScreen()) {
             stage.setMaximized(maximum);
             this.doMaximum(maximum);
         } else {
@@ -522,6 +524,9 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 最小化
+     */
     public void minimum() {
         Stage stage = this.stage();
         if (stage != null) {
@@ -531,15 +536,23 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 执行最小化
+     *
+     * @param minimum 是否最小化
+     */
     public void minimum(boolean minimum) {
         Stage stage = this.stage();
-        if (stage != null) {
+        if (stage != null && !stage.isFullScreen() && stage.getOwner() == null) {
             stage.setIconified(minimum);
         } else {
             JulLog.warn("stage is null!");
         }
     }
 
+    /**
+     * 全屏
+     */
     public void fullScreen() {
         Stage stage = this.stage();
         if (stage != null) {
@@ -549,6 +562,11 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 执行全屏
+     *
+     * @param fullScreen 是否全屏
+     */
     public void doFullScreen(boolean fullScreen) {
         Stage stage = this.stage();
         if (stage != null) {
@@ -557,11 +575,32 @@ public class TitleBar extends FlexPane {
             if (pane != null) {
                 pane.setFullScreen(!fullScreen);
             }
+            // 最小化按钮处理
+            if (this.config.isMinimum()) {
+                if (fullScreen) {
+                    this.disableAction("minimum");
+                } else {
+                    this.enableAction("minimum");
+                }
+            }
+            // 最大化按钮处理
+            if (this.config.isMaximum()) {
+                if (fullScreen) {
+                    this.disableAction("maximum");
+                } else {
+                    this.enableAction("maximum");
+                }
+            }
         } else {
             JulLog.warn("stage is null!");
         }
     }
 
+    /**
+     * 全屏
+     *
+     * @param fullScreen 是否全屏
+     */
     public void fullScreen(boolean fullScreen) {
         Stage stage = this.stage();
         if (stage != null) {
@@ -572,6 +611,9 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 置顶
+     */
     public void alwaysOnTop() {
         Stage stage = this.stage();
         if (stage != null) {
@@ -581,6 +623,11 @@ public class TitleBar extends FlexPane {
         }
     }
 
+    /**
+     * 执行置顶
+     *
+     * @param alwaysOnTop 是否置顶
+     */
     public void doAlwaysOnTop(boolean alwaysOnTop) {
         Stage stage = this.stage();
         if (stage != null) {
@@ -589,11 +636,24 @@ public class TitleBar extends FlexPane {
             if (glyph != null) {
                 glyph.setActive(alwaysOnTop);
             }
+            // 最小化按钮处理
+            if (this.config.isMinimum() && !stage.isFullScreen()) {
+                if (alwaysOnTop) {
+                    this.disableAction("minimum");
+                } else {
+                    this.enableAction("minimum");
+                }
+            }
         } else {
             JulLog.warn("stage is null!");
         }
     }
 
+    /**
+     * 置顶
+     *
+     * @param alwaysOnTop 是否置顶
+     */
     public void alwaysOnTop(boolean alwaysOnTop) {
         Stage stage = this.stage();
         if (stage != null) {
@@ -601,6 +661,30 @@ public class TitleBar extends FlexPane {
             this.doAlwaysOnTop(alwaysOnTop);
         } else {
             JulLog.warn("stage is null!");
+        }
+    }
+
+    /**
+     * 启用操作
+     *
+     * @param action 操作
+     */
+    private void enableAction(String action) {
+        Node node = this.lookup("#" + action);
+        if (node != null) {
+            node.setDisable(false);
+        }
+    }
+
+    /**
+     * 禁用操作
+     *
+     * @param action 操作
+     */
+    private void disableAction(String action) {
+        Node node = this.lookup("#" + action);
+        if (node != null) {
+            node.setDisable(true);
         }
     }
 
