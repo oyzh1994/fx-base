@@ -311,7 +311,7 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 设置窗口样式
         if (!this.hasBeenVisible()) {
-            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.TRANSPARENT);
         }
         // 自定义icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {

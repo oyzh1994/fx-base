@@ -38,6 +38,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TitleBar extends FlexPane {
 
     /**
+     * 是否有内容
+     */
+    @Getter
+    private boolean hasContent;
+
+    /**
      * 原始x
      */
     private AtomicReference<Double> originalX;
@@ -117,57 +123,52 @@ public class TitleBar extends FlexPane {
 
         // 置顶
         if (config.isAlwaysOnTop()) {
-            TitleBarTopSVGGlyph alwaysOnTop = new TitleBarTopSVGGlyph("16");
+            TitleBarTopSVGGlyph alwaysOnTop = new TitleBarTopSVGGlyph("14");
             alwaysOnTop.setId("alwaysOnTop");
-            nodes.add(alwaysOnTop);
             alwaysOnTop.setOnMousePrimaryClicked(e -> this.alwaysOnTop());
+            nodes.add(alwaysOnTop);
         }
 
         // 全屏
         if (config.isFullScreen()) {
-            TitleBarFullScreenSVGPane fullScreen = new TitleBarFullScreenSVGPane("16");
+            TitleBarFullScreenSVGPane fullScreen = new TitleBarFullScreenSVGPane("14");
             fullScreen.setId("fullScreen");
-            nodes.add(fullScreen);
             fullScreen.setOnMousePrimaryClicked(e -> this.fullScreen());
+            nodes.add(fullScreen);
         }
 
         // 最小化
-        TitleBarMinimumSVGGlyph minimum = new TitleBarMinimumSVGGlyph("18");
+        TitleBarMinimumSVGGlyph minimum = new TitleBarMinimumSVGGlyph("14");
         minimum.setId("minimum");
-        nodes.add(minimum);
         if (config.isMinimum()) {
             minimum.setOnMousePrimaryClicked(e -> this.minimum());
         } else {
             minimum.disable();
         }
+        nodes.add(minimum);
 
         // 最大化
-        TitleBarMaximumSVGPane maximum = new TitleBarMaximumSVGPane("18");
+        TitleBarMaximumSVGPane maximum = new TitleBarMaximumSVGPane("14");
         maximum.setId("maximum");
-        nodes.add(maximum);
         if (config.isMaximum()) {
             maximum.setOnMousePrimaryClicked(e -> this.maximum());
         } else {
             maximum.disable();
         }
+        nodes.add(maximum);
 
         // 关闭
-        TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("18");
+        TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("14");
         close.setId("close");
-        nodes.add(close);
         if (config.isClose()) {
             close.setOnMousePrimaryClicked(e -> this.close());
         } else {
             close.disable();
         }
-        this.addChild(nodes);
+        nodes.add(close);
+        // 设置子节点
+        this.setChild(nodes);
     }
-
-    /**
-     * 是否有内容
-     */
-    @Getter
-    private boolean hasContent;
 
     /**
      * 加载内容
@@ -189,10 +190,10 @@ public class TitleBar extends FlexPane {
      * @param content 内容
      */
     public void setContent(Node content) {
+        Node node = this.lookup("#content");
+        this.hasContent = content != null;
         if (content != null) {
-            this.hasContent = true;
             content.setId("content");
-            Node node = this.lookup("#content");
             Node title = this.lookup("#title");
             // 覆盖旧内容组件或者标题组件
             if (node != null || title != null) {
@@ -200,13 +201,8 @@ public class TitleBar extends FlexPane {
             } else {// 添加组件
                 this.addChild(1, content);
             }
-        } else {
-            this.hasContent = false;
-            Node node = this.lookup("#content");
-            // 移除内容组件
-            if (node != null) {
-                this.removeChild(node);
-            }
+        } else if (node != null) {// 移除内容组件
+            this.removeChild(node);
         }
         // 更新节点位置
         this.updateNodeLocation();
@@ -220,9 +216,9 @@ public class TitleBar extends FlexPane {
         if (stage == null || this.hasContent) {
             return;
         }
+        FXText text = (FXText) this.lookup("#title");
         if (stage.getTitle() != null) {
             String title = stage.getTitle();
-            FXText text = (FXText) this.lookup("#title");
             // 创建
             if (text == null) {
                 text = new FXText(title);
@@ -232,11 +228,8 @@ public class TitleBar extends FlexPane {
             } else if (StringUtil.equals(text.getText(), title)) {// 更新
                 text.setText(title);
             }
-        } else {
-            FXText text = (FXText) this.lookup("#title");
-            if (text != null) {// 移除
-                this.removeChild(text);
-            }
+        } else if (text != null) {// 移除
+            this.removeChild(text);
         }
     }
 
