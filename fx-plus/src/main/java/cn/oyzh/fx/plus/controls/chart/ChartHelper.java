@@ -1,7 +1,11 @@
 package cn.oyzh.fx.plus.controls.chart;
 
 import cn.oyzh.fx.plus.util.FXUtil;
+import com.sun.javafx.charts.Legend;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.Chart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.layout.Region;
 import lombok.experimental.UtilityClass;
 
 import java.util.Optional;
@@ -68,6 +72,21 @@ public class ChartHelper {
             for (int i = 0; i < len; i++) {
                 series.getData().remove(i);
             }
+        }
+    }
+
+    /**
+     * 初始化图例
+     *
+     * @param chart 图表
+     */
+    public void initLegend(Chart chart) {
+        Legend legend = (Legend) chart.getLegend();
+        ObservableList<Legend.LegendItem> items = legend.getItems();
+        for (int i = 0; i < items.size(); i++) {
+            Legend.LegendItem item = items.get(i);
+            Region region = (Region) item.getSymbol();
+            region.setStyle("-fx-background-color:-color-chart-" + (i + 1));
         }
     }
 }

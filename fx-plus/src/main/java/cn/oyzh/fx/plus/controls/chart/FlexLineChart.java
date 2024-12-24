@@ -33,6 +33,10 @@ public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter,
         FXUtil.runWait(() -> this.getData().add(series));
     }
 
+    public void setChartData(Series<X, Y> ...series) {
+        FXUtil.runWait(() -> this.getData().setAll(series));
+    }
+
     public Series<X, Y> getChartData(int index) {
         if (!this.getData().isEmpty() && this.getData().size() > index) {
             return this.getData().get(index);
