@@ -34,7 +34,7 @@ public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter,
     }
 
     public Series<X, Y> getChartData(int index) {
-        if (!this.getData().isEmpty()) {
+        if (!this.getData().isEmpty() && this.getData().size() > index) {
             return this.getData().get(index);
         }
         return null;
