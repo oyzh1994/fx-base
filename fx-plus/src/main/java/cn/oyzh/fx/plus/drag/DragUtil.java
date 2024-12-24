@@ -42,6 +42,7 @@ public class DragUtil {
      * @param node    监听节点
      * @param content 拖动板内容
      */
+    @Deprecated
     public static void initDragNode(DragNodeHandler handler, Node node, String content) {
         // 触发拖动
         node.setOnDragDetected(event -> {
@@ -109,6 +110,7 @@ public class DragUtil {
      * @param handler 拖动处理器
      * @param scene   场景
      */
+    @Deprecated
     public static void initDragFile(DragFileHandler handler, Scene scene) {
         scene.setOnDragOver(handler::onDragOver);
         scene.setOnDragExited(handler::onDragExited);
@@ -123,10 +125,12 @@ public class DragUtil {
      */
     public static void clearDragFile(Scene scene) {
         if (scene != null && scene.getProperties().containsKey("_drapFileHandler")) {
-            scene.getProperties().remove("_drapFileHandler");
-            scene.setOnDragOver(null);
-            scene.setOnDragExited(null);
-            scene.setOnDragDropped(null);
+            DragFileHandler handler = (DragFileHandler) scene.getProperties().get("_drapFileHandler");
+            handler.clearEvent(scene);
+            // scene.getProperties().remove("_drapFileHandler");
+            // scene.setOnDragOver(null);
+            // scene.setOnDragExited(null);
+            // scene.setOnDragDropped(null);
         }
     }
 }

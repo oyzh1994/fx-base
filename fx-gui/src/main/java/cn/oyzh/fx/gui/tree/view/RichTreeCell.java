@@ -4,8 +4,6 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeCell;
 import cn.oyzh.fx.plus.drag.DragNodeHandler;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
-import cn.oyzh.fx.plus.drag.DragUtil;
-import cn.oyzh.fx.plus.thread.BackgroundService;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 
@@ -60,7 +58,8 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         if (this.getTreeItem() instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
             this.dragNodeHandler = new DragNodeHandler();
             RichTreeView treeView = (RichTreeView) this.getTreeView();
-            BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
+            this.dragNodeHandler.initEvent(this, treeView.getDragContent());
+            // BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
         }
     }
 }

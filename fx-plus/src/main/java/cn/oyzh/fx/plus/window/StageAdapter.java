@@ -19,6 +19,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
@@ -493,7 +494,7 @@ public interface StageAdapter extends WindowAdapter {
             }
             String newTitle = title + append;
             this.title(newTitle);
-            if (liveTime >= 0) {
+            if (liveTime > 0) {
                 ExecutorUtil.start(this::restoreTitle, liveTime);
             }
         }
@@ -573,17 +574,17 @@ public interface StageAdapter extends WindowAdapter {
      */
     default void initDragFile(@NonNull String dragBoardContent, @NonNull Consumer<List<File>> onDragFile) {
         // 文件拖拽初始化
-        DragUtil.initDragFile(new DragFileHandler() {
+        DragFileHandler dragFileHandler=new DragFileHandler(){
 
             @Override
-            public boolean checkDragboard(Dragboard dragboard) {
+            protected boolean checkDragboard(Dragboard dragboard) {
                 return dragboard == null || !Objects.equals(dragboard.getString(), dragBoardContent);
             }
 
             @Override
             protected void dragOver(DragEvent event) {
                 disable();
-                appendTitle("===松开鼠标以释放文件===");
+                appendTitle(I18nHelper.dragTip1());
             }
 
             @Override
@@ -598,20 +599,47 @@ public interface StageAdapter extends WindowAdapter {
                     onDragFile.accept(event.getDragboard().getFiles());
                 }
             }
-        }, this.scene());
+        };
+        // 初始化事件
+        dragFileHandler.initEvent(this.scene());
+        // // 文件拖拽初始化
+        // DragUtil.initDragFile(new DragFileHandler() {
+        //
+        //     @Override
+        //     public boolean checkDragboard(Dragboard dragboard) {
+        //         return dragboard == null || !Objects.equals(dragboard.getString(), dragBoardContent);
+        //     }
+        //
+        //     @Override
+        //     protected void dragOver(DragEvent event) {
+        //         disable();
+        //         appendTitle("===松开鼠标以释放文件===");
+        //     }
+        //
+        //     @Override
+        //     public void dragExited(DragEvent event) {
+        //         enable();
+        //         restoreTitle();
+        //     }
+        //
+        //     @Override
+        //     public void dragDropped(DragEvent event) {
+        //         if (event.getDragboard() != null && event.getDragboard().getFiles() != null) {
+        //             onDragFile.accept(event.getDragboard().getFiles());
+        //         }
+        //     }
+        // }, this.scene());
     }
 
     default boolean isShowing() {
         return this.stage().isShowing();
     }
 
-    default void setIconified(boolean b) {
-        this.stage().setIconified(b);
+    default void setIconified(boolean iconified) {
+        this.stage().setIconified(iconified);
     }
 
     default boolean isIconified() {
         return this.stage().isIconified();
     }
-
-
 }
