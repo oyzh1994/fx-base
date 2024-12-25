@@ -366,7 +366,7 @@ public interface StageAdapter extends WindowAdapter {
         });
         // 焦点
         stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (BooleanUtil.isTrue(newValue)) {
+            if (BooleanUtil.isTrue(newValue) && stage.isMaximized()) {
                 TaskManager.startDelay(titleBox::updateContent, 10);
             }
         });

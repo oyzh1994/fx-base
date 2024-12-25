@@ -71,7 +71,7 @@ public class RichDataTextArea extends FlexRichTextArea {
      * 显示检测后的数据
      *
      * @param rawData 显示数据
-     * @return  RichDataType
+     * @return RichDataType
      */
     public RichDataType showDetectData(Object rawData) {
         // 检测类型
@@ -116,8 +116,8 @@ public class RichDataTextArea extends FlexRichTextArea {
     }
 
     @Override
-    public void setText(String text) {
-        super.setText(text);
+    public synchronized void replaceText(int start, int end, String text) {
+        super.replaceText(start, end, text);
         if (this.isEmpty()) {
             this.hideLineNum();
         } else {
