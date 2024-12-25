@@ -418,12 +418,18 @@ public class TitleBox extends FXVBox {
         }
         // 处理节点
         Node node = this.getContent();
-        if (node != null) {
+        if (node != null && stage != null) {
             double width = this.realWidth();
             double height = this.getHeight();
-            // 先减再加，因为全屏和最大化这个宽高已经最大了
-            this.resize(width - 1, height - 1);
-            this.resize(width + 1, height + 1);
+            if (stage.isFullScreen() || stage.isMaximized()) {
+                // 先减再加，因为全屏和最大化这个宽高已经最大了
+                this.resize(width - 1, height - 1);
+                this.resize(width + 1, height + 1);
+            } else {
+                // 先加再减，避免边框异常
+                this.resize(width + 1, height + 1);
+                this.resize(width - 1, height - 1);
+            }
         }
     }
 }
