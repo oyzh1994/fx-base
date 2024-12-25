@@ -136,7 +136,7 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     }
 
     public void scrollToEnd() {
-        FXUtil.runLater(() -> this.scrollYBy(Double.MAX_VALUE), 200);
+        FXUtil.runPulse(() -> this.scrollYBy(Double.MAX_VALUE), 30);
     }
 
     public void replaceText(int start, int end, String text) {
