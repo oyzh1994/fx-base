@@ -3,9 +3,9 @@ package cn.oyzh.fx.plus.controls.chart;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.sun.javafx.charts.Legend;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.layout.Region;
 import lombok.experimental.UtilityClass;
 
 import java.util.Optional;
@@ -81,12 +81,13 @@ public class ChartHelper {
      * @param chart 图表
      */
     public void initLegend(Chart chart) {
-        Legend legend = (Legend) chart.getLegend();
+        // 寻找图例，根据名称查找
+        Legend legend = (Legend) chart.lookup("Legend");
         ObservableList<Legend.LegendItem> items = legend.getItems();
-        for (int i = 0; i < items.size(); i++) {
-            Legend.LegendItem item = items.get(i);
-            Region region = (Region) item.getSymbol();
-            region.setStyle("-fx-background-color:-color-chart-" + (i + 1));
+        int index = 1;
+        for (Legend.LegendItem item : items) {
+            Node node = item.getSymbol();
+            node.setStyle("-fx-background-color:-color-chart-" + index++);
         }
     }
 }

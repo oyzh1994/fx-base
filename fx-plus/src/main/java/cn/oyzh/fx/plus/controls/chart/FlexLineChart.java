@@ -11,6 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.LineChart;
 
+import java.util.Collection;
+
 /**
  * @author oyzh
  * @since 2023/8/2
@@ -33,7 +35,7 @@ public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter,
         FXUtil.runWait(() -> this.getData().add(series));
     }
 
-    public void setChartData(Series<X, Y> ...series) {
+    public void setChartData(Collection<Series<X, Y>> series) {
         FXUtil.runWait(() -> this.getData().setAll(series));
     }
 
