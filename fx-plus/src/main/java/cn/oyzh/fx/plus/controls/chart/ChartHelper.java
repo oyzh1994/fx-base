@@ -76,10 +76,11 @@ public class ChartHelper {
     }
 
     /**
-     * 初始化图例
+     * 初始化图例，改用css处理
      *
      * @param chart 图表
      */
+    @Deprecated
     public void initLegend(Chart chart) {
         // 寻找图例，根据名称查找
         Legend legend = (Legend) chart.lookup("Legend");

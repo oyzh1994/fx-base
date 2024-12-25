@@ -139,7 +139,7 @@
 
 /* combo-box，修复atlantafx的样式异常问题 */
 
-/* chart，修复atlantafx的样式异常问题 */
+/* chart，修复atlantafx、javafx的样式异常问题 */
 .chart-legend {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
@@ -153,6 +153,46 @@
 .chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
+}
+
+.default-color0.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-1;
+}
+
+.default-color1.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-2;
+}
+
+.default-color2.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-3;
+}
+
+.default-color3.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-4;
+}
+
+.default-color4.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-5;
+}
+
+.default-color5.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-6;
+}
+
+.default-color6.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-7;
+}
+
+.default-color6.chart-legend-item-symbol {
+    -fx-text-fill: -color-fg-default;
+    -fx-background-color: -color-chart-8;
 }
 
 /* chart，修复atlantafx的样式异常问题 */
