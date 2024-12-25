@@ -411,6 +411,12 @@ public class TitleBox extends FXVBox {
      * 更新内容
      */
     public void updateContent() {
+        Stage stage = this.stage();
+        // 最大化设置高度不超过显示边界
+        if (stage != null && stage.isMaximized()) {
+            TitleBarUtil.limitations(stage);
+        }
+        // 处理节点
         Node node = this.getContent();
         if (node != null) {
             double width = this.realWidth();

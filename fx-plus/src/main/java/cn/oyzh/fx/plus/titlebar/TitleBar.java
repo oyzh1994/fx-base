@@ -498,26 +498,7 @@ public class TitleBar extends FlexPane {
             }
             // 最大化设置高度不超过显示边界
             if (maximum) {
-                // 是否更新
-                boolean update = false;
-                double xPos = stage.getX() + stage.getWidth();
-                double yPos = stage.getY();
-                // 获取所有屏幕的列表
-                ObservableList<Screen> screens = Screen.getScreens();
-                // 遍历屏幕列表，检查舞台是否在当前屏幕的边界内
-                for (Screen screen : screens) {
-                    Rectangle2D screenBounds = screen.getVisualBounds();
-                    if (screenBounds.contains(xPos, yPos)) {
-                        stage.setHeight(screenBounds.getHeight());
-                        update = true;
-                        break;
-                    }
-                }
-                // 兜底设置
-                if (!update) {
-                    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-                    stage.setHeight(screenBounds.getHeight());
-                }
+                TitleBarUtil.limitations(stage);
             }
         } else {
             JulLog.warn("stage is null!");

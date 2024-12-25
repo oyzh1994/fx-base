@@ -364,6 +364,12 @@ public interface StageAdapter extends WindowAdapter {
                 TaskManager.startDelay(titleBox::updateContent, 10);
             }
         });
+        // 焦点
+        stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (BooleanUtil.isTrue(newValue)) {
+                TaskManager.startDelay(titleBox::updateContent, 10);
+            }
+        });
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
