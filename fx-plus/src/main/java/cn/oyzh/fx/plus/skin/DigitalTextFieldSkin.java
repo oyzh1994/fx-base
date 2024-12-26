@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -10,7 +9,6 @@ import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -100,23 +98,13 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
         this.getChildren().addAll(this.incrButton, this.decrButton);
     }
 
-    /**
-     * 获取按钮颜色
-     *
-     * @return 按钮颜色
-     */
-    protected Color getButtonColor() {
-        if (ThemeManager.isDarkMode()) {
-            return Color.WHITE;
-        }
-        return Color.BLACK;
-    }
-
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
-        // 按钮大小，规则 组件高*0.5-3
-        double size = (this.getSkinnable().getHeight() * 0.5 - 2);
+        // 文本域高度
+        double height = this.getSkinnable().getHeight();
+        // 按钮大小，规则 组件高*0.5-4
+        double size = (Math.floor(height * 0.5) - 4);
         // 限制按钮大小
         size = NumberUtil.limit(size, 6, 15);
         this.incrButton.setSize(size);
@@ -126,7 +114,7 @@ public class DigitalTextFieldSkin extends TextFieldSkinExt {
         // 位移的areaX值，规则 组件宽+x-按钮实际大小
         double areaX = w + x - btnSize - this.btnMarginRight;
         // 位移的areaY1值
-        double areaY1 = (h - btnSize - btnSize) / 2 + 1;
+        double areaY1 = (h - btnSize - btnSize) / 2 + 2;
         // 位移的areaY2值
         double areaY2 = areaY1 + btnSize + 2;
         // 设置按钮位置

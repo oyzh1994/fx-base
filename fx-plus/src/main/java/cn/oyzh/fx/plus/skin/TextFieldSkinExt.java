@@ -54,10 +54,11 @@ public class TextFieldSkinExt extends TextFieldSkin {
      * @return 按钮颜色
      */
     protected Color getButtonColor() {
-        if (!ThemeManager.isDarkMode()) {
-            return Color.BLACK;
-        }
-        return Color.WHITE;
+        // if (ThemeManager.isDarkMode()) {
+        //     return Color.WHITE;
+        // }
+        // return Color.BLACK;
+        return ThemeManager.currentAccentColor();
     }
 
     /**
