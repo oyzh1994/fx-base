@@ -47,6 +47,13 @@ public class FlexLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter,
     }
 
     @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
+    }
+
+    @Override
     public void initNode() {
 
     }
