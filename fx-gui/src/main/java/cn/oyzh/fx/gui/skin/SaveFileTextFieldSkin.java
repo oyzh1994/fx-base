@@ -18,7 +18,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2024/07/04
  */
-public class SaveFileTextFieldSkin extends ActionTextFieldSkinExt {
+public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
 
     @Getter
     @Setter

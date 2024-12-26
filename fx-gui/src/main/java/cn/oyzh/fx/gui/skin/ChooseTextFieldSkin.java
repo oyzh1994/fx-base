@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseTextFieldSkin extends ActionTextFieldSkinExt {
+public class ChooseTextFieldSkin extends ActionTextFieldSkin {
 
     public ChooseTextFieldSkin(TextField textField) {
         super(textField,new ChooseSVGGlyph("13"));

@@ -2,7 +2,7 @@ package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.skin.TextFieldSkinExt;
+import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -19,7 +19,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/10/25
  */
-public class ActionTextFieldSkinExt extends TextFieldSkinExt {
+public class ActionTextFieldSkin extends FXTextFieldSkin {
 
     @Getter
     @Setter
@@ -27,7 +27,7 @@ public class ActionTextFieldSkinExt extends TextFieldSkinExt {
 
     protected final SVGGlyph button;
 
-    public ActionTextFieldSkinExt(TextField control, SVGGlyph button) {
+    public ActionTextFieldSkin(TextField control, SVGGlyph button) {
         super(control);
         this.button = button;
         this.button.managedBindVisible();

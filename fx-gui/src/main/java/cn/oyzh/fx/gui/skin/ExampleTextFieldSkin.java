@@ -13,7 +13,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ExampleTextFieldSkin extends ActionTextFieldSkinExt {
+public class ExampleTextFieldSkin extends ActionTextFieldSkin {
 
     /**
      * 示例文本

@@ -18,7 +18,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseFileTextFieldSkin extends ActionTextFieldSkinExt {
+public class ChooseFileTextFieldSkin extends ActionTextFieldSkin {
 
     /**
      * 文件

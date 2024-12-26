@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  * @author oyzh
  * @since 2023/10/9
  */
-public class ClearableTextFieldSkin extends ActionTextFieldSkinExt {
+public class ClearableTextFieldSkin extends ActionTextFieldSkin {
 
     @Override
     protected void updateButtonVisibility() {

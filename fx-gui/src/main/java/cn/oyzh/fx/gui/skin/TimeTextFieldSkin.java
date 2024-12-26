@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
  * @author oyzh
  * @since 2024/07/21
  */
-public class TimeTextFieldSkin extends ActionTextFieldSkinExt {
+public class TimeTextFieldSkin extends ActionTextFieldSkin {
 
     /**
      * 日期格式化器

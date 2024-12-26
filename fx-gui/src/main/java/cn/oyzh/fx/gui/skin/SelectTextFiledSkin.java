@@ -26,7 +26,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/07/12
  */
-public class SelectTextFiledSkin extends ActionTextFieldSkinExt {
+public class SelectTextFiledSkin extends ActionTextFieldSkin {
 
     /**
      * 行高

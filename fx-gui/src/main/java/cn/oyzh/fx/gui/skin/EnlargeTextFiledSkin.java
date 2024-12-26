@@ -21,7 +21,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024/07/09
  */
-public class EnlargeTextFiledSkin extends ActionTextFieldSkinExt {
+public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
 
     /**
      * 展开宽
