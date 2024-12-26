@@ -261,6 +261,12 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
         }
     }
 
+    public void outputLine(String output, boolean endLine) {
+        if (output != null) {
+            this.appendLine(output, endLine);
+        }
+    }
+
     @Override
     public void outputByPrompt(String output) {
         if (output != null) {
