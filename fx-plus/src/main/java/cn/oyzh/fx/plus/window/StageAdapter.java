@@ -22,6 +22,9 @@ import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import cn.oyzh.i18n.I18nHelper;
+import com.sun.javafx.beans.event.AbstractNotifyListener;
+import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
@@ -358,19 +361,19 @@ public interface StageAdapter extends WindowAdapter {
         // 绑定大小，因为有边框，需要总高度/宽度+4
         titleBox.prefWidthProperty().bind(stage.widthProperty().add(4));
         titleBox.prefHeightProperty().bind(stage.heightProperty().add(4));
+        // 显示监听
+        stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                this.onWindowClosed();
+            } else {
+                // 最大化处理
+                titleBar.doMaximum(stage.isMaximized());
+                // 初始化标题
+                titleBar.initTitle();
+            }
+        });
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
-            // 显示监听
-            stage.showingProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue) {
-                    this.onWindowClosed();
-                } else {
-                    // 最大化处理
-                    titleBar.doMaximum(stage.isMaximized());
-                    // 初始化标题
-                    titleBar.initTitle();
-                }
-            });
             // 标题
             stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
             // 最大化
