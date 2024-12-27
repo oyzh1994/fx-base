@@ -702,4 +702,12 @@ public interface StageAdapter extends WindowAdapter {
     default boolean isIconified() {
         return this.stage().isIconified();
     }
+
+    default boolean isFocused() {
+       return this.stage().isFocused();
+    }
+
+    default void requestFocus() {
+        this.stage().requestFocus();
+    }
 }

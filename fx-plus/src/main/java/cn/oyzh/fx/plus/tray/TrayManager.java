@@ -121,6 +121,55 @@ public class TrayManager {
     }
 
     /**
+     * 显示消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     * @param messageType 类型
+     */
+    public static void displayMessage(String caption, String text, TrayIcon.MessageType messageType) {
+        if (tray != null) {
+            tray.displayMessage(caption, text, messageType);
+        }
+    }
+
+    /**
+     * 显示正常消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     */
+    public static void displayInfoMessage(String caption, String text) {
+        if (tray != null) {
+            tray.displayInfoMessage(caption, text);
+        }
+    }
+
+    /**
+     * 显示警告消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     */
+    public static void displayWarnMessage(String caption, String text) {
+        if (tray != null) {
+            tray.displayWarnMessage(caption, text);
+        }
+    }
+
+    /**
+     * 显示错误消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     */
+    public static void displayErrorMessage(String caption, String text) {
+        if (tray != null) {
+            tray.displayErrorMessage(caption, text);
+        }
+    }
+
+    /**
      * 获取系统托盘扩展
      *
      * @return 系统托盘扩展
