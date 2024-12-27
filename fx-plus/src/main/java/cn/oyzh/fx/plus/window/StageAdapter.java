@@ -48,11 +48,13 @@ public interface StageAdapter extends WindowAdapter {
     @Override
     default void onWindowClosed() {
         try {
+            Stage stage = this.stage();
             WindowAdapter.super.onWindowClosed();
             DragUtil.clearDragFile(this.scene());
-            NodeLifeCycleUtil.onStageDestroy(this.stage());
-            this.title(null);
-            this.scene(null);
+            NodeLifeCycleUtil.onStageDestroy(stage);
+            this.clearTitle();
+            this.clearScene();
+            this.clearListener();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -101,12 +103,21 @@ public interface StageAdapter extends WindowAdapter {
     }
 
     /**
+     * 清除场景
+     */
+    default void clearScene() {
+        this.stage().setScene(null);
+    }
+
+    /**
      * 设置场景
      *
      * @param scene 场景
      */
     default void scene(Scene scene) {
-        this.stage().setScene(scene);
+        if (scene != null) {
+            this.stage().setScene(scene);
+        }
     }
 
     /**
@@ -329,6 +340,8 @@ public interface StageAdapter extends WindowAdapter {
             config.setIcon(FXConst.appIcon());
             stage.getIcons().setAll(IconUtil.getIcon(FXConst.appIcon()));
         }
+        // 标题栏
+        TitleBar titleBar = new TitleBar(config);
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
@@ -340,19 +353,6 @@ public interface StageAdapter extends WindowAdapter {
             // 初始化模态
             stage.initModality(attribute.modality());
         }
-        // 标题栏
-        TitleBar titleBar = new TitleBar(config);
-        // 显示监听
-        stage.showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onWindowClosed();
-            } else {
-                // 最大化处理
-                titleBar.doMaximum(stage.isMaximized());
-                // 初始化标题
-                titleBar.initTitle();
-            }
-        });
         // 标题组件
         TitleBox titleBox = new TitleBox(titleBar, root);
         // 绑定大小，因为有边框，需要总高度/宽度+4
@@ -360,6 +360,17 @@ public interface StageAdapter extends WindowAdapter {
         titleBox.prefHeightProperty().bind(stage.heightProperty().add(4));
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
+            // 显示监听
+            stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue) {
+                    this.onWindowClosed();
+                } else {
+                    // 最大化处理
+                    titleBar.doMaximum(stage.isMaximized());
+                    // 初始化标题
+                    titleBar.initTitle();
+                }
+            });
             // 标题
             stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
             // 最大化
@@ -457,6 +468,20 @@ public interface StageAdapter extends WindowAdapter {
     }
 
     /**
+     * 清理监听器
+     */
+    default void clearListener() {
+        Stage stage = this.stage();
+        if (stage != null) {
+            stage.setOnShown(null);
+            stage.setOnHiding(null);
+            stage.setOnHidden(null);
+            stage.setOnShowing(null);
+            stage.setOnCloseRequest(null);
+        }
+    }
+
+    /**
      * 初始化监听器
      *
      * @param listener 舞台监听器
@@ -464,11 +489,21 @@ public interface StageAdapter extends WindowAdapter {
     default void initListener(@NonNull StageListener listener) {
         // 设置事件
         listener.onStageInitialize(this);
-        this.stage().setOnShown(listener::onStageShown);
-        this.stage().setOnHiding(listener::onWindowHiding);
-        this.stage().setOnHidden(listener::onWindowHidden);
-        this.stage().setOnShowing(listener::onWindowShowing);
-        this.stage().setOnCloseRequest(listener::onStageCloseRequest);
+        Stage stage = this.stage();
+        if (stage != null) {
+            stage.setOnShown(listener::onStageShown);
+            stage.setOnHiding(listener::onWindowHiding);
+            stage.setOnHidden(listener::onWindowHidden);
+            stage.setOnShowing(listener::onWindowShowing);
+            stage.setOnCloseRequest(listener::onStageCloseRequest);
+        }
+    }
+
+    /**
+     * 清除标题
+     */
+    default void clearTitle() {
+        FXUtil.runWait(() -> this.stage().setTitle(null));
     }
 
     /**
@@ -477,7 +512,9 @@ public interface StageAdapter extends WindowAdapter {
      * @param title 标题
      */
     default void title(String title) {
-        FXUtil.runWait(() -> this.stage().setTitle(title));
+        if (title != null) {
+            FXUtil.runWait(() -> this.stage().setTitle(title));
+        }
     }
 
     /**
