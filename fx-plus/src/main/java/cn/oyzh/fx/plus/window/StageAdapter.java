@@ -4,6 +4,7 @@ import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.BooleanUtil;
+import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
@@ -11,6 +12,7 @@ import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
+import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.titlebar.TitleBar;
 import cn.oyzh.fx.plus.titlebar.TitleBox;
@@ -30,6 +32,7 @@ import javafx.stage.Window;
 import lombok.NonNull;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -47,6 +50,7 @@ public interface StageAdapter extends WindowAdapter {
         try {
             WindowAdapter.super.onWindowClosed();
             DragUtil.clearDragFile(this.scene());
+            NodeLifeCycleUtil.onStageDestroy(this.stage());
             this.title(null);
             this.scene(null);
         } catch (Exception ex) {
@@ -67,16 +71,22 @@ public interface StageAdapter extends WindowAdapter {
      * @return 结果
      */
     default boolean hasBeenVisible() {
-        Boolean hasBeenVisible = this.getProp("_hasBeenVisible");
-        return hasBeenVisible != null && hasBeenVisible;
+        Stage stage = this.stage();
+        if (stage != null) {
+            Field field = ReflectUtil.getField(Window.class, "hasBeenVisible");
+            return ReflectUtil.getFieldValue(field, stage);
+        }
+        // Boolean hasBeenVisible = this.getProp("_hasBeenVisible");
+        // return hasBeenVisible != null && hasBeenVisible;
+        return false;
     }
 
-    /**
-     * 设置已经显示过标志位
-     */
-    default void setBeenVisible() {
-        this.setProp("_hasBeenVisible", true);
-    }
+    // /**
+    //  * 设置已经显示过标志位
+    //  */
+    // default void setBeenVisible() {
+    //     this.setProp("_hasBeenVisible", true);
+    // }
 
     /**
      * 获取场景
@@ -96,9 +106,7 @@ public interface StageAdapter extends WindowAdapter {
      * @param scene 场景
      */
     default void scene(Scene scene) {
-        if (scene != null) {
-            this.stage().setScene(scene);
-        }
+        this.stage().setScene(scene);
     }
 
     /**
@@ -350,26 +358,29 @@ public interface StageAdapter extends WindowAdapter {
         // 绑定大小，因为有边框，需要总高度/宽度+4
         titleBox.prefWidthProperty().bind(stage.widthProperty().add(4));
         titleBox.prefHeightProperty().bind(stage.heightProperty().add(4));
-        // 标题
-        stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
-        // 最大化
-        stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
-            if (BooleanUtil.isFalse(newValue)) {
-                TaskManager.startDelay(titleBox::updateContent, 10);
-            }
-        });
-        // 全屏
-        stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
-            if (BooleanUtil.isFalse(newValue)) {
-                TaskManager.startDelay(titleBox::updateContent, 10);
-            }
-        });
-        // 焦点
-        stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (BooleanUtil.isTrue(newValue) && stage.isMaximized()) {
-                TaskManager.startDelay(titleBox::updateContent, 10);
-            }
-        });
+        // 非主窗口或者未显示过
+        if (!attribute.usePrimary() || !this.hasBeenVisible()) {
+            // 标题
+            stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
+            // 最大化
+            stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+                if (BooleanUtil.isFalse(newValue)) {
+                    TaskManager.startDelay(titleBox::updateContent, 10);
+                }
+            });
+            // 全屏
+            stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+                if (BooleanUtil.isFalse(newValue)) {
+                    TaskManager.startDelay(titleBox::updateContent, 10);
+                }
+            });
+            // 焦点
+            stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (BooleanUtil.isTrue(newValue) && stage.isMaximized()) {
+                    TaskManager.startDelay(titleBox::updateContent, 10);
+                }
+            });
+        }
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
@@ -466,9 +477,7 @@ public interface StageAdapter extends WindowAdapter {
      * @param title 标题
      */
     default void title(String title) {
-        if (title != null) {
-            FXUtil.runWait(() -> this.stage().setTitle(title));
-        }
+        FXUtil.runWait(() -> this.stage().setTitle(title));
     }
 
     /**

@@ -31,10 +31,16 @@ public class TrayManager {
      * @return 托盘
      */
     public static Tray init(String icon) {
-        if (tray == null) {
-            TrayManager.tray = new Tray(icon);
+        try {
+            if (tray == null) {
+                TrayManager.tray = new Tray(icon);
+            }
+            return tray;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.error("init tray error, err:{}", ex.getMessage());
         }
-        return tray;
+        return null;
     }
 
     /**
