@@ -22,13 +22,11 @@ import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import cn.oyzh.i18n.I18nHelper;
-import com.sun.javafx.beans.event.AbstractNotifyListener;
-import javafx.beans.Observable;
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -343,19 +341,24 @@ public interface StageAdapter extends WindowAdapter {
             config.setIcon(FXConst.appIcon());
             stage.getIcons().setAll(IconUtil.getIcon(FXConst.appIcon()));
         }
-        // 标题栏
-        TitleBar titleBar = new TitleBar(config);
+        // 窗口模态
+        Modality modality = attribute.modality();
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
             if (owner != null) {
                 stage.initOwner(owner);
-                // 不显示最小化
-                config.setMinimum(false);
             }
             // 初始化模态
-            stage.initModality(attribute.modality());
+            stage.initModality(modality);
         }
+        // 最小化处理
+        if (modality != Modality.NONE || owner != null) {
+            // 不启用最小化
+            config.setMinimum(false);
+        }
+        // 标题栏
+        TitleBar titleBar = new TitleBar(config);
         // 标题组件
         TitleBox titleBox = new TitleBox(titleBar, root);
         // 绑定大小，因为有边框，需要总高度/宽度+4

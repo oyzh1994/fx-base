@@ -365,7 +365,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void requestFocus() {
-        TaskManager.startDelay(() -> FXUtil.runWait(super::requestFocus), 1);
+        FXUtil.runWait(super::requestFocus, 1);
     }
 
     @Override
