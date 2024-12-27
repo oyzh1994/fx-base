@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.tree.view;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.controls.tree.view.FlexTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.TreeItem;
@@ -32,11 +33,17 @@ public class RichTreeView extends FlexTreeView {
      * 对节点排序，正序
      */
     public synchronized void sortAsc() {
+        RichTreeItem<?> root = this.getRoot();
+        // 可能为null
+        if (root == null) {
+            JulLog.warn("root is null");
+            return;
+        }
         // 获取选中节点
         RichTreeItem<?> item = this.getSelectedItem();
         if (item == null) {
             // 执行排序
-            this.getRoot().sortAsc();
+            root.sortAsc();
         } else {
             // 执行排序
             item.sortAsc();
@@ -50,11 +57,17 @@ public class RichTreeView extends FlexTreeView {
      * 对节点排序，倒序
      */
     public synchronized void sortDesc() {
+        RichTreeItem<?> root = this.getRoot();
+        // 可能为null
+        if (root == null) {
+            JulLog.warn("root is null");
+            return;
+        }
         // 获取选中节点
         RichTreeItem<?> item = this.getSelectedItem();
         if (item == null) {
             // 执行排序
-            this.getRoot().sortDesc();
+            root.sortDesc();
         } else {
             // 执行排序
             item.sortDesc();
@@ -73,7 +86,7 @@ public class RichTreeView extends FlexTreeView {
     public void setRoot(TreeItem root) {
         if (root instanceof RichTreeItem<?> item) {
             FXUtil.runWait(() -> super.setRoot(root));
-            // item.doFilter();
+            item.doFilter();
         } else if (root != null) {
             throw new IllegalArgumentException("Root is not a RichTreeItem");
         }
@@ -83,12 +96,18 @@ public class RichTreeView extends FlexTreeView {
      * 过滤节点
      */
     public synchronized void filter() {
+        RichTreeItem<?> root = this.getRoot();
+        // 可能为null
+        if (root == null) {
+            JulLog.warn("root is null");
+            return;
+        }
         // 获取选中节点
         TreeItem<?> item = this.getSelectedItem();
         // 清除选中节点
         this.clearSelection();
         // 执行过滤
-        this.getRoot().doFilter();
+        root.doFilter();
         // 选中并滚动节点
         this.selectAndScroll(item);
         // 刷新

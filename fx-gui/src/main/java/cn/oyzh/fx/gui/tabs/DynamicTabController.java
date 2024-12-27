@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.tabs;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.event.EventListener;
 import cn.oyzh.event.EventUtil;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
@@ -34,6 +35,8 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
         DynamicTab tab = this.getTab();
         if (tab != null) {
             tab.closeTab();
+        } else {
+            JulLog.warn("tab is null");
         }
     }
 

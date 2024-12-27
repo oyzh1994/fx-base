@@ -34,7 +34,7 @@ public class DragFileHandler {
     public final void onDragOver(DragEvent event) {
         if (this.checkDragboard(event.getDragboard())) {
             event.acceptTransferModes(TransferMode.ANY);
-            // event.consume();
+            event.consume();
             this.dragOver(event);
         }
     }
@@ -55,7 +55,7 @@ public class DragFileHandler {
      */
     public final void onDragExited(DragEvent event) {
         if (this.checkDragboard(event.getDragboard())) {
-            // event.consume();
+            event.consume();
             this.dragExited(event);
         }
     }
@@ -87,8 +87,8 @@ public class DragFileHandler {
      */
     protected void dragDropped(DragEvent event) {
         if (this.checkDragboard(event.getDragboard())) {
+            event.consume();
             event.setDropCompleted(true);
-            // event.consume();
         }
     }
 
@@ -98,9 +98,12 @@ public class DragFileHandler {
      * @param scene 场景
      */
     public void initEvent(Scene scene) {
-        scene.addEventFilter(DragEvent.DRAG_OVER, this::dragOver);
-        scene.addEventFilter(DragEvent.DRAG_EXITED, this::dragExited);
-        scene.addEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
+        scene.setOnDragOver(this::dragOver);
+        scene.setOnDragExited(this::dragExited);
+        scene.setOnDragDropped(this::dragDropped);
+        // scene.addEventFilter(DragEvent.DRAG_OVER, this::dragOver);
+        // scene.addEventFilter(DragEvent.DRAG_EXITED, this::dragExited);
+        // scene.addEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
         scene.getProperties().put("_drapFileHandler", this);
     }
 
