@@ -38,7 +38,7 @@ public class FontWeightComboBox extends FlexComboBox<FontWeight> {
         }
     }
 
-    public void selectWeight(Short fontWeight) {
+    public void selectWeight(Integer fontWeight) {
         if (fontWeight == null) {
             this.select(null);
         } else {

@@ -1,11 +1,16 @@
 package cn.oyzh.fx.plus.domain;
 
 import cn.oyzh.common.util.ObjectCopier;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
 import cn.oyzh.store.jdbc.Column;
 import cn.oyzh.store.jdbc.PrimaryKey;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -16,44 +21,42 @@ import java.io.Serializable;
  * @author oyzh
  * @since 2022/8/26
  */
-@Data
+@Setter
 public class Setting implements Serializable, ObjectCopier<Object> {
-
-//    /**
-//     * 数据id
-//     */
-//    @Column
-//    @PrimaryKey(autoGeneration = false)
-//    private String uid = "DEFAULT";
 
     /**
      * 透明度
      */
     @Column
+    @Getter
     private Float opacity;
 
     /**
      * 主题
      */
     @Column
+    @Getter
     private String theme;
 
     /**
      * 自定义前景色
      */
     @Column
+    @Getter
     private String fgColor;
 
     /**
      * 自定义背景色
      */
     @Column
+    @Getter
     private String bgColor;
 
     /**
      * 自定义强调色
      */
     @Column
+    @Getter
     private String accentColor;
 
     /**
@@ -66,6 +69,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 字体名称
      */
     @Column
+    @Getter
     private String fontFamily;
 
     /**
@@ -75,9 +79,46 @@ public class Setting implements Serializable, ObjectCopier<Object> {
     private Short fontWeight;
 
     /**
+     * 编辑器字体大小
+     */
+    @Column
+    private Byte editorFontSize;
+
+    /**
+     * 编辑器字体名称
+     */
+    @Column
+    private String editorFontFamily;
+
+    /**
+     * 编辑器字体粗细
+     */
+    @Column
+    private Short editorFontWeight;
+
+    /**
+     * 终端字体大小
+     */
+    @Column
+    private Byte terminalFontSize;
+
+    /**
+     * 终端字体名称
+     */
+    @Column
+    private String terminalFontFamily;
+
+    /**
+     * 终端字体粗细
+     */
+    @Column
+    private Short terminalFontWeight;
+
+    /**
      * 区域
      */
     @Column
+    @Getter
     private String locale;
 
     /**
@@ -87,6 +128,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 2 直接关闭程序
      */
     @Column
+    @Getter
     private Byte exitMode;
 
     /**
@@ -95,6 +137,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
+    @Getter
     private Byte rememberPageSize;
 
     /**
@@ -103,6 +146,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 1|null 记住
      */
     @Column
+    @Getter
     private Byte rememberPageResize;
 
     /**
@@ -111,100 +155,50 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
+    @Getter
     private Byte rememberPageLocation;
-
-    /**
-     * 标签策略
-     * null或者ALL_CONNECT 代表所有连接
-     * SINGLE_CONNECT 代表单个连接
-     */
-    @Column
-    @Deprecated
-    private String tabStrategy;
-
-    /**
-     * 标签数量限制
-     * 0代表无限，null或者1代表1个
-     */
-    @Column
-    @Deprecated
-    private Integer tabLimit;
 
     /**
      * 页面宽
      */
     @Column
+    @Getter
     private Double pageWidth;
 
     /**
      * 页面高
      */
     @Column
+    @Getter
     private Double pageHeight;
 
     /**
      * 屏幕x
      */
     @Column
+    @Getter
     private Double pageScreenX;
 
     /**
      * 屏幕y
      */
     @Column
+    @Getter
     private Double pageScreenY;
 
     /**
      * 是否最大化
      */
     @Column
+    @Getter
     private Boolean pageMaximized;
 
     /**
      * 主页左侧宽
      */
     @Column
+    @Getter
     private Float pageLeftWidth;
-
-    /**
-     * 标签策略是否限制全部连接
-     *
-     * @return 结果
-     */
-    @Deprecated
-    public boolean isAllTabLimitStrategy() {
-        return this.tabStrategy == null || "ALL_CONNECT".equals(this.tabStrategy);
-    }
-
-    /**
-     * 标签策略是否限制单个连接
-     *
-     * @return 结果
-     */
-    @Deprecated
-    public boolean isSingleTabLimitStrategy() {
-        return "SINGLE_CONNECT".equals(this.tabStrategy);
-    }
-
-    /**
-     * 获取标签数量限制
-     *
-     * @return 标签数量限制
-     */
-    @Deprecated
-    public int getTabLimit() {
-        return this.tabLimit == null ? 1 : this.tabLimit;
-    }
-
-    /**
-     * 是否标签数量无限制
-     *
-     * @return 标签数量限制
-     */
-    @Deprecated
-    public boolean isTabUnLimit() {
-        return this.tabLimit != null && this.tabLimit == 0;
-    }
 
     /**
      * 是否退出到系统托盘
@@ -319,13 +313,81 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * @return 字体配置
      */
     public FontConfig fontConfig() {
-        if (this.fontWeight == null || this.fontFamily == null || this.fontSize == null) {
+        if (this.fontWeight == null && this.fontFamily == null && this.fontSize == null) {
             return null;
         }
         FontConfig config = new FontConfig();
-        config.setSize(Integer.valueOf(this.fontSize));
-        config.setWeight(Integer.valueOf(this.fontWeight));
-        config.setFamily(this.fontFamily);
+        if (StringUtil.isNotBlank(this.fontFamily)) {
+            config.setFamily(this.fontFamily);
+        } else {
+            config.setFamily(Font.getDefault().getFamily());
+        }
+        if (this.fontWeight != null) {
+            config.setWeight(Integer.valueOf(this.fontWeight));
+        } else {
+            config.setWeight(FontWeight.NORMAL.getWeight());
+        }
+        if (this.fontSize != null) {
+            config.setSize(Integer.valueOf(this.fontSize));
+        } else {
+            config.setSize(11);
+        }
+        return config;
+    }
+
+    /**
+     * 获取编辑器字体配置
+     *
+     * @return 字体配置
+     */
+    public FontConfig editorFontConfig() {
+        if (this.editorFontWeight == null && this.editorFontFamily == null && this.editorFontSize == null) {
+            return null;
+        }
+        FontConfig config = new FontConfig();
+        if (StringUtil.isNotBlank(this.editorFontFamily)) {
+            config.setFamily(this.editorFontFamily);
+        } else {
+            config.setFamily(Font.getDefault().getFamily());
+        }
+        if (this.editorFontWeight != null) {
+            config.setWeight(Integer.valueOf(this.editorFontWeight));
+        } else {
+            config.setWeight(FontWeight.NORMAL.getWeight());
+        }
+        if (this.editorFontSize != null) {
+            config.setSize(Integer.valueOf(this.editorFontSize));
+        } else {
+            config.setSize(10);
+        }
+        return config;
+    }
+
+    /**
+     * 获取终端字体配置
+     *
+     * @return 字体配置
+     */
+    public FontConfig terminalFontConfig() {
+        if (this.terminalFontWeight == null && this.terminalFontFamily == null && this.terminalFontSize == null) {
+            return null;
+        }
+        FontConfig config = new FontConfig();
+        if (StringUtil.isNotBlank(this.terminalFontFamily)) {
+            config.setFamily(this.terminalFontFamily);
+        } else {
+            config.setFamily("Monospaced");
+        }
+        if (this.terminalFontWeight != null) {
+            config.setWeight(Integer.valueOf(this.terminalFontWeight));
+        } else {
+            config.setWeight(FontWeight.NORMAL.getWeight());
+        }
+        if (this.terminalFontSize != null) {
+            config.setSize(Integer.valueOf(this.terminalFontSize));
+        } else {
+            config.setSize(10);
+        }
         return config;
     }
 
@@ -343,14 +405,16 @@ public class Setting implements Serializable, ObjectCopier<Object> {
             this.opacity = t1.opacity;
             this.exitMode = t1.exitMode;
 
-            // tab
-            this.tabLimit = t1.tabLimit;
-            this.tabStrategy = t1.tabStrategy;
-
             // 字体
             this.fontSize = t1.fontSize;
             this.fontWeight = t1.fontWeight;
             this.fontFamily = t1.fontFamily;
+            this.editorFontSize = t1.editorFontSize;
+            this.editorFontFamily = t1.editorFontFamily;
+            this.editorFontWeight = t1.editorFontWeight;
+            this.terminalFontSize = t1.terminalFontSize;
+            this.terminalFontFamily = t1.terminalFontFamily;
+            this.terminalFontWeight = t1.terminalFontWeight;
 
             // 页面
             this.pageWidth = t1.pageWidth;
@@ -363,5 +427,77 @@ public class Setting implements Serializable, ObjectCopier<Object> {
             this.rememberPageResize = t1.rememberPageResize;
             this.rememberPageLocation = t1.rememberPageLocation;
         }
+    }
+
+    public byte getFontSize() {
+        return this.fontSize == null ? defaultFontSize() : this.fontSize;
+    }
+
+    public String getFontFamily() {
+        return this.fontFamily == null ? defaultFontFamily() : this.fontFamily;
+    }
+
+    public int getFontWeight() {
+        return this.fontWeight == null ? defaultFontWeight() : this.fontWeight;
+    }
+
+    public static byte defaultFontSize() {
+        return 11;
+    }
+
+    public static String defaultFontFamily() {
+        return Font.getDefault().getFamily();
+    }
+
+    public static int defaultFontWeight() {
+        return FontWeight.NORMAL.getWeight();
+    }
+
+    public Byte getEditorFontSize() {
+        return this.editorFontSize == null ? defaultEditorFontSize() : this.editorFontSize;
+    }
+
+    public String getEditorFontFamily() {
+        return this.editorFontFamily == null ? defaultEditorFontFamily() : this.editorFontFamily;
+    }
+
+    public int getEditorFontWeight() {
+        return this.editorFontWeight == null ? defaultEditorFontWeight() : this.editorFontWeight;
+    }
+
+    public static byte defaultEditorFontSize() {
+        return 10;
+    }
+
+    public static String defaultEditorFontFamily() {
+        return Font.getDefault().getFamily();
+    }
+
+    public static int defaultEditorFontWeight() {
+        return FontWeight.NORMAL.getWeight();
+    }
+
+    public Byte getTerminalFontSize() {
+        return this.terminalFontSize == null ? defaultTerminalFontSize() : this.terminalFontSize;
+    }
+
+    public int getTerminalFontWeight() {
+        return this.terminalFontWeight == null ? defaultTerminalFontWeight() : this.terminalFontWeight;
+    }
+
+    public String getTerminalFontFamily() {
+        return this.terminalFontFamily == null ? defaultTerminalFontFamily() : this.terminalFontFamily;
+    }
+
+    public static byte defaultTerminalFontSize() {
+        return 10;
+    }
+
+    public static String defaultTerminalFontFamily() {
+        return "Monospace";
+    }
+
+    public static int defaultTerminalFontWeight() {
+        return FontWeight.NORMAL.getWeight();
     }
 }
