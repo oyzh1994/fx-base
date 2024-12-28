@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.ExampleSVGGlyph;
-import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +13,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ExampleTextFieldSkin extends ActionTextFieldSkinExt {
+public class ExampleTextFieldSkin extends ActionTextFieldSkin {
 
     /**
      * 示例文本

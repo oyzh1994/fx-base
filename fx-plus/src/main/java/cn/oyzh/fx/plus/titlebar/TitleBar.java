@@ -227,7 +227,7 @@ public class TitleBar extends FlexPane {
                 text.setFontSize(12);
                 text.setId("title");
                 this.addChild(1, text);
-            } else if (StringUtil.equals(text.getText(), title)) {// 更新
+            } else if (!StringUtil.equals(text.getText(), title)) {// 更新
                 text.setText(title);
             }
         } else if (text != null) {// 移除

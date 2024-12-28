@@ -31,10 +31,16 @@ public class TrayManager {
      * @return 托盘
      */
     public static Tray init(String icon) {
-        if (tray == null) {
-            TrayManager.tray = new Tray(icon);
+        try {
+            if (tray == null) {
+                TrayManager.tray = new Tray(icon);
+            }
+            return tray;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.error("init tray error, err:{}", ex.getMessage());
         }
-        return tray;
+        return null;
     }
 
     /**
@@ -111,6 +117,55 @@ public class TrayManager {
     public static void addMenuItem(@NonNull TrayItem trayItem) {
         if (tray != null) {
             tray.addMenuItem(trayItem);
+        }
+    }
+
+    /**
+     * 显示消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     * @param messageType 类型
+     */
+    public static void displayMessage(String caption, String text, TrayIcon.MessageType messageType) {
+        if (tray != null) {
+            tray.displayMessage(caption, text, messageType);
+        }
+    }
+
+    /**
+     * 显示正常消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     */
+    public static void displayInfoMessage(String caption, String text) {
+        if (tray != null) {
+            tray.displayInfoMessage(caption, text);
+        }
+    }
+
+    /**
+     * 显示警告消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     */
+    public static void displayWarnMessage(String caption, String text) {
+        if (tray != null) {
+            tray.displayWarnMessage(caption, text);
+        }
+    }
+
+    /**
+     * 显示错误消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     */
+    public static void displayErrorMessage(String caption, String text) {
+        if (tray != null) {
+            tray.displayErrorMessage(caption, text);
         }
     }
 

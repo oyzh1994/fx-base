@@ -222,6 +222,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     @Override
     public void flushNOP() {
         this.NOP.set(this.contentLength());
+        this.requestFocus();
     }
 
     @Override
@@ -258,6 +259,12 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     public void outputLine(String output) {
         if (output != null) {
             this.appendLine(output);
+        }
+    }
+
+    public void outputLine(String output, boolean endLine) {
+        if (output != null) {
+            this.appendLine(output, endLine);
         }
     }
 

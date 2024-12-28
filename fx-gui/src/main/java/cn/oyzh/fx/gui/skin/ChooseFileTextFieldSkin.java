@@ -3,7 +3,6 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.file.FileChooserHelper;
 import cn.oyzh.fx.plus.file.FileExtensionFilter;
-import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +18,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseFileTextFieldSkin extends ActionTextFieldSkinExt {
+public class ChooseFileTextFieldSkin extends ActionTextFieldSkin {
 
     /**
      * 文件

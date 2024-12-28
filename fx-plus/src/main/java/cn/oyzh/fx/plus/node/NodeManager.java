@@ -59,6 +59,13 @@ public class NodeManager {
                         lifeCycle.onNodeInitialize();
                     }
                 });
+                node1.sceneProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue == null) {
+                        lifeCycle.onNodeDestroy();
+                    } else {
+                        lifeCycle.onNodeInitialize();
+                    }
+                });
             } else if (node instanceof TreeItem<?> node1) {
                 node1.parentProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue == null) {

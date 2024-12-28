@@ -115,6 +115,7 @@ public class DragNodeHandler {
                 // 设置特效
                 this.initDrapEffect(source);
             }
+            event.consume();
         });
         // 拖动完成
         node.addEventFilter(DragEvent.DRAG_DONE, event -> {
@@ -122,16 +123,19 @@ public class DragNodeHandler {
             this.clear();
             // 清除数据
             event.getDragboard().clear();
+            event.consume();
         });
         // 拖动完成
         node.addEventFilter(DragEvent.DRAG_OVER, event -> {
             // 触发拖动事件
             event.acceptTransferModes(TransferMode.MOVE);
+            event.consume();
         });
         // 拖动离开
         node.addEventFilter(DragEvent.DRAG_EXITED, event -> {
             // 设置透明度
             node.setOpacity(1);
+            event.consume();
         });
         // 拖动进入
         node.addEventFilter(DragEvent.DRAG_ENTERED, event -> {
@@ -143,11 +147,13 @@ public class DragNodeHandler {
                 this.source(source);
                 this.initDropEffect(target);
             }
+            event.consume();
         });
         // 拖动释放
         node.addEventFilter(DragEvent.DRAG_DROPPED, event -> {
             this.dropNode();
             event.setDropCompleted(true);
+            event.consume();
         });
     }
 }

@@ -6,7 +6,6 @@ import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.controls.text.area.FlexTextArea;
-import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -22,7 +21,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024/07/09
  */
-public class EnlargeTextFiledSkin extends ActionTextFieldSkinExt {
+public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
 
     /**
      * 展开宽

@@ -177,4 +177,45 @@ public class Tray implements ThemeAdapter {
             this.trayIcon.changeTheme(style);
         }
     }
+
+    /**
+     * 显示正常消息
+     *
+     * @param caption 标题
+     * @param text    内容
+     */
+    public void displayInfoMessage(String caption, String text) {
+        this.displayMessage(caption, text, TrayIcon.MessageType.INFO);
+    }
+
+    /**
+     * 显示警告消息
+     *
+     * @param caption 标题
+     * @param text    内容
+     */
+    public void displayWarnMessage(String caption, String text) {
+        this.displayMessage(caption, text, TrayIcon.MessageType.WARNING);
+    }
+
+    /**
+     * 显示错误消息
+     *
+     * @param caption 标题
+     * @param text    内容
+     */
+    public void displayErrorMessage(String caption, String text) {
+        this.displayMessage(caption, text, TrayIcon.MessageType.ERROR);
+    }
+
+    /**
+     * 显示消息
+     *
+     * @param caption     标题
+     * @param text        内容
+     * @param messageType 类型
+     */
+    public void displayMessage(String caption, String text, TrayIcon.MessageType messageType) {
+        this.trayIcon.displayMessage(caption, text, messageType);
+    }
 }

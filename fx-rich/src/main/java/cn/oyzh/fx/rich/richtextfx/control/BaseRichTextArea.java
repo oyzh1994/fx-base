@@ -184,15 +184,25 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      * @param s 文本内容
      */
     public void appendLine(String s) {
+        this.appendLine(s, true);
+    }
+
+    /**
+     * 追加行
+     *
+     * @param s       文本内容
+     * @param endLine 是否追加末尾行符号
+     */
+    public void appendLine(String s, boolean endLine) {
         if (s != null) {
-            String text = s;
-            if (this.getLength() > 0 && !this.getText().endsWith("\n") && !text.startsWith("\n")) {
-                text = "\n" + text;
+            String text = this.getText();
+            if (text != null && !text.isEmpty() && !text.endsWith("\n") && !s.startsWith("\n")) {
+                s = "\n" + s;
             }
-            if (!text.endsWith("\n")) {
-                text = text + "\n";
+            if (endLine && !s.endsWith("\n")) {
+                s = s + "\n";
             }
-            this.appendText(text);
+            this.appendText(s);
         }
     }
 
@@ -355,7 +365,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void requestFocus() {
-        TaskManager.startDelay(() -> FXUtil.runWait(super::requestFocus), 1);
+        FXUtil.runWait(super::requestFocus, 1);
     }
 
     @Override

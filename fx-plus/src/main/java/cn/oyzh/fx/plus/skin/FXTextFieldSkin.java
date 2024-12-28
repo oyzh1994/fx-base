@@ -14,7 +14,7 @@ import javafx.stage.Window;
  * @author oyzh
  * @since 2023/10/25
  */
-public class TextFieldSkinExt extends TextFieldSkin {
+public class FXTextFieldSkin extends TextFieldSkin {
 
     /**
      * 可见监听器
@@ -27,7 +27,7 @@ public class TextFieldSkinExt extends TextFieldSkin {
     protected void updateButtonVisibility() {
     }
 
-    public TextFieldSkinExt(TextField control) {
+    public FXTextFieldSkin(TextField control) {
         super(control);
         // 初始化监听器
         control.textProperty().addListener(this.visibilityChanged);
@@ -54,10 +54,11 @@ public class TextFieldSkinExt extends TextFieldSkin {
      * @return 按钮颜色
      */
     protected Color getButtonColor() {
-        if (!ThemeManager.isDarkMode()) {
-            return Color.BLACK;
-        }
-        return Color.WHITE;
+        // if (ThemeManager.isDarkMode()) {
+        //     return Color.WHITE;
+        // }
+        // return Color.BLACK;
+        return ThemeManager.currentAccentColor();
     }
 
     /**

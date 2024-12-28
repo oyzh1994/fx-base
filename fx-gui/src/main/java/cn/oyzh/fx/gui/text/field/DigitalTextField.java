@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.text.field;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
-import cn.oyzh.fx.plus.skin.DigitalTextFieldSkin;
+import cn.oyzh.fx.gui.skin.DigitalTextFieldSkin;
 import javafx.scene.control.Skin;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;

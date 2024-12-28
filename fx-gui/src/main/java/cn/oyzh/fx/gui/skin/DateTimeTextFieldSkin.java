@@ -11,7 +11,6 @@ import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
-import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -34,7 +33,7 @@ import java.time.format.DateTimeFormatter;
  * @author oyzh
  * @since 2024/07/19
  */
-public class DateTimeTextFieldSkin extends ActionTextFieldSkinExt {
+public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
 
     /**
      * 日期格式化器

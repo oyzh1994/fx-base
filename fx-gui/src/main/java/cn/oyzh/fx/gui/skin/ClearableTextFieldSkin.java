@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
-import cn.oyzh.fx.plus.skin.ActionTextFieldSkinExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -12,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  * @author oyzh
  * @since 2023/10/9
  */
-public class ClearableTextFieldSkin extends ActionTextFieldSkinExt {
+public class ClearableTextFieldSkin extends ActionTextFieldSkin {
 
     @Override
     protected void updateButtonVisibility() {

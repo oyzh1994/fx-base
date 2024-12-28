@@ -155,6 +155,10 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
         this.getContent().appendLine(output);
     }
 
+    public void appendLine(String output, boolean endLine) {
+        this.getContent().appendLine(output, endLine);
+    }
+
     public void appendText(String output) {
         this.getContent().appendText(output);
     }
