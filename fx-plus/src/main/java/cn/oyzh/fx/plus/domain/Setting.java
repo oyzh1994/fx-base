@@ -466,7 +466,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
     }
 
     public static byte defaultEditorFontSize() {
-        return 10;
+        return 11;
     }
 
     public static String defaultEditorFontFamily() {
@@ -490,7 +490,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
     }
 
     public static byte defaultTerminalFontSize() {
-        return 10;
+        return 11;
     }
 
     public static String defaultTerminalFontFamily() {

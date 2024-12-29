@@ -470,7 +470,7 @@ public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> impleme
     protected void initFont() {
         // 禁用字体管理
         this.disableFont();
-        this.setFontSize(10);
+        this.setFontSize(11);
         this.setFontFamily("Monospaced");
         this.setFontWeight(FontWeight.NORMAL);
     }

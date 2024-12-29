@@ -76,7 +76,7 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
     protected void initFont() {
         // 禁用字体管理
         this.disableFont();
-        this.setFontSize(10);
+        this.setFontSize(11);
         this.setFontWeight(FontWeight.NORMAL);
     }
 
