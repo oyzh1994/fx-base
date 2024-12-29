@@ -204,6 +204,15 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontWeight 字体粗细
      */
+    default void setFontWeight(int fontWeight) {
+        this.fontWeight(FontWeight.findByWeight(fontWeight));
+    }
+
+    /**
+     * 设置字体粗细
+     *
+     * @param fontWeight 字体粗细
+     */
     default void setFontWeight(FontWeight fontWeight) {
         this.fontWeight(fontWeight);
     }
@@ -264,7 +273,7 @@ public interface FontAdapter extends PropAdapter {
         return FontWeight.findByName(Font.getDefault().getStyle());
     }
 
-    String ENABLE_FONT_KEY = "_enable_font";
+    String ENABLE_FONT_KEY = "enable:font";
 
     /**
      * 禁用字体

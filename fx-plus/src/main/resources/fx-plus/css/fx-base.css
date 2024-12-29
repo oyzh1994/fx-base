@@ -99,12 +99,12 @@
 
 /* rich-text-field，支持atlantafx的样式 */
 
-/* terminal-text-area，修复atlantafx的样式异常问题 */
-.terminal-text-area {
-    -fx-font-family: Monospaced;
-}
+/*!* terminal-text-area，修复atlantafx的样式异常问题 *!*/
+/*.terminal-text-area {*/
+/*    -fx-font-family: Monospaced;*/
+/*}*/
 
-/* terminal-text-area，修复atlantafx的样式异常问题 */
+/*!* terminal-text-area，修复atlantafx的样式异常问题 *!*/
 
 /* svg-glyph，支持atlantafx的样式 */
 .svg-glyph {

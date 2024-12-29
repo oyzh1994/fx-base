@@ -1,7 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.ColorUtil;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
@@ -11,7 +11,9 @@ import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import javafx.geometry.Insets;
@@ -277,6 +279,22 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      * 初始化文字样式
      */
     public void initTextStyle() {
+        FXUtil.runWait(() -> {
+            this.clearTextStyle();
+            // 初始化颜色
+            if (this.isEnableTheme()) {
+                Node placeholder = this.getPlaceholder();
+                CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
+                Color accentColor = ThemeManager.currentAccentColor();
+                Color foregroundColor = ThemeManager.currentForegroundColor();
+                String fgColor = FXColorUtil.getColorHex(foregroundColor);
+                this.setStyle(0, this.getLength(), "-fx-fill: " + fgColor + ";");
+                caretNode.setStroke(accentColor);
+                if (placeholder != null) {
+                    placeholder.setStyle("-fx-fill: " + fgColor + ";");
+                }
+            }
+        });
     }
 
     /**
@@ -331,23 +349,24 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void changeTheme(ThemeStyle style) {
-        if (this.isEnableTheme()) {
-            Node placeholder = this.getPlaceholder();
-            CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
-            if (style.isDarkMode()) {
-                this.setStyle(0, this.getLength(), "-fx-fill: #fff;");
-                caretNode.setStroke(Color.WHITE);
-                if (placeholder != null) {
-                    placeholder.setStyle("-fx-fill: #fff;");
-                }
-            } else {
-                this.setStyle(0, this.getLength(), "-fx-fill: #000");
-                caretNode.setStroke(Color.BLACK);
-                if (placeholder != null) {
-                    placeholder.setStyle("-fx-fill: #000;");
-                }
-            }
-        }
+//        if (this.isEnableTheme()) {
+//            Node placeholder = this.getPlaceholder();
+//            CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
+//            if (style.isDarkMode()) {
+//                this.setStyle(0, this.getLength(), "-fx-fill: #fff;");
+//                caretNode.setStroke(Color.WHITE);
+//                if (placeholder != null) {
+//                    placeholder.setStyle("-fx-fill: #fff;");
+//                }
+//            } else {
+//                this.setStyle(0, this.getLength(), "-fx-fill: #000");
+//                caretNode.setStroke(Color.BLACK);
+//                if (placeholder != null) {
+//                    placeholder.setStyle("-fx-fill: #000;");
+//                }
+//            }
+//        }
+        this.initTextStyle();
     }
 
     @Override

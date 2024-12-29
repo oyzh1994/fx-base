@@ -12,6 +12,8 @@ import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 import org.reactfx.value.Val;
 
+import java.util.List;
+
 /**
  * @author oyzh
  * @since 2024/5/17
@@ -47,6 +49,11 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     @Override
     public String getFontFamily() {
         return this.getContent().getFontFamily();
+    }
+
+    @Override
+    public void setFontWeight(int fontWeight) {
+        FontAdapter.super.setFontWeight(fontWeight);
     }
 
     @Override
@@ -189,6 +196,10 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
 
     public void setStyle(RichTextStyle style) {
         this.getContent().setStyle(style);
+    }
+
+    public void setStyles(List<RichTextStyle> style) {
+        this.getContent().setStyles(style);
     }
 
     @Override

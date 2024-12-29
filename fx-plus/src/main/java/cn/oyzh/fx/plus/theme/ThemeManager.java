@@ -159,6 +159,10 @@ public class ThemeManager {
         return currentTheme().getForegroundColor();
     }
 
+    public static Color currentBackgroundColor() {
+        return currentTheme().getBackgroundColor();
+    }
+
     public static String currentUserAgentStylesheet() {
         return currentTheme().getUserAgentStylesheet();
     }

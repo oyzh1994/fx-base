@@ -12,7 +12,7 @@ import lombok.experimental.UtilityClass;
  * @since 2024/08/17
  */
 @UtilityClass
-public class ColorUtil {
+public class FXColorUtil {
 
     /**
      * 获取颜色16进制值

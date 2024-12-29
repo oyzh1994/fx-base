@@ -191,22 +191,23 @@ public class RichDataTextArea extends FlexRichTextArea {
 
     @Override
     public void initTextStyle() {
+        super.initTextStyle();
         FXUtil.runWait(() -> {
-            this.clearTextStyle();
+//            this.clearTextStyle();
             // 搜索
             if (StringUtil.isNotBlank(this.searchText)) {
-                super.changeTheme(ThemeManager.currentTheme());
+//                super.changeTheme(ThemeManager.currentTheme());
                 String text = this.getText();
                 Matcher matcher = this.searchPattern().matcher(text);
                 List<RichTextStyle> styles = new ArrayList<>();
                 while (matcher.find()) {
                     styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
                 }
-                for (RichTextStyle style : styles) {
-                    this.setStyle(style);
-                }
+//                for (RichTextStyle style : styles) {
+                    this.setStyles(styles);
+//                }
             } else if (this.dataType == RichDataType.JSON) { // json
-                super.changeTheme(ThemeManager.currentTheme());
+//                super.changeTheme(ThemeManager.currentTheme());
                 String text = this.getText();
                 Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
                 List<RichTextStyle> styles = new ArrayList<>();
@@ -221,15 +222,15 @@ public class RichDataTextArea extends FlexRichTextArea {
                 while (matcher3.find()) {
                     styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
                 }
-                for (RichTextStyle style : styles) {
-                    this.setStyle(style);
-                }
+//                for (RichTextStyle style : styles) {
+                    this.setStyles(styles);
+//                }
             } else if (this.dataType == RichDataType.BINARY) {// binary
                 this.setStyle(0, this.getLength(), "-fx-fill: #32CD32;");
             } else if (this.dataType == RichDataType.HEX) {// hex
                 this.setStyle(0, this.getLength(), "-fx-fill: #4682B4;");
-            } else {
-                super.changeTheme(ThemeManager.currentTheme());
+//            } else {
+//                super.changeTheme(ThemeManager.currentTheme());
             }
         });
     }

@@ -3,10 +3,11 @@ package cn.oyzh.fx.terminal;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.richtextfx.terminal.RichTerminalTextAreaPane;
+import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
+import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
+import cn.oyzh.fx.rich.richtextfx.terminal.RichTerminalTextArea;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -21,6 +22,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -41,7 +44,7 @@ import java.util.regex.Pattern;
  * @author oyzh
  * @since 2023/05/28
  */
-public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Terminal {
+public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> implements Terminal {
 
     /**
      * 不可操作边界
@@ -93,9 +96,6 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
 
     {
         // 保证字符等宽
-        this.addClass("terminal-text-area");
-        this.setFontFamily("Monospaced");
-        this.setContextMenu(new ContextMenu());
         this.caretPositionProperty().addListener((observableValue, number, t1) -> {
             // 对边界做检查
             if (this.getNOP() > this.contentLength()) {
@@ -109,7 +109,11 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
             }
         });
         this.addTextChangeListener((observable, oldValue, newValue) -> this.initTextStyle());
-        this.showLineNum();
+        this.init();
+    }
+
+    public TerminalTextArea() {
+        super(new RichTerminalTextArea());
     }
 
     @Override
@@ -445,6 +449,33 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     }
 
     /**
+     * 初始化组件
+     */
+    protected void init() {
+        // 初始化字体
+        this.initFont();
+        // 显示行号
+        this.showLineNum();
+        // 初始化内容提示符
+        this.initContentPrompts();
+        // 覆盖默认的菜单
+        this.setContextMenu(new ContextMenu());
+//        // 添加类
+//        this.addClass("terminal-text-area");
+    }
+
+    /**
+     * 初始化字体
+     */
+    protected void initFont() {
+        // 禁用字体管理
+        this.disableFont();
+        this.setFontSize(10);
+        this.setFontFamily("Monospaced");
+        this.setFontWeight(FontWeight.NORMAL);
+    }
+
+    /**
      * 初始化内容提示词
      */
     protected void initContentPrompts() {
@@ -460,13 +491,16 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
             }
         }
         this.setContentPrompts(set);
-        super.forgetHistory();
+//        super.forgetHistory();
     }
 
     @Override
     public void initTextStyle() {
-        this.clearTextStyle();
-        this.changeTheme(ThemeManager.currentTheme());
+//        this.clearTextStyle();
+//        this.setProp("init:text:style", false);
+//        this.changeTheme(ThemeManager.currentTheme());
+//        this.removeProp("init:text:style");
+        super.initTextStyle();
         if (this.contentPrompts != null) {
             String text = this.getText();
             Matcher matcher1 = this.contentPrompts.matcher(text);
@@ -474,9 +508,7 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
             while (matcher1.find()) {
                 styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
             }
-            for (RichTextStyle style : styles) {
-                this.setStyle(style);
-            }
+            this.setStyles(styles);
             this.forgetHistory();
         }
     }
@@ -484,5 +516,11 @@ public class TerminalTextTextArea extends RichTerminalTextAreaPane implements Te
     @Override
     public int getNOP() {
         return this.NOP.get();
+    }
+
+    @Override
+    public void changeFont(Font font) {
+        super.changeFont(font);
+        this.initFont();
     }
 }

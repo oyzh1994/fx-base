@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface ThemeAdapter extends PropAdapter {
 
-    String ENABLE_THEME_KEY = "_enable_theme";
+    String ENABLE_THEME_KEY = "enable:theme";
 
     /**
      * 禁用主题

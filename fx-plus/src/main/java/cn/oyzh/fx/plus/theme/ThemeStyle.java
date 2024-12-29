@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.FXStyle;
-import cn.oyzh.fx.plus.util.ColorUtil;
+import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
@@ -54,7 +54,7 @@ public interface ThemeStyle {
      * @return 强调色16进制值
      */
     default String getAccentColorHex() {
-        return ColorUtil.getColorHex(this.getAccentColor());
+        return FXColorUtil.getColorHex(this.getAccentColor());
     }
 
     /**
@@ -70,7 +70,7 @@ public interface ThemeStyle {
      * @return 背景色16进制值
      */
     default String getForegroundColorHex() {
-        return ColorUtil.getColorHex(this.getForegroundColor());
+        return FXColorUtil.getColorHex(this.getForegroundColor());
     }
 
     /**
@@ -86,7 +86,7 @@ public interface ThemeStyle {
      * @return 背景色16进制值
      */
     default String getBackgroundColorHex() {
-        return ColorUtil.getColorHex(this.getBackgroundColor());
+        return FXColorUtil.getColorHex(this.getBackgroundColor());
     }
 
     /**

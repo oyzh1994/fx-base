@@ -47,9 +47,9 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<FlexRichTextArea> {
             while (matcher3.find()) {
                 styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
             }
-            for (RichTextStyle style : styles) {
-                this.setStyle(style);
-            }
+//            for (RichTextStyle style : styles) {
+                this.setStyles(styles);
+//            }
         });
     }
 
