@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.domain;
 import cn.oyzh.common.util.ObjectCopier;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontConfig;
+import cn.oyzh.fx.plus.opacity.OpacityConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
 import cn.oyzh.store.jdbc.Column;
 import cn.oyzh.store.jdbc.PrimaryKey;
@@ -25,11 +26,18 @@ import java.io.Serializable;
 public class Setting implements Serializable, ObjectCopier<Object> {
 
     /**
-     * 透明度
+     * 窗口透明度
      */
     @Column
     @Getter
     private Float opacity;
+
+    /**
+     * 标题栏透明度
+     */
+    @Column
+    @Getter
+    private Float titleBarOpacity;
 
     /**
      * 主题
@@ -291,12 +299,27 @@ public class Setting implements Serializable, ObjectCopier<Object> {
     }
 
     /**
+     * 获取透明度配置
+     *
+     * @return 主题配置
+     */
+    public OpacityConfig opacityConfig() {
+        if (this.opacity == null && this.titleBarOpacity == null ) {
+            return null;
+        }
+        OpacityConfig config = new OpacityConfig();
+        config.setWindowOpacity(this.opacity);
+        config.setTitleOpacity(this.titleBarOpacity);
+        return config;
+    }
+
+    /**
      * 获取主题配置
      *
      * @return 主题配置
      */
     public ThemeConfig themeConfig() {
-        if (this.theme == null || this.fgColor == null || this.bgColor == null || this.accentColor == null) {
+        if (this.theme == null && this.fgColor == null && this.bgColor == null && this.accentColor == null) {
             return null;
         }
         ThemeConfig config = new ThemeConfig();

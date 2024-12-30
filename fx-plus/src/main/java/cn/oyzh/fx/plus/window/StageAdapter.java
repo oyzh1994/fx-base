@@ -373,6 +373,8 @@ public interface StageAdapter extends WindowAdapter {
                 titleBar.doMaximum(stage.isMaximized());
                 // 初始化标题
                 titleBar.initTitle();
+                // 初始化
+                NodeManager.init(this);
             }
         });
         // 非主窗口或者未显示过
@@ -406,8 +408,6 @@ public interface StageAdapter extends WindowAdapter {
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
         }
-        // 初始化
-        NodeManager.init(this);
         // 设置scene
         FXUtil.runWait(() -> stage.setScene(new Scene(titleBox)));
     }
@@ -704,10 +704,18 @@ public interface StageAdapter extends WindowAdapter {
     }
 
     default boolean isFocused() {
-       return this.stage().isFocused();
+        return this.stage().isFocused();
     }
 
     default void requestFocus() {
         this.stage().requestFocus();
+    }
+
+    default double getOpacity() {
+        return this.stage().getOpacity();
+    }
+
+    default void setOpacity(double opacity) {
+        this.stage().setOpacity(opacity);
     }
 }

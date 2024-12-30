@@ -25,16 +25,19 @@ public class OpacityManager {
     /**
      * 当前透明度
      */
-    private static Float currentOpacity;
+    private static OpacityConfig currentOpacity;
 
     /**
      * 获取当前透明度
      *
      * @return 当前透明度
      */
-    public static double currentOpacity() {
+    public static OpacityConfig currentOpacity() {
         if (currentOpacity == null) {
-            return defaultOpacity;
+            OpacityConfig opacityConfig = new OpacityConfig();
+            opacityConfig.setTitleOpacity(defaultOpacity);
+            opacityConfig.setWindowOpacity(defaultOpacity);
+            return opacityConfig;
         }
         return currentOpacity;
     }
@@ -42,12 +45,11 @@ public class OpacityManager {
     /**
      * 应用透明度
      *
-     * @param opacity 透明度
+     * @param opacity 透明度配置
      */
-    public static void apply(Float opacity) {
-        if (opacity != null && !Float.isNaN(opacity)) {
+    public static void apply(OpacityConfig opacity) {
+        if (opacity != null) {
             try {
-                opacity /= 100;
                 // 变更透明度
                 List<Window> windows = WindowManager.allWindows();
                 for (Window window : windows) {
