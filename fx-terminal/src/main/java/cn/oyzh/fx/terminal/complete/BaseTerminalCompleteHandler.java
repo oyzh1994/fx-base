@@ -1,5 +1,6 @@
 package cn.oyzh.fx.terminal.complete;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.terminal.Terminal;
@@ -18,8 +19,8 @@ import java.util.List;
  */
 public class BaseTerminalCompleteHandler<T extends Terminal> implements TerminalCompleteHandler<T> {
 
-    protected List<TerminalCommandHandler<?,?>> findCommandHandlers(String line) {
-        List<TerminalCommandHandler<?,?>> handlers;
+    protected List<TerminalCommandHandler<?, ?>> findCommandHandlers(String line) {
+        List<TerminalCommandHandler<?, ?>> handlers;
         if (line.contains(" ")) {
             handlers = TerminalManager.findHandlers(line, 3);
         } else {
@@ -30,20 +31,25 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
 
     @Override
     public boolean completion(String line, T terminal) {
-        if (StringUtil.isEmpty(line)) {
-            HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(HelpTerminalCommandHandler.class);
-            TerminalExecuteResult result = commandHandler.execute(null, terminal);
-            terminal.outputLine((String) result.getResult());
-            terminal.outputPrompt();
-        } else {
-            List<TerminalCommandHandler<?,?>> handlers = this.findCommandHandlers(line);
-            if (handlers.isEmpty()) {
-                this.noMatch(line, terminal);
-            } else if (handlers.size() == 1) {
-                this.oneMatch(line, terminal, handlers.get(0));
+        try {
+            if (StringUtil.isEmpty(line)) {
+                HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(HelpTerminalCommandHandler.class);
+                TerminalExecuteResult result = commandHandler.execute(null, terminal);
+                terminal.outputLine((String) result.getResult());
+                terminal.outputPrompt();
             } else {
-                this.multiMatch(line, terminal, handlers);
+                List<TerminalCommandHandler<?, ?>> handlers = this.findCommandHandlers(line);
+                if (handlers.isEmpty()) {
+                    this.noMatch(line, terminal);
+                } else if (handlers.size() == 1) {
+                    this.oneMatch(line, terminal, handlers.get(0));
+                } else {
+                    this.multiMatch(line, terminal, handlers);
+                }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("completion error", ex);
         }
         return true;
     }
@@ -66,10 +72,15 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
      * @param handler  处理器
      */
     protected void oneMatch(String input, T terminal, TerminalCommandHandler handler) {
-        if (!StringUtil.startWithIgnoreCase(input, handler.commandFullName())) {
-            terminal.coverInput(handler.commandFullName());
-        } else {
-            handler.completion(input, terminal);
+        try {
+            if (!StringUtil.startWithIgnoreCase(input, handler.commandFullName())) {
+                terminal.coverInput(handler.commandFullName());
+            } else {
+                handler.completion(input, terminal);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("oneMatch error", ex);
         }
     }
 
@@ -80,11 +91,16 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
      * @param terminal 终端
      * @param handlers 处理器列表
      */
-    protected void multiMatch(String input, T terminal, List<TerminalCommandHandler<?,?>> handlers) {
-        List<String> commands = handlers.parallelStream().map(TerminalCommandHandler::commandFullName).toList();
-        String formatText = TextUtil.beautifyFormat(commands, 4, 0);
-        terminal.outputByPrompt(formatText);
-        terminal.outputPrompt();
-        terminal.output(input);
+    protected void multiMatch(String input, T terminal, List<TerminalCommandHandler<?, ?>> handlers) {
+        try {
+            List<String> commands = handlers.parallelStream().map(TerminalCommandHandler::commandFullName).toList();
+            String formatText = TextUtil.beautifyFormat(commands, 4, 0);
+            terminal.outputByPrompt(formatText);
+            terminal.outputPrompt();
+            terminal.output(input);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("oneMatch error", ex);
+        }
     }
 }

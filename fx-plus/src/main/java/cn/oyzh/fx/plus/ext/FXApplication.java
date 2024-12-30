@@ -86,20 +86,6 @@ public abstract class FXApplication extends Preloader {
         }
     }
 
-    // /**
-    //  * app图标
-    //  *
-    //  * @return app图标
-    //  */
-    // protected abstract String appIcon();
-
-    // /**
-    //  * app名称
-    //  *
-    //  * @return app名称
-    //  */
-    // protected abstract String appName();
-
     /**
      * 初始化系统托盘
      */

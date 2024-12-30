@@ -1,5 +1,6 @@
 package cn.oyzh.fx.terminal.standard;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.terminal.Terminal;
@@ -34,7 +35,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
     public TerminalExecuteResult execute(TerminalCommand command, Terminal terminal) {
         TerminalExecuteResult result = new TerminalExecuteResult();
         try {
-            Collection<TerminalCommandHandler<?,?>> handlers = TerminalManager.listHandler();
+            Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
             List<String> list = new ArrayList<>();
             list.add(I18nHelper.orderNo());
             list.add(I18nHelper.cmd());
@@ -42,7 +43,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
             list.add(I18nHelper.status());
             list.add(I18nHelper.desc());
             int index = 0;
-            for (TerminalCommandHandler<?,?> handler : handlers) {
+            for (TerminalCommandHandler<?, ?> handler : handlers) {
                 list.add(++index + ")");
                 list.add(handler.commandFullName());
                 String version = handler.commandSupportedVersion();
@@ -59,6 +60,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
             result.setResult(TextUtil.beautifyFormat(list, 5, 2));
         } catch (Exception ex) {
             ex.printStackTrace();
+            JulLog.warn("execute error", ex);
         }
         return result;
     }

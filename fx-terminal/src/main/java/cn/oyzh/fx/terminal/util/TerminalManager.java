@@ -1,18 +1,15 @@
 package cn.oyzh.fx.terminal.util;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ClassUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.terminal.TerminalConst;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
-import cn.oyzh.fx.terminal.exception.TerminalException;
 import lombok.experimental.UtilityClass;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -26,39 +23,43 @@ public class TerminalManager {
 
     private static final List<TerminalCommandHandler<?, ?>> COMMAND_HANDLERS = new ArrayList<>();
 
-    static {
-        scanHandler();
-    }
-
-    private static void scanHandler() {
-        // 类过滤器
-        Predicate<Class<?>> filter = c -> {
-            if (c.isArray() || c.isAnnotation() || c.isEnum() || c.isHidden() || c.isInterface() || c.isRecord()) {
-                return false;
-            }
-            int modifiers = c.getModifiers();
-            if (Modifier.isAbstract(modifiers)) {
-                return false;
-            }
-            if (TerminalCommandHandler.class.isAssignableFrom(c)) {
-                registerHandler(c);
-                return true;
-            }
-            return false;
-        };
-        try {
-            // 标准命令
-            String standard = TerminalConst.standard();
-            ClassUtil.scanClasses(standard, filter);
-            // 扩展命令
-            String packageBase = TerminalConst.scanBase();
-            if (packageBase != null) {
-                ClassUtil.scanClasses(packageBase, filter);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    // static {
+    //     scanHandler();
+    // }
+    //
+    // private static void scanHandler() {
+    //     try {
+    //         JulLog.info("scanHandler start");
+    //         // 类过滤器
+    //         Predicate<Class<?>> filter = c -> {
+    //             if (c.isArray() || c.isAnnotation() || c.isEnum() || c.isHidden() || c.isInterface() || c.isRecord()) {
+    //                 return false;
+    //             }
+    //             int modifiers = c.getModifiers();
+    //             if (Modifier.isAbstract(modifiers)) {
+    //                 return false;
+    //             }
+    //             if (TerminalCommandHandler.class.isAssignableFrom(c)) {
+    //                 registerHandler(c);
+    //                 return true;
+    //             }
+    //             return false;
+    //         };
+    //         // 标准命令
+    //         String standard = TerminalConst.standard();
+    //         List<Class<?>> list = ClassUtil.scanClasses(standard, filter);
+    //         // 扩展命令
+    //         String packageBase = TerminalConst.scanBase();
+    //         if (packageBase != null) {
+    //             List<Class<?>> list1 = ClassUtil.scanClasses(packageBase, filter);
+    //             list.addAll(list1);
+    //         }
+    //         JulLog.info("scanHandler finish classList:{}", list);
+    //     } catch (Exception ex) {
+    //         ex.printStackTrace();
+    //         JulLog.warn("scanHandler error", ex);
+    //     }
+    // }
 
     /**
      * 列表命令处理器
@@ -74,15 +75,23 @@ public class TerminalManager {
      *
      * @param commandHandlerClass 处理器类
      */
-    public static void registerHandler(Class<?> commandHandlerClass) {
+    public static void registerHandler(Class<? extends TerminalCommandHandler<?, ?>> commandHandlerClass) {
         try {
             if (findHandler(commandHandlerClass) != null) {
-                throw new TerminalException("Multiple Command Handler for: " + commandHandlerClass);
+                JulLog.warn("commandHandlerClass:{} is registered", commandHandlerClass);
+                // throw new TerminalException("Multiple Command Handler for: " + commandHandlerClass);
+                return;
             }
-            Object object = ClassUtil.newInstance(commandHandlerClass);
-            registerHandler((TerminalCommandHandler<?, ?>) object);
+            TerminalCommandHandler<?, ?> object = ClassUtil.newInstance(commandHandlerClass);
+            registerHandler(object);
+            if (object != null) {
+                JulLog.info("registerHandler success, commandHandlerClass:{}", commandHandlerClass);
+            } else {
+                JulLog.warn("registerHandler fail, commandHandlerClass:{}", commandHandlerClass);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
+            JulLog.warn("registerHandler error commandHandlerClass:{}", commandHandlerClass, ex);
         }
     }
 
@@ -92,8 +101,13 @@ public class TerminalManager {
      * @param commandHandler 处理器
      */
     public static void registerHandler(TerminalCommandHandler<?, ?> commandHandler) {
-        if (commandHandler != null) {
-            COMMAND_HANDLERS.add(commandHandler);
+        try {
+            if (commandHandler != null) {
+                COMMAND_HANDLERS.add(commandHandler);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("registerHandler error commandHandler:{}", commandHandler.getClass(), ex);
         }
     }
 
@@ -104,12 +118,17 @@ public class TerminalManager {
      * @return 处理器
      */
     public static <T extends TerminalCommandHandler<?, ?>> T findHandler(Class<?> commandHandlerClass) {
-        if (commandHandlerClass != null) {
-            for (TerminalCommandHandler<?, ?> commandHandler : COMMAND_HANDLERS) {
-                if (commandHandler.getClass() == commandHandlerClass) {
-                    return (T) commandHandler;
+        try {
+            if (commandHandlerClass != null) {
+                for (TerminalCommandHandler<?, ?> commandHandler : COMMAND_HANDLERS) {
+                    if (commandHandler != null && commandHandler.getClass() == commandHandlerClass) {
+                        return (T) commandHandler;
+                    }
                 }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("registerHandler error commandHandlerClass:{}", commandHandlerClass, ex);
         }
         return null;
     }
@@ -136,31 +155,6 @@ public class TerminalManager {
         return commands.parallelStream().sorted(Comparator.comparing(TerminalCommandHandler::commandFullName)).collect(Collectors.toList());
     }
 
-    // /**
-    //  * 列举命令
-    //  *
-    //  * @return 命令列表
-    //  */
-    // public static List<String> listCommands() {
-    //     return CACHE.values().stream().map(TerminalCommandHandler::commandName).collect(Collectors.toList());
-    // }
-
-    // /**
-    //  * 寻找命令
-    //  *
-    //  * @param commandText 命令文本
-    //  * @return 命令列表
-    //  */
-    // public static List<String> findCommands(String commandText) {
-    //     List<String> commands = new ArrayList<>();
-    //     for (TerminalCommandHandler value : COMMAND_HANDLERS) {
-    //         if (StringUtil.startWithIgnoreCase(value.commandName(), commandText)) {
-    //             commands.add(value.commandName());
-    //         }
-    //     }
-    //     return commands;
-    // }
-
     /**
      * 获取命令处理器
      *
@@ -168,29 +162,24 @@ public class TerminalManager {
      * @return 命令处理器
      */
     public static TerminalCommandHandler<?, ?> findHandler(String input) {
-        if (input != null) {
-            String[] words = TerminalUtil.split(input);
-            List<TerminalCommandHandler<?, ?>> list = COMMAND_HANDLERS.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
-            if (!list.isEmpty()) {
-                if (words.length >= 2) {
-                    List<TerminalCommandHandler<?, ?>> list1 = list.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
-                    if (!list1.isEmpty()) {
-                        return list1.getFirst();
+        try {
+            if (input != null) {
+                String[] words = TerminalUtil.split(input);
+                List<TerminalCommandHandler<?, ?>> list = COMMAND_HANDLERS.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
+                if (!list.isEmpty()) {
+                    if (words.length >= 2) {
+                        List<TerminalCommandHandler<?, ?>> list1 = list.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
+                        if (!list1.isEmpty()) {
+                            return list1.getFirst();
+                        }
                     }
+                    return list.getFirst();
                 }
-                return list.getFirst();
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("findHandler error", ex);
         }
         return null;
     }
-
-    // /**
-    //  * 获取处理器
-    //  *
-    //  * @param commandName 命令名称
-    //  * @return 命令处理器
-    //  */
-    // public static TerminalCommandHandler getHandler(String commandName) {
-    //     return COMMAND_HANDLERS.get(commandName);
-    // }
 }
