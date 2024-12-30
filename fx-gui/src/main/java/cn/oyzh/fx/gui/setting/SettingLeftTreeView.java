@@ -58,8 +58,6 @@ public class SettingLeftTreeView extends RichTreeView {
             } else {
                 JulLog.warn("right is null");
             }
-        } else {
-            JulLog.warn("mainPane or fxId:{} is null");
         }
     }
 
