@@ -21,7 +21,7 @@ import java.util.Properties;
  * @author oyzh
  * @since 2021/8/19
  */
-public abstract class FXApplication extends Preloader {
+public abstract class FXApplication extends Application {
 
     /**
      * 启动时间
@@ -132,28 +132,28 @@ public abstract class FXApplication extends Preloader {
         }
     }
 
-    @Override
-    public void handleApplicationNotification(PreloaderNotification info) {
-        super.handleApplicationNotification(info);
-    }
-
-    @Override
-    public void handleStateChangeNotification(StateChangeNotification info) {
-        super.handleStateChangeNotification(info);
-    }
-
-    @Override
-    public void handleProgressNotification(ProgressNotification info) {
-        super.handleProgressNotification(info);
-    }
-
-    @Override
-    public boolean handleErrorNotification(ErrorNotification info) {
-        Throwable throwable = info == null ? null : info.getCause();
-        if (throwable != null) {
-            throwable.printStackTrace();
-            return false;
-        }
-        return super.handleErrorNotification(info);
-    }
+    // @Override
+    // public void handleApplicationNotification(PreloaderNotification info) {
+    //     super.handleApplicationNotification(info);
+    // }
+    //
+    // @Override
+    // public void handleStateChangeNotification(StateChangeNotification info) {
+    //     super.handleStateChangeNotification(info);
+    // }
+    //
+    // @Override
+    // public void handleProgressNotification(ProgressNotification info) {
+    //     super.handleProgressNotification(info);
+    // }
+    //
+    // @Override
+    // public boolean handleErrorNotification(ErrorNotification info) {
+    //     Throwable throwable = info == null ? null : info.getCause();
+    //     if (throwable != null) {
+    //         throwable.printStackTrace();
+    //         return false;
+    //     }
+    //     return super.handleErrorNotification(info);
+    // }
 }
