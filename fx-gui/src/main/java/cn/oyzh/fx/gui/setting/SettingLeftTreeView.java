@@ -3,12 +3,13 @@ package cn.oyzh.fx.gui.setting;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.gui.tree.view.RichTreeCell;
 import cn.oyzh.fx.gui.tree.view.RichTreeView;
-import cn.oyzh.fx.plus.node.NodeGroupUtil;
-import javafx.beans.value.WeakChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 import javafx.util.Callback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author oyzh
@@ -39,25 +40,40 @@ public class SettingLeftTreeView extends RichTreeView {
         this.setId("left-tree-view");
     }
 
-    public void selectItem(String itemId) {
-        this.doSelect(itemId);
+    protected SettingLeftItem findItem(String itemId) {
+        return this.getRoot().findItem(itemId);
     }
 
-    protected void doSelect(String fxId) {
+    public void selectItem(String itemId) {
+        SettingLeftItem item = this.findItem(itemId);
+        if (item != null) {
+            this.doSelect(itemId);
+        } else {
+            JulLog.warn("item is null");
+        }
+    }
+
+    protected void doSelect(String itemId) {
         SettingMainPane mainPane = this.getSettingMainPane();
-        if (mainPane != null && fxId != null) {
-            NodeGroupUtil.disappear(mainPane, "setting_item");
-            Node right = mainPane.getRight();
-            if (right != null) {
-                Node node = right.lookup("#" + fxId);
-                if (node != null) {
-                    node.setVisible(true);
+        if (mainPane != null && itemId != null) {
+            SettingLeftItem leftItem;
+            List<SettingLeftItem> items = new ArrayList<>();
+            String fxId = itemId;
+            do {
+                leftItem = this.findItem(fxId);
+                if (leftItem != null) {
+                    items.add(leftItem);
+                    fxId = leftItem.getParentId();
                 } else {
-                    JulLog.warn("node:{} is null", fxId);
+                    break;
                 }
-            } else {
-                JulLog.warn("right is null");
+            } while (true);
+            items = items.reversed();
+            StringBuilder label = new StringBuilder();
+            for (SettingLeftItem item : items) {
+                label.append(" > ").append(item.getName());
             }
+            mainPane.updateRightContent(itemId, label.substring(3));
         }
     }
 

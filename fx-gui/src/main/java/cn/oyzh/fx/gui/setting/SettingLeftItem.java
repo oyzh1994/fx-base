@@ -19,6 +19,8 @@ public class SettingLeftItem extends RichTreeItemValue {
 
     private String name;
 
+    private String parentId;
+
     public SettingLeftItem(String name ) {
         this.name = name;
     }
@@ -33,9 +35,6 @@ public class SettingLeftItem extends RichTreeItemValue {
         return this.name;
     }
 
-    public static SettingLeftItem of(String name ){
-        return new SettingLeftItem(name);
-    }
     public static SettingLeftItem of(String name, String id){
         return new SettingLeftItem(name, id);
     }

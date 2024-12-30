@@ -12,7 +12,7 @@ public class SettingRightContent extends FlexVBox {
     public SettingRightContent() {
     }
 
-    public SettingRightContent(Node node) {
-        super(node);
+    public SettingRightContent(Node... children) {
+        super(children);
     }
 }

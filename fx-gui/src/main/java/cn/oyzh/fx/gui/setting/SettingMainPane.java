@@ -2,7 +2,10 @@ package cn.oyzh.fx.gui.setting;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
+import cn.oyzh.fx.plus.node.NodeGroupUtil;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.layout.VBox;
 
 /**
  * @author oyzh
@@ -32,8 +35,8 @@ public class SettingMainPane extends FlexHBox {
     }
 
     public SettingLeftTreeView getLeftTreeView() {
-        SettingLeftContent  content = this.getLeftContent();
-        if(content == null) {
+        SettingLeftContent content = this.getLeftContent();
+        if (content == null) {
             return null;
         }
         return (SettingLeftTreeView) content.lookup("#left-tree-view");
@@ -42,18 +45,20 @@ public class SettingMainPane extends FlexHBox {
     public void setRight(Node right) {
         SettingRightContent content = (SettingRightContent) this.getChild(1);
         if (content == null) {
-            content = new SettingRightContent(right);
+            SettingRightNavBar navBar = new SettingRightNavBar();
+            content = new SettingRightContent(navBar, right);
+            VBox.setMargin(navBar, new Insets(0, 0, 10, 30));
             content.setFlexWidth("70%");
             content.setFlexHeight("100%");
             this.setChild(1, content);
         } else {
-            content.setChild(0, right);
+            content.setChild(1, right);
         }
     }
 
     public Node getRight() {
         SettingRightContent content = this.getRightContent();
-        return content.getChild(0);
+        return content.getChild(1);
     }
 
     public SettingRightContent getRightContent() {
@@ -63,7 +68,7 @@ public class SettingMainPane extends FlexHBox {
     public void setAction(SettingRightAction action) {
         SettingRightContent content = this.getRightContent();
         if (content != null) {
-            content.setChild(1, action);
+            content.setChild(2, action);
         } else {
             JulLog.warn("SettingRightContent is null");
         }
@@ -74,7 +79,32 @@ public class SettingMainPane extends FlexHBox {
         if (content == null) {
             return null;
         }
-        return (SettingRightAction) content.getChild(1);
+        return (SettingRightAction) content.getChild(2);
+    }
+
+    public SettingRightNavBar getNavBar() {
+        SettingRightContent content = this.getRightContent();
+        if (content == null) {
+            return null;
+        }
+        return (SettingRightNavBar) content.getChild(0);
+    }
+
+    void updateRightContent(String fxId, String label) {
+        NodeGroupUtil.disappear(this, "setting_item");
+        SettingRightContent rightContent = this.getRightContent();
+        if (rightContent != null) {
+            Node node = rightContent.lookup("#" + fxId);
+            if (node != null) {
+                node.setVisible(true);
+                SettingRightNavBar navBar = this.getNavBar();
+                navBar.setText(label);
+            } else {
+                JulLog.warn("node:{} is null", fxId);
+            }
+        } else {
+            JulLog.warn("SettingRightContent is null");
+        }
     }
 }
 
