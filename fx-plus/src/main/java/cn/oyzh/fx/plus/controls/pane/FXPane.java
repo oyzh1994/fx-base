@@ -16,9 +16,4 @@ public class FXPane extends Pane implements LayoutAdapter, NodeAdapter, ThemeAda
     {
         NodeManager.init(this);
     }
-
-    @Override
-    public void initNode() {
-
-    }
 }

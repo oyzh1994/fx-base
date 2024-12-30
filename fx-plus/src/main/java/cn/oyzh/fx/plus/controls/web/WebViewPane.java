@@ -17,11 +17,6 @@ public class WebViewPane extends Pane implements FlexAdapter {
         NodeManager.init(this);
     }
 
-    @Override
-    public void initNode() {
-
-    }
-
     public WebView webView() {
         if (this.isChildEmpty()) {
             WebView webView = new WebView();

@@ -18,8 +18,4 @@ public class FlexDatePicker extends DatePicker implements ThemeAdapter, FlexAdap
         super.resize(size[0], size[1]);
         this.resizeNode();
     }
-
-    @Override
-    public void initNode() {
-    }
 }

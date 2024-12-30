@@ -19,13 +19,6 @@ public class FXImageView extends ImageView implements NodeAdapter, PropAdapter, 
         NodeManager.init(this);
     }
 
-    // @Getter
-    // private String url;
-    //
-    // @Getter
-    // @Setter
-    // private String name;
-
     public FXImageView() {
         super();
     }

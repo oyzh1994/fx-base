@@ -27,9 +27,4 @@ public class FXHBox extends HBox implements NodeGroup, ThemeAdapter, LayoutAdapt
     public FXHBox(Node... children) {
         super(children);
     }
-
-    @Override
-    public void initNode() {
-
-    }
 }

@@ -48,11 +48,6 @@ public class FXText extends Text implements StateAdapter, TipAdapter, ThemeAdapt
         }
     }
 
-    @Override
-    public void initNode() {
-
-    }
-
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }

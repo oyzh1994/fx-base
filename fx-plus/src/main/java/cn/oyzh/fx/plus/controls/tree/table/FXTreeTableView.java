@@ -118,11 +118,6 @@ public class FXTreeTableView extends TreeTableView implements DestroyAdapter, No
     }
 
     @Override
-    public void initNode() {
-
-    }
-
-    @Override
     public void destroy() {
         if (this.getRoot() instanceof Destroyable destroyable) {
             destroyable.destroy();

@@ -19,9 +19,4 @@ public class FXFlowPane extends FlowPane implements NodeGroup, ThemeAdapter, Fon
     {
         NodeManager.init(this);
     }
-
-    @Override
-    public void initNode() {
-
-    }
 }

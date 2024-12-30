@@ -197,16 +197,6 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
     public EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
         return MouseAdapter.super.getOnMousePrimaryClicked();
     }
-//
-//    @Override
-//    public void setTipText(String tipText) {
-//        TipAdapter.super.tipText(tipText);
-//    }
-//
-//    @Override
-//    public String getTipText() {
-//        return TipAdapter.super.tipText();
-//    }
 
     public SVGGlyph() {
     }

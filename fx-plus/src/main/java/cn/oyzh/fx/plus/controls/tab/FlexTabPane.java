@@ -41,9 +41,4 @@ public class FlexTabPane extends FXTabPane implements FlexAdapter {
             }
         }
     }
-
-    @Override
-    public void initNode() {
-
-    }
 }

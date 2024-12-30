@@ -21,8 +21,6 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
 
     {
         NodeManager.init(this);
-        this.setOnClosed(this::onTabClosed);
-        this.setOnCloseRequest(this::onTabCloseRequest);
     }
 
     public FXTab() {
@@ -95,6 +93,8 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
     @Override
     public void initNode() {
         this.setClosable(false);
+        this.setOnClosed(this::onTabClosed);
+        this.setOnCloseRequest(this::onTabCloseRequest);
     }
 
     protected void onTabClosed(Event event) {

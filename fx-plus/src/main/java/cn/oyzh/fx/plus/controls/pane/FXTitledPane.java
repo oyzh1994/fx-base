@@ -20,11 +20,11 @@ public class FXTitledPane extends TitledPane implements NodeGroup, NodeAdapter, 
 
     {
         NodeManager.init(this);
-        this.setAnimated(true);
     }
 
     @Override
     public void initNode() {
+        this.setAnimated(true);
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);

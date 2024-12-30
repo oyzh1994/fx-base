@@ -46,11 +46,6 @@ public class FXLabel extends Label implements NodeGroup, ThemeAdapter, MouseAdap
         ThemeAdapter.super.setEnableTheme(enableTheme);
     }
 
-    @Override
-    public void initNode() {
-
-    }
-
     public void clear() {
         this.setText("");
     }

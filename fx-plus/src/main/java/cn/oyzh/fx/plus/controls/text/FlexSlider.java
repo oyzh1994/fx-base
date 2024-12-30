@@ -15,8 +15,6 @@ public class FlexSlider extends Slider implements FlexAdapter, ThemeAdapter, Tip
 
     {
         NodeManager.init(this);
-        this.setCursor(Cursor.HAND);
-        this.valueProperty().addListener((observableValue, number, t1) -> this.setTipText(t1 != null ? t1.intValue() + "" : ""));
     }
 
     @Override
@@ -28,6 +26,7 @@ public class FlexSlider extends Slider implements FlexAdapter, ThemeAdapter, Tip
 
     @Override
     public void initNode() {
-
+        this.setCursor(Cursor.HAND);
+        this.valueProperty().addListener((observableValue, number, t1) -> this.setTipText(t1 != null ? t1.intValue() + "" : ""));
     }
 }

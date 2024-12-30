@@ -26,10 +26,4 @@ public class FXTreeTableColumn<S, T> extends TreeTableColumn<S, T> implements Th
     public FXTreeTableColumn(String text) {
         super(text);
     }
-
-    @Override
-    public void initNode() {
-
-    }
-
 }

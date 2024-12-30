@@ -27,9 +27,4 @@ public class FXVBox extends VBox implements NodeGroup, ThemeAdapter, FontAdapter
     public FXVBox(Node... children) {
         super(children);
     }
-
-    @Override
-    public void initNode() {
-
-    }
 }

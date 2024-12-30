@@ -21,9 +21,4 @@ public class FlexSeparator extends Separator implements FlexAdapter, ThemeAdapte
         super.resize(size[0], size[1]);
         this.resizeNode();
     }
-
-    @Override
-    public void initNode() {
-
-    }
 }

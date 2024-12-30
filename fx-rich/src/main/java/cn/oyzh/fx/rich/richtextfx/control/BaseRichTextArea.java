@@ -1,7 +1,6 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.ColorUtil;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;

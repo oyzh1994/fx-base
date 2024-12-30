@@ -28,7 +28,9 @@ public interface NodeAdapter extends EventTarget {
     /**
      * 初始化节点
      */
-    void initNode();
+    default void initNode() {
+
+    }
 
     /**
      * 获取父节点

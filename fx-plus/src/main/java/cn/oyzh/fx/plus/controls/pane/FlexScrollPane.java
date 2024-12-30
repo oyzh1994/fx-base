@@ -35,9 +35,4 @@ public class FlexScrollPane extends ScrollPane implements FlexAdapter, ThemeAdap
             NodeUtil.setHeight(this.getContent(), height);
         }
     }
-
-    @Override
-    public void initNode() {
-
-    }
 }

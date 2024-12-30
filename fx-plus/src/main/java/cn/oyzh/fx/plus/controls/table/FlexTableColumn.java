@@ -70,11 +70,6 @@ public class FlexTableColumn<S, T> extends TableColumn<S, T> implements NodeAdap
         return null;
     }
 
-    @Override
-    public void initNode() {
-
-    }
-
     public void setValueName(String valueName) {
         this.setCellValueFactory(new PropertyValueFactory<>(valueName));
         this.setProp("_valueName", valueName);
