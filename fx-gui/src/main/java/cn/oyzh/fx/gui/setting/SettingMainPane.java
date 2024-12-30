@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.setting;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
 import javafx.scene.Node;
 
 /**
@@ -11,59 +11,71 @@ import javafx.scene.Node;
 public class SettingMainPane extends FlexHBox {
 
     public void setLeft(Node left) {
-        FlexVBox vBox = (FlexVBox) this.getChild(0);
-        if (vBox == null) {
-            vBox = new FlexVBox(left);
-            vBox.setFlexWidth("30%");
-            vBox.setFlexHeight("100%");
-            this.setChild(0, vBox);
+        SettingLeftContent content = (SettingLeftContent) this.getChild(0);
+        if (content == null) {
+            content = new SettingLeftContent(left);
+            content.setFlexWidth("30%");
+            content.setFlexHeight("100%");
+            this.setChild(0, content);
         } else {
-            vBox.setChild(0, left);
+            content.setChild(0, left);
         }
     }
 
     public Node getLeft() {
-        return this.getChild(0);
+        SettingLeftContent content = this.getLeftContent();
+        return content.getChild(0);
+    }
+
+    public SettingLeftContent getLeftContent() {
+        return (SettingLeftContent) this.getChild(0);
+    }
+
+    public SettingLeftTreeView getLeftTreeView() {
+        SettingLeftContent  content = this.getLeftContent();
+        if(content == null) {
+            return null;
+        }
+        return (SettingLeftTreeView) content.lookup("#left-tree-view");
     }
 
     public void setRight(Node right) {
-        FlexVBox vBox = (FlexVBox) this.getChild(1);
-        if (vBox == null) {
-            vBox = new FlexVBox(right);
-            vBox.setFlexWidth("70%");
-            vBox.setFlexHeight("100%");
-            this.setChild(1, vBox);
+        SettingRightContent content = (SettingRightContent) this.getChild(1);
+        if (content == null) {
+            content = new SettingRightContent(right);
+            content.setFlexWidth("70%");
+            content.setFlexHeight("100%");
+            this.setChild(1, content);
         } else {
-            vBox.setChild(0, right);
+            content.setChild(0, right);
         }
     }
 
     public Node getRight() {
-        FlexVBox vBox = (FlexVBox) this.getChild(1);
-        if (vBox == null) {
-            return null;
-        }
-        return vBox.getChild(0);
+        SettingRightContent content = this.getRightContent();
+        return content.getChild(0);
     }
 
-    public void setAction(Node action) {
-        FlexVBox vBox = (FlexVBox) this.getChild(1);
-        if (vBox == null) {
-            vBox = new FlexVBox(action);
-            this.setChild(1, vBox);
+    public SettingRightContent getRightContent() {
+        return (SettingRightContent) this.getChild(1);
+    }
+
+    public void setAction(SettingRightAction action) {
+        SettingRightContent content = this.getRightContent();
+        if (content != null) {
+            content.setChild(1, action);
         } else {
-            vBox.setChild(1, action);
+            JulLog.warn("SettingRightContent is null");
         }
     }
 
-    public Node getAction() {
-        FlexVBox vBox = (FlexVBox) this.getChild(1);
-        if (vBox == null) {
+    public SettingRightAction getAction() {
+        SettingRightContent content = this.getRightContent();
+        if (content == null) {
             return null;
         }
-        return vBox.getChild(1);
+        return (SettingRightAction) content.getChild(1);
     }
-
 }
 
 

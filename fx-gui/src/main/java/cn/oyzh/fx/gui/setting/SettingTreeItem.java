@@ -4,9 +4,13 @@ import cn.oyzh.fx.gui.tree.view.RichTreeItem;
 import cn.oyzh.fx.gui.tree.view.RichTreeView;
 import lombok.NonNull;
 
-public class SettingTreeItem  extends RichTreeItem<SettingLeftItem> {
+/**
+ * @author oyzh
+ * @since 2024/12/29
+ */
+public class SettingTreeItem extends RichTreeItem<SettingLeftItem> {
 
-    public SettingTreeItem(@NonNull RichTreeView treeView,SettingLeftItem value) {
+    public SettingTreeItem(@NonNull RichTreeView treeView, SettingLeftItem value) {
         super(treeView);
         this.setValue(value);
     }
@@ -17,8 +21,8 @@ public class SettingTreeItem  extends RichTreeItem<SettingLeftItem> {
         return treeItem;
     }
 
-    public String getItemId(){
-       return this.getValue().getId();
+    public String getItemId() {
+        SettingLeftItem value = this.getValue();
+        return value == null ? null : value.getId();
     }
-
 }

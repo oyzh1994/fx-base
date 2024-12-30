@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.tree.view;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.controls.tree.view.FlexTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TreeItem;
 import lombok.Getter;
 import lombok.Setter;
@@ -112,5 +113,9 @@ public class RichTreeView extends FlexTreeView {
         this.selectAndScroll(item);
         // 刷新
         this.refresh();
+    }
+
+    public void selectedItemChanged(ChangeListener<?> listener) {
+        this.getSelectionModel().selectedItemProperty().addListener(listener);
     }
 }
