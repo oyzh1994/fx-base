@@ -52,8 +52,8 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     }
 
     @Override
-    public void setFontWeight(int fontWeight) {
-        FontAdapter.super.setFontWeight(fontWeight);
+    public void setFontWeight2(int fontWeight) {
+        FontAdapter.super.setFontWeight2(fontWeight);
     }
 
     @Override

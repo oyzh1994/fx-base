@@ -204,7 +204,7 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontWeight 字体粗细
      */
-    default void setFontWeight(int fontWeight) {
+    default void setFontWeight2(int fontWeight) {
         this.fontWeight(FontWeight.findByWeight(fontWeight));
     }
 
