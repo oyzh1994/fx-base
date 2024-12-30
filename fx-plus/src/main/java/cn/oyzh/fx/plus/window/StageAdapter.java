@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
@@ -366,15 +367,18 @@ public interface StageAdapter extends WindowAdapter {
         titleBox.prefHeightProperty().bind(stage.heightProperty().add(4));
         // 显示监听
         stage.showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onWindowClosed();
-            } else {
-                // 最大化处理
-                titleBar.doMaximum(stage.isMaximized());
-                // 初始化标题
-                titleBar.initTitle();
-                // 初始化
-                NodeManager.init(this);
+            try {
+                if (!newValue) {
+                    this.onWindowClosed();
+                } else {
+                    // 最大化处理
+                    titleBar.doMaximum(stage.isMaximized());
+                    // 初始化标题
+                    titleBar.initTitle();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JulLog.warn("showing error", ex);
             }
         });
         // 非主窗口或者未显示过
@@ -399,6 +403,8 @@ public interface StageAdapter extends WindowAdapter {
                     TaskManager.startDelay(titleBox::updateContent, 10);
                 }
             });
+            // 初始化
+            NodeManager.init(this);
         }
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
@@ -433,8 +439,8 @@ public interface StageAdapter extends WindowAdapter {
             this.stage().initStyle(StageStyle.DECORATED);
         }
         // 初始化stage
-        // this.stage().setTitle(attribute.title());
-        // this.stage().setMaximized(attribute.maximized());
+        this.stage().setTitle(attribute.title());
+        this.stage().setMaximized(attribute.maximumAble());
         this.stage().setResizable(attribute.resizable());
         // 设置icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {

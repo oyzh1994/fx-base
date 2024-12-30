@@ -10,15 +10,12 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Getter;
@@ -214,24 +211,29 @@ public class TitleBar extends FlexPane {
      * 初始化标题
      */
     public void initTitle() {
-        Stage stage = this.stage();
-        if (stage == null || this.hasContent) {
-            return;
-        }
-        FXText text = (FXText) this.lookup("#title");
-        if (stage.getTitle() != null) {
-            String title = stage.getTitle();
-            // 创建
-            if (text == null) {
-                text = new FXText(title);
-                text.setFontSize(12);
-                text.setId("title");
-                this.addChild(1, text);
-            } else if (!StringUtil.equals(text.getText(), title)) {// 更新
-                text.setText(title);
+        try {
+            Stage stage = this.stage();
+            if (stage == null || this.hasContent) {
+                return;
             }
-        } else if (text != null) {// 移除
-            this.removeChild(text);
+            FXText text = (FXText) this.lookup("#title");
+            if (stage.getTitle() != null) {
+                String title = stage.getTitle();
+                // 创建
+                if (text == null) {
+                    text = new FXText(title);
+                    text.setFontSize(12);
+                    text.setId("title");
+                    this.addChild(1, text);
+                } else if (!StringUtil.equals(text.getText(), title)) {// 更新
+                    text.setText(title);
+                }
+            } else if (text != null) {// 移除
+                this.removeChild(text);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("init title error", ex);
         }
     }
 
@@ -475,7 +477,7 @@ public class TitleBar extends FlexPane {
      */
     public void maximum(boolean maximum) {
         Stage stage = this.stage();
-        if (stage != null&& stage.isResizable() && !stage.isFullScreen()) {
+        if (stage != null && stage.isResizable() && !stage.isFullScreen()) {
             stage.setMaximized(maximum);
             this.doMaximum(maximum);
         } else {

@@ -35,8 +35,8 @@ public class OpacityManager {
     public static OpacityConfig currentOpacity() {
         if (currentOpacity == null) {
             OpacityConfig opacityConfig = new OpacityConfig();
-            opacityConfig.setTitleOpacity(defaultOpacity);
-            opacityConfig.setWindowOpacity(defaultOpacity);
+            opacityConfig.setTitleOpacity(defaultOpacity * 100);
+            opacityConfig.setWindowOpacity(defaultOpacity * 100);
             return opacityConfig;
         }
         return currentOpacity;

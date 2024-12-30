@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.opacity;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.titlebar.TitleBar;
 import cn.oyzh.fx.plus.window.StageAdapter;
@@ -74,6 +75,7 @@ public interface OpacityAdapter extends PropAdapter {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
+                JulLog.warn("changeOpacity error", ex);
             }
         }
     }
