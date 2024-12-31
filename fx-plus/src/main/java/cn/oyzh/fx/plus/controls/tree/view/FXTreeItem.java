@@ -53,6 +53,9 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      * @return 渲染服务
      */
     protected QueueService service() {
+        if (this.treeView == null) {
+            return null;
+        }
         return this.treeView.service();
     }
 
@@ -377,7 +380,11 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      * 刷新treeview
      */
     public void refresh() {
-        this.service().submitFXLater(() -> this.getTreeView().refresh());
+        QueueService service = this.service();
+        if (service == null) {
+            return;
+        }
+        service.submitFXLater(() -> this.getTreeView().refresh());
     }
 
     /**

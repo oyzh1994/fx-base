@@ -6,13 +6,13 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.thread.QueueService;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import lombok.NonNull;
 
 import java.util.BitSet;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
@@ -369,7 +369,11 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 子节点排序
      */
     protected void sortChild(boolean sortAsc) {
-        this.service().submitFX(() -> {
+        QueueService service = this.service();
+        if (service == null) {
+            return;
+        }
+        service.submitFX(() -> {
             this.setSorting(true);
             try {
                 // 执行排序
