@@ -381,17 +381,19 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void refresh() {
         QueueService service = this.service();
-        if (service == null) {
-            return;
+        if (service != null) {
+            service.submitFXLater(() -> this.getTreeView().refresh());
         }
-        service.submitFXLater(() -> this.getTreeView().refresh());
     }
 
     /**
      * 刷新坐标，防止出现白屏
      */
     public void flushLocal() {
-        this.service().submit(() -> this.getTreeView().flushLocal());
+        QueueService service = this.service();
+        if (service != null) {
+            service.submit(() -> this.getTreeView().flushLocal());
+        }
     }
 
     /**
