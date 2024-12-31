@@ -91,15 +91,19 @@ public class SettingMainPane extends FlexHBox {
     }
 
     void updateRightContent(String fxId, String label) {
-        NodeGroupUtil.disappear(this, "setting_item");
         SettingRightContent rightContent = this.getRightContent();
         if (rightContent != null) {
             Node node = rightContent.lookup("#" + fxId);
+            SettingRightNavBar navBar = this.getNavBar();
             if (node != null) {
+                navBar.enable();
+                NodeGroupUtil.enable(this, "setting_item");
+                NodeGroupUtil.disappear(this, "setting_item");
                 node.setVisible(true);
-                SettingRightNavBar navBar = this.getNavBar();
                 navBar.setText(label);
             } else {
+                navBar.disable();
+                NodeGroupUtil.disable(this, "setting_item");
                 JulLog.warn("node:{} is null", fxId);
             }
         } else {
