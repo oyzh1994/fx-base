@@ -1,7 +1,10 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.CostUtil;
+import cn.oyzh.common.util.MD5Util;
 import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -275,25 +278,43 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
     }
 
     /**
+     * 检查样式是否失效
+     *
+     * @return 结果
+     */
+    public boolean checkInvalidStyle() {
+        String md5 = this.getProp("style:md5");
+        String textMd5 = MD5Util.md5Hex(this.getText());
+        if (!StringUtil.equals(md5, textMd5)) {
+            this.setProp("style:md5", textMd5);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 初始化文字样式
      */
     public void initTextStyle() {
-        FXUtil.runWait(() -> {
-            this.clearTextStyle();
-            // 初始化颜色
-            if (this.isEnableTheme()) {
-                Node placeholder = this.getPlaceholder();
-                CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
-                Color accentColor = ThemeManager.currentAccentColor();
-                Color foregroundColor = ThemeManager.currentForegroundColor();
-                String fgColor = FXColorUtil.getColorHex(foregroundColor);
-                this.setStyle(0, this.getLength(), "-fx-fill: " + fgColor + ";");
-                caretNode.setStroke(accentColor);
-                if (placeholder != null) {
-                    placeholder.setStyle("-fx-fill: " + fgColor + ";");
-                }
+        if (!this.checkInvalidStyle()) {
+            return;
+        }
+        CostUtil.record();
+        this.clearTextStyle();
+        // 初始化颜色
+        if (this.isEnableTheme()) {
+            Node placeholder = this.getPlaceholder();
+            CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
+            Color accentColor = ThemeManager.currentAccentColor();
+            Color foregroundColor = ThemeManager.currentForegroundColor();
+            String fgColor = FXColorUtil.getColorHex(foregroundColor);
+            this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
+            caretNode.setStroke(accentColor);
+            if (placeholder != null) {
+                placeholder.setStyle("-fx-fill:" + fgColor);
             }
-        });
+        }
+        CostUtil.printCost();
     }
 
     /**
@@ -365,6 +386,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 //                }
 //            }
 //        }
+        // 移除样式缓存
+        this.removeProp("style:md5");
         this.initTextStyle();
     }
 
@@ -375,10 +398,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
         this.setFocusTraversable(false);
         this.setAutoScrollOnDragDesired(true);
         this.setPadding(new Insets(5, 5, 5, 5));
-        BorderStroke stroke = new BorderStroke(Color.GREY, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        Color color = ThemeManager.currentAccentColor();
+        BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         this.setBorder(new Border(stroke));
-        this.getStyleClass().add("rich-text-area");
         this.applyPlainUndoManager();
+        this.getStyleClass().add("rich-text-area");
     }
 
     @Override

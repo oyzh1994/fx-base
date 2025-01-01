@@ -14,7 +14,9 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,24 +26,75 @@ import java.util.regex.Pattern;
  * @author oyzh
  * @since 2024/04/17
  */
-@Getter
+
 public class RichDataTextArea extends FlexRichTextArea {
+
+    /**
+     * 搜索文本
+     */
+    @Getter
+    private String searchText;
 
     /**
      * 是否忽略变化
      */
+    @Getter
     private boolean ignoreChange;
 
     /**
      * 数据类型
      */
     @Setter
+    @Getter
     private RichDataType dataType = RichDataType.STRING;
 
     /**
      * 实际类型类型
      */
+    @Getter
     private RichDataType realType = RichDataType.STRING;
+
+    /**
+     * 样式触发边距
+     */
+    private Map<RichDataType, Integer> styleBound;
+
+    /**
+     * 设置边距
+     *
+     * @param type  类型
+     * @param limit 最大限制
+     */
+    public void setStyleBound(RichDataType type, int limit) {
+        if (this.styleBound == null) {
+            this.styleBound = new HashMap<RichDataType, Integer>();
+        }
+        this.styleBound.put(type, limit);
+    }
+
+    /**
+     * 获取边距
+     *
+     * @param type 类型
+     * @return 最大限制
+     */
+    public Integer getStyleBound(RichDataType type) {
+        if (this.styleBound != null) {
+            return this.styleBound.get(type);
+        }
+        return null;
+    }
+
+    /**
+     * 检查边距
+     *
+     * @param type 类型
+     * @return 结果
+     */
+    public boolean checkStyleBound(RichDataType type) {
+        Integer bound = this.getStyleBound(type);
+        return bound != null && this.getLength() >= bound;
+    }
 
     @Override
     public void addTextChangeListener(ChangeListener<String> listener) {
@@ -141,7 +194,11 @@ public class RichDataTextArea extends FlexRichTextArea {
     public void showJsonData(Object rawData) {
         String jsonData = TextUtil.getJsonData(rawData);
         this.setText(jsonData);
-        this.initTextStyle();
+        if (this.checkStyleBound(RichDataType.JSON)) {
+            this.initTextStyle();
+        } else {
+            this.clearTextStyle();
+        }
         this.dataType = RichDataType.JSON;
     }
 
@@ -151,7 +208,11 @@ public class RichDataTextArea extends FlexRichTextArea {
     public void showBinaryData(Object rawData) {
         String binaryData = TextUtil.getBinaryData(rawData);
         this.setText(binaryData);
-        this.initTextStyle();
+        if (this.checkStyleBound(RichDataType.BINARY)) {
+            this.initTextStyle();
+        } else {
+            this.clearTextStyle();
+        }
         this.dataType = RichDataType.BINARY;
     }
 
@@ -161,7 +222,11 @@ public class RichDataTextArea extends FlexRichTextArea {
     public void showHexData(Object rawData) {
         String hexData = TextUtil.getHexData(rawData);
         this.setText(hexData);
-        this.initTextStyle();
+        if (this.checkStyleBound(RichDataType.HEX)) {
+            this.initTextStyle();
+        } else {
+            this.clearTextStyle();
+        }
         this.dataType = RichDataType.HEX;
     }
 
@@ -191,54 +256,41 @@ public class RichDataTextArea extends FlexRichTextArea {
 
     @Override
     public void initTextStyle() {
+        if (!super.checkInvalidStyle()) {
+            return;
+        }
         super.initTextStyle();
-        FXUtil.runWait(() -> {
-//            this.clearTextStyle();
-            // 搜索
-            if (StringUtil.isNotBlank(this.searchText)) {
-//                super.changeTheme(ThemeManager.currentTheme());
-                String text = this.getText();
-                Matcher matcher = this.searchPattern().matcher(text);
-                List<RichTextStyle> styles = new ArrayList<>();
-                while (matcher.find()) {
-                    styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
-                }
-//                for (RichTextStyle style : styles) {
-                    this.setStyles(styles);
-//                }
-            } else if (this.dataType == RichDataType.JSON) { // json
-//                super.changeTheme(ThemeManager.currentTheme());
-                String text = this.getText();
-                Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
-                List<RichTextStyle> styles = new ArrayList<>();
-                while (matcher1.find()) {
-                    styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
-                }
-                Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
-                while (matcher2.find()) {
-                    styles.add(new RichTextStyle(matcher2.start(), matcher2.end() - 1, "-fx-fill: #EE2C2C;"));
-                }
-                Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);
-                while (matcher3.find()) {
-                    styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
-                }
-//                for (RichTextStyle style : styles) {
-                    this.setStyles(styles);
-//                }
-            } else if (this.dataType == RichDataType.BINARY) {// binary
-                this.setStyle(0, this.getLength(), "-fx-fill: #32CD32;");
-            } else if (this.dataType == RichDataType.HEX) {// hex
-                this.setStyle(0, this.getLength(), "-fx-fill: #4682B4;");
-//            } else {
-//                super.changeTheme(ThemeManager.currentTheme());
+        // 搜索
+        if (StringUtil.isNotBlank(this.searchText)) {
+            String text = this.getText();
+            Matcher matcher = this.searchPattern().matcher(text);
+            List<RichTextStyle> styles = new ArrayList<>();
+            while (matcher.find()) {
+                styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
             }
-        });
+            this.setStyles(styles);
+        } else if (this.dataType == RichDataType.JSON) { // json
+            String text = this.getText();
+            Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
+            List<RichTextStyle> styles = new ArrayList<>();
+            while (matcher1.find()) {
+                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
+            }
+            Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
+            while (matcher2.find()) {
+                styles.add(new RichTextStyle(matcher2.start(), matcher2.end() - 1, "-fx-fill: #EE2C2C;"));
+            }
+            Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);
+            while (matcher3.find()) {
+                styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
+            }
+            this.setStyles(styles);
+        } else if (this.dataType == RichDataType.BINARY) {// binary
+            this.setStyle(0, this.getLength(), "-fx-fill: #32CD32;");
+        } else if (this.dataType == RichDataType.HEX) {// hex
+            this.setStyle(0, this.getLength(), "-fx-fill: #4682B4;");
+        }
     }
-
-    /**
-     * 搜索文本
-     */
-    private String searchText;
 
     /**
      * 设置搜索文本
