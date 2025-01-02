@@ -67,7 +67,7 @@ public class RichDataTextArea extends FlexRichTextArea {
      */
     public void setStyleBound(RichDataType type, int limit) {
         if (this.styleBound == null) {
-            this.styleBound = new HashMap<RichDataType, Integer>();
+            this.styleBound = new HashMap<>();
         }
         this.styleBound.put(type, limit);
     }
@@ -93,7 +93,7 @@ public class RichDataTextArea extends FlexRichTextArea {
      */
     public boolean checkStyleBound(RichDataType type) {
         Integer bound = this.getStyleBound(type);
-        return bound != null && this.getLength() >= bound;
+        return bound == null || this.getLength() < bound;
     }
 
     @Override

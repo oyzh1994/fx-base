@@ -245,20 +245,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
         return this.getText().isEmpty();
     }
 
-    // /**
-    //  * 滚动到尾部
-    //  */
-    // public void scrollToEnd() {
-    //     ExecutorUtil.start(() -> {
-    //         int len = this.getLength() - 1;
-    //         if (len > 0) {
-    //             this.selectRange(len - 1, len);
-    //             this.deselect();
-    //             this.positionCaret(this.getLength());
-    //         }
-    //     }, 150);
-    // }
-
     public void positionCaret(int caretPosition) {
         FXUtil.runWait(() -> this.displaceCaret(caretPosition));
     }
@@ -369,23 +355,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void changeTheme(ThemeStyle style) {
-//        if (this.isEnableTheme()) {
-//            Node placeholder = this.getPlaceholder();
-//            CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
-//            if (style.isDarkMode()) {
-//                this.setStyle(0, this.getLength(), "-fx-fill: #fff;");
-//                caretNode.setStroke(Color.WHITE);
-//                if (placeholder != null) {
-//                    placeholder.setStyle("-fx-fill: #fff;");
-//                }
-//            } else {
-//                this.setStyle(0, this.getLength(), "-fx-fill: #000");
-//                caretNode.setStroke(Color.BLACK);
-//                if (placeholder != null) {
-//                    placeholder.setStyle("-fx-fill: #000;");
-//                }
-//            }
-//        }
         // 移除样式缓存
         this.removeProp("style:md5");
         this.initTextStyle();
