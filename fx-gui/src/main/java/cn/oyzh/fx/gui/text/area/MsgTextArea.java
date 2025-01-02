@@ -1,10 +1,14 @@
 package cn.oyzh.fx.gui.text.area;
 
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.controls.text.area.FlexTextArea;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -40,6 +44,16 @@ public class MsgTextArea extends FlexTextArea {
     @Setter
     private byte limitPolicy = 1;
 
+    /**
+     * 消息队列
+     */
+    private final Queue<String> queue = new ArrayDeque<>();
+
+    /**
+     * 拼接中标志位
+     */
+    private final AtomicBoolean appending = new AtomicBoolean(false);
+
     @Override
     public void appendText(String s) {
         if (s != null) {
@@ -52,11 +66,42 @@ public class MsgTextArea extends FlexTextArea {
                         this.deleteLimitLine(lineCount);
                     }
                 }
-                super.appendText(s);
+//                super.appendText(s);
+                this.doAppend(s);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 执行拼接
+     */
+    private void doAppend(String text) {
+        this.queue.add(text);
+        if (this.appending.get()) {
+            return;
+        }
+        this.appending.set(true);
+        // 执行拼接
+        TaskManager.start(() -> {
+            try {
+                StringBuilder builder = new StringBuilder();
+                while (!this.queue.isEmpty()) {
+                    builder.append(this.queue.poll());
+                }
+                super.appendText(builder.toString());
+            } finally {
+                this.appending.set(false);
+            }
+        });
+    }
+
+    @Override
+    public void setTextExt(String text) {
+        this.queue.clear();
+        super.setTextExt(text);
+
     }
 
     /**
