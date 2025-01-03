@@ -59,10 +59,12 @@ public interface OpacityAdapter extends PropAdapter {
                 // 窗口处理
                 Float windowOpacity = opacity.getWindowOpacity();
                 if (windowOpacity != null && !Float.isNaN(windowOpacity)) {
+                    windowOpacity /= 100;
+                    windowOpacity = OpacityManager.fixOpacity(windowOpacity);
                     if (this instanceof Window window) {
-                        window.setOpacity(windowOpacity / 100f);
+                        window.setOpacity(windowOpacity);
                     } else if (this instanceof StageAdapter adapter) {
-                        adapter.setOpacity(windowOpacity / 100f);
+                        adapter.setOpacity(windowOpacity);
                     }
                 }
                 // 标题栏处理
@@ -70,7 +72,9 @@ public interface OpacityAdapter extends PropAdapter {
                 if (titleOpacity != null && !Float.isNaN(titleOpacity) && this instanceof StageAdapter adapter) {
                     TitleBar titleBar = adapter.getTitleBar();
                     if (titleBar != null) {
-                        titleBar.setOpacity(titleOpacity / 100f);
+                        titleOpacity /= 100;
+                        titleOpacity = OpacityManager.fixOpacity(titleOpacity);
+                        titleBar.setOpacity(titleOpacity);
                     }
                 }
             } catch (Exception ex) {
