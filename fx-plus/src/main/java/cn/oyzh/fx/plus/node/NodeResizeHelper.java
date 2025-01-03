@@ -49,6 +49,11 @@ public class NodeResizeHelper {
     private Boolean resizeIng;
 
     /**
+     * 鼠标按下时间
+     */
+    private long mousePressedTime;
+
+    /**
      * 原始鼠标样式
      */
     @Setter
@@ -198,6 +203,7 @@ public class NodeResizeHelper {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                 // 设置拉伸中标志位
                 this.resizeIng = true;
+                this.mousePressedTime = System.currentTimeMillis();
                 JulLog.debug("MousePressed");
             }
         };
@@ -319,7 +325,7 @@ public class NodeResizeHelper {
      * @return 结果
      */
     public boolean isResizeIng() {
-        return this.resizeIng != null && this.resizeIng;
+        return this.resizeIng != null && this.resizeIng && (System.currentTimeMillis() - this.mousePressedTime) > 500;
     }
 
     /**
