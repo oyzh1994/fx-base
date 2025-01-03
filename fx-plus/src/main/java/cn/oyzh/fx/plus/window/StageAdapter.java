@@ -3,10 +3,7 @@ package cn.oyzh.fx.plus.window;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.common.util.ArrayUtil;
-import cn.oyzh.common.util.BooleanUtil;
-import cn.oyzh.common.util.ReflectUtil;
-import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.*;
 import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
@@ -336,10 +333,14 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 自定义icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
-            config.setIcon(attribute.iconUrl());
+            if (OSUtil.isWindows()) {
+                config.setIcon(attribute.iconUrl());
+            }
             stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {// 全局icon
-            config.setIcon(FXConst.appIcon());
+            if (OSUtil.isWindows()) {
+                config.setIcon(FXConst.appIcon());
+            }
             stage.getIcons().setAll(IconUtil.getIcon(FXConst.appIcon()));
         }
         // 窗口模态

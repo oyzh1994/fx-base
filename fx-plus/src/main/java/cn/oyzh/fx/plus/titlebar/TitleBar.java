@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
@@ -16,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Getter;
@@ -240,7 +242,119 @@ public class TitleBar extends FlexPane {
     /**
      * 更新节点位置
      */
-    protected void updateNodeLocation() {
+    public void updateNodeLocation() {
+        if (OSUtil.isWindows() || OSUtil.isLinux()) {
+            this.updateNodeLocationForWindows();
+        } else {
+            this.updateNodeLocationForMacos();
+        }
+    }
+
+    /**
+     * 更新节点位置，macos版本
+     */
+    protected void updateNodeLocationForMacos() {
+        double width = this.realWidth();
+        double height = this.realHeight();
+        double actionW = 0;
+        Node close = null;
+        Node maximum = null;
+        Node minimum = null;
+        Node fullScreen = null;
+        Node alwaysOnTop = null;
+        Node content = null;
+        Node title = null;
+        for (Node child : this.getChildren()) {
+            if ("content".equals(child.getId())) {
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                content = child;
+                continue;
+            }
+            if ("title".equals(child.getId())) {
+                child.setLayoutY(20);
+                title = child;
+                FXText text = (FXText) child;
+                text.setFontWeight(FontWeight.BOLD);
+                continue;
+            }
+            if ("fullScreen".equals(child.getId())) {
+                fullScreen = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+            if ("alwaysOnTop".equals(child.getId())) {
+                alwaysOnTop = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+            if ("minimum".equals(child.getId())) {
+                minimum = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+            if ("maximum".equals(child.getId())) {
+                maximum = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+                continue;
+            }
+            if ("close".equals(child.getId())) {
+                close = child;
+                double nHeight = NodeUtil.getHeight(child);
+                child.setLayoutY((height - nHeight) / 2);
+            }
+        }
+
+        // 关闭按钮处理
+        if (close != null) {
+            double nWidth = NodeUtil.getWidth(close);
+            close.setLayoutX(10);
+            actionW = nWidth + 10;
+        }
+        // 最小化按钮处理
+        if (minimum != null) {
+            double nWidth = NodeUtil.getWidth(minimum);
+            minimum.setLayoutX(actionW + 10);
+            actionW = actionW + nWidth + 10;
+        }
+        // 最大化按钮处理
+        if (maximum != null) {
+            double nWidth = NodeUtil.getWidth(maximum);
+            maximum.setLayoutX(actionW + 10);
+            actionW = actionW + nWidth + 10;
+        }
+        // 全屏按钮处理
+        if (fullScreen != null) {
+            double nWidth = NodeUtil.getWidth(fullScreen);
+            fullScreen.setLayoutX(actionW + 10);
+            actionW = actionW + nWidth + 10;
+        }
+        // 置顶按钮处理
+        if (alwaysOnTop != null) {
+            double nWidth = NodeUtil.getWidth(alwaysOnTop);
+            alwaysOnTop.setLayoutX(actionW + 10);
+            actionW = actionW + nWidth + 10;
+        }
+        // 标题组件处理
+        if (title != null) {
+            double nWidth = NodeUtil.getWidth(title);
+            double less = width - actionW - nWidth;
+            title.setLayoutX(less / 2);
+        } else if (content != null) {// 内容组件处理
+            double nWidth = NodeUtil.getWidth(content);
+            double less = width - actionW - nWidth;
+            content.setLayoutX(less / 2);
+        }
+    }
+
+    /**
+     * 更新节点位置，windows版本
+     */
+    protected void updateNodeLocationForWindows() {
         double width = this.realWidth();
         double height = this.realHeight();
         double layoutX = 5;

@@ -77,7 +77,6 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 字体名称
      */
     @Column
-    @Getter
     private String fontFamily;
 
     /**
@@ -170,14 +169,12 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 页面宽
      */
     @Column
-    @Getter
     private Double pageWidth;
 
     /**
      * 页面高
      */
     @Column
-    @Getter
     private Double pageHeight;
 
     /**
@@ -205,7 +202,6 @@ public class Setting implements Serializable, ObjectCopier<Object> {
      * 主页左侧宽
      */
     @Column
-    @Getter
     private Float pageLeftWidth;
 
     /**
