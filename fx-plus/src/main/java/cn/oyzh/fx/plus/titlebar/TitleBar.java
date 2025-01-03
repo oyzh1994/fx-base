@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
@@ -8,6 +9,7 @@ import cn.oyzh.fx.plus.controls.pane.FlexPane;
 import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
@@ -256,7 +258,7 @@ public class TitleBar extends FlexPane {
     protected void updateNodeLocationForMacos() {
         double width = this.realWidth();
         double height = this.realHeight();
-        double actionW = 0;
+        double actionW = 10;
         Node close = null;
         Node maximum = null;
         Node minimum = null;
@@ -312,31 +314,31 @@ public class TitleBar extends FlexPane {
         // 关闭按钮处理
         if (close != null) {
             double nWidth = NodeUtil.getWidth(close);
-            close.setLayoutX(10);
-            actionW = nWidth + 10;
+            close.setLayoutX(actionW);
+            actionW = actionW + nWidth + 10;
         }
         // 最小化按钮处理
         if (minimum != null) {
             double nWidth = NodeUtil.getWidth(minimum);
-            minimum.setLayoutX(actionW + 10);
+            minimum.setLayoutX(actionW);
             actionW = actionW + nWidth + 10;
         }
         // 最大化按钮处理
         if (maximum != null) {
             double nWidth = NodeUtil.getWidth(maximum);
-            maximum.setLayoutX(actionW + 10);
+            maximum.setLayoutX(actionW);
             actionW = actionW + nWidth + 10;
         }
         // 全屏按钮处理
         if (fullScreen != null) {
             double nWidth = NodeUtil.getWidth(fullScreen);
-            fullScreen.setLayoutX(actionW + 10);
+            fullScreen.setLayoutX(actionW);
             actionW = actionW + nWidth + 10;
         }
         // 置顶按钮处理
         if (alwaysOnTop != null) {
             double nWidth = NodeUtil.getWidth(alwaysOnTop);
-            alwaysOnTop.setLayoutX(actionW + 10);
+            alwaysOnTop.setLayoutX(actionW);
             actionW = actionW + nWidth + 10;
         }
         // 标题组件处理
@@ -701,6 +703,12 @@ public class TitleBar extends FlexPane {
     public void fullScreen(boolean fullScreen) {
         Stage stage = this.stage();
         if (stage != null) {
+            // TODO： macos系统较新首次执行全屏要先这样
+            if (OSUtil.isMacOS() && !this.hasProp("fullScreen:executed")) {
+                stage.setFullScreen(fullScreen);
+                stage.setFullScreen(!fullScreen);
+                this.setProp("fullScreen:executed", true);
+            }
             stage.setFullScreen(fullScreen);
             this.doFullScreen(fullScreen);
         } else {

@@ -77,17 +77,8 @@ public interface StageAdapter extends WindowAdapter {
             Field field = ReflectUtil.getField(Window.class, "hasBeenVisible");
             return ReflectUtil.getFieldValue(field, stage);
         }
-        // Boolean hasBeenVisible = this.getProp("_hasBeenVisible");
-        // return hasBeenVisible != null && hasBeenVisible;
         return false;
     }
-
-    // /**
-    //  * 设置已经显示过标志位
-    //  */
-    // default void setBeenVisible() {
-    //     this.setProp("_hasBeenVisible", true);
-    // }
 
     /**
      * 获取场景
@@ -253,12 +244,7 @@ public interface StageAdapter extends WindowAdapter {
      * @param maximized 最大化
      */
     default void setMaximized(boolean maximized) {
-        // if (BooleanUtil.isTrue(this.getProp("_custom"))) {
-        //     TitleBar titleBar = (TitleBar) this.root().lookup("#titleBar");
-        //     titleBar.maximum(maximized);
-        // } else {
         this.stage().setMaximized(maximized);
-        // }
     }
 
     /**
