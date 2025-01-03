@@ -1,34 +1,6 @@
 package cn.oyzh.fx.gui.menu;
 
-import cn.oyzh.fx.gui.svg.glyph.AddSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.BatchOptSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ClearSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CollapseAllSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CopySVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ExportSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.FileSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.FunctionSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ImportSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.InfoSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.LoadAllSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.MoveSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.OpenSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ProcedureSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RefreshSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RenameSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RepeatSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.StopSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.TerminalSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.TransportSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.TruncateSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.*;
 import cn.oyzh.fx.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
@@ -138,7 +110,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem keyFilter(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.keyFilter(), new FileSVGGlyph(iconSize), action);
+        return FXMenuItem.newItem(I18nHelper.keyFilter(), new FilterSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem exportNode(String iconSize, Runnable action) {
