@@ -1,6 +1,9 @@
 package cn.oyzh.fx.plus.keyboard;
 
+import cn.oyzh.common.util.OSUtil;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import lombok.experimental.UtilityClass;
 
@@ -14,6 +17,19 @@ import lombok.experimental.UtilityClass;
 public class KeyboardUtil {
 
     /**
+     * 保存键组合
+     */
+    public static KeyCombination saveKeyCombination;
+
+    static {
+        if (OSUtil.isMacOS()) {
+            saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
+        } else {
+            saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+        }
+    }
+
+    /**
      * 是否按下ctrl s
      *
      * @param event 事件
@@ -23,7 +39,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return event.isControlDown() && event.getCode() == KeyCode.S;
+        return saveKeyCombination.match(event);
     }
 
     /**
