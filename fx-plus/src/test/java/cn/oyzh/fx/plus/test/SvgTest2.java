@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.test;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import javafx.application.Application;
+import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
@@ -229,39 +230,42 @@ public class SvgTest2 extends Application {
         svgPath.setContent(svg2);
 //        svgPath.setContent(svg1);
         svgPath.setFill(Color.RED);
-        WritableImage writableImage = new WritableImage(1024, 1024);
+        Bounds bounds= svgPath.getBoundsInLocal();
+        WritableImage writableImage = new WritableImage((int) bounds.getWidth(), (int) bounds.getHeight());
         SnapshotParameters snapshotParameters = new SnapshotParameters();
 //        snapshotParameters.setDepthBuffer(true);
 //        snapshotParameters.setFill(Color.WHITE);
-//        snapshotParameters.setViewport(new Rectangle2D(0, 0, 1024*2, 1024*2));
+        snapshotParameters.setViewport(new Rectangle2D(bounds.getMinX(), bounds.getMinY(), bounds.getWidth(), bounds.getHeight()));
         WritableImage writableImage1 = svgPath.snapshot(new SnapshotParameters(), writableImage);
 //        WritableImage writableImage1=    svgPath.snapshot(new SnapshotParameters(),null);
 
 //        svgPath.snapshot(new SnapshotParameters(),writableImage);
 
 //        ImageView imageView = new ImageView(writableImage1);
-        System.out.println(writableImage.getWidth());
-        System.out.println(writableImage.getHeight());
+//        System.out.println(writableImage.getWidth());
+//        System.out.println(writableImage.getHeight());
         ImageView imageView = new ImageView(writableImage);
-//        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(true);
 //        imageView.setSmooth(true);
 //        imageView.setSmooth(true);
 //        imageView.setViewport(new Rectangle2D(0, 0, 2048, 2048));
-        imageView.setPickOnBounds(true);
-        imageView.setFitWidth(128);
-        imageView.setFitHeight(128);
+//        imageView.setPickOnBounds(true);
+        imageView.setFitWidth(16);
+//        imageView.setFitHeight(128);
 
-//        HBox stackPane = new HBox(imageView);
+        HBox stackPane = new HBox(imageView,new Button("aaa"));
 //        stackPane.setPrefSize(10,10);
 //        stackPane.setMaxSize(10,10);
 
-        HBox root = new HBox();
-        root.getChildren().add(imageView);
-        root.getChildren().add(new Button("aaa"));
-        root.setMaxWidth(100);
-        root.setMaxHeight(100);
+//        StackPane root = new StackPane();
+//        root.getChildren().add(imageView);
+//        root.getChildren().add(new Button("aaa"));
+//        root.setMaxWidth(100);
+//        root.setMaxHeight(100);
 
-        Scene scene = new Scene(root);
+//        root.getChildren().add(svgPath);
+
+        Scene scene = new Scene(stackPane);
 
         primaryStage.setWidth(200);
         primaryStage.setHeight(200);
@@ -275,10 +279,10 @@ public class SvgTest2 extends Application {
 //        svgPath.setStrokeWidth(1);
         System.out.println(svgPath.getBoundsInLocal());
         System.out.println(svgPath.getBoundsInParent());
-        System.out.println(imageView.getFitWidth());
-        System.out.println(imageView.getFitHeight());
-        System.out.println(imageView.getBoundsInParent());
-        System.out.println(imageView.getBoundsInLocal());
+//        System.out.println(imageView.getFitWidth());
+//        System.out.println(imageView.getFitHeight());
+//        System.out.println(imageView.getBoundsInParent());
+//        System.out.println(imageView.getBoundsInLocal());
     }
 
     public static void main(String[] args) {
