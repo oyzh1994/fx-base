@@ -16,8 +16,15 @@ import lombok.Setter;
 public class SortSVGPane extends FXHBox implements MouseAdapter {
 
     @Getter
-    @Setter
     private String size;
+
+    public void setSize(String size) {
+        this.size = size;
+        SVGGlyph glyph = (SVGGlyph) this.getChild(0);
+        if (glyph != null) {
+            glyph.setSizeStr(size);
+        }
+    }
 
     public SortSVGPane() {
         this.desc();
