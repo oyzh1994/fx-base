@@ -121,7 +121,7 @@ public class SvgTest2 extends Application {
         pane.setMinSize(200, 200); // Set preferred size of the StackPane
 
 //        pane.getChildren().setAll(svgPath);
-        pane.setSkin(new TextFieldSkin(pane){
+        pane.setSkin(new TextFieldSkin(pane) {
 
 
             {
@@ -176,21 +176,21 @@ public class SvgTest2 extends Application {
 //        svgPath.getTransforms().add(new Scale(0.1,0.1,1,1));
 
 
-        StackPane pane = new StackPane(){
+        StackPane pane = new StackPane() {
 
 
             @Override
             protected void layoutChildren() {
                 super.layoutChildren();
-                this.layoutInArea(svgPath,0,0,20,20,0,HPos.CENTER,VPos.CENTER);
+                this.layoutInArea(svgPath, 0, 0, 20, 20, 0, HPos.CENTER, VPos.CENTER);
             }
 
             @Override
             protected void layoutInArea(Node child, double areaX, double areaY, double areaWidth, double areaHeight, double areaBaselineOffset, HPos halignment, VPos valignment) {
                 if (child == svgPath) {
-                super.layoutInArea(child, 0, 0, 20, 20, areaBaselineOffset, halignment, valignment);
-                }else{
-                super.layoutInArea(child, areaX, areaY, areaWidth, areaHeight, areaBaselineOffset, halignment, valignment);
+                    super.layoutInArea(child, 0, 0, 20, 20, areaBaselineOffset, halignment, valignment);
+                } else {
+                    super.layoutInArea(child, areaX, areaY, areaWidth, areaHeight, areaBaselineOffset, halignment, valignment);
 
                 }
             }
@@ -203,7 +203,6 @@ public class SvgTest2 extends Application {
 //        pane.getChildren().add(svgPath);
 
 //        pane.setShape(svgPath);
-
 
 
         // Create a scene and add the StackPane to it
@@ -225,24 +224,44 @@ public class SvgTest2 extends Application {
 
     private void test5(Stage primaryStage) {
         String svg1 = "M929.8 528.1H93.5c-15.5 0-28-12.5-28-28s12.5-28 28-28h836.3c15.5 0 28 12.5 28 28s-12.5 28-28 28z";
+        String svg2 = "M768 245.76a10.24 10.24 0 0 1 10.24 10.24v512a10.24 10.24 0 0 1-10.24 10.24H256a10.24 10.24 0 0 1-10.24-10.24V256a10.24 10.24 0 0 1 10.24-10.24z m-10.24 20.48H266.24v491.52h491.52V266.24zM645.12 655.36a10.24 10.24 0 0 1 1.19808 20.40832L645.12 675.84H378.88a10.24 10.24 0 0 1-1.19808-20.40832L378.88 655.36h266.24z";
         SVGPath svgPath = new SVGPath();
-        svgPath.setContent(svg1);
+        svgPath.setContent(svg2);
+//        svgPath.setContent(svg1);
         svgPath.setFill(Color.RED);
-        WritableImage writableImage=new WritableImage(4096,4096);
+        WritableImage writableImage = new WritableImage(1024, 1024);
         SnapshotParameters snapshotParameters = new SnapshotParameters();
+//        snapshotParameters.setDepthBuffer(true);
 //        snapshotParameters.setFill(Color.WHITE);
-//        snapshotParameters.setViewport(new Rectangle2D(0,0,900,900));
-        WritableImage writableImage1=    svgPath.snapshot(new SnapshotParameters(),writableImage);
+//        snapshotParameters.setViewport(new Rectangle2D(0, 0, 1024*2, 1024*2));
+        WritableImage writableImage1 = svgPath.snapshot(new SnapshotParameters(), writableImage);
 //        WritableImage writableImage1=    svgPath.snapshot(new SnapshotParameters(),null);
 
 //        svgPath.snapshot(new SnapshotParameters(),writableImage);
 
 //        ImageView imageView = new ImageView(writableImage1);
+        System.out.println(writableImage.getWidth());
+        System.out.println(writableImage.getHeight());
         ImageView imageView = new ImageView(writableImage);
-        imageView.setViewport(new Rectangle2D(0,0,512,512));
-        imageView.setFitHeight(16);
-        imageView.setFitWidth(16);
-        Scene scene = new Scene(new VBox(imageView));
+//        imageView.setPreserveRatio(true);
+//        imageView.setSmooth(true);
+//        imageView.setSmooth(true);
+//        imageView.setViewport(new Rectangle2D(0, 0, 2048, 2048));
+        imageView.setPickOnBounds(true);
+        imageView.setFitWidth(128);
+        imageView.setFitHeight(128);
+
+//        HBox stackPane = new HBox(imageView);
+//        stackPane.setPrefSize(10,10);
+//        stackPane.setMaxSize(10,10);
+
+        HBox root = new HBox();
+        root.getChildren().add(imageView);
+        root.getChildren().add(new Button("aaa"));
+        root.setMaxWidth(100);
+        root.setMaxHeight(100);
+
+        Scene scene = new Scene(root);
 
         primaryStage.setWidth(200);
         primaryStage.setHeight(200);
@@ -253,9 +272,13 @@ public class SvgTest2 extends Application {
 //        svgPath.setScaleY(0);
 //        svgPath.setLayoutX(0);
 //        svgPath.setLayoutY(0);
-        svgPath.setStrokeWidth(1);
+//        svgPath.setStrokeWidth(1);
         System.out.println(svgPath.getBoundsInLocal());
         System.out.println(svgPath.getBoundsInParent());
+        System.out.println(imageView.getFitWidth());
+        System.out.println(imageView.getFitHeight());
+        System.out.println(imageView.getBoundsInParent());
+        System.out.println(imageView.getBoundsInLocal());
     }
 
     public static void main(String[] args) {
