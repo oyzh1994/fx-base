@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.titlebar;
 public class TitleBarMinimumSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarMinimumSVGGlyph() {
-        this.setUrl("/fx-svg/titlebar/minimum.svg");
+        this.setUrl("/fx-svg/titlebar/minimum1.svg");
     }
 
     public TitleBarMinimumSVGGlyph(String size) {

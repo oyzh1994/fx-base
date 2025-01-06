@@ -70,9 +70,8 @@ public class SVGLoader {
             return null;
         }
         String svgPath = null;
-        try {
+        try (XMLReader reader = new XMLReader()) {
             // 解析内容
-            XMLReader reader = new XMLReader();
             XMLDocument document = reader.read(u.openStream());
             XMLElement root = document.getRootElement();
             Iterator<XMLElement> iterator = root.elementIterator("path");

@@ -301,6 +301,15 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 获取首个子节点
+     *
+     * @return 子节点
+     */
+    default Node getFirstChild() {
+        return this.getChild(0);
+    }
+
+    /**
      * 获取子节点
      *
      * @param index 下标

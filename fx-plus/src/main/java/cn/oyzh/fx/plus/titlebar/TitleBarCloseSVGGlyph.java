@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 public class TitleBarCloseSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarCloseSVGGlyph() {
-        this.setUrl("/fx-svg/titlebar/close.svg");
+        this.setUrl("/fx-svg/titlebar/close1.svg");
     }
 
     public TitleBarCloseSVGGlyph(String size) {

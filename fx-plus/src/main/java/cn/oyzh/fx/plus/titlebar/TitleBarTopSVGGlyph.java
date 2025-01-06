@@ -14,7 +14,7 @@ public class TitleBarTopSVGGlyph extends ActionSVGGlyph {
     }
 
     public TitleBarTopSVGGlyph() {
-        this.setUrl("/fx-svg/titlebar/top.svg");
+        this.setUrl("/fx-svg/titlebar/top3.svg");
     }
 
     public TitleBarTopSVGGlyph(String size) {
