@@ -2,6 +2,7 @@ package cn.oyzh.fx.gui.tabs;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.menu.MenuItemHelper;
+import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
@@ -10,6 +11,7 @@ import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.paint.Paint;
@@ -38,7 +40,12 @@ public abstract class DynamicTab extends FXTab {
         String url = this.url();
         if (url != null) {
             FXMLLoaderExt loaderExt = new FXMLLoaderExt();
+            // 加载内容
             Node content = loaderExt.load(url);
+            // 添加默认样式
+            if (content instanceof Parent parent) {
+                parent.getStylesheets().add(FXStyle.FX_BASE);
+            }
             this.setContent(content);
             DynamicTabController controller = loaderExt.getController();
             this.setProp("_controller", controller);
