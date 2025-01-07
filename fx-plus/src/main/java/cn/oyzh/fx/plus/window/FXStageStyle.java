@@ -13,6 +13,7 @@ public enum FXStageStyle {
     TRANSPARENT,
     UTILITY,
     UNIFIED,
+    @Deprecated
     CUSTOM;
 
     public StageStyle toStageStyle() {

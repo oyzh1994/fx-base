@@ -13,6 +13,7 @@ import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.titlebar.TitleBar;
+import cn.oyzh.fx.plus.titlebar.TitleBarUtil;
 import cn.oyzh.fx.plus.titlebar.TitleBox;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -20,6 +21,7 @@ import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
@@ -372,7 +374,7 @@ public interface StageAdapter extends WindowAdapter {
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
             // 标题
             stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
-            if(!OSUtil.isMacOS()){
+            if (!OSUtil.isMacOS()) {
                 // 最大化
                 stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
                     if (BooleanUtil.isFalse(newValue)) {
@@ -391,10 +393,10 @@ public interface StageAdapter extends WindowAdapter {
                         TaskManager.startDelay(titleBox::updateContent, 10);
                     }
                 });
-            }else{
+            } else {
                 // 最大化
                 stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
-                   titleBar.doMaximum(newValue);
+                    titleBar.doMaximum(newValue);
                 });
                 // 全屏
                 stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
@@ -430,33 +432,56 @@ public interface StageAdapter extends WindowAdapter {
         if (root == null) {
             throw new RuntimeException("load root fail");
         }
+        Stage stage = this.stage();
         // 设置controller
         this.setProp("_controller", loader.getController());
         // 设置窗口样式
         if (!this.hasBeenVisible()) {
-            this.stage().initStyle(StageStyle.DECORATED);
+            stage.initStyle(attribute.stageStyle().toStageStyle());
         }
         // 初始化stage
-        this.stage().setTitle(attribute.title());
-        this.stage().setMaximized(attribute.maximumAble());
-        this.stage().setResizable(attribute.resizable());
+//        stage.setTitle(attribute.title());
+        stage.setResizable(attribute.resizable());
         // 设置icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
-            this.stage().getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
+            stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         }
-        // if (ArrayUtil.isNotEmpty(attribute.iconUrls())) {
-        //     this.stage().getIcons().setAll(IconUtil.getIcons(attribute.iconUrls()));
-        // }
-        // 设置scene
-        FXUtil.runWait(() -> this.stage().setScene(new Scene(root)));
+        // 自定义icon
+        if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+            stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
+        } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {// 全局icon
+            stage.getIcons().setAll(IconUtil.getIcon(FXConst.appIcon()));
+        }
+        // 显示监听
+        stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (!newValue) {
+                    this.onWindowClosed();
+                } else {
+                    TaskManager.startDelay(this::updateStage, 10);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JulLog.warn("showing error", ex);
+            }
+        });
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
             if (owner != null) {
-                this.stage().initOwner(owner);
+                stage.initOwner(owner);
             }
             // 初始化模态
-            this.stage().initModality(attribute.modality());
+            stage.initModality(attribute.modality());
+        }
+        // 非主窗口或者未显示过
+        if (!attribute.usePrimary() || !this.hasBeenVisible()) {
+            // 最大化
+            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay(this::updateStage, 10));
+            // 全屏
+            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay(this::updateStage, 10));
+            // 初始化
+            NodeManager.init(this);
         }
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
@@ -466,15 +491,39 @@ public interface StageAdapter extends WindowAdapter {
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
         }
-        // 监听显示属性
-        this.stage().showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onWindowClosed();
+        // 设置scene
+        FXUtil.runWait(() -> stage.setScene(new Scene(root)));
+    }
+
+    /**
+     * 更新内容
+     */
+    default void updateStage() {
+        Stage stage = this.stage();
+        if ( stage != null) {
+            double width = NodeUtil.getWidth(stage);
+            double height = NodeUtil.getHeight(stage);
+            if (stage.isFullScreen() || stage.isMaximized()) {
+                // 先减再加，因为全屏和最大化这个宽高已经最大了
+                this.resizeStage(width - 1, height - 1);
+                this.resizeStage(width + 1, height + 1);
+            } else {
+                // 先加再减，避免边框异常
+                this.resizeStage(width + 1, height + 1);
+                this.resizeStage(width - 1, height - 1);
             }
-        });
-        NodeManager.init(this);
-        // 监听最大化，处理内置内容大小
-        this.stage().maximizedProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay("_stage_resize", () -> this.root().resize(NodeUtil.getWidth(this.stage()) - 15, NodeUtil.getHeight(this.stage()) - 40), 1));
+        }
+    }
+
+    /**
+     * 修改页面大小
+     * @param width 宽
+     * @param height 高
+     */
+    default void resizeStage(double width, double height) {
+        Stage stage = this.stage();
+        stage.setWidth(width);
+        stage.setHeight(height);
     }
 
     /**
