@@ -87,7 +87,7 @@ public @interface StageAttribute {
      *
      * @return 装饰样式
      */
-    FXStageStyle stageStyle() default FXStageStyle.CUSTOM;
+    FXStageStyle stageStyle() default FXStageStyle.DECORATED;
 
     /**
      * 是否使用主要的stage

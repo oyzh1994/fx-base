@@ -372,24 +372,35 @@ public interface StageAdapter extends WindowAdapter {
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
             // 标题
             stage.titleProperty().addListener((observable, oldValue, newValue) -> titleBar.initTitle());
-            // 最大化
-            stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
-                if (BooleanUtil.isFalse(newValue)) {
-                    TaskManager.startDelay(titleBox::updateContent, 10);
-                }
-            });
-            // 全屏
-            stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
-                if (BooleanUtil.isFalse(newValue)) {
-                    TaskManager.startDelay(titleBox::updateContent, 10);
-                }
-            });
-            // 焦点
-            stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                if (BooleanUtil.isTrue(newValue) && stage.isMaximized()) {
-                    TaskManager.startDelay(titleBox::updateContent, 10);
-                }
-            });
+            if(!OSUtil.isMacOS()){
+                // 最大化
+                stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (BooleanUtil.isFalse(newValue)) {
+                        TaskManager.startDelay(titleBox::updateContent, 10);
+                    }
+                });
+                // 全屏
+                stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+                    if (BooleanUtil.isFalse(newValue)) {
+                        TaskManager.startDelay(titleBox::updateContent, 10);
+                    }
+                });
+                // 焦点
+                stage.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (BooleanUtil.isTrue(newValue) && stage.isMaximized()) {
+                        TaskManager.startDelay(titleBox::updateContent, 10);
+                    }
+                });
+            }else{
+                // 最大化
+                stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+                   titleBar.doMaximum(newValue);
+                });
+                // 全屏
+                stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+                    titleBar.doFullScreen(newValue);
+                });
+            }
             // 初始化
             NodeManager.init(this);
         }

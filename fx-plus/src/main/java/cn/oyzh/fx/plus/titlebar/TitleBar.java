@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.util.IconUtil;
 import cn.oyzh.fx.plus.util.MouseUtil;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -594,6 +595,26 @@ public class TitleBar extends FlexPane {
     public void maximum(boolean maximum) {
         Stage stage = this.stage();
         if (stage != null && stage.isResizable() && !stage.isFullScreen()) {
+//            // TODO: 解决macos下最大化异常问题
+//            if (OSUtil.isMacOS()) {
+//                if (maximum) {
+//                    stage.getProperties().put("stage:width", stage.getWidth());
+//                    stage.getProperties().put("stage:height", stage.getHeight());
+//                    stage.setMaximized(true);
+//                } else {
+//                    Double width = (Double) stage.getProperties().get("maximum:width");
+//                    Double height = (Double) stage.getProperties().get("maximum:height");
+//                    if (width == null) {
+//                        width = stage.getWidth() - 300;
+//                        height = stage.getHeight() - 50;
+//                    }
+//                    stage.setMaximized(false);
+//                    stage.setX(180);
+//                    stage.setY(50);
+//                    stage.setWidth(width);
+//                    stage.setHeight(height);
+//                }
+//            }
             stage.setMaximized(maximum);
             this.doMaximum(maximum);
         } else {
@@ -703,11 +724,16 @@ public class TitleBar extends FlexPane {
     public void fullScreen(boolean fullScreen) {
         Stage stage = this.stage();
         if (stage != null) {
-            // TODO： macos系统较新首次执行全屏要先这样
-            if (OSUtil.isMacOS() && !this.hasProp("fullScreen:executed")) {
-                stage.setFullScreen(fullScreen);
-                stage.setFullScreen(!fullScreen);
-                this.setProp("fullScreen:executed", true);
+            // TODO： 解决macos全屏异常问题
+            if (OSUtil.isMacOS()) {
+                if (fullScreen) {
+                    stage.setFullScreen(true);
+                    TitleBarUtil.doFullScreen(stage);
+                    stage.setFullScreen(true);
+                } else {
+                    TitleBarUtil.exitFullScreen(stage);
+                    stage.setFullScreen(false);
+                }
             }
             stage.setFullScreen(fullScreen);
             this.doFullScreen(fullScreen);
