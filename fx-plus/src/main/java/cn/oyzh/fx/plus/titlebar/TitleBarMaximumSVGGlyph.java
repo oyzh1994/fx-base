@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.titlebar;
 public class TitleBarMaximumSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarMaximumSVGGlyph() {
-        this.setUrl("/fx-svg/titlebar/maximum.svg");
+        this.setUrl("/fx-svg/titlebar/maximum1.svg");
     }
 
     public TitleBarMaximumSVGGlyph(String size) {

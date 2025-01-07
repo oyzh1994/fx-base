@@ -161,7 +161,7 @@ public class TitleBar extends FlexPane {
         nodes.add(maximum);
 
         // 关闭
-        TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("14");
+        TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("13");
         close.setId("close");
         if (this.config.isClose()) {
             close.setOnMousePrimaryClicked(e -> this.close());
