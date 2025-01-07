@@ -293,11 +293,13 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
             Color accentColor = ThemeManager.currentAccentColor();
             Color foregroundColor = ThemeManager.currentForegroundColor();
             String fgColor = FXColorUtil.getColorHex(foregroundColor);
-            this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
-            caretNode.setStroke(accentColor);
-            if (placeholder != null) {
-                placeholder.setStyle("-fx-fill:" + fgColor);
-            }
+            FXUtil.runWait(() -> {
+                this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
+                caretNode.setStroke(accentColor);
+                if (placeholder != null) {
+                    placeholder.setStyle("-fx-fill:" + fgColor);
+                }
+            });
         }
     }
 
