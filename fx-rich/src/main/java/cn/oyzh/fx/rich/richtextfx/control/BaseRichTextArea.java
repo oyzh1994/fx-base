@@ -282,10 +282,9 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
      * 初始化文字样式
      */
     public void initTextStyle() {
-        if (!this.checkInvalidStyle()) {
-            return;
-        }
-        CostUtil.record();
+//        if (!this.checkInvalidStyle()) {
+//            return;
+//        }
         this.clearTextStyle();
         // 初始化颜色
         if (this.isEnableTheme()) {
@@ -300,7 +299,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
                 placeholder.setStyle("-fx-fill:" + fgColor);
             }
         }
-        CostUtil.printCost();
     }
 
     /**
@@ -355,8 +353,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void changeTheme(ThemeStyle style) {
-        // 移除样式缓存
-        this.removeProp("style:md5");
+//        // 移除样式缓存
+//        this.removeProp("style:md5");
         this.initTextStyle();
     }
 
