@@ -2,11 +2,9 @@ package cn.oyzh.fx.plus.test;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.application.Application;
-import javafx.geometry.Bounds;
-import javafx.geometry.HPos;
-import javafx.geometry.Rectangle2D;
-import javafx.geometry.VPos;
+import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
@@ -33,8 +31,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+
+import java.lang.reflect.Type;
 
 
 /**
@@ -48,7 +50,8 @@ public class SvgTest2 extends Application {
 //      this.test2(primaryStage);
 //        this.test3(primaryStage);
 //        this.test4(primaryStage);
-        this.test5(primaryStage);
+//        this.test5(primaryStage);
+        this.test6(primaryStage);
     }
 
     private void test1(Stage primaryStage) {
@@ -260,6 +263,51 @@ public class SvgTest2 extends Application {
 //        System.out.println(imageView.getFitHeight());
 //        System.out.println(imageView.getBoundsInParent());
 //        System.out.println(imageView.getBoundsInLocal());
+    }
+
+    private void test6(Stage primaryStage) {
+        String svg1 = "M929.8 528.1H93.5c-15.5 0-28-12.5-28-28s12.5-28 28-28h836.3c15.5 0 28 12.5 28 28s-12.5 28-28 28z";
+        String svg2 = "M768 245.76a10.24 10.24 0 0 1 10.24 10.24v512a10.24 10.24 0 0 1-10.24 10.24H256a10.24 10.24 0 0 1-10.24-10.24V256a10.24 10.24 0 0 1 10.24-10.24z m-10.24 20.48H266.24v491.52h491.52V266.24zM645.12 655.36a10.24 10.24 0 0 1 1.19808 20.40832L645.12 675.84H378.88a10.24 10.24 0 0 1-1.19808-20.40832L378.88 655.36h266.24z";
+        SVGPath svgPath = new SVGPath();
+//        svgPath.setContent(svg2);
+        svgPath.setContent(svg1);
+        svgPath.setFill(Color.RED);
+
+        svgPath.getTransforms().add(new Scale(0.1, 0.1));
+        svgPath.getTransforms().add(new Translate(1000, 0.1));
+//        svgPath.getTransforms().add(new Rotate(100));
+
+        Region region = new Region();
+
+        region.setBackground(ControlUtil.background(Color.RED));
+        region.setShape(svgPath);
+        region.setCenterShape(true);
+        region.setScaleShape(true);
+        region.setPrefSize(900, 900);
+        region.setMaxSize(900, 900);
+//        region.setScaleX(0.5);
+//        region.setScaleY(0.5);
+//        region.setRotate(30);
+//        region.setSnapToPixel(true);
+//        region.setTranslateX(100);
+//        region.setTranslateY(100);
+//        region.setOpaqueInsets(new Insets(0));
+
+//        region.snapPositionX(100);
+        region.getTransforms().add(new Scale(0.05, 0.05));
+
+        HBox stackPane = new HBox(region, new Button("aaa"));
+        stackPane.setPrefSize(100, 100);
+        stackPane.setMaxSize(100, 100);
+        Scene scene = new Scene(stackPane);
+
+        primaryStage.setWidth(200);
+        primaryStage.setHeight(200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        System.out.println(svgPath.getBoundsInLocal());
+        System.out.println(svgPath.getBoundsInParent());
     }
 
     public static void main(String[] args) {

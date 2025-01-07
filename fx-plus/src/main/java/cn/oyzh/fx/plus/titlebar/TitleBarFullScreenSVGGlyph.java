@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.titlebar;
 public class TitleBarFullScreenSVGGlyph extends ActionSVGGlyph {
 
     public TitleBarFullScreenSVGGlyph() {
-        this.setUrl("/fx-svg/titlebar/fullscreen.svg");
+        this.setUrl("/fx-svg/titlebar/fullscreen1.svg");
     }
 
     public TitleBarFullScreenSVGGlyph(String size) {

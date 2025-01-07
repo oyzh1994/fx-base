@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGPane;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,14 +11,10 @@ import lombok.Setter;
  * @author oyzh
  * @since 2024-12-09
  */
-public class TitleBarMaximumSVGPane extends FXHBox implements MouseAdapter {
-
-    @Getter
-    @Setter
-    private String size;
+public class TitleBarMaximumSVGPane extends SVGPane {
 
     public TitleBarMaximumSVGPane(String size) {
-        this.size = size;
+        this.setSize(size);
         this.maximize();
     }
 
@@ -31,7 +28,7 @@ public class TitleBarMaximumSVGPane extends FXHBox implements MouseAdapter {
 
     public boolean isMaximize() {
         SVGGlyph svgGlyph = (SVGGlyph) this.getChildren().getFirst();
-        return svgGlyph.getUrl().contains("un-maximum.svg");
+        return svgGlyph.getUrl().contains("un-maximum");
     }
 
     public void setMaximize(boolean maximize) {

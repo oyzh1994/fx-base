@@ -168,8 +168,8 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
             this.waitingTransition = null;
         }
         this.setRotate(0);
-        this.waiting = null;
         this.setShape(this.original);
+        this.waiting = null;
     }
 
     @Override
@@ -309,6 +309,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
                     w = h = Double.parseDouble(size);
                 }
                 this.setMaxSize(w, h);
+                this.setMinSize(w, h);
                 this.setPrefSize(w, h);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -333,6 +334,9 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
         this.setFocusTraversable(false);
+        this.setScaleShape(true);
+        this.setCacheShape(true);
+        this.setCenterShape(true);
     }
 
     @Override

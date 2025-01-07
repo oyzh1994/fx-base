@@ -134,14 +134,14 @@ public class TitleBar extends FlexPane {
 
         // 全屏
         if (this.config.isFullScreen()) {
-            TitleBarFullScreenSVGPane fullScreen = new TitleBarFullScreenSVGPane("14");
+            TitleBarFullScreenSVGPane fullScreen = new TitleBarFullScreenSVGPane("13");
             fullScreen.setId("fullScreen");
             fullScreen.setOnMousePrimaryClicked(e -> this.fullScreen());
             nodes.add(fullScreen);
         }
 
         // 最小化
-        TitleBarMinimumSVGGlyph minimum = new TitleBarMinimumSVGGlyph("14");
+        TitleBarMinimumSVGGlyph minimum = new TitleBarMinimumSVGGlyph("15");
         minimum.setId("minimum");
         if (this.config.isMinimum()) {
             minimum.setOnMousePrimaryClicked(e -> this.minimum());
@@ -161,7 +161,7 @@ public class TitleBar extends FlexPane {
         nodes.add(maximum);
 
         // 关闭
-        TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("13");
+        TitleBarCloseSVGGlyph close = new TitleBarCloseSVGGlyph("11");
         close.setId("close");
         if (this.config.isClose()) {
             close.setOnMousePrimaryClicked(e -> this.close());

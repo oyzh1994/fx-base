@@ -1,23 +1,16 @@
 package cn.oyzh.fx.plus.titlebar;
 
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.mouse.MouseAdapter;
-import lombok.Getter;
-import lombok.Setter;
+import cn.oyzh.fx.plus.controls.svg.SVGPane;
 
 /**
  * @author oyzh
  * @since 2024-12-17
  */
-public class TitleBarFullScreenSVGPane extends FXHBox implements MouseAdapter {
-
-    @Getter
-    @Setter
-    private String size;
+public class TitleBarFullScreenSVGPane extends SVGPane {
 
     public TitleBarFullScreenSVGPane(String size) {
-        this.size = size;
+        super.setSize(size);
         this.fullScreen();
     }
 
@@ -31,7 +24,7 @@ public class TitleBarFullScreenSVGPane extends FXHBox implements MouseAdapter {
 
     public boolean isFullScreen() {
         SVGGlyph svgGlyph = (SVGGlyph) this.getChildren().getFirst();
-        return svgGlyph.getUrl().contains("exit-fullscreen.svg");
+        return svgGlyph.getUrl().contains("exit-fullscreen");
     }
 
     public void setFullScreen(boolean fullScreen) {
