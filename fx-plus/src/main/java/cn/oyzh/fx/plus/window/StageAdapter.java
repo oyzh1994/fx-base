@@ -458,7 +458,7 @@ public interface StageAdapter extends WindowAdapter {
                 if (!newValue) {
                     this.onWindowClosed();
                 } else {
-                    TaskManager.startDelay(this::updateStage, 10);
+                    FXUtil.runPulse(this::updateStage);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -477,9 +477,9 @@ public interface StageAdapter extends WindowAdapter {
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
             // 最大化
-            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay(this::updateStage, 10));
+            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
             // 全屏
-            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> TaskManager.startDelay(this::updateStage, 10));
+            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
             // 初始化
             NodeManager.init(this);
         }
@@ -500,7 +500,7 @@ public interface StageAdapter extends WindowAdapter {
      */
     default void updateStage() {
         Stage stage = this.stage();
-        if ( stage != null) {
+        if (stage != null) {
             double width = NodeUtil.getWidth(stage);
             double height = NodeUtil.getHeight(stage);
             if (stage.isFullScreen() || stage.isMaximized()) {
@@ -517,7 +517,8 @@ public interface StageAdapter extends WindowAdapter {
 
     /**
      * 修改页面大小
-     * @param width 宽
+     *
+     * @param width  宽
      * @param height 高
      */
     default void resizeStage(double width, double height) {
