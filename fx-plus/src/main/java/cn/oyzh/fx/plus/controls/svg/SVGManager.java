@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import javafx.scene.Cursor;
+import javafx.scene.image.Image;
 import javafx.scene.shape.SVGPath;
 import lombok.experimental.UtilityClass;
 
@@ -18,7 +19,7 @@ public class SVGManager {
     /**
      * loading的svg路径引用
      */
-    private static WeakReference<SVGPath> loadingSvgPathReference;
+    private static WeakReference<FXSVGPath> loadingSVGPathRef;
 
     /**
      * 加载svg路径
@@ -26,7 +27,7 @@ public class SVGManager {
      * @param url 地址
      * @return svg路径
      */
-    public static SVGPath load(String url) {
+    public static FXSVGPath load(String url) {
         return SVGLoader.INSTANCE.load(url);
     }
 
@@ -43,11 +44,23 @@ public class SVGManager {
     /**
      * 是否loading的svg路径
      *
+     * @param image svg路径
+     * @return 结果
+     */
+    public static boolean isLoadingSvgPath(Image image) {
+//        return image != null && image.getUrl().contains("/fx-svg/loading.svg");
+
+        return false;
+    }
+
+    /**
+     * 是否loading的svg路径
+     *
      * @param svgPath svg路径
      * @return 结果
      */
     public static boolean isLoadingSvgPath(SVGPath svgPath) {
-        return loadingSvgPathReference != null && svgPath != null && svgPath == loadingSvgPathReference.get();
+        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
     }
 
     /**
@@ -55,12 +68,13 @@ public class SVGManager {
      *
      * @return loading的svg路径
      */
-    public static SVGPath getLoadingSvgPath() {
-        if (loadingSvgPathReference == null || loadingSvgPathReference.get() == null) {
-            SVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
+    public static FXSVGPath getLoadingSvgPath() {
+        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
+            FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
             svgPath.setCursor(Cursor.NONE);
-            loadingSvgPathReference = new WeakReference<>(svgPath);
+//            svgPath.setProp("svgpath:loading", true);
+            loadingSVGPathRef = new WeakReference<>(svgPath);
         }
-        return loadingSvgPathReference.get();
+        return loadingSVGPathRef.get();
     }
 }

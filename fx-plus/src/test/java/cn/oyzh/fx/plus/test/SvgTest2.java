@@ -227,44 +227,21 @@ public class SvgTest2 extends Application {
         String svg1 = "M929.8 528.1H93.5c-15.5 0-28-12.5-28-28s12.5-28 28-28h836.3c15.5 0 28 12.5 28 28s-12.5 28-28 28z";
         String svg2 = "M768 245.76a10.24 10.24 0 0 1 10.24 10.24v512a10.24 10.24 0 0 1-10.24 10.24H256a10.24 10.24 0 0 1-10.24-10.24V256a10.24 10.24 0 0 1 10.24-10.24z m-10.24 20.48H266.24v491.52h491.52V266.24zM645.12 655.36a10.24 10.24 0 0 1 1.19808 20.40832L645.12 675.84H378.88a10.24 10.24 0 0 1-1.19808-20.40832L378.88 655.36h266.24z";
         SVGPath svgPath = new SVGPath();
-        svgPath.setContent(svg2);
-//        svgPath.setContent(svg1);
+//        svgPath.setContent(svg2);
+        svgPath.setContent(svg1);
         svgPath.setFill(Color.RED);
-        Bounds bounds= svgPath.getBoundsInLocal();
+        Bounds bounds = svgPath.getBoundsInLocal();
         WritableImage writableImage = new WritableImage((int) bounds.getWidth(), (int) bounds.getHeight());
         SnapshotParameters snapshotParameters = new SnapshotParameters();
-//        snapshotParameters.setDepthBuffer(true);
-//        snapshotParameters.setFill(Color.WHITE);
         snapshotParameters.setViewport(new Rectangle2D(bounds.getMinX(), bounds.getMinY(), bounds.getWidth(), bounds.getHeight()));
+
+//        snapshotParameters.setDepthBuffer(true);
         WritableImage writableImage1 = svgPath.snapshot(new SnapshotParameters(), writableImage);
-//        WritableImage writableImage1=    svgPath.snapshot(new SnapshotParameters(),null);
-
-//        svgPath.snapshot(new SnapshotParameters(),writableImage);
-
-//        ImageView imageView = new ImageView(writableImage1);
-//        System.out.println(writableImage.getWidth());
-//        System.out.println(writableImage.getHeight());
         ImageView imageView = new ImageView(writableImage);
         imageView.setPreserveRatio(true);
-//        imageView.setSmooth(true);
-//        imageView.setSmooth(true);
-//        imageView.setViewport(new Rectangle2D(0, 0, 2048, 2048));
-//        imageView.setPickOnBounds(true);
         imageView.setFitWidth(16);
 //        imageView.setFitHeight(128);
-
-        HBox stackPane = new HBox(imageView,new Button("aaa"));
-//        stackPane.setPrefSize(10,10);
-//        stackPane.setMaxSize(10,10);
-
-//        StackPane root = new StackPane();
-//        root.getChildren().add(imageView);
-//        root.getChildren().add(new Button("aaa"));
-//        root.setMaxWidth(100);
-//        root.setMaxHeight(100);
-
-//        root.getChildren().add(svgPath);
-
+        HBox stackPane = new HBox(imageView, new Button("aaa"));
         Scene scene = new Scene(stackPane);
 
         primaryStage.setWidth(200);

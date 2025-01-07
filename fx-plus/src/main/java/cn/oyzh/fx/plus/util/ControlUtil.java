@@ -239,7 +239,7 @@ public class ControlUtil {
         }
         svgGlyph.managedBindVisible();
         svgGlyph.setEnableWaiting(false);
-        svgGlyph.setPadding(new Insets(0));
+//        svgGlyph.setPadding(new Insets(0));
         return svgGlyph;
     }
 

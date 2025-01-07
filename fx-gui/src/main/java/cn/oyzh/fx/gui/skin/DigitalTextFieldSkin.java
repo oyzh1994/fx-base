@@ -61,7 +61,7 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);
         this.incrButton.setFocusTraversable(false);
-        this.incrButton.setPadding(new Insets(0));
+//        this.incrButton.setPadding(new Insets(0));
 
         this.decrButton = new SVGGlyph("/fx-svg/arrow-down-filling.svg");
         this.decrButton.setSize(h);
@@ -71,7 +71,7 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         this.decrButton.managedBindVisible();
         this.decrButton.setEnableWaiting(false);
         this.decrButton.setFocusTraversable(false);
-        this.decrButton.setPadding(new Insets(0));
+//        this.decrButton.setPadding(new Insets(0));
         // 绑定事件到按钮
         if (onIncr != null) {
             this.incrButton.setOnMousePrimaryClicked(event -> onIncr.run());

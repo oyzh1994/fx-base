@@ -33,7 +33,7 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         this.button.managedBindVisible();
         this.button.setEnableWaiting(false);
         this.button.setFocusTraversable(false);
-        this.button.setPadding(new Insets(0));
+//        this.button.setPadding(new Insets(0));
         this.button.setColor(this.getButtonColor());
         this.button.setOnMousePrimaryClicked(this::onButtonClicked);
         this.button.setOnMouseExited(mouseEvent -> this.resetButtonColor());

@@ -95,7 +95,7 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
 //        this.historyButton.setColor(this.getButtonColor());
         this.historyButton.setEnableWaiting(false);
         this.historyButton.setFocusTraversable(false);
-        this.historyButton.setPadding(new Insets(0));
+//        this.historyButton.setPadding(new Insets(0));
         this.historyButton.setOnMousePrimaryClicked(e -> this.showHistoryPopup());
         this.historyButton.setOnMouseMoved(mouseEvent -> this.historyButton.setColor("#E36413"));
         this.historyButton.setOnMouseExited(mouseEvent -> this.historyButton.setColor(this.getButtonColor()));

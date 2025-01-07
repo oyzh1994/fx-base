@@ -37,12 +37,10 @@ public class SVGLoader {
      * @param url 路径
      * @return 结果
      */
-    public SVGPath load(String url) {
+    public FXSVGPath load(String url) {
         String content = this.loadContent(url);
         if (content != null) {
-            SVGPath svgPath = new SVGPath();
-            svgPath.setContent(content);
-            return svgPath;
+            return new FXSVGPath(content);
         }
         return null;
     }

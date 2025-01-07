@@ -33,7 +33,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2022/5/31
  */
-public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
+public class SVGGlyph1 extends Region implements NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -76,17 +76,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      */
     @Setter
     @Getter
-    private boolean enableWaiting = true;
-
-    /**
-     * 原始svg组件
-     */
-    private FXSVGPath original;
-
-    /**
-     * 等待动画
-     */
-    private RotateTransition waitingTransition;
+    private Boolean enableWaiting = true;
 
     public boolean isActive() {
         return this.active != null && this.active;
@@ -143,6 +133,16 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
     }
 
     /**
+     * 原始svg组件
+     */
+    private SVGPath original;
+
+    /**
+     * 等待动画
+     */
+    private RotateTransition waitingTransition;
+
+    /**
      * 开始动画
      */
     public void startWaiting() {
@@ -150,8 +150,8 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
             return;
         }
         this.setWaiting(true);
-//        // 记录原始图标
-//        this.original = (SVGPath) this.getShape();
+        // 记录原始图标
+        this.original = (SVGPath) this.getShape();
         // 设置loading图标
         this.setShape(SVGManager.getLoadingSvgPath());
         // 初始化动画
@@ -172,7 +172,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setShape(this.original);
         this.setRotate(0);
         this.setWaiting(false);
-//        this.original = null;
+        this.original = null;
     }
 
     @Override
@@ -198,27 +198,27 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         return MouseAdapter.super.getOnMousePrimaryClicked();
     }
 
-    public SVGGlyph() {
+    public SVGGlyph1() {
     }
 
-    public SVGGlyph(@NonNull String url) {
+    public SVGGlyph1(@NonNull String url) {
         this();
         this.setUrl(url);
     }
 
-    public SVGGlyph(@NonNull String url, @NonNull Paint color) {
+    public SVGGlyph1(@NonNull String url, @NonNull Paint color) {
         this();
         this.setUrl(url);
         this.setColor(color);
     }
 
-    public SVGGlyph(@NonNull String url, @NonNull String size) {
+    public SVGGlyph1(@NonNull String url, @NonNull String size) {
         this();
         this.setUrl(url);
         this.setSizeStr(size);
     }
 
-    public SVGGlyph(@NonNull String url, double size) {
+    public SVGGlyph1(@NonNull String url, double size) {
         this();
         this.setUrl(url);
         this.setSize(size);
@@ -232,12 +232,12 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
     public void setUrl(@NonNull String url) {
         this.url = url.intern();
         // 创建图标
-        this.original = SVGManager.load(this.url);
-        if (this.original == null) {
+        SVGPath svgPath = SVGManager.load(this.url);
+        if (svgPath == null) {
             throw new RuntimeException("SVG path " + this.url + " is not found");
         }
-        this.original.setCursor(this.getCursor());
-        this.setShape(this.original);
+        svgPath.setCursor(this.getCursor());
+        this.setShape(svgPath);
     }
 
     /**
@@ -335,8 +335,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setFocusTraversable(false);
-        this.setPadding(Insets.EMPTY);
-//        this.setPadding(new Insets(0));
+        this.setPadding(new Insets(0));
     }
 
     @Override
@@ -388,8 +387,8 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
     }
 
     @Override
-    public SVGGlyph clone() {
-        SVGGlyph glyph = new SVGGlyph(this.url, this.color);
+    public SVGGlyph1 clone() {
+        SVGGlyph1 glyph = new SVGGlyph1(this.url, this.color);
         glyph.setSizeStr(this.getSizeStr());
         return glyph;
     }
