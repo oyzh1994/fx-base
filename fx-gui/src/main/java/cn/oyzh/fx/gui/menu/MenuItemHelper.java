@@ -8,6 +8,8 @@ import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.i18n.I18nHelper;
 import lombok.experimental.UtilityClass;
 
+import java.sql.Time;
+
 /**
  * 菜单工具类
  *
@@ -411,6 +413,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem batchOpt(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.batchOpt(), new BatchOptSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem updateTtl(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.updateTtl(), new TimeSVGGlyph(iconSize), action);
     }
 }
 

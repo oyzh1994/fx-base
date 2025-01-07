@@ -168,15 +168,15 @@ public class RichDataTextArea extends FlexRichTextArea {
         }
     }
 
-//    @Override
-//    public synchronized void replaceText(int start, int end, String text) {
-//        super.replaceText(start, end, text);
-//        if (this.isEmpty()) {
-//            this.hideLineNum();
-//        } else {
-//            this.showLineNum();
-//        }
-//    }
+    @Override
+    public synchronized void replaceText(int start, int end, String text) {
+        super.replaceText(start, end, text);
+        if (this.isEmpty()) {
+            this.hideLineNum();
+        } else {
+            this.showLineNum();
+        }
+    }
 
     /**
      * 显示字符串数据

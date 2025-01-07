@@ -18,7 +18,7 @@ public class ParentTabController extends DynamicTabController {
     @Override
     protected void setTab(DynamicTab tab) {
         super.setTab(tab);
-        for (SubTabController controller : this.getSubControllers()) {
+        for (DynamicTabController controller : this.getSubControllers()) {
             controller.setTab(tab);
         }
     }
@@ -26,7 +26,7 @@ public class ParentTabController extends DynamicTabController {
     @Override
     public void onTabInit(DynamicTab tab) {
         super.onTabInit(tab);
-        for (SubTabController controller : this.getSubControllers()) {
+        for (DynamicTabController controller : this.getSubControllers()) {
             controller.onTabInit(tab);
         }
     }
@@ -34,7 +34,7 @@ public class ParentTabController extends DynamicTabController {
     @Override
     public void onTabClose(DynamicTab tab, Event event) {
         super.onTabClose(tab, event);
-        for (SubTabController controller : this.getSubControllers()) {
+        for (DynamicTabController controller : this.getSubControllers()) {
             controller.onTabClose(tab, event);
         }
     }
@@ -42,7 +42,7 @@ public class ParentTabController extends DynamicTabController {
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         super.initialize(location, resourceBundle);
-        for (SubTabController controller : this.getSubControllers()) {
+        for (DynamicTabController controller : this.getSubControllers()) {
             controller.initialize(location, resourceBundle);
         }
     }
@@ -50,7 +50,7 @@ public class ParentTabController extends DynamicTabController {
     @Override
     protected void bindListeners() {
         super.bindListeners();
-        for (SubTabController controller : this.getSubControllers()) {
+        for (DynamicTabController controller : this.getSubControllers()) {
             controller.bindListeners();
         }
     }
@@ -60,7 +60,7 @@ public class ParentTabController extends DynamicTabController {
      *
      * @return 子控制器列表
      */
-    public List<? extends SubTabController> getSubControllers() {
+    public List<? extends DynamicTabController> getSubControllers() {
         return Collections.emptyList();
     }
 }
