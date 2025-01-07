@@ -1,5 +1,7 @@
 package cn.oyzh.fx.gui.svg.label;
 
+import cn.oyzh.fx.gui.svg.glyph.AboutSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CopySVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.i18n.I18nHelper;
 
@@ -10,7 +12,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class AboutSVGLabel extends SVGLabel {
 
     public AboutSVGLabel() {
-        this.setUrl("/fx-svg/info-circle.svg");
+        this.setGraphic(new AboutSVGGlyph());
     }
 
     public AboutSVGLabel(String size) {
