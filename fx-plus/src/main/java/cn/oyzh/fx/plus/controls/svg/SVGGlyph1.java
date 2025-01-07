@@ -109,7 +109,7 @@ public class SVGGlyph1 extends Region implements NodeGroup, NodeAdapter, ThemeAd
             return;
         }
         // loading图标
-        if (SVGManager.isLoadingSvgPath(svgPath)) {
+        if (SVGManager.isLoading(svgPath)) {
             return;
         }
         // 更新鼠标
@@ -153,7 +153,7 @@ public class SVGGlyph1 extends Region implements NodeGroup, NodeAdapter, ThemeAd
         // 记录原始图标
         this.original = (SVGPath) this.getShape();
         // 设置loading图标
-        this.setShape(SVGManager.getLoadingSvgPath());
+        this.setShape(SVGManager.getLoading());
         // 初始化动画
         this.waitingTransition = AnimationUtil.rotate(this);
         // 播放动画

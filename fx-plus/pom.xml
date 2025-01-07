@@ -148,6 +148,23 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-transcoder</artifactId>
+            <version>1.18</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jfree/org.jfree.svg -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>org.jfree.svg</artifactId>
+            <version>5.0.6</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--        <dependency>-->
         <!--            <groupId>io.github.mkpaz</groupId>-->
         <!--            <artifactId>atlantafx-styles</artifactId>-->

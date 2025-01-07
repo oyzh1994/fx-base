@@ -111,7 +111,7 @@ public class SVGGlyph2 extends ImageView implements NodeGroup, NodeAdapter, Them
 //            return;
 //        }
         // loading图标
-        if (SVGManager.isLoadingSvgPath(image)) {
+        if (SVGManager.isLoading(image)) {
             return;
         }
 //        // 更新鼠标
@@ -169,7 +169,7 @@ public class SVGGlyph2 extends ImageView implements NodeGroup, NodeAdapter, Them
 //        this.original = (SVGPath) this.getShape();
 //        this.original = (SVGPath) this.getShape();
         // 设置loading图标
-        this.setImage(SVGManager.getLoadingSvgPath().snapshot());
+        this.setImage(SVGManager.getLoading().snapshot());
 //        this.setShape(SVGManager.getLoadingSvgPath());
         // 初始化动画
         this.waitingTransition = AnimationUtil.rotate(this);

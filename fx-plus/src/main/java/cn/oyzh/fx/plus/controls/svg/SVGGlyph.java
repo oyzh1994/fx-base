@@ -113,13 +113,13 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
      */
     private void updateContent() {
         // 获取图标
-        SVGPath svgPath = (SVGPath) this.getShape();
+        FXSVGPath svgPath = (FXSVGPath) this.getShape();
         // 无内容
         if (svgPath == null) {
             return;
         }
         // loading图标
-        if (SVGManager.isLoadingSvgPath(svgPath)) {
+        if (SVGManager.isLoading(svgPath)) {
             return;
         }
         // 更新鼠标
@@ -150,10 +150,8 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
             return;
         }
         this.setWaiting(true);
-//        // 记录原始图标
-//        this.original = (SVGPath) this.getShape();
         // 设置loading图标
-        this.setShape(SVGManager.getLoadingSvgPath());
+        this.setShape(SVGManager.getLoading());
         // 初始化动画
         this.waitingTransition = AnimationUtil.rotate(this);
         // 播放动画
@@ -169,10 +167,9 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
             FXUtil.runWait(this.waitingTransition::stop);
             this.waitingTransition = null;
         }
-        this.setShape(this.original);
         this.setRotate(0);
-        this.setWaiting(false);
-//        this.original = null;
+        this.waiting = null;
+        this.setShape(this.original);
     }
 
     @Override
@@ -334,9 +331,8 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setSize(16);
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
-        this.setFocusTraversable(false);
         this.setPadding(Insets.EMPTY);
-//        this.setPadding(new Insets(0));
+        this.setFocusTraversable(false);
     }
 
     @Override
