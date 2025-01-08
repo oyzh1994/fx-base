@@ -1,22 +1,22 @@
-package cn.oyzh.fx.gui.svg.label;
+package cn.oyzh.fx.gui.svg.box;
 
 import cn.oyzh.fx.gui.svg.glyph.QuitSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGLabel;
+import cn.oyzh.fx.plus.controls.svg.SVGBox;
 import cn.oyzh.i18n.I18nHelper;
 
 /**
  * @author oyzh
  * @since 2024/4/10
  */
-public class QuitSVGLabel extends SVGLabel {
+public class QuitSVGBox extends SVGBox {
 
-    public QuitSVGLabel() {
-        this.setGraphic(new QuitSVGGlyph());
+    public QuitSVGBox() {
+        this.setGlyph(new QuitSVGGlyph());
     }
 
-    public QuitSVGLabel(String size) {
+    public QuitSVGBox(String size) {
         this();
-        this.setSizeStr(size);
+        this.setSize(size);
     }
 
     @Override

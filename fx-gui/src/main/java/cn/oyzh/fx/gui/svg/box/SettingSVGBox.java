@@ -1,6 +1,7 @@
-package cn.oyzh.fx.gui.svg.label;
+package cn.oyzh.fx.gui.svg.box;
 
 import cn.oyzh.fx.gui.svg.glyph.SettingSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGBox;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.i18n.I18nHelper;
 
@@ -8,15 +9,15 @@ import cn.oyzh.i18n.I18nHelper;
  * @author oyzh
  * @since 2024/4/10
  */
-public class SettingSVGLabel extends SVGLabel {
+public class SettingSVGBox extends SVGBox {
 
-    public SettingSVGLabel() {
-        this.setGraphic(new SettingSVGGlyph());
+    public SettingSVGBox() {
+        this.setGlyph(new SettingSVGGlyph());
     }
 
-    public SettingSVGLabel(String size) {
+    public SettingSVGBox(String size) {
         this();
-        this.setSizeStr(size);
+        this.setSize(size);
     }
 
     @Override

@@ -1,6 +1,7 @@
-package cn.oyzh.fx.gui.svg.label;
+package cn.oyzh.fx.gui.svg.box;
 
 import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGBox;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.i18n.I18nHelper;
 
@@ -8,15 +9,15 @@ import cn.oyzh.i18n.I18nHelper;
  * @author oyzh
  * @since 2024/4/11
  */
-public class DeleteSVGLabel extends SVGLabel {
+public class DeleteSVGBox extends SVGBox {
 
-    public DeleteSVGLabel() {
-        this.setGraphic(new DeleteSVGGlyph());
+    public DeleteSVGBox() {
+        this.setGlyph(new DeleteSVGGlyph());
     }
 
-    public DeleteSVGLabel(String size) {
+    public DeleteSVGBox(String size) {
         this();
-        this.setSizeStr(size);
+        this.setSize(size);
     }
 
     @Override
