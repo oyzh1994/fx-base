@@ -54,6 +54,12 @@
             <version>${javafx.version}</version>
             <classifier>mac</classifier>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>mac-aarch64</classifier>
+        </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -68,6 +74,13 @@
             <scope>provided</scope>
             <version>${javafx.version}</version>
             <classifier>mac</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <scope>provided</scope>
+            <version>${javafx.version}</version>
+            <classifier>mac-aarch64</classifier>
         </dependency>
 
         <!-- 自定义类库，通用 -->
@@ -90,13 +103,6 @@
             <groupId>cn.oyzh</groupId>
             <artifactId>i18n</artifactId>
         </dependency>
-
-        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/de.codecentric.centerdevice/javafxsvg &ndash;&gt; -->
-        <!-- <dependency> -->
-        <!--     <groupId>de.codecentric.centerdevice</groupId> -->
-        <!--     <artifactId>javafxsvg</artifactId> -->
-        <!--     <version>1.3.0</version> -->
-        <!-- </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx -->
         <dependency>
@@ -147,6 +153,14 @@
                     <artifactId>javafx-controls</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/de.codecentric.centerdevice/javafxsvg -->
+        <dependency>
+            <groupId>de.codecentric.centerdevice</groupId>
+            <artifactId>javafxsvg</artifactId>
+            <version>1.3.0</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
