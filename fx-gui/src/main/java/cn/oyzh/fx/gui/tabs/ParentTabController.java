@@ -19,6 +19,9 @@ public class ParentTabController extends DynamicTabController {
     protected void setTab(DynamicTab tab) {
         super.setTab(tab);
         for (DynamicTabController controller : this.getSubControllers()) {
+            if (controller instanceof SubTabController subTabController) {
+                subTabController.parent(this);
+            }
             controller.setTab(tab);
         }
     }
