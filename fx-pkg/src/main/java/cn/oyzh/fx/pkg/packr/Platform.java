@@ -6,6 +6,7 @@ public enum Platform {
     MacOS("mac"),
     WIN_AMD64("win_amd64"),
     MACOS_AMD64("macos_amd64"),
+    MACOS_ARM64("macos_arm64"),
     LINUX_AMD64("linux_amd64"),
     LINUX_ARM64("linux_arm64");
 
@@ -25,6 +26,6 @@ public enum Platform {
     }
 
     public boolean isMacos() {
-        return this == MacOS || this == MACOS_AMD64;
+        return this == MacOS || this == MACOS_AMD64 || this == MACOS_ARM64;
     }
 }

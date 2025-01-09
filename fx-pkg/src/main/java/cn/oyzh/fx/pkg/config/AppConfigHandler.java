@@ -40,6 +40,8 @@ public class AppConfigHandler implements PostHandler {
                 cmdText = jre + "/bin/javaw.exe -jar " + packConfig.mainJarName();
             } else if (packConfig.isPlatformLinux()) {
                 cmdText = "./" + jre + "/bin/java -jar " + packConfig.mainJarName();
+            } else if (packConfig.isPlatformMacos()) {
+                cmdText = "./" + jre + "/bin/java -jar " + packConfig.mainJarName();
             }
             if (cmdText != null) {
                 File configFile = new File(packConfig.getDest(), "app.conf");

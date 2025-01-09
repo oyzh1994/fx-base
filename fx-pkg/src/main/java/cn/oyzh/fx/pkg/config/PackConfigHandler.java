@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg.config;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -29,6 +30,13 @@ public class PackConfigHandler implements PreHandler {
     public void handle(PackConfig packConfig) throws Exception {
         if (StringUtil.equals(packConfig.getJdkPath(), "$SYSTEM")) {
             String javaHome = System.getenv("JAVA_HOME");
+            if (StringUtil.isBlank(javaHome)) {
+                JulLog.warn("从环境变量获取JAVA_HOME失败，该用系统属性获取");
+                javaHome = System.getProperty("java.home");
+                if (StringUtil.isBlank(javaHome)) {
+                    JulLog.warn("从系统属性获取获取java.home失败");
+                }
+            }
             packConfig.setJdkPath(javaHome);
         }
         String appVersion = packConfig.appVersion();

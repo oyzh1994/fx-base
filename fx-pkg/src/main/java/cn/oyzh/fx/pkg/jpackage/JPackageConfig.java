@@ -2,6 +2,8 @@ package cn.oyzh.fx.pkg.jpackage;
 
 import lombok.Data;
 
+import java.io.File;
+
 /**
  * JPackage配置
  *
@@ -65,4 +67,8 @@ public class JPackageConfig {
      * 过程信息
      */
     private boolean verbose = true;
+
+    public String destParent(){
+        return new File(dest).getParent();
+    }
 }

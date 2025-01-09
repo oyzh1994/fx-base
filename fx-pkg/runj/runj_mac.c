@@ -163,7 +163,7 @@ int main() {
         printf("start1----------\n");
         if (ret <= 0) {
             fprintf(stderr, "Error retrieving process path: %s\n", strerror(errno));
-            return NULL;
+            return ret;
         }
         printf("start2----------\n");
         // // 获取当前启动文件
@@ -182,7 +182,7 @@ int main() {
          FILE *fp;
         char path5[1035];
 
-        fp = popen(execCmd, "r");
+        fp = popen(line2, "r");
         if (fp == NULL) {
             printf("Execution failed\n");
             return 1;

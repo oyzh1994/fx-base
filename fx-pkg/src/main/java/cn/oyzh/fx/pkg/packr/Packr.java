@@ -252,6 +252,9 @@ public class Packr {
             case MacOS:
                 exe = readResource("/packr-mac");
                 break;
+            case MACOS_ARM64:
+                exe = readResource("/runj_mac_arm64");
+                break;
         }
 
         System.out.println("Copying executable ...");

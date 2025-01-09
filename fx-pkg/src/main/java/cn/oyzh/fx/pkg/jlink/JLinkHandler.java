@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.jlink;
 
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.RuntimeUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -52,6 +53,7 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         }
         String cmdStr = PkgUtil.getJLinkCMD(jLinkConfig);
         cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+        JulLog.info("JLink cmd:{}", cmdStr);
         // 执行jlink
         RuntimeUtil.execAndWait(cmdStr);
         // 更新jre路径

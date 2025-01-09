@@ -7,7 +7,6 @@ import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.OSUtil;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -208,7 +207,7 @@ public class PkgUtil {
             cmdStr += " -verbose";
         }
         if (config.isSummary()) {
-            cmdStr += " -summary" ;
+            cmdStr += " -summary";
         }
         if (config.getMultiRelease() != null) {
             cmdStr += " --multi-release " + config.getMultiRelease();
@@ -270,9 +269,9 @@ public class PkgUtil {
         if (jdkPath == null) {
             return cmd;
         }
-        if (OSUtil.isWindows()) {
-            return FileNameUtil.concat(jdkPath, "bin", cmd);
-        }
-        return "sh " + FileNameUtil.concat(jdkPath, "bin", cmd);
+//        if (OSUtil.isWindows()) {
+        return FileNameUtil.concat(jdkPath, "bin", cmd);
+//        }
+//        return "sh " + FileNameUtil.concat(jdkPath, "bin", cmd);
     }
 }

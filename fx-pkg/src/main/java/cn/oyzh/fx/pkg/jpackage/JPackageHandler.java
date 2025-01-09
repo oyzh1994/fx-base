@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.jpackage;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.RuntimeUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackHandler;
@@ -74,6 +75,7 @@ public class JPackageHandler implements PackHandler {
         }
         String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
         cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+        JulLog.info("JPackage cmd:{}", cmdStr);
         // 执行jpackage
         RuntimeUtil.execAndWait(cmdStr);
     }
