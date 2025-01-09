@@ -37,13 +37,14 @@ public class CompressHandler implements PostHandler {
             }
             String dest = packConfig.getDest();
             File compressFile = switch (compressConfig.getType().toLowerCase()) {
-                case "zip" -> {
-                    if (packConfig.isPlatformMacos()) {
-                        yield PkgUtil.zipDestByMacos(compressName, dest);
-                    } else {
-                        yield PkgUtil.zipDest(compressName, dest);
-                    }
-                }
+//                case "zip" -> {
+//                    if (packConfig.isPlatformMacos()) {
+//                        yield PkgUtil.zipDestByMacos(compressName, dest);
+//                    } else {
+//                        yield PkgUtil.zipDest(compressName, dest);
+//                    }
+//                }
+                case "zip" -> PkgUtil.zipDest(compressName, dest);
                 case "tar" -> PkgUtil.tarDest(compressName, dest);
                 case "tar.gz" -> PkgUtil.gzipDest(compressName, dest);
                 default ->
