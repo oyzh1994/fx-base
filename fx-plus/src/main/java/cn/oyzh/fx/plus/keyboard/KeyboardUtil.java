@@ -21,11 +21,53 @@ public class KeyboardUtil {
      */
     public static KeyCombination saveKeyCombination;
 
+    /**
+     * 全选键组合
+     */
+    public static KeyCombination selectAllKeyCombination;
+
+    /**
+     * 撤销键组合
+     */
+    public static KeyCombination redoKeyCombination;
+
+    /**
+     * 重做键组合
+     */
+    public static KeyCombination undoKeyCombination;
+
+    /**
+     * 剪切键组合
+     */
+    public static KeyCombination cutKeyCombination;
+
+    /**
+     * 粘贴键组合
+     */
+    public static KeyCombination pasteKeyCombination;
+
+    /**
+     * 复制键组合
+     */
+    public static KeyCombination copyKeyCombination;
+
     static {
         if (OSUtil.isMacOS()) {
             saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
+            selectAllKeyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.META_DOWN);
+            undoKeyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
+            redoKeyCombination = new KeyCodeCombination(KeyCode.Y, KeyCombination.META_DOWN);
+            cutKeyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.META_DOWN);
+            pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.META_DOWN);
+            copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.META_DOWN);
         } else {
             saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+            selectAllKeyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
+            undoKeyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+            redoKeyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+            cutKeyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN);
+            pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+            copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
         }
     }
 

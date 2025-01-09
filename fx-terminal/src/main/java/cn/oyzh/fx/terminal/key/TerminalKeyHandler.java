@@ -113,6 +113,18 @@ public interface TerminalKeyHandler<T extends Terminal> {
     }
 
     /**
+     * 末尾按键处理
+     *
+     * @param terminal 终端
+     * @return 结果
+     * @throws Exception 异常
+     */
+    default boolean onEndKeyPressed(T terminal) throws Exception {
+        terminal.caretPosition(terminal.contentLength());
+        return false;
+    }
+
+    /**
      * 向上翻页按键处理
      *
      * @param terminal 终端

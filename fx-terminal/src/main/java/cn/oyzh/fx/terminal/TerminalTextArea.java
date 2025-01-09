@@ -2,7 +2,9 @@ package cn.oyzh.fx.terminal;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.OSUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
@@ -95,7 +97,6 @@ public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> impleme
     private TerminalCompleteHandler completeHandler;
 
     {
-        // 保证字符等宽
         this.caretPositionProperty().addListener((observableValue, number, t1) -> {
             // 对边界做检查
             if (this.getNOP() > this.contentLength()) {
@@ -154,36 +155,44 @@ public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> impleme
                         if (!keyHandler.onPageDownKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (event.getCode() == KeyCode.A && event.isControlDown()) {
+                    } else if (KeyboardUtil.selectAllKeyCombination.match(event)) {
                         if (!keyHandler.onCtrlAKeyPressed(this)) {
+                            event.consume();
+                        }
+                    } else if (OSUtil.isMacOS() && event.getCode() == KeyCode.A && event.isControlDown()) {
+                        if (!keyHandler.onHomeKeyPressed(this)) {
                             event.consume();
                         }
                     } else if (event.getCode() == KeyCode.E && event.isControlDown()) {
                         if (!keyHandler.onCtrlEKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (event.getCode() == KeyCode.Z && event.isControlDown()) {
+                    } else if (KeyboardUtil.redoKeyCombination.match(event)) {
                         if (!keyHandler.onCtrlZKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (event.getCode() == KeyCode.Y && event.isControlDown()) {
+                    } else if (KeyboardUtil.redoKeyCombination.match(event)) {
                         if (!keyHandler.onCtrlYKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (event.getCode() == KeyCode.X && event.isControlDown()) {
+                    } else if (KeyboardUtil.cutKeyCombination.match(event)) {
                         if (!keyHandler.onCtrlXKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (event.getCode() == KeyCode.V && event.isControlDown()) {
+                    } else if (KeyboardUtil.pasteKeyCombination.match(event)) {
                         if (!keyHandler.onCtrlVKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (event.getCode() == KeyCode.C && event.isControlDown()) {
+                    } else if (KeyboardUtil.copyKeyCombination.match(event)) {
                         if (!keyHandler.onCtrlCKeyPressed(this)) {
                             event.consume();
                         }
                     } else if (event.getCode() == KeyCode.HOME) {
                         if (!keyHandler.onHomeKeyPressed(this)) {
+                            event.consume();
+                        }
+                    } else if (event.getCode() == KeyCode.END) {
+                        if (!keyHandler.onEndKeyPressed(this)) {
                             event.consume();
                         }
                     }
