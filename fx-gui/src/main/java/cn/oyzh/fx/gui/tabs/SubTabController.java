@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- *
  * @author oyzh
  * @since 2023/10/12
  */
@@ -14,8 +13,11 @@ public class SubTabController extends DynamicTabController {
     /**
      * 父控制器
      */
-    @Getter
     @Setter
     @Accessors(fluent = true, chain = false)
     private ParentTabController parent;
+
+    public ParentTabController parent() {
+        return this.parent;
+    }
 }
