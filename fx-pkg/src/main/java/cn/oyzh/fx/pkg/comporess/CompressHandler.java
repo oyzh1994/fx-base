@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg.comporess;
 
+import cn.oyzh.common.util.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
@@ -44,7 +45,15 @@ public class CompressHandler implements PostHandler {
 //                        yield PkgUtil.zipDest(compressName, dest);
 //                    }
 //                }
-                case "zip" -> PkgUtil.zipDest(compressName, dest);
+                case "zip" -> {
+                    if (OSUtil.isMacOS()) {
+                        yield PkgUtil.zipDest(compressName, dest);
+                    } else if (packConfig.isPlatformMacos()) {
+                        yield PkgUtil.zipDestByMacos(compressName, dest);
+                    } else {
+                        yield PkgUtil.zipDest(compressName, dest);
+                    }
+                }
                 case "tar" -> PkgUtil.tarDest(compressName, dest);
                 case "tar.gz" -> PkgUtil.gzipDest(compressName, dest);
                 default ->
