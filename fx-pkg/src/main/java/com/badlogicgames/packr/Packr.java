@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.oyzh.fx.pkg.packr;
+package com.badlogicgames.packr;
 
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.compressors.CompressorException;
@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static cn.oyzh.fx.pkg.packr.ArchiveUtils.extractArchive;
+import static com.badlogicgames.packr.ArchiveUtils.extractArchive;
 
 /**
  * Takes a couple of parameters and a JRE and bundles them into a platform specific distributable (zip on Windows and Linux, app bundle on Mac OS X).

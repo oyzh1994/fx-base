@@ -1,4 +1,4 @@
-package cn.oyzh.fx.pkg.packr;
+package com.badlogicgames.packr;
 
 import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;

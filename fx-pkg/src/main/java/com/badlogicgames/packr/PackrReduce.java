@@ -15,7 +15,7 @@
  *
  */
 
-package cn.oyzh.fx.pkg.packr;
+package com.badlogicgames.packr;
 
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
@@ -35,7 +35,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import static cn.oyzh.fx.pkg.packr.ArchiveUtils.ArchiveType.ZIP;
+import static com.badlogicgames.packr.ArchiveUtils.ArchiveType.ZIP;
 
 /**
  * Functions to reduce package size for both classpath JARs, and the bundled JRE.

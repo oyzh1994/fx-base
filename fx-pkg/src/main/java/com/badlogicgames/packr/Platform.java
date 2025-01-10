@@ -1,4 +1,4 @@
-package cn.oyzh.fx.pkg.packr;
+package com.badlogicgames.packr;
 
 public enum Platform {
     Windows64("windows64"),

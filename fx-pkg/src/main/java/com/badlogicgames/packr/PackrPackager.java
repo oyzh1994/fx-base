@@ -1,4 +1,4 @@
-package cn.oyzh.fx.pkg.packr;
+package com.badlogicgames.packr;
 
 import cn.oyzh.common.log.JulLog;
 import org.apache.commons.compress.archivers.ArchiveException;

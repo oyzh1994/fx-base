@@ -7,7 +7,7 @@ import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jre.JreConfig;
-import cn.oyzh.fx.pkg.packr.PackrConfig;
+import com.badlogicgames.packr.PackrConfig;
 import lombok.Getter;
 import lombok.Setter;
 

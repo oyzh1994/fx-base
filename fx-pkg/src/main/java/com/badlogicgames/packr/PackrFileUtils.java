@@ -15,7 +15,7 @@
  *
  */
 
-package cn.oyzh.fx.pkg.packr;
+package com.badlogicgames.packr;
 
 import cn.oyzh.common.file.FileUtil;
 

@@ -15,18 +15,21 @@
  *
  */
 
-package cn.oyzh.fx.pkg.packr;
+package com.badlogicgames.packr;
 
-import javax.swing.*;
 import java.io.File;
 
-public class TestApp {
-	 public static void main (String[] args) {
-		  JFrame frame = new JFrame();
-		  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		  frame.setTitle("My Test App");
-		  frame.setSize(480, 320);
-		  frame.setVisible(true);
-		  JOptionPane.showConfirmDialog(null, "Working dir: " + new File(".").getAbsolutePath());
+/**
+ * Data structure to describe output folders.
+ */
+class PackrOutput {
+
+	 final File executableFolder;
+	 final File resourcesFolder;
+
+	 PackrOutput (File executableFolder, File resourcesFolder) {
+		  this.executableFolder = executableFolder;
+		  this.resourcesFolder = resourcesFolder;
 	 }
+
 }
