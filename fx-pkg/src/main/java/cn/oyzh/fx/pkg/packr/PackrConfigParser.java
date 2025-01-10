@@ -1,7 +1,8 @@
-package com.badlogicgames.packr;
+package cn.oyzh.fx.pkg.packr;
 
 import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
+import com.badlogicgames.packr.PackrConfig;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class PackrConfigParser implements ConfigParser<PackrConfig> {
             packrConfig.outDir = new File(object.getStr("outDir"));
         }
         if (object.containsKey("platform")) {
-            packrConfig.platform = Platform.byDesc(object.getStr("platform"));
+            packrConfig.platform = PackrConfig.Platform.byDesc(object.getStr("platform"));
         }
         if (object.containsKey("iconResource")) {
             packrConfig.iconResource = new File(object.getStr("iconResource"));

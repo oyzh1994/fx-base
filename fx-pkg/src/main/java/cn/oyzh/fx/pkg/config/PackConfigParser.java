@@ -15,7 +15,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageConfigParser;
 import cn.oyzh.fx.pkg.jre.JreConfig;
 import cn.oyzh.fx.pkg.jre.JreConfigParser;
 import com.badlogicgames.packr.PackrConfig;
-import com.badlogicgames.packr.PackrConfigParser;
+import cn.oyzh.fx.pkg.packr.PackrConfigParser;
 
 /**
  * 打包配置解析器

@@ -34,7 +34,7 @@ public class AppConfigHandler implements PostHandler {
             if (StringUtil.isBlank(packConfig.mainJar())) {
                 throw new Exception("mainJar参数缺失！");
             }
-            String jre = packConfig.getPackrConfig().jrePath();
+            String jre = packConfig.getPackrConfig().jrePath;
             String cmdText = null;
             if (packConfig.isPlatformWindows()) {
                 cmdText = jre + "/bin/javaw.exe -jar " + packConfig.mainJarName();

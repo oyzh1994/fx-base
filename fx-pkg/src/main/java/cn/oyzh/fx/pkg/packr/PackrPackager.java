@@ -1,6 +1,8 @@
-package com.badlogicgames.packr;
+package cn.oyzh.fx.pkg.packr;
 
 import cn.oyzh.common.log.JulLog;
+import com.badlogicgames.packr.Packr;
+import com.badlogicgames.packr.PackrConfig;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.compressors.CompressorException;
 
@@ -10,7 +12,6 @@ import java.io.IOException;
  * @author oyzh
  * @since 2023/3/8
  */
-//@Slf4j
 public class PackrPackager extends Packr {
 
     @Override

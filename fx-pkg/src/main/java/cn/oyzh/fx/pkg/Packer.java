@@ -18,7 +18,7 @@ import cn.oyzh.fx.pkg.jre.JreHandler;
 import cn.oyzh.fx.pkg.mvn.MvnHandler;
 import cn.oyzh.fx.pkg.pack.EndHandler;
 import cn.oyzh.fx.pkg.pack.StartHandler;
-import com.badlogicgames.packr.PackrHandler;
+import cn.oyzh.fx.pkg.packr.PackrHandler;
 
 import java.util.ArrayList;
 import java.util.List;

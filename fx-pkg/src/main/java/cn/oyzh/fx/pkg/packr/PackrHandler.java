@@ -1,9 +1,11 @@
-package com.badlogicgames.packr;
+package cn.oyzh.fx.pkg.packr;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
+import com.badlogicgames.packr.Packr;
+import com.badlogicgames.packr.PackrConfig;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -50,7 +52,7 @@ public class PackrHandler implements PackHandler {
         }
         // 修正platform
         if (packrConfig.platform == null) {
-            packrConfig.platform = Platform.byDesc(packConfig.getPlatform());
+            packrConfig.platform = PackrConfig.Platform.byDesc(packConfig.getPlatform());
         }
         // 处理主程序
         if (packrConfig.classpath == null) {

@@ -17,13 +17,10 @@
 
 package com.badlogicgames.packr;
 
-import cn.oyzh.common.file.FileUtil;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
@@ -39,7 +36,7 @@ class PackrFileUtils {
      *
      * @param path the path to the file to change to executable
      */
-    static void chmodX(File path) {
+    static void chmodX (File path) {
         if (!path.setExecutable(true)) {
             System.err.println("Warning! Failed setting executable flag for: " + path);
         }
@@ -50,23 +47,22 @@ class PackrFileUtils {
      *
      * @param sourceDirectory the directory to copy from
      * @param targetDirectory the directory to copy into
+     *
      * @throws IOException if an IO error occurs
      */
-    static void copyDirectory(File sourceDirectory, File targetDirectory) throws IOException {
+    static void copyDirectory (File sourceDirectory, File targetDirectory) throws IOException {
         final Path sourcePath = Paths.get(sourceDirectory.toURI()).toRealPath();
         final Path targetPath = Paths.get(targetDirectory.toURI());
 
         Files.walkFileTree(sourcePath, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+            @Override public FileVisitResult preVisitDirectory (Path dir, BasicFileAttributes attrs) throws IOException {
                 Path relative = sourcePath.relativize(dir);
                 Path target = targetPath.resolve(relative);
                 Files.createDirectories(target);
                 return FileVisitResult.CONTINUE;
             }
 
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            @Override public FileVisitResult visitFile (Path file, BasicFileAttributes attrs) throws IOException {
                 // symbolic links
                 if (attrs.isSymbolicLink()) {
                     final Path linkTargetPath = Files.readSymbolicLink(file);
@@ -78,9 +74,6 @@ class PackrFileUtils {
                     }
                     Files.createSymbolicLink(targetPath.resolve(sourcePath.relativize(file)), linkTargetRelativePath);
                 } else {
-                    if (Files.isHidden(file)) {
-                        return FileVisitResult.SKIP_SUBTREE;
-                    }
                     Path relative = sourcePath.relativize(file);
                     Path target = targetPath.resolve(relative);
                     Files.copy(file, target, StandardCopyOption.COPY_ATTRIBUTES);
@@ -94,30 +87,20 @@ class PackrFileUtils {
      * Deletes all the content of a directory and the directory itself.
      *
      * @param directory the directory to delete
+     *
      * @throws IOException if an IO error occurs
      */
-    static void deleteDirectory(File directory) throws IOException {
-        Path path = directory.toPath();
-        System.out.println(Files.isReadable(path));
-        System.out.println(Files.isHidden(path));
-        System.out.println(Files.isRegularFile(path));
-        System.out.println(Files.isSymbolicLink(path));
-        try {
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Files.deleteIfExists(file);
-                    return super.visitFile(file, attrs);
-                }
+    static void deleteDirectory (File directory) throws IOException {
+        Files.walkFileTree(directory.toPath(), new SimpleFileVisitor<Path>() {
+            @Override public FileVisitResult visitFile (Path file, BasicFileAttributes attrs) throws IOException {
+                Files.deleteIfExists(file);
+                return super.visitFile(file, attrs);
+            }
 
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    Files.deleteIfExists(dir);
-                    return super.postVisitDirectory(dir, exc);
-                }
-            });
-        } catch (NoSuchFileException ex) {
-            FileUtil.del(directory);
-        }
+            @Override public FileVisitResult postVisitDirectory (Path dir, IOException exc) throws IOException {
+                Files.deleteIfExists(dir);
+                return super.postVisitDirectory(dir, exc);
+            }
+        });
     }
 }
