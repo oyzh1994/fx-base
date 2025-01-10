@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.ext;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.controller.ControllerFactory;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
@@ -33,8 +34,9 @@ public class FXMLLoaderExt extends FXMLLoader {
             this.setLocation(ResourceUtil.getResource(fxmlUrl));
             this.setResources(I18nResourceBundle.INSTANCE);
             return super.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("load fxml fail, url:{}", fxmlUrl);
         }
         return null;
     }
