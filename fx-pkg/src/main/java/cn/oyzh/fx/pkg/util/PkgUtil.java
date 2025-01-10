@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
  * @author oyzh
  * @since 2023/11/17
  */
-//@Slf4j
 @UtilityClass
 public class PkgUtil {
 

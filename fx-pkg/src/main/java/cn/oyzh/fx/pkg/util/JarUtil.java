@@ -27,7 +27,6 @@ import java.util.zip.ZipEntry;
  * @since 2022/12/7
  */
 @UtilityClass
-//@Slf4j
 public class JarUtil {
 
     /**
