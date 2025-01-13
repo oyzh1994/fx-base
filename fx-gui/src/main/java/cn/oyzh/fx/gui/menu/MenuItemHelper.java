@@ -167,6 +167,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.editConnect(), new RenameSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem editCollection(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.editConnect(), new RenameSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem editGroup(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.editGroup(), new EditSVGGlyph(iconSize), action);
     }
