@@ -211,6 +211,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.addConnect(), new AddSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem addCollections(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.addCollections(), new AddSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem addKey(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.addKey(), new AddSVGGlyph(iconSize), action);
     }

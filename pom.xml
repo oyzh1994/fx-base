@@ -26,6 +26,7 @@
         <javafx.version>24-ea+19</javafx.version>
         <snakeyaml.version>2.3</snakeyaml.version>
         <richtextfx.version>0.11.4</richtextfx.version>
+        <atlantafx.version>2.0.1</atlantafx.version>
     </properties>
 
     <dependencyManagement>
