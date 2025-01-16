@@ -69,7 +69,7 @@ public class QueueService {
         if (!this.rendering.get()) {
             this.rendering.set(true);
             try {
-                while (!this.tasks.isEmpty()) {
+                do {
                     QueueTask task = this.tasks.poll();
                     if (task != null) {
                         if (task.getType() == 2) {
@@ -80,7 +80,7 @@ public class QueueService {
                             BackgroundService.submit(task.getTask());
                         }
                     }
-                }
+                } while (!this.tasks.isEmpty());
             } finally {
                 this.rendering.set(false);
             }
@@ -109,7 +109,5 @@ public class QueueService {
          * 2: fx线程，异步
          */
         private byte type;
-
-
     }
 }

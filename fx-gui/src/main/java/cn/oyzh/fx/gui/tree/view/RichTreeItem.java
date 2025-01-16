@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.thread.QueueService;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -295,35 +296,40 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     @Override
     public void setChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
+            FXUtil.runWait(() -> this.unfilteredChildren().setAll(items));
+//            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
         }
     }
 
     @Override
     public void addChild(TreeItem<?> item) {
         if (item != null) {
-            this.service().submitFX(() -> this.unfilteredChildren().add(item));
+            FXUtil.runWait(() -> this.unfilteredChildren().add(item));
+//            this.service().submitFX(() -> this.unfilteredChildren().add(item));
         }
     }
 
     @Override
     public void addChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            this.service().submitFX(() -> this.unfilteredChildren().addAll(items));
+            FXUtil.runWait(() -> this.unfilteredChildren().addAll(items));
+//            this.service().submitFX(() -> this.unfilteredChildren().addAll(items));
         }
     }
 
     @Override
     public void removeChild(TreeItem<?> item) {
         if (item != null) {
-            this.service().submitFX(() -> this.unfilteredChildren().remove(item));
+            FXUtil.runWait(() -> this.unfilteredChildren().remove(item));
+//            this.service().submitFX(() -> this.unfilteredChildren().remove(item));
         }
     }
 
     @Override
     public void removeChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            this.service().submitFX(() -> this.unfilteredChildren().removeAll(items));
+            FXUtil.runWait(() -> this.unfilteredChildren().remove(items));
+//            this.service().submitFX(() -> this.unfilteredChildren().removeAll(items));
         }
     }
 
