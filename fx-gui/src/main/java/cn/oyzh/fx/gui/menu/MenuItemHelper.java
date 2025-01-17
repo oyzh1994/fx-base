@@ -239,6 +239,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.repeatConnect(), new RepeatSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem cloneConnect(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.cloneConnect(), new RepeatSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem reload(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.reload(), new RefreshSVGGlyph(iconSize), action);
     }
