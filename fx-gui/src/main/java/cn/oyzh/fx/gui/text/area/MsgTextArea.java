@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.text.area;
 
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.controls.text.area.FlexTextArea;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.ToString;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -47,7 +49,7 @@ public class MsgTextArea extends FlexTextArea {
     /**
      * 消息队列
      */
-    private final Queue<String> queue = new ArrayDeque<>();
+    private final Queue<String> queue = new LinkedBlockingQueue<>();
 
     /**
      * 拼接中标志位
@@ -82,17 +84,21 @@ public class MsgTextArea extends FlexTextArea {
         if (this.appending.get()) {
             return;
         }
-        this.appending.set(true);
+        this.appending.compareAndSet(false, true);
         // 执行拼接
-        TaskManager.start(() -> {
+        ThreadUtil.startVirtual(() -> {
             try {
                 StringBuilder builder = new StringBuilder();
-                while (!this.queue.isEmpty()) {
-                    builder.append(this.queue.poll());
-                }
+                do {
+                    String line = this.queue.poll();
+                    if (line != null) {
+                        builder.append(line);
+                    }
+                } while (!this.queue.isEmpty());
+                this.appending.compareAndSet(true, false);
                 super.appendText(builder.toString());
             } finally {
-                this.appending.set(false);
+                this.appending.compareAndSet(true, false);
             }
         });
     }
