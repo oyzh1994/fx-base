@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -103,11 +104,11 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
         // 文本域高度
-        double height = this.getSkinnable().getHeight();
+        double height = NodeUtil.getHeight(this.getSkinnable());
         // 按钮大小，规则 组件高*0.5-4
-        double size = (Math.floor(height * 0.5) - 4);
+        double size = Math.floor(height * 0.5) - 4;
         // 限制按钮大小
-        size = NumberUtil.limit(size, 6, 15);
+        size = NumberUtil.limit(size, 5, 13);
         this.incrButton.setSize(size);
         this.decrButton.setSize(size);
         // 计算按钮实际大小
@@ -115,7 +116,7 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         // 位移的areaX值，规则 组件宽+x-按钮实际大小
         double areaX = w + x - btnSize - this.btnMarginRight;
         // 位移的areaY1值
-        double areaY1 = (h - btnSize - btnSize) / 2 + 2;
+        double areaY1 = (h - btnSize) / 2 + 2;
         // 位移的areaY2值
         double areaY2 = areaY1 + btnSize + 2;
         // 设置按钮位置
