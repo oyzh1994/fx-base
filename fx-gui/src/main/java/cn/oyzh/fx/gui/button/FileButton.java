@@ -14,7 +14,7 @@ public class FileButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.setText(I18nHelper.file());
         this.setTipText(I18nHelper.file());
         this.init(new FileSVGGlyph(), 0.7);

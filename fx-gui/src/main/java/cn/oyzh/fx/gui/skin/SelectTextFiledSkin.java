@@ -83,6 +83,9 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
                             this.setText(null);
                         } else {
                             this.setText(item);
+                            this.setHeight(lineHeight);
+                            this.setMaxHeight(lineHeight);
+                            this.setMinHeight(lineHeight);
                             this.setPrefHeight(lineHeight);
                             ListViewUtil.highlightCell(this);
                         }

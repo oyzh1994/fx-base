@@ -12,7 +12,7 @@ public class TransportButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.setText(I18nHelper.transport());
         this.setTipText(I18nHelper.transport());
         this.init(new TransportSVGGlyph(), 0.7);

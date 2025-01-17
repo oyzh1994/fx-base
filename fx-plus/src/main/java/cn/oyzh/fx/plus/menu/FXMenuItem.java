@@ -82,6 +82,8 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
             w += glyph.getWidth() + 25;
         }
         // 设置宽度
+        label.setMaxWidth(w);
+        label.setMinWidth(w);
         label.setPrefWidth(w);
         // 生成菜单项
         return new FXMenuItem(label, null, action);

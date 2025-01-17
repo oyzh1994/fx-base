@@ -15,7 +15,7 @@ public class ClearButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("danger");
         this.setText(I18nHelper.clear());
         this.setTipText(I18nHelper.clear());

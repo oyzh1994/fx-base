@@ -16,7 +16,7 @@ public class CalcButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("accent");
         this.setText(I18nHelper.calc());
         this.setTipText(I18nHelper.calc());

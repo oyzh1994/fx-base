@@ -15,7 +15,7 @@ public class CopyButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.setText(I18nHelper.copy());
         this.setTipText(I18nHelper.copy());
         this.init(new CopySVGGlyph(), 0.7);

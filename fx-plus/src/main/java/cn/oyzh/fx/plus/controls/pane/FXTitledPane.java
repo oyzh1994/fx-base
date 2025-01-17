@@ -40,6 +40,8 @@ public class FXTitledPane extends TitledPane implements NodeGroup, NodeAdapter, 
                     if (newValue) {
                         NodeUtil.display(this.getContent());
                     } else {
+                        this.setHeight(0);
+                        this.setMinHeight(0);
                         this.setMaxHeight(0);
                         this.setPrefHeight(0);
                         NodeUtil.disappear(this.getContent());

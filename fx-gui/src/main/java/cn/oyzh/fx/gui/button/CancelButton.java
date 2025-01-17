@@ -13,7 +13,7 @@ public class CancelButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("danger");
         this.setText(I18nHelper.cancel());
         this.setTipText(I18nHelper.cancel());

@@ -12,7 +12,7 @@ public class MigrationButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.setText(I18nHelper.migration());
         this.setTipText(I18nHelper.migration());
         this.init(new MigrationSVGGlyph(), 0.7);

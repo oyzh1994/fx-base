@@ -13,7 +13,7 @@ public class PrevStepButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("accent");
         this.setText(I18nHelper.prevStep());
         this.setTipText(I18nHelper.prevStep());

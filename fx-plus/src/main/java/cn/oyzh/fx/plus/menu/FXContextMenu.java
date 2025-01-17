@@ -61,29 +61,11 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
                 }
             }
             // 设置宽度
+            this.setMaxWidth(maxWidth);
+            this.setMinWidth(maxWidth);
             this.setPrefWidth(maxWidth);
         }
     }
-
-//    @Override
-//    public double getRealWidth() {
-//        return LayoutAdapter.super.realWidth();
-//    }
-//
-//    @Override
-//    public void setRealWidth(double width) {
-//        LayoutAdapter.super.realWidth(width);
-//    }
-//
-//    @Override
-//    public double getRealHeight() {
-//        return LayoutAdapter.super.realHeight();
-//    }
-//
-//    @Override
-//    public void setRealHeight(double height) {
-//        LayoutAdapter.super.realHeight(height);
-//    }
 
     public void addItem(MenuItem item) {
         if (item != null) {

@@ -13,7 +13,7 @@ public class NextButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("accent");
         this.setText(I18nHelper.next());
         this.setTipText(I18nHelper.next());
