@@ -328,7 +328,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     @Override
     public void removeChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            FXUtil.runWait(() -> this.unfilteredChildren().remove(items));
+            FXUtil.runWait(() -> this.unfilteredChildren().removeAll(items));
 //            this.service().submitFX(() -> this.unfilteredChildren().removeAll(items));
         }
     }

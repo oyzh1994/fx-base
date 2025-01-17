@@ -41,16 +41,16 @@ public class SVGManager {
         return SVGLoader.INSTANCE.loadContent(url);
     }
 
-    /**
-     * 是否loading的svg路径
-     *
-     * @param image svg路径
-     * @return 结果
-     */
-    public static boolean isLoading(Image image) {
-//        return image != null && image.getUrl().contains("/fx-svg/loading.svg");
-        return false;
-    }
+//    /**
+//     * 是否loading的svg路径
+//     *
+//     * @param image svg路径
+//     * @return 结果
+//     */
+//    public static boolean isLoading(Image image) {
+////        return image != null && image.getUrl().contains("/fx-svg/loading.svg");
+//        return false;
+//    }
 
     /**
      * 是否loading的svg路径
