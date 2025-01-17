@@ -2680,6 +2680,12 @@ public class FXMLLoader {
             // Clear controller accessor caches
             controllerAccessor.reset();
             // Clear the parser
+            // TODO: 关闭读取器
+            try {
+                xmlStreamReader.close();
+            } catch (XMLStreamException ex) {
+                ex.printStackTrace();
+            }
             xmlStreamReader = null;
         }
 
