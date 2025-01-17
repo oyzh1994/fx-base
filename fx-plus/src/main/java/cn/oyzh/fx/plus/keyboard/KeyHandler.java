@@ -28,7 +28,7 @@ public class KeyHandler {
     private boolean altDown;
 
     /**
-     * 是否 meta按下
+     * 是否meta按下
      */
     private boolean metaDown;
 

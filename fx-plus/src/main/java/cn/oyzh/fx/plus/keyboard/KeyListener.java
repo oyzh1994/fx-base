@@ -80,7 +80,7 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    private static void addHandler(Object target, KeyHandler keyHandler) {
+    public static void addHandler(Object target, KeyHandler keyHandler) {
         if (target instanceof StageAdapter wrapper) {
             target = wrapper.root();
         } else if (target instanceof Stage stage) {
@@ -112,7 +112,7 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    private static void removeHandler(EventTarget target, KeyHandler keyHandler) {
+    public static void removeHandler(EventTarget target, KeyHandler keyHandler) {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyHandler.keyCode(), keyHandler.keyType());

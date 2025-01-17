@@ -51,6 +51,11 @@ public class KeyboardUtil {
      */
     public static KeyCombination copyKeyCombination;
 
+    /**
+     * 搜索键组合
+     */
+    public static KeyCombination searchKeyCombination;
+
     static {
         if (OSUtil.isMacOS()) {
             saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
@@ -60,6 +65,7 @@ public class KeyboardUtil {
             cutKeyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.META_DOWN);
             pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.META_DOWN);
             copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.META_DOWN);
+            searchKeyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.META_DOWN);
         } else {
             saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
             selectAllKeyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
@@ -68,6 +74,7 @@ public class KeyboardUtil {
             cutKeyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN);
             pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
             copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+            searchKeyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
         }
     }
 
