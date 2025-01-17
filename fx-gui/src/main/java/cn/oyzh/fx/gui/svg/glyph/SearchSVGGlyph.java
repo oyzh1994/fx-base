@@ -20,7 +20,7 @@ public class SearchSVGGlyph extends SVGGlyph {
 
     @Override
     public void initNode() {
-        this.setTipText(I18nHelper.stop());
+        this.setTipText(I18nHelper.search());
         super.initNode();
     }
 }
