@@ -434,6 +434,14 @@ public class MenuItemHelper {
     public static FXMenuItem updateTtl(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.updateTtl(), new TimeSVGGlyph(iconSize), action);
     }
+
+    public static FXMenuItem openData(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.openData(), new OpenSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem openServer(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.openServer(), new OpenSVGGlyph(iconSize), action);
+    }
 }
 
 
