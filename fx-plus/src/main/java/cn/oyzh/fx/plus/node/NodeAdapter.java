@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -174,6 +175,8 @@ public interface NodeAdapter extends EventTarget {
             FXUtil.runWait(() -> pane.getChildren().clear());
         } else if (this instanceof Group group) {
             FXUtil.runWait(() -> group.getChildren().clear());
+        } else if (this instanceof TabPane tabPane) {
+            FXUtil.runWait(() -> tabPane.getTabs().clear());
         }
     }
 
