@@ -99,6 +99,97 @@ public class KeyboardUtil {
     }
 
     /**
+     * 是否保存
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isSave(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return saveKeyCombination.match(event);
+    }
+
+    /**
+     * 是否剪切
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isCut(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return cutKeyCombination.match(event);
+    }
+
+    /**
+     * 是否复制
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isCopy(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return copyKeyCombination.match(event);
+    }
+
+    /**
+     * 是否全选
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isSelectAll(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return selectAllKeyCombination.match(event);
+    }
+
+    /**
+     * 是否撤销
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isUndo(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return undoKeyCombination.match(event);
+    }
+
+    /**
+     * 是否重做
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isRedo(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return redoKeyCombination.match(event);
+    }
+
+    /**
+     * 是否粘贴
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isPaste(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        return pasteKeyCombination.match(event);
+    }
+
+    /**
      * 是否按下ctrl slash
      *
      * @param event 事件
