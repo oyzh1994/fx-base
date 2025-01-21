@@ -56,6 +56,11 @@ public class KeyboardUtil {
      */
     public static KeyCombination searchKeyCombination;
 
+    /**
+     * 运行键组合
+     */
+    public static KeyCombination runKeyCombination;
+
     static {
         if (OSUtil.isMacOS()) {
             saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
@@ -66,6 +71,7 @@ public class KeyboardUtil {
             pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.META_DOWN);
             copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.META_DOWN);
             searchKeyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.META_DOWN);
+            runKeyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.META_DOWN);
         } else {
             saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
             selectAllKeyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
@@ -75,6 +81,7 @@ public class KeyboardUtil {
             pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
             copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
             searchKeyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
+            runKeyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
         }
     }
 
@@ -114,7 +121,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return event.isControlDown() && event.getCode() == KeyCode.R;
+        return runKeyCombination.match(event);
     }
 
     /**
