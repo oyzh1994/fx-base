@@ -122,6 +122,24 @@ public class Setting implements Serializable, ObjectCopier<Object> {
     private Short terminalFontWeight;
 
     /**
+     * 查询字体大小
+     */
+    @Column
+    private Byte queryFontSize;
+
+    /**
+     * 查询字体名称
+     */
+    @Column
+    private String queryFontFamily;
+
+    /**
+     * 查询字体粗细
+     */
+    @Column
+    private Short queryFontWeight;
+
+    /**
      * 区域
      */
     @Column
@@ -517,6 +535,30 @@ public class Setting implements Serializable, ObjectCopier<Object> {
     }
 
     public static int defaultTerminalFontWeight() {
+        return FontWeight.NORMAL.getWeight();
+    }
+
+    public Byte getQueryFontSize() {
+        return this.queryFontSize == null ? defaultQueryFontSize() : this.queryFontSize;
+    }
+
+    public int getQueryFontWeight() {
+        return this.queryFontWeight == null ? defaultQueryFontWeight() : this.queryFontWeight;
+    }
+
+    public String getQueryFontFamily() {
+        return this.queryFontFamily == null ? defaultQueryFontFamily() : this.queryFontFamily;
+    }
+
+    public static byte defaultQueryFontSize() {
+        return 15;
+    }
+
+    public static String defaultQueryFontFamily() {
+        return "System";
+    }
+
+    public static int defaultQueryFontWeight() {
         return FontWeight.NORMAL.getWeight();
     }
 }
