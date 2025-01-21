@@ -67,17 +67,15 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(@NonNull String title, String content) {
-        content = content == null ? "" : content;
-        ButtonType button1 = new ButtonType(I18nHelper.ok());
-        ButtonType button2 = new ButtonType(I18nHelper.cancel());
-        AtomicReference<Alert> reference = new AtomicReference<>();
-        String finalContent = content;
-        FXUtil.runWait(() -> reference.set(new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2)));
-        reference.get().setTitle(title);
-        reference.get().setHeaderText(null);
+        String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            Optional<ButtonType> optional = reference.get().showAndWait();
+            ButtonType button1 = new ButtonType(I18nHelper.ok());
+            ButtonType button2 = new ButtonType(I18nHelper.cancel());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            Optional<ButtonType> optional = alert.showAndWait();
             result.set(optional.map(b -> b.equals(button1)).orElse(false));
         });
         return result.get();

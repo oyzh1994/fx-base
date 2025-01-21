@@ -51,6 +51,7 @@ public abstract class DynamicTab extends FXTab {
             this.setProp("_controller", controller);
             controller.onTabInit(this);
             this.setOnClosed(e -> controller.onTabClose(this, e));
+            this.setOnCloseRequest(e -> controller.onCloseRequest(this, e));
         }
     }
 

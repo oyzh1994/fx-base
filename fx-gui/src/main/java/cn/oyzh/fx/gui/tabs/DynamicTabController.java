@@ -101,6 +101,14 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
         EventUtil.post(new TabClosedEvent(tab));
     }
 
+    /**
+     * tab请求关闭事件
+     *
+     * @param event 事件
+     */
+    public void onCloseRequest(DynamicTab tab, Event event) {
+    }
+
     @Override
     public void changeLocale(Locale locale) {
 
