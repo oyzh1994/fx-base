@@ -6,6 +6,12 @@ import javafx.beans.property.ObjectPropertyBase;
 
 import java.math.BigDecimal;
 
+
+/**
+ *
+ * @author oyzh
+ * @since 2023/11/22
+ */
 public class DigitalDecimalProperty extends ObjectPropertyBase<BigDecimal> {
 
     /**

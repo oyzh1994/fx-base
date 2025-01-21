@@ -2,6 +2,11 @@ package cn.oyzh.fx.plus.property;
 
 import lombok.Data;
 
+/**
+ *
+ * @author oyzh
+ * @since 2025/01/20
+ */
 @Data
 public class KeyValueProperty<K, V> {
 
