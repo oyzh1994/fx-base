@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.paint.Color;
 
 /**
@@ -37,12 +38,13 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
             return;
         }
         TreeItem<?> treeItem = this.getTreeItem();
+        RichTreeView treeView = (RichTreeView) this.getTreeView();
         if (value.isRichMode()) {
             Node node = this.getGraphic();
             if (node instanceof RichTreeItemBox box) {
-                box.init(value);
+                box.init(value, treeView.highlightText);
             } else {
-                this.setGraphic(new RichTreeItemBox(value));
+                this.setGraphic(new RichTreeItemBox(value, treeView.highlightText));
             }
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         } else {
@@ -61,14 +63,13 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
                     graphic.setColor(color);
                 }
             }
-            // 刷新文本
+            // 更新文本
             this.setText(value.text());
             this.setContentDisplay(ContentDisplay.LEFT);
         }
         // 初始化拖动
         if (treeItem instanceof DragNodeItem dragItem && dragItem.allowDragDrop() && this.dragNodeHandler == null) {
             this.dragNodeHandler = new DragNodeHandler();
-            RichTreeView treeView = (RichTreeView) this.getTreeView();
             this.dragNodeHandler.initEvent(this, treeView.getDragContent());
             // BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
         }

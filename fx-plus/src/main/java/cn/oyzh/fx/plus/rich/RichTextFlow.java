@@ -32,6 +32,12 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         this.setText(text);
     }
 
+    public RichTextFlow(String text, String highlight) {
+        super();
+        this.setText(text);
+        this.setHighlight(highlight);
+    }
+
     public void setText(String text) {
         this.setProp("_text", text);
         this.initTextFlow();
@@ -46,16 +52,22 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
     }
 
     protected void initTextFlow(String text) {
+        System.out.println(text);
         String highlight = this.getHighlight();
         if (StringUtil.isNotBlank(highlight)) {
-            Color highlightColor = this.getHighlightColor();
-            String[] arr = text.split(highlight);
-            List<Text> texts = new ArrayList<Text>();
-            for (String s : arr) {
-                texts.add(new Text(s));
-                Text text1 = new Text(highlight);
-                text1.setFill(highlightColor);
-                texts.add(text1);
+            List<Text> texts = new ArrayList<>();
+            if (text.contains(highlight)) {
+                Color highlightColor = this.getHighlightColor();
+                String[] arr = text.splitWithDelimiters(highlight, -1);
+                for (String s : arr) {
+                    Text text1 = new Text(s);
+                    texts.add(text1);
+                    if (s.equals(highlight)) {
+                        text1.setFill(highlightColor);
+                    }
+                }
+            } else {
+                texts.add(new Text(text));
             }
             this.initTextFlow(texts);
         } else if (StringUtil.isNotBlank(text)) {

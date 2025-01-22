@@ -35,9 +35,45 @@ public class Test2 {
     }
 
     @Test
-    public void test3(){
+    public void test3() {
         String str = "1a2a3a";
         String[] arr = str.split("a");
         System.out.println(Arrays.toString(arr));
+    }
+
+    @Test
+    public void test4() {
+        String str = "/112";
+        String reg = "112";
+        String[] arr = str.split(reg, -1);
+        System.out.println(Arrays.toString(arr));
+        StringBuilder builder = new StringBuilder();
+        for (String s : arr) {
+            if (s.isEmpty()) {
+                builder.append(reg);
+            } else {
+                builder.append(s);
+            }
+        }
+        System.out.println(builder.toString());
+
+    }
+
+    @Test
+    public void test5() {
+        String str = "/11111234111ads";
+        String reg = "A";
+        String[] arr = str.splitWithDelimiters(reg, -1);
+        System.out.println(Arrays.toString(arr));
+        StringBuilder builder = new StringBuilder();
+        for (String s : arr) {
+            if (s.isEmpty()) {
+                builder.append(reg);
+            } else {
+                builder.append(s);
+            }
+        }
+        System.out.println(builder.toString());
+
     }
 }

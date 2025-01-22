@@ -18,6 +18,14 @@ import lombok.experimental.Accessors;
 public class RichTreeView extends FlexTreeView {
 
     /**
+     * 高亮内容
+     */
+    @Setter
+    @Getter
+    @Accessors(chain = true, fluent = true)
+    protected String highlightText;
+
+    /**
      * 节点过滤器
      */
     @Setter

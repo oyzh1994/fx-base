@@ -4,7 +4,8 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.rich.RichTextFlow;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -18,12 +19,12 @@ public class RichTreeItemBox extends FlexHBox {
         super();
     }
 
-    public RichTreeItemBox(RichTreeItemValue value) {
+    public RichTreeItemBox(RichTreeItemValue value, String highlight) {
         super();
-        this.init(value);
+        this.init(value, highlight);
     }
 
-    public void init(RichTreeItemValue value) {
+    public void init(RichTreeItemValue value, String highlight) {
         String name = value.name();
         String extra = value.extra();
         SVGGlyph glyph = value.graphic();
@@ -33,16 +34,18 @@ public class RichTreeItemBox extends FlexHBox {
             glyph.setColor(color);
             this.addChild(glyph);
             // 名称
-            this.addChild(new RichTextFlow(name));
+            this.addChild(new RichTextFlow(name, highlight));
             // 额外信息
             if (StringUtil.isNotBlank(extra)) {
                 this.addChild(new Text(extra));
             }
+            HBox.setMargin(glyph, new Insets(1, 3, 0, 0));
         } else {
             // 更新图标
             SVGGlyph graphic = this.getGraphic();
             if (graphic != glyph) {
                 this.setGraphic(glyph);
+                HBox.setMargin(glyph, new Insets(3, 5, 0, 0));
             }
             if (graphic.getColor() != color) {
                 graphic.setColor(color);
@@ -51,6 +54,10 @@ public class RichTreeItemBox extends FlexHBox {
             RichTextFlow text1 = (RichTextFlow) this.getChild(1);
             if (StringUtil.notEquals(name, text1.getText())) {
                 text1.setText(name);
+            }
+            // 更新高亮
+            if (StringUtil.notEquals(highlight, text1.getHighlight())) {
+                text1.setHighlight(highlight);
             }
             // 更新额外信息
             if (StringUtil.isNotBlank(extra)) {
