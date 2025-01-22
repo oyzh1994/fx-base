@@ -1,6 +1,9 @@
 package cn.oyzh.fx.plus.test;
 
+import org.junit.Test;
+
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,5 +32,12 @@ public class Test2 {
         map.put("a", new BigDecimal("1.0"));
         map.put("b", new BigDecimal("2.0"));
         return (Map) map;
+    }
+
+    @Test
+    public void test3(){
+        String str = "1a2a3a";
+        String[] arr = str.split("a");
+        System.out.println(Arrays.toString(arr));
     }
 }

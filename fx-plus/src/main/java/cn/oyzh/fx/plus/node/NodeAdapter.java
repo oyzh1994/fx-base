@@ -343,11 +343,11 @@ public interface NodeAdapter extends EventTarget {
     default void removeChild(int index) {
         if (index >= 0) {
             if (this instanceof Pane pane) {
-                if (pane.getChildren().size() >= index) {
+                if (pane.getChildren().size() > index) {
                     FXUtil.runWait(() -> pane.getChildren().remove(index));
                 }
             } else if (this instanceof Group group) {
-                if (group.getChildren().size() >= index) {
+                if (group.getChildren().size() > index) {
                     FXUtil.runWait(() -> group.getChildren().remove(index));
                 }
             }
