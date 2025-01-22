@@ -174,6 +174,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         super(treeView);
     }
 
+    /**
+     * 加载子节点
+     */
     public void loadChild() {
 
     }
