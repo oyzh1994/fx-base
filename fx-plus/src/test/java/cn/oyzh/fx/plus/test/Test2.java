@@ -62,18 +62,14 @@ public class Test2 {
     @Test
     public void test5() {
         String str = "/11111234111ads";
-        String reg = "A";
+        String reg = "(?i)A";
         String[] arr = str.splitWithDelimiters(reg, -1);
         System.out.println(Arrays.toString(arr));
         StringBuilder builder = new StringBuilder();
         for (String s : arr) {
-            if (s.isEmpty()) {
-                builder.append(reg);
-            } else {
-                builder.append(s);
-            }
+            builder.append(s);
         }
-        System.out.println(builder.toString());
+        System.out.println(builder);
 
     }
 }
