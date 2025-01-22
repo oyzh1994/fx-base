@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.TextField;
 import javafx.stage.PopupWindow;
 import lombok.NonNull;
 
@@ -192,5 +193,17 @@ public interface PopupAdapter extends WindowAdapter {
         if (consumer != null) {
             consumer.accept(obj);
         }
+    }
+
+    default boolean isShowing() {
+        return this.popup().isShowing();
+    }
+
+    default void show(Node node) {
+        this.popup().show(node, 0, 0);
+    }
+
+    default void hide() {
+        this.popup().hide();
     }
 }
