@@ -33,22 +33,22 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         this.setText(text);
     }
 
-    public RichTextFlow(String text, String highlight) {
+    public RichTextFlow(String text, String highlight,boolean highlightMatchCase) {
         super();
-        this.setProp("_text", text);
+        this.setText(text);
         this.setHighlight(highlight);
+        this.setHighlightMatchCase(highlightMatchCase);
     }
 
     public void setText(String text) {
         this.setProp("_text", text);
-        this.initTextFlow();
     }
 
     public String getText() {
         return this.getProp("_text");
     }
 
-    protected void initTextFlow() {
+    public void initTextFlow() {
         this.initTextFlow(this.getText());
     }
 
@@ -92,7 +92,6 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
 
     public void setHighlight(String highlight) {
         this.setProp("_highlight", highlight);
-        this.initTextFlow();
     }
 
     public String getHighlight() {

@@ -28,12 +28,12 @@ public class RichTreeItemBox extends FlexFlowPane {
         super();
     }
 
-    public RichTreeItemBox(RichTreeItemValue value, String highlight) {
+    public RichTreeItemBox(RichTreeItemValue value, String highlight, boolean highlightMatchCase) {
         super();
-        this.init(value, highlight);
+        this.init(value, highlight, highlightMatchCase);
     }
 
-    public void init(RichTreeItemValue value, String highlight) {
+    public void init(RichTreeItemValue value, String highlight, boolean highlightMatchCase) {
         String name = value.name();
         String extra = value.extra();
         SVGGlyph glyph = value.graphic();
@@ -44,7 +44,8 @@ public class RichTreeItemBox extends FlexFlowPane {
             glyph.setColor(color);
             this.addChild(glyph);
             // 名称
-            RichTextFlow textFlow = new RichTextFlow(name, highlight);
+            RichTextFlow textFlow = new RichTextFlow(name, highlight, highlightMatchCase);
+            textFlow.initTextFlow();
             this.addChild(textFlow);
             // 额外信息
             if (StringUtil.isNotBlank(extra)) {
@@ -68,12 +69,24 @@ public class RichTreeItemBox extends FlexFlowPane {
             }
             // 更新名称
             RichTextFlow text1 = (RichTextFlow) this.getChild(1);
+            boolean changed = false;
             if (StringUtil.notEquals(name, text1.getText())) {
                 text1.setText(name);
+                changed = true;
             }
             // 更新高亮
             if (StringUtil.notEquals(highlight, text1.getHighlight())) {
                 text1.setHighlight(highlight);
+                changed = true;
+            }
+            // 更新高亮
+            if (highlightMatchCase != text1.isHighlightMatchCase()) {
+                text1.setHighlightMatchCase(highlightMatchCase);
+                changed = true;
+            }
+            // 执行初始化
+            if (changed) {
+                text1.initTextFlow();
             }
             // 更新额外信息
             if (StringUtil.isNotBlank(extra)) {

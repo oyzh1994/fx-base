@@ -42,9 +42,9 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         if (value.isRichMode()) {
             Node node = this.getGraphic();
             if (node instanceof RichTreeItemBox box) {
-                box.init(value, treeView.highlightText);
+                box.init(value, treeView.highlightText, treeView.highlightMatchCase);
             } else {
-                this.setGraphic(new RichTreeItemBox(value, treeView.highlightText));
+                this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase));
             }
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         } else {
