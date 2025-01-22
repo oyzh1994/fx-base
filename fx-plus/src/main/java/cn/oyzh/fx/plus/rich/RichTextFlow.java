@@ -33,7 +33,7 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         this.setText(text);
     }
 
-    public RichTextFlow(String text, String highlight,boolean highlightMatchCase) {
+    public RichTextFlow(String text, String highlight, boolean highlightMatchCase) {
         super();
         this.setText(text);
         this.setHighlight(highlight);
@@ -56,7 +56,7 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         String highlight = this.getHighlight();
         if (StringUtil.isNotBlank(highlight)) {
             List<Text> texts = new ArrayList<>();
-            if (text.contains(highlight)) {
+            if (StringUtil.containsIgnoreCase(text, highlight)) {
                 String[] arr;
                 if (this.isHighlightMatchCase()) {
                     arr = text.splitWithDelimiters(highlight, -1);
@@ -67,7 +67,7 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
                 for (String s : arr) {
                     Text text1 = new Text(s);
                     texts.add(text1);
-                    if (s.equals(highlight)) {
+                    if ((this.isHighlightMatchCase() && s.equals(highlight)) || s.equalsIgnoreCase(highlight)) {
                         text1.setFill(highlightColor);
                     }
                 }

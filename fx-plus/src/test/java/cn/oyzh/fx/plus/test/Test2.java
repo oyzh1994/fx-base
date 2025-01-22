@@ -61,8 +61,10 @@ public class Test2 {
 
     @Test
     public void test5() {
-        String str = "/11111234111ads";
-        String reg = "(?i)A";
+//        String str = "/11111234111ads";
+//        String reg = "(?i)A";
+        String str = "/yjcloud/asr/timer/suspendMonitor ";
+        String reg = "(?i)dm";
         String[] arr = str.splitWithDelimiters(reg, -1);
         System.out.println(Arrays.toString(arr));
         StringBuilder builder = new StringBuilder();
