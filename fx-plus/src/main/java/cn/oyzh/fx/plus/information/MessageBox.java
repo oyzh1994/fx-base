@@ -24,6 +24,7 @@ import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import javax.swing.*;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -153,13 +154,25 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void alert(@NonNull Alert.AlertType type, @NonNull String title, String header, String content) {
-        FXUtil.runLater(() -> {
-            Alert alert = new Alert(type);
-            alert.setTitle(title);
-            alert.setHeaderText(header);
-            alert.setContentText(content);
-            alert.show();
-        });
+        // 使用fx消息框
+        if (FXUtil.isInitialized()) {
+            FXUtil.runLater(() -> {
+                Alert alert = new Alert(type);
+                alert.setTitle(title);
+                alert.setHeaderText(header);
+                alert.setContentText(content);
+                alert.show();
+            });
+        } else {// 使用swing消息框
+            int msgType = switch (type) {
+                case NONE -> JOptionPane.NO_OPTION;
+                case INFORMATION -> JOptionPane.INFORMATION_MESSAGE;
+                case WARNING -> JOptionPane.WARNING_MESSAGE;
+                case CONFIRMATION -> JOptionPane.YES_NO_OPTION;
+                case ERROR -> JOptionPane.ERROR_MESSAGE;
+            };
+            JOptionPane.showMessageDialog(null, content, title, msgType);
+        }
     }
 
     /**

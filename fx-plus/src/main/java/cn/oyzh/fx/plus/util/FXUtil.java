@@ -6,6 +6,7 @@ import cn.oyzh.common.thread.TaskBuilder;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
+import com.sun.javafx.application.PlatformImpl;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -302,5 +303,19 @@ public class FXUtil {
         } finally {
             IOUtil.close(byteArrayOutputStream);
         }
+    }
+
+    /**
+     * 判断fx是否可用
+     *
+     * @return 结果
+     */
+    public static boolean isInitialized() {
+        try {
+            PlatformImpl.getPlatformPreferences();
+        } catch (IllegalStateException ignored) {
+            return false;
+        }
+        return true;
     }
 }
