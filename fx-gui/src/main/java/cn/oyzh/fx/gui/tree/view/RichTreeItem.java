@@ -15,6 +15,7 @@ import lombok.NonNull;
 
 import java.util.BitSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -486,7 +487,12 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
             if (item.getValue() == this.getValue() || item.getValue() == null || this.getValue() == null) {
                 return 0;
             }
-            return CharSequence.compare(this.getValue().name(), item.getValue().name());
+            String name1 = this.getValue().name();
+            String name2 = item.getValue().name();
+            if (Objects.equals(name1, name2)) {
+                return 0;
+            }
+            return CharSequence.compare(name1, name2);
         }
         return 0;
     }
