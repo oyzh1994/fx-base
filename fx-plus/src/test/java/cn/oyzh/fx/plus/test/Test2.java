@@ -63,7 +63,7 @@ public class Test2 {
     public void test5() {
 //        String str = "/11111234111ads";
 //        String reg = "(?i)A";
-        String str = "/yjcloud/asr/timer/suspendMonitor ";
+        String str = "/aaaccc/suspendMonitor ";
         String reg = "(?i)dm";
         String[] arr = str.splitWithDelimiters(reg, -1);
         System.out.println(Arrays.toString(arr));
@@ -72,6 +72,5 @@ public class Test2 {
             builder.append(s);
         }
         System.out.println(builder);
-
     }
 }

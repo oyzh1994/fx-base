@@ -114,7 +114,7 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
     public Color getHighlightColor() {
         Color color = this.getProp("_highlightColor");
         if (color == null) {
-            color = Color.ORANGERED;
+            color = Color.valueOf("#FF6600");
         }
         return color;
     }

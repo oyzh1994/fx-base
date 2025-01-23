@@ -62,12 +62,12 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         return this.getContent().getDataType();
     }
 
-    public void setSearchText(String searchText) {
-        this.getContent().setSearchText(searchText);
+    public void setHighlightText(String highlightText) {
+        this.getContent().setHighlightText(highlightText);
     }
 
-    public String setSearchText() {
-        return this.getContent().getSearchText();
+    public String getHighlightText() {
+        return this.getContent().getHighlightText();
     }
 
     public BooleanProperty editableProperty() {

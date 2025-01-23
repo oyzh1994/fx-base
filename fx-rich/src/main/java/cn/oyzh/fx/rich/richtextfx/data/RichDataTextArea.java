@@ -30,10 +30,10 @@ import java.util.regex.Pattern;
 public class RichDataTextArea extends FlexRichTextArea {
 
     /**
-     * 搜索文本
+     * 高亮文本
      */
     @Getter
-    private String searchText;
+    private String highlightText;
 
     /**
      * 是否忽略变化
@@ -246,12 +246,12 @@ public class RichDataTextArea extends FlexRichTextArea {
     }
 
     /**
-     * 搜索正则模式
+     * 高亮正则模式
      *
-     * @return 搜索正则模式
+     * @return 高亮正则模式
      */
-    private Pattern searchPattern() {
-        return Pattern.compile(this.searchText);
+    private Pattern highlightPattern() {
+        return Pattern.compile(this.highlightText);
     }
 
     @Override
@@ -260,10 +260,10 @@ public class RichDataTextArea extends FlexRichTextArea {
 //        if (!super.checkInvalidStyle()) {
 //            return;
 //        }
-        // 搜索
-        if (StringUtil.isNotBlank(this.searchText)) {
+        // 高亮
+        if (StringUtil.isNotBlank(this.highlightText)) {
             String text = this.getText();
-            Matcher matcher = this.searchPattern().matcher(text);
+            Matcher matcher = this.highlightPattern().matcher(text);
             List<RichTextStyle> styles = new ArrayList<>();
             while (matcher.find()) {
                 styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
@@ -293,12 +293,12 @@ public class RichDataTextArea extends FlexRichTextArea {
     }
 
     /**
-     * 设置搜索文本
+     * 设置高亮文本
      *
-     * @param searchText 搜索文本
+     * @param highlightText 高亮文本
      */
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
+    public void setHighlightText(String highlightText) {
+        this.highlightText = highlightText;
         this.initTextStyle();
     }
 }
