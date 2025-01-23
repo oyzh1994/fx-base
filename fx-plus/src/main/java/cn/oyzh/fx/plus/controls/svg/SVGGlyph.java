@@ -393,4 +393,8 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         glyph.setSizeStr(this.getSizeStr());
         return glyph;
     }
+
+    public void disableWaiting() {
+        this.enableWaiting = false;
+    }
 }

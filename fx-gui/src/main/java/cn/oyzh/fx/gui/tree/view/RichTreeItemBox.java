@@ -18,7 +18,9 @@ import javafx.scene.text.Text;
 public class RichTreeItemBox extends FlexFlowPane {
 
     {
+        this.disableFont();
         this.setRealHeight(15);
+        this.setFlexWidth("100%");
         this.setPadding(Insets.EMPTY);
     }
 
