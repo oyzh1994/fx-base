@@ -2,11 +2,9 @@ package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.pane.FlexFlowPane;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.rich.RichTextFlow;
 import javafx.geometry.Insets;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -15,16 +13,16 @@ import javafx.scene.text.Text;
  * @author oyzh
  * @since 2025-01-22
  */
-public class RichTreeItemBox extends FlexFlowPane {
+public class RichTreeItemBox extends FlexHBox {
 
     {
         this.disableFont();
-        this.setRealHeight(15);
-        this.setFlexWidth("100%");
+//        this.setRealHeight(15);
+//        this.setMaxWidth(1500);
         this.setPadding(Insets.EMPTY);
     }
 
-    private static final Insets DEFAULT_NODE_MARGIN = new Insets(0, 3, 0, 0);
+    private static final Insets DEFAULT_NODE_MARGIN = new Insets(1, 3, 0, 0);
 
     public RichTreeItemBox() {
         super();
@@ -57,14 +55,14 @@ public class RichTreeItemBox extends FlexFlowPane {
                 }
                 this.addChild(extraText);
             }
-            FlowPane.setMargin(glyph, DEFAULT_NODE_MARGIN);
-            FlowPane.setMargin(textFlow, DEFAULT_NODE_MARGIN);
+            HBox.setMargin(glyph, DEFAULT_NODE_MARGIN);
+            HBox.setMargin(textFlow, DEFAULT_NODE_MARGIN);
         } else {
             // 更新图标
             SVGGlyph graphic = this.getGraphic();
             if (graphic != glyph) {
                 this.setGraphic(glyph);
-                FlowPane.setMargin(glyph, DEFAULT_NODE_MARGIN);
+                HBox.setMargin(glyph, DEFAULT_NODE_MARGIN);
             }
             if (graphic.getColor() != color) {
                 graphic.setColor(color);

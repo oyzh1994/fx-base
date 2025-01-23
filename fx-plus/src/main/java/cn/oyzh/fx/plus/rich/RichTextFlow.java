@@ -12,7 +12,6 @@ import javafx.scene.text.TextFlow;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * @author oyzh
@@ -118,4 +117,32 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         }
         return color;
     }
+
+//    @Override
+//    protected void layoutChildren() {
+////        Insets insets = getInsets();
+////        double top = snapSpaceY(insets.getTop());
+////        double left = snapSpaceX(insets.getLeft());
+////        List<Node> managed = getManagedChildren();
+////        for (Node node : managed) {
+////            if (node instanceof Text text) {
+////                text.relocate(0, 0);
+////            }
+////        }
+//
+//        double x = 0;
+//        double y = 0;
+////        TextFlow textFlow = (TextFlow) getChildren().getFirst();
+//        // 遍历 TextFlow 中的所有 Text 节点
+//        for (Node child : this.getChildren()) {
+//            if (child instanceof Text text) {
+//                // 手动设置每个 Text 节点的位置
+//                text.setLayoutX(x);
+//                text.setLayoutY(y);
+//                // 更新下一个 Text 节点的起始 x 坐标
+//                x += text.getLayoutBounds().getWidth();
+//            }
+//        }
+//        super.layoutChildren();
+//    }
 }
