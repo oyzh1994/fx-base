@@ -40,9 +40,9 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         }
         TreeItem<?> treeItem = this.getTreeItem();
         RichTreeView treeView = (RichTreeView) this.getTreeView();
+        Node node = this.getGraphic();
         // 富文本模式
         if (value.isRichMode()) {
-            Node node = this.getGraphic();
             if (node instanceof RichTreeItemBox box) {
                 box.init(value, treeView.highlightText, treeView.highlightMatchCase);
             } else {
@@ -52,18 +52,16 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         } else {// 标准模式
             // 获取图标
             SVGGlyph glyph = value.graphic();
-            SVGGlyph graphic = (SVGGlyph) this.getGraphic();
+            Color color = value.graphicColor();
+            SVGGlyph graphic = node instanceof SVGGlyph ? glyph : null;
             // 更新图标
-            if (graphic == null || graphic != glyph) {
+            if (graphic == null) {
                 this.setGraphic(glyph);
-                graphic = glyph;
-            }
-            // 更新图标颜色
-            if (graphic != null) {
-                Color color = value.graphicColor();
-                if (graphic.getColor() != color) {
-                    graphic.setColor(color);
+                if (glyph != null) {
+                    glyph.setColor(color);
                 }
+            } else if (graphic.getColor() != color) { // 更新图标颜色
+                graphic.setColor(color);
             }
             // 更新文本
             this.setText(value.text());

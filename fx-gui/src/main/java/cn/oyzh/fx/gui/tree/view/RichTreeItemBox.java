@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.rich.RichTextFlow;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -17,6 +18,7 @@ public class RichTreeItemBox extends FlexHBox {
 
     {
         this.disableFont();
+        this.setPrefWidth(1000);
         this.setPadding(Insets.EMPTY);
     }
 
@@ -62,11 +64,10 @@ public class RichTreeItemBox extends FlexHBox {
             // 更新图标
             SVGGlyph graphic = this.getGraphic();
             if (graphic != glyph) {
-                graphic.setColor(color);
+                glyph.setColor(color);
                 this.setGraphic(glyph);
                 HBox.setMargin(glyph, DEFAULT_NODE_MARGIN);
-            }
-            if (graphic.getColor() != color) {
+            } else if (graphic.getColor() != color) {
                 graphic.setColor(color);
             }
             // 更新名称
@@ -117,7 +118,11 @@ public class RichTreeItemBox extends FlexHBox {
     }
 
     public SVGGlyph getGraphic() {
-        return (SVGGlyph) this.getFirstChild();
+        Node node = this.getFirstChild();
+        if (node instanceof SVGGlyph) {
+            return (SVGGlyph) node;
+        }
+        return null;
     }
 
     public void setGraphic(SVGGlyph glyph) {
