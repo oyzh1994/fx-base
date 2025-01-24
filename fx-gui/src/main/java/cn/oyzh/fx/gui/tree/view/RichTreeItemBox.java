@@ -17,11 +17,12 @@ public class RichTreeItemBox extends FlexHBox {
 
     {
         this.disableFont();
-//        this.setRealHeight(15);
-//        this.setMaxWidth(1500);
         this.setPadding(Insets.EMPTY);
     }
 
+    /**
+     * 默认节点编剧
+     */
     private static final Insets DEFAULT_NODE_MARGIN = new Insets(1, 3, 0, 0);
 
     public RichTreeItemBox() {
@@ -44,9 +45,9 @@ public class RichTreeItemBox extends FlexHBox {
             glyph.setColor(color);
             this.addChild(glyph);
             // 名称
-            RichTextFlow textFlow = new RichTextFlow(name, highlight, highlightMatchCase);
-            textFlow.initTextFlow();
-            this.addChild(textFlow);
+            RichTextFlow nameText = new RichTextFlow(name, highlight, highlightMatchCase);
+            nameText.initTextFlow();
+            this.addChild(nameText);
             // 额外信息
             if (StringUtil.isNotBlank(extra)) {
                 Text extraText = new Text(extra);
@@ -56,11 +57,12 @@ public class RichTreeItemBox extends FlexHBox {
                 this.addChild(extraText);
             }
             HBox.setMargin(glyph, DEFAULT_NODE_MARGIN);
-            HBox.setMargin(textFlow, DEFAULT_NODE_MARGIN);
+            HBox.setMargin(nameText, DEFAULT_NODE_MARGIN);
         } else {
             // 更新图标
             SVGGlyph graphic = this.getGraphic();
             if (graphic != glyph) {
+                graphic.setColor(color);
                 this.setGraphic(glyph);
                 HBox.setMargin(glyph, DEFAULT_NODE_MARGIN);
             }
@@ -68,44 +70,44 @@ public class RichTreeItemBox extends FlexHBox {
                 graphic.setColor(color);
             }
             // 更新名称
-            RichTextFlow text1 = (RichTextFlow) this.getChild(1);
+            RichTextFlow nameText = (RichTextFlow) this.getChild(1);
             boolean changed = false;
-            if (StringUtil.notEquals(name, text1.getText())) {
-                text1.setText(name);
+            if (StringUtil.notEquals(name, nameText.getText())) {
+                nameText.setText(name);
                 changed = true;
             }
             // 更新高亮
-            if (StringUtil.notEquals(highlight, text1.getHighlight())) {
-                text1.setHighlight(highlight);
+            if (StringUtil.notEquals(highlight, nameText.getHighlight())) {
+                nameText.setHighlight(highlight);
                 changed = true;
             }
             // 更新高亮
-            if (highlightMatchCase != text1.isHighlightMatchCase()) {
-                text1.setHighlightMatchCase(highlightMatchCase);
+            if (highlightMatchCase != nameText.isHighlightMatchCase()) {
+                nameText.setHighlightMatchCase(highlightMatchCase);
                 changed = true;
             }
             // 执行初始化
             if (changed) {
-                text1.initTextFlow();
+                nameText.initTextFlow();
             }
             // 更新额外信息
             if (StringUtil.isNotBlank(extra)) {
-                Text text2 = (Text) this.getChild(2);
+                Text extraText = (Text) this.getChild(2);
                 // 新增
-                if (text2 == null) {
-                    Text extraText = new Text(extra);
+                if (extraText == null) {
+                    extraText = new Text(extra);
                     if (extraColor != null) {
                         extraText.setFill(extraColor);
                     }
                     this.addChild(extraText);
                 } else {
                     // 更新文本
-                    if (StringUtil.notEquals(extra, text2.getText())) {
-                        text2.setText(extra);
+                    if (StringUtil.notEquals(extra, extraText.getText())) {
+                        extraText.setText(extra);
                     }
                     // 更新颜色
-                    if (text2.getFill() != extraColor) {
-                        text2.setFill(extraColor);
+                    if (extraText.getFill() != extraColor) {
+                        extraText.setFill(extraColor);
                     }
                 }
             } else {
@@ -119,15 +121,10 @@ public class RichTreeItemBox extends FlexHBox {
     }
 
     public void setGraphic(SVGGlyph glyph) {
-        this.setChild(0, glyph);
+        if (this.getChild(0) instanceof SVGGlyph) {
+            this.setChild(0, glyph);
+        } else {
+            this.addChild(0, glyph);
+        }
     }
-//
-//    public void setContent(String text, String extra) {
-//        RichTextFlow text1 = (RichTextFlow) this.getChild(1);
-//        text1.setText(text);
-//        Text text2 = (Text) this.getChild(2);
-//        if (text2 != null) {
-//            text2.setText(extra);
-//        }
-//    }
 }
