@@ -488,7 +488,7 @@ public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> impleme
      * 初始化内容提示词
      */
     @Override
-    protected void initContentPrompts() {
+    public void initContentPrompts() {
         // 设置内容提示符
         Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
         Set<String> set = new HashSet<>();

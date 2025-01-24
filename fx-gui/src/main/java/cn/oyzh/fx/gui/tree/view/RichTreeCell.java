@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
 public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
 
     {
+        this.setCache(true);
         this.setCacheShape(true);
         this.setCursor(Cursor.HAND);
     }
@@ -39,6 +40,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         }
         TreeItem<?> treeItem = this.getTreeItem();
         RichTreeView treeView = (RichTreeView) this.getTreeView();
+        // 富文本模式
         if (value.isRichMode()) {
             Node node = this.getGraphic();
             if (node instanceof RichTreeItemBox box) {
@@ -47,7 +49,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
                 this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase));
             }
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        } else {
+        } else {// 标准模式
             // 获取图标
             SVGGlyph glyph = value.graphic();
             SVGGlyph graphic = (SVGGlyph) this.getGraphic();

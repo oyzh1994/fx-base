@@ -1,6 +1,5 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
-import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -16,14 +15,9 @@ import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 import org.reactfx.value.Val;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author oyzh
@@ -203,16 +197,16 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
 
     public void initTextStyle() {
         this.getContent().initTextStyle();
-        if (this.contentPrompts != null) {
-            String text = this.getText();
-            Matcher matcher1 = this.contentPrompts.matcher(text);
-            List<RichTextStyle> styles = new ArrayList<>();
-            while (matcher1.find()) {
-                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
-            }
-            this.setStyles(styles);
-            this.forgetHistory();
-        }
+//        if (this.contentPrompts != null) {
+//            String text = this.getText();
+//            Matcher matcher1 = this.contentPrompts.matcher(text);
+//            List<RichTextStyle> styles = new ArrayList<>();
+//            while (matcher1.find()) {
+//                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
+//            }
+//            this.setStyles(styles);
+//            this.forgetHistory();
+//        }
     }
 
     public void clearTextStyle() {
@@ -245,10 +239,10 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
         this.getContent().changeTheme(style);
     }
 
-    /**
-     * 基础内容正则模式
-     */
-    private Pattern contentPrompts;
+//    /**
+//     * 基础内容正则模式
+//     */
+//    private Pattern contentPrompts;
 
     /**
      * 设置内容提示词
@@ -256,23 +250,25 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
      * @param prompts 内容提示词列表
      */
     public void setContentPrompts(Set<String> prompts) {
-        if (prompts == null || prompts.isEmpty()) {
-            this.contentPrompts = null;
-        } else {
-            StringBuilder regex = new StringBuilder("\\b(");
-            for (String s : prompts) {
-                regex.append(s).append("|");
-            }
-            regex.append(")\\b");
-            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
-        }
-        this.initTextStyle();
+//        if (prompts == null || prompts.isEmpty()) {
+//            this.contentPrompts = null;
+//        } else {
+//            StringBuilder regex = new StringBuilder("\\b(");
+//            for (String s : prompts) {
+//                regex.append(s).append("|");
+//            }
+//            regex.append(")\\b");
+//            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
+//        }
+//        this.initTextStyle();
+        this.getContent().setContentPrompts(prompts);
     }
 
     /**
      * 初始化内容提示词
      */
-    protected void initContentPrompts() {
+    public void initContentPrompts() {
+        this.getContent().initContentPrompts();
     }
 
     public Optional<Bounds> getCaretBounds() {
