@@ -175,10 +175,10 @@ public class PageBox<T> extends FlexFlowPane {
      * @return 模板内容
      */
     protected String pageTextTpl() {
-        if (I18nManager.currentLocale() == Locale.SIMPLIFIED_CHINESE) {
+        if (I18nManager.currentLocale() == Locale.PRC) {
             return "共#count条，每页#limit条，#currentPage/#countPage页";
         }
-        if (I18nManager.currentLocale() == Locale.TRADITIONAL_CHINESE) {
+        if (I18nManager.currentLocale() == Locale.TAIWAN) {
             return "共#count條，每頁#limit條，#currentPage/#countPage頁";
         }
         return "Total #count, Limit #limit, Page #currentPage/#countPage";
