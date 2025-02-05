@@ -166,6 +166,20 @@
             </exclusions>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>de.jangassen</groupId>-->
+<!--            <artifactId>tray-icon</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/com.dorkbox/SystemTray -->
+        <dependency>
+            <groupId>com.dorkbox</groupId>
+            <artifactId>SystemTray</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/de.codecentric.centerdevice/javafxsvg -->
         <dependency>
             <groupId>de.codecentric.centerdevice</groupId>
