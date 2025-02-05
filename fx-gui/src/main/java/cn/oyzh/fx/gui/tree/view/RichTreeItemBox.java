@@ -1,12 +1,12 @@
 package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.rich.RichTextFlow;
+import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -14,31 +14,31 @@ import javafx.scene.text.Text;
  * @author oyzh
  * @since 2025-01-22
  */
-public class RichTreeItemBox extends FXHBox {
+public class RichTreeItemBox extends FXPane {
 
     {
         this.disableFont();
         this.setMaxHeight(18);
         this.setMinHeight(18);
         this.setPrefWidth(18);
-        this.setPrefWidth(1000);
+//        this.setPrefWidth(1000);
         this.setPadding(Insets.EMPTY);
     }
 
     /**
      * 默认图标边距
      */
-    private static final Insets DEFAULT_GRAPHIC_MARGIN = new Insets(2, 3, 0, 0);
+    private static final Insets DEFAULT_GRAPHIC_MARGIN = new Insets(3, 3, 0, 0);
 
     /**
      * 默认名称边距
      */
-    private static final Insets DEFAULT_NAME_MARGIN = new Insets(2, 1, 0, 0);
+    private static final Insets DEFAULT_NAME_MARGIN = new Insets(2, 0, 0, 0);
 
     /**
      * 默认扩展边距
      */
-    private static final Insets DEFAULT_EXTRA_MARGIN = new Insets(2, 0, 0, 0);
+    private static final Insets DEFAULT_EXTRA_MARGIN = new Insets(14, 0, 0, 0);
 
     public RichTreeItemBox() {
         super();
@@ -59,14 +59,14 @@ public class RichTreeItemBox extends FXHBox {
             // 图标
             glyph.setColor(color);
             glyph.setId("graphic");
-            HBox.setMargin(glyph, DEFAULT_GRAPHIC_MARGIN);
+            glyph.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
             this.addChild(glyph);
 
             // 名称
             RichTextFlow nameNode = new RichTextFlow(name, highlight, highlightMatchCase);
             nameNode.initTextFlow();
             nameNode.setId("name");
-            HBox.setMargin(nameNode, DEFAULT_NAME_MARGIN);
+            nameNode.setLayoutY(DEFAULT_NAME_MARGIN.getTop());
             this.addChild(nameNode);
 
             // 额外信息
@@ -76,7 +76,7 @@ public class RichTreeItemBox extends FXHBox {
                 if (extraColor != null) {
                     extraNode.setFill(extraColor);
                 }
-                HBox.setMargin(extraNode, DEFAULT_EXTRA_MARGIN);
+                extraNode.setLayoutY(DEFAULT_EXTRA_MARGIN.getTop());
                 this.addChild(extraNode);
             }
         } else {
@@ -84,8 +84,8 @@ public class RichTreeItemBox extends FXHBox {
             SVGGlyph graphicNode = this.getGraphic();
             if (graphicNode != glyph) {
                 glyph.setColor(color);
+                glyph.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
                 this.setGraphic(glyph);
-                HBox.setMargin(glyph, DEFAULT_GRAPHIC_MARGIN);
             } else if (graphicNode.getColor() != color) {
                 graphicNode.setColor(color);
             }
@@ -199,5 +199,22 @@ public class RichTreeItemBox extends FXHBox {
         } else {
             this.addChild(2, extra);
         }
+    }
+
+    @Override
+    protected void layoutChildren() {
+        super.layoutChildren();
+        double x = 0;
+        for (Node child : this.getChildren()) {
+            child.setLayoutX(x);
+            if ("graphic".equals(child.getId())) {
+                x += NodeUtil.getWidth(child) + DEFAULT_GRAPHIC_MARGIN.getRight();
+            } else if ("name".equals(child.getId())) {
+                x += NodeUtil.getWidth(child) + DEFAULT_NAME_MARGIN.getRight();
+            } else if ("extra".equals(child.getId())) {
+                x += NodeUtil.getWidth(child) + DEFAULT_EXTRA_MARGIN.getRight();
+            }
+        }
+        this.setPrefWidth(x + 30);
     }
 }
