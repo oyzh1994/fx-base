@@ -27,7 +27,7 @@ public class FXButton extends Button implements NodeGroup, NodeAdapter, ThemeAda
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 
     public FXButton() {

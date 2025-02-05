@@ -70,7 +70,7 @@ public class FXTextField extends TextField implements NodeGroup, NodeAdapter, Th
     @Override
     public void initNode() {
         this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 
     /**

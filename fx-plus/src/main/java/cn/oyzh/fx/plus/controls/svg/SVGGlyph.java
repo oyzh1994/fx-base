@@ -333,7 +333,7 @@ public class SVGGlyph extends Region implements NodeGroup, NodeAdapter, ThemeAda
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
         this.setScaleShape(true);
         this.setCacheShape(true);
         this.setCenterShape(true);

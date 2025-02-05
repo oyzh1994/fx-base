@@ -368,7 +368,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
     public void initNode() {
         this.setWrapText(true);
         this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
         this.setAutoScrollOnDragDesired(true);
         this.setPadding(new Insets(5, 5, 5, 5));
         Color color = ThemeManager.currentAccentColor();

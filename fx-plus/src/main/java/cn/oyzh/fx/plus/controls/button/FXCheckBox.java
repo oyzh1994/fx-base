@@ -44,6 +44,6 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 }

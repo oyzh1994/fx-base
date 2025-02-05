@@ -43,14 +43,16 @@ public interface TextAdapter {
         if (listener == null) {
             return;
         }
-        if (this instanceof Text text) {
-            text.textProperty().addListener(listener);
-        } else if (this instanceof Labeled labeled) {
-            labeled.textProperty().addListener(listener);
-        } else if (this instanceof TextInputControl inputControl) {
-            inputControl.textProperty().addListener(listener);
-        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-            area.textProperty().addListener(listener);
+        synchronized (this) {
+            if (this instanceof Text text) {
+                text.textProperty().addListener(listener);
+            } else if (this instanceof Labeled labeled) {
+                labeled.textProperty().addListener(listener);
+            } else if (this instanceof TextInputControl inputControl) {
+                inputControl.textProperty().addListener(listener);
+            } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+                area.textProperty().addListener(listener);
+            }
         }
     }
 

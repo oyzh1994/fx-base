@@ -28,7 +28,7 @@ public class FXTitledPane extends TitledPane implements NodeGroup, NodeAdapter, 
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 
     private ChangeListener<Boolean> autoHideListener;

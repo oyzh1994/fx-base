@@ -13,6 +13,6 @@ public class ReadOnlyTextField extends FlexTextField {
     {
         this.setEditable(false);
         this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 }

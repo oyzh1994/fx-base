@@ -89,11 +89,13 @@ public class RichDataTextArea extends FlexRichTextArea {
 
     @Override
     public void addTextChangeListener(ChangeListener<String> listener) {
-        this.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!this.ignoreChange) {
-                listener.changed(observable, oldValue, newValue);
-            }
-        });
+        synchronized (this) {
+            this.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!this.ignoreChange) {
+                    listener.changed(observable, oldValue, newValue);
+                }
+            });
+        }
     }
 
     /**

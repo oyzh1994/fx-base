@@ -79,7 +79,7 @@ public class BaseRichTextField extends InlineCssTextField implements NodeAdapter
     @Override
     public void initNode() {
         this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
         this.getStyleClass().add("rich-text-field");
     }
 }

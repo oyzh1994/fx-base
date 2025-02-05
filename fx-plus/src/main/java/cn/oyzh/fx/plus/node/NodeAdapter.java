@@ -418,6 +418,19 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 获取节点的场景对象
+     *
+     * @return 场景对象
+     */
+    default Scene scene() {
+        Window window = this.window();
+        if (window != null) {
+            return window.getScene();
+        }
+        return null;
+    }
+
+    /**
      * 获取节点的窗口
      *
      * @return 窗口对象
@@ -432,6 +445,11 @@ public interface NodeAdapter extends EventTarget {
         return null;
     }
 
+    /**
+     * 获取鼠标类型
+     *
+     * @return 鼠标类型
+     */
     default String getCursorType() {
         if (this instanceof Node node) {
             return node.getCursor().toString();
@@ -439,9 +457,30 @@ public interface NodeAdapter extends EventTarget {
         return null;
     }
 
+    /**
+     * 设置鼠标类型
+     *
+     * @param cursorType 鼠标类型
+     */
     default void setCursorType(String cursorType) {
         if (this instanceof Node node) {
             node.setCursor(Cursor.cursor(cursorType));
+        }
+    }
+
+    /**
+     * 清除焦点
+     */
+    default void clearFocus() {
+        FXUtil.runWait(() -> this.scene().focusCleanup());
+    }
+
+    /**
+     * 当前节点设置为焦点节点
+     */
+    default void focusNode() {
+        if (this instanceof Node node) {
+            FXUtil.runWait(() -> this.scene().setFocusOwner(node, true));
         }
     }
 }

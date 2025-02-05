@@ -62,6 +62,6 @@ public class FXImageView extends ImageView implements NodeAdapter, PropAdapter, 
     public void initNode() {
         this.setPickOnBounds(true);
         this.setPreserveRatio(true);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 }

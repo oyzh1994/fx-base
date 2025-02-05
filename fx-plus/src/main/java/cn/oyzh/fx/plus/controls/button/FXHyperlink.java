@@ -38,7 +38,7 @@ public class FXHyperlink extends Hyperlink implements MouseAdapter, NodeGroup, N
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
         this.setOnMousePrimaryClicked(event -> {
             String url = this.getText();
             if (StringUtil.isNotBlank(url)) {
