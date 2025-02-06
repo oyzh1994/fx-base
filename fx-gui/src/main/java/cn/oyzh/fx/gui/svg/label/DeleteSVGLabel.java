@@ -22,7 +22,7 @@ public class DeleteSVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.delete());
-        this.setTipText(I18nHelper.delete());
+//        this.setTipText(I18nHelper.delete());
         super.initNode();
     }
 }

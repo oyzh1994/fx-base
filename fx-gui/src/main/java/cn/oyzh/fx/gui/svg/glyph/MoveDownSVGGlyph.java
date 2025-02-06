@@ -18,9 +18,9 @@ public class MoveDownSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.moveDown());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.moveDown());
+//        super.initNode();
+//    }
 }

@@ -22,7 +22,7 @@ public class CopySVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.copy());
-        this.setTipText(I18nHelper.copy());
+//        this.setTipText(I18nHelper.copy());
         super.initNode();
     }
 }

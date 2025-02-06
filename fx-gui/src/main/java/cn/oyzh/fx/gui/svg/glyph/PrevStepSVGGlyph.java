@@ -18,9 +18,9 @@ public class PrevStepSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.prevStep());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.prevStep());
+//        super.initNode();
+//    }
 }

@@ -18,9 +18,9 @@ public class UnCollectSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.unCollect());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.unCollect());
+//        super.initNode();
+//    }
 }

@@ -22,7 +22,7 @@ public class ExpandSVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.expand());
-        this.setTipText(I18nHelper.expand());
+//        this.setTipText(I18nHelper.expand());
         super.initNode();
     }
 }

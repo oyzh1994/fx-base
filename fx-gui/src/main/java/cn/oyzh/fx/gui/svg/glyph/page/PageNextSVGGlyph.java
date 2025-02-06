@@ -18,9 +18,9 @@ public class PageNextSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.nextPage());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.nextPage());
+//        super.initNode();
+//    }
 }

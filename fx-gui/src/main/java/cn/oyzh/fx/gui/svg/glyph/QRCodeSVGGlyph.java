@@ -18,9 +18,9 @@ public class QRCodeSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.qrCode());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.qrCode());
+//        super.initNode();
+//    }
 }

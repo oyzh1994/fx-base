@@ -22,7 +22,7 @@ public class MigrationSVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.migration());
-        this.setTipText(I18nHelper.migration());
+//        this.setTipText(I18nHelper.migration());
         super.initNode();
     }
 }

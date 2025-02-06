@@ -22,7 +22,7 @@ public class FilterSVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.filter());
-        this.setTipText(I18nHelper.filter());
+//        this.setTipText(I18nHelper.filter());
         super.initNode();
     }
 }

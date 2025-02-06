@@ -22,7 +22,7 @@ public class TransportSVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.transport());
-        this.setTipText(I18nHelper.transport());
+//        this.setTipText(I18nHelper.transport());
         super.initNode();
     }
 }
