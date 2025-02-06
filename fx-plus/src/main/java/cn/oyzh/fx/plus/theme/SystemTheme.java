@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.ColorScheme;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.WeakChangeListener;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -113,6 +114,11 @@ public class SystemTheme implements Theme, ThemeStyle {
     public synchronized void listener() {
         if (!this.following) {
             this.following = true;
+//            WeakChangeListener<Color> colorWeakChangeListener = new WeakChangeListener<>(this.colorListener);
+//            Platform.getPreferences().accentColorProperty().addListener(colorWeakChangeListener);
+//            Platform.getPreferences().foregroundColorProperty().addListener(colorWeakChangeListener);
+//            Platform.getPreferences().backgroundColorProperty().addListener(colorWeakChangeListener);
+//            Platform.getPreferences().colorSchemeProperty().addListener(new WeakChangeListener<>(this.colorSchemeChangeListener));
             Platform.getPreferences().accentColorProperty().addListener(this.colorListener);
             Platform.getPreferences().foregroundColorProperty().addListener(this.colorListener);
             Platform.getPreferences().backgroundColorProperty().addListener(this.colorListener);

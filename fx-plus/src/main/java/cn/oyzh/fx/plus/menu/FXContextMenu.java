@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.WeakListChangeListener;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
@@ -28,7 +29,8 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
-        this.getItems().addListener(this.itemsListener);
+//        this.getItems().addListener(this.itemsListener);
+        this.getItems().addListener(new WeakListChangeListener<>(this.itemsListener));
     }
 
     public FXContextMenu() {

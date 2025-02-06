@@ -44,12 +44,16 @@ public interface TextAdapter {
         if (listener != null) {
             synchronized (this) {
                 if (this instanceof Text text) {
+//                    text.textProperty().addListener(listener);
                     text.textProperty().addListener(new WeakChangeListener<>(listener));
                 } else if (this instanceof Labeled labeled) {
+//                    labeled.textProperty().addListener(listener);
                     labeled.textProperty().addListener(new WeakChangeListener<>(listener));
                 } else if (this instanceof TextInputControl inputControl) {
+//                    inputControl.textProperty().addListener(listener);
                     inputControl.textProperty().addListener(new WeakChangeListener<>(listener));
                 } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+//                    area.textProperty().addListener(listener);
                     area.textProperty().addListener(new WeakChangeListener<>(listener));
                 }
             }

@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.WeakChangeListener;
 import javafx.geometry.HorizontalDirection;
 import javafx.scene.Cursor;
 import lombok.Getter;
@@ -77,6 +78,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapte
      * @param listener 监听器
      */
     public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
-        this.selectedProperty().addListener(listener);
+//        this.selectedProperty().addListener(listener);
+        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }
 }

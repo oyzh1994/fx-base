@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.skin;
 import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.beans.InvalidationListener;
+import javafx.beans.WeakInvalidationListener;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.paint.Color;
@@ -30,10 +31,15 @@ public class FXTextFieldSkin extends TextFieldSkin {
     public FXTextFieldSkin(TextField control) {
         super(control);
         // 初始化监听器
-        control.textProperty().addListener(this.visibilityChanged);
-        control.focusedProperty().addListener(this.visibilityChanged);
-        control.visibleProperty().addListener(this.visibilityChanged);
-        control.disableProperty().addListener(this.visibilityChanged);
+        WeakInvalidationListener weakInvalidationListener = new WeakInvalidationListener(this.visibilityChanged);
+        control.textProperty().addListener(weakInvalidationListener);
+        control.focusedProperty().addListener(weakInvalidationListener);
+        control.visibleProperty().addListener(weakInvalidationListener);
+        control.disableProperty().addListener(weakInvalidationListener);
+//        control.textProperty().addListener(this.visibilityChanged);
+//        control.focusedProperty().addListener(this.visibilityChanged);
+//        control.visibleProperty().addListener(this.visibilityChanged);
+//        control.disableProperty().addListener(this.visibilityChanged);
     }
 
     @Override
