@@ -48,6 +48,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
             } else {
                 this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase));
             }
+            this.setText(null);
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         } else {// 标准模式
             // 获取图标

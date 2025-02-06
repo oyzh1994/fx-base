@@ -212,7 +212,7 @@ public class RichTreeItemBox extends FXPane {
             child.setLayoutX(x);
             if ("graphic".equals(child.getId())) {
                 x += NodeUtil.getWidth(child) + 3;
-//                child.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
+                child.setLayoutY(2);
             } else if ("name".equals(child.getId())) {
                 x += NodeUtil.getWidth(child) + 3;
 //                child.setLayoutY(DEFAULT_NAME_MARGIN.getTop());

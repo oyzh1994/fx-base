@@ -200,6 +200,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 //        // 恢复
 //        this.setRotate(0);
         this.setChild(this.original);
+        this.updateContent();
         this.waiting = null;
     }
 
