@@ -138,7 +138,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
         // loading图标
         if (SVGManager.isLoading(svgPath)) {
-            svgPath.setFill(ThemeManager.currentForegroundColor());
+//            svgPath.setFill(ThemeManager.currentForegroundColor());
             return;
         }
         // 更新鼠标
@@ -172,10 +172,9 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
             this.setWaiting(true);
             // 获取loading
             FXSVGPath loading = SVGManager.getLoading();
-            loading.setFill(ThemeManager.currentForegroundColor());
-            // 设置缩放比例
-            loading.setScaleX(this.getWidth() / loading.getBoundsInLocal().getWidth());
-            loading.setScaleY(this.getHeight() / loading.getBoundsInLocal().getHeight());
+            // 动态绑定缩放比例
+            loading.scaleXProperty().bind(this.widthProperty().divide(loading.getBoundsInLocal().getWidth()));
+            loading.scaleYProperty().bind(this.heightProperty().divide(loading.getBoundsInLocal().getHeight()));
             // 设置loading图标
             this.setChild(loading);
             // 初始化动画
@@ -197,8 +196,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
             FXUtil.runWait(this.waitingAnimation::stop);
             this.waitingAnimation = null;
         }
-//        // 恢复
-//        this.setRotate(0);
+        // 恢复原始图标，并更新内容
         this.setChild(this.original);
         this.updateContent();
         this.waiting = null;
@@ -221,11 +219,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
             }
         }
     }
-
-//    @Override
-//    public EventHandler<? super MouseEvent> getOnMousePrimaryClicked() {
-//        return MouseAdapter.super.getOnMousePrimaryClicked();
-//    }
 
     public SVGGlyph() {
     }
@@ -354,16 +347,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
     }
 
-//    @Override
-//    public boolean isEnableTheme() {
-//        return ThemeAdapter.super.isEnableTheme();
-//    }
-//
-//    @Override
-//    public void setEnableTheme(boolean enableTheme) {
-//        ThemeAdapter.super.setEnableTheme(enableTheme);
-//    }
-
     @Override
     public void initNode() {
         this.setSize(DEFAULT_SIZE);
@@ -371,9 +354,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
         this.setFocusTraversable(false);
-//        this.setScaleShape(true);
-//        this.setCacheShape(true);
-//        this.setCenterShape(true);
     }
 
     @Override
