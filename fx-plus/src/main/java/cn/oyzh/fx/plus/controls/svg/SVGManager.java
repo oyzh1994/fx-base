@@ -27,7 +27,7 @@ public class SVGManager {
      * @param url 地址
      * @return svg路径
      */
-    public static FXSVGPath load(String url) {
+    public static synchronized FXSVGPath load(String url) {
         return SVGLoader.INSTANCE.load(url);
     }
 
@@ -59,7 +59,11 @@ public class SVGManager {
      * @return 结果
      */
     public static boolean isLoading(SVGPath svgPath) {
-        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
+//        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
+        if (svgPath instanceof FXSVGPath fxsvgPath) {
+            return fxsvgPath.hasProp("loading");
+        }
+        return false;
     }
 
     /**
@@ -67,12 +71,14 @@ public class SVGManager {
      *
      * @return loading的svg路径
      */
-    public static FXSVGPath getLoading() {
-        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
-            FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
-            svgPath.setCursor(Cursor.NONE);
-            loadingSVGPathRef = new WeakReference<>(svgPath);
-        }
-        return loadingSVGPathRef.get();
+    public static synchronized FXSVGPath getLoading() {
+//        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
+        FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
+        svgPath.setProp("loading", true);
+        svgPath.setCursor(Cursor.NONE);
+//            loadingSVGPathRef = new WeakReference<>(svgPath);
+//        }
+//        return loadingSVGPathRef.get();
+        return svgPath;
     }
 }

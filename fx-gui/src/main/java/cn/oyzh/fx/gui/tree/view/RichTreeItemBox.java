@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.rich.RichTextFlow;
 import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -18,27 +19,27 @@ public class RichTreeItemBox extends FXPane {
 
     {
         this.disableFont();
-        this.setMaxHeight(18);
-        this.setMinHeight(18);
-        this.setPrefWidth(18);
+        this.setMaxHeight(15);
+        this.setMinHeight(15);
+        this.setPrefWidth(15);
 //        this.setPrefWidth(1000);
         this.setPadding(Insets.EMPTY);
     }
-
-    /**
-     * 默认图标边距
-     */
-    private static final Insets DEFAULT_GRAPHIC_MARGIN = new Insets(3, 3, 0, 0);
-
-    /**
-     * 默认名称边距
-     */
-    private static final Insets DEFAULT_NAME_MARGIN = new Insets(2, 0, 0, 0);
-
-    /**
-     * 默认扩展边距
-     */
-    private static final Insets DEFAULT_EXTRA_MARGIN = new Insets(14, 0, 0, 0);
+//
+//    /**
+//     * 默认图标边距
+//     */
+//    private static final Insets DEFAULT_GRAPHIC_MARGIN = new Insets(0, 3, 0, 0);
+//
+//    /**
+//     * 默认名称边距
+//     */
+//    private static final Insets DEFAULT_NAME_MARGIN = new Insets(0, 3, 0, 0);
+//
+//    /**
+//     * 默认扩展边距
+//     */
+//    private static final Insets DEFAULT_EXTRA_MARGIN = new Insets(0, 0, 0, 0);
 
     public RichTreeItemBox() {
         super();
@@ -59,24 +60,24 @@ public class RichTreeItemBox extends FXPane {
             // 图标
             glyph.setColor(color);
             glyph.setId("graphic");
-            glyph.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
+//            glyph.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
             this.addChild(glyph);
 
             // 名称
             RichTextFlow nameNode = new RichTextFlow(name, highlight, highlightMatchCase);
             nameNode.initTextFlow();
             nameNode.setId("name");
-            nameNode.setLayoutY(DEFAULT_NAME_MARGIN.getTop());
+//            nameNode.setLayoutY(DEFAULT_NAME_MARGIN.getTop());
             this.addChild(nameNode);
 
             // 额外信息
             if (StringUtil.isNotBlank(extra)) {
-                Text extraNode = new Text(extra);
+                Label extraNode = new Label(extra);
                 extraNode.setId("extra");
                 if (extraColor != null) {
-                    extraNode.setFill(extraColor);
+                    extraNode.setTextFill(extraColor);
                 }
-                extraNode.setLayoutY(DEFAULT_EXTRA_MARGIN.getTop());
+//                extraNode.setLayoutY(DEFAULT_EXTRA_MARGIN.getTop());
                 this.addChild(extraNode);
             }
         } else {
@@ -84,7 +85,7 @@ public class RichTreeItemBox extends FXPane {
             SVGGlyph graphicNode = this.getGraphic();
             if (graphicNode != glyph) {
                 glyph.setColor(color);
-                glyph.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
+//                glyph.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
                 this.setGraphic(glyph);
             } else if (graphicNode.getColor() != color) {
                 graphicNode.setColor(color);
@@ -114,12 +115,12 @@ public class RichTreeItemBox extends FXPane {
 
             // 更新额外信息
             if (StringUtil.isNotBlank(extra)) {
-                Text extraNode = this.getExtra();
+                Label extraNode = this.getExtra();
                 // 新增
                 if (extraNode == null) {
-                    extraNode = new Text(extra);
+                    extraNode = new Label(extra);
                     if (extraColor != null) {
-                        extraNode.setFill(extraColor);
+                        extraNode.setTextFill(extraColor);
                     }
                     this.addChild(extraNode);
                 } else {
@@ -128,14 +129,15 @@ public class RichTreeItemBox extends FXPane {
                         extraNode.setText(extra);
                     }
                     // 更新颜色
-                    if (extraNode.getFill() != extraColor) {
-                        extraNode.setFill(extraColor);
+                    if (extraNode.getTextFill() != extraColor) {
+                        extraNode.setTextFill(extraColor);
                     }
                 }
             } else {
                 this.removeChild(2);
             }
         }
+//        this.layoutChildren();
     }
 
     public SVGGlyph getGraphic() {
@@ -180,14 +182,14 @@ public class RichTreeItemBox extends FXPane {
         }
     }
 
-    public Text getExtra() {
+    public Label getExtra() {
         Node node = this.getChild(2);
-        if (node instanceof Text) {
-            return (Text) node;
+        if (node instanceof Label) {
+            return (Label) node;
         }
         node = this.lookup("#extra");
-        if (node instanceof Text) {
-            return (Text) node;
+        if (node instanceof Label) {
+            return (Label) node;
         }
         return null;
     }
@@ -203,18 +205,34 @@ public class RichTreeItemBox extends FXPane {
 
     @Override
     protected void layoutChildren() {
-        super.layoutChildren();
+//        super.layoutChildren();
         double x = 0;
         for (Node child : this.getChildren()) {
+            child.autosize();
             child.setLayoutX(x);
             if ("graphic".equals(child.getId())) {
-                x += NodeUtil.getWidth(child) + DEFAULT_GRAPHIC_MARGIN.getRight();
+                x += NodeUtil.getWidth(child) + 3;
+//                child.setLayoutY(DEFAULT_GRAPHIC_MARGIN.getTop());
             } else if ("name".equals(child.getId())) {
-                x += NodeUtil.getWidth(child) + DEFAULT_NAME_MARGIN.getRight();
-            } else if ("extra".equals(child.getId())) {
-                x += NodeUtil.getWidth(child) + DEFAULT_EXTRA_MARGIN.getRight();
+                x += NodeUtil.getWidth(child) + 3;
+//                child.setLayoutY(DEFAULT_NAME_MARGIN.getTop());
+//            } else if ("extra".equals(child.getId())) {
+//                x += NodeUtil.getWidth(child) + DEFAULT_EXTRA_MARGIN.getRight();
+//                child.setLayoutY(DEFAULT_EXTRA_MARGIN.getTop());
             }
         }
         this.setPrefWidth(x + 30);
     }
+
+//    @Override
+//    public void resize(double width, double height) {
+//        super.resize(width, height);
+//        this.layoutChildren();
+//    }
+//
+//    @Override
+//    public void requestLayout() {
+//        super.requestLayout();
+//        this.layoutChildren();
+//    }
 }

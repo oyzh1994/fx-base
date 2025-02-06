@@ -90,7 +90,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     /**
      * 等待动画
      */
-    private RotateTransition waitingTransition;
+    private RotateTransition waitingAnimation;
 
     /**
      * 是否激活状态
@@ -138,6 +138,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
         // loading图标
         if (SVGManager.isLoading(svgPath)) {
+            svgPath.setFill(ThemeManager.currentForegroundColor());
             return;
         }
         // 更新鼠标
@@ -167,13 +168,24 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         if (this.isWaiting()) {
             return;
         }
-        this.setWaiting(true);
-        // 设置loading图标
-        this.setChild(SVGManager.getLoading());
-        // 初始化动画
-        this.waitingTransition = AnimationUtil.rotate(this);
-        // 播放动画
-        this.waitingTransition.play();
+        try {
+            this.setWaiting(true);
+            // 获取loading
+            FXSVGPath loading = SVGManager.getLoading();
+            loading.setFill(ThemeManager.currentForegroundColor());
+            // 设置缩放比例
+            loading.setScaleX(this.getWidth() / loading.getBoundsInLocal().getWidth());
+            loading.setScaleY(this.getHeight() / loading.getBoundsInLocal().getHeight());
+            // 设置loading图标
+            this.setChild(loading);
+            // 初始化动画
+            this.waitingAnimation = AnimationUtil.rotate(loading);
+            // 播放动画
+            this.waitingAnimation.play();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            this.setWaiting(false);
+        }
     }
 
     /**
@@ -181,12 +193,12 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      */
     public void stopWaiting() {
         // 结束动画
-        if (this.waitingTransition != null) {
-            FXUtil.runWait(this.waitingTransition::stop);
-            this.waitingTransition = null;
+        if (this.waitingAnimation != null) {
+            FXUtil.runWait(this.waitingAnimation::stop);
+            this.waitingAnimation = null;
         }
-        // 恢复
-        this.setRotate(0);
+//        // 恢复
+//        this.setRotate(0);
         this.setChild(this.original);
         this.waiting = null;
     }

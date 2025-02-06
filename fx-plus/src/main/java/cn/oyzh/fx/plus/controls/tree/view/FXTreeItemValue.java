@@ -82,10 +82,11 @@ public class FXTreeItemValue implements Destroyable {
      * @return 图标颜色
      */
     public Color graphicColor() {
-        if (ThemeManager.isDarkMode()) {
-            return Color.WHITE;
-        }
-        return Color.BLACK;
+//        if (ThemeManager.isDarkMode()) {
+//            return Color.WHITE;
+//        }
+//        return Color.BLACK;
+        return ThemeManager.currentForegroundColor();
     }
 
     @Override
