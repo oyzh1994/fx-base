@@ -15,7 +15,7 @@ public class IconButton extends FlexButton {
      * 图标对比字符的百分比
      */
     @Getter
-    private Double iconSizePercent = 0.7;
+    private Double iconSizePercent = 1.0;
 
     @Override
     public void initNode() {
@@ -90,7 +90,7 @@ public class IconButton extends FlexButton {
         if (this.getGraphic() instanceof SVGGlyph glyph) {
             glyph.disableTheme();
             if (this.iconSizePercent != null && this.getFont() != null) {
-                glyph.setSize(this.getFont().getSize() * this.iconSizePercent);
+                glyph.setSize(this.getFontSize() * this.iconSizePercent);
             }
             if (this.getTextFill() != null) {
                 glyph.setColor(this.getTextFill());
