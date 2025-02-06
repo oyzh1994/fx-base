@@ -16,10 +16,10 @@ import java.lang.ref.WeakReference;
 @UtilityClass
 public class SVGManager {
 
-    /**
-     * loading的svg路径引用
-     */
-    private static WeakReference<FXSVGPath> loadingSVGPathRef;
+//    /**
+//     * loading的svg路径引用
+//     */
+//    private static WeakReference<FXSVGPath> loadingSVGPathRef;
 
     /**
      * 加载svg路径
@@ -27,7 +27,7 @@ public class SVGManager {
      * @param url 地址
      * @return svg路径
      */
-    public static synchronized FXSVGPath load(String url) {
+    public static FXSVGPath load(String url) {
         return SVGLoader.INSTANCE.load(url);
     }
 
@@ -60,10 +60,7 @@ public class SVGManager {
      */
     public static boolean isLoading(SVGPath svgPath) {
 //        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
-        if (svgPath instanceof FXSVGPath fxsvgPath) {
-            return fxsvgPath.hasProp("loading");
-        }
-        return false;
+        return svgPath.hasProperties() && svgPath.getProperties().containsKey("loading");
     }
 
     /**
@@ -71,7 +68,7 @@ public class SVGManager {
      *
      * @return loading的svg路径
      */
-    public static synchronized FXSVGPath getLoading() {
+    public static FXSVGPath getLoading() {
 //        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
         FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
         svgPath.setProp("loading", true);
