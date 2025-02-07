@@ -11,16 +11,19 @@ import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  * @author oyzh
  * @since 2025-02-07
  */
-public class HBoxLayout extends Pane implements FlexAdapter, ThemeAdapter, FontAdapter, NodeGroup, LayoutAdapter, NodeAdapter, StateAdapter {
+public class HBoxLayout extends BoxLayout implements FlexAdapter, ThemeAdapter, FontAdapter, NodeGroup, LayoutAdapter, NodeAdapter, StateAdapter {
 
     private final static String MARGIN_CONSTRAINT = "hbox_layout_margin";
 
@@ -32,6 +35,14 @@ public class HBoxLayout extends Pane implements FlexAdapter, ThemeAdapter, FontA
         NodeUtil.setProperty(child, MARGIN_CONSTRAINT, insets);
     }
 
+    public HBoxLayout() {
+        super();
+    }
+
+    public HBoxLayout(Node... children) {
+        super(children);
+    }
+
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
@@ -40,19 +51,26 @@ public class HBoxLayout extends Pane implements FlexAdapter, ThemeAdapter, FontA
     }
 
     @Override
+    public Orientation getContentBias() {
+        return Orientation.HORIZONTAL;
+    }
+
+    @Override
     protected void layoutChildren() {
-        double x = 0;
-        for (Node child : this.getChildren()) {
+        Insets padding = this.getPadding();
+        double x = padding == null ? this.getBaseLineX() : this.getBaseLineX() + padding.getLeft();
+        for (Node child : this.getManagedChildren()) {
             child.autosize();
             Insets margin = getMargin(child);
-            double areaX = margin == null ? x : x + margin.getLeft();
-            double areaY = margin == null ? 0 : margin.getTop();
-            child.setLayoutX(areaX);
-            child.setLayoutY(areaY);
-            x += NodeUtil.getWidth(child);
-            if (margin != null) {
+            if (margin == null) {
+                child.setLayoutX(x);
+                child.setLayoutY(0);
+            } else {
+                child.setLayoutX(x + margin.getLeft());
+                child.setLayoutY(margin.getTop());
                 x += margin.getLeft() + margin.getRight();
             }
+            x += this.boundedWidth(child) + child.getLayoutBounds().getMinX();
         }
     }
 }
