@@ -58,7 +58,7 @@ public class HBoxLayout extends BoxLayout implements FlexAdapter, ThemeAdapter, 
     @Override
     protected void layoutChildren() {
         Insets padding = this.getPadding();
-        double x = padding == null ? this.getBaseLineX() : this.getBaseLineX() + padding.getLeft();
+        double x = padding == null ? 0 : padding.getLeft();
         for (Node child : this.getManagedChildren()) {
             child.autosize();
             Insets margin = getMargin(child);
@@ -70,7 +70,12 @@ public class HBoxLayout extends BoxLayout implements FlexAdapter, ThemeAdapter, 
                 child.setLayoutY(margin.getTop());
                 x += margin.getLeft() + margin.getRight();
             }
-            x += this.boundedWidth(child) + child.getLayoutBounds().getMinX();
+
+            x += NodeUtil.getWidth(child) + child.getLayoutBounds().getMinX();
+            Insets padding1 = this.getPadding();
+            if (padding1 != null) {
+                x += padding1.getLeft() + padding1.getRight();
+            }
         }
     }
 }

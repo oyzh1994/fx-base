@@ -53,7 +53,6 @@ public class VBoxLayout extends BoxLayout implements FlexAdapter, ThemeAdapter, 
     @Override
     protected void layoutChildren() {
         Insets padding = this.getPadding();
-        double maxWidth = 0;
         double y = padding == null ? 0 : padding.getTop();
         for (Node child : this.getManagedChildren()) {
             child.autosize();
@@ -66,7 +65,15 @@ public class VBoxLayout extends BoxLayout implements FlexAdapter, ThemeAdapter, 
                 child.setLayoutY(y + margin.getTop());
                 y += margin.getTop() + margin.getBottom();
             }
-            y += this.boundedHeight(child);
+            y += NodeUtil.getHeight(child);
+            Insets padding1 = this.getPadding();
+            if (padding1 != null) {
+                y += padding1.getTop() + padding1.getBottom();
+            }
+            System.out.println(child.getBoundsInLocal());
+            System.out.println(child.getBoundsInParent());
+            System.out.println(child.getLayoutBounds());
+            System.out.println("child: " + child);
         }
     }
 }

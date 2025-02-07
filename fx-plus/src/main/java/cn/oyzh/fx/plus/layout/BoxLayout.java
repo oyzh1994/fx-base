@@ -3,22 +3,12 @@ package cn.oyzh.fx.plus.layout;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author oyzh
  * @since 2025-02-07
  */
 public class BoxLayout extends Pane {
-
-    @Getter
-    @Setter
-    private double baseLineX;
-
-    @Getter
-    @Setter
-    private double baseLineY;
 
     public BoxLayout() {
         super();
