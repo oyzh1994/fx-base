@@ -3,7 +3,7 @@ package cn.oyzh.fx.rich.richtextfx.control;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import lombok.Getter;
 

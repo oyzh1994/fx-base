@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controls.tree.table;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeTableColumn;
 import lombok.ToString;
