@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.WeakChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.TitledPane;
 
@@ -48,8 +47,8 @@ public class FXTitledPane extends TitledPane implements NodeGroup, NodeAdapter, 
                         NodeUtil.disappear(this.getContent());
                     }
                 };
-//                this.expandedProperty().addListener(this.autoHideListener);
-                this.expandedProperty().addListener(new WeakChangeListener<>(this.autoHideListener));
+                this.expandedProperty().addListener(this.autoHideListener);
+//                this.expandedProperty().addListener(new WeakChangeListener<>(this.autoHideListener));
             }
         } else {
 //            if (this.autoHideListener != null) {

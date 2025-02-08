@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.WeakChangeListener;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
@@ -44,17 +43,17 @@ public interface TextAdapter {
         if (listener != null) {
             synchronized (this) {
                 if (this instanceof Text text) {
-//                    text.textProperty().addListener(listener);
-                    text.textProperty().addListener(new WeakChangeListener<>(listener));
+                    text.textProperty().addListener(listener);
+//                    text.textProperty().addListener(new WeakChangeListener<>(listener));
                 } else if (this instanceof Labeled labeled) {
-//                    labeled.textProperty().addListener(listener);
-                    labeled.textProperty().addListener(new WeakChangeListener<>(listener));
+                    labeled.textProperty().addListener(listener);
+//                    labeled.textProperty().addListener(new WeakChangeListener<>(listener));
                 } else if (this instanceof TextInputControl inputControl) {
-//                    inputControl.textProperty().addListener(listener);
-                    inputControl.textProperty().addListener(new WeakChangeListener<>(listener));
+                    inputControl.textProperty().addListener(listener);
+//                    inputControl.textProperty().addListener(new WeakChangeListener<>(listener));
                 } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-//                    area.textProperty().addListener(listener);
-                    area.textProperty().addListener(new WeakChangeListener<>(listener));
+                    area.textProperty().addListener(listener);
+//                    area.textProperty().addListener(new WeakChangeListener<>(listener));
                 }
             }
         }

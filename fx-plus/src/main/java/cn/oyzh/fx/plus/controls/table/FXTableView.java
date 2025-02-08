@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.TableViewUtil;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.WeakChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
@@ -75,7 +74,7 @@ public class FXTableView<S> extends TableView<S> implements NodeGroup, NodeAdapt
     }
 
     public void selectedItemChanged(ChangeListener<S> listener) {
-//        this.getSelectionModel().selectedItemProperty().addListener(listener);
-        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
+        this.getSelectionModel().selectedItemProperty().addListener(listener);
+//        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
     }
 }

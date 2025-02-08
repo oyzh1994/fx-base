@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.ColorScheme;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.WeakChangeListener;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
