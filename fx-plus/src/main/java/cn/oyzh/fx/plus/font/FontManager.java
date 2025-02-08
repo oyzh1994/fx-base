@@ -131,11 +131,11 @@ public class FontManager {
     public static Font cacheFont(Font font) {
         if (font != null) {
             // 从缓存中获取
-            if (!FONTS_CACHE.containsKey(font)) {
-                FONTS_CACHE.put(font);
+            if (!FONTS_CACHE.contains(font)) {
+                FONTS_CACHE.add(font);
             } else {
                 font = FONTS_CACHE.get(font);
-                JulLog.debug("get font from cache, font:{}", font);
+                JulLog.info("get font from cache, font:{}", font);
             }
         }
         return font;
