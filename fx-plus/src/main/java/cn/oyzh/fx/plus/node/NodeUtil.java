@@ -86,15 +86,15 @@ public class NodeUtil {
      * @return 宽度
      */
     public static double getWidth(EventTarget target) {
-        if (target instanceof Node node) {
-            Bounds bounds = node.getLayoutBounds();
-            if (bounds != null) {
-                double w = bounds.getWidth();
-                if (w != 0) {
-                    return Math.abs(w);
-                }
-            }
-        }
+//        if (target instanceof Node node) {
+//            Bounds bounds = node.getLayoutBounds();
+//            if (bounds != null) {
+//                double w = bounds.getWidth();
+//                if (w != 0) {
+//                    return Math.abs(w);
+//                }
+//            }
+//        }
 
         if (target instanceof Region region) {
             double w1 = region.getWidth();
@@ -156,15 +156,15 @@ public class NodeUtil {
      * @return 高度
      */
     public static double getHeight(EventTarget target) {
-        if (target instanceof Node node) {
-            Bounds bounds = node.getLayoutBounds();
-            if (bounds != null) {
-                double h = bounds.getHeight();
-                if (h != 0) {
-                    return Math.abs(h);
-                }
-            }
-        }
+//        if (target instanceof Node node) {
+//            Bounds bounds = node.getLayoutBounds();
+//            if (bounds != null) {
+//                double h = bounds.getHeight();
+//                if (h != 0) {
+//                    return Math.abs(h);
+//                }
+//            }
+//        }
 
         if (target instanceof Region region) {
             double w1 = region.getPrefHeight();
