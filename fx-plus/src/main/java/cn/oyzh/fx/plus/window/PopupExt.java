@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
 import javafx.util.Duration;
@@ -46,7 +48,8 @@ public class PopupExt extends Popover implements PopupAdapter {
 
     @Override
     public void showPopup(Node owner) {
-        super.show(owner);
+        Point2D point2D = owner.localToScreen(0, 0);
+        super.show(owner, point2D.getX() + 10, point2D.getY());
     }
 
     @Override
