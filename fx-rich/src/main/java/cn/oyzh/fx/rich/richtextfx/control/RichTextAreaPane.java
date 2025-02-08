@@ -197,16 +197,6 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
 
     public void initTextStyle() {
         this.getContent().initTextStyle();
-//        if (this.contentPrompts != null) {
-//            String text = this.getText();
-//            Matcher matcher1 = this.contentPrompts.matcher(text);
-//            List<RichTextStyle> styles = new ArrayList<>();
-//            while (matcher1.find()) {
-//                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
-//            }
-//            this.setStyles(styles);
-//            this.forgetHistory();
-//        }
     }
 
     public void clearTextStyle() {
@@ -239,28 +229,12 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
         this.getContent().changeTheme(style);
     }
 
-//    /**
-//     * 基础内容正则模式
-//     */
-//    private Pattern contentPrompts;
-
     /**
      * 设置内容提示词
      *
      * @param prompts 内容提示词列表
      */
     public void setContentPrompts(Set<String> prompts) {
-//        if (prompts == null || prompts.isEmpty()) {
-//            this.contentPrompts = null;
-//        } else {
-//            StringBuilder regex = new StringBuilder("\\b(");
-//            for (String s : prompts) {
-//                regex.append(s).append("|");
-//            }
-//            regex.append(")\\b");
-//            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
-//        }
-//        this.initTextStyle();
         this.getContent().setContentPrompts(prompts);
     }
 
