@@ -133,6 +133,15 @@ public interface PopupAdapter extends WindowAdapter {
     void content(Node content);
 
     /**
+     * 获取控制器
+     *
+     * @return 控制器
+     */
+    default Object getController() {
+        return this.getProp("_controller");
+    }
+
+    /**
      * 初始化弹窗
      *
      * @param attribute 弹窗属性
@@ -160,6 +169,8 @@ public interface PopupAdapter extends WindowAdapter {
         this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 this.onWindowClosed();
+            } else if (this.controller() instanceof PopupListener listener) {
+                listener.onWindowShown(null);
             }
         });
     }
