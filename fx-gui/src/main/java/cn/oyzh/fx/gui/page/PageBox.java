@@ -7,8 +7,8 @@ import cn.oyzh.fx.gui.svg.glyph.page.PageNextSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PagePrevSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageSettingSVGGlyph;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
+import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.label.FlexLabel;
-import cn.oyzh.fx.plus.controls.pane.FlexFlowPane;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -17,7 +17,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -31,7 +31,7 @@ import java.util.Objects;
  * @author oyzh
  * @since 2022/12/22
  */
-public class PageBox<T> extends FlexFlowPane {
+public class PageBox<T> extends FlexHBox {
 
     /**
      * 是否显示文本组件
@@ -193,6 +193,8 @@ public class PageBox<T> extends FlexFlowPane {
         this.init();
     }
 
+    private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
+
     /**
      * 执行初始化
      */
@@ -250,7 +252,7 @@ public class PageBox<T> extends FlexFlowPane {
         this.jump.setMinVal(1);
         this.jump.setMaxWidth(50);
         this.jump.setBtnMarginRight(0);
-        this.jump.setFlexHeight("90%");
+        this.jump.setFlexHeight("80%");
         this.jump.managedBindVisible();
         this.jump.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (KeyboardUtil.isEnter(event) && this.onJumpFired != null) {
@@ -258,15 +260,21 @@ public class PageBox<T> extends FlexFlowPane {
                 event.consume();
             }
         });
-        this.jump.setPadding(new Insets(0, 0, 0, 0));
+        this.jump.setPadding(Insets.EMPTY);
 
         // 设置边距
-        FlowPane.setMargin(this.jump, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.settingBtn, new Insets(0, 0, 0, 5));
+        HBox.setMargin(this.jump, new Insets(1, 0, 0, 5));
+        HBox.setMargin(this.prevBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.nextBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.lastBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.firstBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.settingBtn, DEFAULT_MARGIN);
+//        HBox.setMargin(this.jump, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.settingBtn, new Insets(0, 0, 0, 5));
 
         // 添加子节点
         this.setChild(this.firstBtn, this.prevBtn, this.jump, this.nextBtn, this.lastBtn, this.settingBtn);
@@ -330,7 +338,9 @@ public class PageBox<T> extends FlexFlowPane {
             if (this.text == null) {
                 this.text = new FlexLabel();
                 this.text.setFlexHeight("90%");
-                FlowPane.setMargin(this.text, new Insets(0, 0, 0, 5));
+                this.text.setPadding(Insets.EMPTY);
+                HBox.setMargin(this.text, new Insets(1, 0, 0, 5));
+//                HBox.setMargin(this.text, new Insets(0, 0, 0, 5));
                 this.addChild(this.text);
             }
         } else {
