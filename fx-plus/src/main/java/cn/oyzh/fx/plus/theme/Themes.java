@@ -50,7 +50,7 @@ public class Themes {
      * @return 主题列表
      */
     public static List<ThemeStyle> themes() {
-        List<ThemeStyle> themes = new ArrayList<>();
+        List<ThemeStyle> themes = new ArrayList<>(12);
         themes.add(PRIMER_LIGHT);
         themes.add(PRIMER_DARK);
         themes.add(NORD_LIGHT);

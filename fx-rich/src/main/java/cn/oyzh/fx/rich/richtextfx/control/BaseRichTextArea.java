@@ -15,6 +15,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
@@ -292,13 +293,18 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
             CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
             Color accentColor = ThemeManager.currentAccentColor();
             Color foregroundColor = ThemeManager.currentForegroundColor();
+            Color backgroundColor = ThemeManager.currentBackgroundColor();
             String fgColor = FXColorUtil.getColorHex(foregroundColor);
             FXUtil.runWait(() -> {
+                // 设置光标颜色
                 this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
                 caretNode.setStroke(accentColor);
+                // 设置背景文字颜色
                 if (placeholder != null) {
                     placeholder.setStyle("-fx-fill:" + fgColor);
                 }
+                // 设置背景色
+                this.setBackground(ControlUtil.background(backgroundColor));
             });
         }
     }
@@ -355,8 +361,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
 
     @Override
     public void changeTheme(ThemeStyle style) {
-//        // 移除样式缓存
-//        this.removeProp("style:md5");
         this.initTextStyle();
     }
 
@@ -364,7 +368,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements I18nAdapter, 
     public void initNode() {
         this.setWrapText(true);
         this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
         this.setAutoScrollOnDragDesired(true);
         this.setPadding(new Insets(5, 5, 5, 5));
         Color color = ThemeManager.currentAccentColor();

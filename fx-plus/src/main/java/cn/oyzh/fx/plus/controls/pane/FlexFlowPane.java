@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FlexFlowPane extends FXFlowPane implements  FlexAdapter {
+public class FlexFlowPane extends FXFlowPane implements FlexAdapter {
 
     @Override
     public void resize(double width, double height) {
@@ -14,5 +14,4 @@ public class FlexFlowPane extends FXFlowPane implements  FlexAdapter {
         super.resize(size[0], size[1]);
         this.resizeNode();
     }
-
 }

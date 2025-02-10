@@ -51,6 +51,6 @@ public class FlexColorPicker extends ColorPicker implements FlexAdapter, TipAdap
     public void initNode() {
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 }

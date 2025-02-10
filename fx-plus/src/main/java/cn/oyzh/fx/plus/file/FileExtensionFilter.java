@@ -40,7 +40,7 @@ public class FileExtensionFilter {
 
     public void addExtensions(String... extensions) {
         if (this.extensions == null) {
-            this.extensions = new ArrayList<>();
+            this.extensions = new ArrayList<>(8);
         }
         this.extensions.addAll(List.of(extensions));
     }

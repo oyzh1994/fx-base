@@ -32,7 +32,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapte
     private String unselectedText;
 
     {
-        this.setCache(false);
+//        this.setCache(false);
         this.setCursor(Cursor.HAND);
         // 设置文字靠右
         this.setLabelPosition(HorizontalDirection.RIGHT);
@@ -78,5 +78,6 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapte
      */
     public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
+//        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }
 }

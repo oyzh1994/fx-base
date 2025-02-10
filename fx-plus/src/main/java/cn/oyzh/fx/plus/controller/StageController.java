@@ -52,12 +52,12 @@ public class StageController extends Controller implements StageListener, EventL
     }
 
     @Override
-    public void onStageShown(WindowEvent event) {
+    public void onWindowShown(WindowEvent event) {
         this.bindListeners();
     }
 
     @Override
-    public void onStageCloseRequest(WindowEvent event) {
+    public void onWindowCloseRequest(WindowEvent event) {
     }
 
     @Override

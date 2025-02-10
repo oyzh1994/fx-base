@@ -9,7 +9,7 @@ import javafx.event.EventTarget;
  * @author oyzh
  * @since 2023/3/15
  */
-public interface TipAdapter extends EventTarget {
+public interface TipAdapter extends EventTarget, PropAdapter {
 
     /**
      * 获取提示标题
@@ -17,7 +17,11 @@ public interface TipAdapter extends EventTarget {
      * @return 提示标题
      */
     default String getTipText() {
-        return this.tipText();
+        String text = this.tipText();
+        if (text == null) {
+            return this.getProp("_tipText");
+        }
+        return text;
     }
 
     /**
@@ -36,6 +40,7 @@ public interface TipAdapter extends EventTarget {
      */
     default void setTipText(String tipText) {
         this.tipText(tipText);
+        this.setProp("_tipText", tipText);
     }
 
     /**
@@ -45,5 +50,22 @@ public interface TipAdapter extends EventTarget {
      */
     default void tipText(String tipText) {
         TooltipUtil.setTipText(this, tipText);
+    }
+
+    /**
+     * 设置追加提示标题
+     *
+     * @param appendTipText 追加提示标题
+     */
+    default void setAppendTipText(String appendTipText) {
+        String tipText = this.getTipText();
+        this.tipText(tipText == null ? appendTipText : tipText + appendTipText);
+    }
+
+    /**
+     * 获取追加提示标题
+     */
+    default String getAppendTipText() {
+        return null;
     }
 }

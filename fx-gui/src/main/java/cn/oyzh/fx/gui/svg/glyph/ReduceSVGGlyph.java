@@ -18,9 +18,9 @@ public class ReduceSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.reduce());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.reduce());
+//        super.initNode();
+//    }
 }

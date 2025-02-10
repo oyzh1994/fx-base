@@ -18,9 +18,9 @@ public class TerminalSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.terminal());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.terminal());
+//        super.initNode();
+//    }
 }

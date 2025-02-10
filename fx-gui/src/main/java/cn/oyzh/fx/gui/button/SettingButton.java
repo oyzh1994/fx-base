@@ -15,7 +15,7 @@ public class SettingButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.setText(I18nHelper.setting());
         this.setTipText(I18nHelper.setting());
         this.init(new SettingSVGGlyph(), 0.7);

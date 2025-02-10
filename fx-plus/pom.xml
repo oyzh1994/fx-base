@@ -141,7 +141,7 @@
             </exclusions>
         </dependency>
 
-        <!-- fx美化 -->
+        <!-- fx美化库 -->
         <dependency>
             <groupId>io.github.mkpaz</groupId>
             <artifactId>atlantafx-base</artifactId>
@@ -164,6 +164,44 @@
                     <artifactId>javafx-controls</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>atlantafx-styles</artifactId>
+            <version>${atlantafx.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-base</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-fxml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-controls</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>de.jangassen</groupId>-->
+        <!--            <artifactId>tray-icon</artifactId>-->
+        <!--            <version>3.0.0</version>-->
+        <!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/com.dorkbox/SystemTray -->
+        <dependency>
+            <groupId>com.dorkbox</groupId>
+            <artifactId>SystemTray</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/de.codecentric.centerdevice/javafxsvg -->
@@ -190,11 +228,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>io.github.mkpaz</groupId>-->
-        <!--            <artifactId>atlantafx-styles</artifactId>-->
-        <!--            <version>2.0.1</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- 测试类库 -->
         <dependency>

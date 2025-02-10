@@ -98,7 +98,18 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
      */
     public void onTabClose(DynamicTab tab, Event event) {
         EventListener.super.unregister();
-        EventUtil.post(new TabClosedEvent(tab));
+        if (!tab.hasProp("tab:close:flag")) {
+            tab.setProp("tab:close:flag", true);
+            EventUtil.post(new TabClosedEvent(tab));
+        }
+    }
+
+    /**
+     * tab请求关闭事件
+     *
+     * @param event 事件
+     */
+    public void onCloseRequest(DynamicTab tab, Event event) {
     }
 
     @Override

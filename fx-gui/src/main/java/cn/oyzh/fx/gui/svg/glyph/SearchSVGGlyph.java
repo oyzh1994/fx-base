@@ -18,9 +18,9 @@ public class SearchSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.stop());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.search());
+//        super.initNode();
+//    }
 }

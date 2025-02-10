@@ -1,7 +1,8 @@
 package cn.oyzh.fx.plus.font;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
@@ -27,6 +28,8 @@ public interface FontAdapter extends PropAdapter {
         if (font == null) {
             return;
         }
+        // 缓存字体
+        font = FontManager.cacheFont(font);
         switch (this) {
             case Text node -> {
                 Font font1 = node.getFont();
@@ -49,6 +52,7 @@ public interface FontAdapter extends PropAdapter {
             case Node node -> {
                 this.setFontSize(font.getSize());
                 this.setFontFamily(font.getFamily());
+                this.setFontWeight(FontUtil.getWeight(font.getStyle()));
             }
             default -> {
             }
@@ -65,7 +69,7 @@ public interface FontAdapter extends PropAdapter {
             case Text node -> node.getFont();
             case Labeled node -> node.getFont();
             case TextInputControl node -> node.getFont();
-            case Node node -> Font.font(this.getFontFamily(), this.getFontSize());
+            case Node node -> Font.font(this.getFontFamily(), this.getFontWeight(), this.getFontSize());
             default -> Font.getDefault();
         };
     }
@@ -253,24 +257,24 @@ public interface FontAdapter extends PropAdapter {
     default FontWeight fontWeight() {
         switch (this) {
             case Text node -> {
-                return FontWeight.findByName(node.getFont().getFamily());
+                return FontUtil.getWeight(node.getFont().getStyle());
             }
             case Labeled node -> {
-                return FontWeight.findByName(node.getFont().getFamily());
+                return FontUtil.getWeight(node.getFont().getStyle());
             }
             case TextInputControl node -> {
-                return FontWeight.findByName(node.getFont().getFamily());
+                return FontUtil.getWeight(node.getFont().getStyle());
             }
             case Node node -> {
                 String weight = NodeUtil.getStyle(node, "-fx-font-weight");
                 if (weight != null) {
-                    return FontWeight.findByName(weight);
+                    return FontUtil.getWeight(weight);
                 }
             }
             default -> {
             }
         }
-        return FontWeight.findByName(Font.getDefault().getStyle());
+        return FontUtil.getWeight(Font.getDefault().getStyle());
     }
 
     String ENABLE_FONT_KEY = "enable:font";

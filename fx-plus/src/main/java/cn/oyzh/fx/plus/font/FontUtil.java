@@ -32,8 +32,9 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontBySize(javafx.scene.text.Font font, double size) {
-        FontWeight weight = FontWeight.findByName(font.getStyle());
-        return javafx.scene.text.Font.font(font.getFamily(), weight, size);
+        FontWeight weight = getWeight(font.getStyle());
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(font.getFamily(), weight, size);
+        return FontManager.cacheFont(font1);
     }
 
     /**
@@ -44,8 +45,9 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontByFamily(javafx.scene.text.Font font, String family) {
-        FontWeight weight = FontWeight.findByName(font.getStyle());
-        return javafx.scene.text.Font.font(family, weight, font.getSize());
+        FontWeight weight = getWeight(font.getStyle());
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, font.getSize());
+        return FontManager.cacheFont(font1);
     }
 
     /**
@@ -56,8 +58,26 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontByWeight(javafx.scene.text.Font font, String style) {
-        FontWeight weight = FontWeight.findByName(style);
-        return javafx.scene.text.Font.font(font.getFamily(), weight, font.getSize());
+        FontWeight weight = getWeight(style);
+        return newFontByWeight(font, weight);
+    }
+
+    /**
+     * 获取字体重量
+     *
+     * @param style 字体样式
+     * @return 字体重量
+     */
+    public static FontWeight getWeight(String style) {
+        if (StringUtil.isNotBlank(style)) {
+            for (String part : style.split(" ")) {
+                FontWeight weight = FontWeight.findByName(part);
+                if (weight != null) {
+                    return weight;
+                }
+            }
+        }
+        return FontWeight.NORMAL;
     }
 
     /**
@@ -68,7 +88,8 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontByWeight(javafx.scene.text.Font font, FontWeight weight) {
-        return javafx.scene.text.Font.font(font.getFamily(), weight, font.getSize());
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(font.getFamily(), weight, font.getSize());
+        return FontManager.cacheFont(font1);
     }
 
     /**

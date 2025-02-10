@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.TextField;
 import javafx.stage.PopupWindow;
 import lombok.NonNull;
 
@@ -46,9 +47,11 @@ public interface PopupAdapter extends WindowAdapter {
     default void initListener(@NonNull PopupListener listener) {
         // 设置事件
         listener.onPopupInitialize(this);
+        this.popup().setOnShown(listener::onWindowShown);
         this.popup().setOnHiding(listener::onWindowHiding);
         this.popup().setOnHidden(listener::onWindowHidden);
         this.popup().setOnShowing(listener::onWindowShowing);
+        this.popup().setOnCloseRequest(listener::onWindowCloseRequest);
     }
 
 
@@ -106,14 +109,14 @@ public interface PopupAdapter extends WindowAdapter {
      *
      * @param owner 父组件
      */
-    void showPopup(Node owner);
+    void showPopup(@NonNull Node owner);
 
     /**
      * 显示弹窗
      *
      * @param owner 父组件
      */
-    void showPopup(Node owner, double x, double y);
+    void showPopup(@NonNull Node owner, double x, double y);
 
     /**
      * 获取内容
@@ -128,6 +131,15 @@ public interface PopupAdapter extends WindowAdapter {
      * @param content 内容组件
      */
     void content(Node content);
+
+    /**
+     * 获取控制器
+     *
+     * @return 控制器
+     */
+    default Object getController() {
+        return this.getProp("_controller");
+    }
 
     /**
      * 初始化弹窗
@@ -157,6 +169,8 @@ public interface PopupAdapter extends WindowAdapter {
         this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 this.onWindowClosed();
+            } else if (this.controller() instanceof PopupListener listener) {
+                listener.onWindowShown(null);
             }
         });
     }
@@ -192,5 +206,17 @@ public interface PopupAdapter extends WindowAdapter {
         if (consumer != null) {
             consumer.accept(obj);
         }
+    }
+
+    default boolean isShowing() {
+        return this.popup().isShowing();
+    }
+
+    default void show(Node node) {
+        this.popup().show(node, 0, 0);
+    }
+
+    default void hide() {
+        this.popup().hide();
     }
 }

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.font;
 
+import cn.oyzh.common.cache.TimedCache;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
@@ -30,6 +32,11 @@ public class FontManager {
      * 默认字体
      */
     public static Font defaultFont = Font.getDefault();
+
+    /**
+     * 字体缓存
+     */
+    private static final FontCache FONTS_CACHE = new FontCache();
 
     /**
      * 当前字体
@@ -73,6 +80,8 @@ public class FontManager {
             return;
         }
         try {
+            // 缓存字体
+            font = cacheFont(font);
             // 变更颜色
             List<StageAdapter> wrappers = StageManager.allStages();
             for (StageAdapter wrapper : wrappers) {
@@ -110,5 +119,25 @@ public class FontManager {
         } else if (root instanceof Scene scene) {
             applyCycle(scene.getRoot(), font);
         }
+    }
+
+    /**
+     * 缓存字体
+     *
+     * @param font 字体
+     * @return 缓存后的字体
+     */
+    public static Font cacheFont(Font font) {
+        if (font != null) {
+            // 从缓存中获取
+            if (!FONTS_CACHE.contains(font)) {
+                FONTS_CACHE.add(font);
+            } else {
+                font = FONTS_CACHE.get(font);
+//                JulLog.info("get font from cache, font:{}", font);
+                JulLog.debug("get font from cache, font:{}", font);
+            }
+        }
+        return font;
     }
 }

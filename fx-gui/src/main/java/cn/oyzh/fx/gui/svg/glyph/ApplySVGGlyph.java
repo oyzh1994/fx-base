@@ -18,9 +18,9 @@ public class ApplySVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.apply());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.apply());
+//        super.initNode();
+//    }
 }

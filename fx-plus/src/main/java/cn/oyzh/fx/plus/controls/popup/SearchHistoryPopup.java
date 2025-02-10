@@ -87,6 +87,9 @@ public class SearchHistoryPopup extends FXPopup {
                                 this.setText(null);
                             } else {
                                 this.setText(item);
+                                this.setHeight(cellDataHeight);
+                                this.setMaxHeight(cellDataHeight);
+                                this.setMinHeight(cellDataHeight);
                                 this.setPrefHeight(cellDataHeight);
                                 ListViewUtil.highlightCell(this);
                             }

@@ -97,6 +97,4 @@ public class FlexUtil {
         }
         return Double.NaN;
     }
-
-
 }

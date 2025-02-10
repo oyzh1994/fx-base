@@ -15,11 +15,11 @@ public class SaveButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("accent");
         this.setText(I18nHelper.save());
         this.setTipText(I18nHelper.save());
-        this.init(new SaveSVGGlyph(), 0.7);
+        this.init(new SaveSVGGlyph(), 0.85);
         super.initNode();
     }
 }

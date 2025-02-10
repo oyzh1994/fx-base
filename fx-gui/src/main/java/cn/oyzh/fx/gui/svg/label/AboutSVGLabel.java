@@ -23,7 +23,7 @@ public class AboutSVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.about());
-        this.setTipText(I18nHelper.about());
+//        this.setTipText(I18nHelper.about());
         super.initNode();
     }
 }

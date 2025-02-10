@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.WeakListChangeListener;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
@@ -28,7 +29,8 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
-        this.getItems().addListener(this.itemsListener);
+//        this.getItems().addListener(this.itemsListener);
+        this.getItems().addListener(new WeakListChangeListener<>(this.itemsListener));
     }
 
     public FXContextMenu() {
@@ -61,29 +63,11 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
                 }
             }
             // 设置宽度
+            this.setMaxWidth(maxWidth);
+            this.setMinWidth(maxWidth);
             this.setPrefWidth(maxWidth);
         }
     }
-
-//    @Override
-//    public double getRealWidth() {
-//        return LayoutAdapter.super.realWidth();
-//    }
-//
-//    @Override
-//    public void setRealWidth(double width) {
-//        LayoutAdapter.super.realWidth(width);
-//    }
-//
-//    @Override
-//    public double getRealHeight() {
-//        return LayoutAdapter.super.realHeight();
-//    }
-//
-//    @Override
-//    public void setRealHeight(double height) {
-//        LayoutAdapter.super.realHeight(height);
-//    }
 
     public void addItem(MenuItem item) {
         if (item != null) {

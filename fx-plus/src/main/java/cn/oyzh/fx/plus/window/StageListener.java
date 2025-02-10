@@ -8,7 +8,7 @@ import javafx.stage.WindowEvent;
  * @author oyzh
  * @since 2023/10/12
  */
-public interface StageListener extends WindowListener{
+public interface StageListener extends WindowListener {
 
     /**
      * 舞台初始化事件
@@ -16,20 +16,6 @@ public interface StageListener extends WindowListener{
      * @param stage 舞台扩展
      */
     void onStageInitialize(StageAdapter stage);
-
-    /**
-     * 舞台已显示事件
-     *
-     * @param event 事件
-     */
-    void onStageShown(WindowEvent event);
-
-    /**
-     * 舞台请求关闭事件
-     *
-     * @param event 事件
-     */
-    void onStageCloseRequest(WindowEvent event);
 
     /**
      * 系统退出事件

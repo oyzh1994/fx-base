@@ -16,9 +16,9 @@ public class RenameKeySVGGlyph extends RenameSVGGlyph {
         super(size);
     }
 
-    @Override
-    public void initNode() {
-        super.initNode();
-        this.setTipText(I18nHelper.renameKey());
-    }
+//    @Override
+//    public void initNode() {
+//        super.initNode();
+//        this.setTipText(I18nHelper.renameKey());
+//    }
 }

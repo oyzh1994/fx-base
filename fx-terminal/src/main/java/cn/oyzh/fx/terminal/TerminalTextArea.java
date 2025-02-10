@@ -433,29 +433,29 @@ public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> impleme
         this.requestFocus();
     }
 
-    /**
-     * 基础内容正则模式
-     */
-    private Pattern contentPrompts;
-
-    /**
-     * 设置内容提示词
-     *
-     * @param collection 内容提示词列表
-     */
-    public void setContentPrompts(Collection<String> collection) {
-        if (collection == null || collection.isEmpty()) {
-            this.contentPrompts = null;
-        } else {
-            StringBuilder regex = new StringBuilder("\\b(");
-            for (String s : collection) {
-                regex.append(s).append("|");
-            }
-            regex.append(")\\b");
-            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
-        }
-        this.initTextStyle();
-    }
+//    /**
+//     * 基础内容正则模式
+//     */
+//    private Pattern contentPrompts;
+//
+//    /**
+//     * 设置内容提示词
+//     *
+//     * @param collection 内容提示词列表
+//     */
+//    public void setContentPrompts(Collection<String> collection) {
+//        if (collection == null || collection.isEmpty()) {
+//            this.contentPrompts = null;
+//        } else {
+//            StringBuilder regex = new StringBuilder("\\b(");
+//            for (String s : collection) {
+//                regex.append(s).append("|");
+//            }
+//            regex.append(")\\b");
+//            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
+//        }
+//        this.initTextStyle();
+//    }
 
     /**
      * 初始化组件
@@ -487,7 +487,8 @@ public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> impleme
     /**
      * 初始化内容提示词
      */
-    protected void initContentPrompts() {
+    @Override
+    public void initContentPrompts() {
         // 设置内容提示符
         Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
         Set<String> set = new HashSet<>();
@@ -498,29 +499,31 @@ public class TerminalTextArea extends RichTextAreaPane<FlexRichTextArea> impleme
             if (StringUtil.isNotBlank(handler.commandSubName())) {
                 set.add(handler.commandSubName());
             }
+            if (StringUtil.isNotBlank(handler.commandFullName())) {
+                set.add(handler.commandFullName());
+            }
         }
         this.setContentPrompts(set);
-//        super.forgetHistory();
     }
 
-    @Override
-    public void initTextStyle() {
-//        this.clearTextStyle();
-//        this.setProp("init:text:style", false);
-//        this.changeTheme(ThemeManager.currentTheme());
-//        this.removeProp("init:text:style");
-        super.initTextStyle();
-        if (this.contentPrompts != null) {
-            String text = this.getText();
-            Matcher matcher1 = this.contentPrompts.matcher(text);
-            List<RichTextStyle> styles = new ArrayList<>();
-            while (matcher1.find()) {
-                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
-            }
-            this.setStyles(styles);
-            this.forgetHistory();
-        }
-    }
+//    @Override
+//    public void initTextStyle() {
+////        this.clearTextStyle();
+////        this.setProp("init:text:style", false);
+////        this.changeTheme(ThemeManager.currentTheme());
+////        this.removeProp("init:text:style");
+//        super.initTextStyle();
+//        if (this.contentPrompts != null) {
+//            String text = this.getText();
+//            Matcher matcher1 = this.contentPrompts.matcher(text);
+//            List<RichTextStyle> styles = new ArrayList<>();
+//            while (matcher1.find()) {
+//                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
+//            }
+//            this.setStyles(styles);
+//            this.forgetHistory();
+//        }
+//    }
 
     @Override
     public int getNOP() {

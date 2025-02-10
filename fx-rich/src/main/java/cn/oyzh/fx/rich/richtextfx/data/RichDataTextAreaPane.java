@@ -34,8 +34,20 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         this.showData(RichDataType.JSON, rawData);
     }
 
+    public void showBinaryData(Object rawData) {
+        this.showData(RichDataType.BINARY, rawData);
+    }
+
+    public void showHexData(Object rawData) {
+        this.showData(RichDataType.HEX, rawData);
+    }
+
     public void showStringData(Object rawData) {
         this.showData(RichDataType.STRING, rawData);
+    }
+
+    public void showRawData(Object rawData) {
+        this.showData(RichDataType.RAW, rawData);
     }
 
     public void showData(RichDataType dataType, Object rawData) {
@@ -50,12 +62,12 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         return this.getContent().getDataType();
     }
 
-    public void setSearchText(String searchText) {
-        this.getContent().setSearchText(searchText);
+    public void setHighlightText(String highlightText) {
+        this.getContent().setHighlightText(highlightText);
     }
 
-    public String setSearchText() {
-        return this.getContent().getSearchText();
+    public String getHighlightText() {
+        return this.getContent().getHighlightText();
     }
 
     public BooleanProperty editableProperty() {

@@ -21,7 +21,7 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
     /**
      * 按键处理器
      */
-    private final List<MouseHandler> handlers = new ArrayList<>();
+    private final List<MouseHandler> handlers = new ArrayList<>(12);
 
     /**
      * 获取按键处理器

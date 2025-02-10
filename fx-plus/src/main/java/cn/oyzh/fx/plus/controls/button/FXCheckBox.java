@@ -37,6 +37,7 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
      */
     public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
+//        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }
 
     @Override
@@ -44,6 +45,6 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 }

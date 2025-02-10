@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.TitledPane;
@@ -28,7 +28,7 @@ public class FXTitledPane extends TitledPane implements NodeGroup, NodeAdapter, 
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 
     private ChangeListener<Boolean> autoHideListener;
@@ -40,18 +40,22 @@ public class FXTitledPane extends TitledPane implements NodeGroup, NodeAdapter, 
                     if (newValue) {
                         NodeUtil.display(this.getContent());
                     } else {
+                        this.setHeight(0);
+                        this.setMinHeight(0);
                         this.setMaxHeight(0);
                         this.setPrefHeight(0);
                         NodeUtil.disappear(this.getContent());
                     }
                 };
                 this.expandedProperty().addListener(this.autoHideListener);
+//                this.expandedProperty().addListener(new WeakChangeListener<>(this.autoHideListener));
             }
         } else {
-            if (this.autoHideListener != null) {
-                this.expandedProperty().removeListener(this.autoHideListener);
+//            if (this.autoHideListener != null) {
+                this.expandedProperty().unbind();
+//                this.expandedProperty().removeListener(this.autoHideListener);
                 this.autoHideListener = null;
-            }
+//            }
         }
         this.setProp("autoHide", autoHide);
     }

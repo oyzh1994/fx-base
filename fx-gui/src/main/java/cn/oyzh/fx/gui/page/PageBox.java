@@ -175,10 +175,10 @@ public class PageBox<T> extends FlexFlowPane {
      * @return 模板内容
      */
     protected String pageTextTpl() {
-        if (I18nManager.currentLocale() == Locale.SIMPLIFIED_CHINESE) {
+        if (I18nManager.currentLocale() == Locale.PRC) {
             return "共#count条，每页#limit条，#currentPage/#countPage页";
         }
-        if (I18nManager.currentLocale() == Locale.TRADITIONAL_CHINESE) {
+        if (I18nManager.currentLocale() == Locale.TAIWAN) {
             return "共#count條，每頁#limit條，#currentPage/#countPage頁";
         }
         return "Total #count, Limit #limit, Page #currentPage/#countPage";
@@ -206,7 +206,6 @@ public class PageBox<T> extends FlexFlowPane {
                 this.onFirstClicked.handle(e);
             }
         });
-//        this.firstBtn.setPadding(new Insets(0, 0, 0, 0));
 
         // 上一页
         this.prevBtn = new PagePrevSVGGlyph(this.bthSize);
@@ -216,7 +215,6 @@ public class PageBox<T> extends FlexFlowPane {
                 this.onPrevClicked.handle(e);
             }
         });
-//        this.prevBtn.setPadding(new Insets(0, 0, 0, 0));
 
         // 下一页
         this.nextBtn = new PageNextSVGGlyph(this.bthSize);
@@ -226,7 +224,6 @@ public class PageBox<T> extends FlexFlowPane {
                 this.onNextClicked.handle(e);
             }
         });
-//        this.nextBtn.setPadding(new Insets(0, 0, 0, 0));
 
         // 尾页
         this.lastBtn = new PageLastSVGGlyph(this.bthSize);
@@ -237,7 +234,6 @@ public class PageBox<T> extends FlexFlowPane {
                 this.onLastClicked.handle(e);
             }
         });
-//        this.lastBtn.setPadding(new Insets(0, 0, 0, 0));
 
         // 设置
         this.settingBtn = new PageSettingSVGGlyph(this.bthSize);
@@ -248,7 +244,6 @@ public class PageBox<T> extends FlexFlowPane {
                 this.onSettingClicked.handle(e);
             }
         });
-//        this.settingBtn.setPadding(new Insets(0, 0, 0, 0));
 
         // 跳页
         this.jump = new NumberTextField(true);

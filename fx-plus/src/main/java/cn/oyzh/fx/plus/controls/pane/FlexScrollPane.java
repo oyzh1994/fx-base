@@ -4,7 +4,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.scene.control.ScrollPane;
 
 /**

@@ -3,9 +3,9 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -34,7 +34,7 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
      */
     @Getter
     @Setter
-    private float btnMarginRight = 8.0f;
+    private float btnMarginRight = 5.0f;
 
     @Override
     protected void updateButtonVisibility() {
@@ -61,7 +61,6 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);
         this.incrButton.setFocusTraversable(false);
-//        this.incrButton.setPadding(new Insets(0));
 
         this.decrButton = new SVGGlyph("/fx-svg/arrow-down-filling.svg");
         this.decrButton.setSize(h);
@@ -71,7 +70,6 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         this.decrButton.managedBindVisible();
         this.decrButton.setEnableWaiting(false);
         this.decrButton.setFocusTraversable(false);
-//        this.decrButton.setPadding(new Insets(0));
         // 绑定事件到按钮
         if (onIncr != null) {
             this.incrButton.setOnMousePrimaryClicked(event -> onIncr.run());
@@ -103,11 +101,11 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
     protected void layoutChildren(double x, double y, double w, double h) {
         super.layoutChildren(x, y, w, h);
         // 文本域高度
-        double height = this.getSkinnable().getHeight();
-        // 按钮大小，规则 组件高*0.5-4
-        double size = (Math.floor(height * 0.5) - 4);
+        double height = NodeUtil.getHeight(this.getSkinnable());
+        // 按钮大小，规则 组件高*0.5-3
+        double size = Math.floor(height * 0.5) - 3;
         // 限制按钮大小
-        size = NumberUtil.limit(size, 6, 15);
+        size = NumberUtil.limit(size, 5, 13);
         this.incrButton.setSize(size);
         this.decrButton.setSize(size);
         // 计算按钮实际大小
@@ -115,9 +113,9 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         // 位移的areaX值，规则 组件宽+x-按钮实际大小
         double areaX = w + x - btnSize - this.btnMarginRight;
         // 位移的areaY1值
-        double areaY1 = (h - btnSize - btnSize) / 2 + 2;
+        double areaY1 = 1.5;
         // 位移的areaY2值
-        double areaY2 = areaY1 + btnSize + 2;
+        double areaY2 = areaY1 + btnSize + 1.5;
         // 设置按钮位置
         super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
         super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);

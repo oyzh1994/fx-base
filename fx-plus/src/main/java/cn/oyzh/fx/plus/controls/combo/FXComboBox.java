@@ -87,6 +87,6 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
     public void initNode() {
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 }

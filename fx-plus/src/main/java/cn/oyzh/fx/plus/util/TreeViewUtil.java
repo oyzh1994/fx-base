@@ -44,7 +44,7 @@ public class TreeViewUtil {
      */
     public static List<TreeItem<?>> getAllItem(@NonNull TreeView<?> treeView, Function<TreeItem<?>, Boolean> filter) {
         TreeItem<?> root = treeView.getRoot();
-        List<TreeItem<?>> items = new ArrayList<>();
+        List<TreeItem<?>> items = new ArrayList<>(128);
         getAllItem(root, items, filter);
         return items;
     }

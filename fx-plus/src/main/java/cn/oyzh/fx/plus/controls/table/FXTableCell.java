@@ -50,6 +50,7 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
                 this.setGraphic(null);
             }
             if (this.lineHeight > 0) {
+                this.getTableRow().setMinHeight(this.lineHeight);
                 this.getTableRow().setMaxHeight(this.lineHeight);
                 this.getTableRow().setPrefHeight(this.lineHeight);
             }

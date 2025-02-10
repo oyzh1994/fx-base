@@ -27,10 +27,10 @@ public class FXConst {
     //  */
     // public final static String MODULE_PATH = "/module/";
     //
-    // /**
-    //  * popup地址
-    //  */
-    // public final static String POPUP_PATH = "/popups/";
+    /**
+     * popup地址
+     */
+    public final static String POPUP_PATH = "/popups/";
 
     /**
      * 提示标题属性

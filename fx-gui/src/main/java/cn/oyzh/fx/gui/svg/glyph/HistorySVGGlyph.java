@@ -18,9 +18,9 @@ public class HistorySVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.his());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.his());
+//        super.initNode();
+//    }
 }

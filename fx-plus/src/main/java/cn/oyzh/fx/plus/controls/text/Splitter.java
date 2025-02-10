@@ -16,8 +16,8 @@ import lombok.Setter;
 public class Splitter extends FlexText {
 
     {
-        this.setCache(false);
-        this.setCacheHint(CacheHint.QUALITY);
+//        this.setCache(false);
+//        this.setCacheHint(CacheHint.QUALITY);
         this.setDisable(true);
         this.setFill(Color.GREY);
         this.setFlexWidth("100%");

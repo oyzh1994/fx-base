@@ -15,7 +15,7 @@ public class StopButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("default");
         this.setText(I18nHelper.stop());
         this.setTipText(I18nHelper.stop());

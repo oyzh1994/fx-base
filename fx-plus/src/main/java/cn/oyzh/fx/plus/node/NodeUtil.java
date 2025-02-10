@@ -1,10 +1,12 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.plus.node;
 
 import atlantafx.base.theme.Styles;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
@@ -28,6 +30,19 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class NodeUtil {
+
+    public static Object getProperty(Node node, Object key) {
+        if (node.hasProperties()) {
+            return node.getProperties().get(key);
+        }
+        return null;
+    }
+
+    public static void setProperty(Node node, Object key, Object value) {
+        if (key != null && value != null) {
+            node.getProperties().put(key, value);
+        }
+    }
 
     /**
      * 获取样式值
@@ -71,6 +86,16 @@ public class NodeUtil {
      * @return 宽度
      */
     public static double getWidth(EventTarget target) {
+//        if (target instanceof Node node) {
+//            Bounds bounds = node.getLayoutBounds();
+//            if (bounds != null) {
+//                double w = bounds.getWidth();
+//                if (w != 0) {
+//                    return Math.abs(w);
+//                }
+//            }
+//        }
+
         if (target instanceof Region region) {
             double w1 = region.getWidth();
             double w2 = region.getMinWidth();
@@ -131,6 +156,16 @@ public class NodeUtil {
      * @return 高度
      */
     public static double getHeight(EventTarget target) {
+//        if (target instanceof Node node) {
+//            Bounds bounds = node.getLayoutBounds();
+//            if (bounds != null) {
+//                double h = bounds.getHeight();
+//                if (h != 0) {
+//                    return Math.abs(h);
+//                }
+//            }
+//        }
+
         if (target instanceof Region region) {
             double w1 = region.getPrefHeight();
             double w2 = region.getMinHeight();

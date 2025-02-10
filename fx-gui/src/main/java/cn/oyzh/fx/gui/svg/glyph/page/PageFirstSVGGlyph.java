@@ -18,9 +18,9 @@ public class PageFirstSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-    @Override
-    public void initNode() {
-        this.setTipText(I18nHelper.firstPage());
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.firstPage());
+//        super.initNode();
+//    }
 }

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.util.ArrayUtil;
-import cn.oyzh.fx.plus.util.NodeUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -47,7 +46,7 @@ public class NodeGroupUtil {
      * @return 分组列表
      */
     public static List<NodeGroup> list(Object node, String groupId) {
-        List<NodeGroup> groups = new ArrayList<>();
+        List<NodeGroup> groups = new ArrayList<>(128);
         list(node, groupId, groups);
         return groups;
     }

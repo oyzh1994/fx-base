@@ -14,6 +14,6 @@ public class DisabledTextField extends FlexTextField {
         this.setDisable(true);
         this.setEditable(false);
         this.setPickOnBounds(true);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
     }
 }

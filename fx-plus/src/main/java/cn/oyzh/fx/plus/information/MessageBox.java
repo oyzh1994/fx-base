@@ -24,6 +24,7 @@ import javafx.stage.Window;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import javax.swing.*;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -67,17 +68,15 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(@NonNull String title, String content) {
-        content = content == null ? "" : content;
-        ButtonType button1 = new ButtonType(I18nHelper.ok());
-        ButtonType button2 = new ButtonType(I18nHelper.cancel());
-        AtomicReference<Alert> reference = new AtomicReference<>();
-        String finalContent = content;
-        FXUtil.runWait(() -> reference.set(new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2)));
-        reference.get().setTitle(title);
-        reference.get().setHeaderText(null);
+        String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            Optional<ButtonType> optional = reference.get().showAndWait();
+            ButtonType button1 = new ButtonType(I18nHelper.ok());
+            ButtonType button2 = new ButtonType(I18nHelper.cancel());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            Optional<ButtonType> optional = alert.showAndWait();
             result.set(optional.map(b -> b.equals(button1)).orElse(false));
         });
         return result.get();
@@ -155,13 +154,25 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void alert(@NonNull Alert.AlertType type, @NonNull String title, String header, String content) {
-        FXUtil.runLater(() -> {
-            Alert alert = new Alert(type);
-            alert.setTitle(title);
-            alert.setHeaderText(header);
-            alert.setContentText(content);
-            alert.show();
-        });
+        // 使用fx消息框
+        if (FXUtil.isInitialized()) {
+            FXUtil.runLater(() -> {
+                Alert alert = new Alert(type);
+                alert.setTitle(title);
+                alert.setHeaderText(header);
+                alert.setContentText(content);
+                alert.show();
+            });
+        } else {// 使用swing消息框
+            int msgType = switch (type) {
+                case NONE -> JOptionPane.NO_OPTION;
+                case INFORMATION -> JOptionPane.INFORMATION_MESSAGE;
+                case WARNING -> JOptionPane.WARNING_MESSAGE;
+                case CONFIRMATION -> JOptionPane.YES_NO_OPTION;
+                case ERROR -> JOptionPane.ERROR_MESSAGE;
+            };
+            JOptionPane.showMessageDialog(null, content, title, msgType);
+        }
     }
 
     /**

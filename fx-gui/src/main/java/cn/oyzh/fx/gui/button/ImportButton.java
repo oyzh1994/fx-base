@@ -12,7 +12,7 @@ public class ImportButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.setText(I18nHelper._import());
         this.setTipText(I18nHelper._import());
         this.init(new ImportSVGGlyph(), 0.7);

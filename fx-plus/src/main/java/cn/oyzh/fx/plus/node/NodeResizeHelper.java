@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.fx.plus.util.NodeUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -16,10 +15,10 @@ import lombok.experimental.Accessors;
 import java.util.function.Consumer;
 
 /**
- * 组件大小改变增强
+ * 组件大小改变辅助
  *
  * @author oyzh
- * @since 2023/5/15
+ * @since 2023/05/15
  */
 @Accessors(chain = true, fluent = true)
 public class NodeResizeHelper {
@@ -201,10 +200,21 @@ public class NodeResizeHelper {
     public EventHandler<MouseEvent> defaultMousePressed() {
         return event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                // 设置拉伸中标志位
-                this.resizeIng = true;
-                this.mousePressedTime = System.currentTimeMillis();
+                // 计算偏移
+                float xOffset = this.calcXOffset(event);
+                // 设置拉伸参数
+                if (this.triggerAble(xOffset)) {
+                    this.resizeIng = true;
+                    this.mousePressedTime = System.currentTimeMillis();
+                } else {// 重置拉伸参数
+                    this.resizeIng = false;
+                    this.mousePressedTime = -1;
+                }
                 JulLog.debug("MousePressed");
+            } else {
+                // 重置拉伸参数
+                this.resizeIng = false;
+                this.mousePressedTime = -1;
             }
         };
     }
@@ -228,7 +238,7 @@ public class NodeResizeHelper {
      */
     public EventHandler<MouseEvent> defaultMouseDragged() {
         return event -> {
-            if (event.getButton() == MouseButton.PRIMARY && this.resizeTriggered != null && this.resizeAble(event)) {
+            if (event.getButton() == MouseButton.PRIMARY && this.isResizeIng() && this.resizeTriggered != null && this.resizeAble(event)) {
                 this.resizeTriggered.accept(this.calcNodeWidth(event));
             }
         };
@@ -325,7 +335,7 @@ public class NodeResizeHelper {
      * @return 结果
      */
     public boolean isResizeIng() {
-        return this.resizeIng != null && this.resizeIng && (System.currentTimeMillis() - this.mousePressedTime) > 500;
+        return this.resizeIng != null && this.resizeIng && (System.currentTimeMillis() - this.mousePressedTime) > 150;
     }
 
     /**

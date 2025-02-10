@@ -4,7 +4,7 @@ import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.list.FlexListView;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.util.ListViewUtil;
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
@@ -83,6 +83,9 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
                             this.setText(null);
                         } else {
                             this.setText(item);
+                            this.setHeight(lineHeight);
+                            this.setMaxHeight(lineHeight);
+                            this.setMinHeight(lineHeight);
                             this.setPrefHeight(lineHeight);
                             ListViewUtil.highlightCell(this);
                         }

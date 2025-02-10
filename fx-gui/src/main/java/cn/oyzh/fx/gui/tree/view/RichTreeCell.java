@@ -5,6 +5,10 @@ import cn.oyzh.fx.plus.controls.tree.view.FXTreeCell;
 import cn.oyzh.fx.plus.drag.DragNodeHandler;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.paint.Color;
 
 /**
@@ -16,6 +20,8 @@ import javafx.scene.paint.Color;
 public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
 
     {
+//        this.setCache(true);
+//        this.setCacheShape(true);
         this.setCursor(Cursor.HAND);
     }
 
@@ -24,40 +30,55 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
      */
     private DragNodeHandler dragNodeHandler;
 
-    /**
-     * 更新节点信息
-     *
-     * @param value 节点
-     * @param empty 是否为空
-     */
     @Override
     protected void updateItem(T value, boolean empty) {
         super.updateItem(value, empty);
         if (empty || value == null) {
+//            this.setText(null);
+//            this.setGraphic(null);
             return;
         }
-        // 获取图标
-        SVGGlyph glyph = value.graphic();
-        SVGGlyph graphic = (SVGGlyph) this.getGraphic();
-        // 更新图标
-        if (graphic == null || graphic != glyph) {
-            this.setGraphic(glyph);
-            graphic = glyph;
-        }
-        // 更新图标颜色
-        if (graphic != null) {
-            Color color = value.graphicColor();
-            if (graphic.getColor() != color) {
-                graphic.setColor(color);
+        TreeItem<?> treeItem = this.getTreeItem();
+        RichTreeView treeView = (RichTreeView) this.getTreeView();
+        Node node = this.getGraphic();
+        // 富文本模式
+        if (value.isRichMode()) {
+            if (node instanceof RichTreeItemBox box) {
+                box.init(value, treeView.highlightText, treeView.highlightMatchCase);
+            } else {
+                this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase));
             }
+            this.setText(null);
+            this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        } else {// 标准模式
+            // 获取图标
+            SVGGlyph glyph = value.graphic();
+//            Color color = value.graphicColor();
+//            SVGGlyph graphic = node instanceof SVGGlyph ? glyph : null;
+//            if (graphic == null) {
+//                this.setGraphic(glyph);
+//                if (glyph != null) {
+//                    glyph.setColor(color);
+//                }
+//            } else if (graphic.getColor() != color) { // 更新图标颜色
+//                graphic.setColor(color);
+//            }
+            // 处理图标
+            if (glyph != null) {
+                // 更新颜色
+                glyph.setColor(value.graphicColor());
+                // 更新图标
+                this.setGraphic(glyph);
+            } else {
+                this.setGraphic(null);
+            }
+            // 更新文本
+            this.setText(value.text());
+            this.setContentDisplay(ContentDisplay.LEFT);
         }
-        // 刷新文本
-        this.setText(value.text());
-
         // 初始化拖动
-        if (this.getTreeItem() instanceof DragNodeItem dragNodeItem && dragNodeItem.allowDragDrop() && this.dragNodeHandler == null) {
+        if (treeItem instanceof DragNodeItem dragItem && dragItem.allowDragDrop() && this.dragNodeHandler == null) {
             this.dragNodeHandler = new DragNodeHandler();
-            RichTreeView treeView = (RichTreeView) this.getTreeView();
             this.dragNodeHandler.initEvent(this, treeView.getDragContent());
             // BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
         }

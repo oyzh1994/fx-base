@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -174,6 +175,8 @@ public interface NodeAdapter extends EventTarget {
             FXUtil.runWait(() -> pane.getChildren().clear());
         } else if (this instanceof Group group) {
             FXUtil.runWait(() -> group.getChildren().clear());
+        } else if (this instanceof TabPane tabPane) {
+            FXUtil.runWait(() -> tabPane.getTabs().clear());
         }
     }
 
@@ -340,11 +343,11 @@ public interface NodeAdapter extends EventTarget {
     default void removeChild(int index) {
         if (index >= 0) {
             if (this instanceof Pane pane) {
-                if (pane.getChildren().size() >= index) {
+                if (pane.getChildren().size() > index) {
                     FXUtil.runWait(() -> pane.getChildren().remove(index));
                 }
             } else if (this instanceof Group group) {
-                if (group.getChildren().size() >= index) {
+                if (group.getChildren().size() > index) {
                     FXUtil.runWait(() -> group.getChildren().remove(index));
                 }
             }
@@ -415,6 +418,19 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 获取节点的场景对象
+     *
+     * @return 场景对象
+     */
+    default Scene scene() {
+        Window window = this.window();
+        if (window != null) {
+            return window.getScene();
+        }
+        return null;
+    }
+
+    /**
      * 获取节点的窗口
      *
      * @return 窗口对象
@@ -429,6 +445,11 @@ public interface NodeAdapter extends EventTarget {
         return null;
     }
 
+    /**
+     * 获取鼠标类型
+     *
+     * @return 鼠标类型
+     */
     default String getCursorType() {
         if (this instanceof Node node) {
             return node.getCursor().toString();
@@ -436,9 +457,30 @@ public interface NodeAdapter extends EventTarget {
         return null;
     }
 
+    /**
+     * 设置鼠标类型
+     *
+     * @param cursorType 鼠标类型
+     */
     default void setCursorType(String cursorType) {
         if (this instanceof Node node) {
             node.setCursor(Cursor.cursor(cursorType));
+        }
+    }
+
+    /**
+     * 清除焦点
+     */
+    default void clearFocus() {
+        FXUtil.runWait(() -> this.scene().focusCleanup());
+    }
+
+    /**
+     * 当前节点设置为焦点节点
+     */
+    default void focusNode() {
+        if (this instanceof Node node) {
+            FXUtil.runWait(() -> this.scene().setFocusOwner(node, true));
         }
     }
 }

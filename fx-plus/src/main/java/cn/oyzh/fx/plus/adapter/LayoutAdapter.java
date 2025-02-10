@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.event.EventTarget;
 
 /**

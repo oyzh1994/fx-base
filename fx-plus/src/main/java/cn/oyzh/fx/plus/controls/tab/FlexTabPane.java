@@ -1,19 +1,9 @@
 package cn.oyzh.fx.plus.controls.tab;
 
-import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
-import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.NodeUtil;
-import javafx.beans.value.ChangeListener;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.scene.control.Tab;
-import lombok.NonNull;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author oyzh

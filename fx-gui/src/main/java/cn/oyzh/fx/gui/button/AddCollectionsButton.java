@@ -13,7 +13,7 @@ public class AddCollectionsButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("success");
         this.setText(I18nHelper.addCollections());
         this.setTipText(I18nHelper.addCollections());

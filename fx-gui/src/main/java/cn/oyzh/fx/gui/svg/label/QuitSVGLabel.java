@@ -22,7 +22,7 @@ public class QuitSVGLabel extends SVGLabel {
     @Override
     public void initNode() {
         this.setText(I18nHelper.quit());
-        this.setTipText(I18nHelper.quit());
+//        this.setTipText(I18nHelper.quit());
         super.initNode();
     }
 }

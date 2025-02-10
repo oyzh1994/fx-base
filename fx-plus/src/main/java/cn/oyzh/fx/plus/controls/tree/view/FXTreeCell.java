@@ -17,12 +17,6 @@ public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter,
         NodeManager.init(this);
     }
 
-    /**
-     * 更新节点信息
-     *
-     * @param item  节点
-     * @param empty 是否为空
-     */
     @Override
     protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);

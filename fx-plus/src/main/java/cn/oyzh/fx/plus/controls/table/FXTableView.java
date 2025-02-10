@@ -39,7 +39,7 @@ public class FXTableView<S> extends TableView<S> implements NodeGroup, NodeAdapt
     @Override
     public void initNode() {
         this.setFixedCellSize(35.f);
-        this.setFocusTraversable(false);
+//        this.setFocusTraversable(false);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
     }
 
@@ -75,5 +75,6 @@ public class FXTableView<S> extends TableView<S> implements NodeGroup, NodeAdapt
 
     public void selectedItemChanged(ChangeListener<S> listener) {
         this.getSelectionModel().selectedItemProperty().addListener(listener);
+//        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
     }
 }

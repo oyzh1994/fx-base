@@ -36,7 +36,7 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
         TerminalExecuteResult result = new TerminalExecuteResult();
         try {
             Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
-            List<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<>(24);
             list.add(I18nHelper.orderNo());
             list.add(I18nHelper.cmd());
             list.add(I18nHelper.version());

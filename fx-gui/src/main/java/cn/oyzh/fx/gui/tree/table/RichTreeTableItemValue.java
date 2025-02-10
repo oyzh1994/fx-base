@@ -74,11 +74,12 @@ public abstract class RichTreeTableItemValue implements Destroyable {
             // 移除等待动画设置的颜色，避免被重复覆盖
             glyph.removeProp("_color");
             // 设置颜色
-            if (ThemeManager.isDarkMode()) {
-                glyph.setColor(Color.WHITE);
-            } else {
-                glyph.setColor(Color.BLACK);
-            }
+            glyph.setColor(ThemeManager.currentForegroundColor());
+//            if (ThemeManager.isDarkMode()) {
+//                glyph.setColor(Color.WHITE);
+//            } else {
+//                glyph.setColor(Color.BLACK);
+//            }
         }
     }
 

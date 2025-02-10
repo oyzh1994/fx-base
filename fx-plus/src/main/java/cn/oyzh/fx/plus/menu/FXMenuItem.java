@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
@@ -24,15 +23,20 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         NodeManager.init(this);
     }
 
-    private ChangeListener<Boolean> disableListener = (observable, oldValue, newValue) -> {
-        if (this.getGraphic() != null) {
-            this.getGraphic().setDisable(newValue);
-        }
-    };
+//    private ChangeListener<Boolean> disableListener = (observable, oldValue, newValue) -> {
+//        if (this.getGraphic() != null) {
+//            this.getGraphic().setDisable(newValue);
+//        }
+//    };
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
-        this.disableProperty().addListener(this.disableListener);
+//        this.disableProperty().addListener(this.disableListener);
+        this.disableProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.getGraphic() != null) {
+                this.getGraphic().setDisable(newValue);
+            }
+        });
     }
 
     public FXMenuItem(Node graphic, String text, Runnable action) {
@@ -82,6 +86,8 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
             w += glyph.getWidth() + 25;
         }
         // 设置宽度
+        label.setMaxWidth(w);
+        label.setMinWidth(w);
         label.setPrefWidth(w);
         // 生成菜单项
         return new FXMenuItem(label, null, action);
@@ -100,10 +106,11 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
 
     @Override
     public void destroy() {
-        if (this.disableListener != null) {
-            this.disableProperty().removeListener(this.disableListener);
-            this.disableListener = null;
-        }
+//        if (this.disableListener != null) {
+//            this.disableProperty().removeListener(this.disableListener);
+        this.disableProperty().unbind();
+//            this.disableListener = null;
+//        }
         this.setText(null);
         this.setStyle(null);
         this.setGraphic(null);

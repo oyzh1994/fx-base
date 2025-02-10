@@ -11,6 +11,9 @@ public class SettingRightNavBar extends FlexLabel {
     {
         this.disableFont();
         this.setFontSize(13);
+        this.setHeight(30);
+        this.setMaxHeight(30);
+        this.setMinHeight(30);
         this.setPrefHeight(30);
         this.setFontWeight2(700);
         this.setId("right-nav-bar");

@@ -26,7 +26,7 @@ public class FontWeightComboBox extends FlexComboBox<FontWeight> {
     }
 
     public FontWeight getDefault() {
-        return FontWeight.findByName(FontManager.defaultFont.getStyle());
+        return FontUtil.getWeight(FontManager.defaultFont.getStyle());
     }
 
     @Override

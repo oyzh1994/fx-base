@@ -151,6 +151,8 @@ public class Toast {
         HBox.setMargin(text, new Insets(0, 0, 0, 3));
         box.getChildren().add(text);
         // 设置宽度
+        box.setMaxWidth(boxWidth + 20);
+        box.setMinWidth(boxWidth + 20);
         box.setPrefWidth(boxWidth + 20);
         // 初始化面板
         if (owner == null) {// Stage

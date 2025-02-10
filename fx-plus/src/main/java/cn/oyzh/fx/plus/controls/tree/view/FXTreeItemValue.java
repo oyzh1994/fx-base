@@ -33,14 +33,38 @@ public class FXTreeItemValue implements Destroyable {
         return this.item;
     }
 
+    /**
+     * 获取名称
+     *
+     * @return 名称
+     */
     public String name() {
         return null;
     }
 
+    /**
+     * 获取额外内容
+     *
+     * @return 额外内容
+     */
     public String extra() {
         return null;
     }
 
+    /**
+     * 获取额外内容颜色
+     *
+     * @return 额外内容颜色
+     */
+    public Color extraColor() {
+        return null;
+    }
+
+    /**
+     * 获取显示文本
+     *
+     * @return 显示文本
+     */
     public String text() {
         String text = this.name();
         String extra = this.extra();
@@ -53,13 +77,16 @@ public class FXTreeItemValue implements Destroyable {
     }
 
     /**
-     * 刷新图标颜色
+     * 获取图标颜色
+     *
+     * @return 图标颜色
      */
     public Color graphicColor() {
-        if (ThemeManager.isDarkMode()) {
-            return Color.WHITE;
-        }
-        return Color.BLACK;
+//        if (ThemeManager.isDarkMode()) {
+//            return Color.WHITE;
+//        }
+//        return Color.BLACK;
+        return ThemeManager.currentForegroundColor();
     }
 
     @Override

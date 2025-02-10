@@ -26,7 +26,7 @@ public class TerminalManager {
     /**
      * 命令处理器列表
      */
-    private static final List<TerminalCommandHandler<?, ?>> COMMAND_HANDLERS = new ArrayList<>();
+    private static final List<TerminalCommandHandler<?, ?>> COMMAND_HANDLERS = new ArrayList<>(128);
 
     // static {
     //     scanHandler();
@@ -178,7 +178,7 @@ public class TerminalManager {
     public static List<TerminalCommandHandler<?, ?>> findHandlers(String commandText, int matchType) {
         try {
             doLoadHandler();
-            List<TerminalCommandHandler<?, ?>> commands = new ArrayList<>();
+            List<TerminalCommandHandler<?, ?>> commands = new ArrayList<>(COMMAND_HANDLERS.size());
             for (TerminalCommandHandler<?, ?> value : COMMAND_HANDLERS) {
                 String command = value.commandFullName();
                 if (matchType == 1 && StringUtil.startWithIgnoreCase(command, commandText)) {

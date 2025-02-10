@@ -13,15 +13,13 @@ import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.titlebar.TitleBar;
-import cn.oyzh.fx.plus.titlebar.TitleBarUtil;
 import cn.oyzh.fx.plus.titlebar.TitleBox;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
-import cn.oyzh.fx.plus.util.NodeUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
@@ -493,6 +491,20 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 设置scene
         FXUtil.runWait(() -> stage.setScene(new Scene(root)));
+//        stage.getScene().focusOwnerProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue != null) {
+//                Light.Distant light = new Light.Distant();
+//                light.setAzimuth(-135.0);
+//                light.setElevation(30.0);
+//                light.setColor(Color.ALICEBLUE);
+//                Lighting lighting = new Lighting();
+//                lighting.setLight(light);
+//                newValue.setEffect(lighting);
+//            }
+//            if (oldValue != null) {
+//                oldValue.setEffect(null);
+//            }
+//        });
     }
 
     /**
@@ -551,11 +563,11 @@ public interface StageAdapter extends WindowAdapter {
         listener.onStageInitialize(this);
         Stage stage = this.stage();
         if (stage != null) {
-            stage.setOnShown(listener::onStageShown);
+            stage.setOnShown(listener::onWindowShown);
             stage.setOnHiding(listener::onWindowHiding);
             stage.setOnHidden(listener::onWindowHidden);
             stage.setOnShowing(listener::onWindowShowing);
-            stage.setOnCloseRequest(listener::onStageCloseRequest);
+            stage.setOnCloseRequest(listener::onWindowCloseRequest);
         }
     }
 

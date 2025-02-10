@@ -1,6 +1,8 @@
 package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItemValue;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -10,6 +12,13 @@ import cn.oyzh.fx.plus.controls.tree.view.FXTreeItemValue;
  * @since 2023/11/10
  */
 public class RichTreeItemValue extends FXTreeItemValue {
+
+    /**
+     * 富文本模式
+     */
+    @Getter
+    @Setter
+    private boolean richMode;
 
     public RichTreeItemValue() {
         super();

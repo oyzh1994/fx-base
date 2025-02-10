@@ -1,9 +1,12 @@
 package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
 import javafx.util.Duration;
+import lombok.NonNull;
 
 /**
  * 弹窗扩展
@@ -45,12 +48,27 @@ public class PopupExt extends Popover implements PopupAdapter {
     }
 
     @Override
-    public void showPopup(Node owner) {
-        super.show(owner);
+    public void showPopup(@NonNull Node owner) {
+        if (owner instanceof SVGGlyph) {
+            Bounds bounds = owner.localToScreen(owner.getBoundsInLocal());
+            if (bounds == null) {
+                throw new IllegalStateException(
+                        "The owner node is not added to the scene. It cannot be used as a popover anchor."
+                );
+            }
+            int offset = 4;
+            switch (getArrowLocation()) {
+                case BOTTOM_LEFT -> show(
+                        owner, bounds.getMinX() + 8, bounds.getMinY() + offset
+                );
+            }
+        } else {
+            super.show(owner);
+        }
     }
 
     @Override
-    public void showPopup(Node owner, double x, double y) {
+    public void showPopup(@NonNull Node owner, double x, double y) {
         super.show(owner, x, y);
     }
 

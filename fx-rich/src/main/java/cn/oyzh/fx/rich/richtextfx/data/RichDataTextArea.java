@@ -3,8 +3,6 @@ package cn.oyzh.fx.rich.richtextfx.data;
 import cn.oyzh.common.util.RegexHelper;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
 import cn.oyzh.i18n.I18nHelper;
@@ -18,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 富文本数据文本域
@@ -28,12 +25,6 @@ import java.util.regex.Pattern;
  */
 
 public class RichDataTextArea extends FlexRichTextArea {
-
-    /**
-     * 搜索文本
-     */
-    @Getter
-    private String searchText;
 
     /**
      * 是否忽略变化
@@ -98,11 +89,13 @@ public class RichDataTextArea extends FlexRichTextArea {
 
     @Override
     public void addTextChangeListener(ChangeListener<String> listener) {
-        this.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!this.ignoreChange) {
-                listener.changed(observable, oldValue, newValue);
-            }
-        });
+        synchronized (this) {
+            this.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!this.ignoreChange) {
+                    listener.changed(observable, oldValue, newValue);
+                }
+            });
+        }
     }
 
     /**
@@ -245,31 +238,15 @@ public class RichDataTextArea extends FlexRichTextArea {
         this.dataType = RichDataType.RAW;
     }
 
-    /**
-     * 搜索正则模式
-     *
-     * @return 搜索正则模式
-     */
-    private Pattern searchPattern() {
-        return Pattern.compile(this.searchText);
-    }
 
     @Override
     public void initTextStyle() {
         super.initTextStyle();
-//        if (!super.checkInvalidStyle()) {
-//            return;
-//        }
-        // 搜索
-        if (StringUtil.isNotBlank(this.searchText)) {
-            String text = this.getText();
-            Matcher matcher = this.searchPattern().matcher(text);
-            List<RichTextStyle> styles = new ArrayList<>();
-            while (matcher.find()) {
-                styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
-            }
-            this.setStyles(styles);
-        } else if (this.dataType == RichDataType.JSON) { // json
+        // 高亮模式则跳过
+        if (StringUtil.isNotBlank(this.getHighlightText())) {
+            return;
+        }
+        if (this.dataType == RichDataType.JSON) { // json
             String text = this.getText();
             Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
             List<RichTextStyle> styles = new ArrayList<>();
@@ -290,15 +267,5 @@ public class RichDataTextArea extends FlexRichTextArea {
         } else if (this.dataType == RichDataType.HEX) {// hex
             this.setStyle(0, this.getLength(), "-fx-fill: #4682B4;");
         }
-    }
-
-    /**
-     * 设置搜索文本
-     *
-     * @param searchText 搜索文本
-     */
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
-        this.initTextStyle();
     }
 }

@@ -89,7 +89,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     /**
      * 开始等待
      *
-     * @param task 待执行业务
+     * @param task      待执行业务
+     * @param autoClose 自动关闭动画
      */
     public void startWaiting(Runnable task, boolean autoClose) {
         if (this.itemGraphic() instanceof SVGGlyph glyph) {
@@ -111,9 +112,10 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     /**
      * 开始等待
      *
-     * @param task 待执行业务
+     * @param task  待执行业务
+     * @param delay 延迟时间
      */
-    public void startWaiting(Runnable task, int timeout) {
+    public void startWaiting(Runnable task, int delay) {
         if (this.itemGraphic() instanceof SVGGlyph glyph) {
             glyph.startWaiting();
             TaskManager.startDelay(() -> {
@@ -122,9 +124,9 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
                         task.run();
                     }
                 } finally {
-                    TaskManager.startDelay(glyph::stopWaiting, timeout);
+                    TaskManager.start(glyph::stopWaiting);
                 }
-            }, 50);
+            }, delay);
         }
     }
 
@@ -339,7 +341,10 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void expend() {
         if (!this.isExpanded()) {
-            this.service().submitFX(() -> this.setExpanded(true));
+            QueueService service = this.service();
+            if (service != null) {
+                service.submitFX(() -> this.setExpanded(true));
+            }
         }
     }
 
@@ -382,7 +387,12 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     public void refresh() {
         QueueService service = this.service();
         if (service != null) {
-            service.submitFXLater(() -> this.getTreeView().refresh());
+            service.submitFXLater(() -> {
+                FXTreeView treeView = this.getTreeView();
+                if (treeView != null) {
+                    treeView.refresh();
+                }
+            });
         }
     }
 

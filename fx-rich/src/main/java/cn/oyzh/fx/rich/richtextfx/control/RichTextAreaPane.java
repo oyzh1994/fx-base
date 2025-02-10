@@ -8,12 +8,16 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.IndexRange;
 import javafx.scene.text.FontWeight;
 import lombok.NonNull;
 import org.reactfx.value.Val;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author oyzh
@@ -151,6 +155,10 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
         this.getContent().replaceText(start, end, text);
     }
 
+    public void replaceText(IndexRange range, String text) {
+        this.getContent().replaceText(range, text);
+    }
+
     public int getLength() {
         return this.getContent().getLength();
     }
@@ -219,5 +227,25 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     @Override
     public void changeTheme(ThemeStyle style) {
         this.getContent().changeTheme(style);
+    }
+
+    /**
+     * 设置内容提示词
+     *
+     * @param prompts 内容提示词列表
+     */
+    public void setContentPrompts(Set<String> prompts) {
+        this.getContent().setContentPrompts(prompts);
+    }
+
+    /**
+     * 初始化内容提示词
+     */
+    public void initContentPrompts() {
+        this.getContent().initContentPrompts();
+    }
+
+    public Optional<Bounds> getCaretBounds() {
+        return this.getContent().getCaretBounds();
     }
 }

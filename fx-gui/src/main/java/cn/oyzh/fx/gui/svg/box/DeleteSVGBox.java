@@ -1,29 +1,29 @@
-package cn.oyzh.fx.gui.svg.box;
-
-import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGBox;
-import cn.oyzh.fx.plus.controls.svg.SVGLabel;
-import cn.oyzh.i18n.I18nHelper;
-
-/**
- * @author oyzh
- * @since 2024/4/11
- */
-public class DeleteSVGBox extends SVGBox {
-
-    public DeleteSVGBox() {
-        this.setGlyph(new DeleteSVGGlyph());
-    }
-
-    public DeleteSVGBox(String size) {
-        this();
-        this.setSize(size);
-    }
-
-    @Override
-    public void initNode() {
-        this.setText(I18nHelper.delete());
-        this.setTipText(I18nHelper.delete());
-        super.initNode();
-    }
-}
+//package cn.oyzh.fx.gui.svg.box;
+//
+//import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
+//import cn.oyzh.fx.plus.controls.svg.SVGBox;
+//import cn.oyzh.fx.plus.controls.svg.SVGLabel;
+//import cn.oyzh.i18n.I18nHelper;
+//
+///**
+// * @author oyzh
+// * @since 2024/4/11
+// */
+//public class DeleteSVGBox extends SVGBox {
+//
+//    public DeleteSVGBox() {
+//        this.setGlyph(new DeleteSVGGlyph());
+//    }
+//
+//    public DeleteSVGBox(String size) {
+//        this();
+//        this.setSize(size);
+//    }
+//
+//    @Override
+//    public void initNode() {
+//        this.setText(I18nHelper.delete());
+//        this.setTipText(I18nHelper.delete());
+//        super.initNode();
+//    }
+//}

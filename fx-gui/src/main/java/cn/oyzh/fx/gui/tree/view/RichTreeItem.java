@@ -15,6 +15,7 @@ import lombok.NonNull;
 
 import java.util.BitSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -174,6 +175,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         super(treeView);
     }
 
+    /**
+     * 加载子节点
+     */
     public void loadChild() {
 
     }
@@ -328,7 +332,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     @Override
     public void removeChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            FXUtil.runWait(() -> this.unfilteredChildren().remove(items));
+            FXUtil.runWait(() -> this.unfilteredChildren().removeAll(items));
 //            this.service().submitFX(() -> this.unfilteredChildren().removeAll(items));
         }
     }
@@ -407,7 +411,10 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 执行过滤
      */
     public synchronized void doFilter() {
-        this.doFilter(this.getTreeView().itemFilter());
+        RichTreeView treeView = this.getTreeView();
+        if (treeView != null) {
+            this.doFilter(treeView.itemFilter());
+        }
     }
 
     /**
@@ -416,9 +423,12 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * @param itemFilter 节点过滤器
      */
     public synchronized void doFilter(RichTreeItemFilter itemFilter) {
-        List<RichTreeItem<?>> items = this.richChildren();
-        List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
-        this.service().submit(() -> this.doFilter(itemFilter, list));
+        QueueService service = this.service();
+        if (service != null) {
+            List<RichTreeItem<?>> items = this.richChildren();
+            List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
+            service.submit(() -> this.doFilter(itemFilter, list));
+        }
     }
 
     /**
@@ -483,7 +493,12 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
             if (item.getValue() == this.getValue() || item.getValue() == null || this.getValue() == null) {
                 return 0;
             }
-            return CharSequence.compare(this.getValue().name(), item.getValue().name());
+            String name1 = this.getValue().name();
+            String name2 = item.getValue().name();
+            if (Objects.equals(name1, name2)) {
+                return 0;
+            }
+            return CharSequence.compare(name1, name2);
         }
         return 0;
     }

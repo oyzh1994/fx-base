@@ -61,7 +61,7 @@ public class NodeMutexes {
     public void addNode(Node node) {
         if (node != null) {
             if (this.nodes == null) {
-                this.nodes = new ArrayList<>();
+                this.nodes = new ArrayList<>(12);
             }
             this.nodes.add(node);
         }

@@ -15,7 +15,7 @@ public class TestButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("success");
         this.setText(I18nHelper.test());
         this.setTipText(I18nHelper.test());

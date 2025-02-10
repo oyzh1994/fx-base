@@ -121,6 +121,9 @@ public class ListViewPopup<E> extends FXPopup {
                                 } else {
                                     this.setText("    " + item);
                                 }
+                                this.setHeight(cellLineHeight);
+                                this.setMinHeight(cellLineHeight);
+                                this.setMaxHeight(cellLineHeight);
                                 this.setPrefHeight(cellLineHeight);
                                 ListViewUtil.highlightCell(this);
                             }

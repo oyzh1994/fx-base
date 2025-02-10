@@ -15,7 +15,7 @@ public class AddGroupButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("accent");
         this.setText(I18nHelper.addGroup());
         this.setTipText(I18nHelper.addGroup());

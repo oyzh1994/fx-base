@@ -13,7 +13,7 @@ public class AddConnectButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("success");
         this.setText(I18nHelper.addConnect());
         this.setTipText(I18nHelper.addConnect());

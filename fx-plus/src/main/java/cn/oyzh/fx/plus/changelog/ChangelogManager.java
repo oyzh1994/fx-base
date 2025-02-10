@@ -13,7 +13,7 @@ import java.util.List;
  * 更新日志管理器
  *
  * @author oyzh
- * @since 2024/4/7
+ * @since 2024/04/07
  */
 @UtilityClass
 public class ChangelogManager {

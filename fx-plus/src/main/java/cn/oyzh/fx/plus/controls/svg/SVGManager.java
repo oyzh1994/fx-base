@@ -16,10 +16,10 @@ import java.lang.ref.WeakReference;
 @UtilityClass
 public class SVGManager {
 
-    /**
-     * loading的svg路径引用
-     */
-    private static WeakReference<FXSVGPath> loadingSVGPathRef;
+//    /**
+//     * loading的svg路径引用
+//     */
+//    private static WeakReference<FXSVGPath> loadingSVGPathRef;
 
     /**
      * 加载svg路径
@@ -41,16 +41,16 @@ public class SVGManager {
         return SVGLoader.INSTANCE.loadContent(url);
     }
 
-    /**
-     * 是否loading的svg路径
-     *
-     * @param image svg路径
-     * @return 结果
-     */
-    public static boolean isLoading(Image image) {
-//        return image != null && image.getUrl().contains("/fx-svg/loading.svg");
-        return false;
-    }
+//    /**
+//     * 是否loading的svg路径
+//     *
+//     * @param image svg路径
+//     * @return 结果
+//     */
+//    public static boolean isLoading(Image image) {
+////        return image != null && image.getUrl().contains("/fx-svg/loading.svg");
+//        return false;
+//    }
 
     /**
      * 是否loading的svg路径
@@ -59,7 +59,8 @@ public class SVGManager {
      * @return 结果
      */
     public static boolean isLoading(SVGPath svgPath) {
-        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
+//        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
+        return svgPath.hasProperties() && svgPath.getProperties().containsKey("loading");
     }
 
     /**
@@ -68,11 +69,13 @@ public class SVGManager {
      * @return loading的svg路径
      */
     public static FXSVGPath getLoading() {
-        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
-            FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
-            svgPath.setCursor(Cursor.NONE);
-            loadingSVGPathRef = new WeakReference<>(svgPath);
-        }
-        return loadingSVGPathRef.get();
+//        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
+        FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
+        svgPath.setProp("loading", true);
+        svgPath.setCursor(Cursor.NONE);
+//            loadingSVGPathRef = new WeakReference<>(svgPath);
+//        }
+//        return loadingSVGPathRef.get();
+        return svgPath;
     }
 }

@@ -13,7 +13,7 @@ public class SubmitButton extends IconButton {
 
     @Override
     public void initNode() {
-        this.setPrefHeight(25);
+        this.setRealHeight(30);
         this.addClass("accent");
         this.setText(I18nHelper.submit());
         this.setTipText(I18nHelper.submit());
