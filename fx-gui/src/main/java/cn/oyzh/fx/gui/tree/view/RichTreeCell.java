@@ -20,8 +20,8 @@ import javafx.scene.paint.Color;
 public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
 
     {
-        this.setCache(true);
-        this.setCacheShape(true);
+//        this.setCache(true);
+//        this.setCacheShape(true);
         this.setCursor(Cursor.HAND);
     }
 
@@ -34,8 +34,8 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
     protected void updateItem(T value, boolean empty) {
         super.updateItem(value, empty);
         if (empty || value == null) {
-            this.setText(null);
-            this.setGraphic(null);
+//            this.setText(null);
+//            this.setGraphic(null);
             return;
         }
         TreeItem<?> treeItem = this.getTreeItem();
@@ -53,17 +53,20 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         } else {// 标准模式
             // 获取图标
             SVGGlyph glyph = value.graphic();
-            Color color = value.graphicColor();
-            SVGGlyph graphic = node instanceof SVGGlyph ? glyph : null;
+//            Color color = value.graphicColor();
+//            SVGGlyph graphic = node instanceof SVGGlyph ? glyph : null;
+//            if (graphic == null) {
+//                this.setGraphic(glyph);
+//                if (glyph != null) {
+//                    glyph.setColor(color);
+//                }
+//            } else if (graphic.getColor() != color) { // 更新图标颜色
+//                graphic.setColor(color);
+//            }
+            // 更新颜色
+            glyph.setColor(value.graphicColor());
             // 更新图标
-            if (graphic == null) {
-                this.setGraphic(glyph);
-                if (glyph != null) {
-                    glyph.setColor(color);
-                }
-            } else if (graphic.getColor() != color) { // 更新图标颜色
-                graphic.setColor(color);
-            }
+            this.setGraphic(glyph);
             // 更新文本
             this.setText(value.text());
             this.setContentDisplay(ContentDisplay.LEFT);
