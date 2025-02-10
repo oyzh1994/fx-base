@@ -17,7 +17,6 @@ import javafx.stage.Window;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
-import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**

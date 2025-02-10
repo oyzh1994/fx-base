@@ -157,7 +157,7 @@ public class TabSwitchHandler {
      * @param event 事件
      */
     private void toNextNode(KeyEvent event) {
-        List<Node> nodeList = new ArrayList<>();
+        List<Node> nodeList = new ArrayList<>(128);
         // 寻找节点
         this.findNodes(this.root, nodeList);
         // 执行排序

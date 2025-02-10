@@ -46,7 +46,7 @@ public class NodeGroupUtil {
      * @return 分组列表
      */
     public static List<NodeGroup> list(Object node, String groupId) {
-        List<NodeGroup> groups = new ArrayList<>();
+        List<NodeGroup> groups = new ArrayList<>(128);
         list(node, groupId, groups);
         return groups;
     }
