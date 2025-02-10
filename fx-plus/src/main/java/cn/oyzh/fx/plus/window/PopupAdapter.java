@@ -47,9 +47,11 @@ public interface PopupAdapter extends WindowAdapter {
     default void initListener(@NonNull PopupListener listener) {
         // 设置事件
         listener.onPopupInitialize(this);
+        this.popup().setOnShown(listener::onWindowShown);
         this.popup().setOnHiding(listener::onWindowHiding);
         this.popup().setOnHidden(listener::onWindowHidden);
         this.popup().setOnShowing(listener::onWindowShowing);
+        this.popup().setOnCloseRequest(listener::onWindowCloseRequest);
     }
 
 
@@ -107,14 +109,14 @@ public interface PopupAdapter extends WindowAdapter {
      *
      * @param owner 父组件
      */
-    void showPopup(Node owner);
+    void showPopup(@NonNull Node owner);
 
     /**
      * 显示弹窗
      *
      * @param owner 父组件
      */
-    void showPopup(Node owner, double x, double y);
+    void showPopup(@NonNull Node owner, double x, double y);
 
     /**
      * 获取内容

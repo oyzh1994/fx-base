@@ -563,11 +563,11 @@ public interface StageAdapter extends WindowAdapter {
         listener.onStageInitialize(this);
         Stage stage = this.stage();
         if (stage != null) {
-            stage.setOnShown(listener::onStageShown);
+            stage.setOnShown(listener::onWindowShown);
             stage.setOnHiding(listener::onWindowHiding);
             stage.setOnHidden(listener::onWindowHidden);
             stage.setOnShowing(listener::onWindowShowing);
-            stage.setOnCloseRequest(listener::onStageCloseRequest);
+            stage.setOnCloseRequest(listener::onWindowCloseRequest);
         }
     }
 

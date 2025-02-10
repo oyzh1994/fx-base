@@ -40,21 +40,21 @@ public class ParentStageController extends StageController {
     }
 
     @Override
-    public void onStageShown(WindowEvent event) {
-        super.onStageShown(event);
+    public void onWindowShown(WindowEvent event) {
+        super.onWindowShown(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
-                controller.onStageShown(event);
+                controller.onWindowShown(event);
             }
         }
     }
 
     @Override
-    public void onStageCloseRequest(WindowEvent event) {
-        super.onStageCloseRequest(event);
+    public void onWindowCloseRequest(WindowEvent event) {
+        super.onWindowCloseRequest(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
-                controller.onStageCloseRequest(event);
+                controller.onWindowCloseRequest(event);
             }
         }
     }

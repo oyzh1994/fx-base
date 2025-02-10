@@ -37,7 +37,11 @@ public class SearchTextField extends LimitTextField {
      * @return 皮肤
      */
     public SearchTextFieldSkin skin() {
-        return (SearchTextFieldSkin) this.getSkin();
+        SearchTextFieldSkin skin = (SearchTextFieldSkin) this.getSkin();
+//        if (skin == null) {
+//            skin = (SearchTextFieldSkin) this.createDefaultSkin();
+//        }
+        return skin;
     }
 
     /**
