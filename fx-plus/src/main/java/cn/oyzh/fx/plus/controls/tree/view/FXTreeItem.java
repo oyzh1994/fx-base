@@ -341,7 +341,10 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void expend() {
         if (!this.isExpanded()) {
-            this.service().submitFX(() -> this.setExpanded(true));
+            QueueService service = this.service();
+            if (service != null) {
+                service.submitFX(() -> this.setExpanded(true));
+            }
         }
     }
 
@@ -384,7 +387,12 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     public void refresh() {
         QueueService service = this.service();
         if (service != null) {
-            service.submitFXLater(() -> this.getTreeView().refresh());
+            service.submitFXLater(() -> {
+                FXTreeView treeView = this.getTreeView();
+                if (treeView != null) {
+                    treeView.refresh();
+                }
+            });
         }
     }
 

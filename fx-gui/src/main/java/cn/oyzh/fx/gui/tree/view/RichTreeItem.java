@@ -411,7 +411,10 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 执行过滤
      */
     public synchronized void doFilter() {
-        this.doFilter(this.getTreeView().itemFilter());
+        RichTreeView treeView = this.getTreeView();
+        if (treeView != null) {
+            this.doFilter(treeView.itemFilter());
+        }
     }
 
     /**
@@ -420,9 +423,12 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * @param itemFilter 节点过滤器
      */
     public synchronized void doFilter(RichTreeItemFilter itemFilter) {
-        List<RichTreeItem<?>> items = this.richChildren();
-        List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
-        this.service().submit(() -> this.doFilter(itemFilter, list));
+        QueueService service = this.service();
+        if (service != null) {
+            List<RichTreeItem<?>> items = this.richChildren();
+            List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
+            service.submit(() -> this.doFilter(itemFilter, list));
+        }
     }
 
     /**

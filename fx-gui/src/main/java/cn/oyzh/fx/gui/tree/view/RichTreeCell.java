@@ -63,10 +63,15 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
 //            } else if (graphic.getColor() != color) { // 更新图标颜色
 //                graphic.setColor(color);
 //            }
-            // 更新颜色
-            glyph.setColor(value.graphicColor());
-            // 更新图标
-            this.setGraphic(glyph);
+            // 处理图标
+            if (glyph != null) {
+                // 更新颜色
+                glyph.setColor(value.graphicColor());
+                // 更新图标
+                this.setGraphic(glyph);
+            } else {
+                this.setGraphic(null);
+            }
             // 更新文本
             this.setText(value.text());
             this.setContentDisplay(ContentDisplay.LEFT);

@@ -134,7 +134,8 @@ public class FontManager {
                 FONTS_CACHE.add(font);
             } else {
                 font = FONTS_CACHE.get(font);
-                JulLog.info("get font from cache, font:{}", font);
+//                JulLog.info("get font from cache, font:{}", font);
+                JulLog.debug("get font from cache, font:{}", font);
             }
         }
         return font;
