@@ -31,7 +31,7 @@ public class PackConfigHandler implements PreHandler {
         if (StringUtil.equals(packConfig.getJdkPath(), "$SYSTEM")) {
             String javaHome = System.getenv("JAVA_HOME");
             if (StringUtil.isBlank(javaHome)) {
-                JulLog.warn("从环境变量获取JAVA_HOME失败，该用系统属性获取");
+                JulLog.warn("从环境变量获取JAVA_HOME失败，改用系统属性获取");
                 javaHome = System.getProperty("java.home");
                 if (StringUtil.isBlank(javaHome)) {
                     JulLog.warn("从系统属性获取获取java.home失败");
