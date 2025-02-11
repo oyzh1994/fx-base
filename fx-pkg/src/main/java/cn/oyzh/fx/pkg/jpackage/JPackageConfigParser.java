@@ -68,6 +68,10 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (winDirChooser != null) {
             config.setWinDirChooser(winDirChooser);
         }
+        String macPackageIdentifier = object.getStr("mac-package-identifier");
+        if (macPackageIdentifier != null) {
+            config.setMacPackageIdentifier(macPackageIdentifier);
+        }
         String description = object.getStr("description");
         if (description != null) {
             config.setDescription(description);

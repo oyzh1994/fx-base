@@ -83,6 +83,11 @@ public class JPackageConfig {
      */
     private boolean winDirChooser;
 
+    /**
+     * mac程序唯一id、仅macos
+     */
+    private String macPackageIdentifier;
+
     public String destParent() {
         return new File(dest).getParent();
     }

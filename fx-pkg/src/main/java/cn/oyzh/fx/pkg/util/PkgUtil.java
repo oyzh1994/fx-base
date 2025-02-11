@@ -234,6 +234,9 @@ public class PkgUtil {
         if (config.isWinDirChooser()) {
             cmdStr += " --win-dir-chooser";
         }
+        if (config.getMacPackageIdentifier() != null) {
+            cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
+        }
         if (config.getVendor() != null) {
             cmdStr += " --vendor " + config.getVendor();
         }
