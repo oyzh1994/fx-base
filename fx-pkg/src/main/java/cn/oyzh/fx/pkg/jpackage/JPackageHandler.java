@@ -3,7 +3,8 @@ package cn.oyzh.fx.pkg.jpackage;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.RuntimeUtil;
+import cn.oyzh.common.thread.ProcessExecBuilder;
+import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -78,6 +79,10 @@ public class JPackageHandler implements PackHandler {
         cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
         JulLog.info("JPackage cmd:{}", cmdStr);
         // 执行jpackage
-        RuntimeUtil.execAndWait(cmdStr);
+        // RuntimeUtil.execAndWait(cmdStr);
+        ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+        builder.timeout(15_000);
+        ProcessExecResult result = builder.exec();
+        JulLog.info("JPackage result:{}", result);
     }
 }

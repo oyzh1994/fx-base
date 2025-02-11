@@ -56,6 +56,18 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (vendor != null) {
             config.setVerbose(verbose);
         }
+        Boolean winMenu = object.getBool("win-menu");
+        if (winMenu != null) {
+            config.setWinMenu(winMenu);
+        }
+        Boolean winShortcut = object.getBool("win-shortcut");
+        if (winShortcut != null) {
+            config.setWinShortcut(winShortcut);
+        }
+        Boolean winDirChooser = object.getBool("win-dir-chooser");
+        if (winDirChooser != null) {
+            config.setWinDirChooser(winDirChooser);
+        }
         String description = object.getStr("description");
         if (description != null) {
             config.setDescription(description);

@@ -225,6 +225,15 @@ public class PkgUtil {
         if (config.isVerbose()) {
             cmdStr += " --verbose";
         }
+        if (config.isWinMenu()) {
+            cmdStr += " --win-menu";
+        }
+        if (config.isWinShortcut()) {
+            cmdStr += " --win-shortcut";
+        }
+        if (config.isWinDirChooser()) {
+            cmdStr += " --win-dir-chooser";
+        }
         if (config.getVendor() != null) {
             cmdStr += " --vendor " + config.getVendor();
         }

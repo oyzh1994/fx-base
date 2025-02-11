@@ -68,7 +68,22 @@ public class JPackageConfig {
      */
     private boolean verbose = true;
 
-    public String destParent(){
+    /**
+     * 是否创建开始菜单、仅windows
+     */
+    private boolean winMenu;
+
+    /**
+     * 是否创建桌面图标、仅windows
+     */
+    private boolean winShortcut;
+
+    /**
+     * 是否可选安装目录、仅windows
+     */
+    private boolean winDirChooser;
+
+    public String destParent() {
         return new File(dest).getParent();
     }
 }
