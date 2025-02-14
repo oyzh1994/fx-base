@@ -1,7 +1,6 @@
-package cn.oyzh.fx.gui.svg.glyph;
+package cn.oyzh.fx.gui.svg.glyph.database;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.i18n.I18nHelper;
 
 /**
  * @author oyzh
