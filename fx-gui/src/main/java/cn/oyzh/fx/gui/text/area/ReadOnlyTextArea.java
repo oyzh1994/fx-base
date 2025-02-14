@@ -12,6 +12,6 @@ public class ReadOnlyTextArea extends FlexTextArea {
         this.setRequire(false);
         this.setEditable(false);
         this.setPickOnBounds(true);
-//        this.setFocusTraversable(false);
+        this.setFocusTraversable(false);
     }
 }
