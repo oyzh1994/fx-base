@@ -67,8 +67,8 @@ public class JDepsHandler implements PreHandler {
         // 列举系统模块
         Set<String> modules = new HashSet<>();
         StringBuilder cmdStr = new StringBuilder("java --list-modules");
-//        String result = RuntimeUtil.execForStr(cmdStr.toString());
-        String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        String result = RuntimeUtil.execForStr(cmdStr.toString());
+//        String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
         JulLog.info("list modules:{}", result);
 //        System.out.println(result);
         result.lines().forEach(r -> {
@@ -99,9 +99,9 @@ public class JDepsHandler implements PreHandler {
         }
         // 列举模块
         cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, cmdStr.toString()));
-//        result = RuntimeUtil.execForStr(cmdStr.toString());
+        result = RuntimeUtil.execForStr(cmdStr.toString());
 //        System.out.println(result);
-        result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+//        result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
         JulLog.info("Jdeps result:{}", result);
         result.lines().forEach(r -> {
             // 处理内容
