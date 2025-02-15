@@ -77,7 +77,7 @@ public class JPackageHandler implements PackHandler {
         }
         String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
         cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
-        JulLog.info("JPackage cmd:{}", cmdStr);
+        JulLog.info("JPackage cmd:{}", "\n" + cmdStr);
         // 执行jpackage
         // RuntimeUtil.execAndWait(cmdStr);
         ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);

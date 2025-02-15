@@ -2,6 +2,8 @@ package cn.oyzh.fx.pkg.jdeps;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.ProcessExecBuilder;
+import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.RuntimeUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -65,8 +67,10 @@ public class JDepsHandler implements PreHandler {
         // 列举系统模块
         Set<String> modules = new HashSet<>();
         StringBuilder cmdStr = new StringBuilder("java --list-modules");
-        String result = RuntimeUtil.execForStr(cmdStr.toString());
-        System.out.println(result);
+//        String result = RuntimeUtil.execForStr(cmdStr.toString());
+        String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        JulLog.info("list modules:{}", result);
+//        System.out.println(result);
         result.lines().forEach(r -> {
             if (StringUtil.isNotBlank(r)) {
                 modules.add(r.split("@")[0]);
@@ -95,8 +99,10 @@ public class JDepsHandler implements PreHandler {
         }
         // 列举模块
         cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, cmdStr.toString()));
-        result = RuntimeUtil.execForStr(cmdStr.toString());
-        System.out.println(result);
+//        result = RuntimeUtil.execForStr(cmdStr.toString());
+//        System.out.println(result);
+        result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        JulLog.info("Jdeps result:{}", result);
         result.lines().forEach(r -> {
             // 处理内容
             if (!r.contains("-> ") || r.startsWith(" ") || r.endsWith(".jar")) {

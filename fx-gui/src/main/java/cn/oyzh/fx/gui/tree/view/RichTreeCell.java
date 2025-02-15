@@ -22,6 +22,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
     {
 //        this.setCache(true);
 //        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.SPEED);
         this.setCursor(Cursor.HAND);
     }
 
