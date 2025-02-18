@@ -34,6 +34,14 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         this.showData(RichDataType.JSON, rawData);
     }
 
+    public void showXmlData(Object rawData) {
+        this.showData(RichDataType.XML, rawData);
+    }
+
+    public void showHtmlData(Object rawData) {
+        this.showData(RichDataType.HTML, rawData);
+    }
+
     public void showBinaryData(Object rawData) {
         this.showData(RichDataType.BINARY, rawData);
     }

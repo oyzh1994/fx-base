@@ -35,8 +35,28 @@ public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements 
             case 2 -> "RAW";
             case 3 -> "BINARY";
             case 4 -> "HEX";
+            case 5 -> "XML";
+            case 6 -> "HTML";
             default -> "RAW";
         };
+    }
+
+    /**
+     * 是否xml格式
+     *
+     * @return 结果
+     */
+    public boolean isXmlFormat() {
+        return "XML".equals(this.getFormat());
+    }
+
+    /**
+     * 是否html格式
+     *
+     * @return 结果
+     */
+    public boolean isHtmlFormat() {
+        return "HTML".equals(this.getFormat());
     }
 
     /**
