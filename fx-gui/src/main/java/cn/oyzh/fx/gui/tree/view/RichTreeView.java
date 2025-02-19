@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.fx.plus.controls.tree.view.FlexTreeView;
+import cn.oyzh.fx.plus.controls.tree.view.FXTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TreeItem;
@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/11/10
  */
-public class RichTreeView extends FlexTreeView {
+public class RichTreeView extends FXTreeView {
 
     /**
      * 高亮文本

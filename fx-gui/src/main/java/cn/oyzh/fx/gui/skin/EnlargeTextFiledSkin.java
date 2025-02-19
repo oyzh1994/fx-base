@@ -5,7 +5,7 @@ import cn.oyzh.fx.gui.svg.glyph.EnlargeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
 import cn.oyzh.fx.plus.controls.box.FlexVBox;
-import cn.oyzh.fx.plus.controls.text.area.FlexTextArea;
+import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -54,7 +54,7 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         TextField textField = this.getSkinnable();
         textField.setDisable(true);
         // 文本节点
-        FlexTextArea textArea = new FlexTextArea();
+        FXTextArea textArea = new FXTextArea();
         textArea.setPromptText(I18nHelper.pleaseInputContent());
         textArea.setText(this.getText());
         // 按钮

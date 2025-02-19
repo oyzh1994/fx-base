@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.changelog;
 
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.controls.label.FlexLabel;
-import cn.oyzh.fx.plus.controls.list.FlexListView;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.controls.list.FXListView;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/4/7
  */
-public class ChangelogListView extends FlexListView<Node> {
+public class ChangelogListView extends FXListView<Node> {
 
     {
         this.setCursor(Cursor.DEFAULT);
@@ -43,17 +43,17 @@ public class ChangelogListView extends FlexListView<Node> {
      */
     private void initChangelog(Changelog changelog) {
         // 标题
-        FlexLabel title = this.initTitle(changelog.getVersion() + "(" + changelog.getDate() + ")");
+        FXLabel title = this.initTitle(changelog.getVersion() + "(" + changelog.getDate() + ")");
         title.addClass("default");
         this.addItem(title);
 
         // 特性
         if (CollectionUtil.isNotEmpty(changelog.getFeatures())) {
-            FlexLabel label = this.initItem("全新功能");
+            FXLabel label = this.initItem("全新功能");
             label.addClass("success");
             this.addItem(label);
             for (String feature : changelog.getFeatures()) {
-                FlexLabel label1 = this.initItem(feature);
+                FXLabel label1 = this.initItem(feature);
                 label1.addClass("success");
                 this.addItem(label1);
             }
@@ -61,11 +61,11 @@ public class ChangelogListView extends FlexListView<Node> {
 
         // 优化
         if (CollectionUtil.isNotEmpty(changelog.getOptimize())) {
-            FlexLabel label = this.initItem("优化内容");
+            FXLabel label = this.initItem("优化内容");
             label.addClass("accent");
             this.addItem(label);
             for (String optimize : changelog.getOptimize()) {
-                FlexLabel label1 = this.initItem(optimize);
+                FXLabel label1 = this.initItem(optimize);
                 label1.addClass("accent");
                 this.addItem(label1);
             }
@@ -73,11 +73,11 @@ public class ChangelogListView extends FlexListView<Node> {
 
         // 问题处理
         if (CollectionUtil.isNotEmpty(changelog.getBugfix())) {
-            FlexLabel label = this.initItem("问题修复");
+            FXLabel label = this.initItem("问题修复");
             label.addClass("danger");
             this.addItem(label);
             for (String bugfix : changelog.getBugfix()) {
-                FlexLabel label1 = this.initItem(bugfix);
+                FXLabel label1 = this.initItem(bugfix);
                 label1.addClass("danger");
                 this.addItem(label1);
             }
@@ -90,8 +90,8 @@ public class ChangelogListView extends FlexListView<Node> {
      * @param text 文本内容
      * @return 组件
      */
-    private FlexLabel initTitle(String text) {
-        FlexLabel label = new FlexLabel(text);
+    private FXLabel initTitle(String text) {
+        FXLabel label = new FXLabel(text);
         label.setFontSize(25);
         label.setEnableFont(false);
         label.setCursor(Cursor.DEFAULT);
@@ -105,8 +105,8 @@ public class ChangelogListView extends FlexListView<Node> {
      * @param text 文本内容
      * @return 组件
      */
-    private FlexLabel initItem(String text) {
-        FlexLabel label = new FlexLabel(text);
+    private FXLabel initItem(String text) {
+        FXLabel label = new FXLabel(text);
         label.setFontSize(12);
         label.setEnableFont(false);
         label.setCursor(Cursor.DEFAULT);

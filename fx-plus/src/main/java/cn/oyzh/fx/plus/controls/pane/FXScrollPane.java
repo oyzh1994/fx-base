@@ -11,7 +11,7 @@ import javafx.scene.control.ScrollPane;
  * @author oyzh
  * @since 2023/12/6
  */
-public class FlexScrollPane extends ScrollPane implements FlexAdapter, ThemeAdapter {
+public class FXScrollPane extends ScrollPane implements FlexAdapter, ThemeAdapter {
 
     {
         NodeManager.init(this);

@@ -1,6 +1,6 @@
 package cn.oyzh.fx.gui.label;
 
-import cn.oyzh.fx.plus.controls.label.FlexLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.Node;
 
@@ -8,7 +8,7 @@ import javafx.scene.Node;
  * @author oyzh
  * @since 2024/04/08
  */
-public class SystemLabel extends FlexLabel {
+public class SystemLabel extends FXLabel {
 
     public SystemLabel() {
         super("");

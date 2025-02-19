@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.page;
 import cn.oyzh.common.dto.Paging;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.text.FlexText;
+import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.event.EventHandler;
@@ -28,7 +28,7 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     /**
      * 分页信息文本组件
      */
-    private final FlexText pageText = new FlexText();
+    private final FXText pageText = new FXText();
 
     /**
      * 是否显示分页信息文本组件

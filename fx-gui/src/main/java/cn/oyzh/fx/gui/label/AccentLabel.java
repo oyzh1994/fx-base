@@ -1,13 +1,13 @@
 package cn.oyzh.fx.gui.label;
 
-import cn.oyzh.fx.plus.controls.label.FlexLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.scene.Node;
 
 /**
  * @author oyzh
  * @since 2024/04/08
  */
-public class AccentLabel extends FlexLabel {
+public class AccentLabel extends FXLabel {
 
     {
         this.addClass("accent");

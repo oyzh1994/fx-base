@@ -9,7 +9,7 @@ import lombok.Getter;
  * @author oyzh
  * @since 2023/1/13
  */
-public class IconButton extends FlexButton {
+public class IconButton extends FXButton {
 
     /**
      * 图标对比字符的百分比

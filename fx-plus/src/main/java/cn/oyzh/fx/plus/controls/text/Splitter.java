@@ -12,7 +12,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2022/8/25
  */
-public class Splitter extends FlexText {
+public class Splitter extends FXText {
 
     {
 //        this.setCache(false);

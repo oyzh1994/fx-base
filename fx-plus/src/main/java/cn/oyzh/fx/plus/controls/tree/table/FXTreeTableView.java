@@ -6,14 +6,19 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import lombok.NonNull;
 import lombok.ToString;
@@ -27,7 +32,7 @@ import java.util.function.Consumer;
  * @since 2022/1/19
  */
 @ToString
-public class FXTreeTableView extends TreeTableView implements DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FXTreeTableView extends TreeTableView implements FlexAdapter, DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -130,5 +135,33 @@ public class FXTreeTableView extends TreeTableView implements DestroyAdapter, No
      */
     public void positionItem() {
         this.scrollTo(this.getSelectedItem());
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
+    }
+
+    @Override
+    public void resizeNode(Double width, Double height) {
+        // 调用父类的resizeNode方法来调整节点大小
+        FlexAdapter.super.resizeNode(width, height);
+        // 获取表格中的列
+        ObservableList<? extends TreeTableColumn<?, ?>> columns = this.getColumns();
+        // 遍历每一列
+        for (TreeTableColumn<?, ?> column : columns) {
+            // 判断列是否是FlexAdapter的实例
+            if (column instanceof FlexAdapter flexNode) {
+                // 如果列可见，则设置实际宽度为计算得到的弹性宽度
+                if (column.isVisible()) {
+                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                } else {
+                    // 否则将列宽度设置为0
+                    NodeUtil.setWidth(column, 0D);
+                }
+            }
+        }
     }
 }

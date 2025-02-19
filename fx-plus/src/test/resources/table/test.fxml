@@ -9,11 +9,11 @@
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
 <?import cn.oyzh.fx.plus.controls.button.IconButton?>
 <?import cn.oyzh.fx.plus.controls.svg.SVGGlyph?>
-<?import cn.oyzh.fx.plus.controls.tab.FlexTabPane?>
+<?import cn.oyzh.fx.plus.controls.tab.FXTabPane?>
 <?import cn.oyzh.fx.plus.controls.tab.FXTab?>
-<?import cn.oyzh.fx.plus.controls.table.FlexTableColumn?>
-<?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
-<?import cn.oyzh.fx.plus.controls.text.area.FlexTextArea?>
+<?import cn.oyzh.fx.plus.controls.table.FXTableColumn?>
+<?import cn.oyzh.fx.plus.controls.table.FXTableView?>
+<?import cn.oyzh.fx.plus.controls.text.area.FXTextArea?>
 <?import cn.oyzh.fx.plus.controls.text.FXText?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
@@ -23,7 +23,7 @@
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.layout.HBox?>
 <?import java.lang.String?>
-<FlexTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
+<FXTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
              fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FXTab text="测试1">
         <FlexVBox>
@@ -84,21 +84,21 @@
             <FlexHBox realHeight="50">
                 <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
                 <ToggleSwitch text="测试内容"></ToggleSwitch>
-                <FlexTextArea text="测试内容"></FlexTextArea>
+                <FXTextArea text="测试内容"></FXTextArea>
                 <FlexRichTextArea text="测试内容" promptText="测试内容提示"></FlexRichTextArea>
             </FlexHBox>
-            <FlexTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
+            <FXTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
                            fixedCellSize="30">
                 <columns>
-                    <FlexTableColumn flexWidth="10%" fx:id="index" text="编号"/>
-                    <FlexTableColumn flexWidth="50%" fx:id="value" text="成员名称"/>
-                    <FlexTableColumn flexWidth="30%" fx:id="score" visible="false" text="分数"/>
-                    <FlexTableColumn flexWidth="25%" fx:id="longitude" visible="false" text="经度"/>
-                    <FlexTableColumn flexWidth="25%" fx:id="latitude" visible="false" text="纬度"/>
-                    <FlexTableColumn flexWidth="10% - 6" fx:id="action" text="操作" sortable="false"/>
+                    <FXTableColumn flexWidth="10%" fx:id="index" text="编号"/>
+                    <FXTableColumn flexWidth="50%" fx:id="value" text="成员名称"/>
+                    <FXTableColumn flexWidth="30%" fx:id="score" visible="false" text="分数"/>
+                    <FXTableColumn flexWidth="25%" fx:id="longitude" visible="false" text="经度"/>
+                    <FXTableColumn flexWidth="25%" fx:id="latitude" visible="false" text="纬度"/>
+                    <FXTableColumn flexWidth="10% - 6" fx:id="action" text="操作" sortable="false"/>
                 </columns>
-            </FlexTableView>
-            <FlexTabPane focusTraversable="true" flexWidth="100%" realHeight="200">
+            </FXTableView>
+            <FXTabPane focusTraversable="true" flexWidth="100%" realHeight="200">
                 <FXTab text="测试tab">
                     <HBox>
                         <SVGGlyph url="/fx-svg/clear.svg"></SVGGlyph>
@@ -116,7 +116,7 @@
                         </SearchTextField>
                     </HBox>
                 </FXTab>
-            </FlexTabPane>
+            </FXTabPane>
         </FlexVBox>
     </FXTab>
     <FXTab text="测试2">
@@ -156,5 +156,5 @@
            <SVGGlyph disable="true" url="/fx-svg/clear.svg"></SVGGlyph>
         </FlexVBox>
     </FXTab>
-</FlexTabPane>
+</FXTabPane>
 

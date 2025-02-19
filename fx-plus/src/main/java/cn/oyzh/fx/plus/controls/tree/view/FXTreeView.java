@@ -6,6 +6,7 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
@@ -32,7 +33,7 @@ import java.util.function.Consumer;
  * @since 2022/1/19
  */
 @ToString
-public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -264,5 +265,12 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
             item.reloadChild();
             this.refresh();
         }
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
     }
 }

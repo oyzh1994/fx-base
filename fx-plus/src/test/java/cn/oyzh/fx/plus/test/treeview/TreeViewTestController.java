@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.test.treeview;
 
 import cn.oyzh.fx.plus.controller.StageController;
-import cn.oyzh.fx.plus.controls.tree.view.FlexTreeView;
+import cn.oyzh.fx.plus.controls.tree.view.FXTreeView;
 import cn.oyzh.fx.plus.window.StageAttribute;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +21,7 @@ import javafx.stage.Modality;
 public class TreeViewTestController extends StageController {
 
     @FXML
-    private FlexTreeView tree;
+    private FXTreeView tree;
 
     public void test1(ActionEvent actionEvent) {
         tree.setRoot(new TreeItem("根节点"));

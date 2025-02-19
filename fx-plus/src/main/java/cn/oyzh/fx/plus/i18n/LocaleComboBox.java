@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.i18n;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nLocales;
 import cn.oyzh.i18n.I18nManager;
@@ -14,7 +14,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/04/07
  */
-public class LocaleComboBox extends FlexComboBox<Locale> {
+public class LocaleComboBox extends FXComboBox<Locale> {
 
     {
         this.addItems(I18nLocales.locales());

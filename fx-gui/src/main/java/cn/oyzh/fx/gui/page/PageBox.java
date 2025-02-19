@@ -8,7 +8,7 @@ import cn.oyzh.fx.gui.svg.glyph.page.PagePrevSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageSettingSVGGlyph;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
 import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.label.FlexLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -43,7 +43,7 @@ public class PageBox<T> extends FlexHBox {
      * 文本组件
      */
     @Getter
-    private FlexLabel text;
+    private FXLabel text;
 
     /**
      * 是否显示跳转组件
@@ -336,7 +336,7 @@ public class PageBox<T> extends FlexHBox {
         this.showText = showText;
         if (showText) {
             if (this.text == null) {
-                this.text = new FlexLabel();
+                this.text = new FXLabel();
                 this.text.setFlexHeight("90%");
                 this.text.setPadding(Insets.EMPTY);
                 HBox.setMargin(this.text, new Insets(1, 0, 0, 5));

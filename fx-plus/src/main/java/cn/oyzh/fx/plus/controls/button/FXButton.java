@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.button;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
@@ -16,7 +17,7 @@ import javafx.scene.control.Button;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXButton extends Button implements NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
+public class FXButton extends Button implements FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -48,4 +49,10 @@ public class FXButton extends Button implements NodeGroup, NodeAdapter, ThemeAda
         ThemeAdapter.super.setEnableTheme(enableTheme);
     }
 
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
+    }
 }

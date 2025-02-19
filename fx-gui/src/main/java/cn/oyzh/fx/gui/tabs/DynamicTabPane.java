@@ -1,6 +1,6 @@
 package cn.oyzh.fx.gui.tabs;
 
-import cn.oyzh.fx.plus.controls.tab.FlexTabPane;
+import cn.oyzh.fx.plus.controls.tab.FXTabPane;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.Tab;
@@ -11,7 +11,7 @@ import javafx.scene.control.Tab;
  * @author oyzh
  * @since 2023/11/03
  */
-public class DynamicTabPane extends FlexTabPane {
+public class DynamicTabPane extends FXTabPane {
 
     {
         super.setTabHeight(25);

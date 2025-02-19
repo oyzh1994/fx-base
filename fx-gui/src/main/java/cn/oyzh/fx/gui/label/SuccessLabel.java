@@ -1,13 +1,13 @@
 package cn.oyzh.fx.gui.label;
 
-import cn.oyzh.fx.plus.controls.label.FlexLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.scene.Node;
 
 /**
  * @author oyzh
  * @since 2024/04/09
  */
-public class SuccessLabel extends FlexLabel {
+public class SuccessLabel extends FXLabel {
 
     {
         this.addClass("success");

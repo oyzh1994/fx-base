@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.plus.LimitLenControl;
-import cn.oyzh.fx.plus.controls.text.field.FlexTextField;
+import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.operator.LimitOperator;
 import javafx.scene.control.TextFormatter;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Getter;
  * @author oyzh
  * @since 2023/08/29
  */
-public class LimitTextField extends FlexTextField implements LimitLenControl {
+public class LimitTextField extends FXTextField implements LimitLenControl {
 
     /**
      * 最大长度

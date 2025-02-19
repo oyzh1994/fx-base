@@ -4,7 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
-import cn.oyzh.fx.plus.controls.pane.FlexPane;
+import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.font.FontUtil;
@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2024/12/14
  */
-public class TitleBar extends FlexPane {
+public class TitleBar extends FXPane {
 
     /**
      * 是否有内容

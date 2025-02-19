@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
-import cn.oyzh.fx.plus.controls.list.FlexListView;
+import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.util.ListViewUtil;
@@ -63,7 +63,7 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     private void initPopup() {
         this.popup = new FXPopup();
         TextField textField = this.getSkinnable();
-        FlexListView<String> listView = new FlexListView<>();
+        FXListView<String> listView = new FXListView<>();
         listView.setRealWidth(NodeUtil.getWidth(textField));
         listView.selectedIndexChanged((observable, oldValue, newValue) -> {
             if (this.selectIndexChanged != null) {
@@ -129,11 +129,11 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
-    private FlexListView<String> getListView() {
+    private FXListView<String> getListView() {
         if (this.popup == null) {
             this.initPopup();
         }
-        return (FlexListView<String>) this.popup.content();
+        return (FXListView<String>) this.popup.content();
     }
 
     public void selectItem(String item) {

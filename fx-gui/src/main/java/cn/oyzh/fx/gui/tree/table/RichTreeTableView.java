@@ -1,6 +1,6 @@
 package cn.oyzh.fx.gui.tree.table;
 
-import cn.oyzh.fx.plus.controls.tree.table.FlexTreeTableView;
+import cn.oyzh.fx.plus.controls.tree.table.FXTreeTableView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.thread.QueueService;
@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
  * @since 2023/11/10
  */
 @Accessors(chain = true, fluent = true)
-public class RichTreeTableView extends FlexTreeTableView {
+public class RichTreeTableView extends FXTreeTableView {
 
     {
         this.initTreeView();

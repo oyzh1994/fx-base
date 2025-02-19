@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -17,7 +18,7 @@ import javafx.scene.text.Text;
  * @author oyzh
  * @since 2023/04/25
  */
-public class FXText extends Text implements StateAdapter, TipAdapter, ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
+public class FXText extends Text implements FlexAdapter, StateAdapter, TipAdapter, ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
 
     {
         NodeManager.init(this);
@@ -55,5 +56,12 @@ public class FXText extends Text implements StateAdapter, TipAdapter, ThemeAdapt
 
     public void clear() {
         this.setText("");
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
     }
 }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.text.area;
 
 import cn.oyzh.common.thread.ThreadUtil;
-import cn.oyzh.fx.plus.controls.text.area.FlexTextArea;
+import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2023/04/08
  */
 @ToString
-public class MsgTextArea extends FlexTextArea {
+public class MsgTextArea extends FXTextArea {
 
     {
         this.setEditable(false);

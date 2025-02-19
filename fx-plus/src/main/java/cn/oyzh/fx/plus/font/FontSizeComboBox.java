@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.i18n.I18nHelper;
 
 /**
@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * @author oyzh
  * @since 2024/04/05
  */
-public class FontSizeComboBox extends FlexComboBox<Integer> {
+public class FontSizeComboBox extends FXComboBox<Integer> {
 
     {
         this.addItem(10);

@@ -13,7 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FlexTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapter, FlexAdapter, ThemeAdapter {
+public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapter, FlexAdapter, ThemeAdapter {
 
     {
         NodeManager.init(this);

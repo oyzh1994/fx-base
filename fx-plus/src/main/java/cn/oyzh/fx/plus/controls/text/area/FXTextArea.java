@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.LimitLineControl;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -30,7 +31,7 @@ import java.util.Collection;
  * @since 2022/1/20
  */
 @Getter
-public class FXTextArea extends TextArea implements LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements FlexAdapter, LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -199,5 +200,12 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
 
     public long lineCount() {
         return this.getText().lines().count();
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
     }
 }

@@ -1,15 +1,12 @@
-package cn.oyzh.fx.plus.controls.text;
+package cn.oyzh.fx.plus.controls.picker;
 
+import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.scene.control.Separator;
+import javafx.scene.control.DatePicker;
 
-/**
- * @author oyzh
- * @since 2023/4/4
- */
-public class FlexSeparator extends Separator implements FlexAdapter, ThemeAdapter {
+public class FXDatePicker extends DatePicker implements ThemeAdapter, FlexAdapter, TipAdapter {
 
     {
         NodeManager.init(this);

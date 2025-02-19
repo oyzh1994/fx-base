@@ -1,7 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.data;
 
 
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.i18n.I18nHelper;
@@ -15,7 +15,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2023/8/14
  */
-public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements I18nSelectAdapter<RichDataType> {
+public class RichDataTypeComboBox extends FXComboBox<RichDataType> implements I18nSelectAdapter<RichDataType> {
 
     {
         NodeManager.init(this);
