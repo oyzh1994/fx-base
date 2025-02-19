@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.ext;
 
 import cn.oyzh.common.SysConst;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.SystemUtil;
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageManager;
 import com.sun.javafx.application.LauncherImpl;

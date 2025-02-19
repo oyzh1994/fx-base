@@ -1,6 +1,6 @@
 package cn.oyzh.fx.terminal.histroy;
 
-import cn.oyzh.common.util.ObjectComparator;
+import cn.oyzh.common.object.ObjectComparator;
 import cn.oyzh.store.jdbc.Column;
 import lombok.Data;
 

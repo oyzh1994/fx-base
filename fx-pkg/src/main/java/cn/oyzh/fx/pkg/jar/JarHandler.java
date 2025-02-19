@@ -2,7 +2,7 @@ package cn.oyzh.fx.pkg.jar;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.RuntimeUtil;
+import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;

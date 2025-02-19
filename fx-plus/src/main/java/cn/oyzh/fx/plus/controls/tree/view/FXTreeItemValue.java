@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
-import cn.oyzh.common.util.Destroyable;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.paint.Color;

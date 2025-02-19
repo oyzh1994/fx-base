@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.keyboard;
 
-import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.common.system.OSUtil;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.common.system.OSUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;

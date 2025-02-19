@@ -2,11 +2,10 @@ package cn.oyzh.fx.terminal;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import cn.oyzh.fx.rich.richtextfx.terminal.RichTerminalTextArea;
@@ -31,14 +30,10 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 命令行文本域

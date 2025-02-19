@@ -1,15 +1,13 @@
 package cn.oyzh.fx.plus.domain;
 
-import cn.oyzh.common.util.ObjectCopier;
+import cn.oyzh.common.object.ObjectCopier;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.opacity.OpacityConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
 import cn.oyzh.store.jdbc.Column;
-import cn.oyzh.store.jdbc.PrimaryKey;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

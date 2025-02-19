@@ -2,7 +2,7 @@ package cn.oyzh.fx.gui.tree.table;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.Destroyable;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;

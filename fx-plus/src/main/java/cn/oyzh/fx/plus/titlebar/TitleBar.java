@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.controls.pane.FlexPane;
