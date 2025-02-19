@@ -11,7 +11,7 @@ import javafx.scene.control.Slider;
  * @author oyzh
  * @since 2024/4/20
  */
-public class FlexSlider extends Slider implements FlexAdapter, ThemeAdapter, TipAdapter {
+public class FXSlider extends Slider implements FlexAdapter, ThemeAdapter, TipAdapter {
 
     {
         NodeManager.init(this);

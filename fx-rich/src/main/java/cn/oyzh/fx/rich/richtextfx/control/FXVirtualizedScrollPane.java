@@ -13,13 +13,13 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
  * @since 2023/10/7
  */
 @DefaultProperty("content")
-public class FlexVirtualizedScrollPane<V extends Region & Virtualized> extends VirtualizedScrollPane<V> implements FlexAdapter {
+public class FXVirtualizedScrollPane<V extends Region & Virtualized> extends VirtualizedScrollPane<V> implements FlexAdapter {
 
     {
         NodeManager.init(this);
     }
 
-    public FlexVirtualizedScrollPane(@NamedArg("content") V content) {
+    public FXVirtualizedScrollPane(@NamedArg("content") V content) {
         super(content);
         content.prefWidthProperty().bind(this.widthProperty());
         content.prefHeightProperty().bind(this.heightProperty());

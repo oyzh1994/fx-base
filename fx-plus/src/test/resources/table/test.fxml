@@ -1,8 +1,4 @@
 <?import atlantafx.base.controls.ToggleSwitch?>
-<?import cn.oyzh.fx.gui.page.PageBox?>
-<?import cn.oyzh.fx.gui.page.PagePane?>
-<?import cn.oyzh.fx.gui.text.field.ClearableTextField?>
-<?import cn.oyzh.fx.gui.text.field.NumberTextField?>
 <?import cn.oyzh.fx.plus.controls.box.FXHBox?>
 <?import cn.oyzh.fx.plus.controls.box.FXVBox?>
 <?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
@@ -85,7 +81,7 @@
                 <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
                 <ToggleSwitch text="测试内容"></ToggleSwitch>
                 <FXTextArea text="测试内容"></FXTextArea>
-                <FlexRichTextArea text="测试内容" promptText="测试内容提示"></FlexRichTextArea>
+                <FXichTextArea text="测试内容" promptText="测试内容提示"></FXichTextArea>
             </FXHBox>
             <FXTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
                            fixedCellSize="30">

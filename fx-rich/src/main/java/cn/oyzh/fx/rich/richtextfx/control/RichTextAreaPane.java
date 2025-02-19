@@ -23,7 +23,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/5/17
  */
-public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FlexVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
+public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
 
     public RichTextAreaPane(E content) {
         super(content);
