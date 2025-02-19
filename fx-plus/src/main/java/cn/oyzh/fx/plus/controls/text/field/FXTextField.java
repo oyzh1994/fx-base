@@ -9,6 +9,8 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.validator.Verifiable;
+import com.sun.source.tree.VariableTree;
 import javafx.scene.control.TextField;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,14 +21,17 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
     }
 
-    @Getter
+    /**
+     * 是否必须
+     */
     @Setter
+    @Getter
     private boolean require;
 
     public FXTextField() {
@@ -54,17 +59,13 @@ public class FXTextField extends TextField implements NodeGroup, NodeAdapter, Th
         return this.getLength() == 0 || this.getText().isEmpty();
     }
 
-    /**
-     * 校验数据
-     *
-     * @return 结果
-     */
+    @Override
     public boolean validate() {
         if (this.require && this.isEmpty()) {
             this.requestFocus();
             return false;
         }
-        return true;
+        return Verifiable.super.validate();
     }
 
     @Override

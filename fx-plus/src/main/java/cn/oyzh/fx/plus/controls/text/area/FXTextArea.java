@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.text.area;
 
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.LimitLenControl;
 import cn.oyzh.fx.plus.LimitLineControl;
@@ -14,7 +15,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.operator.LimitOperator;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
@@ -30,11 +30,17 @@ import java.util.Collection;
  * @since 2022/1/20
  */
 @Getter
-public class FXTextArea extends TextArea implements LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
     }
+
+    /**
+     * 最大长度
+     */
+    @Getter
+    private Long maxLen;
 
     /**
      * 最大行数
@@ -43,10 +49,10 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
     private Long maxLine;
 
     /**
-     * 最大长度
+     * 是否必须
      */
-    @Getter
-    private Long maxLen;
+    @Setter
+    private boolean require;
 
     @Override
     public void setMaxLine(Long maxLine) {
@@ -144,15 +150,22 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
         }
     }
 
-    private Boolean require;
-
-    @Setter
-    private BaseValidator validator = new BaseValidator(this);
-
-    public void setRequire(Boolean require) {
-        this.require = require;
-        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+    @Override
+    public boolean validate() {
+        if (this.require && this.isEmpty()) {
+            this.requestFocus();
+            return false;
+        }
+        return Verifiable.super.validate();
     }
+
+    //    @Setter
+//    private BaseValidator validator = new BaseValidator(this);
+//
+//    public void setRequire(Boolean require) {
+//        this.require = require;
+//        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+//    }
 
     @Override
     public void flushCaret() {

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.combo;
 
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -10,7 +11,6 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
@@ -25,22 +25,35 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter, ThemeAdapter, Verifiable<BaseValidator>, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
 
     {
         NodeManager.init(this);
     }
 
-    @Getter
-    private Boolean require;
-
-    @Getter
+    /**
+     * 是否必须
+     */
     @Setter
-    private BaseValidator validator = new BaseValidator(this);
+    @Getter
+    private boolean require;
+//
+//    @Getter
+//    @Setter
+//    private BaseValidator validator = new BaseValidator(this);
+//
+//    public void setRequire(Boolean require) {
+//        this.require = require;
+//        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+//    }
 
-    public void setRequire(Boolean require) {
-        this.require = require;
-        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+    @Override
+    public boolean validate() {
+        if (this.require && this.getSelectedItem() == null) {
+            this.requestFocus();
+            return false;
+        }
+        return Verifiable.super.validate();
     }
 
     /**
