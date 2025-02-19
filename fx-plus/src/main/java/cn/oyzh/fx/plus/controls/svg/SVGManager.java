@@ -1,11 +1,8 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import javafx.scene.Cursor;
-import javafx.scene.image.Image;
 import javafx.scene.shape.SVGPath;
 import lombok.experimental.UtilityClass;
-
-import java.lang.ref.WeakReference;
 
 /**
  * svg管理器

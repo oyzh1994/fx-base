@@ -1,11 +1,7 @@
 package cn.oyzh.fx.plus.titlebar;
 
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGPane;
-import cn.oyzh.fx.plus.mouse.MouseAdapter;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author oyzh

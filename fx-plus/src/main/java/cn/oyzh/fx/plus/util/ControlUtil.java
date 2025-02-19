@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextInputControl;

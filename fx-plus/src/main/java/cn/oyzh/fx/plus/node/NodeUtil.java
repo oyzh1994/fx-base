@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;

@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.oyzh.common.cache.TimedCache;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;

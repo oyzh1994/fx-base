@@ -1,11 +1,14 @@
 package cn.oyzh.fx.plus.test;
 
-import org.apache.batik.transcoder.*;
-import org.apache.batik.transcoder.image.PNGTranscoder;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class SvgTest3 {
 

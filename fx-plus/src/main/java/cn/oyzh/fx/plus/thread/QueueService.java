@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.thread;
 
-import cn.oyzh.fx.plus.util.FXUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

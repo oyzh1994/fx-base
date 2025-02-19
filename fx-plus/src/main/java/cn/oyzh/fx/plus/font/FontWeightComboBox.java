@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.text.FontWeight;
 

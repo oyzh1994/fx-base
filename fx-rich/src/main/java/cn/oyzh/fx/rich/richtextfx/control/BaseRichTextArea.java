@@ -1,7 +1,6 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.CostUtil;
 import cn.oyzh.common.util.MD5Util;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;

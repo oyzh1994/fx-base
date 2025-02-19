@@ -1,10 +1,7 @@
 package cn.oyzh.fx.gui.setting;
 
 import cn.oyzh.fx.gui.tree.view.RichTreeItemValue;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**

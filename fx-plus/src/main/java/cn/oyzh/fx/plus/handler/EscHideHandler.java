@@ -1,9 +1,6 @@
 package cn.oyzh.fx.plus.handler;
 
-import cn.oyzh.common.cache.CacheUtil;
-import cn.oyzh.common.cache.WeakCache;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
-import javafx.event.EventTarget;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Window;

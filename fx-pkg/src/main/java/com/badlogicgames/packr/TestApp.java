@@ -17,8 +17,7 @@
 
 package com.badlogicgames.packr;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import java.io.File;
 
 public class TestApp {

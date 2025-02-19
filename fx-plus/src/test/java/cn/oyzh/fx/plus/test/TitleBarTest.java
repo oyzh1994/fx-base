@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.test;
 
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.titlebar.TitleBar;
 import cn.oyzh.fx.plus.titlebar.TitleBox;
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

@@ -8,8 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import lombok.NonNull;
 
-import java.io.IOException;
-
 /**
  * fxml加载器扩展
  *

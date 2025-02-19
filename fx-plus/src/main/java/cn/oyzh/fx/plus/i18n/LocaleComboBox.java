@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.i18n;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nLocales;
 import cn.oyzh.i18n.I18nManager;
 

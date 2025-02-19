@@ -2,8 +2,8 @@ package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;

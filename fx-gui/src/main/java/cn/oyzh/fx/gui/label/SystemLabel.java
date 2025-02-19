@@ -3,7 +3,6 @@ package cn.oyzh.fx.gui.label;
 import cn.oyzh.fx.plus.controls.label.FlexLabel;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.Node;
-import javafx.scene.text.FontWeight;
 
 /**
  * @author oyzh

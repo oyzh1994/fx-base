@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nManager;
 import javafx.scene.paint.Color;
 

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.object.DestroyUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;

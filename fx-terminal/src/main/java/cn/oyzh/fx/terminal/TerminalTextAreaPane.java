@@ -1,8 +1,8 @@
 package cn.oyzh.fx.terminal;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;

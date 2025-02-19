@@ -11,7 +11,6 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 /**

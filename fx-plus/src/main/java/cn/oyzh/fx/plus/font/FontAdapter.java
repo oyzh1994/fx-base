@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.scene.Node;

@@ -1,7 +1,5 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
-import cn.oyzh.i18n.I18nHelper;
-
 /**
  * @author oyzh
  * @since 2024/4/11

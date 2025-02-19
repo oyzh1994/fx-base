@@ -1,6 +1,5 @@
 package cn.oyzh.fx.gui.tabs;
 
-import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 

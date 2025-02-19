@@ -1,9 +1,7 @@
 <?import cn.oyzh.fx.plus.controls.box.FlexHBox?>
 <?import cn.oyzh.fx.plus.controls.box.FlexVBox?>
-<?import cn.oyzh.fx.plus.controls.table.FlexTableColumn?>
-<?import cn.oyzh.fx.plus.controls.table.FlexTableView?>
-<?import javafx.scene.control.Button?>
 <?import cn.oyzh.fx.plus.controls.tree.view.FlexTreeView?>
+<?import javafx.scene.control.Button?>
 <FlexVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.treeview.TreeViewTestController">
     <FlexHBox realHeight="50">

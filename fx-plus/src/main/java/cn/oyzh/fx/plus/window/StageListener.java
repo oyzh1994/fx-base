@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.window;
 
-import javafx.stage.WindowEvent;
-
 /**
  * 舞台监听接口
  *

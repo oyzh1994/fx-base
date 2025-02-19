@@ -8,7 +8,6 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.xml.XMLDocument;
 import cn.oyzh.common.xml.XMLElement;
 import cn.oyzh.common.xml.XMLReader;
-import javafx.scene.shape.SVGPath;
 
 import java.net.URL;
 import java.util.Iterator;

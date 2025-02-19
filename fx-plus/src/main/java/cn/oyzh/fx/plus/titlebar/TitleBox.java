@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.titlebar;
 
 import cn.oyzh.fx.plus.controls.box.FXVBox;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;

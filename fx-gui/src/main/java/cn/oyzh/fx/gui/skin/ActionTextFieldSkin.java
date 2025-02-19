@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
