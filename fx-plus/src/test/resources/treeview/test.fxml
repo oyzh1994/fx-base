@@ -1,14 +1,14 @@
-<?import cn.oyzh.fx.plus.controls.box.FlexHBox?>
-<?import cn.oyzh.fx.plus.controls.box.FlexVBox?>
+<?import cn.oyzh.fx.plus.controls.box.FXHBox?>
+<?import cn.oyzh.fx.plus.controls.box.FXVBox?>
 <?import cn.oyzh.fx.plus.controls.tree.view.FXTreeView?>
 <?import javafx.scene.control.Button?>
-<FlexVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
+<FXVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.treeview.TreeViewTestController">
-    <FlexHBox realHeight="50">
+    <FXHBox realHeight="50">
         <Button text="测试1" onAction="#test1"></Button>
         <Button text="测试2" onAction="#test2"></Button>
-    </FlexHBox>
+    </FXHBox>
     <FXTreeView focusTraversable="true" flexWidth="100%" flexHeight="100% - 50" fx:id="tree"
                   fixedCellSize="30">
     </FXTreeView>
-</FlexVBox>
+</FXVBox>

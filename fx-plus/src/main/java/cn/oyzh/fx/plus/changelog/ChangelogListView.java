@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.changelog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.list.FXListView;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -49,7 +50,7 @@ public class ChangelogListView extends FXListView<Node> {
 
         // 特性
         if (CollectionUtil.isNotEmpty(changelog.getFeatures())) {
-            FXLabel label = this.initItem("全新功能");
+            FXLabel label = this.initItem(I18nHelper.features());
             label.addClass("success");
             this.addItem(label);
             for (String feature : changelog.getFeatures()) {
@@ -61,7 +62,7 @@ public class ChangelogListView extends FXListView<Node> {
 
         // 优化
         if (CollectionUtil.isNotEmpty(changelog.getOptimize())) {
-            FXLabel label = this.initItem("优化内容");
+            FXLabel label = this.initItem(I18nHelper.optimize());
             label.addClass("accent");
             this.addItem(label);
             for (String optimize : changelog.getOptimize()) {
@@ -73,7 +74,7 @@ public class ChangelogListView extends FXListView<Node> {
 
         // 问题处理
         if (CollectionUtil.isNotEmpty(changelog.getBugfix())) {
-            FXLabel label = this.initItem("问题修复");
+            FXLabel label = this.initItem(I18nHelper.bugfixes());
             label.addClass("danger");
             this.addItem(label);
             for (String bugfix : changelog.getBugfix()) {

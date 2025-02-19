@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.text;
 
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import lombok.NonNull;
@@ -11,7 +11,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/5/11
  */
-public class FXSeparator1 extends FlexVBox {
+public class FXSeparator1 extends FXVBox {
 
     /**
      * 文字

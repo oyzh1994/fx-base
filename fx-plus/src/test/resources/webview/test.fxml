@@ -1,26 +1,26 @@
 <?import cn.oyzh.fx.gui.text.field.ClearableTextField?>
-<?import cn.oyzh.fx.plus.controls.box.FlexHBox?>
-<?import cn.oyzh.fx.plus.controls.box.FlexVBox?>
+<?import cn.oyzh.fx.plus.controls.box.FXHBox?>
+<?import cn.oyzh.fx.plus.controls.box.FXVBox?>
 <?import cn.oyzh.fx.plus.controls.tab.FXTabPane?>
 <?import cn.oyzh.fx.plus.controls.tab.FXTab?>
 <?import cn.oyzh.fx.plus.controls.web.WebViewPane?>
 <?import javafx.scene.control.Button?>
-<FlexVBox realHeight="800" realWidth="900" xmlns:fx="http://javafx.com/fxml/1"
+<FXVBox realHeight="800" realWidth="900" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="cn.oyzh.fx.plus.test.webview.WebViewTestController" >
-    <FlexHBox realHeight="30">
+    <FXHBox realHeight="30">
         <ClearableTextField fx:id="url" text="http://192.168.2.19:9972" prefWidth="150"></ClearableTextField>
         <Button text="打开页面" onAction="#test1"></Button>
         <Button text="获取cookie" onAction="#test2"></Button>
         <Button text="获取内容" onAction="#test3"></Button>
-    </FlexHBox>
+    </FXHBox>
     <FXTabPane flexWidth="100%" flexHeight="100% - 30">
         <FXTab text="系统页">
-            <FlexVBox flexWidth="100%" flexHeight="100%">
+            <FXVBox flexWidth="100%" flexHeight="100%">
 
             <WebViewPane fx:id="control" flexWidth="100%" flexHeight="100%">
 
             </WebViewPane>
-            </FlexVBox>
+            </FXVBox>
         </FXTab>
     </FXTabPane>
-</FlexVBox>
+</FXVBox>

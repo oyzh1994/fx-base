@@ -7,7 +7,7 @@ import cn.oyzh.fx.gui.svg.glyph.page.PageNextSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PagePrevSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageSettingSVGGlyph;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
-import cn.oyzh.fx.plus.controls.box.FlexHBox;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -31,7 +31,7 @@ import java.util.Objects;
  * @author oyzh
  * @since 2022/12/22
  */
-public class PageBox<T> extends FlexHBox {
+public class PageBox<T> extends FXHBox {
 
     /**
      * 是否显示文本组件

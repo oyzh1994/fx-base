@@ -5,8 +5,8 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DateSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
-import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -80,11 +80,11 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
         cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
-        FlexHBox hBox = new FlexHBox(submit, cancel);
+        FXHBox hBox = new FXHBox(submit, cancel);
         HBox.setMargin(submit, new Insets(5, 0, 0, 3));
         HBox.setMargin(cancel, new Insets(5, 0, 0, 15));
         // 布局组件
-        FlexVBox vBox = new FlexVBox();
+        FXVBox vBox = new FXVBox();
         vBox.addChild(calendar);
         vBox.addChild(hBox);
         // 初始化弹窗

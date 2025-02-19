@@ -3,8 +3,8 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EnlargeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
-import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
@@ -64,9 +64,9 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         cancel.setOnMousePrimaryClicked(event -> this.handleHide());
         HBox.setMargin(ok, new Insets(5, 0, 0, 5));
         HBox.setMargin(cancel, new Insets(5, 0, 0, 15));
-        FlexHBox hBox = new FlexHBox(ok, cancel);
+        FXHBox hBox = new FXHBox(ok, cancel);
         // 组装阶段
-        FlexVBox vBox = new FlexVBox(textArea, hBox);
+        FXVBox vBox = new FXVBox(textArea, hBox);
         this.popup.content(vBox);
         this.popup.setOnHiding(event -> this.onSubmit(textArea.getTextTrim()));
         this.popup.showPopup(textField);
