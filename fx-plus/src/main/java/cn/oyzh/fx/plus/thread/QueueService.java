@@ -73,9 +73,11 @@ public class QueueService {
                     QueueTask task = this.tasks.poll();
                     if (task != null) {
                         if (task.getType() == 2) {
-                            FXUtil.runLater(task.getTask());
+//                            FXUtil.runLater(task.getTask());
+                            BackgroundService.submitFXLater(task.getTask());
                         } else if (task.getType() == 1) {
-                            FXUtil.runWait(task.getTask());
+//                            FXUtil.runWait(task.getTask());
+                            BackgroundService.submitFX(task.getTask());
                         } else {
                             BackgroundService.submit(task.getTask());
                         }

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus;
+package cn.oyzh.fx.plus.converter;
 
 
 import javafx.util.StringConverter;

@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author oyzh
  * @since 2024/5/15
  */
-public class DigitalDecimalFormat extends DecimalFormat {
+public class DigitalFormat extends DecimalFormat {
 
     /**
      * 保留小数位数
@@ -22,11 +22,11 @@ public class DigitalDecimalFormat extends DecimalFormat {
 
     private DecimalFormat format;
 
-    public DigitalDecimalFormat(Integer scaleLen) {
+    public DigitalFormat(Integer scaleLen) {
         this.setScaleLen(scaleLen);
     }
 
-    public DigitalDecimalFormat() {
+    public DigitalFormat() {
         this.setScaleLen(-1);
     }
 

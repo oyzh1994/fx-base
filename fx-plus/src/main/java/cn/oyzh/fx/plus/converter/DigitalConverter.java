@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.converter;
 
-import cn.oyzh.fx.plus.format.DigitalDecimalFormat;
+import cn.oyzh.fx.plus.format.DigitalFormat;
 import javafx.util.converter.FormatStringConverter;
 import lombok.NonNull;
 
@@ -8,13 +8,13 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2024/5/15
  */
-public class DigitalFormatStringConverter extends FormatStringConverter<String> {
+public class DigitalConverter extends FormatStringConverter<String> {
 
-    public DigitalFormatStringConverter() {
-        this(new DigitalDecimalFormat());
+    public DigitalConverter() {
+        this(new DigitalFormat());
     }
 
-    public DigitalFormatStringConverter(@NonNull DigitalDecimalFormat format) {
+    public DigitalConverter(@NonNull DigitalFormat format) {
         super(format);
     }
 
@@ -29,7 +29,7 @@ public class DigitalFormatStringConverter extends FormatStringConverter<String> 
     }
 
     @Override
-    protected DigitalDecimalFormat getFormat() {
-        return (DigitalDecimalFormat) super.getFormat();
+    protected DigitalFormat getFormat() {
+        return (DigitalFormat) super.getFormat();
     }
 }

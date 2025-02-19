@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
-import cn.oyzh.fx.plus.util.MouseUtil;
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;

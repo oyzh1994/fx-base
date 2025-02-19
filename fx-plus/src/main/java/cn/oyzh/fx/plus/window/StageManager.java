@@ -24,7 +24,7 @@ public class StageManager {
     /**
      * 引用属性
      */
-    public static final String REF_ATTR = "_stage_ref";
+    public static final String REF_ATTR = "stage:ref";
 
     /**
      * 主舞台

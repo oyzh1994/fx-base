@@ -222,26 +222,26 @@ public class ControlUtil {
     //     });
     // }
 
-    /**
-     * 初始化开关组件按钮
-     *
-     * @param type 类型
-     */
-    public static SVGGlyph initSwitchButton(int type) {
-        // 初始化增加、减少按钮
-        SVGGlyph svgGlyph;
-        if (type == 1) {
-            svgGlyph = new SVGGlyph("/fx-svg/switch-ON.svg");
-            svgGlyph.setColor("#0e932e");
-        } else {
-            svgGlyph = new SVGGlyph("/fx-svg/switch-OFF.svg");
-            svgGlyph.setColor("#000000");
-        }
-        svgGlyph.managedBindVisible();
-        svgGlyph.setEnableWaiting(false);
-//        svgGlyph.setPadding(new Insets(0));
-        return svgGlyph;
-    }
+//    /**
+//     * 初始化开关组件按钮
+//     *
+//     * @param type 类型
+//     */
+//    public static SVGGlyph initSwitchButton(int type) {
+//        // 初始化增加、减少按钮
+//        SVGGlyph svgGlyph;
+//        if (type == 1) {
+//            svgGlyph = new SVGGlyph("/fx-svg/switch-ON.svg");
+//            svgGlyph.setColor("#0e932e");
+//        } else {
+//            svgGlyph = new SVGGlyph("/fx-svg/switch-OFF.svg");
+//            svgGlyph.setColor("#000000");
+//        }
+//        svgGlyph.managedBindVisible();
+//        svgGlyph.setEnableWaiting(false);
+////        svgGlyph.setPadding(new Insets(0));
+//        return svgGlyph;
+//    }
 
 //    /**
 //     * 设置高度

@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * @since 2023/05/15
  */
 @Accessors(chain = true, fluent = true)
-public class NodeResizeHelper {
+public class NodeResizer {
 
     /**
      * 事件节点
@@ -102,7 +102,7 @@ public class NodeResizeHelper {
     @Setter
     private Consumer<Float> resizeTriggered;
 
-    public NodeResizeHelper(@NonNull Node eventNode, @NonNull Cursor originalCursor, Consumer<Float> resizeTriggered) {
+    public NodeResizer(@NonNull Node eventNode, @NonNull Cursor originalCursor, Consumer<Float> resizeTriggered) {
         this.eventNode = eventNode;
         this.originalCursor = originalCursor;
         this.resizeTriggered = resizeTriggered;

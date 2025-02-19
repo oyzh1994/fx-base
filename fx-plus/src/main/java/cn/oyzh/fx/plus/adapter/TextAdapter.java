@@ -15,6 +15,20 @@ import org.fxmisc.richtext.GenericStyledArea;
 public interface TextAdapter {
 
     /**
+     * 解除文本变化监听器
+     */
+    default void unbindTextChangeListener() {
+        if (this instanceof Text text) {
+            text.textProperty().unbind();
+        } else if (this instanceof Labeled labeled) {
+            labeled.textProperty().unbind();
+        } else if (this instanceof TextInputControl inputControl) {
+            inputControl.textProperty().unbind();
+        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+        }
+    }
+
+    /**
      * 移除文本变化监听器
      *
      * @param listener 监听器
@@ -30,7 +44,7 @@ public interface TextAdapter {
         } else if (this instanceof TextInputControl inputControl) {
             inputControl.textProperty().removeListener(listener);
         } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-            area.textProperty().addListener(listener);
+            area.textProperty().removeListener(listener);
         }
     }
 

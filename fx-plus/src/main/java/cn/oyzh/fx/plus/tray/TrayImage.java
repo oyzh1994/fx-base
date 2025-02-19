@@ -256,7 +256,7 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
     /**
      * 显示菜单
      */
-    private void showMenu() {
+    protected void showMenu() {
         // 初始化窗口
         if (this.stage == null) {
             this.stage = StageManager.newStage(null);

@@ -4,7 +4,7 @@ import cn.oyzh.fx.plus.controls.tree.table.FlexTreeTableView;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.MouseUtil;
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Window;

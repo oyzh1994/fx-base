@@ -15,13 +15,13 @@ import java.io.Serializable;
 
 
 /**
- * zk设置
+ * app设置
  *
  * @author oyzh
  * @since 2022/8/26
  */
 @Setter
-public class Setting implements Serializable, ObjectCopier<Object> {
+public class AppSetting implements Serializable, ObjectCopier<Object> {
 
     /**
      * 窗口透明度
@@ -428,7 +428,7 @@ public class Setting implements Serializable, ObjectCopier<Object> {
 
     @Override
     public void copy(Object obj) {
-        if (obj instanceof Setting t1) {
+        if (obj instanceof AppSetting t1) {
             // 主题
             this.theme = t1.theme;
             this.fgColor = t1.fgColor;

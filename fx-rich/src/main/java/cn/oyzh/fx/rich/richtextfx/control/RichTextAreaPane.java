@@ -23,7 +23,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/5/17
  */
-public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
+public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FlexVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
 
     public RichTextAreaPane(E content) {
         super(content);
@@ -31,7 +31,7 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     }
 
     protected void initTextArea() {
-        FlexRichTextArea area = this.getContent();
+        BaseRichTextArea area = this.getContent();
         area.disableProperty().bind(this.disableProperty());
         area.onKeyPressedProperty().bind(this.onKeyPressedProperty());
     }

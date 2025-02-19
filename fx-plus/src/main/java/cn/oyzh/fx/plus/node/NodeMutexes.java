@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.BooleanUtil;
 import javafx.scene.Node;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/12/19
  */
-public class NodeMutexes {
+public class NodeMutexes implements Destroyable {
 
     /**
      * 节点列表
@@ -105,5 +106,11 @@ public class NodeMutexes {
                 node1.setManaged(res);
             }
         }
+    }
+
+    @Override
+    public void destroy() {
+        this.nodes = null;
+        this.manageBindVisible = null;
     }
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 树分组
+ * app分组
  *
  * @author oyzh
  * @since 2023/6/16
@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, Serializable {
+public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Serializable {
 
     /**
      * 分组id
@@ -40,7 +40,7 @@ public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, S
     private Boolean expand;
 
     @Override
-    public int compareTo(TreeGroup o) {
+    public int compareTo(AppGroup o) {
         if (o == null) {
             return 1;
         }
@@ -58,7 +58,7 @@ public class TreeGroup implements ObjectCopier<Object>, Comparable<TreeGroup>, S
 
     @Override
     public void copy(Object obj) {
-        if (obj instanceof TreeGroup t1) {
+        if (obj instanceof AppGroup t1) {
             this.gid = t1.gid;
             this.name = t1.name;
             this.expand = t1.expand;

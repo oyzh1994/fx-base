@@ -4,7 +4,7 @@ import cn.oyzh.common.util.RegexHelper;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
+import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
 import lombok.Getter;
@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
  * @since 2024/04/17
  */
 
-public class RichDataTextArea extends FlexRichTextArea {
+public class RichDataTextArea extends BaseRichTextArea {
 
     /**
      * 是否忽略变化

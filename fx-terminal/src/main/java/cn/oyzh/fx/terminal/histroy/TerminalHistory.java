@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * zk命令行历史
+ * 命令行历史
  *
  * @author oyzh
  * @since 2023/5/29

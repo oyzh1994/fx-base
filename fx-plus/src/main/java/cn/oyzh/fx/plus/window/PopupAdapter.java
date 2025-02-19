@@ -72,36 +72,48 @@ public interface PopupAdapter extends WindowAdapter {
 
     @Override
     default void hideOnEscape() {
-        if (!EscHideHandler.exists(this.popup())) {
-            EscHideHandler.init(this.popup());
-        }
+//        if (!EscHideHandler.exists(this.popup())) {
+//            EscHideHandler.init(this.popup());
+//        }
+        this.setProp("escHideHandler", new EscHideHandler(this.popup()));
     }
 
     @Override
     default void unHideOnEscape() {
-        EscHideHandler.destroy(this.popup());
-    }
-
-    @Override
-    default boolean isHideOnEscape() {
-        return EscHideHandler.exists(this.popup());
-    }
-
-    @Override
-    default void switchOnTab() {
-        if (!TabSwitchHandler.exists(this.popup())) {
-            TabSwitchHandler.init(this.popup());
+//        EscHideHandler.destroy(this.popup());
+        EscHideHandler escHideHandler = this.removeProp("escHideHandler");
+        if (escHideHandler != null) {
+            escHideHandler.destroy();
         }
     }
 
     @Override
+    default boolean isHideOnEscape() {
+//        return EscHideHandler.exists(this.popup());
+        return this.hasProp("escHideHandler");
+    }
+
+    @Override
+    default void switchOnTab() {
+//        if (!TabSwitchHandler.exists(this.popup())) {
+//            TabSwitchHandler.init(this.popup());
+//        }
+        this.setProp("tabSwitchHandler", new TabSwitchHandler(this.popup()));
+    }
+
+    @Override
     default void unSwitchOnTab() {
-        TabSwitchHandler.destroy(this.popup());
+//        TabSwitchHandler.destroy(this.popup());
+        TabSwitchHandler tabSwitchHandler = this.removeProp("tabSwitchHandler");
+        if (tabSwitchHandler != null) {
+            tabSwitchHandler.destroy();
+        }
     }
 
     @Override
     default boolean isSwitchOnTab() {
-        return TabSwitchHandler.exists(this.popup());
+//        return TabSwitchHandler.exists(this.popup());
+        return this.hasProp("tabSwitchHandler");
     }
 
     /**

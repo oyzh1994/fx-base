@@ -107,6 +107,7 @@ public class ClipboardUtil {
      * @param tipText 提示标题
      * @return 结果
      */
+    @Deprecated
     public static boolean setStringAndTip(@NonNull String content, String tipText) {
         try {
             StringSelection stringSelection = new StringSelection(content);

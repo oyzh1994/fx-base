@@ -2,7 +2,7 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
+import cn.oyzh.fx.plus.converter.DigitalConverter;
 import cn.oyzh.fx.gui.skin.DigitalTextFieldSkin;
 import javafx.scene.control.Skin;
 import javafx.scene.control.TextFormatter;
@@ -77,7 +77,7 @@ public abstract class DigitalTextField extends LimitTextField {
         return skin;
     }
 
-    protected abstract DigitalFormatStringConverter getConverter();
+    protected abstract DigitalConverter getConverter();
 
     /**
      * 值变化

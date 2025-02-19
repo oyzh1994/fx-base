@@ -1,5 +1,6 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.plus.mouse;
 
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import lombok.experimental.UtilityClass;
