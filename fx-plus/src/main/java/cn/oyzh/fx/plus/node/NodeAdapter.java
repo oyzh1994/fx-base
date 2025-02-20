@@ -100,16 +100,16 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentWidth() {
         Parent parent = this.parent();
-        // if (parent instanceof Region region) {
-        //     return region.getWidth();
-        // }
+         if (parent instanceof Region region) {
+             return region.getWidth();
+         }
         if (parent != null) {
-            // return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
-            return NodeUtil.getWidth(parent);
+             return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
+//            return NodeUtil.getWidth(parent);
         }
         if (this instanceof Node node && node.getScene() != null) {
-            // return node.getScene().getWidth();
-            return NodeUtil.getWidth(node.getScene());
+             return node.getScene().getWidth();
+//            return NodeUtil.getWidth(node.getScene());
         }
         return Double.NaN;
     }
@@ -121,16 +121,16 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentHeight() {
         Parent parent = this.parent();
-        // if (parent instanceof Region region) {
-        //     return region.getHeight();
-        // }
+         if (parent instanceof Region region) {
+             return region.getHeight();
+         }
         if (parent != null) {
-            // return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
-            return NodeUtil.getHeight(parent);
+             return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
+//            return NodeUtil.getHeight(parent);
         }
         if (this instanceof Node node && node.getScene() != null) {
-            // return node.getScene().getHeight();
-            return NodeUtil.getHeight(node.getScene());
+             return node.getScene().getHeight();
+//            return NodeUtil.getHeight(node.getScene());
         }
         return Double.NaN;
     }
