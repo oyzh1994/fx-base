@@ -478,10 +478,14 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
+            // 更新stage
+            Runnable task = () -> TaskManager.startDelay("stage:update", () -> FXUtil.runWait(this::updateStage), 1);
             // 最大化
-            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
+            // stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
+            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> task.run());
             // 全屏
-            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
+            // stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
+            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> task.run());
             // 初始化
             NodeManager.init(this);
         }
