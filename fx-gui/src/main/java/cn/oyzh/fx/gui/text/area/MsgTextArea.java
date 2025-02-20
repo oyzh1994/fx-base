@@ -1,11 +1,15 @@
 package cn.oyzh.fx.gui.text.area;
 
 import cn.oyzh.common.thread.ThreadUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
+import cn.oyzh.i18n.I18nHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,6 +27,11 @@ public class MsgTextArea extends FXTextArea {
     {
         this.setEditable(false);
     }
+
+    /**
+     * 单行内容最大长度，避免性能问题
+     */
+    public static int LINE_MAX_LENGTH = 20 * 1024;
 
     /**
      * 最大行数
@@ -55,6 +64,32 @@ public class MsgTextArea extends FXTextArea {
     private final AtomicBoolean appending = new AtomicBoolean(false);
 
     @Override
+    public void appendLines(Collection<String> lines) {
+        if (CollectionUtil.isNotEmpty(lines)) {
+            StringBuilder builder = new StringBuilder();
+            for (String line : lines) {
+                if (line != null) {
+                    if (line.length() > LINE_MAX_LENGTH) {
+                        line = I18nHelper.contentTooLarge();
+                    }
+                    builder.append(line).append(System.lineSeparator());
+                }
+            }
+            this.appendText(builder.toString());
+        }
+    }
+
+    @Override
+    public void appendLine(String s) {
+        if (s != null) {
+            if (s.length() > LINE_MAX_LENGTH) {
+                s = I18nHelper.contentTooLarge();
+            }
+            this.appendText(s + System.lineSeparator());
+        }
+    }
+
+    @Override
     public void appendText(String s) {
         if (s != null) {
             try {
@@ -77,14 +112,14 @@ public class MsgTextArea extends FXTextArea {
     /**
      * 执行拼接
      */
-    private void doAppend(String text) {
+    protected void doAppend(String text) {
         this.queue.add(text);
         if (this.appending.get()) {
             return;
         }
         this.appending.compareAndSet(false, true);
         // 执行拼接
-        ThreadUtil.startVirtual(() -> {
+        ThreadUtil.start(() -> {
             try {
                 StringBuilder builder = new StringBuilder();
                 do {
@@ -105,7 +140,6 @@ public class MsgTextArea extends FXTextArea {
     public void setTextExt(String text) {
         this.queue.clear();
         super.setTextExt(text);
-
     }
 
     /**
