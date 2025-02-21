@@ -55,7 +55,7 @@ public class DragUtil {
                 clipboardContent.putString(content);
                 db.setContent(clipboardContent);
                 // 设置特效
-                handler.initDrapEffect(source);
+                handler.initDragEffect(source);
             }
             event.consume();
         });
@@ -115,7 +115,7 @@ public class DragUtil {
         scene.setOnDragOver(handler::onDragOver);
         scene.setOnDragExited(handler::onDragExited);
         scene.setOnDragDropped(handler::onDragDropped);
-        scene.getProperties().put("_drapFileHandler", handler);
+        scene.getProperties().put("_dragFileHandler", handler);
     }
 
     /**
@@ -124,8 +124,8 @@ public class DragUtil {
      * @param scene 场景
      */
     public static void clearDragFile(Scene scene) {
-        if (scene != null && scene.getProperties().containsKey("_drapFileHandler")) {
-            DragFileHandler handler = (DragFileHandler) scene.getProperties().get("_drapFileHandler");
+        if (scene != null && scene.getProperties().containsKey("_dragFileHandler")) {
+            DragFileHandler handler = (DragFileHandler) scene.getProperties().get("_dragFileHandler");
             handler.clearEvent(scene);
             // scene.getProperties().remove("_drapFileHandler");
             // scene.setOnDragOver(null);

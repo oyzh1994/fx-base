@@ -730,7 +730,7 @@ public interface StageAdapter extends WindowAdapter {
             @Override
             protected void dragOver(DragEvent event) {
                 disable();
-                appendTitle(I18nHelper.dragTip1());
+                appendTitle("===" + I18nHelper.dragTip1());
             }
 
             @Override

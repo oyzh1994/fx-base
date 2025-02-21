@@ -65,7 +65,7 @@ public class DragNodeHandler {
      *
      * @param source 节点
      */
-    public void initDrapEffect(DragNodeItem source) {
+    public void initDragEffect(DragNodeItem source) {
         this.clearDrapEffect();
         source.initDragEffect();
         this.source = source;
@@ -113,7 +113,7 @@ public class DragNodeHandler {
                 clipboardContent.putString(content);
                 db.setContent(clipboardContent);
                 // 设置特效
-                this.initDrapEffect(source);
+                this.initDragEffect(source);
             }
             event.consume();
         });
