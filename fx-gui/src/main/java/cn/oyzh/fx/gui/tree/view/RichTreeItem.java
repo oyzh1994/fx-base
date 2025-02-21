@@ -210,7 +210,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * @return 子节点列表
      */
     public ObservableList<TreeItem<?>> unfilteredChildren() {
-        List list = super.getChildren();
+        ObservableList list = super.getChildren();
         // 如果是可过滤则显示真实子节点列表
         return (ObservableList<TreeItem<?>>) list;
     }
@@ -265,7 +265,8 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
             }
             children.clear();
         };
-        this.service().submitFXLater(() -> {
+        FXUtil.runWait(() -> {
+//        this.service().submitFX(() -> {
             ObservableList<TreeItem<V>> children = super.getChildren();
             for (TreeItem<?> child : children) {
                 clearChildren.accept(child);
@@ -286,14 +287,16 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     @Override
     public void setChild(TreeItem<?> item) {
         if (item != null) {
-            this.service().submitFX(() -> this.unfilteredChildren().setAll(item));
+            FXUtil.runWait(() -> this.unfilteredChildren().setAll(item));
+//            this.service().submitFX(() -> this.unfilteredChildren().setAll(item));
         }
     }
 
     @Override
     public void setChild(TreeItem<?>... items) {
         if (ArrayUtil.isEmpty(items)) {
-            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
+            FXUtil.runWait(() -> this.unfilteredChildren().setAll(items));
+//            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
         }
     }
 
