@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
@@ -57,10 +58,12 @@ public class PopupExt extends Popover implements PopupAdapter {
                 );
             }
             int offset = 4;
-            switch (getArrowLocation()) {
-                case BOTTOM_LEFT -> show(
-                        owner, bounds.getMinX() + 8, bounds.getMinY() + offset
-                );
+            switch (this.getArrowLocation()) {
+                case BOTTOM_LEFT -> super.show(owner, bounds.getMinX() + 8, bounds.getMinY() + offset);
+                case TOP_CENTER -> {
+                    super.show(owner, bounds.getMinX() + 8, bounds.getMaxY() - 8 - NodeUtil.getHeight(owner));
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + this.getArrowLocation());
             }
         } else {
             super.show(owner);
