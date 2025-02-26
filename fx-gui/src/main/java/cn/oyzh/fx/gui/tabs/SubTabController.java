@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/10/12
  */
-public class SubTabController extends DynamicTabController {
+public class SubTabController extends RichTabController {
 
     /**
      * 父控制器

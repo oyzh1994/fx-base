@@ -19,20 +19,20 @@ import java.util.ResourceBundle;
  * @author oyzh
  * @since 2023/11/3
  */
-public abstract class DynamicTabController implements EventListener, I18nAdapter, Initializable {
+public abstract class RichTabController implements EventListener, I18nAdapter, Initializable {
 
-    private Reference<DynamicTab> tabReference;
+    private Reference<RichTab> tabReference;
 
-    protected void setTab(DynamicTab tab) {
+    protected void setTab(RichTab tab) {
         this.tabReference = new WeakReference<>(tab);
     }
 
-    public DynamicTab getTab() {
+    public RichTab getTab() {
         return this.tabReference != null ? this.tabReference.get() : null;
     }
 
     public void closeTab() {
-        DynamicTab tab = this.getTab();
+        RichTab tab = this.getTab();
         if (tab != null) {
             tab.closeTab();
         } else {
@@ -41,35 +41,35 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
     }
 
     public void disableTab() {
-        DynamicTab tab = this.getTab();
+        RichTab tab = this.getTab();
         if (tab != null) {
             tab.disable();
         }
     }
 
     public void enableTab() {
-        DynamicTab tab = this.getTab();
+        RichTab tab = this.getTab();
         if (tab != null) {
             tab.enable();
         }
     }
 
     public void flushTab() {
-        DynamicTab tab = this.getTab();
+        RichTab tab = this.getTab();
         if (tab != null) {
             tab.flush();
         }
     }
 
     public void flushTabGraphic() {
-        DynamicTab tab = this.getTab();
+        RichTab tab = this.getTab();
         if (tab != null) {
             tab.flushGraphic();
         }
     }
 
     public void flushTabGraphicColor() {
-        DynamicTab tab = this.getTab();
+        RichTab tab = this.getTab();
         if (tab != null) {
             tab.flushGraphicColor();
         }
@@ -85,7 +85,7 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
     /**
      * tab初始化事件
      */
-    public void onTabInit(DynamicTab tab) {
+    public void onTabInit(RichTab tab) {
         this.setTab(tab);
         this.bindListeners();
         EventListener.super.register();
@@ -96,7 +96,7 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
      *
      * @param event 事件
      */
-    public void onTabClose(DynamicTab tab, Event event) {
+    public void onTabClose(RichTab tab, Event event) {
         EventListener.super.unregister();
         if (!tab.hasProp("tab:close:flag")) {
             tab.setProp("tab:close:flag", true);
@@ -109,7 +109,7 @@ public abstract class DynamicTabController implements EventListener, I18nAdapter
      *
      * @param event 事件
      */
-    public void onCloseRequest(DynamicTab tab, Event event) {
+    public void onCloseRequest(RichTab tab, Event event) {
     }
 
     @Override

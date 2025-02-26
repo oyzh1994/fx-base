@@ -25,9 +25,9 @@ import java.util.List;
  * @author oyzh
  * @since 2023/11/03
  */
-public abstract class DynamicTab extends FXTab {
+public abstract class RichTab extends FXTab {
 
-    public DynamicTab() {
+    public RichTab() {
         // 加载内容
         this.loadContent();
         this.setClosable(true);
@@ -47,7 +47,7 @@ public abstract class DynamicTab extends FXTab {
                 parent.getStylesheets().add(FXStyle.FX_BASE);
             }
             this.setContent(content);
-            DynamicTabController controller = loaderExt.getController();
+            RichTabController controller = loaderExt.getController();
             this.setProp("_controller", controller);
             controller.onTabInit(this);
             this.setOnClosed(e -> controller.onTabClose(this, e));
@@ -55,7 +55,7 @@ public abstract class DynamicTab extends FXTab {
         }
     }
 
-    protected DynamicTabController controller() {
+    protected RichTabController controller() {
         return this.getProp("_controller");
     }
 
@@ -144,7 +144,7 @@ public abstract class DynamicTab extends FXTab {
         FXMenuItem closeTab = MenuItemHelper.closeCurrTab(this::closeTab);
         FXMenuItem closeLeftTab = MenuItemHelper.closeLeftTab(this::closeLeftTab);
         FXMenuItem closeRightTab = MenuItemHelper.closeRightTab(this::closeRightTab);
-        FXMenuItem closeOtherTab = MenuItemHelper.closeOtherTab(this::closeAllTab);
+        FXMenuItem closeOtherTab = MenuItemHelper.closeOtherTab(this::closeOtherTab);
         FXMenuItem closeAllTab = MenuItemHelper.closeAllTab(this::closeAllTab);
         items.add(closeTab);
         items.add(closeLeftTab);

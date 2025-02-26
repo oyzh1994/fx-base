@@ -11,7 +11,7 @@ import javafx.scene.control.Tab;
  * @author oyzh
  * @since 2023/11/03
  */
-public class DynamicTabPane extends FXTabPane {
+public class RichTabPane extends FXTabPane {
 
     {
         super.setTabHeight(25);
@@ -69,7 +69,7 @@ public class DynamicTabPane extends FXTabPane {
      * 重新载入
      */
     public void reload() {
-        if (this.getSelectedItem() instanceof DynamicTab tab) {
+        if (this.getSelectedItem() instanceof RichTab tab) {
             tab.reload();
         }
     }
