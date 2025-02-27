@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.toggle;
 
 import atlantafx.base.controls.ToggleSwitch;
+import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
@@ -17,7 +18,7 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/12/19
  */
-public class FXToggleSwitch extends ToggleSwitch implements NodeGroup, TipAdapter, StateAdapter, FontAdapter {
+public class FXToggleSwitch extends ToggleSwitch implements LayoutAdapter, NodeGroup, TipAdapter, StateAdapter, FontAdapter {
 
     /**
      * 选中时显示的文字
