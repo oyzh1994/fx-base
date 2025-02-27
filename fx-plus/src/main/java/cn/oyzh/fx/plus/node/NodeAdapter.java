@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
@@ -100,15 +101,15 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentWidth() {
         Parent parent = this.parent();
-         if (parent instanceof Region region) {
-             return region.getWidth();
-         }
+        if (parent instanceof Region region) {
+            return region.getWidth();
+        }
         if (parent != null) {
-             return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
+            return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
 //            return NodeUtil.getWidth(parent);
         }
         if (this instanceof Node node && node.getScene() != null) {
-             return node.getScene().getWidth();
+            return node.getScene().getWidth();
 //            return NodeUtil.getWidth(node.getScene());
         }
         return Double.NaN;
@@ -121,15 +122,15 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentHeight() {
         Parent parent = this.parent();
-         if (parent instanceof Region region) {
-             return region.getHeight();
-         }
+        if (parent instanceof Region region) {
+            return region.getHeight();
+        }
         if (parent != null) {
-             return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
+            return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
 //            return NodeUtil.getHeight(parent);
         }
         if (this instanceof Node node && node.getScene() != null) {
-             return node.getScene().getHeight();
+            return node.getScene().getHeight();
 //            return NodeUtil.getHeight(node.getScene());
         }
         return Double.NaN;
@@ -476,7 +477,14 @@ public interface NodeAdapter extends EventTarget {
      * 清除焦点
      */
     default void clearFocus() {
-        FXUtil.runWait(() -> this.scene().focusCleanup());
+        FXUtil.runWait(() -> {
+//            this.scene().focusCleanup();
+            try {
+                ReflectUtil.invoke(this.scene(), "focusCleanup");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -484,7 +492,14 @@ public interface NodeAdapter extends EventTarget {
      */
     default void focusNode() {
         if (this instanceof Node node) {
-            FXUtil.runWait(() -> this.scene().setFocusOwner(node, true));
+            FXUtil.runWait(() -> {
+//                this.scene().setFocusOwner(node, true);
+                try {
+                    ReflectUtil.invoke(this.scene(), "setFocusOwner", node, true);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
         }
     }
 }

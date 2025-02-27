@@ -432,7 +432,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
             destroyable.destroy();
         }
         this.setValue(null);
-        this.setParent(null);
+//        this.setParent(null);
         this.setGraphic(null);
         this.clearChild();
         this.treeView = null;

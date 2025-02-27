@@ -156,8 +156,8 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
             svgPath.setFill(this.activeColor);
         } else if (this.color != null) {// 指定颜色
             svgPath.setFill(this.color);
-        } else if (this.isEnableTheme()) {// 主题色
-            svgPath.setFill(ThemeManager.currentForegroundColor());
+        } else if (this.isEnableTheme()) {// 强调色
+            svgPath.setFill(ThemeManager.currentAccentColor());
         }
     }
 
@@ -265,6 +265,8 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.original.scaleYProperty().bind(this.heightProperty().divide(this.original.getBoundsInLocal().getHeight()));
         // 设置节点
         this.setChild(this.original);
+//        // 更新内容
+//        this.updateContent();
     }
 
     /**
@@ -354,6 +356,9 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
         this.setFocusTraversable(false);
+        this.cursorProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
+        this.disableProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
+        this.disabledProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
     }
 
     @Override
@@ -363,23 +368,23 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
     }
 
-    @Override
-    public void setCursor(Cursor value) {
-        super.setCursor(value);
-        this.updateContent();
-    }
-
-    @Override
-    public void setDisable(boolean value) {
-        super.setDisable(value);
-        this.updateContent();
-    }
-
-    @Override
-    public void setDisabled(boolean value) {
-        super.setDisabled(value);
-        this.updateContent();
-    }
+//    @Override
+//    public void setCursor(Cursor value) {
+//        super.setCursor(value);
+//        this.updateContent();
+//    }
+//
+//    @Override
+//    public void setDisable(boolean value) {
+//        super.setDisable(value);
+//        this.updateContent();
+//    }
+//
+//    @Override
+//    public void setDisabled(boolean value) {
+//        super.setDisabled(value);
+//        this.updateContent();
+//    }
 
     /**
      * 激活

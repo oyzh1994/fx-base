@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -116,7 +117,8 @@ public interface ThemeStyle {
                     node.getStylesheets().remove(FXStyle.FX_BASE);
                     node.getStylesheets().add(FXStyle.FX_BASE);
                     // 重新应用样式
-                    node.reapplyCss();
+//                    node.reapplyCss();
+                    ReflectUtil.invoke(node, "reapplyCss");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -161,5 +163,4 @@ public interface ThemeStyle {
         // 返回相关度
         return d1 * 5.5 + d2 * 2.5 + d3 * 2;
     }
-
 }

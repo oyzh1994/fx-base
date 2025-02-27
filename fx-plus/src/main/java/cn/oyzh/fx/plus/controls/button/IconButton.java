@@ -97,4 +97,12 @@ public class IconButton extends FXButton {
             }
         }
     }
+
+//    @Override
+//    public void changeTheme(ThemeStyle style) {
+//        super.changeTheme(style);
+//        if (this.getGraphic() instanceof ThemeAdapter adapter) {
+//            adapter.changeTheme(style);
+//        }
+//    }
 }

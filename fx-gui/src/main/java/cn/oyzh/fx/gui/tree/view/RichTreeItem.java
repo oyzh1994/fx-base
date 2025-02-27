@@ -27,6 +27,14 @@ import java.util.function.Consumer;
  */
 public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
+//    {
+//        this.addEventFilter(childrenModificationEvent(), e -> {
+//            if (!this.isSorting()) {
+//                this.doFilter();
+//            }
+//        });
+//    }
+
     /**
      * bit值设置，减少内存占用
      */
@@ -186,13 +194,13 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return (RichTreeView) super.getTreeView();
     }
 
-    @Override
-    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
-        super.updateChildren(c);
-        if (!this.isSorting()) {
-            this.doFilter();
-        }
-    }
+//    @Override
+//    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
+//        super.updateChildren(c);
+//        if (!this.isSorting()) {
+//            this.doFilter();
+//        }
+//    }
 
     @Override
     public ObservableList getChildren() {
