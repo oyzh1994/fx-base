@@ -35,10 +35,10 @@ public class ParentTabController extends RichTabController {
     }
 
     @Override
-    public void onTabClose(RichTab tab, Event event) {
-        super.onTabClose(tab, event);
+    public void onTabClosed(Event event) {
+        super.onTabClosed(event);
         for (RichTabController controller : this.getSubControllers()) {
-            controller.onTabClose(tab, event);
+            controller.onTabClosed(event);
         }
     }
 

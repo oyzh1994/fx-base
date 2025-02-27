@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.MenuItem;
@@ -50,8 +51,8 @@ public abstract class RichTab extends FXTab {
             RichTabController controller = loaderExt.getController();
             this.setProp("_controller", controller);
             controller.onTabInit(this);
-            this.setOnClosed(e -> controller.onTabClose(this, e));
-            this.setOnCloseRequest(e -> controller.onCloseRequest(this, e));
+//            this.setOnClosed(e -> controller.onTabClose(this, e));
+//            this.setOnCloseRequest(e -> controller.onCloseRequest(this, e));
         }
     }
 
@@ -223,5 +224,22 @@ public abstract class RichTab extends FXTab {
 
     protected String getTabTitle() {
         return null;
+    }
+
+    @Override
+    protected void onTabClosed(Event event) {
+        RichTabController controller = controller();
+        if (controller != null) {
+            controller.onTabClosed(event);
+        }
+    }
+
+    @Override
+    protected void onTabCloseRequest(Event event) {
+        RichTabController controller = controller();
+        if (controller != null) {
+            controller.onTabCloseRequest(event);
+        }
+
     }
 }

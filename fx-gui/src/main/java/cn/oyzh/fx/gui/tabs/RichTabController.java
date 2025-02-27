@@ -96,9 +96,10 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
      *
      * @param event 事件
      */
-    public void onTabClose(RichTab tab, Event event) {
+    public void onTabClosed(Event event) {
         EventListener.super.unregister();
-        if (!tab.hasProp("tab:close:flag")) {
+        RichTab tab = this.getTab();
+        if (tab != null && !tab.hasProp("tab:close:flag")) {
             tab.setProp("tab:close:flag", true);
             EventUtil.post(new TabClosedEvent(tab));
         }
@@ -109,7 +110,7 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
      *
      * @param event 事件
      */
-    public void onCloseRequest(RichTab tab, Event event) {
+    public void onTabCloseRequest(Event event) {
     }
 
     @Override
