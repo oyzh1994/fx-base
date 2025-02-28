@@ -75,6 +75,7 @@ public class SystemTheme implements Theme, ThemeStyle {
     public String getUserAgentStylesheet() {
         if (this.themePath == null) {
             this.updateThemeCss();
+            JulLog.info("themePath:{}", this.themePath);
         }
         return new File(this.themePath).toURI().toString();
 //        return this.themePath;
