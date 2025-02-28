@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.util.Locale;
 
 /**
@@ -51,7 +52,8 @@ public class SystemTheme implements Theme, ThemeStyle {
             FileUtil.del(this.themePath.replace("file:/", ""));
         }
         // 设置主题文件
-        this.themePath = "file:/" + ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
+//        this.themePath = "file:/" + ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
+        this.themePath = ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
     }
 
     @Override
@@ -74,7 +76,8 @@ public class SystemTheme implements Theme, ThemeStyle {
         if (this.themePath == null) {
             this.updateThemeCss();
         }
-        return this.themePath;
+        return new File(this.themePath).toURI().toString();
+//        return this.themePath;
     }
 
     @Override
