@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.jdeps;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -64,7 +65,12 @@ public class JDepsHandler implements PreHandler {
         }
         // 列举系统模块
         Set<String> modules = new HashSet<>();
-        StringBuilder cmdStr = new StringBuilder("java --list-modules");
+        StringBuilder cmdStr;
+        if (OSUtil.isLinux()) {
+            cmdStr = new StringBuilder(jdkPath + "/bin/java --list-modules");
+        } else {
+            cmdStr = new StringBuilder("java --list-modules");
+        }
         String result = RuntimeUtil.execForStr(cmdStr.toString());
 //        String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
         JulLog.info("list modules:{}", result);
