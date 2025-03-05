@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.util.ReflectUtil;
+import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
@@ -269,6 +270,8 @@ public interface NodeAdapter extends EventTarget {
                     pane.getChildren().setAll(node);
                 } else if (this instanceof Group group) {
                     group.getChildren().setAll(node);
+                } else if (this instanceof FXTab tab) {
+                    tab.setContent(node);
                 }
             });
         }
