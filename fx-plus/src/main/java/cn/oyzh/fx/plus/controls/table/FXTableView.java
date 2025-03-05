@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.controls.table;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
+import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -22,7 +24,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FXTableView<S> extends TableView<S> implements FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S> {
+public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S> {
 
     {
         NodeManager.init(this);
