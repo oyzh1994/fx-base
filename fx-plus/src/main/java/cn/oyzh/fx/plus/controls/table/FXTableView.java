@@ -43,11 +43,11 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
      * 初始化事件监听器
      */
     protected void initEvenListener() {
-        this.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if(!t1){
-                this.clearSelection();
-            }
-        });
+//        this.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+//            if(!t1){
+//                this.clearSelection();
+//            }
+//        });
     }
 
     /**
