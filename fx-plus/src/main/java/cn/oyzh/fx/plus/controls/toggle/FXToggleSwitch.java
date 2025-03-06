@@ -5,9 +5,12 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
+import cn.oyzh.fx.plus.node.NodeManager;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HorizontalDirection;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -18,7 +21,11 @@ import lombok.NonNull;
  * @author oyzh
  * @since 2023/12/19
  */
-public class FXToggleSwitch extends ToggleSwitch implements LayoutAdapter, NodeGroup, TipAdapter, StateAdapter, FontAdapter {
+public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutAdapter, NodeGroup, TipAdapter, StateAdapter, FontAdapter {
+
+    {
+        NodeManager.init(this);
+    }
 
     /**
      * 选中时显示的文字
@@ -80,5 +87,11 @@ public class FXToggleSwitch extends ToggleSwitch implements LayoutAdapter, NodeG
     public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
 //        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
+    }
+
+    @Override
+    public void initNode() {
+        NodeAdapter.super.initNode();
+        this.setPadding(Insets.EMPTY);
     }
 }

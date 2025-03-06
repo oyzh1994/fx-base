@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
@@ -299,16 +300,16 @@ public class NodeUtil {
                     image.setFitHeight(height);
                 }
             }
-            case TitledPane labeled -> {
+            case Labeled labeled -> {
                 if (!labeled.prefHeightProperty().isBound()) {
                     labeled.setPrefHeight(height);
                 }
-                // if (!labeled.minHeightProperty().isBound()) {
-                //     labeled.setMinHeight(height);
-                // }
-                // if (!labeled.maxHeightProperty().isBound()) {
-                //     labeled.setMaxHeight(height);
-                // }
+                 if (!labeled.minHeightProperty().isBound()) {
+                     labeled.setMinHeight(height);
+                 }
+                 if (!labeled.maxHeightProperty().isBound()) {
+                     labeled.setMaxHeight(height);
+                 }
             }
             case Region region -> {
                 if (!region.prefHeightProperty().isBound()) {
