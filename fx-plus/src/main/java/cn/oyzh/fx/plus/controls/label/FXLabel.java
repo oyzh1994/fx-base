@@ -48,7 +48,7 @@ public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapt
     }
 
     public void clear() {
-        this.setText("");
+        this.text("");
     }
 
     public void text(String text) {
