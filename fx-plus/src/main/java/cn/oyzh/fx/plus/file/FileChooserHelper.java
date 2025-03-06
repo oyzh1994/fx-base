@@ -130,6 +130,31 @@ public class FileChooserHelper {
     }
 
     /**
+     * 选择文件
+     *
+     * @param title   标题
+     * @param filters 过滤器
+     * @return 文件
+     */
+    public static List<File> chooseMultiple(String title, FileExtensionFilter... filters) {
+        return chooseMultiple(title, List.of(filters), null);
+    }
+
+    /**
+     * 选择文件
+     *
+     * @param title   标题
+     * @param filters 过滤器
+     * @param owner   父窗口
+     * @return 文件
+     */
+    public static List<File> chooseMultiple(String title, List<FileExtensionFilter> filters, Window owner) {
+        FXFileChooser chooser = new FXFileChooser();
+        chooser.title(title).addFilters(filters);
+        return chooser.showOpenMultipleDialog(owner);
+    }
+
+    /**
      * 获取类型过滤器
      *
      * @param type 类型

@@ -143,4 +143,19 @@ public class FXFileChooser {
         return file.get();
     }
 
+    public List<File> showOpenMultipleDialog(Window owner) {
+        if (owner == null) {
+            owner = WindowManager.getActiveWindow();
+        }
+        List<File> files = new ArrayList<>();
+        Window finalOwner = owner;
+        FXUtil.runWait(() -> {
+            List<File> files1 = this.chooser().showOpenMultipleDialog(finalOwner);
+            if (files1 != null) {
+                files.addAll(files1);
+            }
+        });
+        return files;
+    }
+
 }

@@ -205,14 +205,18 @@ public class TableViewUtil {
     }
 
     public static double getRowSpacing(TableView<?> tableView) {
+        Set<Node> rows = tableView.lookupAll(".table-row-cell");
         // 获取前两行的 TableRow
-        Optional<Node> firstRowNode = tableView.lookupAll(".table-row-cell").stream().findFirst();
-        Optional<Node> secondRowNode = tableView.lookupAll(".table-row-cell").stream().skip(1).findFirst();
+        Optional<Node> firstRowNode = rows.stream().findFirst();
+        Optional<Node> secondRowNode = rows.stream().skip(1).findFirst();
         if (firstRowNode.isPresent() && secondRowNode.isPresent()) {
             TableRow<?> firstRow = (TableRow<?>) firstRowNode.get();
             TableRow<?> secondRow = (TableRow<?>) secondRowNode.get();
             // 计算行间距
-            return secondRow.getLayoutY() - (firstRow.getLayoutY() + firstRow.getHeight());
+            double rowSpacing = secondRow.getLayoutY() - (firstRow.getLayoutY() + firstRow.getHeight());
+            if (rowSpacing > 0) {
+                return rowSpacing;
+            }
         }
         return 0;
     }

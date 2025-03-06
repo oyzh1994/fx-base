@@ -135,13 +135,14 @@ public class TableViewMouseSelectHelper {
         double endY = tableView.getLayoutBounds().getMaxY();
         double selectionStart = rectangle.getLayoutBounds().getMinY();
         double selectionEnd = rectangle.getLayoutBounds().getMaxY();
+        List<Integer> selected = new ArrayList<>();
+        double indexY = startY + headerRowHeight + rowSpacing;
+//        System.out.println("indexY:" + indexY);
 //        System.out.println("startY:" + startY);
 //        System.out.println("endY:" + endY);
 //        System.out.println("selectionStart:" + selectionStart);
 //        System.out.println("selectionEnd:" + selectionEnd);
 //        System.out.println("------->");
-        List<Integer> selected = new ArrayList<>();
-        double indexY = startY + headerRowHeight + rowSpacing;
         for (int i = 0; i < tableView.getItems().size(); i++) {
             if (indexY >= endY || indexY >= selectionEnd) {
                 break;
