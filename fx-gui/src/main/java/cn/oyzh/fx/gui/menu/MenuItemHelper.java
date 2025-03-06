@@ -398,6 +398,11 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.setToEmptyString(), action);
     }
 
+    public static FXMenuItem fileInfo(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.fileInfo(), new InfoSVGGlyph(iconSize), action);
+    }
+
+
     public static FXMenuItem fieldInfo(Runnable action) {
         return FXMenuItem.newItem(I18nHelper.fieldInfo(), action);
     }
