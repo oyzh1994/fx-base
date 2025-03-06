@@ -1,10 +1,11 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.plus.tableview;
 
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.table.FXTableCell;
 import cn.oyzh.fx.plus.controls.table.FXTableView;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
+import cn.oyzh.fx.plus.util.ClipboardUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -14,10 +15,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.skin.TableHeaderRow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 表格工具类
@@ -170,4 +181,40 @@ public class TableViewUtil {
             });
         }
     }
+
+    public static double getRowHeight(TableView<?> tableView) {
+        Set<Node> rows = tableView.lookupAll(".table-row-cell");
+        for (Node row : rows) {
+            if (row instanceof TableRow<?> tableRow) {
+                double rowHeight = tableRow.getHeight();
+                if (!Double.isNaN(rowHeight) && rowHeight > 0) {
+                    return rowHeight;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static double getHeaderRowHeight(TableView<?> tableView) {
+        // 获取 TableHeaderRow
+        TableHeaderRow headerRow = (TableHeaderRow) tableView.lookup("TableHeaderRow");
+        if (headerRow != null) {
+            return headerRow.getHeight();
+        }
+        return 0;
+    }
+
+    public static double getRowSpacing(TableView<?> tableView) {
+        // 获取前两行的 TableRow
+        Optional<Node> firstRowNode = tableView.lookupAll(".table-row-cell").stream().findFirst();
+        Optional<Node> secondRowNode = tableView.lookupAll(".table-row-cell").stream().skip(1).findFirst();
+        if (firstRowNode.isPresent() && secondRowNode.isPresent()) {
+            TableRow<?> firstRow = (TableRow<?>) firstRowNode.get();
+            TableRow<?> secondRow = (TableRow<?>) secondRowNode.get();
+            // 计算行间距
+            return secondRow.getLayoutY() - (firstRow.getLayoutY() + firstRow.getHeight());
+        }
+        return 0;
+    }
+
 }

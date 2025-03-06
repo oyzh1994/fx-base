@@ -10,8 +10,9 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.util.TableViewUtil;
+import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
@@ -33,6 +34,22 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     public FXTableView() {
     }
 
+    protected void initTableView() {
+        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        this.initEvenListener();
+    }
+
+    /**
+     * 初始化事件监听器
+     */
+    protected void initEvenListener() {
+        this.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if(!t1){
+                this.clearSelection();
+            }
+        });
+    }
+
     /**
      * 获取当前选中列的数据
      *
@@ -45,8 +62,9 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     @Override
     public void initNode() {
         this.setFixedCellSize(35.f);
+        this.initTableView();
 //        this.setFocusTraversable(false);
-        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
     }
 
     @Getter
