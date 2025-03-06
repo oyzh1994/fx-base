@@ -186,6 +186,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.renameNode(), new RenameSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem renameFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.renameFile(), new RenameSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem cloneNode(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.cloneNode(), new RepeatSVGGlyph(iconSize), action);
     }
