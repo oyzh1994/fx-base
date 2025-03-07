@@ -490,6 +490,10 @@ public class MenuItemHelper {
     public static FXMenuItem openInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.openInfo(), new OpenSVGGlyph(iconSize), action);
     }
+
+    public static FXMenuItem downloadFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.downloadFile(), new ExportSVGGlyph(iconSize), action);
+    }
 }
 
 

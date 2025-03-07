@@ -35,7 +35,7 @@ public class FXFileChooser {
      */
     @Getter
     @Accessors(fluent = true, chain = true)
-    private File initDir = FileChooserHelper.DESKTOP_DIR;
+    private File initDir = FXChooser.DESKTOP_DIR;
 
     /**
      * 初始文件名称
@@ -115,7 +115,7 @@ public class FXFileChooser {
         if (this.initDir != null) {
             fileChooser.setInitialDirectory(this.initDir);
         } else {
-            fileChooser.setInitialDirectory(FileChooserHelper.DESKTOP_DIR);
+            fileChooser.setInitialDirectory(FXChooser.DESKTOP_DIR);
         }
         for (FileExtensionFilter filter : filters) {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(filter.getDesc(), filter.getExtensions()));
@@ -124,33 +124,36 @@ public class FXFileChooser {
     }
 
     public File showSaveDialog(Window owner) {
-        if (owner == null) {
-            owner = WindowManager.getActiveWindow();
-        }
+//        if (owner == null) {
+//            owner = WindowManager.getActiveWindow();
+//        }
         AtomicReference<File> file = new AtomicReference<>();
-        Window finalOwner = owner;
-        FXUtil.runWait(() -> file.set(this.chooser().showSaveDialog(finalOwner)));
+        FXUtil.runWait(() -> file.set(this.chooser().showSaveDialog(owner)));
+//        Window finalOwner = owner;
+//        FXUtil.runWait(() -> file.set(this.chooser().showSaveDialog(finalOwner)));
         return file.get();
     }
 
     public File showOpenDialog(Window owner) {
-        if (owner == null) {
-            owner = WindowManager.getActiveWindow();
-        }
+//        if (owner == null) {
+//            owner = WindowManager.getActiveWindow();
+//        }
         AtomicReference<File> file = new AtomicReference<>();
-        Window finalOwner = owner;
-        FXUtil.runWait(() -> file.set(this.chooser().showOpenDialog(finalOwner)));
+        FXUtil.runWait(() -> file.set(this.chooser().showOpenDialog(owner)));
+//        Window finalOwner = owner;
+//        FXUtil.runWait(() -> file.set(this.chooser().showOpenDialog(finalOwner)));
         return file.get();
     }
 
     public List<File> showOpenMultipleDialog(Window owner) {
-        if (owner == null) {
-            owner = WindowManager.getActiveWindow();
-        }
+//        if (owner == null) {
+//            owner = WindowManager.getActiveWindow();
+//        }
         List<File> files = new ArrayList<>();
-        Window finalOwner = owner;
+//        Window finalOwner = owner;
         FXUtil.runWait(() -> {
-            List<File> files1 = this.chooser().showOpenMultipleDialog(finalOwner);
+            List<File> files1 = this.chooser().showOpenMultipleDialog(owner);
+//            List<File> files1 = this.chooser().showOpenMultipleDialog(finalOwner);
             if (files1 != null) {
                 files.addAll(files1);
             }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
+import cn.oyzh.fx.plus.file.FXChooser;
 import cn.oyzh.fx.plus.file.FileChooserHelper;
 import cn.oyzh.fx.plus.file.FileExtensionFilter;
 import cn.oyzh.i18n.I18nHelper;
@@ -35,7 +36,7 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
     @Override
     protected void onButtonClicked(MouseEvent e) {
         if (this.extension == null) {
-            this.extension = FileChooserHelper.allExtensionFilter();
+            this.extension = FXChooser.allExtensionFilter();
         }
         File file1 = FileChooserHelper.save(I18nHelper.chooseFile(), this.initFileName, this.extension);
         if (file1 != null) {
