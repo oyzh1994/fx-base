@@ -1,9 +1,9 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
-import cn.oyzh.fx.plus.file.FXChooser;
-import cn.oyzh.fx.plus.file.FileChooserHelper;
-import cn.oyzh.fx.plus.file.FileExtensionFilter;
+import cn.oyzh.fx.plus.chooser.FXChooser;
+import cn.oyzh.fx.plus.chooser.FileChooserHelper;
+import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;

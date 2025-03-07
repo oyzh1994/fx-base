@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.file;
+package cn.oyzh.fx.plus.chooser;
 
 import javafx.stage.Window;
 import lombok.experimental.UtilityClass;

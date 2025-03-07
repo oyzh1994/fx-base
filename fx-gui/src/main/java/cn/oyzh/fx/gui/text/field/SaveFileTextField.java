@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.SaveFileTextFieldSkin;
-import cn.oyzh.fx.plus.file.FileExtensionFilter;
+import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
 import javafx.scene.control.Skin;
 
 import java.io.File;

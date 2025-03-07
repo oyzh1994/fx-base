@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.file;
+package cn.oyzh.fx.plus.chooser;
 
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -98,9 +98,9 @@ public class FXChooser {
     }
 
     public static String getDownloadDirectory() {
-        if (OSUtil.isLinux() || OSUtil.isMacOS()) {
-            String homeDirectory = System.getProperty("user.home");
-            return homeDirectory + "/Downloads";
+        File file = new File(System.getProperty("user.home"), "Downloads");
+        if (file.exists() && file.isDirectory()) {
+            return file.getPath();
         }
         return DESKTOP_DIR.getPath();
     }

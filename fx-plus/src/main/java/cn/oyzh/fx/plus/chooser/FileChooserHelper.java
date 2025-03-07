@@ -1,12 +1,9 @@
-package cn.oyzh.fx.plus.file;
+package cn.oyzh.fx.plus.chooser;
 
-import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.i18n.I18nHelper;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -18,7 +15,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @since 2020/10/21
  */
 public class FileChooserHelper {
-
 
     /**
      * 保存文件

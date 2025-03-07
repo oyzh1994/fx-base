@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.file;
+package cn.oyzh.fx.plus.chooser;
 
 import lombok.Getter;
 import lombok.Setter;

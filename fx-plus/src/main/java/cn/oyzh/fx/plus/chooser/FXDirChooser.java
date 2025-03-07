@@ -1,4 +1,4 @@
-package cn.oyzh.fx.plus.file;
+package cn.oyzh.fx.plus.chooser;
 
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
