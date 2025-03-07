@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.file;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;
 import lombok.experimental.UtilityClass;
@@ -94,5 +95,13 @@ public class FXChooser {
 
     public static FileExtensionFilter jsonExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.jsonType(), "*.json");
+    }
+
+    public static String getDownloadDirectory() {
+        if (OSUtil.isLinux() || OSUtil.isMacOS()) {
+            String homeDirectory = System.getProperty("user.home");
+            return homeDirectory + "/Downloads";
+        }
+        return DESKTOP_DIR.getPath();
     }
 }

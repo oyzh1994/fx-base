@@ -492,7 +492,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem downloadFile(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.downloadFile(), new ExportSVGGlyph(iconSize), action);
+        return FXMenuItem.newItem(I18nHelper.downloadFile(), new ImportSVGGlyph(iconSize), action);
     }
 }
 
