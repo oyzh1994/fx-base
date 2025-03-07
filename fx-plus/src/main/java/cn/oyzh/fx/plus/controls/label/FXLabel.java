@@ -37,15 +37,15 @@ public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapt
         super(text, graphic);
     }
 
-    @Override
-    public boolean isEnableTheme() {
-        return ThemeAdapter.super.isEnableTheme();
-    }
-
-    @Override
-    public void setEnableTheme(boolean enableTheme) {
-        ThemeAdapter.super.setEnableTheme(enableTheme);
-    }
+//    @Override
+//    public boolean isEnableTheme() {
+//        return ThemeAdapter.super.isEnableTheme();
+//    }
+//
+//    @Override
+//    public void setEnableTheme(boolean enableTheme) {
+//        ThemeAdapter.super.setEnableTheme(enableTheme);
+//    }
 
     public void clear() {
         this.text("");

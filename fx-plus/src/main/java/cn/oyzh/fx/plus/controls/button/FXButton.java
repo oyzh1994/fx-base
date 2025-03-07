@@ -39,15 +39,15 @@ public class FXButton extends Button implements FlexAdapter, NodeGroup, NodeAdap
         super(text);
     }
 
-    @Override
-    public boolean isEnableTheme() {
-        return ThemeAdapter.super.isEnableTheme();
-    }
-
-    @Override
-    public void setEnableTheme(boolean enableTheme) {
-        ThemeAdapter.super.setEnableTheme(enableTheme);
-    }
+//    @Override
+//    public boolean isEnableTheme() {
+//        return ThemeAdapter.super.isEnableTheme();
+//    }
+//
+//    @Override
+//    public void setEnableTheme(boolean enableTheme) {
+//        ThemeAdapter.super.setEnableTheme(enableTheme);
+//    }
 
     @Override
     public void resize(double width, double height) {
