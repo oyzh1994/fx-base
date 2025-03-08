@@ -2,7 +2,9 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -59,6 +61,7 @@ public interface ThemeAdapter extends PropAdapter {
     default void changeTheme(ThemeStyle style) {
         if (this.isEnableTheme() && style != null) {
             switch (this) {
+                case Canvas node -> this.handleStyle(node, style);
                 case Parent node -> this.handleStyle(node, style);
                 case Popup popup -> this.handleStyle(popup.getContent(), style);
                 case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
@@ -90,6 +93,16 @@ public interface ThemeAdapter extends PropAdapter {
      * @param style 主题风格
      */
     private void handleStyle(Parent node, ThemeStyle style) {
+        style.handleStyle(node);
+    }
+
+    /**
+     * 处理样式
+     *
+     * @param node  节点
+     * @param style 主题风格
+     */
+    private void handleStyle(Node node, ThemeStyle style) {
         style.handleStyle(node);
     }
 }

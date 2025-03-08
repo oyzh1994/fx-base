@@ -5,6 +5,7 @@ import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 
@@ -142,6 +143,23 @@ public interface ThemeStyle {
         //         }
         //     // }
         // });
+    }
+
+    /**
+     * 处理样式
+     *
+     * @param node 节点
+     */
+    default void handleStyle(Node node) {
+        if (node != null) {
+            TaskManager.startDelay(this.hashCode() + ":reapplyCss", () -> FXUtil.runLater(() -> {
+                try {
+                    ReflectUtil.invoke(node, "reapplyCss");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }), 50);
+        }
     }
 
     /**

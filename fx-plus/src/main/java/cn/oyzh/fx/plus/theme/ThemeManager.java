@@ -5,6 +5,8 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -35,12 +37,27 @@ public class ThemeManager {
     /**
      * 默认主题
      */
-    public static ThemeStyle defaultTheme = Themes.PRIMER_LIGHT;
+    public final static ThemeStyle defaultTheme = Themes.PRIMER_LIGHT;
 
     /**
-     * 当前主题
+     * 当前主题属性
      */
-    private static ThemeStyle currentTheme;
+    private static final ReadOnlyObjectWrapper<ThemeStyle> currentThemeProperty = new ReadOnlyObjectWrapper<>(defaultTheme);
+//
+//    /**
+//     * 当前主题
+//     */
+//    private static ThemeStyle currentTheme;
+
+    /**
+     * 获取当前主题属性
+     *
+     * @return 当前主题属性
+     */
+    public static ReadOnlyObjectProperty<ThemeStyle> currentThemeProperty() {
+        return currentThemeProperty.getReadOnlyProperty();
+    }
+
 
     /**
      * 是否暗黑模式
@@ -57,10 +74,10 @@ public class ThemeManager {
      * @return 当前主题
      */
     public static ThemeStyle currentTheme() {
-        if (currentTheme == null) {
+        if (currentThemeProperty.get() == null) {
             return defaultTheme;
         }
-        return currentTheme;
+        return currentThemeProperty.get();
     }
 
     /**
@@ -97,7 +114,8 @@ public class ThemeManager {
                 Themes.SYSTEM.unListener();
             }
             // 设置当前主题
-            currentTheme = style;
+//            currentTheme = style;
+            currentThemeProperty.set(style);
             // 设置应用样式
             Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
             // 变更样式

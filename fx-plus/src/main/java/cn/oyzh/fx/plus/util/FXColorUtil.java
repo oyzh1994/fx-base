@@ -4,6 +4,8 @@ import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
+
 
 /**
  * 颜色工具类
@@ -60,5 +62,27 @@ public class FXColorUtil {
             return Color.valueOf(styleColor).toString();
         }
         return styleColor;
+    }
+
+    // 计算两个颜色之间的欧几里得距离
+    public static double colorDistance(Color c1, Color c2) {
+        double rDiff = c1.getRed() - c2.getRed();
+        double gDiff = c1.getGreen() - c2.getGreen();
+        double bDiff = c1.getBlue() - c2.getBlue();
+        return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+    }
+
+    // 在颜色列表中找到与目标颜色最接近的颜色
+    public static Color findClosestColor(Color target, List<Color> colorList) {
+        Color closest = null;
+        double minDistance = 0.35;
+        for (Color color : colorList) {
+            double distance = colorDistance(target, color);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closest = color;
+            }
+        }
+        return closest;
     }
 }
