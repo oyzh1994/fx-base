@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.toggle;
 
 import atlantafx.base.controls.ToggleSwitch;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -47,10 +48,13 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
         // 选中变化事件
         this.selectedChanged((observable, oldValue, t1) -> {
             if (t1) {
-                // 初始化选中按钮
-                this.setText(this.selectedText);
+                if (StringUtil.isNotBlank(this.selectedText)) {
+                    this.setText(this.selectedText);
+                }
             } else {
-                this.setText(this.unselectedText);
+                if (StringUtil.isNotBlank(this.unselectedText)) {
+                    this.setText(this.unselectedText);
+                }
             }
         });
     }
