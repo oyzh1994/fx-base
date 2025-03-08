@@ -228,7 +228,7 @@ public abstract class RichTab extends FXTab {
 
     @Override
     protected void onTabClosed(Event event) {
-        RichTabController controller = controller();
+        RichTabController controller = this.controller();
         if (controller != null) {
             controller.onTabClosed(event);
         }
@@ -236,10 +236,9 @@ public abstract class RichTab extends FXTab {
 
     @Override
     protected void onTabCloseRequest(Event event) {
-        RichTabController controller = controller();
+        RichTabController controller = this.controller();
         if (controller != null) {
             controller.onTabCloseRequest(event);
         }
-
     }
 }
