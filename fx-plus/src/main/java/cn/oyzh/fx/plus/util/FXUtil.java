@@ -6,9 +6,11 @@ import cn.oyzh.common.thread.TaskBuilder;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.fx.plus.FXConst;
 import com.sun.javafx.application.PlatformImpl;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -317,5 +319,15 @@ public class FXUtil {
             return false;
         }
         return true;
+    }
+
+    public static void showDocument(String url) {
+        if (url == null) {
+            return;
+        }
+        HostServices services = FXConst.getHostServices();
+        if (services != null) {
+            services.showDocument(url);
+        }
     }
 }
