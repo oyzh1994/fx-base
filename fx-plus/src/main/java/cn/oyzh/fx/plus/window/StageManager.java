@@ -2,12 +2,7 @@ package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
-import cn.oyzh.common.thread.TaskManager;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -238,43 +233,9 @@ public class StageManager {
     public static void showMask(Runnable callback) {
         for (Window window : Window.getWindows()) {
             if (window.isShowing() && window.isFocused()) {
-                if (window.getScene().getRoot() instanceof Pane pane) {
-                    StackPane maskPane = new StackPane();
-                    maskPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // 半透明黑色背景‌:ml-citation{ref="2,6" data="citationList"}
-                    maskPane.setPrefSize(window.getWidth(), window.getHeight());
-                    ProgressIndicator progress = new ProgressIndicator();
-                    progress.setStyle("-fx-progress-color: white; -fx-pref-width: 50px; -fx-pref-height: 50px;");
-                    maskPane.getChildren().add(progress);
-                    StackPane.setAlignment(progress, Pos.CENTER); // 居中显示‌:ml-citation{ref="1,4" data="citationList"}
-                    maskPane.toFront();
-                    maskPane.setMouseTransparent(false);
-                    pane.getChildren().add(maskPane); // mainContent 为主界面内容
-                    // 执行业务
-                    TaskManager.startDelay(() -> {
-                        try {
-                            callback.run();
-                        } finally {
-                            maskPane.setVisible(false);
-                            pane.getChildren().remove(maskPane);
-                        }
-                    }, 50);
-                }
+                StageMask.showMask(window, callback);
                 break;
             }
         }
     }
-
-//    public static void hideMask() {
-//        FXUtil.runLater(()-> {
-//            for (Window window : Window.getWindows()) {
-//                if (window.isShowing() && window.getScene().getRoot() instanceof Pane pane) {
-//                    Node mask = window.getScene().getRoot().lookup("#mask");
-//                    if (mask != null) {
-//                        mask.setVisible(false);
-//                        pane.getChildren().remove(mask);
-//                    }
-//                }
-//            }
-//        },300);
-//    }
 }
