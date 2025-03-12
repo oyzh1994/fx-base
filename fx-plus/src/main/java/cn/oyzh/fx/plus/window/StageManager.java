@@ -247,4 +247,13 @@ public class StageManager {
         }
         return null;
     }
+
+    public static boolean hasFocusedWindow() {
+        for (Window window : Window.getWindows()) {
+            if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
