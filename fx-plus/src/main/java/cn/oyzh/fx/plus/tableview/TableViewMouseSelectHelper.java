@@ -27,30 +27,56 @@ public class TableViewMouseSelectHelper {
         this.initEvent();
     }
 
+    /**
+     * 获取tableview
+     *
+     * @return tableview
+     */
     protected TableView<?> getTableView() {
         return this.reference.get();
     }
 
-    protected Rectangle initRectangle() {
+    /**
+     * 获取根节点
+     *
+     * @return 根节点
+     */
+    protected Pane getRoot() {
         TableView<?> tableView = this.getTableView();
-        if (tableView != null && tableView.getScene().getRoot() instanceof Pane pane) {
+        if (tableView != null && tableView.getScene() != null && tableView.getScene().getRoot() instanceof Pane pane) {
+            return pane;
+        }
+        return null;
+    }
+
+    /**
+     * 初始化矩形
+     *
+     * @return 矩形
+     */
+    protected Rectangle initRectangle() {
+        Pane pane = this.getRoot();
+        if (pane != null) {
             Rectangle selectionRect = (Rectangle) pane.lookup("#table_view_selection_rect");
             if (selectionRect == null) {
                 selectionRect = new Rectangle(0, 0, 0, 0);
                 selectionRect.setFill(Color.LIGHTBLUE.deriveColor(0, 1, 1, 0.3));
                 selectionRect.managedProperty().bind(selectionRect.visibleProperty());
                 selectionRect.setId("table_view_selection_rect");
-                selectionRect.setVisible(false);
                 pane.getChildren().add(selectionRect);
+                selectionRect.setVisible(true);
             }
             return selectionRect;
         }
         return null;
     }
 
+    /**
+     * 清除矩形
+     */
     protected void clearRectangle() {
-        TableView<?> tableView = this.getTableView();
-        if (tableView != null && tableView.getScene().getRoot() instanceof Pane pane) {
+        Pane pane = this.getRoot();
+        if (pane != null) {
             Node selectionRect = pane.lookup("#table_view_selection_rect");
             if (selectionRect != null) {
                 pane.getChildren().remove(selectionRect);
@@ -58,76 +84,84 @@ public class TableViewMouseSelectHelper {
         }
     }
 
+    /**
+     * 寻找矩形
+     *
+     * @return 矩形
+     */
     protected Rectangle findRectangle() {
-        TableView<?> tableView = this.getTableView();
-        if (tableView != null && tableView.getScene().getRoot() instanceof Pane pane) {
+        Pane pane = this.getRoot();
+        if (pane != null) {
             return (Rectangle) pane.lookup("#table_view_selection_rect");
         }
         return null;
     }
 
+    /**
+     * 初始化事件
+     */
     protected void initEvent() {
         TableView<?> tableView = this.getTableView();
+        if (tableView == null) {
+            return;
+        }
+
         // 起始位置
         AtomicReference<Double> startX = new AtomicReference<>(0D);
         AtomicReference<Double> startY = new AtomicReference<>(0D);
+
         // 监听鼠标按下事件
         tableView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-//            if (event.getButton() == MouseButton.PRIMARY || event.getButton() == MouseButton.SECONDARY) {
+            if (event.getClickCount() == 1 && event.getButton() == MouseButton.PRIMARY) {
                 startX.set(event.getSceneX());
                 startY.set(event.getSceneY());
-//                Rectangle selectionRect = this.findRectangle();
-//                if (selectionRect == null) {
-//                    selectionRect = this.initRectangle();
-//                }
-//                selectionRect.setX(startX.get());
-//                selectionRect.setY(startY.get());
-//                selectionRect.setWidth(0);
-//                selectionRect.setHeight(0);
-//                selectionRect.setVisible(true);
             }
         });
 
         // 监听鼠标拖动事件
         tableView.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-//            if (event.getButton() == MouseButton.PRIMARY || event.getButton() == MouseButton.SECONDARY) {
+            if (event.getClickCount() == 1 && event.getButton() == MouseButton.PRIMARY) {
+                if (startX.get() == 0 && startY.get() == 0) {
+                    return;
+                }
                 double endX = event.getSceneX();
                 double endY = event.getSceneY();
-                Rectangle selectionRect = this.findRectangle();
-                if (selectionRect == null) {
-                    selectionRect = this.initRectangle();
+                Rectangle rectangle = this.findRectangle();
+                if (rectangle == null) {
+                    rectangle = this.initRectangle();
                 }
-                selectionRect.setX(Math.min(startX.get(), endX));
-                selectionRect.setY(Math.min(startY.get(), endY));
-                selectionRect.setWidth(Math.abs(endX - startX.get()));
-                selectionRect.setHeight(Math.abs(endY - startY.get()));
-                selectionRect.setVisible(true);
-                this.onMouseSelection(event);
+                rectangle.setX(Math.min(startX.get(), endX));
+                rectangle.setY(Math.min(startY.get(), endY));
+                rectangle.setWidth(Math.abs(endX - startX.get()));
+                rectangle.setHeight(Math.abs(endY - startY.get()));
+//                selectionRect.setVisible(true);
+                this.onMouseSelection(rectangle);
             }
         });
 
         // 监听鼠标释放事件
         tableView.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-//            if (event.getButton() == MouseButton.PRIMARY || event.getButton() == MouseButton.SECONDARY) {
-                Rectangle selectionRect = this.findRectangle();
-                if (selectionRect != null) {
-                    this.onMouseSelection(event);
-                    selectionRect.setVisible(false);
+            if (event.getClickCount() == 1 && event.getButton() == MouseButton.PRIMARY) {
+                Rectangle rectangle = this.findRectangle();
+                if (rectangle != null) {
+                    this.onMouseSelection(rectangle);
+//                    selectionRect.setVisible(false);
                     this.clearRectangle();
                 }
             }
         });
     }
 
-    protected void onMouseSelection(MouseEvent event) {
+    /**
+     * 鼠标选中事件
+     *
+     * @param rectangle 矩形
+     */
+    protected void onMouseSelection(Rectangle rectangle) {
         TableView<?> tableView = this.getTableView();
-        if (tableView == null) {
+        if (tableView == null || rectangle == null) {
             return;
         }
-        Rectangle rectangle = this.findRectangle();
         double rowHeight = TableViewUtil.getRowHeight(tableView);
         double headerRowHeight = TableViewUtil.getHeaderRowHeight(tableView);
         double rowSpacing = TableViewUtil.getRowSpacing(tableView);
@@ -137,12 +171,6 @@ public class TableViewMouseSelectHelper {
         double selectionEnd = rectangle.getLayoutBounds().getMaxY();
         List<Integer> selected = new ArrayList<>();
         double indexY = startY + headerRowHeight + rowSpacing;
-//        System.out.println("indexY:" + indexY);
-//        System.out.println("startY:" + startY);
-//        System.out.println("endY:" + endY);
-//        System.out.println("selectionStart:" + selectionStart);
-//        System.out.println("selectionEnd:" + selectionEnd);
-//        System.out.println("------->");
         for (int i = 0; i < tableView.getItems().size(); i++) {
             if (indexY >= endY || indexY >= selectionEnd) {
                 break;
@@ -161,12 +189,11 @@ public class TableViewMouseSelectHelper {
             int startIndex = selected.getFirst();
             tableView.getSelectionModel().select(startIndex);
         }
-//        if (event.getEventType() == MouseEvent.MOUSE_RELEASED && event.getButton() == MouseButton.SECONDARY) {
-//            tableView.fireEvent(new MouseEvent(
-//                    MouseEvent.MOUSE_CLICKED, event.getX(), event.getY(), event.getX(), event.getY(), MouseButton.SECONDARY,
-//                    1, true, false, false, false, false,
-//                    false, true, true, true, true, null
-//            ));
-//        }
+    }
+
+    public static void install(TableView<?> tableView) {
+        if (tableView != null) {
+            new TableViewMouseSelectHelper(tableView);
+        }
     }
 }
