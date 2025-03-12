@@ -10,13 +10,14 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.plus.util.AnimationUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.FXColorUtil;
 import javafx.animation.RotateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -122,25 +123,26 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.getStyleClass().remove("svg-glyph");
     }
 
-    public FXSVGPath getSVGPath() {
-        return (FXSVGPath) this.getFirstChild();
-    }
+//    public FXSVGPath getSVGPath() {
+//        return (FXSVGPath) this.getFirstChild();
+//    }
 
     /**
      * 更新内容
      */
     private void updateContent() {
         // 获取图标
-        FXSVGPath svgPath = this.getSVGPath();
+        Node child = this.getChild(0);
         // 无内容
-        if (svgPath == null) {
+        if (child == null) {
             return;
         }
         // loading图标
-        if (SVGManager.isLoading(svgPath)) {
+        if (child instanceof ProgressIndicator) {
 //            svgPath.setFill(ThemeManager.currentForegroundColor());
             return;
         }
+        FXSVGPath svgPath = (FXSVGPath) child;
         // 更新鼠标
         if (this.getCursor() != svgPath.getCursor()) {
             svgPath.setCursor(this.getCursor());
@@ -170,17 +172,26 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
         try {
             this.setWaiting(true);
-            // 获取loading
-            FXSVGPath loading = SVGManager.getLoading();
-            // 动态绑定缩放比例
-            loading.scaleXProperty().bind(this.widthProperty().divide(loading.getBoundsInLocal().getWidth()));
-            loading.scaleYProperty().bind(this.heightProperty().divide(loading.getBoundsInLocal().getHeight()));
+//            // 获取loading
+//            FXSVGPath loading = SVGManager.getLoading();
+//            // 动态绑定缩放比例
+//            loading.scaleXProperty().bind(this.widthProperty().divide(loading.getBoundsInLocal().getWidth()));
+//            loading.scaleYProperty().bind(this.heightProperty().divide(loading.getBoundsInLocal().getHeight()));
+//            // 设置loading图标
+//            this.setChild(loading);
+//            // 初始化动画
+//            this.waitingAnimation = AnimationUtil.rotate(loading);
+//            // 播放动画
+//            this.waitingAnimation.play();
+
+            // 动画
+            ProgressIndicator progress = new ProgressIndicator();
+            progress.setFocusTraversable(false);
+            Color color = ThemeManager.currentForegroundColor();
+            String colorHex = FXColorUtil.getColorHex(color);
+            progress.setStyle("-fx-progress-color: " + colorHex);
             // 设置loading图标
-            this.setChild(loading);
-            // 初始化动画
-            this.waitingAnimation = AnimationUtil.rotate(loading);
-            // 播放动画
-            this.waitingAnimation.play();
+            this.setChild(progress);
         } catch (Exception ex) {
             ex.printStackTrace();
             this.setWaiting(false);
@@ -191,11 +202,11 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * 结束动画
      */
     public void stopWaiting() {
-        // 结束动画
-        if (this.waitingAnimation != null) {
-            FXUtil.runWait(this.waitingAnimation::stop);
-            this.waitingAnimation = null;
-        }
+//        // 结束动画
+//        if (this.waitingAnimation != null) {
+//            FXUtil.runWait(this.waitingAnimation::stop);
+//            this.waitingAnimation = null;
+//        }
         // 恢复原始图标，并更新内容
         this.setChild(this.original);
         this.updateContent();

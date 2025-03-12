@@ -49,30 +49,30 @@ public class SVGManager {
 //        return false;
 //    }
 
-    /**
-     * 是否loading的svg路径
-     *
-     * @param svgPath svg路径
-     * @return 结果
-     */
-    public static boolean isLoading(SVGPath svgPath) {
-//        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
-        return svgPath.hasProperties() && svgPath.getProperties().containsKey("loading");
-    }
+//    /**
+//     * 是否loading的svg路径
+//     *
+//     * @param svgPath svg路径
+//     * @return 结果
+//     */
+//    public static boolean isLoading(SVGPath svgPath) {
+////        return loadingSVGPathRef != null && svgPath != null && svgPath == loadingSVGPathRef.get();
+//        return svgPath.hasProperties() && svgPath.getProperties().containsKey("loading");
+//    }
 
-    /**
-     * 获取loading的svg路径
-     *
-     * @return loading的svg路径
-     */
-    public static FXSVGPath getLoading() {
-//        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
-        FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
-        svgPath.setProp("loading", true);
-        svgPath.setCursor(Cursor.NONE);
-//            loadingSVGPathRef = new WeakReference<>(svgPath);
-//        }
-//        return loadingSVGPathRef.get();
-        return svgPath;
-    }
+//    /**
+//     * 获取loading的svg路径
+//     *
+//     * @return loading的svg路径
+//     */
+//    public static FXSVGPath getLoading() {
+////        if (loadingSVGPathRef == null || loadingSVGPathRef.get() == null) {
+//        FXSVGPath svgPath = SVGManager.load("/fx-svg/loading.svg");
+//        svgPath.setProp("loading", true);
+//        svgPath.setCursor(Cursor.NONE);
+////            loadingSVGPathRef = new WeakReference<>(svgPath);
+////        }
+////        return loadingSVGPathRef.get();
+//        return svgPath;
+//    }
 }

@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.TooltipUtil;
+import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -156,12 +157,13 @@ public class MessageBox {
     public static void alert(@NonNull Alert.AlertType type, @NonNull String title, String header, String content) {
         // 使用fx消息框
         if (FXUtil.isInitialized()) {
-            FXUtil.runLater(() -> {
+            FXUtil.runWait(() -> {
                 Alert alert = new Alert(type);
                 alert.setTitle(title);
                 alert.setHeaderText(header);
                 alert.setContentText(content);
-                alert.show();
+                alert.initOwner(StageManager.getFrontWindow());
+                alert.showAndWait();
             });
         } else {// 使用swing消息框
             int msgType = switch (type) {

@@ -238,4 +238,13 @@ public class StageManager {
             }
         }
     }
+
+    public static Window getFrontWindow() {
+        for (Window window : Window.getWindows()) {
+            if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {
+                return window;
+            }
+        }
+        return null;
+    }
 }

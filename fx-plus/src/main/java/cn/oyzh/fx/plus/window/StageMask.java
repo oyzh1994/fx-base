@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -40,17 +42,24 @@ public class StageMask extends Stage implements StageAdapter {
         // 动画
         ProgressIndicator progress = new ProgressIndicator();
         progress.setFocusTraversable(false);
-        progress.setStyle("-fx-progress-color: white; -fx-pref-width: 50px; -fx-pref-height: 50px;");
+//        progress.setStyle("-fx-progress-color: white; -fx-pref-width: 50px; -fx-pref-height: 50px;");
+        Color color = ThemeManager.currentForegroundColor();
+        String colorHex = FXColorUtil.getColorHex(color);
+        progress.setStyle("-fx-progress-color: " + colorHex);
+
+        // 添加到遮罩板
         maskPane.getChildren().add(progress);
         // 居中显示‌:ml-citation{ref="1,4" data="citationList"}
         StackPane.setAlignment(progress, Pos.CENTER);
         maskPane.toFront();
         maskPane.setMouseTransparent(false);
+
         // 创建场景
         Scene scene = new Scene(maskPane);
         // 透明度
         scene.setFill(Color.TRANSPARENT);
         this.setScene(scene);
+
         // 执行业务
         TaskManager.startDelay(() -> {
             try {
@@ -74,6 +83,6 @@ public class StageMask extends Stage implements StageAdapter {
     }
 
     public static void showMask(Window window, Runnable callback) {
-        new StageMask(window, callback).show();
+        FXUtil.runLater(() -> new StageMask(window, callback).show());
     }
 }
