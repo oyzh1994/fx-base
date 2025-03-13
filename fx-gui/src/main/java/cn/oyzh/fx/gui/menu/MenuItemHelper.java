@@ -20,6 +20,7 @@ import cn.oyzh.fx.gui.svg.glyph.LoadAllSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.LogSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MoveSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.OpenSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.PauseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RefreshSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RenameSVGGlyph;
@@ -32,6 +33,7 @@ import cn.oyzh.fx.gui.svg.glyph.TimeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.TransportSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.TruncateSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UnPauseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.FunctionSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.ProcedureSVGGlyph;
@@ -252,6 +254,14 @@ public class MenuItemHelper {
 
     public static FXMenuItem restartContainer(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.restartContainer(), new RestartSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem pauseContainer(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.pauseContainer(), new PauseSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem unpauseContainer(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.unpauseContainer(), new UnPauseSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem forceDeleteContainer(String iconSize, Runnable action) {
