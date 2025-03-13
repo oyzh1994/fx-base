@@ -7,6 +7,7 @@ import cn.oyzh.fx.gui.svg.glyph.ClearSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CollapseAllSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CopySVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
@@ -224,6 +225,14 @@ public class MenuItemHelper {
 
     public static FXMenuItem deleteFile(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteFile(), new DeleteSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem deleteContainer(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteContainer(), new DeleteSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem forceDeleteContainer(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.forceDeleteContainer(), new DeleteForceSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem deleteGroup(String iconSize, Runnable action) {
