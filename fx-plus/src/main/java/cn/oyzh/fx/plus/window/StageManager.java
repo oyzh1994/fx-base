@@ -138,6 +138,9 @@ public class StageManager {
      * @return StageWrapper
      */
     public static StageAdapter parseStage(@NonNull Class<?> clazz) {
+        if (Primary_Stage != null && Primary_Stage.isShowing()) {
+            return parseStage(clazz, Primary_Stage);
+        }
         return parseStage(clazz, null);
     }
 
