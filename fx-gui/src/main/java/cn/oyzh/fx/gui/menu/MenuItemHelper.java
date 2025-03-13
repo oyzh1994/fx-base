@@ -233,6 +233,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.deleteContainer(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem deleteImage(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.deleteImage(), new DeleteSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem startContainer(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.startContainer(), new RunSVGGlyph(iconSize), action);
     }
@@ -247,6 +251,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem forceDeleteContainer(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.forceDeleteContainer(), new DeleteForceSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem forceDeleteImage(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.forceDeleteImage(), new DeleteForceSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem deleteGroup(String iconSize, Runnable action) {
