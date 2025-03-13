@@ -17,6 +17,7 @@ import cn.oyzh.fx.gui.svg.glyph.FilterSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ImportSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.InfoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.LoadAllSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.LogSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MoveSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.OpenSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
@@ -233,6 +234,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.deleteContainer(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem containerLogs(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.containerLogs(), new LogSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem deleteImage(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteImage(), new DeleteSVGGlyph(iconSize), action);
     }
@@ -435,6 +440,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem imageInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.imageInfo(), new InfoSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem containerInfo(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.containerInfo(), new InfoSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem fieldInfo(Runnable action) {
