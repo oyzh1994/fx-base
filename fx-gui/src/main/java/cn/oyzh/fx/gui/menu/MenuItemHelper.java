@@ -241,6 +241,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.containerLogs(), new LogSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem renameContainer(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.renameContainer(), new EditSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem deleteImage(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteImage(), new DeleteSVGGlyph(iconSize), action);
     }
