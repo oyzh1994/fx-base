@@ -14,6 +14,7 @@ import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExportSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.FilterSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ImportSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.InfoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.KillSVGGlyph;
@@ -461,6 +462,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem imageInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.imageInfo(), new InfoSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem imageHistory(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.imageHistory(), new HistorySVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem containerInfo(String iconSize, Runnable action) {
