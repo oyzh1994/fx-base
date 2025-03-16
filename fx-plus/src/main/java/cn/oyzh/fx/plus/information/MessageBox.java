@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.TooltipUtil;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.Node;
@@ -315,7 +316,8 @@ public class MessageBox {
      * @param msg 消息
      */
     public static void okToast(@NonNull String msg) {
-        okToast(msg, null);
+        okToast(msg, StageManager.getFrontWindow());
+//        okToast(msg, null);
     }
 
     /**
