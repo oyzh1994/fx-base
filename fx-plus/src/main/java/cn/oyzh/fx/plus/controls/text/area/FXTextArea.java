@@ -208,4 +208,8 @@ public class FXTextArea extends TextArea implements FlexAdapter, LimitLineContro
         super.resize(size[0], size[1]);
         this.resizeNode();
     }
+
+    public void text(String text) {
+        FXUtil.runWait(() -> super.setText(text));
+    }
 }
