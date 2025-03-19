@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.thread;
 
 import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import lombok.experimental.UtilityClass;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,7 +12,7 @@ import java.util.concurrent.Executors;
  * @author oyzh
  * @since 2023/12/01
  */
-@UtilityClass
+
 public class BackgroundService {
 
     /**

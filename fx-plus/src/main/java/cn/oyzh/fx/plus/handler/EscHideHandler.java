@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.keyboard.KeyListener;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Window;
-import lombok.NonNull;
 
 import java.lang.ref.WeakReference;
 
@@ -27,7 +26,7 @@ public class EscHideHandler {
 //     * @param stage 舞台
 //     * @return 处理器
 //     */
-//    public static EscHideHandler init(@NonNull Window stage) {
+//    public static EscHideHandler init( Window stage) {
 //        EscHideHandler handler = new EscHideHandler(stage);
 //        CACHE.put(stage, handler);
 //        return handler;
@@ -66,7 +65,7 @@ public class EscHideHandler {
      */
     private WeakReference<Window> windowRef;
 
-    public EscHideHandler(@NonNull Window window) {
+    public EscHideHandler( Window window) {
         this.windowRef = new WeakReference<>(window);
         this.init();
     }

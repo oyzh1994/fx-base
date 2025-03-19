@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.chooser;
 
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +10,27 @@ import java.util.List;
  * @author oyzh
  * @since 2024/08/27
  */
-@Getter
 public class FileExtensionFilter {
 
-    @Setter
     private String desc;
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     private List<String> extensions;
+
+    public void setExtensions(List<String> extensions) {
+        this.extensions = extensions;
+    }
+
+    public List<String> getExtensions() {
+        return extensions;
+    }
 
     public FileExtensionFilter() {
 

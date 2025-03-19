@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import lombok.experimental.UtilityClass;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author oyzh
  * @since 2023/12/18
  */
-@UtilityClass
+
 public class ThemeManager {
 
     static {

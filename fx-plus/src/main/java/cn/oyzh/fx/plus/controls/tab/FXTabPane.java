@@ -15,7 +15,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -88,7 +87,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param listener 监听器
      */
-    public void selectedTabChanged(@NonNull ChangeListener<Tab> listener) {
+    public void selectedTabChanged( ChangeListener<Tab> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
@@ -119,7 +118,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tab tab
      */
-    public void addTab(@NonNull Tab tab) {
+    public void addTab( Tab tab) {
         FXUtil.runWait(() -> this.getTabs().add(tab));
     }
 
@@ -128,7 +127,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tab tab
      */
-    public void setTab(@NonNull Tab tab) {
+    public void setTab( Tab tab) {
         FXUtil.runWait(() -> this.getTabs().setAll(tab));
     }
 
@@ -137,7 +136,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tabs tab列表
      */
-    public void setTab(@NonNull Tab... tabs) {
+    public void setTab( Tab... tabs) {
         FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
 
@@ -166,7 +165,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tabs tab列表
      */
-    public void setTab(@NonNull Collection<Tab> tabs) {
+    public void setTab( Collection<Tab> tabs) {
         FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
 
@@ -175,7 +174,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tab tab
      */
-    public void removeTab(@NonNull Tab tab) {
+    public void removeTab( Tab tab) {
         FXUtil.runLater(() -> this.getTabs().remove(tab));
     }
 

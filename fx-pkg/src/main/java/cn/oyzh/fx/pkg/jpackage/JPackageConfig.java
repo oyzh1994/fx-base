@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.jpackage;
 
-import lombok.Data;
 
 import java.io.File;
 
@@ -10,7 +9,6 @@ import java.io.File;
  * @author oyzh
  * @since 2023/3/8
  */
-@Data
 public class JPackageConfig {
 
     /**
@@ -90,5 +88,125 @@ public class JPackageConfig {
 
     public String destParent() {
         return new File(dest).getParent();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
+    }
+
+    public String getInput() {
+        return input;
+    }
+
+    public void setInput(String input) {
+        this.input = input;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public String getMainJar() {
+        return mainJar;
+    }
+
+    public void setMainJar(String mainJar) {
+        this.mainJar = mainJar;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRuntimeImage() {
+        return runtimeImage;
+    }
+
+    public void setRuntimeImage(String runtimeImage) {
+        this.runtimeImage = runtimeImage;
+    }
+
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public boolean isWinMenu() {
+        return winMenu;
+    }
+
+    public void setWinMenu(boolean winMenu) {
+        this.winMenu = winMenu;
+    }
+
+    public boolean isWinShortcut() {
+        return winShortcut;
+    }
+
+    public void setWinShortcut(boolean winShortcut) {
+        this.winShortcut = winShortcut;
+    }
+
+    public boolean isWinDirChooser() {
+        return winDirChooser;
+    }
+
+    public void setWinDirChooser(boolean winDirChooser) {
+        this.winDirChooser = winDirChooser;
+    }
+
+    public String getMacPackageIdentifier() {
+        return macPackageIdentifier;
+    }
+
+    public void setMacPackageIdentifier(String macPackageIdentifier) {
+        this.macPackageIdentifier = macPackageIdentifier;
     }
 }

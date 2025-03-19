@@ -17,7 +17,7 @@
 //
 //    private RichTreeTableItem<?> item;
 //
-//    public RichTreeTableItemValue(@NonNull RichTreeTableItem<?> item) {
+//    public RichTreeTableItemValue( RichTreeTableItem<?> item) {
 //        this.item = item;
 //        this.flush();
 //    }

@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,9 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
      * @param clickCount 点击次数
      * @return KeyHandler 按键处理器
      */
-    public MouseHandler getMouseHandler(@NonNull EventType<MouseEvent> type, MouseButton button, Integer clickCount) {
+    public MouseHandler getMouseHandler( EventType<MouseEvent> type, MouseButton button, Integer clickCount) {
         for (MouseHandler handler : this.handlers) {
-            if (handler.button() == button && type == handler.type() && Objects.equals(handler.clickCount(), clickCount)) {
+            if (handler.getButton() == button && type == handler.getType() && Objects.equals(handler.getClickCount(), clickCount)) {
                 return handler;
             }
         }
@@ -42,7 +41,7 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
     /**
      * 添加鼠标按键处理器
      */
-    public void addHandler(@NonNull MouseHandler mouseHandler) {
+    public void addHandler( MouseHandler mouseHandler) {
         this.removeHandler(mouseHandler);
         this.handlers.add(mouseHandler);
     }
@@ -55,7 +54,7 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
     public void removeHandler(MouseHandler handler) {
         if (handler != null) {
             if (!this.handlers.remove(handler)) {
-                handler = this.getMouseHandler(handler.type(), handler.button(), handler.clickCount());
+                handler = this.getMouseHandler(handler.getType(), handler.getButton(), handler.getClickCount());
                 if (handler != null) {
                     this.handlers.remove(handler);
                 }
@@ -69,22 +68,22 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
             return;
         }
         for (MouseHandler handler : this.handlers) {
-            if (handler.button() != null && event.getButton() != handler.button()) {
+            if (handler.getButton() != null && event.getButton() != handler.getButton()) {
                 continue;
             }
-            if (handler.clickCount() != null && event.getClickCount() < handler.clickCount()) {
+            if (handler.getClickCount() != null && event.getClickCount() < handler.getClickCount()) {
                 continue;
             }
-            if (handler.metaDown() && !event.isMetaDown()) {
+            if (handler.isMetaDown() && !event.isMetaDown()) {
                 continue;
             }
-            if (handler.altDown() && !event.isAltDown()) {
+            if (handler.isAltDown() && !event.isAltDown()) {
                 continue;
             }
-            if (handler.shiftDown() && !event.isShiftDown()) {
+            if (handler.isShiftDown() && !event.isShiftDown()) {
                 continue;
             }
-            if (handler.controlDown() && !event.isControlDown()) {
+            if (handler.isControlDown() && !event.isControlDown()) {
                 continue;
             }
             handler.handle(event);

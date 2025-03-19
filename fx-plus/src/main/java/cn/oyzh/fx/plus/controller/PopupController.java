@@ -4,8 +4,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.PopupListener;
 import javafx.stage.WindowEvent;
-import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * 弹窗组件控制器
@@ -18,7 +16,6 @@ public class PopupController extends Controller implements PopupListener {
     /**
      * 窗口
      */
-    @Getter
     protected PopupAdapter window;
 
     /**
@@ -26,7 +23,7 @@ public class PopupController extends Controller implements PopupListener {
      *
      * @param window 窗口
      */
-    protected void setWindow(@NonNull PopupAdapter window) {
+    protected void setWindow( PopupAdapter window) {
         this.window = window;
     }
 

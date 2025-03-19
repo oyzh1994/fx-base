@@ -5,10 +5,6 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,33 +20,36 @@ public class FXFileChooser {
     /**
      * 标题
      */
-    @Getter
-    @Setter
-    @Accessors(fluent = true, chain = true)
     private String title;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     /**
      * 初始文件夹
      */
-    @Getter
-    @Accessors(fluent = true, chain = true)
     private File initDir = FXChooser.DESKTOP_DIR;
 
     /**
      * 初始文件名称
      */
-    @Setter
-    @Accessors(fluent = true, chain = true)
     private String initialFileName;
+
+    public void setInitialFileName(String initialFileName) {
+        this.initialFileName = initialFileName;
+    }
 
     /**
      * 过滤器
      */
-    @Getter
-    @Accessors(fluent = true, chain = true)
     private List<FileExtensionFilter> filters;
 
-    public FXFileChooser addFilter(@NonNull FileExtensionFilter filter) {
+    public void filters(List<FileExtensionFilter> filters) {
+        this.filters = filters;
+    }
+
+    public FXFileChooser addFilter( FileExtensionFilter filter) {
         if (this.filters == null) {
             this.filters = new ArrayList<>();
         }

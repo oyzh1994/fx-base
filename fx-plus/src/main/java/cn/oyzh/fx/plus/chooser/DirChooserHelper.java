@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.chooser;
 
 import javafx.stage.Window;
-import lombok.experimental.UtilityClass;
 
 import java.io.File;
 
@@ -11,7 +10,7 @@ import java.io.File;
  * @author oyzh
  * @since 2020/10/21
  */
-@UtilityClass
+
 public class DirChooserHelper {
 
     /**
@@ -44,7 +43,7 @@ public class DirChooserHelper {
      */
     public static File choose(String title, String initDir, Window owner) {
         FXDirChooser chooser = new FXDirChooser();
-        chooser.title(title);
+        chooser.setTitle(title);
         if (initDir != null) {
             chooser.initDir(initDir);
         }

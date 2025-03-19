@@ -12,9 +12,6 @@ import cn.oyzh.fx.pkg.filter.RegFilter;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.HashSet;
@@ -29,10 +26,15 @@ import java.util.Set;
  */
 public class JDepsHandler implements PreHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P6;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     @Override
     public String name() {
@@ -41,11 +43,11 @@ public class JDepsHandler implements PreHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
+        JLinkConfig jLinkConfig = packConfig.getjLinkConfig();
         if (jLinkConfig == null) {
             return;
         }
-        JDepsConfig jDepsConfig = packConfig.getJDepsConfig();
+        JDepsConfig jDepsConfig = packConfig.getjDepsConfig();
         RegFilter fileFilter = new RegFilter();
         RegFilter moduleFilter = new RegFilter();
         if (jDepsConfig != null) {

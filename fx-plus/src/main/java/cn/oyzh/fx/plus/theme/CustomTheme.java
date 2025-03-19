@@ -4,7 +4,6 @@ import atlantafx.base.theme.Theme;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
-import lombok.Getter;
 
 import java.util.Locale;
 
@@ -24,19 +23,16 @@ public class CustomTheme implements Theme, ThemeStyle {
     /**
      * 强调色
      */
-    @Getter
     private Color accentColor;
 
     /**
      * 背景色
      */
-    @Getter
     private Color backgroundColor;
 
     /**
      * 前景色
      */
-    @Getter
     private Color foregroundColor;
 
     /**
@@ -108,5 +104,28 @@ public class CustomTheme implements Theme, ThemeStyle {
     @Override
     public boolean isDarkMode() {
         return this.theme.isDarkMode();
+    }
+
+    public ThemeStyle getTheme() {
+        return theme;
+    }
+
+    @Override
+    public Color getAccentColor() {
+        return accentColor;
+    }
+
+    @Override
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
+    public Color getForegroundColor() {
+        return foregroundColor;
+    }
+
+    public String getThemePath() {
+        return themePath;
     }
 }

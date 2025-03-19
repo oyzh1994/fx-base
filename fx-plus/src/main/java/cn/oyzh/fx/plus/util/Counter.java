@@ -1,9 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.i18n.I18nHelper;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,14 +15,11 @@ public class Counter {
     /**
      * 总数
      */
-    @Getter
-    @Setter
     private Integer sum;
 
     /**
      * 开始时间
      */
-    @Getter
     private Long startTime;
 
     /**
@@ -46,7 +40,6 @@ public class Counter {
     /**
      * 额外信息
      */
-    @Setter
     private String extraMsg;
 
     /**
@@ -164,7 +157,7 @@ public class Counter {
      * @param tpl 模板
      * @return 结果
      */
-    public String format(@NonNull String tpl) {
+    public String format( String tpl) {
         if (this.sum != null) {
             tpl = tpl.replace("$sum", String.valueOf(this.sum));
         }
@@ -214,5 +207,29 @@ public class Counter {
             builder.append(" ").append(I18nHelper.tips()).append(": $extraMsg ");
         }
         return this.format(builder.toString());
+    }
+
+    public Integer getSum() {
+        return sum;
+    }
+
+    public void setSum(Integer sum) {
+        this.sum = sum;
+    }
+
+    public Long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getExtraMsg() {
+        return extraMsg;
+    }
+
+    public void setExtraMsg(String extraMsg) {
+        this.extraMsg = extraMsg;
     }
 }

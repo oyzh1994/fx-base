@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.controls.text.area;
 
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.LimitLenControl;
 import cn.oyzh.fx.plus.LimitLineControl;
@@ -19,8 +18,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Collection;
 
@@ -30,7 +27,6 @@ import java.util.Collection;
  * @author oyzh
  * @since 2022/1/20
  */
-@Getter
 public class FXTextArea extends TextArea implements FlexAdapter, LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
 
     {
@@ -40,20 +36,35 @@ public class FXTextArea extends TextArea implements FlexAdapter, LimitLineContro
     /**
      * 最大长度
      */
-    @Getter
     private Long maxLen;
 
     /**
      * 最大行数
      */
-    @Getter
     private Long maxLine;
 
     /**
      * 是否必须
      */
-    @Setter
     private boolean require;
+
+    @Override
+    public Long getMaxLen() {
+        return maxLen;
+    }
+
+    @Override
+    public Long getMaxLine() {
+        return maxLine;
+    }
+
+    public boolean isRequire() {
+        return require;
+    }
+
+    public void setRequire(boolean require) {
+        this.require = require;
+    }
 
     @Override
     public void setMaxLine(Long maxLine) {

@@ -15,8 +15,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -31,15 +29,27 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     /**
      * 行高
      */
-    @Getter
-    @Setter
     protected double lineHeight = 25;
+
+    public double getLineHeight() {
+        return lineHeight;
+    }
+
+    public void setLineHeight(double lineHeight) {
+        this.lineHeight = lineHeight;
+    }
+
+    public ChangeListener<Number> getSelectIndexChanged() {
+        return selectIndexChanged;
+    }
+
+    public void setSelectIndexChanged(ChangeListener<Number> selectIndexChanged) {
+        this.selectIndexChanged = selectIndexChanged;
+    }
 
     /**
      * 行高
      */
-    @Getter
-    @Setter
     protected ChangeListener<Number> selectIndexChanged;
 
     /**

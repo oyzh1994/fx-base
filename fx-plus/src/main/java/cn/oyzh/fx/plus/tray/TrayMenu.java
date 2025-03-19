@@ -11,7 +11,6 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import lombok.NonNull;
 
 /**
  * 托盘菜单
@@ -33,7 +32,7 @@ public class TrayMenu extends FXVBox {
      *
      * @param menuItem 菜单项
      */
-    public void addItem(@NonNull TrayItem menuItem) {
+    public void addItem( TrayItem menuItem) {
         // 添加节点
         this.getChildren().add(menuItem);
         // 设置边距

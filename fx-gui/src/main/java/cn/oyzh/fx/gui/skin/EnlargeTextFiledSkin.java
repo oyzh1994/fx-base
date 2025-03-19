@@ -12,8 +12,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 展开文本输入框皮肤
@@ -26,15 +24,27 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
     /**
      * 展开宽
      */
-    @Getter
-    @Setter
     protected double enlargeWidth = 350;
+
+    public double getEnlargeWidth() {
+        return enlargeWidth;
+    }
+
+    public void setEnlargeWidth(double enlargeWidth) {
+        this.enlargeWidth = enlargeWidth;
+    }
+
+    public double getEnlargeHeight() {
+        return enlargeHeight;
+    }
+
+    public void setEnlargeHeight(double enlargeHeight) {
+        this.enlargeHeight = enlargeHeight;
+    }
 
     /**
      * 展开高
      */
-    @Getter
-    @Setter
     protected double enlargeHeight = 280;
 
     /**

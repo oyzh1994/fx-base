@@ -14,8 +14,6 @@ import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,9 +30,15 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
     /**
      * 日期格式化器
      */
-    @Setter
-    @Getter
     private DateTimeFormatter formatter;
+
+    public DateTimeFormatter getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(DateTimeFormatter formatter) {
+        this.formatter = formatter;
+    }
 
     /**
      * 弹窗

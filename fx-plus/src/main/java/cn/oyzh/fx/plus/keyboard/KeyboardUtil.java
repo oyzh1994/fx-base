@@ -5,7 +5,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import lombok.experimental.UtilityClass;
 
 /**
  * 键盘按键事件
@@ -13,7 +12,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2024/07/02
  */
-@UtilityClass
+
 public class KeyboardUtil {
 
     /**

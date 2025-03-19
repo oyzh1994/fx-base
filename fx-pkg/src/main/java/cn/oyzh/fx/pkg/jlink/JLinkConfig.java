@@ -1,7 +1,6 @@
 package cn.oyzh.fx.pkg.jlink;
 
 import cn.oyzh.common.util.CollectionUtil;
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +12,6 @@ import java.util.List;
  * @author oyzh
  * @since 2024/06/17
  */
-@Data
 public class JLinkConfig {
 
     /**
@@ -78,5 +76,85 @@ public class JLinkConfig {
                 }
             }
         }
+    }
+
+    public String getVm() {
+        return vm;
+    }
+
+    public void setVm(String vm) {
+        this.vm = vm;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public void setOutput(String output) {
+        this.output = output;
+    }
+
+    public Integer getCompress() {
+        return compress;
+    }
+
+    public void setCompress(Integer compress) {
+        this.compress = compress;
+    }
+
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public boolean isNoManPages() {
+        return noManPages;
+    }
+
+    public void setNoManPages(boolean noManPages) {
+        this.noManPages = noManPages;
+    }
+
+    public boolean isNoHeaderFiles() {
+        return noHeaderFiles;
+    }
+
+    public void setNoHeaderFiles(boolean noHeaderFiles) {
+        this.noHeaderFiles = noHeaderFiles;
+    }
+
+    public boolean isStripDebug() {
+        return stripDebug;
+    }
+
+    public void setStripDebug(boolean stripDebug) {
+        this.stripDebug = stripDebug;
+    }
+
+    public boolean isStripJavaDebugAttributes() {
+        return stripJavaDebugAttributes;
+    }
+
+    public void setStripJavaDebugAttributes(boolean stripJavaDebugAttributes) {
+        this.stripJavaDebugAttributes = stripJavaDebugAttributes;
+    }
+
+    public List<String> getAddModules() {
+        return addModules;
+    }
+
+    public void setAddModules(List<String> addModules) {
+        this.addModules = addModules;
+    }
+
+    public List<String> getExcludeFiles() {
+        return excludeFiles;
+    }
+
+    public void setExcludeFiles(List<String> excludeFiles) {
+        this.excludeFiles = excludeFiles;
     }
 }

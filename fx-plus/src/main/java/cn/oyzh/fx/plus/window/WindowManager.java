@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.window;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.stage.Window;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.NoSuchElementException;
  * @author oyzh
  * @since 2024/07/12
  */
-@UtilityClass
+
 public class WindowManager {
 
     /**

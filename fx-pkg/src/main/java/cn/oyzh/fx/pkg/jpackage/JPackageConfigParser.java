@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.jpackage;
 
 import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
-import lombok.Data;
 
 /**
  * JPackage配置
@@ -10,7 +9,6 @@ import lombok.Data;
  * @author oyzh
  * @since 2023/3/8
  */
-@Data
 public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
 
     @Override

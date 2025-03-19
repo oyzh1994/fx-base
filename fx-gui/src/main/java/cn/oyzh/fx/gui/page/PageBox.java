@@ -18,9 +18,6 @@ import javafx.geometry.Insets;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -36,137 +33,111 @@ public class PageBox<T> extends FXHBox {
     /**
      * 是否显示文本组件
      */
-    @Getter
     private boolean showText = true;
 
     /**
      * 文本组件
      */
-    @Getter
     private FXLabel text;
 
     /**
      * 是否显示跳转组件
      */
-    @Getter
     private boolean showJump;
 
     /**
      * 跳页组件
      */
-    @Getter
     private NumberTextField jump;
 
     /**
      * 跳页事件
      */
-    @Getter
     private EventHandler<PageEvent.PageJumpEvent> onJumpFired;
 
     /**
      * 是否显示首页组件
      */
-    @Getter
     private boolean showFirst;
 
     /**
      * 首页
      */
-    @Getter
     private PageFirstSVGGlyph firstBtn;
 
     /**
      * 首页点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onFirstClicked;
 
     /**
      * 是否显示尾页组件
      */
-    @Getter
     private boolean showLast;
 
     /**
      * 尾页
      */
-    @Getter
     private PageLastSVGGlyph lastBtn;
 
     /**
      * 尾页点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onLastClicked;
 
     /**
      * 上一页
      */
-    @Getter
     private PagePrevSVGGlyph prevBtn;
 
     /**
      * 上一页点击事件
      */
-    @Setter
-    @Getter
     private EventHandler<MouseEvent> onPrevClicked;
 
     /**
      * 下一页
      */
-    @Getter
     private PageNextSVGGlyph nextBtn;
 
     /**
      * 下一页点击事件
      */
-    @Setter
-    @Getter
     private EventHandler<MouseEvent> onNextClicked;
 
     /**
      * 是否显示设置组件
      */
-    @Getter
     private boolean showSetting;
 
     /**
      * 设置
      */
-    @Getter
     private PageSettingSVGGlyph settingBtn;
 
     /**
      * 按钮大小
      */
-    @Getter
-    @Setter
     private String bthSize;
 
     /**
      * 分页信息
      */
-    @Getter
     private Paging<T> paging;
 
     /**
      * 隐藏控件，如果少于等于1页内容时
      */
-    @Getter
     private boolean hideIfLessPage = true;
 
     /**
      * 设置点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onSettingClicked;
 
     /**
      * 分页信息文本模板
      */
-    @Getter
-    @Setter
     private String pageTextTpl = this.pageTextTpl();
 
     /**
@@ -194,6 +165,138 @@ public class PageBox<T> extends FXHBox {
     }
 
     private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
+
+    public boolean isShowText() {
+        return showText;
+    }
+
+    public FXLabel getText() {
+        return text;
+    }
+
+    public void setText(FXLabel text) {
+        this.text = text;
+    }
+
+    public boolean isShowJump() {
+        return showJump;
+    }
+
+    public NumberTextField getJump() {
+        return jump;
+    }
+
+    public void setJump(NumberTextField jump) {
+        this.jump = jump;
+    }
+
+    public EventHandler<PageEvent.PageJumpEvent> getOnJumpFired() {
+        return onJumpFired;
+    }
+
+    public boolean isShowFirst() {
+        return showFirst;
+    }
+
+    public PageFirstSVGGlyph getFirstBtn() {
+        return firstBtn;
+    }
+
+    public void setFirstBtn(PageFirstSVGGlyph firstBtn) {
+        this.firstBtn = firstBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnFirstClicked() {
+        return onFirstClicked;
+    }
+
+    public boolean isShowLast() {
+        return showLast;
+    }
+
+    public PageLastSVGGlyph getLastBtn() {
+        return lastBtn;
+    }
+
+    public void setLastBtn(PageLastSVGGlyph lastBtn) {
+        this.lastBtn = lastBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnLastClicked() {
+        return onLastClicked;
+    }
+
+    public PagePrevSVGGlyph getPrevBtn() {
+        return prevBtn;
+    }
+
+    public void setPrevBtn(PagePrevSVGGlyph prevBtn) {
+        this.prevBtn = prevBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnPrevClicked() {
+        return onPrevClicked;
+    }
+
+    public void setOnPrevClicked(EventHandler<MouseEvent> onPrevClicked) {
+        this.onPrevClicked = onPrevClicked;
+    }
+
+    public PageNextSVGGlyph getNextBtn() {
+        return nextBtn;
+    }
+
+    public void setNextBtn(PageNextSVGGlyph nextBtn) {
+        this.nextBtn = nextBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnNextClicked() {
+        return onNextClicked;
+    }
+
+    public void setOnNextClicked(EventHandler<MouseEvent> onNextClicked) {
+        this.onNextClicked = onNextClicked;
+    }
+
+    public boolean isShowSetting() {
+        return showSetting;
+    }
+
+    public PageSettingSVGGlyph getSettingBtn() {
+        return settingBtn;
+    }
+
+    public void setSettingBtn(PageSettingSVGGlyph settingBtn) {
+        this.settingBtn = settingBtn;
+    }
+
+    public String getBthSize() {
+        return bthSize;
+    }
+
+    public void setBthSize(String bthSize) {
+        this.bthSize = bthSize;
+    }
+
+    public Paging<T> getPaging() {
+        return paging;
+    }
+
+    public boolean isHideIfLessPage() {
+        return hideIfLessPage;
+    }
+
+    public EventHandler<MouseEvent> getOnSettingClicked() {
+        return onSettingClicked;
+    }
+
+    public String getPageTextTpl() {
+        return pageTextTpl;
+    }
+
+    public void setPageTextTpl(String pageTextTpl) {
+        this.pageTextTpl = pageTextTpl;
+    }
 
     /**
      * 执行初始化
@@ -307,7 +410,7 @@ public class PageBox<T> extends FXHBox {
      *
      * @param paging 分页信息
      */
-    public void setPaging(@NonNull Paging<T> paging) {
+    public void setPaging( Paging<T> paging) {
         this.paging = paging;
         this.formatPage();
         if (this.hideIfLessPage) {

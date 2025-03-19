@@ -1,16 +1,12 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import javafx.scene.Cursor;
-import javafx.scene.shape.SVGPath;
-import lombok.experimental.UtilityClass;
-
 /**
  * svg管理器
  *
  * @author oyzh
  * @since 2023/9/15
  */
-@UtilityClass
+
 public class SVGManager {
 
 //    /**

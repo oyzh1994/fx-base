@@ -1,7 +1,5 @@
 package cn.oyzh.fx.terminal.execute;
 
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 终端执行结果
@@ -14,27 +12,49 @@ public class TerminalExecuteResult {
     /**
      * 结果
      */
-    @Getter
-    @Setter
     private Object result;
 
     /**
      * 错误信息
      */
-    @Setter
     private String errMsg;
 
     /**
      * 异常
      */
-    @Setter
     private Exception exception;
+
+    public boolean isIgnoreOutput() {
+        return ignoreOutput;
+    }
+
+    public void setIgnoreOutput(boolean ignoreOutput) {
+        this.ignoreOutput = ignoreOutput;
+    }
+
+    public Exception getException() {
+        return exception;
+    }
+
+    public void setException(Exception exception) {
+        this.exception = exception;
+    }
+
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
+    }
 
     /**
      * 忽略输出
      */
-    @Setter
-    @Getter
     private boolean ignoreOutput;
 
     /**

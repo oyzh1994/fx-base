@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import lombok.NonNull;
 
 /**
  * @author oyzh
@@ -24,33 +23,33 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
         super();
     }
 
-    public FXImageView(@NonNull Image image) {
+    public FXImageView( Image image) {
         super(image);
     }
 
-    public FXImageView(@NonNull String url) {
+    public FXImageView( String url) {
         this.setUrl(url);
     }
 
-    public FXImageView(@NonNull String url, double size) {
+    public FXImageView( String url, double size) {
         this.setUrl(url);
         this.setFitWidth(size);
         this.setFitHeight(size);
     }
 
-    public FXImageView(@NonNull Image image, double size) {
+    public FXImageView( Image image, double size) {
         this.setImage(image);
         this.setFitWidth(size);
         this.setFitHeight(size);
     }
 
-    public FXImageView(@NonNull Image image, double w, double h) {
+    public FXImageView( Image image, double w, double h) {
         this.setImage(image);
         this.setFitWidth(w);
         this.setFitHeight(h);
     }
 
-    public void setUrl(@NonNull String url) {
+    public void setUrl( String url) {
         this.setProp("url", url);
         super.setImage(FXUtil.getImage(url));
     }

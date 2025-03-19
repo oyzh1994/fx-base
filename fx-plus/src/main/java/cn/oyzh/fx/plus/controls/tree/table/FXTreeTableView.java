@@ -20,8 +20,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
-import lombok.NonNull;
-import lombok.ToString;
 
 import java.util.function.Consumer;
 
@@ -31,7 +29,6 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/1/19
  */
-@ToString
 public class FXTreeTableView extends TreeTableView implements FlexAdapter, DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
@@ -56,7 +53,7 @@ public class FXTreeTableView extends TreeTableView implements FlexAdapter, Destr
      *
      * @param consumer 消费器
      */
-    public void selectItemChanged(@NonNull Consumer<TreeItem<?>> consumer) {
+    public void selectItemChanged( Consumer<TreeItem<?>> consumer) {
         this.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (!this.isIgnoreChanged()) {
                 consumer.accept((TreeItem<?>) newValue);

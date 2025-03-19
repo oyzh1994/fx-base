@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.window.StageManager;
 import javafx.scene.Scene;
 import javafx.scene.robot.Robot;
 import javafx.stage.StageStyle;
-import lombok.Setter;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -29,7 +28,6 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
     /**
      * 菜单
      */
-    @Setter
     private TrayMenu menu;
 
     // private static Class<?> clazz;

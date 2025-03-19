@@ -3,8 +3,6 @@ package cn.oyzh.fx.plus.node;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.BooleanUtil;
 import javafx.scene.Node;
-import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,8 +19,11 @@ public class NodeMutexes implements Destroyable {
     /**
      * 节点列表
      */
-    @Getter
     private List<Node> nodes;
+
+    public List<Node> getNodes() {
+        return nodes;
+    }
 
     /**
      * manage属性是否绑定visible属性
@@ -73,7 +74,7 @@ public class NodeMutexes implements Destroyable {
      *
      * @param nodes 多个节点
      */
-    public void addNodes(@NonNull Collection<Node> nodes) {
+    public void addNodes( Collection<Node> nodes) {
         for (Node node : nodes) {
             this.addNode(node);
         }
@@ -84,7 +85,7 @@ public class NodeMutexes implements Destroyable {
      *
      * @param nodes 节点集合
      */
-    public void addNodes(@NonNull Node... nodes) {
+    public void addNodes( Node... nodes) {
         if (nodes != null) {
             for (Node node : nodes) {
                 this.addNode(node);

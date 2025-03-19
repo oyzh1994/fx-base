@@ -23,10 +23,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,39 +50,26 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
     /**
      * 键盘按键实现
      */
-    @Getter
-    @Accessors(fluent = true, chain = false)
     private TerminalKeyHandler<?> keyHandler;
 
     /**
      * 命令帮助实现
      */
-    @Getter
-    @Setter
-    @Accessors(fluent = true, chain = false)
     private TerminalHelpHandler helpHandler;
 
     /**
      * 鼠标按键实现
      */
-    @Getter
-    @Accessors(fluent = true, chain = false)
     private TerminalMouseHandler mouseHandler;
 
     /**
      * 命令历史实现
      */
-    @Getter
-    @Setter
-    @Accessors(fluent = true, chain = false)
     private TerminalHistoryHandler historyHandler;
 
     /**
      * 命令补全实现
      */
-    @Getter
-    @Setter
-    @Accessors(fluent = true, chain = false)
     private TerminalCompleteHandler completeHandler;
 
     {
@@ -198,6 +181,11 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
     }
 
     @Override
+    public TerminalMouseHandler mouseHandler() {
+        return null;
+    }
+
+    @Override
     public void mouseHandler(TerminalMouseHandler mouseHandler) {
         this.mouseHandler = mouseHandler;
         if (mouseHandler != null) {
@@ -217,6 +205,16 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
                 }
             });
         }
+    }
+
+    @Override
+    public TerminalHistoryHandler historyHandler() {
+        return null;
+    }
+
+    @Override
+    public void historyHandler(TerminalHistoryHandler handler) {
+
     }
 
     @Override
@@ -249,7 +247,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
     }
 
     @Override
-    public void coverInput(@NonNull String input) {
+    public void coverInput(String input) {
         this.replaceText(this.getNOP(), this.getLength(), input);
     }
 
@@ -400,6 +398,31 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
         }
     }
 
+    @Override
+    public TerminalHelpHandler helpHandler() {
+        return this.helpHandler;
+    }
+
+    @Override
+    public void helpHandler(TerminalHelpHandler handler) {
+        this.helpHandler = handler;
+    }
+
+    @Override
+    public TerminalCompleteHandler completeHandler() {
+        return this.completeHandler;
+    }
+
+    @Override
+    public void completeHandler(TerminalCompleteHandler handler) {
+        this.completeHandler = handler;
+    }
+
+    @Override
+    public TerminalKeyHandler keyHandler() {
+        return this.keyHandler;
+    }
+
     protected TerminalCommandHandler findHandler(String input) {
         return TerminalManager.findHandler(input);
     }
@@ -501,10 +524,11 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 
 //    @Override
 //    public void initTextStyle() {
-////        this.clearTextStyle();
-////        this.setProp("init:text:style", false);
-////        this.changeTheme(ThemeManager.currentTheme());
-////        this.removeProp("init:text:style");
+
+    /// /        this.clearTextStyle();
+    /// /        this.setProp("init:text:style", false);
+    /// /        this.changeTheme(ThemeManager.currentTheme());
+    /// /        this.removeProp("init:text:style");
 //        super.initTextStyle();
 //        if (this.contentPrompts != null) {
 //            String text = this.getText();
@@ -517,7 +541,6 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 //            this.forgetHistory();
 //        }
 //    }
-
     @Override
     public int getNOP() {
         return this.NOP.get();

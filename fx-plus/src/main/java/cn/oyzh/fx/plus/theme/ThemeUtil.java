@@ -6,7 +6,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import javafx.scene.paint.Color;
-import lombok.experimental.UtilityClass;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +17,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/4/3
  */
-@UtilityClass
+
 public class ThemeUtil {
 
     /**
@@ -82,7 +81,7 @@ public class ThemeUtil {
      * @param bgColor     背景色
      * @param accentColor 强调色
      */
-    public String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
+    public static String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
         // 读取资源
         URL url = ResourceUtil.getResource(style.getUserAgentStylesheet());
         JulLog.info("style url:{}", url);

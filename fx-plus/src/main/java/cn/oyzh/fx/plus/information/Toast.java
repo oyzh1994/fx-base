@@ -24,10 +24,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.awt.*;
 
@@ -38,55 +34,41 @@ import java.awt.*;
  * @author oyzh
  * @since 2020/10/19
  */
-@Accessors(fluent = true, chain = true)
 public class Toast {
 
     /**
      * 消息
      */
-    @Getter
     protected String msg;
 
     /**
      * 持续时间
      */
-    @Getter
-    @Setter
     protected int duration = 1500;
 
     /**
      * 字体
      */
-    @Setter
-    @Getter
     protected Font font = Font.getDefault();
 
     /**
      * 图标
      */
-    @Getter
-    @Setter
     protected SVGGlyph icon;
 
     /**
      * 边框
      */
-    @Setter
-    @Getter
     protected Border border;
 
     /**
      * 文本颜色
      */
-    @Setter
-    @Getter
     protected Paint textFill;
 
     /**
      * 背景
      */
-    @Setter
-    @Getter
     protected Background background;
 
     /**
@@ -94,7 +76,7 @@ public class Toast {
      */
     protected Window window;
 
-    public Toast(@NonNull String msg) {
+    public Toast( String msg) {
         this.msg = msg;
     }
 
@@ -235,5 +217,69 @@ public class Toast {
         if (this.window != null && onHidden != null) {
             this.window.setOnHidden(onHidden);
         }
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
+
+    public SVGGlyph getIcon() {
+        return icon;
+    }
+
+    public void setIcon(SVGGlyph icon) {
+        this.icon = icon;
+    }
+
+    public Border getBorder() {
+        return border;
+    }
+
+    public void setBorder(Border border) {
+        this.border = border;
+    }
+
+    public Paint getTextFill() {
+        return textFill;
+    }
+
+    public void setTextFill(Paint textFill) {
+        this.textFill = textFill;
+    }
+
+    public Background getBackground() {
+        return background;
+    }
+
+    public void setBackground(Background background) {
+        this.background = background;
+    }
+
+    public Window getWindow() {
+        return window;
+    }
+
+    public void setWindow(Window window) {
+        this.window = window;
     }
 }

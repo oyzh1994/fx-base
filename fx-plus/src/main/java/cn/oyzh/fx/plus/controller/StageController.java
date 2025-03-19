@@ -6,8 +6,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageListener;
 import javafx.stage.WindowEvent;
-import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * 窗口控制器
@@ -20,7 +18,6 @@ public class StageController extends Controller implements StageListener, EventL
     /**
      * 舞台
      */
-    @Getter
     protected StageAdapter stage;
 
     /**
@@ -28,7 +25,7 @@ public class StageController extends Controller implements StageListener, EventL
      *
      * @param stage 舞台
      */
-    protected void setWindow(@NonNull StageAdapter stage) {
+    protected void setWindow( StageAdapter stage) {
         this.stage = stage;
     }
 

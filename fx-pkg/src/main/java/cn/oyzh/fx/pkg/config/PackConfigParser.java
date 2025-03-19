@@ -58,12 +58,12 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
 
         if (object.containsKey("jlink")) {
             JLinkConfig jLinkConfig = JLinkConfigParser.parseConfig(object.getJSONObject("jlink"));
-            config.setJLinkConfig(jLinkConfig);
+            config.setjLinkConfig(jLinkConfig);
         }
 
         if (object.containsKey("jdeps")) {
             JDepsConfig jDepsConfig = JDepsConfigParser.parseConfig(object.getJSONObject("jdeps"));
-            config.setJDepsConfig(jDepsConfig);
+            config.setjDepsConfig(jDepsConfig);
         }
 
         if (object.containsKey("compress")) {
@@ -73,7 +73,7 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
 
         if (object.containsKey("jpackage")) {
             JPackageConfig jPackageConfig = JPackageConfigParser.parseConfig(object.getJSONObject("jpackage"));
-            config.setJPackageConfig(jPackageConfig);
+            config.setjPackageConfig(jPackageConfig);
         }
 
         return config;

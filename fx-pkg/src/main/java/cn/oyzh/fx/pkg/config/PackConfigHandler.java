@@ -4,9 +4,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * 打包信息处理器
@@ -16,10 +13,15 @@ import lombok.experimental.Accessors;
  */
 public class PackConfigHandler implements PreHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P8;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     @Override
     public String name() {

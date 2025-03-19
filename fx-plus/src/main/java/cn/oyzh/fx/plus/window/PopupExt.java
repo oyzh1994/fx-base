@@ -7,7 +7,6 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
 import javafx.util.Duration;
-import lombok.NonNull;
 
 /**
  * 弹窗扩展
@@ -49,7 +48,7 @@ public class PopupExt extends Popover implements PopupAdapter {
     }
 
     @Override
-    public void showPopup(@NonNull Node owner) {
+    public void showPopup( Node owner) {
         if (owner instanceof SVGGlyph) {
             Bounds bounds = owner.localToScreen(owner.getBoundsInLocal());
             if (bounds == null) {
@@ -71,7 +70,7 @@ public class PopupExt extends Popover implements PopupAdapter {
     }
 
     @Override
-    public void showPopup(@NonNull Node owner, double x, double y) {
+    public void showPopup( Node owner, double x, double y) {
         super.show(owner, x, y);
     }
 

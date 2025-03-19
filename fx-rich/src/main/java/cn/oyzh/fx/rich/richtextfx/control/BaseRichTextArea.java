@@ -31,7 +31,6 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import lombok.Getter;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
@@ -64,8 +63,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     /**
      * 高亮文本
      */
-    @Getter
     private String highlightText;
+
+    public String getHighlightText() {
+        return highlightText;
+    }
 
     /**
      * 设置高亮文本

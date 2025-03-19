@@ -10,9 +10,6 @@ import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.SingleHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * jlink处理
@@ -22,14 +19,27 @@ import lombok.experimental.Accessors;
  */
 public class JLinkHandler implements PreHandler, SingleHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P5;
 
-    @Getter
-    @Setter
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
+
     private boolean executed;
+
+    @Override
+    public boolean isExecuted() {
+        return executed;
+    }
+
+    @Override
+    public void setExecuted(boolean executed) {
+        this.executed = executed;
+    }
 
     @Override
     public boolean unique() {
@@ -41,7 +51,7 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         if (this.executed) {
             return;
         }
-        JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
+        JLinkConfig jLinkConfig = packConfig.getjLinkConfig();
         if (jLinkConfig == null) {
             return;
         }

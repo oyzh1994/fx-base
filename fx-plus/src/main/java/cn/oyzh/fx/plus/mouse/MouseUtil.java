@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.mouse;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import lombok.experimental.UtilityClass;
 
 /**
  * 鼠标工具类
@@ -11,7 +10,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2023/2/28
  */
-@UtilityClass
+
 public class MouseUtil {
 
     public static double getMouseX() {

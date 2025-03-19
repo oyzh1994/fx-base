@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.XYChart;
-import lombok.experimental.UtilityClass;
 
 import java.util.Optional;
 
@@ -16,7 +15,7 @@ import java.util.Optional;
  * @author oyzh
  * @since 2023/8/2
  */
-@UtilityClass
+
 public class ChartHelper {
 
     /**

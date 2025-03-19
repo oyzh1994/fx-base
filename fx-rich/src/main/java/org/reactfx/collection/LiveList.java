@@ -1,19 +1,10 @@
 package org.reactfx.collection;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.IndexRange;
-
 import org.reactfx.EventStream;
 import org.reactfx.EventStreamBase;
 import org.reactfx.Observable;
@@ -24,6 +15,14 @@ import org.reactfx.util.AccumulatorSize;
 import org.reactfx.util.Experimental;
 import org.reactfx.util.WrapperBase;
 import org.reactfx.value.Val;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Adds additional methods to {@link ObservableList}.

@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import lombok.NonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,9 +29,9 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
      * @param keyType 按键类型
      * @return KeyHandler 按键处理器
      */
-    public KeyHandler getKeyHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType) {
+    public KeyHandler getKeyHandler( KeyCode keyCode,  EventType<KeyEvent> keyType) {
         for (KeyHandler handler : this.handlers) {
-            if (handler.keyCode() == keyCode && Objects.equals(keyType, handler.keyType())) {
+            if (handler.getKeyCode() == keyCode && Objects.equals(keyType, handler.getKeyType())) {
                 return handler;
             }
         }
@@ -46,13 +45,15 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
      * @param keyType 按键类型
      * @param handler 事件处理器
      */
-    public void addHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType, @NonNull EventHandler<? super KeyEvent> handler) {
+    public void addHandler( KeyCode keyCode,  EventType<KeyEvent> keyType,  EventHandler<? super KeyEvent> handler) {
         KeyHandler keyHandler = this.getKeyHandler(keyCode, keyType);
         if (keyHandler == null) {
             keyHandler = new KeyHandler();
-            keyHandler.keyType(keyType).keyCode(keyCode).handler(handler);
-        } else if (!Objects.equals(handler, keyHandler.handler())) {
-            keyHandler.handler(handler);
+            keyHandler.setKeyType(keyType);
+            keyHandler.setKeyCode(keyCode);
+            keyHandler.setHandler(handler);
+        } else if (!Objects.equals(handler, keyHandler.getHandler())) {
+            keyHandler.setHandler(handler);
         }
         this.handlers.add(keyHandler);
     }
@@ -60,8 +61,8 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
     /**
      * 添加按键处理器
      */
-    public void addHandler(@NonNull KeyHandler keyHandler) {
-        this.removeHandler(keyHandler.keyCode(), keyHandler.keyType());
+    public void addHandler( KeyHandler keyHandler) {
+        this.removeHandler(keyHandler.getKeyCode(), keyHandler.getKeyType());
         this.handlers.add(keyHandler);
     }
 
@@ -71,7 +72,7 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
      * @param keyCode 按键编码
      * @param keyType 按键类型
      */
-    public void removeHandler(@NonNull KeyCode keyCode, @NonNull EventType<KeyEvent> keyType) {
+    public void removeHandler( KeyCode keyCode,  EventType<KeyEvent> keyType) {
         this.removeHandler(this.getKeyHandler(keyCode, keyType));
     }
 
@@ -90,22 +91,22 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
     public void handle(KeyEvent event) {
         if (!this.handlers.isEmpty()) {
             for (KeyHandler handler : this.handlers) {
-                if (event.getCode() != handler.keyCode()) {
+                if (event.getCode() != handler.getKeyCode()) {
                     continue;
                 }
-                if (event.getEventType() != handler.keyType()) {
+                if (event.getEventType() != handler.getKeyType()) {
                     continue;
                 }
-                if (handler.metaDown() && !event.isMetaDown()) {
+                if (handler.isMetaDown() && !event.isMetaDown()) {
                     continue;
                 }
-                if (handler.altDown() && !event.isAltDown()) {
+                if (handler.isAltDown() && !event.isAltDown()) {
                     continue;
                 }
-                if (handler.shiftDown() && !event.isShiftDown()) {
+                if (handler.isShiftDown() && !event.isShiftDown()) {
                     continue;
                 }
-                if (handler.controlDown() && !event.isControlDown()) {
+                if (handler.isControlDown() && !event.isControlDown()) {
                     continue;
                 }
                 handler.handle(event);

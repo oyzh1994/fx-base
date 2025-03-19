@@ -10,7 +10,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Window;
-import lombok.NonNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class TabSwitchHandler {
 //     * @param target 对写
 //     * @return 处理器
 //     */
-//    public static TabSwitchHandler init(@NonNull EventTarget target) {
+//    public static TabSwitchHandler init( EventTarget target) {
 //        TabSwitchHandler handler = null;
 //        if (target instanceof Parent parent) {
 //            handler = new TabSwitchHandler(parent);
@@ -82,12 +81,12 @@ public class TabSwitchHandler {
      */
     private WeakReference<Parent> rootRef;
 
-    public TabSwitchHandler(@NonNull Parent root) {
+    public TabSwitchHandler( Parent root) {
         this.rootRef = new WeakReference<>(root);
         this.init();
     }
 
-    public TabSwitchHandler(@NonNull Window window) {
+    public TabSwitchHandler( Window window) {
         if (window.getScene() == null || window.getScene().getRoot() == null) {
             throw new RuntimeException("stage.getScene().getRoot() is null!");
         }
@@ -120,7 +119,7 @@ public class TabSwitchHandler {
      * @param root     根节点
      * @param nodeList 节点列表
      */
-    protected void findNodes(Parent root, @NonNull List<Node> nodeList) {
+    protected void findNodes(Parent root,  List<Node> nodeList) {
         for (Node n : root.getChildrenUnmodifiable()) {
             if (n.isManaged() && n.isVisible()) {
                 if (n instanceof ComboBoxBase<?>
@@ -142,7 +141,7 @@ public class TabSwitchHandler {
      * @param current  当前节点
      * @return 支持tab索引的节点
      */
-    protected Node getNextNode(@NonNull List<Node> nodeList, @NonNull Node current) {
+    protected Node getNextNode( List<Node> nodeList,  Node current) {
         List<Node> list = nodeList.parallelStream().filter(f -> f.getViewOrder() > current.getViewOrder()).toList();
         if (!list.isEmpty()) {
             return list.getFirst();

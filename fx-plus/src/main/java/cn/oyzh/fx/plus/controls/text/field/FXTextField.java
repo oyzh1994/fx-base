@@ -11,10 +11,7 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.validator.Verifiable;
-import com.sun.source.tree.VariableTree;
 import javafx.scene.control.TextField;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 基础文本域
@@ -31,9 +28,15 @@ public class FXTextField extends TextField implements FlexAdapter, Verifiable, N
     /**
      * 是否必须
      */
-    @Setter
-    @Getter
     private boolean require;
+
+    public boolean isRequire() {
+        return require;
+    }
+
+    public void setRequire(boolean require) {
+        this.require = require;
+    }
 
     public FXTextField() {
         super.setText("");

@@ -10,9 +10,6 @@ import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 
@@ -24,10 +21,15 @@ import java.io.File;
  */
 public class JPackageHandler implements PackHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_0;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     @Override
     public String name() {
@@ -36,7 +38,7 @@ public class JPackageHandler implements PackHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        JPackageConfig jPackageConfig = packConfig.getJPackageConfig();
+        JPackageConfig jPackageConfig = packConfig.getjPackageConfig();
         if (jPackageConfig == null) {
             return;
         }

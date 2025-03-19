@@ -18,8 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.robot.Robot;
 import javafx.stage.Window;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -41,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2021/8/19
  */
-@UtilityClass
+
 public class FXUtil {
 
     /**
@@ -88,7 +86,7 @@ public class FXUtil {
      * @param target 对象
      * @return x坐标
      */
-    public static double getAbsoluteX(@NonNull EventTarget target) {
+    public static double getAbsoluteX( EventTarget target) {
         if (target instanceof Window window) {
             return window.getX();
         } else if (target instanceof Scene scene) {
@@ -108,7 +106,7 @@ public class FXUtil {
      * @param target 对象
      * @return y坐标
      */
-    public static double getAbsoluteY(@NonNull EventTarget target) {
+    public static double getAbsoluteY( EventTarget target) {
         if (target instanceof Window window) {
             return window.getY();
         } else if (target instanceof Scene scene) {
@@ -127,7 +125,7 @@ public class FXUtil {
      *
      * @param task 任务
      */
-    public static void runWait(@NonNull Runnable task) {
+    public static void runWait( Runnable task) {
         runWaitByTimeout(task, -1);
     }
 
@@ -137,7 +135,7 @@ public class FXUtil {
      * @param task  任务
      * @param delay 延迟时间
      */
-    public static void runWait(@NonNull Runnable task, int delay) {
+    public static void runWait( Runnable task, int delay) {
         TaskManager.startDelay(() -> runWait(task), delay);
     }
 
@@ -147,7 +145,7 @@ public class FXUtil {
      * @param task    任务
      * @param timeout 超时时间
      */
-    public static void runWaitByTimeout(@NonNull Runnable task, int timeout) {
+    public static void runWaitByTimeout( Runnable task, int timeout) {
         if (Platform.isFxApplicationThread()) {
             task.run();
         } else {
@@ -174,7 +172,7 @@ public class FXUtil {
      *
      * @param task 任务
      */
-    public static void runLater(@NonNull Runnable task) {
+    public static void runLater( Runnable task) {
         if (Platform.isFxApplicationThread()) {
             task.run();
         } else {
@@ -188,7 +186,7 @@ public class FXUtil {
      * @param task  任务
      * @param delay 延迟时间
      */
-    public static void runLater(@NonNull Runnable task, int delay) {
+    public static void runLater( Runnable task, int delay) {
         TaskManager.startDelay(() -> runLater(task), delay);
     }
 
@@ -213,7 +211,7 @@ public class FXUtil {
      *
      * @param task 任务
      */
-    public static void runPulse(@NonNull Runnable task) {
+    public static void runPulse( Runnable task) {
         runPulse(task, 10);
     }
 
@@ -223,7 +221,7 @@ public class FXUtil {
      * @param task 任务
      * @param sign 停止信号
      */
-    public static void runPulse(@NonNull Runnable task, int sign) {
+    public static void runPulse( Runnable task, int sign) {
         AtomicInteger tick = new AtomicInteger();
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -253,7 +251,7 @@ public class FXUtil {
      * @param imgUrls 图片列表地址
      * @return 图片列表
      */
-    public static List<Image> getImages(@NonNull String[] imgUrls) {
+    public static List<Image> getImages( String[] imgUrls) {
         return getImages(Arrays.asList(imgUrls));
     }
 
@@ -263,7 +261,7 @@ public class FXUtil {
      * @param imgUrls 图片列表地址
      * @return 图片列表
      */
-    public static List<Image> getImages(@NonNull List<String> imgUrls) {
+    public static List<Image> getImages( List<String> imgUrls) {
         List<Image> icons = new ArrayList<>(imgUrls.size());
         for (String url : imgUrls) {
             JulLog.info("load imgUrl:{}", url);
@@ -283,7 +281,7 @@ public class FXUtil {
      * @param imgUrl 图片地址
      * @return 图片
      */
-    public static Image getImage(@NonNull String imgUrl) {
+    public static Image getImage( String imgUrl) {
         JulLog.info("load imgUrl:{}", imgUrl);
         InputStream stream = ResourceUtil.getResourceAsStream(imgUrl);
         if (stream == null) {

@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.validator;
 
-import javax.xml.validation.Validator;
-
 /**
  * 校验能力接口
  *

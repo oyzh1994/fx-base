@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.jdeps;
 
-import lombok.Data;
 
 import java.util.Set;
 
@@ -10,7 +9,6 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/06/17
  */
-@Data
 public class JDepsConfig {
 
     /**
@@ -38,4 +36,43 @@ public class JDepsConfig {
      */
     private Integer multiRelease;
 
+    public boolean isSummary() {
+        return summary;
+    }
+
+    public void setSummary(boolean summary) {
+        this.summary = summary;
+    }
+
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public Set<String> getSkips() {
+        return skips;
+    }
+
+    public void setSkips(Set<String> skips) {
+        this.skips = skips;
+    }
+
+    public Set<String> getExcludes() {
+        return excludes;
+    }
+
+    public void setExcludes(Set<String> excludes) {
+        this.excludes = excludes;
+    }
+
+    public Integer getMultiRelease() {
+        return multiRelease;
+    }
+
+    public void setMultiRelease(Integer multiRelease) {
+        this.multiRelease = multiRelease;
+    }
 }

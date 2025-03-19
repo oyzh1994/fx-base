@@ -7,9 +7,6 @@ import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,26 +26,54 @@ public class RichDataTextArea extends BaseRichTextArea {
     /**
      * 是否忽略变化
      */
-    @Getter
     private boolean ignoreChange;
 
     /**
      * 数据类型
      */
-    @Setter
-    @Getter
     private RichDataType dataType = RichDataType.STRING;
 
     /**
      * 实际类型类型
      */
-    @Getter
     private RichDataType realType = RichDataType.STRING;
 
     /**
      * 样式触发边距
      */
     private Map<RichDataType, Integer> styleBound;
+
+    public boolean isIgnoreChange() {
+        return ignoreChange;
+    }
+
+    public void setIgnoreChange(boolean ignoreChange) {
+        this.ignoreChange = ignoreChange;
+    }
+
+    public RichDataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(RichDataType dataType) {
+        this.dataType = dataType;
+    }
+
+    public RichDataType getRealType() {
+        return realType;
+    }
+
+    public void setRealType(RichDataType realType) {
+        this.realType = realType;
+    }
+
+    public Map<RichDataType, Integer> getStyleBound() {
+        return styleBound;
+    }
+
+    public void setStyleBound(Map<RichDataType, Integer> styleBound) {
+        this.styleBound = styleBound;
+    }
 
     /**
      * 设置边距
@@ -104,7 +129,7 @@ public class RichDataTextArea extends BaseRichTextArea {
      * @param dataType 数据类型
      * @param rawData  显示数据
      */
-    public void showData(@NonNull RichDataType dataType, Object rawData) {
+    public void showData( RichDataType dataType, Object rawData) {
         RichDataType type = this.dataType;
         this.dataType = dataType;
         this.showData(rawData);

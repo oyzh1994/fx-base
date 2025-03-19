@@ -38,7 +38,7 @@
 //     }
 //
 //     @Override
-//     public synchronized boolean add(@NonNull TerminalHistory history) {
+//     public synchronized boolean add( TerminalHistory history) {
 //         try {
 //             List<TerminalHistory> list = this.load();
 //             TerminalHistory last = CollectionUtil.getLast(list);

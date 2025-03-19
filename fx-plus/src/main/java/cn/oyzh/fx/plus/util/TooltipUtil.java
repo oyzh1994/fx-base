@@ -12,14 +12,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * @author oyzh
  * @since 2024-09-19
  */
-@UtilityClass
+
 public class TooltipUtil {
 
     /**
@@ -83,7 +81,7 @@ public class TooltipUtil {
      * @param target 组件
      * @param text   提示文本
      */
-    public static void setTipText(@NonNull EventTarget target, String text) {
+    public static void setTipText( EventTarget target, String text) {
         if (StringUtil.isNotBlank(text)) {
             if (target instanceof Node node) {
                 EventHandler<MouseEvent> handler = event -> {

@@ -12,7 +12,6 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListView;
-import lombok.NonNull;
 
 /**
  * @author oyzh
@@ -34,7 +33,7 @@ public class FXListView<T> extends ListView<T> implements FlexAdapter, NodeAdapt
      *
      * @param listener 监听器
      */
-    public void selectedItemChanged(@NonNull ChangeListener<T> listener) {
+    public void selectedItemChanged( ChangeListener<T> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);

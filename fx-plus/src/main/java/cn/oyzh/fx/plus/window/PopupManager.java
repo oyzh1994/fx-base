@@ -4,8 +4,6 @@ import atlantafx.base.controls.Popover;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
 import javafx.stage.Window;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * 弹窗工具类
@@ -13,7 +11,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2024/07/12
  */
-@UtilityClass
+
 public class PopupManager {
 
     /**
@@ -27,7 +25,7 @@ public class PopupManager {
      * @param controllerClass controller类
      * @return PopupWrapper
      */
-    public static PopupAdapter getPopup(@NonNull Class<?> controllerClass) {
+    public static PopupAdapter getPopup( Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             Object reference = window.getProperties().get(REF_ATTR);
             if (reference instanceof PopupAdapter wrapper && wrapper.controllerClass() == controllerClass) {
@@ -43,7 +41,7 @@ public class PopupManager {
      * @param controllerClass controller类
      * @param owner           父组件
      */
-    public static void showPopup(@NonNull Class<?> controllerClass, @NonNull Node owner) {
+    public static void showPopup( Class<?> controllerClass,  Node owner) {
         PopupAdapter window = parsePopup(controllerClass);
         window.showPopup(owner);
     }
@@ -54,7 +52,7 @@ public class PopupManager {
      * @param clazz 弹窗类
      * @return PopupWrapper
      */
-    public static PopupAdapter parsePopup(@NonNull Class<?> clazz) {
+    public static PopupAdapter parsePopup( Class<?> clazz) {
         return parsePopup(clazz, null, null);
     }
 
@@ -66,7 +64,7 @@ public class PopupManager {
      * @param anchorLocation 弹窗位置
      * @return PopupWrapper
      */
-    public static PopupAdapter parsePopup(@NonNull Class<?> clazz, Popover.ArrowLocation arrowLocation, PopupWindow.AnchorLocation anchorLocation) {
+    public static PopupAdapter parsePopup( Class<?> clazz, Popover.ArrowLocation arrowLocation, PopupWindow.AnchorLocation anchorLocation) {
         PopupAttribute attribute = clazz.getAnnotation(PopupAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + PopupAttribute.class.getSimpleName() + "] from class: " + clazz.getName());

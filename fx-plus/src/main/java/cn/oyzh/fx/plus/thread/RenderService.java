@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.thread;
 
 import cn.oyzh.fx.plus.util.FXUtil;
-import lombok.experimental.UtilityClass;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,7 +11,7 @@ import java.util.concurrent.Executors;
  * @author oyzh
  * @since 2023/11/28
  */
-@UtilityClass
+
 public class RenderService {
 
     /**

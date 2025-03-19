@@ -2,7 +2,6 @@ package cn.oyzh.fx.terminal.histroy;
 
 import cn.oyzh.common.object.ObjectComparator;
 import cn.oyzh.store.jdbc.Column;
-import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,7 +12,6 @@ import java.util.Objects;
  * @author oyzh
  * @since 2023/5/29
  */
-@Data
 public class TerminalHistory implements ObjectComparator<TerminalHistory>, Serializable {
 
     /**
@@ -40,6 +38,22 @@ public class TerminalHistory implements ObjectComparator<TerminalHistory>, Seria
             return Objects.equals(this.saveTime, history.getSaveTime());
         }
         return false;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public long getSaveTime() {
+        return saveTime;
+    }
+
+    public void setSaveTime(long saveTime) {
+        this.saveTime = saveTime;
     }
 
     @Override

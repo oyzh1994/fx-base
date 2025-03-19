@@ -4,7 +4,6 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.tree.view.RichTreeItem;
 import cn.oyzh.fx.gui.tree.view.RichTreeView;
 import javafx.scene.control.TreeItem;
-import lombok.NonNull;
 
 /**
  * @author oyzh
@@ -12,7 +11,7 @@ import lombok.NonNull;
  */
 public class SettingTreeItem extends RichTreeItem<SettingLeftItem> {
 
-    public SettingTreeItem(@NonNull RichTreeView treeView, SettingLeftItem value) {
+    public SettingTreeItem( RichTreeView treeView, SettingLeftItem value) {
         super(treeView);
         this.setValue(value);
     }

@@ -45,7 +45,6 @@ import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.i18n.I18nHelper;
-import lombok.experimental.UtilityClass;
 
 /**
  * 菜单工具类
@@ -53,7 +52,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2024/6/28
  */
-@UtilityClass
+
 public class MenuItemHelper {
 
     public static FXMenuItem openView(String iconSize, Runnable action) {

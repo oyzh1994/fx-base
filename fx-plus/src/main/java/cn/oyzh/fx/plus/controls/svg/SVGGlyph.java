@@ -22,9 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 
 /**
@@ -47,40 +44,31 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     /**
      * 图标地址
      */
-    @Getter
     private String url;
 
     /**
      * 图标颜色
      */
-    @Getter
     private Paint color;
 
     /**
      * 是否激活态
      */
-    @Getter
     protected Boolean active;
 
     /**
      * 激活时的颜色
      */
-    @Getter
-    @Setter
     protected Color activeColor = Color.ORANGERED;
 
     /**
      * 是否等待中
      */
-    @Getter
-    @Setter
     private Boolean waiting;
 
     /**
      * 是否开启动画功能
      */
-    @Setter
-    @Getter
     private boolean enableWaiting = true;
 
     /**
@@ -234,24 +222,24 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public SVGGlyph() {
     }
 
-    public SVGGlyph(@NonNull String url) {
+    public SVGGlyph( String url) {
         this();
         this.setUrl(url);
     }
 
-    public SVGGlyph(@NonNull String url, @NonNull Paint color) {
+    public SVGGlyph( String url,  Paint color) {
         this();
         this.setUrl(url);
         this.setColor(color);
     }
 
-    public SVGGlyph(@NonNull String url, @NonNull String size) {
+    public SVGGlyph( String url,  String size) {
         this();
         this.setUrl(url);
         this.setSizeStr(size);
     }
 
-    public SVGGlyph(@NonNull String url, double size) {
+    public SVGGlyph( String url, double size) {
         this();
         this.setUrl(url);
         this.setSize(size);
@@ -262,7 +250,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      *
      * @param url svg地址
      */
-    public void setUrl(@NonNull String url) {
+    public void setUrl( String url) {
         this.url = url.intern();
         // 创建图标
         this.original = SVGManager.load(this.url);
@@ -429,5 +417,61 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 
     public void disableWaiting() {
         this.enableWaiting = false;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Paint getColor() {
+        return color;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Color getActiveColor() {
+        return activeColor;
+    }
+
+    public void setActiveColor(Color activeColor) {
+        this.activeColor = activeColor;
+    }
+
+    public Boolean getWaiting() {
+        return waiting;
+    }
+
+    public void setWaiting(Boolean waiting) {
+        this.waiting = waiting;
+    }
+
+    public boolean isEnableWaiting() {
+        return enableWaiting;
+    }
+
+    public void setEnableWaiting(boolean enableWaiting) {
+        this.enableWaiting = enableWaiting;
+    }
+
+    public FXSVGPath getOriginal() {
+        return original;
+    }
+
+    public void setOriginal(FXSVGPath original) {
+        this.original = original;
+    }
+
+    public RotateTransition getWaitingAnimation() {
+        return waitingAnimation;
+    }
+
+    public void setWaitingAnimation(RotateTransition waitingAnimation) {
+        this.waitingAnimation = waitingAnimation;
     }
 }

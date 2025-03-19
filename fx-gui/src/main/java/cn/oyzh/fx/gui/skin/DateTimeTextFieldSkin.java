@@ -7,7 +7,6 @@ import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DateSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
@@ -19,8 +18,6 @@ import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,11 +32,17 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
 
+    public DateTimeFormatter getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(DateTimeFormatter formatter) {
+        this.formatter = formatter;
+    }
+
     /**
      * 日期格式化器
      */
-    @Setter
-    @Getter
     private DateTimeFormatter formatter;
 
     /**

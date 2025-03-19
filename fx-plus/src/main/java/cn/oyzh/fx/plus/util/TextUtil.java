@@ -16,7 +16,7 @@
 //  * @author oyzh
 //  * @since 2022/12/27
 //  */
-// @UtilityClass
+// 
 // public class TextUtil {
 //
 //     // public static boolean checkNumber(KeyEvent event, TextField field) {

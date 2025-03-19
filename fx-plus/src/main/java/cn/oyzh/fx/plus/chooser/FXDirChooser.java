@@ -4,9 +4,6 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
@@ -20,16 +17,15 @@ public class FXDirChooser {
     /**
      * 标题
      */
-    @Getter
-    @Setter
-    @Accessors(fluent = true, chain = true)
     private String title;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     /**
      * 初始文件夹
      */
-    @Getter
-    @Accessors(fluent = true, chain = true)
     private File initDir = FXChooser.DESKTOP_DIR;
 
     /**

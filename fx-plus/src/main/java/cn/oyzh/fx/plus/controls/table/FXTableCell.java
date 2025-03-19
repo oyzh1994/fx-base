@@ -4,8 +4,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Node;
 import javafx.scene.control.TableCell;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 表单列
@@ -22,9 +20,15 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
     /**
      * 行高
      */
-    @Getter
-    @Setter
     protected double lineHeight;
+
+    public double getLineHeight() {
+        return lineHeight;
+    }
+
+    public void setLineHeight(double lineHeight) {
+        this.lineHeight = lineHeight;
+    }
 
     /**
      * 获取表单内容

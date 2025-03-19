@@ -4,8 +4,6 @@ import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.Clipboard;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -16,7 +14,7 @@ import java.awt.datatransfer.StringSelection;
  * @author oyzh
  * @since 2023/11/22
  */
-@UtilityClass
+
 public class ClipboardUtil {
 
     /**
@@ -70,7 +68,7 @@ public class ClipboardUtil {
      * @param content 内容
      * @return 结果
      */
-    public static boolean setString(@NonNull String content) {
+    public static boolean setString( String content) {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
@@ -87,7 +85,7 @@ public class ClipboardUtil {
      * @param content 内容
      * @return 结果
      */
-    public static boolean setStringAndTip(@NonNull String content) {
+    public static boolean setStringAndTip( String content) {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
@@ -108,7 +106,7 @@ public class ClipboardUtil {
      * @return 结果
      */
     @Deprecated
-    public static boolean setStringAndTip(@NonNull String content, String tipText) {
+    public static boolean setStringAndTip( String content, String tipText) {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);

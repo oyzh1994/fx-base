@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
-import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/08/17
  */
-@UtilityClass
+
 public class FXColorUtil {
 
     /**

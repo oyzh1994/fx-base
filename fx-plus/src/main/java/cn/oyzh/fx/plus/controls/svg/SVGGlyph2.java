@@ -219,24 +219,24 @@
 //    public SVGGlyph2() {
 //    }
 //
-//    public SVGGlyph2(@NonNull String url) {
+//    public SVGGlyph2( String url) {
 //        this();
 //        this.setUrl(url);
 //    }
 //
-//    public SVGGlyph2(@NonNull String url, @NonNull Paint color) {
+//    public SVGGlyph2( String url,  Paint color) {
 //        this();
 //        this.setUrl(url);
 //        this.setColor(color);
 //    }
 //
-//    public SVGGlyph2(@NonNull String url, @NonNull String size) {
+//    public SVGGlyph2( String url,  String size) {
 //        this();
 //        this.setUrl(url);
 //        this.setSizeStr(size);
 //    }
 //
-//    public SVGGlyph2(@NonNull String url, double size) {
+//    public SVGGlyph2( String url, double size) {
 //        this();
 //        this.setUrl(url);
 //        this.setSize(size);
@@ -247,7 +247,7 @@
 //     *
 //     * @param url svg地址
 //     */
-//    public void setUrl(@NonNull String url) {
+//    public void setUrl( String url) {
 //        this.url = url.intern();
 //        // 创建图标
 ////        FXSVGPath svgPath = SVGManager.load(this.url);

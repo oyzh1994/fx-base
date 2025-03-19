@@ -6,7 +6,6 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
 import cn.oyzh.fx.plus.format.DigitalFormat;
 import javafx.scene.control.TextFormatter;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,13 +17,16 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/08/28
  */
-@Getter
 public class DecimalTextField extends DigitalTextField {
 
     /**
      * 小数位数
      */
     protected Integer scaleLen;
+
+    public Integer getScaleLen() {
+        return scaleLen;
+    }
 
     public void setScaleLen(Integer scaleLen) {
         this.scaleLen = scaleLen;

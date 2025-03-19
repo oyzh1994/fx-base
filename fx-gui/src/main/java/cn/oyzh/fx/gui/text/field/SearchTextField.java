@@ -6,8 +6,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.Skin;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 搜索文本域
@@ -20,15 +18,11 @@ public class SearchTextField extends LimitTextField {
     /**
      * 搜索触发事件
      */
-    @Getter
-    @Setter
     private EventHandler<SearchEvent> onSearch;
 
     /**
      * 搜索历史选中事件
      */
-    @Getter
-    @Setter
     private EventHandler<SearchEvent> onHistorySelected;
 
     /**
@@ -56,6 +50,22 @@ public class SearchTextField extends LimitTextField {
      */
     public SearchHistoryPopup getHistoryPopup() {
         return this.skin().getHistoryPopup();
+    }
+
+    public EventHandler<SearchEvent> getOnSearch() {
+        return onSearch;
+    }
+
+    public void setOnSearch(EventHandler<SearchEvent> onSearch) {
+        this.onSearch = onSearch;
+    }
+
+    public EventHandler<SearchEvent> getOnHistorySelected() {
+        return onHistorySelected;
+    }
+
+    public void setOnHistorySelected(EventHandler<SearchEvent> onHistorySelected) {
+        this.onHistorySelected = onHistorySelected;
     }
 
     @Override

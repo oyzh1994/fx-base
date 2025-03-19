@@ -3,8 +3,6 @@ package cn.oyzh.fx.plus.controls.text;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontUtil;
 import javafx.scene.paint.Color;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 分割器
@@ -25,16 +23,28 @@ public class Splitter extends FXText {
     /**
      * 标题文字
      */
-    @Getter
-    @Setter
     private String titleText;
 
     /**
      * 切割文字
      */
-    @Getter
-    @Setter
     private String splitText = "-";
+
+    public String getTitleText() {
+        return titleText;
+    }
+
+    public void setTitleText(String titleText) {
+        this.titleText = titleText;
+    }
+
+    public String getSplitText() {
+        return splitText;
+    }
+
+    public void setSplitText(String splitText) {
+        this.splitText = splitText;
+    }
 
     @Override
     public void resize(double width, double height) {

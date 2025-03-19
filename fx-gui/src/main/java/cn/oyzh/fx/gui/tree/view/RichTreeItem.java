@@ -8,10 +8,8 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
-import lombok.NonNull;
 
 import java.util.BitSet;
 import java.util.List;
@@ -179,7 +177,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return this.bitValue().get(6);
     }
 
-    public RichTreeItem(@NonNull RichTreeView treeView) {
+    public RichTreeItem( RichTreeView treeView) {
         super(treeView);
     }
 
@@ -424,7 +422,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public synchronized void doFilter() {
         RichTreeView treeView = this.getTreeView();
         if (treeView != null) {
-            this.doFilter(treeView.itemFilter());
+            this.doFilter(treeView.getItemFilter());
         }
     }
 

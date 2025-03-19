@@ -16,19 +16,11 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.skin.TableHeaderRow;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import lombok.experimental.UtilityClass;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 表格工具类
@@ -36,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2023/8/11
  */
-@UtilityClass
+
 public class TableViewUtil {
 
     public <S, T> FXTableCell<S, T> newCell(double lineHeight) {
@@ -117,7 +109,7 @@ public class TableViewUtil {
      * @param tableView 表格组件
      * @return 列数据
      */
-    public Object getSelectCellData(TableView<?> tableView) {
+    public static Object getSelectCellData(TableView<?> tableView) {
         ObservableList<TablePosition> positions = tableView.getSelectionModel().getSelectedCells();
         if (CollectionUtil.isNotEmpty(positions)) {
             TablePosition<?, ?> position = positions.getFirst();

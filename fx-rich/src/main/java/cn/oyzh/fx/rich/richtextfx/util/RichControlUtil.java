@@ -1,7 +1,6 @@
 package cn.oyzh.fx.rich.richtextfx.util;
 
 import cn.oyzh.fx.rich.richtextfx.data.RichDataTextAreaPane;
-import lombok.experimental.UtilityClass;
 import org.fxmisc.richtext.StyledTextArea;
 
 
@@ -11,7 +10,7 @@ import org.fxmisc.richtext.StyledTextArea;
  * @author oyzh
  * @since 2023/11/20
  */
-@UtilityClass
+
 public class RichControlUtil {
 
     /**

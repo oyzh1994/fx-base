@@ -5,8 +5,8 @@
 <?import cn.oyzh.fx.plus.controls.button.FXRadioButton?>
 <?import cn.oyzh.fx.plus.controls.button.IconButton?>
 <?import cn.oyzh.fx.plus.controls.svg.SVGGlyph?>
-<?import cn.oyzh.fx.plus.controls.tab.FXTabPane?>
 <?import cn.oyzh.fx.plus.controls.tab.FXTab?>
+<?import cn.oyzh.fx.plus.controls.tab.FXTabPane?>
 <?import cn.oyzh.fx.plus.controls.table.FXTableColumn?>
 <?import cn.oyzh.fx.plus.controls.table.FXTableView?>
 <?import cn.oyzh.fx.plus.controls.text.area.FXTextArea?>
@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import java.lang.String?>
 <FXTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
-             fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
+           fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
     <FXTab text="测试1">
         <FXVBox>
             <FXHBox realHeight="50">

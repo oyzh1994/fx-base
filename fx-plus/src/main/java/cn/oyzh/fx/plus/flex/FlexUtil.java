@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.flex;
 
 import cn.oyzh.common.util.StringUtil;
-import lombok.experimental.UtilityClass;
 
 /**
  * 流式布局工具类
@@ -9,7 +8,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2022/12/31
  */
-@UtilityClass
+
 public class FlexUtil {
 
     /**

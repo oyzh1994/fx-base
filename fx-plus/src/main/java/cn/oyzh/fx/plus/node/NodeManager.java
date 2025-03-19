@@ -12,7 +12,6 @@ import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.i18n.I18nManager;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
-import lombok.experimental.UtilityClass;
 
 /**
  * 节点管理器
@@ -20,7 +19,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2024/04/05
  */
-@UtilityClass
+
 public class NodeManager {
 
     /**

@@ -3,9 +3,6 @@ package cn.oyzh.fx.plus.domain;
 import cn.oyzh.common.object.ObjectCopier;
 import cn.oyzh.store.jdbc.Column;
 import cn.oyzh.store.jdbc.PrimaryKey;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -15,9 +12,6 @@ import java.io.Serializable;
  * @author oyzh
  * @since 2023/6/16
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Serializable {
 
     /**
@@ -63,5 +57,35 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
             this.name = t1.name;
             this.expand = t1.expand;
         }
+    }
+
+    public AppGroup(String gid, String name, Boolean expand) {
+        this.gid = gid;
+        this.name = name;
+        this.expand = expand;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getExpand() {
+        return expand;
+    }
+
+    public void setExpand(Boolean expand) {
+        this.expand = expand;
     }
 }

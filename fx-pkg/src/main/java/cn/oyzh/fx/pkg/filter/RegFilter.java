@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.filter;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class RegFilter implements Function<String, Boolean> {
      *
      * @param exclude 排除参数
      */
-    public void addExclude(@NonNull String exclude) {
+    public void addExclude( String exclude) {
         if (StringUtil.isNotBlank(exclude)) {
             this.excludes.add(exclude.trim());
         }

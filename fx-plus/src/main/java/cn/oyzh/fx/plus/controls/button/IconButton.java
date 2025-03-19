@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import lombok.Getter;
 
 /**
  * 图标按钮
@@ -14,8 +13,11 @@ public class IconButton extends FXButton {
     /**
      * 图标对比字符的百分比
      */
-    @Getter
     private Double iconSizePercent = 1.0;
+
+    public Double getIconSizePercent() {
+        return iconSizePercent;
+    }
 
     @Override
     public void initNode() {

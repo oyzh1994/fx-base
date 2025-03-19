@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.controller;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.WindowEvent;
-import lombok.NonNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,13 +16,13 @@ import java.util.List;
 public class ParentStageController extends StageController {
 
     @Override
-    protected void setWindow(@NonNull StageAdapter stage) {
+    protected void setWindow( StageAdapter stage) {
         super.setWindow(stage);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.setWindow(stage);
                 if (controller instanceof SubStageController subController) {
-                    subController.parent(this);
+                    subController.setParent(this);
                 }
             }
         }

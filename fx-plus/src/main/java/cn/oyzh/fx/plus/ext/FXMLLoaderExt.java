@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.controller.ControllerFactory;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
-import lombok.NonNull;
 
 /**
  * fxml加载器扩展
@@ -27,7 +26,7 @@ public class FXMLLoaderExt extends FXMLLoader {
      * @param fxmlUrl  fxml地址
      * @return 内容
      */
-    public <T> T load(@NonNull String fxmlUrl) {
+    public <T> T load( String fxmlUrl) {
         try {
             this.setLocation(ResourceUtil.getResource(fxmlUrl));
             this.setResources(I18nResourceBundle.INSTANCE);
@@ -45,7 +44,7 @@ public class FXMLLoaderExt extends FXMLLoader {
      * @param fxmlUrl 资源地址
      * @return 内容
      */
-    public static <T> T loadFromUrl(@NonNull String fxmlUrl) {
+    public static <T> T loadFromUrl( String fxmlUrl) {
         return new FXMLLoaderExt().load(fxmlUrl);
     }
 }

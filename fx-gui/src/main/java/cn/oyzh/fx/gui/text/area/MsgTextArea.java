@@ -4,12 +4,8 @@ import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
 import cn.oyzh.i18n.I18nHelper;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2023/04/08
  */
-@ToString
 public class MsgTextArea extends FXTextArea {
 
     {
@@ -36,8 +31,6 @@ public class MsgTextArea extends FXTextArea {
     /**
      * 最大行数
      */
-    @Getter
-    @Setter
     private int lineLimit = 3000;
 
     /**
@@ -49,9 +42,23 @@ public class MsgTextArea extends FXTextArea {
      * 5 触发限制后保留50%行内容
      * 6 触发限制后保留30%行内容
      */
-    @Getter
-    @Setter
     private byte limitPolicy = 1;
+
+    public int getLineLimit() {
+        return lineLimit;
+    }
+
+    public void setLineLimit(int lineLimit) {
+        this.lineLimit = lineLimit;
+    }
+
+    public byte getLimitPolicy() {
+        return limitPolicy;
+    }
+
+    public void setLimitPolicy(byte limitPolicy) {
+        this.limitPolicy = limitPolicy;
+    }
 
     /**
      * 消息队列

@@ -3,7 +3,7 @@
 <?import cn.oyzh.fx.plus.controls.tree.view.FXTreeView?>
 <?import javafx.scene.control.Button?>
 <FXVBox realHeight="300" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="cn.oyzh.fx.plus.test.treeview.TreeViewTestController">
+        fx:controller="cn.oyzh.fx.plus.test.treeview.TreeViewTestController">
     <FXHBox realHeight="50">
         <Button text="测试1" onAction="#test1"></Button>
         <Button text="测试2" onAction="#test2"></Button>

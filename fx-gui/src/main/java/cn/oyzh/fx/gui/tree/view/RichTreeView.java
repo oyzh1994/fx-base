@@ -5,9 +5,6 @@ import cn.oyzh.fx.plus.controls.tree.view.FXTreeView;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TreeItem;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * 富功能树
@@ -20,25 +17,40 @@ public class RichTreeView extends FXTreeView {
     /**
      * 高亮文本
      */
-    @Setter
-    @Getter
-    @Accessors(chain = true, fluent = true)
     protected String highlightText;
 
     /**
      * 高亮需要匹配大小写
      */
-    @Setter
-    @Getter
-    @Accessors(chain = true, fluent = true)
     protected boolean highlightMatchCase;
+
+    public RichTreeItemFilter getItemFilter() {
+        return itemFilter;
+    }
+
+    public void setItemFilter(RichTreeItemFilter itemFilter) {
+        this.itemFilter = itemFilter;
+    }
+
+    public boolean isHighlightMatchCase() {
+        return highlightMatchCase;
+    }
+
+    public void setHighlightMatchCase(boolean highlightMatchCase) {
+        this.highlightMatchCase = highlightMatchCase;
+    }
+
+    public String getHighlightText() {
+        return highlightText;
+    }
+
+    public void setHighlightText(String highlightText) {
+        this.highlightText = highlightText;
+    }
 
     /**
      * 节点过滤器
      */
-    @Setter
-    @Getter
-    @Accessors(chain = true, fluent = true)
     protected RichTreeItemFilter itemFilter;
 
     @Override

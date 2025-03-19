@@ -13,8 +13,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 
 /**
@@ -23,7 +21,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2022/1/19
  */
-@UtilityClass
+
 public class ControlUtil {
 
     // /**
@@ -65,7 +63,7 @@ public class ControlUtil {
     //  * @param target 组件
     //  * @param text   提示文本
     //  */
-    // public static void setTipText(@NonNull EventTarget target, String text) {
+    // public static void setTipText( EventTarget target, String text) {
     //     Tooltip tooltip = getTooltip(target);
     //     if (StringUtil.isNotBlank(text)) {
     //         // if (tooltip != null) {
@@ -131,7 +129,7 @@ public class ControlUtil {
 //     *
 //     * @param inputField 定制输入框
 //     */
-//    public static void setupClearButtonField(@NonNull CustomTextField inputField) {
+//    public static void setupClearButtonField( CustomTextField inputField) {
 //        ObjectProperty<Node> rightProperty = inputField.rightProperty();
 //
 //        inputField.getStyleClass().add("clearable-field"); //$NON-NLS-1$
@@ -273,7 +271,7 @@ public class ControlUtil {
      * @param width 宽度
      * @return 指定宽度边框
      */
-    public static Border strokeOfWidth(@NonNull Paint stroke, double width) {
+    public static Border strokeOfWidth( Paint stroke, double width) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(width)));
     }
 
@@ -283,7 +281,7 @@ public class ControlUtil {
      * @param width 宽度
      * @return 指定宽度边框
      */
-    public static Border strokeOfWidthBottom(@NonNull Paint stroke, double width) {
+    public static Border strokeOfWidthBottom( Paint stroke, double width) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(0, 0, width, 0)));
     }
 
@@ -292,7 +290,7 @@ public class ControlUtil {
      * @param stroke 颜色
      * @return 中等宽度边框
      */
-    public static Border strokeOfThick(@NonNull Paint stroke) {
+    public static Border strokeOfThick( Paint stroke) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, BorderStroke.THICK));
     }
 
@@ -301,7 +299,7 @@ public class ControlUtil {
      * @param stroke 颜色
      * @return 中等宽度边框
      */
-    public static Border strokeOfMedium(@NonNull Paint stroke) {
+    public static Border strokeOfMedium( Paint stroke) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, BorderStroke.MEDIUM));
     }
 
@@ -310,7 +308,7 @@ public class ControlUtil {
      * @param stroke 颜色
      * @return 中等宽度边框
      */
-    public static Border borderOfThin(@NonNull Paint stroke) {
+    public static Border borderOfThin( Paint stroke) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, BorderStroke.THIN));
     }
 
@@ -364,7 +362,7 @@ public class ControlUtil {
      *
      * @param control 组件
      */
-    public static boolean isSelect(@NonNull TextInputControl control) {
+    public static boolean isSelect( TextInputControl control) {
         IndexRange range = control.getSelection();
         return range != null && range.getLength() > 0;
     }
@@ -375,7 +373,7 @@ public class ControlUtil {
      * @param node 节点
      * @return 组件宽度
      */
-    public static double boundedWidth(@NonNull Node node) {
+    public static double boundedWidth( Node node) {
         double min = node.minWidth(-1);
         double max = node.maxWidth(-1);
         return Math.min(Math.max(node.prefWidth(-1), min), Math.max(min, max));
@@ -387,7 +385,7 @@ public class ControlUtil {
      * @param node 节点
      * @return 组件高度
      */
-    public static double boundedHeight(@NonNull Node node) {
+    public static double boundedHeight( Node node) {
         double min = node.minHeight(-1);
         double max = node.maxHeight(-1);
         return Math.min(Math.max(node.prefHeight(-1), min), Math.max(min, max));

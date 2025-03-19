@@ -6,7 +6,6 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import lombok.experimental.UtilityClass;
 
 /**
  * 拖动工具类
@@ -14,7 +13,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2023/9/12
  */
-@UtilityClass
+
 public class DragUtil {
 
     /**
@@ -90,7 +89,7 @@ public class DragUtil {
             // 判断是否允许投放
             if (target != null && source != null && target.allowDropNode(source)) {
                 node.setOpacity(0.3);
-                handler.source(source);
+                handler.setSource(source);
                 handler.initDropEffect(target);
             }
             event.consume();

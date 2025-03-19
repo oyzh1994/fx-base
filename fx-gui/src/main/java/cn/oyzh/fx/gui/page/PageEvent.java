@@ -2,7 +2,6 @@ package cn.oyzh.fx.gui.page;
 
 import javafx.event.Event;
 import javafx.event.EventType;
-import lombok.Getter;
 
 /**
  * @author oyzh
@@ -21,8 +20,11 @@ public class PageEvent extends Event {
 
     public static class PageJumpEvent extends PageEvent {
 
-        @Getter
         private int page;
+
+        public int getPage() {
+            return page;
+        }
 
         public PageJumpEvent(int page) {
             super(PAGE_JUMP_EVENT);

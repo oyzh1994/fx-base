@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.chooser;
 
-import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;
-import lombok.experimental.UtilityClass;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -12,7 +10,7 @@ import java.io.File;
  * @author oyzh
  * @since 2025-03-07
  */
-@UtilityClass
+
 public class FXChooser {
 
     /**

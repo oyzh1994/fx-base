@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import lombok.experimental.UtilityClass;
 
 import java.util.Collections;
 
@@ -15,7 +14,7 @@ import java.util.Collections;
  * @author oyzh
  * @since 2024/7/12
  */
-@UtilityClass
+
 public class ListViewUtil {
 
     /**

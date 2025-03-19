@@ -6,8 +6,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import javafx.scene.image.Image;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -21,7 +19,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/4/4
  */
-@UtilityClass
+
 public class IconUtil {
 
     /**
@@ -35,7 +33,7 @@ public class IconUtil {
      * @param iconUrls 图标列表地址
      * @return 图标列表
      */
-    public static List<Image> getIcons(@NonNull String[] iconUrls) {
+    public static List<Image> getIcons( String[] iconUrls) {
         return getIcons(Arrays.asList(iconUrls));
     }
 
@@ -45,7 +43,7 @@ public class IconUtil {
      * @param iconUrls 图标列表地址
      * @return 图标列表
      */
-    public static List<Image> getIcons(@NonNull List<String> iconUrls) {
+    public static List<Image> getIcons( List<String> iconUrls) {
         List<Image> icons = new ArrayList<>(iconUrls.size());
         for (String iconUrl : iconUrls) {
             Image icon = getIcon(iconUrl);
@@ -62,7 +60,7 @@ public class IconUtil {
      * @param iconUrl 图标地址
      * @return 图标
      */
-    public static Image getIcon(@NonNull String iconUrl) {
+    public static Image getIcon( String iconUrl) {
         InputStream stream;
         WeakReference<byte[]> reference = ICON_CACHE.get(iconUrl);
         if (reference == null || reference.get() == null) {

@@ -9,17 +9,14 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author oyzh
@@ -67,9 +64,15 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 //        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
     }
 
-    @Getter
-    @Setter
     private Runnable ctrlSAction;
+
+    public Runnable getCtrlSAction() {
+        return ctrlSAction;
+    }
+
+    public void setCtrlSAction(Runnable ctrlSAction) {
+        this.ctrlSAction = ctrlSAction;
+    }
 
     public void onCtrl_S() {
         if (this.ctrlSAction != null) {

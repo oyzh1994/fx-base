@@ -13,8 +13,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.HorizontalDirection;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import lombok.Getter;
-import lombok.NonNull;
 
 /**
  * 切换开关组件
@@ -31,14 +29,20 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
     /**
      * 选中时显示的文字
      */
-    @Getter
     private String selectedText;
 
     /**
      * 未选中时显示的文字
      */
-    @Getter
     private String unselectedText;
+
+    public String getSelectedText() {
+        return selectedText;
+    }
+
+    public String getUnselectedText() {
+        return unselectedText;
+    }
 
     {
 //        this.setCache(false);
@@ -88,7 +92,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
      *
      * @param listener 监听器
      */
-    public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
+    public void selectedChanged( ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
 //        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }

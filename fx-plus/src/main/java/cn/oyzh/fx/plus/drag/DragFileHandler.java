@@ -4,7 +4,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import lombok.experimental.Accessors;
 
 
 /**
@@ -13,7 +12,6 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/5/14
  */
-@Accessors(chain = true, fluent = true)
 public class DragFileHandler {
 
     /**

@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.format;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;
-import lombok.Getter;
 
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
@@ -17,8 +16,11 @@ public class DigitalFormat extends DecimalFormat {
     /**
      * 保留小数位数
      */
-    @Getter
     private Integer scaleLen;
+
+    public Integer getScaleLen() {
+        return scaleLen;
+    }
 
     private DecimalFormat format;
 

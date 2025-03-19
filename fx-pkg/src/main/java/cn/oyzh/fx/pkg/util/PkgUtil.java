@@ -10,7 +10,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
 import java.io.File;
@@ -20,7 +19,7 @@ import java.nio.charset.StandardCharsets;
  * @author oyzh
  * @since 2023/11/17
  */
-@UtilityClass
+
 public class PkgUtil {
 
     /**

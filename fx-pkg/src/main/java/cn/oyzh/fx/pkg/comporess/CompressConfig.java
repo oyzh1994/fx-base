@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.comporess;
 
-import lombok.Data;
 
 /**
  * 压缩配置
@@ -8,7 +7,6 @@ import lombok.Data;
  * @author oyzh
  * @since 2024/06/18
  */
-@Data
 public class CompressConfig {
 
     /**
@@ -21,4 +19,19 @@ public class CompressConfig {
      */
     private String name;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

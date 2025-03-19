@@ -18,9 +18,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,15 +46,11 @@ public class SearchHistoryPopup extends FXPopup {
     /**
      * 选中事件
      */
-    @Getter
-    @Setter
     protected Consumer<String> onHistorySelected;
 
     /**
      * 单列数据高
      */
-    @Getter
-    @Setter
     protected double cellDataHeight = 20;
 
     /**
@@ -109,6 +102,22 @@ public class SearchHistoryPopup extends FXPopup {
      */
     public FXListView<String> listView() {
         return (FXListView<String>) CollectionUtil.getFirst(this.getContent());
+    }
+
+    public Consumer<String> getOnHistorySelected() {
+        return onHistorySelected;
+    }
+
+    public void setOnHistorySelected(Consumer<String> onHistorySelected) {
+        this.onHistorySelected = onHistorySelected;
+    }
+
+    public double getCellDataHeight() {
+        return cellDataHeight;
+    }
+
+    public void setCellDataHeight(double cellDataHeight) {
+        this.cellDataHeight = cellDataHeight;
     }
 
     /**
@@ -238,12 +247,12 @@ public class SearchHistoryPopup extends FXPopup {
      * @param ownerNode 父节点
      * @param event     鼠标事件
      */
-    public void show(@NonNull Node ownerNode, @NonNull MouseEvent event) {
+    public void show( Node ownerNode,  MouseEvent event) {
         this.show(ownerNode, event.getScreenX(), event.getScreenY());
     }
 
     @Override
-    public void show(@NonNull Node ownerNode) {
+    public void show( Node ownerNode) {
         Point2D point2D = ownerNode.localToScreen(ownerNode.getScaleX(), ownerNode.getScaleY());
         double height = ControlUtil.boundedHeight(ownerNode);
         this.show(ownerNode, point2D.getX(), point2D.getY() + height);

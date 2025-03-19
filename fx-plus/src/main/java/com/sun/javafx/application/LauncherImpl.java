@@ -27,12 +27,14 @@ package com.sun.javafx.application;
 
 import com.sun.javafx.PlatformUtil;
 import com.sun.javafx.SecurityUtil;
+import com.sun.javafx.stage.StageHelper;
 import javafx.application.Application;
 import javafx.application.Preloader;
 import javafx.application.Preloader.ErrorNotification;
 import javafx.application.Preloader.PreloaderNotification;
 import javafx.application.Preloader.StateChangeNotification;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -42,17 +44,16 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-import java.util.Base64;
-import java.util.Optional;
-import com.sun.javafx.stage.StageHelper;
 
 
 public class LauncherImpl {

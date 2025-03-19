@@ -15,8 +15,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.stage.Window;
-import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.List;
 
@@ -26,7 +24,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/11/10
  */
-@Getter
 public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
     {
@@ -35,7 +32,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     private FXTreeView treeView;
 
-    public FXTreeItem(@NonNull FXTreeView treeView) {
+    public FXTreeItem( FXTreeView treeView) {
         this.setTreeView(treeView);
     }
 

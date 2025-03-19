@@ -8,7 +8,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import lombok.NonNull;
 
 /**
  * 字体组件适配器
@@ -142,7 +141,7 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontFamily 字体类型
      */
-    default void setFontFamily(@NonNull String fontFamily) {
+    default void setFontFamily( String fontFamily) {
         this.fontFamily(fontFamily);
     }
 

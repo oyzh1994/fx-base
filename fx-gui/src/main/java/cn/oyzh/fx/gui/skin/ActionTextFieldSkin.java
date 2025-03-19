@@ -9,8 +9,6 @@ import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 文本域皮肤扩展
@@ -20,9 +18,15 @@ import lombok.Setter;
  */
 public class ActionTextFieldSkin extends FXTextFieldSkin {
 
-    @Getter
-    @Setter
     private Runnable action;
+
+    public Runnable getAction() {
+        return action;
+    }
+
+    public void setAction(Runnable action) {
+        this.action = action;
+    }
 
     protected final SVGGlyph button;
 

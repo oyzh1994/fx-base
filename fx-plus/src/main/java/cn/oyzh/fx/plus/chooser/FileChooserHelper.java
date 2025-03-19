@@ -70,7 +70,9 @@ public class FileChooserHelper {
      */
     public static File save(String title, String initFileName, List<FileExtensionFilter> filters, Window owner) {
         FXFileChooser chooser = new FXFileChooser();
-        chooser.title(title).addFilters(filters).initialFileName(initFileName);
+        chooser.setTitle(title);
+        chooser.addFilters(filters);
+        chooser.setInitialFileName(initFileName);
         return chooser.showSaveDialog(owner);
     }
 
@@ -117,7 +119,8 @@ public class FileChooserHelper {
      */
     public static File choose(String title, List<FileExtensionFilter> filters, Window owner) {
         FXFileChooser chooser = new FXFileChooser();
-        chooser.title(title).addFilters(filters);
+        chooser.setTitle(title);
+        chooser.addFilters(filters);
         return chooser.showOpenDialog(owner);
     }
 
@@ -142,7 +145,8 @@ public class FileChooserHelper {
      */
     public static List<File> chooseMultiple(String title, List<FileExtensionFilter> filters, Window owner) {
         FXFileChooser chooser = new FXFileChooser();
-        chooser.title(title).addFilters(filters);
+        chooser.setTitle(title);
+        chooser.addFilters(filters);
         return chooser.showOpenMultipleDialog(owner);
     }
 

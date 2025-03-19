@@ -8,8 +8,6 @@ import cn.oyzh.fx.plus.theme.ThemeConfig;
 import cn.oyzh.store.jdbc.Column;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -20,49 +18,42 @@ import java.io.Serializable;
  * @author oyzh
  * @since 2022/8/26
  */
-@Setter
 public class AppSetting implements Serializable, ObjectCopier<Object> {
 
     /**
      * 窗口透明度
      */
     @Column
-    @Getter
     private Float opacity;
 
     /**
      * 标题栏透明度
      */
     @Column
-    @Getter
     private Float titleBarOpacity;
 
     /**
      * 主题
      */
     @Column
-    @Getter
     private String theme;
 
     /**
      * 自定义前景色
      */
     @Column
-    @Getter
     private String fgColor;
 
     /**
      * 自定义背景色
      */
     @Column
-    @Getter
     private String bgColor;
 
     /**
      * 自定义强调色
      */
     @Column
-    @Getter
     private String accentColor;
 
     /**
@@ -141,7 +132,6 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 区域
      */
     @Column
-    @Getter
     private String locale;
 
     /**
@@ -151,7 +141,6 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 2 直接关闭程序
      */
     @Column
-    @Getter
     private Byte exitMode;
 
     /**
@@ -160,7 +149,6 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
-    @Getter
     private Byte rememberPageSize;
 
     /**
@@ -169,7 +157,6 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 1|null 记住
      */
     @Column
-    @Getter
     private Byte rememberPageResize;
 
     /**
@@ -178,7 +165,6 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
-    @Getter
     private Byte rememberPageLocation;
 
     /**
@@ -197,21 +183,18 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 屏幕x
      */
     @Column
-    @Getter
     private Double pageScreenX;
 
     /**
      * 屏幕y
      */
     @Column
-    @Getter
     private Double pageScreenY;
 
     /**
      * 是否最大化
      */
     @Column
-    @Getter
     private Boolean pageMaximized;
 
     /**
@@ -424,6 +407,178 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
             config.setSize(10);
         }
         return config;
+    }
+
+    public Float getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(Float opacity) {
+        this.opacity = opacity;
+    }
+
+    public Float getTitleBarOpacity() {
+        return titleBarOpacity;
+    }
+
+    public void setTitleBarOpacity(Float titleBarOpacity) {
+        this.titleBarOpacity = titleBarOpacity;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public String getFgColor() {
+        return fgColor;
+    }
+
+    public void setFgColor(String fgColor) {
+        this.fgColor = fgColor;
+    }
+
+    public String getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        this.bgColor = bgColor;
+    }
+
+    public String getAccentColor() {
+        return accentColor;
+    }
+
+    public void setAccentColor(String accentColor) {
+        this.accentColor = accentColor;
+    }
+
+    public void setFontSize(Byte fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+    }
+
+    public void setFontWeight(Short fontWeight) {
+        this.fontWeight = fontWeight;
+    }
+
+    public void setEditorFontSize(Byte editorFontSize) {
+        this.editorFontSize = editorFontSize;
+    }
+
+    public void setEditorFontFamily(String editorFontFamily) {
+        this.editorFontFamily = editorFontFamily;
+    }
+
+    public void setEditorFontWeight(Short editorFontWeight) {
+        this.editorFontWeight = editorFontWeight;
+    }
+
+    public void setTerminalFontSize(Byte terminalFontSize) {
+        this.terminalFontSize = terminalFontSize;
+    }
+
+    public void setTerminalFontFamily(String terminalFontFamily) {
+        this.terminalFontFamily = terminalFontFamily;
+    }
+
+    public void setTerminalFontWeight(Short terminalFontWeight) {
+        this.terminalFontWeight = terminalFontWeight;
+    }
+
+    public void setQueryFontSize(Byte queryFontSize) {
+        this.queryFontSize = queryFontSize;
+    }
+
+    public void setQueryFontFamily(String queryFontFamily) {
+        this.queryFontFamily = queryFontFamily;
+    }
+
+    public void setQueryFontWeight(Short queryFontWeight) {
+        this.queryFontWeight = queryFontWeight;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public Byte getExitMode() {
+        return exitMode;
+    }
+
+    public void setExitMode(Byte exitMode) {
+        this.exitMode = exitMode;
+    }
+
+    public Byte getRememberPageSize() {
+        return rememberPageSize;
+    }
+
+    public void setRememberPageSize(Byte rememberPageSize) {
+        this.rememberPageSize = rememberPageSize;
+    }
+
+    public Byte getRememberPageResize() {
+        return rememberPageResize;
+    }
+
+    public void setRememberPageResize(Byte rememberPageResize) {
+        this.rememberPageResize = rememberPageResize;
+    }
+
+    public Byte getRememberPageLocation() {
+        return rememberPageLocation;
+    }
+
+    public void setRememberPageLocation(Byte rememberPageLocation) {
+        this.rememberPageLocation = rememberPageLocation;
+    }
+
+    public void setPageWidth(Double pageWidth) {
+        this.pageWidth = pageWidth;
+    }
+
+    public void setPageHeight(Double pageHeight) {
+        this.pageHeight = pageHeight;
+    }
+
+    public Double getPageScreenX() {
+        return pageScreenX;
+    }
+
+    public void setPageScreenX(Double pageScreenX) {
+        this.pageScreenX = pageScreenX;
+    }
+
+    public Double getPageScreenY() {
+        return pageScreenY;
+    }
+
+    public void setPageScreenY(Double pageScreenY) {
+        this.pageScreenY = pageScreenY;
+    }
+
+    public Boolean getPageMaximized() {
+        return pageMaximized;
+    }
+
+    public void setPageMaximized(Boolean pageMaximized) {
+        this.pageMaximized = pageMaximized;
+    }
+
+    public void setPageLeftWidth(Float pageLeftWidth) {
+        this.pageLeftWidth = pageLeftWidth;
     }
 
     @Override

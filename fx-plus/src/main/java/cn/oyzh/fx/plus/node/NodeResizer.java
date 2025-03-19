@@ -7,10 +7,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.util.function.Consumer;
 
@@ -20,31 +16,26 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/05/15
  */
-@Accessors(chain = true, fluent = true)
 public class NodeResizer {
 
     /**
      * 事件节点
      */
-    @Getter
     private final Node eventNode;
 
     /**
      * 最小宽度
      */
-    @Setter
     private Float minWidth;
 
     /**
      * 最大宽度
      */
-    @Setter
     private Float maxWidth;
 
     /**
      * 大小改变中标志位
      */
-    @Getter
     private Boolean resizeIng;
 
     /**
@@ -55,54 +46,144 @@ public class NodeResizer {
     /**
      * 原始鼠标样式
      */
-    @Setter
-    @Getter
     private Cursor originalCursor;
 
     /**
      * 触发阈值
      */
-    @Setter
     private Byte triggerThreshold = 1;
 
     /**
      * 鼠标移动事件
      */
-    @Setter
     private EventHandler<MouseEvent> mouseMoved;
 
     /**
      * 鼠标离开事件
      */
-    @Setter
     private EventHandler<MouseEvent> mouseExited;
 
     /**
      * 鼠标按下事件
      */
-    @Setter
     private EventHandler<MouseEvent> mousePressed;
 
     /**
      * 鼠标拖动事件
      */
-    @Setter
     private EventHandler<MouseEvent> mouseDragged;
 
     /**
      * 鼠标释放事件
      */
-    @Setter
     private EventHandler<MouseEvent> mouseReleased;
 
     /**
      * 鼠标拖动事件
      */
-    @Getter
-    @Setter
     private Consumer<Float> resizeTriggered;
 
-    public NodeResizer(@NonNull Node eventNode, @NonNull Cursor originalCursor, Consumer<Float> resizeTriggered) {
+    public Node getEventNode() {
+        return eventNode;
+    }
+
+    public Float getMinWidth() {
+        return minWidth;
+    }
+
+    public void setMinWidth(Float minWidth) {
+        this.minWidth = minWidth;
+    }
+
+    public Float getMaxWidth() {
+        return maxWidth;
+    }
+
+    public void setMaxWidth(Float maxWidth) {
+        this.maxWidth = maxWidth;
+    }
+
+    public Boolean getResizeIng() {
+        return resizeIng;
+    }
+
+    public void setResizeIng(Boolean resizeIng) {
+        this.resizeIng = resizeIng;
+    }
+
+    public long getMousePressedTime() {
+        return mousePressedTime;
+    }
+
+    public void setMousePressedTime(long mousePressedTime) {
+        this.mousePressedTime = mousePressedTime;
+    }
+
+    public Cursor getOriginalCursor() {
+        return originalCursor;
+    }
+
+    public void setOriginalCursor(Cursor originalCursor) {
+        this.originalCursor = originalCursor;
+    }
+
+    public Byte getTriggerThreshold() {
+        return triggerThreshold;
+    }
+
+    public void setTriggerThreshold(Byte triggerThreshold) {
+        this.triggerThreshold = triggerThreshold;
+    }
+
+    public EventHandler<MouseEvent> getMouseMoved() {
+        return mouseMoved;
+    }
+
+    public void setMouseMoved(EventHandler<MouseEvent> mouseMoved) {
+        this.mouseMoved = mouseMoved;
+    }
+
+    public EventHandler<MouseEvent> getMouseExited() {
+        return mouseExited;
+    }
+
+    public void setMouseExited(EventHandler<MouseEvent> mouseExited) {
+        this.mouseExited = mouseExited;
+    }
+
+    public EventHandler<MouseEvent> getMousePressed() {
+        return mousePressed;
+    }
+
+    public void setMousePressed(EventHandler<MouseEvent> mousePressed) {
+        this.mousePressed = mousePressed;
+    }
+
+    public EventHandler<MouseEvent> getMouseDragged() {
+        return mouseDragged;
+    }
+
+    public void setMouseDragged(EventHandler<MouseEvent> mouseDragged) {
+        this.mouseDragged = mouseDragged;
+    }
+
+    public EventHandler<MouseEvent> getMouseReleased() {
+        return mouseReleased;
+    }
+
+    public void setMouseReleased(EventHandler<MouseEvent> mouseReleased) {
+        this.mouseReleased = mouseReleased;
+    }
+
+    public Consumer<Float> getResizeTriggered() {
+        return resizeTriggered;
+    }
+
+    public void setResizeTriggered(Consumer<Float> resizeTriggered) {
+        this.resizeTriggered = resizeTriggered;
+    }
+
+    public NodeResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
         this.eventNode = eventNode;
         this.originalCursor = originalCursor;
         this.resizeTriggered = resizeTriggered;

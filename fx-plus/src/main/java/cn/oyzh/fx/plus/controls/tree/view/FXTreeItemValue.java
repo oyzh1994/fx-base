@@ -4,8 +4,6 @@ import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.paint.Color;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 
 
 /**
@@ -16,9 +14,11 @@ import lombok.experimental.Accessors;
  */
 public class FXTreeItemValue implements Destroyable {
 
-    @Getter
-    @Accessors(fluent = true, chain = false)
     protected SVGGlyph graphic;
+
+    public SVGGlyph graphic(){
+        return graphic;
+    }
 
     protected FXTreeItem<?> item;
 

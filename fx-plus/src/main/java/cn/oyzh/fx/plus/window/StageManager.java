@@ -6,8 +6,6 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/10/12
  */
-@UtilityClass
+
 public class StageManager {
 
     /**
@@ -70,7 +68,7 @@ public class StageManager {
      * @param controllerClass controller类
      * @return StageWrapper
      */
-    public static StageAdapter getStage(@NonNull Class<?> controllerClass) {
+    public static StageAdapter getStage( Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
                 StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
@@ -87,7 +85,7 @@ public class StageManager {
      *
      * @param clazz 舞台类
      */
-    public static void showStage(@NonNull Class<?> clazz) {
+    public static void showStage( Class<?> clazz) {
         showStage(clazz, (Window) null);
     }
 
@@ -97,7 +95,7 @@ public class StageManager {
      * @param clazz   舞台类
      * @param wrapper 舞台包装
      */
-    public static void showStage(@NonNull Class<?> clazz, StageAdapter wrapper) {
+    public static void showStage( Class<?> clazz, StageAdapter wrapper) {
         showStage(clazz, wrapper == null ? null : wrapper.stage());
     }
 
@@ -107,7 +105,7 @@ public class StageManager {
      * @param clazz 舞台类
      * @param owner 父窗口
      */
-    public static void showStage(@NonNull Class<?> clazz, Window owner) {
+    public static void showStage( Class<?> clazz, Window owner) {
         StageAdapter wrapper = parseStage(clazz, owner);
         wrapper.display();
     }
@@ -137,7 +135,7 @@ public class StageManager {
      * @param clazz 舞台类
      * @return StageWrapper
      */
-    public static StageAdapter parseStage(@NonNull Class<?> clazz) {
+    public static StageAdapter parseStage( Class<?> clazz) {
         if (Primary_Stage != null && Primary_Stage.isShowing()) {
             return parseStage(clazz, Primary_Stage);
         }
@@ -151,7 +149,7 @@ public class StageManager {
      * @param owner 父窗口
      * @return StageWrapper
      */
-    public static StageAdapter parseStage(@NonNull Class<?> clazz, Window owner) {
+    public static StageAdapter parseStage( Class<?> clazz, Window owner) {
         StageAttribute attribute = clazz.getAnnotation(StageAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());

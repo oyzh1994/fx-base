@@ -120,7 +120,7 @@
 //    @Setter
 //    private volatile boolean filterable;
 //
-//    public RichTreeTableItem(@NonNull RichTreeTableView treeView) {
+//    public RichTreeTableItem( RichTreeTableView treeView) {
 //        this.treeView = treeView;
 //    }
 //

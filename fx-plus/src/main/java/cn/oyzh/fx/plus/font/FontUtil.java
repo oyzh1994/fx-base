@@ -7,8 +7,6 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +19,7 @@ import java.util.Optional;
  * @author oyzh
  * @since 2023048/24
  */
-@UtilityClass
+
 public class FontUtil {
 
     /**
@@ -155,7 +153,7 @@ public class FontUtil {
      * @param fontSize 字体大小
      * @return 字体高度
      */
-    public static double calcFontHeight(@NonNull String fontName, int fontSize) {
+    public static double calcFontHeight( String fontName, int fontSize) {
         FontMetrics fontMetrics = fontMetrics(fontName, fontSize);
         return fontMetrics.getHeight();
     }
@@ -165,7 +163,7 @@ public class FontUtil {
      * @param font 字体
      * @return 字体高度
      */
-    public static double calcFontHeight(@NonNull javafx.scene.text.Font font) {
+    public static double calcFontHeight( javafx.scene.text.Font font) {
         FontMetrics fontMetrics = fontMetrics(font);
         return fontMetrics.getHeight();
     }
@@ -187,7 +185,7 @@ public class FontUtil {
      * @param fontSize 字体大小
      * @return FontMetrics
      */
-    public static FontMetrics fontMetrics(@NonNull String fontName, int fontSize) {
+    public static FontMetrics fontMetrics( String fontName, int fontSize) {
         Font font = new Font(fontName, Font.PLAIN, fontSize);
         return new JLabel().getFontMetrics(font);
     }

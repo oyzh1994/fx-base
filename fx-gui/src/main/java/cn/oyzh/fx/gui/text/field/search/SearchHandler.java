@@ -288,7 +288,7 @@
 //      * @param treeView 树组件
 //      * @return 可见树节点
 //      */
-//     public static List<TreeItem<?>> getVisibleItems(@NonNull TreeView<?> treeView) {
+//     public static List<TreeItem<?>> getVisibleItems( TreeView<?> treeView) {
 //         List<TreeItem<?>> result = new ArrayList<>(treeView.getExpandedItemCount());
 //         int startIndex = -1;
 //         for (int i = 0; i < treeView.getExpandedItemCount(); i++) {

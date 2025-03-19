@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.controls.text;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
-import lombok.NonNull;
 
 /**
  * 分割器
@@ -32,7 +31,7 @@ public class FXSeparator1 extends FXVBox {
      *
      * @param text 文本
      */
-    public void setText(@NonNull String text) {
+    public void setText( String text) {
         if (this.text == null) {
             this.text = new FXText();
             this.text.setFlexHeight("50%");

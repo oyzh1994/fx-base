@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.converter;
 
 import cn.oyzh.fx.plus.format.DigitalFormat;
 import javafx.util.converter.FormatStringConverter;
-import lombok.NonNull;
 
 /**
  * @author oyzh
@@ -14,7 +13,7 @@ public class DigitalConverter extends FormatStringConverter<String> {
         this(new DigitalFormat());
     }
 
-    public DigitalConverter(@NonNull DigitalFormat format) {
+    public DigitalConverter( DigitalFormat format) {
         super(format);
     }
 

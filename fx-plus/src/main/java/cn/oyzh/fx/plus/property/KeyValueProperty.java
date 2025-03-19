@@ -1,13 +1,11 @@
 package cn.oyzh.fx.plus.property;
 
-import lombok.Data;
 
 /**
  *
  * @author oyzh
  * @since 2025/01/20
  */
-@Data
 public class KeyValueProperty<K, V> {
 
     private K key;
@@ -19,6 +17,22 @@ public class KeyValueProperty<K, V> {
 
     public KeyValueProperty(K key, V value) {
         this.key = key;
+        this.value = value;
+    }
+
+    public K getKey() {
+        return key;
+    }
+
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public V getValue() {
+        return value;
+    }
+
+    public void setValue(V value) {
         this.value = value;
     }
 

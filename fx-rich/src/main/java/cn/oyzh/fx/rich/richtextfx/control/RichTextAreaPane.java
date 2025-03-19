@@ -12,7 +12,6 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.IndexRange;
 import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 import org.reactfx.value.Val;
 
 import java.util.List;
@@ -47,7 +46,7 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
     }
 
     @Override
-    public void setFontFamily(@NonNull String fontFamily) {
+    public void setFontFamily( String fontFamily) {
         this.getContent().setFontFamily(fontFamily);
     }
 

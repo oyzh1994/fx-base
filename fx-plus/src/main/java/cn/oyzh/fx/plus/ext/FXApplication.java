@@ -11,7 +11,6 @@ import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.stage.Stage;
-import lombok.NonNull;
 
 import java.util.Properties;
 
@@ -97,7 +96,7 @@ public abstract class FXApplication extends Application {
      * @param appClass app类
      * @param args     参数
      */
-    public static void launch(@NonNull Class<? extends Application> appClass, String... args) {
+    public static void launch( Class<? extends Application> appClass, String... args) {
         try {
             JulLog.info("appClass:{}", appClass.getName());
             if (args != null && args.length > 0) {
