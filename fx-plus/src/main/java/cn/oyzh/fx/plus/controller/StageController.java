@@ -20,6 +20,10 @@ public class StageController extends Controller implements StageListener, EventL
      */
     protected StageAdapter stage;
 
+    public StageAdapter getStage() {
+        return stage;
+    }
+
     /**
      * 设置舞台
      *

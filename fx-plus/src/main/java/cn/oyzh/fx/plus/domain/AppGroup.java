@@ -50,6 +50,9 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
         return Boolean.TRUE == this.expand;
     }
 
+    public AppGroup() {
+    }
+
     @Override
     public void copy(Object obj) {
         if (obj instanceof AppGroup t1) {

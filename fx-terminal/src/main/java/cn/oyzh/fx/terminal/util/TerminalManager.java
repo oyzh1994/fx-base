@@ -68,6 +68,10 @@ public class TerminalManager {
      */
     private static Runnable loadHandlerAction;
 
+    public static void setLoadHandlerAction(Runnable loadHandlerAction) {
+        TerminalManager.loadHandlerAction = loadHandlerAction;
+    }
+
     public static Runnable getLoadHandlerAction() {
         return loadHandlerAction;
     }
