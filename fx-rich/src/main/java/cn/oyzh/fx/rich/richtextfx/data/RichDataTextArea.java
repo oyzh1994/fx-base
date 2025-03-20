@@ -184,6 +184,7 @@ public class RichDataTextArea extends BaseRichTextArea {
                 case XML -> this.showXmlData(rawData);
                 case JSON -> this.showJsonData(rawData);
                 case HTML -> this.showHtmlData(rawData);
+                case YAML -> this.showYamlData(rawData);
                 case STRING -> this.showStringData(rawData);
                 case BINARY -> this.showBinaryData(rawData);
             }
@@ -246,14 +247,28 @@ public class RichDataTextArea extends BaseRichTextArea {
      * 显示html数据
      */
     public void showHtmlData(Object rawData) {
-        String xmlData = TextUtil.getHtmlData(rawData);
-        this.setText(xmlData);
+        String htmlData = TextUtil.getHtmlData(rawData);
+        this.setText(htmlData);
         if (this.checkStyleBound(RichDataType.HTML)) {
             this.initTextStyle();
         } else {
             this.clearTextStyle();
         }
         this.dataType = RichDataType.HTML;
+    }
+
+    /**
+     * 显示yaml数据
+     */
+    public void showYamlData(Object rawData) {
+        String yamlData = TextUtil.getYamlData(rawData);
+        this.setText(yamlData);
+        if (this.checkStyleBound(RichDataType.YAML)) {
+            this.initTextStyle();
+        } else {
+            this.clearTextStyle();
+        }
+        this.dataType = RichDataType.YAML;
     }
 
     /**
@@ -347,6 +362,25 @@ public class RichDataTextArea extends BaseRichTextArea {
             Matcher matcher2 = RegexHelper.htmlCommentPattern().matcher(text);
             while (matcher2.find()) {
                 styles.add(new RichTextStyle(matcher2.start(0), matcher2.end(0), "-fx-fill: #377E22;"));
+            }
+            this.setStyles(styles);
+        } else if (this.dataType == RichDataType.YAML) {// yaml
+            String text = this.getText();
+            Matcher matcher1 = RegexHelper.yamlPattern().matcher(text);
+            List<RichTextStyle> styles = new ArrayList<>();
+            while (matcher1.find()) {
+                String comment = matcher1.group(1);
+                // 独立注释
+                if (comment != null) {
+                    styles.add(new RichTextStyle(matcher1.start(1) - 1, matcher1.end(1), "-fx-fill: #377E22;"));
+                } else {
+                    comment = matcher1.group(6);
+                    styles.add(new RichTextStyle(matcher1.start(4), matcher1.end(4), "-fx-fill: #75140C;"));
+                    styles.add(new RichTextStyle(matcher1.start(5), matcher1.end(5), "-fx-fill: #0000F5;"));
+                    if (comment != null) {
+                        styles.add(new RichTextStyle(matcher1.start(6), matcher1.end(6), "-fx-fill: #377E22;"));
+                    }
+                }
             }
             this.setStyles(styles);
         } else if (this.dataType == RichDataType.BINARY) {// binary

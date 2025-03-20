@@ -51,6 +51,15 @@ public class RichDataTypeComboBox extends FXComboBox<RichDataType> implements I1
     }
 
     /**
+     * 是否yaml格式
+     *
+     * @return 结果
+     */
+    public boolean isYamlFormat() {
+        return RichDataType.YAML == this.getFormat();
+    }
+
+    /**
      * 是否raw格式
      *
      * @return 结果
