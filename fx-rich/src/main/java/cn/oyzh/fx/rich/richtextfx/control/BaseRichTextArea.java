@@ -3,6 +3,7 @@ package cn.oyzh.fx.rich.richtextfx.control;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.MD5Util;
 import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -11,6 +12,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
+import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -25,6 +27,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Labeled;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -32,11 +36,13 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.fxmisc.richtext.CaretNode;
+import org.fxmisc.richtext.GenericStyledArea;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -505,6 +511,20 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
         this.setBorder(new Border(stroke));
         this.applyPlainUndoManager();
         this.getStyleClass().add("rich-text-area");
+
+        // 解决输入内容时，滚动条会自动拉伸的问题
+        List<KeyCode> inputCodes = KeyboardUtil.getInputCodes();
+        Field field = ReflectUtil.getField(GenericStyledArea.class, "paging");
+        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (inputCodes.contains(event.getCode())) {
+                ReflectUtil.setFieldValue(field, true, this);
+            }
+        });
+        this.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+            if (inputCodes.contains(event.getCode())) {
+                ReflectUtil.setFieldValue(field, false, this);
+            }
+        });
     }
 
     @Override

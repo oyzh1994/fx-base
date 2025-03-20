@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 
 /**
@@ -15,6 +16,13 @@ public class FXScrollPane extends ScrollPane implements FlexAdapter, ThemeAdapte
 
     {
         NodeManager.init(this);
+    }
+
+    public FXScrollPane(Node content) {
+        super(content);
+    }
+
+    public FXScrollPane() {
     }
 
     @Override

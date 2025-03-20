@@ -46,7 +46,7 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
     }
 
     @Override
-    public void setFontFamily( String fontFamily) {
+    public void setFontFamily(String fontFamily) {
         this.getContent().setFontFamily(fontFamily);
     }
 
