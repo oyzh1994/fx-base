@@ -39,6 +39,7 @@ import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.GenericStyledArea;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
+import org.fxmisc.richtext.model.TwoDimensional;
 import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
 
@@ -561,5 +562,15 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
             count.addAndGet(len + 1);
         });
         return map;
+    }
+
+    public void gotoSelection() {
+        IndexRange selection = this.getSelection();
+        if (selection == null) {
+            return;
+        }
+        int start = selection.getStart();
+        TwoDimensional.Position position = this.offsetToPosition(start, TwoDimensional.Bias.Forward);
+        this.showParagraphAtTop(position.getMajor());
     }
 }

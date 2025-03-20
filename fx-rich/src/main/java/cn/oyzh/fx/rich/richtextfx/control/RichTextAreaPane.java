@@ -129,6 +129,10 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
     public void selectRange(int index, int end) {
         this.getContent().selectRange(index, end);
     }
+    public void selectRangeAndGoto(int index, int end) {
+        this.getContent().selectRange(index, end);
+        this.getContent().gotoSelection();
+    }
 
     public ObservableValue<Integer> caretPositionProperty() {
         return this.getContent().caretPositionProperty();
@@ -246,5 +250,9 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
 
     public Optional<Bounds> getCaretBounds() {
         return this.getContent().getCaretBounds();
+    }
+
+    public void gotoSelection() {
+        this.getContent().gotoSelection();
     }
 }

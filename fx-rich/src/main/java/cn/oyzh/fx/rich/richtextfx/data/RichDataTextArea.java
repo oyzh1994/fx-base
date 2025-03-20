@@ -7,6 +7,8 @@ import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.control.IndexRange;
+import org.fxmisc.richtext.model.TwoDimensional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,7 +131,7 @@ public class RichDataTextArea extends BaseRichTextArea {
      * @param dataType 数据类型
      * @param rawData  显示数据
      */
-    public void showData( RichDataType dataType, Object rawData) {
+    public void showData(RichDataType dataType, Object rawData) {
         RichDataType type = this.dataType;
         this.dataType = dataType;
         this.showData(rawData);
