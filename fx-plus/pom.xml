@@ -100,16 +100,19 @@
             <artifactId>common</artifactId>
         </dependency>
 
+        <!-- 自定义类库，事件 -->
         <dependency>
             <groupId>cn.oyzh</groupId>
             <artifactId>event</artifactId>
         </dependency>
 
+        <!-- 自定义类库，存储 -->
         <dependency>
             <groupId>cn.oyzh</groupId>
             <artifactId>store</artifactId>
         </dependency>
 
+        <!-- 自定义类库，i18n -->
         <dependency>
             <groupId>cn.oyzh</groupId>
             <artifactId>i18n</artifactId>
