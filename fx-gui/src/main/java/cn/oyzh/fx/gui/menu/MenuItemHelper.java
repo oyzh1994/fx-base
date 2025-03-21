@@ -323,6 +323,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.transportData(), new TransportSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem transportFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.transportFile(), new TransportSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem transportKey(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.transportKey(), new TransportSVGGlyph(iconSize), action);
     }
