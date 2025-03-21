@@ -18,7 +18,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.input.MouseEvent;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -185,6 +187,23 @@ public class TableViewUtil {
             }
         }
         return -1;
+    }
+
+    /**
+     * 获取行列表
+     *
+     * @param tableView 表格
+     * @return 行列表
+     */
+    public static List<TableRow<?>> getRows(TableView<?> tableView) {
+        Set<Node> rows = tableView.lookupAll(".table-row-cell");
+        List<TableRow<?>> rowList = new ArrayList<>();
+        for (Node row : rows) {
+            if (row instanceof TableRow<?> tableRow) {
+                rowList.add(tableRow);
+            }
+        }
+        return rowList;
     }
 
     public static double getHeaderRowHeight(TableView<?> tableView) {
