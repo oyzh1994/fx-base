@@ -547,6 +547,14 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.cancelConnect(), new CancelSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem cancelTransport(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.cancelTransport(), new CancelSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem removeTransport(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.removeTransport(), new DeleteSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem cancelOperation(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.cancelOperation(), new CancelSVGGlyph(iconSize), action);
     }
