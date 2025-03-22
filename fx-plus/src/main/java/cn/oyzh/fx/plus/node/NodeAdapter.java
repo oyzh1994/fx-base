@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
@@ -446,6 +447,11 @@ public interface NodeAdapter extends EventTarget {
     default Window window() {
         if (this instanceof Node node) {
             Scene scene = node.getScene();
+            if (scene != null) {
+                return scene.getWindow();
+            }
+        } else if (this instanceof Tab node) {
+            Scene scene = node.getContent().getScene();
             if (scene != null) {
                 return scene.getWindow();
             }
