@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/05/15
  */
-public class NodeResizer {
+public class NodeWidthResizer {
 
     /**
      * 事件节点
@@ -183,7 +183,7 @@ public class NodeResizer {
         this.resizeTriggered = resizeTriggered;
     }
 
-    public NodeResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
+    public NodeWidthResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
         this.eventNode = eventNode;
         this.originalCursor = originalCursor;
         this.resizeTriggered = resizeTriggered;
