@@ -66,9 +66,9 @@ public class StageManager {
      * 获取舞台
      *
      * @param controllerClass controller类
-     * @return StageWrapper
+     * @return StageAdapter
      */
-    public static StageAdapter getStage( Class<?> controllerClass) {
+    public static StageAdapter getStage(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
                 StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
@@ -81,11 +81,30 @@ public class StageManager {
     }
 
     /**
+     * 获取舞台
+     *
+     * @param controllerClass controller类
+     * @return List<StageAdapter>
+     */
+    public static List<StageAdapter> listStage(Class<?> controllerClass) {
+        List<StageAdapter> list = new ArrayList<>();
+        for (Window window : Window.getWindows()) {
+            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
+                StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
+                if (adapter.controllerClass() == controllerClass) {
+                    list.add(adapter);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
      * 显示舞台
      *
      * @param clazz 舞台类
      */
-    public static void showStage( Class<?> clazz) {
+    public static void showStage(Class<?> clazz) {
         showStage(clazz, (Window) null);
     }
 
@@ -95,7 +114,7 @@ public class StageManager {
      * @param clazz   舞台类
      * @param wrapper 舞台包装
      */
-    public static void showStage( Class<?> clazz, StageAdapter wrapper) {
+    public static void showStage(Class<?> clazz, StageAdapter wrapper) {
         showStage(clazz, wrapper == null ? null : wrapper.stage());
     }
 
@@ -105,7 +124,7 @@ public class StageManager {
      * @param clazz 舞台类
      * @param owner 父窗口
      */
-    public static void showStage( Class<?> clazz, Window owner) {
+    public static void showStage(Class<?> clazz, Window owner) {
         StageAdapter wrapper = parseStage(clazz, owner);
         wrapper.display();
     }
@@ -133,9 +152,9 @@ public class StageManager {
      * 解析舞台
      *
      * @param clazz 舞台类
-     * @return StageWrapper
+     * @return StageAdapter
      */
-    public static StageAdapter parseStage( Class<?> clazz) {
+    public static StageAdapter parseStage(Class<?> clazz) {
         if (Primary_Stage != null && Primary_Stage.isShowing()) {
             return parseStage(clazz, Primary_Stage);
         }
@@ -147,9 +166,9 @@ public class StageManager {
      *
      * @param clazz 舞台类
      * @param owner 父窗口
-     * @return StageWrapper
+     * @return StageAdapter
      */
-    public static StageAdapter parseStage( Class<?> clazz, Window owner) {
+    public static StageAdapter parseStage(Class<?> clazz, Window owner) {
         StageAttribute attribute = clazz.getAnnotation(StageAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
