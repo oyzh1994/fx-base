@@ -55,7 +55,7 @@ public interface TextAdapter {
      */
     default void addTextChangeListener(ChangeListener<String> listener) {
         if (listener != null) {
-            synchronized (this) {
+//            synchronized (this) {
                 if (this instanceof Text text) {
                     text.textProperty().addListener(listener);
 //                    text.textProperty().addListener(new WeakChangeListener<>(listener));
@@ -69,7 +69,7 @@ public interface TextAdapter {
                     area.textProperty().addListener(listener);
 //                    area.textProperty().addListener(new WeakChangeListener<>(listener));
                 }
-            }
+//            }
         }
     }
 

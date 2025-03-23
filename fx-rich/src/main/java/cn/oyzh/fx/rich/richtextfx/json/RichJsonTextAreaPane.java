@@ -33,8 +33,16 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<RichJsonTextArea> {
         FXUtil.runWait(() -> {
             this.clearTextStyle();
             String text = this.getText();
-            Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
             List<RichTextStyle> styles = new ArrayList<>();
+//            Matcher matcher1 = RegexHelper.jsonPattern().matcher(text);
+//            while (matcher1.find()) {
+//                styles.add(new RichTextStyle(matcher1.start(1), matcher1.end(1), "-fx-fill: #EE2C2C;"));
+//                styles.add(new RichTextStyle(matcher1.start(2), matcher1.end(2), "-fx-fill: #green;"));
+//                if (matcher1.group(3) != null) {
+//                    styles.add(new RichTextStyle(matcher1.start(3), matcher1.end(3), "-fx-fill: 4169E1;"));
+//                }
+//            }
+            Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
             while (matcher1.find()) {
                 styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
             }
@@ -47,7 +55,7 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<RichJsonTextArea> {
                 styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
             }
 //            for (RichTextStyle style : styles) {
-            this.setStyles(styles);
+                this.setStyles(styles);
 //            }
         });
     }

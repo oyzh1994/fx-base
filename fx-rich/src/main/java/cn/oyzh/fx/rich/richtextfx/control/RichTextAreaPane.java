@@ -78,8 +78,8 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
         return this.getContent().isEditable();
     }
 
-    public void addTextChangeListener(ChangeListener<String> dataListener) {
-        this.getContent().addTextChangeListener(dataListener);
+    public void addTextChangeListener(ChangeListener<String> textChangeListener) {
+        this.getContent().addTextChangeListener(textChangeListener);
     }
 
     public Val<Boolean> undoableProperty() {
