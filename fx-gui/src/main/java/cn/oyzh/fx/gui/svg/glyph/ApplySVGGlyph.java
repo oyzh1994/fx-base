@@ -9,17 +9,11 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ApplySVGGlyph extends SVGGlyph {
 
     public ApplySVGGlyph() {
-        this.setUrl("/fx-svg/check.svg");
+        this.setUrl("/fx-svg/apply.svg");
     }
 
     public ApplySVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }
-
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.apply());
-//        super.initNode();
-//    }
 }
