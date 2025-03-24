@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.label;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
@@ -46,6 +47,10 @@ public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapt
 //    public void setEnableTheme(boolean enableTheme) {
 //        ThemeAdapter.super.setEnableTheme(enableTheme);
 //    }
+
+    public boolean isEmpty() {
+        return StringUtil.isEmpty(this.getText());
+    }
 
     public void clear() {
         this.text("");
