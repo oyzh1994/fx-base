@@ -240,7 +240,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     public void setText(String text) {
         if (text != null) {
 //            FXUtil.runWait(() -> {
-//            this.clear();
+            this.clear();
             this.replaceText(text);
 //            });
         }
