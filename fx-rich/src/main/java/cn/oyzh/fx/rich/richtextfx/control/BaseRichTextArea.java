@@ -23,6 +23,7 @@ import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
+import cn.oyzh.fx.rich.richtextfx.RichLineNumberFactory;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
@@ -215,7 +216,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     public void showLineNum() {
         if (this.getParagraphGraphicFactory() == null) {
             if (lineFunc == null) {
-                lineFunc = LineNumberFactory.get(this);
+                lineFunc = new RichLineNumberFactory(this);
             }
             FXUtil.runWait(() -> this.setParagraphGraphicFactory(lineFunc));
         }
@@ -238,10 +239,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setText(String text) {
         if (text != null) {
-            FXUtil.runWait(() -> {
-                this.clear();
-                this.replaceText(text);
-            });
+//            FXUtil.runWait(() -> {
+//            this.clear();
+            this.replaceText(text);
+//            });
         }
     }
 
@@ -381,21 +382,21 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     public void forgetHistory() {
         this.getUndoManager().forgetHistory();
     }
-
-    /**
-     * 检查样式是否失效
-     *
-     * @return 结果
-     */
-    public boolean checkInvalidStyle() {
-        String md5 = this.getProp("style:md5");
-        String textMd5 = MD5Util.md5Hex(this.getText());
-        if (!StringUtil.equals(md5, textMd5)) {
-            this.setProp("style:md5", textMd5);
-            return true;
-        }
-        return false;
-    }
+//
+//    /**
+//     * 检查样式是否失效
+//     *
+//     * @return 结果
+//     */
+//    public boolean checkInvalidStyle() {
+//        String md5 = this.getProp("style:md5");
+//        String textMd5 = MD5Util.md5Hex(this.getText());
+//        if (!StringUtil.equals(md5, textMd5)) {
+//            this.setProp("style:md5", textMd5);
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * 初始化文字样式
@@ -404,47 +405,51 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 //        if (!this.checkInvalidStyle()) {
 //            return;
 //        }
-        this.clearTextStyle();
-        // 初始化颜色
-        if (this.isEnableTheme()) {
-            Node placeholder = this.getPlaceholder();
-            CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
-            Color accentColor = ThemeManager.currentAccentColor();
-            Color foregroundColor = ThemeManager.currentForegroundColor();
-            Color backgroundColor = ThemeManager.currentBackgroundColor();
-            String fgColor = FXColorUtil.getColorHex(foregroundColor);
-            FXUtil.runWait(() -> {
-                // 设置光标颜色
-                this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
-                caretNode.setStroke(accentColor);
-                // 设置背景文字颜色
-                if (placeholder != null) {
-                    placeholder.setStyle("-fx-fill:" + fgColor);
+        try {
+            this.clearTextStyle();
+            // 初始化颜色
+            if (this.isEnableTheme()) {
+                Node placeholder = this.getPlaceholder();
+                CaretNode caretNode = this.getCaretSelectionBind().getUnderlyingCaret();
+                Color accentColor = ThemeManager.currentAccentColor();
+                Color foregroundColor = ThemeManager.currentForegroundColor();
+                Color backgroundColor = ThemeManager.currentBackgroundColor();
+                String fgColor = FXColorUtil.getColorHex(foregroundColor);
+                FXUtil.runWait(() -> {
+                    // 设置光标颜色
+                    this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
+                    caretNode.setStroke(accentColor);
+                    // 设置背景文字颜色
+                    if (placeholder != null) {
+                        placeholder.setStyle("-fx-fill:" + fgColor);
+                    }
+                    // 设置背景色
+                    this.setBackground(ControlUtil.background(backgroundColor));
+                });
+            }
+            // 高亮
+            if (StringUtil.isNotBlank(this.highlightText)) {
+                String text = this.getText();
+                Matcher matcher = this.highlightPattern().matcher(text);
+                List<RichTextStyle> styles = new ArrayList<>();
+                while (matcher.find()) {
+                    styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
                 }
-                // 设置背景色
-                this.setBackground(ControlUtil.background(backgroundColor));
-            });
-        }
-        // 高亮
-        if (StringUtil.isNotBlank(this.highlightText)) {
-            String text = this.getText();
-            Matcher matcher = this.highlightPattern().matcher(text);
-            List<RichTextStyle> styles = new ArrayList<>();
-            while (matcher.find()) {
-                styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
+                this.setStyles(styles);
             }
-            this.setStyles(styles);
-        }
-        // 内容提示
-        if (this.contentPrompts != null) {
-            String text = this.getText();
-            Matcher matcher1 = this.contentPrompts.matcher(text);
-            List<RichTextStyle> styles = new ArrayList<>();
-            while (matcher1.find()) {
-                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
+            // 内容提示
+            if (this.contentPrompts != null) {
+                String text = this.getText();
+                Matcher matcher1 = this.contentPrompts.matcher(text);
+                List<RichTextStyle> styles = new ArrayList<>();
+                while (matcher1.find()) {
+                    styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
+                }
+                this.setStyles(styles);
+                this.forgetHistory();
             }
-            this.setStyles(styles);
-            this.forgetHistory();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

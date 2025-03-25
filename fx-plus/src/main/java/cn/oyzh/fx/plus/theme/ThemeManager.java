@@ -57,7 +57,6 @@ public class ThemeManager {
         return currentThemeProperty.getReadOnlyProperty();
     }
 
-
     /**
      * 是否暗黑模式
      *

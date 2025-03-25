@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextInputControl;
@@ -271,7 +272,7 @@ public class ControlUtil {
      * @param width 宽度
      * @return 指定宽度边框
      */
-    public static Border strokeOfWidth( Paint stroke, double width) {
+    public static Border strokeOfWidth(Paint stroke, double width) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(width)));
     }
 
@@ -281,7 +282,7 @@ public class ControlUtil {
      * @param width 宽度
      * @return 指定宽度边框
      */
-    public static Border strokeOfWidthBottom( Paint stroke, double width) {
+    public static Border strokeOfWidthBottom(Paint stroke, double width) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(0, 0, width, 0)));
     }
 
@@ -290,7 +291,7 @@ public class ControlUtil {
      * @param stroke 颜色
      * @return 中等宽度边框
      */
-    public static Border strokeOfThick( Paint stroke) {
+    public static Border strokeOfThick(Paint stroke) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, BorderStroke.THICK));
     }
 
@@ -299,17 +300,34 @@ public class ControlUtil {
      * @param stroke 颜色
      * @return 中等宽度边框
      */
-    public static Border strokeOfMedium( Paint stroke) {
+    public static Border strokeOfMedium(Paint stroke) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, BorderStroke.MEDIUM));
     }
 
     /***
      * 生成默认宽度的边框
      * @param stroke 颜色
-     * @return 中等宽度边框
+     * @return 边框
      */
-    public static Border borderOfThin( Paint stroke) {
+    public static Border borderOfThin(Paint stroke) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, BorderStroke.THIN));
+    }
+
+    /***
+     * 生成默认宽度的边框，仅右侧
+     * @param stroke 颜色
+     * @return 边框
+     */
+    public static Border borderOfThinRight(Paint stroke) {
+        // 创建 BorderStroke 对象，设置边框样式、颜色和宽度
+        BorderStroke borderStroke = new BorderStroke(
+                stroke, // 边框颜色
+                BorderStrokeStyle.SOLID, // 边框样式
+                null, // 边框圆角
+                new BorderWidths(0, 1, 0, 0),// 边框宽度
+                Insets.EMPTY
+        );
+        return new Border(borderStroke);
     }
 
     /**
@@ -362,7 +380,7 @@ public class ControlUtil {
      *
      * @param control 组件
      */
-    public static boolean isSelect( TextInputControl control) {
+    public static boolean isSelect(TextInputControl control) {
         IndexRange range = control.getSelection();
         return range != null && range.getLength() > 0;
     }
@@ -373,7 +391,7 @@ public class ControlUtil {
      * @param node 节点
      * @return 组件宽度
      */
-    public static double boundedWidth( Node node) {
+    public static double boundedWidth(Node node) {
         double min = node.minWidth(-1);
         double max = node.maxWidth(-1);
         return Math.min(Math.max(node.prefWidth(-1), min), Math.max(min, max));
@@ -385,7 +403,7 @@ public class ControlUtil {
      * @param node 节点
      * @return 组件高度
      */
-    public static double boundedHeight( Node node) {
+    public static double boundedHeight(Node node) {
         double min = node.minHeight(-1);
         double max = node.maxHeight(-1);
         return Math.min(Math.max(node.prefHeight(-1), min), Math.max(min, max));
