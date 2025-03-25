@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.domain;
 
 import cn.oyzh.common.object.ObjectCopier;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.opacity.OpacityConfig;
@@ -24,115 +25,115 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 窗口透明度
      */
     @Column
-    private Float opacity;
+    protected Float opacity;
 
     /**
      * 标题栏透明度
      */
     @Column
-    private Float titleBarOpacity;
+    protected Float titleBarOpacity;
 
     /**
      * 主题
      */
     @Column
-    private String theme;
+    protected String theme;
 
     /**
      * 自定义前景色
      */
     @Column
-    private String fgColor;
+    protected String fgColor;
 
     /**
      * 自定义背景色
      */
     @Column
-    private String bgColor;
+    protected String bgColor;
 
     /**
      * 自定义强调色
      */
     @Column
-    private String accentColor;
+    protected String accentColor;
 
     /**
      * 字体大小
      */
     @Column
-    private Byte fontSize;
+    protected Byte fontSize;
 
     /**
      * 字体名称
      */
     @Column
-    private String fontFamily;
+    protected String fontFamily;
 
     /**
      * 字体粗细
      */
     @Column
-    private Short fontWeight;
+    protected Short fontWeight;
 
     /**
      * 编辑器字体大小
      */
     @Column
-    private Byte editorFontSize;
+    protected Byte editorFontSize;
 
     /**
      * 编辑器字体名称
      */
     @Column
-    private String editorFontFamily;
+    protected String editorFontFamily;
 
     /**
      * 编辑器字体粗细
      */
     @Column
-    private Short editorFontWeight;
+    protected Short editorFontWeight;
 
     /**
      * 终端字体大小
      */
     @Column
-    private Byte terminalFontSize;
+    protected Byte terminalFontSize;
 
     /**
      * 终端字体名称
      */
     @Column
-    private String terminalFontFamily;
+    protected String terminalFontFamily;
 
     /**
      * 终端字体粗细
      */
     @Column
-    private Short terminalFontWeight;
+    protected Short terminalFontWeight;
 
     /**
      * 查询字体大小
      */
     @Column
-    private Byte queryFontSize;
+    protected Byte queryFontSize;
 
     /**
      * 查询字体名称
      */
     @Column
-    private String queryFontFamily;
+    protected String queryFontFamily;
 
     /**
      * 查询字体粗细
      */
     @Column
-    private Short queryFontWeight;
+    protected Short queryFontWeight;
 
     /**
      * 区域
      */
     @Column
-    private String locale;
+    protected String locale;
 
     /**
      * 应用退出
@@ -141,7 +142,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 2 直接关闭程序
      */
     @Column
-    private Byte exitMode;
+    protected Byte exitMode;
 
     /**
      * 记住页面大小
@@ -149,7 +150,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
-    private Byte rememberPageSize;
+    protected Byte rememberPageSize;
 
     /**
      * 记住页面拉伸
@@ -157,7 +158,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 1|null 记住
      */
     @Column
-    private Byte rememberPageResize;
+    protected Byte rememberPageResize;
 
     /**
      * 记住页面位置
@@ -165,43 +166,43 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 1 记住
      */
     @Column
-    private Byte rememberPageLocation;
+    protected Byte rememberPageLocation;
 
     /**
      * 页面宽
      */
     @Column
-    private Double pageWidth;
+    protected Double pageWidth;
 
     /**
      * 页面高
      */
     @Column
-    private Double pageHeight;
+    protected Double pageHeight;
 
     /**
      * 屏幕x
      */
     @Column
-    private Double pageScreenX;
+    protected Double pageScreenX;
 
     /**
      * 屏幕y
      */
     @Column
-    private Double pageScreenY;
+    protected Double pageScreenY;
 
     /**
      * 是否最大化
      */
     @Column
-    private Boolean pageMaximized;
+    protected Boolean pageMaximized;
 
     /**
      * 主页左侧宽
      */
     @Column
-    private Float pageLeftWidth;
+    protected Float pageLeftWidth;
 
     /**
      * 是否退出到系统托盘
@@ -299,7 +300,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 主题配置
      */
     public OpacityConfig opacityConfig() {
-        if (this.opacity == null && this.titleBarOpacity == null ) {
+        if (this.opacity == null && this.titleBarOpacity == null) {
             return null;
         }
         OpacityConfig config = new OpacityConfig();
@@ -338,7 +339,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (StringUtil.isNotBlank(this.fontFamily)) {
             config.setFamily(this.fontFamily);
         } else {
-            config.setFamily(Font.getDefault().getFamily());
+            config.setFamily(defaultFontFamily());
         }
         if (this.fontWeight != null) {
             config.setWeight(Integer.valueOf(this.fontWeight));
@@ -348,7 +349,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (this.fontSize != null) {
             config.setSize(Integer.valueOf(this.fontSize));
         } else {
-            config.setSize(11);
+            config.setSize((int) defaultFontSize());
         }
         return config;
     }
@@ -366,7 +367,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (StringUtil.isNotBlank(this.editorFontFamily)) {
             config.setFamily(this.editorFontFamily);
         } else {
-            config.setFamily(Font.getDefault().getFamily());
+            config.setFamily(defaultEditorFontFamily());
         }
         if (this.editorFontWeight != null) {
             config.setWeight(Integer.valueOf(this.editorFontWeight));
@@ -376,7 +377,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (this.editorFontSize != null) {
             config.setSize(Integer.valueOf(this.editorFontSize));
         } else {
-            config.setSize(10);
+            config.setSize((int) defaultEditorFontSize());
         }
         return config;
     }
@@ -394,7 +395,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (StringUtil.isNotBlank(this.terminalFontFamily)) {
             config.setFamily(this.terminalFontFamily);
         } else {
-            config.setFamily("Monospaced");
+            config.setFamily(defaultTerminalFontFamily());
         }
         if (this.terminalFontWeight != null) {
             config.setWeight(Integer.valueOf(this.terminalFontWeight));
@@ -404,7 +405,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (this.terminalFontSize != null) {
             config.setSize(Integer.valueOf(this.terminalFontSize));
         } else {
-            config.setSize(10);
+            config.setSize((int) defaultTerminalFontSize());
         }
         return config;
     }
@@ -656,7 +657,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public static byte defaultEditorFontSize() {
-        return 11;
+        return 14;
     }
 
     public static String defaultEditorFontFamily() {
@@ -680,10 +681,16 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public static byte defaultTerminalFontSize() {
-        return 11;
+        return 14;
     }
 
     public static String defaultTerminalFontFamily() {
+        if (OSUtil.isWindows()) {
+            return "Consolas";
+        }
+        if (OSUtil.isMacOS()) {
+            return "Menlo";
+        }
         return "Monospace";
     }
 

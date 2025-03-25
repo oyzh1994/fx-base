@@ -65,13 +65,13 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
 
-    @Override
-    protected Color getButtonColor() {
-        if (!ThemeManager.isDarkMode()) {
-            return Color.valueOf("#696969");
-        }
-        return super.getButtonColor();
-    }
+//    @Override
+//    protected Color getButtonColor() {
+//        if (!ThemeManager.isDarkMode()) {
+//            return Color.valueOf("#696969");
+//        }
+//        return super.getButtonColor();
+//    }
 
     public void resetButtonColor() {
         this.button.setColor(this.getButtonColor());
