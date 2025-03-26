@@ -69,6 +69,17 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
+
+import com.sun.javafx.beans.IDProperty;
+import com.sun.javafx.fxml.BeanAdapter;
+import com.sun.javafx.fxml.ParseTraceElement;
+import com.sun.javafx.fxml.PropertyNotFoundException;
+import com.sun.javafx.fxml.expression.Expression;
+import com.sun.javafx.fxml.expression.ExpressionValue;
+import com.sun.javafx.fxml.expression.KeyPath;
+import com.sun.javafx.fxml.FXMLLoaderHelper;
+import com.sun.javafx.fxml.MethodHelper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -96,6 +107,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
+
+import com.sun.javafx.reflect.ConstructorUtil;
+import com.sun.javafx.reflect.MethodUtil;
+import com.sun.javafx.reflect.ReflectUtil;
 
 /**
  * Loads an object hierarchy from an XML document.

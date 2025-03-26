@@ -54,6 +54,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.Base64;
+import java.util.Optional;
+import com.sun.javafx.stage.StageHelper;
 
 
 public class LauncherImpl {
