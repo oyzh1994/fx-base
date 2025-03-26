@@ -489,15 +489,14 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 //        this.addClass("terminal-text-area");
     }
 
-    /**
-     * 初始化字体
-     */
-    protected void initFont() {
+    @Override
+    protected Font initFont() {
         // 禁用字体管理
         this.disableFont();
-        this.setFontSize(11);
-        this.setFontFamily("Monospaced");
-        this.setFontWeight(FontWeight.NORMAL);
+//        this.setFontSize(11);
+//        this.setFontFamily("Monospaced");
+//        this.setFontWeight(FontWeight.NORMAL);
+        return Font.font("Monospaced", FontWeight.NORMAL, 11);
     }
 
     /**
@@ -546,9 +545,9 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
         return this.NOP.get();
     }
 
-    @Override
-    public void changeFont(Font font) {
-        super.changeFont(font);
-        this.initFont();
-    }
+//    @Override
+//    public void changeFont(Font font) {
+//        super.changeFont(font);
+//        this.initFont();
+//    }
 }

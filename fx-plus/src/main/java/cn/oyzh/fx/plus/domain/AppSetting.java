@@ -344,7 +344,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (this.fontWeight != null) {
             config.setWeight(Integer.valueOf(this.fontWeight));
         } else {
-            config.setWeight(FontWeight.NORMAL.getWeight());
+            config.setWeight(defaultFontWeight());
         }
         if (this.fontSize != null) {
             config.setSize(Integer.valueOf(this.fontSize));
@@ -372,7 +372,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (this.editorFontWeight != null) {
             config.setWeight(Integer.valueOf(this.editorFontWeight));
         } else {
-            config.setWeight(FontWeight.NORMAL.getWeight());
+            config.setWeight(defaultEditorFontWeight());
         }
         if (this.editorFontSize != null) {
             config.setSize(Integer.valueOf(this.editorFontSize));
@@ -400,7 +400,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         if (this.terminalFontWeight != null) {
             config.setWeight(Integer.valueOf(this.terminalFontWeight));
         } else {
-            config.setWeight(FontWeight.NORMAL.getWeight());
+            config.setWeight(defaultTerminalFontWeight());
         }
         if (this.terminalFontSize != null) {
             config.setSize(Integer.valueOf(this.terminalFontSize));
@@ -504,6 +504,34 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
 
     public void setQueryFontWeight(Short queryFontWeight) {
         this.queryFontWeight = queryFontWeight;
+    }
+
+    /**
+     * 获取查询字体配置
+     *
+     * @return 字体配置
+     */
+    public FontConfig queryFontConfig() {
+        if (this.queryFontWeight == null && this.queryFontFamily == null && this.queryFontSize == null) {
+            return null;
+        }
+        FontConfig config = new FontConfig();
+        if (StringUtil.isNotBlank(this.queryFontFamily)) {
+            config.setFamily(this.queryFontFamily);
+        } else {
+            config.setFamily(defaultQueryFontFamily());
+        }
+        if (this.queryFontWeight != null) {
+            config.setWeight(Integer.valueOf(this.queryFontWeight));
+        } else {
+            config.setWeight(defaultQueryFontWeight());
+        }
+        if (this.queryFontSize != null) {
+            config.setSize(Integer.valueOf(this.queryFontSize));
+        } else {
+            config.setSize((int) defaultQueryFontSize());
+        }
+        return config;
     }
 
     public String getLocale() {

@@ -61,7 +61,7 @@ public class FontManager {
     public static void apply(FontConfig config) {
         if (config != null && StringUtil.isNotEmpty(config.getFamily()) && config.getWeight() != null && config.getSize() != null) {
             try {
-                apply(Font.font(config.getFamily(), FontWeight.findByWeight(config.getWeight()), config.getSize()));
+                apply(toFont(config));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -137,5 +137,15 @@ public class FontManager {
             }
         }
         return font;
+    }
+
+    /**
+     * font配置转font
+     *
+     * @param config 配置
+     * @return font
+     */
+    public static Font toFont(FontConfig config) {
+        return Font.font(config.getFamily(), FontWeight.findByWeight(config.getWeight()), config.getSize());
     }
 }

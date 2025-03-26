@@ -22,8 +22,8 @@ public class RichJsonTextAreaPane extends RichTextAreaPane<RichJsonTextArea> {
     }
 
     @Override
-    protected void initTextArea() {
-        super.initTextArea();
+    public void initNode() {
+        super.initNode();
         this.showLineNum();
         this.addTextChangeListener((observable, oldValue, newValue) -> this.initTextStyle());
     }

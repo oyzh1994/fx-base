@@ -11,10 +11,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class FontCache {
 
-    private final List<Font> cache = new CopyOnWriteArrayList<>();
+    private final List<Font> fonts = new CopyOnWriteArrayList<>();
 
     public Font get(Font font) {
-        for (Font font1 : this.cache) {
+        for (Font font1 : this.fonts) {
             if (FontUtil.isSameFont(font1, font)) {
                 return font1;
             }
@@ -23,19 +23,19 @@ public class FontCache {
     }
 
     public void clear() {
-        this.cache.clear();
+        this.fonts.clear();
     }
 
     public void add(Font font) {
-        this.cache.add(font);
+        this.fonts.add(font);
     }
 
     public void remove(Font font) {
-        this.cache.removeIf(font1 -> FontUtil.isSameFont(font1, font));
+        this.fonts.removeIf(font1 -> FontUtil.isSameFont(font1, font));
     }
 
     public boolean contains(Font font) {
-        for (Font font1 : this.cache) {
+        for (Font font1 : this.fonts) {
             if (FontUtil.isSameFont(font1, font)) {
                 return true;
             }

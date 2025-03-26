@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.IndexRange;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.reactfx.value.Val;
 
@@ -26,14 +27,23 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
 
     public RichTextAreaPane(E content) {
         super(content);
-        this.initTextArea();
+//        this.initTextArea();
     }
 
-    protected void initTextArea() {
+    @Override
+    public void initNode() {
+        super.initNode();
         BaseRichTextArea area = this.getContent();
         area.disableProperty().bind(this.disableProperty());
         area.onKeyPressedProperty().bind(this.onKeyPressedProperty());
+        this.initFont();
     }
+
+//    protected void initTextArea() {
+//        BaseRichTextArea area = this.getContent();
+//        area.disableProperty().bind(this.disableProperty());
+//        area.onKeyPressedProperty().bind(this.onKeyPressedProperty());
+//    }
 
     @Override
     public void setFontSize(double fontSize) {
@@ -129,6 +139,7 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
     public void selectRange(int index, int end) {
         this.getContent().selectRange(index, end);
     }
+
     public void selectRangeAndGoto(int index, int end) {
         this.getContent().selectRange(index, end);
         this.getContent().gotoSelection();
@@ -254,5 +265,22 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
 
     public void gotoSelection() {
         this.getContent().gotoSelection();
+    }
+
+    /**
+     * 初始化字体
+     */
+    protected Font initFont() {
+        return null;
+    }
+
+    @Override
+    public void changeFont(Font font) {
+        Font font1 = this.initFont();
+        if (font1 != null) {
+            FontAdapter.super.changeFont(font1);
+        } else {
+            FontAdapter.super.changeFont(font);
+        }
     }
 }

@@ -107,7 +107,6 @@ public class FontUtil {
         return font1.getSize() == font2.getSize();
     }
 
-
     /**
      * 计算字符宽度
      *
