@@ -4,6 +4,7 @@ import cn.oyzh.common.SysConst;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import javafx.scene.paint.Color;
 
@@ -90,13 +91,14 @@ public class ThemeUtil {
         // 替换颜色
         StringBuilder content = new StringBuilder();
         for (String s : lines) {
-            if (s.trim().startsWith("-color-fg-default:")) {
+            s = s.trim();
+            if (s.startsWith("-color-fg-default:")) {
                 content.append("-color-fg-default:").append(fgColor).append(";");
-            } else if (s.trim().startsWith("-color-bg-default:")) {
+            } else if (s.startsWith("-color-bg-default:")) {
                 content.append("-color-bg-default:").append(bgColor).append(";");
-            } else if (s.trim().startsWith("-color-accent-fg:")) {
+            } else if (s.startsWith("-color-accent-fg:")) {
                 content.append("-color-accent-fg:").append(accentColor).append(";");
-            } else {
+            } else if (StringUtil.isNotBlank(s)) {
                 content.append(s);
             }
         }

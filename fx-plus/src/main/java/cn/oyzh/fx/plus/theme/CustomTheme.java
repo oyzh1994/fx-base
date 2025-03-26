@@ -5,6 +5,7 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.util.Locale;
 
 /**
@@ -65,7 +66,15 @@ public class CustomTheme implements Theme, ThemeStyle {
             FileUtil.del(this.themePath.replace("file:/", ""));
         }
         // 设置主题文件
-        this.themePath = "file:/" + ThemeUtil.updateThemeCss(this.theme, fgColor, bgColor, accentColor);
+//        this.themePath = "file:/" + ThemeUtil.updateThemeCss(this.theme, fgColor, bgColor, accentColor);
+        try {
+            // 更新主题文件
+            String filePath = ThemeUtil.updateThemeCss(this.theme, fgColor, bgColor, accentColor);
+            File file = new File(filePath);
+            this.themePath = file.toURI().toURL().toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
