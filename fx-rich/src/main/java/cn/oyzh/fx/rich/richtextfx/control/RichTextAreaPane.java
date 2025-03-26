@@ -283,4 +283,13 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
             FontAdapter.super.changeFont(font);
         }
     }
+
+    public void setHighlightText(String highlightText) {
+        this.getContent().setHighlightText(highlightText);
+    }
+
+    public String getHighlightText() {
+        return this.getContent().getHighlightText();
+    }
+
 }

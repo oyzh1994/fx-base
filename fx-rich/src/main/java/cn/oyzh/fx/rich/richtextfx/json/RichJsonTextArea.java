@@ -1,6 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.json;
 
 import cn.oyzh.common.util.RegexHelper;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
@@ -18,6 +19,10 @@ public class RichJsonTextArea extends BaseRichTextArea {
     @Override
     public void initTextStyle() {
         super.initTextStyle();
+        // 高亮模式则跳过
+        if (StringUtil.isNotBlank(this.getHighlightText())) {
+            return;
+        }
         FXUtil.runWait(() -> {
             String text = this.getText();
             List<RichTextStyle> styles = new ArrayList<>();

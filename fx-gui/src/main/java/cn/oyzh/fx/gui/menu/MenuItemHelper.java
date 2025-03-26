@@ -467,12 +467,20 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.imageInfo(), new InfoSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem imageInspect(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.imageInspect(), new InfoSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem imageHistory(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.imageHistory(), new HistorySVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem containerInfo(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.containerInfo(), new InfoSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem containerInspect(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.containerInspect(), new InfoSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem containerResource(String iconSize, Runnable action) {
