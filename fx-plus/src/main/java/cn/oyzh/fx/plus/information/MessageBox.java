@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.TooltipUtil;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.Node;
@@ -91,6 +92,26 @@ public class MessageBox {
     }
 
     /**
+     * 警告窗口
+     *
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static void warn(String content, Window owner) {
+        alert(Alert.AlertType.WARNING, I18nHelper.tips(), null, content, owner);
+    }
+
+    /**
+     * 警告窗口
+     *
+     * @param content 文本信息
+     * @param adapter 父窗口
+     */
+    public static void warn(String content, StageAdapter adapter) {
+        alert(Alert.AlertType.WARNING, I18nHelper.tips(), null, content, adapter.stage());
+    }
+
+    /**
      * 异常窗口
      *
      * @param ex 异常信息
@@ -153,6 +174,19 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static void alert(Alert.AlertType type, String title, String header, String content) {
+        alert(type, title, header, content, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 窗口控件
+     *
+     * @param type    类型
+     * @param title   标题
+     * @param header  提示头
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static void alert(Alert.AlertType type, String title, String header, String content, Window owner) {
         // 使用fx消息框
         if (FXUtil.isInitialized()) {
             FXUtil.runWait(() -> {
@@ -160,7 +194,7 @@ public class MessageBox {
                 alert.setTitle(title);
                 alert.setHeaderText(header);
                 alert.setContentText(content);
-                alert.initOwner(StageManager.getFrontWindow());
+                alert.initOwner(owner);
                 alert.showAndWait();
             });
         } else {// 使用swing消息框
