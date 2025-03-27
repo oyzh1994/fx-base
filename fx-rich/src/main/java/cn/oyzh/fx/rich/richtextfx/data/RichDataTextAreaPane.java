@@ -1,5 +1,6 @@
 package cn.oyzh.fx.rich.richtextfx.data;
 
+import cn.oyzh.fx.plus.menu.FXContextMenu;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import javafx.beans.property.BooleanProperty;
@@ -89,7 +90,7 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         // 显示行号
         this.showLineNum();
         // 覆盖默认的菜单
-        this.setContextMenu(new ContextMenu());
+        this.setContextMenu(FXContextMenu.EMPTY);
     }
 
 //    /**

@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextField;
 
@@ -105,5 +106,9 @@ public class FXTextField extends TextField implements FlexAdapter, Verifiable, N
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    public void text(String text) {
+        FXUtil.runWait(() -> super.setText(text));
     }
 }

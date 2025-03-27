@@ -5,6 +5,7 @@ import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
+import cn.oyzh.fx.plus.menu.FXContextMenu;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
@@ -484,7 +485,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
         // 初始化内容提示符
         this.initContentPrompts();
         // 覆盖默认的菜单
-        this.setContextMenu(new ContextMenu());
+        this.setContextMenu(FXContextMenu.EMPTY);
 //        // 添加类
 //        this.addClass("terminal-text-area");
     }
