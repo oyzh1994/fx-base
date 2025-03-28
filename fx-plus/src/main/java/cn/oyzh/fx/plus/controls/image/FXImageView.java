@@ -6,8 +6,12 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author oyzh
@@ -23,33 +27,33 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
         super();
     }
 
-    public FXImageView( Image image) {
+    public FXImageView(Image image) {
         super(image);
     }
 
-    public FXImageView( String url) {
+    public FXImageView(String url) {
         this.setUrl(url);
     }
 
-    public FXImageView( String url, double size) {
+    public FXImageView(String url, double size) {
         this.setUrl(url);
         this.setFitWidth(size);
         this.setFitHeight(size);
     }
 
-    public FXImageView( Image image, double size) {
+    public FXImageView(Image image, double size) {
         this.setImage(image);
         this.setFitWidth(size);
         this.setFitHeight(size);
     }
 
-    public FXImageView( Image image, double w, double h) {
+    public FXImageView(Image image, double w, double h) {
         this.setImage(image);
         this.setFitWidth(w);
         this.setFitHeight(h);
     }
 
-    public void setUrl( String url) {
+    public void setUrl(String url) {
         this.setProp("url", url);
         super.setImage(FXUtil.getImage(url));
     }
@@ -70,5 +74,19 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    public WritableImage snapshot() {
+        return this.snapshot(null, null);
+    }
+
+    @Override
+    public WritableImage snapshot(SnapshotParameters params, WritableImage image) {
+        AtomicReference<WritableImage> imageRef = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            WritableImage image1 = super.snapshot(params, image);
+            imageRef.set(image1);
+        });
+        return imageRef.get();
     }
 }

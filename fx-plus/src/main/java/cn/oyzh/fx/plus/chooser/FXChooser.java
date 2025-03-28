@@ -95,6 +95,22 @@ public class FXChooser {
         return new FileExtensionFilter(I18nHelper.jsonType(), "*.json");
     }
 
+    public static FileExtensionFilter pngExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.pngType(), "*.png");
+    }
+
+    public static FileExtensionFilter jpgExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.jpgType(), "*.jpg");
+    }
+
+    public static FileExtensionFilter jpegExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.jpegType(), "*.jpeg");
+    }
+
+    public static FileExtensionFilter gifExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.gifType(), "*.gif");
+    }
+
     public static String getDownloadDirectory() {
         File file = new File(System.getProperty("user.home"), "Downloads");
         if (file.exists() && file.isDirectory()) {

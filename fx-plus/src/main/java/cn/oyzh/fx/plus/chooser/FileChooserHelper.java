@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.chooser;
 
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.window.StageManager;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -95,7 +96,7 @@ public class FileChooserHelper {
      * @return 文件
      */
     public static File choose(String title, FileExtensionFilter filter) {
-        return choose(title, List.of(filter), null);
+        return choose(title, List.of(filter), StageManager.getFrontWindow());
     }
 
     /**
@@ -106,7 +107,18 @@ public class FileChooserHelper {
      * @return 文件
      */
     public static File choose(String title, FileExtensionFilter... filters) {
-        return choose(title, List.of(filters), null);
+        return choose(title, List.of(filters), StageManager.getFrontWindow());
+    }
+
+    /**
+     * 选择文件
+     *
+     * @param title   标题
+     * @param filters 过滤器
+     * @return 文件
+     */
+    public static File choose(String title, List<FileExtensionFilter> filters) {
+        return choose(title, filters, StageManager.getFrontWindow());
     }
 
     /**
