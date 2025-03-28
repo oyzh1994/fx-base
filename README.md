@@ -5,7 +5,7 @@
 ###### 依赖说明
 1. base工程  
  https://gitee.com/oyzh1994/base
-2. jdk版本要求23
+2. jdk版本要求24
 
 ###### 结构说明 
 fx-gui -> gui模块，各种组件相关实现  
@@ -19,4 +19,4 @@ fx-terminal -> javafx的终端实现
 mvn -X clean install -DskipTests
 
 ###### 注意
-检查cmd里面java -version的版本号和项目版本号是否一致，否则可能出现无效的目标版本号21之类的问题
+检查cmd里面java -version的版本号和项目版本号是否一致，否则可能出现无效的目标版本号24之类的问题
