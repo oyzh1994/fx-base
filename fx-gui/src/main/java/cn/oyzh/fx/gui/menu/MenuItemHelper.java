@@ -23,6 +23,7 @@ import cn.oyzh.fx.gui.svg.glyph.LogSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MoveSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.OpenSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.PauseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.PermissionSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.PortSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RefreshSVGGlyph;
@@ -45,6 +46,8 @@ import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.i18n.I18nHelper;
+
+import java.security.PermissionCollection;
 
 /**
  * 菜单工具类
@@ -197,6 +200,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem renameFile(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.renameFile(), new RenameSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem filePermission(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.filePermission(), new PermissionSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem cloneNode(String iconSize, Runnable action) {
