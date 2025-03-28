@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.SimpleStringConverter;
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
+import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nManager;
 import javafx.scene.paint.Color;
 
@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
  * @author oyzh
  * @since 2023/12/18
  */
-public class ThemeComboBox extends FlexComboBox<ThemeStyle> {
+public class ThemeComboBox extends FXComboBox<ThemeStyle> {
 
     {
         this.addItems(Themes.allThemes());

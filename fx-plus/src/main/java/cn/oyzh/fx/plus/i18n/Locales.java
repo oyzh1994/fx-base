@@ -11,7 +11,7 @@
 //  * @author oyzh
 //  * @since 2024/4/7
 //  */
-// @UtilityClass
+// 
 // public class Locales {
 //
 //     /**

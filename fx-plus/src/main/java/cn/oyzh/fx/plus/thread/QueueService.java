@@ -1,8 +1,5 @@
 package cn.oyzh.fx.plus.thread;
 
-import cn.oyzh.fx.plus.util.FXUtil;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -73,9 +70,11 @@ public class QueueService {
                     QueueTask task = this.tasks.poll();
                     if (task != null) {
                         if (task.getType() == 2) {
-                            FXUtil.runLater(task.getTask());
+//                            FXUtil.runLater(task.getTask());
+                            BackgroundService.submitFXLater(task.getTask());
                         } else if (task.getType() == 1) {
-                            FXUtil.runWait(task.getTask());
+//                            FXUtil.runWait(task.getTask());
+                            BackgroundService.submitFX(task.getTask());
                         } else {
                             BackgroundService.submit(task.getTask());
                         }
@@ -93,8 +92,6 @@ public class QueueService {
      * @author oyzh
      * @since 2024/3/26
      */
-    @Data
-    @AllArgsConstructor
     public static class QueueTask {
 
         /**
@@ -109,5 +106,26 @@ public class QueueService {
          * 2: fx线程，异步
          */
         private byte type;
+
+        public QueueTask(Runnable task, byte type) {
+            this.task = task;
+            this.type = type;
+        }
+
+        public Runnable getTask() {
+            return task;
+        }
+
+        public void setTask(Runnable task) {
+            this.task = task;
+        }
+
+        public byte getType() {
+            return type;
+        }
+
+        public void setType(byte type) {
+            this.type = type;
+        }
     }
 }

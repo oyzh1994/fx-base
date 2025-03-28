@@ -10,8 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * 键盘按键事件
@@ -20,7 +18,7 @@ import lombok.experimental.UtilityClass;
  * @since 2023/1/16
  */
 //@Slf4j
-@UtilityClass
+
 public class KeyListener {
 
     /**
@@ -29,7 +27,7 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    public static void listen(@NonNull Object target, @NonNull KeyHandler keyHandler) {
+    public static void listen(Object target, KeyHandler keyHandler) {
         addHandler(target, keyHandler);
     }
 
@@ -39,7 +37,7 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    public static void unListen(@NonNull Object target, @NonNull KeyHandler keyHandler) {
+    public static void unListen(Object target, KeyHandler keyHandler) {
         addHandler(target, keyHandler);
     }
 
@@ -49,8 +47,9 @@ public class KeyListener {
      * @param target  事件目标
      * @param handler 按键处理器
      */
-    public static void listenReleased(@NonNull Object target, @NonNull KeyHandler handler) {
-        addHandler(target, handler.keyType(KeyEvent.KEY_RELEASED));
+    public static void listenReleased(Object target, KeyHandler handler) {
+        handler.setKeyType(KeyEvent.KEY_RELEASED);
+        addHandler(target, handler);
     }
 
     /**
@@ -60,8 +59,12 @@ public class KeyListener {
      * @param keyCode 按键编码
      * @param handler 事件处理器
      */
-    public static void listenReleased(@NonNull Object target, @NonNull KeyCode keyCode, @NonNull EventHandler<? super KeyEvent> handler) {
-        addHandler(target, new KeyHandler().keyType(KeyEvent.KEY_RELEASED).keyCode(keyCode).handler(handler));
+    public static void listenReleased(Object target, KeyCode keyCode, EventHandler<? super KeyEvent> handler) {
+        KeyHandler handler1 = new KeyHandler();
+        handler1.setKeyType(KeyEvent.KEY_RELEASED);
+        handler1.setKeyCode(keyCode);
+        handler1.setHandler(handler);
+        addHandler(target, handler1);
     }
 
     /**
@@ -70,7 +73,7 @@ public class KeyListener {
      * @param target  事件目标
      * @param keyCode 按键编码
      */
-    public static void unListenReleased(@NonNull Object target, @NonNull KeyCode keyCode) {
+    public static void unListenReleased(Object target, KeyCode keyCode) {
         removeHandler(target, KeyEvent.KEY_RELEASED, keyCode);
     }
 
@@ -102,7 +105,7 @@ public class KeyListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(keyHandler);
-            JulLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
+            JulLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.getKeyType(), keyHandler.getKeyCode());
         }
     }
 
@@ -115,8 +118,8 @@ public class KeyListener {
     public static void removeHandler(EventTarget target, KeyHandler keyHandler) {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
-            eventHandler.removeHandler(keyHandler.keyCode(), keyHandler.keyType());
-            JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.keyType(), keyHandler.keyCode());
+            eventHandler.removeHandler(keyHandler.getKeyCode(), keyHandler.getKeyType());
+            JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.getKeyType(), keyHandler.getKeyCode());
         }
     }
 

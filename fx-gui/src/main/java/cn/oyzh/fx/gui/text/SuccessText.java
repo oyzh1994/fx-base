@@ -1,12 +1,12 @@
 package cn.oyzh.fx.gui.text;
 
-import cn.oyzh.fx.plus.controls.text.FlexText;
+import cn.oyzh.fx.plus.controls.text.FXText;
 
 /**
  * @author oyzh
  * @since 2024/04/09
  */
-public class SuccessText extends FlexText {
+public class SuccessText extends FXText {
 
     {
         this.addClass("success");

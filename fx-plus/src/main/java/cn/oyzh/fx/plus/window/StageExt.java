@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import lombok.NonNull;
 
 /**
  * 舞台扩展
@@ -15,7 +14,7 @@ import lombok.NonNull;
  */
 public class StageExt extends Stage implements StageAdapter, OpacityAdapter {
 
-    public StageExt(@NonNull StageAttribute attribute, Window owner) {
+    public StageExt( StageAttribute attribute, Window owner) {
         this.init(attribute, owner);
         this.setProp(StageManager.REF_ATTR, this);
     }

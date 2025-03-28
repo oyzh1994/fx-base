@@ -95,6 +95,8 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
         this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
+//        this.addEventFilter(Tab.CLOSED_EVENT, this::onTabClosed);
+//        this.addEventFilter(Tab.TAB_CLOSE_REQUEST_EVENT, this::onTabCloseRequest);
     }
 
     protected void onTabClosed(Event event) {

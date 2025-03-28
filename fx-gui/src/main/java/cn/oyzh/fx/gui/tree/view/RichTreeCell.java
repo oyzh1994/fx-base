@@ -8,8 +8,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.paint.Color;
 
 /**
  * 富功能树节点工厂
@@ -22,6 +20,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
     {
 //        this.setCache(true);
 //        this.setCacheShape(true);
+//        this.setCacheHint(CacheHint.SPEED);
         this.setCursor(Cursor.HAND);
     }
 

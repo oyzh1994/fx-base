@@ -1,16 +1,13 @@
 package cn.oyzh.fx.pkg.mvn;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.oyzh.common.util.OSUtil;
-import cn.oyzh.common.util.RuntimeUtil;
+import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.SingleHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.List;
@@ -22,10 +19,15 @@ import java.util.List;
  */
 public class MvnHandler implements PreHandler, SingleHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P9;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     /**
      * 项目工程
@@ -37,9 +39,17 @@ public class MvnHandler implements PreHandler, SingleHandler {
      */
     private final List<String> dependencies;
 
-    @Getter
-    @Setter
     private boolean executed;
+
+    @Override
+    public boolean isExecuted() {
+        return executed;
+    }
+
+    @Override
+    public void setExecuted(boolean executed) {
+        this.executed = executed;
+    }
 
     public MvnHandler(String projectDir, List<String> dependencies) {
         this.dependencies = dependencies;

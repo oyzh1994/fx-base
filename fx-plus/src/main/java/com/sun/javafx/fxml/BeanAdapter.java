@@ -25,6 +25,13 @@
 
 package com.sun.javafx.fxml;
 
+import cn.oyzh.fx.plus.util.FXBeanUtil;
+import com.sun.javafx.reflect.FieldUtil;
+import com.sun.javafx.reflect.MethodUtil;
+import com.sun.javafx.reflect.ReflectUtil;
+import javafx.beans.value.ObservableValue;
+
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -33,15 +40,13 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
-
-import java.lang.reflect.*;
-
-import cn.oyzh.fx.plus.util.FXBeanUtil;
-import javafx.beans.value.ObservableValue;
-import com.sun.javafx.reflect.FieldUtil;
-import com.sun.javafx.reflect.MethodUtil;
-import com.sun.javafx.reflect.ReflectUtil;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Exposes Java Bean properties of an object via the {@link Map} interface.

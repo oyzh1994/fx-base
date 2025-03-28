@@ -3,9 +3,6 @@ package cn.oyzh.fx.pkg.config;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.net.URL;
 import java.util.Properties;
@@ -18,10 +15,15 @@ import java.util.Properties;
  */
 public class ProjectHandler implements PreHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P9;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     private String projectFile = "project.properties";
 

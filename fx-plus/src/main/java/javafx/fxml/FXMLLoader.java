@@ -25,37 +25,31 @@
 
 package javafx.fxml;
 
+import com.sun.javafx.beans.IDProperty;
+import com.sun.javafx.fxml.BeanAdapter;
+import com.sun.javafx.fxml.FXMLLoaderHelper;
+import com.sun.javafx.fxml.MethodHelper;
+import com.sun.javafx.fxml.ParseTraceElement;
+import com.sun.javafx.fxml.PropertyNotFoundException;
+import com.sun.javafx.fxml.expression.Expression;
+import com.sun.javafx.fxml.expression.ExpressionValue;
+import com.sun.javafx.fxml.expression.KeyPath;
+import com.sun.javafx.reflect.ConstructorUtil;
+import com.sun.javafx.reflect.MethodUtil;
+import com.sun.javafx.reflect.ReflectUtil;
 import com.sun.javafx.util.Logging;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import javafx.beans.DefaultProperty;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
+import javafx.collections.ObservableSet;
+import javafx.collections.SetChangeListener;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.util.Builder;
@@ -85,10 +79,35 @@ import com.sun.javafx.fxml.expression.ExpressionValue;
 import com.sun.javafx.fxml.expression.KeyPath;
 import com.sun.javafx.fxml.FXMLLoaderHelper;
 import com.sun.javafx.fxml.MethodHelper;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
+
 import com.sun.javafx.reflect.ConstructorUtil;
 import com.sun.javafx.reflect.MethodUtil;
 import com.sun.javafx.reflect.ReflectUtil;
@@ -2119,7 +2138,7 @@ public class FXMLLoader {
     public static final String JAVAFX_VERSION = System.getProperty("javafx.version");
 
     /**
-     * Contains the current fx namepsace version.
+     * Contains the current fx namespace version.
      * @since JavaFX 8.0
      */
     public static final String FX_NAMESPACE_VERSION = "1";

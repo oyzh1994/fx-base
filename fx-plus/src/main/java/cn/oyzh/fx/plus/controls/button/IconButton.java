@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import lombok.Getter;
 
 /**
  * 图标按钮
@@ -9,13 +8,16 @@ import lombok.Getter;
  * @author oyzh
  * @since 2023/1/13
  */
-public class IconButton extends FlexButton {
+public class IconButton extends FXButton {
 
     /**
      * 图标对比字符的百分比
      */
-    @Getter
     private Double iconSizePercent = 1.0;
+
+    public Double getIconSizePercent() {
+        return iconSizePercent;
+    }
 
     @Override
     public void initNode() {
@@ -97,4 +99,12 @@ public class IconButton extends FlexButton {
             }
         }
     }
+
+//    @Override
+//    public void changeTheme(ThemeStyle style) {
+//        super.changeTheme(style);
+//        if (this.getGraphic() instanceof ThemeAdapter adapter) {
+//            adapter.changeTheme(style);
+//        }
+//    }
 }

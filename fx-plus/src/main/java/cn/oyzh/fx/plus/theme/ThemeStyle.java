@@ -1,9 +1,11 @@
 package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 
@@ -116,7 +118,8 @@ public interface ThemeStyle {
                     node.getStylesheets().remove(FXStyle.FX_BASE);
                     node.getStylesheets().add(FXStyle.FX_BASE);
                     // 重新应用样式
-                    node.reapplyCss();
+//                    node.reapplyCss();
+                    ReflectUtil.invoke(node, "reapplyCss");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -143,6 +146,23 @@ public interface ThemeStyle {
     }
 
     /**
+     * 处理样式
+     *
+     * @param node 节点
+     */
+    default void handleStyle(Node node) {
+        if (node != null) {
+            TaskManager.startDelay(this.hashCode() + ":reapplyCss", () -> FXUtil.runLater(() -> {
+                try {
+                    ReflectUtil.invoke(node, "reapplyCss");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }), 50);
+        }
+    }
+
+    /**
      * 计算相关度
      *
      * @param style 主题
@@ -161,5 +181,4 @@ public interface ThemeStyle {
         // 返回相关度
         return d1 * 5.5 + d2 * 2.5 + d3 * 2;
     }
-
 }

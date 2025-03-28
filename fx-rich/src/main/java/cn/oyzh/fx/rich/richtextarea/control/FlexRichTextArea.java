@@ -134,7 +134,7 @@
 ////    }
 ////
 ////    @Override
-////    public void setFontFamily(@NonNull String fontFamily) {
+////    public void setFontFamily( String fontFamily) {
 ////        AreaAdapter.super.fontFamily(fontFamily);
 ////    }
 ////

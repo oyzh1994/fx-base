@@ -5,13 +5,10 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 文本域皮肤扩展
@@ -21,9 +18,15 @@ import lombok.Setter;
  */
 public class ActionTextFieldSkin extends FXTextFieldSkin {
 
-    @Getter
-    @Setter
     private Runnable action;
+
+    public Runnable getAction() {
+        return action;
+    }
+
+    public void setAction(Runnable action) {
+        this.action = action;
+    }
 
     protected final SVGGlyph button;
 
@@ -62,13 +65,13 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }
 
-    @Override
-    protected Color getButtonColor() {
-        if (!ThemeManager.isDarkMode()) {
-            return Color.valueOf("#696969");
-        }
-        return super.getButtonColor();
-    }
+//    @Override
+//    protected Color getButtonColor() {
+//        if (!ThemeManager.isDarkMode()) {
+//            return Color.valueOf("#696969");
+//        }
+//        return super.getButtonColor();
+//    }
 
     public void resetButtonColor() {
         this.button.setColor(this.getButtonColor());

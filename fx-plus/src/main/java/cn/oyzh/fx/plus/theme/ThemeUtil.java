@@ -1,12 +1,12 @@
 package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.SysConst;
-import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import javafx.scene.paint.Color;
-import lombok.experimental.UtilityClass;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/4/3
  */
-@UtilityClass
+
 public class ThemeUtil {
 
     /**
@@ -82,7 +82,7 @@ public class ThemeUtil {
      * @param bgColor     背景色
      * @param accentColor 强调色
      */
-    public String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
+    public static String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
         // 读取资源
         URL url = ResourceUtil.getResource(style.getUserAgentStylesheet());
         JulLog.info("style url:{}", url);
@@ -91,13 +91,14 @@ public class ThemeUtil {
         // 替换颜色
         StringBuilder content = new StringBuilder();
         for (String s : lines) {
-            if (s.trim().startsWith("-color-fg-default:")) {
+            s = s.trim();
+            if (s.startsWith("-color-fg-default:")) {
                 content.append("-color-fg-default:").append(fgColor).append(";");
-            } else if (s.trim().startsWith("-color-bg-default:")) {
+            } else if (s.startsWith("-color-bg-default:")) {
                 content.append("-color-bg-default:").append(bgColor).append(";");
-            } else if (s.trim().startsWith("-color-accent-fg:")) {
+            } else if (s.startsWith("-color-accent-fg:")) {
                 content.append("-color-accent-fg:").append(accentColor).append(";");
-            } else {
+            } else if (StringUtil.isNotBlank(s)) {
                 content.append(s);
             }
         }

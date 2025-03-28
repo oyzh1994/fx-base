@@ -2,13 +2,12 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import lombok.NonNull;
 
 /**
  * 托盘菜单项
@@ -23,11 +22,11 @@ public class TrayItem extends FXLabel {
         this.setCursor(Cursor.HAND);
     }
 
-    public TrayItem(@NonNull String label, Runnable action) {
+    public TrayItem( String label, Runnable action) {
         this(label, null, action);
     }
 
-    public TrayItem(@NonNull String label, Node icon, Runnable action) {
+    public TrayItem( String label, Node icon, Runnable action) {
         super(label);
         if (icon != null) {
             this.setGraphic(icon);

@@ -15,9 +15,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,35 +35,26 @@ public class ListViewPopup<E> extends FXPopup {
     /**
      * 模式选中事件
      */
-    @Getter
-    @Setter
     protected Consumer<E> onItemSelected;
 
     /**
      * 索引选中事件
      */
-    @Getter
-    @Setter
     protected Consumer<Integer> onIndexSelected;
 
     /**
      * 选中的模式
      */
-    @Getter
     private E selectedItem;
 
     /**
      * 选中的索引
      */
-    @Getter
-    @Setter
     private Integer selectedIndex;
 
     /**
      * 单列数据高
      */
-    @Getter
-    @Setter
     protected double cellLineHeight = 20;
 
     /**
@@ -222,7 +210,47 @@ public class ListViewPopup<E> extends FXPopup {
      * @param ownerNode 父节点
      * @param event     鼠标事件
      */
-    public void show(@NonNull Node ownerNode, @NonNull MouseEvent event) {
+    public void show( Node ownerNode,  MouseEvent event) {
         this.show(ownerNode, event.getScreenX(), event.getScreenY());
+    }
+
+    public Consumer<E> getOnItemSelected() {
+        return onItemSelected;
+    }
+
+    public void setOnItemSelected(Consumer<E> onItemSelected) {
+        this.onItemSelected = onItemSelected;
+    }
+
+    public Consumer<Integer> getOnIndexSelected() {
+        return onIndexSelected;
+    }
+
+    public void setOnIndexSelected(Consumer<Integer> onIndexSelected) {
+        this.onIndexSelected = onIndexSelected;
+    }
+
+    public E getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(E selectedItem) {
+        this.selectedItem = selectedItem;
+    }
+
+    public Integer getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public void setSelectedIndex(Integer selectedIndex) {
+        this.selectedIndex = selectedIndex;
+    }
+
+    public double getCellLineHeight() {
+        return cellLineHeight;
+    }
+
+    public void setCellLineHeight(double cellLineHeight) {
+        this.cellLineHeight = cellLineHeight;
     }
 }

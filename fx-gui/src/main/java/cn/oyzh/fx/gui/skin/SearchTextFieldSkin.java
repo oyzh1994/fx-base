@@ -13,7 +13,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import lombok.Getter;
 
 /**
  * 搜索文本输入框皮肤
@@ -31,8 +30,11 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
     /**
      * 搜索历史弹窗
      */
-    @Getter
     protected SearchHistoryPopup historyPopup;
+
+    public SearchHistoryPopup getHistoryPopup() {
+        return historyPopup;
+    }
 
     /**
      * 设置历史弹窗组件
@@ -130,13 +132,13 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         this.getSkinnable().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> this.closeHistoryPopup());
     }
 
-    @Override
-    protected Color getButtonColor() {
-        if (!ThemeManager.isDarkMode()) {
-            return Color.valueOf("#696969");
-        }
-        return super.getButtonColor();
-    }
+//    @Override
+//    protected Color getButtonColor() {
+//        if (!ThemeManager.isDarkMode()) {
+//            return Color.valueOf("#696969");
+//        }
+//        return super.getButtonColor();
+//    }
 
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {

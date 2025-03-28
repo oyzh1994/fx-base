@@ -4,8 +4,6 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
 
 /**
@@ -14,8 +12,6 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/10/10
  */
-@Data
-@Accessors(fluent = true, chain = true)
 public class MouseHandler {
 
     /**
@@ -62,5 +58,69 @@ public class MouseHandler {
         if (this.handler != null) {
             this.handler.handle(event);
         }
+    }
+
+    public MouseButton getButton() {
+        return button;
+    }
+
+    public void setButton(MouseButton button) {
+        this.button = button;
+    }
+
+    public EventType<MouseEvent> getType() {
+        return type;
+    }
+
+    public void setType(EventType<MouseEvent> type) {
+        this.type = type;
+    }
+
+    public EventHandler<? super MouseEvent> getHandler() {
+        return handler;
+    }
+
+    public void setHandler(EventHandler<? super MouseEvent> handler) {
+        this.handler = handler;
+    }
+
+    public Integer getClickCount() {
+        return clickCount;
+    }
+
+    public void setClickCount(Integer clickCount) {
+        this.clickCount = clickCount;
+    }
+
+    public boolean isAltDown() {
+        return altDown;
+    }
+
+    public void setAltDown(boolean altDown) {
+        this.altDown = altDown;
+    }
+
+    public boolean isMetaDown() {
+        return metaDown;
+    }
+
+    public void setMetaDown(boolean metaDown) {
+        this.metaDown = metaDown;
+    }
+
+    public boolean isShiftDown() {
+        return shiftDown;
+    }
+
+    public void setShiftDown(boolean shiftDown) {
+        this.shiftDown = shiftDown;
+    }
+
+    public boolean isControlDown() {
+        return controlDown;
+    }
+
+    public void setControlDown(boolean controlDown) {
+        this.controlDown = controlDown;
     }
 }

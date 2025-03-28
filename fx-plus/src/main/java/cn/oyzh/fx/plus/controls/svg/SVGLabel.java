@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Paint;
-import lombok.NonNull;
 
 /**
  * svg label
@@ -43,7 +42,7 @@ public class SVGLabel extends FXLabel {
      *
      * @param url 图标URL地址
      */
-    public void setUrl(@NonNull String url) {
+    public void setUrl( String url) {
         if (this.graphic() == null) {
             this.setGraphic(new SVGGlyph(url));
         }

@@ -4,8 +4,6 @@ import cn.oyzh.fx.gui.svg.glyph.ExampleSVGGlyph;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 示例文本输入框皮肤
@@ -15,11 +13,17 @@ import lombok.Setter;
  */
 public class ExampleTextFieldSkin extends ActionTextFieldSkin {
 
+    public String getExampleText() {
+        return exampleText;
+    }
+
+    public void setExampleText(String exampleText) {
+        this.exampleText = exampleText;
+    }
+
     /**
      * 示例文本
      */
-    @Getter
-    @Setter
     protected String exampleText;
 
     protected void onButtonClicked(MouseEvent e) {

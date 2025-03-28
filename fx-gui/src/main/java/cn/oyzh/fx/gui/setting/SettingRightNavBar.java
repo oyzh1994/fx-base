@@ -1,12 +1,12 @@
 package cn.oyzh.fx.gui.setting;
 
-import cn.oyzh.fx.plus.controls.label.FlexLabel;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 
 /**
  * @author oyzh
  * @since 2024/12/29
  */
-public class SettingRightNavBar extends FlexLabel {
+public class SettingRightNavBar extends FXLabel {
 
     {
         this.disableFont();

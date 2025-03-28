@@ -2,12 +2,10 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
 import cn.oyzh.fx.gui.skin.DigitalTextFieldSkin;
+import cn.oyzh.fx.plus.converter.DigitalConverter;
 import javafx.scene.control.Skin;
 import javafx.scene.control.TextFormatter;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.function.UnaryOperator;
 
@@ -22,30 +20,58 @@ public abstract class DigitalTextField extends LimitTextField {
     /**
      * 最大值
      */
-    @Setter
-    @Getter
     protected Number maxVal;
 
     /**
      * 最小值
      */
-    @Setter
-    @Getter
     protected Number minVal;
 
     /**
      * 递进值
      */
-    @Getter
-    @Setter
     protected Number step = 1L;
 
     /**
      * 无符号模式
      */
-    @Getter
-    @Setter
     private boolean unsigned;
+
+    public Number getMaxVal() {
+        return maxVal;
+    }
+
+    public void setMaxVal(Number maxVal) {
+        this.maxVal = maxVal;
+    }
+
+    public Number getMinVal() {
+        return minVal;
+    }
+
+    public void setMinVal(Number minVal) {
+        this.minVal = minVal;
+    }
+
+    public Number getStep() {
+        return step;
+    }
+
+    public void setStep(Number step) {
+        this.step = step;
+    }
+
+    public boolean isUnsigned() {
+        return unsigned;
+    }
+
+    public void setUnsigned(boolean unsigned) {
+        this.unsigned = unsigned;
+    }
+
+    public TextFormatter<String> textFormatter() {
+        return textFormatter;
+    }
 
     /**
      * 文本格式器
@@ -77,7 +103,7 @@ public abstract class DigitalTextField extends LimitTextField {
         return skin;
     }
 
-    protected abstract DigitalFormatStringConverter getConverter();
+    protected abstract DigitalConverter getConverter();
 
     /**
      * 值变化

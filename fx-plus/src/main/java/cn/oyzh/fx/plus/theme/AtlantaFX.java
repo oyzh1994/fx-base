@@ -14,7 +14,7 @@
 //  * @author oyzh
 //  * @since 2023/12/18
 //  */
-// @UtilityClass
+// 
 // public class AtlantaFX {
 //
 //     public static final Theme SYSTEM = new SystemTheme();

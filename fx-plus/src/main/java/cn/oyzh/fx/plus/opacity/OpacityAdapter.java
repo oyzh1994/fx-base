@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.opacity;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
-import cn.oyzh.fx.plus.titlebar.TitleBar;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.Window;
 
@@ -67,16 +66,16 @@ public interface OpacityAdapter extends PropAdapter {
                         adapter.setOpacity(windowOpacity);
                     }
                 }
-                // 标题栏处理
-                Float titleOpacity = opacity.getTitleOpacity();
-                if (titleOpacity != null && !Float.isNaN(titleOpacity) && this instanceof StageAdapter adapter) {
-                    TitleBar titleBar = adapter.getTitleBar();
-                    if (titleBar != null) {
-                        titleOpacity /= 100;
-                        titleOpacity = OpacityManager.fixOpacity(titleOpacity);
-                        titleBar.setOpacity(titleOpacity);
-                    }
-                }
+//                // 标题栏处理
+//                Float titleOpacity = opacity.getTitleOpacity();
+//                if (titleOpacity != null && !Float.isNaN(titleOpacity) && this instanceof StageAdapter adapter) {
+//                    TitleBar titleBar = adapter.getTitleBar();
+//                    if (titleBar != null) {
+//                        titleOpacity /= 100;
+//                        titleOpacity = OpacityManager.fixOpacity(titleOpacity);
+//                        titleBar.setOpacity(titleOpacity);
+//                    }
+//                }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JulLog.warn("changeOpacity error", ex);

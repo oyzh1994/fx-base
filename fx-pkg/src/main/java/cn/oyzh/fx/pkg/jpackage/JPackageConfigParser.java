@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.jpackage;
 
 import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
-import lombok.Data;
 
 /**
  * JPackage配置
@@ -10,7 +9,6 @@ import lombok.Data;
  * @author oyzh
  * @since 2023/3/8
  */
-@Data
 public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
 
     @Override
@@ -55,6 +53,22 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         Boolean verbose = object.getBool("verbose");
         if (vendor != null) {
             config.setVerbose(verbose);
+        }
+        Boolean winMenu = object.getBool("win-menu");
+        if (winMenu != null) {
+            config.setWinMenu(winMenu);
+        }
+        Boolean winShortcut = object.getBool("win-shortcut");
+        if (winShortcut != null) {
+            config.setWinShortcut(winShortcut);
+        }
+        Boolean winDirChooser = object.getBool("win-dir-chooser");
+        if (winDirChooser != null) {
+            config.setWinDirChooser(winDirChooser);
+        }
+        String macPackageIdentifier = object.getStr("mac-package-identifier");
+        if (macPackageIdentifier != null) {
+            config.setMacPackageIdentifier(macPackageIdentifier);
         }
         String description = object.getStr("description");
         if (description != null) {

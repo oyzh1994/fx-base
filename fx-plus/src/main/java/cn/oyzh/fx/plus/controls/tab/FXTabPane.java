@@ -3,16 +3,18 @@ package cn.oyzh.fx.plus.controls.tab;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab> {
+public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab> {
 
     {
         NodeManager.init(this);
@@ -85,7 +87,7 @@ public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontA
      *
      * @param listener 监听器
      */
-    public void selectedTabChanged(@NonNull ChangeListener<Tab> listener) {
+    public void selectedTabChanged( ChangeListener<Tab> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
@@ -116,7 +118,7 @@ public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontA
      *
      * @param tab tab
      */
-    public void addTab(@NonNull Tab tab) {
+    public void addTab( Tab tab) {
         FXUtil.runWait(() -> this.getTabs().add(tab));
     }
 
@@ -125,7 +127,7 @@ public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontA
      *
      * @param tab tab
      */
-    public void setTab(@NonNull Tab tab) {
+    public void setTab( Tab tab) {
         FXUtil.runWait(() -> this.getTabs().setAll(tab));
     }
 
@@ -134,7 +136,7 @@ public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontA
      *
      * @param tabs tab列表
      */
-    public void setTab(@NonNull Tab... tabs) {
+    public void setTab( Tab... tabs) {
         FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
 
@@ -163,7 +165,7 @@ public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontA
      *
      * @param tabs tab列表
      */
-    public void setTab(@NonNull Collection<Tab> tabs) {
+    public void setTab( Collection<Tab> tabs) {
         FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
 
@@ -172,7 +174,7 @@ public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontA
      *
      * @param tab tab
      */
-    public void removeTab(@NonNull Tab tab) {
+    public void removeTab( Tab tab) {
         FXUtil.runLater(() -> this.getTabs().remove(tab));
     }
 
@@ -289,5 +291,26 @@ public class FXTabPane extends TabPane implements NodeGroup, ThemeAdapter, FontA
     public String getSelectTabId() {
         Tab tab = this.getSelectedItem();
         return tab == null ? null : tab.getId();
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
+    }
+
+    @Override
+    public void resizeNode(Double width, Double height) {
+        FlexAdapter.super.resizeNode(width, height);
+        for (Tab tab : this.getTabs()) {
+            if (tab.getContent() instanceof FlexAdapter flexNode) {
+                flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                flexNode.setRealHeight(FlexUtil.compute(flexNode.getFlexHeight(), height));
+            } else {
+                NodeUtil.setWidth(tab.getContent(), width);
+                NodeUtil.setHeight(tab.getContent(), height);
+            }
+        }
     }
 }

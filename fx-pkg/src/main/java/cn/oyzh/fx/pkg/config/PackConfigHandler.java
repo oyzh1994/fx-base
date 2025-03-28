@@ -4,9 +4,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * 打包信息处理器
@@ -16,10 +13,15 @@ import lombok.experimental.Accessors;
  */
 public class PackConfigHandler implements PreHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P8;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     @Override
     public String name() {
@@ -31,7 +33,7 @@ public class PackConfigHandler implements PreHandler {
         if (StringUtil.equals(packConfig.getJdkPath(), "$SYSTEM")) {
             String javaHome = System.getenv("JAVA_HOME");
             if (StringUtil.isBlank(javaHome)) {
-                JulLog.warn("从环境变量获取JAVA_HOME失败，该用系统属性获取");
+                JulLog.warn("从环境变量获取JAVA_HOME失败，改用系统属性获取");
                 javaHome = System.getProperty("java.home");
                 if (StringUtil.isBlank(javaHome)) {
                     JulLog.warn("从系统属性获取获取java.home失败");

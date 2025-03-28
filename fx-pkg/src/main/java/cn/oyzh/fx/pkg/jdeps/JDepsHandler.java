@@ -2,7 +2,8 @@ package cn.oyzh.fx.pkg.jdeps;
 
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.RuntimeUtil;
+import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -11,9 +12,6 @@ import cn.oyzh.fx.pkg.filter.RegFilter;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 import java.util.HashSet;
@@ -28,10 +26,15 @@ import java.util.Set;
  */
 public class JDepsHandler implements PreHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_P6;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     @Override
     public String name() {
@@ -40,11 +43,11 @@ public class JDepsHandler implements PreHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
+        JLinkConfig jLinkConfig = packConfig.getjLinkConfig();
         if (jLinkConfig == null) {
             return;
         }
-        JDepsConfig jDepsConfig = packConfig.getJDepsConfig();
+        JDepsConfig jDepsConfig = packConfig.getjDepsConfig();
         RegFilter fileFilter = new RegFilter();
         RegFilter moduleFilter = new RegFilter();
         if (jDepsConfig != null) {
@@ -64,9 +67,16 @@ public class JDepsHandler implements PreHandler {
         }
         // 列举系统模块
         Set<String> modules = new HashSet<>();
-        StringBuilder cmdStr = new StringBuilder("java --list-modules");
+        StringBuilder cmdStr;
+        if (OSUtil.isLinux()) {
+            cmdStr = new StringBuilder(jdkPath + "/bin/java --list-modules");
+        } else {
+            cmdStr = new StringBuilder("java --list-modules");
+        }
         String result = RuntimeUtil.execForStr(cmdStr.toString());
-        System.out.println(result);
+//        String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        JulLog.info("list modules:{}", result);
+//        System.out.println(result);
         result.lines().forEach(r -> {
             if (StringUtil.isNotBlank(r)) {
                 modules.add(r.split("@")[0]);
@@ -96,7 +106,9 @@ public class JDepsHandler implements PreHandler {
         // 列举模块
         cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, cmdStr.toString()));
         result = RuntimeUtil.execForStr(cmdStr.toString());
-        System.out.println(result);
+//        System.out.println(result);
+//        result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        JulLog.info("Jdeps result:{}", result);
         result.lines().forEach(r -> {
             // 处理内容
             if (!r.contains("-> ") || r.startsWith(" ") || r.endsWith(".jar")) {

@@ -12,14 +12,14 @@ public interface FXEventListener extends EventListener, NodeLifeCycle {
     @Override
     default void onNodeDestroy() {
         NodeLifeCycle.super.onNodeDestroy();
-        EventListener.super.unregister();
+        this.unregister();
     }
 
     @Override
     default void onNodeInitialize() {
         if (!NodeLifeCycle.super.isNodeInitialize()) {
             NodeLifeCycle.super.onNodeInitialize();
-            EventListener.super.register();
+            this.register();
         }
     }
 }

@@ -3,6 +3,7 @@ package cn.oyzh.fx.rich.richtextfx.control;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -19,7 +20,7 @@ import org.fxmisc.richtext.InlineCssTextField;
  * @author oyzh
  * @since 2023/9/15
  */
-public class BaseRichTextField extends InlineCssTextField implements NodeAdapter, ThemeAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class BaseRichTextField extends InlineCssTextField implements FlexAdapter, NodeAdapter, ThemeAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -81,5 +82,12 @@ public class BaseRichTextField extends InlineCssTextField implements NodeAdapter
         this.setPickOnBounds(true);
 //        this.setFocusTraversable(false);
         this.getStyleClass().add("rich-text-field");
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
     }
 }

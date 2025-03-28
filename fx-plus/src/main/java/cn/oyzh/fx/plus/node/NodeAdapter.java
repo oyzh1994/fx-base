@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.util.ReflectUtil;
+import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
@@ -8,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
@@ -105,9 +108,11 @@ public interface NodeAdapter extends EventTarget {
         }
         if (parent != null) {
             return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
+//            return NodeUtil.getWidth(parent);
         }
         if (this instanceof Node node && node.getScene() != null) {
             return node.getScene().getWidth();
+//            return NodeUtil.getWidth(node.getScene());
         }
         return Double.NaN;
     }
@@ -124,9 +129,11 @@ public interface NodeAdapter extends EventTarget {
         }
         if (parent != null) {
             return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
+//            return NodeUtil.getHeight(parent);
         }
         if (this instanceof Node node && node.getScene() != null) {
             return node.getScene().getHeight();
+//            return NodeUtil.getHeight(node.getScene());
         }
         return Double.NaN;
     }
@@ -264,6 +271,8 @@ public interface NodeAdapter extends EventTarget {
                     pane.getChildren().setAll(node);
                 } else if (this instanceof Group group) {
                     group.getChildren().setAll(node);
+                } else if (this instanceof FXTab tab) {
+                    tab.setContent(node);
                 }
             });
         }
@@ -441,6 +450,11 @@ public interface NodeAdapter extends EventTarget {
             if (scene != null) {
                 return scene.getWindow();
             }
+        } else if (this instanceof Tab node) {
+            Scene scene = node.getContent().getScene();
+            if (scene != null) {
+                return scene.getWindow();
+            }
         }
         return null;
     }
@@ -472,7 +486,14 @@ public interface NodeAdapter extends EventTarget {
      * 清除焦点
      */
     default void clearFocus() {
-        FXUtil.runWait(() -> this.scene().focusCleanup());
+        FXUtil.runWait(() -> {
+//            this.scene().focusCleanup();
+            try {
+                ReflectUtil.invoke(this.scene(), "focusCleanup");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -480,7 +501,14 @@ public interface NodeAdapter extends EventTarget {
      */
     default void focusNode() {
         if (this instanceof Node node) {
-            FXUtil.runWait(() -> this.scene().setFocusOwner(node, true));
+            FXUtil.runWait(() -> {
+//                this.scene().setFocusOwner(node, true);
+                try {
+                    ReflectUtil.invoke(this.scene(), "setFocusOwner", node, true);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
         }
     }
 }

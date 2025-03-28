@@ -1,11 +1,13 @@
 package cn.oyzh.fx.plus.keyboard;
 
-import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.common.system.OSUtil;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import lombok.experimental.UtilityClass;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 键盘按键事件
@@ -13,7 +15,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2024/07/02
  */
-@UtilityClass
+
 public class KeyboardUtil {
 
     /**
@@ -226,5 +228,96 @@ public class KeyboardUtil {
             return false;
         }
         return event.getCode() == KeyCode.ENTER;
+    }
+
+    /**
+     * 获取输入用的键盘码
+     *
+     * @return 列表
+     */
+    public static List<KeyCode> getInputCodes() {
+        List<KeyCode> codes = new ArrayList<>();
+        // 字母
+        codes.add(KeyCode.A);
+        codes.add(KeyCode.B);
+        codes.add(KeyCode.C);
+        codes.add(KeyCode.D);
+        codes.add(KeyCode.E);
+        codes.add(KeyCode.F);
+        codes.add(KeyCode.G);
+        codes.add(KeyCode.H);
+        codes.add(KeyCode.I);
+        codes.add(KeyCode.J);
+        codes.add(KeyCode.K);
+        codes.add(KeyCode.L);
+        codes.add(KeyCode.M);
+        codes.add(KeyCode.N);
+        codes.add(KeyCode.O);
+        codes.add(KeyCode.P);
+        codes.add(KeyCode.Q);
+        codes.add(KeyCode.R);
+        codes.add(KeyCode.S);
+        codes.add(KeyCode.T);
+        codes.add(KeyCode.U);
+        codes.add(KeyCode.V);
+        codes.add(KeyCode.W);
+        codes.add(KeyCode.X);
+        codes.add(KeyCode.Y);
+        codes.add(KeyCode.Z);
+        // 数字
+        codes.add(KeyCode.DIGIT0);
+        codes.add(KeyCode.DIGIT1);
+        codes.add(KeyCode.DIGIT2);
+        codes.add(KeyCode.DIGIT3);
+        codes.add(KeyCode.DIGIT4);
+        codes.add(KeyCode.DIGIT5);
+        codes.add(KeyCode.DIGIT6);
+        codes.add(KeyCode.DIGIT7);
+        codes.add(KeyCode.DIGIT8);
+        codes.add(KeyCode.DIGIT9);
+        // 小键盘数字
+        codes.add(KeyCode.NUMPAD0);
+        codes.add(KeyCode.NUMPAD1);
+        codes.add(KeyCode.NUMPAD2);
+        codes.add(KeyCode.NUMPAD3);
+        codes.add(KeyCode.NUMPAD4);
+        codes.add(KeyCode.NUMPAD5);
+        codes.add(KeyCode.NUMPAD6);
+        codes.add(KeyCode.NUMPAD7);
+        codes.add(KeyCode.NUMPAD8);
+        codes.add(KeyCode.NUMPAD9);
+        // 空格
+        codes.add(KeyCode.SPACE);
+        // 小数点
+        codes.add(KeyCode.DECIMAL);
+        // ➕
+        codes.add(KeyCode.PLUS);
+        // ➖
+        codes.add(KeyCode.SUBTRACT);
+        // ✖️
+        codes.add(KeyCode.MULTIPLY);
+        // ➗
+        codes.add(KeyCode.DIVIDE);
+        // 逗号
+        codes.add(KeyCode.COMMA);
+        // 斜杆
+        codes.add(KeyCode.SLASH);
+        // 分号
+        codes.add(KeyCode.SEMICOLON);
+        // 等号
+        codes.add(KeyCode.EQUALS);
+        // 左括号
+        codes.add(KeyCode.OPEN_BRACKET);
+        // 右括号
+        codes.add(KeyCode.CLOSE_BRACKET);
+        // 反斜杠
+        codes.add(KeyCode.BACK_SLASH);
+        // 单引号
+        codes.add(KeyCode.QUOTE);
+        // 双引号
+        codes.add(KeyCode.BACK_QUOTE);
+        // 连字符
+        codes.add(KeyCode.MINUS);
+        return codes;
     }
 }

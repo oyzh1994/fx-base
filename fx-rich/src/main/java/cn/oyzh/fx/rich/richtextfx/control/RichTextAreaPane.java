@@ -11,8 +11,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.IndexRange;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import lombok.NonNull;
 import org.reactfx.value.Val;
 
 import java.util.List;
@@ -23,18 +23,27 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/5/17
  */
-public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
+public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
 
     public RichTextAreaPane(E content) {
         super(content);
-        this.initTextArea();
+//        this.initTextArea();
     }
 
-    protected void initTextArea() {
-        FlexRichTextArea area = this.getContent();
+    @Override
+    public void initNode() {
+        super.initNode();
+        BaseRichTextArea area = this.getContent();
         area.disableProperty().bind(this.disableProperty());
         area.onKeyPressedProperty().bind(this.onKeyPressedProperty());
+        this.initFont();
     }
+
+//    protected void initTextArea() {
+//        BaseRichTextArea area = this.getContent();
+//        area.disableProperty().bind(this.disableProperty());
+//        area.onKeyPressedProperty().bind(this.onKeyPressedProperty());
+//    }
 
     @Override
     public void setFontSize(double fontSize) {
@@ -47,7 +56,7 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     }
 
     @Override
-    public void setFontFamily(@NonNull String fontFamily) {
+    public void setFontFamily(String fontFamily) {
         this.getContent().setFontFamily(fontFamily);
     }
 
@@ -79,8 +88,8 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
         return this.getContent().isEditable();
     }
 
-    public void addTextChangeListener(ChangeListener<String> dataListener) {
-        this.getContent().addTextChangeListener(dataListener);
+    public void addTextChangeListener(ChangeListener<String> textChangeListener) {
+        this.getContent().addTextChangeListener(textChangeListener);
     }
 
     public Val<Boolean> undoableProperty() {
@@ -129,6 +138,11 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
 
     public void selectRange(int index, int end) {
         this.getContent().selectRange(index, end);
+    }
+
+    public void selectRangeAndGoto(int index, int end) {
+        this.getContent().selectRange(index, end);
+        this.getContent().gotoSelection();
     }
 
     public ObservableValue<Integer> caretPositionProperty() {
@@ -248,4 +262,34 @@ public abstract class RichTextAreaPane<E extends FlexRichTextArea> extends FlexV
     public Optional<Bounds> getCaretBounds() {
         return this.getContent().getCaretBounds();
     }
+
+    public void gotoSelection() {
+        this.getContent().gotoSelection();
+    }
+
+    /**
+     * 初始化字体
+     */
+    protected Font initFont() {
+        return null;
+    }
+
+    @Override
+    public void changeFont(Font font) {
+        Font font1 = this.initFont();
+        if (font1 != null) {
+            FontAdapter.super.changeFont(font1);
+        } else {
+            FontAdapter.super.changeFont(font);
+        }
+    }
+
+    public void setHighlightText(String highlightText) {
+        this.getContent().setHighlightText(highlightText);
+    }
+
+    public String getHighlightText() {
+        return this.getContent().getHighlightText();
+    }
+
 }

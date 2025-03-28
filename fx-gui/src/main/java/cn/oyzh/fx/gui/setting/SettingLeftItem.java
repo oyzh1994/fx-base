@@ -1,18 +1,11 @@
 package cn.oyzh.fx.gui.setting;
 
 import cn.oyzh.fx.gui.tree.view.RichTreeItemValue;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * @author oyzh
  * @since 2024/12/29
  */
-@Getter
-@Setter
 public class SettingLeftItem extends RichTreeItemValue {
 
     private String id;
@@ -37,5 +30,29 @@ public class SettingLeftItem extends RichTreeItemValue {
 
     public static SettingLeftItem of(String name, String id){
         return new SettingLeftItem(name, id);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }

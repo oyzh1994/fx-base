@@ -1,7 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.data;
 
 
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.i18n.I18nHelper;
@@ -15,7 +15,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2023/8/14
  */
-public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements I18nSelectAdapter<RichDataType> {
+public class RichDataTypeComboBox extends FXComboBox<RichDataType> implements I18nSelectAdapter<RichDataType> {
 
     {
         NodeManager.init(this);
@@ -27,16 +27,36 @@ public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements 
      *
      * @return 格式
      */
-    public String getFormat() {
-        int val = this.getSelectedIndex();
-        return switch (val) {
-            case 0 -> "JSON";
-            case 1 -> "STRING";
-            case 2 -> "RAW";
-            case 3 -> "BINARY";
-            case 4 -> "HEX";
-            default -> "RAW";
-        };
+    public RichDataType getFormat() {
+        RichDataType type = this.getSelectedItem();
+        return type == null ? RichDataType.RAW : type;
+    }
+
+    /**
+     * 是否xml格式
+     *
+     * @return 结果
+     */
+    public boolean isXmlFormat() {
+        return RichDataType.XML == this.getFormat();
+    }
+
+    /**
+     * 是否html格式
+     *
+     * @return 结果
+     */
+    public boolean isHtmlFormat() {
+        return RichDataType.HTML == this.getFormat();
+    }
+
+    /**
+     * 是否yaml格式
+     *
+     * @return 结果
+     */
+    public boolean isYamlFormat() {
+        return RichDataType.YAML == this.getFormat();
     }
 
     /**
@@ -45,7 +65,7 @@ public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements 
      * @return 结果
      */
     public boolean isRawFormat() {
-        return "RAW".equals(this.getFormat());
+        return RichDataType.RAW == this.getFormat();
     }
 
     /**
@@ -54,7 +74,7 @@ public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements 
      * @return 结果
      */
     public boolean isJsonFormat() {
-        return "JSON".equals(this.getFormat());
+        return RichDataType.JSON == this.getFormat();
     }
 
     /**
@@ -63,7 +83,7 @@ public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements 
      * @return 结果
      */
     public boolean isBinaryFormat() {
-        return "BINARY".equals(this.getFormat());
+        return RichDataType.BINARY == this.getFormat();
     }
 
     /**
@@ -72,7 +92,7 @@ public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements 
      * @return 结果
      */
     public boolean isHexFormat() {
-        return "HEX".equals(this.getFormat());
+        return RichDataType.HEX == this.getFormat();
     }
 
     /**
@@ -81,7 +101,7 @@ public class RichDataTypeComboBox extends FlexComboBox<RichDataType> implements 
      * @return 结果
      */
     public boolean isStringFormat() {
-        return "STRING".equals(this.getFormat());
+        return RichDataType.STRING == this.getFormat();
     }
 
     /**

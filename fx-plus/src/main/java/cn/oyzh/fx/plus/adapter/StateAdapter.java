@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.stage.Stage;
-import lombok.NonNull;
 
 /**
  * 状态适配器
@@ -86,7 +85,7 @@ public interface StateAdapter extends PropAdapter {
      *
      * @param other 其他节点
      */
-    default void managedBindVisible(@NonNull Node other) {
+    default void managedBindVisible( Node other) {
         if (this instanceof Node node) {
             if (!node.managedProperty().isBound()) {
                 node.managedProperty().bind(other.visibleProperty());

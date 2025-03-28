@@ -8,18 +8,16 @@ import cn.oyzh.fx.plus.LimitLineControl;
 import cn.oyzh.fx.plus.adapter.AreaAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.operator.LimitOperator;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Collection;
 
@@ -29,24 +27,44 @@ import java.util.Collection;
  * @author oyzh
  * @since 2022/1/20
  */
-@Getter
-public class FXTextArea extends TextArea implements LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable<BaseValidator>, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements FlexAdapter, LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
     }
 
     /**
+     * 最大长度
+     */
+    private Long maxLen;
+
+    /**
      * 最大行数
      */
-    @Getter
     private Long maxLine;
 
     /**
-     * 最大长度
+     * 是否必须
      */
-    @Getter
-    private Long maxLen;
+    private boolean require;
+
+    @Override
+    public Long getMaxLen() {
+        return maxLen;
+    }
+
+    @Override
+    public Long getMaxLine() {
+        return maxLine;
+    }
+
+    public boolean isRequire() {
+        return require;
+    }
+
+    public void setRequire(boolean require) {
+        this.require = require;
+    }
 
     @Override
     public void setMaxLine(Long maxLine) {
@@ -144,15 +162,22 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
         }
     }
 
-    private Boolean require;
-
-    @Setter
-    private BaseValidator validator = new BaseValidator(this);
-
-    public void setRequire(Boolean require) {
-        this.require = require;
-        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+    @Override
+    public boolean validate() {
+        if (this.require && this.isEmpty()) {
+            this.requestFocus();
+            return false;
+        }
+        return Verifiable.super.validate();
     }
+
+    //    @Setter
+//    private BaseValidator validator = new BaseValidator(this);
+//
+//    public void setRequire(Boolean require) {
+//        this.require = require;
+//        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+//    }
 
     @Override
     public void flushCaret() {
@@ -186,5 +211,16 @@ public class FXTextArea extends TextArea implements LimitLineControl, LimitLenCo
 
     public long lineCount() {
         return this.getText().lines().count();
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
+    }
+
+    public void text(String text) {
+        FXUtil.runWait(() -> super.setText(text));
     }
 }

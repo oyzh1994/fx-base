@@ -1,8 +1,5 @@
 package cn.oyzh.fx.plus.controller;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 /**
  * 子窗口控制器
@@ -15,8 +12,13 @@ public class SubStageController extends StageController {
     /**
      * 父控制器
      */
-    @Getter
-    @Setter
-    @Accessors(fluent = true, chain = false)
     private ParentStageController parent;
+
+    public ParentStageController getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentStageController parent) {
+        this.parent = parent;
+    }
 }

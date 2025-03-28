@@ -10,7 +10,6 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
-import lombok.NonNull;
 
 /**
  * @author oyzh
@@ -35,7 +34,7 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
      *
      * @param listener 监听器
      */
-    public void selectedChanged(@NonNull ChangeListener<Boolean> listener) {
+    public void selectedChanged( ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
 //        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }

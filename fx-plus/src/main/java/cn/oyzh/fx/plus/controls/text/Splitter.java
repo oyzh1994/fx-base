@@ -2,10 +2,7 @@ package cn.oyzh.fx.plus.controls.text;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontUtil;
-import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 分割器
@@ -13,7 +10,7 @@ import lombok.Setter;
  * @author oyzh
  * @since 2022/8/25
  */
-public class Splitter extends FlexText {
+public class Splitter extends FXText {
 
     {
 //        this.setCache(false);
@@ -26,16 +23,28 @@ public class Splitter extends FlexText {
     /**
      * 标题文字
      */
-    @Getter
-    @Setter
     private String titleText;
 
     /**
      * 切割文字
      */
-    @Getter
-    @Setter
     private String splitText = "-";
+
+    public String getTitleText() {
+        return titleText;
+    }
+
+    public void setTitleText(String titleText) {
+        this.titleText = titleText;
+    }
+
+    public String getSplitText() {
+        return splitText;
+    }
+
+    public void setSplitText(String splitText) {
+        this.splitText = splitText;
+    }
 
     @Override
     public void resize(double width, double height) {

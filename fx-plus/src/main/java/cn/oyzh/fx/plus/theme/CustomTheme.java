@@ -4,8 +4,8 @@ import atlantafx.base.theme.Theme;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
-import lombok.Getter;
 
+import java.io.File;
 import java.util.Locale;
 
 /**
@@ -24,19 +24,16 @@ public class CustomTheme implements Theme, ThemeStyle {
     /**
      * 强调色
      */
-    @Getter
     private Color accentColor;
 
     /**
      * 背景色
      */
-    @Getter
     private Color backgroundColor;
 
     /**
      * 前景色
      */
-    @Getter
     private Color foregroundColor;
 
     /**
@@ -69,7 +66,15 @@ public class CustomTheme implements Theme, ThemeStyle {
             FileUtil.del(this.themePath.replace("file:/", ""));
         }
         // 设置主题文件
-        this.themePath = "file:/" + ThemeUtil.updateThemeCss(this.theme, fgColor, bgColor, accentColor);
+//        this.themePath = "file:/" + ThemeUtil.updateThemeCss(this.theme, fgColor, bgColor, accentColor);
+        try {
+            // 更新主题文件
+            String filePath = ThemeUtil.updateThemeCss(this.theme, fgColor, bgColor, accentColor);
+            File file = new File(filePath);
+            this.themePath = file.toURI().toURL().toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -108,5 +113,28 @@ public class CustomTheme implements Theme, ThemeStyle {
     @Override
     public boolean isDarkMode() {
         return this.theme.isDarkMode();
+    }
+
+    public ThemeStyle getTheme() {
+        return theme;
+    }
+
+    @Override
+    public Color getAccentColor() {
+        return accentColor;
+    }
+
+    @Override
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
+    public Color getForegroundColor() {
+        return foregroundColor;
+    }
+
+    public String getThemePath() {
+        return themePath;
     }
 }

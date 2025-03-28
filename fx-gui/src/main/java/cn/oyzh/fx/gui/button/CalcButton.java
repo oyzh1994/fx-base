@@ -2,7 +2,6 @@ package cn.oyzh.fx.gui.button;
 
 
 import cn.oyzh.fx.gui.svg.glyph.CalcSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ClearSVGGlyph;
 import cn.oyzh.fx.plus.controls.button.IconButton;
 import cn.oyzh.i18n.I18nHelper;
 

@@ -4,20 +4,17 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.validator.BaseValidator;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ComboBox;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.Collection;
 
@@ -25,22 +22,42 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter, ThemeAdapter, Verifiable<BaseValidator>, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
 
     {
         NodeManager.init(this);
     }
 
-    @Getter
-    private Boolean require;
+    /**
+     * 是否必须
+     */
+    private boolean require;
 
-    @Getter
-    @Setter
-    private BaseValidator validator = new BaseValidator(this);
+    public boolean isRequire() {
+        return require;
+    }
 
-    public void setRequire(Boolean require) {
+    public void setRequire(boolean require) {
         this.require = require;
-        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+    }
+
+    //
+//    @Getter
+//    @Setter
+//    private BaseValidator validator = new BaseValidator(this);
+//
+//    public void setRequire(Boolean require) {
+//        this.require = require;
+//        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
+//    }
+
+    @Override
+    public boolean validate() {
+        if (this.require && this.getSelectedItem() == null) {
+            this.requestFocus();
+            return false;
+        }
+        return Verifiable.super.validate();
     }
 
     /**
@@ -48,7 +65,7 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
      *
      * @param listener 监听器
      */
-    public void selectedItemChanged(@NonNull ChangeListener<T> listener) {
+    public void selectedItemChanged( ChangeListener<T> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
@@ -61,7 +78,7 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
      *
      * @param item 数据
      */
-    public boolean containsItem(@NonNull T item) {
+    public boolean containsItem( T item) {
         return this.getItems().contains(item);
     }
 
@@ -70,7 +87,7 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
      *
      * @param collection 数据集合
      */
-    public void addItems(@NonNull Collection<T> collection) {
+    public void addItems( Collection<T> collection) {
         FXUtil.runWait(() -> this.getItems().addAll(collection));
     }
 
@@ -79,7 +96,7 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
      *
      * @param items 数据数组
      */
-    public void addItems(@NonNull T[] items) {
+    public void addItems( T[] items) {
         FXUtil.runWait(() -> this.getItems().addAll(items));
     }
 
@@ -88,5 +105,12 @@ public class FXComboBox<T> extends ComboBox<T> implements NodeGroup, NodeAdapter
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
 //        this.setFocusTraversable(false);
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
     }
 }

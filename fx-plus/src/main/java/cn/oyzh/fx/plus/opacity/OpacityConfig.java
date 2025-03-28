@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.opacity;
 
 
-import lombok.Data;
 
 
 /**
@@ -10,7 +9,6 @@ import lombok.Data;
  * @author oyzh
  * @since 2024/12/30
  */
-@Data
 public class OpacityConfig {
 
     /**
@@ -23,4 +21,19 @@ public class OpacityConfig {
      */
     private Float titleOpacity;
 
+    public Float getWindowOpacity() {
+        return windowOpacity;
+    }
+
+    public void setWindowOpacity(Float windowOpacity) {
+        this.windowOpacity = windowOpacity;
+    }
+
+    public Float getTitleOpacity() {
+        return titleOpacity;
+    }
+
+    public void setTitleOpacity(Float titleOpacity) {
+        this.titleOpacity = titleOpacity;
+    }
 }

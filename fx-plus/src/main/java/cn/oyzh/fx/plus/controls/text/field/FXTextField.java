@@ -4,14 +4,15 @@ package cn.oyzh.fx.plus.controls.text.field;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextField;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 基础文本域
@@ -19,15 +20,24 @@ import lombok.Setter;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
     }
 
-    @Getter
-    @Setter
+    /**
+     * 是否必须
+     */
     private boolean require;
+
+    public boolean isRequire() {
+        return require;
+    }
+
+    public void setRequire(boolean require) {
+        this.require = require;
+    }
 
     public FXTextField() {
         super.setText("");
@@ -54,17 +64,13 @@ public class FXTextField extends TextField implements NodeGroup, NodeAdapter, Th
         return this.getLength() == 0 || this.getText().isEmpty();
     }
 
-    /**
-     * 校验数据
-     *
-     * @return 结果
-     */
+    @Override
     public boolean validate() {
         if (this.require && this.isEmpty()) {
             this.requestFocus();
             return false;
         }
-        return true;
+        return Verifiable.super.validate();
     }
 
     @Override
@@ -93,5 +99,16 @@ public class FXTextField extends TextField implements NodeGroup, NodeAdapter, Th
             return val.toString();
         }
         return null;
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
+    }
+
+    public void text(String text) {
+        FXUtil.runWait(() -> super.setText(text));
     }
 }

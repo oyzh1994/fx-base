@@ -1,15 +1,18 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import lombok.NonNull;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+
+import java.util.List;
 
 /**
  * 字体组件适配器
@@ -43,10 +46,23 @@ public interface FontAdapter extends PropAdapter {
                     node.setFont(font);
                 }
             }
+            case TabPane tabPane -> {
+                List<Tab> tabs = tabPane.getTabs();
+                for (Tab tab : tabs) {
+                    if (tab.getContent() instanceof FontAdapter adapter) {
+                        adapter.setFont(font);
+                    }
+                }
+            }
             case TextInputControl node -> {
                 Font font1 = node.getFont();
                 if (!FontUtil.isSameFont(font, font1)) {
                     node.setFont(font);
+                }
+            }
+            case VirtualizedScrollPane<?> pane -> {
+                if (pane.getContent() instanceof FontAdapter adapter) {
+                    adapter.setFont(font);
                 }
             }
             case Node node -> {
@@ -143,7 +159,7 @@ public interface FontAdapter extends PropAdapter {
      *
      * @param fontFamily 字体类型
      */
-    default void setFontFamily(@NonNull String fontFamily) {
+    default void setFontFamily(String fontFamily) {
         this.fontFamily(fontFamily);
     }
 

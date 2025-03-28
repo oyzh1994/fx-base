@@ -4,13 +4,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import lombok.experimental.UtilityClass;
 
 /**
  * @author oyzh
  * @since 2024-11-18
  */
-@UtilityClass
+
 public class NodeLifeCycleUtil {
 
     public static void onStageDestroy(Stage stage) {
@@ -31,6 +30,5 @@ public class NodeLifeCycleUtil {
                 }
             }
         }
-
     }
 }

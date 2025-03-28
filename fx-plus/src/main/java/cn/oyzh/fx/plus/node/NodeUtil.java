@@ -6,21 +6,18 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
-import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * 节点工具类
@@ -28,7 +25,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2023/05/15
  */
-@UtilityClass
+
 public class NodeUtil {
 
     public static Object getProperty(Node node, Object key) {
@@ -300,16 +297,16 @@ public class NodeUtil {
                     image.setFitHeight(height);
                 }
             }
-            case TitledPane labeled -> {
+            case Labeled labeled -> {
                 if (!labeled.prefHeightProperty().isBound()) {
                     labeled.setPrefHeight(height);
                 }
-                // if (!labeled.minHeightProperty().isBound()) {
-                //     labeled.setMinHeight(height);
-                // }
-                // if (!labeled.maxHeightProperty().isBound()) {
-                //     labeled.setMaxHeight(height);
-                // }
+                 if (!labeled.minHeightProperty().isBound()) {
+                     labeled.setMinHeight(height);
+                 }
+                 if (!labeled.maxHeightProperty().isBound()) {
+                     labeled.setMaxHeight(height);
+                 }
             }
             case Region region -> {
                 if (!region.prefHeightProperty().isBound()) {
@@ -351,7 +348,7 @@ public class NodeUtil {
      * @param target  对象
      * @param layoutY y坐标
      */
-    public static void setLayoutY(@NonNull EventTarget target, Double layoutY) {
+    public static void setLayoutY( EventTarget target, Double layoutY) {
         if (layoutY == null || Double.isNaN(layoutY) || layoutY <= 0) {
             return;
         }

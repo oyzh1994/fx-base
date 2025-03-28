@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.bean.BeanUtil;
-import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Method;
 
@@ -9,7 +8,7 @@ import java.lang.reflect.Method;
  * @author oyzh
  * @since 2024-12-05
  */
-@UtilityClass
+
 public class FXBeanUtil {
 
     public static Method getSetterMethod(Class<?> clazz, String name) {

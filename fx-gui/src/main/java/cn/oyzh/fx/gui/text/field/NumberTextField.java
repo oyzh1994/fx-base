@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.text.field;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
+import cn.oyzh.fx.plus.converter.DigitalConverter;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
@@ -34,12 +34,12 @@ public class NumberTextField extends DigitalTextField {
         super.setMaxVal(maxVal);
     }
 
-    private DigitalFormatStringConverter converter;
+    private DigitalConverter converter;
 
     @Override
-    protected DigitalFormatStringConverter getConverter() {
+    protected DigitalConverter getConverter() {
         if (this.converter == null) {
-            this.converter = new DigitalFormatStringConverter();
+            this.converter = new DigitalConverter();
         }
         return this.converter;
     }

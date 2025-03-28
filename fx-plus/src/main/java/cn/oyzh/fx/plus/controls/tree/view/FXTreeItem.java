@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
@@ -15,8 +15,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.stage.Window;
-import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.List;
 
@@ -26,7 +24,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/11/10
  */
-@Getter
 public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
     {
@@ -35,7 +32,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     private FXTreeView treeView;
 
-    public FXTreeItem(@NonNull FXTreeView treeView) {
+    public FXTreeItem( FXTreeView treeView) {
         this.setTreeView(treeView);
     }
 
@@ -432,7 +429,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
             destroyable.destroy();
         }
         this.setValue(null);
-        this.setParent(null);
+//        this.setParent(null);
         this.setGraphic(null);
         this.clearChild();
         this.treeView = null;

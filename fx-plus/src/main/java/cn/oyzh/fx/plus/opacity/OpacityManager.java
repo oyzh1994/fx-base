@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.fx.plus.window.WindowManager;
 import javafx.stage.Window;
-import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/04/19
  */
-@UtilityClass
+
 public class OpacityManager {
 
     /**

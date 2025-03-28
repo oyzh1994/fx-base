@@ -6,7 +6,6 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import lombok.experimental.UtilityClass;
 
 /**
  * 拖动工具类
@@ -14,7 +13,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2023/9/12
  */
-@UtilityClass
+
 public class DragUtil {
 
     /**
@@ -55,7 +54,7 @@ public class DragUtil {
                 clipboardContent.putString(content);
                 db.setContent(clipboardContent);
                 // 设置特效
-                handler.initDrapEffect(source);
+                handler.initDragEffect(source);
             }
             event.consume();
         });
@@ -90,7 +89,7 @@ public class DragUtil {
             // 判断是否允许投放
             if (target != null && source != null && target.allowDropNode(source)) {
                 node.setOpacity(0.3);
-                handler.source(source);
+                handler.setSource(source);
                 handler.initDropEffect(target);
             }
             event.consume();
@@ -115,7 +114,7 @@ public class DragUtil {
         scene.setOnDragOver(handler::onDragOver);
         scene.setOnDragExited(handler::onDragExited);
         scene.setOnDragDropped(handler::onDragDropped);
-        scene.getProperties().put("_drapFileHandler", handler);
+        scene.getProperties().put("_dragFileHandler", handler);
     }
 
     /**
@@ -124,8 +123,8 @@ public class DragUtil {
      * @param scene 场景
      */
     public static void clearDragFile(Scene scene) {
-        if (scene != null && scene.getProperties().containsKey("_drapFileHandler")) {
-            DragFileHandler handler = (DragFileHandler) scene.getProperties().get("_drapFileHandler");
+        if (scene != null && scene.getProperties().containsKey("_dragFileHandler")) {
+            DragFileHandler handler = (DragFileHandler) scene.getProperties().get("_dragFileHandler");
             handler.clearEvent(scene);
             // scene.getProperties().remove("_drapFileHandler");
             // scene.setOnDragOver(null);

@@ -11,5 +11,8 @@ public enum RichDataType {
     STRING,
     RAW,
     BINARY,
-    HEX
+    HEX,
+    XML,
+    HTML,
+    YAML
 }

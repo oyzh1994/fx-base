@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.i18n.I18nHelper;
 
 /**
  * @author oyzh
@@ -10,17 +9,11 @@ import cn.oyzh.i18n.I18nHelper;
 public class ApplySVGGlyph extends SVGGlyph {
 
     public ApplySVGGlyph() {
-        this.setUrl("/fx-svg/check.svg");
+        this.setUrl("/fx-svg/apply.svg");
     }
 
     public ApplySVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }
-
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.apply());
-//        super.initNode();
-//    }
 }

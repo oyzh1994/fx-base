@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.text.Font;
 
@@ -11,7 +11,7 @@ import javafx.scene.text.Font;
  * @author oyzh
  * @since 2024/04/05
  */
-public class FontFamilyComboBox extends FlexComboBox<String> {
+public class FontFamilyComboBox extends FXComboBox<String> {
 
     {
         this.addItems(Font.getFamilies());

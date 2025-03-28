@@ -5,6 +5,8 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.TooltipUtil;
+import cn.oyzh.fx.plus.window.StageAdapter;
+import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -21,8 +23,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Window;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import javax.swing.*;
 import java.util.Optional;
@@ -35,7 +35,7 @@ import java.util.function.Function;
  * @author oyzh
  * @since 2023/10/24
  */
-@UtilityClass
+
 public class MessageBox {
 
     /**
@@ -48,7 +48,7 @@ public class MessageBox {
      *
      * @param exceptionParser 异常解析器
      */
-    public static void registerExceptionParser(@NonNull Function<Throwable, String> exceptionParser) {
+    public static void registerExceptionParser(Function<Throwable, String> exceptionParser) {
         Exception_Parser = exceptionParser;
     }
 
@@ -67,7 +67,7 @@ public class MessageBox {
      * @param title   标题信息
      * @param content 文本信息
      */
-    public static boolean confirm(@NonNull String title, String content) {
+    public static boolean confirm(String title, String content) {
         String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
@@ -87,8 +87,28 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
-    public static void warn(@NonNull String content) {
+    public static void warn(String content) {
         alert(Alert.AlertType.WARNING, I18nHelper.tips(), null, content);
+    }
+
+    /**
+     * 警告窗口
+     *
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static void warn(String content, Window owner) {
+        alert(Alert.AlertType.WARNING, I18nHelper.tips(), null, content, owner);
+    }
+
+    /**
+     * 警告窗口
+     *
+     * @param content 文本信息
+     * @param adapter 父窗口
+     */
+    public static void warn(String content, StageAdapter adapter) {
+        alert(Alert.AlertType.WARNING, I18nHelper.tips(), null, content, adapter.stage());
     }
 
     /**
@@ -96,7 +116,7 @@ public class MessageBox {
      *
      * @param ex 异常信息
      */
-    public static void exception(@NonNull Throwable ex) {
+    public static void exception(Throwable ex) {
         ex.printStackTrace();
         exception(ex, null);
     }
@@ -107,7 +127,7 @@ public class MessageBox {
      * @param ex    异常信息
      * @param title 标题
      */
-    public static void exception(@NonNull Throwable ex, String title) {
+    public static void exception(Throwable ex, String title) {
         String err;
         if (Exception_Parser != null) {
             err = Exception_Parser.apply(ex);
@@ -123,7 +143,7 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
-    public static void info(@NonNull String content) {
+    public static void info(String content) {
         alert(Alert.AlertType.INFORMATION, I18nHelper.tips(), null, content);
     }
 
@@ -132,7 +152,7 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
-    public static void error(@NonNull String content) {
+    public static void error(String content) {
         alert(Alert.AlertType.ERROR, I18nHelper.tips(), null, content);
     }
 
@@ -141,7 +161,7 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
-    public static void none(@NonNull String content) {
+    public static void none(String content) {
         alert(Alert.AlertType.NONE, I18nHelper.tips(), null, content);
     }
 
@@ -153,15 +173,29 @@ public class MessageBox {
      * @param header  提示头
      * @param content 文本信息
      */
-    public static void alert(@NonNull Alert.AlertType type, @NonNull String title, String header, String content) {
+    public static void alert(Alert.AlertType type, String title, String header, String content) {
+        alert(type, title, header, content, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 窗口控件
+     *
+     * @param type    类型
+     * @param title   标题
+     * @param header  提示头
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static void alert(Alert.AlertType type, String title, String header, String content, Window owner) {
         // 使用fx消息框
         if (FXUtil.isInitialized()) {
-            FXUtil.runLater(() -> {
+            FXUtil.runWait(() -> {
                 Alert alert = new Alert(type);
                 alert.setTitle(title);
                 alert.setHeaderText(header);
                 alert.setContentText(content);
-                alert.show();
+                alert.initOwner(owner);
+                alert.showAndWait();
             });
         } else {// 使用swing消息框
             int msgType = switch (type) {
@@ -185,7 +219,7 @@ public class MessageBox {
      * @param buttonTypes 按钮
      * @return 点击的按钮
      */
-    public static ButtonType alert(@NonNull Alert.AlertType type, @NonNull String title, String header, String content, ButtonType... buttonTypes) {
+    public static ButtonType alert(Alert.AlertType type, String title, String header, String content, ButtonType... buttonTypes) {
         Alert alert = new Alert(type, content, buttonTypes);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -265,7 +299,7 @@ public class MessageBox {
      * @param liveTime 存活时间
      * @return FXTooltip
      */
-    public static TooltipExt tipMsg(@NonNull String tipMsg, @NonNull Node node, Integer liveTime) {
+    public static TooltipExt tipMsg(String tipMsg, Node node, Integer liveTime) {
         TooltipExt tooltip = new TooltipExt();
         try {
             // 隐藏旧工具条
@@ -312,8 +346,9 @@ public class MessageBox {
      *
      * @param msg 消息
      */
-    public static void okToast(@NonNull String msg) {
-        okToast(msg, null);
+    public static void okToast(String msg) {
+        okToast(msg, StageManager.getFrontWindow());
+//        okToast(msg, null);
     }
 
     /**
@@ -322,7 +357,7 @@ public class MessageBox {
      * @param msg   消息
      * @param owner 父窗口
      */
-    public static void okToast(@NonNull String msg, Window owner) {
+    public static void okToast(String msg, Window owner) {
         showToast(msg, new SVGGlyph("/fx-svg/check-circle.svg", Color.GREEN), owner);
     }
 
@@ -331,7 +366,7 @@ public class MessageBox {
      *
      * @param msg 消息
      */
-    public static void warnToast(@NonNull String msg) {
+    public static void warnToast(String msg) {
         warnToast(msg, null);
     }
 
@@ -341,7 +376,7 @@ public class MessageBox {
      * @param msg   消息
      * @param owner 父窗口
      */
-    public static void warnToast(@NonNull String msg, Window owner) {
+    public static void warnToast(String msg, Window owner) {
         showToast(msg, new SVGGlyph("/fx-svg/warning-circle.svg", Color.ORANGE), owner);
     }
 
@@ -350,7 +385,7 @@ public class MessageBox {
      *
      * @param msg 消息
      */
-    public static void questionToast(@NonNull String msg) {
+    public static void questionToast(String msg) {
         questionToast(msg, null);
     }
 
@@ -360,7 +395,7 @@ public class MessageBox {
      * @param msg   消息
      * @param owner 父窗口
      */
-    public static void questionToast(@NonNull String msg, Window owner) {
+    public static void questionToast(String msg, Window owner) {
         showToast(msg, new SVGGlyph("/fx-svg/question-circle.svg", Color.ORANGE), owner);
     }
 
@@ -378,10 +413,10 @@ public class MessageBox {
         // 背景
         Background background = new Background(new BackgroundFill(Color.valueOf("#FFFAFA"), new CornerRadii(3), null));
         // 设置参数
-        toast.icon(icon)
-                .border(border)
-                .textFill(Color.valueOf("#242424"))
-                .background(background);
+        toast.setIcon(icon);
+        toast.setBorder(border);
+        toast.setTextFill(Color.valueOf("#242424"));
+        toast.setBackground(background);
         // 显示组件
         FXUtil.runLater(() -> toast.show(owner));
     }

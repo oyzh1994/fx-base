@@ -7,8 +7,7 @@ import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DateSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
-import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.window.PopupExt;
@@ -19,8 +18,6 @@ import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,11 +32,17 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
 
+    public DateTimeFormatter getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(DateTimeFormatter formatter) {
+        this.formatter = formatter;
+    }
+
     /**
      * 日期格式化器
      */
-    @Setter
-    @Getter
     private DateTimeFormatter formatter;
 
     /**
@@ -136,13 +139,13 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
         cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
-        FlexHBox hBox = new FlexHBox(submit, cancel);
+        FXHBox hBox = new FXHBox(submit, cancel);
         hBox.setRealHeight(30);
         HBox.setMargin(submit, new Insets(5, 0, 0, 3));
         HBox.setMargin(cancel, new Insets(5, 0, 0, 15));
 
         // 布局组件
-        FlexVBox vBox = new FlexVBox();
+        FXVBox vBox = new FXVBox();
         vBox.addChild(calendar);
         vBox.addChild(timeBox);
         vBox.addChild(hBox);

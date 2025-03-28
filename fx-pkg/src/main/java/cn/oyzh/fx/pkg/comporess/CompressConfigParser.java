@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.comporess;
 
 import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
-import lombok.Data;
 
 /**
  * 压缩配置解析器
@@ -10,7 +9,6 @@ import lombok.Data;
  * @author oyzh
  * @since 2024/06/18
  */
-@Data
 public class CompressConfigParser implements ConfigParser<CompressConfig> {
 
     @Override

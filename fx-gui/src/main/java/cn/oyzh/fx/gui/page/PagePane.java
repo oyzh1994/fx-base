@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.page;
 import cn.oyzh.common.dto.Paging;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.text.FlexText;
+import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.event.EventHandler;
@@ -11,9 +11,6 @@ import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.Objects;
 
@@ -28,24 +25,21 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     /**
      * 分页信息文本组件
      */
-    private final FlexText pageText = new FlexText();
+    private final FXText pageText = new FXText();
 
     /**
      * 是否显示分页信息文本组件
      */
-    @Getter
     private boolean showPageText = true;
 
     /**
      * 是否显示首页组件
      */
-    @Getter
     private boolean showLast;
 
     /**
      * 是否显示尾页组件
      */
-    @Getter
     private boolean showFirst;
 
     /**
@@ -71,52 +65,41 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     /**
      * 分页信息文本模板
      */
-    @Getter
-    @Setter
     private String pageTextTpl = "共#count条，每页#limit条，#currentPage/#countPage页";
 
     /**
      * 分页信息
      */
-    @Getter
     private Paging<T> paging;
 
     /**
      * 图标大小
      */
-    @Getter
     private String iconSize;
 
     /**
      * 隐藏控件，如果少于等于1页内容时
      */
-    @Getter
     private boolean hideIfLessPage = true;
 
     /**
      * 上一页点击事件
      */
-    @Setter
-    @Getter
     private EventHandler<MouseEvent> onNextClicked;
 
     /**
      * 下一页点击事件
      */
-    @Setter
-    @Getter
     private EventHandler<MouseEvent> onPrevClicked;
 
     /**
      * 首页点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onFirstClicked;
 
     /**
      * 尾页点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onLastClicked;
 
     {
@@ -191,7 +174,7 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
      *
      * @param iconSize 图标大小
      */
-    public void setIconSize(@NonNull String iconSize) {
+    public void setIconSize( String iconSize) {
         this.iconSize = iconSize;
         this.firstSVG.setSizeStr(iconSize);
         this.prevSVG.setSizeStr(iconSize);
@@ -204,7 +187,7 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
      *
      * @param paging 分页信息
      */
-    public void setPaging(@NonNull Paging<T> paging) {
+    public void setPaging( Paging<T> paging) {
         this.paging = paging;
         this.formatPageText();
         if (this.hideIfLessPage) {
@@ -297,5 +280,81 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
 //    @Override
 //    public void setRealHeight(double height) {
 //        LayoutAdapter.super.realHeight(height);
+
+    public FXText getPageText() {
+        return pageText;
+    }
+
+    public boolean isShowPageText() {
+        return showPageText;
+    }
+
+    public boolean isShowLast() {
+        return showLast;
+    }
+
+    public boolean isShowFirst() {
+        return showFirst;
+    }
+
+    public SVGGlyph getFirstSVG() {
+        return firstSVG;
+    }
+
+    public SVGGlyph getLastSVG() {
+        return lastSVG;
+    }
+
+    public SVGGlyph getPrevSVG() {
+        return prevSVG;
+    }
+
+    public SVGGlyph getNextSVG() {
+        return nextSVG;
+    }
+
+    public String getPageTextTpl() {
+        return pageTextTpl;
+    }
+
+    public void setPageTextTpl(String pageTextTpl) {
+        this.pageTextTpl = pageTextTpl;
+    }
+
+    public Paging<T> getPaging() {
+        return paging;
+    }
+
+    public String getIconSize() {
+        return iconSize;
+    }
+
+    public boolean isHideIfLessPage() {
+        return hideIfLessPage;
+    }
+
+    public EventHandler<MouseEvent> getOnNextClicked() {
+        return onNextClicked;
+    }
+
+    public void setOnNextClicked(EventHandler<MouseEvent> onNextClicked) {
+        this.onNextClicked = onNextClicked;
+    }
+
+    public EventHandler<MouseEvent> getOnPrevClicked() {
+        return onPrevClicked;
+    }
+
+    public void setOnPrevClicked(EventHandler<MouseEvent> onPrevClicked) {
+        this.onPrevClicked = onPrevClicked;
+    }
+
+    public EventHandler<MouseEvent> getOnFirstClicked() {
+        return onFirstClicked;
+    }
+
+    public EventHandler<MouseEvent> getOnLastClicked() {
+        return onLastClicked;
+    }
 //    }
 }

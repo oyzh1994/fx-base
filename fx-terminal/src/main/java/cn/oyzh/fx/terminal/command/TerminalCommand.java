@@ -1,8 +1,6 @@
 package cn.oyzh.fx.terminal.command;
 
 import cn.oyzh.common.util.ArrayUtil;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,8 +11,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/7/21
  */
-@Data
-@Accessors(chain = true, fluent = true)
 public class TerminalCommand {
 
     /**
@@ -41,4 +37,19 @@ public class TerminalCommand {
         return List.of(this.args);
     }
 
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
+    public String[] getArgs() {
+        return args;
+    }
+
+    public void setArgs(String[] args) {
+        this.args = args;
+    }
 }

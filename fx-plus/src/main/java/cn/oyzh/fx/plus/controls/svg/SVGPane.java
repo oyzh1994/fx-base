@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.controls.svg;
 
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
-import lombok.Getter;
 
 /**
  * svg面板
@@ -12,8 +11,11 @@ import lombok.Getter;
  */
 public class SVGPane extends FXHBox implements MouseAdapter {
 
-    @Getter
     protected String size;
+
+    public String getSize() {
+        return size;
+    }
 
     public void setSize(String size) {
         this.size = size;

@@ -4,9 +4,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ClassUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
  * @author oyzh
  * @since 2023/7/21
  */
-@UtilityClass
+
 public class TerminalManager {
 
     /**
@@ -69,9 +66,15 @@ public class TerminalManager {
     /**
      * 加载处理器操作
      */
-    @Setter
-    @Getter
     private static Runnable loadHandlerAction;
+
+    public static void setLoadHandlerAction(Runnable loadHandlerAction) {
+        TerminalManager.loadHandlerAction = loadHandlerAction;
+    }
+
+    public static Runnable getLoadHandlerAction() {
+        return loadHandlerAction;
+    }
 
     /**
      * 是否已经加载

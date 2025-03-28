@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.oyzh</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.3.3</version>
+        <version>1.3.4</version>
     </parent>
 
     <artifactId>fx-pkg</artifactId>
@@ -56,11 +56,11 @@
         <!--     <scope>compile</scope> -->
         <!-- </dependency> -->
 
-        <!-- java 辅助工具包 -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; java 辅助工具包 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--        </dependency>-->
 
 <!--        &lt;!&ndash; 常用工具扩展类库 &ndash;&gt;-->
 <!--        <dependency>-->
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.22</version>
+            <version>1.26.2</version>
         </dependency>
 
         <!-- 自定义类库，通用 -->

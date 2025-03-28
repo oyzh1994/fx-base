@@ -1,15 +1,16 @@
 package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.Theme;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.ColorScheme;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.util.Locale;
 
 /**
@@ -51,7 +52,8 @@ public class SystemTheme implements Theme, ThemeStyle {
             FileUtil.del(this.themePath.replace("file:/", ""));
         }
         // 设置主题文件
-        this.themePath = "file:/" + ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
+//        this.themePath = "file:/" + ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
+        this.themePath = ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
     }
 
     @Override
@@ -73,8 +75,10 @@ public class SystemTheme implements Theme, ThemeStyle {
     public String getUserAgentStylesheet() {
         if (this.themePath == null) {
             this.updateThemeCss();
+            JulLog.info("themePath:{}", this.themePath);
         }
-        return this.themePath;
+        return new File(this.themePath).toURI().toString();
+//        return this.themePath;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.font;
 
-import lombok.Data;
 
 /**
  * 字体配置
@@ -8,7 +7,6 @@ import lombok.Data;
  * @author oyzh
  * @since 2024/04/05
  */
-@Data
 public class FontConfig {
 
     /**
@@ -26,4 +24,27 @@ public class FontConfig {
      */
     private Integer weight;
 
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
 }

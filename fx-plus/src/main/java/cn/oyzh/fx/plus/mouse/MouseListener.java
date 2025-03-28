@@ -10,8 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * 键盘按键事件
@@ -20,7 +18,7 @@ import lombok.experimental.UtilityClass;
  * @since 2023/1/16
  */
 //@Slf4j
-@UtilityClass
+
 public class MouseListener {
 
     /**
@@ -29,7 +27,7 @@ public class MouseListener {
      * @param target     事件目标
      * @param mouseHandler 按键处理器
      */
-    public static void listen(@NonNull Object target, @NonNull MouseHandler mouseHandler) {
+    public static void listen( Object target,  MouseHandler mouseHandler) {
         addHandler(target, mouseHandler);
     }
 
@@ -39,7 +37,7 @@ public class MouseListener {
      * @param target     事件目标
      * @param mouseHandler 按键处理器
      */
-    public static void unListen(@NonNull EventTarget target, @NonNull MouseHandler mouseHandler) {
+    public static void unListen( EventTarget target,  MouseHandler mouseHandler) {
         removeHandler(target, mouseHandler);
     }
 
@@ -78,7 +76,7 @@ public class MouseListener {
         if (eventHandler != null) {
             eventHandler.addHandler(mouseHandler);
 //            if (log.isDebugEnabled()) {
-                JulLog.debug("addHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
+                JulLog.debug("addHandler, button:{} clickCount:{}", mouseHandler.getButton(), mouseHandler.getClickCount());
 //            }
         }
     }
@@ -92,7 +90,11 @@ public class MouseListener {
      * @param handler 事件业务处理
      */
     private static void addHandler(EventTarget target, EventType<MouseEvent> type, MouseButton button, EventHandler<? super MouseEvent> handler) {
-        addHandler(target, new MouseHandler().type(type).button(button).handler(handler));
+        MouseHandler handler1 = new MouseHandler();
+        handler1.setButton(button);
+        handler1.setType(type);
+        handler1.setHandler(handler);
+        addHandler(target,handler1);
     }
 
     /**
@@ -106,7 +108,7 @@ public class MouseListener {
         if (eventHandler != null) {
             eventHandler.removeHandler(mouseHandler);
 //            if (log.isDebugEnabled()) {
-                JulLog.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.button(), mouseHandler.clickCount());
+                JulLog.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.getButton(), mouseHandler.getClickCount());
 //            }
         }
     }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.font;
 
-import cn.oyzh.fx.plus.SimpleStringConverter;
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
+import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.text.FontWeight;
 
@@ -11,7 +11,7 @@ import javafx.scene.text.FontWeight;
  * @author oyzh
  * @since 2024/04/05
  */
-public class FontWeightComboBox extends FlexComboBox<FontWeight> {
+public class FontWeightComboBox extends FXComboBox<FontWeight> {
 
     {
         this.addItems(FontWeight.values());

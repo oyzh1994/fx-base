@@ -1,10 +1,9 @@
 package org.fxmisc.flowless;
 
-import java.util.NoSuchElementException;
+import org.reactfx.collection.MemoizationList;
+
 import java.util.Optional;
 import java.util.OptionalInt;
-
-import org.reactfx.collection.MemoizationList;
 
 /**
  * Helper class for properly {@link javafx.scene.Node#resize(double, double) resizing} and

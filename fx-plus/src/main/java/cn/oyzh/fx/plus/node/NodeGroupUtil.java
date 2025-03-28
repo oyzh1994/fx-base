@@ -9,7 +9,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumnBase;
 import javafx.stage.Stage;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/06/08
  */
-@UtilityClass
+
 public class NodeGroupUtil {
 
     /**

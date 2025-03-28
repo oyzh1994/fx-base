@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.common.object.DestroyUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.DestroyUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -24,6 +24,8 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
     {
         NodeManager.init(this);
     }
+
+    public static final FXContextMenu EMPTY = new FXContextMenu();
 
     private ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
 

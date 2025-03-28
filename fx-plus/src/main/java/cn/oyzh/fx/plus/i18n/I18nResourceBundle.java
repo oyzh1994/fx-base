@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.i18n;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nManager;
-import lombok.NonNull;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public class I18nResourceBundle extends ResourceBundle {
     }
 
     @Override
-    protected Object handleGetObject(@NonNull String key) {
+    protected Object handleGetObject( String key) {
         try {
             ResourceBundle resource = this.initResource(key);
             if (resource != null) {
@@ -53,7 +52,7 @@ public class I18nResourceBundle extends ResourceBundle {
         return null;
     }
 
-    @NonNull
+    
     @Override
     public Enumeration<String> getKeys() {
         return new Enumeration<>() {
@@ -94,7 +93,7 @@ public class I18nResourceBundle extends ResourceBundle {
     }
 
     @Override
-    public boolean containsKey(@NonNull String key) {
+    public boolean containsKey( String key) {
         ResourceBundle resource = this.initResource(key);
         return resource.containsKey(key);
     }

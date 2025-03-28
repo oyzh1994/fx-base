@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.jar;
 
-import lombok.Data;
 
 import java.util.Set;
 
@@ -10,7 +9,6 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/06/17
  */
-@Data
 public class JarConfig {
 
     /**
@@ -22,4 +20,20 @@ public class JarConfig {
      * 排除的文件
      */
     private Set<String> excludes;
+
+    public boolean isRemoveEmpty() {
+        return removeEmpty;
+    }
+
+    public void setRemoveEmpty(boolean removeEmpty) {
+        this.removeEmpty = removeEmpty;
+    }
+
+    public Set<String> getExcludes() {
+        return excludes;
+    }
+
+    public void setExcludes(Set<String> excludes) {
+        this.excludes = excludes;
+    }
 }

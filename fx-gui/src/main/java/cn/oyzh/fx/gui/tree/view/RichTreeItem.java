@@ -8,10 +8,8 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
-import lombok.NonNull;
 
 import java.util.BitSet;
 import java.util.List;
@@ -26,6 +24,14 @@ import java.util.function.Consumer;
  * @since 2023/11/10
  */
 public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+
+//    {
+//        this.addEventFilter(childrenModificationEvent(), e -> {
+//            if (!this.isSorting()) {
+//                this.doFilter();
+//            }
+//        });
+//    }
 
     /**
      * bit值设置，减少内存占用
@@ -171,7 +177,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return this.bitValue().get(6);
     }
 
-    public RichTreeItem(@NonNull RichTreeView treeView) {
+    public RichTreeItem( RichTreeView treeView) {
         super(treeView);
     }
 
@@ -186,13 +192,13 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return (RichTreeView) super.getTreeView();
     }
 
-    @Override
-    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
-        super.updateChildren(c);
-        if (!this.isSorting()) {
-            this.doFilter();
-        }
-    }
+//    @Override
+//    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
+//        super.updateChildren(c);
+//        if (!this.isSorting()) {
+//            this.doFilter();
+//        }
+//    }
 
     @Override
     public ObservableList getChildren() {
@@ -210,7 +216,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * @return 子节点列表
      */
     public ObservableList<TreeItem<?>> unfilteredChildren() {
-        List list = super.getChildren();
+        ObservableList list = super.getChildren();
         // 如果是可过滤则显示真实子节点列表
         return (ObservableList<TreeItem<?>>) list;
     }
@@ -265,7 +271,8 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
             }
             children.clear();
         };
-        this.service().submitFXLater(() -> {
+        FXUtil.runWait(() -> {
+//        this.service().submitFX(() -> {
             ObservableList<TreeItem<V>> children = super.getChildren();
             for (TreeItem<?> child : children) {
                 clearChildren.accept(child);
@@ -286,14 +293,16 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     @Override
     public void setChild(TreeItem<?> item) {
         if (item != null) {
-            this.service().submitFX(() -> this.unfilteredChildren().setAll(item));
+            FXUtil.runWait(() -> this.unfilteredChildren().setAll(item));
+//            this.service().submitFX(() -> this.unfilteredChildren().setAll(item));
         }
     }
 
     @Override
     public void setChild(TreeItem<?>... items) {
         if (ArrayUtil.isEmpty(items)) {
-            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
+            FXUtil.runWait(() -> this.unfilteredChildren().setAll(items));
+//            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
         }
     }
 
@@ -413,7 +422,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public synchronized void doFilter() {
         RichTreeView treeView = this.getTreeView();
         if (treeView != null) {
-            this.doFilter(treeView.itemFilter());
+            this.doFilter(treeView.getItemFilter());
         }
     }
 

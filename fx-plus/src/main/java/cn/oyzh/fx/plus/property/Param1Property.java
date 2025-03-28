@@ -1,13 +1,18 @@
 package cn.oyzh.fx.plus.property;
 
-import lombok.Data;
 
 /**
  * @author oyzh
  * @since 2025/01/21
  */
-@Data
 public class Param1Property<P1> {
+    public P1 getParam1() {
+        return param1;
+    }
+
+    public void setParam1(P1 param1) {
+        this.param1 = param1;
+    }
 
     private P1 param1;
 

@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.theme;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +9,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/4/3
  */
-@UtilityClass
+
 public class Themes {
 
     public static final SystemTheme SYSTEM = new SystemTheme();

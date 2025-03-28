@@ -3,10 +3,9 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.converter.DigitalFormatStringConverter;
-import cn.oyzh.fx.plus.format.DigitalDecimalFormat;
+import cn.oyzh.fx.plus.converter.DigitalConverter;
+import cn.oyzh.fx.plus.format.DigitalFormat;
 import javafx.scene.control.TextFormatter;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,13 +17,16 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/08/28
  */
-@Getter
 public class DecimalTextField extends DigitalTextField {
 
     /**
      * 小数位数
      */
     protected Integer scaleLen;
+
+    public Integer getScaleLen() {
+        return scaleLen;
+    }
 
     public void setScaleLen(Integer scaleLen) {
         this.scaleLen = scaleLen;
@@ -55,12 +57,12 @@ public class DecimalTextField extends DigitalTextField {
         this.setScaleLen(scaleLen);
     }
 
-    private DigitalFormatStringConverter converter;
+    private DigitalConverter converter;
 
     @Override
-    protected DigitalFormatStringConverter getConverter() {
+    protected DigitalConverter getConverter() {
         if (this.converter == null) {
-            this.converter = new DigitalFormatStringConverter(this.format());
+            this.converter = new DigitalConverter(this.format());
         }
         return this.converter;
     }
@@ -174,11 +176,11 @@ public class DecimalTextField extends DigitalTextField {
     //     }
     // }
 
-    private DigitalDecimalFormat format;
+    private DigitalFormat format;
 
-    private DigitalDecimalFormat format() {
+    private DigitalFormat format() {
         if (this.format == null) {
-            this.format = new DigitalDecimalFormat(this.scaleLen);
+            this.format = new DigitalFormat(this.scaleLen);
         } else {
             this.format.setScaleLen(this.scaleLen);
         }

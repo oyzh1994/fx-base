@@ -4,8 +4,6 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * 键盘按键处理器
@@ -13,8 +11,6 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/2/8
  */
-@Data
-@Accessors(fluent = true, chain = true)
 public class KeyHandler {
 
     /**
@@ -56,5 +52,61 @@ public class KeyHandler {
         if (this.handler != null) {
             this.handler.handle(event);
         }
+    }
+
+    public KeyCode getKeyCode() {
+        return keyCode;
+    }
+
+    public void setKeyCode(KeyCode keyCode) {
+        this.keyCode = keyCode;
+    }
+
+    public boolean isAltDown() {
+        return altDown;
+    }
+
+    public void setAltDown(boolean altDown) {
+        this.altDown = altDown;
+    }
+
+    public boolean isMetaDown() {
+        return metaDown;
+    }
+
+    public void setMetaDown(boolean metaDown) {
+        this.metaDown = metaDown;
+    }
+
+    public boolean isShiftDown() {
+        return shiftDown;
+    }
+
+    public void setShiftDown(boolean shiftDown) {
+        this.shiftDown = shiftDown;
+    }
+
+    public boolean isControlDown() {
+        return controlDown;
+    }
+
+    public void setControlDown(boolean controlDown) {
+        this.controlDown = controlDown;
+    }
+
+    public EventType<KeyEvent> getKeyType() {
+        return keyType;
+    }
+
+    public void setKeyType(EventType<KeyEvent> keyType) {
+        this.keyType = keyType;
+    }
+
+    public EventHandler<? super KeyEvent> getHandler() {
+        return handler;
+    }
+
+    public void setHandler(EventHandler<? super KeyEvent> handler) {
+        this.handler = handler;
     }
 }

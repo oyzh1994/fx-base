@@ -3,8 +3,6 @@ package cn.oyzh.fx.plus.util;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.stage.Window;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
  * fx鼠标相关操作
@@ -12,7 +10,7 @@ import lombok.experimental.UtilityClass;
  * @author oyzh
  * @since 2022/3/8
  */
-@UtilityClass
+
 public class CursorUtil {
 
     /**
@@ -56,7 +54,7 @@ public class CursorUtil {
      *
      * @param node 组件
      */
-    public static void handCursor(@NonNull Node node) {
+    public static void handCursor( Node node) {
         setCursor(node, Cursor.HAND);
     }
 
@@ -65,7 +63,7 @@ public class CursorUtil {
      *
      * @param node 组件
      */
-    public static void defaultCursor(@NonNull Node node) {
+    public static void defaultCursor( Node node) {
         setCursor(node, Cursor.DEFAULT);
     }
 
@@ -75,7 +73,7 @@ public class CursorUtil {
      * @param node   组件
      * @param cursor 鼠标样式
      */
-    public static void setCursor(Node node, @NonNull Cursor cursor) {
+    public static void setCursor(Node node,  Cursor cursor) {
         if (node != null && node.getCursor() != cursor) {
             FXUtil.runWait(() -> node.setCursor(cursor));
         }
@@ -87,7 +85,7 @@ public class CursorUtil {
      * @param stage  页面
      * @param cursor 鼠标
      */
-    public void setCursor(Window stage, @NonNull Cursor cursor) {
+    public static void setCursor(Window stage,  Cursor cursor) {
         if (stage != null && stage.getScene() != null) {
             CursorUtil.setCursor(stage.getScene().getRoot(), cursor);
         }

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.common.object.DestroyUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.DestroyUtil;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
@@ -9,7 +9,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
-import lombok.NonNull;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public interface ContextMenuAdapter {
      * @param menuItems 菜单列表
      * @param event     鼠标事件
      */
-    default void showContextMenu(List<MenuItem> menuItems, @NonNull MouseEvent event) {
+    default void showContextMenu(List<MenuItem> menuItems,  MouseEvent event) {
         this.showContextMenu(menuItems, event.getScreenX(), event.getScreenY());
     }
 

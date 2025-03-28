@@ -2,16 +2,14 @@ package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author oyzh
@@ -32,9 +30,31 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
     /**
      * 按钮右边距
      */
-    @Getter
-    @Setter
     private float btnMarginRight = 5.0f;
+
+    public SVGGlyph getIncrButton() {
+        return incrButton;
+    }
+
+    public void setIncrButton(SVGGlyph incrButton) {
+        this.incrButton = incrButton;
+    }
+
+    public SVGGlyph getDecrButton() {
+        return decrButton;
+    }
+
+    public void setDecrButton(SVGGlyph decrButton) {
+        this.decrButton = decrButton;
+    }
+
+    public float getBtnMarginRight() {
+        return btnMarginRight;
+    }
+
+    public void setBtnMarginRight(float btnMarginRight) {
+        this.btnMarginRight = btnMarginRight;
+    }
 
     @Override
     protected void updateButtonVisibility() {

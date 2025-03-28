@@ -2,7 +2,6 @@ package cn.oyzh.fx.pkg.jre;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.List;
  * @author oyzh
  * @since 2024/06/18
  */
-@Data
 public class JreConfig {
 
     private List<String> excludes;
@@ -26,5 +24,13 @@ public class JreConfig {
                 this.excludes.add(o.toString());
             }
         }
+    }
+
+    public List<String> getExcludes() {
+        return excludes;
+    }
+
+    public void setExcludes(List<String> excludes) {
+        this.excludes = excludes;
     }
 }

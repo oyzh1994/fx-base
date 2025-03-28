@@ -1,13 +1,12 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
-import cn.oyzh.fx.plus.file.FileChooserHelper;
-import cn.oyzh.fx.plus.file.FileExtensionFilter;
+import cn.oyzh.fx.plus.chooser.FXChooser;
+import cn.oyzh.fx.plus.chooser.FileChooserHelper;
+import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -23,33 +22,55 @@ public class ChooseFileTextFieldSkin extends ActionTextFieldSkin {
     /**
      * 文件
      */
-    @Getter
     protected File file;
 
     /**
      * 是否一直显示图标
      */
-    @Getter
     protected boolean alwaysShowGraphic;
 
     /**
      * 过滤器
      */
-    @Setter
-    @Getter
     protected FileExtensionFilter filter;
 
     /**
      * 文件选中事件
      */
-    @Getter
-    @Setter
     private Consumer<File> onSelectedFile;
+
+    public Consumer<File> getOnSelectedFile() {
+        return onSelectedFile;
+    }
+
+    public void setOnSelectedFile(Consumer<File> onSelectedFile) {
+        this.onSelectedFile = onSelectedFile;
+    }
+
+    public FileExtensionFilter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(FileExtensionFilter filter) {
+        this.filter = filter;
+    }
+
+    public boolean isAlwaysShowGraphic() {
+        return alwaysShowGraphic;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
 
     @Override
     protected void onButtonClicked(MouseEvent e) {
         if (this.filter == null) {
-            this.filter = FileChooserHelper.allExtensionFilter();
+            this.filter = FXChooser.allExtensionFilter();
         }
         File file1 = FileChooserHelper.choose(I18nHelper.chooseFile(), this.filter);
         if (file1 != null) {

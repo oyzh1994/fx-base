@@ -1,7 +1,7 @@
 package cn.oyzh.fx.rich.test;
 
-import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import com.gluonhq.richtextarea.RichTextArea;
 import com.gluonhq.richtextarea.model.DecorationModel;
 import com.gluonhq.richtextarea.model.Document;
@@ -134,7 +134,7 @@ public class AppMain extends Application {
         RichTextArea editor = new RichTextArea();
         editor.setAutoSave(true);
 
-        FlexHBox hbox = new FlexHBox();
+        FXHBox hbox = new FXHBox();
         hbox.setFlexWidth("100%");
         hbox.setRealHeight(50);
 
@@ -151,7 +151,7 @@ public class AppMain extends Application {
         });
         hbox.addChild(btn7);
 
-        FlexVBox root = new FlexVBox(hbox, editor);
+        FXVBox root = new FXVBox(hbox, editor);
         root.setPrefHeight(500);
         root.setPrefWidth(800);
 

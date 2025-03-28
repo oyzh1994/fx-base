@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.svg.glyph.database;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/4/10
+ */
+public class FunctionSVGGlyph extends SVGGlyph {
+
+    public FunctionSVGGlyph() {
+        this.setUrl("/fx-svg/function.svg");
+    }
+
+    public FunctionSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.function());
+//        super.initNode();
+//    }
+}

@@ -1,7 +1,5 @@
 package cn.oyzh.fx.plus.tray;
 
-import lombok.Getter;
-import lombok.Setter;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,64 +18,46 @@ public class TrayMouseListener extends MouseAdapter {
     /**
      * 鼠标监听器
      */
-    @Getter
-    @Setter
     private MouseListener mouseListener;
 
     /**
      * 鼠标移动事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseEvent> mouseMoved;
 
     /**
      * 鼠标离开事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseEvent> mouseExited;
 
     /**
      * 鼠标点击事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseEvent> mouseClicked;
 
     /**
      * 鼠标拖拽事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseEvent> mouseDragged;
 
     /**
      * 鼠标进入事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseEvent> mouseEntered;
 
     /**
      * 鼠标按下事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseEvent> mousePressed;
 
     /**
      * 鼠标释放事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseEvent> mouseReleased;
 
     /**
      * 鼠标滚轮滚动事件
      */
-    @Getter
-    @Setter
     private Consumer<MouseWheelEvent> mouseWheelMoved;
 
     @Override
@@ -142,6 +122,78 @@ public class TrayMouseListener extends MouseAdapter {
         if (this.mouseListener != null) {
             this.mouseListener.mouseReleased(e);
         }
+    }
+
+    public MouseListener getMouseListener() {
+        return mouseListener;
+    }
+
+    public void setMouseListener(MouseListener mouseListener) {
+        this.mouseListener = mouseListener;
+    }
+
+    public Consumer<MouseEvent> getMouseMoved() {
+        return mouseMoved;
+    }
+
+    public void setMouseMoved(Consumer<MouseEvent> mouseMoved) {
+        this.mouseMoved = mouseMoved;
+    }
+
+    public Consumer<MouseEvent> getMouseExited() {
+        return mouseExited;
+    }
+
+    public void setMouseExited(Consumer<MouseEvent> mouseExited) {
+        this.mouseExited = mouseExited;
+    }
+
+    public Consumer<MouseEvent> getMouseClicked() {
+        return mouseClicked;
+    }
+
+    public void setMouseClicked(Consumer<MouseEvent> mouseClicked) {
+        this.mouseClicked = mouseClicked;
+    }
+
+    public Consumer<MouseEvent> getMouseDragged() {
+        return mouseDragged;
+    }
+
+    public void setMouseDragged(Consumer<MouseEvent> mouseDragged) {
+        this.mouseDragged = mouseDragged;
+    }
+
+    public Consumer<MouseEvent> getMouseEntered() {
+        return mouseEntered;
+    }
+
+    public void setMouseEntered(Consumer<MouseEvent> mouseEntered) {
+        this.mouseEntered = mouseEntered;
+    }
+
+    public Consumer<MouseEvent> getMousePressed() {
+        return mousePressed;
+    }
+
+    public void setMousePressed(Consumer<MouseEvent> mousePressed) {
+        this.mousePressed = mousePressed;
+    }
+
+    public Consumer<MouseEvent> getMouseReleased() {
+        return mouseReleased;
+    }
+
+    public void setMouseReleased(Consumer<MouseEvent> mouseReleased) {
+        this.mouseReleased = mouseReleased;
+    }
+
+    public Consumer<MouseWheelEvent> getMouseWheelMoved() {
+        return mouseWheelMoved;
+    }
+
+    public void setMouseWheelMoved(Consumer<MouseWheelEvent> mouseWheelMoved) {
+        this.mouseWheelMoved = mouseWheelMoved;
     }
 
     @Override

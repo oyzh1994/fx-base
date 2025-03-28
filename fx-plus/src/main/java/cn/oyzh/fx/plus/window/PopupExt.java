@@ -2,11 +2,11 @@ package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
 import javafx.util.Duration;
-import lombok.NonNull;
 
 /**
  * 弹窗扩展
@@ -48,7 +48,7 @@ public class PopupExt extends Popover implements PopupAdapter {
     }
 
     @Override
-    public void showPopup(@NonNull Node owner) {
+    public void showPopup( Node owner) {
         if (owner instanceof SVGGlyph) {
             Bounds bounds = owner.localToScreen(owner.getBoundsInLocal());
             if (bounds == null) {
@@ -57,10 +57,12 @@ public class PopupExt extends Popover implements PopupAdapter {
                 );
             }
             int offset = 4;
-            switch (getArrowLocation()) {
-                case BOTTOM_LEFT -> show(
-                        owner, bounds.getMinX() + 8, bounds.getMinY() + offset
-                );
+            switch (this.getArrowLocation()) {
+                case BOTTOM_LEFT -> super.show(owner, bounds.getMinX() + 8, bounds.getMinY() + offset);
+                case TOP_CENTER -> {
+                    super.show(owner, bounds.getMinX() + 8, bounds.getMaxY() - 8 - NodeUtil.getHeight(owner));
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + this.getArrowLocation());
             }
         } else {
             super.show(owner);
@@ -68,7 +70,7 @@ public class PopupExt extends Popover implements PopupAdapter {
     }
 
     @Override
-    public void showPopup(@NonNull Node owner, double x, double y) {
+    public void showPopup( Node owner, double x, double y) {
         super.show(owner, x, y);
     }
 

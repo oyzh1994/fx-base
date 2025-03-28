@@ -2,7 +2,7 @@ package cn.oyzh.fx.gui.combobox;
 
 import cn.oyzh.common.util.CharsetUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.controls.combo.FlexComboBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.i18n.I18nHelper;
 
 import java.nio.charset.Charset;
@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  * @author oyzh
  * @since 2022/12/2
  */
-public class CharsetComboBox extends FlexComboBox<String> {
+public class CharsetComboBox extends FXComboBox<String> {
 
     {
         this.addItem("");

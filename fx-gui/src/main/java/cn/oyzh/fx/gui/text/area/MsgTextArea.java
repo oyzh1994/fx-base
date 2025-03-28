@@ -1,13 +1,11 @@
 package cn.oyzh.fx.gui.text.area;
 
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.thread.ThreadUtil;
-import cn.oyzh.fx.plus.controls.text.area.FlexTextArea;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
+import cn.oyzh.i18n.I18nHelper;
 
-import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,18 +17,20 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2023/04/08
  */
-@ToString
-public class MsgTextArea extends FlexTextArea {
+public class MsgTextArea extends FXTextArea {
 
     {
         this.setEditable(false);
     }
 
     /**
+     * 单行内容最大长度，避免性能问题
+     */
+    public static int LINE_MAX_LENGTH = 20 * 1024;
+
+    /**
      * 最大行数
      */
-    @Getter
-    @Setter
     private int lineLimit = 3000;
 
     /**
@@ -42,9 +42,23 @@ public class MsgTextArea extends FlexTextArea {
      * 5 触发限制后保留50%行内容
      * 6 触发限制后保留30%行内容
      */
-    @Getter
-    @Setter
     private byte limitPolicy = 1;
+
+    public int getLineLimit() {
+        return lineLimit;
+    }
+
+    public void setLineLimit(int lineLimit) {
+        this.lineLimit = lineLimit;
+    }
+
+    public byte getLimitPolicy() {
+        return limitPolicy;
+    }
+
+    public void setLimitPolicy(byte limitPolicy) {
+        this.limitPolicy = limitPolicy;
+    }
 
     /**
      * 消息队列
@@ -55,6 +69,32 @@ public class MsgTextArea extends FlexTextArea {
      * 拼接中标志位
      */
     private final AtomicBoolean appending = new AtomicBoolean(false);
+
+    @Override
+    public void appendLines(Collection<String> lines) {
+        if (CollectionUtil.isNotEmpty(lines)) {
+            StringBuilder builder = new StringBuilder();
+            for (String line : lines) {
+                if (line != null) {
+                    if (line.length() > LINE_MAX_LENGTH) {
+                        line = I18nHelper.contentTooLarge();
+                    }
+                    builder.append(line).append(System.lineSeparator());
+                }
+            }
+            this.appendText(builder.toString());
+        }
+    }
+
+    @Override
+    public void appendLine(String s) {
+        if (s != null) {
+            if (s.length() > LINE_MAX_LENGTH) {
+                s = I18nHelper.contentTooLarge();
+            }
+            this.appendText(s + System.lineSeparator());
+        }
+    }
 
     @Override
     public void appendText(String s) {
@@ -79,14 +119,14 @@ public class MsgTextArea extends FlexTextArea {
     /**
      * 执行拼接
      */
-    private void doAppend(String text) {
+    protected void doAppend(String text) {
         this.queue.add(text);
         if (this.appending.get()) {
             return;
         }
         this.appending.compareAndSet(false, true);
         // 执行拼接
-        ThreadUtil.startVirtual(() -> {
+        ThreadUtil.start(() -> {
             try {
                 StringBuilder builder = new StringBuilder();
                 do {
@@ -107,7 +147,6 @@ public class MsgTextArea extends FlexTextArea {
     public void setTextExt(String text) {
         this.queue.clear();
         super.setTextExt(text);
-
     }
 
     /**

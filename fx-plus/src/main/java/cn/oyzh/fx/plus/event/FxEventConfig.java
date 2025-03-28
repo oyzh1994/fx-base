@@ -1,16 +1,18 @@
 package cn.oyzh.fx.plus.event;
 
 import cn.oyzh.event.EventConfig;
-import lombok.Setter;
 
 /**
  * @author oyzh
  * @since 2024/3/29
  */
-@Setter
 public class FxEventConfig extends EventConfig {
 
     private Boolean fxThread;
+
+    public void setFxThread(Boolean fxThread) {
+        this.fxThread = fxThread;
+    }
 
     public static FxEventConfig SYNC = new FxEventConfig();
 

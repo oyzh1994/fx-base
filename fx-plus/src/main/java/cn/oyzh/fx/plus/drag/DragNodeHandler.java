@@ -6,9 +6,6 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 
 /**
@@ -17,20 +14,16 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/5/14
  */
-@Getter
-@Accessors(chain = true, fluent = true)
 public class DragNodeHandler {
 
     /**
      * 来源
      */
-    @Setter
     private DragNodeItem source;
 
     /**
      * 目标
      */
-    @Setter
     private DragNodeItem target;
 
     /**
@@ -65,7 +58,7 @@ public class DragNodeHandler {
      *
      * @param source 节点
      */
-    public void initDrapEffect(DragNodeItem source) {
+    public void initDragEffect(DragNodeItem source) {
         this.clearDrapEffect();
         source.initDragEffect();
         this.source = source;
@@ -113,7 +106,7 @@ public class DragNodeHandler {
                 clipboardContent.putString(content);
                 db.setContent(clipboardContent);
                 // 设置特效
-                this.initDrapEffect(source);
+                this.initDragEffect(source);
             }
             event.consume();
         });
@@ -144,7 +137,7 @@ public class DragNodeHandler {
             // 判断是否允许投放
             if (target != null && source != null && target.allowDropNode(source)) {
                 node.setOpacity(0.3);
-                this.source(source);
+                this.setSource(source);
                 this.initDropEffect(target);
             }
             event.consume();
@@ -155,5 +148,21 @@ public class DragNodeHandler {
             event.setDropCompleted(true);
             event.consume();
         });
+    }
+
+    public DragNodeItem getSource() {
+        return source;
+    }
+
+    public void setSource(DragNodeItem source) {
+        this.source = source;
+    }
+
+    public DragNodeItem getTarget() {
+        return target;
+    }
+
+    public void setTarget(DragNodeItem target) {
+        this.target = target;
     }
 }

@@ -17,13 +17,17 @@ import java.util.List;
  */
 public class SettingLeftTreeView extends RichTreeView {
 
-    @Override
-    public SettingTreeItem getRoot() {
+    public SettingTreeItem root() {
         return (SettingTreeItem) super.getRoot();
     }
 
+//    @Override
+//    public SettingTreeItem getRoot() {
+//        return (SettingTreeItem) super.getRoot();
+//    }
+
     public SettingTreeItem addItem(SettingLeftItem item) {
-        return this.getRoot().addItem(item);
+        return this.root().addItem(item);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class SettingLeftTreeView extends RichTreeView {
     }
 
     protected SettingLeftItem findItem(String itemId) {
-        return this.getRoot().findItem(itemId);
+        return this.root().findItem(itemId);
     }
 
     public void selectItem(String itemId) {

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.svg.glyph.page;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.i18n.I18nHelper;
 
 /**
  * @author oyzh
@@ -10,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class PageSettingSVGGlyph extends SVGGlyph {
 
     public PageSettingSVGGlyph() {
-        this.setUrl("/fx-svg/page/page-setting.svg");
+        this.setUrl("/fx-svg/page/page-setting3.svg");
     }
 
     public PageSettingSVGGlyph(String size) {

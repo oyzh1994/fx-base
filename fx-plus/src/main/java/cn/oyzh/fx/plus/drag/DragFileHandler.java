@@ -4,7 +4,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import lombok.experimental.Accessors;
 
 
 /**
@@ -13,7 +12,6 @@ import lombok.experimental.Accessors;
  * @author oyzh
  * @since 2023/5/14
  */
-@Accessors(chain = true, fluent = true)
 public class DragFileHandler {
 
     /**
@@ -98,13 +96,13 @@ public class DragFileHandler {
      * @param scene 场景
      */
     public void initEvent(Scene scene) {
-        scene.setOnDragOver(this::dragOver);
-        scene.setOnDragExited(this::dragExited);
-        scene.setOnDragDropped(this::dragDropped);
-        // scene.addEventFilter(DragEvent.DRAG_OVER, this::dragOver);
-        // scene.addEventFilter(DragEvent.DRAG_EXITED, this::dragExited);
-        // scene.addEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
-        scene.getProperties().put("_drapFileHandler", this);
+//        scene.setOnDragOver(this::onDragOver);
+//        scene.setOnDragExited(this::onDragExited);
+//        scene.setOnDragDropped(this::onDragDropped);
+        scene.addEventFilter(DragEvent.DRAG_OVER, this::onDragOver);
+        scene.addEventFilter(DragEvent.DRAG_EXITED, this::onDragExited);
+        scene.addEventFilter(DragEvent.DRAG_DROPPED, this::onDragDropped);
+        scene.getProperties().put("_dragFileHandler", this);
     }
 
     /**
@@ -116,6 +114,6 @@ public class DragFileHandler {
         scene.removeEventFilter(DragEvent.DRAG_OVER, this::dragOver);
         scene.removeEventFilter(DragEvent.DRAG_EXITED, this::dragExited);
         scene.removeEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
-        scene.getProperties().remove("_drapFileHandler", this);
+        scene.getProperties().remove("_dragFileHandler", this);
     }
 }

@@ -7,8 +7,8 @@ import cn.oyzh.fx.gui.svg.glyph.page.PageNextSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PagePrevSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageSettingSVGGlyph;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
-import cn.oyzh.fx.plus.controls.label.FlexLabel;
-import cn.oyzh.fx.plus.controls.pane.FlexFlowPane;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -17,10 +17,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import javafx.scene.layout.HBox;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -31,142 +28,116 @@ import java.util.Objects;
  * @author oyzh
  * @since 2022/12/22
  */
-public class PageBox<T> extends FlexFlowPane {
+public class PageBox<T> extends FXHBox {
 
     /**
      * 是否显示文本组件
      */
-    @Getter
     private boolean showText = true;
 
     /**
      * 文本组件
      */
-    @Getter
-    private FlexLabel text;
+    private FXLabel text;
 
     /**
      * 是否显示跳转组件
      */
-    @Getter
     private boolean showJump;
 
     /**
      * 跳页组件
      */
-    @Getter
     private NumberTextField jump;
 
     /**
      * 跳页事件
      */
-    @Getter
     private EventHandler<PageEvent.PageJumpEvent> onJumpFired;
 
     /**
      * 是否显示首页组件
      */
-    @Getter
     private boolean showFirst;
 
     /**
      * 首页
      */
-    @Getter
     private PageFirstSVGGlyph firstBtn;
 
     /**
      * 首页点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onFirstClicked;
 
     /**
      * 是否显示尾页组件
      */
-    @Getter
     private boolean showLast;
 
     /**
      * 尾页
      */
-    @Getter
     private PageLastSVGGlyph lastBtn;
 
     /**
      * 尾页点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onLastClicked;
 
     /**
      * 上一页
      */
-    @Getter
     private PagePrevSVGGlyph prevBtn;
 
     /**
      * 上一页点击事件
      */
-    @Setter
-    @Getter
     private EventHandler<MouseEvent> onPrevClicked;
 
     /**
      * 下一页
      */
-    @Getter
     private PageNextSVGGlyph nextBtn;
 
     /**
      * 下一页点击事件
      */
-    @Setter
-    @Getter
     private EventHandler<MouseEvent> onNextClicked;
 
     /**
      * 是否显示设置组件
      */
-    @Getter
     private boolean showSetting;
 
     /**
      * 设置
      */
-    @Getter
     private PageSettingSVGGlyph settingBtn;
 
     /**
      * 按钮大小
      */
-    @Getter
-    @Setter
     private String bthSize;
 
     /**
      * 分页信息
      */
-    @Getter
     private Paging<T> paging;
 
     /**
      * 隐藏控件，如果少于等于1页内容时
      */
-    @Getter
     private boolean hideIfLessPage = true;
 
     /**
      * 设置点击事件
      */
-    @Getter
     private EventHandler<MouseEvent> onSettingClicked;
 
     /**
      * 分页信息文本模板
      */
-    @Getter
-    @Setter
     private String pageTextTpl = this.pageTextTpl();
 
     /**
@@ -191,6 +162,140 @@ public class PageBox<T> extends FlexFlowPane {
     public PageBox(String bthSize) {
         this.bthSize = bthSize;
         this.init();
+    }
+
+    private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
+
+    public boolean isShowText() {
+        return showText;
+    }
+
+    public FXLabel getText() {
+        return text;
+    }
+
+    public void setText(FXLabel text) {
+        this.text = text;
+    }
+
+    public boolean isShowJump() {
+        return showJump;
+    }
+
+    public NumberTextField getJump() {
+        return jump;
+    }
+
+    public void setJump(NumberTextField jump) {
+        this.jump = jump;
+    }
+
+    public EventHandler<PageEvent.PageJumpEvent> getOnJumpFired() {
+        return onJumpFired;
+    }
+
+    public boolean isShowFirst() {
+        return showFirst;
+    }
+
+    public PageFirstSVGGlyph getFirstBtn() {
+        return firstBtn;
+    }
+
+    public void setFirstBtn(PageFirstSVGGlyph firstBtn) {
+        this.firstBtn = firstBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnFirstClicked() {
+        return onFirstClicked;
+    }
+
+    public boolean isShowLast() {
+        return showLast;
+    }
+
+    public PageLastSVGGlyph getLastBtn() {
+        return lastBtn;
+    }
+
+    public void setLastBtn(PageLastSVGGlyph lastBtn) {
+        this.lastBtn = lastBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnLastClicked() {
+        return onLastClicked;
+    }
+
+    public PagePrevSVGGlyph getPrevBtn() {
+        return prevBtn;
+    }
+
+    public void setPrevBtn(PagePrevSVGGlyph prevBtn) {
+        this.prevBtn = prevBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnPrevClicked() {
+        return onPrevClicked;
+    }
+
+    public void setOnPrevClicked(EventHandler<MouseEvent> onPrevClicked) {
+        this.onPrevClicked = onPrevClicked;
+    }
+
+    public PageNextSVGGlyph getNextBtn() {
+        return nextBtn;
+    }
+
+    public void setNextBtn(PageNextSVGGlyph nextBtn) {
+        this.nextBtn = nextBtn;
+    }
+
+    public EventHandler<MouseEvent> getOnNextClicked() {
+        return onNextClicked;
+    }
+
+    public void setOnNextClicked(EventHandler<MouseEvent> onNextClicked) {
+        this.onNextClicked = onNextClicked;
+    }
+
+    public boolean isShowSetting() {
+        return showSetting;
+    }
+
+    public PageSettingSVGGlyph getSettingBtn() {
+        return settingBtn;
+    }
+
+    public void setSettingBtn(PageSettingSVGGlyph settingBtn) {
+        this.settingBtn = settingBtn;
+    }
+
+    public String getBthSize() {
+        return bthSize;
+    }
+
+    public void setBthSize(String bthSize) {
+        this.bthSize = bthSize;
+    }
+
+    public Paging<T> getPaging() {
+        return paging;
+    }
+
+    public boolean isHideIfLessPage() {
+        return hideIfLessPage;
+    }
+
+    public EventHandler<MouseEvent> getOnSettingClicked() {
+        return onSettingClicked;
+    }
+
+    public String getPageTextTpl() {
+        return pageTextTpl;
+    }
+
+    public void setPageTextTpl(String pageTextTpl) {
+        this.pageTextTpl = pageTextTpl;
     }
 
     /**
@@ -250,7 +355,7 @@ public class PageBox<T> extends FlexFlowPane {
         this.jump.setMinVal(1);
         this.jump.setMaxWidth(50);
         this.jump.setBtnMarginRight(0);
-        this.jump.setFlexHeight("90%");
+        this.jump.setFlexHeight("80%");
         this.jump.managedBindVisible();
         this.jump.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (KeyboardUtil.isEnter(event) && this.onJumpFired != null) {
@@ -258,15 +363,21 @@ public class PageBox<T> extends FlexFlowPane {
                 event.consume();
             }
         });
-        this.jump.setPadding(new Insets(0, 0, 0, 0));
+        this.jump.setPadding(Insets.EMPTY);
 
         // 设置边距
-        FlowPane.setMargin(this.jump, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
-        FlowPane.setMargin(this.settingBtn, new Insets(0, 0, 0, 5));
+        HBox.setMargin(this.jump, new Insets(1, 0, 0, 5));
+        HBox.setMargin(this.prevBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.nextBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.lastBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.firstBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.settingBtn, DEFAULT_MARGIN);
+//        HBox.setMargin(this.jump, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
+//        HBox.setMargin(this.settingBtn, new Insets(0, 0, 0, 5));
 
         // 添加子节点
         this.setChild(this.firstBtn, this.prevBtn, this.jump, this.nextBtn, this.lastBtn, this.settingBtn);
@@ -299,7 +410,7 @@ public class PageBox<T> extends FlexFlowPane {
      *
      * @param paging 分页信息
      */
-    public void setPaging(@NonNull Paging<T> paging) {
+    public void setPaging( Paging<T> paging) {
         this.paging = paging;
         this.formatPage();
         if (this.hideIfLessPage) {
@@ -328,9 +439,11 @@ public class PageBox<T> extends FlexFlowPane {
         this.showText = showText;
         if (showText) {
             if (this.text == null) {
-                this.text = new FlexLabel();
+                this.text = new FXLabel();
                 this.text.setFlexHeight("90%");
-                FlowPane.setMargin(this.text, new Insets(0, 0, 0, 5));
+                this.text.setPadding(Insets.EMPTY);
+                HBox.setMargin(this.text, new Insets(1, 0, 0, 5));
+//                HBox.setMargin(this.text, new Insets(0, 0, 0, 5));
                 this.addChild(this.text);
             }
         } else {

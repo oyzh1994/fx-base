@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.theme;
 
 
 import cn.oyzh.common.util.StringUtil;
-import lombok.Data;
 
 
 /**
@@ -11,7 +10,6 @@ import lombok.Data;
  * @author oyzh
  * @since 2024/04/04
  */
-@Data
 public class ThemeConfig {
 
     /**
@@ -55,5 +53,37 @@ public class ThemeConfig {
             return true;
         }
         return !StringUtil.equalsIgnoreCase(accentColor, style.getAccentColorHex());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFgColor() {
+        return fgColor;
+    }
+
+    public void setFgColor(String fgColor) {
+        this.fgColor = fgColor;
+    }
+
+    public String getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        this.bgColor = bgColor;
+    }
+
+    public String getAccentColor() {
+        return accentColor;
+    }
+
+    public void setAccentColor(String accentColor) {
+        this.accentColor = accentColor;
     }
 }

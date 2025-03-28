@@ -10,7 +10,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeView;
-import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -236,7 +235,7 @@ public interface SelectAdapter<T> extends PropAdapter {
      *
      * @param listener 监听器
      */
-    default void selectedIndexChanged(@NonNull ChangeListener<Number> listener) {
+    default void selectedIndexChanged( ChangeListener<Number> listener) {
         if (this instanceof TreeView<?> node) {
             node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {

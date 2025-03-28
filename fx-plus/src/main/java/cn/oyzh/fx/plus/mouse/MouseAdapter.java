@@ -50,7 +50,7 @@ public interface MouseAdapter extends PropAdapter {
         if (mouseHandler == null) {
             return null;
         }
-        return mouseHandler.handler();
+        return mouseHandler.getHandler();
     }
 
     /**
@@ -60,10 +60,10 @@ public interface MouseAdapter extends PropAdapter {
      */
     default void setOnMousePrimaryClicked(EventHandler<? super MouseEvent> handler) {
         MouseHandler mouseHandler = new MouseHandler();
-        mouseHandler.type(MouseEvent.MOUSE_CLICKED)
-                .button(MouseButton.PRIMARY)
-                .clickCount(1)
-                .handler(handler);
+        mouseHandler.setType(MouseEvent.MOUSE_CLICKED);
+        mouseHandler.setButton(MouseButton.PRIMARY);
+        mouseHandler.setClickCount(1);
+        mouseHandler.setHandler(handler);
         this.getOnMouseEventHandler(true).addHandler(mouseHandler);
     }
 
@@ -81,7 +81,7 @@ public interface MouseAdapter extends PropAdapter {
         if (mouseHandler == null) {
             return null;
         }
-        return mouseHandler.handler();
+        return mouseHandler.getHandler();
     }
 
     /**
@@ -91,10 +91,10 @@ public interface MouseAdapter extends PropAdapter {
      */
     default void setOnMouseSecondClicked(EventHandler<? super MouseEvent> handler) {
         MouseHandler mouseHandler = new MouseHandler();
-        mouseHandler.type(MouseEvent.MOUSE_CLICKED)
-                .button(MouseButton.SECONDARY)
-                .clickCount(1)
-                .handler(handler);
+        mouseHandler.setType(MouseEvent.MOUSE_CLICKED);
+        mouseHandler.setButton(MouseButton.SECONDARY);
+        mouseHandler.setClickCount(1);
+        mouseHandler.setHandler(handler);
         this.getOnMouseEventHandler(true).addHandler(mouseHandler);
     }
 }

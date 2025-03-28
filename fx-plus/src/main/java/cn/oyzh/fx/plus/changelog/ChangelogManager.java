@@ -1,9 +1,8 @@
 package cn.oyzh.fx.plus.changelog;
 
-import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.common.util.ResourceUtil;
-import lombok.experimental.UtilityClass;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +14,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/04/07
  */
-@UtilityClass
+
 public class ChangelogManager {
 
     /**

@@ -4,12 +4,11 @@ import cn.oyzh.common.util.RegexHelper;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.richtextfx.control.FlexRichTextArea;
+import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import javafx.scene.control.IndexRange;
+import org.fxmisc.richtext.model.TwoDimensional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,31 +23,59 @@ import java.util.regex.Matcher;
  * @since 2024/04/17
  */
 
-public class RichDataTextArea extends FlexRichTextArea {
+public class RichDataTextArea extends BaseRichTextArea {
 
     /**
      * 是否忽略变化
      */
-    @Getter
     private boolean ignoreChange;
 
     /**
      * 数据类型
      */
-    @Setter
-    @Getter
     private RichDataType dataType = RichDataType.STRING;
 
     /**
      * 实际类型类型
      */
-    @Getter
     private RichDataType realType = RichDataType.STRING;
 
     /**
      * 样式触发边距
      */
     private Map<RichDataType, Integer> styleBound;
+
+    public boolean isIgnoreChange() {
+        return ignoreChange;
+    }
+
+    public void setIgnoreChange(boolean ignoreChange) {
+        this.ignoreChange = ignoreChange;
+    }
+
+    public RichDataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(RichDataType dataType) {
+        this.dataType = dataType;
+    }
+
+    public RichDataType getRealType() {
+        return realType;
+    }
+
+    public void setRealType(RichDataType realType) {
+        this.realType = realType;
+    }
+
+    public Map<RichDataType, Integer> getStyleBound() {
+        return styleBound;
+    }
+
+    public void setStyleBound(Map<RichDataType, Integer> styleBound) {
+        this.styleBound = styleBound;
+    }
 
     /**
      * 设置边距
@@ -104,7 +131,7 @@ public class RichDataTextArea extends FlexRichTextArea {
      * @param dataType 数据类型
      * @param rawData  显示数据
      */
-    public void showData(@NonNull RichDataType dataType, Object rawData) {
+    public void showData(RichDataType dataType, Object rawData) {
         RichDataType type = this.dataType;
         this.dataType = dataType;
         this.showData(rawData);
@@ -128,6 +155,10 @@ public class RichDataTextArea extends FlexRichTextArea {
         } else if (detectType == 2) {
             dataType = RichDataType.BINARY;
         } else if (detectType == 3) {
+            dataType = RichDataType.XML;
+        } else if (detectType == 4) {
+            dataType = RichDataType.HTML;
+        } else if (detectType == 5) {
             dataType = RichDataType.STRING;
         } else {
             dataType = RichDataType.RAW;
@@ -150,7 +181,10 @@ public class RichDataTextArea extends FlexRichTextArea {
             switch (this.dataType) {
                 case HEX -> this.showHexData(rawData);
                 case RAW -> this.showRawData(rawData);
+                case XML -> this.showXmlData(rawData);
                 case JSON -> this.showJsonData(rawData);
+                case HTML -> this.showHtmlData(rawData);
+                case YAML -> this.showYamlData(rawData);
                 case STRING -> this.showStringData(rawData);
                 case BINARY -> this.showBinaryData(rawData);
             }
@@ -196,6 +230,48 @@ public class RichDataTextArea extends FlexRichTextArea {
     }
 
     /**
+     * 显示xml数据
+     */
+    public void showXmlData(Object rawData) {
+        String xmlData = TextUtil.getXmlData(rawData);
+        this.setText(xmlData);
+        if (this.checkStyleBound(RichDataType.XML)) {
+            this.initTextStyle();
+        } else {
+            this.clearTextStyle();
+        }
+        this.dataType = RichDataType.XML;
+    }
+
+    /**
+     * 显示html数据
+     */
+    public void showHtmlData(Object rawData) {
+        String htmlData = TextUtil.getHtmlData(rawData);
+        this.setText(htmlData);
+        if (this.checkStyleBound(RichDataType.HTML)) {
+            this.initTextStyle();
+        } else {
+            this.clearTextStyle();
+        }
+        this.dataType = RichDataType.HTML;
+    }
+
+    /**
+     * 显示yaml数据
+     */
+    public void showYamlData(Object rawData) {
+        String yamlData = TextUtil.getYamlData(rawData);
+        this.setText(yamlData);
+        if (this.checkStyleBound(RichDataType.YAML)) {
+            this.initTextStyle();
+        } else {
+            this.clearTextStyle();
+        }
+        this.dataType = RichDataType.YAML;
+    }
+
+    /**
      * 显示二进制数据
      */
     public void showBinaryData(Object rawData) {
@@ -238,7 +314,6 @@ public class RichDataTextArea extends FlexRichTextArea {
         this.dataType = RichDataType.RAW;
     }
 
-
     @Override
     public void initTextStyle() {
         super.initTextStyle();
@@ -246,20 +321,66 @@ public class RichDataTextArea extends FlexRichTextArea {
         if (StringUtil.isNotBlank(this.getHighlightText())) {
             return;
         }
-        if (this.dataType == RichDataType.JSON) { // json
+        // json
+        if (this.dataType == RichDataType.JSON) {
             String text = this.getText();
-            Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
             List<RichTextStyle> styles = new ArrayList<>();
+            Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
             while (matcher1.find()) {
-                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #4169E1;"));
+                styles.add(new RichTextStyle(matcher1.start(0), matcher1.end(0), "-fx-fill: #4E913F;"));
             }
             Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
             while (matcher2.find()) {
-                styles.add(new RichTextStyle(matcher2.start(), matcher2.end() - 1, "-fx-fill: #EE2C2C;"));
+//                styles.add(new RichTextStyle(matcher2.start(1), matcher2.end(1), "-fx-fill: #EE2C2C;"));
+//                styles.add(new RichTextStyle(matcher2.start(1), matcher2.end(1) - 1, "-fx-fill: #EE2C2C;"));
+                styles.add(new RichTextStyle(matcher2.start(1) - 1, matcher2.end(1) + 1, "-fx-fill: #22509F;"));
             }
             Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);
             while (matcher3.find()) {
-                styles.add(new RichTextStyle(matcher3.start(), matcher3.end(), "-fx-fill: green;"));
+                styles.add(new RichTextStyle(matcher3.start(1), matcher3.end(1), "-fx-fill: #95261F;"));
+            }
+            this.setStyles(styles);
+        } else if (this.dataType == RichDataType.XML) {// xml
+            String text = this.getText();
+            Matcher matcher1 = RegexHelper.xmlPattern().matcher(text);
+            List<RichTextStyle> styles = new ArrayList<>();
+            while (matcher1.find()) {
+                styles.add(new RichTextStyle(matcher1.start(1) - 1, matcher1.end(1) + 1, "-fx-fill: #75140C;"));
+            }
+            Matcher matcher2 = RegexHelper.xmlCommentPattern().matcher(text);
+            while (matcher2.find()) {
+                styles.add(new RichTextStyle(matcher2.start(0), matcher2.end(0), "-fx-fill: #377E22;"));
+            }
+            this.setStyles(styles);
+        } else if (this.dataType == RichDataType.HTML) {// html
+            String text = this.getText();
+            Matcher matcher1 = RegexHelper.htmlPattern().matcher(text);
+            List<RichTextStyle> styles = new ArrayList<>();
+            while (matcher1.find()) {
+                styles.add(new RichTextStyle(matcher1.start(1) - 1, matcher1.end(1) + 1, "-fx-fill: #75140C;"));
+            }
+            Matcher matcher2 = RegexHelper.htmlCommentPattern().matcher(text);
+            while (matcher2.find()) {
+                styles.add(new RichTextStyle(matcher2.start(0), matcher2.end(0), "-fx-fill: #377E22;"));
+            }
+            this.setStyles(styles);
+        } else if (this.dataType == RichDataType.YAML) {// yaml
+            String text = this.getText();
+            Matcher matcher1 = RegexHelper.yamlPattern().matcher(text);
+            List<RichTextStyle> styles = new ArrayList<>();
+            while (matcher1.find()) {
+                String comment = matcher1.group(1);
+                // 独立注释
+                if (comment != null) {
+                    styles.add(new RichTextStyle(matcher1.start(1) - 1, matcher1.end(1), "-fx-fill: #377E22;"));
+                } else {
+                    comment = matcher1.group(6);
+                    styles.add(new RichTextStyle(matcher1.start(4), matcher1.end(4), "-fx-fill: #75140C;"));
+                    styles.add(new RichTextStyle(matcher1.start(5), matcher1.end(5), "-fx-fill: #0000F5;"));
+                    if (comment != null) {
+                        styles.add(new RichTextStyle(matcher1.start(6), matcher1.end(6), "-fx-fill: #377E22;"));
+                    }
+                }
             }
             this.setStyles(styles);
         } else if (this.dataType == RichDataType.BINARY) {// binary

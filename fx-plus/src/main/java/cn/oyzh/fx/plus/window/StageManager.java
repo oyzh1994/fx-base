@@ -1,13 +1,11 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.OSUtil;
+import cn.oyzh.common.system.OSUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +16,13 @@ import java.util.List;
  * @author oyzh
  * @since 2023/10/12
  */
-@UtilityClass
+
 public class StageManager {
 
     /**
      * 引用属性
      */
-    public static final String REF_ATTR = "_stage_ref";
+    public static final String REF_ATTR = "stage:ref";
 
     /**
      * 主舞台
@@ -68,9 +66,9 @@ public class StageManager {
      * 获取舞台
      *
      * @param controllerClass controller类
-     * @return StageWrapper
+     * @return StageAdapter
      */
-    public static StageAdapter getStage(@NonNull Class<?> controllerClass) {
+    public static StageAdapter getStage(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
                 StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
@@ -83,11 +81,30 @@ public class StageManager {
     }
 
     /**
+     * 获取舞台
+     *
+     * @param controllerClass controller类
+     * @return List<StageAdapter>
+     */
+    public static List<StageAdapter> listStage(Class<?> controllerClass) {
+        List<StageAdapter> list = new ArrayList<>();
+        for (Window window : Window.getWindows()) {
+            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
+                StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
+                if (adapter.controllerClass() == controllerClass) {
+                    list.add(adapter);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
      * 显示舞台
      *
      * @param clazz 舞台类
      */
-    public static void showStage(@NonNull Class<?> clazz) {
+    public static void showStage(Class<?> clazz) {
         showStage(clazz, (Window) null);
     }
 
@@ -97,7 +114,7 @@ public class StageManager {
      * @param clazz   舞台类
      * @param wrapper 舞台包装
      */
-    public static void showStage(@NonNull Class<?> clazz, StageAdapter wrapper) {
+    public static void showStage(Class<?> clazz, StageAdapter wrapper) {
         showStage(clazz, wrapper == null ? null : wrapper.stage());
     }
 
@@ -107,7 +124,7 @@ public class StageManager {
      * @param clazz 舞台类
      * @param owner 父窗口
      */
-    public static void showStage(@NonNull Class<?> clazz, Window owner) {
+    public static void showStage(Class<?> clazz, Window owner) {
         StageAdapter wrapper = parseStage(clazz, owner);
         wrapper.display();
     }
@@ -135,9 +152,12 @@ public class StageManager {
      * 解析舞台
      *
      * @param clazz 舞台类
-     * @return StageWrapper
+     * @return StageAdapter
      */
-    public static StageAdapter parseStage(@NonNull Class<?> clazz) {
+    public static StageAdapter parseStage(Class<?> clazz) {
+        if (Primary_Stage != null && Primary_Stage.isShowing()) {
+            return parseStage(clazz, Primary_Stage);
+        }
         return parseStage(clazz, null);
     }
 
@@ -146,9 +166,9 @@ public class StageManager {
      *
      * @param clazz 舞台类
      * @param owner 父窗口
-     * @return StageWrapper
+     * @return StageAdapter
      */
-    public static StageAdapter parseStage(@NonNull Class<?> clazz, Window owner) {
+    public static StageAdapter parseStage(Class<?> clazz, Window owner) {
         StageAttribute attribute = clazz.getAnnotation(StageAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
@@ -228,5 +248,32 @@ public class StageManager {
         transparentStage.setX(-1000);
         transparentStage.setY(-1000);
         return transparentStage;
+    }
+
+    public static void showMask(Runnable callback) {
+        for (Window window : Window.getWindows()) {
+            if (window.isShowing() && window.isFocused()) {
+                StageMask.showMask(window, callback);
+                break;
+            }
+        }
+    }
+
+    public static Window getFrontWindow() {
+        for (Window window : Window.getWindows()) {
+            if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {
+                return window;
+            }
+        }
+        return null;
+    }
+
+    public static boolean hasFocusedWindow() {
+        for (Window window : Window.getWindows()) {
+            if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

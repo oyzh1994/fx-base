@@ -1,27 +1,25 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.common.util.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.keyboard.KeyListener;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.MouseUtil;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
 
 import java.util.function.Consumer;
 
@@ -31,8 +29,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/1/19
  */
-@ToString
-public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -41,8 +38,11 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
     /**
      * 拖动内容
      */
-    @Getter
     protected String dragContent = "tree_view_drag";
+
+    public String getDragContent() {
+        return dragContent;
+    }
 
     /**
      * 初始化组件
@@ -118,7 +118,7 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
      *
      * @param consumer 消费器
      */
-    public void selectItemChanged(@NonNull Consumer<TreeItem<?>> consumer) {
+    public void selectItemChanged( Consumer<TreeItem<?>> consumer) {
         this.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (!this.isIgnoreChanged()) {
                 consumer.accept((TreeItem<?>) newValue);
@@ -264,5 +264,12 @@ public class FXTreeView extends TreeView implements DestroyAdapter, NodeAdapter,
             item.reloadChild();
             this.refresh();
         }
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        double[] size = this.computeSize(width, height);
+        super.resize(size[0], size[1]);
+        this.resizeNode();
     }
 }

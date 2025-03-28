@@ -1,0 +1,86 @@
+package cn.oyzh.fx.plus.format;
+
+import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.StringUtil;
+
+import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.util.Objects;
+
+/**
+ * @author oyzh
+ * @since 2024/5/15
+ */
+public class DigitalFormat extends DecimalFormat {
+
+    /**
+     * 保留小数位数
+     */
+    private Integer scaleLen;
+
+    public Integer getScaleLen() {
+        return scaleLen;
+    }
+
+    private DecimalFormat format;
+
+    public DigitalFormat(Integer scaleLen) {
+        this.setScaleLen(scaleLen);
+    }
+
+    public DigitalFormat() {
+        this.setScaleLen(-1);
+    }
+
+    public void setScaleLen(Integer scaleLen) {
+        if (!Objects.equals(scaleLen, this.scaleLen)) {
+            this.format = null;
+        }
+        this.scaleLen = scaleLen;
+    }
+
+    protected DecimalFormat format() {
+        if (this.format == null) {
+            if (scaleLen == null || scaleLen <= 0) {
+                this.format = new DecimalFormat();
+            } else {
+                this.format = new DecimalFormat("0." + "0".repeat(this.scaleLen));
+            }
+        }
+        return this.format;
+    }
+
+    public String format(String sequence) {
+        if (StringUtil.isNotBlank(sequence)) {
+            try {
+                Number number = NumberUtil.parseNumber(sequence);
+                return this.format(number);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    public String format(Number number) {
+        if (number != null) {
+            try {
+                String string = this.format().format(number);
+                return string.replaceAll(",", "");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public StringBuffer format(long number, StringBuffer result, FieldPosition fieldPosition) {
+        return this.format().format(number, result, fieldPosition);
+    }
+
+    @Override
+    public StringBuffer format(double number, StringBuffer result, FieldPosition fieldPosition) {
+        return this.format().format(number, result, fieldPosition);
+    }
+}

@@ -1,10 +1,10 @@
 package cn.oyzh.fx.plus.test.table;
 
 import cn.oyzh.fx.plus.controller.StageController;
-import cn.oyzh.fx.plus.controls.table.FlexTableColumn;
-import cn.oyzh.fx.plus.window.StageAttribute;
-import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.plus.controls.table.FXTableColumn;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.plus.window.StageAttribute;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Pagination;
@@ -25,25 +25,25 @@ public class TableTestController extends StageController {
      * 分数列
      */
     @FXML
-    private FlexTableColumn<String, String> value;
+    private FXTableColumn<String, String> value;
 
     /**
      * 分数列
      */
     @FXML
-    private FlexTableColumn<String, Double> score;
+    private FXTableColumn<String, Double> score;
 
     /**
      * 分数列
      */
     @FXML
-    private FlexTableColumn<String, Double> longitude;
+    private FXTableColumn<String, Double> longitude;
 
     /**
      * 分数列
      */
     @FXML
-    private FlexTableColumn<String, Double> latitude;
+    private FXTableColumn<String, Double> latitude;
 
     public void test1(ActionEvent actionEvent) {
         value.setText("成员名称");

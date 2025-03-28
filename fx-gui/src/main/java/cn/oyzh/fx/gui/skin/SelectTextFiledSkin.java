@@ -1,10 +1,10 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
-import cn.oyzh.fx.plus.controls.list.FlexListView;
+import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
-import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
@@ -15,8 +15,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -31,15 +29,27 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     /**
      * 行高
      */
-    @Getter
-    @Setter
     protected double lineHeight = 25;
+
+    public double getLineHeight() {
+        return lineHeight;
+    }
+
+    public void setLineHeight(double lineHeight) {
+        this.lineHeight = lineHeight;
+    }
+
+    public ChangeListener<Number> getSelectIndexChanged() {
+        return selectIndexChanged;
+    }
+
+    public void setSelectIndexChanged(ChangeListener<Number> selectIndexChanged) {
+        this.selectIndexChanged = selectIndexChanged;
+    }
 
     /**
      * 行高
      */
-    @Getter
-    @Setter
     protected ChangeListener<Number> selectIndexChanged;
 
     /**
@@ -63,7 +73,7 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     private void initPopup() {
         this.popup = new FXPopup();
         TextField textField = this.getSkinnable();
-        FlexListView<String> listView = new FlexListView<>();
+        FXListView<String> listView = new FXListView<>();
         listView.setRealWidth(NodeUtil.getWidth(textField));
         listView.selectedIndexChanged((observable, oldValue, newValue) -> {
             if (this.selectIndexChanged != null) {
@@ -129,11 +139,11 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
-    private FlexListView<String> getListView() {
+    private FXListView<String> getListView() {
         if (this.popup == null) {
             this.initPopup();
         }
-        return (FlexListView<String>) this.popup.content();
+        return (FXListView<String>) this.popup.content();
     }
 
     public void selectItem(String item) {

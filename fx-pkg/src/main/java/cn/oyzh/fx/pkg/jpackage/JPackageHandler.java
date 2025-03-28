@@ -3,15 +3,13 @@ package cn.oyzh.fx.pkg.jpackage;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.RuntimeUtil;
+import cn.oyzh.common.thread.ProcessExecBuilder;
+import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.File;
 
@@ -23,10 +21,15 @@ import java.io.File;
  */
 public class JPackageHandler implements PackHandler {
 
-    @Getter
-    @Setter
-    @Accessors(chain = false, fluent = true)
     private int order = PackOrder.ORDER_0;
+
+    public int order() {
+        return order;
+    }
+
+    public void order(int order) {
+        this.order = order;
+    }
 
     @Override
     public String name() {
@@ -35,7 +38,7 @@ public class JPackageHandler implements PackHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        JPackageConfig jPackageConfig = packConfig.getJPackageConfig();
+        JPackageConfig jPackageConfig = packConfig.getjPackageConfig();
         if (jPackageConfig == null) {
             return;
         }
@@ -60,8 +63,14 @@ public class JPackageHandler implements PackHandler {
         if (jPackageConfig.getIcon() == null) {
             jPackageConfig.setIcon(packConfig.getAppIcon());
         }
-        if (jPackageConfig.getName() == null) {
-            jPackageConfig.setName(packConfig.getAppName() + "_v" + packConfig.appVersion());
+        String name = jPackageConfig.getName();
+        if (name == null) {
+            jPackageConfig.setName(packConfig.getAppName());
+//            jPackageConfig.setName(packConfig.getAppName() + "_v" + packConfig.appVersion());
+        } else {
+            name = name.replace("${projectName}", packConfig.getAppName());
+            name = name.replace("${os.arch}", System.getProperty("os.arch"));
+            jPackageConfig.setName(name);
         }
         if (jPackageConfig.getAppVersion() == null) {
             jPackageConfig.setAppVersion(packConfig.appVersion());
@@ -75,8 +84,12 @@ public class JPackageHandler implements PackHandler {
         }
         String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
         cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
-        JulLog.info("JPackage cmd:{}", cmdStr);
+        JulLog.info("JPackage cmd:{}", "\n" + cmdStr);
         // 执行jpackage
-        RuntimeUtil.execAndWait(cmdStr);
+        // RuntimeUtil.execAndWait(cmdStr);
+        ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+        builder.timeout(30_000);
+        ProcessExecResult result = builder.exec();
+        JulLog.info("JPackage result:{}", result);
     }
 }

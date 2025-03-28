@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.util.ArrayUtil;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +12,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/4/4
  */
-@UtilityClass
+
 public class StyleUtil {
 
     /**

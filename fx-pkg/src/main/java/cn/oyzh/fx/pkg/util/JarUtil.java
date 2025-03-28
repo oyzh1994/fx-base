@@ -5,8 +5,6 @@ import cn.hutool.core.util.ZipUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.StringUtil;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -26,7 +24,7 @@ import java.util.zip.ZipEntry;
  * @author oyzh
  * @since 2022/12/7
  */
-@UtilityClass
+
 public class JarUtil {
 
     /**
@@ -35,7 +33,7 @@ public class JarUtil {
      * @param jarFile jar文件
      * @return 结果
      */
-    public static boolean hasClass(@NonNull String jarFile) throws IOException {
+    public static boolean hasClass( String jarFile) throws IOException {
         if (!FileUtil.exist(jarFile)) {
             throw new RuntimeException("jarFile " + jarFile + " is not exist.");
         }
@@ -65,7 +63,7 @@ public class JarUtil {
      * @param src     源文件
      * @param destDir 目标目录
      */
-    public static File unJar(@NonNull String src, @NonNull String destDir) {
+    public static File unJar( String src,  String destDir) {
         if (!FileUtil.exist(src)) {
             throw new RuntimeException("src " + src + " is not exist.");
         }

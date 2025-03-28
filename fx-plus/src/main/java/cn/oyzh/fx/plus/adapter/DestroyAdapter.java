@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.Destroyable;
+import cn.oyzh.common.object.Destroyable;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 

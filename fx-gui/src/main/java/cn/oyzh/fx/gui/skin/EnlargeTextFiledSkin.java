@@ -3,17 +3,15 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EnlargeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
-import cn.oyzh.fx.plus.controls.box.FlexHBox;
-import cn.oyzh.fx.plus.controls.box.FlexVBox;
-import cn.oyzh.fx.plus.controls.text.area.FlexTextArea;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 展开文本输入框皮肤
@@ -26,15 +24,27 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
     /**
      * 展开宽
      */
-    @Getter
-    @Setter
     protected double enlargeWidth = 350;
+
+    public double getEnlargeWidth() {
+        return enlargeWidth;
+    }
+
+    public void setEnlargeWidth(double enlargeWidth) {
+        this.enlargeWidth = enlargeWidth;
+    }
+
+    public double getEnlargeHeight() {
+        return enlargeHeight;
+    }
+
+    public void setEnlargeHeight(double enlargeHeight) {
+        this.enlargeHeight = enlargeHeight;
+    }
 
     /**
      * 展开高
      */
-    @Getter
-    @Setter
     protected double enlargeHeight = 280;
 
     /**
@@ -54,7 +64,7 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         TextField textField = this.getSkinnable();
         textField.setDisable(true);
         // 文本节点
-        FlexTextArea textArea = new FlexTextArea();
+        FXTextArea textArea = new FXTextArea();
         textArea.setPromptText(I18nHelper.pleaseInputContent());
         textArea.setText(this.getText());
         // 按钮
@@ -64,9 +74,9 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         cancel.setOnMousePrimaryClicked(event -> this.handleHide());
         HBox.setMargin(ok, new Insets(5, 0, 0, 5));
         HBox.setMargin(cancel, new Insets(5, 0, 0, 15));
-        FlexHBox hBox = new FlexHBox(ok, cancel);
+        FXHBox hBox = new FXHBox(ok, cancel);
         // 组装阶段
-        FlexVBox vBox = new FlexVBox(textArea, hBox);
+        FXVBox vBox = new FXVBox(textArea, hBox);
         this.popup.content(vBox);
         this.popup.setOnHiding(event -> this.onSubmit(textArea.getTextTrim()));
         this.popup.showPopup(textField);

@@ -8,8 +8,6 @@ import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jre.JreConfig;
 import com.badlogicgames.packr.PackrConfig;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.File;
 import java.util.HashMap;
@@ -21,37 +19,31 @@ import java.util.Map;
  * @author oyzh
  * @since 2024/6/14
  */
-@Getter
 public class PackConfig {
 
     /**
      * 目标目录
      */
-    @Setter
     private String dest;
 
     /**
      * jlink后的jre目录
      */
-    @Setter
     private String jlinkJre;
 
     /**
      * 最小化后的jre目录
      */
-    @Setter
     private String minimizeJre;
 
     /**
      * jpackage输入目录
      */
-    @Setter
     private String jpackageInput;
 
     /**
      * jar解压目录
      */
-    @Setter
     private String jarUnDir;
 
     /**
@@ -59,109 +51,91 @@ public class PackConfig {
      * jpackage win打包的exe不能重启，mac打包的不能启动，不建议使用
      * packr
      */
-    @Setter
     private String packMode = "packr";
 
     /**
      * 最小化后的主程序
      */
-    @Setter
     private String minimizeManJar;
 
     /**
      * 主程序
      */
-    @Setter
     private String mainJar;
 
     /**
      * 应用名称
      */
-    @Setter
     private String appName;
 
     /**
      * 应用图标
      */
-    @Setter
     private String appIcon;
 
     /**
      * 应用版本
      */
-    @Setter
     private String appVersion;
 
     /**
      * 构建类型
      */
-    @Setter
     private String buildType;
 
     /**
      * 最终压缩文件
      */
-    @Setter
     private File compressFile;
 
     /**
      * 打包用的jre路径
      */
-    @Setter
     private String jrePath;
 
     /**
      * 执行用的jdk路径
      */
-    @Setter
     private String jdkPath;
 
     /**
      * 平台
      */
-    @Setter
     private String platform;
 
     /**
      * jar配置
      */
-    @Setter
     private JarConfig jarConfig;
 
     /**
      * jre配置
      */
-    @Setter
     private JreConfig jreConfig;
 
     /**
      * jdeps配置
      */
-    @Setter
     private JDepsConfig jDepsConfig;
 
     /**
      * jlink配置
      */
-    @Setter
     private JLinkConfig jLinkConfig;
 
     /**
      * packr配置
      */
-    @Setter
     private PackrConfig packrConfig;
 
     /**
      * jpackage配置
      */
-    @Setter
     private JPackageConfig jPackageConfig;
 
     /**
      * 压缩配置
      */
-    @Setter
     private CompressConfig compressConfig;
 
     /**
@@ -236,5 +210,193 @@ public class PackConfig {
 
     public boolean isPlatformLinux() {
         return StringUtil.containsAnyIgnoreCase(this.platform, "linux");
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
+    }
+
+    public String getJlinkJre() {
+        return jlinkJre;
+    }
+
+    public void setJlinkJre(String jlinkJre) {
+        this.jlinkJre = jlinkJre;
+    }
+
+    public String getMinimizeJre() {
+        return minimizeJre;
+    }
+
+    public void setMinimizeJre(String minimizeJre) {
+        this.minimizeJre = minimizeJre;
+    }
+
+    public String getJpackageInput() {
+        return jpackageInput;
+    }
+
+    public void setJpackageInput(String jpackageInput) {
+        this.jpackageInput = jpackageInput;
+    }
+
+    public String getJarUnDir() {
+        return jarUnDir;
+    }
+
+    public void setJarUnDir(String jarUnDir) {
+        this.jarUnDir = jarUnDir;
+    }
+
+    public String getPackMode() {
+        return packMode;
+    }
+
+    public void setPackMode(String packMode) {
+        this.packMode = packMode;
+    }
+
+    public String getMinimizeManJar() {
+        return minimizeManJar;
+    }
+
+    public void setMinimizeManJar(String minimizeManJar) {
+        this.minimizeManJar = minimizeManJar;
+    }
+
+    public String getMainJar() {
+        return mainJar;
+    }
+
+    public void setMainJar(String mainJar) {
+        this.mainJar = mainJar;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getAppIcon() {
+        return appIcon;
+    }
+
+    public void setAppIcon(String appIcon) {
+        this.appIcon = appIcon;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    public String getBuildType() {
+        return buildType;
+    }
+
+    public void setBuildType(String buildType) {
+        this.buildType = buildType;
+    }
+
+    public File getCompressFile() {
+        return compressFile;
+    }
+
+    public void setCompressFile(File compressFile) {
+        this.compressFile = compressFile;
+    }
+
+    public String getJrePath() {
+        return jrePath;
+    }
+
+    public void setJrePath(String jrePath) {
+        this.jrePath = jrePath;
+    }
+
+    public String getJdkPath() {
+        return jdkPath;
+    }
+
+    public void setJdkPath(String jdkPath) {
+        this.jdkPath = jdkPath;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public JarConfig getJarConfig() {
+        return jarConfig;
+    }
+
+    public void setJarConfig(JarConfig jarConfig) {
+        this.jarConfig = jarConfig;
+    }
+
+    public JreConfig getJreConfig() {
+        return jreConfig;
+    }
+
+    public void setJreConfig(JreConfig jreConfig) {
+        this.jreConfig = jreConfig;
+    }
+
+    public JDepsConfig getjDepsConfig() {
+        return jDepsConfig;
+    }
+
+    public void setjDepsConfig(JDepsConfig jDepsConfig) {
+        this.jDepsConfig = jDepsConfig;
+    }
+
+    public JLinkConfig getjLinkConfig() {
+        return jLinkConfig;
+    }
+
+    public void setjLinkConfig(JLinkConfig jLinkConfig) {
+        this.jLinkConfig = jLinkConfig;
+    }
+
+    public PackrConfig getPackrConfig() {
+        return packrConfig;
+    }
+
+    public void setPackrConfig(PackrConfig packrConfig) {
+        this.packrConfig = packrConfig;
+    }
+
+    public JPackageConfig getjPackageConfig() {
+        return jPackageConfig;
+    }
+
+    public void setjPackageConfig(JPackageConfig jPackageConfig) {
+        this.jPackageConfig = jPackageConfig;
+    }
+
+    public CompressConfig getCompressConfig() {
+        return compressConfig;
+    }
+
+    public void setCompressConfig(CompressConfig compressConfig) {
+        this.compressConfig = compressConfig;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
     }
 }

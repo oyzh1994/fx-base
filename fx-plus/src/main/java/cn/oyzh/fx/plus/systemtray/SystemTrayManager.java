@@ -20,7 +20,7 @@
 // * @author oyzh
 // * @since 2023/12/21
 // */
-//@UtilityClass
+//
 //public class SystemTrayManager {
 //
 //    /**
@@ -71,7 +71,7 @@
 //     *
 //     * @param title 标题
 //     */
-//    public static void setTitle(@NonNull String title) {
+//    public static void setTitle( String title) {
 //        if (tray != null) {
 //            tray.setTooltip(title);
 //        }
@@ -82,7 +82,7 @@
 //     *
 //     * @param eventHandler 事件处理器
 //     */
-//    public static void onMouseClicked(@NonNull Consumer<MouseEvent> eventHandler) {
+//    public static void onMouseClicked( Consumer<MouseEvent> eventHandler) {
 //        if (tray != null) {
 //            tray.getMenu().add(eventHandler);
 //        }
@@ -94,7 +94,7 @@
 //     * @param label  菜单名称
 //     * @param action 菜单业务
 //     */
-//    public static void addMenuItem(@NonNull String label, Runnable action) {
+//    public static void addMenuItem( String label, Runnable action) {
 //        if (tray != null) {
 //            tray.addMenuItem(label, null, action);
 //        }
@@ -107,7 +107,7 @@
 //     * @param icon   菜单图标
 //     * @param action 菜单业务
 //     */
-//    public static void addMenuItem(@NonNull String label, Node icon, Runnable action) {
+//    public static void addMenuItem( String label, Node icon, Runnable action) {
 //        if (tray != null) {
 //            tray.addMenuItem(label, icon, action);
 //        }
@@ -118,7 +118,7 @@
 //     *
 //     * @param trayItem 托盘菜单
 //     */
-//    public static void addMenuItem(@NonNull TrayItem trayItem) {
+//    public static void addMenuItem( TrayItem trayItem) {
 //        if (tray != null) {
 //            tray.addMenuItem(trayItem);
 //        }
