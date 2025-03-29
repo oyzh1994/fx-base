@@ -270,6 +270,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.killContainer(), new KillSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem killProcess(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.killProcess(), new KillSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem restartContainer(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.restartContainer(), new RestartSVGGlyph(iconSize), action);
     }
