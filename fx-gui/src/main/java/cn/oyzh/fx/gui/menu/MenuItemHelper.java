@@ -13,6 +13,7 @@ import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExportSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.FileSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.FilterSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ImportSVGGlyph;
@@ -46,8 +47,6 @@ import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.i18n.I18nHelper;
-
-import java.security.PermissionCollection;
 
 /**
  * 菜单工具类
@@ -616,6 +615,18 @@ public class MenuItemHelper {
 
     public static FXMenuItem downloadFile(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.downloadFile(), new ImportSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem uploadFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.uploadFile(), new ExportSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem uploadFolder(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.uploadFolder(), new ExportSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem touchFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.touchFile(), new FileSVGGlyph(iconSize), action);
     }
 }
 
