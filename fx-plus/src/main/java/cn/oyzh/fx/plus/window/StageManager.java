@@ -251,11 +251,11 @@ public class StageManager {
     }
 
     public static void showMask(Runnable callback) {
-        for (Window window : Window.getWindows()) {
-            if (window.isShowing() && window.isFocused()) {
-                StageMask.showMask(window, callback);
-                break;
-            }
+        Window window = getFrontWindow();
+        if (window != null) {
+            StageMask.showMask(window, callback);
+        } else {
+            callback.run();
         }
     }
 
