@@ -136,7 +136,6 @@ public class TableViewMouseSelectHelper {
                 rectangle.setY(Math.min(startY.get(), endY));
                 rectangle.setWidth(Math.abs(endX - startX.get()));
                 rectangle.setHeight(Math.abs(endY - startY.get()));
-//                selectionRect.setVisible(true);
                 this.onMouseSelection(rectangle);
             }
         });
@@ -147,7 +146,6 @@ public class TableViewMouseSelectHelper {
                 Rectangle rectangle = this.findRectangle();
                 if (rectangle != null) {
                     this.onMouseSelection(rectangle);
-//                    selectionRect.setVisible(false);
                     this.clearRectangle();
                 }
             }
@@ -166,35 +164,27 @@ public class TableViewMouseSelectHelper {
         }
         // 行高
         double rowHeight = TableViewUtil.getRowHeight(tableView);
-//        double headerRowHeight = TableViewUtil.getHeaderRowHeight(tableView);
-//        double rowSpacing = TableViewUtil.getRowSpacing(tableView);
-//        double startY = tableView.getLayoutBounds().getMinY();
-//        double endY = tableView.getLayoutBounds().getMaxY();
         // 选区开始和结束
-        double selectionStart = rectangle.getLayoutBounds().getMinY();
+        Point2D rectanglePoint = rectangle.localToScene(0, 0);
+        double selectionStart = rectanglePoint.getY() + rectangle.getLayoutBounds().getMinY();
         double selectionEnd = rectangle.getLayoutBounds().getMaxY();
+        // 选中节点
         List<Integer> selected = new ArrayList<>();
-//        double indexY = startY + headerRowHeight + rowSpacing;
-//        for (int i = 0; i < tableView.getItems().size(); i++) {
-//            if (indexY >= endY || indexY >= selectionEnd) {
-//                break;
-//            }
-//            indexY += rowHeight + rowSpacing;
-//            if (indexY >= selectionStart - rowHeight - rowSpacing) {
-//                selected.add(i);
-//            }
-//        }
         // 计算位置
         List<TableRow<?>> rows = TableViewUtil.getRows(tableView);
         for (TableRow<?> row : rows) {
             Point2D point = row.localToScene(0, 0);
+            double rowStart = point.getY() + row.getLayoutBounds().getMinY();
+            double rowEnd = row.getLayoutBounds().getMaxY();
             // 判断是否在选区内
-            if (point.getY() >= selectionStart && point.getY() - rowHeight <= selectionEnd) {
+            if (rowStart + rowHeight > selectionStart && rowEnd + 5 < selectionEnd) {
                 selected.add(row.getIndex());
             }
         }
         // 清除选择
         tableView.getSelectionModel().clearSelection();
+        // 进行排序
+        selected.sort(Integer::compareTo);
         // 选择多个
         if (selected.size() > 1) {
             int startIndex = selected.getFirst();
