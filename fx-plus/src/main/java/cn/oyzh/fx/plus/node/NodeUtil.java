@@ -7,11 +7,13 @@ import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumnBase;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
@@ -25,8 +27,26 @@ import javafx.stage.Window;
  * @author oyzh
  * @since 2023/05/15
  */
-
 public class NodeUtil {
+
+    /**
+     * 递归重新请求布局
+     *
+     * @param node 节点
+     */
+    public static void requestLayoutRecursive(EventTarget node) {
+        if (node instanceof TabPane tabPane) {
+            tabPane.requestLayout();
+            for (Tab tab : tabPane.getTabs()) {
+                requestLayoutRecursive(tab.getContent());
+            }
+        } else if (node instanceof Parent parent) {
+            parent.requestLayout();
+            for (Node node1 : parent.getChildrenUnmodifiable()) {
+                requestLayoutRecursive(node1);
+            }
+        }
+    }
 
     public static Object getProperty(Node node, Object key) {
         if (node.hasProperties()) {
@@ -301,12 +321,12 @@ public class NodeUtil {
                 if (!labeled.prefHeightProperty().isBound()) {
                     labeled.setPrefHeight(height);
                 }
-                 if (!labeled.minHeightProperty().isBound()) {
-                     labeled.setMinHeight(height);
-                 }
-                 if (!labeled.maxHeightProperty().isBound()) {
-                     labeled.setMaxHeight(height);
-                 }
+                if (!labeled.minHeightProperty().isBound()) {
+                    labeled.setMinHeight(height);
+                }
+                if (!labeled.maxHeightProperty().isBound()) {
+                    labeled.setMaxHeight(height);
+                }
             }
             case Region region -> {
                 if (!region.prefHeightProperty().isBound()) {
@@ -348,7 +368,7 @@ public class NodeUtil {
      * @param target  对象
      * @param layoutY y坐标
      */
-    public static void setLayoutY( EventTarget target, Double layoutY) {
+    public static void setLayoutY(EventTarget target, Double layoutY) {
         if (layoutY == null || Double.isNaN(layoutY) || layoutY <= 0) {
             return;
         }

@@ -26,9 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.File;
@@ -269,11 +267,11 @@ public interface StageAdapter extends WindowAdapter {
      * @param attribute 舞台属性
      * @param owner     父窗口
      */
-    default void init( StageAttribute attribute, Window owner) {
+    default void init(StageAttribute attribute, Window owner) {
 //        if (attribute.stageStyle().isCustom()) {
 //            this.initByCustom(attribute, owner);
 //        } else {
-            this.initByPlatform(attribute, owner);
+        this.initByPlatform(attribute, owner);
 //        }
     }
 
@@ -475,14 +473,12 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
-//            // 更新stage
-//            Runnable task = () -> TaskManager.startDelay("stage:update", () -> FXUtil.runWait(this::updateStage), 1);
-//            // 最大化
-//            // stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
-//            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> task.run());
-//            // 全屏
-//            // stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> FXUtil.runPulse(this::updateStage));
-//            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> task.run());
+            // 更新stage
+            Runnable task = () -> FXUtil.runPulse(this::updateContent);
+            // 最大化
+            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> task.run());
+            // 全屏
+            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> task.run());
             // 初始化
             NodeManager.init(this);
         }
@@ -515,20 +511,23 @@ public interface StageAdapter extends WindowAdapter {
     /**
      * 更新内容
      */
-    default void updateStage() {
-        Stage stage = this.stage();
-        if (stage != null) {
-            double width = NodeUtil.getWidth(stage);
-            double height = NodeUtil.getHeight(stage);
-            if (stage.isFullScreen() || stage.isMaximized()) {
-                // 先减再加，因为全屏和最大化这个宽高已经最大了
-                this.resizeStage(width - 1, height - 1);
-                this.resizeStage(width + 1, height + 1);
-            } else {
-                // 先加再减，避免边框异常
-                this.resizeStage(width + 1, height + 1);
-                this.resizeStage(width - 1, height - 1);
-            }
+    default void updateContent() {
+//        Stage stage = this.stage();
+        Parent parent = this.root();
+        if (parent != null) {
+//            double width = NodeUtil.getWidth(stage);
+//            double height = NodeUtil.getHeight(stage);
+//            if (stage.isFullScreen() || stage.isMaximized()) {
+//                // 先减再加，因为全屏和最大化这个宽高已经最大了
+//                this.resizeStage(width - 1, height - 1);
+//                this.resizeStage(width + 1, height + 1);
+//            } else {
+//                // 先加再减，避免边框异常
+//                this.resizeStage(width + 1, height + 1);
+//                this.resizeStage(width - 1, height - 1);
+//            }
+            // 递归请求布局
+            NodeUtil.requestLayoutRecursive(parent);
         }
     }
 
@@ -540,8 +539,23 @@ public interface StageAdapter extends WindowAdapter {
      */
     default void resizeStage(double width, double height) {
         Stage stage = this.stage();
-        stage.setWidth(width);
-        stage.setHeight(height);
+        if (stage != null) {
+            stage.setWidth(width);
+            stage.setHeight(height);
+        }
+    }
+
+    /**
+     * 修改根节点大小
+     *
+     * @param width  宽
+     * @param height 高
+     */
+    default void resizeRoot(double width, double height) {
+        Parent parent = this.root();
+        if (parent != null) {
+            parent.resize(width, height);
+        }
     }
 
     /**
@@ -563,7 +577,7 @@ public interface StageAdapter extends WindowAdapter {
      *
      * @param listener 舞台监听器
      */
-    default void initListener( StageListener listener) {
+    default void initListener(StageListener listener) {
         // 设置事件
         listener.onStageInitialize(this);
         Stage stage = this.stage();
@@ -715,7 +729,7 @@ public interface StageAdapter extends WindowAdapter {
      * @param dragBoardContent 拖拽板内容
      * @param onDragFile       文件拖入处理
      */
-    default void initDragFile( String dragBoardContent,  Consumer<List<File>> onDragFile) {
+    default void initDragFile(String dragBoardContent, Consumer<List<File>> onDragFile) {
         // 文件拖拽初始化
         DragFileHandler dragFileHandler = new DragFileHandler() {
 
