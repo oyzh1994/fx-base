@@ -122,10 +122,12 @@ public class SystemTheme implements Theme, ThemeStyle {
 //            Platform.getPreferences().foregroundColorProperty().addListener(colorWeakChangeListener);
 //            Platform.getPreferences().backgroundColorProperty().addListener(colorWeakChangeListener);
 //            Platform.getPreferences().colorSchemeProperty().addListener(new WeakChangeListener<>(this.colorSchemeChangeListener));
-            Platform.getPreferences().accentColorProperty().addListener(this.colorListener);
-            Platform.getPreferences().foregroundColorProperty().addListener(this.colorListener);
-            Platform.getPreferences().backgroundColorProperty().addListener(this.colorListener);
-            Platform.getPreferences().colorSchemeProperty().addListener(this.colorSchemeChangeListener);
+            FXUtil.runLater(() -> {
+                Platform.getPreferences().accentColorProperty().addListener(this.colorListener);
+                Platform.getPreferences().foregroundColorProperty().addListener(this.colorListener);
+                Platform.getPreferences().backgroundColorProperty().addListener(this.colorListener);
+                Platform.getPreferences().colorSchemeProperty().addListener(this.colorSchemeChangeListener);
+            });
         }
     }
 
@@ -134,10 +136,12 @@ public class SystemTheme implements Theme, ThemeStyle {
      */
     public synchronized void unListener() {
         this.following = false;
-        Platform.getPreferences().accentColorProperty().removeListener(this.colorListener);
-        Platform.getPreferences().foregroundColorProperty().removeListener(this.colorListener);
-        Platform.getPreferences().backgroundColorProperty().removeListener(this.colorListener);
-        Platform.getPreferences().colorSchemeProperty().removeListener(this.colorSchemeChangeListener);
+        FXUtil.runLater(() -> {
+            Platform.getPreferences().accentColorProperty().removeListener(this.colorListener);
+            Platform.getPreferences().foregroundColorProperty().removeListener(this.colorListener);
+            Platform.getPreferences().backgroundColorProperty().removeListener(this.colorListener);
+            Platform.getPreferences().colorSchemeProperty().removeListener(this.colorSchemeChangeListener);
+        });
     }
 
     /**
