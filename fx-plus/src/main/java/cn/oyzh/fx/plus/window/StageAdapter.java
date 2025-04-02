@@ -455,7 +455,7 @@ public interface StageAdapter extends WindowAdapter {
                 if (!newValue) {
                     this.onWindowClosed();
 //                } else {
-//                    FXUtil.runPulse(this::updateStage);
+//                    FXUtil.runPulse(this::updateContent);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -473,7 +473,7 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
-            // 更新stage
+            // 更新内容
             Runnable task = () -> FXUtil.runPulse(this::updateContent);
             // 最大化
             stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> task.run());
@@ -526,8 +526,8 @@ public interface StageAdapter extends WindowAdapter {
 //                this.resizeStage(width + 1, height + 1);
 //                this.resizeStage(width - 1, height - 1);
 //            }
-            // 递归请求布局
-            NodeUtil.requestLayoutRecursive(parent);
+            // 递归布局
+            NodeUtil.layoutRecursive(parent);
         }
     }
 
