@@ -1,7 +1,10 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
+import javafx.geometry.Insets;
 
 /**
  * svg面板
@@ -9,7 +12,11 @@ import cn.oyzh.fx.plus.mouse.MouseAdapter;
  * @author oyzh
  * @since 2025/01/07
  */
-public class SVGPane extends FXHBox implements MouseAdapter {
+public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
+
+    {
+        this.setPadding(Insets.EMPTY);
+    }
 
     protected String size;
 
