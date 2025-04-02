@@ -22,6 +22,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class TableViewMouseSelectHelper {
 
+    /**
+     * tableview
+     */
     private final Reference<TableView<?>> reference;
 
     public TableViewMouseSelectHelper(TableView<?> tableView) {
@@ -149,6 +152,11 @@ public class TableViewMouseSelectHelper {
                     this.clearRectangle();
                 }
             }
+        });
+
+        // 监听鼠标离开事件
+        tableView.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
+            this.clearRectangle();
         });
     }
 
