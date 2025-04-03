@@ -7,7 +7,7 @@ import cn.oyzh.i18n.I18nHelper;
  * @author oyzh
  * @since 2025-03-18
  */
-public class SSHAuthMethodCombobox extends FXComboBox<String> {
+public class SSHAuthTypeCombobox extends FXComboBox<String> {
 
     {
         this.addItem(I18nHelper.password());
