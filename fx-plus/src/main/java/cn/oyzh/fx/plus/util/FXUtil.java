@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * fx工具类
@@ -42,6 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public class FXUtil {
+
 
     /**
      * 当前机器对象
@@ -60,6 +62,26 @@ public class FXUtil {
             }
         }
         return robot;
+    }
+
+    /**
+     * 偏好设置
+     */
+    private static Platform.Preferences preferences;
+
+    /**
+     * 获取偏好设置
+     * @return 偏好设置
+     */
+    public static Platform.Preferences getPreferences() {
+        if (preferences == null) {
+            AtomicReference<Platform.Preferences> preferencesRef = new AtomicReference<>();
+            synchronized (FXUtil.class) {
+                FXUtil.runWait(() -> preferencesRef.set(Platform.getPreferences()));
+            }
+            preferences = preferencesRef.get();
+        }
+        return preferences;
     }
 
     /**

@@ -93,22 +93,22 @@ public class SystemTheme implements Theme, ThemeStyle {
 
     @Override
     public boolean isDarkMode() {
-        return Platform.getPreferences().getColorScheme() == ColorScheme.DARK;
+        return FXUtil.getPreferences().getColorScheme() == ColorScheme.DARK;
     }
 
     @Override
     public Color getAccentColor() {
-        return Platform.getPreferences().getAccentColor();
+        return FXUtil.getPreferences().getAccentColor();
     }
 
     @Override
     public Color getForegroundColor() {
-        return Platform.getPreferences().getForegroundColor();
+        return FXUtil.getPreferences().getForegroundColor();
     }
 
     @Override
     public Color getBackgroundColor() {
-        return Platform.getPreferences().getBackgroundColor();
+        return FXUtil.getPreferences().getBackgroundColor();
     }
 
     /**
@@ -122,12 +122,10 @@ public class SystemTheme implements Theme, ThemeStyle {
 //            Platform.getPreferences().foregroundColorProperty().addListener(colorWeakChangeListener);
 //            Platform.getPreferences().backgroundColorProperty().addListener(colorWeakChangeListener);
 //            Platform.getPreferences().colorSchemeProperty().addListener(new WeakChangeListener<>(this.colorSchemeChangeListener));
-            FXUtil.runLater(() -> {
-                Platform.getPreferences().accentColorProperty().addListener(this.colorListener);
-                Platform.getPreferences().foregroundColorProperty().addListener(this.colorListener);
-                Platform.getPreferences().backgroundColorProperty().addListener(this.colorListener);
-                Platform.getPreferences().colorSchemeProperty().addListener(this.colorSchemeChangeListener);
-            });
+            FXUtil.getPreferences().accentColorProperty().addListener(this.colorListener);
+            FXUtil.getPreferences().foregroundColorProperty().addListener(this.colorListener);
+            FXUtil.getPreferences().backgroundColorProperty().addListener(this.colorListener);
+            FXUtil.getPreferences().colorSchemeProperty().addListener(this.colorSchemeChangeListener);
         }
     }
 
@@ -136,12 +134,10 @@ public class SystemTheme implements Theme, ThemeStyle {
      */
     public synchronized void unListener() {
         this.following = false;
-        FXUtil.runLater(() -> {
-            Platform.getPreferences().accentColorProperty().removeListener(this.colorListener);
-            Platform.getPreferences().foregroundColorProperty().removeListener(this.colorListener);
-            Platform.getPreferences().backgroundColorProperty().removeListener(this.colorListener);
-            Platform.getPreferences().colorSchemeProperty().removeListener(this.colorSchemeChangeListener);
-        });
+        FXUtil.getPreferences().accentColorProperty().removeListener(this.colorListener);
+        FXUtil.getPreferences().foregroundColorProperty().removeListener(this.colorListener);
+        FXUtil.getPreferences().backgroundColorProperty().removeListener(this.colorListener);
+        FXUtil.getPreferences().colorSchemeProperty().removeListener(this.colorSchemeChangeListener);
     }
 
     /**
