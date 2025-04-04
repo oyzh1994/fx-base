@@ -222,6 +222,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.renameKey1(), new RenameSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem updateKey1(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.updateKey1(), new RenameSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem editConnect(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.editConnect(), new RenameSVGGlyph(iconSize), action);
     }
@@ -248,6 +252,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem copyKeys1ToHost(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.copyKeys1ToHost(), new CopySVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem copyToHost(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.copyToHost(), new CopySVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem deleteData(String iconSize, Runnable action) {
