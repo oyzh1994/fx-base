@@ -246,6 +246,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.deleteKey1(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem copyKeys1ToHost(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.copyKeys1ToHost(), new CopySVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem deleteData(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.deleteData(), new DeleteSVGGlyph(iconSize), action);
     }
