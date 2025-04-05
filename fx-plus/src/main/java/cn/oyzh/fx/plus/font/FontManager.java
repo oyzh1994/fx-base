@@ -146,6 +146,9 @@ public class FontManager {
      * @return font
      */
     public static Font toFont(FontConfig config) {
+        if (config == null) {
+            return Font.getDefault();
+        }
         return Font.font(config.getFamily(), FontWeight.findByWeight(config.getWeight()), config.getSize());
     }
 }
