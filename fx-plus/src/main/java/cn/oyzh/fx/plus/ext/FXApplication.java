@@ -107,7 +107,8 @@ public abstract class FXApplication extends Application {
                 JulLog.info("=============launch args end---------->");
             }
             // 移除可选属性
-            SystemUtil.removeOptionalProperties();
+            // TODO: 暂时注释
+//            SystemUtil.removeOptionalProperties();
             Properties properties = System.getProperties();
             if (!properties.isEmpty()) {
                 JulLog.info("=============System Properties start---------->");
