@@ -406,6 +406,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.copyFilePath(), new CopySVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem copyNodePath(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.copyNodePath(), new CopySVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem authNode(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.authNode(), new UnLockSVGGlyph(iconSize), action);
     }
