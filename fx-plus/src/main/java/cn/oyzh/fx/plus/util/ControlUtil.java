@@ -25,6 +25,11 @@ import javafx.scene.text.Text;
 
 public class ControlUtil {
 
+    /**
+     * 边框长度-0.5
+     */
+    public static BorderWidths BW_HALF = new BorderWidths(0.5);
+
     // /**
     //  * 初始化提示组件
     //  *

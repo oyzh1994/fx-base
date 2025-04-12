@@ -3,11 +3,14 @@ package cn.oyzh.fx.plus.information;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.TooltipUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -407,14 +410,18 @@ public class MessageBox {
      */
     private static void showToast(String msg, SVGGlyph icon, Window owner) {
         Toast toast = new Toast(msg);
+        CornerRadii radii = new CornerRadii(3);
+        Color color1 = ThemeManager.currentForegroundColor();
+        Color color2 = ThemeManager.currentBackgroundColor();
+        Color color3 = ThemeManager.currentAccentColor();
         // 边框
-        Border border = new Border(new BorderStroke(Color.valueOf("#CCCCCC"), BorderStrokeStyle.SOLID, new CornerRadii(3), BorderStroke.THIN));
+        Border border = new Border(new BorderStroke(color1, BorderStrokeStyle.SOLID, radii, ControlUtil.BW_HALF));
         // 背景
-        Background background = new Background(new BackgroundFill(Color.TRANSPARENT, null, null));
+        Background background = new Background(new BackgroundFill(color2, radii, Insets.EMPTY));
         // 设置参数
         toast.setIcon(icon);
         toast.setBorder(border);
-        toast.setTextFill(Color.valueOf("#242424"));
+        toast.setTextFill(color3);
         toast.setBackground(background);
         // 显示组件
         FXUtil.runLater(() -> toast.show(owner));

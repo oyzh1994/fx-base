@@ -514,7 +514,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
         this.setPickOnBounds(true);
 //        this.setFocusTraversable(false);
         this.setAutoScrollOnDragDesired(true);
-        this.setPadding(new Insets(5, 5, 5, 5));
+        this.setPadding(new Insets(5));
         Color color = ThemeManager.currentAccentColor();
         BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         this.setBorder(new Border(stroke));

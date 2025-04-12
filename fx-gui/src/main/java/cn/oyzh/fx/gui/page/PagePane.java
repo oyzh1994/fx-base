@@ -102,6 +102,11 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
      */
     private EventHandler<MouseEvent> onLastClicked;
 
+    /**
+     * 默认边距
+     */
+    private static final Insets DEFAULT_MARGIN = new Insets(0, 0, 0, 5);
+
     {
 //        this.setCache(true);
 //        this.setCacheShape(true);
@@ -139,11 +144,12 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
             }
         });
         HBox box = new HBox(this.firstSVG, this.prevSVG, this.nextSVG, this.lastSVG, this.pageText);
-        HBox.setMargin(this.firstSVG, new Insets(0, 0, 0, 0));
-        HBox.setMargin(this.prevSVG, new Insets(0, 0, 0, 0));
-        HBox.setMargin(this.nextSVG, new Insets(0, 0, 0, 5));
-        HBox.setMargin(this.lastSVG, new Insets(0, 0, 0, 5));
-        HBox.setMargin(this.pageText, new Insets(0, 0, 0, 5));
+
+        HBox.setMargin(this.firstSVG, Insets.EMPTY);
+        HBox.setMargin(this.prevSVG, Insets.EMPTY);
+        HBox.setMargin(this.nextSVG, DEFAULT_MARGIN);
+        HBox.setMargin(this.lastSVG, DEFAULT_MARGIN);
+        HBox.setMargin(this.pageText, DEFAULT_MARGIN);
         this.getChildren().add(box);
         this.firstSVG.managedProperty().bind(this.firstSVG.visibleProperty());
         this.lastSVG.managedProperty().bind(this.lastSVG.visibleProperty());
@@ -174,7 +180,7 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
      *
      * @param iconSize 图标大小
      */
-    public void setIconSize( String iconSize) {
+    public void setIconSize(String iconSize) {
         this.iconSize = iconSize;
         this.firstSVG.setSizeStr(iconSize);
         this.prevSVG.setSizeStr(iconSize);
@@ -187,7 +193,7 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
      *
      * @param paging 分页信息
      */
-    public void setPaging( Paging<T> paging) {
+    public void setPaging(Paging<T> paging) {
         this.paging = paging;
         this.formatPageText();
         if (this.hideIfLessPage) {
@@ -236,9 +242,9 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
         this.showFirst = showFirst;
         this.firstSVG.setVisible(showFirst);
         if (this.showFirst) {
-            HBox.setMargin(this.prevSVG, new Insets(0, 0, 0, 5));
+            HBox.setMargin(this.prevSVG, DEFAULT_MARGIN);
         } else {
-            HBox.setMargin(this.prevSVG, new Insets(0, 0, 0, 0));
+            HBox.setMargin(this.prevSVG, Insets.EMPTY);
         }
     }
 

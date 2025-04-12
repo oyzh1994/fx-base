@@ -79,7 +79,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         // 生成标签
         SVGLabel label = new SVGLabel(text, glyph);
         // 设置边距
-        label.setPadding(new Insets(0, 0, 0, 0));
+        label.setPadding(Insets.EMPTY);
         // 计算宽度
         double w = FontUtil.stringWidth(text);
         if (glyph != null) {
