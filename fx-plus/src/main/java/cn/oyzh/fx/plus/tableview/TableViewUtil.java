@@ -15,8 +15,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.skin.TableHeaderRow;
+import javafx.scene.control.skin.NestedTableColumnHeader;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -206,11 +207,42 @@ public class TableViewUtil {
         return rowList;
     }
 
+    /**
+     * 获取表头
+     *
+     * @param tableView 组件
+     * @return 表头组件
+     */
+    public static Pane getHeader(TableView<?> tableView) {
+        // 获取 TableHeaderRow
+        return (Pane) tableView.lookup(".column-header-background");
+    }
+
+    /**
+     * 获取表头列
+     *
+     * @param tableView 组件
+     * @return 表头列组件
+     */
+    public static NestedTableColumnHeader getHeaderColumn(TableView<?> tableView) {
+        Pane header = getHeader(tableView);
+        if (header != null) {
+            return (NestedTableColumnHeader) header.lookup(".nested-column-header");
+        }
+        return null;
+    }
+
+    /**
+     * 获取表头高度
+     *
+     * @param tableView 组件
+     * @return 表头高度
+     */
     public static double getHeaderRowHeight(TableView<?> tableView) {
         // 获取 TableHeaderRow
-        TableHeaderRow headerRow = (TableHeaderRow) tableView.lookup("TableHeaderRow");
-        if (headerRow != null) {
-            return headerRow.getHeight();
+        Pane header = getHeader(tableView);
+        if (header != null) {
+            return header.getHeight();
         }
         return 0;
     }

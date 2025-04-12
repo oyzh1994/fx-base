@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -145,13 +146,15 @@ public class Toast {
             scene.setCursor(Cursor.NONE);
             stage.setScene(scene);
             stage.setAlwaysOnTop(true);
-            stage.initStyle(StageStyle.UNDECORATED);
+            scene.setFill(Color.TRANSPARENT);
+            stage.initStyle(StageStyle.TRANSPARENT);
         } else {// Popup
             Popup popup = new FXPopup();
             this.window = popup;
             box.setCursor(Cursor.NONE);
             popup.setAutoFix(true);
             popup.setAutoHide(true);
+            popup.getScene().setFill(Color.TRANSPARENT);
             popup.getContent().setAll(box);
         }
         // 设置透明度
@@ -166,9 +169,9 @@ public class Toast {
             });
         }
         // 显示窗口
-        if (this.window instanceof StageAdapter wrapper) {
-            wrapper.changeTheme(ThemeManager.currentTheme());
-            wrapper.display();
+        if (this.window instanceof StageAdapter adapter) {
+            adapter.changeTheme(ThemeManager.currentTheme());
+            adapter.display();
         } else if (this.window instanceof FXPopup popup) {
             popup.changeTheme(ThemeManager.currentTheme());
             popup.show(owner);
@@ -277,9 +280,5 @@ public class Toast {
 
     public Window getWindow() {
         return window;
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
     }
 }

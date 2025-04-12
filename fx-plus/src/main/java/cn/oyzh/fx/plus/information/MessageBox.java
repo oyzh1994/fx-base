@@ -35,7 +35,6 @@ import java.util.function.Function;
  * @author oyzh
  * @since 2023/10/24
  */
-
 public class MessageBox {
 
     /**
@@ -411,7 +410,7 @@ public class MessageBox {
         // 边框
         Border border = new Border(new BorderStroke(Color.valueOf("#CCCCCC"), BorderStrokeStyle.SOLID, new CornerRadii(3), BorderStroke.THIN));
         // 背景
-        Background background = new Background(new BackgroundFill(Color.valueOf("#FFFAFA"), new CornerRadii(3), null));
+        Background background = new Background(new BackgroundFill(Color.TRANSPARENT, null, null));
         // 设置参数
         toast.setIcon(icon);
         toast.setBorder(border);

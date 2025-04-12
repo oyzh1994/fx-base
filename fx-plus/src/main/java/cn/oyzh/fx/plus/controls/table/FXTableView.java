@@ -11,12 +11,15 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.skin.NestedTableColumnHeader;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 /**
  * @author oyzh
@@ -28,13 +31,10 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         NodeManager.init(this);
     }
 
-    public FXTableView() {
-    }
-
-    protected void initTableView() {
-        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        this.initEvenListener();
-    }
+//    protected void initTableView() {
+//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+//        this.initEvenListener();
+//    }
 
     /**
      * 初始化事件监听器
@@ -58,8 +58,10 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void initNode() {
-        this.setFixedCellSize(35.f);
-        this.initTableView();
+        this.setHeaderHeight(30);
+        this.setFixedCellSize(30);
+        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        this.initEvenListener();
 //        this.setFocusTraversable(false);
 //        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
     }
@@ -131,6 +133,46 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
                     NodeUtil.setWidth(column, 0D);
                 }
             }
+        }
+    }
+
+    /**
+     * 获取表头组件
+     *
+     * @return 表头组件
+     */
+    public Pane getHeader() {
+        return TableViewUtil.getHeader(this);
+    }
+
+    /**
+     * 获取表头高
+     *
+     * @return 表头高
+     */
+    public double getHeaderHeight() {
+        Pane header = this.getHeader();
+        return header == null ? -1D : header.getHeight();
+    }
+
+    /**
+     * 设置表头高
+     *
+     * @param height 高
+     */
+    public void setHeaderHeight(double height) {
+        Pane header = this.getHeader();
+        if (header != null) {
+            NestedTableColumnHeader columnHeader = TableViewUtil.getHeaderColumn(this);
+            if (columnHeader != null) {
+                columnHeader.maxHeightProperty().bind(header.maxHeightProperty());
+                columnHeader.minHeightProperty().bind(header.minHeightProperty());
+                columnHeader.prefHeightProperty().bind(header.prefHeightProperty());
+            }
+            header.setMaxHeight(height);
+            header.setPrefHeight(height);
+        } else {
+            FXUtil.runPulse(() -> setHeaderHeight(height));
         }
     }
 }
