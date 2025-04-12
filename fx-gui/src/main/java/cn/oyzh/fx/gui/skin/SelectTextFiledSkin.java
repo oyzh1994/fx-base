@@ -4,6 +4,7 @@ import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
@@ -14,6 +15,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 import java.util.List;
@@ -39,6 +41,24 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         this.lineHeight = lineHeight;
     }
 
+//    /**
+//     * 元素选中事件
+//     */
+//    protected ChangeListener<String> selectItemChanged;
+//
+//    public ChangeListener<String> getSelectItemChanged() {
+//        return selectItemChanged;
+//    }
+//
+//    public void setSelectItemChanged(ChangeListener<String> selectItemChanged) {
+//        this.selectItemChanged = selectItemChanged;
+//    }
+
+    /**
+     * 下标选中事件
+     */
+    protected ChangeListener<Number> selectIndexChanged;
+
     public ChangeListener<Number> getSelectIndexChanged() {
         return selectIndexChanged;
     }
@@ -46,11 +66,6 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     public void setSelectIndexChanged(ChangeListener<Number> selectIndexChanged) {
         this.selectIndexChanged = selectIndexChanged;
     }
-
-    /**
-     * 行高
-     */
-    protected ChangeListener<Number> selectIndexChanged;
 
     /**
      * 展开组件
@@ -70,17 +85,33 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         }
     }
 
-    private void initPopup() {
+    protected void initPopup() {
         this.popup = new FXPopup();
+        Color color = ThemeManager.currentBackgroundColor();
+        this.popup.getScene().setFill(color);
         TextField textField = this.getSkinnable();
         FXListView<String> listView = new FXListView<>();
         listView.setRealWidth(NodeUtil.getWidth(textField));
+//        listView.selectedItemChanged((observable, oldValue, newValue) -> {
+//            if (this.selectItemChanged != null) {
+//                this.selectItemChanged.changed(observable, oldValue, newValue);
+//            }
+//            textField.setText(newValue);
+//            this.popup.hide();
+//        });
         listView.selectedIndexChanged((observable, oldValue, newValue) -> {
-            if (this.selectIndexChanged != null) {
-                this.selectIndexChanged.changed(observable, oldValue, newValue);
+            if (!listView.isIgnoreChanged()) {
+                String text = listView.getSelectedItem();
+                if (text == null) {
+                    textField.clear();
+                } else {
+                    textField.setText(text);
+                }
+                if (this.selectIndexChanged != null) {
+                    this.selectIndexChanged.changed(observable, oldValue, newValue);
+                }
+                this.popup.hide();
             }
-            textField.setText(listView.getSelectedItem());
-            this.popup.hide();
         });
         listView.setCellFactory(new Callback<>() {
             @Override
@@ -104,13 +135,13 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
             }
         });
         // 监听节点变化
-        listView.getItems().addListener((ListChangeListener<String>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 2));
+        listView.getItems().addListener((ListChangeListener<String>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4));
         textField.widthProperty().addListener((observable, oldValue, newValue) -> listView.setRealWidth(NodeUtil.getWidth(textField)));
         this.popup.content(listView);
     }
 
     public SelectTextFiledSkin(TextField textField) {
-        super(textField, new SelectSVGGlyph("15,12"));
+        super(textField, new SelectSVGGlyph("16,13"));
         this.button.disappear();
         this.button.setTipText(I18nHelper.select());
     }
@@ -139,7 +170,7 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
-    private FXListView<String> getListView() {
+    protected FXListView<String> getListView() {
         if (this.popup == null) {
             this.initPopup();
         }
@@ -164,7 +195,11 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         if (itemList == null) {
             return;
         }
-        this.getListView().setItem(itemList);
+        FXListView<String> listView = this.getListView();
+        listView.setIgnoreChanged(true);
+        listView.setItem(itemList);
+        listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4);
+        listView.setIgnoreChanged(false);
     }
 
     public int getItemSize() {
