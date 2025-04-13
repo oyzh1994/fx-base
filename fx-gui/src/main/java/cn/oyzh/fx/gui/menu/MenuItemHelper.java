@@ -62,10 +62,7 @@ public class MenuItemHelper {
     private static SeparatorMenuItem separator;
 
     public static MenuItem separator() {
-        if (separator == null) {
-            separator = new SeparatorMenuItem();
-        }
-        return separator;
+        return new SeparatorMenuItem();
     }
 
     public static FXMenuItem openView(String iconSize, Runnable action) {
@@ -98,6 +95,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem refreshData(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.refreshData(), new RefreshSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem refreshFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.refreshFile(), new RefreshSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem reloadData(String iconSize, Runnable action) {

@@ -54,7 +54,7 @@ public interface ContextMenuAdapter {
      * @param menuItems 菜单列表
      * @param event     鼠标事件
      */
-    default void showContextMenu(List<MenuItem> menuItems,  MouseEvent event) {
+    default void showContextMenu(List<MenuItem> menuItems, MouseEvent event) {
         this.showContextMenu(menuItems, event.getScreenX(), event.getScreenY());
     }
 
@@ -70,7 +70,7 @@ public interface ContextMenuAdapter {
             if (contextMenu == null) {
                 contextMenu = new FXContextMenu(menuItems);
                 this.contextMenu(contextMenu);
-            } else {
+            } else if (!contextMenu.getItems().equals(menuItems)) {
                 DestroyUtil.destroy(contextMenu.getItems());
                 contextMenu.getItems().setAll(menuItems);
             }
