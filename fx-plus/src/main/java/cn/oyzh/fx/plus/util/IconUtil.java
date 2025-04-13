@@ -19,7 +19,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/4/4
  */
-
 public class IconUtil {
 
     /**
@@ -70,6 +69,7 @@ public class IconUtil {
                 ICON_CACHE.put(iconUrl, new WeakReference<>(bytes));
                 stream = IOUtil.toStream(bytes);
             }
+            JulLog.info("load icon form file.");
         } else {
             stream = IOUtil.toStream(reference.get());
             JulLog.info("load icon form cache.");

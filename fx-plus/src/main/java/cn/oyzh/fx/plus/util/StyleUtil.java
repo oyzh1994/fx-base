@@ -12,7 +12,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/4/4
  */
-
 public class StyleUtil {
 
     /**

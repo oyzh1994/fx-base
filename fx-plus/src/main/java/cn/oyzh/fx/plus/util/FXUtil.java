@@ -41,9 +41,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2021/8/19
  */
-
 public class FXUtil {
-
 
     /**
      * 当前机器对象
@@ -71,6 +69,7 @@ public class FXUtil {
 
     /**
      * 获取偏好设置
+     *
      * @return 偏好设置
      */
     public static Platform.Preferences getPreferences() {

@@ -17,7 +17,6 @@ import javafx.util.Duration;
  * @author oyzh
  * @since 2024-09-19
  */
-
 public class TooltipUtil {
 
     /**

@@ -14,7 +14,6 @@ import java.util.Collections;
  * @author oyzh
  * @since 2024/7/12
  */
-
 public class ListViewUtil {
 
     /**
