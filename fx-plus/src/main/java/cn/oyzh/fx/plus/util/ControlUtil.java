@@ -439,7 +439,7 @@ public class ControlUtil {
      * @param target 组件
      */
     public static void validFail(EventTarget target) {
-        validFail(target, 2500);
+        validFail(target, 1500);
     }
 
     /**
