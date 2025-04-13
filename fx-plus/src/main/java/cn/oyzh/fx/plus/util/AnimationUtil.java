@@ -74,13 +74,12 @@ public class AnimationUtil {
      * @param target 目标节点
      */
     public static void move(Window window, Node node, Node source, Node target) {
-        Point2D point1 = source.localToScene(0, 0);
-        Point2D point2 = target.localToScene(0, 0);
-        double x1 = target.getLayoutBounds().getMaxY();
-        double y1 = target.getLayoutBounds().getMaxX();
-        double w = NodeUtil.getWidth(target);
-        double h = NodeUtil.getHeight(target);
-        move(window, node, point1.getX(), point1.getY(), point2.getX() - w - x1 - 30, point2.getY() - h - y1 - 40);
+        Point2D point1 = source.localToScreen(0, 0);
+        Point2D point2 = target.localToScreen(0, 0);
+        double x1 = target.getLayoutBounds().getMinX();
+        double x2 = target.getLayoutBounds().getMaxX();
+        double x3 = (x2 - x1) / 2;
+        move(window, node, point1.getX(), point1.getY(), point2.getX() + x3, point2.getY());
     }
 
     /**
@@ -107,6 +106,8 @@ public class AnimationUtil {
         } else {
             return;
         }
+        endX = Math.abs(endX);
+        endY = Math.abs(endY);
         // 添加的目标阶段
         pane.getChildren().add(node);
         node.setLayoutX(startX);

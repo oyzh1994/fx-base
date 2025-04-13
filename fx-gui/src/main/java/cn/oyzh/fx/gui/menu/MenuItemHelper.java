@@ -48,6 +48,8 @@ import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 
 /**
  * 菜单工具类
@@ -55,8 +57,16 @@ import cn.oyzh.i18n.I18nHelper;
  * @author oyzh
  * @since 2024/6/28
  */
-
 public class MenuItemHelper {
+
+    private static SeparatorMenuItem separator;
+
+    public static MenuItem separator() {
+        if (separator == null) {
+            separator = new SeparatorMenuItem();
+        }
+        return separator;
+    }
 
     public static FXMenuItem openView(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.openView(), new OpenSVGGlyph(iconSize), action);
