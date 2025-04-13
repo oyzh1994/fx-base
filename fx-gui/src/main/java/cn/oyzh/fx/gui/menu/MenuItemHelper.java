@@ -59,9 +59,12 @@ import javafx.scene.control.SeparatorMenuItem;
  */
 public class MenuItemHelper {
 
-    private static SeparatorMenuItem separator;
-
-    public static MenuItem separator() {
+    /**
+     * 分割用菜单项
+     *
+     * @return 分割菜单项
+     */
+    public static SeparatorMenuItem separator() {
         return new SeparatorMenuItem();
     }
 
