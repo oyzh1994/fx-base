@@ -25,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -491,8 +492,13 @@ public interface StageAdapter extends WindowAdapter {
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
         }
+        // 初始化场景
+        Scene scene = new Scene(root);
+        if (attribute.sceneTransparent()) {
+            scene.setFill(Color.TRANSPARENT);
+        }
         // 设置scene
-        FXUtil.runWait(() -> stage.setScene(new Scene(root)));
+        FXUtil.runWait(() -> stage.setScene(scene));
 //        stage.getScene().focusOwnerProperty().addListener((observable, oldValue, newValue) -> {
 //            if (newValue != null) {
 //                Light.Distant light = new Light.Distant();

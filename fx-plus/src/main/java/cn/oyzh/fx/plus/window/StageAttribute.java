@@ -95,4 +95,11 @@ public @interface StageAttribute {
      * @return 结果
      */
     boolean usePrimary() default false;
+
+    /**
+     * 场景透明
+     *
+     * @return 结果
+     */
+    boolean sceneTransparent() default true;
 }
