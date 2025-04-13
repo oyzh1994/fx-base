@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageExt;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.scene.robot.Robot;
 import javafx.stage.StageStyle;
 
@@ -258,7 +259,9 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
         // 初始化窗口
         if (this.stage == null) {
             this.stage = StageManager.newStage(null);
-            this.stage.setScene(new Scene(this.menu));
+            Scene scene = new Scene(this.menu);
+            scene.setFill(Color.TRANSPARENT);
+            this.stage.setScene(scene);
             this.stage.setMaximized(false);
             this.stage.setResizable(false);
             this.stage.initStyle(StageStyle.TRANSPARENT);
