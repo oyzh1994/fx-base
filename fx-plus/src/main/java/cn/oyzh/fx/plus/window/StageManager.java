@@ -250,8 +250,36 @@ public class StageManager {
         return transparentStage;
     }
 
+    /**
+     * 显示遮罩面板
+     *
+     * @param callback 遮罩关闭处理完成后的回调
+     */
     public static void showMask(Runnable callback) {
-        Window window = getFrontWindow();
+        showMask(getFrontWindow(), callback);
+    }
+
+    /**
+     * 显示遮罩面板
+     *
+     * @param adapter  需要遮罩的窗口
+     * @param callback 遮罩关闭处理完成后的回调
+     */
+    public static void showMask(StageAdapter adapter, Runnable callback) {
+        if (adapter != null) {
+            StageMask.showMask(adapter.stage(), callback);
+        } else {
+            StageMask.showMask(null, callback);
+        }
+    }
+
+    /**
+     * 显示遮罩面板
+     *
+     * @param window   需要遮罩的窗口
+     * @param callback 遮罩关闭处理完成后的回调
+     */
+    public static void showMask(Window window, Runnable callback) {
         if (window != null) {
             StageMask.showMask(window, callback);
         } else {
