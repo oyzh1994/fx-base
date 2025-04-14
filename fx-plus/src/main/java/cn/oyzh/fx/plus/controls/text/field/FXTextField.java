@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.text.field;
 
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -11,6 +12,7 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.TextField;
 
@@ -37,6 +39,19 @@ public class FXTextField extends TextField implements FlexAdapter, Verifiable, N
 
     public void setRequire(boolean require) {
         this.require = require;
+    }
+
+    /**
+     * 是否不能为空或者空白
+     */
+    private boolean notEmpty;
+
+    public boolean isNotEmpty() {
+        return notEmpty;
+    }
+
+    public void setNotEmpty(boolean notEmpty) {
+        this.notEmpty = notEmpty;
     }
 
     public FXTextField() {
@@ -67,7 +82,12 @@ public class FXTextField extends TextField implements FlexAdapter, Verifiable, N
     @Override
     public boolean validate() {
         if (this.require && this.isEmpty()) {
-            this.requestFocus();
+//            this.requestFocus();
+            ValidatorUtil.validFail(this);
+            return false;
+        }
+        if (this.notEmpty && this.isEmpty() || StringUtil.isBlank(this.getText())) {
+            ValidatorUtil.validFail(this);
             return false;
         }
         return Verifiable.super.validate();
