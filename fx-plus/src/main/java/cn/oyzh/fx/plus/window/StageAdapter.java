@@ -822,4 +822,20 @@ public interface StageAdapter extends WindowAdapter {
     default void setOpacity(double opacity) {
         this.stage().setOpacity(opacity);
     }
+
+    default void hide() {
+        this.stage().hide();
+    }
+
+    default void close() {
+        this.stage().close();
+    }
+
+    default void show() {
+        this.stage().show();
+    }
+
+    default void showAndWait() {
+        this.stage().showAndWait();
+    }
 }

@@ -29,7 +29,7 @@ public class StageController extends Controller implements StageListener, EventL
      *
      * @param stage 舞台
      */
-    protected void setWindow( StageAdapter stage) {
+    protected void setWindow(StageAdapter stage) {
         this.stage = stage;
     }
 
@@ -80,6 +80,13 @@ public class StageController extends Controller implements StageListener, EventL
     @Override
     protected <T> T getWindowProp(String key) {
         return this.stage == null ? null : this.stage.getProp(key);
+    }
+
+    @Override
+    public void setProp(String key, Object value) {
+        if (this.stage != null) {
+            this.stage.setProp(key, value);
+        }
     }
 
     public String getViewTitle() {
