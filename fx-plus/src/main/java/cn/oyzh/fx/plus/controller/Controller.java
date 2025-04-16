@@ -27,16 +27,16 @@ public abstract class Controller implements I18nAdapter, WindowListener {
     protected void closeWindow() {
     }
 
-    /**
-     * 获取属性
-     *
-     * @param key key
-     * @param <T> 泛型
-     * @return 值
-     */
-    protected <T> T getWindowProp(String key) {
-        return null;
-    }
+//    /**
+//     * 获取属性
+//     *
+//     * @param key key
+//     * @param <T> 泛型
+//     * @return 值
+//     */
+//    protected <T> T getWindowProp(String key) {
+//        return null;
+//    }
 
     @Override
     public void changeLocale(Locale locale) {

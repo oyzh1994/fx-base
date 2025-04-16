@@ -77,10 +77,10 @@ public class StageController extends Controller implements StageListener, EventL
         }
     }
 
-    @Override
-    protected <T> T getWindowProp(String key) {
-        return this.stage == null ? null : this.stage.getProp(key);
-    }
+//    @Override
+//    protected <T> T getWindowProp(String key) {
+//        return this.stage == null ? null : this.stage.getProp(key);
+//    }
 
     @Override
     public void setProp(String key, Object value) {
@@ -92,6 +92,23 @@ public class StageController extends Controller implements StageListener, EventL
     @Override
     public <T> T getProp(String key) {
         return this.stage == null ? null : this.stage.getProp(key);
+    }
+
+    @Override
+    public boolean hasProp(String key) {
+        return this.stage != null && this.stage.hasProp(key);
+    }
+
+    @Override
+    public <T> T removeProp(String key) {
+        return this.stage == null ? null : this.stage.removeProp(key);
+    }
+
+    @Override
+    public void clearProps() {
+       if (this.stage != null) {
+           this.stage.clearProps();
+       }
     }
 
     public String getViewTitle() {
