@@ -51,11 +51,12 @@ public class LimitTextField extends FXTextField implements LimitLenControl {
 
     @Override
     public boolean validate() {
-        if (super.validate()) {
-            if (this.maxLen != null && this.getText().length() > this.maxLen) {
-                ValidatorUtil.validFail(this);
-                return false;
-            }
+        if (!super.validate()) {
+            return false;
+        }
+        if (this.maxLen != null && this.getText().length() > this.maxLen) {
+            ValidatorUtil.validFail(this);
+            return false;
         }
         return true;
     }
