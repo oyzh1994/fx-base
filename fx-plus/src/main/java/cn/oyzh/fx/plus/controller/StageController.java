@@ -89,6 +89,11 @@ public class StageController extends Controller implements StageListener, EventL
         }
     }
 
+    @Override
+    public <T> T getProp(String key) {
+        return this.stage == null ? null : this.stage.getProp(key);
+    }
+
     public String getViewTitle() {
         return null;
     }
