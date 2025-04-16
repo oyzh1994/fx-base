@@ -485,8 +485,8 @@ public interface StageAdapter extends WindowAdapter {
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
-        } else {// 默认样式文件
-            root.getStylesheets().addAll(ThemeManager.currentUserAgentStylesheet(), FXStyle.FX_BASE);
+//        } else {// 默认样式文件
+//            root.getStylesheets().addAll(ThemeManager.currentUserAgentStylesheet(), FXStyle.FX_BASE);
         }
         // 设置事件
         if (this.controller() instanceof StageListener listener) {

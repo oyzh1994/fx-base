@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
@@ -40,9 +41,6 @@ public class NodeManager {
         if (node instanceof FontAdapter adapter) {
             adapter.changeFont(FontManager.currentFont());
         }
-        if (node instanceof ThemeAdapter adapter) {
-            adapter.changeTheme(ThemeManager.currentTheme());
-        }
         if (node instanceof I18nAdapter adapter) {
             adapter.changeLocale(I18nManager.currentLocale());
         }
@@ -74,6 +72,10 @@ public class NodeManager {
                     }
                 });
             }
+        }
+        // TODO 延迟执行主题处理，否则可能出现部分组件样式异常
+        if (node instanceof ThemeAdapter adapter) {
+            TaskManager.startDelay(() -> adapter.changeTheme(ThemeManager.currentTheme()), 50);
         }
     }
 }

@@ -117,9 +117,9 @@ public class ThemeManager {
             // 设置应用样式
             Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
             // 变更样式
-            List<StageAdapter> wrappers = StageManager.allStages();
-            for (StageAdapter wrapper : wrappers) {
-                applyCycle(wrapper.root(), style);
+            List<StageAdapter> adapters = StageManager.allStages();
+            for (StageAdapter adapter : adapters) {
+                applyCycle(adapter.root(), style);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
