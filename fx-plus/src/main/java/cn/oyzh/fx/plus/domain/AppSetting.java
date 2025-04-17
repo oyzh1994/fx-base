@@ -713,12 +713,12 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public static String defaultTerminalFontFamily() {
-        if (OSUtil.isWindows()) {
-            return "Consolas";
-        }
-        if (OSUtil.isMacOS()) {
-            return "Menlo";
-        }
+//        if (OSUtil.isWindows()) {
+//            return "Consolas";
+//        }
+//        if (OSUtil.isMacOS()) {
+//            return "Menlo";
+//        }
         return "Monospace";
     }
 

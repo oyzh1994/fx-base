@@ -56,13 +56,22 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         // 按钮大小，组件高度/2，最大20，最小10
         double size = NumberUtil.limit(h * 0.5, this.getButtonSizeMin(), this.getButtonSizeMax());
         // 设置按钮大小
-        this.button.setSize(size);
+        this.setButtonSize(size);
         // 计算组件大小
         double btnSize = this.snapSizeX(size);
-        // 位移的areaX值，规则 组件宽+x-按钮大小
-        double areaX = w + x - btnSize - 8;
+        // 位移的areaX值，规则 组件宽 + x -按钮大小
+        double areaX = w + x - btnSize;
         // 设置位置
         super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+    }
+
+    /**
+     * 设置按钮大小
+     *
+     * @param size 大小
+     */
+    protected void setButtonSize(double size) {
+        this.button.setSize(size);
     }
 
 //    @Override

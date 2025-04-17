@@ -92,7 +92,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
      *
      * @param listener 监听器
      */
-    public void selectedChanged( ChangeListener<Boolean> listener) {
+    public void selectedChanged(ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
 //        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }

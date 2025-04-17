@@ -222,24 +222,24 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public SVGGlyph() {
     }
 
-    public SVGGlyph( String url) {
+    public SVGGlyph(String url) {
         this();
         this.setUrl(url);
     }
 
-    public SVGGlyph( String url,  Paint color) {
+    public SVGGlyph(String url, Paint color) {
         this();
         this.setUrl(url);
         this.setColor(color);
     }
 
-    public SVGGlyph( String url,  String size) {
+    public SVGGlyph(String url, String size) {
         this();
         this.setUrl(url);
         this.setSizeStr(size);
     }
 
-    public SVGGlyph( String url, double size) {
+    public SVGGlyph(String url, double size) {
         this();
         this.setUrl(url);
         this.setSize(size);
@@ -250,7 +250,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      *
      * @param url svg地址
      */
-    public void setUrl( String url) {
+    public void setUrl(String url) {
         this.url = url.intern();
         // 创建图标
         this.original = SVGManager.load(this.url);
@@ -301,6 +301,18 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public void setSize(double size) {
         if (size > 0) {
             this.setSizeStr(size + "");
+        }
+    }
+
+    /**
+     * 设置大小
+     *
+     * @param width  宽
+     * @param height 高
+     */
+    public void setSize(double width, double height) {
+        if (width > 0 && height > 0) {
+            this.setSizeStr(width + "," + height);
         }
     }
 

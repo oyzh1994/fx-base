@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.EyeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ShowSVGGlyph;
 import cn.oyzh.fx.gui.text.field.PasswordTextField;
 import cn.oyzh.fx.plus.information.TooltipExt;
@@ -23,7 +24,7 @@ import javafx.stage.Window;
 public class PasswordTextFieldSkin extends ActionTextFieldSkin {
 
     public PasswordTextFieldSkin(PasswordTextField textField) {
-        super(textField, new ShowSVGGlyph("16,11"));
+        super(textField, new EyeSVGGlyph());
         this.button.disappear();
         this.button.setTipText(I18nHelper.showPassword());
     }
@@ -49,4 +50,8 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
+    @Override
+    protected void setButtonSize(double size) {
+        this.button.setSize(size * 1.2, size);
+    }
 }

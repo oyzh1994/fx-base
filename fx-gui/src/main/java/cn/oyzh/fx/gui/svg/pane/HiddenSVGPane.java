@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.svg.pane;
 
-import cn.oyzh.fx.gui.svg.glyph.HiddenSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ShowSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.EyeCloseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.EyeOpenSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGPane;
 
@@ -16,16 +16,16 @@ public class HiddenSVGPane extends SVGPane {
     }
 
     public void show() {
-        this.setChild(new ShowSVGGlyph(this.size));
+        this.setChild(new EyeOpenSVGGlyph(this.size));
     }
 
     public void hidden() {
-        this.setChild(new HiddenSVGGlyph(this.size));
+        this.setChild(new EyeCloseSVGGlyph(this.size));
     }
 
     public boolean isHidden() {
         SVGGlyph svgGlyph = (SVGGlyph) this.getChildren().getFirst();
-        return svgGlyph.getUrl().contains("hidden.svg");
+        return svgGlyph.getUrl().contains("eye-close.svg");
     }
 
     public void setHidden(boolean hidden) {
