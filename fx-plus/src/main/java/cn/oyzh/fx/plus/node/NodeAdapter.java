@@ -511,4 +511,14 @@ public interface NodeAdapter extends EventTarget {
             });
         }
     }
+
+    default void setOpaque(boolean opaque) {
+        if (this instanceof Node node) {
+            if (opaque) {
+                node.setOpacity(1.0);
+            } else {
+                node.setOpacity(0.5);
+            }
+        }
+    }
 }
