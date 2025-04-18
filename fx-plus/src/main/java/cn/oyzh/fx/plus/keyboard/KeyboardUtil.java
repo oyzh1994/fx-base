@@ -320,4 +320,20 @@ public class KeyboardUtil {
         codes.add(KeyCode.MINUS);
         return codes;
     }
+
+    /**
+     * 获取按键字符
+     *
+     * @param e 事件
+     * @return 按键字符
+     */
+    public static char getKeyChar(KeyEvent e) {
+        char keyChar;
+        if (!e.getText().isEmpty()) {
+            keyChar = e.getText().charAt(0);
+        } else {
+            keyChar = '\uffff';
+        }
+        return keyChar;
+    }
 }

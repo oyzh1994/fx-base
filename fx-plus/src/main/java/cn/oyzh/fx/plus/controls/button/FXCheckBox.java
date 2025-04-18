@@ -29,12 +29,17 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
         super(text);
     }
 
+    public FXCheckBox(String text, boolean selected) {
+        super(text);
+        this.setSelected(selected);
+    }
+
     /**
      * 选中变更事件
      *
      * @param listener 监听器
      */
-    public void selectedChanged( ChangeListener<Boolean> listener) {
+    public void selectedChanged(ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
 //        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }
