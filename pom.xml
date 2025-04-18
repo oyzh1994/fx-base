@@ -29,6 +29,35 @@
         <atlantafx.version>2.0.1</atlantafx.version>
     </properties>
 
+    <!-- 声明仓库 -->
+    <repositories>
+        <repository>
+            <id>jetbrains</id>
+            <name>jetbrains</name>
+            <url>https://packages.jetbrains.team/maven/p/ij/intellij-dependencies/</url>
+        </repository>
+        <repository>
+            <id>center</id>
+            <name>center</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <name>sonatype</name>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>codehaus</id>
+            <name>codehaus</name>
+            <url>https://codehaus-mirror.ibiblio.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <!-- 自定义类库，fx增强 -->
