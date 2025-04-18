@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.mouse;
 
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -23,11 +24,15 @@ public class MouseUtil {
 
     public static double[] getMousePosition() {
         double[] position = new double[2];
-        FXUtil.runWait(()->{
+        FXUtil.runWait(() -> {
             position[0] = FXUtil.getRobot().getMouseX();
             position[1] = FXUtil.getRobot().getMouseY();
         });
         return position;
+    }
+
+    public static Point2D getMousePoint() {
+        return new Point2D(getMouseX(), getMouseY());
     }
 
     /**
