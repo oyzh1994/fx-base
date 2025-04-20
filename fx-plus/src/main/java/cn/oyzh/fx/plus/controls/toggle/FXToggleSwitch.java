@@ -102,4 +102,12 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
         NodeAdapter.super.initNode();
         this.setPadding(Insets.EMPTY);
     }
+
+    @Override
+    public void setTipText(String tipText) {
+        TipAdapter.super.tipText(tipText);
+        if (this.getText() == null || this.getText().isEmpty()) {
+            this.setText(tipText);
+        }
+    }
 }
