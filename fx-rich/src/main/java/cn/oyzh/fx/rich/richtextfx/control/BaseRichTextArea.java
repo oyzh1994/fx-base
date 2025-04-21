@@ -1,7 +1,6 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.MD5Util;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -39,7 +38,6 @@ import javafx.scene.text.Text;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.GenericStyledArea;
 import org.fxmisc.richtext.InlineCssTextArea;
-import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.TwoDimensional;
 import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
@@ -93,7 +91,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * @return 高亮正则模式
      */
     protected Pattern highlightPattern() {
-        return Pattern.compile(this.highlightText);
+        return Pattern.compile(this.highlightText, Pattern.CASE_INSENSITIVE);
     }
 
     @Override

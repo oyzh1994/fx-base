@@ -13,17 +13,16 @@ import javafx.scene.control.Tab;
  */
 public class RichTabPane extends FXTabPane {
 
-    {
-        super.setTabHeight(25);
+//    {
+//        super.setTabHeight(25);
 //        this.setCache(false);
 //        this.setCacheHint(CacheHint.QUALITY);
-        this.initTabPane();
-    }
+//        this.initTabPane();
+//    }
 
-    /**
-     * 初始化组件
-     */
-    protected void initTabPane() {
+    @Override
+    public void initNode() {
+        super.initNode();
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             // 判断是否在tab标签栏范围内
