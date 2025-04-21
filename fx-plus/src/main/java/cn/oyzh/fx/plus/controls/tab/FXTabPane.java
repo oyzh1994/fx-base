@@ -16,6 +16,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -207,12 +208,13 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      * @param tabIds tabId列表
      */
     public void removeTabs(String... tabIds) {
+        List<Tab> tabs = new ArrayList<>(tabIds.length);
         for (Tab tab : this.getTabs()) {
             if (StringUtil.equalsAny(tab.getId(), tabIds)) {
-                this.removeTab(tab);
-                break;
+                tabs.add(tab);
             }
         }
+        this.removeTab(tabs);
     }
 
     /**
