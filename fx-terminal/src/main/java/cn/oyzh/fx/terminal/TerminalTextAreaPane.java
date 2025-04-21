@@ -17,7 +17,6 @@ import cn.oyzh.fx.terminal.histroy.TerminalHistoryHandler;
 import cn.oyzh.fx.terminal.key.TerminalKeyHandler;
 import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -132,7 +131,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
                         if (!keyHandler.onPageDownKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (KeyboardUtil.selectAllKeyCombination.match(event)) {
+                    } else if (KeyboardUtil.selectAll_keyCombination.match(event)) {
                         if (!keyHandler.onCtrlAKeyPressed(this)) {
                             event.consume();
                         }
@@ -144,23 +143,23 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
                         if (!keyHandler.onCtrlEKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (KeyboardUtil.redoKeyCombination.match(event)) {
+                    } else if (KeyboardUtil.undo_keyCombination.match(event)) {
                         if (!keyHandler.onCtrlZKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (KeyboardUtil.redoKeyCombination.match(event)) {
+                    } else if (KeyboardUtil.redo_keyCombination.match(event)) {
                         if (!keyHandler.onCtrlYKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (KeyboardUtil.cutKeyCombination.match(event)) {
+                    } else if (KeyboardUtil.cut_keyCombination.match(event)) {
                         if (!keyHandler.onCtrlXKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (KeyboardUtil.pasteKeyCombination.match(event)) {
+                    } else if (KeyboardUtil.paste_keyCombination.match(event)) {
                         if (!keyHandler.onCtrlVKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (KeyboardUtil.copyKeyCombination.match(event)) {
+                    } else if (KeyboardUtil.copy_keyCombination.match(event)) {
                         if (!keyHandler.onCtrlCKeyPressed(this)) {
                             event.consume();
                         }
