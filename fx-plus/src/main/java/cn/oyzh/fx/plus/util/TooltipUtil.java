@@ -5,6 +5,7 @@ import cn.oyzh.common.cache.TimedCache;
 import cn.oyzh.common.util.MD5Util;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
+import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
@@ -80,39 +81,60 @@ public class TooltipUtil {
      * @param target 组件
      * @param text   提示文本
      */
-    public static void setTipText( EventTarget target, String text) {
+    public static void setTipText(EventTarget target, String text) {
+        uninstall(target);
         if (StringUtil.isNotBlank(text)) {
             if (target instanceof Node node) {
+                if (node.getProperties().containsKey("_tip:handler")) {
+                    EventHandler<MouseEvent> tipHandler = (EventHandler<MouseEvent>) node.getProperties().get("_tip:handler");
+                    node.removeEventFilter(MouseEvent.ANY, tipHandler);
+                }
                 EventHandler<MouseEvent> handler = event -> {
-                    if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
-                        Tooltip.install(node, initTooltip(text));
-                    } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
+                    if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
+                        Tooltip tooltip = getTooltip(node);
+                        if (tooltip == null) {
+                            Tooltip.install(node, initTooltip(text));
+                        }
+                    } else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
                         Tooltip tooltip = getTooltip(node);
                         if (tooltip != null) {
                             Tooltip.uninstall(node, tooltip);
                         }
                     }
                 };
-                node.setOnMouseExited(handler);
-                node.setOnMouseEntered(handler);
+                node.addEventFilter(MouseEvent.ANY, handler);
+                node.getProperties().put("_tip:handler", handler);
             } else if (target instanceof Tab tab) {
-                tab.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                if (tab.getProperties().containsKey("_tip:handler")) {
+                    ChangeListener<Boolean> listener = (ChangeListener<Boolean>) tab.getProperties().get("_tip:handler");
+                    tab.selectedProperty().removeListener(listener);
+                }
+                ChangeListener<Boolean> listener = (observable, oldValue, newValue) -> {
                     if (newValue) {
                         tab.setTooltip(initTooltip(text));
                     } else {
                         tab.setTooltip(null);
                     }
-                });
+                };
+                tab.selectedProperty().addListener(listener);
+                tab.getProperties().put("_tip:handler", listener);
             }
-        } else {
-            if (target instanceof Node node) {
-                Tooltip tooltip = getTooltip(node);
-                if (tooltip != null) {
-                    Tooltip.uninstall(node, tooltip);
-                }
-            } else if (target instanceof Tab tab) {
-                tab.setTooltip(null);
+        }
+    }
+
+    /**
+     * 卸载提示
+     *
+     * @param target 提示
+     */
+    public static void uninstall(EventTarget target) {
+        if (target instanceof Node node) {
+            Tooltip tooltip = getTooltip(node);
+            if (tooltip != null) {
+                Tooltip.uninstall(node, tooltip);
             }
+        } else if (target instanceof Tab tab) {
+            tab.setTooltip(null);
         }
     }
 

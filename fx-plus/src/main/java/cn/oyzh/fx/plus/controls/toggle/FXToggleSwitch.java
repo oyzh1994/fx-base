@@ -105,7 +105,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
 
     @Override
     public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
+        TipAdapter.super.setTipText(tipText);
         if (this.getText() == null || this.getText().isEmpty()) {
             this.setText(tipText);
         }

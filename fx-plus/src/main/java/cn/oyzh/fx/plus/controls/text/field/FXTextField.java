@@ -64,7 +64,7 @@ public class FXTextField extends TextField implements FlexAdapter, Verifiable, N
 
     @Override
     public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
+        TipAdapter.super.setTipText(tipText);
         if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
             this.setPromptText(tipText);
         }

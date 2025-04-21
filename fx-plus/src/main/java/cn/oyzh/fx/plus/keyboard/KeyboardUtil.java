@@ -64,34 +64,39 @@ public class KeyboardUtil {
     public static KeyCombination run_keyCombination;
 
     /**
-     * 重启快捷键
+     * 应用快捷键
      */
-    public static KeyCombination restart_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.SHIFT_DOWN);
+    public final static KeyCombination apply_keyCombination;
 
     /**
      * 停止快捷键
      */
-    public static KeyCombination stop_keyCombination;
+    public final static KeyCombination stop_keyCombination;
+
+    /**
+     * 重启快捷键
+     */
+    public final static KeyCombination restart_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.SHIFT_DOWN);
 
     /**
      * 删除快捷键
      */
-    public static KeyCombination delete_keyCombination = new KeyCodeCombination(KeyCode.DELETE);
+    public final static KeyCombination delete_keyCombination = new KeyCodeCombination(KeyCode.DELETE);
 
     /**
      * 重命名快捷键
      */
-    public static KeyCombination rename_keyCombination = new KeyCodeCombination(KeyCode.F2);
+    public final static KeyCombination rename_keyCombination = new KeyCodeCombination(KeyCode.F2);
 
     /**
      * 刷新快捷键
      */
-    public static KeyCombination refresh_keyCombination = new KeyCodeCombination(KeyCode.F5);
+    public final static KeyCombination refresh_keyCombination = new KeyCodeCombination(KeyCode.F5);
 
     /**
      * 信息快捷键
      */
-    public static KeyCombination info_keyCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.SHIFT_DOWN);
+    public final static KeyCombination info_keyCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.SHIFT_DOWN);
 
     /**
      * 编辑快捷键
@@ -102,6 +107,11 @@ public class KeyboardUtil {
      * 暂停快捷键
      */
     public static final KeyCombination pause_keyCombination = new KeyCodeCombination(KeyCode.PAUSE);
+
+    /**
+     * 隐藏快捷键
+     */
+    public final static KeyCombination hide_keyCombination = new KeyCodeCombination(KeyCode.H, KeyCombination.SHIFT_DOWN);
 
     static {
         if (OSUtil.isMacOS()) {
@@ -115,6 +125,7 @@ public class KeyboardUtil {
             search_keyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.META_DOWN);
             run_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.META_DOWN);
             stop_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
+            apply_keyCombination = new KeyCodeCombination(KeyCode.T, KeyCombination.META_DOWN);
         } else {
             save_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
             selectAll_keyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
@@ -126,6 +137,7 @@ public class KeyboardUtil {
             search_keyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
             run_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
             stop_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+            apply_keyCombination = new KeyCodeCombination(KeyCode.T, KeyCombination.META_DOWN);
         }
     }
 

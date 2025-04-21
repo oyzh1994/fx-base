@@ -50,7 +50,7 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
 
     @Override
     public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
+        TipAdapter.super.setTipText(tipText);
         if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
             this.setPromptText(tipText);
         }
