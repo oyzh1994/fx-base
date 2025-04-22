@@ -27,7 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Window;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -60,7 +60,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(String content) {
-        return confirm(I18nHelper.tips(), content);
+        return confirm(I18nHelper.tips(), content, StageManager.getFrontWindow());
     }
 
     /**
@@ -70,6 +70,17 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(String title, String content) {
+        return confirm(title, content, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param title   标题信息
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static boolean confirm(String title, String content, Window owner) {
         String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
@@ -78,6 +89,20 @@ public class MessageBox {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
             alert.setTitle(title);
             alert.setHeaderText(null);
+            alert.initOwner(owner);
+//            // 监听回车，触发按钮
+//            Scene scene = alert.getDialogPane().getScene();
+//            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+//                if (event.getCode() == KeyCode.ENTER) {
+//                    // 获取当前选中的按钮
+//                    ButtonType selectedButton = alert.getResult();
+//                    if (selectedButton != null) {
+//                        // 模拟点击当前选中的按钮
+//                        alert.setResult(selectedButton);
+//                        alert.hide();
+//                    }
+//                }
+//            });
             Optional<ButtonType> optional = alert.showAndWait();
             result.set(optional.map(b -> b.equals(button1)).orElse(false));
         });
@@ -201,10 +226,10 @@ public class MessageBox {
             });
         } else {// 使用swing消息框
             int msgType = switch (type) {
-                case NONE -> JOptionPane.NO_OPTION;
+                case NONE -> JOptionPane.PLAIN_MESSAGE;
                 case INFORMATION -> JOptionPane.INFORMATION_MESSAGE;
                 case WARNING -> JOptionPane.WARNING_MESSAGE;
-                case CONFIRMATION -> JOptionPane.YES_NO_OPTION;
+                case CONFIRMATION -> JOptionPane.QUESTION_MESSAGE;
                 case ERROR -> JOptionPane.ERROR_MESSAGE;
             };
             JOptionPane.showMessageDialog(null, content, title, msgType);

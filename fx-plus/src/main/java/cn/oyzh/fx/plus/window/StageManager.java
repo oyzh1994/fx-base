@@ -286,6 +286,11 @@ public class StageManager {
         }
     }
 
+    /**
+     * 获取前台窗口
+     *
+     * @return 前台窗口
+     */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
             if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {
