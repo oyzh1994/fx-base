@@ -51,11 +51,6 @@
             <name>sonatype</name>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>codehaus</id>
-            <name>codehaus</name>
-            <url>https://codehaus-mirror.ibiblio.org/maven2/</url>
-        </repository>
     </repositories>
 
     <dependencyManagement>
