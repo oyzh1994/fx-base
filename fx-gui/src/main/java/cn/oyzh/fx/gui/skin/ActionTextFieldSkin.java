@@ -3,12 +3,10 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 /**
  * 文本域皮肤扩展
@@ -60,7 +58,7 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         // 计算组件大小
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽 + x -按钮大小
-        double areaX = w + x - btnSize;
+        double areaX = w + x - btnSize - 5;
         // 设置位置
         super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
     }

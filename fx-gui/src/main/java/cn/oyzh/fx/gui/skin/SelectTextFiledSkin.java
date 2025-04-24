@@ -9,8 +9,6 @@ import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -141,7 +139,7 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     }
 
     public SelectTextFiledSkin(TextField textField) {
-        super(textField, new SelectSVGGlyph("16,13"));
+        super(textField, new SelectSVGGlyph("12,10"));
         this.button.disappear();
         this.button.setTipText(I18nHelper.select());
     }
@@ -209,5 +207,10 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
 
     public int getItemSize() {
         return this.getListView().getItemSize();
+    }
+
+    @Override
+    protected double getButtonSizeMax() {
+        return 10;
     }
 }
