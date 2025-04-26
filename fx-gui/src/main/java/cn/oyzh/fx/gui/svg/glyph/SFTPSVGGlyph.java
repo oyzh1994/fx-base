@@ -6,13 +6,13 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * @author oyzh
  * @since 2024/4/11
  */
-public class SftpSVGGlyph extends SVGGlyph {
+public class SFTPSVGGlyph extends SVGGlyph {
 
-    public SftpSVGGlyph() {
+    public SFTPSVGGlyph() {
         this.setUrl("/fx-svg/sftp.svg");
     }
 
-    public SftpSVGGlyph(String size) {
+    public SFTPSVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }
