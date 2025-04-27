@@ -135,6 +135,9 @@ public class TableViewMouseSelectHelper {
                 if (rectangle == null) {
                     rectangle = this.initRectangle();
                 }
+                if (rectangle == null) {
+                    return;
+                }
                 rectangle.setX(Math.min(startX.get(), endX));
                 rectangle.setY(Math.min(startY.get(), endY));
                 rectangle.setWidth(Math.abs(endX - startX.get()));

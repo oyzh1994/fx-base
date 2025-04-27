@@ -175,4 +175,9 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
             FXUtil.runPulse(() -> setHeaderHeight(height));
         }
     }
+
+    @Override
+    public void refresh() {
+        FXUtil.runLater(super::refresh);
+    }
 }
