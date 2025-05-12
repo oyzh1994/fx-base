@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls;
 
-import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.geometry.Pos;
