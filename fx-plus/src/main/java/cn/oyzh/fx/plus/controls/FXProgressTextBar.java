@@ -12,8 +12,16 @@ public class FXProgressTextBar extends FXHBox {
         this.setAlignment(Pos.CENTER_LEFT);
     }
 
+    public FXProgressBar progressBar() {
+        return (FXProgressBar) this.getFirstChild();
+    }
+
+    public FXLabel label() {
+        return (FXLabel) this.getChild(1);
+    }
+
     public void setProgress(double progress) {
-        FXProgressBar progressBar = (FXProgressBar) this.getFirstChild();
+        FXProgressBar progressBar = this.progressBar();
         progressBar.progress(progress);
     }
 
@@ -22,7 +30,7 @@ public class FXProgressTextBar extends FXHBox {
     }
 
     public void setText(String text) {
-        FXLabel label = (FXLabel) this.getChild(1);
+        FXLabel label = this.label();
         label.text(text);
     }
 
@@ -34,5 +42,9 @@ public class FXProgressTextBar extends FXHBox {
     public void setValue(double current, double total) {
         this.setText(current, total);
         this.setProgress(current, total);
+    }
+
+    public double getProgress() {
+        return this.progressBar().getProgress();
     }
 }
