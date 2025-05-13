@@ -154,10 +154,11 @@ public class StageManager {
      * @return StageAdapter
      */
     public static StageAdapter parseStage(Class<?> clazz) {
-        if (Primary_Stage != null && Primary_Stage.isShowing()) {
-            return parseStage(clazz, Primary_Stage);
-        }
-        return parseStage(clazz, null);
+        Window frontWindow = getFrontWindow();
+//        if (Primary_Stage != null && Primary_Stage.isShowing()) {
+//            return parseStage(clazz, Primary_Stage);
+//        }
+        return parseStage(clazz, frontWindow);
     }
 
     /**
