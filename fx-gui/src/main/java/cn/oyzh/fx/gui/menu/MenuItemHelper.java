@@ -48,7 +48,6 @@ import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 /**
@@ -237,19 +236,19 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem updateKey1(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.updateKey1(), new RenameSVGGlyph(iconSize), action);
+        return FXMenuItem.newItem(I18nHelper.updateKey1(), new EditSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem editConnect(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.editConnect(), new RenameSVGGlyph(iconSize), action);
+        return FXMenuItem.newItem(I18nHelper.editConnect(), new EditSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem editFile(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.editFile(), new RenameSVGGlyph(iconSize), action);
+        return FXMenuItem.newItem(I18nHelper.editFile(), new EditSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem editCollections(String iconSize, Runnable action) {
-        return FXMenuItem.newItem(I18nHelper.editCollections(), new RenameSVGGlyph(iconSize), action);
+        return FXMenuItem.newItem(I18nHelper.editCollections(), new EditSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem editGroup(String iconSize, Runnable action) {
