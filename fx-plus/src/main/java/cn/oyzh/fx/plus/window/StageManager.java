@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -9,6 +10,7 @@ import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 舞台工具类
@@ -154,11 +156,11 @@ public class StageManager {
      * @return StageAdapter
      */
     public static StageAdapter parseStage(Class<?> clazz) {
-        Window frontWindow = getFrontWindow();
+//        Window frontWindow = getFrontWindow();
 //        if (Primary_Stage != null && Primary_Stage.isShowing()) {
 //            return parseStage(clazz, Primary_Stage);
 //        }
-        return parseStage(clazz, frontWindow);
+        return parseStage(clazz, null);
     }
 
     /**
@@ -177,12 +179,18 @@ public class StageManager {
         StageAdapter stage = getStage(clazz);
         // 创建舞台
         if (stage == null) {
-            // 主舞台
-            if (attribute.usePrimary()) {
-                stage = new PrimaryStage(Primary_Stage, attribute, owner);
-            } else {// 一般舞台
-                stage = new StageExt(attribute, owner);
-            }
+            AtomicReference<StageAdapter> ref = new AtomicReference<>();
+            FXUtil.runWait(() -> {
+                // 主舞台
+                if (attribute.usePrimary()) {
+                    StageAdapter stage1 = new PrimaryStage(Primary_Stage, attribute, owner);
+                    ref.set(stage1);
+                } else {// 一般舞台
+                    StageAdapter stage1 = new StageExt(attribute, owner);
+                    ref.set(stage1);
+                }
+            });
+            stage = ref.get();
         }
         return stage;
     }
