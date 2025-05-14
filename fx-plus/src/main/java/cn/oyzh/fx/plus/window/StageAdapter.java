@@ -6,7 +6,6 @@ import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
-import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
@@ -15,7 +14,6 @@ import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
@@ -229,9 +227,18 @@ public interface StageAdapter extends WindowAdapter {
     }
 
     /**
+     * 是否全屏
+     *
+     * @return 结果
+     */
+    default boolean isFullScreen() {
+        return this.stage().isFullScreen();
+    }
+
+    /**
      * 是否最大化
      *
-     * @return 最大化
+     * @return 结果
      */
     default boolean isMaximized() {
         return this.stage().isMaximized();
@@ -519,26 +526,25 @@ public interface StageAdapter extends WindowAdapter {
      * 更新内容
      */
     default void updateContent() {
-       Stage stage = this.stage();
-        Parent parent = this.root();
-        if (parent != null) {
-           double width = NodeUtil.getWidth(stage);
-           double height = NodeUtil.getHeight(stage);
-           if (stage.isFullScreen() || stage.isMaximized()) {
-               // 先减再加，因为全屏和最大化这个宽高已经最大了
-               this.resizeRoot(width - 1, height - 1);
-               this.resizeRoot(width + 1, height + 1);
-               // this.resizeStage(width - 1, height - 1);
-               // this.resizeStage(width + 1, height + 1);
-           } else {
-               // 先加再减，避免边框异常
-               this.resizeRoot(width + 1, height + 1);
-               this.resizeRoot(width - 1, height - 1);
-               // this.resizeStage(width + 1, height + 1);
-               // this.resizeStage(width - 1, height - 1);
-           }
+        Parent root = this.root();
+        if (root != null) {
+            double width = NodeUtil.getWidth(root);
+            double height = NodeUtil.getHeight(root);
+            if (this.isFullScreen() || this.isMaximized()) {
+                // 先减再加，因为全屏和最大化这个宽高已经最大了
+                this.resizeRoot(width - 1, height - 1);
+                this.resizeRoot(width + 1, height + 1);
+                // this.resizeStage(width - 1, height - 1);
+                // this.resizeStage(width + 1, height + 1);
+            } else {
+                // 先加再减，避免边框异常
+                this.resizeRoot(width + 1, height + 1);
+                this.resizeRoot(width - 1, height - 1);
+                // this.resizeStage(width + 1, height + 1);
+                // this.resizeStage(width - 1, height - 1);
+            }
             // 递归布局
-            NodeUtil.layoutRecursive(parent);
+            NodeUtil.layoutRecursive(root);
         }
     }
 
