@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.domain;
 
 import cn.oyzh.common.object.ObjectCopier;
-import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.opacity.OpacityConfig;
@@ -332,9 +331,9 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 字体配置
      */
     public FontConfig fontConfig() {
-        if (this.fontWeight == null && this.fontFamily == null && this.fontSize == null) {
-            return null;
-        }
+//        if (this.fontWeight == null && this.fontFamily == null && this.fontSize == null) {
+//            return null;
+//        }
         FontConfig config = new FontConfig();
         if (StringUtil.isNotBlank(this.fontFamily)) {
             config.setFamily(this.fontFamily);
@@ -360,9 +359,9 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 字体配置
      */
     public FontConfig editorFontConfig() {
-        if (this.editorFontWeight == null && this.editorFontFamily == null && this.editorFontSize == null) {
-            return null;
-        }
+//        if (this.editorFontWeight == null && this.editorFontFamily == null && this.editorFontSize == null) {
+//            return null;
+//        }
         FontConfig config = new FontConfig();
         if (StringUtil.isNotBlank(this.editorFontFamily)) {
             config.setFamily(this.editorFontFamily);
@@ -388,9 +387,9 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 字体配置
      */
     public FontConfig terminalFontConfig() {
-        if (this.terminalFontWeight == null && this.terminalFontFamily == null && this.terminalFontSize == null) {
-            return null;
-        }
+//        if (this.terminalFontWeight == null && this.terminalFontFamily == null && this.terminalFontSize == null) {
+//            return null;
+//        }
         FontConfig config = new FontConfig();
         if (StringUtil.isNotBlank(this.terminalFontFamily)) {
             config.setFamily(this.terminalFontFamily);
@@ -677,7 +676,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public String getEditorFontFamily() {
-        return this.editorFontFamily == null ? defaultEditorFontFamily() : this.editorFontFamily;
+        return StringUtil.isBlank(this.editorFontFamily) ? defaultEditorFontFamily() : this.editorFontFamily;
     }
 
     public int getEditorFontWeight() {
@@ -705,7 +704,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public String getTerminalFontFamily() {
-        return this.terminalFontFamily == null ? defaultTerminalFontFamily() : this.terminalFontFamily;
+        return StringUtil.isBlank(this.terminalFontFamily) ? defaultTerminalFontFamily() : this.terminalFontFamily;
     }
 
     public static byte defaultTerminalFontSize() {
@@ -735,7 +734,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public String getQueryFontFamily() {
-        return this.queryFontFamily == null ? defaultQueryFontFamily() : this.queryFontFamily;
+        return StringUtil.isBlank(this.queryFontFamily) ? defaultQueryFontFamily() : this.queryFontFamily;
     }
 
     public static byte defaultQueryFontSize() {
