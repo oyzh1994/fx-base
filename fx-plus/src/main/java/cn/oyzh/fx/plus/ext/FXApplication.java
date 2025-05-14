@@ -80,6 +80,7 @@ public abstract class FXApplication extends Application {
             JulLog.info("运行时间:{}ms-------------------------------", runAlive);
             super.stop();
             JulLog.info("{} stop.", SysConst.projectName());
+            System.exit(0);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
