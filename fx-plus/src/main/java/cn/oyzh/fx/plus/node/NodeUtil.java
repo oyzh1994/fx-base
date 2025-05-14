@@ -16,6 +16,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumnBase;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
@@ -37,17 +38,17 @@ public class NodeUtil {
      */
     public static void layoutRecursive(EventTarget node) {
         if (node instanceof TabPane tabPane) {
-            tabPane.layout();
+            tabPane.requestLayout();
             for (Tab tab : tabPane.getTabs()) {
                 layoutRecursive(tab.getContent());
             }
         } else if (node instanceof Pane pane) {
-            pane.layout();
+            pane.requestLayout();
             for (Node node1 : pane.getChildren()) {
                 layoutRecursive(node1);
             }
         } else if (node instanceof Parent parent) {
-            parent.layout();
+            parent.requestLayout();
             for (Node node1 : parent.getChildrenUnmodifiable()) {
                 layoutRecursive(node1);
             }

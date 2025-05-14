@@ -519,20 +519,24 @@ public interface StageAdapter extends WindowAdapter {
      * 更新内容
      */
     default void updateContent() {
-//        Stage stage = this.stage();
+       Stage stage = this.stage();
         Parent parent = this.root();
         if (parent != null) {
-//            double width = NodeUtil.getWidth(stage);
-//            double height = NodeUtil.getHeight(stage);
-//            if (stage.isFullScreen() || stage.isMaximized()) {
-//                // 先减再加，因为全屏和最大化这个宽高已经最大了
-//                this.resizeStage(width - 1, height - 1);
-//                this.resizeStage(width + 1, height + 1);
-//            } else {
-//                // 先加再减，避免边框异常
-//                this.resizeStage(width + 1, height + 1);
-//                this.resizeStage(width - 1, height - 1);
-//            }
+           double width = NodeUtil.getWidth(stage);
+           double height = NodeUtil.getHeight(stage);
+           if (stage.isFullScreen() || stage.isMaximized()) {
+               // 先减再加，因为全屏和最大化这个宽高已经最大了
+               this.resizeRoot(width - 1, height - 1);
+               this.resizeRoot(width + 1, height + 1);
+               // this.resizeStage(width - 1, height - 1);
+               // this.resizeStage(width + 1, height + 1);
+           } else {
+               // 先加再减，避免边框异常
+               this.resizeRoot(width + 1, height + 1);
+               this.resizeRoot(width - 1, height - 1);
+               // this.resizeStage(width + 1, height + 1);
+               // this.resizeStage(width - 1, height - 1);
+           }
             // 递归布局
             NodeUtil.layoutRecursive(parent);
         }
