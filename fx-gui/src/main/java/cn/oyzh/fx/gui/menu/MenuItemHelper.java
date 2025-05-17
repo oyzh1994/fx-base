@@ -627,6 +627,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.cancelTransport(), new CancelSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem retry(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.retry(), new RestartSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem removeTransport(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.removeTransport(), new DeleteSVGGlyph(iconSize), action);
     }
