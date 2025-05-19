@@ -7,6 +7,7 @@ import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -224,17 +225,21 @@ public class PkgUtil {
         if (config.isVerbose()) {
             cmdStr += " --verbose";
         }
-        if (config.isWinMenu()) {
-            cmdStr += " --win-menu";
+        if (OSUtil.isWindows()) {
+            if (config.isWinMenu()) {
+                cmdStr += " --win-menu";
+            }
+            if (config.isWinShortcut()) {
+                cmdStr += " --win-shortcut";
+            }
+            if (config.isWinDirChooser()) {
+                cmdStr += " --win-dir-chooser";
+            }
         }
-        if (config.isWinShortcut()) {
-            cmdStr += " --win-shortcut";
-        }
-        if (config.isWinDirChooser()) {
-            cmdStr += " --win-dir-chooser";
-        }
-        if (config.getMacPackageIdentifier() != null) {
-            cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
+        if (OSUtil.isMacOS()) {
+            if (config.getMacPackageIdentifier() != null) {
+                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
+            }
         }
         if (config.getVendor() != null) {
             cmdStr += " --vendor " + config.getVendor();
