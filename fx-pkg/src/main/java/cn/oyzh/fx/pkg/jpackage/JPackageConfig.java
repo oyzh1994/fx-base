@@ -86,11 +86,6 @@ public class JPackageConfig {
      */
     private String macPackageIdentifier;
 
-    /**
-     * linux打包属性、仅linux
-     */
-    private String linuxPackageProperty;
-
     public String destParent() {
         return new File(dest).getParent();
     }
@@ -213,13 +208,5 @@ public class JPackageConfig {
 
     public void setMacPackageIdentifier(String macPackageIdentifier) {
         this.macPackageIdentifier = macPackageIdentifier;
-    }
-
-    public String getLinuxPackageProperty() {
-        return linuxPackageProperty;
-    }
-
-    public void setLinuxPackageProperty(String linuxPackageProperty) {
-        this.linuxPackageProperty = linuxPackageProperty;
     }
 }

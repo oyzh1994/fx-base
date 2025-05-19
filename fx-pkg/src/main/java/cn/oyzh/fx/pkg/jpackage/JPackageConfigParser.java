@@ -70,10 +70,6 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (macPackageIdentifier != null) {
             config.setMacPackageIdentifier(macPackageIdentifier);
         }
-        String linuxPackageProperty = object.getStr("linux-package-property");
-        if (linuxPackageProperty != null) {
-            config.setLinuxPackageProperty(linuxPackageProperty);
-        }
         String description = object.getStr("description");
         if (description != null) {
             config.setDescription(description);
