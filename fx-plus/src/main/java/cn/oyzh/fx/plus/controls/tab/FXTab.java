@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
@@ -107,5 +108,22 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
 
     protected void onTabCloseRequest(Event event) {
 
+    }
+
+    public void setAppendText(String appendText) {
+        if (StringUtil.isEmpty(appendText)) {
+            return;
+        }
+        String text = this.getText();
+        if (StringUtil.isEmpty(text)) {
+            this.setText(appendText);
+        } else {
+            this.setText(text + appendText);
+        }
+        this.setProp("appendText", appendText);
+    }
+
+    public String getAppendText() {
+        return this.getProp("appendText");
     }
 }
