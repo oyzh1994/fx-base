@@ -209,7 +209,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 结果
      */
     public boolean isExitTray() {
-        return this.exitMode == null || this.exitMode == 0;
+        return this.exitMode != null && this.exitMode == 0;
     }
 
     /**
@@ -227,7 +227,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 结果
      */
     public boolean isExitDirectly() {
-        return this.exitMode != null && this.exitMode == 2;
+        return this.exitMode == null || this.exitMode == 2;
     }
 
     /**
