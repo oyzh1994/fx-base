@@ -42,7 +42,7 @@ public interface PopupAdapter extends WindowAdapter {
      *
      * @param listener 弹窗监听器
      */
-    default void initListener( PopupListener listener) {
+    default void initListener(PopupListener listener) {
         // 设置事件
         listener.onPopupInitialize(this);
         this.popup().setOnShown(listener::onWindowShown);
@@ -119,14 +119,14 @@ public interface PopupAdapter extends WindowAdapter {
      *
      * @param owner 父组件
      */
-    void showPopup( Node owner);
+    void showPopup(Node owner);
 
     /**
      * 显示弹窗
      *
      * @param owner 父组件
      */
-    void showPopup( Node owner, double x, double y);
+    void showPopup(Node owner, double x, double y);
 
     /**
      * 获取内容
@@ -156,7 +156,7 @@ public interface PopupAdapter extends WindowAdapter {
      *
      * @param attribute 弹窗属性
      */
-    default void init( PopupAttribute attribute) {
+    default void init(PopupAttribute attribute) {
         // 初始化加载器
         FXMLLoaderExt loader = new FXMLLoaderExt();
         // 加载根节点
