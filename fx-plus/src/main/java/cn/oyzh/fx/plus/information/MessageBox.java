@@ -60,7 +60,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(String content) {
-        return confirm(I18nHelper.tips(), content, StageManager.getFrontWindow());
+        return confirm(I18nHelper.tips(), content, null, StageManager.getFrontWindow());
     }
 
     /**
@@ -70,7 +70,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(String title, String content) {
-        return confirm(title, content, StageManager.getFrontWindow());
+        return confirm(title, content, null, StageManager.getFrontWindow());
     }
 
     /**
@@ -78,9 +78,21 @@ public class MessageBox {
      *
      * @param title   标题信息
      * @param content 文本信息
-     * @param owner   父窗口
+     * @param header  头信息
      */
-    public static boolean confirm(String title, String content, Window owner) {
+    public static boolean confirm(String title, String content, String header) {
+        return confirm(title, content, header, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param title      标题信息
+     * @param content    文本信息
+     * @param headerText 头信息
+     * @param owner      父窗口
+     */
+    public static boolean confirm(String title, String content, String headerText, Window owner) {
         String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
@@ -88,8 +100,8 @@ public class MessageBox {
             ButtonType button2 = new ButtonType(I18nHelper.cancel());
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
             alert.setTitle(title);
-            alert.setHeaderText(null);
             alert.initOwner(owner);
+            alert.setHeaderText(headerText);
 //            // 监听回车，触发按钮
 //            Scene scene = alert.getDialogPane().getScene();
 //            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
