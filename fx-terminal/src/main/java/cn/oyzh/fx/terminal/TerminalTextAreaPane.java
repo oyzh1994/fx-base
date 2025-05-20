@@ -182,7 +182,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 
     @Override
     public TerminalMouseHandler mouseHandler() {
-        return null;
+        return this.mouseHandler;
     }
 
     @Override
@@ -209,12 +209,12 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 
     @Override
     public TerminalHistoryHandler historyHandler() {
-        return null;
+        return this.historyHandler;
     }
 
     @Override
     public void historyHandler(TerminalHistoryHandler handler) {
-
+        this.historyHandler = handler;
     }
 
     @Override
