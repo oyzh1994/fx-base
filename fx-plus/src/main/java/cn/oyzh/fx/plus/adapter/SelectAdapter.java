@@ -235,7 +235,7 @@ public interface SelectAdapter<T> extends PropAdapter {
      *
      * @param listener 监听器
      */
-    default void selectedIndexChanged( ChangeListener<Number> listener) {
+    default void selectedIndexChanged(ChangeListener<Number> listener) {
         if (this instanceof TreeView<?> node) {
             node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
@@ -562,9 +562,13 @@ public interface SelectAdapter<T> extends PropAdapter {
 
     /**
      * 移除已选中节点
+     *
+     * @return 选中的节点
      */
-    default void removeSelectedItem() {
-        this.removeItem(this.getSelectedItem());
+    default T removeSelectedItem() {
+        T item = this.getSelectedItem();
+        this.removeItem(item);
+        return item;
     }
 
     /**
