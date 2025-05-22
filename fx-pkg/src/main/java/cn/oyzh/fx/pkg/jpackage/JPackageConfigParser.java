@@ -54,6 +54,10 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (vendor != null) {
             config.setVerbose(verbose);
         }
+        String javaOptions = object.getString("java-options");
+        if (javaOptions != null) {
+            config.setJavaOptions(javaOptions);
+        }
         Boolean winMenu = object.getBoolean("win-menu");
         if (winMenu != null) {
             config.setWinMenu(winMenu);

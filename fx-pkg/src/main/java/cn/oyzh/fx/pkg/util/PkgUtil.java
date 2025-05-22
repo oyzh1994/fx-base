@@ -225,24 +225,11 @@ public class PkgUtil {
         if (config.isVerbose()) {
             cmdStr += " --verbose";
         }
-        if (OSUtil.isWindows()) {
-            if (config.isWinMenu()) {
-                cmdStr += " --win-menu";
-            }
-            if (config.isWinShortcut()) {
-                cmdStr += " --win-shortcut";
-            }
-            if (config.isWinDirChooser()) {
-                cmdStr += " --win-dir-chooser";
-            }
-        }
-        if (OSUtil.isMacOS()) {
-            if (config.getMacPackageIdentifier() != null) {
-                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
-            }
-        }
         if (config.getVendor() != null) {
             cmdStr += " --vendor " + config.getVendor();
+        }
+        if (config.getJavaOptions() != null) {
+            cmdStr += " --java-options " + config.getJavaOptions();
         }
         if (config.getDescription() != null) {
             cmdStr += " --description " + config.getDescription();
@@ -267,6 +254,22 @@ public class PkgUtil {
         }
         if (config.getRuntimeImage() != null) {
             cmdStr += " --runtime-image " + config.getRuntimeImage();
+        }
+        if (OSUtil.isWindows()) {
+            if (config.isWinMenu()) {
+                cmdStr += " --win-menu";
+            }
+            if (config.isWinShortcut()) {
+                cmdStr += " --win-shortcut";
+            }
+            if (config.isWinDirChooser()) {
+                cmdStr += " --win-dir-chooser";
+            }
+        }
+        if (OSUtil.isMacOS()) {
+            if (config.getMacPackageIdentifier() != null) {
+                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
+            }
         }
         cmdStr += " -d " + config.getDest();
         return cmdStr;

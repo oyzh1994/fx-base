@@ -62,9 +62,14 @@ public class JPackageConfig {
     private String runtimeImage;
 
     /**
-     * 过程信息
+     * 详细信息
      */
     private boolean verbose = true;
+
+    /**
+     * vm参数
+     */
+    private String javaOptions;
 
     /**
      * 是否创建开始菜单、仅windows
@@ -208,5 +213,13 @@ public class JPackageConfig {
 
     public void setMacPackageIdentifier(String macPackageIdentifier) {
         this.macPackageIdentifier = macPackageIdentifier;
+    }
+
+    public String getJavaOptions() {
+        return javaOptions;
+    }
+
+    public void setJavaOptions(String javaOptions) {
+        this.javaOptions = javaOptions;
     }
 }
