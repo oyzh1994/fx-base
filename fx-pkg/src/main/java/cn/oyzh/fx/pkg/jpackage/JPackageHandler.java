@@ -68,7 +68,7 @@ public class JPackageHandler implements PackHandler {
             jPackageConfig.setName(packConfig.getAppName());
 //            jPackageConfig.setName(packConfig.getAppName() + "_v" + packConfig.appVersion());
         } else {
-            name = name.replace("${projectName}", packConfig.getAppName());
+            name = name.replace("${appName}", packConfig.getAppName());
             name = name.replace("${os.arch}", System.getProperty("os.arch"));
             jPackageConfig.setName(name);
         }
