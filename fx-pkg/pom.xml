@@ -89,11 +89,19 @@
         <!--     <artifactId>fastjson</artifactId> -->
         <!-- </dependency> -->
 
-        <!-- json工具类库 -->
+<!--        &lt;!&ndash; json工具类库 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>cn.hutool</groupId>-->
+<!--            <artifactId>hutool-json</artifactId>-->
+<!--            <version>${hutool.version}</version>-->
+<!--        </dependency>-->
+
+        <!-- json类库 -->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-json</artifactId>
-            <version>${hutool.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- yaml库 -->

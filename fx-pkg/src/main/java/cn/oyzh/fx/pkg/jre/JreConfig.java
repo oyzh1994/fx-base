@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.jre;
 
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

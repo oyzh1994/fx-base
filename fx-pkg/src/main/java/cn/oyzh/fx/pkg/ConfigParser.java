@@ -1,8 +1,14 @@
 package cn.oyzh.fx.pkg;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
+import cn.oyzh.common.file.FileNameUtil;
+import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.common.util.IOUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * 配置解析器
@@ -19,7 +25,17 @@ public interface ConfigParser<C> {
      * @return 配置类
      */
     default C parse(String configFile) {
-        JSONObject object = JSONUtil.parseObj(FileUtil.readUtf8String(configFile));
+        String extName = FileNameUtil.extName(configFile);
+        JSONObject object = null;
+        if (FileNameUtil.isJsonType(extName)) {
+            object = JSONObject.parse(FileUtil.readUtf8String(configFile));
+        } else if (FileNameUtil.isYamlType(extName)) {
+            Yaml yaml = new Yaml();
+            InputStream in = cn.oyzh.common.file.FileUtil.getInputStream(configFile);
+            Map<String, Object> yamlData = yaml.load(in);
+            IOUtil.close(in);
+            object = JSONObject.parseObject(JSON.toJSONString(yamlData));
+        }
         return this.parse(object);
     }
 

@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.jdeps;
 
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.util.HashSet;
 
@@ -31,9 +31,9 @@ public class JDepsConfigParser implements ConfigParser<JDepsConfig> {
                 config.getExcludes().add(o.toString());
             }
         }
-        config.setMultiRelease(object.getInt("multi-release"));
-        config.setSummary(object.getBool("summary", true));
-        config.setVerbose(object.getBool("verbose", false));
+        config.setMultiRelease(object.getInteger("multi-release"));
+        config.setSummary(object.getBooleanValue("summary", true));
+        config.setVerbose(object.getBooleanValue("verbose", false));
         return config;
     }
 

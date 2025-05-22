@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.jar;
 
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.util.HashSet;
 
@@ -24,7 +24,7 @@ public class JarConfigParser implements ConfigParser<JarConfig> {
                 config.getExcludes().add(o.toString());
             }
         }
-        config.setRemoveEmpty(object.getBool("removeEmpty", true));
+        config.setRemoveEmpty(object.getBooleanValue("removeEmpty", true));
         return config;
     }
 

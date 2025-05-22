@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.config;
 
-import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
 import cn.oyzh.fx.pkg.comporess.CompressConfig;
 import cn.oyzh.fx.pkg.comporess.CompressConfigParser;
@@ -15,6 +14,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageConfigParser;
 import cn.oyzh.fx.pkg.jre.JreConfig;
 import cn.oyzh.fx.pkg.jre.JreConfigParser;
 import cn.oyzh.fx.pkg.packr.PackrConfigParser;
+import com.alibaba.fastjson2.JSONObject;
 import com.badlogicgames.packr.PackrConfig;
 
 /**
@@ -30,16 +30,16 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         PackConfig config = new PackConfig();
 
         // 扩展配置
-        config.setDest(object.getStr("dest"));
-        config.setAppName(object.getStr("appName"));
-        config.setAppIcon(object.getStr("appIcon"));
-        config.setAppVersion(object.getStr("appVersion"));
-        config.setMainJar(object.getStr("mainJar"));
-        config.setJdkPath(object.getStr("jdkPath"));
-        config.setJrePath(object.getStr("jrePath"));
-        config.setPlatform(object.getStr("platform"));
-        config.setPackMode(object.getStr("packMode"));
-        config.setBuildType(object.getStr("buildType"));
+        config.setDest(object.getString("dest"));
+        config.setAppName(object.getString("appName"));
+        config.setAppIcon(object.getString("appIcon"));
+        config.setAppVersion(object.getString("appVersion"));
+        config.setMainJar(object.getString("mainJar"));
+        config.setJdkPath(object.getString("jdkPath"));
+        config.setJrePath(object.getString("jrePath"));
+        config.setPlatform(object.getString("platform"));
+        config.setPackMode(object.getString("packMode"));
+        config.setBuildType(object.getString("buildType"));
 
         if (object.containsKey("jre")) {
             JreConfig jreConfig = JreConfigParser.parseConfig(object.getJSONObject("jre"));

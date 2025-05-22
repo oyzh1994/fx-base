@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.packr;
 
-import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
+import com.alibaba.fastjson2.JSONObject;
 import com.badlogicgames.packr.PackrConfig;
 
 import java.io.File;
@@ -19,22 +19,22 @@ public class PackrConfigParser implements ConfigParser<PackrConfig> {
     public PackrConfig parse(JSONObject object) {
         PackrConfig packrConfig = new PackrConfig();
         // 基础配置
-        packrConfig.jdk = object.getStr("jdk");
-        packrConfig.mainClass = object.getStr("mainClass");
-        packrConfig.executable = object.getStr("executable");
+        packrConfig.jdk = object.getString("jdk");
+        packrConfig.mainClass = object.getString("mainClass");
+        packrConfig.executable = object.getString("executable");
         if (object.containsKey("outDir")) {
-            packrConfig.outDir = new File(object.getStr("outDir"));
+            packrConfig.outDir = new File(object.getString("outDir"));
         }
         if (object.containsKey("platform")) {
-            packrConfig.platform = PackrConfig.Platform.byDesc(object.getStr("platform"));
+            packrConfig.platform = PackrConfig.Platform.byDesc(object.getString("platform"));
         }
         if (object.containsKey("iconResource")) {
-            packrConfig.iconResource = new File(object.getStr("iconResource"));
+            packrConfig.iconResource = new File(object.getString("iconResource"));
         }
-        packrConfig.bundleIdentifier = object.getStr("bundleIdentifier");
-        packrConfig.verbose = object.getBool("verbose", false);
+        packrConfig.bundleIdentifier = object.getString("bundleIdentifier");
+        packrConfig.verbose = object.getBooleanValue("verbose", false);
         packrConfig.classpath = object.getJSONArray("classpath").toList(String.class);
-        packrConfig.useZgcIfSupportedOs = object.getBool("useZgcIfSupportedOs", true);
+        packrConfig.useZgcIfSupportedOs = object.getBooleanValue("useZgcIfSupportedOs", true);
         if (object.containsKey("vmArgs")) {
             packrConfig.vmArgs = object.getJSONArray("vmArgs").toList(String.class);
         } else {
