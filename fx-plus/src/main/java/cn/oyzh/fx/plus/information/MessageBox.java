@@ -311,12 +311,18 @@ public class MessageBox {
     public static String prompt(String title, String initText) {
         title = title == null ? I18nHelper.tips() : title;
         initText = initText == null ? "" : initText;
-        TextInputDialog dialog = new TextInputDialog(initText);
-        dialog.setTitle(title);
-        dialog.setGraphic(null);
-        dialog.setHeaderText(null);
-        Optional<String> result = dialog.showAndWait();
-        return result.orElse(null);
+        String finalTitle = title;
+        String finalInitText = initText;
+        AtomicReference<String> ref = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            TextInputDialog dialog = new TextInputDialog(finalInitText);
+            dialog.setTitle(finalTitle);
+            dialog.setGraphic(null);
+            dialog.setHeaderText(null);
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(ref::set);
+        });
+        return ref.get();
     }
 
     /**
