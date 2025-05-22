@@ -3,6 +3,8 @@ package cn.oyzh.fx.pkg.jpackage;
 import cn.oyzh.fx.pkg.ConfigParser;
 import com.alibaba.fastjson2.JSONObject;
 
+import java.util.List;
+
 /**
  * JPackage配置
  *
@@ -54,7 +56,7 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (vendor != null) {
             config.setVerbose(verbose);
         }
-        String javaOptions = object.getString("java-options");
+        List<String> javaOptions = object.getList("java-options", String.class);
         if (javaOptions != null) {
             config.setJavaOptions(javaOptions);
         }

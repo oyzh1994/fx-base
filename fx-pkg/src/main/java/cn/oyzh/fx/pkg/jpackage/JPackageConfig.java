@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.jpackage;
 
 
 import java.io.File;
+import java.util.List;
 
 /**
  * JPackage配置
@@ -69,7 +70,7 @@ public class JPackageConfig {
     /**
      * vm参数
      */
-    private String javaOptions;
+    private List<String> javaOptions;
 
     /**
      * 是否创建开始菜单、仅windows
@@ -215,11 +216,11 @@ public class JPackageConfig {
         this.macPackageIdentifier = macPackageIdentifier;
     }
 
-    public String getJavaOptions() {
+    public List<String> getJavaOptions() {
         return javaOptions;
     }
 
-    public void setJavaOptions(String javaOptions) {
+    public void setJavaOptions(List<String> javaOptions) {
         this.javaOptions = javaOptions;
     }
 }

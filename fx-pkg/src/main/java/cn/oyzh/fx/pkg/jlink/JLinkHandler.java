@@ -71,6 +71,10 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         builder.timeout(30_000);
         ProcessExecResult result = builder.exec();
         JulLog.info("JLink result:{}", result);
+        if (!result.isSuccess()) {
+            JulLog.error("JLink error:{}", result.getError());
+            throw new Exception("JLink error:" + result.getError());
+        }
         // 更新jre路径
         packConfig.setJlinkJre(jLinkConfig.getOutput());
         this.executed = true;

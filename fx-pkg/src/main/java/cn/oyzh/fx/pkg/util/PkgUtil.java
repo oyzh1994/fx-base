@@ -228,8 +228,13 @@ public class PkgUtil {
         if (config.getVendor() != null) {
             cmdStr += " --vendor " + config.getVendor();
         }
-        if (config.getJavaOptions() != null) {
-            cmdStr += " --java-options " + config.getJavaOptions();
+        if (CollectionUtil.isNotEmpty(config.getJavaOptions())) {
+            for (String javaOption : config.getJavaOptions()) {
+                String[] options = javaOption.split(" ");
+                for (String option : options) {
+                    cmdStr += " --java-options " + option;
+                }
+            }
         }
         if (config.getDescription() != null) {
             cmdStr += " --description " + config.getDescription();

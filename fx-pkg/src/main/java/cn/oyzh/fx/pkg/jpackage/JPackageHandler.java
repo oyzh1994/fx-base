@@ -91,5 +91,9 @@ public class JPackageHandler implements PackHandler {
         builder.timeout(30_000);
         ProcessExecResult result = builder.exec();
         JulLog.info("JPackage result:{}", result);
+        if (!result.isSuccess()) {
+            JulLog.error("JPackage error:{}", result.getError());
+            throw new Exception("JPackage error:" + result.getError());
+        }
     }
 }
