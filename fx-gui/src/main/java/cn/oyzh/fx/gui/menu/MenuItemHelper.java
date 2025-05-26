@@ -7,6 +7,7 @@ import cn.oyzh.fx.gui.svg.glyph.ClearSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CollapseAllSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CopySVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CutSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
@@ -522,6 +523,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem copyFile(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.copyFile(), new CopySVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem cutFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.cutFile(), new CutSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem paste(Runnable action) {
