@@ -19,6 +19,9 @@ public class ParentTabController extends RichTabController {
     protected void setTab(RichTab tab) {
         super.setTab(tab);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             if (controller instanceof SubTabController subTabController) {
                 subTabController.parent(this);
             }
@@ -30,6 +33,9 @@ public class ParentTabController extends RichTabController {
     public void onTabInit(RichTab tab) {
         super.onTabInit(tab);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             controller.onTabInit(tab);
         }
     }
@@ -38,6 +44,9 @@ public class ParentTabController extends RichTabController {
     public void onTabClosed(Event event) {
         super.onTabClosed(event);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             controller.onTabClosed(event);
         }
     }
@@ -46,6 +55,9 @@ public class ParentTabController extends RichTabController {
     public void initialize(URL location, ResourceBundle resourceBundle) {
         super.initialize(location, resourceBundle);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             controller.initialize(location, resourceBundle);
         }
     }
@@ -54,6 +66,9 @@ public class ParentTabController extends RichTabController {
     protected void bindListeners() {
         super.bindListeners();
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             controller.bindListeners();
         }
     }
