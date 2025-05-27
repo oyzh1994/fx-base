@@ -451,9 +451,12 @@ public interface NodeAdapter extends EventTarget {
                 return scene.getWindow();
             }
         } else if (this instanceof Tab node) {
-            Scene scene = node.getContent().getScene();
-            if (scene != null) {
-                return scene.getWindow();
+            TabPane tabPane = node.getTabPane();
+            if (tabPane != null) {
+                Scene scene = tabPane.getScene();
+                if (scene != null) {
+                    return scene.getWindow();
+                }
             }
         }
         return null;

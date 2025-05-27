@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.i18n.I18nManager;
 import javafx.scene.Node;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -57,6 +58,14 @@ public class NodeManager {
                     }
                 });
                 node1.sceneProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue == null) {
+                        lifeCycle.onNodeDestroy();
+                    } else {
+                        lifeCycle.onNodeInitialize();
+                    }
+                });
+            } else if (node instanceof Tab node1) {
+                node1.tabPaneProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue == null) {
                         lifeCycle.onNodeDestroy();
                     } else {

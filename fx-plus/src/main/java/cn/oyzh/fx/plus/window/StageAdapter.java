@@ -462,7 +462,7 @@ public interface StageAdapter extends WindowAdapter {
                 if (!newValue) {
                     this.onWindowClosed();
 //                } else {
-//                    FXUtil.runPulse(this::updateContent);
+//                    this.updateContentInner();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -480,12 +480,10 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
-            // 更新内容
-            Runnable task = () -> FXUtil.runPulse(this::updateContent);
             // 最大化
-            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> task.run());
+            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> this.updateContentLater());
             // 全屏
-            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> task.run());
+            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> this.updateContentLater());
             // 初始化
             NodeManager.init(this);
         }
@@ -520,6 +518,14 @@ public interface StageAdapter extends WindowAdapter {
 //                oldValue.setEffect(null);
 //            }
 //        });
+    }
+
+    /**
+     * 更新内容，延迟处理
+     */
+    default void updateContentLater() {
+        // 更新内容
+        FXUtil.runPulse(this::updateContent);
     }
 
     /**

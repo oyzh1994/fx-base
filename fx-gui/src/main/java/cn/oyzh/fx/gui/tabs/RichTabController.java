@@ -6,6 +6,9 @@ import cn.oyzh.event.EventUtil;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
+import javafx.stage.Window;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -23,12 +26,45 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
 
     private Reference<RichTab> tabReference;
 
+    /**
+     * 设置tab
+     * @param tab tab
+     */
     protected void setTab(RichTab tab) {
         this.tabReference = new WeakReference<>(tab);
     }
 
+    /**
+     * 获取tab
+     * @return RichTab
+     */
     public RichTab getTab() {
         return this.tabReference != null ? this.tabReference.get() : null;
+    }
+
+    /**
+     * 获取TabPane
+     * @return TabPane
+     */
+    public TabPane getTabPane() {
+        RichTab tab = this.getTab();
+        if (tab == null) {
+            return null;
+        }
+        return tab.getTabPane();
+    }
+
+    /**
+     * 获取窗口
+     * @return Window
+     */
+    public Window getWindow() {
+        TabPane tabPane = this.getTabPane();
+        if (tabPane == null) {
+            return null;
+        }
+        Scene scene = tabPane.getScene();
+        return scene == null ? null : scene.getWindow();
     }
 
     public void closeTab() {

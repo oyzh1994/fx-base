@@ -82,6 +82,38 @@ public class StageManager {
     }
 
     /**
+     * 是否stage适配器
+     *
+     * @param window 窗口
+     * @return 结果
+     */
+    public static boolean isAdapter(Window window) {
+        if (window == null) {
+            return false;
+        }
+        if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
+            return window.getProperties().get(REF_ATTR) != null;
+        }
+        return false;
+    }
+
+    /**
+     * 获取stage适配器
+     *
+     * @param window 窗口
+     * @return stage适配器
+     */
+    public static StageAdapter getAdapter(Window window) {
+        if (window == null) {
+            return null;
+        }
+        if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
+            return (StageAdapter) window.getProperties().get(REF_ATTR);
+        }
+        return null;
+    }
+
+    /**
      * 获取舞台
      *
      * @param controllerClass controller类
