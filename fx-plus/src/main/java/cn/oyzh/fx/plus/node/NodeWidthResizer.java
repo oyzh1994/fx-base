@@ -479,4 +479,59 @@ public class NodeWidthResizer {
             this.eventNode.setCursor(cursor);
         }
     }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param cursor          鼠标样式
+     * @param resizeTriggered 触发函数
+     * @return NodeWidthResizer
+     */
+    public static NodeWidthResizer of(Node eventNode, Cursor cursor, Consumer<Float> resizeTriggered) {
+        NodeWidthResizer resizer = new NodeWidthResizer(eventNode, cursor, resizeTriggered);
+        resizer.initResizeEvent();
+        return resizer;
+    }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param resizeTriggered 触发函数
+     * @return NodeWidthResizer
+     */
+    public static NodeWidthResizer of(Node eventNode, Consumer<Float> resizeTriggered) {
+        return of(eventNode, Cursor.DEFAULT, resizeTriggered);
+    }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param cursor          鼠标样式
+     * @param resizeTriggered 触发函数
+     * @param minWidth        最小宽
+     * @param maxWidth        最大宽
+     * @return NodeWidthResizer
+     */
+    public static NodeWidthResizer of(Node eventNode, Cursor cursor, Consumer<Float> resizeTriggered, float minWidth, float maxWidth) {
+        NodeWidthResizer resizer = new NodeWidthResizer(eventNode, cursor, resizeTriggered);
+        resizer.widthLimit(minWidth, maxWidth);
+        resizer.initResizeEvent();
+        return resizer;
+    }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param resizeTriggered 触发函数
+     * @param minWidth        最小宽
+     * @param maxWidth        最大宽
+     * @return NodeWidthResizer
+     */
+    public static NodeWidthResizer of(Node eventNode, Consumer<Float> resizeTriggered, float minWidth, float maxWidth) {
+        return of(eventNode, Cursor.DEFAULT, resizeTriggered, minWidth, maxWidth);
+    }
 }

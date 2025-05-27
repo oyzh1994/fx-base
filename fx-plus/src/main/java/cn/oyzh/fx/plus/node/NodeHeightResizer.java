@@ -455,4 +455,59 @@ public class NodeHeightResizer {
             this.eventNode.setCursor(cursor);
         }
     }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param cursor          鼠标样式
+     * @param resizeTriggered 触发函数
+     * @return NodeHeightResizer
+     */
+    public static NodeHeightResizer of(Node eventNode, Cursor cursor, Consumer<Float> resizeTriggered) {
+        NodeHeightResizer resizer = new NodeHeightResizer(eventNode, cursor, resizeTriggered);
+        resizer.initResizeEvent();
+        return resizer;
+    }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param resizeTriggered 触发函数
+     * @return NodeHeightResizer
+     */
+    public static NodeHeightResizer of(Node eventNode, Consumer<Float> resizeTriggered) {
+        return of(eventNode, Cursor.DEFAULT, resizeTriggered);
+    }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param cursor          鼠标样式
+     * @param resizeTriggered 触发函数
+     * @param minHeight       最小高
+     * @param maxHeight       最大高
+     * @return NodeHeightResizer
+     */
+    public static NodeHeightResizer of(Node eventNode, Cursor cursor, Consumer<Float> resizeTriggered, float minHeight, float maxHeight) {
+        NodeHeightResizer resizer = new NodeHeightResizer(eventNode, cursor, resizeTriggered);
+        resizer.widthLimit(minHeight, maxHeight);
+        resizer.initResizeEvent();
+        return resizer;
+    }
+
+    /**
+     * 创建一个新实例
+     *
+     * @param eventNode       时间节点
+     * @param resizeTriggered 触发函数
+     * @param minHeight       最小高
+     * @param maxHeight       最大高
+     * @return NodeHeightResizer
+     */
+    public static NodeHeightResizer of(Node eventNode, Consumer<Float> resizeTriggered, float minHeight, float maxHeight) {
+        return of(eventNode, Cursor.DEFAULT, resizeTriggered, minHeight, maxHeight);
+    }
 }
