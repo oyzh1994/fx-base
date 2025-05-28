@@ -76,7 +76,7 @@ public class RegFilter implements Function<String, Boolean> {
                 // 编译正则表达式
                 Pattern pattern = Pattern.compile(exclude, Pattern.CASE_INSENSITIVE);
                 // 创建匹配器
-                Matcher matcher = pattern.matcher(name);
+                Matcher matcher = pattern.matcher(fullName);
                 // 判断是否匹配
                 if (matcher.matches()) {
                     return false;
