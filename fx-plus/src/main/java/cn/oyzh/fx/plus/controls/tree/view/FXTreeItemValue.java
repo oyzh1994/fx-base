@@ -57,7 +57,7 @@ public class FXTreeItemValue implements Destroyable {
      * @return 额外内容颜色
      */
     public Color extraColor() {
-        return null;
+        return ThemeManager.currentForegroundColor();
     }
 
     /**
