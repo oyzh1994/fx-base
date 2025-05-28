@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -118,7 +119,7 @@ public class RichTreeItemBox extends FXPane {
                 Label extraNode = this.getExtra();
                 // 新增
                 if (extraNode == null) {
-                    extraNode = new Label(extra);
+                    extraNode = new FXLabel(extra);
                     if (extraColor != null) {
                         extraNode.setTextFill(extraColor);
                     }
