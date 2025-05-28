@@ -16,12 +16,15 @@ import java.util.List;
 public class ParentStageController extends StageController {
 
     @Override
-    protected void setWindow( StageAdapter stage) {
+    protected void setWindow(StageAdapter stage) {
         super.setWindow(stage);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
                 controller.setWindow(stage);
                 if (controller instanceof SubStageController subController) {
+                    if (controller == null) {
+                        continue;
+                    }
                     subController.setParent(this);
                 }
             }
@@ -33,6 +36,9 @@ public class ParentStageController extends StageController {
         super.onWindowShowing(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
                 controller.onWindowShowing(event);
             }
         }
@@ -43,6 +49,9 @@ public class ParentStageController extends StageController {
         super.onWindowShown(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
                 controller.onWindowShown(event);
             }
         }
@@ -53,6 +62,9 @@ public class ParentStageController extends StageController {
         super.onWindowCloseRequest(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
                 controller.onWindowCloseRequest(event);
             }
         }
@@ -63,6 +75,9 @@ public class ParentStageController extends StageController {
         super.onWindowHiding(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
                 controller.onWindowHiding(event);
             }
         }
@@ -73,6 +88,9 @@ public class ParentStageController extends StageController {
         super.onWindowHidden(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
                 controller.onWindowHidden(event);
             }
         }
@@ -83,7 +101,23 @@ public class ParentStageController extends StageController {
         super.onSystemExit();
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
                 controller.onSystemExit();
+            }
+        }
+    }
+
+    @Override
+    public void onStageInitialize(StageAdapter stage) {
+        super.onStageInitialize(stage);
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
+            for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
+                controller.onStageInitialize(stage);
             }
         }
     }
