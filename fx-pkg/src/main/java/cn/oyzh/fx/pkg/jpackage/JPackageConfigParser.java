@@ -80,6 +80,10 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (description != null) {
             config.setDescription(description);
         }
+        Boolean enable = object.getBoolean("enable");
+        if (enable != null) {
+            config.setEnable(enable);
+        }
         return config;
     }
 

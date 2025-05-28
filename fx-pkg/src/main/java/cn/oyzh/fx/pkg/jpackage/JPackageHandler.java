@@ -42,6 +42,10 @@ public class JPackageHandler implements PackHandler {
         if (jPackageConfig == null) {
             return;
         }
+        if (!jPackageConfig.isEnable()) {
+            JulLog.warn("jpackage未启用，跳过jpackage");
+            return;
+        }
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");

@@ -36,7 +36,7 @@ public class RegFilter implements Function<String, Boolean> {
      *
      * @param exclude 排除参数
      */
-    public void addExclude( String exclude) {
+    public void addExclude(String exclude) {
         if (StringUtil.isNotBlank(exclude)) {
             this.excludes.add(exclude.trim());
         }

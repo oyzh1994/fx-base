@@ -92,6 +92,11 @@ public class JPackageConfig {
      */
     private String macPackageIdentifier;
 
+    /**
+     * 是否启用
+     */
+    private boolean enable = true;
+
     public String destParent() {
         return new File(dest).getParent();
     }
@@ -222,5 +227,13 @@ public class JPackageConfig {
 
     public void setJavaOptions(List<String> javaOptions) {
         this.javaOptions = javaOptions;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }
