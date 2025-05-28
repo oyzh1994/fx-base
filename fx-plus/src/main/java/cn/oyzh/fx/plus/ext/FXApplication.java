@@ -57,8 +57,6 @@ public abstract class FXApplication extends Application {
             }
             // 初始化系统托盘
             this.initSystemTray();
-            // 开启定期gc
-            SystemUtil.gcInterval(60_000);
             JulLog.info("{} start.", SysConst.projectName());
         } catch (Exception ex) {
             JulLog.error("start fail", ex);
