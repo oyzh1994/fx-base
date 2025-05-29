@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cn.oyzh</groupId>
+        <groupId>io.github.oyzh1994</groupId>
         <artifactId>fx-base</artifactId>
         <version>1.3.4</version>
     </parent>
@@ -52,25 +52,25 @@
 
         <!-- 自定义类库，通用 -->
         <dependency>
-            <groupId>cn.oyzh</groupId>
+            <groupId>io.github.oyzh1994</groupId>
             <artifactId>common</artifactId>
         </dependency>
 
         <!-- 自定义类库，事件 -->
         <dependency>
-            <groupId>cn.oyzh</groupId>
+            <groupId>io.github.oyzh1994</groupId>
             <artifactId>event</artifactId>
         </dependency>
 
         <!-- 自定义类库，存储 -->
         <dependency>
-            <groupId>cn.oyzh</groupId>
+            <groupId>io.github.oyzh1994</groupId>
             <artifactId>store</artifactId>
         </dependency>
 
         <!-- 自定义类库，i18n -->
         <dependency>
-            <groupId>cn.oyzh</groupId>
+            <groupId>io.github.oyzh1994</groupId>
             <artifactId>i18n</artifactId>
         </dependency>
 

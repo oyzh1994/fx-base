@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cn.oyzh</groupId>
+        <groupId>io.github.oyzh1994</groupId>
         <artifactId>fx-base</artifactId>
         <version>1.3.4</version>
     </parent>
@@ -79,22 +79,9 @@
 
         <!-- 自定义类库，通用 -->
         <dependency>
-            <groupId>cn.oyzh</groupId>
+            <groupId>io.github.oyzh1994</groupId>
             <artifactId>common</artifactId>
         </dependency>
-
-        <!-- &lt;!&ndash; json类库 &ndash;&gt; -->
-        <!-- <dependency> -->
-        <!--     <groupId>com.alibaba</groupId> -->
-        <!--     <artifactId>fastjson</artifactId> -->
-        <!-- </dependency> -->
-
-<!--        &lt;!&ndash; json工具类库 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>cn.hutool</groupId>-->
-<!--            <artifactId>hutool-json</artifactId>-->
-<!--            <version>${hutool.version}</version>-->
-<!--        </dependency>-->
 
         <!-- json类库 -->
         <dependency>
@@ -141,7 +128,7 @@
                         <phase>validate</phase>
                         <configuration>
                             <file>${project.basedir}/lib/packr-all-3.0.3-custom.jar</file>
-                            <groupId>cn.oyzh</groupId>
+                            <groupId>io.github.oyzh1994</groupId>
                             <artifactId>packr-all-custom</artifactId>
                             <version>3.0.3</version>
                             <packaging>jar</packaging>

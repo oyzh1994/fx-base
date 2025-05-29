@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>cn.oyzh</groupId>
+        <groupId>io.github.oyzh1994</groupId>
         <artifactId>base</artifactId>
         <version>1.0.1</version>
     </parent>
@@ -57,31 +57,31 @@
         <dependencies>
             <!-- 自定义类库，fx增强 -->
             <dependency>
-                <groupId>cn.oyzh</groupId>
+                <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-plus</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
             <!-- 自定义类库，fx组件 -->
             <dependency>
-                <groupId>cn.oyzh</groupId>
+                <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-gui</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
             <!-- 自定义类库，终端相关 -->
             <dependency>
-                <groupId>cn.oyzh</groupId>
+                <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-terminal</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
             <!-- 自定义类库，富文本相关 -->
             <dependency>
-                <groupId>cn.oyzh</groupId>
+                <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-rich</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
             <!-- 打包工具 -->
             <dependency>
-                <groupId>cn.oyzh</groupId>
+                <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-pkg</artifactId>
                 <version>${fx-base.version}</version>
                 <scope>test</scope>
