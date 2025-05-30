@@ -117,7 +117,7 @@ public class StageManager {
      * 获取舞台
      *
      * @param controllerClass controller类
-     * @return List<StageAdapter>
+     * @return 舞台列表
      */
     public static List<StageAdapter> listStage(Class<?> controllerClass) {
         List<StageAdapter> list = new ArrayList<>();

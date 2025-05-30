@@ -6,10 +6,14 @@
     <parent>
         <groupId>io.github.oyzh1994</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.3.4-SNAPSHOT</version>
+        <version>1.3.5</version>
     </parent>
 
+    <name>fx-pkg</name>
     <artifactId>fx-pkg</artifactId>
+    <description>
+        javafx基础模块，打包功能的实现
+    </description>
 
     <dependencies>
         <!-- 打包工具，此版本打包的linux程序，会提示glibc版本太高的问题，暂不使用 -->

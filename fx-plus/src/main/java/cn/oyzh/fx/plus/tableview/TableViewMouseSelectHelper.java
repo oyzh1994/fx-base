@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * 鼠标辅助选择
+ *
  * @author oyzh
  * @since 2025-03-06
  */

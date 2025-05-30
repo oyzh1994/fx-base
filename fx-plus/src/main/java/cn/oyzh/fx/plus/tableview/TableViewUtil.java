@@ -31,7 +31,6 @@ import java.util.Set;
  * @author oyzh
  * @since 2023/8/11
  */
-
 public class TableViewUtil {
 
     public <S, T> FXTableCell<S, T> newCell(double lineHeight) {
@@ -90,7 +89,7 @@ public class TableViewUtil {
      * 双击时，复制列数据到粘贴板
      *
      * @param tableView 表格组件
-     * @return EventHandler<MouseEvent>
+     * @return 事件处理器
      */
     public static EventHandler<MouseEvent> copyCellDataOnDoubleClicked(TableView<?> tableView) {
         EventHandler<MouseEvent> handler = event -> {

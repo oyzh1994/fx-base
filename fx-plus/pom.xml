@@ -6,10 +6,14 @@
     <parent>
         <groupId>io.github.oyzh1994</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.3.4-SNAPSHOT</version>
+        <version>1.3.5</version>
     </parent>
 
+    <name>fx-plus</name>
     <artifactId>fx-plus</artifactId>
+    <description>
+        javafx基础模块，fx功能增强
+    </description>
 
     <dependencies>
         <dependency>
