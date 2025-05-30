@@ -1,8 +1,6 @@
 package cn.oyzh.fx.rich.test;
 
 import cn.oyzh.fx.plus.controls.box.FXHBox;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.rich.incubator.BaseRichTextArea;
 import cn.oyzh.fx.rich.incubator.FXRichTextArea;
 import javafx.application.Application;
@@ -29,8 +27,8 @@ public class AppMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.DRACULA);
-        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+//        ThemeManager.apply(Themes.PRIMER_LIGHT);
+//        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
 //        test1(stage);
         // test2(stage);
         // test3(stage);
@@ -224,6 +222,8 @@ public class AppMain extends Application {
         FXHBox hBox = new FXHBox();
 
         FXRichTextArea richTextArea = new FXRichTextArea();
+
+        richTextArea.setWrapText(true);
         richTextArea.appendText("test1 test2");
         StyleAttribute<Color> attribute = StyleAttributeMap.TEXT_COLOR;
 
