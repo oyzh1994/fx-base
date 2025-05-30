@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.oyzh1994</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.3.4</version>
+        <version>1.3.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>fx-pkg</artifactId>
@@ -80,7 +80,7 @@
         <!-- 自定义类库，通用 -->
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>base-common</artifactId>
         </dependency>
 
         <!-- json类库 -->
