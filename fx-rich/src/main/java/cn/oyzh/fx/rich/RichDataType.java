@@ -1,4 +1,4 @@
-package cn.oyzh.fx.rich.richtextfx.data;
+package cn.oyzh.fx.rich;
 
 /**
  * 富文本数据类型

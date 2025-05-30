@@ -2,11 +2,9 @@ package cn.oyzh.fx.rich.richtextfx.data;
 
 import cn.oyzh.fx.plus.menu.FXContextMenu;
 import cn.oyzh.fx.plus.node.NodeGroup;
+import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import javafx.beans.property.BooleanProperty;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 /**
  * @author oyzh

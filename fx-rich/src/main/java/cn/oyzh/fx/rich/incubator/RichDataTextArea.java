@@ -1,13 +1,13 @@
-package cn.oyzh.fx.rich.richtextfx.data;
+package cn.oyzh.fx.rich.incubator;
 
 import cn.oyzh.common.util.RegexHelper;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
+import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,6 +204,7 @@ public class RichDataTextArea extends BaseRichTextArea {
         }
     }
 
+
     /**
      * 显示字符串数据
      */
@@ -383,9 +384,9 @@ public class RichDataTextArea extends BaseRichTextArea {
             }
             this.setStyles(styles);
         } else if (this.dataType == RichDataType.BINARY) {// binary
-            this.setStyle(0, this.getLength(), "-fx-fill: #32CD32;");
+            this.setStyle(0, this.getLength(), Color.valueOf("#32CD32"));
         } else if (this.dataType == RichDataType.HEX) {// hex
-            this.setStyle(0, this.getLength(), "-fx-fill: #4682B4;");
+            this.setStyle(0, this.getLength(), Color.valueOf("#4682B4"));
         }
     }
 }

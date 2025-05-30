@@ -1,4 +1,4 @@
-package cn.oyzh.fx.rich.richtextfx.data;
+package cn.oyzh.fx.rich;
 
 
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
