@@ -14,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
 import java.util.List;
@@ -38,19 +39,6 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     public void setLineHeight(double lineHeight) {
         this.lineHeight = lineHeight;
     }
-
-//    /**
-//     * 元素选中事件
-//     */
-//    protected ChangeListener<String> selectItemChanged;
-//
-//    public ChangeListener<String> getSelectItemChanged() {
-//        return selectItemChanged;
-//    }
-//
-//    public void setSelectItemChanged(ChangeListener<String> selectItemChanged) {
-//        this.selectItemChanged = selectItemChanged;
-//    }
 
     /**
      * 下标选中事件
@@ -85,18 +73,13 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
 
     protected void initPopup() {
         this.popup = new FXPopup();
+        this.popup.setOnHidden(this::onPopupHide);
+        this.popup.setOnShowing(this::onPopupShowing);
         Color color = ThemeManager.currentBackgroundColor();
         this.popup.getScene().setFill(color);
         TextField textField = this.getSkinnable();
         FXListView<String> listView = new FXListView<>();
         listView.setRealWidth(NodeUtil.getWidth(textField));
-//        listView.selectedItemChanged((observable, oldValue, newValue) -> {
-//            if (this.selectItemChanged != null) {
-//                this.selectItemChanged.changed(observable, oldValue, newValue);
-//            }
-//            textField.setText(newValue);
-//            this.popup.hide();
-//        });
         listView.selectedIndexChanged((observable, oldValue, newValue) -> {
             if (!listView.isIgnoreChanged()) {
                 String text = listView.getSelectedItem();
@@ -212,5 +195,23 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
     @Override
     protected double getButtonSizeMax() {
         return 10;
+    }
+
+    /**
+     * 弹窗隐藏事件
+     *
+     * @param event 事件
+     */
+    protected void onPopupHide(WindowEvent event) {
+
+    }
+
+    /**
+     * 弹窗显示中事件
+     *
+     * @param event 事件
+     */
+    protected void onPopupShowing(WindowEvent event) {
+
     }
 }

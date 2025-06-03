@@ -6,6 +6,7 @@ import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ClearSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CollapseAllSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CollectSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CopySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CutSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
@@ -41,6 +42,7 @@ import cn.oyzh.fx.gui.svg.glyph.TerminalSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.TimeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.TransportSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.TruncateSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnCompressSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnPauseSVGGlyph;
@@ -380,6 +382,14 @@ public class MenuItemHelper {
 
     public static FXMenuItem addCollections(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.addCollections(), new AddSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem collectFile(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.collectFile(), new CollectSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem unCollect(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.unCollect(), new UnCollectSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem addKey(String iconSize, Runnable action) {
