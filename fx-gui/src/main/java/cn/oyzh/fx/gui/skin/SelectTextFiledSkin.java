@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -16,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import java.util.List;
 
@@ -25,12 +27,40 @@ import java.util.List;
  * @author oyzh
  * @since 2024/07/12
  */
-public class SelectTextFiledSkin extends ActionTextFieldSkin {
+public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
+
+    /**
+     * 弹窗组件
+     */
+    protected FXPopup popup;
 
     /**
      * 行高
      */
     protected double lineHeight = 25;
+
+    /**
+     * 转换器
+     */
+    private StringConverter<T> converter;
+
+    /**
+     * 节点变更事件
+     */
+    protected ChangeListener<T> selectItemChanged;
+
+    /**
+     * 下标变更事件
+     */
+    protected ChangeListener<Number> selectIndexChanged;
+
+    public StringConverter<T> getConverter() {
+        return converter;
+    }
+
+    public void setConverter(StringConverter<T> converter) {
+        this.converter = converter;
+    }
 
     public double getLineHeight() {
         return lineHeight;
@@ -40,23 +70,21 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         this.lineHeight = lineHeight;
     }
 
-    /**
-     * 下标选中事件
-     */
-    protected ChangeListener<Number> selectIndexChanged;
+    public ChangeListener<T> selectItemChanged() {
+        return selectItemChanged;
+    }
 
-    public ChangeListener<Number> getSelectIndexChanged() {
+    public void selectItemChanged(ChangeListener<T> selectItemChanged) {
+        this.selectItemChanged = selectItemChanged;
+    }
+
+    public ChangeListener<Number> selectIndexChanged() {
         return selectIndexChanged;
     }
 
-    public void setSelectIndexChanged(ChangeListener<Number> selectIndexChanged) {
+    public void selectIndexChanged(ChangeListener<Number> selectIndexChanged) {
         this.selectIndexChanged = selectIndexChanged;
     }
-
-    /**
-     * 展开组件
-     */
-    protected FXPopup popup;
 
     @Override
     protected void onButtonClicked(MouseEvent event) {
@@ -64,8 +92,26 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
             this.initPopup();
         }
         if (this.popup.isShowing()) {
-            this.popup.hide();
+            this.hidePopup();
         } else {
+            this.showPopup();
+        }
+    }
+
+    /**
+     * 隐藏弹窗
+     */
+    public void hidePopup() {
+        if (this.popup != null && this.popup.isShowing()) {
+            this.popup.hide();
+        }
+    }
+
+    /**
+     * 显示弹窗
+     */
+    public void showPopup() {
+        if (this.popup != null) {
             TextField textField = this.getSkinnable();
             this.popup.showFixed(textField, -2, 0);
         }
@@ -78,33 +124,54 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         Color color = ThemeManager.currentBackgroundColor();
         this.popup.getScene().setFill(color);
         TextField textField = this.getSkinnable();
-        FXListView<String> listView = new FXListView<>();
+        FXListView<T> listView = new FXListView<>();
         listView.setRealWidth(NodeUtil.getWidth(textField));
+        // 数据函数
+        Runnable dataFunc = () -> {
+            T item = listView.getSelectedItem();
+            textField.getProperties().put("set:texting", true);
+            if (item == null) {
+                textField.clear();
+            } else if (this.converter != null) {
+                textField.setText(this.converter.toString(item));
+            } else {
+                textField.setText(item.toString());
+            }
+            textField.getProperties().remove("set:texting");
+        };
+        listView.selectedItemChanged((observable, oldValue, newValue) -> {
+            if (!listView.isIgnoreChanged()) {
+                dataFunc.run();
+                if (this.selectItemChanged != null) {
+                    this.selectItemChanged.changed(observable, oldValue, newValue);
+                }
+                this.hidePopup();
+            }
+        });
         listView.selectedIndexChanged((observable, oldValue, newValue) -> {
             if (!listView.isIgnoreChanged()) {
-                String text = listView.getSelectedItem();
-                if (text == null) {
-                    textField.clear();
-                } else {
-                    textField.setText(text);
-                }
+                dataFunc.run();
                 if (this.selectIndexChanged != null) {
                     this.selectIndexChanged.changed(observable, oldValue, newValue);
                 }
-                this.popup.hide();
+                this.hidePopup();
             }
         });
         listView.setCellFactory(new Callback<>() {
             @Override
-            public ListCell<String> call(ListView<String> param) {
+            public ListCell<T> call(ListView<T> param) {
                 return new ListCell<>() {
                     @Override
-                    protected void updateItem(String item, boolean empty) {
+                    protected void updateItem(T item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty || item == null) {
                             this.setText(null);
                         } else {
-                            this.setText(item);
+                            if (converter != null) {
+                                this.setText(converter.toString(item));
+                            } else {
+                                this.setText(item.toString());
+                            }
                             this.setHeight(lineHeight);
                             this.setMaxHeight(lineHeight);
                             this.setMinHeight(lineHeight);
@@ -116,8 +183,12 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
             }
         });
         // 监听节点变化
-        listView.getItems().addListener((ListChangeListener<String>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4));
+        listView.getItems().addListener((ListChangeListener<T>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4));
         textField.widthProperty().addListener((observable, oldValue, newValue) -> listView.setRealWidth(NodeUtil.getWidth(textField)));
+        // 同步布局
+        if (NodeUtil.isOrientationRightToLeft(textField)) {
+            listView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        }
         this.popup.content(listView);
     }
 
@@ -132,21 +203,6 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         super.button.setSize(size * 1.5, size);
     }
 
-    //    @Override
-//    protected void layoutChildren(double x, double y, double w, double h) {
-//        super.layoutChildren(x, y, w, h);
-//        double h1 = h * 0.5;
-//        double w1 = h1 * 0.7;
-//        // 按钮大小
-//        this.button.setSizeStr(h1 + "," + w1);
-//        // 计算组件大小
-//        double btnSize = this.snapSizeX(w1);
-//        // 位移的areaX值，规则 组件宽+x-按钮大小
-//        double areaX = w + x - btnSize - 12;
-//        // 设置位置
-//        super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
-//    }
-
     @Override
     protected void updateButtonVisibility() {
         boolean visible = this.getSkinnable().isVisible();
@@ -156,14 +212,14 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
-    protected FXListView<String> getListView() {
+    protected FXListView<T> getListView() {
         if (this.popup == null) {
             this.initPopup();
         }
-        return (FXListView<String>) this.popup.content();
+        return (FXListView<T>) this.popup.content();
     }
 
-    public void selectItem(String item) {
+    public void selectItem(T item) {
         if (item != null && this.popup != null && this.popup.isShowing()) {
             this.getListView().select(item);
         }
@@ -173,15 +229,15 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
         this.getListView().select(index);
     }
 
-    public List<String> getItemList() {
+    public List<T> getItemList() {
         return this.getListView().getItems();
     }
 
-    public void setItemList(List<String> itemList) {
+    public void setItemList(List<T> itemList) {
         if (itemList == null) {
             return;
         }
-        FXListView<String> listView = this.getListView();
+        FXListView<T> listView = this.getListView();
         listView.setIgnoreChanged(true);
         listView.setItem(itemList);
         listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4);
@@ -213,5 +269,32 @@ public class SelectTextFiledSkin extends ActionTextFieldSkin {
      */
     protected void onPopupShowing(WindowEvent event) {
 
+    }
+
+    /**
+     * 获取选中的节点
+     *
+     * @return 节点
+     */
+    public T getSelectedItem() {
+        return this.getListView().getSelectedItem();
+    }
+
+    /**
+     * 获取选中的索引
+     *
+     * @return 索引
+     */
+    public int getSelectedIndex() {
+        return this.getListView().getSelectedIndex();
+    }
+
+    /**
+     * 是否收到设置文本中
+     *
+     * @return 结果
+     */
+    public boolean isSetTexting() {
+        return this.getSkinnable().getProperties().containsKey("set:texting");
     }
 }

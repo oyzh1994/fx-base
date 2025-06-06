@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventTarget;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,7 +17,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumnBase;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
@@ -548,5 +548,15 @@ public class NodeUtil {
         if (node != null && node.getParent() != null) {
             node.getParent().requestFocus();
         }
+    }
+
+    /**
+     * 是否从右到左布局
+     *
+     * @param node 节点
+     * @return 结果
+     */
+    public static boolean isOrientationRightToLeft(Node node) {
+        return node.getNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT || node.getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT;
     }
 }

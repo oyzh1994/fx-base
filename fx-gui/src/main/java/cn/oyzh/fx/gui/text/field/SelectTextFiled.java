@@ -59,7 +59,7 @@ public class SelectTextFiled extends LimitTextField {
     }
 
     public void selectIndexChanged(ChangeListener<Number> listener) {
-        this.skin().setSelectIndexChanged(listener);
+        this.skin().selectIndexChanged(listener);
     }
 
     public void selectItem(String item) {
