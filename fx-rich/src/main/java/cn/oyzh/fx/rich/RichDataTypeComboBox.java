@@ -105,6 +105,33 @@ public class RichDataTypeComboBox extends FXComboBox<RichDataType> implements I1
     }
 
     /**
+     * 是否java格式
+     *
+     * @return 结果
+     */
+    public boolean isJavaFormat() {
+        return RichDataType.JAVA == this.getFormat();
+    }
+
+    /**
+     * 是否python格式
+     *
+     * @return 结果
+     */
+    public boolean isPythonFormat() {
+        return RichDataType.PYTHON == this.getFormat();
+    }
+
+    /**
+     * 是否javascript格式
+     *
+     * @return 结果
+     */
+    public boolean isJavaScriptFormat() {
+        return RichDataType.JAVASCRIPT == this.getFormat();
+    }
+
+    /**
      * 选择字符串格式
      */
     public void selectString() {
@@ -135,9 +162,17 @@ public class RichDataTypeComboBox extends FXComboBox<RichDataType> implements I1
     @Override
     public List<RichDataType> values(Locale locale) {
         this.clearItems();
-        for (RichDataType value : RichDataType.values()) {
-            this.addItem(value);
-        }
+        this.addItem(RichDataType.JSON);
+        this.addItem(RichDataType.XML);
+        this.addItem(RichDataType.HTML);
+        this.addItem(RichDataType.YAML);
+        this.addItem(RichDataType.STRING);
+        this.addItem(RichDataType.BINARY);
+        this.addItem(RichDataType.HEX);
+        this.addItem(RichDataType.RAW);
+        // for (RichDataType value : RichDataType.values()) {
+        //     this.addItem(value);
+        // }
         return this.getItems();
     }
 }

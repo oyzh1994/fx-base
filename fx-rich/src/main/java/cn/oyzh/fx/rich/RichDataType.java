@@ -14,5 +14,8 @@ public enum RichDataType {
     HEX,
     XML,
     HTML,
-    YAML
+    YAML,
+    JAVA,
+    PYTHON,
+    JAVASCRIPT,
 }

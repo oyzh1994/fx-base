@@ -57,6 +57,18 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         this.showData(RichDataType.STRING, rawData);
     }
 
+    public void showJavaData(Object rawData) {
+        this.showData(RichDataType.JAVA, rawData);
+    }
+
+    public void showPythonData(Object rawData) {
+        this.showData(RichDataType.PYTHON, rawData);
+    }
+
+    public void showJavaScriptData(Object rawData) {
+        this.showData(RichDataType.JAVASCRIPT, rawData);
+    }
+
     public void showRawData(Object rawData) {
         this.showData(RichDataType.RAW, rawData);
     }
@@ -89,6 +101,10 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         this.showLineNum();
         // 覆盖默认的菜单
         this.setContextMenu(FXContextMenu.EMPTY);
+    }
+
+    public boolean isEmpty() {
+        return this.getContent().isEmpty();
     }
 
 //    /**

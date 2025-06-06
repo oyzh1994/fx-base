@@ -329,8 +329,6 @@ public class RichDataTextArea extends BaseRichTextArea {
             }
             Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
             while (matcher2.find()) {
-//                styles.add(new RichTextStyle(matcher2.start(1), matcher2.end(1), "-fx-fill: #EE2C2C;"));
-//                styles.add(new RichTextStyle(matcher2.start(1), matcher2.end(1) - 1, "-fx-fill: #EE2C2C;"));
                 styles.add(new RichTextStyle(matcher2.start(1) - 1, matcher2.end(1) + 1, "-fx-fill: #22509F;"));
             }
             Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);
