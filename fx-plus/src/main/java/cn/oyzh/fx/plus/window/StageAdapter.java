@@ -702,15 +702,11 @@ public interface StageAdapter extends WindowAdapter {
 
     @Override
     default void hideOnEscape() {
-//        if (!EscHideHandler.exists(this.stage())) {
-//            EscHideHandler.init(this.stage());
-//        }
         this.setProp("escHideHandler", new EscHideHandler(this.stage()));
     }
 
     @Override
     default void unHideOnEscape() {
-//        EscHideHandler.destroy(this.stage());
         EscHideHandler escHideHandler = this.removeProp("escHideHandler");
         if (escHideHandler != null) {
             escHideHandler.destroy();
@@ -719,21 +715,16 @@ public interface StageAdapter extends WindowAdapter {
 
     @Override
     default boolean isHideOnEscape() {
-//        return EscHideHandler.exists(this.stage());
         return this.hasProp("escHideHandler");
     }
 
     @Override
     default void switchOnTab() {
-//        if (!TabSwitchHandler.exists(this.stage())) {
-//            TabSwitchHandler.init(this.stage());
-//        }
         this.setProp("tabSwitchHandler", new TabSwitchHandler(this.stage()));
     }
 
     @Override
     default void unSwitchOnTab() {
-//        TabSwitchHandler.destroy(this.stage());
         TabSwitchHandler tabSwitchHandler = this.removeProp("tabSwitchHandler");
         if (tabSwitchHandler != null) {
             tabSwitchHandler.destroy();
@@ -742,7 +733,6 @@ public interface StageAdapter extends WindowAdapter {
 
     @Override
     default boolean isSwitchOnTab() {
-//        return TabSwitchHandler.exists(this.stage());
         return this.hasProp("tabSwitchHandler");
     }
 
