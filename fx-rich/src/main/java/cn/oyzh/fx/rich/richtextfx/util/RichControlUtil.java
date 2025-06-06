@@ -10,7 +10,6 @@ import org.fxmisc.richtext.StyledTextArea;
  * @author oyzh
  * @since 2023/11/20
  */
-
 public class RichControlUtil {
 
     /**

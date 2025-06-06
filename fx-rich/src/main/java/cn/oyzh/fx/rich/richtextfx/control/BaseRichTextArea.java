@@ -1,5 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
+import cn.oyzh.common.thread.IRunnable;
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.ReflectUtil;
@@ -38,7 +40,6 @@ import javafx.scene.text.Text;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.GenericStyledArea;
 import org.fxmisc.richtext.InlineCssTextArea;
-import org.fxmisc.richtext.model.TwoDimensional;
 import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
 
@@ -458,7 +459,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setStyle(RichTextStyle style) {
         if (style != null) {
-            FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
+            IRunnable func = () -> FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
+            TaskManager.startDelay("rich:style:" + this.hashCode(), func, 0);
         }
     }
 
@@ -473,7 +475,16 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
         if (to > this.getLength()) {
             to = this.getLength();
         }
+        // TODO: 修复输入内容时，滚动条异常上滚的问题
+        FXVirtualizedScrollPane<?> scrollPane = null;
+        if (this.getParent() instanceof FXVirtualizedScrollPane<?> pane) {
+            scrollPane = pane;
+            scrollPane.setIgnoreVChanged(true);
+        }
         super.setStyle(from, to, style);
+        if (scrollPane != null) {
+            scrollPane.setIgnoreVChanged(false);
+        }
     }
 
     /**
@@ -576,7 +587,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
             return;
         }
         int start = selection.getStart();
-        TwoDimensional.Position position = this.offsetToPosition(start, TwoDimensional.Bias.Forward);
+        Position position = this.offsetToPosition(start, Bias.Forward);
         this.showParagraphAtTop(position.getMajor());
     }
 }

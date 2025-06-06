@@ -21,7 +21,6 @@ import java.util.regex.Matcher;
  * @author oyzh
  * @since 2024/04/17
  */
-
 public class RichDataTextArea extends BaseRichTextArea {
 
     /**

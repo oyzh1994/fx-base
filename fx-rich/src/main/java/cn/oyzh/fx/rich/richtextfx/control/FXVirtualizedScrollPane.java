@@ -19,6 +19,20 @@ public class FXVirtualizedScrollPane<V extends Region & Virtualized> extends Vir
         NodeManager.init(this);
     }
 
+    /**
+     * 忽略v变化
+     * TODO: 修复输入内容时，滚动条异常上滚的问题
+     */
+    private transient boolean ignoreVChanged;
+
+    public boolean isIgnoreVChanged() {
+        return ignoreVChanged;
+    }
+
+    public void setIgnoreVChanged(boolean ignoreVChanged) {
+        this.ignoreVChanged = ignoreVChanged;
+    }
+
     public FXVirtualizedScrollPane(@NamedArg("content") V content) {
         super(content);
         content.prefWidthProperty().bind(this.widthProperty());
@@ -29,5 +43,12 @@ public class FXVirtualizedScrollPane<V extends Region & Virtualized> extends Vir
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
+    }
+
+    @Override
+    protected void setVPosition(double pos) {
+        if (!this.isIgnoreVChanged()) {
+            super.setVPosition(pos);
+        }
     }
 }
