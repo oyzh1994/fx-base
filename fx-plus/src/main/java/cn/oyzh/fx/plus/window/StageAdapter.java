@@ -525,7 +525,8 @@ public interface StageAdapter extends WindowAdapter {
      */
     default void updateContentLater() {
         // 更新内容
-        FXUtil.runPulse(this::updateContent);
+//        FXUtil.runPulse(this::updateContent);
+        this.updateContent();
     }
 
     /**
@@ -549,8 +550,8 @@ public interface StageAdapter extends WindowAdapter {
                 // this.resizeStage(width + 1, height + 1);
                 // this.resizeStage(width - 1, height - 1);
             }
-            // 递归布局
-            NodeUtil.layoutRecursive(root);
+//            // 递归布局
+//            NodeUtil.layoutRecursive(root);
         }
     }
 

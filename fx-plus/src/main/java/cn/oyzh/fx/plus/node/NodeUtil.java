@@ -39,19 +39,30 @@ public class NodeUtil {
     public static void layoutRecursive(EventTarget node) {
         if (node instanceof TabPane tabPane) {
             tabPane.requestLayout();
+//            tabPane.layout();
             for (Tab tab : tabPane.getTabs()) {
                 layoutRecursive(tab.getContent());
             }
         } else if (node instanceof Pane pane) {
             pane.requestLayout();
+//            pane.layout();
             for (Node node1 : pane.getChildren()) {
+                layoutRecursive(node1);
+            }
+        } else if (node instanceof Region region) {
+            region.requestLayout();
+//            region.layout();
+            for (Node node1 : region.getChildrenUnmodifiable()) {
                 layoutRecursive(node1);
             }
         } else if (node instanceof Parent parent) {
             parent.requestLayout();
+//            parent.layout();
             for (Node node1 : parent.getChildrenUnmodifiable()) {
                 layoutRecursive(node1);
             }
+        } else if (node instanceof Node parent) {
+            parent.autosize();
         }
     }
 
