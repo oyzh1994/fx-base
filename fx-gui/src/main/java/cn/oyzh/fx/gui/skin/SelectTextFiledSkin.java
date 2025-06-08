@@ -129,7 +129,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         // 数据函数
         Runnable dataFunc = () -> {
             T item = listView.getSelectedItem();
-            textField.getProperties().put("set:texting", true);
+            // 设置数据中标志位
+            textField.getProperties().put("texting", true);
             if (item == null) {
                 textField.clear();
             } else if (this.converter != null) {
@@ -137,7 +138,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             } else {
                 textField.setText(item.toString());
             }
-            textField.getProperties().remove("set:texting");
+            // 清除数据中标志位
+            textField.getProperties().remove("texting");
         };
         listView.selectedItemChanged((observable, oldValue, newValue) -> {
             if (!listView.isIgnoreChanged()) {
@@ -281,6 +283,13 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     /**
+     * 移除选区
+     */
+    public void clearSelection() {
+        this.getListView().clearSelection();
+    }
+
+    /**
      * 获取选中的索引
      *
      * @return 索引
@@ -294,7 +303,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      *
      * @return 结果
      */
-    public boolean isSetTexting() {
-        return this.getSkinnable().getProperties().containsKey("set:texting");
+    public boolean isTexting() {
+        return this.getSkinnable().getProperties().containsKey("texting");
     }
 }
