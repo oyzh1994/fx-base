@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.util.ReflectUtil;
-import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
@@ -10,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -165,6 +165,9 @@ public interface NodeAdapter extends EventTarget {
             case Group group -> {
                 return group.getChildren().getFirst();
             }
+            case ScrollPane scrollPane -> {
+                return scrollPane.getContent();
+            }
             case Parent parent -> {
                 return parent.getChildrenUnmodifiable().getFirst();
             }
@@ -184,6 +187,8 @@ public interface NodeAdapter extends EventTarget {
             FXUtil.runWait(() -> group.getChildren().clear());
         } else if (this instanceof TabPane tabPane) {
             FXUtil.runWait(() -> tabPane.getTabs().clear());
+        } else if (this instanceof ScrollPane scrollPane) {
+            FXUtil.runWait(() -> scrollPane.setContent(null));
         }
     }
 
@@ -271,8 +276,10 @@ public interface NodeAdapter extends EventTarget {
                     pane.getChildren().setAll(node);
                 } else if (this instanceof Group group) {
                     group.getChildren().setAll(node);
-                } else if (this instanceof FXTab tab) {
+                } else if (this instanceof Tab tab) {
                     tab.setContent(node);
+                } else if (this instanceof ScrollPane scrollPane) {
+                    scrollPane.setContent(node);
                 }
             });
         }
