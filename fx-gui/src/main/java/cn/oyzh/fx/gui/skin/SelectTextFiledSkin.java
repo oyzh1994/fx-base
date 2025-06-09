@@ -240,7 +240,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param item 内容
      */
     public void selectItem(T item) {
-        if (item != null && this.popup != null && this.popup.isShowing()) {
+        if (item != null && this.popup != null) {
             this.getListView().select(item);
         }
     }
