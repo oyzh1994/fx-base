@@ -12,6 +12,7 @@ public class SSHAuthTypeCombobox extends FXComboBox<String> {
     {
         this.addItem(I18nHelper.password());
         this.addItem(I18nHelper.certificate());
+        this.addItem("SSH Agent");
     }
 
     public boolean isPasswordAuth() {
@@ -22,7 +23,17 @@ public class SSHAuthTypeCombobox extends FXComboBox<String> {
         return this.getSelectedIndex() == 1;
     }
 
+    public boolean isSSHAgentAuth() {
+        return this.getSelectedIndex() == 2;
+    }
+
     public String getAuthType() {
-        return this.getSelectedIndex() == 0 ? "password" : "certificate";
+        if (this.isSSHAgentAuth()) {
+            return "sshAgent";
+        }
+        if (this.isCertificateAuth()) {
+            return "certificate";
+        }
+        return "password";
     }
 }
