@@ -584,19 +584,16 @@ public interface SelectAdapter<T> extends PropAdapter {
      * 选中末尾节点
      */
     default void selectLast() {
-        // int lastIndex = this.getLastIndex();
-        // this.select(lastIndex);
-        // if (this instanceof ListView<?> node) {
-        //     node.scrollTo(this.getItemSize());
-        // } else if (this instanceof TableView<?> node) {
-        //     node.scrollTo(this.getItemSize());
-        // }
         if (this instanceof ListView<?> node) {
             node.getSelectionModel().selectLast();
             node.scrollTo(this.getItemSize());
         } else if (this instanceof TableView<?> node) {
             node.getSelectionModel().selectLast();
             node.scrollTo(this.getItemSize());
+        } else if (this instanceof ComboBox<?> node) {
+            node.getSelectionModel().selectLast();
+        } else if (this instanceof TabPane node) {
+            node.getSelectionModel().selectLast();
         }
     }
 }
