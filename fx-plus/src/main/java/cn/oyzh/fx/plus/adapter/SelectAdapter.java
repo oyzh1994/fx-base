@@ -13,6 +13,7 @@ import javafx.scene.control.TreeView;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -154,21 +155,26 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @return 结果
      */
     default T getSelectedItem() {
-        Object o = null;
-        if (this instanceof TreeView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TreeTableView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TableView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TabPane node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof ComboBox<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof ListView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        }
-        return (T) o;
+
+        AtomicReference<T> ref = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            Object o = null;
+            if (this instanceof TreeView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof TreeTableView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof TableView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof TabPane node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof ComboBox<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof ListView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            }
+            ref.set((T) o);
+        });
+        return ref.get();
     }
 
     /**

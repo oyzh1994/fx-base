@@ -481,9 +481,17 @@ public interface StageAdapter extends WindowAdapter {
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
             // 最大化
-            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> this.updateContentLater());
+            stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> {
+                if (t1) {
+                    this.updateContent();
+                }
+            });
             // 全屏
-            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> this.updateContentLater());
+            stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> {
+                if (t1) {
+                    this.updateContent();
+                }
+            });
             // 初始化
             NodeManager.init(this);
         }
@@ -525,8 +533,8 @@ public interface StageAdapter extends WindowAdapter {
      */
     default void updateContentLater() {
         // 更新内容
-//        FXUtil.runPulse(this::updateContent);
-        this.updateContent();
+        FXUtil.runPulse(this::updateContent);
+        // this.updateContent();
     }
 
     /**

@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.skin;
 
 import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.scene.control.TextField;
@@ -51,7 +52,7 @@ public class FXTextFieldSkin extends TextFieldSkin {
         this.getSkinnable().disableProperty().removeListener(this.visibilityChanged);
         this.getSkinnable().setOnMouseExited(null);
         this.getSkinnable().setOnMouseEntered(null);
-        super.dispose();
+        FXUtil.runLater(super::dispose);
     }
 
     /**
