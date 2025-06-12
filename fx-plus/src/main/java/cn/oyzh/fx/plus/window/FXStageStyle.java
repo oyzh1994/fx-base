@@ -11,6 +11,10 @@ public enum FXStageStyle {
     DECORATED,
     UNDECORATED,
     TRANSPARENT,
+    /**
+     * 这个会导致部分windows环境下页面白屏，不要使用
+     */
+    @Deprecated
     UTILITY,
     UNIFIED,
     @Deprecated

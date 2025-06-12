@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.chooser;
 
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;
 
@@ -112,7 +113,7 @@ public class FXChooser {
     }
 
     public static String getDownloadDirectory() {
-        File file = new File(System.getProperty("user.home"), "Downloads");
+        File file = new File(SystemUtil.userHome(), "Downloads");
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }

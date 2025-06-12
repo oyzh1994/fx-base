@@ -102,7 +102,10 @@ public interface StageAdapter extends WindowAdapter {
      * 清除场景
      */
     default void clearScene() {
-        this.stage().setScene(null);
+        Stage stage = this.stage();
+        if (stage != null) {
+            stage.setScene(null);
+        }
     }
 
     /**

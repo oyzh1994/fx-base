@@ -20,7 +20,7 @@ import javafx.stage.Window;
 import java.lang.reflect.Field;
 
 /**
- * 节点销毁接口
+ * 节点销毁工具类
  *
  * @author oyzh
  * @since 2025-06-12
@@ -91,18 +91,18 @@ public class NodeDisposeUtil {
         Field[] fields = ReflectUtil.getFields(object.getClass(), true, true);
         for (Field field : fields) {
             try {
-                // 过滤类型
+                // 过滤属性类型
                 Class<?> clazz = field.getType();
-                if (!Property.class.isAssignableFrom(clazz)) {
-                    continue;
-                }
-                field.setAccessible(true);
-                // 获取属性值
-                Object value = field.get(object);
-                // 如果值为Property，解绑属性
-                if (value instanceof Property<?> property) {
-                    property.unbind();
-                    System.out.println("property:" + property.getName() + " unbind");
+                // 属性类型
+                if (Property.class.isAssignableFrom(clazz)) {
+                    field.setAccessible(true);
+                    // 获取属性值
+                    Object value = field.get(object);
+                    // 如果值为Property，解绑属性
+                    if (value instanceof Property<?> property) {
+                        property.unbind();
+                        System.out.println("property:" + property.getName() + " unbind");
+                    }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
