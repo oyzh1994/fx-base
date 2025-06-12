@@ -4,8 +4,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 /**
@@ -20,7 +22,8 @@ public class AppTestMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        test1(stage);
+        // test1(stage);
+        test2(stage);
     }
 
     private void test1(Stage stage){
@@ -35,6 +38,36 @@ public class AppTestMain extends Application {
 
         hBox.getChildren().add(toolBar);
         stage.setScene(new Scene(hBox));
+        stage.show();
+    }
+
+    private void test2(Stage stage){
+        // 创建一个轻量级HBox
+        LightweightHBox hbox = new LightweightHBox(10);
+        hbox.setPadding(new javafx.geometry.Insets(10));
+
+        Button btn1 = new Button("Button 1");
+        Button btn2 = new Button("Button 2");
+        Label label = new Label("这是一个标签");
+
+        // 设置按钮可以增长
+        LightweightHBox.setHgrow(btn1, Priority.ALWAYS);
+        LightweightHBox.setHgrow(btn2, Priority.ALWAYS);
+
+        hbox.getChildren().addAll(btn1, label, btn2);
+
+        // 创建一个轻量级VBox
+        LightweightVBox vbox = new LightweightVBox(15);
+        vbox.setPadding(new javafx.geometry.Insets(15));
+
+        Label title = new Label("轻量级布局示例");
+        title.setStyle("-fx-font-size: 16pt; -fx-font-weight: bold;");
+
+        vbox.getChildren().addAll(title, hbox);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("轻量级布局容器示例");
+        stage.setScene(scene);
         stage.show();
     }
 

@@ -171,7 +171,7 @@ public class AppMain extends Application {
 //        });
 //        hbox.getChildren().add(btn7);
 //
-//        VBox root = new VBox(hbox, editor);
+//        LVBox root = new LVBox(hbox, editor);
 //        root.setPrefHeight(500);
 //        root.setPrefWidth(800);
 //
@@ -230,7 +230,7 @@ public class AppMain extends Application {
 //
 //        richTextArea.setLineNumbersEnabled(true);
 //
-//        stage.setScene(new Scene(new VBox(hBox, richTextArea)));
+//        stage.setScene(new Scene(new LVBox(hBox, richTextArea)));
 //        Button btn1 = new Button("重做");
 //        Button btn2 = new Button("撤销");
 //        hBox.addChild(btn1);
@@ -259,7 +259,7 @@ public class AppMain extends Application {
 //
 //        richTextArea.setLineNumbersEnabled(true);
 //
-//        stage.setScene(new Scene(new VBox(hBox, richTextArea)));
+//        stage.setScene(new Scene(new LVBox(hBox, richTextArea)));
 //        Button btn1 = new Button("重做");
 //        Button btn2 = new Button("撤销");
 //        Button btn3 = new Button("清除");

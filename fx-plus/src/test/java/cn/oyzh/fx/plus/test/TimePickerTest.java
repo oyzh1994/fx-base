@@ -3,7 +3,7 @@
 // import cn.oyzh.fx.plus.controls.calendar.TimePicker;
 // import cn.oyzh.fx.plus.spring.SpringApplication;
 // import javafx.scene.Scene;
-// import javafx.scene.layout.VBox;
+// import javafx.scene.layout.LVBox;
 // import javafx.stage.Stage;
 //
 // public class TimePickerTest extends SpringApplication {
@@ -20,7 +20,7 @@
 //
 //         // picker.setShowNow(false);
 //
-//         final VBox vBox = new VBox();
+//         final LVBox vBox = new LVBox();
 //         vBox.getChildren().add(picker);
 //         final Scene scene = new Scene(vBox);
 //         primaryStage.setScene(scene);

@@ -266,6 +266,9 @@ public class NodeUtil {
         if (target == null || width == null || Double.isNaN(width) || width <= 0) {
             return;
         }
+        if (target instanceof Node node && !node.isManaged()) {
+            return;
+        }
         switch (target) {
             case TableColumnBase<?, ?> columnBase -> {
                 if (!columnBase.prefWidthProperty().isBound()) {
@@ -327,6 +330,9 @@ public class NodeUtil {
      */
     public static void setHeight(Object target, Double height) {
         if (target == null || height == null || Double.isNaN(height) || height < 0) {
+            return;
+        }
+        if (target instanceof Node node && !node.isManaged()) {
             return;
         }
         switch (target) {
@@ -391,6 +397,9 @@ public class NodeUtil {
             return;
         }
         if (target instanceof Node node) {
+            if (!node.isManaged()) {
+                return;
+            }
             if (!node.layoutYProperty().isBound() && node.getLayoutY() != layoutY) {
                 node.setLayoutY(layoutY);
             }
