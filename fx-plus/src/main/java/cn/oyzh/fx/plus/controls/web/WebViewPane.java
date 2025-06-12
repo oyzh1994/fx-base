@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controls.web;
 
+import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
-import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
@@ -11,7 +11,7 @@ import netscape.javascript.JSObject;
  * @author oyzh
  * @since 2024/8/19
  */
-public class WebViewPane extends Pane implements FlexAdapter {
+public class WebViewPane extends FXPane implements FlexAdapter {
 
     {
         NodeManager.init(this);

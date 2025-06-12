@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -102,8 +103,13 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
 //        this.addEventFilter(Tab.TAB_CLOSE_REQUEST_EVENT, this::onTabCloseRequest);
     }
 
+    /**
+     * tab关闭事件
+     *
+     * @param event 事件
+     */
     protected void onTabClosed(Event event) {
-
+        NodeDisposeUtil.dispose(this);
     }
 
     protected void onTabCloseRequest(Event event) {

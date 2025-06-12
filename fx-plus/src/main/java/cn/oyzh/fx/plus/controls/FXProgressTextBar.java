@@ -4,6 +4,10 @@ import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.geometry.Pos;
 
+/**
+ * @author oyzh
+ * @since 2025-03-07
+ */
 public class FXProgressTextBar extends FXHBox {
 
     {

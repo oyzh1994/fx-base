@@ -6,14 +6,17 @@ import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
+import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.drag.DragFileHandler;
 import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
+import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.IconUtil;
@@ -44,10 +47,16 @@ public interface StageAdapter extends WindowAdapter {
     @Override
     default void onWindowClosed() {
         try {
+            // 主页面不处理
+            if (this instanceof PrimaryStage) {
+                return;
+            }
             Stage stage = this.stage();
             WindowAdapter.super.onWindowClosed();
             DragUtil.clearDragFile(this.scene());
             NodeLifeCycleUtil.onStageDestroy(stage);
+            // 销毁节点
+            NodeDisposeUtil.dispose(stage);
             this.clearTitle();
             this.clearScene();
             this.clearListener();
@@ -444,7 +453,6 @@ public interface StageAdapter extends WindowAdapter {
             stage.initStyle(attribute.stageStyle().toStageStyle());
         }
         // 初始化stage
-//        stage.setTitle(attribute.title());
         stage.setResizable(attribute.resizable());
         // 设置icon
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
@@ -456,19 +464,6 @@ public interface StageAdapter extends WindowAdapter {
         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {// 全局icon
             stage.getIcons().setAll(IconUtil.getIcon(FXConst.appIcon()));
         }
-        // 显示监听
-        stage.showingProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                if (!newValue) {
-                    this.onWindowClosed();
-//                } else {
-//                    this.updateContentInner();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                JulLog.warn("showing error", ex);
-            }
-        });
         // 非主窗口
         if (!attribute.usePrimary() && !this.hasBeenVisible()) {
             // 初始化父窗口
@@ -480,6 +475,17 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 非主窗口或者未显示过
         if (!attribute.usePrimary() || !this.hasBeenVisible()) {
+            // 显示监听
+            stage.showingProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                    if (!newValue) {
+                        this.onWindowClosed();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JulLog.warn("showing error", ex);
+                }
+            });
             // 最大化
             stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> {
                 if (t1) {
@@ -498,8 +504,9 @@ public interface StageAdapter extends WindowAdapter {
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
             root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
-//        } else {// 默认样式文件
-//            root.getStylesheets().addAll(ThemeManager.currentUserAgentStylesheet(), FXStyle.FX_BASE);
+        } else if (this.hasBeenVisible()) {// 显示过，则重新设置样式文件
+            root.getStylesheets().removeAll(ThemeManager.currentUserAgentStylesheet(), FXStyle.FX_BASE);
+            root.getStylesheets().addAll(ThemeManager.currentUserAgentStylesheet(), FXStyle.FX_BASE);
         }
         // 设置事件
         if (this.controller() instanceof StageListener listener) {
@@ -512,20 +519,6 @@ public interface StageAdapter extends WindowAdapter {
         }
         // 设置scene
         FXUtil.runWait(() -> stage.setScene(scene));
-//        stage.getScene().focusOwnerProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue != null) {
-//                Light.Distant light = new Light.Distant();
-//                light.setAzimuth(-135.0);
-//                light.setElevation(30.0);
-//                light.setColor(Color.ALICEBLUE);
-//                Lighting lighting = new Lighting();
-//                lighting.setLight(light);
-//                newValue.setEffect(lighting);
-//            }
-//            if (oldValue != null) {
-//                oldValue.setEffect(null);
-//            }
-//        });
     }
 
     /**

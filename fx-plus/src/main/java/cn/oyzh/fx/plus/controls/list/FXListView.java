@@ -33,7 +33,7 @@ public class FXListView<T> extends ListView<T> implements FlexAdapter, NodeAdapt
      *
      * @param listener 监听器
      */
-    public void selectedItemChanged( ChangeListener<T> listener) {
+    public void selectedItemChanged(ChangeListener<T> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
