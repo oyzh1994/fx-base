@@ -122,6 +122,10 @@ public class TableViewMouseSelectHelper {
             if (event.getClickCount() == 1 && event.getButton() == MouseButton.PRIMARY) {
                 startX.set(event.getSceneX());
                 startY.set(event.getSceneY());
+            } else {
+                startX.set(0d);
+                startY.set(0d);
+                this.clearRectangle();
             }
         });
 
@@ -145,6 +149,10 @@ public class TableViewMouseSelectHelper {
                 rectangle.setWidth(Math.abs(endX - startX.get()));
                 rectangle.setHeight(Math.abs(endY - startY.get()));
                 this.onMouseSelection(rectangle);
+            } else {
+                startX.set(0d);
+                startY.set(0d);
+                this.clearRectangle();
             }
         });
 
@@ -156,6 +164,10 @@ public class TableViewMouseSelectHelper {
                     this.onMouseSelection(rectangle);
                     this.clearRectangle();
                 }
+            } else {
+                startX.set(0d);
+                startY.set(0d);
+                this.clearRectangle();
             }
         });
 
@@ -187,10 +199,10 @@ public class TableViewMouseSelectHelper {
         List<TableRow<?>> rows = TableViewUtil.getRows(tableView);
         for (TableRow<?> row : rows) {
             Point2D point = row.localToScene(0, 0);
+            double rowEnd = point.getY() + row.getLayoutBounds().getMaxY();
             double rowStart = point.getY() + row.getLayoutBounds().getMinY();
-            double rowEnd = row.getLayoutBounds().getMaxY();
             // 判断是否在选区内
-            if (rowStart + rowHeight > selectionStart && rowEnd + 5 < selectionEnd) {
+            if (rowStart + rowHeight >= selectionStart && rowEnd + 5 <= selectionEnd) {
                 selected.add(row.getIndex());
             }
         }
@@ -209,6 +221,11 @@ public class TableViewMouseSelectHelper {
         }
     }
 
+    /**
+     * 安装鼠标多选辅助器
+     *
+     * @param tableView 组件
+     */
     public static void install(TableView<?> tableView) {
         if (tableView != null) {
             new TableViewMouseSelectHelper(tableView);
