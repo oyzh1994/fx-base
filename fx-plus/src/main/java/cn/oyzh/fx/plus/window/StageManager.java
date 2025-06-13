@@ -296,7 +296,11 @@ public class StageManager {
      * @param callback 遮罩关闭处理完成后的回调
      */
     public static void showMask(Runnable callback) {
-        showMask(getFrontWindow(), callback);
+        Window window = getFrontWindow();
+        if (window == null || !window.isShowing()) {
+            window = getPrimaryStage();
+        }
+        showMask(window, callback);
     }
 
     /**
@@ -320,7 +324,7 @@ public class StageManager {
      * @param callback 遮罩关闭处理完成后的回调
      */
     public static void showMask(Window window, Runnable callback) {
-        if (window != null) {
+        if (window != null && window.isShowing()) {
             StageMask.showMask(window, callback);
         } else {
             callback.run();
