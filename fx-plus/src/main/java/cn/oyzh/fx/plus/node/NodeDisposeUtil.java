@@ -101,7 +101,7 @@ public class NodeDisposeUtil {
                     // 如果值为Property，解绑属性
                     if (value instanceof Property<?> property) {
                         property.unbind();
-                        System.out.println("property:" + property.getName() + " unbind");
+                        // System.out.println("property:" + property.getName() + " unbind");
                     }
                 }
             } catch (Exception ex) {

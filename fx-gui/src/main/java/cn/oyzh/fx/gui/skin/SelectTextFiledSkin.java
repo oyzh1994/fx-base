@@ -337,12 +337,26 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     /**
-     * 是否收到设置文本中
+     * 是否输入文本中
      *
      * @return 结果
      */
     public boolean isTexting() {
         return this.getSkinnable().getProperties().containsKey("texting");
+    }
+
+    /**
+     * 设置输入文本中
+     */
+    public void setTexting() {
+        this.getSkinnable().getProperties().put("texting", true);
+    }
+
+    /**
+     * 清除设置文本中
+     */
+    public void clearTexting() {
+        this.getSkinnable().getProperties().remove("texting");
     }
 
 }

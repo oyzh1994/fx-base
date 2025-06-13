@@ -73,6 +73,9 @@ public class FontFamilyTextField extends FXTextField {
 
     public void select(String connect) {
         this.skin().selectItem(connect);
+        this.skin().setTexting();
+        this.text(connect);
+        this.skin().clearTexting();
     }
 
     public String getSelectedItem() {
