@@ -12,7 +12,6 @@ import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXColorUtil;
-import javafx.animation.RotateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -76,10 +75,10 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      */
     private FXSVGPath original;
 
-    /**
-     * 等待动画
-     */
-    private RotateTransition waitingAnimation;
+//    /**
+//     * 等待动画
+//     */
+//    private RotateTransition waitingAnimation;
 
     /**
      * 是否激活状态
@@ -479,11 +478,11 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.original = original;
     }
 
-    public RotateTransition getWaitingAnimation() {
-        return waitingAnimation;
-    }
-
-    public void setWaitingAnimation(RotateTransition waitingAnimation) {
-        this.waitingAnimation = waitingAnimation;
-    }
+//    public RotateTransition getWaitingAnimation() {
+//        return waitingAnimation;
+//    }
+//
+//    public void setWaitingAnimation(RotateTransition waitingAnimation) {
+//        this.waitingAnimation = waitingAnimation;
+//    }
 }
