@@ -256,6 +256,10 @@ public class MenuItemHelper {
         return FXMenuItem.newItem(I18nHelper.updateKey1(), new EditSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem updateBucket(String iconSize, Runnable action) {
+        return FXMenuItem.newItem(I18nHelper.updateBucket(), new EditSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem editKey1(String iconSize, Runnable action) {
         return FXMenuItem.newItem(I18nHelper.updateKey1(), new EditSVGGlyph(iconSize), action);
     }
