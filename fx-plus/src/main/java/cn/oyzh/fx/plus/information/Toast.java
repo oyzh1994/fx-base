@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
-import cn.oyzh.fx.plus.window.StageManager;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,13 +19,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
-import java.awt.*;
+import java.awt.FontMetrics;
 
 
 /**
@@ -77,7 +77,7 @@ public class Toast {
      */
     protected Window window;
 
-    public Toast( String msg) {
+    public Toast(String msg) {
         this.msg = msg;
     }
 
@@ -100,6 +100,7 @@ public class Toast {
         this.resetDefault();
         // 创建组件
         HBox box = new HBox();
+        box.setFocusTraversable(false);
         // 设置间距等
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(3));
@@ -139,15 +140,14 @@ public class Toast {
         box.setPrefWidth(boxWidth + 20);
         // 初始化面板
         if (owner == null) {// Stage
-            StageAdapter wrapper = StageManager.newStage(null);
-            Stage stage = wrapper.stage();
+            Stage stage = new Stage(StageStyle.TRANSPARENT);
             this.window = stage;
             Scene scene = new Scene(box);
             scene.setCursor(Cursor.NONE);
             stage.setScene(scene);
             stage.setAlwaysOnTop(true);
+            stage.initModality(Modality.NONE);
             scene.setFill(Color.TRANSPARENT);
-            stage.initStyle(StageStyle.TRANSPARENT);
         } else {// Popup
             Popup popup = new FXPopup();
             this.window = popup;
@@ -166,6 +166,12 @@ public class Toast {
                 FXUtil.computePos(owner, this.window);
                 // 执行延迟关闭
                 TaskManager.startDelay(this::close, this.duration);
+            });
+            // 强制抢走焦点
+            this.window.focusedProperty().addListener((v, o, n) -> {
+                if (n) {
+                    owner.requestFocus();
+                }
             });
         }
         // 显示窗口
