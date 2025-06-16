@@ -12,7 +12,7 @@ import org.fxmisc.richtext.GenericStyledArea;
  * @author oyzh
  * @since 2023/1/29
  */
-public interface TextAdapter {
+public interface TextAdapter extends PropAdapter{
 
     /**
      * 解除文本变化监听器
@@ -90,5 +90,25 @@ public interface TextAdapter {
             str = area.getText();
         }
         return str == null ? null : str.trim();
+    }
+
+
+    /**
+     * 是否忽略节点改变事件
+     *
+     * @return 结果
+     */
+    default boolean isIgnoreChanged() {
+        Object _ignoreChanged = this.getProp("_ignoreChanged");
+        return _ignoreChanged instanceof Boolean && (boolean) _ignoreChanged;
+    }
+
+    /**
+     * 设置忽略节点改变事件
+     *
+     * @param ignoreChanged 忽略节点改变事件
+     */
+    default void setIgnoreChanged(boolean ignoreChanged) {
+        this.setProp("_ignoreChanged", ignoreChanged);
     }
 }
