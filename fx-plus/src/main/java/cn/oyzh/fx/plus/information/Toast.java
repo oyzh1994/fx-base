@@ -100,6 +100,7 @@ public class Toast {
         this.resetDefault();
         // 创建组件
         HBox box = new HBox();
+        box.setCursor(Cursor.NONE);
         box.setFocusTraversable(false);
         // 设置间距等
         box.setAlignment(Pos.CENTER);
@@ -151,10 +152,10 @@ public class Toast {
         } else {// Popup
             Popup popup = new FXPopup();
             this.window = popup;
-            box.setCursor(Cursor.NONE);
             popup.setAutoFix(true);
             popup.setAutoHide(true);
             popup.getScene().setFill(Color.TRANSPARENT);
+            popup.getScene().setCursor(Cursor.NONE);
             popup.getContent().setAll(box);
         }
         // 设置透明度
@@ -172,6 +173,10 @@ public class Toast {
                 if (n) {
                     owner.requestFocus();
                 }
+            });
+            // 强制抢走焦点
+            this.window.addEventFilter(WindowEvent.WINDOW_HIDING, (WindowEvent e) -> {
+                owner.requestFocus();
             });
         }
         // 显示窗口
