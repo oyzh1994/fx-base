@@ -119,4 +119,17 @@ public class FXChooser {
         }
         return DESKTOP_DIR.getPath();
     }
+
+    /**
+     * 获取桌面路径
+     *
+     * @return 结果
+     */
+    public static String getDesktopDirectory() {
+        File file = new File(SystemUtil.userHome(), "Desktop");
+        if (file.exists() && file.isDirectory()) {
+            return file.getPath();
+        }
+        return DESKTOP_DIR.getPath();
+    }
 }

@@ -35,6 +35,16 @@ public class DirChooserHelper {
     }
 
     /**
+     * 选择桌面文件夹
+     *
+     * @param title 标题
+     * @return 文件夹
+     */
+    public static File chooseDesktop(String title) {
+        return choose(title, FXChooser.getDesktopDirectory(), StageManager.getFrontWindow());
+    }
+
+    /**
      * 选择文件夹
      *
      * @param title   标题
