@@ -171,12 +171,16 @@ public class Toast {
             // 强制抢走焦点
             this.window.focusedProperty().addListener((v, o, n) -> {
                 if (n) {
-                    owner.requestFocus();
+                    if (owner != null) {
+                        FXUtil.runLater(owner::requestFocus);
+                    }
                 }
             });
             // 强制抢走焦点
             this.window.addEventFilter(WindowEvent.WINDOW_HIDING, (WindowEvent e) -> {
-                owner.requestFocus();
+                if (owner != null) {
+                    FXUtil.runLater(owner::requestFocus);
+                }
             });
         }
         // 显示窗口
