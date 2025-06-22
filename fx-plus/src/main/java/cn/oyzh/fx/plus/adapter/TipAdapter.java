@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.fx.plus.util.TooltipUtil;
-import javafx.collections.ObservableMap;
 import javafx.event.EventTarget;
-import javafx.scene.Node;
 import javafx.scene.input.KeyCombination;
 
 /**
@@ -88,10 +86,6 @@ public interface TipAdapter extends EventTarget, PropAdapter {
         this.setProp("keyCombination", combination);
         String tipText = this.getTipText();
         String text = combination.toString();
-        if (this instanceof Node node && "filterProcess".equals(node.getId())) {
-            ObservableMap<Object, Object> properties = node.getProperties();
-            System.out.println(properties);
-        }
         this.tipText(tipText == null ? text : tipText + "(" + text + ")");
     }
 
