@@ -33,6 +33,7 @@ public class MenuItemPool extends Pool<MenuItem> {
         item.setVisible(true);
         item.setDisable(false);
         item.setUserData(null);
+        item.setAccelerator(null);
         item.getProperties().clear();
         item.disableProperty().unbind();
         item.setOnMenuValidation(null);

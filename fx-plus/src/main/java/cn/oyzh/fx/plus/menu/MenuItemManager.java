@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 
 import java.util.List;
 
@@ -22,6 +23,20 @@ public class MenuItemManager {
      * 菜单项池
      */
     private static final MenuItemPool POOL = new MenuItemPool();
+
+    /**
+     * 分割菜单项池
+     */
+    private static final SeparatorMenuItemPool SEPARATOR_POOL = new SeparatorMenuItemPool();
+
+    /**
+     * 获取分割菜单项
+     *
+     * @return 菜单
+     */
+    public static SeparatorMenuItem getSeparatorMenuItem() {
+        return SEPARATOR_POOL.borrowObject();
+    }
 
     /**
      * 获取菜单项
@@ -105,8 +120,20 @@ public class MenuItemManager {
      * @param menuItem 菜单项
      */
     public static void returnMenuItem(MenuItem menuItem) {
-        POOL.returnObject(menuItem);
+        if (menuItem instanceof FXMenuItem) {
+            POOL.returnObject(menuItem);
+        }
     }
+
+    /**
+     * 归还菜单项
+     *
+     * @param menuItem 菜单项
+     */
+    public static void returnMenuItem(SeparatorMenuItem menuItem) {
+        SEPARATOR_POOL.returnObject(menuItem);
+    }
+
 
     /**
      * 归还菜单项
@@ -115,7 +142,7 @@ public class MenuItemManager {
      */
     public static void returnMenuItem(List<? extends MenuItem> menuItems) {
         for (MenuItem menuItem : menuItems) {
-            POOL.returnObject(menuItem);
+            returnMenuItem(menuItem);
         }
     }
 }
