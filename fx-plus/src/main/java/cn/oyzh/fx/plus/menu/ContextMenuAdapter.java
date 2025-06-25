@@ -68,10 +68,11 @@ public interface ContextMenuAdapter {
         ContextMenu contextMenu = this.contextMenu();
         if (CollectionUtil.isNotEmpty(menuItems)) {
             if (contextMenu == null) {
-                contextMenu = new FXContextMenu(menuItems);
+                contextMenu = ContextMenuManager.getContextMenu(menuItems);
                 this.contextMenu(contextMenu);
             } else if (!contextMenu.getItems().equals(menuItems)) {
-                DestroyUtil.destroy(contextMenu.getItems());
+                MenuItemManager.returnMenuItem(contextMenu.getItems());
+                // DestroyUtil.destroy(contextMenu.getItems());
                 contextMenu.getItems().setAll(menuItems);
             }
             return contextMenu;
@@ -114,8 +115,9 @@ public interface ContextMenuAdapter {
     default void clearContextMenu() {
         ContextMenu menu = this.contextMenu();
         if (menu != null) {
-            menu.hide();
-            DestroyUtil.destroy(menu.getItems());
+            MenuItemManager.returnMenuItem(menu.getItems());
+            ContextMenuManager.returnContextMenu(menu);
+            // DestroyUtil.destroy(menu.getItems());
             this.contextMenu(null);
         }
     }

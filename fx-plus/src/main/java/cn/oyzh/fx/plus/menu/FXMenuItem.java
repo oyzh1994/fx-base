@@ -39,6 +39,10 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         });
     }
 
+    public FXMenuItem() {
+        super();
+    }
+
     public FXMenuItem(Node graphic, String text, Runnable action) {
         if (text != null) {
             super.setText(text);
@@ -67,6 +71,10 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         return w;
     }
 
+    public void fixed(){
+
+    }
+
     /**
      * 使用svg和文字来生成菜单项
      *
@@ -75,6 +83,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
      * @param action 执行业务
      * @return 菜单项
      */
+    @Deprecated
     public static FXMenuItem newItem(String text, SVGGlyph glyph, Runnable action) {
         // 生成标签
         SVGLabel label = new SVGLabel(text, glyph);
@@ -100,6 +109,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
      * @param action 执行业务
      * @return 菜单项
      */
+    @Deprecated
     public static FXMenuItem newItem(String text, Runnable action) {
         return new FXMenuItem(null, text, action);
     }
