@@ -13,6 +13,7 @@ import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ErrorInfoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExportSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.FileSVGGlyph;
@@ -54,6 +55,7 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 /**
@@ -759,6 +761,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem touchFile(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.touchFile(), new FileSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem errorInfo(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.errorInfo(), new ErrorInfoSVGGlyph(iconSize), action);
     }
 }
 
