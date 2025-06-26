@@ -459,6 +459,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneConnect(), new RepeatSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem cloneSession(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneSession(), action);
+    }
+
     public static FXMenuItem reload(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reload(), new RefreshSVGGlyph(iconSize), action);
     }

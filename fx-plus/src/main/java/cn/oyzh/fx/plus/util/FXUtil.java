@@ -334,7 +334,8 @@ public class FXUtil {
      */
     public static boolean isInitialized() {
         try {
-            PlatformImpl.getPlatformPreferences();
+            Platform.runLater(() -> {});
+            // PlatformImpl.getPlatformPreferences();
         } catch (IllegalStateException ignored) {
             return false;
         }
