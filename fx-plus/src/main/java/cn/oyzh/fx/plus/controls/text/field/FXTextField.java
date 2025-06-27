@@ -29,6 +29,13 @@ public class FXTextField extends TextField implements FlexAdapter, Verifiable, N
     }
 
     /**
+     * 失焦事件
+     */
+    protected void onBlur() {
+
+    }
+
+    /**
      * 是否必须
      */
     private boolean require;

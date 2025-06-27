@@ -64,9 +64,10 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
     protected void updateButtonVisibility() {
         boolean visible = this.getSkinnable().isVisible();
         boolean disable = this.getSkinnable().isDisable();
-        boolean hasFocus = this.getSkinnable().isFocused();
-        boolean isEmpty = this.getSkinnable().getText() == null || this.getSkinnable().getText().isEmpty();
-        boolean shouldBeVisible = !disable && visible && hasFocus && !isEmpty;
+        boolean isFocus = this.getSkinnable().isFocused();
+        // boolean isEmpty = this.getSkinnable().getText() == null || this.getSkinnable().getText().isEmpty();
+        // boolean shouldBeVisible = !disable && visible && hasFocus && !isEmpty;
+        boolean shouldBeVisible = !disable && visible && isFocus;
         this.decrButton.setVisible(shouldBeVisible);
         this.incrButton.setVisible(shouldBeVisible);
     }
@@ -138,7 +139,6 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽 + x - 按钮实际大小
         double areaX = w + x - btnSize - this.btnMarginRight;
-        System.out.println("w:" + w);
         // 位移的areaY1值
         double areaY1 = height * 0.1 + 1;
         // 位移的areaY2值

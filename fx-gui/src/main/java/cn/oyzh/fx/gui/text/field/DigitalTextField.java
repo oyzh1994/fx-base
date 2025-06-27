@@ -17,6 +17,14 @@ import java.util.function.UnaryOperator;
  */
 public abstract class DigitalTextField extends LimitTextField {
 
+    {
+        this.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                this.onBlur();
+            }
+        });
+    }
+
     /**
      * 最大值
      */
@@ -120,6 +128,7 @@ public abstract class DigitalTextField extends LimitTextField {
             // 判断新值是否小于等于最小值，如果是则禁用减号按钮
             if (this.minVal != null && number.doubleValue() <= this.minVal.doubleValue()) {
                 skin.disableDecrButton();
+                // this.setValue(this.minVal);
             } else {
                 // 否则启用减号按钮
                 skin.enableDecrButton();
@@ -127,6 +136,7 @@ public abstract class DigitalTextField extends LimitTextField {
             // 判断新值是否大于等于最大值，如果是则禁用加号按钮
             if (this.maxVal != null && number.doubleValue() >= this.maxVal.doubleValue()) {
                 skin.disableIncrButton();
+                // this.setValue(this.maxVal);
             } else {
                 // 否则启用加号按钮
                 skin.enableIncrButton();
@@ -260,5 +270,20 @@ public abstract class DigitalTextField extends LimitTextField {
 
     public float getBtnMarginRight() {
         return this.skin().getBtnMarginRight();
+    }
+
+    @Override
+    protected void onBlur() {
+        super.onBlur();
+        Double val = this.getDoubleValue();
+        if (val == null) {
+            return;
+        }
+        if (this.minVal != null && val < this.minVal.doubleValue()) {
+            this.setValue(this.minVal);
+        }
+        if (this.maxVal != null && val > this.maxVal.doubleValue()) {
+            this.setValue(this.maxVal);
+        }
     }
 }

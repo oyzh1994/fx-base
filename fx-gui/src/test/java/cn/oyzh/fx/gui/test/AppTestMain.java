@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.test;
 
+import cn.oyzh.fx.gui.text.field.DecimalTextField;
 import cn.oyzh.fx.gui.text.field.DigitalTextField;
 import cn.oyzh.fx.gui.text.field.LimitTextField;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
@@ -37,6 +38,13 @@ public class AppTestMain extends Application {
         textField.setMin(10L);
         textField.setMax(20L);
         vbox.getChildren().addAll(textField);
+
+        DecimalTextField decimalTextField = new DecimalTextField();
+        decimalTextField.setMaxWidth(200);
+        decimalTextField.setScaleLen(2);
+        decimalTextField.setMin(10d);
+        decimalTextField.setMax(20d);
+        vbox.getChildren().addAll(decimalTextField);
 
         TextField textField1 = new TextField();
         textField1.setMaxWidth(200);
