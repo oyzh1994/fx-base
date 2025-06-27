@@ -60,7 +60,8 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         // 位移的areaX值，规则 组件宽 + x -按钮大小
         double areaX = w + x - btnSize - 5;
         // 设置位置
-        super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+        // super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.button, areaX, y, 0, h, 0, HPos.CENTER, VPos.CENTER);
     }
 
     /**

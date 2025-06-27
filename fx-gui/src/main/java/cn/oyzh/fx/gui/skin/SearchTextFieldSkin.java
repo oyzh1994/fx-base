@@ -3,7 +3,6 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -12,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 /**
  * 搜索文本输入框皮肤
@@ -159,6 +157,7 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
             this.getSkinnable().setPadding(padding);
         }
         // 设置组件位置
-        super.positionInArea(this.historyButton, 3, y * 0.9, w, h, btnSize, HPos.LEFT, VPos.CENTER);
+        // super.positionInArea(this.historyButton, 3, y * 0.9, w, h, btnSize, HPos.LEFT, VPos.CENTER);
+        super.positionInArea(this.historyButton, 3, y * 0.9, 0, h, btnSize, HPos.LEFT, VPos.CENTER);
     }
 }

@@ -138,13 +138,16 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽 + x - 按钮实际大小
         double areaX = w + x - btnSize - this.btnMarginRight;
+        System.out.println("w:" + w);
         // 位移的areaY1值
         double areaY1 = height * 0.1 + 1;
         // 位移的areaY2值
         double areaY2 = areaY1 + size + height * 0.1 + 1;
         // 设置按钮位置
-        super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
-        super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
+        // super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
+        // super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.incrButton, areaX, areaY1, 0, btnSize, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.decrButton, areaX, areaY2, 0, btnSize, 0, HPos.CENTER, VPos.CENTER);
     }
 
     /**
