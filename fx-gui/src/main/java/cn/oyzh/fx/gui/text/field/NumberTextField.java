@@ -46,16 +46,18 @@ public class NumberTextField extends DigitalTextField {
     @Override
     protected void incrValue() {
         // 设置值
-        if (this.step != null) {
-            this.setValue(this.getValue() + this.step.longValue());
+        Long val = this.getValue();
+        if (this.step != null && val != null) {
+            this.setValue(val + this.step.longValue());
         }
     }
 
     @Override
     protected void decrValue() {
         // 设置值
-        if (this.step != null) {
-            this.setValue(this.getValue() - this.step.longValue());
+        Long val = this.getValue();
+        if (this.step != null && val != null) {
+            this.setValue(val - this.step.longValue());
         }
     }
 

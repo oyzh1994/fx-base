@@ -82,20 +82,21 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         this.incrButton = new UpSVGGlyph();
         this.incrButton.setSize(h);
         this.incrButton.setVisible(false);
-        this.incrButton.setTipText(I18nHelper.addValue());
         this.incrButton.managedBindVisible();
         this.incrButton.setEnableWaiting(false);
         this.incrButton.setFocusTraversable(false);
+        this.incrButton.setColor(this.getButtonColor());
+        this.incrButton.setTipText(I18nHelper.addValue());
         this.incrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
 
         this.decrButton = new DonwSVGGlyph();
         this.decrButton.setSize(h);
         this.decrButton.setVisible(false);
-        this.decrButton.setColor(this.getButtonColor());
-        this.decrButton.setTipText(I18nHelper.reduceValue());
         this.decrButton.managedBindVisible();
         this.decrButton.setEnableWaiting(false);
         this.decrButton.setFocusTraversable(false);
+        this.decrButton.setColor(this.getButtonColor());
+        this.decrButton.setTipText(I18nHelper.reduceValue());
         this.decrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
         // 绑定事件到按钮
         if (onIncr != null) {
@@ -140,14 +141,14 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         // 位移的areaX值，规则 组件宽 + x - 按钮实际大小
         double areaX = w + x - btnSize - this.btnMarginRight;
         // 位移的areaY1值
-        double areaY1 = height * 0.1 + 1;
+        double areaY1 = btnSize + height * 0.1;
         // 位移的areaY2值
-        double areaY2 = areaY1 + size + height * 0.1 + 1;
+        double areaY2 = areaY1 + size + height * 0.1;
         // 设置按钮位置
         // super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
         // super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
-        super.positionInArea(this.incrButton, areaX, areaY1, 0, btnSize, 0, HPos.CENTER, VPos.CENTER);
-        super.positionInArea(this.decrButton, areaX, areaY2, 0, btnSize, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.incrButton, areaX, areaY1, 0, 0, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.decrButton, areaX, areaY2, 0, 0, 0, HPos.CENTER, VPos.CENTER);
     }
 
     /**

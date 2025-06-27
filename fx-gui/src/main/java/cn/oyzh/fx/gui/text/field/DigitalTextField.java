@@ -281,8 +281,7 @@ public abstract class DigitalTextField extends LimitTextField {
         }
         if (this.minVal != null && val < this.minVal.doubleValue()) {
             this.setValue(this.minVal);
-        }
-        if (this.maxVal != null && val > this.maxVal.doubleValue()) {
+        } else if (this.maxVal != null && val > this.maxVal.doubleValue()) {
             this.setValue(this.maxVal);
         }
     }
