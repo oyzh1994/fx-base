@@ -113,11 +113,20 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      */
     public void showPopup() {
         if (this.popup != null) {
+            int size = this.getItemSize();
+            double height = size * this.lineHeight + 10;
+            if (height > 300) {
+                height = 300;
+            }
+            this.popup.setHeight(height);
             TextField textField = this.getSkinnable();
             this.popup.showFixed(textField, -2, 0);
         }
     }
 
+    /**
+     * 初始化弹窗
+     */
     protected void initPopup() {
         this.popup = new FXPopup();
         this.popup.setOnHidden(this::onPopupHide);
@@ -193,7 +202,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         FXScrollPane scrollPane = new FXScrollPane(listView);
         scrollPane.setFlexWidth("100%");
         scrollPane.setFlexHeight("100%");
-        scrollPane.setMaxHeight(150);
+        //scrollPane.setMaxHeight(150);
         // 同步布局
         if (NodeUtil.isOrientationRightToLeft(textField)) {
             scrollPane.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
