@@ -133,8 +133,14 @@ public class NodeUtil {
 
         if (target instanceof Region region) {
             double w1 = region.getWidth();
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = region.getMinWidth();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            return region.getMaxWidth();
         }
 
         // if (target instanceof Parent parent) {
@@ -145,8 +151,14 @@ public class NodeUtil {
 
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             double w1 = columnBase.getWidth();
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = columnBase.getMinWidth();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            return columnBase.getMaxWidth();
         }
 
         // if (target instanceof Shape shape) {
@@ -161,14 +173,18 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getWidth();
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = stage.getMinWidth();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            return stage.getMaxWidth();
         }
 
-        if (target instanceof StageAdapter wrapper) {
-            double w1 = wrapper.stage().getWidth();
-            double w2 = wrapper.stage().getMinWidth();
-            return Math.max(w1, w2);
+        if (target instanceof StageAdapter adapter) {
+            return getWidth(adapter.stage());
         }
 
         if (target instanceof Window window) {
@@ -177,8 +193,10 @@ public class NodeUtil {
 
         if (target instanceof Node node) {
             double w1 = node.prefWidth(-1);
-            double w2 = node.minWidth(-1);
-            return Math.max(w1, w2);
+            if (w1 > 0) {
+                return w1;
+            }
+            return node.minWidth(-1);
         }
 
         return Double.NaN;
@@ -202,11 +220,19 @@ public class NodeUtil {
 //        }
 
         if (target instanceof Region region) {
-            double w1 = region.getPrefHeight();
-            double w2 = region.getMinHeight();
-            double w3 = region.getMaxHeight();
             double w4 = region.getHeight();
-            return Math.max(Math.max(w1, w2), Math.max(w3, w4));
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = region.getPrefHeight();
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = region.getMinHeight();
+            if (w2 > 0) {
+                return w1;
+            }
+            return region.getMaxHeight();
         }
 
         // if (target instanceof Parent parent) {
@@ -221,14 +247,18 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getHeight();
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = stage.getMinHeight();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            return stage.getMaxHeight();
         }
 
-        if (target instanceof StageAdapter wrapper) {
-            double w1 = wrapper.stage().getHeight();
-            double w2 = wrapper.stage().getMinHeight();
-            return Math.max(w1, w2);
+        if (target instanceof StageAdapter adapter) {
+            return getHeight(adapter.stage());
         }
 
         if (target instanceof Window window) {
@@ -237,8 +267,10 @@ public class NodeUtil {
 
         if (target instanceof Node node) {
             double w1 = node.prefHeight(-1);
-            double w2 = node.minHeight(-1);
-            return Math.max(w1, w2);
+            if (w1 > 0) {
+                return w1;
+            }
+            return node.minHeight(-1);
         }
 
         return Double.NaN;
