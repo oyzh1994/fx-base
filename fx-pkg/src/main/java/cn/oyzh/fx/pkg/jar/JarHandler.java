@@ -151,6 +151,7 @@ public class JarHandler implements PreHandler {
             // 合并lib目录到主jar文件
             String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ./BOOT-INF/lib";
             cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+            JulLog.info(cmdStr);
             RuntimeUtil.execAndWait(cmdStr, dir);
         } else {// 单个jar逐个合并
             List<File> files = FileUtil.loopFiles(dir);
@@ -159,6 +160,7 @@ public class JarHandler implements PreHandler {
                 String fName = file.getPath().replace(dir.getPath(), "");
                 String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ." + fName;
                 cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+                JulLog.info(cmdStr);
                 RuntimeUtil.execAndWait(cmdStr, dir);
             }
         }
