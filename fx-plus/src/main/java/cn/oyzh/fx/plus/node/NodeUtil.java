@@ -130,9 +130,15 @@ public class NodeUtil {
 //                }
 //            }
 //        }
-
         if (target instanceof Region region) {
             double w1 = region.getWidth();
+            double w3 = region.getPrefWidth();
+            if (w3 > 0 && w1 > 0) {
+                return Math.max(w3, w1);
+            }
+            if (w3 > 0) {
+                return w3;
+            }
             if (w1 > 0) {
                 return w1;
             }
@@ -221,10 +227,13 @@ public class NodeUtil {
 
         if (target instanceof Region region) {
             double w4 = region.getHeight();
+            double w1 = region.getPrefHeight();
+            if (w1 > 0 && w4 > 0) {
+                return Math.max(w4, w1);
+            }
             if (w4 > 0) {
                 return w4;
             }
-            double w1 = region.getPrefHeight();
             if (w1 > 0) {
                 return w1;
             }
