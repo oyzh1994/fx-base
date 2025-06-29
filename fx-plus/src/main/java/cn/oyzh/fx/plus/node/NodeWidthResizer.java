@@ -11,212 +11,18 @@ import javafx.scene.input.MouseEvent;
 import java.util.function.Consumer;
 
 /**
- * 组件大小改变辅助
+ * 组件宽度拉伸器
  *
  * @author oyzh
  * @since 2023/05/15
  */
-public class NodeWidthResizer {
-
-    /**
-     * 事件节点
-     */
-    private final Node eventNode;
-
-    /**
-     * 最小宽度
-     */
-    private Float minWidth;
-
-    /**
-     * 最大宽度
-     */
-    private Float maxWidth;
-
-    /**
-     * 大小改变中标志位
-     */
-    private Boolean resizeIng;
-
-    /**
-     * 鼠标按下时间
-     */
-    private long mousePressedTime;
-
-    /**
-     * 原始鼠标样式
-     */
-    private Cursor originalCursor;
-
-    /**
-     * 触发阈值
-     */
-    private Byte triggerThreshold = 1;
-
-    /**
-     * 鼠标移动事件
-     */
-    private EventHandler<MouseEvent> mouseMoved;
-
-    /**
-     * 鼠标离开事件
-     */
-    private EventHandler<MouseEvent> mouseExited;
-
-    /**
-     * 鼠标按下事件
-     */
-    private EventHandler<MouseEvent> mousePressed;
-
-    /**
-     * 鼠标拖动事件
-     */
-    private EventHandler<MouseEvent> mouseDragged;
-
-    /**
-     * 鼠标释放事件
-     */
-    private EventHandler<MouseEvent> mouseReleased;
-
-    /**
-     * 鼠标拖动事件
-     */
-    private Consumer<Float> resizeTriggered;
-
-    public Node getEventNode() {
-        return eventNode;
-    }
-
-    public Float getMinWidth() {
-        return minWidth;
-    }
-
-    public void setMinWidth(Float minWidth) {
-        this.minWidth = minWidth;
-    }
-
-    public Float getMaxWidth() {
-        return maxWidth;
-    }
-
-    public void setMaxWidth(Float maxWidth) {
-        this.maxWidth = maxWidth;
-    }
-
-    public Boolean getResizeIng() {
-        return resizeIng;
-    }
-
-    public void setResizeIng(Boolean resizeIng) {
-        this.resizeIng = resizeIng;
-    }
-
-    public long getMousePressedTime() {
-        return mousePressedTime;
-    }
-
-    public void setMousePressedTime(long mousePressedTime) {
-        this.mousePressedTime = mousePressedTime;
-    }
-
-    public Cursor getOriginalCursor() {
-        return originalCursor;
-    }
-
-    public void setOriginalCursor(Cursor originalCursor) {
-        this.originalCursor = originalCursor;
-    }
-
-    public Byte getTriggerThreshold() {
-        return triggerThreshold;
-    }
-
-    public void setTriggerThreshold(Byte triggerThreshold) {
-        this.triggerThreshold = triggerThreshold;
-    }
-
-    public EventHandler<MouseEvent> getMouseMoved() {
-        return mouseMoved;
-    }
-
-    public void setMouseMoved(EventHandler<MouseEvent> mouseMoved) {
-        this.mouseMoved = mouseMoved;
-    }
-
-    public EventHandler<MouseEvent> getMouseExited() {
-        return mouseExited;
-    }
-
-    public void setMouseExited(EventHandler<MouseEvent> mouseExited) {
-        this.mouseExited = mouseExited;
-    }
-
-    public EventHandler<MouseEvent> getMousePressed() {
-        return mousePressed;
-    }
-
-    public void setMousePressed(EventHandler<MouseEvent> mousePressed) {
-        this.mousePressed = mousePressed;
-    }
-
-    public EventHandler<MouseEvent> getMouseDragged() {
-        return mouseDragged;
-    }
-
-    public void setMouseDragged(EventHandler<MouseEvent> mouseDragged) {
-        this.mouseDragged = mouseDragged;
-    }
-
-    public EventHandler<MouseEvent> getMouseReleased() {
-        return mouseReleased;
-    }
-
-    public void setMouseReleased(EventHandler<MouseEvent> mouseReleased) {
-        this.mouseReleased = mouseReleased;
-    }
-
-    public Consumer<Float> getResizeTriggered() {
-        return resizeTriggered;
-    }
-
-    public void setResizeTriggered(Consumer<Float> resizeTriggered) {
-        this.resizeTriggered = resizeTriggered;
-    }
+public class NodeWidthResizer extends NodeResizer {
 
     public NodeWidthResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
-        this.eventNode = eventNode;
-        this.originalCursor = originalCursor;
-        this.resizeTriggered = resizeTriggered;
+        super(eventNode, originalCursor, resizeTriggered);
     }
 
-    /**
-     * 限制宽度
-     *
-     * @param minWidth 最小宽
-     * @param maxWidth 最大宽
-     */
-    public void widthLimit(float minWidth, float maxWidth) {
-        this.minWidth = minWidth;
-        this.maxWidth = maxWidth;
-    }
-
-    /**
-     * 获取鼠标移动事件
-     *
-     * @return 鼠标移动事件
-     */
-    public EventHandler<MouseEvent> mouseMoved() {
-        if (this.mouseMoved == null) {
-            this.mouseMoved = this.defaultMouseMoved();
-        }
-        return this.mouseMoved;
-    }
-
-    /**
-     * 获取默认鼠标移动事件
-     *
-     * @return 鼠标移动事件
-     */
+    @Override
     public EventHandler<MouseEvent> defaultMouseMoved() {
         return event -> {
             if (this.isResizeIng()) {
@@ -230,54 +36,13 @@ public class NodeWidthResizer {
             } else {
                 this.setNodeCursor(this.originalCursor);
             }
-            JulLog.debug("MouseMoved");
-        };
-    }
-
-    /**
-     * 获取鼠标离开事件
-     *
-     * @return 鼠标离开事件
-     */
-    public EventHandler<MouseEvent> mouseExited() {
-        if (this.mouseExited == null) {
-            this.mouseExited = this.defaultMouseExited();
-        }
-        return this.mouseExited;
-    }
-
-    /**
-     * 获取默认鼠标离开事件
-     *
-     * @return 鼠标离开事件
-     */
-    public EventHandler<MouseEvent> defaultMouseExited() {
-        return event -> {
-            if (!this.isResizeIng()) {
-                JulLog.debug("Cursor recover.");
-                this.setNodeCursor(this.originalCursor);
-                JulLog.debug("MouseExited");
+            if(JulLog.isDebugEnabled()) {
+                JulLog.debug("MouseMoved");
             }
         };
     }
 
-    /**
-     * 获取鼠标按下事件
-     *
-     * @return 鼠标按下事件
-     */
-    public EventHandler<MouseEvent> mousePressed() {
-        if (this.mousePressed == null) {
-            this.mousePressed = this.defaultMousePressed();
-        }
-        return this.mousePressed;
-    }
-
-    /**
-     * 获取默认鼠标按下事件
-     *
-     * @return 鼠标按下事件
-     */
+    @Override
     public EventHandler<MouseEvent> defaultMousePressed() {
         return event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
@@ -291,7 +56,9 @@ public class NodeWidthResizer {
                     this.resizeIng = false;
                     this.mousePressedTime = -1;
                 }
-                JulLog.debug("MousePressed");
+                if (JulLog.isDebugEnabled()) {
+                    JulLog.debug("MousePressed");
+                }
             } else {
                 // 重置拉伸参数
                 this.resizeIng = false;
@@ -300,133 +67,13 @@ public class NodeWidthResizer {
         };
     }
 
-    /**
-     * 获取鼠标拖动事件
-     *
-     * @return 鼠标动事件
-     */
-    public EventHandler<MouseEvent> mouseDragged() {
-        if (this.mouseDragged == null) {
-            this.mouseDragged = this.defaultMouseDragged();
-        }
-        return this.mouseDragged;
-    }
-
-    /**
-     * 获取默认鼠标拖动事件
-     *
-     * @return 鼠标拖动事件
-     */
+    @Override
     public EventHandler<MouseEvent> defaultMouseDragged() {
         return event -> {
             if (event.getButton() == MouseButton.PRIMARY && this.isResizeIng() && this.resizeTriggered != null && this.resizeAble(event)) {
                 this.resizeTriggered.accept(this.calcNodeWidth(event));
             }
         };
-    }
-
-    /**
-     * 获取鼠标释放事件
-     *
-     * @return 鼠标释放事件
-     */
-    public EventHandler<MouseEvent> mouseReleased() {
-        if (this.mouseReleased == null) {
-            this.mouseReleased = this.defaultMouseReleased();
-        }
-        return this.mouseReleased;
-    }
-
-    /**
-     * 获取默认鼠标释放事件
-     *
-     * @return 鼠标释放事件
-     */
-    public EventHandler<MouseEvent> defaultMouseReleased() {
-        return event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                this.resizeIng = null;
-                this.setNodeCursor(this.originalCursor);
-                JulLog.debug("MouseReleased");
-            }
-        };
-    }
-
-    /**
-     * 初始化拉伸事件
-     */
-    public void initResizeEvent() {
-        if (this.mouseMoved() != null) {
-            this.eventNode.addEventFilter(MouseEvent.MOUSE_MOVED, this.mouseMoved());
-        }
-        if (this.mouseExited() != null) {
-            this.eventNode.addEventFilter(MouseEvent.MOUSE_EXITED, this.mouseExited());
-        }
-        if (this.mousePressed() != null) {
-            this.eventNode.addEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressed());
-        }
-        if (this.mouseDragged() != null) {
-            this.eventNode.addEventFilter(MouseEvent.MOUSE_DRAGGED, this.mouseDragged());
-        }
-        if (this.mouseReleased() != null) {
-            this.eventNode.addEventFilter(MouseEvent.MOUSE_RELEASED, this.mouseReleased());
-        }
-    }
-
-    /**
-     * 清理数据
-     */
-    public void clear() {
-        this.minWidth = null;
-        this.resizeIng = null;
-        this.originalCursor = null;
-        this.triggerThreshold = null;
-    }
-
-    /**
-     * 获取最小宽度
-     *
-     * @return 最小宽度
-     */
-    public Float minWidth() {
-        return this.minWidth == null ? 0.f : this.minWidth;
-    }
-
-    /**
-     * 获取最大宽度
-     *
-     * @return 最大宽度
-     */
-    public Float maxWidth() {
-        return this.maxWidth == null ? 0.f : this.maxWidth;
-    }
-
-    /**
-     * 获取触发阈值
-     *
-     * @return 触发阈值
-     */
-    public Float triggerThreshold() {
-        return this.triggerThreshold == null ? 5.0f : this.triggerThreshold;
-    }
-
-    /**
-     * 是否大小改变中
-     *
-     * @return 结果
-     */
-    public boolean isResizeIng() {
-        return this.resizeIng != null && this.resizeIng && (System.currentTimeMillis() - this.mousePressedTime) > 150;
-    }
-
-    /**
-     * 是否可触发
-     *
-     * @param val 值
-     * @return 结果
-     */
-    public boolean triggerAble(float val) {
-        return Math.abs(val) <= this.triggerThreshold();
     }
 
     /**
@@ -458,26 +105,10 @@ public class NodeWidthResizer {
         return (float) (screenX - nodeX);
     }
 
-    /**
-     * 是否可拉伸
-     *
-     * @param event 鼠标事件
-     * @return 结果
-     */
+    @Override
     public boolean resizeAble(MouseEvent event) {
         double nodeW = this.calcNodeWidth(event);
-        return nodeW > this.minWidth && nodeW < this.maxWidth;
-    }
-
-    /**
-     * 设置鼠标样式
-     *
-     * @param cursor 鼠标样式
-     */
-    private void setNodeCursor(Cursor cursor) {
-        if (this.eventNode.getCursor() != cursor) {
-            this.eventNode.setCursor(cursor);
-        }
+        return nodeW > this.minValue && nodeW < this.maxValue;
     }
 
     /**

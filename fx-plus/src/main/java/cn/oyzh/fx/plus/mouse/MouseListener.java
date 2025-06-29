@@ -75,9 +75,9 @@ public class MouseListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(mouseHandler);
-//            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 JulLog.debug("addHandler, button:{} clickCount:{}", mouseHandler.getButton(), mouseHandler.getClickCount());
-//            }
+            }
         }
     }
 
@@ -107,9 +107,9 @@ public class MouseListener {
         MouseEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(mouseHandler);
-//            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 JulLog.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.getButton(), mouseHandler.getClickCount());
-//            }
+            }
         }
     }
 

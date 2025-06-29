@@ -78,7 +78,9 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
             if (this.getNOP() > this.contentLength()) {
                 this.flushNOP();
             }
-            JulLog.debug("nop:{}, length:{}", this.getNOP(), this.contentLength());
+            if(JulLog.isDebugEnabled()) {
+                JulLog.debug("nop:{}, length:{}", this.getNOP(), this.contentLength());
+            }
             if (t1.longValue() < this.getNOP()) {
                 this.disableInput();
             } else {
