@@ -69,10 +69,14 @@ public class IconUtil {
                 ICON_CACHE.put(iconUrl, new WeakReference<>(bytes));
                 stream = IOUtil.toStream(bytes);
             }
-            JulLog.info("load icon form file.");
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("load icon form file.");
+            }
         } else {
             stream = IOUtil.toStream(reference.get());
-            JulLog.info("load icon form cache.");
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("load icon form cache.");
+            }
         }
         return stream == null ? null : new Image(stream);
     }

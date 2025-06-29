@@ -75,7 +75,9 @@ public class SystemTheme implements Theme, ThemeStyle {
     public String getUserAgentStylesheet() {
         if (this.themePath == null) {
             this.updateThemeCss();
-            JulLog.info("themePath:{}", this.themePath);
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("themePath:{}", this.themePath);
+            }
         }
         return new File(this.themePath).toURI().toString();
 //        return this.themePath;
@@ -144,7 +146,9 @@ public class SystemTheme implements Theme, ThemeStyle {
      * 变更主题
      */
     protected void changeTheme() {
-        JulLog.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
+        }
         TaskManager.startDelay("changeTheme", () -> FXUtil.runLater(() -> {
             this.updateThemeCss();
             ThemeManager.apply(this);

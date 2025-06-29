@@ -286,7 +286,9 @@ public class FXUtil {
     public static List<Image> getImages(List<String> imgUrls) {
         List<Image> icons = new ArrayList<>(imgUrls.size());
         for (String url : imgUrls) {
-            JulLog.info("load imgUrl:{}", url);
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("load imgUrl:{}", url);
+            }
             InputStream stream = ResourceUtil.getResourceAsStream(url);
             if (stream == null) {
                 JulLog.warn("img stream is null.");
@@ -304,7 +306,9 @@ public class FXUtil {
      * @return 图片
      */
     public static Image getImage(String imgUrl) {
-        JulLog.info("load imgUrl:{}", imgUrl);
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("load imgUrl:{}", imgUrl);
+        }
         InputStream stream = ResourceUtil.getResourceAsStream(imgUrl);
         if (stream == null) {
             JulLog.warn("img stream is null.");

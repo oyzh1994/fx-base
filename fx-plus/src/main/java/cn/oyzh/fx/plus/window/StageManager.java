@@ -37,15 +37,21 @@ public class StageManager {
         for (StageAdapter adapter : allStages()) {
             if (adapter.controller() instanceof StageListener listener) {
                 try {
-                    JulLog.info("exit listener:{}", listener.getClass());
+                    if (JulLog.isInfoEnabled()) {
+                        JulLog.info("exit listener:{}", listener.getClass());
+                    }
                     listener.onSystemExit();
-                    JulLog.info("exit listener:{} success.", listener.getClass());
+                    if (JulLog.isInfoEnabled()) {
+                        JulLog.info("exit listener:{} success.", listener.getClass());
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         }
-        JulLog.info("system exit...");
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("system exit...");
+        }
         Platform.exit();
 //        System.exit(0);
     }

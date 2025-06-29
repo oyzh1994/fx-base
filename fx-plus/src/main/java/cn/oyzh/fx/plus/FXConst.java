@@ -62,7 +62,9 @@ public class FXConst {
      * @param appIcon app图标
      */
     public static void appIcon(String appIcon) {
-        JulLog.info("appIcon: {}", appIcon);
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("appIcon: {}", appIcon);
+        }
         System.setProperty(APP_ICON, appIcon);
     }
 
