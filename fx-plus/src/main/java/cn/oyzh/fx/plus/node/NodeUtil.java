@@ -533,9 +533,10 @@ public class NodeUtil {
                 FXUtil.runWait(stage::show);
             }
         } else if (obj instanceof StageAdapter stage) {
-            if (!stage.stage().isShowing()) {
-                FXUtil.runWait(stage.stage()::show);
-            }
+            //if (!stage.stage().isShowing()) {
+            //    FXUtil.runWait(stage.stage()::show);
+            //}
+            display(stage.stage());
         }
     }
 
