@@ -66,6 +66,13 @@ public class NodeUtil {
         }
     }
 
+    /**
+     * 获取属性
+     *
+     * @param node 节点
+     * @param key  键
+     * @return 值
+     */
     public static Object getProperty(Node node, Object key) {
         if (node.hasProperties()) {
             return node.getProperties().get(key);
@@ -73,6 +80,13 @@ public class NodeUtil {
         return null;
     }
 
+    /**
+     * 设置属性
+     *
+     * @param node  节点
+     * @param key   键
+     * @param value 值
+     */
     public static void setProperty(Node node, Object key, Object value) {
         if (key != null && value != null) {
             node.getProperties().put(key, value);
@@ -132,13 +146,13 @@ public class NodeUtil {
 //        }
         if (target instanceof Region region) {
             double w1 = region.getWidth();
-            double w3 = region.getPrefWidth();
-            if (w3 > 0 && w1 > 0) {
-                return Math.max(w3, w1);
-            }
-            if (w3 > 0) {
-                return w3;
-            }
+            // double w3 = region.getPrefWidth();
+            // if (w3 > 0 && w1 > 0) {
+            //     return Math.min(w3, w1);
+            // }
+            // if (w3 > 0) {
+            //     return w3;
+            // }
             if (w1 > 0) {
                 return w1;
             }
@@ -202,7 +216,11 @@ public class NodeUtil {
             if (w1 > 0) {
                 return w1;
             }
-            return node.minWidth(-1);
+            double w2 = node.minWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            return node.maxWidth(-1);
         }
 
         return Double.NaN;
@@ -227,19 +245,19 @@ public class NodeUtil {
 
         if (target instanceof Region region) {
             double w4 = region.getHeight();
-            double w1 = region.getPrefHeight();
-            if (w1 > 0 && w4 > 0) {
-                return Math.max(w4, w1);
-            }
+            // double w1 = region.getPrefHeight();
+            // if (w1 > 0 && w4 > 0) {
+            //     return Math.min(w4, w1);
+            // }
             if (w4 > 0) {
                 return w4;
             }
-            if (w1 > 0) {
-                return w1;
-            }
+            // if (w1 > 0) {
+            //     return w1;
+            // }
             double w2 = region.getMinHeight();
             if (w2 > 0) {
-                return w1;
+                return w2;
             }
             return region.getMaxHeight();
         }
@@ -279,7 +297,11 @@ public class NodeUtil {
             if (w1 > 0) {
                 return w1;
             }
-            return node.minHeight(-1);
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            return node.maxHeight(-1);
         }
 
         return Double.NaN;
@@ -533,7 +555,7 @@ public class NodeUtil {
                 FXUtil.runWait(stage::show);
             }
         } else if (obj instanceof StageAdapter stage) {
-            //if (!stage.stage().isShowing()) {
+            // if (!stage.stage().isShowing()) {
             //    FXUtil.runWait(stage.stage()::show);
             //}
             display(stage.stage());
