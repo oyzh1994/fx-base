@@ -202,7 +202,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         FXScrollPane scrollPane = new FXScrollPane(listView);
         scrollPane.setFlexWidth("100%");
         scrollPane.setFlexHeight("100%");
-        //scrollPane.setMaxHeight(150);
+        // scrollPane.setMaxHeight(150);
         // 同步布局
         if (NodeUtil.isOrientationRightToLeft(textField)) {
             scrollPane.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
