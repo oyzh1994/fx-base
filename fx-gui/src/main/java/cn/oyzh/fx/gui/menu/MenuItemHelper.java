@@ -766,6 +766,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.downloadFile(), new ImportSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem shareFile(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.shareFile(), new OpenSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem uploadFile(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.uploadFile(), new ExportSVGGlyph(iconSize), action);
     }
