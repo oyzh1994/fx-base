@@ -210,6 +210,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runImage(), new RunSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem saveImage(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveImage(), new ExportSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem exportConnect(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportConnect(), new ExportSVGGlyph(iconSize), action);
     }
