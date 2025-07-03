@@ -214,6 +214,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveImage(), new ExportSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem saveContainer(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveContainer(), new ExportSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem exportConnect(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportConnect(), new ExportSVGGlyph(iconSize), action);
     }
