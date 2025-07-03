@@ -55,7 +55,6 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 /**
@@ -205,6 +204,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem runSqlFile(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSqlFile(), new RunSqlFileSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem runImage(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runImage(), new RunSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem exportConnect(String iconSize, Runnable action) {

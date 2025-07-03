@@ -87,6 +87,9 @@ public class NodeDisposeUtil {
      * @param object 节点
      */
     public static void unbindProperty(Object object) {
+        if (object == null) {
+            return;
+        }
         // 获取所有字段
         Field[] fields = ReflectUtil.getFields(object.getClass(), true, true);
         for (Field field : fields) {
