@@ -1,12 +1,9 @@
 package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,7 +17,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -75,7 +71,7 @@ public class Toast {
     /**
      * 当前窗口
      */
-    protected Window window;
+    protected Stage window;
 
     public Toast(String msg) {
         this.msg = msg;
@@ -140,24 +136,25 @@ public class Toast {
         box.setMinWidth(boxWidth + 20);
         box.setPrefWidth(boxWidth + 20);
         // 初始化面板
-        if (owner == null) {// Stage
-            Stage stage = new Stage(StageStyle.TRANSPARENT);
-            this.window = stage;
-            Scene scene = new Scene(box);
-            scene.setCursor(Cursor.NONE);
-            stage.setScene(scene);
-            stage.setAlwaysOnTop(true);
-            stage.initModality(Modality.NONE);
-            scene.setFill(Color.TRANSPARENT);
-        } else {// Popup
-            Popup popup = new FXPopup();
-            this.window = popup;
-            popup.setAutoFix(true);
-            popup.setAutoHide(true);
-            popup.getScene().setFill(Color.TRANSPARENT);
-            popup.getScene().setCursor(Cursor.NONE);
-            popup.getContent().setAll(box);
-        }
+        // if (owner == null) {// Stage
+        this.window = new Stage(StageStyle.TRANSPARENT);
+        // this.window = stage;
+        Scene scene = new Scene(box);
+        // scene.setCursor(Cursor.NONE);
+        this.window.setScene(scene);
+        this.window.initOwner(owner);
+        this.window.setAlwaysOnTop(true);
+        this.window.initModality(Modality.NONE);
+        scene.setFill(Color.TRANSPARENT);
+        // } else {// Popup
+        //     Popup popup = new FXPopup();
+        //     this.window = popup;
+        //     popup.setAutoFix(true);
+        //     popup.setAutoHide(true);
+        //     popup.getScene().setFill(Color.TRANSPARENT);
+        //     popup.getScene().setCursor(Cursor.NONE);
+        //     popup.getContent().setAll(box);
+        // }
         // 设置透明度
         this.window.setOpacity(0.9);
         // 设置自动隐藏，位置定位
@@ -168,33 +165,26 @@ public class Toast {
                 // 执行延迟关闭
                 TaskManager.startDelay(this::close, this.duration);
             });
-            // 强制抢走焦点
-            this.window.focusedProperty().addListener((v, o, n) -> {
-                if (n) {
-                    if (owner != null) {
-                        FXUtil.runLater(owner::requestFocus);
-                    }
-                }
-            });
-            // 强制抢走焦点
-            this.window.addEventFilter(WindowEvent.WINDOW_HIDING, (WindowEvent e) -> {
-                if (owner != null) {
-                    FXUtil.runLater(owner::requestFocus);
-                }
-            });
+            // // 强制抢走焦点
+            // this.window.focusedProperty().addListener((v, o, n) -> {
+            //     if (owner != null) {
+            //         FXUtil.runLater(owner::requestFocus);
+            //     }
+            // });
+            // // 强制抢走焦点
+            // this.window.addEventFilter(WindowEvent.WINDOW_HIDING, (WindowEvent e) -> {
+            //     if (owner != null) {
+            //         FXUtil.runLater(owner::requestFocus);
+            //     }
+            // });
         }
         // 显示窗口
-        if (this.window instanceof StageAdapter adapter) {
-            adapter.changeTheme(ThemeManager.currentTheme());
-            adapter.display();
-        } else if (this.window instanceof FXPopup popup) {
-            popup.changeTheme(ThemeManager.currentTheme());
-            popup.show(owner);
-        } else if (this.window instanceof Stage stage) {
-            stage.show();
-        } else if (this.window instanceof Popup popup) {
-            popup.show(owner);
-        }
+        // if (this.window instanceof FXPopup popup) {
+        //     popup.changeTheme(ThemeManager.currentTheme());
+        //     popup.show(owner);
+        // } else if (this.window instanceof Stage stage) {
+        this.window.show();
+        // }
     }
 
     /**

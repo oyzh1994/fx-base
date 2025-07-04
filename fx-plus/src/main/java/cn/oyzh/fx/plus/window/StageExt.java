@@ -14,7 +14,7 @@ import javafx.stage.Window;
  */
 public class StageExt extends Stage implements StageAdapter, OpacityAdapter {
 
-    public StageExt( StageAttribute attribute, Window owner) {
+    public StageExt(StageAttribute attribute, Window owner) {
         this.init(attribute, owner);
         this.setProp(StageManager.REF_ATTR, this);
     }
