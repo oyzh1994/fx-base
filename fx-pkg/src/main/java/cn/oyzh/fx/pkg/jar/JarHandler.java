@@ -34,6 +34,8 @@ public class JarHandler implements PreHandler {
 
     private RegFilter filter;
 
+    private RegFilter skipFilter;
+
     @Override
     public String name() {
         return "jar处理器";
@@ -50,6 +52,7 @@ public class JarHandler implements PreHandler {
             throw new Exception("jdkPath为空！");
         }
         this.filter = new RegFilter(jarConfig.getExcludes());
+        this.skipFilter = new RegFilter(jarConfig.getSkipsJar());
         // 来源文件
         String src = packConfig.getMainJar();
         // 目标文件
@@ -106,6 +109,11 @@ public class JarHandler implements PreHandler {
             try {
                 // 非jar，跳过
                 if (!JarUtil.isJar(file)) {
+                    continue;
+                }
+                // 符合跳过jar，忽略文件
+                if (!this.skipFilter.apply(file.getName())) {
+                    JulLog.warn("类库:{}被跳过, 已忽略.", file.getName());
                     continue;
                 }
                 // 符合排除jar，删除文件

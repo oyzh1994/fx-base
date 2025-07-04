@@ -24,6 +24,13 @@ public class JarConfigParser implements ConfigParser<JarConfig> {
                 config.getExcludes().add(o.toString());
             }
         }
+        JSONArray skipsJar = object.getJSONArray("skipsJar");
+        if (skipsJar != null) {
+            config.setSkipsJar(new HashSet<>());
+            for (Object o : skipsJar) {
+                config.getSkipsJar().add(o.toString());
+            }
+        }
         config.setRemoveEmpty(object.getBooleanValue("removeEmpty", true));
         return config;
     }

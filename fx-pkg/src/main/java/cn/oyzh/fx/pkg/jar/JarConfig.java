@@ -17,6 +17,11 @@ public class JarConfig {
     private boolean removeEmpty = true;
 
     /**
+     * 跳过的jar
+     */
+    private Set<String> skipsJar;
+
+    /**
      * 排除的文件
      */
     private Set<String> excludes;
@@ -35,5 +40,13 @@ public class JarConfig {
 
     public void setExcludes(Set<String> excludes) {
         this.excludes = excludes;
+    }
+
+    public Set<String> getSkipsJar() {
+        return skipsJar;
+    }
+
+    public void setSkipsJar(Set<String> skipsJar) {
+        this.skipsJar = skipsJar;
     }
 }
