@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.common.util.NumberUtil;
-import cn.oyzh.fx.gui.svg.glyph.DonwSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.DownSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UpSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -89,7 +89,7 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         this.incrButton.setTipText(I18nHelper.addValue());
         this.incrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
 
-        this.decrButton = new DonwSVGGlyph();
+        this.decrButton = new DownSVGGlyph();
         this.decrButton.setSize(h);
         this.decrButton.setVisible(false);
         this.decrButton.managedBindVisible();
