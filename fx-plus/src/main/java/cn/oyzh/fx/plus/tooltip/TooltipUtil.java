@@ -1,8 +1,5 @@
-package cn.oyzh.fx.plus.util;
+package cn.oyzh.fx.plus.tooltip;
 
-import cn.oyzh.common.cache.CacheUtil;
-import cn.oyzh.common.cache.TimedCache;
-import cn.oyzh.common.util.MD5Util;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
 import javafx.beans.value.ChangeListener;
@@ -20,27 +17,37 @@ import javafx.util.Duration;
  */
 public class TooltipUtil {
 
-    /**
-     * 缓存
-     */
-    private final static TimedCache<String, Tooltip> CACHE = CacheUtil.newTimedCache(60 * 1000L);
+    // /**
+    //  * 缓存
+    //  */
+    // private final static TimedCache<String, Tooltip> CACHE = CacheUtil.newTimedCache(60 * 1000L);
 
     /**
-     * 初始化提示组件
-     *
-     * @param text 提示
-     * @return 组件
+     * 池
      */
-    public static Tooltip initTooltip(String text) {
-        String hash = MD5Util.md5Hex(text);
-        if (CACHE.containsKey(hash)) {
-            return CACHE.get(hash);
-        }
-        Tooltip tooltip = new Tooltip(text);
-        initStyle(tooltip);
-        CACHE.put(hash, tooltip);
-        return tooltip;
-    }
+    private final static TooltipPool POOL = new TooltipPool();
+
+    /**
+     * 属性键
+     */
+    private final static String PROP_KEY = "_tip_handler";
+
+    // /**
+    //  * 初始化提示组件
+    //  *
+    //  * @param text 提示
+    //  * @return 组件
+    //  */
+    // public static Tooltip initTooltip(String text) {
+    //     String hash = MD5Util.md5Hex(text);
+    //     if (CACHE.containsKey(hash)) {
+    //         return CACHE.get(hash);
+    //     }
+    //     Tooltip tooltip = new Tooltip(text);
+    //     initStyle(tooltip);
+    //     CACHE.put(hash, tooltip);
+    //     return tooltip;
+    // }
 
     /**
      * 初始化提示组件
@@ -85,39 +92,45 @@ public class TooltipUtil {
         uninstall(target);
         if (StringUtil.isNotBlank(text)) {
             if (target instanceof Node node) {
-                if (node.getProperties().containsKey("_tip:handler")) {
-                    EventHandler<MouseEvent> tipHandler = (EventHandler<MouseEvent>) node.getProperties().get("_tip:handler");
+                if (node.getProperties().containsKey(PROP_KEY)) {
+                    EventHandler<MouseEvent> tipHandler = (EventHandler<MouseEvent>) node.getProperties().get(PROP_KEY);
                     node.removeEventFilter(MouseEvent.ANY, tipHandler);
                 }
                 EventHandler<MouseEvent> handler = event -> {
                     if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
                         Tooltip tooltip = getTooltip(node);
                         if (tooltip == null) {
-                            Tooltip.install(node, initTooltip(text));
+                            tooltip = POOL.borrowObject();
+                            tooltip.setText(text);
+                            Tooltip.install(node, tooltip);
                         }
                     } else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
                         Tooltip tooltip = getTooltip(node);
                         if (tooltip != null) {
                             Tooltip.uninstall(node, tooltip);
+                            POOL.returnObject(tooltip);
                         }
                     }
                 };
                 node.addEventFilter(MouseEvent.ANY, handler);
-                node.getProperties().put("_tip:handler", handler);
+                node.getProperties().put(PROP_KEY, handler);
             } else if (target instanceof Tab tab) {
-                if (tab.getProperties().containsKey("_tip:handler")) {
-                    ChangeListener<Boolean> listener = (ChangeListener<Boolean>) tab.getProperties().get("_tip:handler");
+                if (tab.getProperties().containsKey(PROP_KEY)) {
+                    ChangeListener<Boolean> listener = (ChangeListener<Boolean>) tab.getProperties().get(PROP_KEY);
                     tab.selectedProperty().removeListener(listener);
                 }
                 ChangeListener<Boolean> listener = (observable, oldValue, newValue) -> {
                     if (newValue) {
-                        tab.setTooltip(initTooltip(text));
+                        Tooltip tooltip = POOL.borrowObject();
+                        tooltip.setText(text);
+                        tab.setTooltip(tooltip);
                     } else {
+                        POOL.returnObject(tab.getTooltip());
                         tab.setTooltip(null);
                     }
                 };
                 tab.selectedProperty().addListener(listener);
-                tab.getProperties().put("_tip:handler", listener);
+                tab.getProperties().put(PROP_KEY, listener);
             }
         }
     }

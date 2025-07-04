@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.util.TooltipUtil;
+import cn.oyzh.fx.plus.tooltip.TooltipUtil;
 import javafx.event.EventTarget;
 import javafx.scene.input.KeyCombination;
 
