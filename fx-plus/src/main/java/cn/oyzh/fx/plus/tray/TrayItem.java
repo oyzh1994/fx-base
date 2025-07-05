@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.tray;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -22,11 +23,11 @@ public class TrayItem extends FXLabel {
         this.setCursor(Cursor.HAND);
     }
 
-    public TrayItem( String label, Runnable action) {
+    public TrayItem(String label, Runnable action) {
         this(label, null, action);
     }
 
-    public TrayItem( String label, Node icon, Runnable action) {
+    public TrayItem(String label, Node icon, Runnable action) {
         super(label);
         if (icon != null) {
             this.setGraphic(icon);
@@ -53,7 +54,7 @@ public class TrayItem extends FXLabel {
     public double getRealWidth() {
         double tLen = FontUtil.stringWidth(this.getText(), this.getFont());
         if (this.getGraphic() != null) {
-            return this.getGraphic().maxWidth(-1) + 3 + tLen;
+            return NodeUtil.getWidth(this.getGraphic()) + 3 + tLen;
         }
         return tLen;
     }

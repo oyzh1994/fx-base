@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -66,7 +67,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         Node graphic = this.getGraphic();
         double w = FontUtil.stringWidth(str);
         if (graphic != null) {
-            w += graphic.maxWidth(-1);
+            w += NodeUtil.getWidth(graphic);
         }
         return w;
     }

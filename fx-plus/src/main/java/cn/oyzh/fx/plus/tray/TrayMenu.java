@@ -37,6 +37,8 @@ public class TrayMenu extends FXVBox {
     public void addItem(TrayItem menuItem) {
         // 添加节点
         this.getChildren().add(menuItem);
+        // 初始化一次大小
+        this.initSize();
         // 设置边距
         VBox.setMargin(menuItem, new Insets(3));
     }
@@ -69,7 +71,7 @@ public class TrayMenu extends FXVBox {
         }
         w += 35;
         // 重新设置宽高
-        this.setRealWidth(w);
+        this.setPrefWidth(w);
         this.setRealHeight(h);
     }
 

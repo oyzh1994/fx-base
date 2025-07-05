@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
@@ -77,7 +76,7 @@ public class MenuItemManager {
             w += graphic.getWidth() + 25;
         }
         // 设置宽度
-        label.setMaxWidth(w);
+        //label.setMaxWidth(w);
         label.setMinWidth(w);
         label.setPrefWidth(w);
         MenuItem menuItem = POOL.borrowObject();
