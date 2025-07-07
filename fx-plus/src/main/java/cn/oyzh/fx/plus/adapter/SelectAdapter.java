@@ -82,6 +82,11 @@ public interface SelectAdapter<T> extends PropAdapter {
                 node.getSelectionModel().select(index);
             } else if (this instanceof TabPane node) {
                 node.getSelectionModel().select(index);
+                // TODO: 需要让内容获取焦点，不然可能会导致后续切换无效
+                Tab tab = (Tab) this.getItem(index);
+                if (tab != null && tab.getContent() != null) {
+                    tab.getContent().requestFocus();
+                }
             } else if (this instanceof ComboBox<?> node) {
                 node.getSelectionModel().select(index);
             } else if (this instanceof ListView<?> node) {
@@ -104,7 +109,12 @@ public interface SelectAdapter<T> extends PropAdapter {
             } else if (this instanceof TableView node) {
                 node.getSelectionModel().select(obj);
             } else if (this instanceof TabPane node) {
-                node.getSelectionModel().select((Tab) obj);
+                Tab tab = (Tab) obj;
+                node.getSelectionModel().select(tab);
+                // TODO: 需要让内容获取焦点，不然可能会导致后续切换无效
+                if (tab != null && tab.getContent() != null) {
+                    tab.getContent().requestFocus();
+                }
             } else if (this instanceof ComboBox node) {
                 node.getSelectionModel().select(obj);
             } else if (this instanceof ListView node) {
@@ -155,7 +165,6 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @return 结果
      */
     default T getSelectedItem() {
-
         AtomicReference<T> ref = new AtomicReference<>();
         FXUtil.runWait(() -> {
             Object o = null;
@@ -504,6 +513,11 @@ public interface SelectAdapter<T> extends PropAdapter {
                     return null;
                 }
                 return node.getItems().get(index);
+            } else if (this instanceof TabPane node) {
+                if (node.getTabs().size() <= index) {
+                    return null;
+                }
+                return node.getTabs().get(index);
             }
         }
         return null;

@@ -390,4 +390,29 @@ public class KeyboardUtil {
         }
         return keyChar;
     }
+
+    /**
+     * 获取按键的数字
+     *
+     * @param code 按键
+     * @return 数字
+     */
+    public static int getDigit(KeyCode code) {
+        if (code.isDigitKey()) {
+            return switch (code) {
+                case NUMPAD0, DIGIT0 -> 0;
+                case NUMPAD1, DIGIT1 -> 1;
+                case NUMPAD2, DIGIT2 -> 2;
+                case NUMPAD3, DIGIT3 -> 3;
+                case NUMPAD4, DIGIT4 -> 4;
+                case NUMPAD5, DIGIT5 -> 5;
+                case NUMPAD6, DIGIT6 -> 6;
+                case NUMPAD7, DIGIT7 -> 7;
+                case NUMPAD8, DIGIT8 -> 8;
+                case NUMPAD9, DIGIT9 -> 9;
+                default -> -1;
+            };
+        }
+        return -1;
+    }
 }
