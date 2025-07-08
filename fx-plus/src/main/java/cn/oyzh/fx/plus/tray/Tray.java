@@ -32,11 +32,11 @@ public class Tray implements ThemeAdapter {
      */
     private TrayMouseListener trayMouseListener;
 
-    public Tray( URL iconUrl) {
+    public Tray(URL iconUrl) {
         this.initIcon(iconUrl);
     }
 
-    public Tray( String iconUrl) {
+    public Tray(String iconUrl) {
         this.initIcon(iconUrl);
     }
 
@@ -46,7 +46,7 @@ public class Tray implements ThemeAdapter {
      * @param iconPath 图标地址
      * @return 结果
      */
-    private boolean initIcon( String iconPath) {
+    private boolean initIcon(String iconPath) {
         // 创建新系统托盘图标
         URL url = ResourceUtil.getResource(iconPath);
         if (url == null) {
@@ -62,7 +62,7 @@ public class Tray implements ThemeAdapter {
      * @param url 图标地址
      * @return 结果
      */
-    private boolean initIcon( URL url) {
+    private boolean initIcon(URL url) {
         try {
             Image image = Toolkit.getDefaultToolkit().getImage(url);
             // 系统托盘图标
@@ -84,7 +84,7 @@ public class Tray implements ThemeAdapter {
      *
      * @param title 标题
      */
-    public void setTitle( String title) {
+    public void setTitle(String title) {
         this.trayIcon.setToolTip(title);
     }
 
@@ -94,7 +94,7 @@ public class Tray implements ThemeAdapter {
      * @param label  菜单名称
      * @param action 菜单业务
      */
-    public void addMenuItem( String label, Runnable action) {
+    public void addMenuItem(String label, Runnable action) {
         this.addMenuItem(label, null, action);
     }
 
@@ -105,7 +105,7 @@ public class Tray implements ThemeAdapter {
      * @param icon   菜单图标
      * @param action 菜单业务
      */
-    public void addMenuItem( String label, Node icon, Runnable action) {
+    public void addMenuItem(String label, Node icon, Runnable action) {
         this.trayIcon.getMenu().addItem(new TrayItem(label, icon, action));
     }
 
@@ -114,7 +114,7 @@ public class Tray implements ThemeAdapter {
      *
      * @param trayItem 托盘菜单
      */
-    public void addMenuItem( TrayItem trayItem) {
+    public void addMenuItem(TrayItem trayItem) {
         this.trayIcon.getMenu().addItem(trayItem);
     }
 
@@ -123,7 +123,7 @@ public class Tray implements ThemeAdapter {
      *
      * @param mouseListener 鼠标监听器
      */
-    public void setMouseListener( MouseListener mouseListener) {
+    public void setMouseListener(MouseListener mouseListener) {
         this.trayMouseListener.setMouseListener(mouseListener);
     }
 
@@ -132,7 +132,7 @@ public class Tray implements ThemeAdapter {
      *
      * @param eventHandler 事件处理器
      */
-    public void onMouseClicked( Consumer<MouseEvent> eventHandler) {
+    public void onMouseClicked(Consumer<MouseEvent> eventHandler) {
         this.trayMouseListener.setMouseClicked(eventHandler);
     }
 

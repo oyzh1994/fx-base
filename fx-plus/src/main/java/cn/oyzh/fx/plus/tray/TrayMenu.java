@@ -72,7 +72,7 @@ public class TrayMenu extends FXVBox {
         w += 35;
         // 重新设置宽高
         this.setPrefWidth(w);
-        this.setRealHeight(h);
+        this.setPrefHeight(h);
     }
 
     /**

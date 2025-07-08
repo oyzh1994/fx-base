@@ -14,7 +14,6 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/12/21
  */
-
 public class TrayManager {
 
     /**
@@ -31,7 +30,9 @@ public class TrayManager {
     public static Tray init(String icon) {
         try {
             if (tray == null) {
-                TrayManager.tray = new Tray(icon);
+                synchronized (TrayManager.class) {
+                    TrayManager.tray = new Tray(icon);
+                }
             }
             return tray;
         } catch (Exception ex) {
@@ -65,7 +66,7 @@ public class TrayManager {
      *
      * @param title 标题
      */
-    public static void setTitle( String title) {
+    public static void setTitle(String title) {
         if (tray != null) {
             tray.setTitle(title);
         }
@@ -76,7 +77,7 @@ public class TrayManager {
      *
      * @param eventHandler 事件处理器
      */
-    public static void onMouseClicked( Consumer<MouseEvent> eventHandler) {
+    public static void onMouseClicked(Consumer<MouseEvent> eventHandler) {
         if (tray != null) {
             tray.onMouseClicked(eventHandler);
         }
@@ -88,7 +89,7 @@ public class TrayManager {
      * @param label  菜单名称
      * @param action 菜单业务
      */
-    public static void addMenuItem( String label, Runnable action) {
+    public static void addMenuItem(String label, Runnable action) {
         if (tray != null) {
             tray.addMenuItem(label, null, action);
         }
@@ -101,7 +102,7 @@ public class TrayManager {
      * @param icon   菜单图标
      * @param action 菜单业务
      */
-    public static void addMenuItem( String label, Node icon, Runnable action) {
+    public static void addMenuItem(String label, Node icon, Runnable action) {
         if (tray != null) {
             tray.addMenuItem(label, icon, action);
         }
@@ -112,7 +113,7 @@ public class TrayManager {
      *
      * @param trayItem 托盘菜单
      */
-    public static void addMenuItem( TrayItem trayItem) {
+    public static void addMenuItem(TrayItem trayItem) {
         if (tray != null) {
             tray.addMenuItem(trayItem);
         }
@@ -134,8 +135,8 @@ public class TrayManager {
     /**
      * 显示正常消息
      *
-     * @param caption     标题
-     * @param text        内容
+     * @param caption 标题
+     * @param text    内容
      */
     public static void displayInfoMessage(String caption, String text) {
         if (tray != null) {
@@ -146,8 +147,8 @@ public class TrayManager {
     /**
      * 显示警告消息
      *
-     * @param caption     标题
-     * @param text        内容
+     * @param caption 标题
+     * @param text    内容
      */
     public static void displayWarnMessage(String caption, String text) {
         if (tray != null) {
@@ -158,8 +159,8 @@ public class TrayManager {
     /**
      * 显示错误消息
      *
-     * @param caption     标题
-     * @param text        内容
+     * @param caption 标题
+     * @param text    内容
      */
     public static void displayErrorMessage(String caption, String text) {
         if (tray != null) {
