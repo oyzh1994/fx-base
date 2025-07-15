@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
-import javafx.event.EventTarget;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Background;
@@ -11,7 +9,6 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -392,29 +389,29 @@ public class ControlUtil {
         return range != null && range.getLength() > 0;
     }
 
-    /**
-     * 获取组件宽度
-     *
-     * @param node 节点
-     * @return 组件宽度
-     */
-    public static double boundedWidth(Node node) {
-        double min = node.minWidth(-1);
-        double max = node.maxWidth(-1);
-        return Math.min(Math.max(node.prefWidth(-1), min), Math.max(min, max));
-    }
-
-    /**
-     * 获取组件高度
-     *
-     * @param node 节点
-     * @return 组件高度
-     */
-    public static double boundedHeight(Node node) {
-        double min = node.minHeight(-1);
-        double max = node.maxHeight(-1);
-        return Math.min(Math.max(node.prefHeight(-1), min), Math.max(min, max));
-    }
+    // /**
+    //  * 获取组件宽度
+    //  *
+    //  * @param node 节点
+    //  * @return 组件宽度
+    //  */
+    // public static double boundedWidth(Node node) {
+    //     double min = node.minWidth(-1);
+    //     double max = node.maxWidth(-1);
+    //     return Math.min(Math.max(node.prefWidth(-1), min), Math.max(min, max));
+    // }
+    //
+    // /**
+    //  * 获取组件高度
+    //  *
+    //  * @param node 节点
+    //  * @return 组件高度
+    //  */
+    // public static double boundedHeight(Node node) {
+    //     double min = node.minHeight(-1);
+    //     double max = node.maxHeight(-1);
+    //     return Math.min(Math.max(node.prefHeight(-1), min), Math.max(min, max));
+    // }
 
     /**
      * 获取背景颜色

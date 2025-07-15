@@ -7,10 +7,8 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.ListViewUtil;
-import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
@@ -251,10 +249,11 @@ public class SearchHistoryPopup extends FXPopup {
         this.show(ownerNode, event.getScreenX(), event.getScreenY());
     }
 
-    @Override
-    public void show( Node ownerNode) {
-        Point2D point2D = ownerNode.localToScreen(ownerNode.getScaleX(), ownerNode.getScaleY());
-        double height = ControlUtil.boundedHeight(ownerNode);
-        this.show(ownerNode, point2D.getX(), point2D.getY() + height);
-    }
+    // @Override
+    // public void show( Node ownerNode) {
+    //     Point2D point2D = ownerNode.localToScreen(ownerNode.getScaleX(), ownerNode.getScaleY());
+    //     double height = NodeUtil.getHeight(ownerNode);
+    //     // double height = ControlUtil.boundedHeight(ownerNode);
+    //     this.show(ownerNode, point2D.getX(), point2D.getY() + height);
+    // }
 }

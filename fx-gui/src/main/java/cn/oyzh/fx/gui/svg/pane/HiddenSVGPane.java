@@ -16,7 +16,7 @@ public class HiddenSVGPane extends SVGPane {
     }
 
     public void show() {
-        this.setChild(new EyeOpenSVGGlyph(this.size));
+        this.setChild(new EyeOpenSVGGlyph(this.getSizeWidth() + "," + (this.getSizeHeight() - 2)));
     }
 
     public void hidden() {

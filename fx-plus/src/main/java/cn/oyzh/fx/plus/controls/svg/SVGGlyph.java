@@ -7,10 +7,10 @@ import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -68,7 +68,8 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     /**
      * 是否开启动画功能
      */
-    private boolean enableWaiting = true;
+    private boolean enableWaiting;
+    // private boolean enableWaiting = true;
 
     /**
      * 原始svg组件
@@ -332,7 +333,8 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * @return 大小字符串形式
      */
     public String getSizeStr() {
-        return ControlUtil.boundedWidth(this) + "," + ControlUtil.boundedHeight(this);
+        return NodeUtil.getWidth(this) + "," + NodeUtil.getHeight(this);
+        // return ControlUtil.boundedWidth(this) + "," + ControlUtil.boundedHeight(this);
     }
 
     /**
@@ -343,18 +345,18 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public void setSizeStr(String size) {
         if (StringUtil.isNotBlank(size)) {
             try {
-                size = size.trim();
+                // size = size.trim();
                 double w, h;
                 if (size.contains(",")) {
                     String[] strArr = size.split(",");
-                    w = Double.parseDouble(strArr[0]);
-                    h = Double.parseDouble(strArr[1]);
+                    w = Double.parseDouble(strArr[0].trim());
+                    h = Double.parseDouble(strArr[1].trim());
                 } else {
                     w = h = Double.parseDouble(size);
                 }
                 this.setMaxSize(w, h);
                 this.setMinSize(w, h);
-                this.setPrefSize(w, h);
+                // this.setPrefSize(w, h);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

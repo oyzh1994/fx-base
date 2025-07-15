@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import javafx.geometry.Insets;
@@ -30,5 +29,25 @@ public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
         if (glyph != null) {
             glyph.setSizeStr(size);
         }
+    }
+
+    public double getSizeWidth() {
+        if (this.size == null) {
+            return Double.NaN;
+        }
+        if (this.size.contains(",")) {
+            return Double.parseDouble(this.size.split(",")[0].trim());
+        }
+        return Double.parseDouble(this.size);
+    }
+
+    public double getSizeHeight() {
+        if (this.size == null) {
+            return Double.NaN;
+        }
+        if (this.size.contains(",")) {
+            return Double.parseDouble(this.size.split(",")[1].trim());
+        }
+        return Double.parseDouble(this.size);
     }
 }
