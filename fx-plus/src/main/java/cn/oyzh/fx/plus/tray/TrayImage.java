@@ -10,7 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.robot.Robot;
 import javafx.stage.StageStyle;
 
-import java.awt.*;
+import java.awt.Image;
+import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 
 /**
@@ -281,6 +282,8 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
                     this.stage.setWidth(this.menu.realWidth());
                     this.stage.setHeight(this.menu.realHeight());
                     this.stage.setAlwaysOnTop(true);
+                    this.stage.toFront();
+                    this.stage.requestFocus();
                 }
             });
             // 隐藏窗口的任务栏图标

@@ -194,6 +194,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 //            FXUtil.runWait(this.waitingAnimation::stop);
 //            this.waitingAnimation = null;
 //        }
+        this.setWaiting(false);
         // 恢复原始图标，并更新内容
         this.setChild(this.original);
         this.updateContent();
@@ -250,7 +251,8 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * @param url svg地址
      */
     public void setUrl(String url) {
-        this.url = url.intern();
+        this.url = url;
+        // this.url = url.intern();
         // 创建图标
         this.original = SVGManager.load(this.url);
         if (this.original == null) {
