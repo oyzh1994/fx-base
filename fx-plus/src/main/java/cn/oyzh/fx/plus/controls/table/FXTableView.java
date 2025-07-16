@@ -116,20 +116,15 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void resizeNode(Double width, Double height) {
-        // 调用父类的resizeNode方法来调整节点大小
         FlexAdapter.super.resizeNode(width, height);
-
-        // 获取表格中的列
         ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
-        // 遍历每一列
         for (TableColumn<?, ?> column : columns) {
-            // 判断列是否是FlexAdapter的实例
             if (column instanceof FlexAdapter flexNode) {
-                // 如果列可见，则设置实际宽度为计算得到的弹性宽度
                 if (column.isVisible()) {
-                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                    if (column.isResizable()) {
+                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                    }
                 } else {
-                    // 否则将列宽度设置为0
                     NodeUtil.setWidth(column, 0D);
                 }
             }

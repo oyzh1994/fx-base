@@ -67,4 +67,12 @@ public class FXHBox extends HBox implements FlexAdapter, NodeGroup, ThemeAdapter
     //     // return snapSpaceY(insets.getTop()) + prefHeight + snapSpaceY(insets.getBottom());
     //     return this.realHeight();
     // }
+
+    @Override
+    protected void layoutChildren() {
+        for (Node child : this.getChildren()) {
+            child.autosize();
+        }
+        super.layoutChildren();
+    }
 }
