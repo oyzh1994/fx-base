@@ -7,7 +7,6 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.FXConst;
-import com.sun.javafx.application.PlatformImpl;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.HostServices;
@@ -20,7 +19,9 @@ import javafx.scene.robot.Robot;
 import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -310,11 +311,10 @@ public class FXUtil {
             JulLog.info("load imgUrl:{}", imgUrl);
         }
         InputStream stream = ResourceUtil.getResourceAsStream(imgUrl);
-        if (stream == null) {
-            JulLog.warn("img stream is null.");
-            return null;
+        if (stream != null) {
+            return new Image(stream);
         }
-        return new Image(stream);
+        return new Image(ResourceUtil.getLocalFileUrl(imgUrl));
     }
 
     public static Image toImage(BufferedImage bufferedImage) {
@@ -338,7 +338,8 @@ public class FXUtil {
      */
     public static boolean isInitialized() {
         try {
-            Platform.runLater(() -> {});
+            Platform.runLater(() -> {
+            });
             // PlatformImpl.getPlatformPreferences();
         } catch (IllegalStateException ignored) {
             return false;

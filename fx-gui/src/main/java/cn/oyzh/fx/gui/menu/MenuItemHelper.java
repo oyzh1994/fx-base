@@ -52,6 +52,7 @@ import cn.oyzh.fx.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.FunctionSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.ProcedureSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.database.ViewSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
@@ -289,6 +290,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem editFile(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editFile(), new EditSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem view1File(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1File(), new ViewSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem editCollections(String iconSize, Runnable action) {

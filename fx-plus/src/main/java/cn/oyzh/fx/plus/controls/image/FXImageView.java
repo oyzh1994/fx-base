@@ -89,4 +89,9 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
         });
         return imageRef.get();
     }
+
+    @Override
+    public boolean isResizable() {
+        return true;
+    }
 }
