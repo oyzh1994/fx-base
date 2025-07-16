@@ -184,7 +184,6 @@ public abstract class NodeResizer {
         };
     }
 
-
     /**
      * 获取鼠标拖动事件
      *
@@ -229,6 +228,7 @@ public abstract class NodeResizer {
                 if (JulLog.isDebugEnabled()) {
                     JulLog.debug("MouseReleased");
                 }
+                event.consume();
             }
         };
     }

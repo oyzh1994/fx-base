@@ -26,6 +26,7 @@ public class NodeWidthResizer extends NodeResizer {
     public EventHandler<MouseEvent> defaultMouseMoved() {
         return event -> {
             if (this.isResizeIng()) {
+                event.consume();
                 return;
             }
             // 计算偏移
@@ -52,6 +53,7 @@ public class NodeWidthResizer extends NodeResizer {
                 if (this.triggerAble(xOffset)) {
                     this.resizeIng = true;
                     this.mousePressedTime = System.currentTimeMillis();
+                    event.consume();
                 } else {// 重置拉伸参数
                     this.resizeIng = false;
                     this.mousePressedTime = -1;
@@ -72,6 +74,7 @@ public class NodeWidthResizer extends NodeResizer {
         return event -> {
             if (event.getButton() == MouseButton.PRIMARY && this.isResizeIng() && this.resizeTriggered != null && this.resizeAble(event)) {
                 this.resizeTriggered.accept(this.calcNodeWidth(event));
+                event.consume();
             }
         };
     }
