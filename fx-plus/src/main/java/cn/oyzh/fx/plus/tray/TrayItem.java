@@ -54,7 +54,7 @@ public class TrayItem extends FXLabel {
     public double getRealWidth() {
         double tLen = FontUtil.stringWidth(this.getText(), this.getFont());
         if (this.getGraphic() != null) {
-            return NodeUtil.getWidth(this.getGraphic()) + 3 + tLen;
+            return NodeUtil.getWidth(this.getGraphic()) + 8 + tLen;
         }
         return tLen;
     }
