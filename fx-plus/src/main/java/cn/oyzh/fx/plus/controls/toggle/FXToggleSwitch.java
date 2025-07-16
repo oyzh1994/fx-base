@@ -101,6 +101,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
     public void initNode() {
         NodeAdapter.super.initNode();
         this.setPadding(Insets.EMPTY);
+        this.setPickOnBounds(true);
     }
 
     @Override
