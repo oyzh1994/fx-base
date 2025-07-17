@@ -145,21 +145,59 @@ public class NodeUtil {
 //                }
 //            }
 //        }
+        if (target instanceof ImageView node) {
+            double w4 = node.getFitWidth();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxWidth(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
+        if (target instanceof MediaView node) {
+            double w4 = node.getFitWidth();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxWidth(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
         if (target instanceof Region region) {
             double w1 = region.getWidth();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w3 = region.getPrefWidth();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             double w2 = region.getMinWidth();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w4 = region.getMaxWidth();
-            if (w4 >= 0) {
+            if (w4 > 0) {
                 return w4;
             }
             return Double.NaN;
@@ -173,15 +211,15 @@ public class NodeUtil {
 
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             double w1 = columnBase.getWidth();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = columnBase.getMinWidth();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = columnBase.getMaxWidth();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -199,15 +237,15 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getWidth();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = stage.getMinWidth();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = stage.getMaxWidth();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
         }
@@ -222,15 +260,15 @@ public class NodeUtil {
 
         if (target instanceof Node node) {
             double w1 = node.prefWidth(-1);
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = node.minWidth(-1);
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = node.maxWidth(-1);
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -255,22 +293,59 @@ public class NodeUtil {
 //                }
 //            }
 //        }
-
+        if (target instanceof ImageView node) {
+            double w4 = node.getFitHeight();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefHeight(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
+        if (target instanceof MediaView node) {
+            double w4 = node.getFitHeight();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefHeight(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
         if (target instanceof Region region) {
             double w4 = region.getHeight();
-            if (w4 >= 0) {
+            if (w4 > 0) {
                 return w4;
             }
             double w1 = region.getPrefHeight();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = region.getMinHeight();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = region.getMaxHeight();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -288,15 +363,15 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getHeight();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = stage.getMinHeight();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = stage.getMaxHeight();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -312,15 +387,15 @@ public class NodeUtil {
 
         if (target instanceof Node node) {
             double w1 = node.prefHeight(-1);
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = node.minHeight(-1);
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = node.maxHeight(-1);
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
