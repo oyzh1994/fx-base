@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumnBase;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -354,6 +355,27 @@ public class NodeUtil {
             return;
         }
         switch (target) {
+            case ImageView image -> {
+                if (!image.fitWidthProperty().isBound()) {
+                    image.setFitWidth(width);
+                }
+            }
+            case MediaView media -> {
+                if (!media.fitWidthProperty().isBound()) {
+                    media.setFitWidth(width);
+                }
+            }
+            case Labeled labeled -> {
+                if (!labeled.prefWidthProperty().isBound()) {
+                    labeled.setPrefWidth(width);
+                }
+                if (!labeled.minWidthProperty().isBound()) {
+                    labeled.setMinWidth(width);
+                }
+                if (!labeled.maxWidthProperty().isBound()) {
+                    labeled.setMaxWidth(width);
+                }
+            }
             case TableColumnBase<?, ?> columnBase -> {
                 if (!columnBase.prefWidthProperty().isBound()) {
                     columnBase.setPrefWidth(width);
@@ -361,11 +383,9 @@ public class NodeUtil {
                 if (!columnBase.minWidthProperty().isBound()) {
                     columnBase.setMinWidth(width);
                 }
-                // if (!columnBase.isResizable()) {
                 if (!columnBase.maxWidthProperty().isBound()) {
                     columnBase.setMaxWidth(width);
                 }
-                // }
             }
             case PopupControl control -> {
                 if (!control.prefWidthProperty().isBound()) {
@@ -397,9 +417,7 @@ public class NodeUtil {
             case Stage stage -> stage.setWidth(width);
             case Window window -> window.setWidth(width);
             case Scene scene -> {
-                if (scene.getWindow() != null) {
-                    scene.getWindow().setWidth(width);
-                }
+                setWidth(scene.getWindow(), width);
             }
             default -> {
             }
@@ -425,6 +443,11 @@ public class NodeUtil {
                     image.setFitHeight(height);
                 }
             }
+            case MediaView media -> {
+                if (!media.fitHeightProperty().isBound()) {
+                    media.setFitHeight(height);
+                }
+            }
             case Labeled labeled -> {
                 if (!labeled.prefHeightProperty().isBound()) {
                     labeled.setPrefHeight(height);
@@ -434,17 +457,6 @@ public class NodeUtil {
                 }
                 if (!labeled.maxHeightProperty().isBound()) {
                     labeled.setMaxHeight(height);
-                }
-            }
-            case Region region -> {
-                if (!region.prefHeightProperty().isBound()) {
-                    region.setPrefHeight(height);
-                }
-                if (!region.minHeightProperty().isBound()) {
-                    region.setMinHeight(height);
-                }
-                if (!region.maxHeightProperty().isBound()) {
-                    region.setMaxHeight(height);
                 }
             }
             case PopupControl control -> {
@@ -458,12 +470,21 @@ public class NodeUtil {
                     control.setMaxHeight(height);
                 }
             }
+            case Region region -> {
+                if (!region.prefHeightProperty().isBound()) {
+                    region.setPrefHeight(height);
+                }
+                if (!region.minHeightProperty().isBound()) {
+                    region.setMinHeight(height);
+                }
+                if (!region.maxHeightProperty().isBound()) {
+                    region.setMaxHeight(height);
+                }
+            }
             case Stage stage -> stage.setHeight(height);
             case Window window -> window.setHeight(height);
             case Scene scene -> {
-                if (scene.getWindow() != null) {
-                    scene.getWindow().setHeight(height);
-                }
+                setHeight(scene.getWindow(), height);
             }
             default -> {
             }
