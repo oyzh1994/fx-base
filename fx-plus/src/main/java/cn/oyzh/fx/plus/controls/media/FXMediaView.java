@@ -42,7 +42,6 @@ public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, 
         super.setMediaPlayer(player);
     }
 
-
     public String getUrl() {
         return this.getProp("url");
     }
