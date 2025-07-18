@@ -64,9 +64,30 @@ public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, 
         return true;
     }
 
+    /**
+     * 播放
+     */
     public void play() {
         if (this.getMediaPlayer() != null) {
             this.getMediaPlayer().play();
+        }
+    }
+
+    /**
+     * 停止
+     */
+    public void stop() {
+        if (this.getMediaPlayer() != null) {
+            this.getMediaPlayer().stop();
+        }
+    }
+
+    /**
+     * 销毁
+     */
+    public void dispose() {
+        if (this.getMediaPlayer() != null) {
+            this.getMediaPlayer().dispose();
         }
     }
 }

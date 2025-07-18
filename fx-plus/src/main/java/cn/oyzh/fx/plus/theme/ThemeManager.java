@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.SysConst;
 import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.fx.plus.tray.TrayManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.Application;
@@ -121,6 +122,8 @@ public class ThemeManager {
             for (StageAdapter adapter : adapters) {
                 applyCycle(adapter.root(), style);
             }
+            // 托盘应用主题
+            TrayManager.applyTheme();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

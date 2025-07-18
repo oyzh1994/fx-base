@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -103,5 +105,14 @@ public class TrayMenu extends FXVBox {
         // 背景
         Background background = new Background(new BackgroundFill(color, radii, Insets.EMPTY));
         this.setBackground(background);
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        for (Node child : this.getChildren()) {
+            if (child instanceof ThemeAdapter adapter) {
+                adapter.changeTheme(style);
+            }
+        }
     }
 }

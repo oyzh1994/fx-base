@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.Node;
 
 import java.awt.*;
@@ -207,5 +208,14 @@ public class TrayManager {
      */
     public static boolean supported() {
         return SystemTray.isSupported();
+    }
+
+    /**
+     * 应用主题
+     */
+    public static void applyTheme() {
+        if (tray != null) {
+            tray.changeTheme(ThemeManager.currentTheme());
+        }
     }
 }
