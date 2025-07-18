@@ -52,6 +52,8 @@ public class TrayMenu extends FXVBox {
         this.initSize();
         this.initBorder();
         this.initBackground();
+        // 更新主题
+        this.changeTheme(ThemeManager.currentTheme());
     }
 
     /**

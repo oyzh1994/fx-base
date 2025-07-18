@@ -122,8 +122,6 @@ public class ThemeManager {
             for (StageAdapter adapter : adapters) {
                 applyCycle(adapter.root(), style);
             }
-            // 托盘应用主题
-            TrayManager.applyTheme();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

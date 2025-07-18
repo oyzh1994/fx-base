@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/8/24
  */
-public class Tray implements ThemeAdapter {
+public class Tray {
 
     /**
      * 托盘图标
@@ -106,7 +106,7 @@ public class Tray implements ThemeAdapter {
      * @param action 菜单业务
      */
     public void addMenuItem(String label, Node icon, Runnable action) {
-        this.trayIcon.getMenu().addItem(new TrayItem(label, icon, action));
+        this.addMenuItem(new TrayItem(label, icon, action));
     }
 
     /**
@@ -141,13 +141,9 @@ public class Tray implements ThemeAdapter {
      */
     public void show() {
         try {
-            if (SystemTray.isSupported()) {
-                // 添加到托盘
-                if (ArrayUtil.isEmpty(TrayManager.systemTray().getTrayIcons())) {
-                    TrayManager.systemTray().remove(this.trayIcon);
-                    TrayManager.systemTray().add(this.trayIcon);
-                }
-                this.trayIcon.changeTheme(ThemeManager.currentTheme());
+            if (SystemTray.isSupported() && ArrayUtil.isEmpty(TrayManager.systemTray().getTrayIcons())) {
+                TrayManager.systemTray().remove(this.trayIcon);
+                TrayManager.systemTray().add(this.trayIcon);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -159,23 +155,21 @@ public class Tray implements ThemeAdapter {
      */
     public void close() {
         try {
-            if (SystemTray.isSupported()) {
-                if (ArrayUtil.isNotEmpty(TrayManager.systemTray().getTrayIcons())) {
-                    TrayManager.systemTray().remove(this.trayIcon);
-                }
+            if (SystemTray.isSupported() && ArrayUtil.isNotEmpty(TrayManager.systemTray().getTrayIcons())) {
+                TrayManager.systemTray().remove(this.trayIcon);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    @Override
-    public void changeTheme(ThemeStyle style) {
-        ThemeAdapter.super.changeTheme(style);
-        if (this.trayIcon != null) {
-            this.trayIcon.changeTheme(style);
-        }
-    }
+    // @Override
+    // public void changeTheme(ThemeStyle style) {
+    //     ThemeAdapter.super.changeTheme(style);
+    //     if (this.trayIcon != null) {
+    //         this.trayIcon.changeTheme(style);
+    //     }
+    // }
 
     /**
      * 显示正常消息

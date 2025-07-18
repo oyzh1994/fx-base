@@ -209,13 +209,4 @@ public class TrayManager {
     public static boolean supported() {
         return SystemTray.isSupported();
     }
-
-    /**
-     * 应用主题
-     */
-    public static void applyTheme() {
-        if (tray != null) {
-            tray.changeTheme(ThemeManager.currentTheme());
-        }
-    }
 }

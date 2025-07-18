@@ -20,7 +20,7 @@ import java.awt.event.MouseEvent;
  * @author oyzh
  * @since 2023/3/2
  */
-public class TrayImage extends TrayIcon implements ThemeAdapter {
+public class TrayImage extends TrayIcon {
 
     /**
      * 窗口
@@ -300,11 +300,11 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
         }
     }
 
-    @Override
-    public void changeTheme(ThemeStyle style) {
-        ThemeAdapter.super.changeTheme(style);
-        if (this.menu != null) {
-            this.menu.changeTheme(style);
-        }
-    }
+    // @Override
+    // public void changeTheme(ThemeStyle style) {
+    //     ThemeAdapter.super.changeTheme(style);
+    //     if (this.menu != null) {
+    //         this.menu.changeTheme(style);
+    //     }
+    // }
 }
