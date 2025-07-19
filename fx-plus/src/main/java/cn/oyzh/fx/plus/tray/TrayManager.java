@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.Node;
 
 import java.awt.*;

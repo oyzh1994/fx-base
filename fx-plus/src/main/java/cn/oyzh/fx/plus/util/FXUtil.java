@@ -15,6 +15,7 @@ import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 import javafx.scene.robot.Robot;
 import javafx.stage.Window;
 
@@ -315,6 +316,19 @@ public class FXUtil {
             return new Image(stream);
         }
         return new Image(ResourceUtil.getLocalFileUrl(imgUrl));
+    }
+
+    /**
+     * 获取媒体
+     *
+     * @param mediaUrl 媒体地址
+     * @return 媒体
+     */
+    public static Media getMedia(String mediaUrl) {
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("load mediaUrl:{}", mediaUrl);
+        }
+        return new Media(ResourceUtil.getLocalFileUrl(mediaUrl));
     }
 
     public static Image toImage(BufferedImage bufferedImage) {

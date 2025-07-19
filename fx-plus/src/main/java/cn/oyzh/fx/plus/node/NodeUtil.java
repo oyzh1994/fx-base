@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumnBase;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -144,21 +145,59 @@ public class NodeUtil {
 //                }
 //            }
 //        }
+        if (target instanceof ImageView node) {
+            double w4 = node.getFitWidth();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxWidth(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
+        if (target instanceof MediaView node) {
+            double w4 = node.getFitWidth();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxWidth(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
         if (target instanceof Region region) {
             double w1 = region.getWidth();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w3 = region.getPrefWidth();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             double w2 = region.getMinWidth();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w4 = region.getMaxWidth();
-            if (w4 >= 0) {
+            if (w4 > 0) {
                 return w4;
             }
             return Double.NaN;
@@ -172,15 +211,15 @@ public class NodeUtil {
 
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             double w1 = columnBase.getWidth();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = columnBase.getMinWidth();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = columnBase.getMaxWidth();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -198,15 +237,15 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getWidth();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = stage.getMinWidth();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = stage.getMaxWidth();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
         }
@@ -221,15 +260,15 @@ public class NodeUtil {
 
         if (target instanceof Node node) {
             double w1 = node.prefWidth(-1);
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = node.minWidth(-1);
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = node.maxWidth(-1);
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -254,22 +293,59 @@ public class NodeUtil {
 //                }
 //            }
 //        }
-
+        if (target instanceof ImageView node) {
+            double w4 = node.getFitHeight();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefHeight(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
+        if (target instanceof MediaView node) {
+            double w4 = node.getFitHeight();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefHeight(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
         if (target instanceof Region region) {
             double w4 = region.getHeight();
-            if (w4 >= 0) {
+            if (w4 > 0) {
                 return w4;
             }
             double w1 = region.getPrefHeight();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = region.getMinHeight();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = region.getMaxHeight();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -287,15 +363,15 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getHeight();
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = stage.getMinHeight();
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = stage.getMaxHeight();
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -311,15 +387,15 @@ public class NodeUtil {
 
         if (target instanceof Node node) {
             double w1 = node.prefHeight(-1);
-            if (w1 >= 0) {
+            if (w1 > 0) {
                 return w1;
             }
             double w2 = node.minHeight(-1);
-            if (w2 >= 0) {
+            if (w2 > 0) {
                 return w2;
             }
             double w3 = node.maxHeight(-1);
-            if (w3 >= 0) {
+            if (w3 > 0) {
                 return w3;
             }
             return Double.NaN;
@@ -354,6 +430,27 @@ public class NodeUtil {
             return;
         }
         switch (target) {
+            case ImageView image -> {
+                if (!image.fitWidthProperty().isBound()) {
+                    image.setFitWidth(width);
+                }
+            }
+            case MediaView media -> {
+                if (!media.fitWidthProperty().isBound()) {
+                    media.setFitWidth(width);
+                }
+            }
+            case Labeled labeled -> {
+                if (!labeled.prefWidthProperty().isBound()) {
+                    labeled.setPrefWidth(width);
+                }
+                if (!labeled.minWidthProperty().isBound()) {
+                    labeled.setMinWidth(width);
+                }
+                if (!labeled.maxWidthProperty().isBound()) {
+                    labeled.setMaxWidth(width);
+                }
+            }
             case TableColumnBase<?, ?> columnBase -> {
                 if (!columnBase.prefWidthProperty().isBound()) {
                     columnBase.setPrefWidth(width);
@@ -361,11 +458,9 @@ public class NodeUtil {
                 if (!columnBase.minWidthProperty().isBound()) {
                     columnBase.setMinWidth(width);
                 }
-                // if (!columnBase.isResizable()) {
                 if (!columnBase.maxWidthProperty().isBound()) {
                     columnBase.setMaxWidth(width);
                 }
-                // }
             }
             case PopupControl control -> {
                 if (!control.prefWidthProperty().isBound()) {
@@ -397,9 +492,7 @@ public class NodeUtil {
             case Stage stage -> stage.setWidth(width);
             case Window window -> window.setWidth(width);
             case Scene scene -> {
-                if (scene.getWindow() != null) {
-                    scene.getWindow().setWidth(width);
-                }
+                setWidth(scene.getWindow(), width);
             }
             default -> {
             }
@@ -425,6 +518,11 @@ public class NodeUtil {
                     image.setFitHeight(height);
                 }
             }
+            case MediaView media -> {
+                if (!media.fitHeightProperty().isBound()) {
+                    media.setFitHeight(height);
+                }
+            }
             case Labeled labeled -> {
                 if (!labeled.prefHeightProperty().isBound()) {
                     labeled.setPrefHeight(height);
@@ -434,17 +532,6 @@ public class NodeUtil {
                 }
                 if (!labeled.maxHeightProperty().isBound()) {
                     labeled.setMaxHeight(height);
-                }
-            }
-            case Region region -> {
-                if (!region.prefHeightProperty().isBound()) {
-                    region.setPrefHeight(height);
-                }
-                if (!region.minHeightProperty().isBound()) {
-                    region.setMinHeight(height);
-                }
-                if (!region.maxHeightProperty().isBound()) {
-                    region.setMaxHeight(height);
                 }
             }
             case PopupControl control -> {
@@ -458,12 +545,21 @@ public class NodeUtil {
                     control.setMaxHeight(height);
                 }
             }
+            case Region region -> {
+                if (!region.prefHeightProperty().isBound()) {
+                    region.setPrefHeight(height);
+                }
+                if (!region.minHeightProperty().isBound()) {
+                    region.setMinHeight(height);
+                }
+                if (!region.maxHeightProperty().isBound()) {
+                    region.setMaxHeight(height);
+                }
+            }
             case Stage stage -> stage.setHeight(height);
             case Window window -> window.setHeight(height);
             case Scene scene -> {
-                if (scene.getWindow() != null) {
-                    scene.getWindow().setHeight(height);
-                }
+                setHeight(scene.getWindow(), height);
             }
             default -> {
             }

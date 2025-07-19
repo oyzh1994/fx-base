@@ -191,6 +191,8 @@ public class PkgUtil {
             cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
         }
         cmdStr += " --output " + config.getOutput();
+        // cmdStr += " --bind-services";
+        // cmdStr += " --exclude-modules jdk.localedata";
         return cmdStr;
     }
 
