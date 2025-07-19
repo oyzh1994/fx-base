@@ -128,29 +128,29 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>io.github.mkpaz</groupId>
-            <artifactId>atlantafx-styles</artifactId>
-            <version>${atlantafx.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-base</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-fxml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-graphics</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-controls</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!-- <dependency> -->
+        <!--     <groupId>io.github.mkpaz</groupId> -->
+        <!--     <artifactId>atlantafx-styles</artifactId> -->
+        <!--     <version>${atlantafx.version}</version> -->
+        <!--     <exclusions> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-base</artifactId> -->
+        <!--         </exclusion> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-fxml</artifactId> -->
+        <!--         </exclusion> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-graphics</artifactId> -->
+        <!--         </exclusion> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-controls</artifactId> -->
+        <!--         </exclusion> -->
+        <!--     </exclusions> -->
+        <!-- </dependency> -->
 
         <!-- json类库 -->
         <dependency>
