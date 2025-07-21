@@ -14,6 +14,7 @@ import cn.oyzh.i18n.I18nManager;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
+import javafx.scene.layout.Region;
 
 /**
  * 节点管理器
@@ -82,9 +83,15 @@ public class NodeManager {
                 });
             }
         }
-        // TODO 延迟执行主题处理，否则可能出现部分组件样式异常
+        // TODO: 默认开启亚像素渲染
+        if (node instanceof Region region) {
+            region.setSnapToPixel(true);
+        }
+        // TODO: 延迟执行主题处理，否则可能出现部分组件样式异常
         if (node instanceof ThemeAdapter adapter) {
+            // adapter.changeTheme(ThemeManager.currentTheme());
             TaskManager.startDelay(() -> adapter.changeTheme(ThemeManager.currentTheme()), 50);
         }
     }
+
 }

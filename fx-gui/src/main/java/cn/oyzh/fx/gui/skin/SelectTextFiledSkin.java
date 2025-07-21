@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -196,12 +197,13 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         });
         // 监听节点变化
         listView.getItems().addListener((ListChangeListener<T>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4));
-        textField.widthProperty().addListener((observable, oldValue, newValue) -> listView.setRealWidth(NodeUtil.getWidth(textField)));
-        listView.setFlexWidth("100%");
-        listView.setFlexHeight("100%");
+        listView.setPadding(Insets.EMPTY);
         FXScrollPane scrollPane = new FXScrollPane(listView);
-        scrollPane.setFlexWidth("100%");
-        scrollPane.setFlexHeight("100%");
+        scrollPane.setPadding(Insets.EMPTY);
+        // 绑定大小
+        listView.prefWidthProperty().bind(scrollPane.widthProperty());
+        listView.prefHeightProperty().bind(scrollPane.heightProperty());
+        scrollPane.prefWidthProperty().bind(textField.widthProperty());
         // scrollPane.setMaxHeight(150);
         // 同步布局
         if (NodeUtil.isOrientationRightToLeft(textField)) {
@@ -236,11 +238,27 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return list列表组件
      */
     protected FXListView<T> getListView() {
+        FXScrollPane scrollPane = this.getScrollPane();
+        return (FXListView<T>) scrollPane.getContent();
+    }
+
+    /**
+     * 获取滚动组件
+     *
+     * @return 滚动组件
+     */
+    protected FXScrollPane getScrollPane() {
         if (this.popup == null) {
             this.initPopup();
         }
-        FXScrollPane scrollPane = (FXScrollPane) this.popup.content();
-        return (FXListView<T>) scrollPane.getContent();
+        return (FXScrollPane) this.popup.content();
+    }
+
+    /**
+     * 计算大小
+     */
+    protected void calcSize(){
+        this.getScrollPane().setRealHeight(this.getItemSize() * this.lineHeight + 4);
     }
 
     /**
@@ -284,8 +302,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         FXListView<T> listView = this.getListView();
         listView.setIgnoreChanged(true);
         listView.setItem(itemList);
-        listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4);
         listView.setIgnoreChanged(false);
+        this.calcSize();
     }
 
     /**
