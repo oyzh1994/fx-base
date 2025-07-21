@@ -161,8 +161,22 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
         return this.getContent().getCaretPosition();
     }
 
+    public void scrollYTo(double y) {
+        super.scrollYBy(y);
+        super.scrollYToPixel(y);
+    }
+
+    public void scrollXTo(double x) {
+        super.scrollXBy(x);
+        super.scrollXToPixel(x);
+    }
+
+    public void scrollToTop() {
+        FXUtil.runPulse(() -> this.scrollYTo(0), 30);
+    }
+
     public void scrollToEnd() {
-        FXUtil.runPulse(() -> this.scrollYBy(Double.MAX_VALUE), 30);
+        FXUtil.runPulse(() -> this.scrollYTo(Double.MAX_VALUE), 30);
     }
 
     public void replaceText(int start, int end, String text) {
