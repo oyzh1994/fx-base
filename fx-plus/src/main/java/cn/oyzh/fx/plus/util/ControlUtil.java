@@ -1,7 +1,12 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.oyzh.common.util.ReflectUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.geometry.Insets;
 import javafx.scene.control.IndexRange;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -429,4 +434,49 @@ public class ControlUtil {
         }
         return bg.getFills().getFirst().getFill();
     }
+
+    /**
+     * 获取 ScrollPane 垂直滚动条的宽度
+     *
+     * @param scrollPane 滚动面板
+     */
+    public static double getVBarWidth(ScrollPane scrollPane) {
+        Skin<?> skin =  scrollPane.getSkin();
+        if(skin == null) {
+            return 0;
+        }
+        // 通过反射获取垂直滚动条
+        ScrollBar scrollBar = ReflectUtil.getFieldValue(skin, "vsb");
+        // 确保滚动条可见并已布局
+        if (scrollBar == null ) {
+            return 0;
+        }
+        // 强制布局并获取宽度
+        scrollBar.applyCss();
+        scrollBar.layout();
+        return NodeUtil.getWidth(scrollBar);
+    }
+
+    /**
+     * 获取 ScrollPane 水平滚动条的高度
+     *
+     * @param scrollPane 滚动面板
+     */
+    public static double getHBarHeight(ScrollPane scrollPane) {
+        Skin<?> skin =  scrollPane.getSkin();
+        if(skin == null) {
+            return 0;
+        }
+        // 通过反射获取垂直滚动条
+        ScrollBar scrollBar = ReflectUtil.getFieldValue(skin, "hsb");
+        // 确保滚动条可见并已布局
+        if (scrollBar == null ) {
+            return 0;
+        }
+        // 强制布局并获取宽度
+        scrollBar.applyCss();
+        scrollBar.layout();
+        return NodeUtil.getHeight(scrollBar);
+    }
+
 }

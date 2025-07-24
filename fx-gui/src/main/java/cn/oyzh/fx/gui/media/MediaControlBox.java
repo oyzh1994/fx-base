@@ -9,10 +9,8 @@ import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FXSlider;
 import cn.oyzh.fx.plus.information.MessageBox;
-import cn.oyzh.i18n.I18nHelper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
@@ -100,11 +98,12 @@ public class MediaControlBox extends FXVBox {
         this.progress = new FXProgressBar();
         this.progress.setProgress(0);
         this.progress.setFlexHeight("50%");
-        this.progress.setFlexWidth("100% - 120");
+        this.progress.setFlexWidth("100% - 125");
+        this.progress.setCursor(Cursor.HAND);
         this.box1.addChild(this.progress);
 
         this.timeLabel = new FXLabel();
-        this.timeLabel.setPrefWidth(110);
+        this.timeLabel.setPrefWidth(125);
         this.box1.addChild(this.timeLabel);
         this.addChild(this.box1);
 
@@ -252,6 +251,7 @@ public class MediaControlBox extends FXVBox {
         });
         player.setOnEndOfMedia(() -> {
             this.ended = true;
+            this.progress.setProgress(1);
             stopped.run();
         });
         // 音量处理

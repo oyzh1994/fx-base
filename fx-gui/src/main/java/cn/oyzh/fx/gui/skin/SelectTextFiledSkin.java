@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
@@ -113,14 +114,12 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * 显示弹窗
      */
     public void showPopup() {
+        TextField textField = this.getSkinnable();
+        if (!textField.isVisible()) {
+            return;
+        }
         if (this.popup != null) {
-            int size = this.getItemSize();
-            double height = size * this.lineHeight + 10;
-            if (height > 300) {
-                height = 300;
-            }
-            this.popup.setHeight(height);
-            TextField textField = this.getSkinnable();
+            this.calcSize();
             this.popup.showFixed(textField, -2, 0);
         }
     }
@@ -130,18 +129,19 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      */
     protected void initPopup() {
         this.popup = new FXPopup();
+        this.popup.setAutoFix(true);
         this.popup.setOnHidden(this::onPopupHide);
         this.popup.setOnShowing(this::onPopupShowing);
         Color color = ThemeManager.currentBackgroundColor();
         this.popup.getScene().setFill(color);
         TextField textField = this.getSkinnable();
         FXListView<T> listView = new FXListView<>();
-        listView.setRealWidth(NodeUtil.getWidth(textField));
+        // listView.setRealWidth(NodeUtil.getWidth(textField));
         // 数据函数
         Runnable dataFunc = () -> {
             T item = listView.getSelectedItem();
             // 设置数据中标志位
-            textField.getProperties().put("texting", true);
+            this.setTexting();
             if (item == null) {
                 textField.clear();
             } else if (this.converter != null) {
@@ -149,8 +149,6 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             } else {
                 textField.setText(item.toString());
             }
-            // 清除数据中标志位
-            textField.getProperties().remove("texting");
         };
         listView.selectedItemChanged((observable, oldValue, newValue) -> {
             if (!listView.isIgnoreChanged()) {
@@ -201,10 +199,9 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         FXScrollPane scrollPane = new FXScrollPane(listView);
         scrollPane.setPadding(Insets.EMPTY);
         // 绑定大小
-        listView.prefWidthProperty().bind(scrollPane.widthProperty());
+        // listView.prefWidthProperty().bind(scrollPane.widthProperty().subtract(15));
         listView.prefHeightProperty().bind(scrollPane.heightProperty());
         scrollPane.prefWidthProperty().bind(textField.widthProperty());
-        // scrollPane.setMaxHeight(150);
         // 同步布局
         if (NodeUtil.isOrientationRightToLeft(textField)) {
             scrollPane.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
@@ -238,7 +235,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return list列表组件
      */
     protected FXListView<T> getListView() {
-        FXScrollPane scrollPane = this.getScrollPane();
+        FXScrollPane scrollPane = this.scrollPane();
         return (FXListView<T>) scrollPane.getContent();
     }
 
@@ -247,7 +244,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      *
      * @return 滚动组件
      */
-    protected FXScrollPane getScrollPane() {
+    protected FXScrollPane scrollPane() {
         if (this.popup == null) {
             this.initPopup();
         }
@@ -257,8 +254,19 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     /**
      * 计算大小
      */
-    protected void calcSize(){
-        this.getScrollPane().setRealHeight(this.getItemSize() * this.lineHeight + 4);
+    protected void calcSize() {
+        TextField textField = this.getSkinnable();
+        FXListView<T> listView = this.getListView();
+        FXScrollPane scrollPane = this.scrollPane();
+        double width = NodeUtil.getWidth(textField);
+        double height = this.getItemSize() * this.lineHeight + 4;
+        if (height > 300) {
+            height = 300;
+            double vWidth = ControlUtil.getVBarWidth(scrollPane);
+            width = width - Math.max(8, vWidth);
+        }
+        listView.setRealWidth(width);
+        scrollPane.setRealHeight(height);
     }
 
     /**
@@ -303,7 +311,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         listView.setIgnoreChanged(true);
         listView.setItem(itemList);
         listView.setIgnoreChanged(false);
-        this.calcSize();
+        // this.calcSize();
     }
 
     /**
@@ -335,8 +343,24 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param event 事件
      */
     protected void onPopupShowing(WindowEvent event) {
-
+        // this.fixedPopupHeight();
     }
+
+    // /**
+    //  * 修正弹窗高度
+    //  */
+    // protected void fixedPopupHeight() {
+    //     int size = this.getItemSize();
+    //     double height = size * this.lineHeight + 10;
+    //     if (height > 300) {
+    //         height = 300;
+    //     }
+    //     this.popup.setHeight(height);
+    //     this.scrollPane().setRealHeight(height);
+    //     // if (this.popup.getHeight() > 300) {
+    //     //     this.popup.setHeight(300);
+    //     // }
+    // }
 
     /**
      * 获取选中的节点

@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.popup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.stage.Popup;
@@ -58,9 +59,9 @@ public class FXPopup extends Popup implements ThemeAdapter {
         if (NodeUtil.isOrientationRightToLeft(ownerNode)) {
             double width = NodeUtil.getWidth(ownerNode);
             // double width = ControlUtil.boundedWidth(ownerNode);
-            this.show(ownerNode, point2D.getX() - width - fixedX, point2D.getY() + height + fixedY);
+            FXUtil.runLater(() -> this.show(ownerNode, point2D.getX() - width - fixedX, point2D.getY() + height + fixedY));
         } else {
-            this.show(ownerNode, point2D.getX() + fixedX, point2D.getY() + height + fixedY);
+            FXUtil.runLater(() -> this.show(ownerNode, point2D.getX() + fixedX, point2D.getY() + height + fixedY));
         }
     }
 }
