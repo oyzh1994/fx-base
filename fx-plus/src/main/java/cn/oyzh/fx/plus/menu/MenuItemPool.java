@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.common.util.Pool;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 
 /**
@@ -24,7 +23,7 @@ public class MenuItemPool extends Pool<MenuItem> {
         if (item == null) {
             return;
         }
-        // 尽可能清楚属性
+        // 尽可能清除属性
         item.setId(null);
         item.setText(null);
         item.setStyle(null);

@@ -72,7 +72,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         return w;
     }
 
-    public void fixed(){
+    public void fixed() {
 
     }
 
@@ -117,6 +117,9 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
 
     @Override
     public void destroy() {
+        if (this.getParentMenu() != null) {
+            return;
+        }
 //        if (this.disableListener != null) {
 //            this.disableProperty().removeListener(this.disableListener);
         this.disableProperty().unbind();

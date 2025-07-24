@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.common.util.Pool;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 /**
@@ -11,7 +10,7 @@ import javafx.scene.control.SeparatorMenuItem;
 public class SeparatorMenuItemPool extends Pool<SeparatorMenuItem> {
 
     public SeparatorMenuItemPool() {
-        super(1, 5);
+        super(1, 3);
     }
 
     @Override

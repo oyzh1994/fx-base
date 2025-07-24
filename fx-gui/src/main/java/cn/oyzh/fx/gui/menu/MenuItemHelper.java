@@ -57,6 +57,9 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.scene.Node;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 /**
@@ -66,6 +69,73 @@ import javafx.scene.control.SeparatorMenuItem;
  * @since 2024/6/28
  */
 public class MenuItemHelper {
+
+    /**
+     * 菜单
+     *
+     * @param text 文本
+     * @return 菜单
+     */
+    public static Menu menu(String text) {
+        return MenuItemManager.getMenu(text);
+    }
+
+    /**
+     * 菜单
+     *
+     * @param text    文本
+     * @param graphic 图标
+     * @return 菜单
+     */
+    public static Menu menu(String text, Node graphic) {
+        return MenuItemManager.getMenu(text, graphic);
+    }
+
+    /**
+     * 菜单项
+     *
+     * @param text   文本
+     * @param action 操作
+     * @return 菜单项
+     */
+    public static MenuItem menuItem(String text, Runnable action) {
+        return MenuItemManager.getMenuItem(text, action);
+    }
+
+    /**
+     * 菜单项
+     *
+     * @param text    文本
+     * @param graphic 图标
+     * @param action  操作
+     * @return 菜单项
+     */
+    public static MenuItem menuItem(String text, Node graphic, Runnable action) {
+        return MenuItemManager.getMenuItem(text, graphic, action);
+    }
+
+    /**
+     * 新菜单项
+     *
+     * @param text   文本
+     * @param action 操作
+     * @return 菜单项
+     */
+    public static MenuItem newMenuItem(String text, Runnable action) {
+        return new FXMenuItem(null, text, action);
+    }
+
+    /**
+     * 新菜单项
+     *
+     * @param text    文本
+     * @param graphic 图标
+     * @param action  操作
+     * @return 菜单项
+     */
+    public static MenuItem newMenuItem(String text, Node graphic, Runnable action) {
+        return new FXMenuItem(graphic, text, action);
+    }
 
     /**
      * 分割菜单项
@@ -613,6 +683,10 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem unCompress(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCompress(), new UnCompressSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem compress(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCompress(), new UnCompressSVGGlyph(iconSize), action);
     }
 
