@@ -4,18 +4,18 @@ import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
@@ -23,6 +23,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 展开文本输入框皮肤
@@ -50,12 +51,12 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     /**
      * 节点变更事件
      */
-    protected ChangeListener<T> selectItemChanged;
+    protected Consumer<T> selectItemChanged;
 
-    /**
-     * 下标变更事件
-     */
-    protected ChangeListener<Number> selectIndexChanged;
+    // /**
+    //  * 下标变更事件
+    //  */
+    // protected Consumer<Integer> selectIndexChanged;
 
     public StringConverter<T> getConverter() {
         return converter;
@@ -73,28 +74,28 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         this.lineHeight = lineHeight;
     }
 
-    public ChangeListener<T> selectItemChanged() {
+    public Consumer<T> selectItemChanged() {
         return selectItemChanged;
     }
 
-    public void selectItemChanged(ChangeListener<T> selectItemChanged) {
+    public void selectItemChanged(Consumer<T> selectItemChanged) {
         this.selectItemChanged = selectItemChanged;
     }
 
-    public ChangeListener<Number> selectIndexChanged() {
-        return selectIndexChanged;
-    }
-
-    public void selectIndexChanged(ChangeListener<Number> selectIndexChanged) {
-        this.selectIndexChanged = selectIndexChanged;
-    }
+    // public ChangeListener<Number> selectIndexChanged() {
+    //     return selectIndexChanged;
+    // }
+    //
+    // public void selectIndexChanged(ChangeListener<Number> selectIndexChanged) {
+    //     this.selectIndexChanged = selectIndexChanged;
+    // }
 
     @Override
     protected void onButtonClicked(MouseEvent event) {
         if (this.popup == null) {
             this.initPopup();
         }
-        if (this.popup.isShowing()) {
+        if (this.popup.isShowing() || this.isItemEmpty()) {
             this.hidePopup();
         } else {
             this.showPopup();
@@ -114,13 +115,14 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * 显示弹窗
      */
     public void showPopup() {
-        TextField textField = this.getSkinnable();
-        if (!textField.isVisible()) {
+        if (this.isItemEmpty()) {
+            this.hidePopup();
             return;
         }
         if (this.popup != null) {
             this.calcSize();
-            this.popup.showFixed(textField, -2, 0);
+            TextField textField = this.getSkinnable();
+            this.popup.showFixed(textField, -1, 0);
         }
     }
 
@@ -136,7 +138,6 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         this.popup.getScene().setFill(color);
         TextField textField = this.getSkinnable();
         FXListView<T> listView = new FXListView<>();
-        // listView.setRealWidth(NodeUtil.getWidth(textField));
         // 数据函数
         Runnable dataFunc = () -> {
             T item = listView.getSelectedItem();
@@ -149,25 +150,39 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             } else {
                 textField.setText(item.toString());
             }
+            if (this.selectItemChanged != null) {
+                this.selectItemChanged.accept(item);
+            }
+            this.hidePopup();
         };
-        listView.selectedItemChanged((observable, oldValue, newValue) -> {
-            if (!listView.isIgnoreChanged()) {
+        listView.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (!listView.isIgnoreChanged() && event.getCode() == KeyCode.ENTER) {
                 dataFunc.run();
-                if (this.selectItemChanged != null) {
-                    this.selectItemChanged.changed(observable, oldValue, newValue);
-                }
-                this.hidePopup();
             }
         });
-        listView.selectedIndexChanged((observable, oldValue, newValue) -> {
-            if (!listView.isIgnoreChanged()) {
+        listView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            if (!listView.isIgnoreChanged() && MouseUtil.isDubboClick(event) && MouseUtil.isPrimaryButton(event)) {
                 dataFunc.run();
-                if (this.selectIndexChanged != null) {
-                    this.selectIndexChanged.changed(observable, oldValue, newValue);
-                }
-                this.hidePopup();
             }
         });
+        // listView.selectedItemChanged((observable, oldValue, newValue) -> {
+        //     if (!listView.isIgnoreChanged()) {
+        //         dataFunc.run();
+        //         if (this.selectItemChanged != null) {
+        //             this.selectItemChanged.changed(observable, oldValue, newValue);
+        //         }
+        //         this.hidePopup();
+        //     }
+        // });
+        // listView.selectedIndexChanged((observable, oldValue, newValue) -> {
+        //     if (!listView.isIgnoreChanged()) {
+        //         dataFunc.run();
+        //         if (this.selectIndexChanged != null) {
+        //             this.selectIndexChanged.changed(observable, oldValue, newValue);
+        //         }
+        //         this.hidePopup();
+        //     }
+        // });
         listView.setCellFactory(new Callback<>() {
             @Override
             public ListCell<T> call(ListView<T> param) {
@@ -194,14 +209,14 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             }
         });
         // 监听节点变化
-        listView.getItems().addListener((ListChangeListener<T>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4));
+        // listView.getItems().addListener((ListChangeListener<T>) c -> listView.setRealHeight(listView.getItemSize() * this.lineHeight + 4));
         listView.setPadding(Insets.EMPTY);
         FXScrollPane scrollPane = new FXScrollPane(listView);
         scrollPane.setPadding(Insets.EMPTY);
         // 绑定大小
-        // listView.prefWidthProperty().bind(scrollPane.widthProperty().subtract(15));
-        listView.prefHeightProperty().bind(scrollPane.heightProperty());
         scrollPane.prefWidthProperty().bind(textField.widthProperty());
+        listView.prefWidthProperty().bind(textField.widthProperty());
+        listView.prefHeightProperty().bind(scrollPane.heightProperty());
         // 同步布局
         if (NodeUtil.isOrientationRightToLeft(textField)) {
             scrollPane.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
@@ -210,14 +225,14 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     public SelectTextFiledSkin(TextField textField) {
-        super(textField, new SelectSVGGlyph("12,10"));
+        super(textField, new SelectSVGGlyph());
         this.button.disappear();
         this.button.setTipText(I18nHelper.select());
     }
 
     @Override
     protected void setButtonSize(double size) {
-        super.button.setSize(size * 1.5, size);
+        super.button.setSize(size * 0.6 * 1.5, size * .6);
     }
 
     @Override
@@ -234,7 +249,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      *
      * @return list列表组件
      */
-    protected FXListView<T> getListView() {
+    public FXListView<T> listView() {
         FXScrollPane scrollPane = this.scrollPane();
         return (FXListView<T>) scrollPane.getContent();
     }
@@ -255,17 +270,19 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * 计算大小
      */
     protected void calcSize() {
-        TextField textField = this.getSkinnable();
-        FXListView<T> listView = this.getListView();
+        // TextField textField = this.getSkinnable();
         FXScrollPane scrollPane = this.scrollPane();
-        double width = NodeUtil.getWidth(textField);
         double height = this.getItemSize() * this.lineHeight + 4;
+        // FXListView<T> listView = this.listView();
         if (height > 300) {
             height = 300;
-            double vWidth = ControlUtil.getVBarWidth(scrollPane);
-            width = width - Math.max(8, vWidth);
+            // double vWidth = ControlUtil.getVBarWidth(scrollPane);
+            // double width = NodeUtil.getWidth(scrollPane);
+            // width = width - Math.max(8, vWidth);
+            // listView.setRealWidth(width);
+        // } else {
+        //     listView.setRealWidth(scrollPane.getRealWidth());
         }
-        listView.setRealWidth(width);
         scrollPane.setRealHeight(height);
     }
 
@@ -276,8 +293,15 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      */
     public void selectItem(T item) {
         if (item != null && this.popup != null) {
-            this.getListView().select(item);
+            this.listView().select(item);
         }
+    }
+
+    /**
+     * 选择首个
+     */
+    public void selectFirst() {
+        this.listView().selectFirst();
     }
 
     /**
@@ -286,7 +310,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param index 下标
      */
     public void selectIndex(int index) {
-        this.getListView().select(index);
+        this.listView().select(index);
     }
 
     /**
@@ -295,7 +319,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 内容列表
      */
     public List<T> getItemList() {
-        return this.getListView().getItems();
+        return this.listView().getItems();
     }
 
     /**
@@ -307,11 +331,10 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         if (itemList == null) {
             return;
         }
-        FXListView<T> listView = this.getListView();
+        FXListView<T> listView = this.listView();
         listView.setIgnoreChanged(true);
         listView.setItem(itemList);
         listView.setIgnoreChanged(false);
-        // this.calcSize();
     }
 
     /**
@@ -320,12 +343,16 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 内容大小
      */
     public int getItemSize() {
-        return this.getListView().getItemSize();
+        return this.listView().getItemSize();
     }
 
-    @Override
-    protected double getButtonSizeMax() {
-        return 10;
+    /**
+     * 内容是否为空
+     *
+     * @return 结果
+     */
+    public boolean isItemEmpty() {
+        return this.listView().isItemEmpty();
     }
 
     /**
@@ -343,24 +370,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param event 事件
      */
     protected void onPopupShowing(WindowEvent event) {
-        // this.fixedPopupHeight();
     }
-
-    // /**
-    //  * 修正弹窗高度
-    //  */
-    // protected void fixedPopupHeight() {
-    //     int size = this.getItemSize();
-    //     double height = size * this.lineHeight + 10;
-    //     if (height > 300) {
-    //         height = 300;
-    //     }
-    //     this.popup.setHeight(height);
-    //     this.scrollPane().setRealHeight(height);
-    //     // if (this.popup.getHeight() > 300) {
-    //     //     this.popup.setHeight(300);
-    //     // }
-    // }
 
     /**
      * 获取选中的节点
@@ -368,14 +378,14 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 节点
      */
     public T getSelectedItem() {
-        return this.getListView().getSelectedItem();
+        return this.listView().getSelectedItem();
     }
 
     /**
      * 移除选区
      */
     public void clearSelection() {
-        this.getListView().clearSelection();
+        this.listView().clearSelection();
     }
 
     /**
@@ -384,7 +394,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 索引
      */
     public int getSelectedIndex() {
-        return this.getListView().getSelectedIndex();
+        return this.listView().getSelectedIndex();
     }
 
     /**
@@ -410,4 +420,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         this.getSkinnable().getProperties().remove("texting");
     }
 
+    @Override
+    protected double getButtonMargin() {
+        return -3;
+    }
 }

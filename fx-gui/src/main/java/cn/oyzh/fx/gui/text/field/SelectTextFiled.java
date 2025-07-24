@@ -2,10 +2,12 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.gui.skin.SelectTextFiledSkin;
-import javafx.beans.value.ChangeListener;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author oyzh
@@ -63,9 +65,9 @@ public class SelectTextFiled<T> extends LimitTextField {
         return this.skin().getLineHeight();
     }
 
-    public void selectIndexChanged(ChangeListener<Number> listener) {
-        this.skin().selectIndexChanged(listener);
-    }
+    // public void selectIndexChanged(ChangeListener<Number> listener) {
+    //     this.skin().selectIndexChanged(listener);
+    // }
 
     public void selectItem(T item) {
         this.skin().selectItem(item);
@@ -82,7 +84,7 @@ public class SelectTextFiled<T> extends LimitTextField {
         return this.skin().getSelectedItem();
     }
 
-    public void selectedItemChanged(ChangeListener<T> listener) {
+    public void selectedItemChanged(Consumer<T> listener) {
         this.skin().selectItemChanged(listener);
     }
 
@@ -106,6 +108,11 @@ public class SelectTextFiled<T> extends LimitTextField {
         super.initNode();
         this.addTextChangeListener((observableValue, s, t1) -> {
             TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
+        });
+        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
+                this.skin().selectFirst();
+            }
         });
     }
 }

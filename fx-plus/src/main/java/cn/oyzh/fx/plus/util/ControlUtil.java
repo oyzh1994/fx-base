@@ -451,9 +451,9 @@ public class ControlUtil {
         if (scrollBar == null ) {
             return 0;
         }
-        // 强制布局并获取宽度
-        scrollBar.applyCss();
-        scrollBar.layout();
+        // // 强制布局并获取宽度
+        // scrollBar.applyCss();
+        // scrollBar.layout();
         return NodeUtil.getWidth(scrollBar);
     }
 

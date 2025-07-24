@@ -64,4 +64,9 @@ public class FXPopup extends Popup implements ThemeAdapter {
             FXUtil.runLater(() -> this.show(ownerNode, point2D.getX() + fixedX, point2D.getY() + height + fixedY));
         }
     }
+
+    @Override
+    public void hide() {
+        FXUtil.runWait(super::hide);
+    }
 }

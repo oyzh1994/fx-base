@@ -58,7 +58,7 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         // 计算组件大小
         double btnSize = this.snapSizeX(size);
         // 位移的areaX值，规则 组件宽 + x -按钮大小
-        double areaX = w + x - btnSize - 5;
+        double areaX = w + x - btnSize - this.getButtonMargin();
         // 设置位置
         // super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
         super.positionInArea(this.button, areaX, y, 0, h, 0, HPos.CENTER, VPos.CENTER);
@@ -91,5 +91,14 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
 
     protected double getButtonSizeMax() {
         return 20;
+    }
+
+    /**
+     * 获取按钮边距
+     *
+     * @return 按钮边距
+     */
+    protected double getButtonMargin() {
+        return 5;
     }
 }
