@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.menu;
 
+import cn.oyzh.fx.gui.svg.glyph.AddGroupSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.AddSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.BatchOptSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
@@ -311,6 +312,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.rename(), new RenameSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem renameSnippet(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameSnippet(), new RenameSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem renameGroup(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameGroup(), new RenameSVGGlyph(iconSize), action);
     }
@@ -361,6 +366,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem edit(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.edit(), new EditSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem editSnippet(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editSnippet(), new EditSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem editFile(String iconSize, Runnable action) {
@@ -483,6 +492,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.delete(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem deleteSnippet(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSnippet(), new DeleteSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem deleteBucket(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteBucket(), new DeleteSVGGlyph(iconSize), action);
     }
@@ -496,7 +509,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem addGroup(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addGroup(), new AddSVGGlyph(iconSize), action);
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addGroup(), new AddGroupSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem addConnect(String iconSize, Runnable action) {
@@ -505,6 +518,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem add(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.add(), new AddSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem addSnippet(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addSnippet(), new AddSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem addBucket(String iconSize, Runnable action) {

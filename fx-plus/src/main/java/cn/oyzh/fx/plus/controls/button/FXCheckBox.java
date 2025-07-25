@@ -25,6 +25,11 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
         super();
     }
 
+    public FXCheckBox(boolean selected) {
+        super();
+        this.setSelected(selected);
+    }
+
     public FXCheckBox(String text) {
         super(text);
     }
