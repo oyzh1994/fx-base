@@ -3,12 +3,12 @@ package cn.oyzh.fx.plus.tray;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.ResourceUtil;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.Node;
 
-import java.awt.*;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
@@ -142,7 +142,7 @@ public class Tray {
     public void show() {
         try {
             if (SystemTray.isSupported() && ArrayUtil.isEmpty(TrayManager.systemTray().getTrayIcons())) {
-                TrayManager.systemTray().remove(this.trayIcon);
+                // TrayManager.systemTray().remove(this.trayIcon);
                 TrayManager.systemTray().add(this.trayIcon);
             }
         } catch (Exception ex) {

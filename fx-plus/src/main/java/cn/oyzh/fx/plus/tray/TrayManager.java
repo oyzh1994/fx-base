@@ -1,11 +1,12 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.Node;
 
-import java.awt.*;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 
@@ -48,7 +49,16 @@ public class TrayManager {
      */
     public static void show() {
         if (tray != null) {
-            TaskManager.startTimeout(tray::show, 100);
+            TaskManager.startTimeout(() -> {
+                // linux的图标auto size可能会卡住导致托盘图标异常，所以执行显示、隐藏、再显示流程
+                if (OSUtil.isLinux()) {
+                    tray.show();
+                    tray.close();
+                    tray.show();
+                } else {
+                    tray.show();
+                }
+            }, 100);
         }
     }
 
