@@ -12,6 +12,7 @@ import cn.oyzh.fx.gui.svg.glyph.CutSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.DownloadSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ErrorInfoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
@@ -114,28 +115,28 @@ public class MenuItemHelper {
         return MenuItemManager.getMenuItem(text, graphic, action);
     }
 
-    /**
-     * 新菜单项
-     *
-     * @param text   文本
-     * @param action 操作
-     * @return 菜单项
-     */
-    public static MenuItem newMenuItem(String text, Runnable action) {
-        return new FXMenuItem(null, text, action);
-    }
-
-    /**
-     * 新菜单项
-     *
-     * @param text    文本
-     * @param graphic 图标
-     * @param action  操作
-     * @return 菜单项
-     */
-    public static MenuItem newMenuItem(String text, Node graphic, Runnable action) {
-        return new FXMenuItem(graphic, text, action);
-    }
+    // /**
+    //  * 新菜单项
+    //  *
+    //  * @param text   文本
+    //  * @param action 操作
+    //  * @return 菜单项
+    //  */
+    // public static MenuItem newMenuItem(String text, Runnable action) {
+    //     return new FXMenuItem(null, text, action);
+    // }
+    //
+    // /**
+    //  * 新菜单项
+    //  *
+    //  * @param text    文本
+    //  * @param graphic 图标
+    //  * @param action  操作
+    //  * @return 菜单项
+    //  */
+    // public static MenuItem newMenuItem(String text, Node graphic, Runnable action) {
+    //     return new FXMenuItem(graphic, text, action);
+    // }
 
     /**
      * 分割菜单项
@@ -851,7 +852,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem downloadFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.downloadFile(), new ImportSVGGlyph(iconSize), action);
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.downloadFile(), new DownloadSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem shareFile(String iconSize, Runnable action) {
