@@ -164,25 +164,6 @@ public class NodeUtil {
             }
             return Double.NaN;
         }
-        if (target instanceof MediaView node) {
-            double w4 = node.getFitWidth();
-            if (w4 > 0) {
-                return w4;
-            }
-            double w1 = node.prefWidth(-1);
-            if (w1 > 0) {
-                return w1;
-            }
-            double w2 = node.minWidth(-1);
-            if (w2 > 0) {
-                return w2;
-            }
-            double w3 = node.maxWidth(-1);
-            if (w3 > 0) {
-                return w3;
-            }
-            return Double.NaN;
-        }
         if (target instanceof Region region) {
             double w1 = region.getWidth();
             if (w1 > 0) {
@@ -258,6 +239,30 @@ public class NodeUtil {
             return window.getWidth();
         }
 
+        try {
+            if (target instanceof MediaView node) {
+                double w4 = node.getFitWidth();
+                if (w4 > 0) {
+                    return w4;
+                }
+                double w1 = node.prefWidth(-1);
+                if (w1 > 0) {
+                    return w1;
+                }
+                double w2 = node.minWidth(-1);
+                if (w2 > 0) {
+                    return w2;
+                }
+                double w3 = node.maxWidth(-1);
+                if (w3 > 0) {
+                    return w3;
+                }
+                return Double.NaN;
+            }
+        } catch (NoClassDefFoundError error) {
+
+        }
+
         if (target instanceof Node node) {
             double w1 = node.prefWidth(-1);
             if (w1 > 0) {
@@ -294,25 +299,6 @@ public class NodeUtil {
 //            }
 //        }
         if (target instanceof ImageView node) {
-            double w4 = node.getFitHeight();
-            if (w4 > 0) {
-                return w4;
-            }
-            double w1 = node.prefHeight(-1);
-            if (w1 > 0) {
-                return w1;
-            }
-            double w2 = node.minHeight(-1);
-            if (w2 > 0) {
-                return w2;
-            }
-            double w3 = node.maxHeight(-1);
-            if (w3 > 0) {
-                return w3;
-            }
-            return Double.NaN;
-        }
-        if (target instanceof MediaView node) {
             double w4 = node.getFitHeight();
             if (w4 > 0) {
                 return w4;
@@ -385,6 +371,30 @@ public class NodeUtil {
             return window.getHeight();
         }
 
+        try {
+            if (target instanceof MediaView node) {
+                double w4 = node.getFitHeight();
+                if (w4 > 0) {
+                    return w4;
+                }
+                double w1 = node.prefHeight(-1);
+                if (w1 > 0) {
+                    return w1;
+                }
+                double w2 = node.minHeight(-1);
+                if (w2 > 0) {
+                    return w2;
+                }
+                double w3 = node.maxHeight(-1);
+                if (w3 > 0) {
+                    return w3;
+                }
+                return Double.NaN;
+            }
+        } catch (NoClassDefFoundError ignored) {
+
+        }
+
         if (target instanceof Node node) {
             double w1 = node.prefHeight(-1);
             if (w1 > 0) {
@@ -429,73 +439,77 @@ public class NodeUtil {
         if (target instanceof Node node && !node.isManaged()) {
             return;
         }
-        switch (target) {
-            case ImageView image -> {
-                if (!image.fitWidthProperty().isBound()) {
-                    image.setFitWidth(width);
+        try {
+            switch (target) {
+                case ImageView image -> {
+                    if (!image.fitWidthProperty().isBound()) {
+                        image.setFitWidth(width);
+                    }
+                }
+                case Labeled labeled -> {
+                    if (!labeled.prefWidthProperty().isBound()) {
+                        labeled.setPrefWidth(width);
+                    }
+                    if (!labeled.minWidthProperty().isBound()) {
+                        labeled.setMinWidth(width);
+                    }
+                    if (!labeled.maxWidthProperty().isBound()) {
+                        labeled.setMaxWidth(width);
+                    }
+                }
+                case TableColumnBase<?, ?> columnBase -> {
+                    if (!columnBase.prefWidthProperty().isBound()) {
+                        columnBase.setPrefWidth(width);
+                    }
+                    if (!columnBase.minWidthProperty().isBound()) {
+                        columnBase.setMinWidth(width);
+                    }
+                    if (!columnBase.maxWidthProperty().isBound()) {
+                        columnBase.setMaxWidth(width);
+                    }
+                }
+                case PopupControl control -> {
+                    if (!control.prefWidthProperty().isBound()) {
+                        control.setPrefWidth(width);
+                    }
+                    if (!control.minWidthProperty().isBound()) {
+                        control.setMinWidth(width);
+                    }
+                    if (!control.maxWidthProperty().isBound()) {
+                        control.setMaxWidth(width);
+                    }
+                }
+                case Region region -> {
+                    if (!region.prefWidthProperty().isBound()) {
+                        region.setPrefWidth(width);
+                    }
+                    if (!region.minWidthProperty().isBound()) {
+                        region.setMinWidth(width);
+                    }
+                    if (!region.maxWidthProperty().isBound()) {
+                        region.setMaxWidth(width);
+                    }
+                }
+                case Shape shape -> {
+                    if (!shape.strokeWidthProperty().isBound()) {
+                        shape.setStrokeWidth(width);
+                    }
+                }
+                case Stage stage -> stage.setWidth(width);
+                case Window window -> window.setWidth(width);
+                case Scene scene -> {
+                    setWidth(scene.getWindow(), width);
+                }
+                case MediaView media -> {
+                    if (!media.fitWidthProperty().isBound()) {
+                        media.setFitWidth(width);
+                    }
+                }
+                default -> {
                 }
             }
-            case MediaView media -> {
-                if (!media.fitWidthProperty().isBound()) {
-                    media.setFitWidth(width);
-                }
-            }
-            case Labeled labeled -> {
-                if (!labeled.prefWidthProperty().isBound()) {
-                    labeled.setPrefWidth(width);
-                }
-                if (!labeled.minWidthProperty().isBound()) {
-                    labeled.setMinWidth(width);
-                }
-                if (!labeled.maxWidthProperty().isBound()) {
-                    labeled.setMaxWidth(width);
-                }
-            }
-            case TableColumnBase<?, ?> columnBase -> {
-                if (!columnBase.prefWidthProperty().isBound()) {
-                    columnBase.setPrefWidth(width);
-                }
-                if (!columnBase.minWidthProperty().isBound()) {
-                    columnBase.setMinWidth(width);
-                }
-                if (!columnBase.maxWidthProperty().isBound()) {
-                    columnBase.setMaxWidth(width);
-                }
-            }
-            case PopupControl control -> {
-                if (!control.prefWidthProperty().isBound()) {
-                    control.setPrefWidth(width);
-                }
-                if (!control.minWidthProperty().isBound()) {
-                    control.setMinWidth(width);
-                }
-                if (!control.maxWidthProperty().isBound()) {
-                    control.setMaxWidth(width);
-                }
-            }
-            case Region region -> {
-                if (!region.prefWidthProperty().isBound()) {
-                    region.setPrefWidth(width);
-                }
-                if (!region.minWidthProperty().isBound()) {
-                    region.setMinWidth(width);
-                }
-                if (!region.maxWidthProperty().isBound()) {
-                    region.setMaxWidth(width);
-                }
-            }
-            case Shape shape -> {
-                if (!shape.strokeWidthProperty().isBound()) {
-                    shape.setStrokeWidth(width);
-                }
-            }
-            case Stage stage -> stage.setWidth(width);
-            case Window window -> window.setWidth(width);
-            case Scene scene -> {
-                setWidth(scene.getWindow(), width);
-            }
-            default -> {
-            }
+        } catch (NoClassDefFoundError ignored) {
+
         }
     }
 
@@ -512,57 +526,61 @@ public class NodeUtil {
         if (target instanceof Node node && !node.isManaged()) {
             return;
         }
-        switch (target) {
-            case ImageView image -> {
-                if (!image.fitHeightProperty().isBound()) {
-                    image.setFitHeight(height);
+        try {
+            switch (target) {
+                case ImageView image -> {
+                    if (!image.fitHeightProperty().isBound()) {
+                        image.setFitHeight(height);
+                    }
+                }
+                case Labeled labeled -> {
+                    if (!labeled.prefHeightProperty().isBound()) {
+                        labeled.setPrefHeight(height);
+                    }
+                    if (!labeled.minHeightProperty().isBound()) {
+                        labeled.setMinHeight(height);
+                    }
+                    if (!labeled.maxHeightProperty().isBound()) {
+                        labeled.setMaxHeight(height);
+                    }
+                }
+                case PopupControl control -> {
+                    if (!control.prefHeightProperty().isBound()) {
+                        control.setPrefHeight(height);
+                    }
+                    if (!control.minHeightProperty().isBound()) {
+                        control.setMinHeight(height);
+                    }
+                    if (!control.maxHeightProperty().isBound()) {
+                        control.setMaxHeight(height);
+                    }
+                }
+                case Region region -> {
+                    if (!region.prefHeightProperty().isBound()) {
+                        region.setPrefHeight(height);
+                    }
+                    if (!region.minHeightProperty().isBound()) {
+                        region.setMinHeight(height);
+                    }
+                    if (!region.maxHeightProperty().isBound()) {
+                        region.setMaxHeight(height);
+                    }
+                }
+                case Stage stage -> stage.setHeight(height);
+                case Window window -> window.setHeight(height);
+                case Scene scene -> {
+                    setHeight(scene.getWindow(), height);
+                }
+                case MediaView media -> {
+                    if (!media.fitHeightProperty().isBound()) {
+                        media.setFitHeight(height);
+                    }
+                }
+                default -> {
                 }
             }
-            case MediaView media -> {
-                if (!media.fitHeightProperty().isBound()) {
-                    media.setFitHeight(height);
-                }
-            }
-            case Labeled labeled -> {
-                if (!labeled.prefHeightProperty().isBound()) {
-                    labeled.setPrefHeight(height);
-                }
-                if (!labeled.minHeightProperty().isBound()) {
-                    labeled.setMinHeight(height);
-                }
-                if (!labeled.maxHeightProperty().isBound()) {
-                    labeled.setMaxHeight(height);
-                }
-            }
-            case PopupControl control -> {
-                if (!control.prefHeightProperty().isBound()) {
-                    control.setPrefHeight(height);
-                }
-                if (!control.minHeightProperty().isBound()) {
-                    control.setMinHeight(height);
-                }
-                if (!control.maxHeightProperty().isBound()) {
-                    control.setMaxHeight(height);
-                }
-            }
-            case Region region -> {
-                if (!region.prefHeightProperty().isBound()) {
-                    region.setPrefHeight(height);
-                }
-                if (!region.minHeightProperty().isBound()) {
-                    region.setMinHeight(height);
-                }
-                if (!region.maxHeightProperty().isBound()) {
-                    region.setMaxHeight(height);
-                }
-            }
-            case Stage stage -> stage.setHeight(height);
-            case Window window -> window.setHeight(height);
-            case Scene scene -> {
-                setHeight(scene.getWindow(), height);
-            }
-            default -> {
-            }
+        } catch (NoClassDefFoundError ignored) {
+
         }
     }
 
