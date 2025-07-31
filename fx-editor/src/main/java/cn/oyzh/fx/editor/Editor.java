@@ -273,6 +273,8 @@ public class Editor extends BaseRichTextArea {
 
     public static final String SYMBOL_STYLE = "-fx-fill: #377B2A;";
 
+    public static final String KEYWORD_STYLE = "-fx-fill: #0000FF;";
+
     /**
      * 应用json样式
      */
@@ -280,25 +282,86 @@ public class Editor extends BaseRichTextArea {
         EditorVisibleData visibleData = this.getVisibleData();
         int fIndex = visibleData.getStartIndex();
         String text = visibleData.getText();
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
+        //     while (matcher1.find()) {
+        //         RichTextStyle style = new RichTextStyle(matcher1.start(0) + fIndex, matcher1.end(0) + fIndex, SYMBOL_STYLE);
+        //         this.setStyle(style);
+        //     }
+        // });
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
+        //     while (matcher2.find()) {
+        //         RichTextStyle style = new RichTextStyle(matcher2.start(1) + fIndex, matcher2.end(1) + fIndex, KEY_STYLE);
+        //         this.setStyle(style);
+        //     }
+        // });
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);
+        //     while (matcher3.find()) {
+        //         RichTextStyle style = new RichTextStyle(matcher3.start(1) + fIndex, matcher3.end(1) + fIndex, VALUE_STYLE);
+        //         this.setStyle(style);
+        //     }
+        // });
         ThreadUtil.start(() -> {
-            Matcher matcher1 = RegexHelper.jsonSymbolPattern().matcher(text);
-            while (matcher1.find()) {
-                RichTextStyle style = new RichTextStyle(matcher1.start(0) + fIndex, matcher1.end(0) + fIndex, SYMBOL_STYLE);
-                this.setStyle(style);
-            }
-        });
-        ThreadUtil.start(() -> {
-            Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
-            while (matcher2.find()) {
-                RichTextStyle style = new RichTextStyle(matcher2.start(1) + fIndex, matcher2.end(1) + fIndex, KEY_STYLE);
-                this.setStyle(style);
-            }
-        });
-        ThreadUtil.start(() -> {
-            Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);
-            while (matcher3.find()) {
-                RichTextStyle style = new RichTextStyle(matcher3.start(1) + fIndex, matcher3.end(1) + fIndex, VALUE_STYLE);
-                this.setStyle(style);
+            Matcher matcher = RegexHelper.jsonPattern().matcher(text);
+            // 状态标记：明确区分当前解析位置
+            boolean inObject = false;    // 是否在对象内（{}中）
+            boolean expectKey = false;   // 是否期待键（对象内，逗号/左括号后）
+            boolean expectValue = false; // 是否期待值（冒号后）
+            while (matcher.find()) {
+                // 处理对象开始
+                if (matcher.group("braceOpen") != null) {
+                    inObject = true;
+                    expectKey = true; // 对象内首先期待键
+                }
+                // 处理对象结束
+                else if (matcher.group("braceClose") != null) {
+                    inObject = false;
+                    expectKey = false;
+                    expectValue = false;
+                }
+                // 处理数组开始
+                else if (matcher.group("bracketOpen") != null) {
+                    expectValue = true; // 数组内直接期待值
+                }
+                // 处理数组结束
+                else if (matcher.group("bracketClose") != null) {
+                    expectValue = inObject; // 数组结束后是否期待值取决于是否在对象内
+                }
+                // 处理逗号分隔符
+                else if (matcher.group("comma") != null) {
+                    if (inObject) {
+                        expectKey = true;  // 对象内逗号后期待新键
+                    } else {
+                        expectValue = true; // 数组内逗号后期待新值
+                    }
+                }
+                // 处理冒号（键值分隔）
+                else if (matcher.group("colon") != null) {
+                    expectKey = false;
+                    expectValue = true; // 冒号后必然期待值
+                }
+                // 处理字符串（根据状态判断是键还是值）
+                else if (matcher.group("string") != null) {
+                    if (expectKey) {
+                        expectKey = false;
+                        RichTextStyle style = new RichTextStyle(matcher.start("string") + fIndex, matcher.end("string") + fIndex, KEY_STYLE);
+                        this.setStyle(style);
+                    } else if (expectValue) {
+                        expectValue = false;
+                        RichTextStyle style = new RichTextStyle(matcher.start("string") + fIndex, matcher.end("string") + fIndex, VALUE_STYLE);
+                        this.setStyle(style);
+                    }
+                } else if (matcher.group("keyword") != null && expectValue) {  // 处理关键字值
+                    RichTextStyle style = new RichTextStyle(matcher.start("keyword") + fIndex, matcher.end("keyword") + fIndex, KEYWORD_STYLE);
+                    this.setStyle(style);
+                    expectValue = false;
+                } else if (matcher.group("number") != null && expectValue) { // 处理数字值
+                    RichTextStyle style = new RichTextStyle(matcher.start("number") + fIndex, matcher.end("number") + fIndex, KEYWORD_STYLE);
+                    this.setStyle(style);
+                    expectValue = false;
+                }
             }
         });
     }
@@ -427,7 +490,7 @@ public class Editor extends BaseRichTextArea {
                     this.setStyle(new RichTextStyle(matcher1.start("selector") + fIndex, matcher1.end("selector") + fIndex, BASE_STYLE));
                 } else if (matcher1.group("propName") != null) { // 分组5：属性名
                     this.setStyle(new RichTextStyle(matcher1.start("propName") + fIndex, matcher1.end("propName") + fIndex, KEY_STYLE));
-                } else if (matcher1.group("value") != null) {  // 分组6：带引号的属性值
+                } else if (matcher1.group("value") != null) {  // 分组6：属性值
                     this.setStyle(new RichTextStyle(matcher1.start("value") + fIndex, matcher1.end("value") + fIndex, VALUE_STYLE));
                 } else if (matcher1.group("url") != null) {// 分组7：URL值
                     this.setStyle(new RichTextStyle(matcher1.start("url") + fIndex, matcher1.end("url") + fIndex, VALUE_STYLE));
