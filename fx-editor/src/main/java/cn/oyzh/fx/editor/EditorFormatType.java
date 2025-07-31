@@ -16,6 +16,7 @@ public enum EditorFormatType {
     HTML,
     YAML,
     CSS,
+    PROPERTIES,
     JAVA,
     PYTHON,
     JAVASCRIPT,

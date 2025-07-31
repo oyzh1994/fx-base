@@ -165,9 +165,18 @@ public class Editor extends BaseRichTextArea {
      * 显示css数据
      */
     public void showCssData(Object rawData) {
-        String yamlData = TextUtil.getYamlData(rawData);
+        String yamlData = TextUtil.getCssData(rawData);
         this.setText(yamlData);
         this.setFormatType(EditorFormatType.CSS);
+    }
+
+    /**
+     * 显示properties数据
+     */
+    public void showPropertiesData(Object rawData) {
+        String yamlData = TextUtil.getPropertiesData(rawData);
+        this.setText(yamlData);
+        this.setFormatType(EditorFormatType.PROPERTIES);
     }
 
     /**
@@ -222,6 +231,8 @@ public class Editor extends BaseRichTextArea {
             this.applyYamlStyle();
         } else if (this.getFormatType() == EditorFormatType.CSS) {// css
             this.applyCssStyle();
+        } else if (this.getFormatType() == EditorFormatType.PROPERTIES) {// properties
+            this.applyPropertiesStyle();
         } else if (this.getFormatType() == EditorFormatType.BINARY) {// binary
             this.setStyle(0, this.getLength(), "-fx-fill: #32CD32;");
         } else if (this.getFormatType() == EditorFormatType.HEX) {// hex
@@ -541,6 +552,30 @@ public class Editor extends BaseRichTextArea {
         });
     }
 
+    /**
+     * 应用properties样式
+     */
+    protected void applyPropertiesStyle() {
+        EditorVisibleData visibleData = this.getVisibleData();
+        int fIndex = visibleData.getStartIndex();
+        String text = visibleData.getText();
+        ThreadUtil.start(() -> {
+            Matcher matcher1 = RegexHelper.propertiesPattern().matcher(text);
+            while (matcher1.find()) {
+                String comment = matcher1.group(1);
+                if (comment != null) {
+                    this.setStyle(new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, COMMENT_STYLE));
+                } else {
+                    this.setStyle(new RichTextStyle(matcher1.start(2) + fIndex, matcher1.end(2) + fIndex, KEY_STYLE));
+                    this.setStyle(new RichTextStyle(matcher1.start(3) + fIndex, matcher1.end(3) + fIndex, VALUE_STYLE));
+                    if (matcher1.group(4) != null) {
+                        this.setStyle(new RichTextStyle(matcher1.start(4) + fIndex, matcher1.end(4) + fIndex, COMMENT_STYLE));
+                    }
+                }
+            }
+        });
+    }
+
     private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
 
     public EditorLineNumPolicy getLineNumPolicy() {
@@ -613,10 +648,10 @@ public class Editor extends BaseRichTextArea {
             }
         });
 
-        // 监听宽度变化
-        this.widthProperty().addListener((observableValue, number, t1) -> {
-            this.initTextStyle(false);
-        });
+        // // 监听宽度变化
+        // this.widthProperty().addListener((observableValue, number, t1) -> {
+        //     this.initTextStyle(false);
+        // });
 
         // 监听高度变化
         this.heightProperty().addListener((observableValue, number, t1) -> {

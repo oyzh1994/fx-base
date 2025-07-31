@@ -52,6 +52,10 @@ public class EditorPane extends RichTextAreaPane<Editor> implements NodeGroup {
         this.getContent().showCssData(rawData);
     }
 
+    public void showPropertiesData(Object rawData) {
+        this.getContent().showPropertiesData(rawData);
+    }
+
     public void showBinaryData(Object rawData) {
         this.getContent().showBinaryData(rawData);
     }

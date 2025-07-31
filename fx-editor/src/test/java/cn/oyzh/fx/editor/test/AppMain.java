@@ -186,6 +186,14 @@ public class AppMain extends Application {
         });
         hBox.addChild(btn_5);
 
+        Button btn_6 = new Button("properties数据");
+        btn_6.setOnAction(actionEvent -> {
+            InputStream stream = ResourceUtil.getResourceAsStream("test.properties");
+            String string = IOUtil.readUtf8String(stream);
+            editor.showPropertiesData(string);
+        });
+        hBox.addChild(btn_6);
+
         FXHBox hBox2 = new FXHBox();
 
         Button btn_21 = new Button("明亮主题");
