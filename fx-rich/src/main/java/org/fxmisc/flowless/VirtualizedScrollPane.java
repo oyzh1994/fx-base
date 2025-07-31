@@ -380,4 +380,12 @@ public class VirtualizedScrollPane<V extends Region & Virtualized> extends Regio
                 ? (double) Math.round( scrollbarPos / contentSize * (contentSize - viewportSize + padding) )
                 : 0;
     }
+
+    public ScrollBar getHbar() {
+        return hbar;
+    }
+
+    public ScrollBar getVbar() {
+        return vbar;
+    }
 }

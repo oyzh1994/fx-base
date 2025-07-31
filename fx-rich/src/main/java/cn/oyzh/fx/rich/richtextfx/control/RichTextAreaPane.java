@@ -1,5 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
+import cn.oyzh.common.thread.ExecutorUtil;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -225,6 +227,10 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
 
     public void initTextStyle() {
         this.getContent().initTextStyle();
+    }
+
+    public void initTextStyleDelay() {
+        this.getContent().initTextStyleDelay();
     }
 
     public void clearTextStyle() {

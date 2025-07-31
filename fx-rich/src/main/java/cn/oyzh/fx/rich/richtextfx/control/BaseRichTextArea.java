@@ -2,6 +2,7 @@ package cn.oyzh.fx.rich.richtextfx.control;
 
 import cn.oyzh.common.thread.IRunnable;
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.ReflectUtil;
@@ -25,6 +26,10 @@ import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.RichLineNumberFactory;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
@@ -52,6 +57,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
 import java.util.regex.Matcher;
@@ -70,10 +76,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     /**
      * 高亮文本
      */
-    private String highlightText;
+    private StringProperty highlightTextProperty;
 
     public String getHighlightText() {
-        return highlightText;
+        return this.highlightTextProperty == null ? null : this.highlightTextProperty.get();
     }
 
     /**
@@ -82,8 +88,14 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * @param highlightText 高亮文本
      */
     public void setHighlightText(String highlightText) {
-        this.highlightText = highlightText;
-        this.initTextStyle();
+        this.highlightTextProperty().setValue(highlightText);
+    }
+
+    public StringProperty highlightTextProperty() {
+        if (this.highlightTextProperty == null) {
+            this.highlightTextProperty = new SimpleStringProperty();
+        }
+        return this.highlightTextProperty;
     }
 
     /**
@@ -92,7 +104,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * @return 高亮正则模式
      */
     protected Pattern highlightPattern() {
-        return Pattern.compile(this.highlightText, Pattern.CASE_INSENSITIVE);
+        return Pattern.compile(this.getHighlightText(), Pattern.CASE_INSENSITIVE);
     }
 
     @Override
@@ -142,7 +154,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     /**
      * 基础内容正则模式
      */
-    protected Pattern contentPrompts;
+    protected Pattern contentPromptsPattern;
 
     /**
      * 设置内容提示词
@@ -151,14 +163,14 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setContentPrompts(Set<String> prompts) {
         if (prompts == null || prompts.isEmpty()) {
-            this.contentPrompts = null;
+            this.contentPromptsPattern = null;
         } else {
             StringBuilder regex = new StringBuilder("\\b(");
             for (String s : prompts) {
                 regex.append(s).append("|");
             }
             regex.append(")\\b");
-            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
+            this.contentPromptsPattern = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
         }
         this.initTextStyle();
     }
@@ -395,15 +407,27 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 //        return false;
 //    }
 
+
     /**
      * 初始化文字样式
      */
     public void initTextStyle() {
+        this.initTextStyle(true);
+    }
+
+    /**
+     * 初始化文字样式
+     *
+     * @param clear 是否清除旧样式
+     */
+    public void initTextStyle(boolean clear) {
 //        if (!this.checkInvalidStyle()) {
 //            return;
 //        }
         try {
-            this.clearTextStyle();
+            if (clear) {
+                this.clearTextStyle();
+            }
             // 初始化颜色
             if (this.isEnableTheme()) {
                 Node placeholder = this.getPlaceholder();
@@ -412,9 +436,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
                 Color foregroundColor = ThemeManager.currentForegroundColor();
                 Color backgroundColor = ThemeManager.currentBackgroundColor();
                 String fgColor = FXColorUtil.getColorHex(foregroundColor);
+                // 设置前景色
+                this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
                 FXUtil.runWait(() -> {
                     // 设置光标颜色
-                    this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
                     caretNode.setStroke(accentColor);
                     // 设置背景文字颜色
                     if (placeholder != null) {
@@ -425,28 +450,67 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
                 });
             }
             // 高亮
-            if (StringUtil.isNotBlank(this.highlightText)) {
-                String text = this.getText();
-                Matcher matcher = this.highlightPattern().matcher(text);
-                List<RichTextStyle> styles = new ArrayList<>();
-                while (matcher.find()) {
-                    styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
-                }
-                this.setStyles(styles);
-            }
+            this.initHighlightStyle();
+            // String highlightText = this.getHighlightText();
+            // if (StringUtil.isNotBlank(highlightText)) {
+            //     String text = this.getText();
+            //     Matcher matcher = this.highlightPattern().matcher(text);
+            //     List<RichTextStyle> styles = new ArrayList<>();
+            //     while (matcher.find()) {
+            //         styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
+            //     }
+            //     this.setStyles(styles);
+            // }
             // 内容提示
-            if (this.contentPrompts != null) {
-                String text = this.getText();
-                Matcher matcher1 = this.contentPrompts.matcher(text);
-                List<RichTextStyle> styles = new ArrayList<>();
-                while (matcher1.find()) {
-                    styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
-                }
-                this.setStyles(styles);
-                this.forgetHistory();
-            }
+            this.initContentPromptStyle();
+            // if (this.contentPrompts != null) {
+            //     String text = this.getText();
+            //     Matcher matcher1 = this.contentPrompts.matcher(text);
+            //     List<RichTextStyle> styles = new ArrayList<>();
+            //     while (matcher1.find()) {
+            //         styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
+            //     }
+            //     this.setStyles(styles);
+            //     this.forgetHistory();
+            // }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void initTextStyleDelay() {
+        FXUtil.runLater(this::initTextStyle, 500);
+    }
+
+    public static final String HIGHLIGHT_STYLE = "-fx-fill: #FF6600";
+
+    protected void initHighlightStyle() {
+        if (StringUtil.isBlank(this.getHighlightText())) {
+            return;
+        }
+        String text = this.getText();
+        // 高亮
+        ThreadUtil.start(() -> {
+            Matcher matcher = this.highlightPattern().matcher(text);
+            while (matcher.find()) {
+                RichTextStyle style = new RichTextStyle(matcher.start(), matcher.end(), HIGHLIGHT_STYLE);
+                this.setStyle(style);
+            }
+        });
+    }
+
+    public static final String CONTENT_PROMPT_STYLE = "-fx-fill: #008B45";
+
+    protected void initContentPromptStyle() {
+        // 内容提示
+        if (this.contentPromptsPattern != null) {
+            String text = this.getText();
+            Matcher matcher1 = this.contentPromptsPattern.matcher(text);
+            while (matcher1.find()) {
+                RichTextStyle style = new RichTextStyle(matcher1.start(), matcher1.end(), CONTENT_PROMPT_STYLE);
+                this.setStyle(style);
+            }
+            this.forgetHistory();
         }
     }
 
@@ -457,8 +521,9 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setStyle(RichTextStyle style) {
         if (style != null) {
-            IRunnable func = () -> FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
-            TaskManager.startDelay("rich:style:" + this.hashCode(), func, 0);
+            // IRunnable func = () -> FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
+            // TaskManager.startDelay("rich:style:" + this.hashCode(), func, 0);
+            this.setStyle(style.start(), style.end(), style.style());
         }
     }
 
@@ -479,7 +544,12 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
             scrollPane = pane;
             scrollPane.setIgnoreVChanged(true);
         }
-        super.setStyle(from, to, style);
+        this.setAutoScrollOnDragDesired(false);
+        int finalTo = to;
+        int finalFrom = from;
+        // super.setStyle(finalFrom, finalTo, style);
+        FXUtil.runWait(() -> super.setStyle(finalFrom, finalTo, style));
+        this.setAutoScrollOnDragDesired(true);
         if (scrollPane != null) {
             scrollPane.setIgnoreVChanged(false);
         }
@@ -492,11 +562,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setStyles(List<RichTextStyle> styles) {
         if (CollectionUtil.isNotEmpty(styles)) {
-            FXUtil.runWait(() -> {
-                for (RichTextStyle style : styles) {
-                    this.setStyle(style.start(), style.end(), style.style());
-                }
-            });
+            // FXUtil.runWait(() -> {
+            for (RichTextStyle style : styles) {
+                this.setStyle(style.start(), style.end(), style.style());
+            }
+            // });
         }
     }
 
@@ -541,7 +611,17 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
                 ReflectUtil.setFieldValue(field, false, this);
             }
         });
+        this.highlightTextProperty().addListener((observableValue, s, t1) -> {
+            this.initTextStyle(true);
+        });
+        this.textProperty().addListener((observableValue, s, t1) -> {
+            this.initTextStyle();
+        });
     }
+
+    // protected void initTextStyleAsync() {
+    //     TaskManager.startDelay(this.hashCode() + ":init:text:style", this::initTextStyle, 1);
+    // }
 
     @Override
     public void requestFocus() {
@@ -588,4 +668,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
         Position position = this.offsetToPosition(start, Bias.Forward);
         this.showParagraphAtTop(position.getMajor());
     }
+
+
 }

@@ -42,6 +42,7 @@
         <module>fx-plus</module>
         <module>fx-rich</module>
         <module>fx-terminal</module>
+        <module>fx-editor</module>
     </modules>
 
     <properties>

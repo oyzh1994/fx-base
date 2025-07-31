@@ -13,6 +13,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ComboBox;
@@ -73,6 +74,13 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
                 listener.changed(observableValue, t, t1);
             }
         });
+    }
+
+    /**
+     * 选中内容属性
+     */
+    public ReadOnlyObjectProperty<T> selectedItemProperty() {
+        return this.getSelectionModel().selectedItemProperty();
     }
 
     /**

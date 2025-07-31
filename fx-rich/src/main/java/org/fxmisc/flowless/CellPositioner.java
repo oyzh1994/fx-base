@@ -1,5 +1,6 @@
 package org.fxmisc.flowless;
 
+import javafx.scene.Node;
 import org.reactfx.collection.MemoizationList;
 
 import java.util.Optional;
@@ -29,14 +30,19 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
     }
 
     public C getVisibleCell(int itemIndex) {
-        C cell = cellManager.getPresentCell(itemIndex);
-        // if(cell.getNode().isVisible()) {
-        //     return cell;
-        // } else {
-        //     throw new NoSuchElementException(
-        //             "Cell " + itemIndex + " is not visible");
-        // }
-        return cell;
+        try {
+            C cell = cellManager.getPresentCell(itemIndex);
+            // if(cell.getNode().isVisible()) {
+            //     return cell;
+            // } else {
+            //     throw new NoSuchElementException(
+            //             "Cell " + itemIndex + " is not visible");
+            // }
+            return cell;
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public Optional<C> getCellIfVisible(int itemIndex) {
@@ -227,6 +233,8 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
     }
 
     private void relocate(C cell, double breadth0, double length0) {
+       Node node= cell.getNode();
+
         orientation.relocate(cell, breadth0, length0);
     }
 }
