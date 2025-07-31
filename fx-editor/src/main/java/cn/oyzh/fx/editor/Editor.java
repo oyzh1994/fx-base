@@ -162,6 +162,15 @@ public class Editor extends BaseRichTextArea {
     }
 
     /**
+     * 显示css数据
+     */
+    public void showCssData(Object rawData) {
+        String yamlData = TextUtil.getYamlData(rawData);
+        this.setText(yamlData);
+        this.setFormatType(EditorFormatType.CSS);
+    }
+
+    /**
      * 显示二进制数据
      */
     public void showBinaryData(Object rawData) {
@@ -211,6 +220,8 @@ public class Editor extends BaseRichTextArea {
             this.applyHtmlStyle();
         } else if (this.getFormatType() == EditorFormatType.YAML) {// yaml
             this.applyYamlStyle();
+        } else if (this.getFormatType() == EditorFormatType.CSS) {// css
+            this.applyCssStyle();
         } else if (this.getFormatType() == EditorFormatType.BINARY) {// binary
             this.setStyle(0, this.getLength(), "-fx-fill: #32CD32;");
         } else if (this.getFormatType() == EditorFormatType.HEX) {// hex
@@ -256,7 +267,7 @@ public class Editor extends BaseRichTextArea {
 
     public static final String VALUE_STYLE = "-fx-fill: #95261F;";
 
-    public static final String BASE_STYLE = "-fx-fill: #1232AC;";
+    public static final String BASE_STYLE = "-fx-fill: #800000;";
 
     public static final String COMMENT_STYLE = "-fx-fill: #8C8C8C;";
 
@@ -369,46 +380,6 @@ public class Editor extends BaseRichTextArea {
             }
         });
     }
-    //
-    // /**
-    //  * 应用html样式
-    //  */
-    // protected void applyHtmlStyle1() {
-    //     EditorVisibleData visibleData = this.getVisibleData();
-    //     int fIndex = visibleData.getStartIndex();
-    //     String text = visibleData.getText();
-    //     ThreadUtil.start(() -> {
-    //         HtmlResolver syntax = new HtmlResolver(new HtmlResolveListener() {
-    //             @Override
-    //             public void onTagStart(String tagName, int index) {
-    //                 this.onTagEnd(tagName, index);
-    //             }
-    //
-    //             @Override
-    //             public void onTagEnd(String tagName, int index) {
-    //                 RichTextStyle style = new RichTextStyle(index + fIndex - tagName.length() - 1, index + fIndex, BASE_STYLE);
-    //                 setStyle(style);
-    //             }
-    //
-    //             @Override
-    //             public void onComment(String comment, int index) {
-    //                 RichTextStyle style = new RichTextStyle(index + fIndex - comment.length() - 1, index + fIndex, COMMENT_STYLE);
-    //                 setStyle(style);
-    //             }
-    //
-    //             @Override
-    //             public void onAttribute(String attrName, String attrValue, int index) {
-    //                 RichTextStyle style1 = new RichTextStyle(index + fIndex - attrName.length() - 1, index + fIndex, KEY_STYLE);
-    //                 setStyle(style1);
-    //                 if (attrValue != null) {
-    //                     RichTextStyle style2 = new RichTextStyle(index + fIndex - attrValue.length() - 1, index + fIndex, VALUE_STYLE);
-    //                     setStyle(style2);
-    //                 }
-    //             }
-    //         });
-    //         syntax.parse(text);
-    //     });
-    // }
 
     /**
      * 应用yaml样式
@@ -431,6 +402,41 @@ public class Editor extends BaseRichTextArea {
                     if (comment != null) {
                         this.setStyle(new RichTextStyle(matcher1.start(6) + fIndex - 1, matcher1.end(6) + fIndex, COMMENT_STYLE));
                     }
+                }
+            }
+        });
+    }
+
+    /**
+     * 应用css样式
+     */
+    protected void applyCssStyle() {
+        EditorVisibleData visibleData = this.getVisibleData();
+        int fIndex = visibleData.getStartIndex();
+        String text = visibleData.getText();
+        ThreadUtil.start(() -> {
+            Matcher matcher1 = RegexHelper.cssPattern().matcher(text);
+            while (matcher1.find()) {
+                // 分组1：注释
+                if (matcher1.group("comment") != null) {
+                    this.setStyle(new RichTextStyle(matcher1.start("comment") + fIndex, matcher1.end("comment") + fIndex, COMMENT_STYLE));
+                } else if (matcher1.group("string") != null) { // 分组2：字符串
+                } else if (matcher1.group("atRule") != null) { // 分组3：规则
+                    this.setStyle(new RichTextStyle(matcher1.start("atRule") + fIndex, matcher1.end("atRule") + fIndex, SYMBOL_STYLE));
+                } else if (matcher1.group("selector") != null) { // 分组4：选择器块
+                    this.setStyle(new RichTextStyle(matcher1.start("selector") + fIndex, matcher1.end("selector") + fIndex, BASE_STYLE));
+                } else if (matcher1.group("propName") != null) { // 分组5：属性名
+                    this.setStyle(new RichTextStyle(matcher1.start("propName") + fIndex, matcher1.end("propName") + fIndex, KEY_STYLE));
+                } else if (matcher1.group("value") != null) {  // 分组6：带引号的属性值
+                    this.setStyle(new RichTextStyle(matcher1.start("value") + fIndex, matcher1.end("value") + fIndex, VALUE_STYLE));
+                } else if (matcher1.group("url") != null) {// 分组7：URL值
+                    this.setStyle(new RichTextStyle(matcher1.start("url") + fIndex, matcher1.end("url") + fIndex, VALUE_STYLE));
+                } else if (matcher1.group("function") != null) { // 分组8：函数名
+                    this.setStyle(new RichTextStyle(matcher1.start("function") + fIndex, matcher1.end("function") + fIndex, KEY_STYLE));
+                } else if (matcher1.group("blockEnd") != null) {  // 分组9：块结束符
+                    this.setStyle(new RichTextStyle(matcher1.start("blockEnd") + fIndex, matcher1.end("blockEnd") + fIndex, SYMBOL_STYLE));
+                } else if (matcher1.group("propEnd") != null) {  // 分组10：属性结束符
+                    this.setStyle(new RichTextStyle(matcher1.start("propEnd") + fIndex, matcher1.end("propEnd") + fIndex, SYMBOL_STYLE));
                 }
             }
         });

@@ -178,7 +178,15 @@ public class AppMain extends Application {
         });
         hBox.addChild(btn_4);
 
-        FXHBox hBox2=new FXHBox();
+        Button btn_5 = new Button("css数据");
+        btn_5.setOnAction(actionEvent -> {
+            InputStream stream = ResourceUtil.getResourceAsStream("test.css");
+            String string = IOUtil.readDefaultString(stream);
+            editor.showCssData(string);
+        });
+        hBox.addChild(btn_5);
+
+        FXHBox hBox2 = new FXHBox();
 
         Button btn_21 = new Button("明亮主题");
         btn_21.setOnAction(actionEvent -> {
