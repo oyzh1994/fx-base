@@ -373,22 +373,40 @@ public class Editor extends BaseRichTextArea {
         EditorVisibleData visibleData = this.getVisibleData();
         String text = visibleData.getText();
         int fIndex = visibleData.getStartIndex();
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher1 = RegexHelper.xmlPattern().matcher(text);
+        //     while (matcher1.find()) {
+        //         RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
+        //         this.setStyle(style);
+        //     }
+        // });
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher2 = RegexHelper.xmlCommentPattern().matcher(text);
+        //     while (matcher2.find()) {
+        //         RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
+        //         this.setStyle(style);
+        //     }
+        // });
         ThreadUtil.start(() -> {
-            Matcher matcher1 = RegexHelper.xmlPattern().matcher(text);
-            while (matcher1.find()) {
-                RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
-                this.setStyle(style);
+            Matcher matcher = RegexHelper.xmlPattern().matcher(text);
+            while (matcher.find()) {
+                if (matcher.group("comment") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("comment") + fIndex, matcher.end("comment") + fIndex, COMMENT_STYLE);
+                    this.setStyle(style);
+                } else if (matcher.group("startTag") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("startTag") + fIndex, matcher.end("startTag") + fIndex, BASE_STYLE);
+                    this.setStyle(style);
+                } else if (matcher.group("endTag") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("endTag") + fIndex, matcher.end("endTag") + fIndex, BASE_STYLE);
+                    this.setStyle(style);
+                } else if (matcher.group("selfCloseTag") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("selfCloseTag") + fIndex, matcher.end("selfCloseTag") + fIndex, BASE_STYLE);
+                    this.setStyle(style);
+                }
             }
         });
         ThreadUtil.start(() -> {
-            Matcher matcher2 = RegexHelper.xmlCommentPattern().matcher(text);
-            while (matcher2.find()) {
-                RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
-                this.setStyle(style);
-            }
-        });
-        ThreadUtil.start(() -> {
-            Matcher matcher3 = RegexHelper.htmlAttributePattern().matcher(text);
+            Matcher matcher3 = RegexHelper.xmlAttributePattern().matcher(text);
             while (matcher3.find()) {
                 RichTextStyle style1 = new RichTextStyle(matcher3.start(2) + fIndex, matcher3.end(2) + fIndex, KEY_STYLE);
                 this.setStyle(style1);
@@ -410,18 +428,36 @@ public class Editor extends BaseRichTextArea {
         EditorVisibleData visibleData = this.getVisibleData();
         int fIndex = visibleData.getStartIndex();
         String text = visibleData.getText();
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher1 = RegexHelper.htmlPattern().matcher(text);
+        //     while (matcher1.find()) {
+        //         RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
+        //         this.setStyle(style);
+        //     }
+        // });
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher2 = RegexHelper.htmlCommentPattern().matcher(text);
+        //     while (matcher2.find()) {
+        //         RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
+        //         this.setStyle(style);
+        //     }
+        // });
         ThreadUtil.start(() -> {
-            Matcher matcher1 = RegexHelper.htmlPattern().matcher(text);
-            while (matcher1.find()) {
-                RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
-                this.setStyle(style);
-            }
-        });
-        ThreadUtil.start(() -> {
-            Matcher matcher2 = RegexHelper.htmlCommentPattern().matcher(text);
-            while (matcher2.find()) {
-                RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
-                this.setStyle(style);
+            Matcher matcher = RegexHelper.htmlPattern().matcher(text);
+            while (matcher.find()) {
+                if (matcher.group("comment") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("comment") + fIndex, matcher.end("comment") + fIndex, COMMENT_STYLE);
+                    this.setStyle(style);
+                } else if (matcher.group("tagOpen") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("tagOpen") + fIndex, matcher.end("tagOpen") + fIndex, BASE_STYLE);
+                    this.setStyle(style);
+                } else if (matcher.group("tagClose") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("tagClose") + fIndex, matcher.end("tagClose") + fIndex, BASE_STYLE);
+                    this.setStyle(style);
+                } else if (matcher.group("selfCloseTag") != null) {
+                    RichTextStyle style = new RichTextStyle(matcher.start("selfCloseTag") + fIndex, matcher.end("selfCloseTag") + fIndex, BASE_STYLE);
+                    this.setStyle(style);
+                }
             }
         });
         ThreadUtil.start(() -> {
