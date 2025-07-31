@@ -1,30 +1,19 @@
 package cn.oyzh.fx.editor;
 
-import cn.oyzh.common.thread.Task;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.RegexHelper;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.plus.theme.ThemeUtil;
-import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
-import org.fxmisc.richtext.model.Paragraph;
-import org.reactfx.collection.LiveList;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -231,8 +220,8 @@ public class Editor extends BaseRichTextArea {
     }
 
     public EditorVisibleData getVisibleData() {
-        int start = this.firstVisibleParToAllParIndex() ;
-        int end = start + this.lastVisibleParToAllParIndex() ;
+        int start = this.firstVisibleParToAllParIndex();
+        int end = start + this.lastVisibleParToAllParIndex();
         System.out.println("start=" + start);
         System.out.println("end=" + end);
         int fIndex = 0, lIndex = 0;
@@ -263,15 +252,15 @@ public class Editor extends BaseRichTextArea {
         return getVisibleParagraphs().isEmpty() ? 0 : this.getVisibleParagraphs().size() - 1;
     }
 
-    public static final String KEY_STYLE = "-fx-fill: #22509F;";
+    public static final String KEY_STYLE = "-fx-fill: #1232AC;";
 
     public static final String VALUE_STYLE = "-fx-fill: #95261F;";
 
-    public static final String BASE_STYLE = "-fx-fill: #75140C;";
+    public static final String BASE_STYLE = "-fx-fill: #1232AC;";
 
-    public static final String COMMENT_STYLE = "-fx-fill: #377E22;";
+    public static final String COMMENT_STYLE = "-fx-fill: #8C8C8C;";
 
-    public static final String SYMBOL_STYLE = "-fx-fill: #4E913F;";
+    public static final String SYMBOL_STYLE = "-fx-fill: #377B2A;";
 
     /**
      * 应用json样式
@@ -324,6 +313,20 @@ public class Editor extends BaseRichTextArea {
                 this.setStyle(style);
             }
         });
+        ThreadUtil.start(() -> {
+            Matcher matcher3 = RegexHelper.htmlAttributePattern().matcher(text);
+            while (matcher3.find()) {
+                RichTextStyle style1 = new RichTextStyle(matcher3.start(2) + fIndex, matcher3.end(2) + fIndex, KEY_STYLE);
+                this.setStyle(style1);
+                // 获取属性值
+                int valStart = matcher3.group(4) != null ? matcher3.start(4) : matcher3.start(5);
+                int valEnd = matcher3.group(4) != null ? matcher3.end(4) : matcher3.end(5);
+                if (valStart >= 0 && valEnd >= 0) {
+                    RichTextStyle style2 = new RichTextStyle(valStart + fIndex, valEnd + fIndex, VALUE_STYLE);
+                    this.setStyle(style2);
+                }
+            }
+        });
     }
 
     /**
@@ -347,7 +350,65 @@ public class Editor extends BaseRichTextArea {
                 this.setStyle(style);
             }
         });
+        ThreadUtil.start(() -> {
+            Matcher matcher3 = RegexHelper.htmlAttributePattern().matcher(text);
+            while (matcher3.find()) {
+                RichTextStyle style1 = new RichTextStyle(matcher3.start(2) + fIndex, matcher3.end(2) + fIndex, KEY_STYLE);
+                this.setStyle(style1);
+                // 获取属性值
+                int valStart = matcher3.group(4) != null ? matcher3.start(4) :
+                        matcher3.group(5) != null ? matcher3.start(5) :
+                                matcher3.start(6);
+                int valEnd = matcher3.group(4) != null ? matcher3.end(4) :
+                        matcher3.group(5) != null ? matcher3.end(5) :
+                                matcher3.end(6);
+                if (valStart >= 0 && valEnd >= 0) {
+                    RichTextStyle style2 = new RichTextStyle(valStart + fIndex, valEnd + fIndex, VALUE_STYLE);
+                    this.setStyle(style2);
+                }
+            }
+        });
     }
+    //
+    // /**
+    //  * 应用html样式
+    //  */
+    // protected void applyHtmlStyle1() {
+    //     EditorVisibleData visibleData = this.getVisibleData();
+    //     int fIndex = visibleData.getStartIndex();
+    //     String text = visibleData.getText();
+    //     ThreadUtil.start(() -> {
+    //         HtmlResolver syntax = new HtmlResolver(new HtmlResolveListener() {
+    //             @Override
+    //             public void onTagStart(String tagName, int index) {
+    //                 this.onTagEnd(tagName, index);
+    //             }
+    //
+    //             @Override
+    //             public void onTagEnd(String tagName, int index) {
+    //                 RichTextStyle style = new RichTextStyle(index + fIndex - tagName.length() - 1, index + fIndex, BASE_STYLE);
+    //                 setStyle(style);
+    //             }
+    //
+    //             @Override
+    //             public void onComment(String comment, int index) {
+    //                 RichTextStyle style = new RichTextStyle(index + fIndex - comment.length() - 1, index + fIndex, COMMENT_STYLE);
+    //                 setStyle(style);
+    //             }
+    //
+    //             @Override
+    //             public void onAttribute(String attrName, String attrValue, int index) {
+    //                 RichTextStyle style1 = new RichTextStyle(index + fIndex - attrName.length() - 1, index + fIndex, KEY_STYLE);
+    //                 setStyle(style1);
+    //                 if (attrValue != null) {
+    //                     RichTextStyle style2 = new RichTextStyle(index + fIndex - attrValue.length() - 1, index + fIndex, VALUE_STYLE);
+    //                     setStyle(style2);
+    //                 }
+    //             }
+    //         });
+    //         syntax.parse(text);
+    //     });
+    // }
 
     /**
      * 应用yaml样式
