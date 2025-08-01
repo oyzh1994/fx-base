@@ -15,6 +15,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2023/8/14
  */
+@Deprecated
 public class RichDataTypeComboBox extends FXComboBox<RichDataType> implements I18nSelectAdapter<RichDataType> {
 
     {

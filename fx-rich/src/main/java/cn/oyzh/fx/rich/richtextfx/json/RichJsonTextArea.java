@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
  * @author oyzh
  * @since 2025-02-20
  */
+@Deprecated
 public class RichJsonTextArea extends BaseRichTextArea {
 
     @Override

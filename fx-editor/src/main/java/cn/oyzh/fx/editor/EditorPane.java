@@ -1,117 +1,61 @@
 package cn.oyzh.fx.editor;
 
-import cn.oyzh.fx.plus.menu.FXContextMenu;
-import cn.oyzh.fx.plus.node.NodeGroup;
-import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.RichDataType;
-import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-
-import java.net.Socket;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
+ * 编辑器面板
+ *
  * @author oyzh
  * @since 2025/07/30
  */
-public class EditorPane extends RichTextAreaPane<Editor> implements NodeGroup {
-
-    public EditorPane() {
-        super(new Editor());
-    }
+public class EditorPane extends BaseEditorPane {
 
     public void showData(Object data, EditorFormatType formatType) {
-        this.getContent().showData(data, formatType);
+        this.getEditor().showData(data, formatType);
     }
 
     public EditorFormatType showDetectData(Object rawData) {
-        return this.getContent().showDetectData(rawData);
+        return this.getEditor().showDetectData(rawData);
     }
 
     public void showJsonData(Object rawData) {
-        this.getContent().showJsonData(rawData);
+        this.getEditor().showJsonData(rawData);
     }
 
     public void showXmlData(Object rawData) {
-        this.getContent().showXmlData(rawData);
+        this.getEditor().showXmlData(rawData);
     }
 
     public void showHtmlData(Object rawData) {
-        this.getContent().showHtmlData(rawData);
+        this.getEditor().showHtmlData(rawData);
     }
 
     public void showYamlData(Object rawData) {
-        this.getContent().showYamlData(rawData);
+        this.getEditor().showYamlData(rawData);
     }
 
     public void showCssData(Object rawData) {
-        this.getContent().showCssData(rawData);
+        this.getEditor().showCssData(rawData);
     }
 
     public void showPropertiesData(Object rawData) {
-        this.getContent().showPropertiesData(rawData);
-    }
-
-    public void showBinaryData(Object rawData) {
-        this.getContent().showBinaryData(rawData);
-    }
-
-    public void showHexData(Object rawData) {
-        this.getContent().showHexData(rawData);
-    }
-
-    public void showStringData(Object rawData) {
-        this.getContent().showStringData(rawData);
+        this.getEditor().showPropertiesData(rawData);
     }
 
     public void showRawData(Object rawData) {
-        this.getContent().showRawData(rawData);
+        this.getEditor().showRawData(rawData);
     }
 
     public void setFormatType(EditorFormatType formatType) {
-        this.getContent().setFormatType(formatType);
+        this.getEditor().setFormatType(formatType);
     }
 
-    public EditorFormatType getFormatType() {
-        return this.getContent().getFormatType();
-    }
-
-    public BooleanProperty editableProperty() {
-        return this.getContent().editableProperty();
-    }
-
-    public boolean isEmpty() {
-        return this.getContent().isEmpty();
-    }
-
-    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
-        this.getContent().setLineNumPolicy(lineNumPolicy);
-    }
-
-    public StringProperty highlightTextProperty() {
-        return this.getContent().highlightTextProperty();
-    }
-
-    public ObjectProperty<EditorFormatType> formatTypeProperty() {
-        return this.getContent().formatTypeProperty();
-    }
-
-    @Override
-    public void initNode() {
-        // 覆盖默认的菜单
-        this.setContextMenu(FXContextMenu.EMPTY);
-        // vbar点击事件
-        this.getVbar().addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            this.initTextStyle();
-        });
-        // vbar滚动事件
-        this.getVbar().addEventFilter(ScrollEvent.SCROLL, event -> {
-            this.initTextStyle();
-        });
-    }
-
+    // @Override
+    // public void initNode() {
+    //     super.initNode();
+    //     this.getVbar().valueProperty().addListener((observableValue, number, t1) -> {
+    //         this.initTextStyleDelay();
+    //     });
+    // }
 }

@@ -484,7 +484,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
         // 显示行号
         this.showLineNum();
         // 初始化内容提示符
-        this.initContentPrompts();
+        this.initPrompts();
         // 覆盖默认的菜单
         this.setContextMenu(FXContextMenu.EMPTY);
 //        // 添加类
@@ -505,7 +505,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
      * 初始化内容提示词
      */
     @Override
-    public void initContentPrompts() {
+    public void initPrompts() {
         // 设置内容提示符
         Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
         Set<String> set = new HashSet<>();
@@ -520,7 +520,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
                 set.add(handler.commandFullName());
             }
         }
-        this.setContentPrompts(set);
+        this.setPrompts(set);
     }
 
 //    @Override

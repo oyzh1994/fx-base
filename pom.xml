@@ -104,6 +104,12 @@
                 <artifactId>fx-rich</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
+            <!-- 自定义类库，编辑器相关 -->
+            <dependency>
+                <groupId>io.github.oyzh1994</groupId>
+                <artifactId>fx-editor</artifactId>
+                <version>${fx-base.version}</version>
+            </dependency>
             <!-- 打包工具 -->
             <dependency>
                 <groupId>io.github.oyzh1994</groupId>

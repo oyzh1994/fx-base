@@ -10,6 +10,7 @@ import javafx.beans.property.BooleanProperty;
  * @author oyzh
  * @since 2024/5/17
  */
+@Deprecated
 public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> implements NodeGroup {
 
     {

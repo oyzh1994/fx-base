@@ -6,6 +6,7 @@ package cn.oyzh.fx.rich;
  * @author oyzh
  * @since 2024/5/17
  */
+@Deprecated
 public enum RichDataType {
     JSON,
     STRING,

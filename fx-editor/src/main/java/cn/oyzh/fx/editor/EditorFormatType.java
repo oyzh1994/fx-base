@@ -8,16 +8,10 @@ package cn.oyzh.fx.editor;
  */
 public enum EditorFormatType {
     JSON,
-    STRING,
     RAW,
-    BINARY,
-    HEX,
     XML,
     HTML,
     YAML,
     CSS,
-    PROPERTIES,
-    JAVA,
-    PYTHON,
-    JAVASCRIPT,
+    PROPERTIES
 }

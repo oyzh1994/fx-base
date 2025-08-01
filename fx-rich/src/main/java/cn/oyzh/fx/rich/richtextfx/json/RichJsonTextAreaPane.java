@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
  * @author oyzh
  * @since 2024/5/17
  */
+@Deprecated
 public class RichJsonTextAreaPane extends RichTextAreaPane<RichJsonTextArea> {
 
     public RichJsonTextAreaPane() {

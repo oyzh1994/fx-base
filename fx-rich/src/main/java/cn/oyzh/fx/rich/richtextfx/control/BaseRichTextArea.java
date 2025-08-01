@@ -26,6 +26,8 @@ import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.RichLineNumberFactory;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -42,6 +44,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.GenericStyledArea;
 import org.fxmisc.richtext.InlineCssTextArea;
@@ -152,34 +155,34 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 //    }
 
     /**
-     * 基础内容正则模式
+     * 提示词正则模式
      */
-    protected Pattern contentPromptsPattern;
+    protected Pattern promptsPattern;
 
     /**
-     * 设置内容提示词
+     * 设置提示词
      *
-     * @param prompts 内容提示词列表
+     * @param prompts 提示词列表
      */
-    public void setContentPrompts(Set<String> prompts) {
+    public void setPrompts(Set<String> prompts) {
         if (prompts == null || prompts.isEmpty()) {
-            this.contentPromptsPattern = null;
+            this.promptsPattern = null;
         } else {
             StringBuilder regex = new StringBuilder("\\b(");
             for (String s : prompts) {
                 regex.append(s).append("|");
             }
             regex.append(")\\b");
-            this.contentPromptsPattern = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
+            this.promptsPattern = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
         }
-        this.initTextStyle();
+        // this.initTextStyle();
     }
 
-    /**
-     * 初始化内容提示词
-     */
-    public void initContentPrompts() {
-    }
+    // /**
+    //  * 初始化内容提示词
+    //  */
+    // public void initContentPrompts() {
+    // }
 
     /**
      * 应用丰富操作管理器
@@ -407,7 +410,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 //        return false;
 //    }
 
-
     /**
      * 初始化文字样式
      */
@@ -421,9 +423,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * @param clear 是否清除旧样式
      */
     public void initTextStyle(boolean clear) {
-//        if (!this.checkInvalidStyle()) {
-//            return;
-//        }
         try {
             if (clear) {
                 this.clearTextStyle();
@@ -451,39 +450,28 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
             }
             // 高亮
             this.initHighlightStyle();
-            // String highlightText = this.getHighlightText();
-            // if (StringUtil.isNotBlank(highlightText)) {
-            //     String text = this.getText();
-            //     Matcher matcher = this.highlightPattern().matcher(text);
-            //     List<RichTextStyle> styles = new ArrayList<>();
-            //     while (matcher.find()) {
-            //         styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
-            //     }
-            //     this.setStyles(styles);
-            // }
-            // 内容提示
-            this.initContentPromptStyle();
-            // if (this.contentPrompts != null) {
-            //     String text = this.getText();
-            //     Matcher matcher1 = this.contentPrompts.matcher(text);
-            //     List<RichTextStyle> styles = new ArrayList<>();
-            //     while (matcher1.find()) {
-            //         styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
-            //     }
-            //     this.setStyles(styles);
-            //     this.forgetHistory();
-            // }
+            // 提示词
+            this.initPromptStyle();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
+    /**
+     * 初始化样式，延迟
+     */
     public void initTextStyleDelay() {
         FXUtil.runLater(this::initTextStyle, 500);
     }
 
+    /**
+     * 高亮样式
+     */
     public static final String HIGHLIGHT_STYLE = "-fx-fill: #FF6600";
 
+    /**
+     * 初始化可视区样式
+     */
     protected void initHighlightStyle() {
         if (StringUtil.isBlank(this.getHighlightText())) {
             return;
@@ -499,15 +487,21 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
         });
     }
 
-    public static final String CONTENT_PROMPT_STYLE = "-fx-fill: #008B45";
+    /**
+     * 提示词样式
+     */
+    public static final String PROMPT_STYLE = "-fx-fill: #008B45";
 
-    protected void initContentPromptStyle() {
+    /**
+     * 初始化提示词样式
+     */
+    protected void initPromptStyle() {
         // 内容提示
-        if (this.contentPromptsPattern != null) {
+        if (this.promptsPattern != null) {
             String text = this.getText();
-            Matcher matcher1 = this.contentPromptsPattern.matcher(text);
+            Matcher matcher1 = this.promptsPattern.matcher(text);
             while (matcher1.find()) {
-                RichTextStyle style = new RichTextStyle(matcher1.start(), matcher1.end(), CONTENT_PROMPT_STYLE);
+                RichTextStyle style = new RichTextStyle(matcher1.start(), matcher1.end(), PROMPT_STYLE);
                 this.setStyle(style);
             }
             this.forgetHistory();
@@ -521,38 +515,37 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setStyle(RichTextStyle style) {
         if (style != null) {
-            // IRunnable func = () -> FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
-            // TaskManager.startDelay("rich:style:" + this.hashCode(), func, 0);
             this.setStyle(style.start(), style.end(), style.style());
         }
     }
 
     @Override
     public void setStyle(int from, int to, String style) {
-        if (from < 0) {
-            from = 0;
-        }
-        if (to < from) {
-            to = from;
-        }
-        if (to > this.getLength()) {
-            to = this.getLength();
-        }
-        // TODO: 修复输入内容时，滚动条异常上滚的问题
-        FXVirtualizedScrollPane<?> scrollPane = null;
-        if (this.getParent() instanceof FXVirtualizedScrollPane<?> pane) {
-            scrollPane = pane;
-            scrollPane.setIgnoreVChanged(true);
-        }
-        this.setAutoScrollOnDragDesired(false);
+        // if (from < 0) {
+        //     from = 0;
+        // }
+        // if (to < from) {
+        //     to = from;
+        // }
+        // if (to > this.getLength()) {
+        //     to = this.getLength();
+        // }
+        // // TODO: 修复输入内容时，滚动条异常上滚的问题
+        // FXVirtualizedScrollPane<?> scrollPane = null;
+        // if (this.getParent() instanceof FXVirtualizedScrollPane<?> pane) {
+        //     scrollPane = pane;
+        //     scrollPane.setIgnoreVChanged(true);
+        // }
+        // this.setAutoScrollOnDragDesired(false);
         int finalTo = to;
         int finalFrom = from;
         // super.setStyle(finalFrom, finalTo, style);
+        // ThreadUtil.sleep(10);
         FXUtil.runWait(() -> super.setStyle(finalFrom, finalTo, style));
-        this.setAutoScrollOnDragDesired(true);
-        if (scrollPane != null) {
-            scrollPane.setIgnoreVChanged(false);
-        }
+        // this.setAutoScrollOnDragDesired(true);
+        // if (scrollPane != null) {
+        //     scrollPane.setIgnoreVChanged(false);
+        // }
     }
 
     /**
@@ -562,11 +555,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setStyles(List<RichTextStyle> styles) {
         if (CollectionUtil.isNotEmpty(styles)) {
-            // FXUtil.runWait(() -> {
-            for (RichTextStyle style : styles) {
-                this.setStyle(style.start(), style.end(), style.style());
-            }
-            // });
+            FXUtil.runLater(() -> {
+                for (RichTextStyle style : styles) {
+                    this.setStyle(style.start(), style.end(), style.style());
+                }
+            });
         }
     }
 
@@ -589,7 +582,6 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     public void initNode() {
         this.setWrapText(true);
         this.setPickOnBounds(true);
-//        this.setFocusTraversable(false);
         this.setAutoScrollOnDragDesired(true);
         this.setPadding(new Insets(5));
         Color color = ThemeManager.currentAccentColor();
@@ -612,16 +604,12 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
             }
         });
         this.highlightTextProperty().addListener((observableValue, s, t1) -> {
-            this.initTextStyle(true);
+            this.initTextStyle();
         });
         this.textProperty().addListener((observableValue, s, t1) -> {
             this.initTextStyle();
         });
     }
-
-    // protected void initTextStyleAsync() {
-    //     TaskManager.startDelay(this.hashCode() + ":init:text:style", this::initTextStyle, 1);
-    // }
 
     @Override
     public void requestFocus() {

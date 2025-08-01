@@ -12,7 +12,8 @@ public class TerminalTextArea extends BaseRichTextArea {
 
     @Override
     public void initNode() {
+        super.initNode();
         this.disableFont();
-        this.initTextStyle();
+        // this.initTextStyle();
     }
 }

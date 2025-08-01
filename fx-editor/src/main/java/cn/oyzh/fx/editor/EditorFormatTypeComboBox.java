@@ -4,7 +4,6 @@ package cn.oyzh.fx.editor;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.i18n.I18nHelper;
 
 import java.util.List;
@@ -78,80 +77,80 @@ public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> imple
         return EditorFormatType.JSON == this.getFormat();
     }
 
-    /**
-     * 是否二进制格式
-     *
-     * @return 结果
-     */
-    public boolean isBinaryFormat() {
-        return EditorFormatType.BINARY == this.getFormat();
-    }
+    // /**
+    //  * 是否二进制格式
+    //  *
+    //  * @return 结果
+    //  */
+    // public boolean isBinaryFormat() {
+    //     return EditorFormatType.BINARY == this.getFormat();
+    // }
+    //
+    // /**
+    //  * 是否十六进制格式
+    //  *
+    //  * @return 结果
+    //  */
+    // public boolean isHexFormat() {
+    //     return EditorFormatType.HEX == this.getFormat();
+    // }
+    //
+    // /**
+    //  * 是否字符串格式
+    //  *
+    //  * @return 结果
+    //  */
+    // public boolean isStringFormat() {
+    //     return EditorFormatType.STRING == this.getFormat();
+    // }
 
-    /**
-     * 是否十六进制格式
-     *
-     * @return 结果
-     */
-    public boolean isHexFormat() {
-        return EditorFormatType.HEX == this.getFormat();
-    }
+    // /**
+    //  * 是否java格式
+    //  *
+    //  * @return 结果
+    //  */
+    // public boolean isJavaFormat() {
+    //     return EditorFormatType.JAVA == this.getFormat();
+    // }
+    //
+    // /**
+    //  * 是否python格式
+    //  *
+    //  * @return 结果
+    //  */
+    // public boolean isPythonFormat() {
+    //     return EditorFormatType.PYTHON == this.getFormat();
+    // }
+    //
+    // /**
+    //  * 是否javascript格式
+    //  *
+    //  * @return 结果
+    //  */
+    // public boolean isJavaScriptFormat() {
+    //     return EditorFormatType.JAVASCRIPT == this.getFormat();
+    // }
 
-    /**
-     * 是否字符串格式
-     *
-     * @return 结果
-     */
-    public boolean isStringFormat() {
-        return EditorFormatType.STRING == this.getFormat();
-    }
-
-    /**
-     * 是否java格式
-     *
-     * @return 结果
-     */
-    public boolean isJavaFormat() {
-        return EditorFormatType.JAVA == this.getFormat();
-    }
-
-    /**
-     * 是否python格式
-     *
-     * @return 结果
-     */
-    public boolean isPythonFormat() {
-        return EditorFormatType.PYTHON == this.getFormat();
-    }
-
-    /**
-     * 是否javascript格式
-     *
-     * @return 结果
-     */
-    public boolean isJavaScriptFormat() {
-        return EditorFormatType.JAVASCRIPT == this.getFormat();
-    }
-
-    /**
-     * 选择字符串格式
-     */
-    public void selectString() {
-        this.select(EditorFormatType.STRING);
-    }
-
-    /**
-     * 选择二进制格式
-     */
-    public void selectBinary() {
-        this.select(EditorFormatType.BINARY);
-    }
-
-    /**
-     * 选择十六进制格式
-     */
-    public void selectHex() {
-        this.select(EditorFormatType.HEX);
-    }
+    // /**
+    //  * 选择字符串格式
+    //  */
+    // public void selectString() {
+    //     this.select(EditorFormatType.STRING);
+    // }
+    //
+    // /**
+    //  * 选择二进制格式
+    //  */
+    // public void selectBinary() {
+    //     this.select(EditorFormatType.BINARY);
+    // }
+    //
+    // /**
+    //  * 选择十六进制格式
+    //  */
+    // public void selectHex() {
+    //     this.select(EditorFormatType.HEX);
+    // }
 
     /**
      * 选择json格式
@@ -163,14 +162,16 @@ public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> imple
     @Override
     public List<EditorFormatType> values(Locale locale) {
         this.clearItems();
+        this.addItem(EditorFormatType.RAW);
         this.addItem(EditorFormatType.JSON);
         this.addItem(EditorFormatType.XML);
         this.addItem(EditorFormatType.HTML);
         this.addItem(EditorFormatType.YAML);
-        this.addItem(EditorFormatType.STRING);
-        this.addItem(EditorFormatType.BINARY);
-        this.addItem(EditorFormatType.HEX);
-        this.addItem(EditorFormatType.RAW);
+        // this.addItem(EditorFormatType.STRING);
+        // this.addItem(EditorFormatType.BINARY);
+        // this.addItem(EditorFormatType.HEX);
+        this.addItem(EditorFormatType.CSS);
+        this.addItem(EditorFormatType.PROPERTIES);
         return this.getItems();
     }
 }

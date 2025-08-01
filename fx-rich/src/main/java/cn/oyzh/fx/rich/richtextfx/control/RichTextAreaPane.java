@@ -229,9 +229,9 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
         this.getContent().initTextStyle();
     }
 
-    public void initTextStyleDelay() {
-        this.getContent().initTextStyleDelay();
-    }
+    // public void initTextStyleDelay() {
+    //     this.getContent().initTextStyleDelay();
+    // }
 
     public void clearTextStyle() {
         this.getContent().clearTextStyle();
@@ -264,19 +264,19 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
     }
 
     /**
-     * 设置内容提示词
+     * 设置提示词
      *
-     * @param prompts 内容提示词列表
+     * @param prompts 提示词列表
      */
-    public void setContentPrompts(Set<String> prompts) {
-        this.getContent().setContentPrompts(prompts);
+    public void setPrompts(Set<String> prompts) {
+        this.getContent().setPrompts(prompts);
     }
 
     /**
-     * 初始化内容提示词
+     * 初始化提示词
      */
-    public void initContentPrompts() {
-        this.getContent().initContentPrompts();
+    public void initPrompts() {
+        // this.getContent().initContentPrompts();
     }
 
     public Optional<Bounds> getCaretBounds() {
