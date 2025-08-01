@@ -384,38 +384,38 @@ public class Editor extends BaseRichTextArea {
         EditorVisibleData visibleData = this.getVisibleData();
         String text = visibleData.getText();
         int fIndex = visibleData.getStartIndex();
-        // ThreadUtil.start(() -> {
-        //     Matcher matcher1 = RegexHelper.xmlPattern().matcher(text);
-        //     while (matcher1.find()) {
-        //         RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
-        //         this.setStyle(style);
-        //     }
-        // });
-        // ThreadUtil.start(() -> {
-        //     Matcher matcher2 = RegexHelper.xmlCommentPattern().matcher(text);
-        //     while (matcher2.find()) {
-        //         RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
-        //         this.setStyle(style);
-        //     }
-        // });
         ThreadUtil.start(() -> {
-            Matcher matcher = RegexHelper.xmlPattern().matcher(text);
-            while (matcher.find()) {
-                if (matcher.group("comment") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("comment") + fIndex, matcher.end("comment") + fIndex, COMMENT_STYLE);
-                    this.setStyle(style);
-                } else if (matcher.group("startTag") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("startTag") + fIndex, matcher.end("startTag") + fIndex, BASE_STYLE);
-                    this.setStyle(style);
-                } else if (matcher.group("endTag") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("endTag") + fIndex, matcher.end("endTag") + fIndex, BASE_STYLE);
-                    this.setStyle(style);
-                } else if (matcher.group("selfCloseTag") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("selfCloseTag") + fIndex, matcher.end("selfCloseTag") + fIndex, BASE_STYLE);
-                    this.setStyle(style);
-                }
+            Matcher matcher1 = RegexHelper.xmlPattern().matcher(text);
+            while (matcher1.find()) {
+                RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
+                this.setStyle(style);
             }
         });
+        ThreadUtil.start(() -> {
+            Matcher matcher2 = RegexHelper.xmlCommentPattern().matcher(text);
+            while (matcher2.find()) {
+                RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
+                this.setStyle(style);
+            }
+        });
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher = RegexHelper.xmlPattern().matcher(text);
+        //     while (matcher.find()) {
+        //         if (matcher.group("comment") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("comment") + fIndex, matcher.end("comment") + fIndex, COMMENT_STYLE);
+        //             this.setStyle(style);
+        //         } else if (matcher.group("startTag") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("startTag") + fIndex, matcher.end("startTag") + fIndex, BASE_STYLE);
+        //             this.setStyle(style);
+        //         } else if (matcher.group("endTag") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("endTag") + fIndex, matcher.end("endTag") + fIndex, BASE_STYLE);
+        //             this.setStyle(style);
+        //         } else if (matcher.group("selfCloseTag") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("selfCloseTag") + fIndex, matcher.end("selfCloseTag") + fIndex, BASE_STYLE);
+        //             this.setStyle(style);
+        //         }
+        //     }
+        // });
         ThreadUtil.start(() -> {
             Matcher matcher3 = RegexHelper.xmlAttributePattern().matcher(text);
             while (matcher3.find()) {
@@ -439,38 +439,38 @@ public class Editor extends BaseRichTextArea {
         EditorVisibleData visibleData = this.getVisibleData();
         int fIndex = visibleData.getStartIndex();
         String text = visibleData.getText();
-        // ThreadUtil.start(() -> {
-        //     Matcher matcher1 = RegexHelper.htmlPattern().matcher(text);
-        //     while (matcher1.find()) {
-        //         RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
-        //         this.setStyle(style);
-        //     }
-        // });
-        // ThreadUtil.start(() -> {
-        //     Matcher matcher2 = RegexHelper.htmlCommentPattern().matcher(text);
-        //     while (matcher2.find()) {
-        //         RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
-        //         this.setStyle(style);
-        //     }
-        // });
         ThreadUtil.start(() -> {
-            Matcher matcher = RegexHelper.htmlPattern().matcher(text);
-            while (matcher.find()) {
-                if (matcher.group("comment") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("comment") + fIndex, matcher.end("comment") + fIndex, COMMENT_STYLE);
-                    this.setStyle(style);
-                } else if (matcher.group("tagOpen") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("tagOpen") + fIndex, matcher.end("tagOpen") + fIndex, BASE_STYLE);
-                    this.setStyle(style);
-                } else if (matcher.group("tagClose") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("tagClose") + fIndex, matcher.end("tagClose") + fIndex, BASE_STYLE);
-                    this.setStyle(style);
-                } else if (matcher.group("selfCloseTag") != null) {
-                    RichTextStyle style = new RichTextStyle(matcher.start("selfCloseTag") + fIndex, matcher.end("selfCloseTag") + fIndex, BASE_STYLE);
-                    this.setStyle(style);
-                }
+            Matcher matcher1 = RegexHelper.htmlPattern().matcher(text);
+            while (matcher1.find()) {
+                RichTextStyle style = new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, BASE_STYLE);
+                this.setStyle(style);
             }
         });
+        ThreadUtil.start(() -> {
+            Matcher matcher2 = RegexHelper.htmlCommentPattern().matcher(text);
+            while (matcher2.find()) {
+                RichTextStyle style = new RichTextStyle(matcher2.start(0) + fIndex, matcher2.end(0) + fIndex, COMMENT_STYLE);
+                this.setStyle(style);
+            }
+        });
+        // ThreadUtil.start(() -> {
+        //     Matcher matcher = RegexHelper.htmlPattern().matcher(text);
+        //     while (matcher.find()) {
+        //         if (matcher.group("comment") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("comment") + fIndex, matcher.end("comment") + fIndex, COMMENT_STYLE);
+        //             this.setStyle(style);
+        //         } else if (matcher.group("tagOpen") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("tagOpen") + fIndex, matcher.end("tagOpen") + fIndex, BASE_STYLE);
+        //             this.setStyle(style);
+        //         } else if (matcher.group("tagClose") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("tagClose") + fIndex, matcher.end("tagClose") + fIndex, BASE_STYLE);
+        //             this.setStyle(style);
+        //         } else if (matcher.group("selfCloseTag") != null) {
+        //             RichTextStyle style = new RichTextStyle(matcher.start("selfCloseTag") + fIndex, matcher.end("selfCloseTag") + fIndex, BASE_STYLE);
+        //             this.setStyle(style);
+        //         }
+        //     }
+        // });
         ThreadUtil.start(() -> {
             Matcher matcher3 = RegexHelper.htmlAttributePattern().matcher(text);
             while (matcher3.find()) {
@@ -562,8 +562,7 @@ public class Editor extends BaseRichTextArea {
         ThreadUtil.start(() -> {
             Matcher matcher1 = RegexHelper.propertiesPattern().matcher(text);
             while (matcher1.find()) {
-                String comment = matcher1.group(1);
-                if (comment != null) {
+                if (matcher1.group(1) != null) {
                     this.setStyle(new RichTextStyle(matcher1.start(1) + fIndex, matcher1.end(1) + fIndex, COMMENT_STYLE));
                 } else {
                     this.setStyle(new RichTextStyle(matcher1.start(2) + fIndex, matcher1.end(2) + fIndex, KEY_STYLE));
@@ -574,6 +573,26 @@ public class Editor extends BaseRichTextArea {
                 }
             }
         });
+        // ThreadUtil.start(() -> {
+        //     List<String> lines = text.lines().toList();
+        //     int index = 0;
+        //     for (String line : lines) {
+        //         if (StringUtil.startWithAny(line.trim(), "#", "!")) {
+        //             int start = index + fIndex;
+        //             int end = start + line.length() + 1;
+        //             this.setStyle(new RichTextStyle(start, end, COMMENT_STYLE));
+        //         } else if (StringUtil.contains(line, "#")) {
+        //             int start = index + line.indexOf("#") + fIndex;
+        //             int end = start + line.length() + 1;
+        //             this.setStyle(new RichTextStyle(start, end, COMMENT_STYLE));
+        //         } else if (StringUtil.contains(line, "!")) {
+        //             int start = index + line.indexOf("!") + fIndex;
+        //             int end = start + line.length() + 1;
+        //             this.setStyle(new RichTextStyle(start, end, COMMENT_STYLE));
+        //         }
+        //         index += line.length() + 1;
+        //     }
+        // });
     }
 
     private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
