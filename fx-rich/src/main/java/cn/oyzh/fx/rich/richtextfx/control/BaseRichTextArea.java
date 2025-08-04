@@ -59,6 +59,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -392,7 +393,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * 忘记历史记录
      */
     public void forgetHistory() {
-        this.getUndoManager().forgetHistory();
+        try {
+            this.getUndoManager().forgetHistory();
+        } catch (NoSuchElementException | IllegalStateException ignored) {
+        }
     }
 //
 //    /**
@@ -521,31 +525,32 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 
     @Override
     public void setStyle(int from, int to, String style) {
-        // if (from < 0) {
-        //     from = 0;
-        // }
-        // if (to < from) {
-        //     to = from;
-        // }
-        // if (to > this.getLength()) {
-        //     to = this.getLength();
-        // }
-        // // TODO: 修复输入内容时，滚动条异常上滚的问题
-        // FXVirtualizedScrollPane<?> scrollPane = null;
-        // if (this.getParent() instanceof FXVirtualizedScrollPane<?> pane) {
-        //     scrollPane = pane;
-        //     scrollPane.setIgnoreVChanged(true);
-        // }
-        // this.setAutoScrollOnDragDesired(false);
+        if (from < 0) {
+            from = 0;
+        }
+        if (to < from) {
+            to = from;
+        }
+        int len = this.getLength();
+        if (to > len) {
+            to = len;
+        }
+        // TODO: 修复输入内容时，滚动条异常上滚的问题
+        FXVirtualizedScrollPane<?> scrollPane = null;
+        if (this.getParent() instanceof FXVirtualizedScrollPane<?> pane) {
+            scrollPane = pane;
+            scrollPane.setIgnoreVChanged(true);
+        }
+        this.setAutoScrollOnDragDesired(false);
         int finalTo = to;
         int finalFrom = from;
         // super.setStyle(finalFrom, finalTo, style);
         // ThreadUtil.sleep(10);
         FXUtil.runWait(() -> super.setStyle(finalFrom, finalTo, style));
-        // this.setAutoScrollOnDragDesired(true);
-        // if (scrollPane != null) {
-        //     scrollPane.setIgnoreVChanged(false);
-        // }
+        this.setAutoScrollOnDragDesired(true);
+        if (scrollPane != null) {
+            scrollPane.setIgnoreVChanged(false);
+        }
     }
 
     /**

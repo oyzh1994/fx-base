@@ -32,11 +32,34 @@ import javafx.stage.Window;
 public class NodeUtil {
 
     /**
+     * web是个可选模块，避免强依赖
+     */
+    private static boolean isWebImport;
+
+    /**
+     * swing是个可选模块，避免强依赖
+     */
+    private static boolean isSwingImport;
+
+    /**
      * media是个可选模块，避免强依赖
      */
     private static boolean isMediaImport;
 
+
     static {
+        try {
+            Class.forName("javafx.scene.web.WebView");
+            isWebImport = true;
+        } catch (ClassNotFoundException ignored) {
+
+        }
+        try {
+            Class.forName("javafx.embed.swing.SwingNode");
+            isSwingImport = true;
+        } catch (ClassNotFoundException ignored) {
+
+        }
         try {
             Class.forName("javafx.scene.media.MediaView");
             isMediaImport = true;
@@ -272,6 +295,22 @@ public class NodeUtil {
             return Double.NaN;
         }
 
+        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+            double w4 = node.prefWidth(-1);
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.minWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.maxWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            return Double.NaN;
+        }
+
         if (target instanceof Node node) {
             double w1 = node.prefWidth(-1);
             if (w1 > 0) {
@@ -400,6 +439,22 @@ public class NodeUtil {
             return Double.NaN;
         }
 
+        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+            double w4 = node.prefHeight(-1);
+            if (w4 > 0) {
+                return w4;
+            }
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
+
         if (target instanceof Node node) {
             double w1 = node.prefHeight(-1);
             if (w1 > 0) {
@@ -512,6 +567,9 @@ public class NodeUtil {
                 media.setFitWidth(width);
             }
         }
+        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+            node.getContent().setSize(width.intValue(), node.getContent().getHeight());
+        }
     }
 
     /**
@@ -578,6 +636,9 @@ public class NodeUtil {
             if (!media.fitHeightProperty().isBound()) {
                 media.setFitHeight(height);
             }
+        }
+        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+            node.getContent().setSize(node.getContent().getWidth(), height.intValue());
         }
     }
 

@@ -60,13 +60,12 @@
             </exclusions>
         </dependency>
 
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>jfx-incubator-richtext</artifactId>-->
-<!--            <version>${javafx.version}</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+       <!-- https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext -->
+       <dependency>
+           <groupId>org.openjfx</groupId>
+           <artifactId>jfx-incubator-richtext</artifactId>
+           <version>${javafx.version}</version>
+       </dependency>
 
 <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext &ndash;&gt;-->
 <!--        <dependency>-->

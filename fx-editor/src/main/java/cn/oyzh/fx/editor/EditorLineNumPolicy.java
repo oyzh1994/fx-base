@@ -8,6 +8,6 @@ package cn.oyzh.fx.editor;
  */
 public enum EditorLineNumPolicy {
     NONE,
-    ALWAYS,
-    AUTO
+    ALWAYS
+    // AUTO
 }
