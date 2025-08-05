@@ -70,6 +70,13 @@ public class StageManager {
     }
 
     /**
+     * 获取所有窗口
+     */
+    public static List<Window> allWindows() {
+        return new ArrayList<>(Window.getWindows());
+    }
+
+    /**
      * 获取舞台
      *
      * @param controllerClass controller类

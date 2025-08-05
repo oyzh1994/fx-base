@@ -1,6 +1,9 @@
 package cn.oyzh.fx.editor;
 
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
+import cn.oyzh.fx.plus.swing.SwingUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -228,5 +231,27 @@ public class EditorPane extends FXSwingNode {
 
     public ObjectProperty<EditorFormatType> formatTypeProperty() {
         return this.getEditor().formatTypeProperty();
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        super.changeTheme(style);
+        Editor editor = this.getEditor();
+        if (ThemeManager.isDarkMode()) {
+            editor.setCurrentLineHighlightColor(EditorUtil.CURRENT_LINE_HIGHLIGHT_COLOR_DARK);
+        } else {
+            editor.setCurrentLineHighlightColor(EditorUtil.CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT);
+        }
+        SwingUtil.applyTheme(editor);
+        RTextScrollPane scrollPane = this.getScrollPane();
+        SwingUtil.applyTheme(scrollPane);
+    }
+
+    public void setEditable(boolean editable) {
+        this.getEditor().setEditable(editable);
+    }
+
+    public boolean isEditable() {
+        return this.getEditor().isEditable();
     }
 }

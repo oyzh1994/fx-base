@@ -11,6 +11,10 @@ import java.awt.*;
  */
 public class EditorUtil {
 
+    public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_DARK    = new Color(255, 100, 100);
+
+    public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT = new Color(255, 255, 170);
+
     public static String toSyntax(EditorFormatType formatType) {
         return switch (formatType) {
             case CSS -> SyntaxConstants.SYNTAX_STYLE_CSS;

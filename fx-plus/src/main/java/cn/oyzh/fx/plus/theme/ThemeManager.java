@@ -2,8 +2,6 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.SysConst;
 import cn.oyzh.common.file.FileUtil;
-import cn.oyzh.fx.plus.tray.TrayManager;
-import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -113,14 +111,13 @@ public class ThemeManager {
                 Themes.SYSTEM.unListener();
             }
             // 设置当前主题
-//            currentTheme = style;
             currentThemeProperty.set(style);
             // 设置应用样式
             Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
             // 变更样式
-            List<StageAdapter> adapters = StageManager.allStages();
-            for (StageAdapter adapter : adapters) {
-                applyCycle(adapter.root(), style);
+            List<Window> windows = StageManager.allWindows();
+            for (Window window : windows) {
+                applyCycle(window, style);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -145,12 +142,12 @@ public class ThemeManager {
             for (Node node : new CopyOnWriteArrayList<>(popup.getContent())) {
                 applyCycle(node, style);
             }
+        } else if (root instanceof Scene scene) {
+            applyCycle(scene.getRoot(), style);
         } else if (root instanceof Stage stage) {
             applyCycle(stage.getScene(), style);
         } else if (root instanceof Window window) {
             applyCycle(window.getScene(), style);
-        } else if (root instanceof Scene scene) {
-            applyCycle(scene.getRoot(), style);
         }
     }
 

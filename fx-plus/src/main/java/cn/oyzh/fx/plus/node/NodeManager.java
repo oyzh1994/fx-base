@@ -22,7 +22,6 @@ import javafx.scene.layout.Region;
  * @author oyzh
  * @since 2024/04/05
  */
-
 public class NodeManager {
 
     /**

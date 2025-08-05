@@ -5,17 +5,24 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
+import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.embed.swing.SwingNode;
 
 /**
  * @author oyzh
  * @since 2025-08-04
  */
-public class FXSwingNode extends SwingNode implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, FontAdapter {
+public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, FontAdapter {
+
+    {
+        NodeManager.init(this);
+    }
 
     public void setSize(double width, double height) {
         // SwingUtil.runWait(() ->
-                this.getContent().setSize((int) width, (int) height);
+        this.getContent().setSize((int) width, (int) height);
         // );
     }
 

@@ -34,7 +34,6 @@ public class AppMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ThemeManager.apply(Themes.PRIMER_LIGHT);
-        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
         test1(stage);
         // test2(stage);
         // test3(stage);
