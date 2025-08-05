@@ -7,9 +7,11 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 
 /**
  * @author oyzh
@@ -135,15 +137,24 @@ public class SwingUtil {
         // 设置组件样式
         scrollBar.setBackground(bgColor);
         scrollBar.setForeground(fgColor);
-        if (ThemeManager.isDarkMode()) {
-            UIManager.put("ScrollBar.track", new Color(100, 100, 100));
-            UIManager.put("ScrollBar.thumb", new Color(75, 75, 75));
-        } else {
-            UIManager.put("ScrollBar.track", new Color(240, 240, 240));
-            UIManager.put("ScrollBar.thumb", new Color(180, 180, 180));
-        }
-        // 自定义滚动条UI（主要针对箭头按钮）
-        scrollBar.setUI(new SwingBasicScrollBarUI());
+        scrollBar.setBorder(new Border() {
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+
+            }
+
+            @Override
+            public Insets getBorderInsets(Component c) {
+                return null;
+            }
+
+            @Override
+            public boolean isBorderOpaque() {
+                return false;
+            }
+        });
+        // 自定义滚动条UI
+        scrollBar.setUI(new SwingScrollBarUI());
     }
 
 }
