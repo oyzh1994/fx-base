@@ -5,10 +5,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
-import cn.oyzh.fx.plus.util.SwingUtil;
 import javafx.embed.swing.SwingNode;
-
-import javax.swing.*;
 
 /**
  * @author oyzh
@@ -17,22 +14,36 @@ import javax.swing.*;
 public class FXSwingNode extends SwingNode implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, FontAdapter {
 
     public void setSize(double width, double height) {
-        this.getContent().setSize((int) width, (int) height);
+        // SwingUtil.runWait(() ->
+                this.getContent().setSize((int) width, (int) height);
+        // );
     }
 
     public void setWidth(double width) {
-        this.getContent().setSize((int) width, (int) this.getHeight());
+        this.setSize(width, this.getHeight());
     }
 
     public double getWidth() {
+        // AtomicReference<Integer> ref = new AtomicReference<>();
+        // SwingUtil.runWait(() -> {
+        //     int val = this.getContent().getWidth();
+        //     ref.set(val);
+        // });
+        // return ref.get();
         return this.getContent().getWidth();
     }
 
     public void setHeight(double height) {
-        this.getContent().setSize((int) this.getWidth(), (int) height);
+        this.setSize(this.getWidth(), height);
     }
 
     public double getHeight() {
+        // AtomicReference<Integer> ref = new AtomicReference<>();
+        // SwingUtil.runWait(() -> {
+        //     int val = this.getContent().getHeight();
+        //     ref.set(val);
+        // });
+        // return ref.get();
         return this.getContent().getHeight();
     }
 
@@ -40,11 +51,5 @@ public class FXSwingNode extends SwingNode implements FlexAdapter, NodeAdapter, 
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
-        this.resizeNode();
-    }
-
-    @Override
-    public void setContent(JComponent content) {
-        SwingUtil.runWait(() -> super.setContent(content));
     }
 }

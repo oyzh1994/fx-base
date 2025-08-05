@@ -12,33 +12,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
-import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
-import org.fife.ui.rsyntaxtextarea.Token;
-import org.fife.ui.rsyntaxtextarea.TokenMaker;
-import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
-import org.fife.ui.rsyntaxtextarea.TokenMap;
-import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
-import javax.swing.plaf.synth.SynthTextFieldUI;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.Segment;
-import javax.swing.text.View;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -315,9 +296,9 @@ public class Editor extends TextEditorPane {
         SwingUtil.runWait(() -> super.setSyntaxEditingStyle(styleKey));
     }
 
-    public void invalidSyntaxEditingStyle() {
-        SwingUtil.runWait(() -> super.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE));
-    }
+    // public void invalidSyntaxEditingStyle() {
+    //     SwingUtil.runWait(() -> super.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE));
+    // }
 
     /**
      * 添加高亮
@@ -598,31 +579,34 @@ public class Editor extends TextEditorPane {
         return text.trim();
     }
 
-    @Override
-    public void cut() {
-        SwingUtil.runWait(super::cut);
-    }
-
-    @Override
-    public void copy() {
-        SwingUtil.runWait(super::copy);
-    }
-
-    @Override
-    public void paste() {
-        SwingUtil.runWait(super::paste);
-    }
+    // @Override
+    // public void cut() {
+    //     SwingUtil.runWait(super::cut);
+    // }
+    //
+    // @Override
+    // public void copy() {
+    //     SwingUtil.runWait(super::copy);
+    // }
+    //
+    // @Override
+    // public void paste() {
+    //     SwingUtil.runWait(super::paste);
+    // }
 
     public void undo() {
-        SwingUtil.runWait(super::undoLastAction);
+        super.undoLastAction();
+        // SwingUtil.runWait(super::undoLastAction);
     }
 
     public void redo() {
-        SwingUtil.runWait(super::redoLastAction);
+        super.redoLastAction();
+        // SwingUtil.runWait(super::redoLastAction);
     }
 
     public void forgetHistory() {
-        SwingUtil.runWait(this::discardAllEdits);
+        super.discardAllEdits();
+        // SwingUtil.runWait(this::discardAllEdits);
     }
 
     public void replaceText(int start, int end, String content) {

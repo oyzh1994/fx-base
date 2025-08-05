@@ -47,7 +47,7 @@ public class AppMain extends Application {
 
 
         EditorPane editor = new EditorPane();
-        // Editor editor = new Editor();
+
         editor.setCache(true);
         editor.setCacheHint(CacheHint.SPEED);
         editor.setFlexWidth("100%");

@@ -1,25 +1,19 @@
 package cn.oyzh.fx.editor;
 
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
-import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.control.IndexRange;
 import javafx.scene.text.Font;
-import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.Caret;
-import java.awt.*;
-import java.net.Socket;
+import java.awt.Point;
 import java.util.Optional;
 import java.util.Set;
 

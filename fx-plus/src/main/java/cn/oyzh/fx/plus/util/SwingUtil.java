@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.util;
 
-import javax.swing.*;
-import java.lang.reflect.InvocationTargetException;
+import javax.swing.SwingUtilities;
 
 /**
  * @author oyzh
@@ -13,7 +12,7 @@ public class SwingUtil {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
                 func.run();
-            } else {
+            }else {
                 SwingUtilities.invokeAndWait(func);
             }
         } catch (Exception ex) {
