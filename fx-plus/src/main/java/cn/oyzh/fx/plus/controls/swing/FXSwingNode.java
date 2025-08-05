@@ -7,8 +7,13 @@ import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.embed.swing.SwingNode;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
+import java.awt.Component;
 
 /**
  * @author oyzh
@@ -21,9 +26,7 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     }
 
     public void setSize(double width, double height) {
-        // SwingUtil.runWait(() ->
         this.getContent().setSize((int) width, (int) height);
-        // );
     }
 
     public void setWidth(double width) {
@@ -31,12 +34,6 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     }
 
     public double getWidth() {
-        // AtomicReference<Integer> ref = new AtomicReference<>();
-        // SwingUtil.runWait(() -> {
-        //     int val = this.getContent().getWidth();
-        //     ref.set(val);
-        // });
-        // return ref.get();
         return this.getContent().getWidth();
     }
 
@@ -45,12 +42,6 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     }
 
     public double getHeight() {
-        // AtomicReference<Integer> ref = new AtomicReference<>();
-        // SwingUtil.runWait(() -> {
-        //     int val = this.getContent().getHeight();
-        //     ref.set(val);
-        // });
-        // return ref.get();
         return this.getContent().getHeight();
     }
 
@@ -58,5 +49,69 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
+    }
+
+    /**
+     * 获取真实的组件，部分组件被滚动条等包裹了
+     *
+     * @return 真实组件
+     */
+    protected Component realComponent() {
+        return this.getContent();
+    }
+
+    protected java.awt.Font getRealComponentFont() {
+        if (this.realComponent() != null) {
+            return this.realComponent().getFont();
+        }
+        return null;
+    }
+
+    protected void setRealComponentFont(java.awt.Font font) {
+        if (this.realComponent() != null) {
+            this.realComponent().setFont(font);
+        }
+    }
+
+
+    @Override
+    public void setFont(Font font) {
+        if (this.realComponent() != null) {
+            this.setRealComponentFont(SwingUtil.fromFxFont(font));
+        }
+    }
+
+    @Override
+    public Font getFont() {
+        java.awt.Font font = this.getRealComponentFont();
+        return SwingUtil.toFxFont(font);
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        if (this.realComponent() != null) {
+            java.awt.Font font = this.getRealComponentFont();
+            java.awt.Font newFont = new java.awt.Font(font.getFamily(), font.getStyle(), (int) fontSize);
+            this.setRealComponentFont(newFont);
+        }
+    }
+
+    @Override
+    public void setFontFamily(String fontFamily) {
+        if (this.realComponent() != null) {
+            java.awt.Font font = this.getRealComponentFont();
+            java.awt.Font newFont = new java.awt.Font(fontFamily, font.getStyle(), font.getSize());
+            this.setRealComponentFont(newFont);
+        }
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        if (this.realComponent() != null) {
+            java.awt.Font font = this.getRealComponentFont();
+            String family = SwingUtil.toAwtFamilyFrom(font.getFamily(), fontWeight);
+            java.awt.Font newFont = new java.awt.Font(family, font.getStyle(), font.getSize());
+            this.setRealComponentFont(newFont);
+        }
     }
 }

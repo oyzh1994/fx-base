@@ -20,6 +20,7 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -428,7 +429,7 @@ public class Editor extends TextEditorPane {
      * 提示词样式
      */
     protected static final Highlighter.HighlightPainter PROMPTS_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(
-            new Color(125,190,93)
+            new Color(125, 190, 93)
             // new Color(166, 38, 164)
     );
 
@@ -611,5 +612,10 @@ public class Editor extends TextEditorPane {
 
     public void replaceText(int start, int end, String content) {
         SwingUtil.runWait(() -> super.replaceRange(content, start, end));
+    }
+
+    @Override
+    public void setFont(Font font) {
+        SwingUtil.runWait(() -> super.setFont(font));
     }
 }

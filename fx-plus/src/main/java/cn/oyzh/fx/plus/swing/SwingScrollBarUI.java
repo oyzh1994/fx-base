@@ -14,17 +14,29 @@ import java.awt.Dimension;
  */
 public class SwingScrollBarUI extends BasicScrollBarUI {
 
+    public static final Color TRACK_COLOR_DARK = new Color(80, 80, 80);
+
+    public static final Color THUMB_COLOR_DARK = new Color(120, 120, 120);
+
+    public static final Color TRACK_HIGHLIGHT_COLOR_DARK = new Color(160, 160, 160);
+
+    public static final Color TRACK_COLOR_LIGHT = new Color(240, 240, 240);
+
+    public static final Color THUMB_COLOR_LIGHT = new Color(180, 180, 180);
+
+    public static final Color TRACK_HIGHLIGHT_COLOR_LIGHT = new Color(120, 120, 120);
+
     @Override
     protected void configureScrollBarColors() {
         super.configureScrollBarColors();
         if (ThemeManager.isDarkMode()) {
-            this.trackColor = new Color(80, 80, 80);
-            this.thumbColor = new Color(120, 120, 120);
-            this.trackHighlightColor = new Color(160, 160 ,160);
+            this.trackColor = TRACK_COLOR_DARK;
+            this.thumbColor = THUMB_COLOR_DARK;
+            this.trackHighlightColor = TRACK_HIGHLIGHT_COLOR_DARK;
         } else {
-            this.trackColor = new Color(240, 240, 240);
-            this.thumbColor = new Color(180, 180, 180);
-            this.trackHighlightColor = new Color(120, 120 ,120);
+            this.trackColor = TRACK_COLOR_LIGHT;
+            this.thumbColor = THUMB_COLOR_LIGHT;
+            this.trackHighlightColor = TRACK_HIGHLIGHT_COLOR_LIGHT;
         }
     }
 

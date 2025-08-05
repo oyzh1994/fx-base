@@ -1,17 +1,17 @@
 package cn.oyzh.fx.plus.swing;
 
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Insets;
+import java.awt.Font;
 
 /**
  * @author oyzh
@@ -48,6 +48,96 @@ public class SwingUtil {
                 color.getAlpha() / 255.0);
     }
 
+    /**
+     * 将 AWT Font 转换为 JavaFX Font
+     *
+     * @param awtFont AWT 字体对象
+     * @return JavaFX 字体对象
+     */
+    public static javafx.scene.text.Font toFxFont(Font awtFont) {
+        if (awtFont == null) {
+            return null;
+        }
+
+        // 1. 获取字体家族名称
+        String family = awtFont.getFamily();
+
+        // 2. 获取字体大小（转换为 double 类型）
+        double size = awtFont.getSize2D(); // getSize2D() 直接返回浮点型大小
+
+        // 3. 转换字体样式（粗体和斜体）
+        FontWeight weight = FontWeight.NORMAL;
+        if (awtFont.isBold()) {
+            weight = FontWeight.BOLD;
+        }
+
+        FontPosture posture = FontPosture.REGULAR;
+        if (awtFont.isItalic()) {
+            posture = FontPosture.ITALIC;
+        }
+
+        // 4. 创建并返回 JavaFX Font
+        return javafx.scene.text.Font.font(family, weight, posture, size);
+    }
+
+    /**
+     * 将 JavaFX Font 转换为 AWT Font
+     *
+     * @param fxFont JavaFX 字体对象
+     * @return AWT 字体对象
+     */
+    public static Font fromFxFont(javafx.scene.text.Font fxFont) {
+        if (fxFont == null) {
+            return null;
+        }
+        // 1. 获取字体名称
+        String family = fxFont.getFamily();
+        // 2. 获取字体大小
+        double size = fxFont.getSize();
+        // 3. 转换字体样式（粗体、斜体）
+        int style = fromFxStyle(fxFont.getStyle());
+        // 4. 创建并返回 AWT Font
+        return new Font(family, style, (int) Math.round(size));
+    }
+
+    public static int fromFxStyle(String fxStyle) {
+        // 3. 转换字体样式（粗体、斜体）
+        int style = Font.PLAIN; // 默认样式
+        if (fxStyle.contains("bold")) {
+            style |= Font.BOLD; // 叠加粗体样式
+        }
+        if (fxStyle.contains("italic")) {
+            style |= Font.ITALIC; // 叠加斜体样式
+        }
+        return style;
+    }
+
+    public static String toAwtFamilyFrom(String family, FontWeight fontWeight) {
+        String adjustedFamily = family;
+        // 处理字重（核心逻辑）
+        switch (fontWeight) {
+            case THIN:
+            case EXTRA_LIGHT:
+            case LIGHT:
+                // 轻量字重：尝试使用带"Light"后缀的字体变体
+                adjustedFamily = family + " Light";
+                break;
+            case SEMI_BOLD:
+            case MEDIUM:
+                // 半粗体：尝试使用带"SemiBold"后缀的字体变体
+                adjustedFamily = family + " SemiBold";
+                break;
+            case EXTRA_BOLD:
+            case BLACK:
+                // 特粗体：尝试使用带"Black"或"ExtraBold"后缀的字体变体
+                adjustedFamily = family + " Black";
+                break;
+            default: // NORMAL
+                adjustedFamily = family;
+        }
+        return adjustedFamily;
+    }
+
     public static Color fromFxColor(javafx.scene.paint.Color color) {
         return color == null ? null : new Color(
                 (int) Math.round(color.getRed() * 255),
@@ -56,24 +146,24 @@ public class SwingUtil {
                 (int) Math.round(color.getOpacity() * 255));
     }
 
-    /**
-     * 反转AWT Color的颜色（计算RGB补色，保持透明度不变）
-     *
-     * @param color 原始颜色
-     * @return 反转后的颜色
-     */
-    public static Color invert(Color color) {
-        if (color == null) {
-            return null;
-        }
-        // 计算RGB分量的补值（255 - 原始值）
-        int red = 255 - color.getRed();
-        int green = 255 - color.getGreen();
-        int blue = 255 - color.getBlue();
-        // 透明度保持不变
-        int alpha = color.getAlpha();
-        return new Color(red, green, blue, alpha);
-    }
+    // /**
+    //  * 反转AWT Color的颜色（计算RGB补色，保持透明度不变）
+    //  *
+    //  * @param color 原始颜色
+    //  * @return 反转后的颜色
+    //  */
+    // public static Color invert(Color color) {
+    //     if (color == null) {
+    //         return null;
+    //     }
+    //     // 计算RGB分量的补值（255 - 原始值）
+    //     int red = 255 - color.getRed();
+    //     int green = 255 - color.getGreen();
+    //     int blue = 255 - color.getBlue();
+    //     // 透明度保持不变
+    //     int alpha = color.getAlpha();
+    //     return new Color(red, green, blue, alpha);
+    // }
 
     /**
      * 应用主题的通用方法
@@ -137,22 +227,6 @@ public class SwingUtil {
         // 设置组件样式
         scrollBar.setBackground(bgColor);
         scrollBar.setForeground(fgColor);
-        scrollBar.setBorder(new Border() {
-            @Override
-            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-
-            }
-
-            @Override
-            public Insets getBorderInsets(Component c) {
-                return null;
-            }
-
-            @Override
-            public boolean isBorderOpaque() {
-                return false;
-            }
-        });
         // 自定义滚动条UI
         scrollBar.setUI(new SwingScrollBarUI());
     }

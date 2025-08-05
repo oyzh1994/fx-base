@@ -16,6 +16,8 @@ import javafx.scene.text.Font;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.text.Caret;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +29,16 @@ import java.util.Set;
  * @since 2025/07/30
  */
 public class EditorPane extends FXSwingNode {
+
+    /**
+     * 当前行暗色模式
+     */
+    public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_DARK = new Color(255, 100, 100);
+
+    /**
+     * 当前行亮色色模式
+     */
+    public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT = new Color(255, 255, 170);
 
     {
         Editor editor = new Editor();
@@ -42,12 +54,26 @@ public class EditorPane extends FXSwingNode {
     }
 
     public Editor getEditor() {
-        return (Editor) this.getScrollPane().getViewport().getComponents()[0];
+        RTextScrollPane scrollPane = this.getScrollPane();
+        if (scrollPane == null || scrollPane.getViewport() == null) {
+            return null;
+        }
+        return (Editor) scrollPane.getViewport().getComponents()[0];
     }
 
     protected Font initFont() {
 
         return null;
+    }
+
+    @Override
+    public void changeFont(Font font) {
+        Font font1 = this.initFont();
+        if (font1 != null) {
+            super.changeFont(font1);
+        } else {
+            super.changeFont(font);
+        }
     }
 
     public void initPrompts() {
@@ -238,9 +264,9 @@ public class EditorPane extends FXSwingNode {
         super.changeTheme(style);
         Editor editor = this.getEditor();
         if (ThemeManager.isDarkMode()) {
-            editor.setCurrentLineHighlightColor(EditorUtil.CURRENT_LINE_HIGHLIGHT_COLOR_DARK);
+            editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_DARK);
         } else {
-            editor.setCurrentLineHighlightColor(EditorUtil.CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT);
+            editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT);
         }
         SwingUtil.applyTheme(editor);
         RTextScrollPane scrollPane = this.getScrollPane();
@@ -253,5 +279,10 @@ public class EditorPane extends FXSwingNode {
 
     public boolean isEditable() {
         return this.getEditor().isEditable();
+    }
+
+    @Override
+    protected Component realComponent() {
+        return this.getEditor();
     }
 }
