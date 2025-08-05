@@ -34,18 +34,22 @@ public class NodeUtil {
     /**
      * web是个可选模块，避免强依赖
      */
-    private static boolean isWebImport;
+    public static boolean isWebImport;
 
     /**
      * swing是个可选模块，避免强依赖
      */
-    private static boolean isSwingImport;
+    public static boolean isSwingImport;
 
     /**
      * media是个可选模块，避免强依赖
      */
-    private static boolean isMediaImport;
+    public static boolean isMediaImport;
 
+    /**
+     * richtext是个可选模块，避免强依赖
+     */
+    public static boolean isRichtextImport;
 
     static {
         try {
@@ -63,6 +67,12 @@ public class NodeUtil {
         try {
             Class.forName("javafx.scene.media.MediaView");
             isMediaImport = true;
+        } catch (ClassNotFoundException ignored) {
+
+        }
+        try {
+            Class.forName("org.fxmisc.richtext");
+            isRichtextImport = true;
         } catch (ClassNotFoundException ignored) {
 
         }

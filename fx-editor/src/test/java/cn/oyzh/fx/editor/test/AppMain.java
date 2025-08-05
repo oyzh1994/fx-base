@@ -1,11 +1,8 @@
 package cn.oyzh.fx.editor.test;
 
 import cn.oyzh.common.util.IOUtil;
-import cn.oyzh.common.util.RegexHelper;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.editor.Editor;
-import cn.oyzh.fx.editor.EditorFormatType;
 import cn.oyzh.fx.editor.EditorFormatTypeComboBox;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.EditorPane;
@@ -18,20 +15,10 @@ import javafx.application.Application;
 import javafx.scene.CacheHint;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
 
 
 /**

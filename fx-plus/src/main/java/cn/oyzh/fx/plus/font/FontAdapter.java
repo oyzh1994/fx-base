@@ -10,7 +10,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import org.fxmisc.flowless.VirtualizedScrollPane;
 
 import java.util.List;
 
@@ -33,45 +32,36 @@ public interface FontAdapter extends PropAdapter {
         }
         // 缓存字体
         font = FontManager.cacheFont(font);
-        switch (this) {
-            case Text node -> {
-                Font font1 = node.getFont();
-                if (!FontUtil.isSameFont(font, font1)) {
-                    node.setFont(font);
-                }
+        if (this instanceof Text node) {
+            Font font1 = node.getFont();
+            if (!FontUtil.isSameFont(font, font1)) {
+                node.setFont(font);
             }
-            case Labeled node -> {
-                Font font1 = node.getFont();
-                if (!FontUtil.isSameFont(font, font1)) {
-                    node.setFont(font);
-                }
+        } else if (this instanceof Labeled node) {
+            Font font1 = node.getFont();
+            if (!FontUtil.isSameFont(font, font1)) {
+                node.setFont(font);
             }
-            case TabPane tabPane -> {
-                List<Tab> tabs = tabPane.getTabs();
-                for (Tab tab : tabs) {
-                    if (tab.getContent() instanceof FontAdapter adapter) {
-                        adapter.setFont(font);
-                    }
-                }
-            }
-            case TextInputControl node -> {
-                Font font1 = node.getFont();
-                if (!FontUtil.isSameFont(font, font1)) {
-                    node.setFont(font);
-                }
-            }
-            case VirtualizedScrollPane<?> pane -> {
-                if (pane.getContent() instanceof FontAdapter adapter) {
+        } else if (this instanceof TabPane tabPane) {
+            List<Tab> tabs = tabPane.getTabs();
+            for (Tab tab : tabs) {
+                if (tab.getContent() instanceof FontAdapter adapter) {
                     adapter.setFont(font);
                 }
             }
-            case Node node -> {
-                this.setFontSize(font.getSize());
-                this.setFontFamily(font.getFamily());
-                this.setFontWeight(FontUtil.getWeight(font.getStyle()));
+        } else if (this instanceof TextInputControl node) {
+            Font font1 = node.getFont();
+            if (!FontUtil.isSameFont(font, font1)) {
+                node.setFont(font);
             }
-            default -> {
+        } else if (NodeUtil.isRichtextImport && this instanceof org.fxmisc.flowless.VirtualizedScrollPane<?> pane) {
+            if (pane.getContent() instanceof FontAdapter adapter) {
+                adapter.setFont(font);
             }
+        } else if (this instanceof Node node) {
+            this.setFontSize(font.getSize());
+            this.setFontFamily(font.getFamily());
+            this.setFontWeight(FontUtil.getWeight(font.getStyle()));
         }
     }
 
