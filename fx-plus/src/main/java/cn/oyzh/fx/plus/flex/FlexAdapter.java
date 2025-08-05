@@ -239,6 +239,8 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         } else {
             size[1] = computeHeight1;
         }
+        size[0] = Math.max(0, size[0]);
+        size[1] = Math.max(0, size[1]);
         return size;
     }
 

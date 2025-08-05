@@ -11,15 +11,11 @@
 
     <artifactId>fx-editor</artifactId>
 
-    <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
+
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
-            <artifactId>fx-rich</artifactId>
+            <artifactId>fx-plus</artifactId>
         </dependency>
 
         <dependency>
@@ -38,7 +34,7 @@
         <dependency>
             <groupId>com.fifesoft</groupId>
             <artifactId>rsyntaxtextarea</artifactId>
-            <version>3.6.0</version>
+            <version>${rsyntaxtextarea.version}</version>
         </dependency>
 
         <dependency>

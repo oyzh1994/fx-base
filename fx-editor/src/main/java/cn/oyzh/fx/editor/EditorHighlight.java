@@ -10,6 +10,15 @@ public class EditorHighlight {
 
     private int start;
 
+    public EditorHighlight() {
+
+    }
+
+    public EditorHighlight(int start, int end) {
+        this.end = end;
+        this.start = start;
+    }
+
     public int getEnd() {
         return end;
     }

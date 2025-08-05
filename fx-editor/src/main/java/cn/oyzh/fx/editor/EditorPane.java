@@ -1,18 +1,26 @@
 package cn.oyzh.fx.editor;
 
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
+import javafx.beans.Observable;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
+import javafx.scene.control.IndexRange;
 import javafx.scene.text.Font;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.Caret;
+import java.awt.*;
 import java.net.Socket;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -49,7 +57,12 @@ public class EditorPane extends FXSwingNode {
 
     }
 
-    protected void setPrompts(Set<String> set) {
+    public void setPrompts(Set<String> prompts) {
+        this.getEditor().setPrompts(prompts);
+    }
+
+    public void showData(Object data) {
+        this.getEditor().showData(data);
     }
 
     public void showData(Object data, EditorFormatType formatType) {
@@ -159,5 +172,67 @@ public class EditorPane extends FXSwingNode {
     }
 
     public void selectRangeAndGoto(int index, int i) {
+    }
+
+    public void undo() {
+        this.getEditor().undo();
+    }
+
+    public void redo() {
+        this.getEditor().redo();
+    }
+
+    public void forgetHistory() {
+        this.getEditor().forgetHistory();
+    }
+
+    public BooleanProperty undoableProperty() {
+        return this.getEditor().undoableProperty();
+    }
+
+    public BooleanProperty redoableProperty() {
+        return this.getEditor().redoableProperty();
+    }
+
+    public BooleanProperty editableProperty() {
+        return this.getEditor().editableProperty();
+    }
+
+    public void addTextChangeListener(ChangeListener<String> listener) {
+        this.getEditor().addTextChangeListener(listener);
+    }
+
+    public void setPromptText(String promptText) {
+    }
+
+    public int getCaretPosition() {
+        return this.getEditor().getCaretPosition();
+    }
+
+    public Optional<Bounds> getCaretBounds() {
+        Caret caret = this.getEditor().getCaret();
+        if (caret == null || !caret.isVisible()) {
+            return Optional.empty();
+        }
+        Point point = caret.getMagicCaretPosition();
+        int w = EditorUtil.getCaretWidth(this.getEditor());
+        int h = EditorUtil.getCaretHeight(this.getEditor());
+        BoundingBox bounds = new BoundingBox(point.x, point.y, w, h);
+        return Optional.of(bounds);
+    }
+
+    public void replaceText(IndexRange range, String content) {
+        this.getEditor().replaceText(range.getStart(), range.getEnd(), content);
+    }
+
+    public void scrollToTop() {
+    }
+
+    public boolean isEmpty() {
+        return this.getEditor().isEmpty();
+    }
+
+    public ObjectProperty<EditorFormatType> formatTypeProperty() {
+        return this.getEditor().formatTypeProperty();
     }
 }

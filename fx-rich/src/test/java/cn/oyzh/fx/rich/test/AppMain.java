@@ -1,14 +1,8 @@
 package cn.oyzh.fx.rich.test;
 
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
-import cn.oyzh.fx.rich.incubator.BaseRichTextArea;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -31,7 +25,7 @@ public class AppMain extends Application {
         // test3(stage);
 //        test4(stage);
 //        test5(stage);
-       test6(stage);
+//        test6(stage);
     }
 
 //    private void test1(Stage stage) {
@@ -254,38 +248,38 @@ public class AppMain extends Application {
 //
 //    }
 //
-   public void test6(Stage stage) {
-
-       FXHBox hBox = new FXHBox();
-
-       BaseRichTextArea richTextArea = new BaseRichTextArea();
-       richTextArea.appendText("0123456789\n");
-       richTextArea.appendText("0123456789");
-
-       richTextArea.setStyle(1, 3, Color.BLUE);
-       richTextArea.setStyle(4, 14, Color.RED);
-
-       richTextArea.setLineNumbersEnabled(true);
-
-       stage.setScene(new Scene(new VBox(hBox, richTextArea)));
-       Button btn1 = new Button("重做");
-       Button btn2 = new Button("撤销");
-       Button btn3 = new Button("清除");
-       hBox.addChild(btn1);
-       hBox.addChild(btn2);
-       hBox.addChild(btn3);
-
-       btn1.setOnAction(e -> {
-           richTextArea.redo();
-       });
-       btn2.setOnAction(e -> {
-           richTextArea.undo();
-       });
-       btn3.setOnAction(e -> {
-           richTextArea.setStyle(0, 20, null);
-       });
-       stage.show();
-
-   }
+//    public void test6(Stage stage) {
+//
+//        FXHBox hBox = new FXHBox();
+//
+//        BaseRichTextArea richTextArea = new BaseRichTextArea();
+//        richTextArea.appendText("0123456789\n");
+//        richTextArea.appendText("0123456789");
+//
+//        richTextArea.setStyle(1, 3, Color.BLUE);
+//        richTextArea.setStyle(4, 14, Color.RED);
+//
+//        richTextArea.setLineNumbersEnabled(true);
+//
+//        stage.setScene(new Scene(new VBox(hBox, richTextArea)));
+//        Button btn1 = new Button("重做");
+//        Button btn2 = new Button("撤销");
+//        Button btn3 = new Button("清除");
+//        hBox.addChild(btn1);
+//        hBox.addChild(btn2);
+//        hBox.addChild(btn3);
+//
+//        btn1.setOnAction(e -> {
+//            richTextArea.redo();
+//        });
+//        btn2.setOnAction(e -> {
+//            richTextArea.undo();
+//        });
+//        btn3.setOnAction(e -> {
+//            richTextArea.setStyle(0, 20, null);
+//        });
+//        stage.show();
+//
+//    }
 
 }

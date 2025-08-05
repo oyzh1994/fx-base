@@ -1,40 +1,51 @@
 package cn.oyzh.fx.editor;
 
-import cn.oyzh.common.exception.ExceptionUtil;
 import cn.oyzh.common.thread.ThreadUtil;
-import cn.oyzh.common.util.RegexHelper;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.util.SwingUtil;
-import cn.oyzh.fx.rich.RichTextStyle;
-import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
-import cn.oyzh.i18n.I18nHelper;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.embed.swing.SwingNode;
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
-import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenMaker;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.plaf.synth.SynthTextFieldUI;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Segment;
+import javax.swing.text.View;
 import java.awt.*;
-import java.security.PublicKey;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,9 +62,18 @@ public class Editor extends TextEditorPane {
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
             this.initTextStyle();
         });
+        // 提示词变化事件
+        this.promptsProperty().addListener((observableValue, formatType, t1) -> {
+            this.initPromptsStyle();
+        });
         // 高亮变化事件
         this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
             this.initHighlightStyle();
+        });
+        // 重做、撤销监听器
+        this.addUndoableEditListener(e -> {
+            this.redoableProperty.set(e.getEdit().canRedo());
+            this.undoableProperty.set(e.getEdit().canUndo());
         });
         // 文本变更事件
         this.addDocumentListener(new DocumentListener() {
@@ -72,6 +92,28 @@ public class Editor extends TextEditorPane {
                 textProperty.setValue(getText());
             }
         });
+        // 可编辑变更事件
+        this.addPropertyChangeListener("editable", e -> {
+            this.editableProperty.setValue((Boolean) e.getNewValue());
+        });
+    }
+
+    private final BooleanProperty undoableProperty = new SimpleBooleanProperty();
+
+    private final BooleanProperty redoableProperty = new SimpleBooleanProperty();
+
+    private final BooleanProperty editableProperty = new SimpleBooleanProperty();
+
+    public BooleanProperty undoableProperty() {
+        return undoableProperty;
+    }
+
+    public BooleanProperty redoableProperty() {
+        return redoableProperty;
+    }
+
+    public BooleanProperty editableProperty() {
+        return editableProperty;
     }
 
     /**
@@ -264,9 +306,8 @@ public class Editor extends TextEditorPane {
         if (!StringUtil.equalsAnyIgnoreCase(editingStyle, syntax)) {
             this.setSyntaxEditingStyle(syntax);
         }
-        if (StringUtil.isNotBlank(this.getHighlightText())) {
-            this.initHighlightStyle();
-        }
+        this.initPromptsStyle();
+        this.initHighlightStyle();
     }
 
     @Override
@@ -279,82 +320,46 @@ public class Editor extends TextEditorPane {
     }
 
     /**
-     * 高亮样式
-     */
-    protected static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(
-            new Color(248, 201, 171)
-    );
-
-    /**
-     * 高亮id列表
-     */
-    private final List<Object> highlightIds = new CopyOnWriteArrayList<>();
-
-    /**
-     * 初始化高亮
-     */
-    protected void initHighlightStyle() {
-        // 移除高亮
-        ThreadUtil.start(() -> {
-            List<Object> ids;
-            synchronized (this.highlightIds) {
-                ids = new ArrayList<>(this.highlightIds);
-                this.highlightIds.clear();
-            }
-            this.removeHighlights(ids);
-        });
-        // 没有高亮内容，返回
-        if (StringUtil.isBlank(this.getHighlightText())) {
-            return;
-        }
-        // 生成高亮
-        ThreadUtil.start(() -> {
-            String text = this.getText();
-            List<EditorHighlight> highlights = new ArrayList<>();
-            Matcher matcher = this.highlightPattern().matcher(text);
-            while (matcher.find()) {
-                EditorHighlight highlight = new EditorHighlight();
-                highlight.setStart(matcher.start());
-                highlight.setEnd(matcher.end());
-                highlights.add(highlight);
-            }
-            this.addHighlights(highlights);
-        });
-    }
-
-    /**
      * 添加高亮
      *
-     * @param start 开始位置
-     * @param end   结束位置
+     * @param start   开始位置
+     * @param end     结束位置
+     * @param painter 样式
+     * @return id
      */
-    public void addHighlight(int start, int end) {
-        SwingUtil.runLater(() -> {
+    public Object addHighlight(int start, int end, Highlighter.HighlightPainter painter) {
+        AtomicReference<Object> reference = new AtomicReference<>();
+        SwingUtil.runWait(() -> {
             try {
-                Object id = this.getHighlighter().addHighlight(start, end, HIGHLIGHT_PAINTER);
-                this.highlightIds.add(id);
+                Object id = this.getHighlighter().addHighlight(start, end, painter);
+                reference.set(id);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
+        return reference.get();
     }
 
     /**
      * 添加高亮
      *
      * @param highlights 高亮列表
+     * @param painter    样式
+     * @return id列表
      */
-    public void addHighlights(List<EditorHighlight> highlights) {
-        SwingUtil.runLater(() -> {
+    public List<Object> addHighlights(List<EditorHighlight> highlights, Highlighter.HighlightPainter painter) {
+        List<Object> ids = new ArrayList<>();
+        SwingUtil.runWait(() -> {
             try {
                 for (EditorHighlight highlight : highlights) {
-                    Object id = this.getHighlighter().addHighlight(highlight.getStart(), highlight.getEnd(), HIGHLIGHT_PAINTER);
-                    this.highlightIds.add(id);
+                    Object id = this.getHighlighter().addHighlight(highlight.getStart(), highlight.getEnd(), painter);
+                    ids.add(id);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
+        return ids;
     }
 
     /**
@@ -389,9 +394,148 @@ public class Editor extends TextEditorPane {
         });
     }
 
+    /**
+     * 高亮样式
+     */
+    protected static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(
+            new Color(248, 201, 171)
+    );
+
+    /**
+     * 高亮id列表
+     */
+    private final List<Object> highlightIds = new CopyOnWriteArrayList<>();
+
+    /**
+     * 初始化高亮样式
+     */
+    protected void initHighlightStyle() {
+        // 移除高亮
+        if (!this.highlightIds.isEmpty()) {
+            List<Object> ids;
+            synchronized (this.highlightIds) {
+                ids = new ArrayList<>(this.highlightIds);
+                this.highlightIds.clear();
+            }
+            ThreadUtil.start(() -> this.removeHighlights(ids));
+        }
+        // 无高亮内容，返回
+        String highlightText = this.getHighlightText();
+        if (StringUtil.isEmpty(highlightText)) {
+            return;
+        }
+        // 高亮正则模式
+        Pattern highlightPattern = Pattern.compile(highlightText, Pattern.CASE_INSENSITIVE);
+        // 生成高亮
+        ThreadUtil.start(() -> {
+            String text = this.getText();
+            List<EditorHighlight> highlights = new ArrayList<>();
+            Matcher matcher = highlightPattern.matcher(text);
+            while (matcher.find()) {
+                highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
+            }
+            List<Object> ids = this.addHighlights(highlights, HIGHLIGHT_PAINTER);
+            if (CollectionUtil.isNotEmpty(ids)) {
+                synchronized (this.highlightIds) {
+                    this.highlightIds.addAll(ids);
+                }
+            }
+        });
+    }
+
+    /**
+     * 提示词样式
+     */
+    protected static final Highlighter.HighlightPainter PROMPTS_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(
+            new Color(125,190,93)
+            // new Color(166, 38, 164)
+    );
+
+    /**
+     * 提示词高亮id列表
+     */
+    private final List<Object> promptIds = new CopyOnWriteArrayList<>();
+
+    /**
+     * 提示词属性
+     */
+    private ObjectProperty<Set<String>> promptsProperty;
+
+    public ObjectProperty<Set<String>> promptsProperty() {
+        if (this.promptsProperty == null) {
+            this.promptsProperty = new SimpleObjectProperty<>();
+        }
+        return this.promptsProperty;
+    }
+
+    /**
+     * 设置提示词
+     *
+     * @param prompts 提示词列表
+     */
+    public void setPrompts(Set<String> prompts) {
+        this.promptsProperty().set(prompts);
+    }
+
+    /**
+     * 获取提示词
+     *
+     * @return 提示词列表
+     */
+    public Set<String> getPrompts() {
+        return this.promptsProperty == null ? null : this.promptsProperty.get();
+    }
+
+    /**
+     * 初始化提示词样式
+     */
+    protected void initPromptsStyle() {
+        // 移除提示词
+        if (!this.promptIds.isEmpty()) {
+            List<Object> ids;
+            synchronized (this.promptIds) {
+                ids = new ArrayList<>(this.promptIds);
+                this.promptIds.clear();
+            }
+            ThreadUtil.start(() -> this.removeHighlights(ids));
+        }
+        // 无高亮内容，返回
+        Set<String> prompts = this.getPrompts();
+        if (CollectionUtil.isEmpty(prompts)) {
+            return;
+        }
+        // 提示词正则模式
+        Pattern promptsPattern = Pattern.compile("\\b(" + String.join("|", prompts) + ")\\b", Pattern.CASE_INSENSITIVE);
+        // 生成高亮
+        ThreadUtil.start(() -> {
+            String text = this.getText();
+            List<EditorHighlight> highlights = new ArrayList<>();
+            Matcher matcher = promptsPattern.matcher(text);
+            while (matcher.find()) {
+                highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
+            }
+            List<Object> ids = this.addHighlights(highlights, PROMPTS_PAINTER);
+            synchronized (this.promptIds) {
+                this.promptIds.addAll(ids);
+            }
+        });
+    }
+
+    /**
+     * 是否为空
+     *
+     * @return 结果
+     */
     public boolean isEmpty() {
-        String text = this.textProperty.get();
-        return StringUtil.isEmpty(text);
+        AtomicBoolean result = new AtomicBoolean(false);
+        SwingUtil.runWait(() -> {
+            try {
+                this.getDocument().getText(0, 1);
+            } catch (Exception ex) {
+                result.set(true);
+            }
+        });
+        return result.get();
     }
 
     /**
@@ -409,7 +553,7 @@ public class Editor extends TextEditorPane {
      * @param highlightText 高亮文本
      */
     public void setHighlightText(String highlightText) {
-        this.highlightTextProperty().setValue(highlightText);
+        this.highlightTextProperty().set(highlightText);
     }
 
     public StringProperty highlightTextProperty() {
@@ -417,15 +561,6 @@ public class Editor extends TextEditorPane {
             this.highlightTextProperty = new SimpleStringProperty();
         }
         return this.highlightTextProperty;
-    }
-
-    /**
-     * 高亮正则模式
-     *
-     * @return 高亮正则模式
-     */
-    protected Pattern highlightPattern() {
-        return Pattern.compile(this.getHighlightText(), Pattern.CASE_INSENSITIVE);
     }
 
     public int getLength() {
@@ -447,20 +582,12 @@ public class Editor extends TextEditorPane {
         });
     }
 
-    public void cut() {
-        SwingUtil.runWait(super::cut);
-    }
-
-    public void copy() {
-        SwingUtil.runWait(super::copy);
-    }
-
-    public void paste() {
-        SwingUtil.runWait(super::paste);
-    }
-
     public void addDocumentListener(DocumentListener documentListener) {
         SwingUtil.runWait(() -> this.getDocument().addDocumentListener(documentListener));
+    }
+
+    public void addUndoableEditListener(UndoableEditListener undoableEditListener) {
+        SwingUtil.runWait(() -> this.getDocument().addUndoableEditListener(undoableEditListener));
     }
 
     public String getTextTrim() {
@@ -469,5 +596,36 @@ public class Editor extends TextEditorPane {
             return null;
         }
         return text.trim();
+    }
+
+    @Override
+    public void cut() {
+        SwingUtil.runWait(super::cut);
+    }
+
+    @Override
+    public void copy() {
+        SwingUtil.runWait(super::copy);
+    }
+
+    @Override
+    public void paste() {
+        SwingUtil.runWait(super::paste);
+    }
+
+    public void undo() {
+        SwingUtil.runWait(super::undoLastAction);
+    }
+
+    public void redo() {
+        SwingUtil.runWait(super::redoLastAction);
+    }
+
+    public void forgetHistory() {
+        SwingUtil.runWait(this::discardAllEdits);
+    }
+
+    public void replaceText(int start, int end, String content) {
+        SwingUtil.runWait(() -> super.replaceRange(content, start, end));
     }
 }
