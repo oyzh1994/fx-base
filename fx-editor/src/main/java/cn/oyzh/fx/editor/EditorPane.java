@@ -2,7 +2,6 @@ package cn.oyzh.fx.editor;
 
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
 import cn.oyzh.fx.plus.swing.SwingUtil;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -16,7 +15,6 @@ import javafx.scene.text.Font;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.text.Caret;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
 import java.util.Optional;
@@ -30,15 +28,15 @@ import java.util.Set;
  */
 public class EditorPane extends FXSwingNode {
 
-    /**
-     * 当前行暗色模式
-     */
-    public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_DARK = new Color(255, 100, 100);
-
-    /**
-     * 当前行亮色色模式
-     */
-    public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT = new Color(255, 255, 170);
+    // /**
+    //  * 当前行暗色模式
+    //  */
+    // public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_DARK = new Color(255, 100, 100);
+    //
+    // /**
+    //  * 当前行亮色色模式
+    //  */
+    // public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT = new Color(255, 255, 170);
 
     {
         Editor editor = new Editor();
@@ -262,13 +260,14 @@ public class EditorPane extends FXSwingNode {
     @Override
     public void changeTheme(ThemeStyle style) {
         super.changeTheme(style);
-        Editor editor = this.getEditor();
-        if (ThemeManager.isDarkMode()) {
-            editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_DARK);
-        } else {
-            editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT);
-        }
-        SwingUtil.applyTheme(editor);
+        // Editor editor = this.getEditor();
+        // if (ThemeManager.isDarkMode()) {
+        //     editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_DARK);
+        // } else {
+        //     editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT);
+        // }
+        // SwingUtil.applyTheme(editor);
+        EditorUtil.applyTheme(this.getEditor());
         RTextScrollPane scrollPane = this.getScrollPane();
         SwingUtil.applyTheme(scrollPane);
     }

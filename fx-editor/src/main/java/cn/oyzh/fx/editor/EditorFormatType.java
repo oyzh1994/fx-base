@@ -7,8 +7,8 @@ package cn.oyzh.fx.editor;
  * @since 2024/5/17
  */
 public enum EditorFormatType {
-    JSON,
     RAW,
+    JSON,
     XML,
     HTML,
     YAML,
