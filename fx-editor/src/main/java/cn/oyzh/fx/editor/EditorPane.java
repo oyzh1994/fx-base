@@ -246,8 +246,16 @@ public class EditorPane extends FXSwingNode {
         return Optional.of(bounds);
     }
 
-    public void replaceText(IndexRange range, String content) {
-        this.getEditor().replaceText(range.getStart(), range.getEnd(), content);
+    public void replaceText(int start, int end, String content) {
+        this.getEditor().replaceText(start, end, content);
+    }
+
+    public void appendText(String content) {
+        this.getEditor().appendText(content);
+    }
+
+    public void appendLine(String content) {
+        this.getEditor().appendLine(content);
     }
 
     public void scrollToTop() {
@@ -280,5 +288,9 @@ public class EditorPane extends FXSwingNode {
     @Override
     protected Component realComponent() {
         return this.getEditor();
+    }
+
+    public void copy() {
+        this.getEditor().copy();
     }
 }

@@ -631,7 +631,33 @@ public class Editor extends TextEditorPane {
     }
 
     public void replaceText(int start, int end, String content) {
-        SwingUtil.runWait(() -> super.replaceRange(content, start, end));
+        if (content != null) {
+            try {
+                // SwingUtil.runWait(() -> super.replaceRange(content, start, end));
+                super.replaceRange(content, start, end);
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    public void appendText(String content) {
+        if (content != null) {
+            super.append(content);
+        }
+    }
+
+    public void appendLine(String content) {
+        if (content != null) {
+            String text = this.getText();
+            if (text != null && !text.isEmpty() && !text.endsWith("\n") && !content.startsWith("\n")) {
+                content = System.lineSeparator() + content;
+            }
+            if (!content.endsWith(System.lineSeparator())) {
+                content = content + "\n";
+            }
+            this.append(content);
+        }
     }
 
     @Override
@@ -644,4 +670,5 @@ public class Editor extends TextEditorPane {
 
         }
     }
+
 }

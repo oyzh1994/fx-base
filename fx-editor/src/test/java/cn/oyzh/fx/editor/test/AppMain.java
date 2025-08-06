@@ -17,20 +17,15 @@ import cn.oyzh.fx.plus.font.FontSizeComboBox;
 import cn.oyzh.fx.plus.font.FontWeightComboBox;
 import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.CacheHint;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import org.apache.tika.pipes.emitter.StreamEmitter;
 
 import java.io.InputStream;
 import java.util.Set;
-import java.util.stream.Stream;
 
 
 /**
@@ -164,9 +159,58 @@ public class AppMain extends Application {
         hBox2.addChild(new FXLabel("字体字重"));
         hBox2.addChild(fontWeightComboBox);
 
+        FXHBox hBox3 = new FXHBox();
+        // 替换
+        Button btn_31 = new Button("替换");
+        btn_31.setOnAction(event -> {
+            editor.replaceText(0, 4, "test");
+        });
+        hBox3.addChild(btn_31);
+        // 追加
+        Button btn_32 = new Button("追加");
+        btn_32.setOnAction(event -> {
+            editor.appendText("test1");
+        });
+        hBox3.addChild(btn_32);
+        // 追加
+        Button btn_33 = new Button("追加行");
+        btn_33.setOnAction(event -> {
+            editor.appendLine("test2");
+        });
+        hBox3.addChild(btn_33);
+        // 清除
+        Button btn_34 = new Button("清除");
+        btn_34.setOnAction(event -> {
+            editor.clear();
+        });
+        hBox3.addChild(btn_34);
+        Button btn_35 = new Button("复制");
+        btn_35.setOnAction(event -> {
+            editor.copy();
+        });
+        hBox3.addChild(btn_35);
+        Button btn_36 = new Button("粘贴");
+        btn_36.setOnAction(event -> {
+            editor.paste();
+        });
+        hBox3.addChild(btn_36);
+        Button btn_37 = new Button("重做");
+        btn_37.setOnAction(event -> {
+            editor.redo();
+        });
+        hBox3.addChild(btn_37);
+        Button btn_38 = new Button("撤销");
+        btn_38.setOnAction(event -> {
+            editor.undo();
+        });
+        hBox3.addChild(btn_38);
+
+
         vBox.addChild(hBox);
+        vBox.addChild(hBox3);
         vBox.addChild(editor);
         vBox.addChild(hBox2);
+
 
         Scene scene = new Scene(vBox);
 
