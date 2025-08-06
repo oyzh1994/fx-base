@@ -19,6 +19,11 @@ import java.awt.Font;
  */
 public class SwingUtil {
 
+    /**
+     * 在awt的ui线程同步运行函数
+     *
+     * @param func 函数
+     */
     public static void runWait(Runnable func) {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
@@ -31,6 +36,11 @@ public class SwingUtil {
         }
     }
 
+    /**
+     * 在awt的ui线程异步运行函数
+     *
+     * @param func 函数
+     */
     public static void runLater(Runnable func) {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
@@ -43,6 +53,12 @@ public class SwingUtil {
         }
     }
 
+    /**
+     * awt颜色转换为fx颜色
+     *
+     * @param color awt颜色
+     * @return fx颜色
+     */
     public static javafx.scene.paint.Color toFxColor(Color color) {
         return color == null ? null : javafx.scene.paint.Color.rgb(color.getRed(), color.getGreen(), color.getBlue(),
                 color.getAlpha() / 255.0);
@@ -100,6 +116,12 @@ public class SwingUtil {
         return new Font(family, style, (int) Math.round(size));
     }
 
+    /**
+     * 从fx字体样式获取awt样式
+     *
+     * @param fxStyle fx字体样式
+     * @return awt字体样式
+     */
     public static int fromFxStyle(String fxStyle) {
         // 3. 转换字体样式（粗体、斜体）
         int style = Font.PLAIN; // 默认样式
@@ -112,11 +134,21 @@ public class SwingUtil {
         return style;
     }
 
-    public static String toAwtFamilyFrom(String family, FontWeight fontWeight) {
+    /**
+     * 从fx的字重获取awt字体
+     *
+     * @param family     字体
+     * @param fontWeight 字重
+     * @return awt字体名称
+     */
+    public static String fromFxWeight(String family, FontWeight fontWeight) {
         String adjustedFamily = family;
         // 处理字重（核心逻辑）
         switch (fontWeight) {
             case THIN:
+                // 轻量字重：尝试使用带"THIN"后缀的字体变体
+                adjustedFamily = family + " THIN";
+                break;
             case EXTRA_LIGHT:
             case LIGHT:
                 // 轻量字重：尝试使用带"Light"后缀的字体变体
@@ -128,6 +160,10 @@ public class SwingUtil {
                 adjustedFamily = family + " SemiBold";
                 break;
             case EXTRA_BOLD:
+            case BOLD:
+                // 半粗体：尝试使用带"BOLD"后缀的字体变体
+                adjustedFamily = family + " BOLD";
+                break;
             case BLACK:
                 // 特粗体：尝试使用带"Black"或"ExtraBold"后缀的字体变体
                 adjustedFamily = family + " Black";
@@ -145,25 +181,6 @@ public class SwingUtil {
                 (int) Math.round(color.getBlue() * 255),
                 (int) Math.round(color.getOpacity() * 255));
     }
-
-    // /**
-    //  * 反转AWT Color的颜色（计算RGB补色，保持透明度不变）
-    //  *
-    //  * @param color 原始颜色
-    //  * @return 反转后的颜色
-    //  */
-    // public static Color invert(Color color) {
-    //     if (color == null) {
-    //         return null;
-    //     }
-    //     // 计算RGB分量的补值（255 - 原始值）
-    //     int red = 255 - color.getRed();
-    //     int green = 255 - color.getGreen();
-    //     int blue = 255 - color.getBlue();
-    //     // 透明度保持不变
-    //     int alpha = color.getAlpha();
-    //     return new Color(red, green, blue, alpha);
-    // }
 
     /**
      * 应用主题的通用方法

@@ -8,7 +8,11 @@ import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.EditorPane;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
+import cn.oyzh.fx.plus.font.FontFamilyComboBox;
+import cn.oyzh.fx.plus.font.FontSizeComboBox;
+import cn.oyzh.fx.plus.font.FontWeightComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
@@ -54,21 +58,6 @@ public class AppMain extends Application {
         editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
 
         FXHBox hBox = new FXHBox();
-
-        // 高亮
-        FXTextField textField = new FXTextField();
-        editor.highlightTextProperty().bind(textField.textProperty());
-        hBox.addChild(textField);
-
-        // 格式
-        EditorFormatTypeComboBox formatTypeComboBox = new EditorFormatTypeComboBox();
-        formatTypeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
-            editor.setFormatType(t1);
-        });
-        editor.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
-            formatTypeComboBox.setValue(t1);
-        });
-        hBox.addChild(formatTypeComboBox);
 
         Button btn_1 = new Button("json数据");
         btn_1.setOnAction(actionEvent -> {
@@ -128,9 +117,41 @@ public class AppMain extends Application {
         btn_22.setOnAction(actionEvent -> {
             ThemeManager.apply(Themes.DRACULA);
         });
+        hBox2.addChild(btn_21);
+        hBox2.addChild(btn_22);
+        // 字体大小
+        FontSizeComboBox fontSizeComboBox = new FontSizeComboBox();
+        fontSizeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFontSize(t1);
+        });
+        hBox2.addChild(new FXLabel("字体大小"));
+        hBox2.addChild(fontSizeComboBox);
+        // 字体名称
+        FontFamilyComboBox fontFamilyComboBox = new FontFamilyComboBox();
+        fontFamilyComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFontFamily(t1);
+        });
+        hBox2.addChild(new FXLabel("字体名称"));
+        hBox2.addChild(fontFamilyComboBox);
+        // 字体字重
+        FontWeightComboBox fontWeightComboBox = new FontWeightComboBox();
+        fontWeightComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFontWeight(t1);
+        });
+        hBox2.addChild(new FXLabel("字体字重"));
+        hBox2.addChild(fontWeightComboBox);
+
+        FXHBox hBox3 = new FXHBox();
+        // 高亮
+        FXTextField text_31 = new FXTextField();
+        text_31.setPromptText("查找内容");
+        editor.highlightTextProperty().bind(text_31.textProperty());
+        hBox3.addChild(text_31);
+
         // 提示词
-        FXTextField text_23 = new FXTextField();
-        text_23.addTextChangeListener((observableValue, s, t1) -> {
+        FXTextField text_32 = new FXTextField();
+        text_32.setPromptText("提示词");
+        text_32.addTextChangeListener((observableValue, s, t1) -> {
             if (StringUtil.isEmpty(t1)) {
                 return;
             }
@@ -140,12 +161,21 @@ public class AppMain extends Application {
                 editor.setPrompts(Set.of(t1));
             }
         });
-        hBox2.addChild(btn_21);
-        hBox2.addChild(btn_22);
-        hBox2.addChild(text_23);
+        hBox3.addChild(text_32);
+        // 格式
+        EditorFormatTypeComboBox formatTypeComboBox = new EditorFormatTypeComboBox();
+        formatTypeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFormatType(t1);
+        });
+        editor.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
+            formatTypeComboBox.setValue(t1);
+        });
+        hBox3.addChild(new FXLabel("内容格式"));
+        hBox3.addChild(formatTypeComboBox);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
+        vBox.addChild(hBox3);
         vBox.addChild(editor);
 
         Scene scene = new Scene(vBox);
