@@ -52,7 +52,7 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     }
 
     /**
-     * 获取真实的组件，部分组件被滚动条等包裹了
+     * 获取真实组件，部分组件被滚动条等包裹了
      *
      * @return 真实组件
      */
@@ -60,6 +60,11 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
         return this.getContent();
     }
 
+    /**
+     * 获取真实组件字体
+     *
+     * @return 真实组件字体
+     */
     protected java.awt.Font getRealComponentFont() {
         if (this.realComponent() != null) {
             return this.realComponent().getFont();
@@ -67,12 +72,16 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
         return null;
     }
 
+    /**
+     * 设置真实组件字体
+     *
+     * @param font 字体
+     */
     protected void setRealComponentFont(java.awt.Font font) {
         if (this.realComponent() != null) {
             this.realComponent().setFont(font);
         }
     }
-
 
     @Override
     public void setFont(Font font) {
@@ -89,8 +98,8 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
 
     @Override
     public void setFontSize(double fontSize) {
-        if (this.realComponent() != null) {
-            java.awt.Font font = this.getRealComponentFont();
+        java.awt.Font font = this.getRealComponentFont();
+        if (font != null) {
             java.awt.Font newFont = new java.awt.Font(font.getFamily(), font.getStyle(), (int) fontSize);
             this.setRealComponentFont(newFont);
         }
@@ -98,8 +107,8 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
 
     @Override
     public void setFontFamily(String fontFamily) {
-        if (this.realComponent() != null) {
-            java.awt.Font font = this.getRealComponentFont();
+        java.awt.Font font = this.getRealComponentFont();
+        if (font != null) {
             java.awt.Font newFont = new java.awt.Font(fontFamily, font.getStyle(), font.getSize());
             this.setRealComponentFont(newFont);
         }
@@ -107,8 +116,8 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
 
     @Override
     public void setFontWeight(FontWeight fontWeight) {
-        if (this.realComponent() != null) {
-            java.awt.Font font = this.getRealComponentFont();
+        java.awt.Font font = this.getRealComponentFont();
+        if (font != null) {
             String family = SwingUtil.fromFxWeight(font.getFamily(), fontWeight);
             java.awt.Font newFont = new java.awt.Font(family, font.getStyle(), font.getSize());
             this.setRealComponentFont(newFont);

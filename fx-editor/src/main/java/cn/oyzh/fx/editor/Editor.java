@@ -20,7 +20,6 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -512,7 +511,10 @@ public class Editor extends TextEditorPane {
         AtomicBoolean result = new AtomicBoolean(false);
         SwingUtil.runWait(() -> {
             try {
-                this.getDocument().getText(0, 1);
+                String str = this.getDocument().getText(0, 1);
+                if (str == null || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
+                    result.set(true);
+                }
             } catch (Exception ex) {
                 result.set(true);
             }
@@ -612,10 +614,5 @@ public class Editor extends TextEditorPane {
 
     public void replaceText(int start, int end, String content) {
         SwingUtil.runWait(() -> super.replaceRange(content, start, end));
-    }
-
-    @Override
-    public void setFont(Font font) {
-        SwingUtil.runWait(() -> super.setFont(font));
     }
 }

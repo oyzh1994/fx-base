@@ -183,7 +183,7 @@ public class EditorPane extends FXSwingNode {
     }
 
     public void setText(String text) {
-
+        this.getEditor().setText(text);
     }
 
     public String getTextTrim() {
