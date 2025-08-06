@@ -36,9 +36,9 @@ public class EditorUtil {
             case BAT -> SyntaxConstants.SYNTAX_STYLE_WINDOWS_BATCH;
             case SQL -> SyntaxConstants.SYNTAX_STYLE_SQL;
             case DOCKERFILE -> SyntaxConstants.SYNTAX_STYLE_DOCKERFILE;
-            case MARKDOWN -> SyntaxConstants.SYNTAX_STYLE_MARKDOWN;
+            case MD -> SyntaxConstants.SYNTAX_STYLE_MARKDOWN;
             case MAKEFIL -> SyntaxConstants.SYNTAX_STYLE_MAKEFILE;
-            case PYTHON -> SyntaxConstants.SYNTAX_STYLE_PYTHON;
+            case PY -> SyntaxConstants.SYNTAX_STYLE_PYTHON;
             case JS -> SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT;
             case JAVA -> SyntaxConstants.SYNTAX_STYLE_JAVA;
             case C -> SyntaxConstants.SYNTAX_STYLE_C;
@@ -61,7 +61,7 @@ public class EditorUtil {
             case GROOVY -> SyntaxConstants.SYNTAX_STYLE_GROOVY;
             case HANDLEBARS -> SyntaxConstants.SYNTAX_STYLE_HANDLEBARS;
             case JSP -> SyntaxConstants.SYNTAX_STYLE_JSP;
-            case KOTLIN -> SyntaxConstants.SYNTAX_STYLE_KOTLIN;
+            case KT -> SyntaxConstants.SYNTAX_STYLE_KOTLIN;
             case SAS -> SyntaxConstants.SYNTAX_STYLE_SAS;
             case CSV -> SyntaxConstants.SYNTAX_STYLE_CSV;
             case INI -> SyntaxConstants.SYNTAX_STYLE_INI;
@@ -73,8 +73,8 @@ public class EditorUtil {
             case HOSTS -> SyntaxConstants.SYNTAX_STYLE_HOSTS;
             case HTACCESS -> SyntaxConstants.SYNTAX_STYLE_HTACCESS;
             case PROTO -> SyntaxConstants.SYNTAX_STYLE_PROTO;
-            case ASSEMBLER -> SyntaxConstants.SYNTAX_STYLE_ASSEMBLER_X86;
-            case ASSEMBLER_6502 -> SyntaxConstants.SYNTAX_STYLE_ASSEMBLER_6502;
+            case ASM -> SyntaxConstants.SYNTAX_STYLE_ASSEMBLER_X86;
+            case ASM_6502 -> SyntaxConstants.SYNTAX_STYLE_ASSEMBLER_6502;
             case BBCODE -> SyntaxConstants.SYNTAX_STYLE_BBCODE;
             case CLOJURE -> SyntaxConstants.SYNTAX_STYLE_CLOJURE;
             case JSON_WITH_COMMENTS -> SyntaxConstants.SYNTAX_STYLE_JSON_WITH_COMMENTS;

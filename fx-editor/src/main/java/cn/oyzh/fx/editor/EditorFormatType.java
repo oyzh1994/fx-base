@@ -21,9 +21,9 @@ public enum EditorFormatType {
     BAT("BAT"),
     SQL("SQL"),
     DOCKERFILE("DOCKERFILE"),
-    MARKDOWN("MD"),
+    MD("MARKDOWN"),
     MAKEFIL("MAKEFIL"),
-    PYTHON("PYTHON"),
+    PY("PYTHON"),
     JS("JAVASCRIPT"),
     JAVA("JAVA"),
     C("C"),
@@ -46,7 +46,7 @@ public enum EditorFormatType {
     GROOVY("GROOVY"),
     HANDLEBARS("HANDLEBARS"),
     JSP("JSP"),
-    KOTLIN("KOTLIN"),
+    KT("KOTLIN"),
     SAS("SAS"),
     CSV("CSV"),
     INI("INI"),
@@ -58,8 +58,8 @@ public enum EditorFormatType {
     HOSTS("HOSTS"),
     HTACCESS("HTACCESS"),
     PROTO("PROTO"),
-    ASSEMBLER("ASSEMBLER_x86"),
-    ASSEMBLER_6502("ASSEMBLER_6502"),
+    ASM("ASSEMBLER_x86"),
+    ASM_6502("ASSEMBLER_6502"),
     BBCODE("BBCODE"),
     CLOJURE("CLOJURE"),
     JSON_WITH_COMMENTS("JSON(" + I18nHelper.comment() + ")"),
@@ -84,6 +84,12 @@ public enum EditorFormatType {
      * @return 类型
      */
     public static EditorFormatType ofName(String name) {
+        if (StringUtil.equalsAnyIgnoreCase(name, "cs", "c#")) {
+            return CSHARP;
+        }
+        if (StringUtil.equalsAnyIgnoreCase(name, "cpp", "c++")) {
+            return CPLUSPLUS;
+        }
         if (StringUtil.isNotBlank(name)) {
             for (EditorFormatType formatType : EditorFormatType.values()) {
                 if (StringUtil.equalsIgnoreCase(formatType.name, name)) {
@@ -93,15 +99,6 @@ public enum EditorFormatType {
                     return formatType;
                 }
             }
-        }
-        if (name.equalsIgnoreCase("py")) {
-            return PYTHON;
-        }
-        if (name.equalsIgnoreCase("cs")) {
-            return CSHARP;
-        }
-        if (name.equalsIgnoreCase("cpp")) {
-            return CPLUSPLUS;
         }
         return RAW;
     }

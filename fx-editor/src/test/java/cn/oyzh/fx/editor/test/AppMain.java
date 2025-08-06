@@ -87,6 +87,12 @@ public class AppMain extends Application {
         comboBox.addItem("ini");
         comboBox.addItem("py");
         comboBox.addItem("js");
+        comboBox.addItem("dart");
+        comboBox.addItem("kt");
+        comboBox.addItem("less");
+        comboBox.addItem("asm");
+        comboBox.addItem("proto");
+        comboBox.addItem("sql");
 
         comboBox.selectedItemChanged((observableValue, s, t1) -> {
             if (t1 != null) {
