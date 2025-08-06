@@ -636,7 +636,12 @@ public class Editor extends TextEditorPane {
 
     @Override
     public void setFont(Font font) {
-        // super.setFont(font);
-        SwingUtil.runLater(() -> super.setFont(font));
+        try {
+            // super.setFont(font);
+            SwingUtil.runWait(() -> super.setFont(font));
+            // SwingUtil.runLater(() -> super.setFont(font));
+        } catch (Exception ignored) {
+
+        }
     }
 }

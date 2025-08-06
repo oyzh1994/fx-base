@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.swing;
 
+import cn.oyzh.common.thread.DownLatch;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;

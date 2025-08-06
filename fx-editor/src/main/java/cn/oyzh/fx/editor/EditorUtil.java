@@ -143,7 +143,7 @@ public class EditorUtil {
                 }
             }
             Theme theme = Theme.load(stream);
-            SwingUtil.runLater(() -> theme.apply(textArea));
+            theme.apply(textArea);
         } catch (Exception ignored) {
         }
     }

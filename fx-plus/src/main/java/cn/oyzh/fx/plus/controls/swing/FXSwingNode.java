@@ -14,19 +14,23 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 /**
  * @author oyzh
  * @since 2025-08-04
  */
-public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, FontAdapter {
+public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, FlexAdapter, PropAdapter, TipAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
     }
 
     public void setSize(double width, double height) {
-        this.getContent().setSize((int) width, (int) height);
+        SwingUtil.runWait(() -> {
+            this.getContent().setSize((int) width, (int) height);
+            this.getContent().setMinimumSize(new Dimension((int) width, (int) height));
+        });
     }
 
     public void setWidth(double width) {
@@ -48,6 +52,7 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
+        this.setSize(size[0], size[1]);
         super.resize(size[0], size[1]);
     }
 

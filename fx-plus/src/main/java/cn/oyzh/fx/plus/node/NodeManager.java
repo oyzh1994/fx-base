@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
@@ -30,11 +30,11 @@ public class NodeManager {
      * @param node 节点
      */
     public static void init(Object node) {
-        if (node instanceof DestroyAdapter adapter) {
-            adapter.initDestroyListener();
-        }
         if (node instanceof NodeAdapter adapter) {
             adapter.initNode();
+        }
+        if (node instanceof DestroyAdapter adapter) {
+            adapter.initDestroyListener();
         }
         if (node instanceof OpacityAdapter adapter) {
             adapter.changeOpacity(OpacityManager.currentOpacity());
@@ -89,7 +89,7 @@ public class NodeManager {
         // TODO: 延迟执行主题处理，否则可能出现部分组件样式异常
         if (node instanceof ThemeAdapter adapter) {
             // adapter.changeTheme(ThemeManager.currentTheme());
-            TaskManager.startDelay(() -> adapter.changeTheme(ThemeManager.currentTheme()), 50);
+            ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 50);
         }
     }
 

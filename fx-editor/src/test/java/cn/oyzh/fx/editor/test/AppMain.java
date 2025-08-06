@@ -63,7 +63,7 @@ public class AppMain extends Application {
         editor.setCache(true);
         editor.setCacheHint(CacheHint.SPEED);
         editor.setFlexWidth("100%");
-        editor.setFlexHeight("100% - 60");
+        editor.setFlexHeight("100% - 90");
         editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
 
         FXHBox hBox = new FXHBox();
@@ -165,8 +165,8 @@ public class AppMain extends Application {
         hBox2.addChild(fontWeightComboBox);
 
         vBox.addChild(hBox);
-        vBox.addChild(hBox2);
         vBox.addChild(editor);
+        vBox.addChild(hBox2);
 
         Scene scene = new Scene(vBox);
 

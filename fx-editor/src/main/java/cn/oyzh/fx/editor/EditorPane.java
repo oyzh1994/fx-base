@@ -41,14 +41,14 @@ public class EditorPane extends FXSwingNode {
     {
         Editor editor = new Editor();
         editor.setLineWrap(true);
-
         RTextScrollPane scrollPane = new RTextScrollPane(editor);
         scrollPane.setLineNumbersEnabled(true);
         this.setContent(scrollPane);
+        SwingUtil.applyTheme(scrollPane);
     }
 
     public RTextScrollPane getScrollPane() {
-        return (RTextScrollPane) super.getContent();
+        return (RTextScrollPane) this.getContent();
     }
 
     public Editor getEditor() {
@@ -226,6 +226,10 @@ public class EditorPane extends FXSwingNode {
     public void setPromptText(String promptText) {
     }
 
+    public String getPromptText() {
+        return null;
+    }
+
     public int getCaretPosition() {
         return this.getEditor().getCaretPosition();
     }
@@ -260,13 +264,6 @@ public class EditorPane extends FXSwingNode {
     @Override
     public void changeTheme(ThemeStyle style) {
         super.changeTheme(style);
-        // Editor editor = this.getEditor();
-        // if (ThemeManager.isDarkMode()) {
-        //     editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_DARK);
-        // } else {
-        //     editor.setCurrentLineHighlightColor(CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT);
-        // }
-        // SwingUtil.applyTheme(editor);
         EditorUtil.applyTheme(this.getEditor());
         RTextScrollPane scrollPane = this.getScrollPane();
         SwingUtil.applyTheme(scrollPane);
