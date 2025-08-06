@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.util.StringConverter;
 
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +21,20 @@ public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> imple
     {
         NodeManager.init(this);
         this.setTipText(I18nHelper.format());
+        this.setConverter(new StringConverter<EditorFormatType>() {
+            @Override
+            public String toString(EditorFormatType formatType) {
+                if (formatType == null) {
+                    return "";
+                }
+                return formatType.getName();
+            }
+
+            @Override
+            public EditorFormatType fromString(String s) {
+                return null;
+            }
+        });
     }
 
     /**
@@ -162,16 +177,9 @@ public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> imple
     @Override
     public List<EditorFormatType> values(Locale locale) {
         this.clearItems();
-        this.addItem(EditorFormatType.RAW);
-        this.addItem(EditorFormatType.JSON);
-        this.addItem(EditorFormatType.XML);
-        this.addItem(EditorFormatType.HTML);
-        this.addItem(EditorFormatType.YAML);
-        // this.addItem(EditorFormatType.STRING);
-        // this.addItem(EditorFormatType.BINARY);
-        // this.addItem(EditorFormatType.HEX);
-        this.addItem(EditorFormatType.CSS);
-        this.addItem(EditorFormatType.PROPERTIES);
+        for (EditorFormatType formatType : EditorFormatType.values()) {
+            this.addItem(formatType);
+        }
         return this.getItems();
     }
 }

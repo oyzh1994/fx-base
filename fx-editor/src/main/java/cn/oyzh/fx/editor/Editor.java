@@ -21,6 +21,7 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -161,6 +162,22 @@ public class Editor extends TextEditorPane {
                 case HTML -> this.showHtmlData(rawData);
                 case YAML -> this.showYamlData(rawData);
                 case PROPERTIES -> this.showPropertiesData(rawData);
+                default -> {
+                    String data = null;
+                    if (rawData instanceof CharSequence sequence) {
+                        data = sequence.toString();
+                    } else if (rawData instanceof byte[] array) {
+                        data = Arrays.toString(array);
+                    } else if (rawData != null) {
+                        data = rawData.toString();
+                    }
+                    if (data != null) {
+                        this.setText(data);
+                    } else {
+                        this.clear();
+                    }
+                    this.setFormatType(formatType);
+                }
             }
         } finally {
             this.ignoreChange = false;

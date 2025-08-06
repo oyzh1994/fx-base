@@ -3,6 +3,7 @@ package cn.oyzh.fx.editor.test;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.editor.EditorFormatType;
 import cn.oyzh.fx.editor.EditorFormatTypeComboBox;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.EditorPane;
@@ -59,7 +60,7 @@ public class AppMain extends Application {
 
         FXHBox hBox = new FXHBox();
 
-        Button btn_1 = new Button("json数据");
+        Button btn_1 = new Button("json");
         btn_1.setOnAction(actionEvent -> {
             InputStream stream = ResourceUtil.getResourceAsStream("test.json");
             byte[] bytes = IOUtil.readBytes(stream);
@@ -67,7 +68,7 @@ public class AppMain extends Application {
         });
         hBox.addChild(btn_1);
 
-        Button btn_2 = new Button("html数据");
+        Button btn_2 = new Button("html");
         btn_2.setOnAction(actionEvent -> {
             InputStream stream = ResourceUtil.getResourceAsStream("test.html");
             String string = IOUtil.readDefaultString(stream);
@@ -75,7 +76,7 @@ public class AppMain extends Application {
         });
         hBox.addChild(btn_2);
 
-        Button btn_3 = new Button("xml数据");
+        Button btn_3 = new Button("xml");
         btn_3.setOnAction(actionEvent -> {
             InputStream stream = ResourceUtil.getResourceAsStream("test.xml");
             String string = IOUtil.readDefaultString(stream);
@@ -83,7 +84,7 @@ public class AppMain extends Application {
         });
         hBox.addChild(btn_3);
 
-        Button btn_4 = new Button("yaml数据");
+        Button btn_4 = new Button("yaml");
         btn_4.setOnAction(actionEvent -> {
             InputStream stream = ResourceUtil.getResourceAsStream("test.yaml");
             String string = IOUtil.readDefaultString(stream);
@@ -91,7 +92,7 @@ public class AppMain extends Application {
         });
         hBox.addChild(btn_4);
 
-        Button btn_5 = new Button("css数据");
+        Button btn_5 = new Button("css");
         btn_5.setOnAction(actionEvent -> {
             InputStream stream = ResourceUtil.getResourceAsStream("test.css");
             String string = IOUtil.readDefaultString(stream);
@@ -99,13 +100,20 @@ public class AppMain extends Application {
         });
         hBox.addChild(btn_5);
 
-        Button btn_6 = new Button("properties数据");
+        Button btn_6 = new Button("properties");
         btn_6.setOnAction(actionEvent -> {
             InputStream stream = ResourceUtil.getResourceAsStream("test.properties");
             String string = IOUtil.readUtf8String(stream);
             editor.showPropertiesData(string);
         });
         hBox.addChild(btn_6);
+        Button btn_7 = new Button("java");
+        btn_7.setOnAction(actionEvent -> {
+            InputStream stream = ResourceUtil.getResourceAsStream("test.java");
+            String string = IOUtil.readUtf8String(stream);
+            editor.showData(string, EditorFormatType.JAVA);
+        });
+        hBox.addChild(btn_7);
 
         FXHBox hBox2 = new FXHBox();
 
