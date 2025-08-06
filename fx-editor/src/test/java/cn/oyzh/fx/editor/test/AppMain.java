@@ -9,21 +9,28 @@ import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.EditorPane;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.font.FontFamilyComboBox;
 import cn.oyzh.fx.plus.font.FontSizeComboBox;
 import cn.oyzh.fx.plus.font.FontWeightComboBox;
+import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.CacheHint;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.apache.tika.pipes.emitter.StreamEmitter;
 
 import java.io.InputStream;
 import java.util.Set;
+import java.util.stream.Stream;
 
 
 /**
@@ -42,6 +49,7 @@ public class AppMain extends Application {
         test1(stage);
         // test2(stage);
         // test3(stage);
+        stage.setTitle("编辑器测试");
     }
 
     private void test1(Stage stage) {
@@ -55,78 +63,79 @@ public class AppMain extends Application {
         editor.setCache(true);
         editor.setCacheHint(CacheHint.SPEED);
         editor.setFlexWidth("100%");
-        editor.setFlexHeight("100% - 90");
+        editor.setFlexHeight("100% - 60");
         editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
 
         FXHBox hBox = new FXHBox();
 
-        Button btn_1 = new Button("json");
-        btn_1.setOnAction(actionEvent -> {
-            InputStream stream = ResourceUtil.getResourceAsStream("test.json");
-            byte[] bytes = IOUtil.readBytes(stream);
-            editor.showJsonData(new String(bytes));
-        });
-        hBox.addChild(btn_1);
+        // 高亮
+        FXTextField text_31 = new FXTextField();
+        text_31.setPromptText("查找内容");
+        editor.highlightTextProperty().bind(text_31.textProperty());
+        hBox.addChild(text_31);
 
-        Button btn_2 = new Button("html");
-        btn_2.setOnAction(actionEvent -> {
-            InputStream stream = ResourceUtil.getResourceAsStream("test.html");
-            String string = IOUtil.readDefaultString(stream);
-            editor.showHtmlData(string);
-        });
-        hBox.addChild(btn_2);
+        FXComboBox<String> comboBox = new FXComboBox<>();
+        comboBox.addItem("json");
+        comboBox.addItem("html");
+        comboBox.addItem("xml");
+        comboBox.addItem("yaml");
+        comboBox.addItem("css");
+        comboBox.addItem("properties");
+        comboBox.addItem("java");
+        comboBox.addItem("cpp");
+        comboBox.addItem("c");
+        comboBox.addItem("ini");
+        comboBox.addItem("py");
+        comboBox.addItem("js");
 
-        Button btn_3 = new Button("xml");
-        btn_3.setOnAction(actionEvent -> {
-            InputStream stream = ResourceUtil.getResourceAsStream("test.xml");
-            String string = IOUtil.readDefaultString(stream);
-            editor.showXmlData(string);
+        comboBox.selectedItemChanged((observableValue, s, t1) -> {
+            if (t1 != null) {
+                try {
+                    InputStream stream = ResourceUtil.getResourceAsStream("test." + t1);
+                    EditorFormatType formatType = EditorFormatType.ofName(t1);
+                    String data = IOUtil.readDefaultString(stream);
+                    editor.showData(data, formatType);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
-        hBox.addChild(btn_3);
 
-        Button btn_4 = new Button("yaml");
-        btn_4.setOnAction(actionEvent -> {
-            InputStream stream = ResourceUtil.getResourceAsStream("test.yaml");
-            String string = IOUtil.readDefaultString(stream);
-            editor.showYamlData(string);
-        });
-        hBox.addChild(btn_4);
+        hBox.addChild(new FXLabel("数据"));
+        hBox.addChild(comboBox);
 
-        Button btn_5 = new Button("css");
-        btn_5.setOnAction(actionEvent -> {
-            InputStream stream = ResourceUtil.getResourceAsStream("test.css");
-            String string = IOUtil.readDefaultString(stream);
-            editor.showCssData(string);
+        // 提示词
+        FXTextField text_32 = new FXTextField();
+        text_32.setPromptText("提示词");
+        text_32.addTextChangeListener((observableValue, s, t1) -> {
+            if (StringUtil.isEmpty(t1)) {
+                return;
+            }
+            if (t1.contains(",")) {
+                editor.setPrompts(Set.of(t1.split(",")));
+            } else {
+                editor.setPrompts(Set.of(t1));
+            }
         });
-        hBox.addChild(btn_5);
-
-        Button btn_6 = new Button("properties");
-        btn_6.setOnAction(actionEvent -> {
-            InputStream stream = ResourceUtil.getResourceAsStream("test.properties");
-            String string = IOUtil.readUtf8String(stream);
-            editor.showPropertiesData(string);
+        hBox.addChild(text_32);
+        // 格式
+        EditorFormatTypeComboBox formatTypeComboBox = new EditorFormatTypeComboBox();
+        formatTypeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFormatType(t1);
         });
-        hBox.addChild(btn_6);
-        Button btn_7 = new Button("java");
-        btn_7.setOnAction(actionEvent -> {
-            InputStream stream = ResourceUtil.getResourceAsStream("test.java");
-            String string = IOUtil.readUtf8String(stream);
-            editor.showData(string, EditorFormatType.JAVA);
+        editor.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
+            formatTypeComboBox.setValue(t1);
         });
-        hBox.addChild(btn_7);
+        hBox.addChild(new FXLabel("内容格式"));
+        hBox.addChild(formatTypeComboBox);
 
         FXHBox hBox2 = new FXHBox();
-
-        Button btn_21 = new Button("明亮主题");
-        btn_21.setOnAction(actionEvent -> {
-            ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeComboBox themeComboBox = new ThemeComboBox();
+        themeComboBox.selectedItemChanged((observableValue, themeStyle, t1) -> {
+            ThemeManager.apply(t1);
         });
-        Button btn_22 = new Button("黑暗主题");
-        btn_22.setOnAction(actionEvent -> {
-            ThemeManager.apply(Themes.DRACULA);
-        });
-        hBox2.addChild(btn_21);
-        hBox2.addChild(btn_22);
+        hBox2.addChild(new FXLabel("主题"));
+        hBox2.addChild(themeComboBox);
         // 字体大小
         FontSizeComboBox fontSizeComboBox = new FontSizeComboBox();
         fontSizeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
@@ -149,41 +158,8 @@ public class AppMain extends Application {
         hBox2.addChild(new FXLabel("字体字重"));
         hBox2.addChild(fontWeightComboBox);
 
-        FXHBox hBox3 = new FXHBox();
-        // 高亮
-        FXTextField text_31 = new FXTextField();
-        text_31.setPromptText("查找内容");
-        editor.highlightTextProperty().bind(text_31.textProperty());
-        hBox3.addChild(text_31);
-
-        // 提示词
-        FXTextField text_32 = new FXTextField();
-        text_32.setPromptText("提示词");
-        text_32.addTextChangeListener((observableValue, s, t1) -> {
-            if (StringUtil.isEmpty(t1)) {
-                return;
-            }
-            if (t1.contains(",")) {
-                editor.setPrompts(Set.of(t1.split(",")));
-            } else {
-                editor.setPrompts(Set.of(t1));
-            }
-        });
-        hBox3.addChild(text_32);
-        // 格式
-        EditorFormatTypeComboBox formatTypeComboBox = new EditorFormatTypeComboBox();
-        formatTypeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
-            editor.setFormatType(t1);
-        });
-        editor.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
-            formatTypeComboBox.setValue(t1);
-        });
-        hBox3.addChild(new FXLabel("内容格式"));
-        hBox3.addChild(formatTypeComboBox);
-
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
-        vBox.addChild(hBox3);
         vBox.addChild(editor);
 
         Scene scene = new Scene(vBox);

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;
 
 /**
@@ -75,4 +76,34 @@ public enum EditorFormatType {
     EditorFormatType(String name) {
         this.name = name;
     }
+
+    /**
+     * 从名称获取类型
+     *
+     * @param name 名称
+     * @return 类型
+     */
+    public static EditorFormatType ofName(String name) {
+        if (StringUtil.isNotBlank(name)) {
+            for (EditorFormatType formatType : EditorFormatType.values()) {
+                if (StringUtil.equalsIgnoreCase(formatType.name, name)) {
+                    return formatType;
+                }
+                if (StringUtil.equalsIgnoreCase(formatType.toString(), name)) {
+                    return formatType;
+                }
+            }
+        }
+        if (name.equalsIgnoreCase("py")) {
+            return PYTHON;
+        }
+        if (name.equalsIgnoreCase("cs")) {
+            return CSHARP;
+        }
+        if (name.equalsIgnoreCase("cpp")) {
+            return CPLUSPLUS;
+        }
+        return RAW;
+    }
+
 }

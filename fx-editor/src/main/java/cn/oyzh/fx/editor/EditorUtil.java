@@ -1,8 +1,10 @@
 package cn.oyzh.fx.editor;
 
 import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.plus.util.FXUtil;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -141,7 +143,7 @@ public class EditorUtil {
                 }
             }
             Theme theme = Theme.load(stream);
-            theme.apply(textArea);
+            SwingUtil.runLater(() -> theme.apply(textArea));
         } catch (Exception ignored) {
         }
     }

@@ -19,6 +19,9 @@ public class ThemeComboBox extends FXComboBox<ThemeStyle> {
         this.setConverter(new SimpleStringConverter<>() {
             @Override
             public String toString(ThemeStyle o) {
+                if (o == null) {
+                    return "";
+                }
                 return o.getDesc(I18nManager.currentLocale());
             }
         });
