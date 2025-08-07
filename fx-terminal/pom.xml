@@ -22,6 +22,12 @@
             <artifactId>base-store</artifactId>
         </dependency>
 
+        <!-- 自定义类库，编辑器相关 -->
+        <dependency>
+            <groupId>io.github.oyzh1994</groupId>
+            <artifactId>fx-editor</artifactId>
+        </dependency>
+
         <!-- 自定义类库，富文本相关 -->
         <dependency>
             <groupId>io.github.oyzh1994</groupId>

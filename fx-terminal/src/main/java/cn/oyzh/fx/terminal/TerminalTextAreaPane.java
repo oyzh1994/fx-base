@@ -4,6 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.editor.EditorPane;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.menu.FXContextMenu;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -35,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2023/05/28
  */
-public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> implements Terminal {
+public class TerminalTextAreaPane extends EditorPane implements Terminal {
 
     /**
      * 不可操作边界
@@ -78,22 +79,22 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
             if (this.getNOP() > this.contentLength()) {
                 this.flushNOP();
             }
-            if(JulLog.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 JulLog.debug("nop:{}, length:{}", this.getNOP(), this.contentLength());
             }
-            if (t1.longValue() < this.getNOP()) {
+            if (t1.intValue() < this.getNOP()) {
                 this.disableInput();
             } else {
                 this.enableInput();
             }
         });
-        this.addTextChangeListener((observable, oldValue, newValue) -> this.initTextStyle());
-        this.init();
+        // this.addTextChangeListener((observable, oldValue, newValue) -> this.initTextStyle());
+        // this.init();
     }
 
-    public TerminalTextAreaPane() {
-        super(new TerminalTextArea());
-    }
+    // public TerminalTextAreaPane() {
+    //     super(new TerminalTextArea());
+    // }
 
     @Override
     public void keyHandler(TerminalKeyHandler keyHandler) {
@@ -352,7 +353,28 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 
     @Override
     public void caretPosition(int caretPosition) {
-        FXUtil.runWait(() -> this.positionCaret(caretPosition));
+        this.positionCaret(caretPosition);
+        // FXUtil.runWait(() -> this.positionCaret(caretPosition));
+    }
+
+    @Override
+    public String fontFamily() {
+        return super.getFontFamily();
+    }
+
+    @Override
+    public void fontFamily(String fontFamily) {
+        super.setFontFamily(fontFamily);
+    }
+
+    @Override
+    public double fontSize() {
+        return super.getFontSize();
+    }
+
+    @Override
+    public void fontSize(double fontSize) {
+        super.setFontSize(fontSize);
     }
 
     @Override
@@ -437,12 +459,10 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 
     @Override
     public void fontSizeIncr() {
-        super.fontSizeIncr();
     }
 
     @Override
     public void fontSizeDecr() {
-        super.fontSizeDecr();
     }
 
     @Override
@@ -475,55 +495,83 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 //        this.initTextStyle();
 //    }
 
-    /**
-     * 初始化组件
-     */
-    protected void init() {
-        // 初始化字体
-        this.initFont();
-        // 显示行号
-        this.showLineNum();
-        // 初始化内容提示符
-        this.initPrompts();
-        // 覆盖默认的菜单
-        this.setContextMenu(FXContextMenu.EMPTY);
-//        // 添加类
-//        this.addClass("terminal-text-area");
-    }
+//     /**
+//      * 初始化组件
+//      */
+//     protected void init() {
+//         // 初始化字体
+//         this.initFont();
+//         // 显示行号
+//         this.showLineNum();
+//         // 初始化内容提示符
+//         this.initPrompts();
+//         // // 覆盖默认的菜单
+//         // this.setContextMenu(FXContextMenu.EMPTY);
+// //        // 添加类
+// //        this.addClass("terminal-text-area");
+//     }
+
+//     @Override
+//     protected Font initFont() {
+//         // 禁用字体管理
+//         this.disableFont();
+// //        this.setFontSize(11);
+// //        this.setFontFamily("Monospaced");
+// //        this.setFontWeight(FontWeight.NORMAL);
+//         return Font.font("Monospaced", FontWeight.NORMAL, 11);
+//     }
 
     @Override
-    protected Font initFont() {
-        // 禁用字体管理
-        this.disableFont();
-//        this.setFontSize(11);
-//        this.setFontFamily("Monospaced");
-//        this.setFontWeight(FontWeight.NORMAL);
-        return Font.font("Monospaced", FontWeight.NORMAL, 11);
+    public void changeFont(Font font) {
+        Font font1 = Font.font("Monospaced", FontWeight.NORMAL, 11);
+        super.changeFont(font1);
     }
 
-    /**
-     * 初始化内容提示词
-     */
+    // /**
+    //  * 初始化内容提示词
+    //  */
+    // @Override
+    // public void initPrompts() {
+    //     // 设置内容提示符
+    //     Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
+    //     Set<String> set = new HashSet<>();
+    //     for (TerminalCommandHandler<?, ?> handler : handlers) {
+    //         if (StringUtil.isNotBlank(handler.commandName())) {
+    //             set.add(handler.commandName());
+    //         }
+    //         if (StringUtil.isNotBlank(handler.commandSubName())) {
+    //             set.add(handler.commandSubName());
+    //         }
+    //         if (StringUtil.isNotBlank(handler.commandFullName())) {
+    //             set.add(handler.commandFullName());
+    //         }
+    //     }
+    //     this.setPrompts(set);
+    // }
+
     @Override
-    public void initPrompts() {
-        // 设置内容提示符
-        Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
-        Set<String> set = new HashSet<>();
-        for (TerminalCommandHandler<?, ?> handler : handlers) {
-            if (StringUtil.isNotBlank(handler.commandName())) {
-                set.add(handler.commandName());
+    public Set<String> getPrompts() {
+        if (super.getPrompts() == null) {
+            // 设置内容提示符
+            Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
+            Set<String> set = new HashSet<>();
+            for (TerminalCommandHandler<?, ?> handler : handlers) {
+                if (StringUtil.isNotBlank(handler.commandName())) {
+                    set.add(handler.commandName());
+                }
+                if (StringUtil.isNotBlank(handler.commandSubName())) {
+                    set.add(handler.commandSubName());
+                }
+                if (StringUtil.isNotBlank(handler.commandFullName())) {
+                    set.add(handler.commandFullName());
+                }
             }
-            if (StringUtil.isNotBlank(handler.commandSubName())) {
-                set.add(handler.commandSubName());
-            }
-            if (StringUtil.isNotBlank(handler.commandFullName())) {
-                set.add(handler.commandFullName());
-            }
+            this.setPrompts(set);
         }
-        this.setPrompts(set);
+        return super.getPrompts();
     }
 
-//    @Override
+    //    @Override
 //    public void initTextStyle() {
 
     /// /        this.clearTextStyle();
@@ -545,6 +593,11 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
     @Override
     public int getNOP() {
         return this.NOP.get();
+    }
+
+    @Override
+    public String getTipText() {
+        return super.getTipText();
     }
 
 //    @Override

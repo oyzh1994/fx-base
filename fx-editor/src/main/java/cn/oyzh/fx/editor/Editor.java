@@ -7,8 +7,10 @@ import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -93,6 +95,10 @@ public class Editor extends TextEditorPane {
                 textProperty.setValue(getText());
             }
         });
+        // 光标位置变更事件
+        this.addCaretListener(e -> {
+            this.caretPositionProperty.set(e.getDot());
+        });
         // 可编辑变更事件
         this.addPropertyChangeListener("editable", e -> {
             this.editableProperty.setValue((Boolean) e.getNewValue());
@@ -102,6 +108,11 @@ public class Editor extends TextEditorPane {
             this.initTextStyle();
         });
     }
+
+    /**
+     * 光标位置属性
+     */
+    private final LongProperty caretPositionProperty = new SimpleLongProperty();
 
     /**
      * 可撤销属性
@@ -117,6 +128,10 @@ public class Editor extends TextEditorPane {
      * 可编辑属性
      */
     private final BooleanProperty editableProperty = new SimpleBooleanProperty();
+
+    public LongProperty caretPositionProperty() {
+        return caretPositionProperty;
+    }
 
     public BooleanProperty undoableProperty() {
         return undoableProperty;
@@ -679,6 +694,16 @@ public class Editor extends TextEditorPane {
      * @param content 内容
      */
     public void appendLine(String content) {
+        this.appendLine(content, false);
+    }
+
+    /**
+     * 追加行
+     *
+     * @param content 内容
+     * @param endLine 尾部是否追加换行符
+     */
+    public void appendLine(String content, boolean endLine) {
         if (content != null) {
             int len = this.getLength();
             String text = null;
@@ -690,7 +715,7 @@ public class Editor extends TextEditorPane {
             if (text != null && !text.isEmpty() && !text.endsWith("\n") && !content.startsWith("\n")) {
                 content = System.lineSeparator() + content;
             }
-            if (!content.endsWith(System.lineSeparator())) {
+            if (endLine && !content.endsWith(System.lineSeparator())) {
                 content = content + "\n";
             }
             this.append(content);
@@ -759,5 +784,17 @@ public class Editor extends TextEditorPane {
             }
         });
         return reference.get();
+    }
+
+    public void positionCaret(int caretPosition) {
+        this.setCaretPosition(caretPosition);
+    }
+
+    public void deleteText(int start, int end) {
+        try {
+            this.getDocument().remove(start, end);
+        } catch (Exception ignored) {
+
+        }
     }
 }

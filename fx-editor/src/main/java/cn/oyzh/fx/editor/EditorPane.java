@@ -4,12 +4,12 @@ import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
 import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
-import javafx.scene.text.Font;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.JScrollBar;
@@ -227,6 +227,10 @@ public class EditorPane extends FXSwingNode {
         this.getEditor().forgetHistory();
     }
 
+    public LongProperty caretPositionProperty() {
+        return this.getEditor().caretPositionProperty();
+    }
+
     public BooleanProperty undoableProperty() {
         return this.getEditor().undoableProperty();
     }
@@ -270,6 +274,10 @@ public class EditorPane extends FXSwingNode {
         this.getEditor().appendLine(content);
     }
 
+    public void appendLine(String content, boolean endLine) {
+        this.getEditor().appendLine(content, endLine);
+    }
+
     public boolean isEmpty() {
         return this.getEditor().isEmpty();
     }
@@ -300,10 +308,6 @@ public class EditorPane extends FXSwingNode {
         return this.getEditor();
     }
 
-    public void copy() {
-        this.getEditor().copy();
-    }
-
     /**
      * 滚动到顶部
      */
@@ -318,11 +322,35 @@ public class EditorPane extends FXSwingNode {
     /**
      * 滚动到底部
      */
-    public void scrollToBottom() {
+    public void scrollToEnd() {
         JScrollPane scrollPane = this.getScrollPane();
         JScrollBar bar = scrollPane.getVerticalScrollBar();
         SwingUtil.runLater(() -> {
             bar.setValue(bar.getMaximum());
         });
+    }
+
+    public int getLength() {
+        return this.getEditor().getLength();
+    }
+
+    public void cut() {
+        this.getEditor().cut();
+    }
+
+    public void copy() {
+        this.getEditor().copy();
+    }
+
+    public void positionCaret(int caretPosition) {
+        this.getEditor().positionCaret(caretPosition);
+    }
+
+    public void selectRange(int start, int end) {
+        this.getEditor().selectRange(start, end);
+    }
+
+    public void deleteText(int start, int end) {
+        this.getEditor().deleteText(start, end);
     }
 }

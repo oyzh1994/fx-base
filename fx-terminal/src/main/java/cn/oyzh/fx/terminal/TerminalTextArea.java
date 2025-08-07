@@ -8,6 +8,7 @@ import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
  * @author oyzh
  * @since 2024/04/17
  */
+@Deprecated
 public class TerminalTextArea extends BaseRichTextArea {
 
     @Override
