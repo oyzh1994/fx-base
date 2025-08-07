@@ -133,17 +133,17 @@ public class EditorUtil {
                 if (ThemeManager.currentTheme() == Themes.PRIMER_LIGHT) {
                     stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/vs.xml");
                 } else if (ThemeManager.currentTheme() == Themes.NORD_LIGHT) {
-                    stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/eclipse.xml");
+                    stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/default-alt.xml");
                 } else if (ThemeManager.currentTheme() == Themes.CUPERTINO_LIGHT) {
                     // stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/default.xml");
                     // stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/default-alt.xml");
-                    stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/idea.xml");
+                    stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/eclipse.xml");
                 } else {
-                    stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/default-alt.xml");
+                    stream = ResourceUtil.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/idea.xml");
                 }
             }
             Theme theme = Theme.load(stream);
-            theme.apply(textArea);
+            SwingUtil.runTask(()-> theme.apply(textArea));
         } catch (Exception ignored) {
         }
     }

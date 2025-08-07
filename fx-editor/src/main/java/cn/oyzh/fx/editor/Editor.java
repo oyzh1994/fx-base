@@ -649,7 +649,13 @@ public class Editor extends TextEditorPane {
 
     public void appendLine(String content) {
         if (content != null) {
-            String text = this.getText();
+            int len = this.getLength();
+            String text = null;
+            try {
+                this.getText(len - 1, len);
+            } catch (Exception ex) {
+                text = this.getText();
+            }
             if (text != null && !text.isEmpty() && !text.endsWith("\n") && !content.startsWith("\n")) {
                 content = System.lineSeparator() + content;
             }
@@ -664,7 +670,8 @@ public class Editor extends TextEditorPane {
     public void setFont(Font font) {
         try {
             // super.setFont(font);
-            SwingUtil.runWait(() -> super.setFont(font));
+            SwingUtil.runTask(() -> super.setFont(font));
+            // SwingUtil.runWait(() -> super.setFont(font));
             // SwingUtil.runLater(() -> super.setFont(font));
         } catch (Exception ignored) {
 
