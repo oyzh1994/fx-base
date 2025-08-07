@@ -12,6 +12,8 @@ import javafx.geometry.Bounds;
 import javafx.scene.text.Font;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import java.awt.Component;
 import java.util.Optional;
 import java.util.Set;
@@ -36,6 +38,8 @@ public class EditorPane extends FXSwingNode {
 
     {
         Editor editor = new Editor();
+        // java.awt.Font font = SwingUtil.fromFxFont(FontManager.currentFont());
+        // editor.setFont(font);
         editor.setLineWrap(true);
         RTextScrollPane scrollPane = new RTextScrollPane(editor);
         scrollPane.setLineNumbersEnabled(true);
@@ -90,29 +94,29 @@ public class EditorPane extends FXSwingNode {
         return this.getEditor().showDetectData(rawData);
     }
 
-    public void showJsonData(Object rawData) {
-        this.getEditor().showJsonData(rawData);
-    }
-
-    public void showXmlData(Object rawData) {
-        this.getEditor().showXmlData(rawData);
-    }
-
-    public void showHtmlData(Object rawData) {
-        this.getEditor().showHtmlData(rawData);
-    }
-
-    public void showYamlData(Object rawData) {
-        this.getEditor().showYamlData(rawData);
-    }
-
-    public void showCssData(Object rawData) {
-        this.getEditor().showCssData(rawData);
-    }
-
-    public void showPropertiesData(Object rawData) {
-        this.getEditor().showPropertiesData(rawData);
-    }
+    // public void showJsonData(Object rawData) {
+    //     this.getEditor().showJsonData(rawData);
+    // }
+    //
+    // public void showXmlData(Object rawData) {
+    //     this.getEditor().showXmlData(rawData);
+    // }
+    //
+    // public void showHtmlData(Object rawData) {
+    //     this.getEditor().showHtmlData(rawData);
+    // }
+    //
+    // public void showYamlData(Object rawData) {
+    //     this.getEditor().showYamlData(rawData);
+    // }
+    //
+    // public void showCssData(Object rawData) {
+    //     this.getEditor().showCssData(rawData);
+    // }
+    //
+    // public void showPropertiesData(Object rawData) {
+    //     this.getEditor().showPropertiesData(rawData);
+    // }
 
     public void showRawData(Object rawData) {
         this.getEditor().showRawData(rawData);
@@ -246,9 +250,6 @@ public class EditorPane extends FXSwingNode {
         this.getEditor().appendLine(content);
     }
 
-    public void scrollToTop() {
-    }
-
     public boolean isEmpty() {
         return this.getEditor().isEmpty();
     }
@@ -280,5 +281,23 @@ public class EditorPane extends FXSwingNode {
 
     public void copy() {
         this.getEditor().copy();
+    }
+
+    /**
+     * 滚动到顶部
+     */
+    public void scrollToTop() {
+        JScrollPane scrollPane = this.getScrollPane();
+        JScrollBar bar = scrollPane.getVerticalScrollBar();
+        bar.setValue(bar.getMinimum());
+    }
+
+    /**
+     * 滚动到底部
+     */
+    public void scrollToBottom() {
+        JScrollPane scrollPane = this.getScrollPane();
+        JScrollBar bar = scrollPane.getVerticalScrollBar();
+        bar.setValue(bar.getMaximum());
     }
 }

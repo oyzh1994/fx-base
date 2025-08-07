@@ -62,7 +62,15 @@ public class SwingTask extends Thread {
                 ThreadUtil.sleep(5);
                 continue;
             }
-            SwingUtilities.invokeLater(func);
+            try {
+                if (SwingUtilities.isEventDispatchThread()) {
+                    func.run();
+                } else {
+                    SwingUtilities.invokeAndWait(func);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

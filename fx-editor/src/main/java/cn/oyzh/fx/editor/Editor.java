@@ -87,10 +87,19 @@ public class Editor extends TextEditorPane {
         });
     }
 
+    /**
+     * 可撤销属性
+     */
     private final BooleanProperty undoableProperty = new SimpleBooleanProperty();
 
+    /**
+     * 可重做属性
+     */
     private final BooleanProperty redoableProperty = new SimpleBooleanProperty();
 
+    /**
+     * 可编辑属性
+     */
     private final BooleanProperty editableProperty = new SimpleBooleanProperty();
 
     public BooleanProperty undoableProperty() {
@@ -111,7 +120,7 @@ public class Editor extends TextEditorPane {
     private boolean ignoreChange;
 
     /**
-     * 数据类型
+     * 格式类型
      */
     private ObjectProperty<EditorFormatType> formatTypeProperty;
 
@@ -161,34 +170,34 @@ public class Editor extends TextEditorPane {
         try {
             this.ignoreChange = true;
             this.setEnabled(false);
-            switch (formatType) {
-                case CSS -> this.showCssData(rawData);
-                case RAW -> this.showRawData(rawData);
-                case XML -> this.showXmlData(rawData);
-                case JSON -> this.showJsonData(rawData);
-                case HTML -> this.showHtmlData(rawData);
-                case YAML -> this.showYamlData(rawData);
-                case PROPERTIES -> this.showPropertiesData(rawData);
-                default -> {
-                    String data = null;
-                    if (rawData instanceof CharSequence sequence) {
-                        data = sequence.toString();
-                    } else if (rawData instanceof byte[] array) {
-                        data = Arrays.toString(array);
-                    } else if (rawData != null) {
-                        data = rawData.toString();
-                    }
-                    if (data != null) {
-                        this.setText(data);
-                    } else {
-                        this.clear();
-                    }
-                    this.setFormatType(formatType);
-                }
+            // switch (formatType) {
+            //     case CSS -> this.showCssData(rawData);
+            //     case RAW -> this.showRawData(rawData);
+            //     case XML -> this.showXmlData(rawData);
+            //     case JSON -> this.showJsonData(rawData);
+            //     case HTML -> this.showHtmlData(rawData);
+            //     case YAML -> this.showYamlData(rawData);
+            //     case PROPERTIES -> this.showPropertiesData(rawData);
+            //     default -> {
+            String data = null;
+            if (rawData instanceof CharSequence sequence) {
+                data = sequence.toString();
+            } else if (rawData instanceof byte[] array) {
+                data = Arrays.toString(array);
+            } else if (rawData != null) {
+                data = rawData.toString();
             }
+            if (data != null) {
+                this.setText(data);
+            } else {
+                this.clear();
+            }
+            this.setFormatType(formatType);
+            // }
+            // }
         } finally {
-            this.ignoreChange = false;
             this.setEnabled(true);
+            this.ignoreChange = false;
         }
     }
 
@@ -234,59 +243,59 @@ public class Editor extends TextEditorPane {
         }
     }
 
-    /**
-     * 显示json数据
-     */
-    public void showJsonData(Object rawData) {
-        String jsonData = TextUtil.getJsonData(rawData);
-        this.setText(jsonData);
-        this.setFormatType(EditorFormatType.JSON);
-    }
-
-    /**
-     * 显示xml数据
-     */
-    public void showXmlData(Object rawData) {
-        String xmlData = TextUtil.getXmlData(rawData);
-        this.setText(xmlData);
-        this.setFormatType(EditorFormatType.XML);
-    }
-
-    /**
-     * 显示html数据
-     */
-    public void showHtmlData(Object rawData) {
-        String htmlData = TextUtil.getHtmlData(rawData);
-        this.setText(htmlData);
-        this.setFormatType(EditorFormatType.HTML);
-    }
-
-    /**
-     * 显示yaml数据
-     */
-    public void showYamlData(Object rawData) {
-        String yamlData = TextUtil.getYamlData(rawData);
-        this.setText(yamlData);
-        this.setFormatType(EditorFormatType.YAML);
-    }
-
-    /**
-     * 显示css数据
-     */
-    public void showCssData(Object rawData) {
-        String yamlData = TextUtil.getCssData(rawData);
-        this.setText(yamlData);
-        this.setFormatType(EditorFormatType.CSS);
-    }
-
-    /**
-     * 显示properties数据
-     */
-    public void showPropertiesData(Object rawData) {
-        String yamlData = TextUtil.getPropertiesData(rawData);
-        this.setText(yamlData);
-        this.setFormatType(EditorFormatType.PROPERTIES);
-    }
+    // /**
+    //  * 显示json数据
+    //  */
+    // public void showJsonData(Object rawData) {
+    //     String data = TextUtil.getJsonData(rawData);
+    //     this.setText(data);
+    //     this.setFormatType(EditorFormatType.JSON);
+    // }
+    //
+    // /**
+    //  * 显示xml数据
+    //  */
+    // public void showXmlData(Object rawData) {
+    //     String data = TextUtil.getXmlData(rawData);
+    //     this.setText(data);
+    //     this.setFormatType(EditorFormatType.XML);
+    // }
+    //
+    // /**
+    //  * 显示html数据
+    //  */
+    // public void showHtmlData(Object rawData) {
+    //     String data = TextUtil.getHtmlData(rawData);
+    //     this.setText(data);
+    //     this.setFormatType(EditorFormatType.HTML);
+    // }
+    //
+    // /**
+    //  * 显示yaml数据
+    //  */
+    // public void showYamlData(Object rawData) {
+    //     String data = TextUtil.getYamlData(rawData);
+    //     this.setText(data);
+    //     this.setFormatType(EditorFormatType.YAML);
+    // }
+    //
+    // /**
+    //  * 显示css数据
+    //  */
+    // public void showCssData(Object rawData) {
+    //     String data = TextUtil.getCssData(rawData);
+    //     this.setText(data);
+    //     this.setFormatType(EditorFormatType.CSS);
+    // }
+    //
+    // /**
+    //  * 显示properties数据
+    //  */
+    // public void showPropertiesData(Object rawData) {
+    //     String data = TextUtil.getPropertiesData(rawData);
+    //     this.setText(data);
+    //     this.setFormatType(EditorFormatType.PROPERTIES);
+    // }
 
     /**
      * 显示原始数据
@@ -317,12 +326,8 @@ public class Editor extends TextEditorPane {
 
     @Override
     public void setSyntaxEditingStyle(String styleKey) {
-        SwingUtil.runWait(() -> super.setSyntaxEditingStyle(styleKey));
+        SwingUtil.runLater(() -> super.setSyntaxEditingStyle(styleKey));
     }
-
-    // public void invalidSyntaxEditingStyle() {
-    //     SwingUtil.runWait(() -> super.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE));
-    // }
 
     /**
      * 添加高亮
@@ -334,14 +339,14 @@ public class Editor extends TextEditorPane {
      */
     public Object addHighlight(int start, int end, Highlighter.HighlightPainter painter) {
         AtomicReference<Object> reference = new AtomicReference<>();
-        SwingUtil.runWait(() -> {
-            try {
-                Object id = this.getHighlighter().addHighlight(start, end, painter);
-                reference.set(id);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+        // SwingUtil.runWait(() -> {
+        try {
+            Object id = this.getHighlighter().addHighlight(start, end, painter);
+            reference.set(id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // });
         return reference.get();
     }
 
@@ -354,16 +359,16 @@ public class Editor extends TextEditorPane {
      */
     public List<Object> addHighlights(List<EditorHighlight> highlights, Highlighter.HighlightPainter painter) {
         List<Object> ids = new ArrayList<>();
-        SwingUtil.runWait(() -> {
-            try {
-                for (EditorHighlight highlight : highlights) {
-                    Object id = this.getHighlighter().addHighlight(highlight.getStart(), highlight.getEnd(), painter);
-                    ids.add(id);
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        // SwingUtil.runWait(() -> {
+        try {
+            for (EditorHighlight highlight : highlights) {
+                Object id = this.getHighlighter().addHighlight(highlight.getStart(), highlight.getEnd(), painter);
+                ids.add(id);
             }
-        });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // });
         return ids;
     }
 
@@ -373,13 +378,13 @@ public class Editor extends TextEditorPane {
      * @param id id
      */
     public void removeHighlight(Object id) {
-        SwingUtil.runWait(() -> {
-            try {
-                this.getHighlighter().removeHighlight(id);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+        // SwingUtil.runWait(() -> {
+        try {
+            this.getHighlighter().removeHighlight(id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // });
     }
 
     /**
@@ -388,15 +393,15 @@ public class Editor extends TextEditorPane {
      * @param ids id列表
      */
     public void removeHighlights(List<Object> ids) {
-        SwingUtil.runWait(() -> {
-            try {
-                for (Object id : ids) {
-                    this.getHighlighter().removeHighlight(id);
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        // SwingUtil.runWait(() -> {
+        try {
+            for (Object id : ids) {
+                this.getHighlighter().removeHighlight(id);
             }
-        });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // });
     }
 
     /**
@@ -407,6 +412,11 @@ public class Editor extends TextEditorPane {
     );
 
     /**
+     * 提示词样式线程
+     */
+    private Thread highlightStyleThread;
+
+    /**
      * 高亮id列表
      */
     private final List<Object> highlightIds = new CopyOnWriteArrayList<>();
@@ -415,6 +425,8 @@ public class Editor extends TextEditorPane {
      * 初始化高亮样式
      */
     protected void initHighlightStyle() {
+        // 停止旧线程
+        ThreadUtil.interrupt(this.highlightStyleThread);
         // 移除高亮
         if (!this.highlightIds.isEmpty()) {
             List<Object> ids;
@@ -429,22 +441,24 @@ public class Editor extends TextEditorPane {
         if (StringUtil.isEmpty(highlightText)) {
             return;
         }
-        // 高亮正则模式
-        Pattern highlightPattern = Pattern.compile(highlightText, Pattern.CASE_INSENSITIVE);
         // 生成高亮
-        ThreadUtil.start(() -> {
+        Pattern highlightPattern = Pattern.compile(highlightText, Pattern.CASE_INSENSITIVE);
+        this.highlightStyleThread = ThreadUtil.start(() -> {
             String text = this.getText();
-            List<EditorHighlight> highlights = new ArrayList<>();
+            // List<EditorHighlight> highlights = new ArrayList<>();
+            // 高亮正则模式
             Matcher matcher = highlightPattern.matcher(text);
-            while (matcher.find()) {
-                highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
+            while (matcher.find() && !Thread.currentThread().isInterrupted()) {
+                // highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
+                Object id = this.addHighlight(matcher.start(), matcher.end(), HIGHLIGHT_PAINTER);
+                this.highlightIds.add(id);
             }
-            List<Object> ids = this.addHighlights(highlights, HIGHLIGHT_PAINTER);
-            if (CollectionUtil.isNotEmpty(ids)) {
-                synchronized (this.highlightIds) {
-                    this.highlightIds.addAll(ids);
-                }
-            }
+            // List<Object> ids = this.addHighlights(highlights, HIGHLIGHT_PAINTER);
+            // if (CollectionUtil.isNotEmpty(ids)) {
+            //     synchronized (this.highlightIds) {
+            //         this.highlightIds.addAll(ids);
+            //     }
+            // }
         });
     }
 
@@ -455,11 +469,6 @@ public class Editor extends TextEditorPane {
             new Color(125, 190, 93)
             // new Color(166, 38, 164)
     );
-
-    /**
-     * 提示词高亮id列表
-     */
-    private final List<Object> promptIds = new CopyOnWriteArrayList<>();
 
     /**
      * 提示词属性
@@ -492,9 +501,21 @@ public class Editor extends TextEditorPane {
     }
 
     /**
+     * 提示词样式线程
+     */
+    private Thread promptsStyleThread;
+
+    /**
+     * 提示词高亮id列表
+     */
+    private final List<Object> promptIds = new CopyOnWriteArrayList<>();
+
+    /**
      * 初始化提示词样式
      */
     protected void initPromptsStyle() {
+        // 停止旧线程
+        ThreadUtil.interrupt(this.promptsStyleThread);
         // 移除提示词
         if (!this.promptIds.isEmpty()) {
             List<Object> ids;
@@ -509,20 +530,22 @@ public class Editor extends TextEditorPane {
         if (CollectionUtil.isEmpty(prompts)) {
             return;
         }
-        // 提示词正则模式
-        Pattern promptsPattern = Pattern.compile("\\b(" + String.join("|", prompts) + ")\\b", Pattern.CASE_INSENSITIVE);
         // 生成高亮
-        ThreadUtil.start(() -> {
+        Pattern promptsPattern = Pattern.compile("\\b(" + String.join("|", prompts) + ")\\b", Pattern.CASE_INSENSITIVE);
+        this.promptsStyleThread = ThreadUtil.start(() -> {
             String text = this.getText();
-            List<EditorHighlight> highlights = new ArrayList<>();
+            // List<EditorHighlight> highlights = new ArrayList<>();
+            // 提示词正则模式
             Matcher matcher = promptsPattern.matcher(text);
-            while (matcher.find()) {
-                highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
+            while (matcher.find() && !Thread.currentThread().isInterrupted()) {
+                // highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
+                Object id = this.addHighlight(matcher.start(), matcher.end(), PROMPTS_PAINTER);
+                this.promptIds.add(id);
             }
-            List<Object> ids = this.addHighlights(highlights, PROMPTS_PAINTER);
-            synchronized (this.promptIds) {
-                this.promptIds.addAll(ids);
-            }
+            // List<Object> ids = this.addHighlights(highlights, PROMPTS_PAINTER);
+            // synchronized (this.promptIds) {
+            //     this.promptIds.addAll(ids);
+            // }
         });
     }
 
@@ -598,6 +621,11 @@ public class Editor extends TextEditorPane {
         SwingUtil.runWait(() -> this.getDocument().addUndoableEditListener(undoableEditListener));
     }
 
+    /**
+     * 获取内容，去除前后空格
+     *
+     * @return 内容
+     */
     public String getTextTrim() {
         String text = this.getText();
         if (text == null) {
@@ -606,40 +634,37 @@ public class Editor extends TextEditorPane {
         return text.trim();
     }
 
-    // @Override
-    // public void cut() {
-    //     SwingUtil.runWait(super::cut);
-    // }
-    //
-    // @Override
-    // public void copy() {
-    //     SwingUtil.runWait(super::copy);
-    // }
-    //
-    // @Override
-    // public void paste() {
-    //     SwingUtil.runWait(super::paste);
-    // }
-
+    /**
+     * 撤销
+     */
     public void undo() {
         super.undoLastAction();
-        // SwingUtil.runWait(super::undoLastAction);
     }
 
+    /**
+     * 重做
+     */
     public void redo() {
         super.redoLastAction();
-        // SwingUtil.runWait(super::redoLastAction);
     }
 
+    /**
+     * 遗忘历史
+     */
     public void forgetHistory() {
         super.discardAllEdits();
-        // SwingUtil.runWait(this::discardAllEdits);
     }
 
+    /**
+     * 替换内容
+     *
+     * @param start   开始位置
+     * @param end     结束位置
+     * @param content 内容
+     */
     public void replaceText(int start, int end, String content) {
         if (content != null) {
             try {
-                // SwingUtil.runWait(() -> super.replaceRange(content, start, end));
                 super.replaceRange(content, start, end);
             } catch (Exception ignored) {
 
@@ -647,12 +672,22 @@ public class Editor extends TextEditorPane {
         }
     }
 
+    /**
+     * 追加内容
+     *
+     * @param content 内容
+     */
     public void appendText(String content) {
         if (content != null) {
             super.append(content);
         }
     }
 
+    /**
+     * 追加行
+     *
+     * @param content 内容
+     */
     public void appendLine(String content) {
         if (content != null) {
             int len = this.getLength();
@@ -675,10 +710,8 @@ public class Editor extends TextEditorPane {
     @Override
     public void setFont(Font font) {
         try {
-            // super.setFont(font);
-            SwingUtil.runTask(() -> super.setFont(font));
-            // SwingUtil.runWait(() -> super.setFont(font));
-            // SwingUtil.runLater(() -> super.setFont(font));
+            super.setFont(font);
+            // SwingUtil.runTask(() -> super.setFont(font));
         } catch (Exception ignored) {
 
         }

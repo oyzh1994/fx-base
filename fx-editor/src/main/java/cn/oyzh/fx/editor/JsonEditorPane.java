@@ -1,6 +1,5 @@
 package cn.oyzh.fx.editor;
 
-import javafx.scene.text.Font;
 
 /**
  * @author oyzh
@@ -8,8 +7,9 @@ import javafx.scene.text.Font;
  */
 public abstract class JsonEditorPane extends EditorPane {
 
+    @Override
     public void showData(Object rawData) {
-        this.showJsonData(rawData);
+        this.showData(rawData, EditorFormatType.JSON);
     }
 
 }

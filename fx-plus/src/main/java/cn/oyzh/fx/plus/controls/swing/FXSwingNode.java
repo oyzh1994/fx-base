@@ -71,7 +71,7 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
      * @return 真实组件字体
      */
     protected java.awt.Font getRealComponentFont() {
-        if (this.realComponent() != null) {
+        if (this.realComponent() != null&& this.getContent() != null) {
             return this.realComponent().getFont();
         }
         return null;
@@ -83,7 +83,7 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
      * @param font 字体
      */
     protected void setRealComponentFont(java.awt.Font font) {
-        if (this.realComponent() != null) {
+        if (this.realComponent() != null && this.getContent() != null) {
             this.realComponent().setFont(font);
         }
     }
