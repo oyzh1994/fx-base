@@ -93,7 +93,7 @@ public class EditorPane extends FXSwingNode {
         RTextScrollPane scrollPane = new RTextScrollPane(editor);
         scrollPane.setLineNumbersEnabled(true);
         this.setContent(scrollPane);
-        SwingUtil.applyTheme(scrollPane);
+        // SwingUtil.applyTheme(scrollPane);
         // 调用父类
         super.initNode();
         // 尝试初始化提示词
@@ -281,7 +281,8 @@ public class EditorPane extends FXSwingNode {
     @Override
     public void changeTheme(ThemeStyle style) {
         super.changeTheme(style);
-        EditorUtil.applyTheme(this.getEditor());
+        Editor editor = this.getEditor();
+        EditorUtil.applyTheme(editor);
         RTextScrollPane scrollPane = this.getScrollPane();
         SwingUtil.applyTheme(scrollPane);
     }
@@ -309,7 +310,9 @@ public class EditorPane extends FXSwingNode {
     public void scrollToTop() {
         JScrollPane scrollPane = this.getScrollPane();
         JScrollBar bar = scrollPane.getVerticalScrollBar();
-        bar.setValue(bar.getMinimum());
+        SwingUtil.runLater(() -> {
+            bar.setValue(bar.getMinimum());
+        });
     }
 
     /**
@@ -318,6 +321,8 @@ public class EditorPane extends FXSwingNode {
     public void scrollToBottom() {
         JScrollPane scrollPane = this.getScrollPane();
         JScrollBar bar = scrollPane.getVerticalScrollBar();
-        bar.setValue(bar.getMaximum());
+        SwingUtil.runLater(() -> {
+            bar.setValue(bar.getMaximum());
+        });
     }
 }
