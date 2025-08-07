@@ -8,15 +8,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
-import javafx.scene.control.IndexRange;
 import javafx.scene.text.Font;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.text.Caret;
 import java.awt.Component;
-import java.awt.Point;
 import java.util.Optional;
 import java.util.Set;
 
@@ -235,15 +231,7 @@ public class EditorPane extends FXSwingNode {
     }
 
     public Optional<Bounds> getCaretBounds() {
-        Caret caret = this.getEditor().getCaret();
-        if (caret == null || !caret.isVisible()) {
-            return Optional.empty();
-        }
-        Point point = caret.getMagicCaretPosition();
-        int w = EditorUtil.getCaretWidth(this.getEditor());
-        int h = EditorUtil.getCaretHeight(this.getEditor());
-        BoundingBox bounds = new BoundingBox(point.x, point.y, w, h);
-        return Optional.of(bounds);
+        return this.getEditor().getCaretBounds();
     }
 
     public void replaceText(int start, int end, String content) {

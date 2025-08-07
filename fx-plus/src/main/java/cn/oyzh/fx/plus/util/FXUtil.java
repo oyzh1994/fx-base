@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.robot.Robot;
+import javafx.stage.Screen;
 import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
@@ -386,5 +387,15 @@ public class FXUtil {
             return 60;
         }
         return refreshRate;
+    }
+
+    /**
+     * 获取屏幕缩放
+     *
+     * @return 屏幕缩放
+     */
+    public static double screenScale() {
+        Screen primaryScreen = Screen.getPrimary();
+        return primaryScreen.getOutputScaleX();
     }
 }

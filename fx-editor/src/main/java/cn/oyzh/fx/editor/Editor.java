@@ -5,6 +5,7 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.plus.swing.SwingUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -12,6 +13,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 
 import javax.swing.event.DocumentEvent;
@@ -21,9 +24,12 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -676,6 +682,37 @@ public class Editor extends TextEditorPane {
         } catch (Exception ignored) {
 
         }
+    }
+
+    /**
+     * 获取光标边界
+     *
+     * @return 光标边界
+     */
+    public Optional<Bounds> getCaretBounds() {
+        try {
+            // 1. 获取光标在文档中的偏移量
+            int caretOffset = this.getCaretPosition();
+            // 2. 将文档偏移量转换为文本区域内的坐标（相对于文本区域的左上角）
+            // 注意：viewToModel 和 modelToView 是 Swing 文本组件的核心坐标转换方法
+            Rectangle caretRect = this.modelToView(caretOffset);
+            // 3. 计算光标在屏幕上的绝对坐标
+            //  - caretRect.x/y 是光标在文本区域内的相对坐标
+            //  - 加上文本区域在屏幕上的绝对坐标，得到最终位置
+            if (caretRect != null) {
+                Point textAreaScreenPos = this.getLocationOnScreen();
+                int screenX = textAreaScreenPos.x + caretRect.x;
+                int screenY = textAreaScreenPos.y + caretRect.y;
+                double screenScale = FXUtil.screenScale();
+                double x = screenX / screenScale;
+                double y = screenY / screenScale;
+                BoundingBox bounds = new BoundingBox(x, y, x, y);
+                return Optional.of(bounds);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return Optional.empty();
     }
 
 }
