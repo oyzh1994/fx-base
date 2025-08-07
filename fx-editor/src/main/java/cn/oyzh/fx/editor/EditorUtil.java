@@ -41,7 +41,7 @@ public class EditorUtil {
             case C -> SyntaxConstants.SYNTAX_STYLE_C;
             case CSHARP -> SyntaxConstants.SYNTAX_STYLE_CSHARP;
             case CPLUSPLUS -> SyntaxConstants.SYNTAX_STYLE_CPLUSPLUS;
-            case RUST -> SyntaxConstants.SYNTAX_STYLE_RUST;
+            case RS -> SyntaxConstants.SYNTAX_STYLE_RUST;
             case RUBY -> SyntaxConstants.SYNTAX_STYLE_RUBY;
             case GO -> SyntaxConstants.SYNTAX_STYLE_GO;
             case TS -> SyntaxConstants.SYNTAX_STYLE_TYPESCRIPT;

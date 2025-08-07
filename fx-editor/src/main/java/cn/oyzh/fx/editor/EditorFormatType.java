@@ -29,7 +29,7 @@ public enum EditorFormatType {
     C("C"),
     CSHARP("C#"),
     CPLUSPLUS("C++"),
-    RUST("RUST"),
+    RS("RUST"),
     RUBY("RUBY"),
     GO("GOLANG"),
     TS("TYPESCRIPT"),

@@ -88,6 +88,12 @@ public class AppMain extends Application {
         comboBox.addItem("asm");
         comboBox.addItem("proto");
         comboBox.addItem("sql");
+        comboBox.addItem("php");
+        comboBox.addItem("rs");
+        comboBox.addItem("md");
+        comboBox.addItem("lua");
+        comboBox.addItem("perl");
+        comboBox.addItem("scala");
 
         comboBox.selectedItemChanged((observableValue, s, t1) -> {
             if (t1 != null) {

@@ -281,10 +281,10 @@ public class EditorPane extends FXSwingNode {
     @Override
     public void changeTheme(ThemeStyle style) {
         super.changeTheme(style);
-        Editor editor = this.getEditor();
-        EditorUtil.applyTheme(editor);
         RTextScrollPane scrollPane = this.getScrollPane();
         SwingUtil.applyTheme(scrollPane);
+        Editor editor = this.getEditor();
+        EditorUtil.applyTheme(editor);
     }
 
     public void setEditable(boolean editable) {
