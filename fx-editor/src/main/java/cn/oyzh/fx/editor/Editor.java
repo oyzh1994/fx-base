@@ -20,12 +20,14 @@ import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.UndoableEditListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -748,4 +750,26 @@ public class Editor extends TextEditorPane {
         return Optional.empty();
     }
 
+    /**
+     * 选中选区
+     *
+     * @param start 开始位置
+     * @param end   结束位置
+     */
+    public void selectRange(int start, int end) {
+        SwingUtil.runWait(() -> this.select(start, end));
+    }
+
+    @Override
+    public Rectangle2D modelToView2D(int pos) throws BadLocationException {
+        AtomicReference<Rectangle2D> reference = new AtomicReference<>();
+        SwingUtil.runWait(() -> {
+            try {
+                reference.set(super.modelToView2D(pos));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        return reference.get();
+    }
 }

@@ -15,6 +15,8 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.Optional;
 import java.util.Set;
 
@@ -59,25 +61,39 @@ public class EditorPane extends FXSwingNode {
         return (Editor) scrollPane.getViewport().getComponents()[0];
     }
 
-    protected Font initFont() {
+    // /**
+    //  * 初始化字体
+    //  *
+    //  * @return 字体
+    //  */
+    // protected Font initFont() {
+    //     return null;
+    // }
 
-        return null;
+    // @Override
+    // public void changeFont(Font font) {
+    //     Font font1 = this.initFont();
+    //     if (font1 != null) {
+    //         super.changeFont(font1);
+    //     } else {
+    //         super.changeFont(font);
+    //     }
+    // }
+
+    /**
+     * 获取内容提示
+     *
+     * @return 内容提示
+     */
+    public Set<String> getPrompts() {
+        return this.getEditor().getPrompts();
     }
 
-    @Override
-    public void changeFont(Font font) {
-        Font font1 = this.initFont();
-        if (font1 != null) {
-            super.changeFont(font1);
-        } else {
-            super.changeFont(font);
-        }
-    }
-
-    public void initPrompts() {
-
-    }
-
+    /**
+     * 设置内容提示
+     *
+     * @param prompts 内容提示
+     */
     public void setPrompts(Set<String> prompts) {
         this.getEditor().setPrompts(prompts);
     }
@@ -117,10 +133,10 @@ public class EditorPane extends FXSwingNode {
     // public void showPropertiesData(Object rawData) {
     //     this.getEditor().showPropertiesData(rawData);
     // }
-
-    public void showRawData(Object rawData) {
-        this.getEditor().showRawData(rawData);
-    }
+    //
+    // public void showRawData(Object rawData) {
+    //     this.getEditor().showRawData(rawData);
+    // }
 
     @Override
     public void initNode() {
@@ -135,14 +151,23 @@ public class EditorPane extends FXSwingNode {
         });
     }
 
+    /**
+     * 隐藏行号
+     */
     public void hideLineNum() {
         this.getScrollPane().setLineNumbersEnabled(false);
     }
 
+    /**
+     * 显示行号
+     */
     public void showLineNum() {
         this.getScrollPane().setLineNumbersEnabled(true);
     }
 
+    /**
+     * 行号策略
+     */
     private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
 
     public EditorLineNumPolicy getLineNumPolicy() {
@@ -192,7 +217,34 @@ public class EditorPane extends FXSwingNode {
         this.getEditor().setHighlightText(highlightText);
     }
 
-    public void selectRangeAndGoto(int index, int i) {
+    /**
+     * 选中选区并转到选区
+     *
+     * @param start 开始
+     * @param end   结束
+     */
+    public void selectRangeAndGoto(int start, int end) {
+        try {
+            // 选中选区
+            this.getEditor().selectRange(start, end);
+            // 将文本位置转换为屏幕坐标矩形
+            Rectangle2D rect = this.getEditor().modelToView2D(start);
+            if (rect != null) {
+                // 滚动到该矩形区域（确保选中内容可见）
+                this.scrollRectToVisible(rect.getBounds());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 滚动到可视区
+     *
+     * @param rectangle 范围
+     */
+    public void scrollRectToVisible(Rectangle rectangle) {
+        SwingUtil.runWait(() -> this.getScrollPane().getViewport().scrollRectToVisible(rectangle));
     }
 
     public void undo() {
