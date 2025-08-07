@@ -28,31 +28,20 @@ import java.util.Set;
  */
 public class EditorPane extends FXSwingNode {
 
-    // /**
-    //  * 当前行暗色模式
-    //  */
-    // public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_DARK = new Color(255, 100, 100);
-    //
-    // /**
-    //  * 当前行亮色色模式
-    //  */
-    // public static final Color CURRENT_LINE_HIGHLIGHT_COLOR_LIGHT = new Color(255, 255, 170);
-
-    {
-        Editor editor = new Editor();
-        // java.awt.Font font = SwingUtil.fromFxFont(FontManager.currentFont());
-        // editor.setFont(font);
-        editor.setLineWrap(true);
-        RTextScrollPane scrollPane = new RTextScrollPane(editor);
-        scrollPane.setLineNumbersEnabled(true);
-        this.setContent(scrollPane);
-        SwingUtil.applyTheme(scrollPane);
-    }
-
+    /**
+     * 获取滚动面板
+     *
+     * @return 滚动面板
+     */
     public RTextScrollPane getScrollPane() {
         return (RTextScrollPane) this.getContent();
     }
 
+    /**
+     * 获取编辑器
+     *
+     * @return 编辑器
+     */
     public Editor getEditor() {
         RTextScrollPane scrollPane = this.getScrollPane();
         if (scrollPane == null || scrollPane.getViewport() == null) {
@@ -61,31 +50,15 @@ public class EditorPane extends FXSwingNode {
         return (Editor) scrollPane.getViewport().getComponents()[0];
     }
 
-    // /**
-    //  * 初始化字体
-    //  *
-    //  * @return 字体
-    //  */
-    // protected Font initFont() {
-    //     return null;
-    // }
-
-    // @Override
-    // public void changeFont(Font font) {
-    //     Font font1 = this.initFont();
-    //     if (font1 != null) {
-    //         super.changeFont(font1);
-    //     } else {
-    //         super.changeFont(font);
-    //     }
-    // }
-
     /**
      * 获取内容提示
      *
      * @return 内容提示
      */
     public Set<String> getPrompts() {
+        if (this.getEditor() == null) {
+            return null;
+        }
         return this.getEditor().getPrompts();
     }
 
@@ -95,7 +68,9 @@ public class EditorPane extends FXSwingNode {
      * @param prompts 内容提示
      */
     public void setPrompts(Set<String> prompts) {
-        this.getEditor().setPrompts(prompts);
+        if (this.getEditor() != null) {
+            this.getEditor().setPrompts(prompts);
+        }
     }
 
     public void showData(Object data) {
@@ -110,37 +85,21 @@ public class EditorPane extends FXSwingNode {
         return this.getEditor().showDetectData(rawData);
     }
 
-    // public void showJsonData(Object rawData) {
-    //     this.getEditor().showJsonData(rawData);
-    // }
-    //
-    // public void showXmlData(Object rawData) {
-    //     this.getEditor().showXmlData(rawData);
-    // }
-    //
-    // public void showHtmlData(Object rawData) {
-    //     this.getEditor().showHtmlData(rawData);
-    // }
-    //
-    // public void showYamlData(Object rawData) {
-    //     this.getEditor().showYamlData(rawData);
-    // }
-    //
-    // public void showCssData(Object rawData) {
-    //     this.getEditor().showCssData(rawData);
-    // }
-    //
-    // public void showPropertiesData(Object rawData) {
-    //     this.getEditor().showPropertiesData(rawData);
-    // }
-    //
-    // public void showRawData(Object rawData) {
-    //     this.getEditor().showRawData(rawData);
-    // }
-
     @Override
     public void initNode() {
+        // 初始化swing组件
+        Editor editor = new Editor();
+        editor.setLineWrap(true);
+        RTextScrollPane scrollPane = new RTextScrollPane(editor);
+        scrollPane.setLineNumbersEnabled(true);
+        this.setContent(scrollPane);
+        SwingUtil.applyTheme(scrollPane);
+        // 调用父类
         super.initNode();
+        // 尝试初始化提示词
+        this.setPrompts(this.getPrompts());
+        // 尝试初始化高亮
+        this.setHighlightText(this.getHighlightText());
         // 行号策略变化事件
         this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
             if (t1 == EditorLineNumPolicy.NONE) {
@@ -213,8 +172,17 @@ public class EditorPane extends FXSwingNode {
         return this.getEditor().getTextTrim();
     }
 
+    public String getHighlightText() {
+        if (this.getEditor() == null) {
+            return null;
+        }
+        return this.getEditor().getHighlightText();
+    }
+
     public void setHighlightText(String highlightText) {
-        this.getEditor().setHighlightText(highlightText);
+        if (this.getEditor() != null) {
+            this.getEditor().setHighlightText(highlightText);
+        }
     }
 
     /**

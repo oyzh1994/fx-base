@@ -4,12 +4,10 @@ import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
-import cn.oyzh.fx.plus.util.FXUtil;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
-import java.awt.FontMetrics;
 import java.io.InputStream;
 
 /**
@@ -85,30 +83,30 @@ public class EditorUtil {
         };
     }
 
-    /**
-     * 获取光标宽度（通常是1-2像素）
-     *
-     * @param textArea 文本域
-     * @return 结果
-     */
-    public static int getCaretWidth(RSyntaxTextArea textArea) {
-        // Swing光标宽度通常由UI决定，默认1像素
-        // 可通过Caret的paint方法推断，这里返回常见值
-        return 1; // 大多数外观下的默认值
-    }
-
-    /**
-     * 获取光标高度（基于当前字体）
-     *
-     * @param textArea 文本域
-     * @return 结果
-     */
-    public static int getCaretHeight(RSyntaxTextArea textArea) {
-        // 获取当前字体的Metrics
-        FontMetrics metrics = textArea.getFontMetrics(textArea.getFont());
-        // 光标高度约等于字体的 ascent + descent（字符总高度）
-        return metrics.getAscent() + metrics.getDescent();
-    }
+    // /**
+    //  * 获取光标宽度（通常是1-2像素）
+    //  *
+    //  * @param textArea 文本域
+    //  * @return 结果
+    //  */
+    // public static int getCaretWidth(RSyntaxTextArea textArea) {
+    //     // Swing光标宽度通常由UI决定，默认1像素
+    //     // 可通过Caret的paint方法推断，这里返回常见值
+    //     return 1; // 大多数外观下的默认值
+    // }
+    //
+    // /**
+    //  * 获取光标高度（基于当前字体）
+    //  *
+    //  * @param textArea 文本域
+    //  * @return 结果
+    //  */
+    // public static int getCaretHeight(RSyntaxTextArea textArea) {
+    //     // 获取当前字体的Metrics
+    //     FontMetrics metrics = textArea.getFontMetrics(textArea.getFont());
+    //     // 光标高度约等于字体的 ascent + descent（字符总高度）
+    //     return metrics.getAscent() + metrics.getDescent();
+    // }
 
     /**
      * 应用样式
@@ -143,7 +141,7 @@ public class EditorUtil {
                 }
             }
             Theme theme = Theme.load(stream);
-            SwingUtil.runTask(()-> theme.apply(textArea));
+            SwingUtil.runLater(()-> theme.apply(textArea));
         } catch (Exception ignored) {
         }
     }

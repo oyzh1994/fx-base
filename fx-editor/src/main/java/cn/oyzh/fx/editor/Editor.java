@@ -48,6 +48,26 @@ import java.util.regex.Pattern;
  */
 public class Editor extends TextEditorPane {
 
+    /**
+     * 文本属性
+     */
+    private final StringProperty textProperty = new SimpleStringProperty();
+
+    /**
+     * 添加文本监听器
+     *
+     * @param listener 监听器
+     */
+    public void addTextChangeListener(ChangeListener<String> listener) {
+        synchronized (this) {
+            this.textProperty.addListener((observable, oldValue, newValue) -> {
+                if (!this.ignoreChange) {
+                    listener.changed(observable, oldValue, newValue);
+                }
+            });
+        }
+    }
+
     {
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
@@ -67,17 +87,7 @@ public class Editor extends TextEditorPane {
             this.undoableProperty.set(e.getEdit().canUndo());
         });
         // 文本变更事件
-        this.addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-
-            }
-
+        this.addDocumentListener(new EditorDocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 textProperty.setValue(getText());
@@ -86,6 +96,10 @@ public class Editor extends TextEditorPane {
         // 可编辑变更事件
         this.addPropertyChangeListener("editable", e -> {
             this.editableProperty.setValue((Boolean) e.getNewValue());
+        });
+        // 文本变更事件
+        this.addTextChangeListener((observableValue, s, t1) -> {
+            this.initTextStyle();
         });
     }
 
@@ -139,18 +153,6 @@ public class Editor extends TextEditorPane {
             this.formatTypeProperty = new SimpleObjectProperty<>(EditorFormatType.RAW);
         }
         return formatTypeProperty;
-    }
-
-    private final StringProperty textProperty = new SimpleStringProperty();
-
-    public void addTextChangeListener(ChangeListener<String> listener) {
-        synchronized (this) {
-            this.textProperty.addListener((observable, oldValue, newValue) -> {
-                if (!this.ignoreChange) {
-                    listener.changed(observable, oldValue, newValue);
-                }
-            });
-        }
     }
 
     /**
@@ -447,20 +449,12 @@ public class Editor extends TextEditorPane {
         Pattern highlightPattern = Pattern.compile(highlightText, Pattern.CASE_INSENSITIVE);
         this.highlightStyleThread = ThreadUtil.start(() -> {
             String text = this.getText();
-            // List<EditorHighlight> highlights = new ArrayList<>();
             // 高亮正则模式
             Matcher matcher = highlightPattern.matcher(text);
             while (matcher.find() && !Thread.currentThread().isInterrupted()) {
-                // highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
                 Object id = this.addHighlight(matcher.start(), matcher.end(), HIGHLIGHT_PAINTER);
                 this.highlightIds.add(id);
             }
-            // List<Object> ids = this.addHighlights(highlights, HIGHLIGHT_PAINTER);
-            // if (CollectionUtil.isNotEmpty(ids)) {
-            //     synchronized (this.highlightIds) {
-            //         this.highlightIds.addAll(ids);
-            //     }
-            // }
         });
     }
 
@@ -536,18 +530,12 @@ public class Editor extends TextEditorPane {
         Pattern promptsPattern = Pattern.compile("\\b(" + String.join("|", prompts) + ")\\b", Pattern.CASE_INSENSITIVE);
         this.promptsStyleThread = ThreadUtil.start(() -> {
             String text = this.getText();
-            // List<EditorHighlight> highlights = new ArrayList<>();
             // 提示词正则模式
             Matcher matcher = promptsPattern.matcher(text);
             while (matcher.find() && !Thread.currentThread().isInterrupted()) {
-                // highlights.add(new EditorHighlight(matcher.start(), matcher.end()));
                 Object id = this.addHighlight(matcher.start(), matcher.end(), PROMPTS_PAINTER);
                 this.promptIds.add(id);
             }
-            // List<Object> ids = this.addHighlights(highlights, PROMPTS_PAINTER);
-            // synchronized (this.promptIds) {
-            //     this.promptIds.addAll(ids);
-            // }
         });
     }
 
@@ -761,7 +749,7 @@ public class Editor extends TextEditorPane {
     }
 
     @Override
-    public Rectangle2D modelToView2D(int pos) throws BadLocationException {
+    public Rectangle2D modelToView2D(int pos) {
         AtomicReference<Rectangle2D> reference = new AtomicReference<>();
         SwingUtil.runWait(() -> {
             try {
