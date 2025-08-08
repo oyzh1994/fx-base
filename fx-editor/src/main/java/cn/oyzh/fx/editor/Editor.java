@@ -22,7 +22,6 @@ import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.UndoableEditListener;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.Color;
@@ -278,16 +277,12 @@ public class Editor extends TextEditorPane {
      * @return id
      */
     public Object addHighlight(int start, int end, Highlighter.HighlightPainter painter) {
-        AtomicReference<Object> reference = new AtomicReference<>();
-        // SwingUtil.runWait(() -> {
         try {
-            Object id = this.getHighlighter().addHighlight(start, end, painter);
-            reference.set(id);
+           return this.getHighlighter().addHighlight(start, end, painter);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        // });
-        return reference.get();
+        return null;
     }
 
     /**
@@ -299,16 +294,10 @@ public class Editor extends TextEditorPane {
      */
     public List<Object> addHighlights(List<EditorHighlight> highlights, Highlighter.HighlightPainter painter) {
         List<Object> ids = new ArrayList<>();
-        // SwingUtil.runWait(() -> {
-        try {
-            for (EditorHighlight highlight : highlights) {
-                Object id = this.getHighlighter().addHighlight(highlight.getStart(), highlight.getEnd(), painter);
-                ids.add(id);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        for (EditorHighlight highlight : highlights) {
+            Object id = this.addHighlight(highlight.getStart(), highlight.getEnd(), painter);
+            ids.add(id);
         }
-        // });
         return ids;
     }
 
@@ -318,13 +307,15 @@ public class Editor extends TextEditorPane {
      * @param id id
      */
     public void removeHighlight(Object id) {
-        // SwingUtil.runWait(() -> {
-        try {
-            this.getHighlighter().removeHighlight(id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (id != null) {
+            SwingUtil.runLater(() -> {
+                try {
+                    this.getHighlighter().removeHighlight(id);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
         }
-        // });
     }
 
     /**
@@ -333,15 +324,9 @@ public class Editor extends TextEditorPane {
      * @param ids id列表
      */
     public void removeHighlights(List<Object> ids) {
-        // SwingUtil.runWait(() -> {
-        try {
-            for (Object id : ids) {
-                this.getHighlighter().removeHighlight(id);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        for (Object id : ids) {
+            this.removeHighlight(id);
         }
-        // });
     }
 
     /**

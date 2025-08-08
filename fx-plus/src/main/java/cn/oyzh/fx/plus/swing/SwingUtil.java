@@ -10,6 +10,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -38,8 +39,14 @@ public class SwingUtil {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
                 func.run();
-            } else if (OSUtil.isMacOS()) {// macos上面，执行invokeAndWait可能会卡住，需要改成invokeLater
-                SwingUtilities.invokeLater(func);
+            } else if (OSUtil.isMacOS()) {
+                new SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() {
+                        func.run();
+                        return null;
+                    }
+                }.execute();
             } else {
                 SwingUtilities.invokeAndWait(func);
             }
