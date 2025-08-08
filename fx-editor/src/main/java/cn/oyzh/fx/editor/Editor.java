@@ -681,19 +681,20 @@ public class Editor extends TextEditorPane {
                 double screenY1 = point.y + caretRect.getMinY();
                 double screenY2 = point.y + caretRect.getMaxY();
                 double screenScale = FXUtil.screenScale();
-                double x1 = screenX1 / screenScale;
-                double x2 = screenX2 / screenScale;
-                double y1 = screenY1 / screenScale;
-                double y2 = screenY2 / screenScale;
-                System.out.println("x1:" + x1);
-                System.out.println("x2:" + x2);
-                System.out.println("y1:" + y1);
-                System.out.println("y2:" + y2);
+
                 BoundingBox bounds;
-                // 不知道macos为啥有偏差
+                // TODO: 鬼知道三个平台为啥都不一样
                 if (OSUtil.isMacOS()) {
-                    bounds = new BoundingBox(x1 + 120, y1 + 40, x2, y2);
+                    bounds = new BoundingBox(0, 0, this.getWidth(), point.y * screenScale);
+                } else if (OSUtil.isLinux()) {
+                    double x1 = screenX1 / screenScale;
+                    double y1 = screenY1 / screenScale;
+                    bounds = new BoundingBox(x1, y1, caretRect.getWidth(), caretRect.getHeight());
                 } else {
+                    double x1 = screenX1 / screenScale;
+                    double x2 = screenX2 / screenScale;
+                    double y1 = screenY1 / screenScale;
+                    double y2 = screenY2 / screenScale;
                     bounds = new BoundingBox(x1, y1, x2, y2);
                 }
                 return Optional.of(bounds);
