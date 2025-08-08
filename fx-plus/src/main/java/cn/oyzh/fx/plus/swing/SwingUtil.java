@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.swing;
 
-import cn.oyzh.common.thread.ThreadUtil;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -38,6 +38,8 @@ public class SwingUtil {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
                 func.run();
+            } else if (OSUtil.isMacOS()) {// macos上面，执行invokeAndWait可能会卡住，需要改成invokeLater
+                SwingUtilities.invokeLater(func);
             } else {
                 SwingUtilities.invokeAndWait(func);
             }
@@ -52,7 +54,6 @@ public class SwingUtil {
      * @param func 函数
      */
     public static void runLater(Runnable func) {
-        // ThreadUtil.start(() -> runWait(func));
         try {
             if (SwingUtilities.isEventDispatchThread()) {
                 func.run();

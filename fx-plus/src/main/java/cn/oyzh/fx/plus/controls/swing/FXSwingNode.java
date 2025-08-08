@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.swing.SwingUtil;
@@ -28,8 +27,9 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
 
     public void setSize(double width, double height) {
         SwingUtil.runWait(() -> {
-            this.getContent().setSize((int) width, (int) height);
-            this.getContent().setMinimumSize(new Dimension((int) width, (int) height));
+            Dimension dimension = new Dimension((int) width, (int) height);
+            this.getContent().setSize(dimension);
+            this.getContent().setMinimumSize(dimension);
         });
     }
 
@@ -71,7 +71,7 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
      * @return 真实组件字体
      */
     protected java.awt.Font getRealComponentFont() {
-        if (this.realComponent() != null&& this.getContent() != null) {
+        if (this.realComponent() != null && this.getContent() != null) {
             return this.realComponent().getFont();
         }
         return null;
