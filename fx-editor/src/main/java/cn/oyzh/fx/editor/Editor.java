@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -27,7 +28,6 @@ import javax.swing.text.Highlighter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -669,18 +669,33 @@ public class Editor extends TextEditorPane {
             int caretOffset = this.getCaretPosition();
             // 2. 将文档偏移量转换为文本区域内的坐标（相对于文本区域的左上角）
             // 注意：viewToModel 和 modelToView 是 Swing 文本组件的核心坐标转换方法
-            Rectangle caretRect = this.modelToView(caretOffset);
+            Rectangle2D caretRect = this.modelToView2D(caretOffset);
             // 3. 计算光标在屏幕上的绝对坐标
             //  - caretRect.x/y 是光标在文本区域内的相对坐标
             //  - 加上文本区域在屏幕上的绝对坐标，得到最终位置
             if (caretRect != null) {
-                Point textAreaScreenPos = this.getLocationOnScreen();
-                int screenX = textAreaScreenPos.x + caretRect.x;
-                int screenY = textAreaScreenPos.y + caretRect.y;
+                Point point = this.getLocationOnScreen();
+
+                double screenX1 = point.x + caretRect.getMinX();
+                double screenX2 = point.x + caretRect.getMaxX();
+                double screenY1 = point.y + caretRect.getMinY();
+                double screenY2 = point.y + caretRect.getMaxY();
                 double screenScale = FXUtil.screenScale();
-                double x = screenX / screenScale;
-                double y = screenY / screenScale;
-                BoundingBox bounds = new BoundingBox(x, y, x, y);
+                double x1 = screenX1 / screenScale;
+                double x2 = screenX2 / screenScale;
+                double y1 = screenY1 / screenScale;
+                double y2 = screenY2 / screenScale;
+                System.out.println("x1:" + x1);
+                System.out.println("x2:" + x2);
+                System.out.println("y1:" + y1);
+                System.out.println("y2:" + y2);
+                BoundingBox bounds;
+                // 不知道macos为啥有偏差
+                if (OSUtil.isMacOS()) {
+                    bounds = new BoundingBox(x1 + 120, y1 + 40, x2, y2);
+                } else {
+                    bounds = new BoundingBox(x1, y1, x2, y2);
+                }
                 return Optional.of(bounds);
             }
         } catch (Exception ex) {
@@ -688,6 +703,7 @@ public class Editor extends TextEditorPane {
         }
         return Optional.empty();
     }
+
 
     /**
      * 选中选区
