@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.swing;
 
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -19,14 +20,14 @@ import java.awt.Font;
  */
 public class SwingUtil {
 
-    /**
-     * 提交到任务队列运行函数
-     *
-     * @param func 函数
-     */
-    public static void runTask(Runnable func) {
-        SwingTask.getInstance().addTask(func);
-    }
+    // /**
+    //  * 提交到任务队列运行函数
+    //  *
+    //  * @param func 函数
+    //  */
+    // public static void runTask(Runnable func) {
+    //     SwingTask.getInstance().addTask(func);
+    // }
 
     /**
      * 在awt的ui线程同步运行函数
@@ -51,6 +52,7 @@ public class SwingUtil {
      * @param func 函数
      */
     public static void runLater(Runnable func) {
+        // ThreadUtil.start(() -> runWait(func));
         try {
             if (SwingUtilities.isEventDispatchThread()) {
                 func.run();

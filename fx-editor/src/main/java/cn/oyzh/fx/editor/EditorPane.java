@@ -13,10 +13,15 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.util.Optional;
 import java.util.Set;
@@ -35,7 +40,8 @@ public class EditorPane extends FXSwingNode {
      * @return 滚动面板
      */
     public RTextScrollPane getScrollPane() {
-        return (RTextScrollPane) this.getContent();
+        JPanel jPanel = (JPanel) this.getContent();
+        return (RTextScrollPane) jPanel.getComponents()[0];
     }
 
     /**
@@ -93,9 +99,24 @@ public class EditorPane extends FXSwingNode {
         editor.setLineWrap(true);
         editor.setMaximumSize(null);
         editor.setPreferredSize(null);
+        // 滚动面板
         RTextScrollPane scrollPane = new RTextScrollPane(editor);
         scrollPane.setLineNumbersEnabled(true);
-        this.setContent(scrollPane);
+        // TODO: 这个组件作为隔离用，不然跟fx的组件交互可能出现各种异常
+        JPanel jPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // 强制使用 Swing 自身的双缓冲，避免 JavaFX 渲染干扰
+                super.paintComponent(g);
+                if (g instanceof Graphics2D) {
+                    ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                }
+            }
+        };
+        // 设置组件
+        jPanel.add(scrollPane, BorderLayout.CENTER);
+        // 设置swing组件
+        this.setContent(jPanel);
         // 调用父类
         super.initNode();
         // 尝试初始化提示词
