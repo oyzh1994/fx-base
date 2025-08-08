@@ -215,14 +215,23 @@ public class EditorPane extends FXSwingNode {
         SwingUtil.runWait(() -> this.getScrollPane().getViewport().scrollRectToVisible(rectangle));
     }
 
+    /**
+     * 撤销
+     */
     public void undo() {
         this.getEditor().undo();
     }
 
+    /**
+     * 重做
+     */
     public void redo() {
         this.getEditor().redo();
     }
 
+    /**
+     * 忘记历史
+     */
     public void forgetHistory() {
         this.getEditor().forgetHistory();
     }
@@ -254,30 +263,68 @@ public class EditorPane extends FXSwingNode {
         return null;
     }
 
+    /**
+     * 获取光标位置
+     *
+     * @return 光标位置
+     */
     public int getCaretPosition() {
         return this.getEditor().getCaretPosition();
     }
 
+    /**
+     * 获取光标边界
+     *
+     * @return 光标边界
+     */
     public Optional<Bounds> getCaretBounds() {
         return this.getEditor().getCaretBounds();
     }
 
+    /**
+     * 替换内容
+     *
+     * @param start   开始位置
+     * @param end     结束位置
+     * @param content 内容
+     */
     public void replaceText(int start, int end, String content) {
         this.getEditor().replaceText(start, end, content);
     }
 
+    /**
+     * 追加内容
+     *
+     * @param content 内容
+     */
     public void appendText(String content) {
         this.getEditor().appendText(content);
     }
 
+    /**
+     * 追加行
+     *
+     * @param content 内容
+     */
     public void appendLine(String content) {
         this.getEditor().appendLine(content);
     }
 
+    /**
+     * 追加行
+     *
+     * @param content 内容
+     * @param endLine 是否追加尾部换行符
+     */
     public void appendLine(String content, boolean endLine) {
         this.getEditor().appendLine(content, endLine);
     }
 
+    /**
+     * 是否为空
+     *
+     * @return 结果
+     */
     public boolean isEmpty() {
         return this.getEditor().isEmpty();
     }
@@ -295,10 +342,20 @@ public class EditorPane extends FXSwingNode {
         EditorUtil.applyTheme(editor);
     }
 
+    /**
+     * 设置可编辑
+     *
+     * @param editable 是否可编辑
+     */
     public void setEditable(boolean editable) {
         this.getEditor().setEditable(editable);
     }
 
+    /**
+     * 是否可编辑
+     *
+     * @return 结果
+     */
     public boolean isEditable() {
         return this.getEditor().isEditable();
     }
@@ -330,26 +387,63 @@ public class EditorPane extends FXSwingNode {
         });
     }
 
+    /**
+     * 获取内容长度
+     *
+     * @return 结果
+     */
     public int getLength() {
         return this.getEditor().getLength();
     }
 
+    /**
+     * 剪切
+     */
     public void cut() {
         this.getEditor().cut();
     }
 
+    /**
+     * 复制
+     */
     public void copy() {
         this.getEditor().copy();
     }
 
+    /**
+     * 设置光标位置
+     *
+     * @param caretPosition 位置
+     */
     public void positionCaret(int caretPosition) {
         this.getEditor().positionCaret(caretPosition);
+        this.requestFocus();
     }
 
+    /**
+     * 移动光标到末尾
+     */
+    public void moveCaretEnd() {
+        this.getEditor().moveCaretEnd();
+        this.requestFocus();
+    }
+
+    /**
+     * 选中区间
+     *
+     * @param start 开始位置
+     * @param end   结束位置
+     */
     public void selectRange(int start, int end) {
         this.getEditor().selectRange(start, end);
     }
 
+    /**
+     * 删除内容
+     *
+     * @param start 开始位置
+     * @param end   结束位置
+     */
     public void deleteText(int start, int end) {
         this.getEditor().deleteText(start, end);
     }

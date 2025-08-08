@@ -6,9 +6,6 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.EditorPane;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.menu.FXContextMenu;
-import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -75,8 +72,9 @@ public class TerminalTextAreaPane extends EditorPane implements Terminal {
 
     {
         this.caretPositionProperty().addListener((observableValue, number, t1) -> {
+            int len = this.contentLength();
             // 对边界做检查
-            if (this.getNOP() > this.contentLength()) {
+            if (this.getNOP() > len) {
                 this.flushNOP();
             }
             if (JulLog.isDebugEnabled()) {
@@ -229,7 +227,8 @@ public class TerminalTextAreaPane extends EditorPane implements Terminal {
     @Override
     public void flushNOP() {
         this.NOP.set(this.contentLength());
-        this.requestFocus();
+        super.moveCaretEnd();
+        // this.requestFocus();
     }
 
     @Override
@@ -454,7 +453,7 @@ public class TerminalTextAreaPane extends EditorPane implements Terminal {
     @Override
     public void flushCaret() {
         this.caretPosition(this.getNOP());
-        this.requestFocus();
+        // this.requestFocus();
     }
 
     @Override
@@ -465,11 +464,11 @@ public class TerminalTextAreaPane extends EditorPane implements Terminal {
     public void fontSizeDecr() {
     }
 
-    @Override
-    public void moveCaretEnd() {
-        this.caretPosition(this.getLength());
-        this.requestFocus();
-    }
+    // @Override
+    // public void moveCaretEnd() {
+    //     this.caretPosition(this.contentLength());
+    //     this.requestFocus();
+    // }
 
 //    /**
 //     * 基础内容正则模式

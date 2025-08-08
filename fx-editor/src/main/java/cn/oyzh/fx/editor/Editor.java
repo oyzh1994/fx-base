@@ -599,6 +599,11 @@ public class Editor extends TextEditorPane {
         return this.highlightTextProperty;
     }
 
+    /**
+     * 获取文本长度
+     *
+     * @return 文本长度
+     */
     public int getLength() {
         AtomicInteger val = new AtomicInteger();
         SwingUtil.runWait(() -> {
@@ -608,10 +613,14 @@ public class Editor extends TextEditorPane {
         return val.get();
     }
 
+    /**
+     * 清除文本
+     */
     public void clear() {
         SwingUtil.runWait(() -> {
             try {
-                this.getDocument().remove(0, this.getLength());
+                int len = this.getDocument().getLength();
+                this.getDocument().remove(0, len);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -694,7 +703,7 @@ public class Editor extends TextEditorPane {
      * @param content 内容
      */
     public void appendLine(String content) {
-        this.appendLine(content, false);
+        this.appendLine(content, true);
     }
 
     /**
@@ -786,10 +795,31 @@ public class Editor extends TextEditorPane {
         return reference.get();
     }
 
+    /**
+     * 设置光标位置
+     *
+     * @param caretPosition 光标位置
+     */
     public void positionCaret(int caretPosition) {
-        this.setCaretPosition(caretPosition);
+        SwingUtil.runLater(() -> this.setCaretPosition(caretPosition));
     }
 
+    /**
+     * 移动光标到末尾
+     */
+    public void moveCaretEnd() {
+        SwingUtil.runLater(() -> {
+            int len = this.getDocument().getLength();
+            this.setCaretPosition(len);
+        });
+    }
+
+    /**
+     * 删除内容
+     *
+     * @param start 开始位置
+     * @param end   结束位置
+     */
     public void deleteText(int start, int end) {
         try {
             this.getDocument().remove(start, end);

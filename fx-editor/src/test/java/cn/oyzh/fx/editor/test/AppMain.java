@@ -210,7 +210,11 @@ public class AppMain extends Application {
             editor.undo();
         });
         hBox3.addChild(btn_38);
-
+        Button btn_39 = new Button("光标到末尾");
+        btn_39.setOnAction(event -> {
+            editor.positionCaret(editor.getLength());
+        });
+        hBox3.addChild(btn_39);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox3);
