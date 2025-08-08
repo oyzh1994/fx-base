@@ -10,7 +10,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -32,21 +31,17 @@ public class SwingUtil {
 
     /**
      * 在awt的ui线程同步运行函数
+     * 尽量不要使用这个函数，因为macos下会卡死，如果要使用ui线程，就使用runLater
      *
      * @param func 函数
      */
+    @Deprecated
     public static void runWait(Runnable func) {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
                 func.run();
             } else if (OSUtil.isMacOS()) {
-                new SwingWorker<Void, Void>() {
-                    @Override
-                    protected Void doInBackground() {
-                        func.run();
-                        return null;
-                    }
-                }.execute();
+                func.run();
             } else {
                 SwingUtilities.invokeAndWait(func);
             }

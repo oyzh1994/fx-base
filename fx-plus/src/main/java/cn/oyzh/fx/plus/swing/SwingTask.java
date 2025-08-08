@@ -1,10 +1,13 @@
 // package cn.oyzh.fx.plus.swing;
 //
 // import cn.oyzh.common.thread.ThreadUtil;
+// import cn.oyzh.common.util.BooleanUtil;
 //
 // import javax.swing.SwingUtilities;
 // import java.util.ArrayDeque;
+// import java.util.Map;
 // import java.util.Queue;
+// import java.util.concurrent.ConcurrentHashMap;
 //
 // /**
 //  * 专门用于执行swing的ui任务
@@ -39,6 +42,9 @@
 //      */
 //     private final Queue<Runnable> queue = new ArrayDeque<>();
 //
+//
+//     public final Map<Runnable, Boolean> finished = new ConcurrentHashMap<>();
+//
 //     /**
 //      * 添加任务
 //      *
@@ -63,14 +69,25 @@
 //                 continue;
 //             }
 //             try {
+//                 ThreadUtil.sleep(20);
 //                 if (SwingUtilities.isEventDispatchThread()) {
 //                     func.run();
+//                     finished.putIfAbsent(func, true);
 //                 } else {
-//                     SwingUtilities.invokeAndWait(func);
+//                     // SwingUtilities.invokeLater(() -> {
+//                         func.run();
+//                         ThreadUtil.sleep(5);
+//                         finished.putIfAbsent(func, true);
+//                     // });
 //                 }
 //             } catch (Exception ex) {
 //                 ex.printStackTrace();
 //             }
 //         }
+//     }
+//
+//     public boolean isFinished(Runnable func) {
+//         Boolean b = finished.get(func);
+//         return BooleanUtil.isTrue(b);
 //     }
 // }

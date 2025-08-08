@@ -35,9 +35,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -243,7 +240,8 @@ public class Editor extends TextEditorPane {
             if (StringUtil.isEmpty(text)) {
                 this.clear();
             } else {
-                SwingUtil.runWait(() -> super.setText(text));
+                // SwingUtil.runWait(() -> super.setText(text));
+                super.setText(text);
             }
         } catch (Throwable ignore) {
 
@@ -278,7 +276,7 @@ public class Editor extends TextEditorPane {
      */
     public Object addHighlight(int start, int end, Highlighter.HighlightPainter painter) {
         try {
-           return this.getHighlighter().addHighlight(start, end, painter);
+            return this.getHighlighter().addHighlight(start, end, painter);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -333,7 +331,8 @@ public class Editor extends TextEditorPane {
      * 高亮样式
      */
     protected static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(
-            new Color(248, 201, 171)
+            new Color(185, 214, 251)
+            // new Color(248, 201, 171)
     );
 
     /**
@@ -466,18 +465,27 @@ public class Editor extends TextEditorPane {
      * @return 结果
      */
     public boolean isEmpty() {
-        AtomicBoolean result = new AtomicBoolean(false);
-        SwingUtil.runWait(() -> {
-            try {
-                String str = this.getDocument().getText(0, 1);
-                if (str == null || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
-                    result.set(true);
-                }
-            } catch (Exception ex) {
-                result.set(true);
+        // AtomicBoolean result = new AtomicBoolean(false);
+        // SwingUtil.runWait(() -> {
+        //     try {
+        //         String str = this.getDocument().getText(0, 1);
+        //         if (str == null || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
+        //             result.set(true);
+        //         }
+        //     } catch (Exception ex) {
+        //         result.set(true);
+        //     }
+        // });
+        // return result.get();
+        try {
+            String str = this.getDocument().getText(0, 1);
+            if (str == null || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
+                return true;
             }
-        });
-        return result.get();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -511,19 +519,20 @@ public class Editor extends TextEditorPane {
      * @return 文本长度
      */
     public int getLength() {
-        AtomicInteger val = new AtomicInteger();
-        SwingUtil.runWait(() -> {
-            int i = this.getDocument().getLength();
-            val.set(i);
-        });
-        return val.get();
+        // AtomicInteger val = new AtomicInteger();
+        // SwingUtil.runWait(() -> {
+        //     int i = this.getDocument().getLength();
+        //     val.set(i);
+        // });
+        // return val.get();
+        return this.getDocument().getLength();
     }
 
     /**
      * 清除文本
      */
     public void clear() {
-        SwingUtil.runWait(() -> {
+        SwingUtil.runLater(() -> {
             try {
                 int len = this.getDocument().getLength();
                 this.getDocument().remove(0, len);
@@ -534,11 +543,13 @@ public class Editor extends TextEditorPane {
     }
 
     public void addDocumentListener(DocumentListener documentListener) {
-        SwingUtil.runWait(() -> this.getDocument().addDocumentListener(documentListener));
+        // SwingUtil.runWait(() -> this.getDocument().addDocumentListener(documentListener));
+        this.getDocument().addDocumentListener(documentListener);
     }
 
     public void addUndoableEditListener(UndoableEditListener undoableEditListener) {
-        SwingUtil.runWait(() -> this.getDocument().addUndoableEditListener(undoableEditListener));
+        // SwingUtil.runWait(() -> this.getDocument().addUndoableEditListener(undoableEditListener));
+        this.getDocument().addUndoableEditListener(undoableEditListener);
     }
 
     /**
@@ -685,20 +696,28 @@ public class Editor extends TextEditorPane {
      * @param end   结束位置
      */
     public void selectRange(int start, int end) {
-        SwingUtil.runWait(() -> this.select(start, end));
+        SwingUtil.runLater(() -> this.select(start, end));
+        // SwingUtil.runWait(() -> this.select(start, end));
+        // this.select(start, end);
     }
 
     @Override
     public Rectangle2D modelToView2D(int pos) {
-        AtomicReference<Rectangle2D> reference = new AtomicReference<>();
-        SwingUtil.runWait(() -> {
-            try {
-                reference.set(super.modelToView2D(pos));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-        return reference.get();
+        // AtomicReference<Rectangle2D> reference = new AtomicReference<>();
+        // SwingUtil.runWait(() -> {
+        //     try {
+        //         reference.set(super.modelToView2D(pos));
+        //     } catch (Exception ex) {
+        //         ex.printStackTrace();
+        //     }
+        // });
+        // return reference.get();
+        try {
+            return super.modelToView2D(pos);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -708,6 +727,8 @@ public class Editor extends TextEditorPane {
      */
     public void positionCaret(int caretPosition) {
         SwingUtil.runLater(() -> this.setCaretPosition(caretPosition));
+        // SwingUtil.runWait(() -> this.setCaretPosition(caretPosition));
+        // this.setCaretPosition(caretPosition);
     }
 
     /**

@@ -20,9 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.geom.Rectangle2D;
 import java.util.Optional;
 import java.util.Set;
 
@@ -215,28 +213,30 @@ public class EditorPane extends FXSwingNode {
      * @param end   结束
      */
     public void selectRangeAndGoto(int start, int end) {
-        try {
-            // 选中选区
-            this.getEditor().selectRange(start, end);
-            // 将文本位置转换为屏幕坐标矩形
-            Rectangle2D rect = this.getEditor().modelToView2D(start);
-            if (rect != null) {
-                // 滚动到该矩形区域（确保选中内容可见）
-                this.scrollRectToVisible(rect.getBounds());
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        // try {
+        //     System.out.println("start:" + start + " end:" + end);
+        //     // 选中选区
+        //     this.getEditor().selectRange(start, end);
+        //     // // 将文本位置转换为屏幕坐标矩形
+        //     // Rectangle2D rect = this.getEditor().modelToView2D( this.getCaretPosition());
+        //     // if (rect != null) {
+        //     //     // 滚动到该矩形区域（确保选中内容可见）
+        //     //     this.scrollRectToVisible(rect.getBounds());
+        //     // }
+        // } catch (Exception ex) {
+        //     ex.printStackTrace();
+        // }
+        this.selectRange(start, end);
     }
 
-    /**
-     * 滚动到可视区
-     *
-     * @param rectangle 范围
-     */
-    public void scrollRectToVisible(Rectangle rectangle) {
-        SwingUtil.runWait(() -> this.getScrollPane().getViewport().scrollRectToVisible(rectangle));
-    }
+    // /**
+    //  * 滚动到可视区
+    //  *
+    //  * @param rectangle 范围
+    //  */
+    // public void scrollRectToVisible(Rectangle rectangle) {
+    //     SwingUtil.runWait(() -> this.getScrollPane().getViewport().scrollRectToVisible(rectangle));
+    // }
 
     /**
      * 撤销

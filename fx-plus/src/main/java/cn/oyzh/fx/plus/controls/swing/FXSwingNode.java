@@ -26,7 +26,7 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     }
 
     public void setSize(double width, double height) {
-        SwingUtil.runWait(() -> {
+        SwingUtil.runLater(() -> {
             Dimension dimension = new Dimension((int) width, (int) height);
             this.getContent().setSize(dimension);
             this.getContent().setMinimumSize(dimension);
