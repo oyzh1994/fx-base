@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
 import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -11,6 +12,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
+import javafx.scene.input.MouseEvent;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.JPanel;
@@ -33,14 +35,14 @@ import java.util.Set;
 public class EditorPane extends FXSwingNode {
 
     /**
-     * 获取滚动面板
-     *
-     * @return 滚动面板
+     * 编辑器
      */
-    public RTextScrollPane getScrollPane() {
-        JPanel jPanel = (JPanel) this.getContent();
-        return (RTextScrollPane) jPanel.getComponents()[0];
-    }
+    private Editor editor;
+
+    /**
+     * 滚动面板
+     */
+    private RTextScrollPane scrollPane;
 
     /**
      * 获取编辑器
@@ -48,11 +50,16 @@ public class EditorPane extends FXSwingNode {
      * @return 编辑器
      */
     public Editor getEditor() {
-        RTextScrollPane scrollPane = this.getScrollPane();
-        if (scrollPane == null || scrollPane.getViewport() == null) {
-            return null;
-        }
-        return (Editor) scrollPane.getViewport().getComponents()[0];
+        return this.editor;
+    }
+
+    /**
+     * 获取滚动面板
+     *
+     * @return 滚动面板
+     */
+    public RTextScrollPane getScrollPane() {
+        return this.scrollPane;
     }
 
     /**
@@ -113,6 +120,9 @@ public class EditorPane extends FXSwingNode {
         };
         // 设置组件
         jPanel.add(scrollPane, BorderLayout.CENTER);
+        // 设置组件
+        this.editor = editor;
+        this.scrollPane = scrollPane;
         // 设置swing组件
         this.setContent(jPanel);
         // 调用父类
@@ -129,6 +139,12 @@ public class EditorPane extends FXSwingNode {
                 this.showLineNum();
             }
         });
+        // linux可能获取不到焦点，单独监听
+        if (OSUtil.isLinux()) {
+            this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                this.requestFocus();
+            });
+        }
     }
 
     /**

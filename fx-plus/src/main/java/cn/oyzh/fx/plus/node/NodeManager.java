@@ -89,7 +89,7 @@ public class NodeManager {
         // TODO: 延迟执行主题处理，否则可能出现部分组件样式异常
         if (node instanceof ThemeAdapter adapter) {
             // adapter.changeTheme(ThemeManager.currentTheme());
-            ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 100);
+            ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 150);
         }
     }
 

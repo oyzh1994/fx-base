@@ -675,27 +675,9 @@ public class Editor extends TextEditorPane {
             //  - 加上文本区域在屏幕上的绝对坐标，得到最终位置
             if (caretRect != null) {
                 Point point = this.getLocationOnScreen();
-
-                double screenX1 = point.x + caretRect.getMinX();
-                double screenX2 = point.x + caretRect.getMaxX();
-                double screenY1 = point.y + caretRect.getMinY();
-                double screenY2 = point.y + caretRect.getMaxY();
-                double screenScale = FXUtil.screenScale();
-                double x1 = screenX1 / screenScale;
-                double x2 = screenX2 / screenScale;
-                double y1 = screenY1 / screenScale;
-                double y2 = screenY2 / screenScale;
-                System.out.println("x1:" + x1);
-                System.out.println("x2:" + x2);
-                System.out.println("y1:" + y1);
-                System.out.println("y2:" + y2);
-                BoundingBox bounds;
-                // 不知道macos为啥有偏差
-                if (OSUtil.isMacOS()) {
-                    bounds = new BoundingBox(x1 + 120, y1 + 40, x2, y2);
-                } else {
-                    bounds = new BoundingBox(x1, y1, x2, y2);
-                }
+                double screenX1 = point.x + caretRect.getCenterX();
+                double screenY1 = point.y + caretRect.getCenterY();
+                BoundingBox  bounds = new BoundingBox(screenX1, screenY1, caretRect.getWidth(), caretRect.getHeight());
                 return Optional.of(bounds);
             }
         } catch (Exception ex) {
