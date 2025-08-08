@@ -42,7 +42,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
                 if (handlers.isEmpty()) {
                     this.noMatch(line, terminal);
                 } else if (handlers.size() == 1) {
-                    this.oneMatch(line, terminal, handlers.get(0));
+                    this.oneMatch(line, terminal, handlers.getFirst());
                 } else {
                     this.multiMatch(line, terminal, handlers);
                 }
@@ -75,6 +75,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
         try {
             if (!StringUtil.startWithIgnoreCase(input, handler.commandFullName())) {
                 terminal.coverInput(handler.commandFullName());
+                terminal.moveCaretEnd();
             } else {
                 handler.completion(input, terminal);
             }
@@ -98,6 +99,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
             terminal.outputByPrompt(formatText);
             terminal.outputPrompt();
             terminal.output(input);
+            terminal.moveCaretEnd();
         } catch (Exception ex) {
             ex.printStackTrace();
             JulLog.warn("oneMatch error", ex);

@@ -3,6 +3,7 @@ package cn.oyzh.fx.editor;
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
 import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -90,10 +91,11 @@ public class EditorPane extends FXSwingNode {
         // 初始化swing组件
         Editor editor = new Editor();
         editor.setLineWrap(true);
+        editor.setMaximumSize(null);
+        editor.setPreferredSize(null);
         RTextScrollPane scrollPane = new RTextScrollPane(editor);
         scrollPane.setLineNumbersEnabled(true);
         this.setContent(scrollPane);
-        // SwingUtil.applyTheme(scrollPane);
         // 调用父类
         super.initNode();
         // 尝试初始化提示词
@@ -446,5 +448,10 @@ public class EditorPane extends FXSwingNode {
      */
     public void deleteText(int start, int end) {
         this.getEditor().deleteText(start, end);
+    }
+
+    @Override
+    public void requestFocus() {
+        FXUtil.runWait(super::requestFocus);
     }
 }

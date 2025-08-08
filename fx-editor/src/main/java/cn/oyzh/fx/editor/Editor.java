@@ -189,15 +189,6 @@ public class Editor extends TextEditorPane {
         try {
             this.ignoreChange = true;
             this.setEnabled(false);
-            // switch (formatType) {
-            //     case CSS -> this.showCssData(rawData);
-            //     case RAW -> this.showRawData(rawData);
-            //     case XML -> this.showXmlData(rawData);
-            //     case JSON -> this.showJsonData(rawData);
-            //     case HTML -> this.showHtmlData(rawData);
-            //     case YAML -> this.showYamlData(rawData);
-            //     case PROPERTIES -> this.showPropertiesData(rawData);
-            //     default -> {
             String data = null;
             if (rawData instanceof CharSequence sequence) {
                 data = sequence.toString();
@@ -212,8 +203,6 @@ public class Editor extends TextEditorPane {
                 this.clear();
             }
             this.setFormatType(formatType);
-            // }
-            // }
         } finally {
             this.setEnabled(true);
             this.ignoreChange = false;
@@ -260,74 +249,6 @@ public class Editor extends TextEditorPane {
         } catch (Throwable ignore) {
 
         }
-    }
-
-    // /**
-    //  * 显示json数据
-    //  */
-    // public void showJsonData(Object rawData) {
-    //     String data = TextUtil.getJsonData(rawData);
-    //     this.setText(data);
-    //     this.setFormatType(EditorFormatType.JSON);
-    // }
-    //
-    // /**
-    //  * 显示xml数据
-    //  */
-    // public void showXmlData(Object rawData) {
-    //     String data = TextUtil.getXmlData(rawData);
-    //     this.setText(data);
-    //     this.setFormatType(EditorFormatType.XML);
-    // }
-    //
-    // /**
-    //  * 显示html数据
-    //  */
-    // public void showHtmlData(Object rawData) {
-    //     String data = TextUtil.getHtmlData(rawData);
-    //     this.setText(data);
-    //     this.setFormatType(EditorFormatType.HTML);
-    // }
-    //
-    // /**
-    //  * 显示yaml数据
-    //  */
-    // public void showYamlData(Object rawData) {
-    //     String data = TextUtil.getYamlData(rawData);
-    //     this.setText(data);
-    //     this.setFormatType(EditorFormatType.YAML);
-    // }
-    //
-    // /**
-    //  * 显示css数据
-    //  */
-    // public void showCssData(Object rawData) {
-    //     String data = TextUtil.getCssData(rawData);
-    //     this.setText(data);
-    //     this.setFormatType(EditorFormatType.CSS);
-    // }
-    //
-    // /**
-    //  * 显示properties数据
-    //  */
-    // public void showPropertiesData(Object rawData) {
-    //     String data = TextUtil.getPropertiesData(rawData);
-    //     this.setText(data);
-    //     this.setFormatType(EditorFormatType.PROPERTIES);
-    // }
-
-    /**
-     * 显示原始数据
-     */
-    public void showRawData(Object rawData) {
-        if (rawData instanceof CharSequence sequence) {
-            this.setText(sequence.toString());
-        } else if (rawData instanceof byte[] bytes) {
-            this.setText(new String(bytes));
-        } else {
-            this.setText(rawData == null ? "" : rawData.toString());
-        }
-        this.setFormatType(EditorFormatType.RAW);
     }
 
     /**
@@ -727,7 +648,7 @@ public class Editor extends TextEditorPane {
             if (endLine && !content.endsWith(System.lineSeparator())) {
                 content = content + "\n";
             }
-            this.append(content);
+            super.append(content);
         }
     }
 

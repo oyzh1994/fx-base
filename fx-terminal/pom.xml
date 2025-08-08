@@ -32,6 +32,7 @@
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
             <artifactId>fx-rich</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->

@@ -4,10 +4,8 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.editor.EditorPane;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.menu.FXContextMenu;
-import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -30,13 +28,12 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 命令行文本域
+ * 命令行组件
  *
  * @author oyzh
- * @since 2023/05/28
+ * @since 2025/08/08
  */
-@Deprecated
-public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> implements Terminal {
+public class TerminalPane extends EditorPane implements Terminal {
 
     /**
      * 不可操作边界
@@ -89,12 +86,6 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
                 this.enableInput();
             }
         });
-        this.addTextChangeListener((observable, oldValue, newValue) -> this.initTextStyle());
-        this.init();
-    }
-
-    public TerminalTextAreaPane() {
-        super(new TerminalTextArea());
     }
 
     @Override
@@ -230,7 +221,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
     @Override
     public void flushNOP() {
         this.NOP.set(this.contentLength());
-        this.requestFocus();
+        super.moveCaretEnd();
     }
 
     @Override
@@ -339,7 +330,6 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
             this.appendText(prompt);
         }
         this.flushNOP();
-        super.scrollToEnd();
     }
 
     @Override
@@ -354,7 +344,7 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
 
     @Override
     public void caretPosition(int caretPosition) {
-        FXUtil.runWait(() -> this.positionCaret(caretPosition));
+        this.positionCaret(caretPosition);
     }
 
     @Override
@@ -454,124 +444,46 @@ public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> imp
     @Override
     public void flushCaret() {
         this.caretPosition(this.getNOP());
-        this.requestFocus();
     }
 
     @Override
     public void fontSizeIncr() {
-        super.fontSizeIncr();
     }
 
     @Override
     public void fontSizeDecr() {
-        super.fontSizeDecr();
     }
 
     @Override
-    public void moveCaretEnd() {
-        this.caretPosition(this.getLength());
-        this.requestFocus();
-    }
-
-//    /**
-//     * 基础内容正则模式
-//     */
-//    private Pattern contentPrompts;
-//
-//    /**
-//     * 设置内容提示词
-//     *
-//     * @param collection 内容提示词列表
-//     */
-//    public void setContentPrompts(Collection<String> collection) {
-//        if (collection == null || collection.isEmpty()) {
-//            this.contentPrompts = null;
-//        } else {
-//            StringBuilder regex = new StringBuilder("\\b(");
-//            for (String s : collection) {
-//                regex.append(s).append("|");
-//            }
-//            regex.append(")\\b");
-//            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
-//        }
-//        this.initTextStyle();
-//    }
-
-    /**
-     * 初始化组件
-     */
-    protected void init() {
-        // 初始化字体
-        this.initFont();
-        // 显示行号
-        this.showLineNum();
-        // // 初始化内容提示符
-        // this.initContentPrompts();
-        // 覆盖默认的菜单
-        this.setContextMenu(FXContextMenu.EMPTY);
-//        // 添加类
-//        this.addClass("terminal-text-area");
+    public void changeFont(Font font) {
+        Font font1 = Font.font("Monospaced", FontWeight.NORMAL, 11);
+        super.changeFont(font1);
     }
 
     @Override
-    protected Font initFont() {
-        // 禁用字体管理
-        this.disableFont();
-//        this.setFontSize(11);
-//        this.setFontFamily("Monospaced");
-//        this.setFontWeight(FontWeight.NORMAL);
-        return Font.font("Monospaced", FontWeight.NORMAL, 11);
+    public Set<String> getPrompts() {
+        if (super.getPrompts() == null) {
+            // 设置内容提示符
+            Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
+            Set<String> set = new HashSet<>();
+            for (TerminalCommandHandler<?, ?> handler : handlers) {
+                if (StringUtil.isNotBlank(handler.commandName())) {
+                    set.add(handler.commandName());
+                }
+                if (StringUtil.isNotBlank(handler.commandSubName())) {
+                    set.add(handler.commandSubName());
+                }
+                if (StringUtil.isNotBlank(handler.commandFullName())) {
+                    set.add(handler.commandFullName());
+                }
+            }
+            this.setPrompts(set);
+        }
+        return super.getPrompts();
     }
 
-    // /**
-    //  * 初始化内容提示词
-    //  */
-    // @Override
-    // public void initContentPrompts() {
-    //     // 设置内容提示符
-    //     Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
-    //     Set<String> set = new HashSet<>();
-    //     for (TerminalCommandHandler<?, ?> handler : handlers) {
-    //         if (StringUtil.isNotBlank(handler.commandName())) {
-    //             set.add(handler.commandName());
-    //         }
-    //         if (StringUtil.isNotBlank(handler.commandSubName())) {
-    //             set.add(handler.commandSubName());
-    //         }
-    //         if (StringUtil.isNotBlank(handler.commandFullName())) {
-    //             set.add(handler.commandFullName());
-    //         }
-    //     }
-    //     this.setContentPrompts(set);
-    // }
-
-//    @Override
-//    public void initTextStyle() {
-
-    /// /        this.clearTextStyle();
-    /// /        this.setProp("init:text:style", false);
-    /// /        this.changeTheme(ThemeManager.currentTheme());
-    /// /        this.removeProp("init:text:style");
-//        super.initTextStyle();
-//        if (this.contentPrompts != null) {
-//            String text = this.getText();
-//            Matcher matcher1 = this.contentPrompts.matcher(text);
-//            List<RichTextStyle> styles = new ArrayList<>();
-//            while (matcher1.find()) {
-//                styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
-//            }
-//            this.setStyles(styles);
-//            this.forgetHistory();
-//        }
-//    }
     @Override
     public int getNOP() {
         return this.NOP.get();
     }
-
-//    @Override
-//    public void changeFont(Font font) {
-//        super.changeFont(font);
-//        this.initFont();
-//    }
 }
