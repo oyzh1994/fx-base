@@ -110,4 +110,15 @@ public interface ThemeAdapter extends PropAdapter {
     private void handleStyle(Node node, ThemeStyle style) {
         style.handleStyle(node);
     }
+
+    /**
+     * 处理样式
+     *
+     * @param node  节点
+     * @param style 主题风格
+     */
+    private void handleStyle(javafx.embed.swing.SwingNode node, ThemeStyle style) {
+        style.handleStyle(node);
+        cn.oyzh.fx.plus.swing.SwingUtil.applyTheme(node.getContent());
+    }
 }

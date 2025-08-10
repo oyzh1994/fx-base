@@ -483,6 +483,8 @@ public interface StageAdapter extends WindowAdapter {
                 try {
                     if (!newValue) {
                         this.onWindowClosed();
+                    } else {
+                        this.changeTheme(ThemeManager.currentTheme());
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();

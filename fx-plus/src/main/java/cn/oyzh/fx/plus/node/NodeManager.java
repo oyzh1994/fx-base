@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
@@ -8,8 +7,6 @@ import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import cn.oyzh.fx.plus.opacity.OpacityManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.i18n.I18nManager;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -86,11 +83,11 @@ public class NodeManager {
         if (node instanceof Region region) {
             region.setSnapToPixel(true);
         }
-        // TODO: 延迟执行主题处理，否则可能出现部分组件样式异常
-        if (node instanceof ThemeAdapter adapter) {
-            // adapter.changeTheme(ThemeManager.currentTheme());
-            ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 150);
-        }
+        //// TODO: 延迟执行主题处理，否则可能出现部分组件样式异常
+        //if (node instanceof ThemeAdapter adapter) {
+        //    // adapter.changeTheme(ThemeManager.currentTheme());
+        //    ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 150);
+        //}
     }
 
 }

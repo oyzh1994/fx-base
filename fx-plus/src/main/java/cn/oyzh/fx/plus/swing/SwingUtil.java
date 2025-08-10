@@ -202,6 +202,9 @@ public class SwingUtil {
      * @param component 组件
      */
     public static void applyTheme(JComponent component) {
+        if (component == null) {
+            return;
+        }
         Color bgColor = fromFxColor(ThemeManager.currentBackgroundColor());
         Color fgColor = fromFxColor(ThemeManager.currentForegroundColor());
         if (component instanceof JScrollPane node) {

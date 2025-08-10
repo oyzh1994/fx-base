@@ -15,6 +15,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.input.MouseEvent;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -490,5 +491,11 @@ public class EditorPane extends FXSwingNode {
     @Override
     public void requestFocus() {
         FXUtil.runWait(super::requestFocus);
+    }
+
+    @Override
+    public void setContent(JComponent content) {
+        super.setContent(content);
+        SwingUtil.applyTheme(this.scrollPane);
     }
 }

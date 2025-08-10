@@ -123,7 +123,7 @@ public interface ThemeStyle {
                     node.getStylesheets().remove(FXStyle.FX_BASE);
                     node.getStylesheets().add(FXStyle.FX_BASE);
                     // 重新应用样式
-//                    node.reapplyCss();
+                    //node.reapplyCss();
                     ReflectUtil.invoke(node, "reapplyCss");
                 } catch (Exception ex) {
                     ex.printStackTrace();

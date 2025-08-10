@@ -12,6 +12,7 @@ import javafx.embed.swing.SwingNode;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import javax.swing.JComponent;
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -127,5 +128,11 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
             java.awt.Font newFont = new java.awt.Font(family, font.getStyle(), font.getSize());
             this.setRealComponentFont(newFont);
         }
+    }
+
+    @Override
+    public void setContent(JComponent content) {
+        super.setContent(content);
+        SwingUtil.applyTheme(content);
     }
 }
