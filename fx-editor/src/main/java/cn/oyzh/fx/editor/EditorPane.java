@@ -145,7 +145,11 @@ public class EditorPane extends FXSwingNode {
         this.editor = editor;
         this.scrollPane = scrollPane;
         // 设置swing组件，必须使用这个方法，不然可能macos上可能卡死
-        FXUtil.runPulse(()-> this.setContent(jPanel));
+        if (OSUtil.isMacOS()) {
+            FXUtil.runPulse(() -> this.setContent(jPanel));
+        } else {
+            this.setContent(jPanel);
+        }
         // 调用父类
         super.initNode();
         // 尝试初始化提示词

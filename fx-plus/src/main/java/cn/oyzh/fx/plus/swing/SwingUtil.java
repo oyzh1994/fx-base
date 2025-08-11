@@ -20,28 +20,18 @@ import java.awt.Font;
  */
 public class SwingUtil {
 
-    // /**
-    //  * 提交到任务队列运行函数
-    //  *
-    //  * @param func 函数
-    //  */
-    // public static void runTask(Runnable func) {
-    //     SwingTask.getInstance().addTask(func);
-    // }
-
     /**
      * 在awt的ui线程同步运行函数
      * 尽量不要使用这个函数，因为macos下会卡死，如果要使用ui线程，就使用runLater
      *
      * @param func 函数
      */
-    @Deprecated
     public static void runWait(Runnable func) {
         try {
             if (SwingUtilities.isEventDispatchThread()) {
                 func.run();
-            } else if (OSUtil.isMacOS()) {
-                func.run();
+            } else if (OSUtil.isMacOS()) {// macos上，除了jbr的jdk，都会卡死，只能改为invokeLater
+                SwingUtilities.invokeLater(func);
             } else {
                 SwingUtilities.invokeAndWait(func);
             }
@@ -88,24 +78,19 @@ public class SwingUtil {
         if (awtFont == null) {
             return null;
         }
-
         // 1. 获取字体家族名称
         String family = awtFont.getFamily();
-
         // 2. 获取字体大小（转换为 double 类型）
         double size = awtFont.getSize2D(); // getSize2D() 直接返回浮点型大小
-
         // 3. 转换字体样式（粗体和斜体）
         FontWeight weight = FontWeight.NORMAL;
         if (awtFont.isBold()) {
             weight = FontWeight.BOLD;
         }
-
         FontPosture posture = FontPosture.REGULAR;
         if (awtFont.isItalic()) {
             posture = FontPosture.ITALIC;
         }
-
         // 4. 创建并返回 JavaFX Font
         return javafx.scene.text.Font.font(family, weight, posture, size);
     }
@@ -188,6 +173,12 @@ public class SwingUtil {
         return adjustedFamily;
     }
 
+    /**
+     * 从fx颜色转换
+     *
+     * @param color fx颜色
+     * @return awt颜色
+     */
     public static Color fromFxColor(javafx.scene.paint.Color color) {
         return color == null ? null : new Color(
                 (int) Math.round(color.getRed() * 255),
@@ -264,5 +255,4 @@ public class SwingUtil {
         // 自定义滚动条UI
         scrollBar.setUI(new SwingScrollBarUI());
     }
-
 }
