@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.keyboard;
 
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -414,5 +415,23 @@ public class KeyboardUtil {
             };
         }
         return -1;
+    }
+
+    /**
+     * 是否匹配快捷键
+     *
+     * @param combinations 快捷键列表
+     * @param event        事件
+     * @return 结果
+     */
+    public static boolean match(List<KeyCombination> combinations, KeyEvent event) {
+        if (CollectionUtil.isNotEmpty(combinations)) {
+            for (KeyCombination combination : combinations) {
+                if (combination.match(event)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -1,12 +1,10 @@
 package cn.oyzh.fx.editor;
 
-import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.plus.swing.SwingUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -46,26 +44,6 @@ import java.util.regex.Pattern;
  */
 public class Editor extends TextEditorPane {
 
-    /**
-     * 文本属性
-     */
-    private final StringProperty textProperty = new SimpleStringProperty();
-
-    /**
-     * 添加文本监听器
-     *
-     * @param listener 监听器
-     */
-    public void addTextChangeListener(ChangeListener<String> listener) {
-        synchronized (this) {
-            this.textProperty.addListener((observable, oldValue, newValue) -> {
-                if (!this.ignoreChange) {
-                    listener.changed(observable, oldValue, newValue);
-                }
-            });
-        }
-    }
-
     {
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
@@ -79,25 +57,12 @@ public class Editor extends TextEditorPane {
         this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
             this.initHighlightStyle();
         });
-        // 重做、撤销监听器
-        this.addUndoableEditListener(e -> {
-            this.redoableProperty.set(e.getEdit().canRedo());
-            this.undoableProperty.set(e.getEdit().canUndo());
-        });
-        // 文本变更事件
+        // 内容变更事件
         this.addDocumentListener(new EditorDocumentListener() {
             @Override
             public void changedUpdate(DocumentEvent e) {
-                textProperty.setValue(getText());
+                textProperty().setValue(getText());
             }
-        });
-        // 光标位置变更事件
-        this.addCaretListener(e -> {
-            this.caretPositionProperty.set(e.getDot());
-        });
-        // 可编辑变更事件
-        this.addPropertyChangeListener("editable", e -> {
-            this.editableProperty.setValue((Boolean) e.getNewValue());
         });
         // 文本变更事件
         this.addTextChangeListener((observableValue, s, t1) -> {
@@ -106,39 +71,94 @@ public class Editor extends TextEditorPane {
     }
 
     /**
+     * 文本属性
+     */
+    private StringProperty textProperty;
+
+    public StringProperty textProperty() {
+        if (this.textProperty == null) {
+            this.textProperty = new SimpleStringProperty(this.getText());
+        }
+        return this.textProperty;
+    }
+
+    /**
+     * 添加文本监听器
+     *
+     * @param listener 监听器
+     */
+    public void addTextChangeListener(ChangeListener<String> listener) {
+        synchronized (this) {
+            this.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!this.ignoreChange) {
+                    listener.changed(observable, oldValue, newValue);
+                }
+            });
+        }
+    }
+
+    /**
      * 光标位置属性
      */
-    private final LongProperty caretPositionProperty = new SimpleLongProperty();
+    private LongProperty caretPositionProperty;
+
+    public LongProperty caretPositionProperty() {
+        if (this.caretPositionProperty == null) {
+            this.caretPositionProperty = new SimpleLongProperty();
+            // 光标位置变更事件
+            this.addCaretListener(e -> {
+                this.caretPositionProperty.set(e.getDot());
+            });
+        }
+        return this.caretPositionProperty;
+    }
 
     /**
      * 可撤销属性
      */
-    private final BooleanProperty undoableProperty = new SimpleBooleanProperty();
+    private BooleanProperty undoableProperty;
+
+    public BooleanProperty undoableProperty() {
+        if (this.undoableProperty == null) {
+            this.undoableProperty = new SimpleBooleanProperty();
+            // 撤销监听器
+            this.addUndoableEditListener(e -> {
+                this.undoableProperty.set(e.getEdit().canUndo());
+            });
+        }
+        return this.undoableProperty;
+    }
 
     /**
      * 可重做属性
      */
-    private final BooleanProperty redoableProperty = new SimpleBooleanProperty();
+    private BooleanProperty redoableProperty;
+
+    public BooleanProperty redoableProperty() {
+        if (this.redoableProperty == null) {
+            this.redoableProperty = new SimpleBooleanProperty();
+            // 重做监听器
+            this.addUndoableEditListener(e -> {
+                this.redoableProperty.set(e.getEdit().canRedo());
+            });
+        }
+        return this.redoableProperty;
+    }
 
     /**
      * 可编辑属性
      */
-    private final BooleanProperty editableProperty = new SimpleBooleanProperty();
-
-    public LongProperty caretPositionProperty() {
-        return caretPositionProperty;
-    }
-
-    public BooleanProperty undoableProperty() {
-        return undoableProperty;
-    }
-
-    public BooleanProperty redoableProperty() {
-        return redoableProperty;
-    }
+    private BooleanProperty editableProperty;
 
     public BooleanProperty editableProperty() {
-        return editableProperty;
+        if (this.editableProperty == null) {
+            this.editableProperty = new SimpleBooleanProperty();
+            // 可编辑变更事件
+            this.addPropertyChangeListener("editable", e -> {
+                this.editableProperty.setValue((Boolean) e.getNewValue());
+            });
+        }
+        return this.editableProperty;
     }
 
     /**
@@ -240,7 +260,6 @@ public class Editor extends TextEditorPane {
             if (StringUtil.isEmpty(text)) {
                 this.clear();
             } else {
-                // SwingUtil.runWait(() -> super.setText(text));
                 super.setText(text);
             }
         } catch (Throwable ignore) {
@@ -465,18 +484,6 @@ public class Editor extends TextEditorPane {
      * @return 结果
      */
     public boolean isEmpty() {
-        // AtomicBoolean result = new AtomicBoolean(false);
-        // SwingUtil.runWait(() -> {
-        //     try {
-        //         String str = this.getDocument().getText(0, 1);
-        //         if (str == null || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
-        //             result.set(true);
-        //         }
-        //     } catch (Exception ex) {
-        //         result.set(true);
-        //     }
-        // });
-        // return result.get();
         try {
             String str = this.getDocument().getText(0, 1);
             if (str == null || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
@@ -519,12 +526,6 @@ public class Editor extends TextEditorPane {
      * @return 文本长度
      */
     public int getLength() {
-        // AtomicInteger val = new AtomicInteger();
-        // SwingUtil.runWait(() -> {
-        //     int i = this.getDocument().getLength();
-        //     val.set(i);
-        // });
-        // return val.get();
         return this.getDocument().getLength();
     }
 
@@ -543,12 +544,10 @@ public class Editor extends TextEditorPane {
     }
 
     public void addDocumentListener(DocumentListener documentListener) {
-        // SwingUtil.runWait(() -> this.getDocument().addDocumentListener(documentListener));
         this.getDocument().addDocumentListener(documentListener);
     }
 
     public void addUndoableEditListener(UndoableEditListener undoableEditListener) {
-        // SwingUtil.runWait(() -> this.getDocument().addUndoableEditListener(undoableEditListener));
         this.getDocument().addUndoableEditListener(undoableEditListener);
     }
 
@@ -652,7 +651,6 @@ public class Editor extends TextEditorPane {
     public void setFont(Font font) {
         try {
             super.setFont(font);
-            // SwingUtil.runTask(() -> super.setFont(font));
         } catch (Exception ignored) {
 
         }
@@ -677,7 +675,7 @@ public class Editor extends TextEditorPane {
                 Point point = this.getLocationOnScreen();
                 double screenX1 = point.x + caretRect.getCenterX();
                 double screenY1 = point.y + caretRect.getCenterY();
-                BoundingBox  bounds = new BoundingBox(screenX1, screenY1, caretRect.getWidth(), caretRect.getHeight());
+                BoundingBox bounds = new BoundingBox(screenX1, screenY1, caretRect.getWidth(), caretRect.getHeight());
                 return Optional.of(bounds);
             }
         } catch (Exception ex) {
@@ -685,7 +683,6 @@ public class Editor extends TextEditorPane {
         }
         return Optional.empty();
     }
-
 
     /**
      * 选中选区
@@ -695,21 +692,10 @@ public class Editor extends TextEditorPane {
      */
     public void selectRange(int start, int end) {
         SwingUtil.runLater(() -> this.select(start, end));
-        // SwingUtil.runWait(() -> this.select(start, end));
-        // this.select(start, end);
     }
 
     @Override
     public Rectangle2D modelToView2D(int pos) {
-        // AtomicReference<Rectangle2D> reference = new AtomicReference<>();
-        // SwingUtil.runWait(() -> {
-        //     try {
-        //         reference.set(super.modelToView2D(pos));
-        //     } catch (Exception ex) {
-        //         ex.printStackTrace();
-        //     }
-        // });
-        // return reference.get();
         try {
             return super.modelToView2D(pos);
         } catch (Exception ex) {
@@ -725,8 +711,6 @@ public class Editor extends TextEditorPane {
      */
     public void positionCaret(int caretPosition) {
         SwingUtil.runLater(() -> this.setCaretPosition(caretPosition));
-        // SwingUtil.runWait(() -> this.setCaretPosition(caretPosition));
-        // this.setCaretPosition(caretPosition);
     }
 
     /**

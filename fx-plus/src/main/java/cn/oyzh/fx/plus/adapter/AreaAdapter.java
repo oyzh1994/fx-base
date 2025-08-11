@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.font.FontAdapter;
  * @author oyzh
  * @since 2023/1/29
  */
+@Deprecated
 public interface AreaAdapter extends TextAdapter, FontAdapter {
 
     /**

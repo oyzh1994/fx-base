@@ -2,6 +2,8 @@ package cn.oyzh.fx.editor;
 
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
+import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -12,7 +14,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.JComponent;
@@ -24,6 +32,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -146,6 +155,16 @@ public class EditorPane extends FXSwingNode {
                 this.requestFocus();
             });
         }
+        // 键盘监听
+        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (KeyboardUtil.match(this.getFontIncrKeyCombination(), event)) {// 字体加大
+                this.fontSizeIncr();
+                event.consume();
+            } else if (KeyboardUtil.match(this.getFontDecrKeyCombination(), event)) {// 字体减少
+                this.fontSizeDecr();
+                event.consume();
+            }
+        });
     }
 
     /**
@@ -190,22 +209,43 @@ public class EditorPane extends FXSwingNode {
         this.getEditor().setFormatType(formatType);
     }
 
-    public String getText() {
-        return this.getEditor().getText();
-    }
-
+    /**
+     * 粘贴
+     */
     public void paste() {
         this.getEditor().paste();
     }
 
+    /**
+     * 清除
+     */
     public void clear() {
         this.getEditor().clear();
     }
 
+    /**
+     * 获取内容
+     *
+     * @return 内容
+     */
+    public String getText() {
+        return this.getEditor().getText();
+    }
+
+    /**
+     * 设置内容
+     *
+     * @param text 内容
+     */
     public void setText(String text) {
         this.getEditor().setText(text);
     }
 
+    /**
+     * 获取内容，去除首尾空格
+     *
+     * @return 内容
+     */
     public String getTextTrim() {
         return this.getEditor().getTextTrim();
     }
@@ -229,31 +269,10 @@ public class EditorPane extends FXSwingNode {
      * @param start 开始
      * @param end   结束
      */
+    @Deprecated
     public void selectRangeAndGoto(int start, int end) {
-        // try {
-        //     System.out.println("start:" + start + " end:" + end);
-        //     // 选中选区
-        //     this.getEditor().selectRange(start, end);
-        //     // // 将文本位置转换为屏幕坐标矩形
-        //     // Rectangle2D rect = this.getEditor().modelToView2D( this.getCaretPosition());
-        //     // if (rect != null) {
-        //     //     // 滚动到该矩形区域（确保选中内容可见）
-        //     //     this.scrollRectToVisible(rect.getBounds());
-        //     // }
-        // } catch (Exception ex) {
-        //     ex.printStackTrace();
-        // }
         this.selectRange(start, end);
     }
-
-    // /**
-    //  * 滚动到可视区
-    //  *
-    //  * @param rectangle 范围
-    //  */
-    // public void scrollRectToVisible(Rectangle rectangle) {
-    //     SwingUtil.runWait(() -> this.getScrollPane().getViewport().scrollRectToVisible(rectangle));
-    // }
 
     /**
      * 撤销
@@ -296,9 +315,11 @@ public class EditorPane extends FXSwingNode {
         this.getEditor().addTextChangeListener(listener);
     }
 
+    @Deprecated
     public void setPromptText(String promptText) {
     }
 
+    @Deprecated
     public String getPromptText() {
         return null;
     }
@@ -497,5 +518,69 @@ public class EditorPane extends FXSwingNode {
     public void setContent(JComponent content) {
         super.setContent(content);
         SwingUtil.applyTheme(this.scrollPane);
+    }
+
+    @Override
+    public Font getFont() {
+        return SwingUtil.toFxFont(this.getRealComponentFont());
+    }
+
+    @Override
+    public double getFontSize() {
+        return this.getRealComponentFont().getSize();
+    }
+
+    @Override
+    public String getFontFamily() {
+        return this.getRealComponentFont().getFamily();
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        return FontUtil.getWeight(this.getFont().getStyle());
+    }
+
+    /**
+     * 获取字号增加快捷键
+     *
+     * @return 字号增加快捷键
+     */
+    public List<KeyCombination> getFontIncrKeyCombination() {
+        KeyCombination keyCombination = OSUtil.isMacOS()
+                ? new KeyCodeCombination(KeyCode.ADD, KeyCombination.META_DOWN)
+                : new KeyCodeCombination(KeyCode.ADD, KeyCombination.CONTROL_DOWN);
+        KeyCombination keyCombination1 = OSUtil.isMacOS()
+                ? new KeyCodeCombination(KeyCode.EQUALS, KeyCombination.META_DOWN)
+                : new KeyCodeCombination(KeyCode.EQUALS, KeyCombination.CONTROL_DOWN);
+        return List.of(keyCombination, keyCombination1);
+    }
+
+    /**
+     * 获取字号减少快捷键
+     *
+     * @return 字号减少快捷键
+     */
+    public List<KeyCombination> getFontDecrKeyCombination() {
+        KeyCombination keyCombination = OSUtil.isMacOS()
+                ? new KeyCodeCombination(KeyCode.SUBTRACT, KeyCombination.META_DOWN)
+                : new KeyCodeCombination(KeyCode.SUBTRACT, KeyCombination.CONTROL_DOWN);
+        KeyCombination keyCombination1 = OSUtil.isMacOS()
+                ? new KeyCodeCombination(KeyCode.MINUS, KeyCombination.META_DOWN)
+                : new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN);
+        return List.of(keyCombination, keyCombination1);
+    }
+
+    /**
+     * 增加字号
+     */
+    public void fontSizeIncr() {
+        this.setFontSize(this.getFontSize() + 1);
+    }
+
+    /**
+     * 减少字号
+     */
+    public void fontSizeDecr() {
+        this.setFontSize(this.getFontSize() - 1);
     }
 }

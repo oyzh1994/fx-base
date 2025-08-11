@@ -448,10 +448,14 @@ public class TerminalPane extends EditorPane implements Terminal {
 
     @Override
     public void fontSizeIncr() {
+       super.fontSizeIncr();
+        this.flushCaret();
     }
 
     @Override
     public void fontSizeDecr() {
+       super.fontSizeDecr();
+        this.flushCaret();
     }
 
     @Override
