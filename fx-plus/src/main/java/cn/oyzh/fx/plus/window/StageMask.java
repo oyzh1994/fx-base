@@ -80,7 +80,7 @@ public class StageMask extends Stage implements StageAdapter {
         if (this.callback != null) {
             try {
                 this.callback.run();
-            } finally {
+                // 执行业务
                 FXUtil.runWait(() -> {
                     // 清除属性
                     this.setScene(null);
@@ -89,6 +89,7 @@ public class StageMask extends Stage implements StageAdapter {
                     // 聚焦原窗口
                     this.target.requestFocus();
                 });
+            } finally {
                 this.target = null;
                 this.callback = null;
             }

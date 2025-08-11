@@ -618,7 +618,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 
     @Override
     public void requestFocus() {
-        FXUtil.runWait(super::requestFocus, 1);
+        FXUtil.runLater(super::requestFocus, 1);
     }
 
     @Override

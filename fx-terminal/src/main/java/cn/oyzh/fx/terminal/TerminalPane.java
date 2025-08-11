@@ -72,15 +72,17 @@ public class TerminalPane extends EditorPane implements Terminal {
 
     {
         this.caretPositionProperty().addListener((observableValue, number, t1) -> {
+            int nop = this.getNOP();
             int len = this.contentLength();
             // 对边界做检查
-            if (this.getNOP() > len) {
+            if (nop > len) {
                 this.flushNOP();
+                nop = this.getNOP();
             }
             if (JulLog.isDebugEnabled()) {
-                JulLog.debug("nop:{}, length:{}", this.getNOP(), this.contentLength());
+                JulLog.debug("nop:{}, length:{}", nop, len);
             }
-            if (t1.intValue() < this.getNOP()) {
+            if (t1.intValue() < nop) {
                 this.disableInput();
             } else {
                 this.enableInput();
@@ -448,13 +450,13 @@ public class TerminalPane extends EditorPane implements Terminal {
 
     @Override
     public void fontSizeIncr() {
-       super.fontSizeIncr();
+        super.fontSizeIncr();
         this.flushCaret();
     }
 
     @Override
     public void fontSizeDecr() {
-       super.fontSizeDecr();
+        super.fontSizeDecr();
         this.flushCaret();
     }
 

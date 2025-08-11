@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.DownLatch;
 import cn.oyzh.common.thread.Task;
 import cn.oyzh.common.thread.TaskBuilder;
 import cn.oyzh.common.thread.TaskManager;
@@ -151,7 +152,20 @@ public class FXUtil {
      * @param task 任务
      */
     public static void runWait(Runnable task) {
-        runWaitByTimeout(task, -1);
+        // runWaitByTimeout(task, -1);
+        if (Platform.isFxApplicationThread()) {
+            task.run();
+        } else {
+            DownLatch latch = DownLatch.of();
+            Platform.runLater(() -> {
+                try {
+                    task.run();
+                } finally {
+                    latch.countDown();
+                }
+            });
+            latch.await();
+        }
     }
 
     /**
@@ -160,8 +174,9 @@ public class FXUtil {
      * @param task  任务
      * @param delay 延迟时间
      */
+    @Deprecated
     public static void runWait(Runnable task, int delay) {
-        TaskManager.startDelay(() -> runWait(task), delay);
+        TaskManager.startDelay(() -> Platform.runLater(task), delay);
     }
 
     /**
@@ -170,6 +185,7 @@ public class FXUtil {
      * @param task    任务
      * @param timeout 超时时间
      */
+    @Deprecated
     public static void runWaitByTimeout(Runnable task, int timeout) {
         if (Platform.isFxApplicationThread()) {
             task.run();
@@ -212,7 +228,7 @@ public class FXUtil {
      * @param delay 延迟时间
      */
     public static void runLater(Runnable task, int delay) {
-        TaskManager.startDelay(() -> runLater(task), delay);
+        TaskManager.startDelay(() -> Platform.runLater(task), delay);
     }
 
     /**
@@ -332,6 +348,12 @@ public class FXUtil {
         return new Media(ResourceUtil.getLocalFileUrl(mediaUrl));
     }
 
+    /**
+     * 转换为fx的图片
+     *
+     * @param bufferedImage awt图片
+     * @return fx图片
+     */
     public static Image toImage(BufferedImage bufferedImage) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
@@ -362,6 +384,11 @@ public class FXUtil {
         return true;
     }
 
+    /**
+     * 显示文档
+     *
+     * @param url 地址
+     */
     public static void showDocument(String url) {
         if (url == null) {
             return;

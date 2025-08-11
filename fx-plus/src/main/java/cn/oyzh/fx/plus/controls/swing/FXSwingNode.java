@@ -87,7 +87,9 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
      */
     protected void setRealComponentFont(java.awt.Font font) {
         if (this.realComponent() != null && this.getContent() != null) {
-            this.realComponent().setFont(font);
+            SwingUtil.runLater(() -> {
+                this.realComponent().setFont(font);
+            });
         }
     }
 

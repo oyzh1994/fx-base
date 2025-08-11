@@ -107,7 +107,7 @@ public class Editor extends TextEditorPane {
             this.caretPositionProperty = new SimpleLongProperty();
             // 光标位置变更事件
             this.addCaretListener(e -> {
-                this.caretPositionProperty.set(e.getDot());
+                this.caretPositionProperty.set(this.getCaretPosition());
             });
         }
         return this.caretPositionProperty;
@@ -534,14 +534,14 @@ public class Editor extends TextEditorPane {
      * 清除文本
      */
     public void clear() {
-        SwingUtil.runLater(() -> {
-            try {
-                int len = this.getDocument().getLength();
-                this.getDocument().remove(0, len);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+        // SwingUtil.runLater(() -> {
+        try {
+            int len = this.getDocument().getLength();
+            this.getDocument().remove(0, len);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // });
     }
 
     public void addDocumentListener(DocumentListener documentListener) {
@@ -610,7 +610,9 @@ public class Editor extends TextEditorPane {
      */
     public void appendText(String content) {
         if (content != null) {
-            super.append(content);
+            SwingUtil.runWait(() -> {
+                super.append(content);
+            });
         }
     }
 
@@ -644,7 +646,7 @@ public class Editor extends TextEditorPane {
             if (endLine && !content.endsWith(System.lineSeparator())) {
                 content = content + "\n";
             }
-            super.append(content);
+            this.append(content);
         }
     }
 
@@ -722,8 +724,8 @@ public class Editor extends TextEditorPane {
      * 移动光标到末尾
      */
     public void moveCaretEnd() {
+        int len = this.getLength();
         SwingUtil.runLater(() -> {
-            int len = this.getDocument().getLength();
             this.setCaretPosition(len);
         });
     }
