@@ -710,7 +710,11 @@ public class Editor extends TextEditorPane {
      * @param caretPosition 光标位置
      */
     public void positionCaret(int caretPosition) {
-        SwingUtil.runLater(() -> this.setCaretPosition(caretPosition));
+        if (caretPosition >= this.getLength()) {
+            this.moveCaretEnd();
+        } else {
+            SwingUtil.runLater(() -> this.setCaretPosition(caretPosition));
+        }
     }
 
     /**
