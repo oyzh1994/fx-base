@@ -24,7 +24,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import javax.swing.SwingUtilities;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 
@@ -47,13 +49,20 @@ public class AppMain extends Application {
         stage.setTitle("编辑器测试");
     }
 
-    private void test1(Stage stage) {
+    private void test1(Stage stage) throws InterruptedException, InvocationTargetException {
         FXVBox vBox = new FXVBox();
         vBox.setFlexWidth("100%");
         vBox.setFlexHeight("100%");
 
 
         EditorPane editor = new EditorPane();
+        // EditorPane editor1 = new EditorPane();
+
+
+        SwingUtilities.invokeLater(()->{
+            editor.getEditor().setText("test123");
+            // editor1.getEditor().setText("test456");
+        });
 
         editor.setCache(true);
         editor.setCacheHint(CacheHint.SPEED);
@@ -219,6 +228,7 @@ public class AppMain extends Application {
         vBox.addChild(hBox);
         vBox.addChild(hBox3);
         vBox.addChild(editor);
+        // vBox.addChild(editor1);
         vBox.addChild(hBox2);
 
 

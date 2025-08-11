@@ -27,11 +27,13 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     }
 
     public void setSize(double width, double height) {
-        SwingUtil.runLater(() -> {
-            Dimension dimension = new Dimension((int) width, (int) height);
-            this.getContent().setSize(dimension);
-            this.getContent().setMinimumSize(dimension);
-        });
+        if (this.getContent() != null) {
+            SwingUtil.runLater(() -> {
+                Dimension dimension = new Dimension((int) width, (int) height);
+                this.getContent().setSize(dimension);
+                this.getContent().setMinimumSize(dimension);
+            });
+        }
     }
 
     public void setWidth(double width) {

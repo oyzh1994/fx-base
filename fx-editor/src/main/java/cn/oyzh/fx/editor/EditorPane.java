@@ -45,6 +45,11 @@ import java.util.Set;
 public class EditorPane extends FXSwingNode {
 
     /**
+     * 实际组件
+     */
+    private JPanel panel;
+
+    /**
      * 编辑器
      */
     private Editor editor;
@@ -70,6 +75,11 @@ public class EditorPane extends FXSwingNode {
      */
     public RTextScrollPane getScrollPane() {
         return this.scrollPane;
+    }
+
+    @Override
+    public JPanel getContent() {
+        return this.panel;
     }
 
     /**
@@ -131,10 +141,11 @@ public class EditorPane extends FXSwingNode {
         // 设置组件
         jPanel.add(scrollPane, BorderLayout.CENTER);
         // 设置组件
+        this.panel = jPanel;
         this.editor = editor;
         this.scrollPane = scrollPane;
-        // 设置swing组件
-        this.setContent(jPanel);
+        // 设置swing组件，必须使用这个方法，不然可能macos上可能卡死
+        FXUtil.runPulse(()-> this.setContent(jPanel));
         // 调用父类
         super.initNode();
         // 尝试初始化提示词

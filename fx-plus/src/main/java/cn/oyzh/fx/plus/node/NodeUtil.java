@@ -578,7 +578,9 @@ public class NodeUtil {
             }
         }
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
-            node.getContent().setSize(width.intValue(), node.getContent().getHeight());
+            if (node.getContent() != null) {
+                node.getContent().setSize(width.intValue(), node.getContent().getHeight());
+            }
         }
     }
 
@@ -648,7 +650,9 @@ public class NodeUtil {
             }
         }
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
-            node.getContent().setSize(node.getContent().getWidth(), height.intValue());
+            if (node.getContent() != null) {
+                node.getContent().setSize(node.getContent().getWidth(), height.intValue());
+            }
         }
     }
 

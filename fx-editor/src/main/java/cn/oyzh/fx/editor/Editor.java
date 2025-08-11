@@ -282,7 +282,8 @@ public class Editor extends TextEditorPane {
 
     @Override
     public void setSyntaxEditingStyle(String styleKey) {
-        SwingUtil.runLater(() -> super.setSyntaxEditingStyle(styleKey));
+        super.setSyntaxEditingStyle(styleKey);
+        // SwingUtil.runLater(() -> super.setSyntaxEditingStyle(styleKey));
     }
 
     /**

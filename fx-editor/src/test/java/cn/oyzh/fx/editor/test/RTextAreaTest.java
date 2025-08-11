@@ -13,18 +13,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
-import org.fife.ui.rtextarea.LineNumberFormatter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
-import java.time.Year;
 
 /**
  * @author oyzh
@@ -42,26 +39,14 @@ public class RTextAreaTest extends Application {
         FXVBox vBox = new FXVBox();
         TextEditorPane editor = new TextEditorPane();
         editor.setLineWrap(true);
-        // // // 放入滚动面板（避免内容溢出）
+        // 放入滚动面板（避免内容溢出）
         RTextScrollPane swingScrollPane = new RTextScrollPane(editor);
         swingScrollPane.setLineNumbersEnabled(true);
         swingScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        // JPanel jPanel = new JPanel();
-        // jPanel.add(editor);
         SwingNode swingNode = new SwingNode();
-        SwingUtilities.invokeLater(() -> {
-            // editor.setSize(800, 500);
-            // editor.setPreferredSize(new Dimension(0,0));
-            // editor.setMinimumSize(new java.awt.Dimension(800, 500));
-            // swingScrollPane.setSize(800, 500);
-            // swingScrollPane.setPreferredSize(new Dimension(0,0));
-            // swingScrollPane.setMinimumSize(new java.awt.Dimension(800, 500));
+        SwingUtilities.invokeAndWait(() -> {
             swingNode.setContent(swingScrollPane);
-            // swingNode.setContent(jPanel);
-            // swingNode.setContent(editor);
-
-
         });
         editor.addComponentListener(new ComponentAdapter() {
             @Override
