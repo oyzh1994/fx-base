@@ -326,13 +326,11 @@ public class Editor extends TextEditorPane {
      */
     public void removeHighlight(Object id) {
         if (id != null) {
-            SwingUtil.runLater(() -> {
-                try {
-                    this.getHighlighter().removeHighlight(id);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
+            try {
+                this.getHighlighter().removeHighlight(id);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -351,7 +349,8 @@ public class Editor extends TextEditorPane {
      * 高亮样式
      */
     protected static final Highlighter.HighlightPainter HIGHLIGHT_PAINTER = new DefaultHighlighter.DefaultHighlightPainter(
-            new Color(185, 214, 251)
+            new Color(255, 102, 0)
+            // new Color(185, 214, 251)
             // new Color(248, 201, 171)
     );
 
@@ -534,14 +533,12 @@ public class Editor extends TextEditorPane {
      * 清除文本
      */
     public void clear() {
-        // SwingUtil.runLater(() -> {
         try {
             int len = this.getDocument().getLength();
             this.getDocument().remove(0, len);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        // });
     }
 
     public void addDocumentListener(DocumentListener documentListener) {
