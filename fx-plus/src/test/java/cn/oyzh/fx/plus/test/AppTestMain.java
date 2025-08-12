@@ -1,13 +1,19 @@
 package cn.oyzh.fx.plus.test;
 
+import cn.oyzh.fx.plus.LimitLenControl;
+import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -23,10 +29,11 @@ public class AppTestMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // test1(stage);
-        test2(stage);
+        // test2(stage);
+        test3(stage);
     }
 
-    private void test1(Stage stage){
+    private void test1(Stage stage) {
         HBox hBox = new HBox();
         ToolBar toolBar = new ToolBar();
         toolBar.getItems().add(new Button("test1"));
@@ -41,7 +48,7 @@ public class AppTestMain extends Application {
         stage.show();
     }
 
-    private void test2(Stage stage){
+    private void test2(Stage stage) {
         // 创建一个轻量级HBox
         LightweightHBox hbox = new LightweightHBox(10);
         hbox.setPadding(new javafx.geometry.Insets(10));
@@ -71,7 +78,26 @@ public class AppTestMain extends Application {
         stage.show();
     }
 
-    public static class AppTestMainApp{
+    private void test3(Stage stage) {
+        // 创建一个轻量级HBox
+        FXTextField field = new FXTextField();
+        field.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+            }
+        });
+
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(field);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("轻量级布局容器示例");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static class AppTestMainApp {
 
         public static void main(String[] args) {
             AppTestMain.main(args);

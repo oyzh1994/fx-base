@@ -7,6 +7,8 @@ import cn.oyzh.fx.gui.text.field.NumberTextField;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -51,6 +53,12 @@ public class AppTestMain extends Application {
         vbox.getChildren().addAll(textField1);
 
         FXTextField textField2 = new FXTextField();
+        textField2.addTextChangeListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+            }
+        });
         textField2.setMaxWidth(200);
         vbox.getChildren().addAll(textField2);
 

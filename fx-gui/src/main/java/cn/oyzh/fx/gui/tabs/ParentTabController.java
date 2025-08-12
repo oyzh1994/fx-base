@@ -61,17 +61,17 @@ public class ParentTabController extends RichTabController {
             controller.initialize(location, resourceBundle);
         }
     }
-
-    @Override
-    protected void bindListeners() {
-        super.bindListeners();
-        for (RichTabController controller : this.getSubControllers()) {
-            if (controller == null) {
-                continue;
-            }
-            controller.bindListeners();
-        }
-    }
+    //
+    // @Override
+    // protected void bindListeners() {
+    //     super.bindListeners();
+    //     for (RichTabController controller : this.getSubControllers()) {
+    //         if (controller == null) {
+    //             continue;
+    //         }
+    //         controller.bindListeners();
+    //     }
+    // }
 
     /**
      * 获取子控制器列表
