@@ -26,6 +26,12 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
         NodeManager.init(this);
     }
 
+    /**
+     * 设置大小
+     *
+     * @param width  宽
+     * @param height 高
+     */
     public void setSize(double width, double height) {
         if (this.getContent() != null) {
             SwingUtil.runLater(() -> {

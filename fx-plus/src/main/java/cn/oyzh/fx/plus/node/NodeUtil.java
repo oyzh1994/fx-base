@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.node;
 
 import atlantafx.base.theme.Styles;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
+import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
@@ -22,6 +23,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
+import java.awt.Dimension;
 
 /**
  * 节点工具类
@@ -306,6 +309,12 @@ public class NodeUtil {
         }
 
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+            if (node.getContent() != null) {
+                int w5 = node.getContent().getWidth();
+                if (w5 > 0) {
+                    return w5;
+                }
+            }
             double w4 = node.prefWidth(-1);
             if (w4 > 0) {
                 return w4;
@@ -450,6 +459,12 @@ public class NodeUtil {
         }
 
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+            if (node.getContent() != null) {
+                int w5 = node.getContent().getHeight();
+                if (w5 > 0) {
+                    return w5;
+                }
+            }
             double w4 = node.prefHeight(-1);
             if (w4 > 0) {
                 return w4;
@@ -579,7 +594,12 @@ public class NodeUtil {
         }
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
             if (node.getContent() != null) {
-                node.getContent().setSize(width.intValue(), node.getContent().getHeight());
+                SwingUtil.runLater(() -> {
+
+                    Dimension dimension = new Dimension(width.intValue(), node.getContent().getHeight());
+                    node.getContent().setSize(dimension);
+                    node.getContent().setMinimumSize(dimension);
+                });
             }
         }
     }
@@ -651,7 +671,11 @@ public class NodeUtil {
         }
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
             if (node.getContent() != null) {
-                node.getContent().setSize(node.getContent().getWidth(), height.intValue());
+                SwingUtil.runLater(() -> {
+                    Dimension dimension = new Dimension(node.getContent().getWidth(), height.intValue());
+                    node.getContent().setSize(dimension);
+                    node.getContent().setMinimumSize(dimension);
+                });
             }
         }
     }

@@ -117,13 +117,13 @@ public class EditorPane extends FXSwingNode {
         return this.getEditor().showDetectData(rawData);
     }
 
-    @Override
-    public void initNode() {
+    /**
+     * 初始化内容
+     */
+    private void initContent() {
         // 初始化swing组件
         Editor editor = new Editor();
         editor.setLineWrap(true);
-        editor.setMaximumSize(null);
-        editor.setPreferredSize(null);
         // 滚动面板
         RTextScrollPane scrollPane = new RTextScrollPane(editor);
         scrollPane.setLineNumbersEnabled(true);
@@ -144,12 +144,14 @@ public class EditorPane extends FXSwingNode {
         this.panel = jPanel;
         this.editor = editor;
         this.scrollPane = scrollPane;
-        // 设置swing组件，必须使用这个方法，不然可能macos上可能卡死
-        // if (OSUtil.isMacOS()) {
-        // FXUtil.runPulse(() -> this.setContent(jPanel));
-        // } else {
-            this.setContent(jPanel);
-        // }
+        // 设置swing组件
+        FXUtil.runLater(() -> this.setContent(jPanel), 300);
+    }
+
+    @Override
+    public void initNode() {
+        // 初始化内容
+        this.initContent();
         // 调用父类
         super.initNode();
         // 尝试初始化提示词

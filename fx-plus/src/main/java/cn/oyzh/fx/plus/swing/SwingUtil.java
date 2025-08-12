@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.swing;
 
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -55,6 +56,16 @@ public class SwingUtil {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 稍后执行
+     *
+     * @param task  任务
+     * @param delay 延迟时间
+     */
+    public static void runLater(Runnable task, int delay) {
+        TaskManager.startDelay(() -> SwingUtilities.invokeLater(task), delay);
     }
 
     /**
