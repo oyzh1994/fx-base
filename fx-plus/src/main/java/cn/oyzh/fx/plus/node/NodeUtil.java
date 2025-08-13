@@ -595,10 +595,10 @@ public class NodeUtil {
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
             if (node.getContent() != null) {
                 SwingUtil.runLater(() -> {
-
                     Dimension dimension = new Dimension(width.intValue(), node.getContent().getHeight());
                     node.getContent().setSize(dimension);
                     node.getContent().setMinimumSize(dimension);
+                    node.getContent().setMaximumSize(dimension);
                 });
             }
         }
@@ -675,6 +675,7 @@ public class NodeUtil {
                     Dimension dimension = new Dimension(node.getContent().getWidth(), height.intValue());
                     node.getContent().setSize(dimension);
                     node.getContent().setMinimumSize(dimension);
+                    node.getContent().setMaximumSize(dimension);
                 });
             }
         }

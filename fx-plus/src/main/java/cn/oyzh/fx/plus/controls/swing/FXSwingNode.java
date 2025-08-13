@@ -36,8 +36,10 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
         if (this.getContent() != null) {
             SwingUtil.runLater(() -> {
                 Dimension dimension = new Dimension((int) width, (int) height);
-                this.getContent().setSize(dimension);
-                this.getContent().setMinimumSize(dimension);
+                JComponent component = this.getContent();
+                component.setSize(dimension);
+                component.setMinimumSize(dimension);
+                component.setMaximumSize(dimension);
             });
         }
     }
@@ -61,8 +63,8 @@ public class FXSwingNode extends SwingNode implements NodeGroup, ThemeAdapter, F
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
-        this.setSize(size[0], size[1]);
         super.resize(size[0], size[1]);
+        this.setSize(size[0], size[1]);
     }
 
     /**
