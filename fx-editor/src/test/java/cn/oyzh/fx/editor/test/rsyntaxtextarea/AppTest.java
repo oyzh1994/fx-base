@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor.test;
+package cn.oyzh.fx.editor.test.rsyntaxtextarea;
 
 
 

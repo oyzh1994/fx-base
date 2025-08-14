@@ -1,6 +1,5 @@
 package cn.oyzh.fx.editor.tem4javafx;
 
-import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
@@ -8,11 +7,10 @@ import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaBehavior;
-import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,8 +20,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.TextPos;
-import jfx.incubator.scene.control.richtext.skin.CodeAreaSkin;
-import jfx.incubator.scene.control.richtext.skin.RichTextAreaSkin;
+import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import tm4java.grammar.IGrammarSource;
 import tm4java.theme.IThemeSource;
 import tm4javafx.richtext.RichTextAreaModel;
@@ -33,9 +30,13 @@ import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.TextFlowModel;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 编辑器
@@ -45,16 +46,23 @@ import java.util.Set;
  */
 public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter {
 
+    {
+        NodeManager.init(this);
+    }
+
     private final StyleProvider styleProvider = new StyleProvider();
 
     private final TextFlowModel textFlowModel = new TextFlowModel();
 
     private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
+    private EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
+
     {
         this.textFlowModel.setStyleProvider(this.styleProvider);
+        this.syntaxDecorator.setStyleProvider(this.styleProvider);
         this.richTextAreaModel.setStyleProvider(this.styleProvider);
-        this.setSyntaxDecorator(new StatelessSyntaxDecorator(this.styleProvider));
+        this.setSyntaxDecorator(this.syntaxDecorator);
         this.setLineNumbersEnabled(true);
         this.setHighlightCurrentParagraph(true);
         // 格式变化事件
@@ -68,7 +76,10 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         });
         // 高亮变化事件
         this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
-            this.initHighlightStyle();
+            // this.initHighlightStyle();
+            this.syntaxDecorator.setHighlightText(t1);
+            this.initThemes();
+            this.initSyntaxes();
         });
         // 文本变更事件
         this.addTextChangeListener((observableValue, s, t1) -> {
@@ -235,9 +246,47 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     }
 
     /**
+     * 设置样式
+     *
+     * @param start 开始位置
+     * @param end   结束位置
+     * @param color 颜色
+     */
+    public void setStyle(int start, int end, Color color) {
+        System.out.println(start + "=" + end);
+        EditorTextPos pos = this.getPosByIndex(start, end);
+        StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, color);
+        super.setStyle(pos.getStart(), pos.getEnd(), attributeMap);
+    }
+
+    public void setStyles(List<EditorStyle> styles) {
+        for (EditorStyle style : styles) {
+            this.setStyle(style.start(), style.end(), style.color());
+        }
+    }
+
+    /**
+     * 高亮颜色
+     */
+    private static final Color HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
+
+    /**
      * 初始化高亮样式
      */
     protected void initHighlightStyle() {
+        // 高亮
+        String highlightText = this.getHighlightText();
+        if (StringUtil.isNotBlank(highlightText)) {
+            this.setStyle(0, this.getLength(), null);
+            String text = this.getText();
+            Pattern highlightPattern = Pattern.compile(highlightText, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = highlightPattern.matcher(text);
+            List<EditorStyle> styles = new ArrayList<>();
+            while (matcher.find()) {
+                styles.add(new EditorStyle(matcher.start(), matcher.end(), HIGHLIGHT_COLOR));
+            }
+            this.setStyles(styles);
+        }
     }
 
     /**
@@ -365,7 +414,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         int pCount = super.getParagraphCount();
         for (int i = 0; i < pCount; i++) {
             int len = super.getModel().getParagraphLength(i);
-            length += len;
+            length += len + 1;
             if (startIndex == -1 && length >= start) {
                 startIndex = i;
             }
@@ -374,6 +423,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
                 break;
             }
         }
+        System.out.println(startIndex + "-" + endIndex);
         TextPos endPos = TextPos.ofLeading(endIndex, end);
         TextPos startPos = TextPos.ofLeading(startIndex, start);
         return new EditorTextPos(startPos, endPos);

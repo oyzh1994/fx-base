@@ -22,6 +22,7 @@ import javafx.application.Application;
 import javafx.scene.CacheHint;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
@@ -42,7 +43,7 @@ public class EditorTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // ThemeManager.apply(Themes.PRIMER_LIGHT);
-        ThemeManager.apply(Themes.PRIMER_DARK);
+        // ThemeManager.apply(Themes.PRIMER_DARK);
         test1(stage);
         stage.setTitle("编辑器测试");
     }
@@ -222,6 +223,11 @@ public class EditorTest extends Application {
             editor.positionCaret(editor.getLength() / 2);
         });
         hBox3.addChild(btn_311);
+        Button btn_312 = new Button("设置颜色");
+        btn_312.setOnAction(event -> {
+            editor.setStyle(0, 10, Color.RED);
+        });
+        hBox3.addChild(btn_312);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox3);

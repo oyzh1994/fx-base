@@ -2,8 +2,16 @@ package cn.oyzh.fx.rich.test;
 
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.rich.incubator.FXRichTextArea;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import jfx.incubator.scene.control.richtext.CodeArea;
+import jfx.incubator.scene.control.richtext.RichTextArea;
+import jfx.incubator.scene.control.richtext.TextPos;
+import jfx.incubator.scene.control.richtext.model.StyleAttribute;
+import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 
 
 /**
@@ -23,7 +31,7 @@ public class AppMain extends Application {
 //        test1(stage);
         // test2(stage);
         // test3(stage);
-//        test4(stage);
+       test4(stage);
 //        test5(stage);
 //        test6(stage);
     }
@@ -183,30 +191,32 @@ public class AppMain extends Application {
 //
 //    }
 
-//    public void test4(Stage stage) {
-//
-//        RichTextArea richTextArea = new RichTextArea();
-//        richTextArea.appendText("test1 test2");
-//        StyleAttribute<Color> attribute = StyleAttributeMap.TEXT_COLOR;
-//
-//        StyleAttributeMap attributeMap = StyleAttributeMap.of(attribute, Color.BLUE);
-//        TextPos start = TextPos.ofLeading(0, 1);
-//        TextPos end = TextPos.ofLeading(0, 3);
-//        richTextArea.setStyle(start, end, attributeMap);
-//
-//        StyleAttribute<Color> attribute1 = StyleAttributeMap.TEXT_COLOR;
-//
-//        StyleAttributeMap attributeMap1 = StyleAttributeMap.of(attribute1, Color.RED);
-//        TextPos start1 = TextPos.ofLeading(0, 4);
-//        TextPos end1 = TextPos.ofLeading(0, 9);
-//        richTextArea.setStyle(start1, end1, attributeMap1);
-//
-////        richTextArea.setLineNumbersEnabled(true);
-//
-//
-//        stage.setScene(new Scene(richTextArea));
-//        stage.show();
-//    }
+   public void test4(Stage stage) {
+
+       // CodeArea richTextArea = new CodeArea();
+       // RichTextArea richTextArea = new RichTextArea();
+       FXRichTextArea richTextArea = new FXRichTextArea();
+       richTextArea.appendText("test1 test2");
+       StyleAttribute<Color> attribute = StyleAttributeMap.TEXT_COLOR;
+
+       StyleAttributeMap attributeMap = StyleAttributeMap.of(attribute, Color.BLUE);
+       TextPos start = TextPos.ofLeading(0, 0);
+       TextPos end = TextPos.ofLeading(0, 5);
+       richTextArea.setStyle(start, end, attributeMap);
+
+       StyleAttribute<Color> attribute1 = StyleAttributeMap.TEXT_COLOR;
+
+       StyleAttributeMap attributeMap1 = StyleAttributeMap.of(attribute1, Color.RED);
+       TextPos start1 = TextPos.ofLeading(0, 6);
+       TextPos end1 = TextPos.ofLeading(0, 11);
+       richTextArea.setStyle(start1, end1, attributeMap1);
+
+//        richTextArea.setLineNumbersEnabled(true);
+
+
+       stage.setScene(new Scene(richTextArea));
+       stage.show();
+   }
 //
 //    public void test5(Stage stage) {
 //

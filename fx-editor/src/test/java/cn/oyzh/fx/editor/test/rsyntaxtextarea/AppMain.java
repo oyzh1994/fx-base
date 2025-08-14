@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor.test;
+package cn.oyzh.fx.editor.test.rsyntaxtextarea;
 
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
@@ -42,7 +42,7 @@ public class AppMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        // ThemeManager.apply(Themes.PRIMER_LIGHT);
         test1(stage);
         // test2(stage);
         // test3(stage);
