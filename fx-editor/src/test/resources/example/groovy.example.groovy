@@ -1,4 +1,4 @@
-package tm4javafx.grammars
+package example
 // Function definition
 def greet(name) {
   "Hello, $name!"
