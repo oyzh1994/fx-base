@@ -1,0 +1,239 @@
+package cn.oyzh.fx.editor.test.tem4javafx;
+
+import cn.oyzh.common.util.IOUtil;
+import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.editor.tem4javafx.Editor;
+import cn.oyzh.fx.editor.tem4javafx.EditorFormatType;
+import cn.oyzh.fx.editor.tem4javafx.EditorFormatTypeComboBox;
+import cn.oyzh.fx.editor.tem4javafx.EditorLineNumPolicy;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.controls.text.field.FXTextField;
+import cn.oyzh.fx.plus.font.FontFamilyComboBox;
+import cn.oyzh.fx.plus.font.FontSizeComboBox;
+import cn.oyzh.fx.plus.font.FontWeightComboBox;
+import cn.oyzh.fx.plus.theme.ThemeComboBox;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.Themes;
+import javafx.application.Application;
+import javafx.scene.CacheHint;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+
+
+/**
+ * @author oyzh
+ * @since 2022/5/18
+ */
+public class EditorTest extends Application {
+
+    public static void main(String[] args) {
+        launch(EditorTest.class, args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        test1(stage);
+        stage.setTitle("编辑器测试");
+    }
+
+    private void test1(Stage stage) {
+        FXVBox vBox = new FXVBox();
+        vBox.setFlexWidth("100%");
+        vBox.setFlexHeight("100%");
+
+        Editor editor = new Editor();
+
+        editor.setFlexWidth("100%");
+        editor.setFlexHeight("100% - 90");
+        editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
+
+        FXHBox hBox = new FXHBox();
+
+        // 高亮
+        FXTextField text_31 = new FXTextField();
+        text_31.setPromptText("查找内容");
+        editor.highlightTextProperty().bind(text_31.textProperty());
+        hBox.addChild(text_31);
+
+        FXComboBox<String> comboBox = new FXComboBox<>();
+        comboBox.addItem("json");
+        comboBox.addItem("html");
+        comboBox.addItem("xml");
+        comboBox.addItem("yaml");
+        comboBox.addItem("css");
+        comboBox.addItem("properties");
+        comboBox.addItem("java");
+        comboBox.addItem("cpp");
+        comboBox.addItem("c");
+        comboBox.addItem("ini");
+        comboBox.addItem("py");
+        comboBox.addItem("js");
+        comboBox.addItem("dart");
+        comboBox.addItem("kt");
+        comboBox.addItem("less");
+        comboBox.addItem("asm");
+        comboBox.addItem("proto");
+        comboBox.addItem("sql");
+        comboBox.addItem("php");
+        comboBox.addItem("rs");
+        comboBox.addItem("md");
+        comboBox.addItem("lua");
+        comboBox.addItem("perl");
+        comboBox.addItem("scala");
+
+        comboBox.selectedItemChanged((observableValue, s, t1) -> {
+            if (t1 != null) {
+                try {
+                    InputStream stream = ResourceUtil.getResourceAsStream("test." + t1);
+                    EditorFormatType formatType = EditorFormatType.ofName(t1);
+                    String data = IOUtil.readDefaultString(stream);
+                    editor.showData(data, formatType);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        hBox.addChild(new FXLabel("数据"));
+        hBox.addChild(comboBox);
+
+        // 提示词
+        FXTextField text_32 = new FXTextField();
+        text_32.setPromptText("提示词");
+        text_32.addTextChangeListener((observableValue, s, t1) -> {
+            if (StringUtil.isEmpty(t1)) {
+                return;
+            }
+            if (t1.contains(",")) {
+                editor.setPrompts(Set.of(t1.split(",")));
+            } else {
+                editor.setPrompts(Set.of(t1));
+            }
+        });
+        hBox.addChild(text_32);
+        // 格式
+        EditorFormatTypeComboBox formatTypeComboBox = new EditorFormatTypeComboBox();
+        formatTypeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFormatType(t1);
+        });
+        editor.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
+            formatTypeComboBox.setValue(t1);
+        });
+        hBox.addChild(new FXLabel("内容格式"));
+        hBox.addChild(formatTypeComboBox);
+
+        FXHBox hBox2 = new FXHBox();
+        ThemeComboBox themeComboBox = new ThemeComboBox();
+        themeComboBox.selectedItemChanged((observableValue, themeStyle, t1) -> {
+            ThemeManager.apply(t1);
+        });
+        hBox2.addChild(new FXLabel("主题"));
+        hBox2.addChild(themeComboBox);
+        // 字体大小
+        FontSizeComboBox fontSizeComboBox = new FontSizeComboBox();
+        fontSizeComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFontSize(t1);
+        });
+        hBox2.addChild(new FXLabel("字体大小"));
+        hBox2.addChild(fontSizeComboBox);
+        // 字体名称
+        FontFamilyComboBox fontFamilyComboBox = new FontFamilyComboBox();
+        fontFamilyComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFontFamily(t1);
+        });
+        hBox2.addChild(new FXLabel("字体名称"));
+        hBox2.addChild(fontFamilyComboBox);
+        // 字体字重
+        FontWeightComboBox fontWeightComboBox = new FontWeightComboBox();
+        fontWeightComboBox.selectedItemChanged((observableValue, formatType, t1) -> {
+            editor.setFontWeight(t1);
+        });
+        hBox2.addChild(new FXLabel("字体字重"));
+        hBox2.addChild(fontWeightComboBox);
+
+        FXHBox hBox3 = new FXHBox();
+        // 替换
+        Button btn_31 = new Button("替换");
+        btn_31.setOnAction(event -> {
+            editor.replaceText(0, 4, "test");
+        });
+        hBox3.addChild(btn_31);
+        // 追加
+        Button btn_32 = new Button("追加");
+        btn_32.setOnAction(event -> {
+            editor.appendText("test1");
+        });
+        hBox3.addChild(btn_32);
+        // 追加
+        Button btn_33 = new Button("追加行");
+        btn_33.setOnAction(event -> {
+            editor.appendLine("test2");
+        });
+        hBox3.addChild(btn_33);
+        // 清除
+        Button btn_34 = new Button("清除");
+        btn_34.setOnAction(event -> {
+            editor.clear();
+        });
+        hBox3.addChild(btn_34);
+        Button btn_35 = new Button("复制");
+        btn_35.setOnAction(event -> {
+            editor.copy();
+        });
+        hBox3.addChild(btn_35);
+        Button btn_36 = new Button("粘贴");
+        btn_36.setOnAction(event -> {
+            editor.paste();
+        });
+        hBox3.addChild(btn_36);
+        Button btn_37 = new Button("重做");
+        btn_37.setOnAction(event -> {
+            editor.redo();
+        });
+        hBox3.addChild(btn_37);
+        Button btn_38 = new Button("撤销");
+        btn_38.setOnAction(event -> {
+            editor.undo();
+        });
+        hBox3.addChild(btn_38);
+        Button btn_39 = new Button("光标到末尾");
+        btn_39.setOnAction(event -> {
+            editor.positionCaret(editor.getLength());
+        });
+        hBox3.addChild(btn_39);
+
+        vBox.addChild(hBox);
+        vBox.addChild(hBox3);
+        vBox.addChild(editor);
+        // vBox.addChild(editor1);
+        vBox.addChild(hBox2);
+
+
+        Scene scene = new Scene(vBox);
+
+        stage.setWidth(800);
+        stage.setHeight(600);
+
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static class EditorTestStarter {
+
+        public static void main(String[] args) {
+            EditorTest.main(args);
+        }
+
+    }
+
+}
