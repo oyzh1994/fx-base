@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor.tem4javafx;
+package cn.oyzh.fx.editor;
 
 /**
  * 编辑器行号策略
@@ -9,4 +9,5 @@ package cn.oyzh.fx.editor.tem4javafx;
 public enum EditorLineNumPolicy {
     NONE,
     ALWAYS
+    // AUTO
 }

@@ -5,7 +5,7 @@ import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.rsyntaxtextarea.EditorFormatType;
 import cn.oyzh.fx.editor.rsyntaxtextarea.EditorFormatTypeComboBox;
-import cn.oyzh.fx.editor.rsyntaxtextarea.EditorLineNumPolicy;
+import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.rsyntaxtextarea.EditorPane;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;

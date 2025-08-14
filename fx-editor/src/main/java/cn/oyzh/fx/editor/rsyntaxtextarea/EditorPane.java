@@ -1,6 +1,7 @@
 package cn.oyzh.fx.editor.rsyntaxtextarea;
 
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.plus.controls.swing.FXSwingNode;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;

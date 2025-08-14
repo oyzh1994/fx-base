@@ -3,6 +3,7 @@ package cn.oyzh.fx.editor.tem4javafx;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
+import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
@@ -16,8 +17,8 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
 import jfx.incubator.scene.control.richtext.CodeArea;
+import jfx.incubator.scene.control.richtext.TextPos;
 import tm4java.grammar.IGrammarSource;
-import tm4java.internal.utils.Resources;
 import tm4java.theme.IThemeSource;
 import tm4javafx.richtext.RichTextAreaModel;
 import tm4javafx.richtext.StatelessSyntaxDecorator;
@@ -25,16 +26,10 @@ import tm4javafx.richtext.StyleHelper;
 import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.TextFlowModel;
 
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
-import java.awt.Color;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 编辑器
@@ -51,13 +46,15 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
     {
-
-        textFlowModel.setStyleProvider(styleProvider);
-        richTextAreaModel.setStyleProvider(styleProvider);
+        this.textFlowModel.setStyleProvider(this.styleProvider);
+        this.richTextAreaModel.setStyleProvider(this.styleProvider);
+        this.setSyntaxDecorator(new StatelessSyntaxDecorator(this.styleProvider));
+        this.setLineNumbersEnabled(true);
+        this.setHighlightCurrentParagraph(true);
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
-            this.initThemes();
             this.initSyntaxes();
+            this.initThemes();
         });
         // 提示词变化事件
         this.promptsProperty().addListener((observableValue, formatType, t1) -> {
@@ -70,30 +67,39 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         // 文本变更事件
         this.addTextChangeListener((observableValue, s, t1) -> {
         });
-
-        this.setSyntaxDecorator(new StatelessSyntaxDecorator(styleProvider));
-        this.setLineNumbersEnabled(true);
-        this.setHighlightCurrentParagraph(true);
     }
 
-    protected void initSyntaxes() {
+    /**
+     * 初始化主题
+     */
+    protected void initThemes() {
         try {
-            EditorFormatType formatType = this.getFormatType();
-            String name = formatType.toString().toLowerCase();
-            String path = "/tm4javafx/grammars/" + name + ".tmLanguage.json";
-            String url = ResourceUtil.getPath(path);
-            this.styleProvider.setGrammar(IGrammarSource.fromFile(Path.of(url)));
-            if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
-                d.refresh(this.getModel());
-            }
+            this.changeTheme(ThemeManager.currentTheme());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    protected void initThemes() {
+    /**
+     * 初始化语法
+     */
+    protected void initSyntaxes() {
         try {
-           this.changeTheme(ThemeManager.currentTheme());
+            EditorFormatType formatType = this.getFormatType();
+            String url;
+            if (formatType == EditorFormatType.RAW) {
+                String path = "/tm4javafx/grammars/log.tmLanguage.json";
+                url = ResourceUtil.getPath(path);
+            } else {
+                String name = formatType.toString().toLowerCase();
+                String path = "/tm4javafx/grammars/" + name + ".tmLanguage.json";
+                url = ResourceUtil.getPath(path);
+            }
+            this.styleProvider.setGrammar(IGrammarSource.fromFile(Path.of(url)));
+            if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
+                d.refresh(this.getModel());
+            }
+            this.setText(this.getText());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -107,6 +113,9 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public StringProperty textProperty() {
         if (this.textProperty == null) {
             this.textProperty = new SimpleStringProperty(this.getText());
+            super.getModel().addListener(ch -> {
+                this.textProperty.setValue(this.getText());
+            });
         }
         return this.textProperty;
     }
@@ -219,7 +228,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         return formatType;
     }
 
-
     /**
      * 初始化高亮样式
      */
@@ -255,16 +263,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public Set<String> getPrompts() {
         return this.promptsProperty == null ? null : this.promptsProperty.get();
     }
-
-    /**
-     * 提示词样式线程
-     */
-    private Thread promptsStyleThread;
-
-    /**
-     * 提示词高亮id列表
-     */
-    private final List<Object> promptIds = new CopyOnWriteArrayList<>();
 
     /**
      * 初始化提示词样式
@@ -320,7 +318,11 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * @return 文本长度
      */
     public int getLength() {
-        return super.getText().length();
+        String text = super.getText();
+        if (text == null) {
+            return 0;
+        }
+        return text.length();
     }
 
     /**
@@ -336,11 +338,32 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         return text.trim();
     }
 
-
     /**
      * 遗忘历史
      */
     public void forgetHistory() {
+        this.clearUndoRedo();
+    }
+
+    private EditorTextPos getPosByIndex(int start, int end) {
+        int length = 0;
+        int endIndex = -1;
+        int startIndex = -1;
+        int pCount = super.getParagraphCount();
+        for (int i = 0; i < pCount; i++) {
+            int len = super.getModel().getParagraphLength(i);
+            length += len;
+            if (startIndex == -1 && length >= start) {
+                startIndex = i;
+            }
+            if (length >= end) {
+                endIndex = i;
+                break;
+            }
+        }
+        TextPos endPos = TextPos.ofLeading(endIndex, end);
+        TextPos startPos = TextPos.ofLeading(startIndex, start);
+        return new EditorTextPos(startPos, endPos);
     }
 
     /**
@@ -353,6 +376,8 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public void replaceText(int start, int end, String content) {
         if (content != null) {
             try {
+                EditorTextPos pos = this.getPosByIndex(start, end);
+                this.replaceText(pos.getStart(), pos.getEnd(), content, true);
             } catch (Exception ignored) {
 
             }
@@ -376,9 +401,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      */
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
-            int len = this.getLength();
             String text = this.getText();
-            ;
             if (text != null && !text.isEmpty() && !text.endsWith("\n") && !content.startsWith("\n")) {
                 content = System.lineSeparator() + content;
             }
@@ -388,7 +411,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             this.appendText(content);
         }
     }
-
 
     /**
      * 获取光标边界
@@ -406,6 +428,8 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * @param end   结束位置
      */
     public void selectRange(int start, int end) {
+        EditorTextPos pos = this.getPosByIndex(start, end);
+        super.select(pos.getStart(), pos.getEnd());
     }
 
     /**
@@ -431,12 +455,30 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      */
     public void deleteText(int start, int end) {
         try {
+            this.replaceText(start, end, "");
         } catch (Exception ignored) {
 
         }
     }
 
-    public void setLineNumPolicy(EditorLineNumPolicy editorLineNumPolicy) {
+    /**
+     * 行号策略
+     */
+    private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
+
+    public EditorLineNumPolicy getLineNumPolicy() {
+        return this.lineNumPolicyProperty == null ? EditorLineNumPolicy.ALWAYS : this.lineNumPolicyProperty.get();
+    }
+
+    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
+        this.lineNumPolicyProperty().set(lineNumPolicy);
+    }
+
+    public ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty() {
+        if (this.lineNumPolicyProperty == null) {
+            this.lineNumPolicyProperty = new SimpleObjectProperty<>(EditorLineNumPolicy.ALWAYS);
+        }
+        return this.lineNumPolicyProperty;
     }
 
     @Override
@@ -453,5 +495,29 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         String url = ResourceUtil.getPath(path);
         this.styleProvider.setTheme(IThemeSource.fromFile(Path.of(url)));
         StyleHelper.applyThemeSettings(this, styleProvider.getThemeSettings());
+    }
+
+    @Override
+    public void initNode() {
+        // 尝试初始化提示词
+        this.setPrompts(this.getPrompts());
+        // 尝试初始化高亮
+        this.setHighlightText(this.getHighlightText());
+        // 行号策略变化事件
+        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
+            if (t1 == EditorLineNumPolicy.NONE) {
+                this.hideLineNum();
+            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
+                this.showLineNum();
+            }
+        });
+    }
+
+    public void hideLineNum() {
+        this.setLineNumbersEnabled(false);
+    }
+
+    public void showLineNum() {
+        this.setLineNumbersEnabled(true);
     }
 }

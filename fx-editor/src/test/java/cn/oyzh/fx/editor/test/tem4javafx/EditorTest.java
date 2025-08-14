@@ -3,10 +3,10 @@ package cn.oyzh.fx.editor.test.tem4javafx;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.tem4javafx.Editor;
 import cn.oyzh.fx.editor.tem4javafx.EditorFormatType;
 import cn.oyzh.fx.editor.tem4javafx.EditorFormatTypeComboBox;
-import cn.oyzh.fx.editor.tem4javafx.EditorLineNumPolicy;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
@@ -41,7 +41,7 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        // ThemeManager.apply(Themes.PRIMER_LIGHT);
         test1(stage);
         stage.setTitle("编辑器测试");
     }
