@@ -438,13 +438,24 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * @param caretPosition 光标位置
      */
     public void positionCaret(int caretPosition) {
+        this.selectRange(caretPosition, caretPosition);
+        super.requestFocus();
+    }
+
+    /**
+     * 移动光标到头部
+     */
+    public void moveCaretStart() {
+        super.moveDocumentStart();
+        super.requestFocus();
     }
 
     /**
      * 移动光标到末尾
      */
     public void moveCaretEnd() {
-        int len = this.getLength();
+        super.moveDocumentEnd();
+        super.requestFocus();
     }
 
     /**

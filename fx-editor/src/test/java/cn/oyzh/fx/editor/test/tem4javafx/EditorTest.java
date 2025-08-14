@@ -208,9 +208,19 @@ public class EditorTest extends Application {
         hBox3.addChild(btn_38);
         Button btn_39 = new Button("光标到末尾");
         btn_39.setOnAction(event -> {
-            editor.positionCaret(editor.getLength());
+            editor.moveCaretEnd();
         });
         hBox3.addChild(btn_39);
+        Button btn_310 = new Button("光标到开始");
+        btn_310.setOnAction(event -> {
+            editor.moveCaretStart();
+        });
+        hBox3.addChild(btn_310);
+        Button btn_311 = new Button("光标到中间");
+        btn_311.setOnAction(event -> {
+            editor.positionCaret(editor.getLength() / 2);
+        });
+        hBox3.addChild(btn_311);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox3);
