@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor;
+package cn.oyzh.fx.editor.rsyntaxtextarea;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;

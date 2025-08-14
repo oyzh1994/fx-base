@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor;
+package cn.oyzh.fx.editor.rsyntaxtextarea;
 
 /**
  * 编辑器行号策略

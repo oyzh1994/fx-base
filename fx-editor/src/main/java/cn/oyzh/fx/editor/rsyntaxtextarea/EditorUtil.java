@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor;
+package cn.oyzh.fx.editor.rsyntaxtextarea;
 
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;

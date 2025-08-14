@@ -1,5 +1,8 @@
 package cn.oyzh.fx.editor;
 
+import cn.oyzh.fx.editor.rsyntaxtextarea.Editor;
+import cn.oyzh.fx.editor.rsyntaxtextarea.EditorFormatType;
+import cn.oyzh.fx.editor.rsyntaxtextarea.EditorLineNumPolicy;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;

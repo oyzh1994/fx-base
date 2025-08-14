@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor;
+package cn.oyzh.fx.editor.rsyntaxtextarea;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
