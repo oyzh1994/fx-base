@@ -42,6 +42,7 @@ public class EditorTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.PRIMER_DARK);
         test1(stage);
         stage.setTitle("编辑器测试");
     }

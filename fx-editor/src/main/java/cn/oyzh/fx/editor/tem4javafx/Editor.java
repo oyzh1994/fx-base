@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor.tem4javafx;
 
+import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
@@ -10,14 +11,19 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaBehavior;
+import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
+import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.TextPos;
+import jfx.incubator.scene.control.richtext.skin.CodeAreaSkin;
+import jfx.incubator.scene.control.richtext.skin.RichTextAreaSkin;
 import tm4java.grammar.IGrammarSource;
 import tm4java.theme.IThemeSource;
 import tm4javafx.richtext.RichTextAreaModel;
@@ -345,7 +351,14 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         this.clearUndoRedo();
     }
 
-    private EditorTextPos getPosByIndex(int start, int end) {
+    /**
+     * 获取位置
+     *
+     * @param start 开始位置
+     * @param end   结束位置
+     * @return 位置
+     */
+    protected EditorTextPos getPosByIndex(int start, int end) {
         int length = 0;
         int endIndex = -1;
         int startIndex = -1;
@@ -377,7 +390,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         if (content != null) {
             try {
                 EditorTextPos pos = this.getPosByIndex(start, end);
-                this.replaceText(pos.getStart(), pos.getEnd(), content, true);
+                super.replaceText(pos.getStart(), pos.getEnd(), content, true);
             } catch (Exception ignored) {
 
             }
@@ -500,12 +513,35 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     }
 
     @Override
+    protected EditorSkin createDefaultSkin() {
+        return new EditorSkin(this);
+    }
+
+    /**
+     * 设置光标颜色
+     *
+     * @param color 颜色
+     */
+    public void setCartColor(Color color) {
+        EditorSkin skin = (EditorSkin) this.getSkin();
+        skin.setCartColor(color);
+    }
+
+    @Override
     public void changeTheme(ThemeStyle style) {
         ThemeAdapter.super.changeTheme(style);
-        String path = "/tm4javafx/themes/vitesse-light.json";
+        String path;
+        if (style.isDarkMode()) {
+            this.setCartColor(Color.WHITE);
+            path = "/tm4javafx/themes/vitesse-dark.json";
+        } else {
+            this.setCartColor(Color.BLACK);
+            path = "/tm4javafx/themes/vitesse-light.json";
+        }
         String url = ResourceUtil.getPath(path);
         this.styleProvider.setTheme(IThemeSource.fromFile(Path.of(url)));
         StyleHelper.applyThemeSettings(this, styleProvider.getThemeSettings());
+
     }
 
     @Override
