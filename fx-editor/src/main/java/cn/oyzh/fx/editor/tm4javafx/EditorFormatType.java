@@ -15,7 +15,7 @@ public enum EditorFormatType {
     JSONC("JSON with Comments", "jsonc"),
     JSONL("JSON Lines", "jsonl"),
     XML("XML", "xml"),
-    HTML("HTML", "html"),
+    HTML("HTML", "html,htm"),
     YAML("YAML", "yaml"),
     CSS("CSS", "css"),
     SHELLSCRIPT("SHELL SCRIPT", "sh"),
@@ -34,7 +34,7 @@ public enum EditorFormatType {
     JAVA("JAVA", "java"),
     CSHARP("C#", "cs"),
     CPP("C++", "cpp"),
-    CUDA_CPP("CUDA CPP", "cu"),
+    CUDA_CPP("CUDA C++", "cu"),
     RUST("RUST", "rs"),
     RUBY("RUBY", "rb"),
     GO("GO", "go"),
@@ -47,8 +47,8 @@ public enum EditorFormatType {
     GROOVY("GROOVY", "groovy"),
     COFFEESCRIPT("COFFEESCRIPT", "coffee"),
     HANDLEBARS("HANDLEBARS", "hbs"),
-    JSP("JSP", "jsp"),
-    KT("KOTLIN", "kt"),
+    JSP("JSP", "jsp,jspf,tag"),
+    KOTLIN("KOTLIN", "kt,kts", "xml"),
     R("R", "r"),
     SWIFT("SWIFT", "swift"),
     OBJECTIVE_C("OBJECTIVE C", "m"),
@@ -56,6 +56,7 @@ public enum EditorFormatType {
     FSHARP("FSHARP", "fs"),
     JULIA("JULIA", "julia"),
     CLOJURE("CLOJURE", "clj"),
+    ERLANG("ERLANG", "erl,escript,hrl,xrl,yrl", "xml"),
     CPP_EMBEDDED_LATEX("CPP EMBEDDED LATEX", "cpp"),
     // 配置文件
     CSV("CSV", "csv"),
@@ -67,14 +68,19 @@ public enum EditorFormatType {
     IGNORE("IGNORE", "ignore"),
     LATEX("LATEX", "ltx"),
     SCSS("SCSS", "scss"),
-    JADE("JADE", "pug"),
+    PUG("PUG", "pug"),
     TEX("TEX", "tex"),
+    VIML("VIML", "vim,vimrc,gvimrc,nvimrc,_vimrc,vmb,ideavimrc"),
     GIT_COMMIT("GIT COMMIT", "txt"),
     GIT_REBASE("GIT REBASE", "git-rebase-todo"),
     BIBTEX("BIBTEX", "bib"),
     DIFF("DIFF", "diff"),
+    KCONFIG("KCONFIG", "kconfig"),
+    TERRAFORM("TERRAFORM", "tf,tfvars"),
+    HCL("HCL", "hcl"),
     HLSL("HLSL", "hlsl"),
     SAS("SAS", "sas"),
+    TWIG("TWIG", "twig,html.twig", "xml"),
     RAKU("RAKU", "pl6"),
     RAZOR("RAZOR", "razor"),
     RESTRUCTUREDTEXT("RESTRUCTUREDTEXT", "rst"),
@@ -85,7 +91,7 @@ public enum EditorFormatType {
     MARKDOWN_MATH_INLINE("MARKDOWN MATH INLINE", "md"),
     MARKDOWN_LATEX_COMBINED("MARKDOWN LATEX COMBINED", "md"),
     MARKDOWN_MATH_CODE_BLOCK("MARKDOWN MATH CODE BLOCK", "md"),
-    JIKESPG("JIKESPG", "jgrm"),
+    JIKESPG("JIKESPG", "g"),
     SNIPPET("SNIPPET", "snippet"),
     SOURCE_SASSDOC("SOURCE SASSDOC", ""),
     SOURCE_C_PLATFORM("SOURCE C PLATFORM", ""),
@@ -95,11 +101,15 @@ public enum EditorFormatType {
     TEXT_HTML_BASIC("TEXT HTML BASIC", ""),
     MDX("MDX", ""),
     MDX_MARKDOWN("MDX MARKDOWN", ""),
+    ASCIIDOCTOR("ASCIIDOCTOR", "ad,asc,adoc,asciidoc,adoc.txt"),
+    BICEP("BICEP", "bicep", "xml"),
     ;
 
     private final String name;
 
     private final String extension;
+
+    private String textMateType = "json";
 
     public String getName() {
         return name;
@@ -109,13 +119,39 @@ public enum EditorFormatType {
         return this.extension;
     }
 
+    public String getFirstExtension() {
+        if (this.extension.contains(",")) {
+            return this.extension.split(",")[0];
+        }
+        return this.extension;
+    }
+
+    public String getTextMateType() {
+        return this.extension;
+    }
+
     public String getSyntaxesName() {
         return this.toString().toLowerCase().replace("_", "-");
+    }
+
+    public String getFullSyntaxesName() {
+        String name = this.getSyntaxesName();
+        name += ".tmLanguage";
+        if (StringUtil.isNotBlank(this.textMateType)) {
+            name += "." + this.textMateType;
+        }
+        return name;
     }
 
     EditorFormatType(String name, String extension) {
         this.name = name;
         this.extension = extension;
+    }
+
+    EditorFormatType(String name, String extension, String textMateType) {
+        this.name = name;
+        this.extension = extension;
+        this.textMateType = textMateType;
     }
 
     /**
@@ -126,21 +162,16 @@ public enum EditorFormatType {
      */
     public static EditorFormatType ofExtension(String extName) {
         if (StringUtil.isNotBlank(extName)) {
-            if (extName.equalsIgnoreCase("htm")) {
-                return HTML;
-            }
             for (EditorFormatType formatType : EditorFormatType.values()) {
-                if (StringUtil.equalsIgnoreCase(formatType.getExtension(), extName)) {
-                    return formatType;
+                String extension = formatType.getExtension();
+                if (extension.isEmpty()) {
+                    continue;
                 }
-            }
-            for (EditorFormatType formatType : EditorFormatType.values()) {
-                if (StringUtil.equalsIgnoreCase(formatType.toString(), extName)) {
-                    return formatType;
-                }
-            }
-            for (EditorFormatType formatType : EditorFormatType.values()) {
-                if (StringUtil.equalsIgnoreCase(formatType.getName(), extName)) {
+                if (extension.contains(",")) {
+                    if (StringUtil.equalsAnyIgnoreCase(extName, extension.split(","))) {
+                        return formatType;
+                    }
+                } else if (StringUtil.equals(extName, extension)) {
                     return formatType;
                 }
             }

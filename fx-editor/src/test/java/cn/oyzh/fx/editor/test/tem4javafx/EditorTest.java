@@ -5,12 +5,10 @@ import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.tm4javafx.Editor;
-import cn.oyzh.fx.editor.tm4javafx.EditorFormatType;
 import cn.oyzh.fx.editor.tm4javafx.EditorFormatTypeComboBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
-import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.font.FontFamilyComboBox;
@@ -25,7 +23,6 @@ import javafx.application.Application;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -77,7 +74,7 @@ public class EditorTest extends Application {
         comboBox.selectedItemChanged((observableValue, s, t1) -> {
             if (t1 != null) {
                 try {
-                    String name = "/tm4javafx/example/" + t1.getSyntaxesName() + ".example." + t1.getExtension();
+                    String name = "/tm4javafx/example/" + t1.getSyntaxesName() + ".example." + t1.getFirstExtension();
                     InputStream stream = ResourceUtil.getResourceAsStream(name);
                     String data = IOUtil.readDefaultString(stream);
                     editor.showData(data, t1);
