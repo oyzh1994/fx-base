@@ -47,8 +47,8 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.PRIMER_LIGHT);
-        // ThemeManager.apply(Themes.PRIMER_DARK);
+        // ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.PRIMER_DARK);
         test1(stage);
         stage.setTitle("编辑器测试");
     }
@@ -227,11 +227,11 @@ public class EditorTest extends Application {
             editor.positionCaret(editor.getLength() / 2);
         });
         hBox3.addChild(btn_311);
-        Button btn_312 = new Button("设置颜色");
-        btn_312.setOnAction(event -> {
-            editor.setStyle(0, 10, Color.RED);
-        });
-        hBox3.addChild(btn_312);
+        // Button btn_312 = new Button("设置颜色");
+        // btn_312.setOnAction(event -> {
+        //     editor.setStyle(0, 10, Color.RED);
+        // });
+        // hBox3.addChild(btn_312);
 
         FXHBox hBox4 = new FXHBox();
         Button btn_41 = new Button("获取光标位置");

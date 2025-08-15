@@ -64,8 +64,8 @@ public interface ThemeAdapter extends PropAdapter {
         if (this.isEnableTheme() && style != null) {
             if (this instanceof Canvas node) {
                 this.handleStyle(node, style);
-            } else if (NodeUtil.isSwingImport && this instanceof javafx.embed.swing.SwingNode node) {
-                this.handleStyle(node, style);
+            // } else if (NodeUtil.isSwingImport && this instanceof javafx.embed.swing.SwingNode node) {
+            //     this.handleStyle(node, style);
             } else if (this instanceof Parent node) {
                 this.handleStyle(node, style);
             } else if (this instanceof Popup node) {
@@ -114,14 +114,21 @@ public interface ThemeAdapter extends PropAdapter {
         style.handleStyle(node);
     }
 
+    // /**
+    //  * 处理样式
+    //  *
+    //  * @param node  节点
+    //  * @param style 主题风格
+    //  */
+    // private void handleStyle(javafx.embed.swing.SwingNode node, ThemeStyle style) {
+    //     style.handleStyle(node);
+    //     cn.oyzh.fx.plus.swing.SwingUtil.applyTheme(node.getContent());
+    // }
+
     /**
-     * 处理样式
-     *
-     * @param node  节点
-     * @param style 主题风格
+     * 应用主题
      */
-    private void handleStyle(javafx.embed.swing.SwingNode node, ThemeStyle style) {
-        style.handleStyle(node);
-        cn.oyzh.fx.plus.swing.SwingUtil.applyTheme(node.getContent());
+    default void applyTheme(){
+        this.changeTheme(ThemeManager.currentTheme());
     }
 }

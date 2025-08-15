@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -54,7 +55,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter {
+public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
 
     private final StyleProvider styleProvider = new StyleProvider();
 
@@ -118,17 +119,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     }
 
     /**
-     * 初始化主题
-     */
-    protected void initThemes() {
-        try {
-            this.changeTheme(ThemeManager.currentTheme());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
      * 初始化语法
      */
     protected void initSyntaxes() {
@@ -153,7 +143,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * 初始化文本样式
      */
     private void initTextStyle() {
-        this.initThemes();
+        this.applyTheme();
         this.initSyntaxes();
     }
 
@@ -280,25 +270,24 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         return formatType;
     }
 
-    /**
-     * 设置样式
-     *
-     * @param start 开始位置
-     * @param end   结束位置
-     * @param color 颜色
-     */
-    public void setStyle(int start, int end, Color color) {
-        System.out.println(start + "=" + end);
-        EditorTextPos pos = this.getPosByIndex(start, end);
-        StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, color);
-        super.setStyle(pos.getStart(), pos.getEnd(), attributeMap);
-    }
-
-    public void setStyles(List<EditorStyle> styles) {
-        for (EditorStyle style : styles) {
-            this.setStyle(style.start(), style.end(), style.color());
-        }
-    }
+    // /**
+    //  * 设置样式
+    //  *
+    //  * @param start 开始位置
+    //  * @param end   结束位置
+    //  * @param color 颜色
+    //  */
+    // public void setStyle(int start, int end, Color color) {
+    //     EditorTextPos pos = this.getPosByIndex(start, end);
+    //     StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, color);
+    //     super.setStyle(pos.getStart(), pos.getEnd(), attributeMap);
+    // }
+    //
+    // public void setStyles(List<EditorStyle> styles) {
+    //     for (EditorStyle style : styles) {
+    //         this.setStyle(style.start(), style.end(), style.color());
+    //     }
+    // }
 
     /**
      * 提示词属性
@@ -626,9 +615,18 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         }
     }
 
+    /**
+     * 获取光标颜色
+     *
+     * @return 光标颜色
+     */
+    public Color getCartColor() {
+        EditorSkin skin = (EditorSkin) this.getSkin();
+        return skin == null ? null : skin.getCartColor();
+    }
+
     @Override
     public void changeTheme(ThemeStyle style) {
-        ThemeAdapter.super.changeTheme(style);
         String path;
         if (style.isDarkMode()) {
             this.setCartColor(Color.WHITE);

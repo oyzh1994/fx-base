@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.node;
 
 import atlantafx.base.theme.Styles;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.swing.SwingUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
@@ -594,7 +593,7 @@ public class NodeUtil {
         }
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
             if (node.getContent() != null) {
-                SwingUtil.runLater(() -> {
+                cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
                     Dimension dimension = new Dimension(width.intValue(), node.getContent().getHeight());
                     node.getContent().setSize(dimension);
                     node.getContent().setMinimumSize(dimension);
@@ -671,7 +670,7 @@ public class NodeUtil {
         }
         if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
             if (node.getContent() != null) {
-                SwingUtil.runLater(() -> {
+                cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
                     Dimension dimension = new Dimension(node.getContent().getWidth(), height.intValue());
                     node.getContent().setSize(dimension);
                     node.getContent().setMinimumSize(dimension);
