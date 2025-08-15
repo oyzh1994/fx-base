@@ -71,8 +71,11 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * 初始化编辑器
      */
     private void initEditor() {
+        // 默认显示行号
+        this.setLineNumbersEnabled(true);
         // 内容内边距
         this.setContentPadding(new Insets(5));
+        this.setLeftDecorator(new EditorLineNumberDecorator());
         // 边框
         Color color = ThemeManager.currentForegroundColor();
         CornerRadii radii = new CornerRadii(3);
@@ -85,8 +88,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         this.richTextAreaModel.setStyleProvider(this.styleProvider);
         // 语法装饰
         this.setSyntaxDecorator(this.syntaxDecorator);
-        // 默认显示行号
-        this.setLineNumbersEnabled(true);
+
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
             this.syntaxDecorator.setFormatType(t1);

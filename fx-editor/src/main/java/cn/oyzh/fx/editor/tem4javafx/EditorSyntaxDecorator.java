@@ -40,7 +40,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 格式类型
      */
-    private EditorFormatType formatType;
+    private EditorFormatType formatType = EditorFormatType.RAW;
 
     public EditorSyntaxDecorator() {
         this(null);
@@ -157,7 +157,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             return paragraphs;
         }
         // 处理格式
-        if (this.formatType == EditorFormatType.RAW) {
+        if (this.formatType == EditorFormatType.RAW || this.formatType == null) {
             String[] lines = text.split(LINE_SPLIT_PATTERN);
             List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
             for (String line : lines) {
