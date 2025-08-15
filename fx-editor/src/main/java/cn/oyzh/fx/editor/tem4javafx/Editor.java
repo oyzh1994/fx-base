@@ -56,7 +56,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
 
     private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
-    private EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
+    private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     {
         this.textFlowModel.setStyleProvider(this.styleProvider);
@@ -67,19 +67,17 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         this.setHighlightCurrentParagraph(true);
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
-            this.initSyntaxes();
-            this.initThemes();
+            this.initTextStyle();
         });
         // 提示词变化事件
         this.promptsProperty().addListener((observableValue, formatType, t1) -> {
-            this.initPromptsStyle();
+            this.syntaxDecorator.setPrompts(t1);
+            this.initTextStyle();
         });
         // 高亮变化事件
         this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
-            // this.initHighlightStyle();
-            this.syntaxDecorator.setHighlightText(t1);
-            this.initThemes();
-            this.initSyntaxes();
+            this.syntaxDecorator.setHighlight(t1);
+            this.initTextStyle();
         });
         // 文本变更事件
         this.addTextChangeListener((observableValue, s, t1) -> {
@@ -120,6 +118,14 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * 初始化文本样式
+     */
+    private void initTextStyle(){
+        this.initThemes();
+        this.initSyntaxes();
     }
 
     /**
@@ -266,30 +272,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     }
 
     /**
-     * 高亮颜色
-     */
-    private static final Color HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
-
-    /**
-     * 初始化高亮样式
-     */
-    protected void initHighlightStyle() {
-        // 高亮
-        String highlightText = this.getHighlightText();
-        if (StringUtil.isNotBlank(highlightText)) {
-            this.setStyle(0, this.getLength(), null);
-            String text = this.getText();
-            Pattern highlightPattern = Pattern.compile(highlightText, Pattern.CASE_INSENSITIVE);
-            Matcher matcher = highlightPattern.matcher(text);
-            List<EditorStyle> styles = new ArrayList<>();
-            while (matcher.find()) {
-                styles.add(new EditorStyle(matcher.start(), matcher.end(), HIGHLIGHT_COLOR));
-            }
-            this.setStyles(styles);
-        }
-    }
-
-    /**
      * 提示词属性
      */
     private ObjectProperty<Set<String>> promptsProperty;
@@ -317,12 +299,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      */
     public Set<String> getPrompts() {
         return this.promptsProperty == null ? null : this.promptsProperty.get();
-    }
-
-    /**
-     * 初始化提示词样式
-     */
-    protected void initPromptsStyle() {
     }
 
     /**
@@ -574,7 +550,9 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      */
     public void setCartColor(Color color) {
         EditorSkin skin = (EditorSkin) this.getSkin();
-        skin.setCartColor(color);
+        if (skin != null) {
+            skin.setCartColor(color);
+        }
     }
 
     @Override
@@ -591,7 +569,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         String url = ResourceUtil.getPath(path);
         this.styleProvider.setTheme(IThemeSource.fromFile(Path.of(url)));
         StyleHelper.applyThemeSettings(this, styleProvider.getThemeSettings());
-
     }
 
     @Override

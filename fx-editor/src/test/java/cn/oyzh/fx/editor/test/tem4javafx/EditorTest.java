@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.Set;
 
 
@@ -113,11 +114,10 @@ public class EditorTest extends Application {
         FXTextField text_32 = new FXTextField();
         text_32.setPromptText("提示词");
         text_32.addTextChangeListener((observableValue, s, t1) -> {
-            if (StringUtil.isEmpty(t1)) {
-                return;
-            }
             if (t1.contains(",")) {
                 editor.setPrompts(Set.of(t1.split(",")));
+            } else if(StringUtil.isBlank(t1)){
+                editor.setPrompts(Collections.emptySet());
             } else {
                 editor.setPrompts(Set.of(t1));
             }
