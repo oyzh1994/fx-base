@@ -15,7 +15,9 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.ControlUtil;
+import com.sun.javafx.scene.NodeHelper;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.beans.property.ObjectProperty;
@@ -34,7 +36,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.TextPos;
-import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import tm4java.grammar.IGrammarSource;
 import tm4java.theme.IThemeSource;
 import tm4javafx.richtext.RichTextAreaModel;
@@ -45,7 +46,6 @@ import tm4javafx.richtext.TextFlowModel;
 
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -627,17 +627,44 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
 
     @Override
     public void changeTheme(ThemeStyle style) {
-        String path;
-        if (style.isDarkMode()) {
-            this.setCartColor(Color.WHITE);
-            path = "/tm4javafx/themes/vitesse-dark.json";
-        } else {
-            this.setCartColor(Color.BLACK);
-            path = "/tm4javafx/themes/vitesse-light.json";
+        try {
+            String path;
+            if (style.isDarkMode()) {
+                if (style == Themes.DRACULA) {
+                    path = "/tm4javafx/themes/dracula.json";
+                } else if (style == Themes.NORD_DARK) {
+                    path = "/tm4javafx/themes/github-dark.json";
+                } else if (style == Themes.PRIMER_DARK) {
+                    path = "/tm4javafx/themes/min-dark.json";
+                } else if (style == Themes.CUPERTINO_DARK) {
+                    path = "/tm4javafx/themes/dark-plus.json";
+                } else {
+                    path = "/tm4javafx/themes/vitesse-dark.json";
+                }
+            } else {
+                if (style == Themes.NORD_LIGHT) {
+                    path = "/tm4javafx/themes/github-light.json";
+                } else if (style == Themes.PRIMER_LIGHT) {
+                    path = "/tm4javafx/themes/min-light.json";
+                } else if (style == Themes.CUPERTINO_LIGHT) {
+                    path = "/tm4javafx/themes/light-plus.json";
+                } else {
+                    path = "/tm4javafx/themes/vitesse-light.json";
+                }
+            }
+            // 获取资源
+            String url = ResourceUtil.getPath(path);
+            // 设置主题
+            this.styleProvider.setTheme(IThemeSource.fromFile(Path.of(url)));
+            // 应用颜色
+            StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
+            // TODO: 修复主题色可能不生效问题
+            NodeHelper.processCSS(this);
+            // 设置光标颜色
+            this.setCartColor(ThemeManager.currentAccentColor());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        String url = ResourceUtil.getPath(path);
-        this.styleProvider.setTheme(IThemeSource.fromFile(Path.of(url)));
-        StyleHelper.applyThemeSettings(this, styleProvider.getThemeSettings());
     }
 
     @Override
