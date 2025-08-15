@@ -13,8 +13,8 @@ public enum EditorFormatType {
     RAW("RAW", ""),
     // 常见文件
     JSON("JSON", "json"),
-    JSONC("JSONC", "jsonc"),
-    JSONL("JSONL", "jsonl"),
+    JSONC("JSON with Comments", "jsonc"),
+    JSONL("JSON Lines", "jsonl"),
     XML("XML", "xml"),
     HTML("HTML", "html"),
     YAML("YAML", "yaml"),
@@ -29,7 +29,7 @@ public enum EditorFormatType {
     // 语言
     C("C", "c"),
     JAVASCRIPT("JAVASCRIPT", "js"),
-    JAVASCRIPTREACT("JAVASCRIPT REACT", "jsx"),
+    JAVASCRIPTREACT("JAVASCRIPT (with React support)", "jsx"),
     PYTHON("PYTHON", "py"),
     JAVA("JAVA", "java"),
     CSHARP("C#", "cs"),
@@ -39,7 +39,7 @@ public enum EditorFormatType {
     RUBY("RUBY", "rb"),
     GO("GO", "go"),
     TYPESCRIPT("TYPESCRIPT", "ts"),
-    TYPESCRIPTREACT("TYPESCRIPT REACT", "tsx"),
+    TYPESCRIPTREACT("TYPESCRIPT (with React support)", "tsx"),
     PHP("PHP", "php"),
     LUA("LUA", "lua"),
     DART("DART", "dart"),
@@ -93,6 +93,8 @@ public enum EditorFormatType {
     DOCUMENTATION_INJECTION_TS("DOCUMENTATION INJECTION TS", ""),
     DOCUMENTATION_INJECTION_JSX("DOCUMENTATION INJECTION JS JSX", ""),
     TEXT_HTML_BASIC("TEXT HTML BASIC", ""),
+    MDX("MDX", ""),
+    MDX_MARKDOWN("MDX MARKDOWN", ""),
     ;
 
     private final String name;
@@ -107,8 +109,8 @@ public enum EditorFormatType {
         return this.extension;
     }
 
-    public String getSyntaxesName(){
-        return this.toString().toLowerCase().replace("_","-");
+    public String getSyntaxesName() {
+        return this.toString().toLowerCase().replace("_", "-");
     }
 
     EditorFormatType(String name, String extension) {
