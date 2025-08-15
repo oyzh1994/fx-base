@@ -89,6 +89,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         this.setLineNumbersEnabled(true);
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
+            this.syntaxDecorator.setFormatType(t1);
             this.initTextStyle();
         });
         // 提示词变化事件
@@ -130,16 +131,12 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     protected void initSyntaxes() {
         try {
             EditorFormatType formatType = this.getFormatType();
-            String url;
-            if (formatType == EditorFormatType.RAW) {
-                String path = "/tm4javafx/grammars/log.tmLanguage.json";
-                url = ResourceUtil.getPath(path);
-            } else {
+            if (formatType != EditorFormatType.RAW) {
                 String name = formatType.toString().toLowerCase();
                 String path = "/tm4javafx/grammars/" + name + ".tmLanguage.json";
-                url = ResourceUtil.getPath(path);
+                String url = ResourceUtil.getPath(path);
+                this.styleProvider.setGrammar(IGrammarSource.fromFile(Path.of(url)));
             }
-            this.styleProvider.setGrammar(IGrammarSource.fromFile(Path.of(url)));
             if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
                 d.refresh(this.getModel());
             }

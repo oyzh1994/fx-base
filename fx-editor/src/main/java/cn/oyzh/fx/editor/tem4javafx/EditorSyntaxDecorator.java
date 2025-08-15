@@ -3,6 +3,7 @@ package cn.oyzh.fx.editor.tem4javafx;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.model.RichParagraph;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
@@ -36,6 +37,11 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private Set<String> prompts;
 
+    /**
+     * 格式类型
+     */
+    private EditorFormatType formatType;
+
     public EditorSyntaxDecorator() {
         this(null);
     }
@@ -58,6 +64,14 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
     public void setPrompts(Set<String> prompts) {
         this.prompts = prompts;
+    }
+
+    public EditorFormatType getFormatType() {
+        return formatType;
+    }
+
+    public void setFormatType(EditorFormatType formatType) {
+        this.formatType = formatType;
     }
 
     /**
@@ -138,6 +152,17 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 for (StyledToken token : tokens) {
                     super.applyStyles(paragraph, token);
                 }
+                paragraphs.add(paragraph.build());
+            }
+            return paragraphs;
+        }
+        // 处理格式
+        if (this.formatType == EditorFormatType.RAW) {
+            String[] lines = text.split(LINE_SPLIT_PATTERN);
+            List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
+            for (String line : lines) {
+                RichParagraph.Builder paragraph = RichParagraph.builder();
+                super.applyStyles(paragraph, new StyledToken(line, null));
                 paragraphs.add(paragraph.build());
             }
             return paragraphs;
