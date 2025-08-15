@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor.tem4javafx;
+package cn.oyzh.fx.editor.tm4javafx;
 
 import cn.oyzh.common.util.ReflectUtil;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;

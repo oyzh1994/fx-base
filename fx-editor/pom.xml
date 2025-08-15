@@ -28,6 +28,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea -->
@@ -35,6 +36,7 @@
             <groupId>com.fifesoft</groupId>
             <artifactId>rsyntaxtextarea</artifactId>
             <version>${rsyntaxtextarea.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jspecify/jspecify -->
@@ -48,15 +50,17 @@
         <dependency>
             <groupId>io.github.mkpaz</groupId>
             <artifactId>tm4javafx</artifactId>
-            <version>0.1.0</version>
+            <version>${tm4javafx.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.mkpaz/tm4java -->
         <dependency>
             <groupId>io.github.mkpaz</groupId>
             <artifactId>tm4java</artifactId>
             <version>${tm4java.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>jfx-incubator-richtext</artifactId>

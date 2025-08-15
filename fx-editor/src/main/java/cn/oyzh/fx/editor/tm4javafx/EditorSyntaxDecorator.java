@@ -1,9 +1,7 @@
-package cn.oyzh.fx.editor.tem4javafx;
+package cn.oyzh.fx.editor.tm4javafx;
 
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.model.RichParagraph;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
@@ -12,8 +10,6 @@ import tm4javafx.richtext.StatelessSyntaxDecorator;
 import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.StyledToken;
 
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

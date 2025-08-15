@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor.tem4javafx;
+package cn.oyzh.fx.editor.tm4javafx;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;

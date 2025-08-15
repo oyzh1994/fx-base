@@ -1,10 +1,11 @@
-package cn.oyzh.fx.editor.tem4javafx;
+package cn.oyzh.fx.editor.tm4javafx;
 
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
+import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
@@ -53,7 +54,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter {
+public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter {
 
     private final StyleProvider styleProvider = new StyleProvider();
 
@@ -679,6 +680,10 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         return this.getOffsetByPos(pos);
     }
 
+    public void scrollToTop() {
+        this.moveCaretStart();
+    }
+
     public void scrollToEnd() {
         this.moveCaretEnd();
     }
@@ -696,4 +701,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public void fontSizeDecr() {
         this.setFontSize(this.getFontSize() - 1);
     }
+
+
 }
