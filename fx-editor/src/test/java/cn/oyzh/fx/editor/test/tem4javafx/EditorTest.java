@@ -9,25 +9,29 @@ import cn.oyzh.fx.editor.tem4javafx.EditorFormatType;
 import cn.oyzh.fx.editor.tem4javafx.EditorFormatTypeComboBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.font.FontFamilyComboBox;
 import cn.oyzh.fx.plus.font.FontSizeComboBox;
 import cn.oyzh.fx.plus.font.FontWeightComboBox;
+import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
-import javafx.scene.CacheHint;
+import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -43,7 +47,7 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
         // ThemeManager.apply(Themes.PRIMER_DARK);
         test1(stage);
         stage.setTitle("编辑器测试");
@@ -57,7 +61,7 @@ public class EditorTest extends Application {
         Editor editor = new Editor();
 
         editor.setFlexWidth("100%");
-        editor.setFlexHeight("100% - 90");
+        editor.setFlexHeight("100% - 120");
         editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
 
         FXHBox hBox = new FXHBox();
@@ -116,7 +120,7 @@ public class EditorTest extends Application {
         text_32.addTextChangeListener((observableValue, s, t1) -> {
             if (t1.contains(",")) {
                 editor.setPrompts(Set.of(t1.split(",")));
-            } else if(StringUtil.isBlank(t1)){
+            } else if (StringUtil.isBlank(t1)) {
                 editor.setPrompts(Collections.emptySet());
             } else {
                 editor.setPrompts(Set.of(t1));
@@ -229,11 +233,38 @@ public class EditorTest extends Application {
         });
         hBox3.addChild(btn_312);
 
+        FXHBox hBox4 = new FXHBox();
+        Button btn_41 = new Button("获取光标位置");
+        btn_41.setOnAction(event -> {
+            MessageBox.info(editor.caretPosition() + "");
+        });
+        hBox4.addChild(btn_41);
+        Button btn_42 = new Button("获取光标边界");
+        btn_42.setOnAction(event -> {
+            MessageBox.info(editor.getCaretBounds() + "");
+        });
+        hBox4.addChild(btn_42);
+        Button btn_43 = new Button("在光标处弹窗");
+        btn_43.setOnAction(event -> {
+            Popup popup = new Popup();
+            popup.setHeight(100);
+            popup.setWidth(200);
+            popup.getContent().setAll(new FXButton("test1"));
+            Optional<Bounds> bounds = editor.getCaretBounds();
+            double x = bounds.get().getCenterX();
+            double y = bounds.get().getCenterY();
+            popup.show(editor, x, y);
+            FXUtil.runLater(popup::hide, 1500);
+        });
+        hBox4.addChild(btn_43);
+
+
         vBox.addChild(hBox);
+        vBox.addChild(hBox2);
         vBox.addChild(hBox3);
+        vBox.addChild(hBox4);
         vBox.addChild(editor);
         // vBox.addChild(editor1);
-        vBox.addChild(hBox2);
 
 
         Scene scene = new Scene(vBox);

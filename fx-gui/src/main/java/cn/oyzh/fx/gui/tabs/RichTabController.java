@@ -4,6 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.event.EventListener;
 import cn.oyzh.event.EventUtil;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -32,6 +33,8 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
      */
     protected void setTab(RichTab tab) {
         this.tabReference = new WeakReference<>(tab);
+        // 初始化一次样式
+        tab.changeTheme(ThemeManager.currentTheme());
     }
 
     /**

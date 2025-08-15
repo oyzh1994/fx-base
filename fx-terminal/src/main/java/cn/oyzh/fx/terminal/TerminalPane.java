@@ -5,6 +5,7 @@ import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.rsyntaxtextarea.EditorPane;
+import cn.oyzh.fx.editor.tem4javafx.Editor;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
@@ -33,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2025/08/08
  */
-public class TerminalPane extends EditorPane implements Terminal {
+public class TerminalPane extends Editor implements Terminal {
 
     /**
      * 不可操作边界
@@ -74,6 +75,7 @@ public class TerminalPane extends EditorPane implements Terminal {
         this.caretPositionProperty().addListener((observableValue, number, t1) -> {
             int nop = this.getNOP();
             int len = this.contentLength();
+            int caretPosition = this.caretPosition();
             // 对边界做检查
             if (nop > len) {
                 this.flushNOP();
@@ -82,7 +84,7 @@ public class TerminalPane extends EditorPane implements Terminal {
             if (JulLog.isDebugEnabled()) {
                 JulLog.debug("nop:{}, length:{}", nop, len);
             }
-            if (t1.intValue() < nop) {
+            if (caretPosition < nop) {
                 this.disableInput();
             } else {
                 this.enableInput();
@@ -216,7 +218,7 @@ public class TerminalPane extends EditorPane implements Terminal {
 
     @Override
     public boolean checkNop() {
-        int pos = this.getCaretPosition();
+        int pos = this.caretPosition();
         return pos <= this.getNOP();
     }
 
@@ -341,7 +343,7 @@ public class TerminalPane extends EditorPane implements Terminal {
 
     @Override
     public int caretPosition() {
-        return this.getCaretPosition();
+        return super.caretPosition();
     }
 
     @Override
@@ -388,7 +390,7 @@ public class TerminalPane extends EditorPane implements Terminal {
 
     @Override
     public void pasteContent() {
-        if (this.getCaretPosition() >= this.getNOP()) {
+        if (this.caretPosition() >= this.getNOP()) {
             this.paste();
         }
     }

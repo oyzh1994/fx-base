@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Tab;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -68,6 +69,8 @@ public interface ThemeAdapter extends PropAdapter {
             } else if (this instanceof Parent node) {
                 this.handleStyle(node, style);
             } else if (this instanceof Popup node) {
+                this.handleStyle(node.getContent(), style);
+            } else if (this instanceof Tab node) {
                 this.handleStyle(node.getContent(), style);
             } else if (this instanceof StageAdapter node) {
                 this.handleStyle(node.root(), style);

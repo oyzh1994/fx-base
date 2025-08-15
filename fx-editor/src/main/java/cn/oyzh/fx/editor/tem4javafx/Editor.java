@@ -1,22 +1,34 @@
 package cn.oyzh.fx.editor.tem4javafx;
 
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.util.ControlUtil;
+import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
+import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.TextPos;
@@ -30,13 +42,10 @@ import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.TextFlowModel;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 编辑器
@@ -45,10 +54,6 @@ import java.util.regex.Pattern;
  * @since 2025/07/30
  */
 public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter {
-
-    {
-        NodeManager.init(this);
-    }
 
     private final StyleProvider styleProvider = new StyleProvider();
 
@@ -59,12 +64,29 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     {
+        NodeManager.init(this);
+    }
+
+    /**
+     * 初始化编辑器
+     */
+    private void initEditor() {
+        // 内容内边距
+        this.setContentPadding(new Insets(5));
+        // 边框
+        Color color = ThemeManager.currentForegroundColor();
+        CornerRadii radii = new CornerRadii(3);
+        BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, radii, ControlUtil.BW_HALF);
+        Border border = new Border(stroke);
+        this.setBorder(border);
+        // 初始化组件
         this.textFlowModel.setStyleProvider(this.styleProvider);
         this.syntaxDecorator.setStyleProvider(this.styleProvider);
         this.richTextAreaModel.setStyleProvider(this.styleProvider);
+        // 语法装饰
         this.setSyntaxDecorator(this.syntaxDecorator);
+        // 默认显示行号
         this.setLineNumbersEnabled(true);
-        this.setHighlightCurrentParagraph(true);
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
             this.initTextStyle();
@@ -79,9 +101,16 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             this.syntaxDecorator.setHighlight(t1);
             this.initTextStyle();
         });
-        // 文本变更事件
-        this.addTextChangeListener((observableValue, s, t1) -> {
+        // 行号策略变化事件
+        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
+            if (t1 == EditorLineNumPolicy.NONE) {
+                this.hideLineNum();
+            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
+                this.showLineNum();
+            }
         });
+        // 初始化样式
+        this.initTextStyle();
     }
 
     /**
@@ -123,7 +152,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     /**
      * 初始化文本样式
      */
-    private void initTextStyle(){
+    private void initTextStyle() {
         this.initThemes();
         this.initSyntaxes();
     }
@@ -399,10 +428,24 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
                 break;
             }
         }
-        System.out.println(startIndex + "-" + endIndex);
         TextPos endPos = TextPos.ofLeading(endIndex, end);
         TextPos startPos = TextPos.ofLeading(startIndex, start);
         return new EditorTextPos(startPos, endPos);
+    }
+
+    /**
+     * 根据文本位置获取位置
+     *
+     * @param pos 文本位置
+     * @return 位置
+     */
+    protected int getOffsetByPos(TextPos pos) {
+        int length = 0;
+        for (int i = 0; i < pos.index(); i++) {
+            int len = super.getModel().getParagraphLength(i);
+            length += len + 1;
+        }
+        return length + pos.offset();
     }
 
     /**
@@ -457,7 +500,35 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * @return 光标边界
      */
     public Optional<Bounds> getCaretBounds() {
-        return Optional.empty();
+        EditorSkin skin = (EditorSkin) this.getSkin();
+        if (skin == null) {
+            return Optional.empty();
+        }
+        VFlow flow = skin.getVFlow();
+        if (flow == null) {
+            return Optional.empty();
+        }
+        CaretInfo caretInfo = flow.getCaretInfo();
+        if (caretInfo == null) {
+            return Optional.empty();
+        }
+        TextPos pos = this.getCaretPosition();
+        int lLen = (pos.index() + "").length();
+        Point2D point2D = this.localToScreen(0, 0);
+        double fSize = FontUtil.stringWidth("a", this.getFont());
+        // 获取内边距左
+        Insets insets = this.getContentPadding();
+        double insetsLeft = insets == null ? 0 : insets.getLeft();
+        // 获取边框宽
+        Border border = this.getBorder();
+        BorderStroke stroke = border == null ? null : CollectionUtil.getFirst(border.getStrokes());
+        double borderW = stroke == null ? 0 : stroke.getWidths().getLeft();
+        // 获取左侧宽 = 内边距左 + 边框左 + (内容长度 + 1) * 字符宽
+        double leftW = insetsLeft + borderW + (lLen + 1) * fSize;
+        double x = point2D.getX() + caretInfo.getMaxX() + leftW;
+        double y = point2D.getY() + caretInfo.getMaxY();
+        BoundingBox box = new BoundingBox(x, y, fSize, fSize);
+        return Optional.of(box);
     }
 
     /**
@@ -573,18 +644,12 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
 
     @Override
     public void initNode() {
+        // 初始化编辑器
+        this.initEditor();
         // 尝试初始化提示词
         this.setPrompts(this.getPrompts());
         // 尝试初始化高亮
         this.setHighlightText(this.getHighlightText());
-        // 行号策略变化事件
-        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
-            if (t1 == EditorLineNumPolicy.NONE) {
-                this.hideLineNum();
-            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
-                this.showLineNum();
-            }
-        });
     }
 
     public void hideLineNum() {
@@ -593,5 +658,43 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
 
     public void showLineNum() {
         this.setLineNumbersEnabled(true);
+    }
+
+    public void setPromptText(String promptText) {
+    }
+
+    public String getPromptText() {
+        return null;
+    }
+
+    /**
+     * 获取光标位置
+     *
+     * @return 光标位置
+     */
+    public int caretPosition() {
+        TextPos pos = super.getCaretPosition();
+        if (pos == null) {
+            return -1;
+        }
+        return this.getOffsetByPos(pos);
+    }
+
+    public void scrollToEnd() {
+        this.moveCaretEnd();
+    }
+
+    /**
+     * 增加字号
+     */
+    public void fontSizeIncr() {
+        this.setFontSize(this.getFontSize() + 1);
+    }
+
+    /**
+     * 减少字号
+     */
+    public void fontSizeDecr() {
+        this.setFontSize(this.getFontSize() - 1);
     }
 }
