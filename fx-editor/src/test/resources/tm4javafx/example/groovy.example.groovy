@@ -1,4 +1,4 @@
-package example
+package tm4javafx.example
 // Function definition
 def greet(name) {
   "Hello, $name!"

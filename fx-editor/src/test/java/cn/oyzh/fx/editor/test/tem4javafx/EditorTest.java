@@ -72,39 +72,15 @@ public class EditorTest extends Application {
         editor.highlightTextProperty().bind(text_31.textProperty());
         hBox.addChild(text_31);
 
-        FXComboBox<String> comboBox = new FXComboBox<>();
-        comboBox.addItem("json");
-        comboBox.addItem("html");
-        comboBox.addItem("xml");
-        comboBox.addItem("yaml");
-        comboBox.addItem("css");
-        comboBox.addItem("properties");
-        comboBox.addItem("java");
-        comboBox.addItem("cpp");
-        comboBox.addItem("c");
-        comboBox.addItem("ini");
-        comboBox.addItem("py");
-        comboBox.addItem("js");
-        comboBox.addItem("dart");
-        comboBox.addItem("kt");
-        comboBox.addItem("less");
-        comboBox.addItem("asm");
-        comboBox.addItem("proto");
-        comboBox.addItem("sql");
-        comboBox.addItem("php");
-        comboBox.addItem("rs");
-        comboBox.addItem("md");
-        comboBox.addItem("lua");
-        comboBox.addItem("perl");
-        comboBox.addItem("scala");
+        EditorFormatTypeComboBox comboBox = new EditorFormatTypeComboBox();
 
         comboBox.selectedItemChanged((observableValue, s, t1) -> {
             if (t1 != null) {
                 try {
-                    InputStream stream = ResourceUtil.getResourceAsStream("test." + t1);
-                    EditorFormatType formatType = EditorFormatType.ofName(t1);
+                    String name = "/tm4javafx/example/" + t1.getSyntaxesName() + ".example." + t1.getExtension();
+                    InputStream stream = ResourceUtil.getResourceAsStream(name);
                     String data = IOUtil.readDefaultString(stream);
-                    editor.showData(data, formatType);
+                    editor.showData(data, t1);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

@@ -125,7 +125,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         try {
             EditorFormatType formatType = this.getFormatType();
             if (formatType != EditorFormatType.RAW) {
-                String name = formatType.toString().toLowerCase();
+                String name = formatType.getSyntaxesName();
                 String path = "/tm4javafx/grammars/" + name + ".tmLanguage.json";
                 String url = ResourceUtil.getPath(path);
                 this.styleProvider.setGrammar(IGrammarSource.fromFile(Path.of(url)));
@@ -259,8 +259,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             formatType = EditorFormatType.HTML;
         } else if (detectType == 7) {
             formatType = EditorFormatType.CSS;
-        } else if (detectType == 8) {
-            formatType = EditorFormatType.PROPERTIES;
         } else if (detectType == 9) {
             formatType = EditorFormatType.YAML;
         } else {
@@ -726,6 +724,4 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public void fontSizeDecr() {
         this.setFontSize(this.getFontSize() - 1);
     }
-
-
 }
