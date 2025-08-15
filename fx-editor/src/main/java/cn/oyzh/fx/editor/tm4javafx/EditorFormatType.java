@@ -1,7 +1,6 @@
 package cn.oyzh.fx.editor.tm4javafx;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.i18n.I18nHelper;
 
 /**
  * 富文本数据类型
@@ -25,6 +24,7 @@ public enum EditorFormatType {
     DOCKERFILE("DOCKERFILE", "dockerfile"),
     MAKEFILE("MAKEFILE", "makefile"),
     MARKDOWN("MARKDOWN", "md"),
+    PROPERTIES("PROPERTIES", "properties"),
     LOG("LOG", "log"),
     // 语言
     C("C", "c"),
@@ -61,7 +61,7 @@ public enum EditorFormatType {
     CSV("CSV", "csv"),
     INI("INI", "ini"),
     VB("VB", "vb"),
-    XLS("XLS", "xls"),
+    XSL("XSL", "xsl"),
     LESS("LESS", "less"),
     POWERSHELL("POWERSHELL", "ps1"),
     IGNORE("IGNORE", "ignore"),
@@ -77,7 +77,7 @@ public enum EditorFormatType {
     SAS("SAS", "sas"),
     RAKU("RAKU", "pl6"),
     RAZOR("RAZOR", "razor"),
-    RESTRUCTUREDTEXT("RESTRUCTUREDTEXT", "rsp"),
+    RESTRUCTUREDTEXT("RESTRUCTUREDTEXT", "rst"),
     SEARCH_RESULT("SEARCH RESULT", "code-search"),
     SHADERLAB("SHADERLAB", "shader"),
     MARKDOWN_MATH("MARKDOWN MATH", "md"),

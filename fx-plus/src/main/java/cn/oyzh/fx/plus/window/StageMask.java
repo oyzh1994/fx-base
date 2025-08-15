@@ -87,7 +87,9 @@ public class StageMask extends Stage implements StageAdapter {
                     // 关闭当前窗口
                     super.close();
                     // 聚焦原窗口
-                    this.target.requestFocus();
+                    if (this.target != null) {
+                        this.target.requestFocus();
+                    }
                 });
             } finally {
                 this.target = null;

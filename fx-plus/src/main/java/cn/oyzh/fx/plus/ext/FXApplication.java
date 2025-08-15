@@ -6,12 +6,15 @@ import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageManager;
 import com.sun.javafx.application.LauncherImpl;
+import com.sun.javafx.runtime.VersionInfo;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -109,8 +112,10 @@ public abstract class FXApplication extends Application {
      * @param appClass app类
      * @param args     参数
      */
-    public static void launch( Class<? extends Application> appClass, String... args) {
+    public static void launch(Class<? extends Application> appClass, String... args) {
         try {
+            // 注册fx属性
+            VersionInfo.setupSystemProperties();
             if (JulLog.isInfoEnabled()) {
                 JulLog.info("appClass:{}", appClass.getName());
             }
@@ -135,7 +140,11 @@ public abstract class FXApplication extends Application {
                 if (JulLog.isInfoEnabled()) {
                     JulLog.info("=============System Properties start---------->");
                 }
-                for (String key : properties.stringPropertyNames()) {
+                // 对名称进行排序
+                List<String> keys = new ArrayList<>(properties.stringPropertyNames());
+                keys.sort(String.CASE_INSENSITIVE_ORDER);
+                // 打印属性
+                for (String key : keys) {
                     if (JulLog.isInfoEnabled()) {
                         JulLog.info("System Property {}={}", key, System.getProperty(key));
                     }

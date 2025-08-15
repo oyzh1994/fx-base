@@ -17,6 +17,7 @@ import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import com.sun.javafx.scene.NodeHelper;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
@@ -543,16 +544,20 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * 移动光标到头部
      */
     public void moveCaretStart() {
-        super.moveDocumentStart();
-        super.requestFocus();
+        FXUtil.runWait(() -> {
+            super.moveDocumentStart();
+            super.requestFocus();
+        });
     }
 
     /**
      * 移动光标到末尾
      */
     public void moveCaretEnd() {
-        super.moveDocumentEnd();
-        super.requestFocus();
+        FXUtil.runWait(() -> {
+            super.moveDocumentEnd();
+            super.requestFocus();
+        });
     }
 
     /**
