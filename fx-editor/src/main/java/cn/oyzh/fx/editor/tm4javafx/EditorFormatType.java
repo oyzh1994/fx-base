@@ -9,6 +9,7 @@ import cn.oyzh.common.util.StringUtil;
  * @since 2024/5/17
  */
 public enum EditorFormatType {
+    // 原始格式
     RAW("RAW", ""),
     // 常见文件
     JSON("JSON", "json"),
@@ -59,7 +60,7 @@ public enum EditorFormatType {
     ERLANG("ERLANG", "erl,escript,hrl,xrl,yrl", "xml"),
     CPP_EMBEDDED_LATEX("CPP EMBEDDED LATEX", "cpp"),
     // 配置文件
-    CSV("CSV", "csv"),
+    CSV("CSV", "csv,tsv"),
     INI("INI", "ini"),
     VB("VB", "vb"),
     XSL("XSL", "xsl"),
@@ -76,10 +77,12 @@ public enum EditorFormatType {
     BIBTEX("BIBTEX", "bib"),
     DIFF("DIFF", "diff"),
     KCONFIG("KCONFIG", "kconfig"),
+    // 无示例
     TERRAFORM("TERRAFORM", "tf,tfvars"),
     HCL("HCL", "hcl"),
     HLSL("HLSL", "hlsl"),
-    SAS("SAS", "sas"),
+    //SAS("SAS", "sas"),
+    // 无示例
     TWIG("TWIG", "twig,html.twig", "xml"),
     RAKU("RAKU", "pl6"),
     RAZOR("RAZOR", "razor"),
@@ -91,7 +94,9 @@ public enum EditorFormatType {
     MARKDOWN_MATH_INLINE("MARKDOWN MATH INLINE", "md"),
     MARKDOWN_LATEX_COMBINED("MARKDOWN LATEX COMBINED", "md"),
     MARKDOWN_MATH_CODE_BLOCK("MARKDOWN MATH CODE BLOCK", "md"),
+    // 无示例
     JIKESPG("JIKESPG", "g"),
+    // 无示例
     SNIPPET("SNIPPET", "snippet"),
     SOURCE_SASSDOC("SOURCE SASSDOC", ""),
     SOURCE_C_PLATFORM("SOURCE C PLATFORM", ""),
@@ -102,6 +107,7 @@ public enum EditorFormatType {
     MDX("MDX", ""),
     MDX_MARKDOWN("MDX MARKDOWN", ""),
     ASCIIDOCTOR("ASCIIDOCTOR", "ad,asc,adoc,asciidoc,adoc.txt"),
+    // 无示例
     BICEP("BICEP", "bicep", "xml"),
     ;
 
