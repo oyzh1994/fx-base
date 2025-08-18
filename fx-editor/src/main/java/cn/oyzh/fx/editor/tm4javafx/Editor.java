@@ -181,7 +181,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
                 d.refresh(this.getModel());
             }
-            this.setText(this.getText());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -191,8 +190,9 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * 初始化文本样式
      */
     private void initTextStyle() {
-        this.applyTheme();
+        // this.applyTheme();
         this.initSyntaxes();
+        this.setText(this.getText());
     }
 
     /**
@@ -317,25 +317,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         this.showData(rawData, formatType);
         return formatType;
     }
-
-    // /**
-    //  * 设置样式
-    //  *
-    //  * @param start 开始位置
-    //  * @param end   结束位置
-    //  * @param color 颜色
-    //  */
-    // public void setStyle(int start, int end, Color color) {
-    //     EditorTextPos pos = this.getPosByIndex(start, end);
-    //     StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, color);
-    //     super.setStyle(pos.getStart(), pos.getEnd(), attributeMap);
-    // }
-    //
-    // public void setStyles(List<EditorStyle> styles) {
-    //     for (EditorStyle style : styles) {
-    //         this.setStyle(style.start(), style.end(), style.color());
-    //     }
-    // }
 
     /**
      * 提示词属性
@@ -748,6 +729,12 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     @Override
     public void changeTheme(ThemeStyle style) {
         try {
+            // 设置光标行颜色
+            this.setCaretLineColor(this.defaultCaretLineColor());
+            // 设置选区颜色
+            this.setSelectionColor(this.defaultSelectionColor());
+            // 设置光标颜色
+            this.setCaretColor(ThemeManager.currentAccentColor());
             String path;
             if (style.isDarkMode()) {
                 if (style == Themes.DRACULA) {
@@ -780,12 +767,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
             // TODO: 修复主题色可能不生效问题
             NodeHelper.processCSS(this);
-            // 设置光标行颜色
-            this.setCaretLineColor(this.defaultCaretLineColor());
-            // 设置选区颜色
-            this.setSelectionColor(this.defaultSelectionColor());
-            // 设置光标颜色
-            this.setCaretColor(ThemeManager.currentAccentColor());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
