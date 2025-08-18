@@ -19,14 +19,18 @@ public interface StateAdapter extends PropAdapter {
      * 隐藏
      */
     default void disappear() {
-        NodeUtil.disappear(this);
+        synchronized (this) {
+            NodeUtil.disappear(this);
+        }
     }
 
     /**
      * 显示
      */
     default void display() {
-        NodeUtil.display(this);
+        synchronized (this) {
+            NodeUtil.display(this);
+        }
     }
 
     /**
@@ -85,7 +89,7 @@ public interface StateAdapter extends PropAdapter {
      *
      * @param other 其他节点
      */
-    default void managedBindVisible( Node other) {
+    default void managedBindVisible(Node other) {
         if (this instanceof Node node) {
             if (!node.managedProperty().isBound()) {
                 node.managedProperty().bind(other.visibleProperty());

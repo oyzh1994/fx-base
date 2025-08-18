@@ -58,12 +58,54 @@ import java.util.Set;
  */
 public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
 
+    /**
+     * 默认提示词颜色
+     */
+    public static final Color DEFAULT_PROMPTS_COLOR = Color.rgb(125, 190, 93);
+
+    /**
+     * 默认高亮颜色
+     */
+    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
+
+    /**
+     * 默认光标行颜色
+     */
+    public static final Color DEFAULT_CARET_LINE_COLOR = Color.rgb(255, 255, 205);
+
+    /**
+     * 默认光标行颜色-暗色模式
+     */
+    public static final Color DEFAULT_CARET_LINE_DARK_COLOR = Color.rgb(38, 40, 46);
+
+    /**
+     * 默认选区颜色
+     */
+    public static final Color DEFAULT_SELECTION_COLOR = Color.rgb(166, 210, 255);
+
+    /**
+     * 默认选区颜色-暗色模式
+     */
+    public static final Color DEFAULT_SELECTION_DARK_COLOR = Color.rgb(33, 66, 131);
+
+    /**
+     * 样式提供者
+     */
     private final StyleProvider styleProvider = new StyleProvider();
 
+    /**
+     * 流式文本model
+     */
     private final TextFlowModel textFlowModel = new TextFlowModel();
 
+    /**
+     * 富文本域model
+     */
     private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
+    /**
+     * 编辑器语法装饰器
+     */
     private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     {
@@ -74,10 +116,15 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * 初始化编辑器
      */
     private void initEditor() {
+        // 默认自动换行
+        this.setWrapText(true);
         // 默认显示行号
         this.setLineNumbersEnabled(true);
+        // 默认高亮当前行
+        this.setHighlightCurrentParagraph(true);
         // 内容内边距
         this.setContentPadding(new Insets(5));
+        // 行号装饰器
         this.setLeftDecorator(new EditorLineNumberDecorator());
         // 边框
         Color color = ThemeManager.currentForegroundColor();
@@ -156,8 +203,10 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public StringProperty textProperty() {
         if (this.textProperty == null) {
             this.textProperty = new SimpleStringProperty(this.getText());
-            super.getModel().addListener(ch -> {
-                this.textProperty.setValue(this.getText());
+            super.getModel().addListener(e -> {
+                if (e.isEdit()) {
+                    this.textProperty.setValue(this.getText());
+                }
             });
         }
         return this.textProperty;
@@ -609,12 +658,12 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     /**
      * 设置光标颜色
      *
-     * @param color 颜色
+     * @param color 光标颜色
      */
-    public void setCartColor(Color color) {
+    public void setCaretColor(Color color) {
         EditorSkin skin = (EditorSkin) this.getSkin();
         if (skin != null) {
-            skin.setCartColor(color);
+            skin.setCaretColor(color);
         }
     }
 
@@ -623,9 +672,77 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      *
      * @return 光标颜色
      */
-    public Color getCartColor() {
+    public Color getCaretColor() {
         EditorSkin skin = (EditorSkin) this.getSkin();
-        return skin == null ? null : skin.getCartColor();
+        return skin == null ? null : skin.getCaretColor();
+    }
+
+    /**
+     * 设置光标行颜色
+     *
+     * @param color 光标行颜色
+     */
+    public void setCaretLineColor(Color color) {
+        EditorSkin skin = (EditorSkin) this.getSkin();
+        if (skin != null) {
+            skin.setCaretLineColor(color);
+        }
+    }
+
+    /**
+     * 获取光标行颜色
+     *
+     * @return 光标行颜色
+     */
+    public Color getCaretLineColor() {
+        EditorSkin skin = (EditorSkin) this.getSkin();
+        return skin == null ? null : skin.getCaretLineColor();
+    }
+
+    /**
+     * 获取默认光标行颜色
+     *
+     * @return 默认光标行颜色
+     */
+    protected Color defaultCaretLineColor() {
+        if (ThemeManager.isDarkMode()) {
+            return DEFAULT_CARET_LINE_DARK_COLOR;
+        }
+        return DEFAULT_CARET_LINE_COLOR;
+    }
+
+    /**
+     * 设置选区颜色
+     *
+     * @param color 选区颜色
+     */
+    public void setSelectionColor(Color color) {
+        EditorSkin skin = (EditorSkin) this.getSkin();
+        if (skin != null) {
+            skin.setSelectionColor(color);
+        }
+    }
+
+    /**
+     * 获取选区颜色
+     *
+     * @return 选区颜色
+     */
+    public Color getSelectionColor() {
+        EditorSkin skin = (EditorSkin) this.getSkin();
+        return skin == null ? null : skin.getSelectionColor();
+    }
+
+    /**
+     * 获取默认选区颜色
+     *
+     * @return 默认选区颜色
+     */
+    protected Color defaultSelectionColor() {
+        if (ThemeManager.isDarkMode()) {
+            return DEFAULT_SELECTION_DARK_COLOR;
+        }
+        return DEFAULT_SELECTION_COLOR;
     }
 
     @Override
@@ -663,8 +780,12 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
             // TODO: 修复主题色可能不生效问题
             NodeHelper.processCSS(this);
+            // 设置光标行颜色
+            this.setCaretLineColor(this.defaultCaretLineColor());
+            // 设置选区颜色
+            this.setSelectionColor(this.defaultSelectionColor());
             // 设置光标颜色
-            this.setCartColor(ThemeManager.currentAccentColor());
+            this.setCaretColor(ThemeManager.currentAccentColor());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -680,17 +801,37 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         this.setHighlightText(this.getHighlightText());
     }
 
+    /**
+     * 隐藏行号
+     */
     public void hideLineNum() {
         this.setLineNumbersEnabled(false);
     }
 
+    /**
+     * 显示行号
+     */
     public void showLineNum() {
         this.setLineNumbersEnabled(true);
     }
 
+    /**
+     * 设置提示文本
+     * 不支持此属性，已废弃
+     *
+     * @param promptText 提示文本
+     */
+    @Deprecated
     public void setPromptText(String promptText) {
     }
 
+    /**
+     * 获取提示文本
+     * 不支持此属性，已废弃
+     *
+     * @return 提示文本
+     */
+    @Deprecated
     public String getPromptText() {
         return null;
     }
@@ -708,10 +849,16 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         return this.getOffsetByPos(pos);
     }
 
+    /**
+     * 滚动到顶部
+     */
     public void scrollToTop() {
         this.moveCaretStart();
     }
 
+    /**
+     * 滚动到末尾
+     */
     public void scrollToEnd() {
         this.moveCaretEnd();
     }

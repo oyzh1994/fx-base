@@ -73,7 +73,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 高亮颜色
      */
-    private Color highlightColor = Color.rgb(255, 102, 0);
+    private Color highlightColor = Editor.DEFAULT_HIGHLIGHT_COLOR;
 
     public Color getHighlightColor() {
         return highlightColor;
@@ -98,7 +98,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 提示词颜色
      */
-    private Color promptsColor = Color.rgb(125, 190, 93);
+    private Color promptsColor = Editor.DEFAULT_PROMPTS_COLOR;
 
     public void setPromptsColor(Color promptsColor) {
         this.promptsColor = promptsColor;

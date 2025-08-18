@@ -66,7 +66,7 @@ public enum EditorFormatType {
     XSL("XSL", "xsl"),
     LESS("LESS", "less"),
     POWERSHELL("POWERSHELL", "ps1"),
-    IGNORE("IGNORE", "ignore"),
+    IGNORE("IGNORE", "ignore,gitignore"),
     LATEX("LATEX", "ltx"),
     SCSS("SCSS", "scss"),
     PUG("PUG", "pug"),
@@ -97,7 +97,7 @@ public enum EditorFormatType {
     // 无示例
     JIKESPG("JIKESPG", "g"),
     // 无示例
-    SNIPPET("SNIPPET", "snippet"),
+    SNIPPETS("SNIPPETS", "snippet,snippets"),
     SOURCE_SASSDOC("SOURCE SASSDOC", ""),
     SOURCE_C_PLATFORM("SOURCE C PLATFORM", ""),
     SOURCE_REGEXP_PYTHON("SOURCE REGEXP PYTHON", ""),
