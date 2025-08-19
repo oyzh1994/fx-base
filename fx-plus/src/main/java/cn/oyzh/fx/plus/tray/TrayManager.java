@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.TaskManager;
 import javafx.scene.Node;
 
@@ -200,9 +199,6 @@ public class TrayManager {
      * @return 结果
      */
     public static boolean supported() {
-        if (!OSUtil.isLinux()) {
-            return SystemTray.isSupported();
-        }
-        return true;
+        return SystemTray.isSupported();
     }
 }
