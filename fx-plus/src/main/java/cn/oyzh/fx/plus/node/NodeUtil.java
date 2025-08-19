@@ -307,27 +307,27 @@ public class NodeUtil {
             return Double.NaN;
         }
 
-        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
-            if (node.getContent() != null) {
-                int w5 = node.getContent().getWidth();
-                if (w5 > 0) {
-                    return w5;
-                }
-            }
-            double w4 = node.prefWidth(-1);
-            if (w4 > 0) {
-                return w4;
-            }
-            double w1 = node.minWidth(-1);
-            if (w1 > 0) {
-                return w1;
-            }
-            double w2 = node.maxWidth(-1);
-            if (w2 > 0) {
-                return w2;
-            }
-            return Double.NaN;
-        }
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         int w5 = node.getContent().getWidth();
+        //         if (w5 > 0) {
+        //             return w5;
+        //         }
+        //     }
+        //     double w4 = node.prefWidth(-1);
+        //     if (w4 > 0) {
+        //         return w4;
+        //     }
+        //     double w1 = node.minWidth(-1);
+        //     if (w1 > 0) {
+        //         return w1;
+        //     }
+        //     double w2 = node.maxWidth(-1);
+        //     if (w2 > 0) {
+        //         return w2;
+        //     }
+        //     return Double.NaN;
+        // }
 
         if (target instanceof Node node) {
             double w1 = node.prefWidth(-1);
@@ -457,27 +457,27 @@ public class NodeUtil {
             return Double.NaN;
         }
 
-        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
-            if (node.getContent() != null) {
-                int w5 = node.getContent().getHeight();
-                if (w5 > 0) {
-                    return w5;
-                }
-            }
-            double w4 = node.prefHeight(-1);
-            if (w4 > 0) {
-                return w4;
-            }
-            double w2 = node.minHeight(-1);
-            if (w2 > 0) {
-                return w2;
-            }
-            double w3 = node.maxHeight(-1);
-            if (w3 > 0) {
-                return w3;
-            }
-            return Double.NaN;
-        }
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         int w5 = node.getContent().getHeight();
+        //         if (w5 > 0) {
+        //             return w5;
+        //         }
+        //     }
+        //     double w4 = node.prefHeight(-1);
+        //     if (w4 > 0) {
+        //         return w4;
+        //     }
+        //     double w2 = node.minHeight(-1);
+        //     if (w2 > 0) {
+        //         return w2;
+        //     }
+        //     double w3 = node.maxHeight(-1);
+        //     if (w3 > 0) {
+        //         return w3;
+        //     }
+        //     return Double.NaN;
+        // }
 
         if (target instanceof Node node) {
             double w1 = node.prefHeight(-1);
@@ -591,16 +591,16 @@ public class NodeUtil {
                 media.setFitWidth(width);
             }
         }
-        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
-            if (node.getContent() != null) {
-                cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
-                    Dimension dimension = new Dimension(width.intValue(), node.getContent().getHeight());
-                    node.getContent().setSize(dimension);
-                    node.getContent().setMinimumSize(dimension);
-                    node.getContent().setMaximumSize(dimension);
-                });
-            }
-        }
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
+        //             Dimension dimension = new Dimension(width.intValue(), node.getContent().getHeight());
+        //             node.getContent().setSize(dimension);
+        //             node.getContent().setMinimumSize(dimension);
+        //             node.getContent().setMaximumSize(dimension);
+        //         });
+        //     }
+        // }
     }
 
     /**
@@ -668,16 +668,16 @@ public class NodeUtil {
                 media.setFitHeight(height);
             }
         }
-        if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
-            if (node.getContent() != null) {
-                cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
-                    Dimension dimension = new Dimension(node.getContent().getWidth(), height.intValue());
-                    node.getContent().setSize(dimension);
-                    node.getContent().setMinimumSize(dimension);
-                    node.getContent().setMaximumSize(dimension);
-                });
-            }
-        }
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
+        //             Dimension dimension = new Dimension(node.getContent().getWidth(), height.intValue());
+        //             node.getContent().setSize(dimension);
+        //             node.getContent().setMinimumSize(dimension);
+        //             node.getContent().setMaximumSize(dimension);
+        //         });
+        //     }
+        // }
     }
 
     /**

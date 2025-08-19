@@ -47,19 +47,19 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
-            <version>${javafx.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-swing</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-web</artifactId>
-            <version>${javafx.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-web</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <!-- 自定义类库，通用 -->
         <dependency>
@@ -85,31 +85,31 @@
             <artifactId>base-i18n</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx -->
-        <dependency>
-            <groupId>org.fxmisc.richtext</groupId>
-            <artifactId>richtextfx</artifactId>
-            <version>${richtextfx.version}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-base</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-fxml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-graphics</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-controls</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.fxmisc.richtext</groupId> -->
+        <!--     <artifactId>richtextfx</artifactId> -->
+        <!--     <version>${richtextfx.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!--     <exclusions> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-base</artifactId> -->
+        <!--         </exclusion> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-fxml</artifactId> -->
+        <!--         </exclusion> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-graphics</artifactId> -->
+        <!--         </exclusion> -->
+        <!--         <exclusion> -->
+        <!--             <groupId>org.openjfx</groupId> -->
+        <!--             <artifactId>javafx-controls</artifactId> -->
+        <!--         </exclusion> -->
+        <!--     </exclusions> -->
+        <!-- </dependency> -->
 
         <!-- fx美化库 -->
         <dependency>

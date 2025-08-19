@@ -4,7 +4,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
-import org.fxmisc.richtext.GenericStyledArea;
 
 /**
  * 文本组件适配器
@@ -24,7 +23,7 @@ public interface TextAdapter extends PropAdapter{
             labeled.textProperty().unbind();
         } else if (this instanceof TextInputControl inputControl) {
             inputControl.textProperty().unbind();
-        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+        // } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
         }
     }
 
@@ -43,8 +42,8 @@ public interface TextAdapter extends PropAdapter{
             labeled.textProperty().removeListener(listener);
         } else if (this instanceof TextInputControl inputControl) {
             inputControl.textProperty().removeListener(listener);
-        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-            area.textProperty().removeListener(listener);
+        // } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+        //     area.textProperty().removeListener(listener);
         }
     }
 
@@ -65,8 +64,8 @@ public interface TextAdapter extends PropAdapter{
                 } else if (this instanceof TextInputControl inputControl) {
                     inputControl.textProperty().addListener(listener);
 //                    inputControl.textProperty().addListener(new WeakChangeListener<>(listener));
-                } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-                    area.textProperty().addListener(listener);
+//                 } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+//                     area.textProperty().addListener(listener);
 //                    area.textProperty().addListener(new WeakChangeListener<>(listener));
                 }
 //            }
@@ -86,8 +85,8 @@ public interface TextAdapter extends PropAdapter{
             str = labeled.getText();
         } else if (this instanceof TextInputControl inputControl) {
             str = inputControl.getText();
-        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-            str = area.getText();
+        // } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+        //     str = area.getText();
         }
         return str == null ? null : str.trim();
     }

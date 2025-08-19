@@ -24,12 +24,12 @@
             <version>${fastjson.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
-            <version>${javafx.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!-- <dependency> -->
+        <!--     <groupId>org.openjfx</groupId> -->
+        <!--     <artifactId>javafx-swing</artifactId> -->
+        <!--     <version>${javafx.version}</version> -->
+        <!--     <scope>provided</scope> -->
+        <!-- </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea -->
         <dependency>
@@ -73,7 +73,6 @@
             <version>2.9.1</version>
             <scope>test</scope>
         </dependency>
-
 
         <dependency>
             <groupId>net.sf.jmimemagic</groupId>
