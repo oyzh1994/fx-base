@@ -32,10 +32,20 @@ public enum FXStageStyle {
         };
     }
 
+    /**
+     * 是否扩展类型
+     *
+     * @return 结果
+     */
     public boolean isExtended() {
         return this == EXTENDED;
     }
 
+    /**
+     * 是否自定义类型
+     *
+     * @return 结果
+     */
     public boolean isCustom() {
         return this == CUSTOM;
     }

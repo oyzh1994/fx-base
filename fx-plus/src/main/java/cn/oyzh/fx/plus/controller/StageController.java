@@ -37,13 +37,6 @@ public class StageController extends Controller implements StageListener, EventL
     public void onStageInitialize(StageAdapter stage) {
         // 设置页面
         this.setWindow(stage);
-        // 处理标题
-        if (StringUtil.isEmpty(this.stage.title())) {
-            String title = this.getViewTitle();
-            if (title != null) {
-                this.stage.title(title);
-            }
-        }
         NodeManager.init(this);
     }
 
@@ -55,6 +48,11 @@ public class StageController extends Controller implements StageListener, EventL
     @Override
     public void onWindowShown(WindowEvent event) {
         this.bindListeners();
+        // 处理标题
+        if (StringUtil.isEmpty(this.stage.title())) {
+            String title = this.getViewTitle();
+            this.stage.title(title);
+        }
     }
 
     @Override
@@ -106,9 +104,9 @@ public class StageController extends Controller implements StageListener, EventL
 
     @Override
     public void clearProps() {
-       if (this.stage != null) {
-           this.stage.clearProps();
-       }
+        if (this.stage != null) {
+            this.stage.clearProps();
+        }
     }
 
     public String getViewTitle() {

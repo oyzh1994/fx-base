@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -32,8 +34,19 @@ public class CustomTitleBarTest extends Application {
                 stage.setFullScreen(true);
             }
         });
-        // headerBar.setLeading(button);
-        headerBar.setTrailing(button);
+        Button button2 = new Button("test2");
+        Button button3 = new Button("test3");
+        Button button4 = new Button("test4");
+        Button button5 = new Button("test5");
+        Button button6 = new Button("test6");
+        Button button7 = new Button("test7");
+        Button button8 = new Button("test8");
+
+        HBox hBox = new HBox(button, button2, button3, button4, button5, button6, button7, button8);
+        headerBar.setTrailing(hBox);
+        headerBar.setTrailingSystemPadding(true);
+        headerBar.setLeadingSystemPadding(true);
+        // headerBar.setLeading(hBox);
         // HeaderButtonGroup windowsButtons = HeaderButtonGroup.standardGroup();
         // windowsButtons.install(headerBar, stage);
         VBox root = new VBox();

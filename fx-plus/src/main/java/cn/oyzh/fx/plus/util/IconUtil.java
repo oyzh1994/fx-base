@@ -32,7 +32,7 @@ public class IconUtil {
      * @param iconUrls 图标列表地址
      * @return 图标列表
      */
-    public static List<Image> getIcons( String[] iconUrls) {
+    public static List<Image> getIcons(String[] iconUrls) {
         return getIcons(Arrays.asList(iconUrls));
     }
 
@@ -42,7 +42,7 @@ public class IconUtil {
      * @param iconUrls 图标列表地址
      * @return 图标列表
      */
-    public static List<Image> getIcons( List<String> iconUrls) {
+    public static List<Image> getIcons(List<String> iconUrls) {
         List<Image> icons = new ArrayList<>(iconUrls.size());
         for (String iconUrl : iconUrls) {
             Image icon = getIcon(iconUrl);
@@ -59,7 +59,7 @@ public class IconUtil {
      * @param iconUrl 图标地址
      * @return 图标
      */
-    public static Image getIcon( String iconUrl) {
+    public static Image getIcon(String iconUrl) {
         InputStream stream;
         WeakReference<byte[]> reference = ICON_CACHE.get(iconUrl);
         if (reference == null || reference.get() == null) {

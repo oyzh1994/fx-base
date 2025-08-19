@@ -1,31 +1,86 @@
 package cn.oyzh.fx.plus.controls;
 
-import cn.oyzh.common.system.OSUtil;
-import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.node.NodeAdapter;
+import javafx.scene.Node;
 import javafx.scene.layout.HeaderBar;
 
 /**
  * @author oyzh
  * @since 2025-08-19
  */
-public class FXHeaderBar extends HeaderBar {
+public class FXHeaderBar extends HeaderBar implements NodeAdapter {
 
     {
         this.setId("headerBar");
     }
 
-    public FXHBox getContent() {
-        if (OSUtil.isMacOS()) {
-            return (FXHBox) this.getTrailing();
-        }
-        return (FXHBox) this.getLeading();
+    /**
+     * 获取内容
+     *
+     * @return 内容
+     */
+    public Node getContent() {
+        return this.getTrailing();
     }
 
-    public void setContent(FXHBox content) {
-        if (OSUtil.isMacOS()) {
-            this.setTrailing(content);
+    /**
+     * 设置内容
+     *
+     * @param content 内容
+     */
+    public void setContent(Node content) {
+        this.setTrailing(content);
+    }
+
+    /**
+     * 设置图标
+     *
+     * @param icon 图标
+     */
+    public void setIcon(Node icon) {
+        FXLabel label = (FXLabel) this.getLeading();
+        if (label == null) {
+            label = new FXLabel();
+            label.setGraphic(icon);
+            this.setLeading(label);
         } else {
-            this.setLeading(content);
+            label.setGraphic(icon);
         }
+    }
+
+    /**
+     * 获取图标
+     *
+     * @return 图标
+     */
+    public Node getIcon() {
+        FXLabel label = (FXLabel) this.getLeading();
+        return label == null ? null : label.getGraphic();
+    }
+
+    /**
+     * 设置标题
+     *
+     * @param title 标题
+     */
+    public void setTitle(String title) {
+        FXLabel label = (FXLabel) this.getLeading();
+        if (label == null) {
+            label = new FXLabel(title);
+            this.setLeading(label);
+        } else {
+            label.setText(title);
+        }
+    }
+
+    /**
+     * 获取标题
+     *
+     * @return 标题
+     */
+    public String getTitle() {
+        FXLabel label = (FXLabel) this.getLeading();
+        return label == null ? null : label.getText();
     }
 }
