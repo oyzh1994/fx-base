@@ -21,7 +21,7 @@ public class DorkboxTray extends BaseTray {
     private SystemTray systemTray;
 
     public DorkboxTray(String iconUrl) {
-        super(iconUrl);
+        super(ResourceUtil.getPath(iconUrl));
     }
 
     @Override
@@ -49,11 +49,7 @@ public class DorkboxTray extends BaseTray {
 
     @Override
     public void addMenuItem(String label, Node icon, Runnable action) {
-        if (icon == null) {
-            this.addMenuItem(new DorkboxTrayItem(label, action));
-        } else {
-            this.addMenuItem(new DorkboxTrayItem(label, icon, action));
-        }
+        this.addMenuItem(new DorkboxTrayItem(label, action));
     }
 
     @Override

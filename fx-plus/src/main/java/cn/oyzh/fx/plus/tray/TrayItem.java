@@ -64,6 +64,6 @@ public class TrayItem extends FXLabel implements BaseTrayItem {
 
     @Override
     public DorkboxTrayItem toDorkboxTrayItem() {
-        return new DorkboxTrayItem(this.getText(), this.getGraphic(), this.action);
+        return new DorkboxTrayItem(this.getText(), this.action);
     }
 }

@@ -14,10 +14,6 @@ public class DorkboxTrayItem extends MenuItem implements BaseTrayItem {
         super(label, e -> action.run());
     }
 
-    public DorkboxTrayItem(String label, Node icon, Runnable action) {
-        super(label, FXUtil.toAwtImage(icon.snapshot(null, null)), e -> action.run());
-    }
-
     @Override
     public DorkboxTrayItem toDorkboxTrayItem() {
         return this;
