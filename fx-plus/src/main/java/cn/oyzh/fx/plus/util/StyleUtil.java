@@ -39,7 +39,7 @@ public class StyleUtil {
      */
     public static List<String> split(String... cssList) {
         if (ArrayUtil.isNotEmpty(cssList)) {
-            List<String> list = new ArrayList<>(12);
+            List<String> list = new ArrayList<>(4);
             for (String s : cssList) {
                 if (s.contains(";")) {
                     Collections.addAll(list, s.split(";"));

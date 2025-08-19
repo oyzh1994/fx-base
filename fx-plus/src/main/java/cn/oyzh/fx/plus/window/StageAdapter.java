@@ -321,7 +321,7 @@ public interface StageAdapter extends WindowAdapter {
             FXHeaderBar headerBar = HeaderBarUtil.getHeaderBar(root);
             if (headerBar != null) {
                 if (StringUtil.isNotEmpty(attribute.iconUrl())) {
-                    stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
+                    headerBar.setIcon(HeaderBarUtil.getIcon(attribute.iconUrl()));
                 } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
                     headerBar.setIcon(HeaderBarUtil.getIcon(FXConst.appIcon()));
                 }
