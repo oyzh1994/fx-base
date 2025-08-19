@@ -3,8 +3,6 @@ package cn.oyzh.fx.plus.tray;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.TaskManager;
-import dorkbox.jna.rendering.RenderProvider;
-import dorkbox.systemTray.util.SystemTrayFixesLinux;
 import javafx.scene.Node;
 
 import java.awt.SystemTray;
@@ -35,7 +33,6 @@ public class TrayManager {
         try {
             if (tray == null) {
                 if (OSUtil.isLinux()) {
-                    RenderProvider.set(new DorkboxProvider());
                     synchronized (TrayManager.class) {
                         TrayManager.tray = new DorkboxTray(icon);
                     }

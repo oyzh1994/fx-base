@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.common.util.ResourceUtil;
+import dorkbox.jna.rendering.RenderProvider;
 import dorkbox.systemTray.SystemTray;
 import javafx.scene.Node;
 
@@ -18,6 +19,9 @@ import java.util.function.Consumer;
  */
 public class DorkboxTray extends BaseTray {
 
+    /**
+     * 托盘组件
+     */
     private SystemTray systemTray;
 
     public DorkboxTray(String iconUrl) {
@@ -28,6 +32,7 @@ public class DorkboxTray extends BaseTray {
     protected boolean initIcon(String url) {
         try {
             // 系统托盘图标
+            RenderProvider.set(new DorkboxProvider());
             this.systemTray = SystemTray.get();
             this.systemTray.setImage(new File(url));
             return true;

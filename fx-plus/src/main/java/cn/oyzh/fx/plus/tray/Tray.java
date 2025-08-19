@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.tray;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import javafx.scene.Node;
