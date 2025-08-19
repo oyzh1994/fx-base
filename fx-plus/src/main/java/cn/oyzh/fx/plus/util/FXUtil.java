@@ -12,10 +12,12 @@ import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.HostServices;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.media.Media;
 import javafx.scene.robot.Robot;
 import javafx.stage.Screen;
@@ -425,4 +427,14 @@ public class FXUtil {
         Screen primaryScreen = Screen.getPrimary();
         return primaryScreen.getOutputScaleX();
     }
+
+    /**
+     * 将JavaFX的WritableImage转换为AWT的BufferedImage
+     * @param fxImage JavaFX图像对象
+     * @return AWT图像对象，转换失败时返回null
+     */
+    public static BufferedImage toAwtImage(WritableImage fxImage) {
+       return SwingFXUtils.fromFXImage(fxImage, null);
+    }
+
 }

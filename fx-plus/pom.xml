@@ -47,12 +47,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- <dependency> -->
-        <!--     <groupId>org.openjfx</groupId> -->
-        <!--     <artifactId>javafx-swing</artifactId> -->
-        <!--     <version>${javafx.version}</version> -->
-        <!--     <scope>provided</scope> -->
-        <!-- </dependency> -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
 
         <!-- <dependency> -->
         <!--     <groupId>org.openjfx</groupId> -->
@@ -178,7 +177,6 @@
             <groupId>com.dorkbox</groupId>
             <artifactId>SystemTray</artifactId>
             <version>4.4</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/de.codecentric.centerdevice/javafxsvg -->
