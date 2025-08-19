@@ -177,6 +177,7 @@
             <groupId>com.dorkbox</groupId>
             <artifactId>SystemTray</artifactId>
             <version>4.4</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/de.codecentric.centerdevice/javafxsvg -->

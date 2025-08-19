@@ -34,7 +34,9 @@ public class DorkboxTray extends BaseTray {
             // 系统托盘图标
             RenderProvider.set(new DorkboxProvider());
             this.systemTray = SystemTray.get();
+            if(this.systemTray != null) {
             this.systemTray.setImage(new File(url));
+            }
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

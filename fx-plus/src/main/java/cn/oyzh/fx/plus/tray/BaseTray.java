@@ -1,20 +1,17 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.common.util.ResourceUtil;
-import dorkbox.systemTray.SystemTray;
 import javafx.scene.Node;
 
 import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.util.function.Consumer;
 
 /**
- * 系统托盘扩展
+ * 基础系统托盘
  *
  * @author oyzh
- * @since 2022/8/24
+ * @since 2025/0/19
  */
 public abstract class BaseTray {
 

@@ -20,37 +20,37 @@ import dorkbox.jna.rendering.ProviderType;
 import dorkbox.jna.rendering.Renderer;
 import dorkbox.os.OS;
 
+/**
+ * 托盘渲染支持
+ *
+ * @author oyzh
+ * @since 2025/08/19
+ */
+public class DorkboxProvider implements Renderer {
 
-public
-class DorkboxProvider implements Renderer {
     @Override
-    public
-    boolean isSupported() {
+    public boolean isSupported() {
         return true;
     }
 
     @Override
-    public
-    ProviderType getType() {
+    public ProviderType getType() {
         return ProviderType.JAVAFX;
     }
 
     @Override
-    public
-    boolean alreadyRunning() {
+    public boolean alreadyRunning() {
         // this is only true for SWT. JavaFX running detection is elsewhere
         return false;
     }
 
     @Override
-    public
-    boolean isEventThread() {
+    public boolean isEventThread() {
         return javafx.application.Platform.isFxApplicationThread();
     }
 
     @Override
-    public
-    int getGtkVersion() {
+    public int getGtkVersion() {
         if (!OS.INSTANCE.isLinux()) {
             return 0;
         }
@@ -77,21 +77,18 @@ class DorkboxProvider implements Renderer {
         String version = OS.INSTANCE.getProperty("jdk.gtk.version", "2");
         if ("3".equals(version) || version.startsWith("3.")) {
             return 3;
-        }
-        else {
+        } else {
             return 2;
         }
     }
 
     @Override
-    public
-    boolean dispatch(final Runnable runnable) {
+    public boolean dispatch(final Runnable runnable) {
         // JavaFX only
         if (isEventThread()) {
             // Run directly on the JavaFX event thread
             runnable.run();
-        }
-        else {
+        } else {
             javafx.application.Platform.runLater(runnable);
         }
 

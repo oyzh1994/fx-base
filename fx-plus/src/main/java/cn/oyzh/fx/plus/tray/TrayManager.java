@@ -32,15 +32,15 @@ public class TrayManager {
     public static BaseTray init(String icon) {
         try {
             if (tray == null) {
-                if (OSUtil.isLinux()) {
-                    synchronized (TrayManager.class) {
-                        TrayManager.tray = new DorkboxTray(icon);
-                    }
-                } else {
-                    synchronized (TrayManager.class) {
-                        TrayManager.tray = new Tray(icon);
-                    }
+                // if (OSUtil.isLinux()) {
+                //     synchronized (TrayManager.class) {
+                //         TrayManager.tray = new DorkboxTray(icon);
+                //     }
+                // } else {
+                synchronized (TrayManager.class) {
+                    TrayManager.tray = new Tray(icon);
                 }
+                // }
             }
             return tray;
         } catch (Exception ex) {
