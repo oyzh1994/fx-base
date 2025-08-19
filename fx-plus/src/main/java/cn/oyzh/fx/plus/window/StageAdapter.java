@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.BooleanUtil;
@@ -319,16 +318,16 @@ public interface StageAdapter extends WindowAdapter {
         stage.setResizable(attribute.resizable());
         // 设置icon
         if (this.isExtendedHeader()) {
-            FXHeaderBar headerBar = HeaderBarUtil.getHeaderBar(root);
-            if (headerBar != null) {
-                if (StringUtil.isNotEmpty(attribute.iconUrl())) {
-                    headerBar.setIcon(HeaderBarUtil.getIcon(attribute.iconUrl()));
-                } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
-                    headerBar.setIcon(HeaderBarUtil.getIcon(FXConst.appIcon()));
-                }
-            } else {
-                JulLog.warn("headerBar is null");
-            }
+            // FXHeaderBar headerBar = HeaderBarUtil.getHeaderBar(root);
+            // if (headerBar != null) {
+            //     if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+            //         headerBar.setIcon(HeaderBarUtil.getIcon(attribute.iconUrl()));
+            //     } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
+            //         headerBar.setIcon(HeaderBarUtil.getIcon(FXConst.appIcon()));
+            //     }
+            // } else {
+            //     JulLog.warn("headerBar is null");
+            // }
         } else if (StringUtil.isNotEmpty(attribute.iconUrl())) {
             stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
