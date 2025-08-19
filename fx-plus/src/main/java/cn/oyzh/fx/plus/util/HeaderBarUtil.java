@@ -35,7 +35,7 @@ public class HeaderBarUtil {
      */
     public static ImageView getIcon(String iconUrl) {
         ImageView imageView = new ImageView(IconUtil.getIcon(iconUrl));
-        imageView.setFitHeight(20);
+        imageView.setFitHeight(16);
         imageView.setPreserveRatio(true);
         return imageView;
     }

@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.text.FontWeight;
@@ -71,11 +72,32 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
     }
 
     /**
+     * 初始化标题组件
+     *
+     * @return 标题组件
+     */
+    private FXLabel initTitleLabel() {
+        FXLabel label = this.getTitleLabel();
+        if (label == null) {
+            label = new FXLabel();
+            label.setPadding(new Insets(0, 0, 0, 5));
+            if (!OSUtil.isWindows()) {
+                label.setFontWeight(FontWeight.BOLD);
+            }
+            this.setTitleLabel(label);
+        }
+        return label;
+    }
+
+    /**
      * 获取图标
      *
      * @return 图标
      */
     public Node getIcon() {
+        if (OSUtil.isLinux()) {
+            return null;
+        }
         FXLabel label = this.getTitleLabel();
         return label == null ? null : label.getGraphic();
     }
@@ -86,14 +108,11 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @param icon 图标
      */
     public void setIcon(Node icon) {
-        FXLabel label = this.getTitleLabel();
-        if (label == null) {
-            label = new FXLabel(icon);
-            label.setFontWeight(FontWeight.BOLD);
-            this.setTitleLabel(label);
-        } else {
-            label.setGraphic(icon);
+        if (OSUtil.isLinux()) {
+            return;
         }
+        FXLabel label = this.initTitleLabel();
+        label.setGraphic(icon);
     }
 
     /**
@@ -113,14 +132,8 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @param title 标题
      */
     public void setTitle(String title) {
-        FXLabel label = this.getTitleLabel();
-        if (label == null) {
-            label = new FXLabel(title);
-            label.setFontWeight(FontWeight.BOLD);
-            this.setTitleLabel(label);
-        } else {
-            label.setText(title);
-        }
+        FXLabel label = this.initTitleLabel();
+        label.setText(title);
     }
 
     /**
