@@ -17,6 +17,7 @@ public enum FXStageStyle {
     @Deprecated
     UTILITY,
     UNIFIED,
+    EXTENDED,
     @Deprecated
     CUSTOM;
 
@@ -27,7 +28,12 @@ public enum FXStageStyle {
             case TRANSPARENT -> StageStyle.TRANSPARENT;
             case UTILITY -> StageStyle.UTILITY;
             case UNIFIED -> StageStyle.UNIFIED;
+            case EXTENDED -> StageStyle.EXTENDED;
         };
+    }
+
+    public boolean isExtended() {
+        return this == EXTENDED;
     }
 
     public boolean isCustom() {

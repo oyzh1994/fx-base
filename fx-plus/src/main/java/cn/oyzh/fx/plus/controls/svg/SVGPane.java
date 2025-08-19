@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 
 /**
  * svg面板
@@ -25,9 +26,12 @@ public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
 
     public void setSize(String size) {
         this.size = size;
-        SVGGlyph glyph = (SVGGlyph) this.getChild(0);
-        if (glyph != null) {
+
+        Node node = this.getChild(0);
+        if (node instanceof SVGGlyph glyph) {
             glyph.setSizeStr(size);
+        } else if (node instanceof SVGLabel label) {
+            label.setSizeStr(size);
         }
     }
 
