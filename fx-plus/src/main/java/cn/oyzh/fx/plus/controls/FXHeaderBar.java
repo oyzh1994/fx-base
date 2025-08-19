@@ -4,6 +4,7 @@ import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeManager;
 import javafx.scene.Node;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.text.FontWeight;
@@ -15,6 +16,7 @@ import javafx.scene.text.FontWeight;
 public class FXHeaderBar extends HeaderBar implements NodeAdapter {
 
     {
+        NodeManager.init(this);
         this.setId("headerBar");
     }
 
@@ -100,6 +102,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @return 标题
      */
     public String getTitle() {
+        this.initCenter();
         FXLabel label = this.getTitleLabel();
         return label == null ? null : label.getText();
     }
