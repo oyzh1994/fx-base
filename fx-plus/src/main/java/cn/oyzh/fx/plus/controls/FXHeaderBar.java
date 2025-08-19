@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.node.NodeAdapter;
@@ -18,21 +19,53 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
     }
 
     /**
-     * 获取内容
+     * 获取内容组件
      *
-     * @return 内容
+     * @return 内容组件
      */
     public Node getContent() {
+        if (OSUtil.isWindows()) {
+            return this.getTrailing();
+        }
         return this.getLeading();
     }
 
     /**
-     * 设置内容
+     * 设置内容组件
      *
-     * @param content 内容
+     * @param content 内容组件
      */
     public void setContent(Node content) {
-        this.setLeading(content);
+        if (OSUtil.isWindows()) {
+            this.setTrailing(content);
+        } else {
+            this.setLeading(content);
+        }
+    }
+
+    /**
+     * 获取标题组件
+     *
+     * @return 标题组件
+     */
+    private FXLabel getTitleLabel() {
+        if (OSUtil.isWindows()) {
+            return (FXLabel) this.getLeading();
+        }
+        return (FXLabel) this.getTrailing();
+    }
+
+    /**
+     * 设置标题组件
+     *
+     * @param label 标题组件
+     */
+    private void setTitleLabel(FXLabel label) {
+        if (OSUtil.isWindows()) {
+            this.setLeading(label);
+        } else {
+            this.setTrailing(label);
+        }
     }
 
     /**
@@ -41,7 +74,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @return 图标
      */
     public Node getIcon() {
-        FXLabel label = (FXLabel) this.getTrailing();
+        FXLabel label = this.getTitleLabel();
         return label == null ? null : label.getGraphic();
     }
 
@@ -51,12 +84,11 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @param icon 图标
      */
     public void setIcon(Node icon) {
-        FXLabel label = (FXLabel) this.getTrailing();
+        FXLabel label = this.getTitleLabel();
         if (label == null) {
-            this.initCenter();
             label = new FXLabel(icon);
             label.setFontWeight(FontWeight.BOLD);
-            this.setTrailing(label);
+            this.setTitleLabel(label);
         } else {
             label.setGraphic(icon);
         }
@@ -68,7 +100,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @return 标题
      */
     public String getTitle() {
-        FXLabel label = (FXLabel) this.getTrailing();
+        FXLabel label = this.getTitleLabel();
         return label == null ? null : label.getText();
     }
 
@@ -78,12 +110,11 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @param title 标题
      */
     public void setTitle(String title) {
-        FXLabel label = (FXLabel) this.getTrailing();
+        FXLabel label = this.getTitleLabel();
         if (label == null) {
-            this.initCenter();
             label = new FXLabel(title);
             label.setFontWeight(FontWeight.BOLD);
-            this.setTrailing(label);
+            this.setTitleLabel(label);
         } else {
             label.setText(title);
         }
@@ -99,5 +130,11 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
             pane.setMinWidth(20);
             this.setCenter(pane);
         }
+    }
+
+    @Override
+    public void initNode() {
+        NodeAdapter.super.initNode();
+        this.initCenter();
     }
 }
