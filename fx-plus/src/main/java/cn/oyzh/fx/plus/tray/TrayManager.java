@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.tray;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.TaskManager;
+import dorkbox.jna.rendering.RenderProvider;
+import dorkbox.systemTray.util.SystemTrayFixesLinux;
 import javafx.scene.Node;
 
 import java.awt.SystemTray;
@@ -21,7 +23,7 @@ public class TrayManager {
     /**
      * 系统托盘对象，一般程序生命周期内就存在一个
      */
-    private static Tray tray;
+    private static BaseTray tray;
 
     /**
      * 初始化
@@ -29,11 +31,18 @@ public class TrayManager {
      * @param icon 图标地址
      * @return 托盘
      */
-    public static Tray init(String icon) {
+    public static BaseTray init(String icon) {
         try {
             if (tray == null) {
-                synchronized (TrayManager.class) {
-                    TrayManager.tray = new Tray(icon);
+                if (OSUtil.isLinux()) {
+                    RenderProvider.set(new DorkboxProvider());
+                    synchronized (TrayManager.class) {
+                        TrayManager.tray = new DorkboxTray(icon);
+                    }
+                } else {
+                    synchronized (TrayManager.class) {
+                        TrayManager.tray = new Tray(icon);
+                    }
                 }
             }
             return tray;
@@ -49,16 +58,7 @@ public class TrayManager {
      */
     public static void show() {
         if (tray != null) {
-            TaskManager.startTimeout(() -> {
-                // linux的图标auto size可能会卡住导致托盘图标异常，所以执行显示、隐藏、再显示流程
-                if (OSUtil.isLinux()) {
-                    tray.show();
-                    tray.close();
-                    tray.show();
-                } else {
-                    tray.show();
-                }
-            }, 100);
+            tray.show();
         }
     }
 
@@ -102,7 +102,7 @@ public class TrayManager {
      */
     public static void addMenuItem(String label, Runnable action) {
         if (tray != null) {
-            tray.addMenuItem(label, null, action);
+            tray.addMenuItem(label, action);
         }
     }
 
@@ -124,7 +124,7 @@ public class TrayManager {
      *
      * @param trayItem 托盘菜单
      */
-    public static void addMenuItem(TrayItem trayItem) {
+    public static void addMenuItem(BaseTrayItem trayItem) {
         if (tray != null) {
             tray.addMenuItem(trayItem);
         }
@@ -184,22 +184,8 @@ public class TrayManager {
      *
      * @return 系统托盘扩展
      */
-    public static Tray tray() {
+    public static BaseTray tray() {
         return tray;
-    }
-
-    /**
-     * 获取系统托盘
-     *
-     * @return 系统托盘
-     */
-    public static SystemTray systemTray() {
-        if (!SystemTray.isSupported()) {
-            JulLog.warn("SystemTray is not supported.");
-            throw new RuntimeException("SystemTray is not supported.");
-        }
-        System.setProperty("java.awt.headless", "false");
-        return SystemTray.getSystemTray();
     }
 
     /**
@@ -217,6 +203,9 @@ public class TrayManager {
      * @return 结果
      */
     public static boolean supported() {
-        return SystemTray.isSupported();
+        if (!OSUtil.isLinux()) {
+            return SystemTray.isSupported();
+        }
+        return true;
     }
 }

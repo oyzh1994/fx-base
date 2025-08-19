@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Random;
 
-import cn.oyzh.fx.plus.tray.JavaFxProvider;
+import cn.oyzh.fx.plus.tray.DorkboxProvider;
 import dorkbox.jna.rendering.RenderProvider;
 import dorkbox.os.OS;
 import dorkbox.systemTray.Checkbox;
@@ -110,7 +110,7 @@ class TestTrayJavaFX {
         stage.show();
 
         // required, so the rendering back-end knows that we are using JavaFX
-        RenderProvider.set(new JavaFxProvider());
+        RenderProvider.set(new DorkboxProvider());
 
         SystemTray.DEBUG = true; // for test apps, we always want to run in debug mode
 

@@ -16,12 +16,14 @@ import javafx.scene.input.MouseEvent;
  * @author oyzh
  * @since 2023/3/2
  */
-public class TrayItem extends FXLabel {
+public class TrayItem extends FXLabel implements BaseTrayItem {
 
     {
         this.setHeight(25);
         this.setCursor(Cursor.HAND);
     }
+
+    private final Runnable action;
 
     public TrayItem(String label, Runnable action) {
         this(label, null, action);
@@ -35,6 +37,7 @@ public class TrayItem extends FXLabel {
         if (action != null) {
             this.addActionHandler(e -> FXUtil.runLater(action));
         }
+        this.action = action;
     }
 
     /**
@@ -57,5 +60,10 @@ public class TrayItem extends FXLabel {
             return NodeUtil.getWidth(this.getGraphic()) + 8 + tLen;
         }
         return tLen;
+    }
+
+    @Override
+    public DorkboxTrayItem toDorkboxTrayItem() {
+        return new DorkboxTrayItem(this.getText(), this.getGraphic(), this.action);
     }
 }

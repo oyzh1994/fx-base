@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/8/24
  */
-public class Tray {
+public class Tray extends BaseTray {
 
     /**
      * 托盘图标
@@ -32,37 +32,18 @@ public class Tray {
      */
     private TrayMouseListener trayMouseListener;
 
-    public Tray(URL iconUrl) {
-        this.initIcon(iconUrl);
-    }
-
     public Tray(String iconUrl) {
-        this.initIcon(iconUrl);
+        super(iconUrl);
     }
 
-    /**
-     * 设置托盘图标
-     *
-     * @param iconPath 图标地址
-     * @return 结果
-     */
-    private boolean initIcon(String iconPath) {
+    @Override
+    protected boolean initIcon(String iconPath) {
         // 创建新系统托盘图标
         URL url = ResourceUtil.getResource(iconPath);
         if (url == null) {
             JulLog.error("iconPath: {} is invalid.", iconPath);
             return false;
         }
-        return this.initIcon(url);
-    }
-
-    /**
-     * 设置托盘图标
-     *
-     * @param url 图标地址
-     * @return 结果
-     */
-    private boolean initIcon(URL url) {
         try {
             Image image = Toolkit.getDefaultToolkit().getImage(url);
             // 系统托盘图标
@@ -79,136 +60,67 @@ public class Tray {
         return false;
     }
 
-    /**
-     * 设置标题
-     *
-     * @param title 标题
-     */
+    @Override
     public void setTitle(String title) {
         this.trayIcon.setToolTip(title);
     }
 
-    /**
-     * 添加菜单项
-     *
-     * @param label  菜单名称
-     * @param action 菜单业务
-     */
+    @Override
     public void addMenuItem(String label, Runnable action) {
         this.addMenuItem(label, null, action);
     }
 
-    /**
-     * 添加菜单项
-     *
-     * @param label  菜单名称
-     * @param icon   菜单图标
-     * @param action 菜单业务
-     */
+    @Override
     public void addMenuItem(String label, Node icon, Runnable action) {
         this.addMenuItem(new TrayItem(label, icon, action));
     }
 
-    /**
-     * 添加菜单项
-     *
-     * @param trayItem 托盘菜单
-     */
-    public void addMenuItem(TrayItem trayItem) {
-        this.trayIcon.getMenu().addItem(trayItem);
+    @Override
+    public void addMenuItem(BaseTrayItem trayItem) {
+        if (trayItem instanceof TrayItem item) {
+            this.trayIcon.getMenu().addItem(item);
+        }
     }
 
-    /**
-     * 设置鼠标监听事件
-     *
-     * @param mouseListener 鼠标监听器
-     */
+    @Override
     public void setMouseListener(MouseListener mouseListener) {
         this.trayMouseListener.setMouseListener(mouseListener);
     }
 
-    /**
-     * 鼠标点击事件
-     *
-     * @param eventHandler 事件处理器
-     */
+    @Override
     public void onMouseClicked(Consumer<MouseEvent> eventHandler) {
         this.trayMouseListener.setMouseClicked(eventHandler);
     }
 
-    /**
-     * 显示托盘
-     */
+    @Override
     public void show() {
         try {
-            if (SystemTray.isSupported() && ArrayUtil.isEmpty(TrayManager.systemTray().getTrayIcons())) {
-                // TrayManager.systemTray().remove(this.trayIcon);
-                TrayManager.systemTray().add(this.trayIcon);
+            if (SystemTray.isSupported() && ArrayUtil.isEmpty( SystemTray.getSystemTray().getTrayIcons())) {
+                SystemTray.getSystemTray().add(this.trayIcon);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    /**
-     * 关闭托盘
-     */
+    @Override
     public void close() {
         try {
-            if (SystemTray.isSupported() && ArrayUtil.isNotEmpty(TrayManager.systemTray().getTrayIcons())) {
-                TrayManager.systemTray().remove(this.trayIcon);
+            if (SystemTray.isSupported() && ArrayUtil.isNotEmpty( SystemTray.getSystemTray().getTrayIcons())) {
+                 SystemTray.getSystemTray().remove(this.trayIcon);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    // @Override
-    // public void changeTheme(ThemeStyle style) {
-    //     ThemeAdapter.super.changeTheme(style);
-    //     if (this.trayIcon != null) {
-    //         this.trayIcon.changeTheme(style);
-    //     }
-    // }
-
-    /**
-     * 显示正常消息
-     *
-     * @param caption 标题
-     * @param text    内容
-     */
-    public void displayInfoMessage(String caption, String text) {
-        this.displayMessage(caption, text, TrayIcon.MessageType.INFO);
-    }
-
-    /**
-     * 显示警告消息
-     *
-     * @param caption 标题
-     * @param text    内容
-     */
-    public void displayWarnMessage(String caption, String text) {
-        this.displayMessage(caption, text, TrayIcon.MessageType.WARNING);
-    }
-
-    /**
-     * 显示错误消息
-     *
-     * @param caption 标题
-     * @param text    内容
-     */
-    public void displayErrorMessage(String caption, String text) {
-        this.displayMessage(caption, text, TrayIcon.MessageType.ERROR);
-    }
-
-    /**
-     * 显示消息
-     *
-     * @param caption     标题
-     * @param text        内容
-     * @param messageType 类型
-     */
+    @Override
     public void displayMessage(String caption, String text, TrayIcon.MessageType messageType) {
         this.trayIcon.displayMessage(caption, text, messageType);
+    }
+
+    @Override
+    public boolean supported() {
+        return SystemTray.isSupported();
     }
 }

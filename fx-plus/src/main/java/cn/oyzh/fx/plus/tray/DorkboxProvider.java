@@ -22,7 +22,7 @@ import dorkbox.os.OS;
 
 
 public
-class JavaFxProvider implements Renderer {
+class DorkboxProvider implements Renderer {
     @Override
     public
     boolean isSupported() {

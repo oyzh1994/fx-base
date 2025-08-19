@@ -15,28 +15,6 @@
  */
 package cn.oyzh.fx.plus.test.tray;
 
-import cn.oyzh.fx.plus.tray.JavaFxProvider;
-import dorkbox.desktop.Desktop;
-import dorkbox.jna.rendering.RenderProvider;
-import dorkbox.os.OS;
-import dorkbox.systemTray.Checkbox;
-import dorkbox.systemTray.Menu;
-import dorkbox.systemTray.MenuItem;
-import dorkbox.systemTray.Separator;
-import dorkbox.systemTray.SystemTray;
-import dorkbox.util.CacheUtil;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Random;
-
 /**
  * Icons from 'SJJB Icons', public domain/CC0 icon set
  * <p>
