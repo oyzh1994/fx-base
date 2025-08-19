@@ -1,11 +1,8 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.controls.FXHeaderBar;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
-
-import java.awt.Image;
 
 /**
  * @author oyzh
@@ -33,11 +30,12 @@ public class HeaderBarUtil {
     /**
      * 获取图标
      *
+     * @param iconUrl 图标地址
      * @return 图标组件
      */
-    public static ImageView getIcon() {
-        ImageView imageView = new ImageView(IconUtil.getIcon(FXConst.appIcon()));
-        imageView.setFitHeight(24);
+    public static ImageView getIcon(String iconUrl) {
+        ImageView imageView = new ImageView(IconUtil.getIcon(iconUrl));
+        imageView.setFitHeight(20);
         imageView.setPreserveRatio(true);
         return imageView;
     }
