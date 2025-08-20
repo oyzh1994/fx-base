@@ -383,12 +383,13 @@ public interface StageAdapter extends WindowAdapter {
             // 处理扩展标题栏事件
             if (this.isExtendedHeader()) {
                 FXHeaderBar headerBar = this.getHeaderBar();
+                // 标题为null
                 if (headerBar == null) {
                     return;
                 }
                 // 鼠标按下事件
                 stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event)) {
+                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
                         // 全屏则忽略
                         if (stage.isFullScreen()) {
                             return;
@@ -404,14 +405,14 @@ public interface StageAdapter extends WindowAdapter {
                 });
                 // 鼠标拖动事件
                 stage.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event)) {
+                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
                         // 更新位置
                         headerBar.doUpdateLocation();
                     }
                 });
                 // 鼠标释放事件
                 stage.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event)) {
+                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
                         // 清除位置
                         headerBar.doClearLocation();
                     }

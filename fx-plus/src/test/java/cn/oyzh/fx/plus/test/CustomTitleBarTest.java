@@ -4,10 +4,10 @@ import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.HeaderBar;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -43,19 +43,25 @@ public class CustomTitleBarTest extends Application {
         Button button8 = new Button("test8");
 
         HBox hBox = new HBox(button, button2, button3, button4, button5, button6, button7, button8);
-        headerBar.setTrailing(hBox);
-        headerBar.setTrailingSystemPadding(true);
-        headerBar.setLeadingSystemPadding(true);
+        headerBar.setLeading(hBox);
+        // headerBar.setMouseTransparent(false);
+        // headerBar.setTrailingSystemPadding(true);
+        // headerBar.setLeadingSystemPadding(true);
         // headerBar.setLeading(hBox);
         // HeaderButtonGroup windowsButtons = HeaderButtonGroup.standardGroup();
         // windowsButtons.install(headerBar, stage);
-        VBox root = new VBox();
+        BorderPane root = new BorderPane();
+        root.setMouseTransparent(true);
+        // root.setPickOnBounds(false);
         root.getChildren().add(headerBar);
         root.getChildren().add(new FXLabel("1111"));
         Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
         // scene.getStylesheets().add(Decoration.GENOME_LIGHT.getStylesheet());
         stage.initStyle(StageStyle.EXTENDED);
         stage.setScene(scene);
+        stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            System.out.println(event.getTarget());
+        });
         // stage.setOnCloseRequest((e) -> windowsButtons.uninstall(headerBar, stage));
         stage.show();
     }
