@@ -40,4 +40,45 @@ public class HeaderBarUtil {
         return imageView;
     }
 
+    // /**
+    //  * 安装事件
+    //  *
+    //  * @param stage     组件
+    //  * @param headerBar 标题
+    //  */
+    // public static void installEvent(Stage stage, FXHeaderBar headerBar) {
+    //     Parent root = stage.getScene().getRoot();
+    //
+    //     // 鼠标按下事件
+    //     stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+    //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
+    //             // 全屏则忽略
+    //             if (stage.isFullScreen()) {
+    //                 return;
+    //             }
+    //             // 记录位置
+    //             if (event.getClickCount() == 1) {
+    //                 headerBar.doRecordLocation();
+    //             } else if (event.getClickCount() == 2) {  // 最大化
+    //
+    //                 stage.setMaximized(!stage.isMaximized());
+    //             }
+    //         }
+    //     });
+    //     // 鼠标拖动事件
+    //     stage.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
+    //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
+    //             // 更新位置
+    //             headerBar.doUpdateLocation();
+    //         }
+    //     });
+    //     // 鼠标释放事件
+    //     stage.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
+    //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
+    //             // 清除位置
+    //             headerBar.doClearLocation();
+    //         }
+    //     });
+    // }
+
 }

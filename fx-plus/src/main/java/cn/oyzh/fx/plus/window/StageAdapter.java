@@ -14,7 +14,6 @@ import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
-import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -30,7 +29,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -380,44 +378,44 @@ public interface StageAdapter extends WindowAdapter {
                     this.updateContent();
                 }
             });
-            // 处理扩展标题栏事件
-            if (this.isExtendedHeader()) {
-                FXHeaderBar headerBar = this.getHeaderBar();
-                // 标题为null
-                if (headerBar == null) {
-                    return;
-                }
-                // 鼠标按下事件
-                stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
-                        // 全屏则忽略
-                        if (stage.isFullScreen()) {
-                            return;
-                        }
-                        // 记录位置
-                        if (event.getClickCount() == 1) {
-                            headerBar.doRecordLocation();
-                        } else if (event.getClickCount() == 2) {  // 最大化
-
-                            stage.setMaximized(!stage.isMaximized());
-                        }
-                    }
-                });
-                // 鼠标拖动事件
-                stage.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
-                        // 更新位置
-                        headerBar.doUpdateLocation();
-                    }
-                });
-                // 鼠标释放事件
-                stage.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
-                        // 清除位置
-                        headerBar.doClearLocation();
-                    }
-                });
-            }
+            // // 处理扩展标题栏事件
+            // if (this.isExtendedHeader()) {
+            //     FXHeaderBar headerBar = this.getHeaderBar();
+            //     // 标题为null
+            //     if (headerBar == null) {
+            //         return;
+            //     }
+            //     // 鼠标按下事件
+            //     stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
+            //             // 全屏则忽略
+            //             if (stage.isFullScreen()) {
+            //                 return;
+            //             }
+            //             // 记录位置
+            //             if (event.getClickCount() == 1) {
+            //                 headerBar.doRecordLocation();
+            //             } else if (event.getClickCount() == 2) {  // 最大化
+            //
+            //                 stage.setMaximized(!stage.isMaximized());
+            //             }
+            //         }
+            //     });
+            //     // 鼠标拖动事件
+            //     stage.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
+            //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
+            //             // 更新位置
+            //             headerBar.doUpdateLocation();
+            //         }
+            //     });
+            //     // 鼠标释放事件
+            //     stage.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
+            //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
+            //             // 清除位置
+            //             headerBar.doClearLocation();
+            //         }
+            //     });
+            // }
             // 初始化
             NodeManager.init(this);
         }

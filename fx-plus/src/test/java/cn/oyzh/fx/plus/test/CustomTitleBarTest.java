@@ -1,13 +1,14 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.controls.label.FXLabel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.HeaderBar;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -43,22 +44,34 @@ public class CustomTitleBarTest extends Application {
         Button button8 = new Button("test8");
 
         HBox hBox = new HBox(button, button2, button3, button4, button5, button6, button7, button8);
+        // hBox.setMouseTransparent(true);
+        hBox.setStyle("-fx-background-color:f00f");
+        hBox.setMaxWidth(Double.MAX_VALUE);
+        hBox.setMouseTransparent(true);
         headerBar.setLeading(hBox);
+
+        Label label = new Label("标题");
+        label.setMouseTransparent(true);
+        label.setPrefWidth(2000);
+        headerBar.setTrailing(label);
+
         // headerBar.setMouseTransparent(false);
         // headerBar.setTrailingSystemPadding(true);
         // headerBar.setLeadingSystemPadding(true);
         // headerBar.setLeading(hBox);
         // HeaderButtonGroup windowsButtons = HeaderButtonGroup.standardGroup();
         // windowsButtons.install(headerBar, stage);
-        BorderPane root = new BorderPane();
-        root.setMouseTransparent(true);
+        Pane root = new Pane();
+        // root.setMouseTransparent(true);
         // root.setPickOnBounds(false);
+        // root.setTop(headerBar);
         root.getChildren().add(headerBar);
-        root.getChildren().add(new FXLabel("1111"));
+        root.getChildren().add(new Label("1111"));
         Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
         // scene.getStylesheets().add(Decoration.GENOME_LIGHT.getStylesheet());
         stage.initStyle(StageStyle.EXTENDED);
         stage.setScene(scene);
+        scene.setFill(Color.TRANSPARENT);
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             System.out.println(event.getTarget());
         });
