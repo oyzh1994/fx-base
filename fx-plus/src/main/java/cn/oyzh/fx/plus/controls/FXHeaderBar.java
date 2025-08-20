@@ -17,6 +17,9 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
 
     {
         NodeManager.init(this);
+        this.setMaxHeight(30);
+        this.setMinHeight(30);
+        this.setPrefHeight(30);
         this.setId("headerBar");
     }
 
@@ -58,7 +61,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      */
     private void setTitleLabel(FXLabel label) {
         label.setLayoutX(20);
-        label.setLayoutY(6);
+        label.setLayoutY(7);
         FXPane pane = (FXPane) this.getTrailing();
         if (pane == null) {
             pane = new FXPane();

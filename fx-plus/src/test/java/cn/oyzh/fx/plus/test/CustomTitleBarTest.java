@@ -3,10 +3,12 @@ package cn.oyzh.fx.plus.test;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Border;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.HeaderBar;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -43,7 +45,7 @@ public class CustomTitleBarTest extends Application {
         Button button7 = new Button("test7");
         Button button8 = new Button("test8");
 
-        HBox hBox = new HBox(button, button2, button3, button4, button5, button6, button7, button8);
+        Pane hBox = new Pane(button, button2, button3, button4, button5, button6, button7, button8);
         // hBox.setMouseTransparent(true);
         hBox.setStyle("-fx-background-color:f00f");
         hBox.setMaxWidth(Double.MAX_VALUE);
@@ -66,7 +68,7 @@ public class CustomTitleBarTest extends Application {
         // root.setPickOnBounds(false);
         // root.setTop(headerBar);
         root.getChildren().add(headerBar);
-        root.getChildren().add(new Label("1111"));
+        // root.getChildren().add(new Label("1111"));
         Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
         // scene.getStylesheets().add(Decoration.GENOME_LIGHT.getStylesheet());
         stage.initStyle(StageStyle.EXTENDED);
