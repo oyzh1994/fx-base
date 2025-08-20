@@ -4,7 +4,6 @@ import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
-import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ListViewUtil;
@@ -14,8 +13,6 @@ import javafx.geometry.NodeOrientation;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
@@ -155,13 +152,18 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             }
             this.hidePopup();
         };
-        listView.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (!listView.isIgnoreChanged() && event.getCode() == KeyCode.ENTER) {
-                dataFunc.run();
-            }
-        });
-        listView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            if (!listView.isIgnoreChanged() && MouseUtil.isDubboClick(event) && MouseUtil.isPrimaryButton(event)) {
+        // listView.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        //     if (!listView.isIgnoreChanged() && event.getCode() == KeyCode.ENTER) {
+        //         dataFunc.run();
+        //     }
+        // });
+        // listView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+        //     if (!listView.isIgnoreChanged() && MouseUtil.isPrimaryButton(event)) {
+        //         dataFunc.run();
+        //     }
+        // });
+        listView.selectedItemChanged((observableValue, t, t1) -> {
+            if (!listView.isIgnoreChanged()) {
                 dataFunc.run();
             }
         });
@@ -280,8 +282,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             // double width = NodeUtil.getWidth(scrollPane);
             // width = width - Math.max(8, vWidth);
             // listView.setRealWidth(width);
-        // } else {
-        //     listView.setRealWidth(scrollPane.getRealWidth());
+            // } else {
+            //     listView.setRealWidth(scrollPane.getRealWidth());
         }
         scrollPane.setRealHeight(height);
     }
