@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -29,6 +30,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -296,10 +298,6 @@ public interface StageAdapter extends WindowAdapter {
      * @param owner     父窗口
      */
     default void init(StageAttribute attribute, Window owner) {
-        // 扩展标题头类型
-        if (attribute.stageStyle().isExtended()) {
-            this.setProp("extended:header", true);
-        }
         // 初始化加载器
         FXMLLoaderExt loader = new FXMLLoaderExt();
         // 加载根节点
@@ -307,7 +305,20 @@ public interface StageAdapter extends WindowAdapter {
         if (root == null) {
             throw new RuntimeException("load root fail");
         }
+        // 扩展标题头类型
+        if (attribute.stageStyle().isExtended()) {
+            this.setProp("extended:header", true);
+        }
+        // 舞台
         Stage stage = this.stage();
+        // 初始化场景
+        Scene scene = new Scene(root);
+        // 注意，扩展标题头类型不支持背景透明
+        if (attribute.sceneTransparent() && !this.isExtendedHeader()) {
+            scene.setFill(Color.TRANSPARENT);
+        }
+        // 设置scene
+        FXUtil.runWait(() -> stage.setScene(scene));
         // 设置controller
         this.setProp("_controller", loader.getController());
         // 设置窗口样式
@@ -369,6 +380,43 @@ public interface StageAdapter extends WindowAdapter {
                     this.updateContent();
                 }
             });
+            // 处理扩展标题栏事件
+            if (this.isExtendedHeader()) {
+                FXHeaderBar headerBar = this.getHeaderBar();
+                if (headerBar == null) {
+                    return;
+                }
+                // 鼠标按下事件
+                stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event)) {
+                        // 全屏则忽略
+                        if (stage.isFullScreen()) {
+                            return;
+                        }
+                        // 记录位置
+                        if (event.getClickCount() == 1) {
+                            headerBar.doRecordLocation();
+                        } else if (event.getClickCount() == 2) {  // 最大化
+
+                            stage.setMaximized(!stage.isMaximized());
+                        }
+                    }
+                });
+                // 鼠标拖动事件
+                stage.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
+                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event)) {
+                        // 更新位置
+                        headerBar.doUpdateLocation();
+                    }
+                });
+                // 鼠标释放事件
+                stage.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
+                    if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event)) {
+                        // 清除位置
+                        headerBar.doClearLocation();
+                    }
+                });
+            }
             // 初始化
             NodeManager.init(this);
         }
@@ -383,14 +431,6 @@ public interface StageAdapter extends WindowAdapter {
         if (this.controller() instanceof StageListener listener) {
             this.initListener(listener);
         }
-        // 初始化场景
-        Scene scene = new Scene(root);
-        // 注意，扩展标题头类型不支持背景透明
-        if (attribute.sceneTransparent() && !this.isExtendedHeader()) {
-            scene.setFill(Color.TRANSPARENT);
-        }
-        // 设置scene
-        FXUtil.runWait(() -> stage.setScene(scene));
     }
 
     /**
