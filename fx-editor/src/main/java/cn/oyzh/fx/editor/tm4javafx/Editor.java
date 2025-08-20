@@ -142,7 +142,9 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
             this.syntaxDecorator.setFormatType(t1);
-            this.initTextStyle();
+            if (!this.ignoreChange) {
+                this.initTextStyle();
+            }
         });
         // 提示词变化事件
         this.promptsProperty().addListener((observableValue, formatType, t1) -> {
@@ -163,6 +165,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             }
         });
         // 初始化样式
+        this.applyTheme();
         this.initTextStyle();
     }
 
@@ -270,8 +273,7 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public void showData(Object rawData, EditorFormatType formatType) {
         try {
             this.ignoreChange = true;
-            this.setDisable(true);
-            this.setFormatType(formatType);
+            // this.setDisable(true);
             String data = null;
             if (rawData instanceof CharSequence sequence) {
                 data = sequence.toString();
@@ -280,13 +282,18 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             } else if (rawData != null) {
                 data = rawData.toString();
             }
+            // 设置格式
+            this.setFormatType(formatType);
             if (data != null) {
+                // 初始化语法格式
+                this.initSyntaxes();
+                // 设置内容
                 this.setText(data);
             } else {
                 this.clear();
             }
         } finally {
-            this.setDisable(false);
+            // this.setDisable(false);
             this.ignoreChange = false;
         }
     }
