@@ -5,25 +5,22 @@ import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import javafx.application.ConditionalFeature;
+import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumnBase;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
-import java.awt.Dimension;
 
 /**
  * 节点工具类
@@ -54,24 +51,9 @@ public class NodeUtil {
     public static boolean isRichtextImport;
 
     static {
-        try {
-            Class.forName("javafx.scene.web.WebView");
-            isWebImport = true;
-        } catch (ClassNotFoundException ignored) {
-
-        }
-        try {
-            Class.forName("javafx.embed.swing.SwingNode");
-            isSwingImport = true;
-        } catch (ClassNotFoundException ignored) {
-
-        }
-        try {
-            Class.forName("javafx.scene.media.MediaView");
-            isMediaImport = true;
-        } catch (ClassNotFoundException ignored) {
-
-        }
+        isWebImport = Platform.isSupported(ConditionalFeature.WEB);
+        isMediaImport = Platform.isSupported(ConditionalFeature.MEDIA);
+        isSwingImport = Platform.isSupported(ConditionalFeature.SWING);
         try {
             Class.forName("org.fxmisc.richtext");
             isRichtextImport = true;
@@ -80,67 +62,40 @@ public class NodeUtil {
         }
     }
 
-    /**
-     * 递归布局
-     *
-     * @param node 节点
-     */
-    public static void layoutRecursive(EventTarget node) {
-        if (node instanceof TabPane tabPane) {
-            tabPane.requestLayout();
-//            tabPane.layout();
-            for (Tab tab : tabPane.getTabs()) {
-                layoutRecursive(tab.getContent());
-            }
-        } else if (node instanceof Pane pane) {
-            pane.requestLayout();
-//            pane.layout();
-            for (Node node1 : pane.getChildren()) {
-                layoutRecursive(node1);
-            }
-        } else if (node instanceof Region region) {
-            region.requestLayout();
-//            region.layout();
-            for (Node node1 : region.getChildrenUnmodifiable()) {
-                layoutRecursive(node1);
-            }
-        } else if (node instanceof Parent parent) {
-            parent.requestLayout();
-//            parent.layout();
-            for (Node node1 : parent.getChildrenUnmodifiable()) {
-                layoutRecursive(node1);
-            }
-        } else if (node instanceof Node parent) {
-            parent.autosize();
-        }
-    }
-
-    /**
-     * 获取属性
-     *
-     * @param node 节点
-     * @param key  键
-     * @return 值
-     */
-    public static Object getProperty(Node node, Object key) {
-        if (node.hasProperties()) {
-            return node.getProperties().get(key);
-        }
-        return null;
-    }
-
-    /**
-     * 设置属性
-     *
-     * @param node  节点
-     * @param key   键
-     * @param value 值
-     */
-    public static void setProperty(Node node, Object key, Object value) {
-        if (key != null && value != null) {
-            node.getProperties().put(key, value);
-        }
-    }
+//     /**
+//      * 递归布局
+//      *
+//      * @param node 节点
+//      */
+//     public static void layoutRecursive(EventTarget node) {
+//         if (node instanceof TabPane tabPane) {
+//             tabPane.requestLayout();
+// //            tabPane.layout();
+//             for (Tab tab : tabPane.getTabs()) {
+//                 layoutRecursive(tab.getContent());
+//             }
+//         } else if (node instanceof Pane pane) {
+//             pane.requestLayout();
+// //            pane.layout();
+//             for (Node node1 : pane.getChildren()) {
+//                 layoutRecursive(node1);
+//             }
+//         } else if (node instanceof Region region) {
+//             region.requestLayout();
+// //            region.layout();
+//             for (Node node1 : region.getChildrenUnmodifiable()) {
+//                 layoutRecursive(node1);
+//             }
+//         } else if (node instanceof Parent parent) {
+//             parent.requestLayout();
+// //            parent.layout();
+//             for (Node node1 : parent.getChildrenUnmodifiable()) {
+//                 layoutRecursive(node1);
+//             }
+//         } else if (node instanceof Node parent) {
+//             parent.autosize();
+//         }
+//     }
 
     /**
      * 获取样式值

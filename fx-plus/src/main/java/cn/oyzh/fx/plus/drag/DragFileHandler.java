@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.drag;
 
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -102,7 +103,7 @@ public class DragFileHandler {
         scene.addEventFilter(DragEvent.DRAG_OVER, this::onDragOver);
         scene.addEventFilter(DragEvent.DRAG_EXITED, this::onDragExited);
         scene.addEventFilter(DragEvent.DRAG_DROPPED, this::onDragDropped);
-        scene.getProperties().put("_dragFileHandler", this);
+        PropertiesUtil.set(scene, "_dragFileHandler", this);
     }
 
     /**
@@ -114,6 +115,6 @@ public class DragFileHandler {
         scene.removeEventFilter(DragEvent.DRAG_OVER, this::dragOver);
         scene.removeEventFilter(DragEvent.DRAG_EXITED, this::dragExited);
         scene.removeEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
-        scene.getProperties().remove("_dragFileHandler", this);
+        PropertiesUtil.remove(scene, "_dragFileHandler", this);
     }
 }

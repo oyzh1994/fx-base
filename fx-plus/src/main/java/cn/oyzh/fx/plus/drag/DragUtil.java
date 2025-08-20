@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.drag;
 
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeCell;
@@ -114,7 +115,7 @@ public class DragUtil {
         scene.setOnDragOver(handler::onDragOver);
         scene.setOnDragExited(handler::onDragExited);
         scene.setOnDragDropped(handler::onDragDropped);
-        scene.getProperties().put("_dragFileHandler", handler);
+        PropertiesUtil.set(scene, "_dragFileHandler", handler);
     }
 
     /**
@@ -123,8 +124,8 @@ public class DragUtil {
      * @param scene 场景
      */
     public static void clearDragFile(Scene scene) {
-        if (scene != null && scene.getProperties().containsKey("_dragFileHandler")) {
-            DragFileHandler handler = (DragFileHandler) scene.getProperties().get("_dragFileHandler");
+        if (PropertiesUtil.has(scene, "_dragFileHandler")) {
+            DragFileHandler handler = (DragFileHandler) PropertiesUtil.get(scene, "_dragFileHandler");
             handler.clearEvent(scene);
             // scene.getProperties().remove("_drapFileHandler");
             // scene.setOnDragOver(null);

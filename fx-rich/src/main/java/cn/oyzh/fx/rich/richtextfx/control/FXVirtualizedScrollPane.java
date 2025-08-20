@@ -12,6 +12,7 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
  * @author oyzh
  * @since 2023/10/7
  */
+@Deprecated
 @DefaultProperty("content")
 public class FXVirtualizedScrollPane<V extends Region & Virtualized> extends VirtualizedScrollPane<V> implements FlexAdapter {
 

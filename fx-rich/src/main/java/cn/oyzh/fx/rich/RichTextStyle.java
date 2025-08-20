@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
  * @author oyzh
  * @since 2023/10/8
  */
+@Deprecated
 public class RichTextStyle {
 
     private int start;

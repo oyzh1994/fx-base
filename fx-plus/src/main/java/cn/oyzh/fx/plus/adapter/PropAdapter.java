@@ -1,12 +1,9 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumnBase;
-import javafx.stage.Window;
+import javafx.event.EventTarget;
 
 /**
  * 属性适配器
@@ -23,20 +20,12 @@ public interface PropAdapter {
      * @param val 值
      */
     default void setProp(String key, Object val) {
-        if (this instanceof Node node) {
-            node.getProperties().put(key, val);
-        } else if (this instanceof Tab tab) {
-            tab.getProperties().put(key, val);
-        } else if (this instanceof TableColumnBase<?, ?> columnBase) {
-            columnBase.getProperties().put(key, val);
-        } else if (this instanceof Scene scene) {
-            scene.getProperties().put(key, val);
-        } else if (this instanceof Window window) {
-            window.getProperties().put(key, val);
-        } else if (this instanceof PopupAdapter wrapper && wrapper.popup() != null) {
-            wrapper.popup().getProperties().put(key, val);
-        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
-            stage.stage().getProperties().put(key, val);
+        if (this instanceof PopupAdapter adapter && adapter.popup() != null) {
+            PropertiesUtil.set(adapter.popup(), key, val);
+        } else if (this instanceof StageAdapter adapter && adapter.stage() != null) {
+            PropertiesUtil.set(adapter.stage(), key, val);
+        }else if (this instanceof EventTarget node) {
+            PropertiesUtil.set(node, key, val);
         }
     }
 
@@ -47,34 +36,14 @@ public interface PropAdapter {
      * @return 值
      */
     default <T> T getProp(String key) {
-        if (this instanceof Node node) {
-            if (node.hasProperties()) {
-                return (T) node.getProperties().get(key);
-            }
-        } else if (this instanceof Tab tab) {
-            if (tab.hasProperties()) {
-                return (T) tab.getProperties().get(key);
-            }
-        } else if (this instanceof TableColumnBase<?, ?> columnBase) {
-            if (columnBase.hasProperties()) {
-                return (T) columnBase.getProperties().get(key);
-            }
-        } else if (this instanceof Scene scene) {
-            if (scene.hasProperties()) {
-                return (T) scene.getProperties().get(key);
-            }
-        } else if (this instanceof Window window) {
-            if (window.hasProperties()) {
-                return (T) window.getProperties().get(key);
-            }
-        } else if (this instanceof PopupAdapter wrapper) {
-            if (wrapper.popup().hasProperties()) {
-                return (T) wrapper.popup().getProperties().get(key);
-            }
-        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
-            if (stage.stage().hasProperties()) {
-                return (T) stage.stage().getProperties().get(key);
-            }
+        if (this instanceof PopupAdapter adapter) {
+            return (T) PropertiesUtil.get(adapter.popup(), key);
+        }
+        if (this instanceof StageAdapter adapter && adapter.stage() != null) {
+            return (T) PropertiesUtil.get(adapter.stage(), key);
+        }
+        if (this instanceof EventTarget node) {
+            return (T) PropertiesUtil.get(node, key);
         }
         return null;
     }
@@ -86,26 +55,14 @@ public interface PropAdapter {
      * @return 结果
      */
     default boolean hasProp(String key) {
-        if (this instanceof Node obj) {
-            return obj.hasProperties() && obj.getProperties().containsKey(key);
-        }
-        if (this instanceof Tab obj) {
-            return obj.hasProperties() && obj.getProperties().containsKey(key);
-        }
-        if (this instanceof TableColumnBase<?, ?> obj) {
-            return obj.hasProperties() && obj.getProperties().containsKey(key);
-        }
-        if (this instanceof Scene obj) {
-            return obj.hasProperties() && obj.getProperties().containsKey(key);
-        }
-        if (this instanceof Window obj) {
-            return obj.hasProperties() && obj.getProperties().containsKey(key);
-        }
         if (this instanceof PopupAdapter obj && obj.popup() != null) {
-            return obj.popup().hasProperties() && obj.popup().getProperties().containsKey(key);
+            return PropertiesUtil.has(obj.popup(), key);
         }
         if (this instanceof StageAdapter obj && obj.stage() != null) {
-            return obj.stage().hasProperties() && obj.stage().getProperties().containsKey(key);
+            return PropertiesUtil.has(obj.stage(), key);
+        }
+        if (this instanceof EventTarget obj) {
+            return PropertiesUtil.has(obj, key);
         }
         return false;
     }
@@ -118,20 +75,14 @@ public interface PropAdapter {
      * @return 值
      */
     default <T> T removeProp(String key) {
-        if (this instanceof Node node) {
-            return (T) node.getProperties().remove(key);
-        } else if (this instanceof Tab tab) {
-            return (T) tab.getProperties().remove(key);
-        } else if (this instanceof TableColumnBase<?, ?> columnBase) {
-            return (T) columnBase.getProperties().remove(key);
-        } else if (this instanceof Scene scene) {
-            return (T) scene.getProperties().remove(key);
-        } else if (this instanceof Window window) {
-            return (T) window.getProperties().remove(key);
-        } else if (this instanceof PopupAdapter wrapper && wrapper.popup() != null) {
-            return (T) wrapper.popup().getProperties().remove(key);
-        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
-            return (T) stage.stage().getProperties().remove(key);
+        if (this instanceof PopupAdapter adapter && adapter.popup() != null) {
+            return (T) PropertiesUtil.remove(adapter.popup(), key);
+        }
+        if (this instanceof StageAdapter adapter && adapter.stage() != null) {
+            return (T) PropertiesUtil.remove(adapter.stage(), key);
+        }
+        if (this instanceof EventTarget node) {
+            return (T) PropertiesUtil.remove(node, key);
         }
         return null;
     }
@@ -140,20 +91,12 @@ public interface PropAdapter {
      * 清除属性
      */
     default void clearProps() {
-        if (this instanceof Node node) {
-            node.getProperties().clear();
-        } else if (this instanceof Tab tab) {
-            tab.getProperties().clear();
-        } else if (this instanceof TableColumnBase<?, ?> columnBase) {
-            columnBase.getProperties().clear();
-        } else if (this instanceof Scene scene) {
-            scene.getProperties().clear();
-        } else if (this instanceof Window window) {
-            window.getProperties().clear();
-        } else if (this instanceof PopupAdapter wrapper && wrapper.popup() != null) {
-            wrapper.popup().getProperties().clear();
-        } else if (this instanceof StageAdapter stage && stage.stage() != null) {
-            stage.stage().getProperties().clear();
+        if (this instanceof PopupAdapter adapter && adapter.popup() != null) {
+            PropertiesUtil.clear(adapter.popup());
+        } else if (this instanceof StageAdapter adapter && adapter.stage() != null) {
+            PropertiesUtil.clear(adapter.stage());
+        } else if (this instanceof EventTarget node) {
+            PropertiesUtil.clear(node);
         }
     }
 }

@@ -41,6 +41,7 @@ import java.util.Locale;
 *
 * @since 24
 */
+@Deprecated
 public class FXRichTextAreaSkin extends RichTextAreaSkin {
    /**
     * Constructs the CodeArea skin.

@@ -1,7 +1,5 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
-import cn.oyzh.common.thread.ExecutorUtil;
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -25,6 +23,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/5/17
  */
+@Deprecated
 public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
 
     public RichTextAreaPane(E content) {

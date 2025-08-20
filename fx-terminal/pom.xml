@@ -17,6 +17,7 @@
 
     <dependencies>
 
+        <!-- 自定义类库，存储相关 -->
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
             <artifactId>base-store</artifactId>

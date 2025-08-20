@@ -56,15 +56,12 @@ import jfx.incubator.scene.control.richtext.RichTextArea;
 import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.CodeTextModel;
 import jfx.incubator.scene.control.richtext.model.RichTextModel;
-import jfx.incubator.scene.control.richtext.model.StyleAttribute;
-import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import jfx.incubator.scene.control.richtext.model.StyledTextModel;
 import jfx.incubator.scene.control.richtext.skin.RichTextAreaSkin;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
-import java.util.Set;
 
 /**
 * CodeArea is an editable text component which supports styling (for example, syntax highlighting) of plain text.
@@ -97,6 +94,7 @@ import java.util.Set;
 *
 * @since 24
 */
+@Deprecated
 public class FXRichTextArea extends RichTextArea {
    private BooleanProperty lineNumbers;
    private StyleableIntegerProperty tabSize;
