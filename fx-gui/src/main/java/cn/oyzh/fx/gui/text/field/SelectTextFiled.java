@@ -72,7 +72,12 @@ public class SelectTextFiled<T> extends LimitTextField {
     public void selectItem(T item) {
         this.skin().selectItem(item);
         this.skin().setTexting();
-        this.text(item.toString());
+        SelectTextFiledSkin<T> skin = this.skin();
+        if (skin != null && skin.getConverter() != null) {
+            this.text(skin.getConverter().toString(item));
+        } else {
+            this.text(item.toString());
+        }
         this.skin().clearTexting();
     }
 

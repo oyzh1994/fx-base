@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.window;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -62,8 +63,8 @@ public class StageManager {
     public static List<StageAdapter> allStages() {
         List<StageAdapter> list = new ArrayList<>();
         for (Window window : Window.getWindows()) {
-            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-                list.add((StageAdapter) window.getProperties().get(REF_ATTR));
+            if (PropertiesUtil.has(window, REF_ATTR)) {
+                list.add((StageAdapter) PropertiesUtil.get(window, REF_ATTR));
             }
         }
         return list;
@@ -84,8 +85,8 @@ public class StageManager {
      */
     public static StageAdapter getStage(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
-            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-                StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
+            if (PropertiesUtil.has(window, REF_ATTR)) {
+                StageAdapter adapter = (StageAdapter) PropertiesUtil.get(window, REF_ATTR);
                 if (adapter.controllerClass() == controllerClass) {
                     return adapter;
                 }
@@ -104,8 +105,8 @@ public class StageManager {
         if (window == null) {
             return false;
         }
-        if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-            return window.getProperties().get(REF_ATTR) != null;
+        if (PropertiesUtil.has(window, REF_ATTR)) {
+            return PropertiesUtil.get(window, REF_ATTR) != null;
         }
         return false;
     }
@@ -120,8 +121,8 @@ public class StageManager {
         if (window == null) {
             return null;
         }
-        if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-            return (StageAdapter) window.getProperties().get(REF_ATTR);
+        if (PropertiesUtil.has(window, REF_ATTR)) {
+            return (StageAdapter) PropertiesUtil.get(window, REF_ATTR);
         }
         return null;
     }
@@ -135,8 +136,8 @@ public class StageManager {
     public static List<StageAdapter> listStage(Class<?> controllerClass) {
         List<StageAdapter> list = new ArrayList<>();
         for (Window window : Window.getWindows()) {
-            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-                StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
+            if (PropertiesUtil.has(window, REF_ATTR)) {
+                StageAdapter adapter = (StageAdapter) PropertiesUtil.get(window, REF_ATTR);
                 if (adapter.controllerClass() == controllerClass) {
                     list.add(adapter);
                 }
