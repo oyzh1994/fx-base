@@ -918,6 +918,13 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         }
     }
 
+    /**
+     * 自动换行
+     */
+    public void wordWrap() {
+        this.setWrapText(!this.isWrapText());
+    }
+
     @Override
     public List<? extends MenuItem> getMenuItems() {
         List<MenuItem> items = new ArrayList<>();
@@ -925,49 +932,53 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         boolean selectedText = this.isSelectedText();
 
         // 撤销
-        MenuItem item1 = MenuItemManager.getMenuItem(I18nHelper.undo(), this::undo);
-        item1.setDisable(!this.isUndoable());
-        items.add(item1);
+        MenuItem undo = MenuItemManager.getMenuItem(I18nHelper.undo(), this::undo);
+        undo.setDisable(!this.isUndoable());
+        items.add(undo);
 
         // 重做
-        MenuItem item2 = MenuItemManager.getMenuItem(I18nHelper.redo(), this::redo);
-        item2.setDisable(!this.isUndoable());
-        items.add(item2);
+        MenuItem redo = MenuItemManager.getMenuItem(I18nHelper.redo(), this::redo);
+        redo.setDisable(!this.isUndoable());
+        items.add(redo);
 
         items.add(MenuItemManager.getSeparatorMenuItem());
 
         // 剪切
-        MenuItem item3 = MenuItemManager.getMenuItem(I18nHelper.cut(), this::cut);
-        item3.setDisable(!selectedText || !this.isEditable() || this.isDisable());
-        items.add(item3);
+        MenuItem cut = MenuItemManager.getMenuItem(I18nHelper.cut(), this::cut);
+        cut.setDisable(!selectedText || !this.isEditable() || this.isDisable());
+        items.add(cut);
 
         // 复制
-        MenuItem item4 = MenuItemManager.getMenuItem(I18nHelper.copy(), this::copy);
-        item4.setDisable(!selectedText || this.isDisable());
-        items.add(item4);
+        MenuItem copy = MenuItemManager.getMenuItem(I18nHelper.copy(), this::copy);
+        copy.setDisable(!selectedText || this.isDisable());
+        items.add(copy);
 
         // 粘贴
-        MenuItem item5 = MenuItemManager.getMenuItem(I18nHelper.paste(), this::paste);
-        item5.setDisable(!this.isEditable() || this.isDisable() || !ClipboardUtil.hasString());
-        items.add(item5);
+        MenuItem paste = MenuItemManager.getMenuItem(I18nHelper.paste(), this::paste);
+        paste.setDisable(!this.isEditable() || this.isDisable() || !ClipboardUtil.hasString());
+        items.add(paste);
 
         items.add(MenuItemManager.getSeparatorMenuItem());
 
         // 全选
-        MenuItem item6 = MenuItemManager.getMenuItem(I18nHelper.selectAll(), this::selectAll);
-        items.add(item6);
+        MenuItem selectAll = MenuItemManager.getMenuItem(I18nHelper.selectAll(), this::selectAll);
+        items.add(selectAll);
+
+        // 自动换行
+        MenuItem wordWrap = MenuItemManager.getMenuItem(I18nHelper.wordWrap(), this::wordWrap);
+        items.add(wordWrap);
 
         // 移动到文档头
-        MenuItem item7 = MenuItemManager.getMenuItem(I18nHelper.moveToTheBeginningOfTheDocument(), this::moveCaretStart);
-        items.add(item7);
+        MenuItem moveToTheBeginningOfTheDocument = MenuItemManager.getMenuItem(I18nHelper.moveToTheBeginningOfTheDocument(), this::moveCaretStart);
+        items.add(moveToTheBeginningOfTheDocument);
 
         // 移动到文档尾
-        MenuItem item8 = MenuItemManager.getMenuItem(I18nHelper.moveToTheEndOfTheDocument(), this::moveCaretEnd);
-        items.add(item8);
+        MenuItem moveToTheEndOfTheDocument = MenuItemManager.getMenuItem(I18nHelper.moveToTheEndOfTheDocument(), this::moveCaretEnd);
+        items.add(moveToTheEndOfTheDocument);
 
         // 格式化文档
-        MenuItem item9 = MenuItemManager.getMenuItem(I18nHelper.formattingDocument(), this::formatting);
-        items.add(item9);
+        MenuItem formattingDocument = MenuItemManager.getMenuItem(I18nHelper.formattingDocument(), this::formatting);
+        items.add(formattingDocument);
 
         return items;
     }
