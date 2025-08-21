@@ -113,12 +113,15 @@ public enum EditorFormatType {
     TEXT_HTML_BASIC("TEXT HTML BASIC", ""),
     MDX("MDX", ""),
     MDX_MARKDOWN("MDX MARKDOWN", ""),
-    ASCIIDOCTOR("ASCIIDOCTOR", "ad,asc,adoc,asciidoc,adoc.txt"),
+    ASCIIDOCTOR("ASCIIDOCTOR", "ad,asc,adoc,asciidoc"),
     // 无示例
     BICEP("BICEP", "bicep", "xml"),
     NSIS_SCRIPT("NSIS SCRIPT", "nsh,nsi"),
     XAML("XAML", "xaml"),
     FXML("FXML", "fxml"),
+    HOSTS("HOSTS", "hosts,host"),
+    PROFILE("PROFILE", "bashrc,profile,bash_profile,zshrc"),
+    SSHD_CONFIG("SSHD CONFIG", "sshd_config"),
     ;
 
     private final String name;
