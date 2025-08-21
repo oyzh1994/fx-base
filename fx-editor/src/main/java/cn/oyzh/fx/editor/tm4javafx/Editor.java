@@ -292,6 +292,8 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             } else {
                 this.clear();
             }
+            // 忘记历史
+            this.forgetHistory();
         } finally {
             // this.setDisable(false);
             this.ignoreChange = false;

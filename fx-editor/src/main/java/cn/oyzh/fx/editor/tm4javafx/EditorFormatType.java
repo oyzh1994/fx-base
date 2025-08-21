@@ -27,6 +27,8 @@ public enum EditorFormatType {
     MARKDOWN("MARKDOWN", "md"),
     PROPERTIES("PROPERTIES", "properties"),
     LOG("LOG", "log"),
+    CONF("CONFIG", "conf,cfg,config"),
+    PROTO("Protocol Buffers", "proto"),
     // 语言
     C("C", "c"),
     JAVASCRIPT("JAVASCRIPT", "js"),
@@ -55,9 +57,11 @@ public enum EditorFormatType {
     OBJECTIVE_C("OBJECTIVE C", "m"),
     OBJECTIVE_CPP("OBJECTIVE CPP", "mm"),
     FSHARP("FSHARP", "fs"),
+    SCALA("SCALA", "scala,sbt"),
     JULIA("JULIA", "julia"),
     CLOJURE("CLOJURE", "clj"),
     ERLANG("ERLANG", "erl,escript,hrl,xrl,yrl", "xml"),
+    ASM("ASM", "asm,s,inc"),
     CPP_EMBEDDED_LATEX("CPP EMBEDDED LATEX", "cpp"),
     // 配置文件
     CSV("CSV", "csv,tsv"),
@@ -77,11 +81,12 @@ public enum EditorFormatType {
     BIBTEX("BIBTEX", "bib"),
     DIFF("DIFF", "diff"),
     KCONFIG("KCONFIG", "kconfig"),
+    SVG("SVG", "svg"),
     // 无示例
     TERRAFORM("TERRAFORM", "tf,tfvars"),
     HCL("HCL", "hcl"),
     HLSL("HLSL", "hlsl"),
-    //SAS("SAS", "sas"),
+    SAS("SAS", "sas,sas7bdat"),
     // 无示例
     TWIG("TWIG", "twig,html.twig", "xml"),
     RAKU("RAKU", "pl6"),

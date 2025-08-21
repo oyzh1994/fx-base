@@ -1,0 +1,167 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Scala",
+	"scopeName": "source.scala",
+	"fileTypes": ["scala", "sbt"],
+	"uuid": "8f88d5e0-7c7e-4a6a-9d6d-3e6c5d7a8f2b",
+	"patterns": [
+		{
+			"name": "comment.line.double-slash.scala",
+			"match": "//.*$"
+		},
+		{
+			"name": "comment.block.scala",
+			"begin": "/\\*",
+			"end": "\\*/",
+			"patterns": [
+				{
+					"name": "comment.block.nested.scala",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},
+		{
+			"name": "comment.line.documentation.scala",
+			"match": "///.*$"
+		},
+		{
+			"name": "comment.block.documentation.scala",
+			"begin": "/\\*\\*",
+			"end": "\\*/",
+			"patterns": [
+				{
+					"name": "comment.block.documentation.tag.scala",
+					"match": "@[a-zA-Z]+"
+				},
+				{
+					"include": "#documentationMarkup"
+				}
+			]
+		},
+		{
+			"name": "string.quoted.double.scala",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.scala",
+					"match": "\\\\."
+				},
+				{
+					"name": "variable.interpolation.scala",
+					"match": "\\$[a-zA-Z_][a-zA-Z0-9_]*"
+				},
+				{
+					"name": "variable.interpolation.braced.scala",
+					"begin": "\\$\\{",
+					"end": "\\}",
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "string.quoted.single.scala",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.scala",
+					"match": "\\\\."
+				}
+			]
+		},
+		{
+			"name": "string.quoted.triple.scala",
+			"begin": "\"\"\"",
+			"end": "\"\"\"",
+			"patterns": [
+				{
+					"name": "variable.interpolation.scala",
+					"match": "\\$[a-zA-Z_][a-zA-Z0-9_]*"
+				},
+				{
+					"name": "variable.interpolation.braced.scala",
+					"begin": "\\$\\{",
+					"end": "\\}",
+					"patterns": [
+						{
+							"include": "$self"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "keyword.control.scala",
+			"match": "\\b(if|else|match|case|for|do|while|return|throw|try|catch|finally|yield|break|continue)\\b"
+		},
+		{
+			"name": "keyword.declaration.scala",
+			"match": "\\b(val|var|def|class|object|trait|enum|package|import|extends|with|override|implicit|final|sealed|abstract|private|protected|public|this|super|type)\\b"
+		},
+		{
+			"name": "keyword.other.scala",
+			"match": "\\b(new|true|false|null|Unit|Nothing|Any|AnyVal|AnyRef|isInstanceOf|asInstanceOf|def|lazy)\\b"
+		},
+		{
+			"name": "constant.numeric.integer.scala",
+			"match": "\\b(0x[0-9a-fA-F_]+|0b[01_]+|\\d[_\\d]*)[Llr]?\\b"
+		},
+		{
+			"name": "constant.numeric.float.scala",
+			"match": "\\b\\d[_\\d]*(\\.\\d[_\\d]*)?([eE][+-]?\\d[_\\d]*)?[fFd]?\\b"
+		},
+		{
+			"name": "support.type.scala",
+			"match": "\\b(Int|Long|Short|Byte|Float|Double|Char|Boolean|String|Unit|Array|List|Set|Map|Option|Either|Future)\\b"
+		},
+		{
+			"name": "entity.name.function.scala",
+			"match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\s*(?=\\()",
+			"captures": {
+				"0": {
+					"name": "entity.name.function.scala"
+				}
+			}
+		},
+		{
+			"name": "entity.name.type.class.scala",
+			"match": "\\b[A-Z][a-zA-Z0-9_]*\\b"
+		},
+		{
+			"name": "variable.name.scala",
+			"match": "\\b[a-z][a-zA-Z0-9_]*\\b"
+		},
+		{
+			"name": "keyword.operator.scala",
+			"match": "(=|==|!=|<|>|<=|>=|&&|\\|\\||!|\\+|\\-|\\*|/|%|\\+\\+|\\-\\-|:=|<-|=>|->|#|@|\\^|\\|)"
+		},
+		{
+			"name": "comment.block.documentation.tag.scala",
+			"match": "@[a-zA-Z]+"
+		}
+	],
+	"repository": {
+		"documentationMarkup": {
+			"patterns": [
+				{
+					"name": "markup.bold.scala",
+					"match": "\\*\\*.*?\\*\\*"
+				},
+				{
+					"name": "markup.italic.scala",
+					"match": "\\*.*?\\*"
+				},
+				{
+					"name": "markup.underline.scala",
+					"match": "`.*?`"
+				}
+			]
+		}
+	}
+}
