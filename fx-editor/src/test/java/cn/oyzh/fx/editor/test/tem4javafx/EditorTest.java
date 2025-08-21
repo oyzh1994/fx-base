@@ -230,7 +230,11 @@ public class EditorTest extends Application {
             FXUtil.runLater(popup::hide, 1500);
         });
         hBox4.addChild(btn_43);
-
+        Button btn_44 = new Button("只读/可写");
+        btn_44.setOnAction(event -> {
+            editor.setEditable(!editor.isEditable());
+        });
+        hBox4.addChild(btn_44);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox2);

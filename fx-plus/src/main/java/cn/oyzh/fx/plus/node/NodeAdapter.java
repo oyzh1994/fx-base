@@ -149,6 +149,8 @@ public interface NodeAdapter extends EventTarget {
             return node.getChildren().isEmpty();
         } else if (this instanceof Group node) {
             return node.getChildren().isEmpty();
+        } else if (this instanceof TabPane node) {
+            return node.getTabs().isEmpty();
         }
         return true;
     }

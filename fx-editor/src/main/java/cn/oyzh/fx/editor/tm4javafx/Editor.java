@@ -9,6 +9,9 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.menu.MenuItemManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -16,8 +19,10 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.plus.util.ClipboardUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.i18n.I18nHelper;
 import com.sun.javafx.scene.NodeHelper;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
@@ -30,12 +35,14 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.CodeArea;
+import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
 import tm4java.grammar.IGrammarSource;
 import tm4java.theme.IThemeSource;
@@ -46,7 +53,9 @@ import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.TextFlowModel;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -56,7 +65,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
+public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdapter, NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
 
     /**
      * 默认提示词颜色
@@ -162,6 +171,15 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
                 this.hideLineNum();
             } else if (t1 == EditorLineNumPolicy.ALWAYS) {
                 this.showLineNum();
+            }
+        });
+        // 右键菜单事件
+        this.setOnContextMenuRequested(e -> {
+            List<? extends MenuItem> items = this.getMenuItems();
+            if (CollectionUtil.isNotEmpty(items)) {
+                this.showContextMenu(items, e.getScreenX() - 10, e.getScreenY() - 10);
+            } else {
+                this.clearContextMenu();
             }
         });
         // 初始化样式
@@ -872,5 +890,85 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      */
     public void fontSizeDecr() {
         this.setFontSize(this.getFontSize() - 1);
+    }
+
+    /**
+     * 是否选中了文本
+     *
+     * @return 结果
+     */
+    public boolean isSelectedText() {
+        SelectionSegment segment = this.getSelection();
+        if (segment == null) {
+            return false;
+        }
+        TextPos min = segment.getMin();
+        TextPos max = segment.getMax();
+        return !min.equals(max);
+    }
+
+    /**
+     * 格式化
+     */
+    public void formatting() {
+        String text = this.getText();
+        String text1 = EditorFormatter.formatText(this.getFormatType(), text);
+        if (StringUtil.notEquals(text, text1)) {
+            this.setText(text1);
+        }
+    }
+
+    @Override
+    public List<? extends MenuItem> getMenuItems() {
+        List<MenuItem> items = new ArrayList<>();
+        // 是否选中内容
+        boolean selectedText = this.isSelectedText();
+
+        // 撤销
+        MenuItem item1 = MenuItemManager.getMenuItem(I18nHelper.undo(), this::undo);
+        item1.setDisable(!this.isUndoable());
+        items.add(item1);
+
+        // 重做
+        MenuItem item2 = MenuItemManager.getMenuItem(I18nHelper.redo(), this::redo);
+        item2.setDisable(!this.isUndoable());
+        items.add(item2);
+
+        items.add(MenuItemManager.getSeparatorMenuItem());
+
+        // 剪切
+        MenuItem item3 = MenuItemManager.getMenuItem(I18nHelper.cut(), this::cut);
+        item3.setDisable(!selectedText || !this.isEditable() || this.isDisable());
+        items.add(item3);
+
+        // 复制
+        MenuItem item4 = MenuItemManager.getMenuItem(I18nHelper.copy(), this::copy);
+        item4.setDisable(!selectedText || this.isDisable());
+        items.add(item4);
+
+        // 粘贴
+        MenuItem item5 = MenuItemManager.getMenuItem(I18nHelper.paste(), this::paste);
+        item5.setDisable(!this.isEditable() || this.isDisable() || !ClipboardUtil.hasString());
+        items.add(item5);
+
+        items.add(MenuItemManager.getSeparatorMenuItem());
+
+        // 全选
+        MenuItem item6 = MenuItemManager.getMenuItem(I18nHelper.selectAll(), this::selectAll);
+        items.add(item6);
+
+        // 移动到文档头
+        MenuItem item7 = MenuItemManager.getMenuItem(I18nHelper.moveToTheBeginningOfTheDocument(), this::moveCaretStart);
+        items.add(item7);
+
+        // 移动到文档尾
+        MenuItem item8 = MenuItemManager.getMenuItem(I18nHelper.moveToTheEndOfTheDocument(), this::moveCaretEnd);
+        items.add(item8);
+
+        // 格式化文档
+        MenuItem item9 = MenuItemManager.getMenuItem(I18nHelper.formattingDocument(), this::formatting);
+        items.add(item9);
+
+        return items;
     }
 }
