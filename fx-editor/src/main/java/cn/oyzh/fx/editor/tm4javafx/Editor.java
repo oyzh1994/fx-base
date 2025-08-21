@@ -170,6 +170,11 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     }
 
     /**
+     * 语法名称
+     */
+    private String syntaxesName;
+
+    /**
      * 初始化语法
      */
     protected void initSyntaxes() {
@@ -177,6 +182,11 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             EditorFormatType formatType = this.getFormatType();
             if (formatType != EditorFormatType.RAW) {
                 String syntaxesName = formatType.getFullSyntaxesName();
+                // 如果未发生变化，则跳过
+                if (StringUtil.equals(this.syntaxesName, syntaxesName)) {
+                    return;
+                }
+                this.syntaxesName = syntaxesName;
                 String path = "/tm4javafx/grammars/" + syntaxesName;
                 String url = ResourceUtil.getPath(path);
                 this.styleProvider.setGrammar(IGrammarSource.fromFile(Path.of(url)));
@@ -193,7 +203,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
      * 初始化文本样式
      */
     private void initTextStyle() {
-        // this.applyTheme();
         this.initSyntaxes();
         this.setText(this.getText());
     }
@@ -273,7 +282,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
     public void showData(Object rawData, EditorFormatType formatType) {
         try {
             this.ignoreChange = true;
-            // this.setDisable(true);
             String data = null;
             if (rawData instanceof CharSequence sequence) {
                 data = sequence.toString();
@@ -295,7 +303,6 @@ public class Editor extends CodeArea implements NodeAdapter, FlexAdapter, FontAd
             // 忘记历史
             this.forgetHistory();
         } finally {
-            // this.setDisable(false);
             this.ignoreChange = false;
         }
     }

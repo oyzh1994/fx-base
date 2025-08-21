@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.tabs;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.event.EventListener;
 import cn.oyzh.event.EventUtil;
+import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.Event;
@@ -25,13 +26,14 @@ import java.util.ResourceBundle;
  */
 public abstract class RichTabController implements EventListener, I18nAdapter, Initializable {
 
-    private Reference<RichTab> tabReference;
+    private Reference<FXTab> tabReference;
 
     /**
      * 设置tab
+     *
      * @param tab tab
      */
-    protected void setTab(RichTab tab) {
+    protected void setTab(FXTab tab) {
         this.tabReference = new WeakReference<>(tab);
         // 初始化一次样式
         tab.changeTheme(ThemeManager.currentTheme());
@@ -39,18 +41,20 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
 
     /**
      * 获取tab
+     *
      * @return RichTab
      */
-    public RichTab getTab() {
+    public FXTab getTab() {
         return this.tabReference != null ? this.tabReference.get() : null;
     }
 
     /**
      * 获取TabPane
+     *
      * @return TabPane
      */
     public TabPane getTabPane() {
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab == null) {
             return null;
         }
@@ -59,6 +63,7 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
 
     /**
      * 获取窗口
+     *
      * @return Window
      */
     public Window getWindow() {
@@ -71,7 +76,7 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
     }
 
     public void closeTab() {
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab != null) {
             tab.closeTab();
         } else {
@@ -80,35 +85,35 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
     }
 
     public void disableTab() {
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab != null) {
             tab.disable();
         }
     }
 
     public void enableTab() {
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab != null) {
             tab.enable();
         }
     }
 
     public void flushTab() {
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab != null) {
             tab.flush();
         }
     }
 
     public void flushTabGraphic() {
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab != null) {
             tab.flushGraphic();
         }
     }
 
     public void flushTabGraphicColor() {
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab != null) {
             tab.flushGraphicColor();
         }
@@ -123,8 +128,10 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
 
     /**
      * tab初始化事件
+     *
+     * @param tab tab
      */
-    public void onTabInit(RichTab tab) {
+    public void onTabInit(FXTab tab) {
         this.setTab(tab);
         this.bindListeners();
         EventListener.super.register();
@@ -137,7 +144,7 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
      */
     public void onTabClosed(Event event) {
         EventListener.super.unregister();
-        RichTab tab = this.getTab();
+        FXTab tab = this.getTab();
         if (tab != null && !tab.hasProp("tab:close:flag")) {
             tab.setProp("tab:close:flag", true);
             EventUtil.post(new TabClosedEvent(tab));

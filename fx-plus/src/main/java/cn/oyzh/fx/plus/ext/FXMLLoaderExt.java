@@ -42,9 +42,10 @@ public class FXMLLoaderExt extends FXMLLoader {
      * 从地址加载
      *
      * @param fxmlUrl 资源地址
-     * @return 内容
+     * @return 加载结果
      */
-    public static <T> T loadFromUrl(String fxmlUrl) {
-        return new FXMLLoaderExt().load(fxmlUrl);
+    public static FXMLResult loadFromUrl(String fxmlUrl) {
+        FXMLLoaderExt loader = new FXMLLoaderExt();
+        return new FXMLResult(loader.load(fxmlUrl), loader.getController());
     }
 }

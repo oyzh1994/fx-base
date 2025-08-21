@@ -76,17 +76,6 @@ public abstract class RichTab extends FXTab {
     }
 
     /**
-     * 刷新tab
-     */
-    public void flush() {
-        FXUtil.runWait(() -> {
-            this.flushGraphic();
-            this.flushGraphicColor();
-            this.flushTitle();
-        });
-    }
-
-    /**
      * 获取标题
      *
      * @return 标题

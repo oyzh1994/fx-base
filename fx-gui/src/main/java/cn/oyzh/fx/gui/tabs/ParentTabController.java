@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.tabs;
 
+import cn.oyzh.fx.plus.controls.tab.FXTab;
 import javafx.event.Event;
 
 import java.net.URL;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 public class ParentTabController extends RichTabController {
 
     @Override
-    protected void setTab(RichTab tab) {
+    protected void setTab(FXTab tab) {
         super.setTab(tab);
         for (RichTabController controller : this.getSubControllers()) {
             if (controller == null) {
@@ -30,7 +31,7 @@ public class ParentTabController extends RichTabController {
     }
 
     @Override
-    public void onTabInit(RichTab tab) {
+    public void onTabInit(FXTab tab) {
         super.onTabInit(tab);
         for (RichTabController controller : this.getSubControllers()) {
             if (controller == null) {

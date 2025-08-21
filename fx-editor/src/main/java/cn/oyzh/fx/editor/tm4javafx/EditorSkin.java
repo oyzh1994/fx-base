@@ -3,14 +3,10 @@ package cn.oyzh.fx.editor.tm4javafx;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
-import com.sun.jfx.incubator.scene.control.richtext.ClippedPane;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.scene.Node;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.StrokeType;
-import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.skin.CodeAreaSkin;
 
 /**
@@ -24,6 +20,18 @@ public class EditorSkin extends CodeAreaSkin {
         this.setCaretColor(ThemeManager.currentAccentColor());
         this.setCaretLineColor(control.defaultCaretLineColor());
         this.setSelectionColor(control.defaultSelectionColor());
+        // 监听高亮行，防止颜色被修改
+        this.getCaretLineHighlight().fillProperty().addListener((observableValue, paint, t1) -> {
+            if (t1 != this.getCaretLineColor()) {
+                this.setCaretLineColor(this.getCaretLineColor());
+            }
+        });
+        // 监听选区，防止颜色被修改
+        this.getSelectionHighlight().fillProperty().addListener((observableValue, paint, t1) -> {
+            if (t1 != this.getSelectionColor()) {
+                this.setSelectionColor(this.getSelectionColor());
+            }
+        });
     }
 
     public VFlow getVFlow() {
@@ -53,11 +61,6 @@ public class EditorSkin extends CodeAreaSkin {
     public Path getCaretLineHighlight() {
         VFlow vFlow = this.getVFlow();
         return ReflectUtil.getFieldValue(vFlow, "caretLineHighlight");
-    }
-
-    public ClippedPane getCaretLineHighlight1() {
-        VFlow vFlow = this.getVFlow();
-        return ReflectUtil.getFieldValue(vFlow, "rightGutter");
     }
 
     /**

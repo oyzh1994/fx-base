@@ -77,6 +77,17 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
     }
 
     /**
+     * 刷新tab
+     */
+    public void flush() {
+        FXUtil.runWait(() -> {
+            this.flushGraphic();
+            this.flushGraphicColor();
+            this.flushTitle();
+        });
+    }
+
+    /**
      * 刷新tab标题
      */
     public void flushTitle() {
