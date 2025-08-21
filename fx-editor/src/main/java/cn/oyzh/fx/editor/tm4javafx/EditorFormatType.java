@@ -31,12 +31,14 @@ public enum EditorFormatType {
     PROTO("Protocol Buffers", "proto"),
     // 语言
     C("C", "c"),
+    C_H("C header files", "h"),
+    CPP("C++", "cpp"),
+    CPP_H("C++ header files", "hpp,hxx"),
     JAVASCRIPT("JAVASCRIPT", "js"),
     JAVASCRIPTREACT("JAVASCRIPT (with React support)", "jsx"),
     PYTHON("PYTHON", "py"),
     JAVA("JAVA", "java"),
     CSHARP("C#", "cs"),
-    CPP("C++", "cpp"),
     CUDA_CPP("CUDA C++", "cu"),
     RUST("RUST", "rs"),
     RUBY("RUBY", "rb"),
@@ -114,6 +116,9 @@ public enum EditorFormatType {
     ASCIIDOCTOR("ASCIIDOCTOR", "ad,asc,adoc,asciidoc,adoc.txt"),
     // 无示例
     BICEP("BICEP", "bicep", "xml"),
+    NSIS_SCRIPT("NSIS SCRIPT", "nsh,nsi"),
+    XAML("XAML", "xaml"),
+    FXML("FXML", "fxml"),
     ;
 
     private final String name;
@@ -141,10 +146,28 @@ public enum EditorFormatType {
         return this.extension;
     }
 
+    /**
+     * 获取语法名称
+     *
+     * @return 语法名称
+     */
     public String getSyntaxesName() {
+        // c头文件类型重定位
+        if (this == C_H) {
+            return C.getSyntaxesName();
+        }
+        // c++头文件类型重定位
+        if (this == CPP_H) {
+            return CPP.getSyntaxesName();
+        }
         return this.toString().toLowerCase().replace("_", "-");
     }
 
+    /**
+     * 获取语法全称
+     *
+     * @return 语法全称
+     */
     public String getFullSyntaxesName() {
         String name = this.getSyntaxesName();
         name += ".tmLanguage";
