@@ -18,7 +18,9 @@ import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.HeaderBarUtil;
@@ -45,7 +47,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/10/11
  */
-public interface StageAdapter extends WindowAdapter {
+public interface StageAdapter extends WindowAdapter, ThemeAdapter {
 
     @Override
     default void onWindowClosed() {
@@ -311,8 +313,8 @@ public interface StageAdapter extends WindowAdapter {
         Stage stage = this.stage();
         // 初始化场景
         Scene scene = new Scene(root);
-        // 注意，扩展标题头类型不支持背景透明
-        if (attribute.sceneTransparent() && !this.isExtendedHeader()) {
+        //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
+        if ((this.isExtendedHeader() && ThemeManager.isDarkMode()) || attribute.sceneTransparent()) {
             scene.setFill(Color.TRANSPARENT);
         }
         // 设置scene
@@ -773,5 +775,18 @@ public interface StageAdapter extends WindowAdapter {
 
     default void showAndWait() {
         this.stage().showAndWait();
+    }
+
+    @Override
+    default void changeTheme(ThemeStyle style) {
+        //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
+        if (this.isExtendedHeader()) {
+            if (style.isDarkMode()) {
+                this.scene().setFill(Color.TRANSPARENT);
+            } else {
+                this.scene().setFill(ThemeManager.currentBackgroundColor());
+            }
+        }
+        WindowAdapter.super.changeTheme(style);
     }
 }

@@ -4,9 +4,10 @@ import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.tooltip.TooltipUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.tooltip.TooltipUtil;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
@@ -348,12 +349,12 @@ public class MessageBox {
         TooltipExt tooltip = new TooltipExt();
         try {
             // 隐藏旧工具条
-            TooltipExt old = (TooltipExt) node.getProperties().remove("tipTool");
+            TooltipExt old = (TooltipExt) PropertiesUtil.remove(node, "tipTool");
             if (old != null) {
                 old.hide();
             }
             // 设置标志位
-            node.getProperties().put("tipTool", tooltip);
+            PropertiesUtil.set(node, "tipTool", tooltip);
             // 获取字体
             Font font = FontUtil.getFont(node);
             // 初始化提示条
@@ -371,7 +372,7 @@ public class MessageBox {
             // 提示条隐藏事件
             tooltip.setOnHidden(windowEvent -> {
                 tooltip.hide();
-                node.getProperties().remove("tipTool");
+                PropertiesUtil.remove(node, "tipTool");
                 Tooltip.uninstall(node, tooltip);
             });
             FXUtil.runLater(() -> {

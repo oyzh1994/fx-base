@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.tooltip;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.event.EventTarget;
@@ -73,13 +74,7 @@ public class TooltipUtil {
      * @return 提示组件
      */
     public static Tooltip getTooltip(EventTarget target) {
-        Tooltip tooltip = null;
-        if (target instanceof Node node) {
-            tooltip = (Tooltip) node.getProperties().get(FXConst.TOOLTIP_PROP_KEY);
-        } else if (target instanceof Tab tab) {
-            tooltip = (Tooltip) tab.getProperties().get(FXConst.TOOLTIP_PROP_KEY);
-        }
-        return tooltip;
+        return (Tooltip) PropertiesUtil.get(target, FXConst.TOOLTIP_PROP_KEY);
     }
 
     /**
@@ -92,8 +87,8 @@ public class TooltipUtil {
         uninstall(target);
         if (StringUtil.isNotBlank(text)) {
             if (target instanceof Node node) {
-                if (node.getProperties().containsKey(PROP_KEY)) {
-                    EventHandler<MouseEvent> tipHandler = (EventHandler<MouseEvent>) node.getProperties().get(PROP_KEY);
+                if (PropertiesUtil.has(node, PROP_KEY)) {
+                    EventHandler<MouseEvent> tipHandler = (EventHandler<MouseEvent>) PropertiesUtil.get(node, PROP_KEY);
                     node.removeEventFilter(MouseEvent.ANY, tipHandler);
                 }
                 EventHandler<MouseEvent> handler = event -> {
@@ -113,10 +108,10 @@ public class TooltipUtil {
                     }
                 };
                 node.addEventFilter(MouseEvent.ANY, handler);
-                node.getProperties().put(PROP_KEY, handler);
+                PropertiesUtil.set(node, PROP_KEY, handler);
             } else if (target instanceof Tab tab) {
-                if (tab.getProperties().containsKey(PROP_KEY)) {
-                    ChangeListener<Boolean> listener = (ChangeListener<Boolean>) tab.getProperties().get(PROP_KEY);
+                if (PropertiesUtil.has(tab, PROP_KEY)) {
+                    ChangeListener<Boolean> listener = (ChangeListener<Boolean>) PropertiesUtil.get(tab, PROP_KEY);
                     tab.selectedProperty().removeListener(listener);
                 }
                 ChangeListener<Boolean> listener = (observable, oldValue, newValue) -> {
@@ -130,7 +125,7 @@ public class TooltipUtil {
                     }
                 };
                 tab.selectedProperty().addListener(listener);
-                tab.getProperties().put(PROP_KEY, listener);
+                PropertiesUtil.set(tab, PROP_KEY, listener);
             }
         }
     }

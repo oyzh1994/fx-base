@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.SysConst;
 import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -117,7 +118,13 @@ public class ThemeManager {
             // 变更样式
             List<Window> windows = StageManager.allWindows();
             for (Window window : windows) {
-                applyCycle(window, style);
+                // 装饰器直接处理
+                if (StageManager.isAdapter(window)) {
+                    StageAdapter adapter = StageManager.getAdapter(window);
+                    adapter.changeTheme(style);
+                } else {
+                    applyCycle(window, style);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();

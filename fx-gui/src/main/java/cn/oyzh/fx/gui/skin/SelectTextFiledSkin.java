@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ListViewUtil;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
@@ -405,21 +406,21 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 结果
      */
     public boolean isTexting() {
-        return this.getSkinnable().getProperties().containsKey("texting");
+        return PropertiesUtil.has(this.getSkinnable(), "texting");
     }
 
     /**
      * 设置输入文本中
      */
     public void setTexting() {
-        this.getSkinnable().getProperties().put("texting", true);
+        PropertiesUtil.set(this.getSkinnable(), "texting", true);
     }
 
     /**
      * 清除设置文本中
      */
     public void clearTexting() {
-        this.getSkinnable().getProperties().remove("texting");
+        PropertiesUtil.remove(this.getSkinnable(), "texting");
     }
 
     @Override
