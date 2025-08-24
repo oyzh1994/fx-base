@@ -118,13 +118,12 @@ public class ThemeManager {
             // 变更样式
             List<Window> windows = StageManager.allWindows();
             for (Window window : windows) {
-                // 装饰器直接处理
+                // 检查装饰器并处理
                 if (StageManager.isAdapter(window)) {
                     StageAdapter adapter = StageManager.getAdapter(window);
                     adapter.changeTheme(style);
-                } else {
-                    applyCycle(window, style);
                 }
+                applyCycle(window, style);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
