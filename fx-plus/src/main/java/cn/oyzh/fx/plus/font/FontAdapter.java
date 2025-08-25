@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.font;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.scene.Node;
@@ -138,7 +139,7 @@ public interface FontAdapter extends PropAdapter {
         }
         if (this instanceof Node node) {
             String size = NodeUtil.getStyle(node, "-fx-font-size");
-            if (size != null) {
+            if (StringUtil.isNotBlank(size)) {
                 return Double.parseDouble(size);
             }
         }
@@ -316,6 +317,11 @@ public interface FontAdapter extends PropAdapter {
      */
     default void changeFont(Font font) {
         if (this.isEnableFont() && font != null) {
+            Font font1 = this.getFont();
+            // 检查字重
+            if (font1 != null && StringUtil.isNotBlank(font1.getStyle()) && !StringUtil.equals(font1.getStyle(), font.getStyle())) {
+                font = FontUtil.newFontByWeight(font, font1.getStyle());
+            }
             this.setFont(font);
         }
     }

@@ -69,6 +69,9 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontByWeight(javafx.scene.text.Font font, String style) {
+        if (StringUtil.isBlank(style)) {
+            return font;
+        }
         FontWeight weight = getWeight(style);
         return newFontByWeight(font, weight);
     }
