@@ -17,7 +17,7 @@ public enum EditorFormatType {
     JSONL("JSON Lines", "jsonl"),
     XML("XML", "xml"),
     HTML("HTML", "html,htm"),
-    YAML("YAML", "yaml"),
+    YAML("YAML", "yaml,yml"),
     CSS("CSS", "css"),
     SHELLSCRIPT("SHELL SCRIPT", "sh"),
     BAT("BAT", "bat"),
