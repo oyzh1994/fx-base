@@ -120,7 +120,7 @@ public enum EditorFormatType {
     XAML("XAML", "xaml"),
     FXML("FXML", "fxml"),
     HOSTS("HOSTS", "hosts,host"),
-    PROFILE("PROFILE", "bashrc,profile,bash_profile,zshrc"),
+    PROFILE("PROFILE", "bashrc,profile,bash_profile,zshrc,env"),
     SSHD_CONFIG("SSHD CONFIG", "sshd_config"),
     ;
 

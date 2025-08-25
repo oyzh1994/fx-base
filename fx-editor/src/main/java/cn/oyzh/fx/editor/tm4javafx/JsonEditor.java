@@ -11,4 +11,9 @@ public abstract class JsonEditor extends Editor {
         this.showData(rawData, EditorFormatType.JSON);
     }
 
+    @Override
+    public void initNode() {
+        super.initNode();
+        super.setFormatType(EditorFormatType.JSON);
+    }
 }
