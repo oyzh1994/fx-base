@@ -20,16 +20,28 @@ public class EditorSkin extends CodeAreaSkin {
         this.setCaretColor(ThemeManager.currentAccentColor());
         this.setCaretLineColor(control.defaultCaretLineColor());
         this.setSelectionColor(control.defaultSelectionColor());
-        // 监听高亮行，防止颜色被修改
-        this.getCaretLineHighlight().fillProperty().addListener((observableValue, paint, t1) -> {
-            if (t1 != this.getCaretLineColor()) {
-                this.setCaretLineColor(this.getCaretLineColor());
+        Path path1 = this.getCaretPath();
+        // 监听光标，防止颜色被修改
+        path1.fillProperty().addListener((observableValue, paint, t1) -> {
+            Color color = this.caretColor;
+            if (color != null && t1 != color) {
+                path1.setFill(color);
             }
         });
+        Path path2 = this.getCaretLineHighlight();
+        // 监听高亮行，防止颜色被修改
+        path2.fillProperty().addListener((observableValue, paint, t1) -> {
+            Color color = this.caretLineColor;
+            if (color != null && t1 != color) {
+                path2.setFill(color);
+            }
+        });
+        Path path3 = this.getSelectionHighlight();
         // 监听选区，防止颜色被修改
-        this.getSelectionHighlight().fillProperty().addListener((observableValue, paint, t1) -> {
-            if (t1 != this.getSelectionColor()) {
-                this.setSelectionColor(this.getSelectionColor());
+        path3.fillProperty().addListener((observableValue, paint, t1) -> {
+            Color color = this.selectionColor;
+            if (color != null && t1 != color) {
+                this.setSelectionColor(color);
             }
         });
     }
@@ -64,11 +76,17 @@ public class EditorSkin extends CodeAreaSkin {
     }
 
     /**
+     * 光标颜色
+     */
+    private Color caretColor;
+
+    /**
      * 设置光标颜色
      *
      * @param color 光标颜色
      */
     public void setCaretColor(Color color) {
+        this.caretColor = color;
         Path caretPath = this.getCaretPath();
         if (caretPath != null) {
             caretPath.setFill(color);
@@ -82,9 +100,17 @@ public class EditorSkin extends CodeAreaSkin {
      * @return 光标颜色
      */
     public Color getCaretColor() {
+        if (this.caretColor != null) {
+            return this.caretColor;
+        }
         Path caretPath = this.getCaretPath();
         return caretPath == null ? null : (Color) caretPath.getStroke();
     }
+
+    /**
+     * 光标行颜色
+     */
+    private Color caretLineColor;
 
     /**
      * 设置光标行颜色
@@ -92,6 +118,7 @@ public class EditorSkin extends CodeAreaSkin {
      * @param color 光标行颜色
      */
     public void setCaretLineColor(Color color) {
+        this.caretLineColor = color;
         Path caretPath = this.getCaretLineHighlight();
         if (caretPath != null) {
             caretPath.setFill(color);
@@ -105,9 +132,17 @@ public class EditorSkin extends CodeAreaSkin {
      * @return 光标行颜色
      */
     public Color getCaretLineColor() {
+        if (this.caretLineColor != null) {
+            return this.caretLineColor;
+        }
         Path caretPath = this.getCaretLineHighlight();
         return caretPath == null ? null : (Color) caretPath.getStroke();
     }
+
+    /**
+     * 选区颜色
+     */
+    private Color selectionColor;
 
     /**
      * 设置选区颜色
@@ -115,6 +150,7 @@ public class EditorSkin extends CodeAreaSkin {
      * @param color 选区颜色
      */
     public void setSelectionColor(Color color) {
+        this.selectionColor = color;
         Path caretPath = this.getSelectionHighlight();
         if (caretPath != null) {
             caretPath.setFill(color);
@@ -128,6 +164,9 @@ public class EditorSkin extends CodeAreaSkin {
      * @return 选区颜色
      */
     public Color getSelectionColor() {
+        if (this.selectionColor != null) {
+            return this.selectionColor;
+        }
         Path caretPath = this.getSelectionHighlight();
         return caretPath == null ? null : (Color) caretPath.getStroke();
     }

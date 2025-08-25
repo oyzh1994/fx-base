@@ -184,7 +184,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         });
         // 初始化样式
         this.applyTheme();
-        this.initTextStyle();
+        // this.initTextStyle();
     }
 
     /**
@@ -763,12 +763,6 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     @Override
     public void changeTheme(ThemeStyle style) {
         try {
-            // 设置光标行颜色
-            this.setCaretLineColor(this.defaultCaretLineColor());
-            // 设置选区颜色
-            this.setSelectionColor(this.defaultSelectionColor());
-            // 设置光标颜色
-            this.setCaretColor(ThemeManager.currentAccentColor());
             String path;
             if (style.isDarkMode()) {
                 if (style == Themes.DRACULA) {
@@ -801,6 +795,14 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
             // TODO: 修复主题色可能不生效问题
             NodeHelper.processCSS(this);
+            // 设置光标行颜色
+            this.setCaretLineColor(this.defaultCaretLineColor());
+            // 设置选区颜色
+            this.setSelectionColor(this.defaultSelectionColor());
+            // 设置光标颜色
+            this.setCaretColor(ThemeManager.currentAccentColor());
+            // 初始化文字样式
+            this.initTextStyle();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
