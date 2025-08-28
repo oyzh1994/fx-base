@@ -177,7 +177,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return this.bitValue().get(6);
     }
 
-    public RichTreeItem( RichTreeView treeView) {
+    public RichTreeItem(RichTreeView treeView) {
         super(treeView);
     }
 

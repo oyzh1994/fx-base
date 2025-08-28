@@ -25,14 +25,15 @@ public class CustomTitleBarTest1 extends Application {
 
     public static void main(String[] args) {
         System.setProperty("javafx.enablePreview", "true");
-        System.setProperty("javafx.suppressPreviewWarning", "true");
+        // System.setProperty("javafx.suppressPreviewWarning", "true");
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.PRIMER_DARK);
-        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+        // ThemeManager.apply(Themes.PRIMER_LIGHT);
+        // ThemeManager.apply(Themes.PRIMER_DARK);
+        // Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
         FXHeaderBar headerBar = new FXHeaderBar();
         Button button1 = new Button("test1");
         Button button2 = new Button("test2");
@@ -55,7 +56,7 @@ public class CustomTitleBarTest1 extends Application {
         hBox.addChild(button9);
         headerBar.setContent(hBox);
         headerBar.setTitle("测试标题");
-        //headerBar.setStyle("-fx-background-color: white;-fx-text-fill: red;-fx-fill: red");
+        headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
 
         System.out.println(headerBar.getStyle());
         Set<Node> nodes= headerBar.lookupAll("*");
@@ -65,6 +66,7 @@ public class CustomTitleBarTest1 extends Application {
         VBox root = new VBox();
         root.getChildren().add(headerBar);
         root.getChildren().add(new FXLabel("1111"));
+
         Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
         scene.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.EXTENDED);

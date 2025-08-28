@@ -51,6 +51,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- <dependency> -->
