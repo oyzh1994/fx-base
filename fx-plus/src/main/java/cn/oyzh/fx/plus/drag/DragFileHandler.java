@@ -103,7 +103,7 @@ public class DragFileHandler {
         scene.addEventFilter(DragEvent.DRAG_OVER, this::onDragOver);
         scene.addEventFilter(DragEvent.DRAG_EXITED, this::onDragExited);
         scene.addEventFilter(DragEvent.DRAG_DROPPED, this::onDragDropped);
-        PropertiesUtil.set(scene, "_dragFileHandler", this);
+        PropertiesUtil.set(scene, DRAG_FILE_HANDLER_KEY, this);
     }
 
     /**
@@ -115,6 +115,8 @@ public class DragFileHandler {
         scene.removeEventFilter(DragEvent.DRAG_OVER, this::dragOver);
         scene.removeEventFilter(DragEvent.DRAG_EXITED, this::dragExited);
         scene.removeEventFilter(DragEvent.DRAG_DROPPED, this::dragDropped);
-        PropertiesUtil.remove(scene, "_dragFileHandler", this);
+        PropertiesUtil.remove(scene, DRAG_FILE_HANDLER_KEY, this);
     }
+
+    public static final String DRAG_FILE_HANDLER_KEY="_dragFileHandler";
 }
