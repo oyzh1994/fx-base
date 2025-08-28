@@ -36,6 +36,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.DataFormat;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -304,7 +305,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             if (rawData instanceof CharSequence sequence) {
                 data = sequence.toString();
             } else if (rawData instanceof byte[] array) {
-                data = Arrays.toString(array);
+                data = new String(array);
             } else if (rawData != null) {
                 data = rawData.toString();
             }
@@ -325,6 +326,11 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         }
     }
 
+    /**
+     * 设置内容
+     *
+     * @param text 内容
+     */
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }
@@ -338,6 +344,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     public EditorFormatType showDetectData(Object rawData) {
         // 检测类型
         byte detectType = TextUtil.detectType(rawData);
+        // 处理类型
         EditorFormatType formatType;
         if (detectType == 1) {
             formatType = EditorFormatType.JSON;
@@ -929,6 +936,18 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      */
     public void wordWrap() {
         this.setWrapText(!this.isWrapText());
+    }
+
+    @Override
+    public void paste() {
+        super.paste();
+        this.applyTheme();
+    }
+
+    @Override
+    public void paste(DataFormat format) {
+        super.paste(format);
+        this.applyTheme();
     }
 
     @Override
