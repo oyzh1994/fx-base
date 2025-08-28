@@ -314,7 +314,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
                 // 初始化语法格式
                 this.initSyntaxes();
                 // 设置内容
-                this.setText(data);
+                this.text(data);
             } else {
                 this.clear();
             }
@@ -323,6 +323,10 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         } finally {
             this.ignoreChange = false;
         }
+    }
+
+    public void text(String text) {
+        FXUtil.runWait(() -> super.setText(text));
     }
 
     /**
