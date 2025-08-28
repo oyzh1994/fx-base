@@ -4,6 +4,7 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
@@ -79,7 +80,10 @@ public class StageMask extends Stage implements StageAdapter {
     public void close() {
         if (this.callback != null) {
             try {
+                // 执行回调
                 this.callback.run();
+                // 移除标志位
+                PropertiesUtil.remove(this,StageManager.MASK_SHOWING_KEY);
                 // 执行业务
                 FXUtil.runWait(() -> {
                     // 清除属性

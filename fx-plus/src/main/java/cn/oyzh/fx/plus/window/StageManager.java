@@ -331,6 +331,8 @@ public class StageManager {
         }
     }
 
+    public static final String MASK_SHOWING_KEY = "mask:showing";
+
     /**
      * 显示遮罩面板
      *
@@ -338,20 +340,28 @@ public class StageManager {
      * @param callback 遮罩关闭处理完成后的回调
      */
     public static void showMask(Window window, Runnable callback) {
-        // TODO: 关闭可能存在的mask面板
-        try {
-            List<Window> windows = new ArrayList<>(Window.getWindows());
-            for (Window w : windows) {
-                if (w instanceof StageMask mask && mask.isShowing()) {
-                    mask.close();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (window != null && window.isShowing()) {
+        // // TODO: 关闭可能存在的mask面板
+        // try {
+        //     List<Window> windows = new ArrayList<>(Window.getWindows());
+        //     for (Window w : windows) {
+        //         if (w instanceof StageMask mask && mask.isShowing()) {
+        //             mask.close();
+        //         }
+        //     }
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
+        // if (window != null && window.isShowing()) {
+        //     StageMask.showMask(window, callback);
+        // } else {
+        //     callback.run();
+        // }
+        // 判断是否处于mask状态
+        if (!PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
+            // 设置状态位
+            PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             StageMask.showMask(window, callback);
-        } else {
+        } else {// 直接执行
             callback.run();
         }
     }

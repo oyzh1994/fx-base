@@ -18,7 +18,7 @@ public enum EditorFormatType {
     YAML("YAML", "yaml,yml"),
     CSS("CSS", "css"),
     PROPERTIES("PROPERTIES", "properties"),
-    SHELLSCRIPT("SHELL SCRIPT", "sh"),
+    SHELLSCRIPT("SHELL", "sh"),
     BAT("BAT", "bat"),
     LOG("LOG", "log"),
     SQL("SQL", "sql"),
