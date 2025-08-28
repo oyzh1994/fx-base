@@ -360,7 +360,20 @@ public class StageManager {
         if (!PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
             // 设置状态位
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
-            StageMask.showMask(window, callback);
+            // 显示遮罩
+            StageMask.showMask(window, () -> {
+                try {
+                    if (callback != null) {
+                        callback.run();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JulLog.warn("showMask callback error:{}", ex);
+                } finally {
+                    // 移除标志位
+                    PropertiesUtil.remove(window, MASK_SHOWING_KEY);
+                }
+            });
         } else {// 直接执行
             callback.run();
         }

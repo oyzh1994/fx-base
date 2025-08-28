@@ -82,8 +82,6 @@ public class StageMask extends Stage implements StageAdapter {
             try {
                 // 执行回调
                 this.callback.run();
-                // 移除标志位
-                PropertiesUtil.remove(this,StageManager.MASK_SHOWING_KEY);
                 // 执行业务
                 FXUtil.runWait(() -> {
                     // 清除属性
