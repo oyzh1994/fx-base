@@ -17,11 +17,12 @@ import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -98,9 +99,27 @@ public class TerminalPane extends Editor implements Terminal {
     public void keyHandler(TerminalKeyHandler keyHandler) {
         this.keyHandler = keyHandler;
         if (keyHandler != null) {
+            KeyCombination keyCombination1 = OSUtil.isMacOS()
+                    ? new KeyCodeCombination(KeyCode.ADD, KeyCombination.META_DOWN)
+                    : new KeyCodeCombination(KeyCode.ADD, KeyCombination.CONTROL_DOWN);
+            KeyCombination keyCombination2 = OSUtil.isMacOS()
+                    ? new KeyCodeCombination(KeyCode.EQUALS, KeyCombination.META_DOWN)
+                    : new KeyCodeCombination(KeyCode.EQUALS, KeyCombination.CONTROL_DOWN);
+            KeyCombination keyCombination3 = OSUtil.isMacOS()
+                    ? new KeyCodeCombination(KeyCode.SUBTRACT, KeyCombination.META_DOWN)
+                    : new KeyCodeCombination(KeyCode.SUBTRACT, KeyCombination.CONTROL_DOWN);
+            KeyCombination keyCombination4 = OSUtil.isMacOS()
+                    ? new KeyCodeCombination(KeyCode.MINUS, KeyCombination.META_DOWN)
+                    : new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN);
+            List<KeyCombination> incrFontCombinations = List.of(keyCombination1, keyCombination2);
+            List<KeyCombination> decrFontCombinations = List.of(keyCombination3, keyCombination4);
             this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                 try {
-                    if (event.getCode() == KeyCode.ENTER) {
+                    if (KeyboardUtil.match(decrFontCombinations, event)) {
+                        this.fontSizeDecr();
+                    } else if (KeyboardUtil.match(incrFontCombinations, event)) {
+                        this.fontSizeIncr();
+                    } else if (event.getCode() == KeyCode.ENTER) {
                         if (!keyHandler.onEnterKeyPressed(this)) {
                             event.consume();
                         }
@@ -136,10 +155,10 @@ public class TerminalPane extends Editor implements Terminal {
                         if (!keyHandler.onCtrlAKeyPressed(this)) {
                             event.consume();
                         }
-                    } else if (OSUtil.isMacOS() && event.getCode() == KeyCode.A && event.isControlDown()) {
-                        if (!keyHandler.onHomeKeyPressed(this)) {
-                            event.consume();
-                        }
+                        // } else if (OSUtil.isMacOS() && event.getCode() == KeyCode.A && event.isControlDown()) {
+                        //     if (!keyHandler.onHomeKeyPressed(this)) {
+                        //         event.consume();
+                        //     }
                     } else if (event.getCode() == KeyCode.E && event.isControlDown()) {
                         if (!keyHandler.onCtrlEKeyPressed(this)) {
                             event.consume();
@@ -464,10 +483,17 @@ public class TerminalPane extends Editor implements Terminal {
         this.flushCaret();
     }
 
+    /**
+     * 字体
+     */
+    private Font font;
+
     @Override
     public void changeFont(Font font) {
-        Font font1 = Font.font("Monospaced", FontWeight.NORMAL, 11);
-        super.changeFont(font1);
+        this.font = font;
+        this.setFont(font);
+        // Font font1 = Font.font("Monospaced", FontWeight.NORMAL, 11);
+        // super.changeFont(font1);
     }
 
     @Override
@@ -500,5 +526,16 @@ public class TerminalPane extends Editor implements Terminal {
     @Override
     public List<? extends MenuItem> getMenuItems() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public void initNode() {
+        super.initNode();
+        // 监听字体，防止被样式修改
+        this.fontProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.font != null && newValue != this.font) {
+                this.setFont(this.font);
+            }
+        });
     }
 }

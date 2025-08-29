@@ -42,6 +42,7 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
@@ -1067,5 +1068,17 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             // this.replaceText(this.getLength() + 1, this.getLength() + 1, text);
             super.appendText(text);
         });
+    }
+
+    @Override
+    public double getFontSize() {
+        return this.getFont().getSize();
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        Font font = this.getFont();
+        Font font1 = FontUtil.newFontBySize(font, fontSize);
+        this.changeFont(font1);
     }
 }

@@ -235,6 +235,14 @@ public class EditorTest extends Application {
             editor.setEditable(!editor.isEditable());
         });
         hBox4.addChild(btn_44);
+        Button btn_45 = new Button("字体加大");
+        btn_45.setOnAction(event -> {
+            // Font font = editor.getFont();
+            // Font font1 = FontUtil.newFontBySize(font, font.getSize() + 1);
+            // editor.setFont(font1);
+            editor.fontSizeIncr();
+        });
+        hBox4.addChild(btn_45);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
