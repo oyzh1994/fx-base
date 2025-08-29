@@ -55,7 +55,6 @@ import tm4javafx.richtext.TextFlowModel;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -128,6 +127,9 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     private void initEditor() {
         // 默认自动换行
         this.setWrapText(true);
+        // 默认为内容宽高，避免布局问题
+        // this.setUseContentWidth(true);
+        // this.setUseContentHeight(true);
         // 默认显示行号
         this.setLineNumbersEnabled(true);
         // 默认高亮当前行
@@ -148,7 +150,6 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         this.richTextAreaModel.setStyleProvider(this.styleProvider);
         // 语法装饰
         this.setSyntaxDecorator(this.syntaxDecorator);
-
         // 格式变化事件
         this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
             this.syntaxDecorator.setFormatType(t1);
@@ -213,6 +214,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
                 d.refresh(this.getModel());
             }
+            // this.setText(this.getText());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -222,6 +224,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      * 初始化文本样式
      */
     private void initTextStyle() {
+        // this.applyTheme();
         this.initSyntaxes();
         this.setText(this.getText());
     }
@@ -485,6 +488,10 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             length += len + 1;
             if (startIndex == -1 && length >= start) {
                 startIndex = i;
+                if (end == start) {
+                    endIndex = i;
+                    break;
+                }
             }
             if (length >= end) {
                 endIndex = i;
@@ -553,7 +560,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             if (endLine && !content.endsWith(System.lineSeparator())) {
                 content = content + "\n";
             }
-            this.appendText(content);
+            this.appendContent(content);
         }
     }
 
@@ -602,7 +609,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      */
     public void selectRange(int start, int end) {
         EditorTextPos pos = this.getPosByIndex(start, end);
-        super.select(pos.getStart(), pos.getEnd());
+        FXUtil.runWait(() -> super.select(pos.getStart(), pos.getEnd()));
     }
 
     /**
@@ -1006,5 +1013,14 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         items.add(formattingDocument);
 
         return items;
+    }
+
+    /**
+     * 追加内容
+     *
+     * @param text 内容
+     */
+    public void appendContent(String text) {
+        FXUtil.runWait(() -> super.appendText(text));
     }
 }

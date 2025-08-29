@@ -15,6 +15,7 @@ import cn.oyzh.fx.terminal.histroy.TerminalHistoryHandler;
 import cn.oyzh.fx.terminal.key.TerminalKeyHandler;
 import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -23,7 +24,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -281,7 +284,7 @@ public class TerminalPane extends Editor implements Terminal {
     @Override
     public void outputByAppend(String output) {
         if (output != null) {
-            this.appendText(output);
+            this.appendContent(output);
         }
     }
 
@@ -328,9 +331,9 @@ public class TerminalPane extends Editor implements Terminal {
         String text = this.getText();
         String prompt = this.prompt();
         if (StringUtil.equals(text, "\n")) {
-            this.setText(prompt);
+            this.text(prompt);
         } else if (!StringUtil.endWith(text, prompt)) {
-            this.appendText(prompt);
+            this.appendContent(prompt);
         }
         this.flushNOP();
     }
@@ -492,5 +495,10 @@ public class TerminalPane extends Editor implements Terminal {
     @Override
     public int getNOP() {
         return this.NOP.get();
+    }
+
+    @Override
+    public List<? extends MenuItem> getMenuItems() {
+        return Collections.emptyList();
     }
 }
