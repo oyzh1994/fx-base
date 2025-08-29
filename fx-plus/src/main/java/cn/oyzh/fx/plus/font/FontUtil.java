@@ -119,6 +119,16 @@ public class FontUtil {
     /**
      * 获取字体重量
      *
+     * @param font 字体
+     * @return 字体重量
+     */
+    public static FontWeight getWeight(javafx.scene.text.Font font) {
+        return getWeight(font.getStyle());
+    }
+
+    /**
+     * 获取字体重量
+     *
      * @param style 字体样式
      * @return 字体重量
      */

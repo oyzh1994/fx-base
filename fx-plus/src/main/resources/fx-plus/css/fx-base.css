@@ -1,8 +1,8 @@
-/* 根节点默认字体，覆盖atlantafx的默认字体 */
-.root {
-    -fx-font-size: 11px;
-}
-/* 根节点默认字体，覆盖atlantafx的默认字体 */
+/*!* 根节点默认字体，覆盖atlantafx的默认字体 *!*/
+/*.root {*/
+/*    -fx-font-size: 11px;*/
+/*}*/
+/*!* 根节点默认字体，覆盖atlantafx的默认字体 *!*/
 
 /* tab，修复atlantafx的样式异常问题 */
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {

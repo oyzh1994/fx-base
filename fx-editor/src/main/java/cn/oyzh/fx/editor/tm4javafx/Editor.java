@@ -43,6 +43,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
@@ -877,6 +878,14 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         this.setPrompts(this.getPrompts());
         // 尝试初始化高亮
         this.setHighlightText(this.getHighlightText());
+        //this.fontProperty().addListener((observable, oldValue, newValue) -> {
+        //    //Font font = this.getEditorFont();
+        //    //System.out.println(newValue + "====" + font);
+        //    //if (font != null && !FontUtil.isSameFont(font, newValue)) {
+        //    //    this.applyEditorFont();
+        //    //}
+        //    System.out.println(newValue + "====");
+        //});
     }
 
     /**
@@ -1072,13 +1081,75 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
 
     @Override
     public double getFontSize() {
-        return this.getFont().getSize();
+        //Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
+        return super.getFont().getSize();
     }
 
     @Override
     public void setFontSize(double fontSize) {
-        Font font = this.getFont();
-        Font font1 = FontUtil.newFontBySize(font, fontSize);
-        this.changeFont(font1);
+        //Font editorFont = this.getEditorFont();
+        //if (editorFont != null) {
+        //    editorFont = FontUtil.newFontBySize(editorFont, fontSize);
+        //    this.setEditorFont(editorFont);
+        //} else {
+        Font font = FontUtil.newFontBySize(super.getFont(), fontSize);
+        this.setFont(font);
+        //}
+    }
+
+    @Override
+    public String getFontFamily() {
+        //Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
+        return super.getFont().getFamily();
+    }
+
+    @Override
+    public void setFontFamily(String fontFamily) {
+        //Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
+        Font font = FontUtil.newFontByFamily(super.getFont(), fontFamily);
+        this.setFont(font);
+    }
+
+    @Override
+    public FontWeight getFontWeight() {
+        //Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
+        return FontUtil.getWeight(super.getFont());
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        //Font editorFont = this.getEditorFont();
+        //if (editorFont != null) {
+        //    editorFont = FontUtil.newFontByWeight(editorFont, fontWeight);
+        //    this.setEditorFont(editorFont);
+        //} else {
+        //    Font font = super.getFont();
+        Font font = FontUtil.newFontByWeight(super.getFont(), fontWeight);
+        this.setFont(font);
+        //}
+    }
+
+    //protected Font getEditorFont() {
+    //    return null;
+    //}
+    //
+    //protected void setEditorFont(Font editorFont) {
+    //    this.applyEditorFont();
+    //}
+    //
+    //protected void applyEditorFont() {
+    //    Font font = this.getEditorFont();
+    //    if (font != null) {
+    //        this.setFont(font);
+    //    }
+    //}
+
+    @Override
+    public void changeFont(Font font) {
+        // 我也不知道为啥这样写才能生效
+        FXUtil.runPulse(() -> {
+            this.setFont(font);
+            this.setFont(font);
+        });
     }
 }

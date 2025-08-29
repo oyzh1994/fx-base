@@ -22,7 +22,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -483,18 +482,16 @@ public class TerminalPane extends Editor implements Terminal {
         this.flushCaret();
     }
 
-    /**
-     * 字体
-     */
-    private Font font;
-
-    @Override
-    public void changeFont(Font font) {
-        this.font = font;
-        this.setFont(font);
-        // Font font1 = Font.font("Monospaced", FontWeight.NORMAL, 11);
-        // super.changeFont(font1);
-    }
+    ///**
+    // * 字体
+    // */
+    //private Font font;
+    //
+    //@Override
+    //public void changeFont(Font font) {
+    //    this.font = font;
+    //    this.setFont(font);
+    //}
 
     @Override
     public Set<String> getPrompts() {
@@ -528,14 +525,45 @@ public class TerminalPane extends Editor implements Terminal {
         return Collections.emptyList();
     }
 
-    @Override
-    public void initNode() {
-        super.initNode();
-        // 监听字体，防止被样式修改
-        this.fontProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.font != null && newValue != this.font) {
-                this.setFont(this.font);
-            }
-        });
-    }
+    //@Override
+    //public void initNode() {
+    //    super.initNode();
+    //    // 监听字体，防止被样式修改
+    //    this.fontProperty().addListener((observable, oldValue, newValue) -> {
+    //        System.out.println(newValue);
+    //        if (this.font != null && !FontUtil.isSameFont(this.font, newValue)) {
+    //            this.setFont(this.font);
+    //        }
+    //    });
+    //}
+
+    //@Override
+    //public void setFontSize(double fontSize) {
+    //    this.changeFont(FontUtil.newFontBySize(this.font, fontSize));
+    //}
+    //
+    //@Override
+    //public double getFontSize() {
+    //    return this.font.getSize();
+    //}
+    //
+    //@Override
+    //public void setFontFamily(String fontFamily) {
+    //    this.changeFont(FontUtil.newFontByFamily(this.font, fontFamily));
+    //}
+    //
+    //@Override
+    //public String getFontFamily() {
+    //    return this.font.getFamily();
+    //}
+    //
+    //@Override
+    //public void setFontWeight(FontWeight fontWeight) {
+    //    this.changeFont(FontUtil.newFontByWeight(this.font, fontWeight));
+    //}
+    //
+    //@Override
+    //public FontWeight getFontWeight() {
+    //    return FontUtil.getWeight(this.font);
+    //}
 }
