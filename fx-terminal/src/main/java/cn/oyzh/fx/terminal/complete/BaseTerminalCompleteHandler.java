@@ -37,6 +37,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
                 TerminalExecuteResult result = commandHandler.execute(null, terminal);
                 terminal.outputLine((String) result.getResult());
                 terminal.outputPrompt();
+                terminal.moveCaretEnd();
             } else {
                 List<TerminalCommandHandler<?, ?>> handlers = this.findCommandHandlers(line);
                 if (handlers.isEmpty()) {
