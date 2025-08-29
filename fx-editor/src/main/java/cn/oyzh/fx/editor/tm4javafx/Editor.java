@@ -472,6 +472,16 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     }
 
     /**
+     * 获取段落长度
+     *
+     * @param index 段落索引
+     * @return 结果
+     */
+    public int getParagraphLength(int index) {
+        return super.getModel().getParagraphLength(index);
+    }
+
+    /**
      * 获取位置
      *
      * @param start 开始位置
@@ -479,28 +489,60 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      * @return 位置
      */
     protected EditorTextPos getPosByIndex(int start, int end) {
-        int length = 0;
-        int endIndex = -1;
-        int startIndex = -1;
-        int pCount = super.getParagraphCount();
-        for (int i = 0; i < pCount; i++) {
-            int len = super.getModel().getParagraphLength(i);
-            length += len + 1;
-            if (startIndex == -1 && length >= start) {
-                startIndex = i;
-                if (end == start) {
+        TextPos endPos;
+        TextPos startPos;
+        if (end != start) {
+            int length = 0;
+            int lastLen = 0;
+            int endIndex = -1;
+            int startIndex = -1;
+            int endOffset = -1;
+            int startOffset = -1;
+            int pCount = super.getParagraphCount();
+            for (int i = 0; i < pCount; i++) {
+                int len = this.getParagraphLength(i);
+                length += len + 1;
+                if (startIndex == -1 && length >= start) {
+                    startIndex = i;
+                    startOffset = start - lastLen;
+                }
+                if (length >= end) {
                     endIndex = i;
+                    endOffset = end - lastLen;
                     break;
                 }
+                lastLen = length;
             }
-            if (length >= end) {
-                endIndex = i;
-                break;
-            }
+            endPos = TextPos.ofLeading(endIndex, endOffset);
+            startPos = TextPos.ofLeading(startIndex, startOffset);
+        } else {
+            endPos = startPos = this.getPosByIndex(start);
         }
-        TextPos endPos = TextPos.ofLeading(endIndex, end);
-        TextPos startPos = TextPos.ofLeading(startIndex, start);
         return new EditorTextPos(startPos, endPos);
+    }
+
+    /**
+     * 获取位置
+     *
+     * @param index 位置
+     * @return 位置
+     */
+    protected TextPos getPosByIndex(int index) {
+        int length = 0;
+        int lastLen = 0;
+        int startIndex = -1;
+        int startOffset = -1;
+        int pCount = super.getParagraphCount();
+        for (int i = 0; i < pCount; i++) {
+            int len = this.getParagraphLength(i);
+            length += len + 1;
+            if (startIndex == -1 && length >= index) {
+                startIndex = i;
+                startOffset = index - lastLen;
+            }
+            lastLen = length;
+        }
+        return TextPos.ofLeading(startIndex, startOffset);
     }
 
     /**
@@ -512,7 +554,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     protected int getOffsetByPos(TextPos pos) {
         int length = 0;
         for (int i = 0; i < pos.index(); i++) {
-            int len = super.getModel().getParagraphLength(i);
+            int len = this.getParagraphLength(i);
             length += len + 1;
         }
         return length + pos.offset();
@@ -530,8 +572,8 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             try {
                 EditorTextPos pos = this.getPosByIndex(start, end);
                 super.replaceText(pos.getStart(), pos.getEnd(), content, true);
-            } catch (Exception ignored) {
-
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     }
@@ -651,8 +693,8 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     public void deleteText(int start, int end) {
         try {
             this.replaceText(start, end, "");
-        } catch (Exception ignored) {
-
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -1021,6 +1063,9 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      * @param text 内容
      */
     public void appendContent(String text) {
-        FXUtil.runWait(() -> super.appendText(text));
+        FXUtil.runWait(() -> {
+            // this.replaceText(this.getLength() + 1, this.getLength() + 1, text);
+            super.appendText(text);
+        });
     }
 }

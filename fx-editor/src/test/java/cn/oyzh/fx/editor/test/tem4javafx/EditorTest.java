@@ -144,7 +144,7 @@ public class EditorTest extends Application {
         // 替换
         Button btn_31 = new Button("替换");
         btn_31.setOnAction(event -> {
-            editor.replaceText(0, 4, "test");
+            editor.replaceText(5, 10, "test");
         });
         hBox3.addChild(btn_31);
         // 追加
