@@ -1179,7 +1179,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         }
         // 我也不知道为啥这样写才能生效
         FXUtil.runPulse(() -> {
-            this.setFont(font1);
+            //this.setFont(font1);
             this.setFont(font1);
         });
     }
