@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.ReflectUtil;
@@ -541,7 +540,8 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
      * @param title 标题
      */
     default void title(String title) {
-        if (title != null) {
+        Stage stage = this.stage();
+        if (title != null && stage != null) {
             if (this.isExtendedHeader()) {
                 FXHeaderBar headerBar = this.getHeaderBar();
                 if (headerBar != null) {
@@ -550,7 +550,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
                     JulLog.warn("headerBar is null!");
                 }
             } else {
-                FXUtil.runWait(() -> this.stage().setTitle(title));
+                FXUtil.runWait(() -> stage.setTitle(title));
             }
         }
     }
@@ -576,29 +576,44 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
      * @param append 追加内容
      */
     default void appendTitle(String append) {
-        this.appendTitle(append, -1);
-    }
-
-    /**
-     * 追加标题
-     *
-     * @param append   追加内容
-     * @param liveTime 追加内容存活时间
-     */
-    default void appendTitle(String append, int liveTime) {
         if (append != null && !append.isEmpty()) {
             String title = this.getProp("_title");
             if (title == null) {
                 title = this.title();
                 this.setProp("_title", title);
             }
+            if (title == null) {
+                title = "";
+            }
             String newTitle = title + append;
             this.title(newTitle);
-            if (liveTime > 0) {
-                ExecutorUtil.start(this::restoreTitle, liveTime);
-            }
         }
+        //this.appendTitle(append, -1);
     }
+
+    ///**
+    // * 追加标题
+    // *
+    // * @param append   追加内容
+    // * @param liveTime 追加内容存活时间
+    // */
+    //default void appendTitle(String append, int liveTime) {
+    //    if (append != null && !append.isEmpty()) {
+    //        String title = this.getProp("_title");
+    //        if (title == null) {
+    //            title = this.title();
+    //            this.setProp("_title", title);
+    //        }
+    //        if (title == null) {
+    //            title = "";
+    //        }
+    //        String newTitle = title + append;
+    //        this.title(newTitle);
+    //        if (liveTime > 0) {
+    //            ExecutorUtil.start(this::restoreTitle, liveTime);
+    //        }
+    //    }
+    //}
 
     /**
      * 恢复标题

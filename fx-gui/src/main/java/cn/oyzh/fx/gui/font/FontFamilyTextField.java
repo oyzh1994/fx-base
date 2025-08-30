@@ -45,7 +45,7 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
             this.skin().clearTexting();
             return;
         }
-        List<String> fonts = Font.getFontNames();
+        List<String> fonts = Font.getFamilies();
         // 移除选区
         this.skin().clearSelection();
         // 隐藏弹窗
@@ -71,6 +71,6 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
     @Override
     public void initNode() {
         super.initNode();
-        this.setItemList(Font.getFontNames());
+        this.setItemList(Font.getFamilies());
     }
 }
