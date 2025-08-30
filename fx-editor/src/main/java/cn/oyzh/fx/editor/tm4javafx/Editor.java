@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor.tm4javafx;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.ResourceUtil;
@@ -879,13 +880,13 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         this.setPrompts(this.getPrompts());
         // 尝试初始化高亮
         this.setHighlightText(this.getHighlightText());
+        // 对预设了编辑器字体的情况下，组织样式字体修改编辑器字体
         this.fontProperty().addListener((observable, oldValue, newValue) -> {
             Font editorFont = this.getEditorFont();
-            System.out.println(newValue + "====" + editorFont);
+            JulLog.info("font:{} editorFont:{}", newValue, editorFont);
             if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
                 this.changeFont(editorFont);
             }
-            //System.out.println(newValue + "====");
         });
     }
 
@@ -1074,17 +1075,13 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      * @param text 内容
      */
     public void appendContent(String text) {
-        FXUtil.runWait(() -> {
-            // this.replaceText(this.getLength() + 1, this.getLength() + 1, text);
-            super.appendText(text);
-        });
+        FXUtil.runWait(() -> super.appendText(text));
     }
 
     @Override
     public double getFontSize() {
         Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
         return font.getSize();
-        //return super.getFont().getSize();
     }
 
     @Override
@@ -1103,13 +1100,11 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     public String getFontFamily() {
         Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
         return font.getFamily();
-        //return super.getFont().getFamily();
     }
 
     @Override
     public void setFontFamily(String fontFamily) {
         Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
-        //Font font = FontUtil.newFontByFamily(super.getFont(), fontFamily);
         this.setFont(font);
     }
 
@@ -1117,7 +1112,6 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
     public FontWeight getFontWeight() {
         Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
         return FontUtil.getWeight(font);
-        //return FontUtil.getWeight(super.getFont());
     }
 
     @Override
@@ -1127,49 +1121,37 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             editorFont = FontUtil.newFontByWeight(editorFont, fontWeight);
             this.setEditorFont(editorFont);
         } else {
-            //Font font = super.getFont();
             Font font = FontUtil.newFontByWeight(super.getFont(), fontWeight);
             this.setFont(font);
         }
     }
 
     /**
+     * 编辑器字体
+     */
+    private Font editorFont;
+
+    /**
      * 获取编辑器字体(由于会受主题样式字体影响，故用这个参数去覆盖字体参数)
+     *
      * @return 编辑器字体
      */
     protected Font getEditorFont() {
-        return null;
+        return this.editorFont;
     }
 
     /**
      * 设置编辑器字体
+     *
      * @param editorFont 编辑器字体
      */
     protected void setEditorFont(Font editorFont) {
+        this.editorFont = editorFont;
         this.changeFont(editorFont);
     }
 
-    //protected void applyEditorFont() {
-    //    Font font = this.getEditorFont();
-    //    if (font != null) {
-    //        //this.setFont(font);
-    //        this.setFont(font);
-    //        this.setFont(font);
-    //    }
-    //}
-
     @Override
     public void changeFont(Font font) {
-        //// 我也不知道为啥这样写才能生效
-        //FXUtil.runPulse(() -> {
-        //    this.setFont(font);
-        //    this.setFont(font);
-        //}, 5);
-        //FXUtil.runPulse(() -> {
-        //    this.setFont(font);
-        //    this.setFont(font);
-        //}, 10);
-        //System.out.println("---------------");
         Font font1;
         Font editorFont = this.getEditorFont();
         if (editorFont != null) {
@@ -1178,9 +1160,6 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             font1 = font;
         }
         // 我也不知道为啥这样写才能生效
-        FXUtil.runPulse(() -> {
-            //this.setFont(font1);
-            this.setFont(font1);
-        });
+        FXUtil.runPulse(() -> this.setFont(font1));
     }
 }
