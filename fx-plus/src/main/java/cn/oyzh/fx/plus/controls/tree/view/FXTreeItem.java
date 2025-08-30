@@ -121,7 +121,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
                         task.run();
                     }
                 } finally {
-                    TaskManager.start(glyph::stopWaiting);
+                    TaskManager.startSync(glyph::stopWaiting);
                 }
             }, delay);
         }

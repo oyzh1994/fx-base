@@ -105,10 +105,10 @@ public interface ThemeStyle {
      */
     String getCompressedUserAgentStylesheet();
 
-    /**
-     * 重应用css尾缀
-     */
-    String REAPPLY_CSS_SUFFIX = ":reapply:css";
+    ///**
+    // * 重应用css尾缀
+    // */
+    //String REAPPLY_CSS_SUFFIX = ":reapply:css";
 
     /**
      * 处理样式
@@ -117,7 +117,7 @@ public interface ThemeStyle {
      */
     default void handleStyle(Parent node) {
         if (node != null) {
-            TaskManager.startDelay(this.hashCode() + REAPPLY_CSS_SUFFIX, () -> FXUtil.runLater(() -> {
+            TaskManager.startDelay(() -> FXUtil.runLater(() -> {
                 try {
                     // 更新fx-base样式文件
                     node.getStylesheets().remove(FXStyle.FX_BASE);
@@ -157,7 +157,7 @@ public interface ThemeStyle {
      */
     default void handleStyle(Node node) {
         if (node != null) {
-            TaskManager.startDelay(this.hashCode() + REAPPLY_CSS_SUFFIX, () -> FXUtil.runLater(() -> {
+            TaskManager.startDelay(() -> FXUtil.runLater(() -> {
                 try {
                     ReflectUtil.invoke(node, "reapplyCss");
                 } catch (Exception ex) {

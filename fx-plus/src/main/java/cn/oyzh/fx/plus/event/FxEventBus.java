@@ -27,11 +27,11 @@ public class FxEventBus extends EventBus {
             } else if (delay && fxThread) {// 延迟、fx线程
                 TaskManager.startDelay(() -> FXUtil.runWait(func), delayMillis);
             } else if (async && fxThread) {// 异步、fx线程
-                TaskManager.start(() -> FXUtil.runWait(func));
+                TaskManager.startSync(() -> FXUtil.runWait(func));
             } else if (delay) {// 延迟
                 TaskManager.startDelay(func, delayMillis);
             } else if (async) {// 异步
-                TaskManager.start(func);
+                TaskManager.startSync(func);
             } else if (fxThread) {// fx线程
                 FXUtil.runWait(func);
             } else {// 正常执行

@@ -1,18 +1,22 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+
+import java.util.concurrent.Future;
 
 /**
  * @author oyzh
@@ -29,6 +33,11 @@ public class StageMask extends Stage implements StageAdapter {
      * 回调
      */
     private Runnable callback;
+
+    /**
+     * 异步回调
+     */
+    private final Future<?> future;
 
     public StageMask(Window target, Runnable callback) {
         this.target = target;
@@ -72,32 +81,48 @@ public class StageMask extends Stage implements StageAdapter {
         scene.setFill(Color.TRANSPARENT);
         this.setScene(scene);
 
+        // 取消操作
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                this.cancel();
+            }
+        });
+
         // 执行业务
-        TaskManager.startDelay(this::close, 50);
+        this.future = TaskManager.startAsync(this::doCallback);
     }
 
-    @Override
-    public void close() {
-        if (this.callback != null) {
-            try {
-                // 执行回调
-                this.callback.run();
-                // 执行业务
-                FXUtil.runWait(() -> {
-                    // 清除属性
-                    this.setScene(null);
-                    // 关闭当前窗口
-                    super.close();
-                    // 聚焦原窗口
-                    if (this.target != null) {
-                        this.target.requestFocus();
-                    }
-                });
-            } finally {
-                this.target = null;
-                this.callback = null;
-            }
+
+    /**
+     * 取消
+     */
+    public void cancel() {
+        if (this.future != null) {
+            ExecutorUtil.cancel(this.future);
         }
+    }
+
+    /**
+     * 执行回调
+     */
+    protected void doCallback() {
+        // 执行回调
+        if (this.callback != null) {
+            this.callback.run();
+        }
+        // 执行业务
+        FXUtil.runWait(() -> {
+            // 清除属性
+            this.setScene(null);
+            // 关闭当前窗口
+            super.hide();
+            // 聚焦原窗口
+            if (this.target != null) {
+                this.target.requestFocus();
+            }
+        });
+        this.target = null;
+        this.callback = null;
     }
 
     @Override

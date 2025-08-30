@@ -6,7 +6,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.ColorScheme;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 
@@ -149,7 +148,7 @@ public class SystemTheme implements Theme, ThemeStyle {
         if (JulLog.isInfoEnabled()) {
             JulLog.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
         }
-        TaskManager.startDelay("changeTheme", () -> FXUtil.runLater(() -> {
+        TaskManager.startDelay(() -> FXUtil.runLater(() -> {
             this.updateThemeCss();
             ThemeManager.apply(this);
         }), 1000);
