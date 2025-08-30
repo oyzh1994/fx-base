@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -14,7 +13,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.HorizontalDirection;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.input.MouseEvent;
 
 /**
  * 切换开关组件
@@ -26,11 +24,12 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
 
     {
         NodeManager.init(this);
-        this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            if (MouseUtil.isPrimaryButton(event) && MouseUtil.isSingleClick(event)) {
-                this.setSelected(!this.isSelected());
-            }
-        });
+        //this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        //    if (MouseUtil.isPrimaryButton(event) && MouseUtil.isSingleClick(event)) {
+        //        this.setSelected(!this.isSelected());
+        //        event.consume();
+        //    }
+        //});
     }
 
     /**
