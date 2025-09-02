@@ -536,8 +536,16 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collectFile(), new CollectSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem collectKey(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collectKey(), new CollectSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem unCollect(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCollect(), new UnCollectSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem unCollectKey(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCollectKey(), new UnCollectSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem addKey(String iconSize, Runnable action) {
