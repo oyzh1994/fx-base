@@ -41,6 +41,8 @@ import cn.oyzh.fx.gui.svg.glyph.RepeatSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ResourceSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RestartSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RunSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SortAscSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SortDescSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.StopSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.TerminalSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.TimeSVGGlyph;
@@ -256,6 +258,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.keyFilter(), new FilterSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem filterKey(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.filterKey(), new FilterSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem exportNode(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportNode(), new ExportSVGGlyph(iconSize), action);
     }
@@ -270,6 +276,14 @@ public class MenuItemHelper {
 
     public static FXMenuItem exportData(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportData(), new ExportSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem sortAsc(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.sortAsc(), new SortAscSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem sortDesc(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.sortDesc(), new SortDescSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem dumpData(String iconSize, Runnable action) {
