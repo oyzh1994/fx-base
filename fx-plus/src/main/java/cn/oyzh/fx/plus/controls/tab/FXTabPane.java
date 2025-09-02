@@ -333,7 +333,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     @Override
     public void initNode() {
         FlexAdapter.super.initNode();
-        this.setTabRealHeight(20);
+        this.setTabRealHeight(24);
     }
 
     public void setTabRealHeight(double tabHeight) {
