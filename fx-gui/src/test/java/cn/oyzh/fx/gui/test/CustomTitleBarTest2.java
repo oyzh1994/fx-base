@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HeaderBar;
+import javafx.scene.layout.HeaderDragType;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -61,6 +63,7 @@ public class CustomTitleBarTest2 extends Application {
         // hBox.addChild(button8);
         // hBox.addChild(button9);
         headerBar.setContent(hBox);
+        HeaderBar.setDragType(headerBar, HeaderDragType.DRAGGABLE);
         // headerBar.setTitle("测试标题");
         headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
 
