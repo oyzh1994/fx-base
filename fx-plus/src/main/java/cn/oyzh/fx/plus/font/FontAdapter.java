@@ -2,7 +2,8 @@ package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
-import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.util.StyleUtil;
+import javafx.css.Styleable;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Tab;
@@ -12,6 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import javax.swing.text.Style;
 import java.util.List;
 
 /**
@@ -50,16 +52,12 @@ public interface FontAdapter extends PropAdapter {
                     adapter.setFont(font);
                 }
             }
-        } else if (this instanceof Tab node) {
-            if (node.getContent() instanceof FontAdapter adapter) {
-                adapter.setFont(font);
-            }
         } else if (this instanceof TextInputControl node) {
             Font font1 = node.getFont();
             if (!FontUtil.isSameFont(font, font1)) {
                 node.setFont(font);
             }
-        } else if (this instanceof Node) {
+        } else if (this instanceof Styleable) {
             this.setFontSize(font.getSize());
             this.setFontFamily(font.getFamily());
             this.setFontWeight(FontUtil.getWeight(font.getStyle()));
@@ -81,12 +79,7 @@ public interface FontAdapter extends PropAdapter {
         if (this instanceof TextInputControl node) {
             return node.getFont();
         }
-        if (this instanceof Tab node) {
-            if (node.getContent() instanceof FontAdapter adapter) {
-                return adapter.getFont();
-            }
-        }
-        if (this instanceof Node) {
+        if (this instanceof Styleable) {
             return Font.font(this.getFontFamily(), this.getFontWeight(), this.getFontSize());
         }
         return Font.getDefault();
@@ -108,14 +101,10 @@ public interface FontAdapter extends PropAdapter {
                     adapter.setFontSize(fontSize);
                 }
             }
-        } else if (this instanceof Tab node) {
-            if (node.getContent() instanceof FontAdapter adapter) {
-                adapter.setFontSize(fontSize);
-            }
         } else if (this instanceof TextInputControl node) {
             this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
-        } else if (this instanceof Node node) {
-            NodeUtil.replaceStyle(node, "-fx-font-size", fontSize);
+        } else if (this instanceof Styleable node) {
+            StyleUtil.replaceStyle(node, "-fx-font-size", fontSize);
         }
     }
 
@@ -134,11 +123,8 @@ public interface FontAdapter extends PropAdapter {
         if (this instanceof TextInputControl) {
             return this.getFont().getSize();
         }
-        if (this instanceof Tab) {
-            return this.getFont().getSize();
-        }
-        if (this instanceof Node node) {
-            String size = NodeUtil.getStyle(node, "-fx-font-size");
+        if (this instanceof Styleable node) {
+            String size = StyleUtil.getStyle(node, "-fx-font-size");
             if (StringUtil.isNotBlank(size)) {
                 return Double.parseDouble(size);
             }
@@ -168,12 +154,8 @@ public interface FontAdapter extends PropAdapter {
                     adapter.setFontFamily(fontFamily);
                 }
             }
-        } else if (this instanceof Tab node) {
-            if (node.getContent() instanceof FontAdapter adapter) {
-                this.setFont(FontUtil.newFontByFamily(adapter.getFont(), fontFamily));
-            }
-        } else if (this instanceof Node node) {
-            NodeUtil.replaceStyle(node, "-fx-font-family", fontFamily);
+        } else if (this instanceof Styleable node) {
+            StyleUtil.replaceStyle(node, "-fx-font-family", fontFamily);
         }
     }
 
@@ -192,13 +174,8 @@ public interface FontAdapter extends PropAdapter {
         if (this instanceof TextInputControl) {
             return this.getFont().getFamily();
         }
-        if (this instanceof Tab tab) {
-            if (tab.getContent() instanceof FontAdapter adapter) {
-                return adapter.getFontFamily();
-            }
-        }
-        if (this instanceof Node node) {
-            String family = NodeUtil.getStyle(node, "-fx-font-family");
+        if (this instanceof Styleable node) {
+            String family = StyleUtil.getStyle(node, "-fx-font-family");
             if (family != null) {
                 return family;
             }
@@ -237,12 +214,8 @@ public interface FontAdapter extends PropAdapter {
                     adapter.setFontWeight(fontWeight);
                 }
             }
-        } else if (this instanceof Tab tab) {
-            if (tab.getContent() instanceof FontAdapter adapter) {
-                this.setFont(FontUtil.newFontByWeight(adapter.getFont(), fontWeight));
-            }
-        } else if (this instanceof Node node) {
-            NodeUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
+        } else if (this instanceof Styleable node) {
+            StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
         }
     }
 
@@ -261,13 +234,8 @@ public interface FontAdapter extends PropAdapter {
         if (this instanceof TextInputControl) {
             return FontUtil.getWeight(this.getFont().getStyle());
         }
-        if (this instanceof Tab tab) {
-            if (tab.getContent() instanceof FontAdapter adapter) {
-                return adapter.getFontWeight();
-            }
-        }
-        if (this instanceof Node node) {
-            String weight = NodeUtil.getStyle(node, "-fx-font-weight");
+        if (this instanceof Styleable node) {
+            String weight = StyleUtil.getStyle(node, "-fx-font-weight");
             if (weight != null) {
                 return FontUtil.getWeight(weight);
             }

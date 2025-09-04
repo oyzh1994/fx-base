@@ -23,7 +23,7 @@ public class PopupController extends Controller implements PopupListener {
      *
      * @param window 窗口
      */
-    protected void setWindow( PopupAdapter window) {
+    protected void setWindow(PopupAdapter window) {
         this.window = window;
     }
 

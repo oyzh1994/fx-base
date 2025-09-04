@@ -1,12 +1,13 @@
 package cn.oyzh.fx.plus.node;
 
-import atlantafx.base.theme.Styles;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.StyleUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
+import javafx.css.Styleable;
 import javafx.event.EventTarget;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
@@ -97,40 +98,40 @@ public class NodeUtil {
 //         }
 //     }
 
-    /**
-     * 获取样式值
-     *
-     * @param node 节点
-     * @param prop 属性
-     * @return 样式值
-     */
-    public static String getStyle(Node node, String prop) {
-        String currentStyle = node.getStyle();
-        if (currentStyle != null && !currentStyle.isBlank()) {
-            if (prop != null && !prop.isBlank()) {
-                String[] stylePairs = currentStyle.split(";");
-                for (String stylePair : stylePairs) {
-                    String[] styleParts = stylePair.split(":");
-                    if (styleParts[0].trim().equals(prop)) {
-                        return styleParts[1];
-                    }
-                }
-            }
-        }
-        return currentStyle;
-    }
-
-    /**
-     * 替换样式
-     *
-     * @param node  节点
-     * @param prop  属性
-     * @param value 值
-     */
-    public static void replaceStyle(Node node, String prop, Object value) {
-        Styles.removeStyle(node, prop);
-        Styles.appendStyle(node, prop, value.toString());
-    }
+    // /**
+    //  * 获取样式值
+    //  *
+    //  * @param node 节点
+    //  * @param prop 属性
+    //  * @return 样式值
+    //  */
+    // public static String getStyle(Styleable node, String prop) {
+    //     String currentStyle = node.getStyle();
+    //     if (currentStyle != null && !currentStyle.isBlank()) {
+    //         if (prop != null && !prop.isBlank()) {
+    //             String[] stylePairs = currentStyle.split(";");
+    //             for (String stylePair : stylePairs) {
+    //                 String[] styleParts = stylePair.split(":");
+    //                 if (styleParts[0].trim().equals(prop)) {
+    //                     return styleParts[1];
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return currentStyle;
+    // }
+    //
+    // /**
+    //  * 替换样式
+    //  *
+    //  * @param node  节点
+    //  * @param prop  属性
+    //  * @param value 值
+    //  */
+    // public static void replaceStyle(Styleable node, String prop, Object value) {
+    //     StyleUtil.removeStyle(node, prop);
+    //     StyleUtil.appendStyle(node, prop, value.toString());
+    // }
 
     /**
      * 获取宽度
@@ -754,37 +755,41 @@ public class NodeUtil {
      * @param obj 节点
      */
     public static void disappear(Object obj) {
-        if (obj instanceof Node node) {
-            if (!node.visibleProperty().isBound()) {
-                node.setVisible(false);
+        try {
+            if (obj instanceof Node node) {
+                if (!node.visibleProperty().isBound()) {
+                    node.setVisible(false);
+                }
+                if (!node.managedProperty().isBound()) {
+                    node.setManaged(false);
+                }
+            } else if (obj instanceof MenuItem item) {
+                if (!item.visibleProperty().isBound()) {
+                    item.setVisible(false);
+                }
+            } else if (obj instanceof Tab tab) {
+                if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
+                    tab.getContent().setVisible(false);
+                }
+            } else if (obj instanceof Stage stage) {
+                if (stage.isShowing()) {
+                    FXUtil.runWait(stage::close);
+                }
+            } else if (obj instanceof Window window) {
+                if (window.isShowing()) {
+                    FXUtil.runWait(window::hide);
+                }
+            } else if (obj instanceof PopupAdapter wrapper) {
+                if (wrapper.popup().isShowing()) {
+                    FXUtil.runWait(wrapper.popup()::hide);
+                }
+            } else if (obj instanceof StageAdapter wrapper) {
+                if (wrapper.stage().isShowing()) {
+                    FXUtil.runWait(wrapper.stage()::close);
+                }
             }
-            if (!node.managedProperty().isBound()) {
-                node.setManaged(false);
-            }
-        } else if (obj instanceof MenuItem item) {
-            if (!item.visibleProperty().isBound()) {
-                item.setVisible(false);
-            }
-        } else if (obj instanceof Tab tab) {
-            if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
-                tab.getContent().setVisible(false);
-            }
-        } else if (obj instanceof Stage stage) {
-            if (stage.isShowing()) {
-                FXUtil.runWait(stage::close);
-            }
-        } else if (obj instanceof Window window) {
-            if (window.isShowing()) {
-                FXUtil.runWait(window::hide);
-            }
-        } else if (obj instanceof PopupAdapter wrapper) {
-            if (wrapper.popup().isShowing()) {
-                FXUtil.runWait(wrapper.popup()::hide);
-            }
-        } else if (obj instanceof StageAdapter wrapper) {
-            if (wrapper.stage().isShowing()) {
-                FXUtil.runWait(wrapper.stage()::close);
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
