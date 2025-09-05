@@ -11,7 +11,6 @@ import java.io.File;
  * @author oyzh
  * @since 2025-03-07
  */
-
 public class FXChooser {
 
     /**
@@ -86,6 +85,10 @@ public class FXChooser {
 
     public static FileExtensionFilter excelExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.excelType(), "*.xls", "*.xlsx");
+    }
+
+    public static FileExtensionFilter wordExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.wordType(), "*.doc", "*.docx");
     }
 
     public static FileExtensionFilter allExtensionFilter() {
