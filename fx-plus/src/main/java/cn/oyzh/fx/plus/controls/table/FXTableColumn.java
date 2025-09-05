@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
@@ -82,5 +83,9 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapte
 
     public String getValueName() {
         return this.getProp("_valueName");
+    }
+
+    public void setTextExt(String text) {
+        FXUtil.runWait(() -> super.setText(text));
     }
 }
