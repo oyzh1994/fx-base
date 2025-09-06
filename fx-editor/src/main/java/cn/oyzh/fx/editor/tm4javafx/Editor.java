@@ -1162,4 +1162,22 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         // 我也不知道为啥这样写才能生效
         FXUtil.runPulse(() -> this.setFont(font1));
     }
+
+    @Override
+    public void redo() {
+        try {
+            super.redo();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void undo() {
+        try {
+            super.undo();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }
