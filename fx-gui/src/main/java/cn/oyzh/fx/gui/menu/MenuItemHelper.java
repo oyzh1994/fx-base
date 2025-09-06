@@ -443,6 +443,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteData(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem deleteAuth(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteAuth(), new DeleteSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem deleteFile(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFile(), new DeleteSVGGlyph(iconSize), action);
     }
@@ -657,6 +661,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem copyNodePath(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyNodePath(), new CopySVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem copyAuth(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAuth(), new CopySVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem authNode(String iconSize, Runnable action) {
