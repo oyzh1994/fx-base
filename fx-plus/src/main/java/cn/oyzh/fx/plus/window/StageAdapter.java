@@ -781,11 +781,11 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     }
 
     default void close() {
-        this.stage().close();
+        FXUtil.runWait(()-> this.stage().close());
     }
 
     default void show() {
-        this.stage().show();
+        FXUtil.runWait(()-> this.stage().show());
     }
 
     default void showAndWait() {

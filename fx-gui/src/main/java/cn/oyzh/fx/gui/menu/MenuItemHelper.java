@@ -52,6 +52,7 @@ import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnCompressSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnPauseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UndoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.FunctionSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.ProcedureSVGGlyph;
@@ -180,6 +181,18 @@ public class MenuItemHelper {
 
     public static FXMenuItem refreshData(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshData(), new RefreshSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem restoreHistory(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.restoreHistory(), new UndoSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem view1History(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1History(), new ViewSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem refreshHistory(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshHistory(), new RefreshSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem refreshBucket(String iconSize, Runnable action) {
@@ -510,6 +523,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.delete(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem deleteHistory(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteHistory(), new DeleteSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem deleteSnippet(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSnippet(), new DeleteSVGGlyph(iconSize), action);
     }
@@ -772,6 +789,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem imageHistory(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.imageHistory(), new HistorySVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem dataHistory(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.dataHistory(), new HistorySVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem containerInfo(String iconSize, Runnable action) {
