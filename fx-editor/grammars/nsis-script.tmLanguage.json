@@ -1,0 +1,111 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "NSIS Script",
+	"scopeName": "source.nsh",
+	"fileTypes": ["nsh", "nsi"],
+	"uuid": "e2f3a4b5-c6d7-8901-2345-6789abcdef01",
+	"patterns": [
+		{
+			"name": "comment.line.semicolon.nsh",
+			"match": ";.*$"
+		},
+		{
+			"name": "comment.block.nsh",
+			"begin": "/\\*",
+			"end": "\\*/",
+			"patterns": [
+				{
+					"name": "comment.block.nested.nsh",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},
+		{
+			"name": "keyword.instruction.nsh",
+			"match": "\\b(Section|SectionEnd|Function|FunctionEnd|Page|SubSection|SubSectionEnd|Category|CategoryEnd|LangString|LangStringEnd|Macro|MacroEnd|!define|!undef|!ifdef|!ifndef|!else|!endif|!include|!echo|!error|!warning|!insertmacro|!macro|!endmacro|!if|!elif|!elseif|!while|!endwhile|!foreach|!endforeach)\\b"
+		},
+		{
+			"name": "keyword.command.nsh",
+			"match": "\\b(SetOutPath|File|Delete|Rename|CopyFiles|MoveFiles|CreateDirectory|DeleteDirectory|WriteRegStr|WriteRegDWORD|WriteRegBin|DeleteRegKey|ReadRegStr|MessageBox|Exec|ExecWait|Quit|Return|Goto|IfFileExists|IfErrors|StrCmp|IntCmp|Call|Push|Pop|ClearErrors|SetErrors|GetFullPathName|GetFileName|GetFileExt|StrLen|StrCopy|StrCat|IntOp|IntFmt|FindWindow|SendMessage|SetWindowText|GetWindowText|EnableWindow|ShowWindow|HideWindow|SetShellVarContext|ExpandEnvStrings|GetEnv|SetEnv|UninstallExe|DeleteRegValue|WriteUninstaller|SectionGetText|SectionSetText|SectionGetFlags|SectionSetFlags|SectionIn|LangStringGetText|LangStringSetText|LoadLanguageFile|SetCompress|SetCompressor|SetCompressorDictSize|SetSolidCompression|SetOverwrite|SetDateSave|SetTimeSave|SetFileAttributes|SetFileTime|GetFileAttributes|GetFileTime|SetOutFile|Name|Caption|OutFile|InstallDir|InstallDirRegKey|Icon|UninstallIcon|BrandingImage|LicenseData|InfoBefore|InfoAfter|VersionInfo|VIProductVersion|VIFileVersion|VIAuthor|VICopyright|VIDescription|VICompanyName|ViproductName|VIFILEVERSION|VIPRODUCTVERSION|SetAutoClose|AutoCloseWindow|AllowRootDirInstall|CRCCheck|SilentInstall|SilentUnInstall|ShowInstDetails|ShowUnInstDetails|InstProgressFlags|UnInstProgressFlags|WindowIcon|XPStyle|Unicode|MultiUser|RequestExecutionLevel|InstallOptions|Var|StrVar|IntVar|BoolVar|PageEx|PageExEnd|AddSize|AddPluginDir|GetTempFileName|DeleteTempFiles|GetSectionIndex|SectionSetFlags|SectionGetFlags|SectionGetSize|SectionSetSize|SectionGetInstParams|SectionSetInstParams|LangStringGetLength|LangStringCopy|LangStringCat|LangStringCpy|LangStringCat|LangStringLen|LangStringFind|LangStringReplace|LangStringInsert|LangStringDelete|LangStringMid|LangStringUpper|LangStringLower)\\b"
+		},
+		{
+			"name": "support.function.nsh",
+			"match": "\\b(NSISDIR|OUTDIR|INSTDIR|EXEDIR|WINDIR|SYSDIR|PROGRAMFILES|COMMONFILES|DESKTOP|STARTMENU|PROGRAMS|STARTUP|SENDTO|FAVORITES|RECENT|MYDOCUMENTS|APPDATA|PRINTHOOD|INTERNET_CACHE|COOKIES|HISTORY|PROFILE|ADMINTOOLS|COMMONADMINTOOLS|FONTS|TEMPLATES|COMMONTEMPLATES|MYMUSIC|MYVIDEO|NETHOOD|FONTS|SYSTEM|WINDOWS|PROGRAM_FILES|COMMON_FILES|USERPROFILE|ALLUSERS|CURRENTDIRECTORY|CMDLINE|INSTFLAGS|VERSION|FILESIZE|FILETIME|FILEATTRIBUTES|DLLVERSION|PRODUCTVERSION|FILEVERSION|COMPANYNAME|PRODUCTNAME|FILEDESCRIPTION|LEGALCOPYRIGHT|LEGALTRADEMARKS|INTERNALNAME|ORIGINALFILENAME|COMMENTS|PRIVATEBUILD|SPECIALBUILD|LANGUAGE|CHARACTERISTICS|VS_FIXEDFILEINFO|VS_VERSIONINFO)\\b"
+		},
+		{
+			"name": "string.quoted.double.nsh",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.nsh",
+					"match": "\\\\."
+				},
+				{
+					"name": "variable.interpolation.nsh",
+					"match": "\\$\\{[a-zA-Z0-9_]+\\}"
+				}
+			]
+		},
+		{
+			"name": "string.quoted.single.nsh",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.nsh",
+					"match": "\\\\."
+				}
+			]
+		},
+		{
+			"name": "variable.nsh",
+			"match": "\\$[a-zA-Z0-9_]+|\\$\\{[a-zA-Z0-9_]+\\}"
+		},
+		{
+			"name": "constant.numeric.nsh",
+			"match": "\\b(0x[0-9a-fA-F]+|\\d+)\\b"
+		},
+		{
+			"name": "keyword.operator.nsh",
+			"match": "(=|==|!=|<|>|<=|>=|&&|\\|\\||!|\\+|\\-|\\*|/|%|\\+\\+|\\-\\-|&|\\|\\^)"
+		},
+		{
+			"name": "entity.name.section.nsh",
+			"match": "\\bSection\\s+\"[^\"]+\"",
+			"captures": {
+				"0": {
+					"patterns": [
+						{
+							"name": "keyword.instruction.nsh",
+							"match": "Section"
+						},
+						{
+							"name": "string.quoted.double.nsh",
+							"match": "\"[^\"]+\""
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "entity.name.function.nsh",
+			"match": "\\bFunction\\s+[a-zA-Z0-9_]+",
+			"captures": {
+				"0": {
+					"patterns": [
+						{
+							"name": "keyword.instruction.nsh",
+							"match": "Function"
+						},
+						{
+							"name": "entity.name.function.nsh",
+							"match": "[a-zA-Z0-9_]+"
+						}
+					]
+				}
+			}
+		}
+	]
+}
