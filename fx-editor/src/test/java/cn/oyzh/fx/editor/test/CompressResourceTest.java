@@ -2,14 +2,14 @@ package cn.oyzh.fx.editor.test;
 
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.file.FileUtil;
-import com.alibaba.fastjson2.JSON;
+import cn.oyzh.common.json.JSONUtil;
 import org.junit.Test;
 
 import java.io.File;
 
 public class CompressResourceTest {
 
-    private String dir = "C:\\Users\\Administrator\\IdeaProjects\\fx-base\\fx-editor\\src\\main\\resources";
+    private final String dir = "C:\\Users\\Administrator\\IdeaProjects\\fx-base\\fx-editor\\src\\main\\resources";
 
     @Test
     public void testCompressResource() throws Exception {
@@ -18,8 +18,9 @@ public class CompressResourceTest {
             String suffix = FileNameUtil.getSuffix(fileName);
             if (FileNameUtil.isJsonType(suffix)) {
                 String json = FileUtil.readUtf8String(file);
-               String compressJson= JSON.toJSONString(json);
-               FileUtil.writeUtf8String(compressJson, file);
+                String compressJson = JSONUtil.toCompress(json);
+                //System.out.println(compressJson);
+                FileUtil.writeUtf8String(compressJson, file);
             }
         });
 
