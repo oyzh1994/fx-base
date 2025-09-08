@@ -4,7 +4,6 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.css.Styleable;
-import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -13,7 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-import javax.swing.text.Style;
 import java.util.List;
 
 /**
@@ -48,7 +46,7 @@ public interface FontAdapter extends PropAdapter {
         } else if (this instanceof TabPane node) {
             List<Tab> tabs = node.getTabs();
             for (Tab tab : tabs) {
-                if (tab.getContent() instanceof FontAdapter adapter) {
+                if (tab instanceof FontAdapter adapter) {
                     adapter.setFont(font);
                 }
             }
@@ -97,7 +95,7 @@ public interface FontAdapter extends PropAdapter {
             this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
         } else if (this instanceof TabPane node) {
             for (Tab tab : node.getTabs()) {
-                if (tab.getContent() instanceof FontAdapter adapter) {
+                if (tab instanceof FontAdapter adapter) {
                     adapter.setFontSize(fontSize);
                 }
             }
@@ -150,7 +148,7 @@ public interface FontAdapter extends PropAdapter {
         } else if (this instanceof TabPane node) {
             List<Tab> tabs = node.getTabs();
             for (Tab tab : tabs) {
-                if (tab.getContent() instanceof FontAdapter adapter) {
+                if (tab instanceof FontAdapter adapter) {
                     adapter.setFontFamily(fontFamily);
                 }
             }
@@ -210,7 +208,7 @@ public interface FontAdapter extends PropAdapter {
         } else if (this instanceof TabPane node) {
             List<Tab> tabs = node.getTabs();
             for (Tab tab : tabs) {
-                if (tab.getContent() instanceof FontAdapter adapter) {
+                if (tab instanceof FontAdapter adapter) {
                     adapter.setFontWeight(fontWeight);
                 }
             }
