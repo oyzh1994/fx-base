@@ -664,6 +664,10 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      * @param caretPosition 光标位置
      */
     public void positionCaret(int caretPosition) {
+        int len = this.getLength();
+        if (caretPosition > len) {
+            caretPosition = len;
+        }
         this.selectRange(caretPosition, caretPosition);
         super.requestFocus();
     }
