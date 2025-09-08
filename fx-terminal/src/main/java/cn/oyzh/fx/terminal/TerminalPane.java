@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2025/08/08
  */
-public class TerminalPane extends Editor implements Terminal {
+public abstract class TerminalPane extends Editor implements Terminal {
 
     /**
      * 不可操作边界
@@ -462,7 +462,7 @@ public class TerminalPane extends Editor implements Terminal {
     }
 
     protected TerminalCommandHandler findHandler(String input) {
-        return TerminalManager.findHandler(input);
+        return TerminalManager.findHandler(this.terminalName(), input);
     }
 
     @Override
@@ -482,22 +482,21 @@ public class TerminalPane extends Editor implements Terminal {
         this.flushCaret();
     }
 
-    ///**
+    /// **
     // * 字体
     // */
-    //private Font font;
+    // private Font font;
     //
     //@Override
-    //public void changeFont(Font font) {
+    // public void changeFont(Font font) {
     //    this.font = font;
     //    this.setFont(font);
     //}
-
     @Override
     public Set<String> getPrompts() {
         if (super.getPrompts() == null) {
             // 设置内容提示符
-            Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler();
+            Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler(this.terminalName());
             Set<String> set = new HashSet<>();
             for (TerminalCommandHandler<?, ?> handler : handlers) {
                 if (StringUtil.isNotBlank(handler.commandName())) {
@@ -526,7 +525,7 @@ public class TerminalPane extends Editor implements Terminal {
     }
 
     //@Override
-    //public void initNode() {
+    // public void initNode() {
     //    super.initNode();
     //    // 监听字体，防止被样式修改
     //    this.fontProperty().addListener((observable, oldValue, newValue) -> {
@@ -538,32 +537,32 @@ public class TerminalPane extends Editor implements Terminal {
     //}
 
     //@Override
-    //public void setFontSize(double fontSize) {
+    // public void setFontSize(double fontSize) {
     //    this.changeFont(FontUtil.newFontBySize(this.font, fontSize));
     //}
     //
     //@Override
-    //public double getFontSize() {
+    // public double getFontSize() {
     //    return this.font.getSize();
     //}
     //
     //@Override
-    //public void setFontFamily(String fontFamily) {
+    // public void setFontFamily(String fontFamily) {
     //    this.changeFont(FontUtil.newFontByFamily(this.font, fontFamily));
     //}
     //
     //@Override
-    //public String getFontFamily() {
+    // public String getFontFamily() {
     //    return this.font.getFamily();
     //}
     //
     //@Override
-    //public void setFontWeight(FontWeight fontWeight) {
+    // public void setFontWeight(FontWeight fontWeight) {
     //    this.changeFont(FontUtil.newFontByWeight(this.font, fontWeight));
     //}
     //
     //@Override
-    //public FontWeight getFontWeight() {
+    // public FontWeight getFontWeight() {
     //    return FontUtil.getWeight(this.font);
     //}
 }

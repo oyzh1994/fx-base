@@ -19,12 +19,12 @@ import java.util.List;
  */
 public class BaseTerminalCompleteHandler<T extends Terminal> implements TerminalCompleteHandler<T> {
 
-    protected List<TerminalCommandHandler<?, ?>> findCommandHandlers(String line) {
+    protected List<TerminalCommandHandler<?, ?>> findCommandHandlers(T terminal, String line) {
         List<TerminalCommandHandler<?, ?>> handlers;
         if (line.contains(" ")) {
-            handlers = TerminalManager.findHandlers(line, 3);
+            handlers = TerminalManager.findHandlers(terminal.terminalName(), line, 3);
         } else {
-            handlers = TerminalManager.findHandlers(line, 1);
+            handlers = TerminalManager.findHandlers(terminal.terminalName(), line, 1);
         }
         return handlers;
     }
@@ -33,13 +33,13 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
     public boolean completion(String line, T terminal) {
         try {
             if (StringUtil.isEmpty(line)) {
-                HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(HelpTerminalCommandHandler.class);
+                HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(terminal.terminalName(), HelpTerminalCommandHandler.class);
                 TerminalExecuteResult result = commandHandler.execute(null, terminal);
                 terminal.outputLine((String) result.getResult());
                 terminal.outputPrompt();
                 terminal.moveCaretEnd();
             } else {
-                List<TerminalCommandHandler<?, ?>> handlers = this.findCommandHandlers(line);
+                List<TerminalCommandHandler<?, ?>> handlers = this.findCommandHandlers(terminal, line);
                 if (handlers.isEmpty()) {
                     this.noMatch(line, terminal);
                 } else if (handlers.size() == 1) {

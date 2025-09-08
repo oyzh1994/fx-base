@@ -365,4 +365,11 @@ public interface Terminal {
             this.historyHandler().clearHistory();
         }
     }
+
+    /**
+     * 终端唯一名称
+     *
+     * @return 名称
+     */
+    String terminalName();
 }

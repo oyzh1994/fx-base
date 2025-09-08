@@ -13,7 +13,7 @@ public class BaseTerminalHelpHandler<T extends Terminal> implements TerminalHelp
     @Override
     public void help(String input, T terminal) {
         String command = input.split(" -?")[0];
-        TerminalCommandHandler handler = TerminalManager.findHandler(command);
+        TerminalCommandHandler handler = TerminalManager.findHandler(terminal.terminalName(), command);
         if (handler != null) {
             String help = handler.commandHelp(terminal);
             if (help != null) {
