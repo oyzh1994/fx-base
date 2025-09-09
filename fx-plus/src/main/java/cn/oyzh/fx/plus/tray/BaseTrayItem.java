@@ -8,11 +8,11 @@ package cn.oyzh.fx.plus.tray;
  */
 public interface BaseTrayItem {
 
-    /**
-     * 转换为DorkboxTrayItem
-     *
-     * @return DorkboxTrayItem
-     */
-    DorkboxTrayItem toDorkboxTrayItem();
+    ///**
+    // * 转换为DorkboxTrayItem
+    // *
+    // * @return DorkboxTrayItem
+    // */
+    //DorkboxTrayItem toDorkboxTrayItem();
 
 }
