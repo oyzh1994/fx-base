@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.test;
 
+import cn.oyzh.fx.gui.toggle.EnableToggleSwitch;
 import cn.oyzh.fx.gui.tree.view.RichTreeCell;
 import cn.oyzh.fx.gui.tree.view.RichTreeItem;
 import cn.oyzh.fx.gui.tree.view.RichTreeItemValue;
@@ -8,6 +9,9 @@ import cn.oyzh.fx.plus.controls.FXHeaderBar;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
+import cn.oyzh.fx.plus.controls.toggle.FXToggleSwitch;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -39,9 +43,9 @@ public class CustomTitleBarTest2 extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
         // ThemeManager.apply(Themes.PRIMER_DARK);
-        // Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
         FXHeaderBar headerBar = new FXHeaderBar();
         Button button1 = new Button("test1");
         Button button2 = new Button("test2");
@@ -63,7 +67,7 @@ public class CustomTitleBarTest2 extends Application {
         // hBox.addChild(button8);
         // hBox.addChild(button9);
         headerBar.setContent(hBox);
-        HeaderBar.setDragType(headerBar, HeaderDragType.DRAGGABLE);
+        // HeaderBar.setDragType(headerBar, HeaderDragType.DRAGGABLE);
         // headerBar.setTitle("测试标题");
         headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
 
@@ -94,9 +98,10 @@ public class CustomTitleBarTest2 extends Application {
         };
         rootItem.setValue(rootValue);
 
+        int index = 1;
         for (int i = 0; i < 3; i++) {
             int finalI = i;
-            ParentTreeItem pItem1 = new ParentTreeItem (treeView) ;
+            ParentTreeItem pItem1 = new ParentTreeItem(treeView);
             RichTreeItemValue pValue1 = new RichTreeItemValue() {
                 public String name() {
                     return "父节点" + finalI;
@@ -104,21 +109,27 @@ public class CustomTitleBarTest2 extends Application {
             };
             pItem1.setValue(pValue1);
             rootItem.addChild(pItem1);
-            for (int j = 0; j <10 ; j++) {
-                int finalJ = j;
-                SubTreeItem sItem1 = new SubTreeItem (treeView) ;
+            for (int j = 0; j < 10; j++) {
+                SubTreeItem sItem1 = new SubTreeItem(treeView);
+                int finalIndex = index;
                 RichTreeItemValue sValue1 = new RichTreeItemValue() {
                     public String name() {
-                        return "子节点" + finalJ;
+                        return "子节点" + finalIndex;
                     }
                 };
                 sItem1.setValue(sValue1);
                 pItem1.addChild(sItem1);
+                index++;
             }
         }
 
         treeView.setRoot(rootItem);
+
+        treeView.setPrefHeight(500);
         root.getChildren().add(treeView);
+
+        EnableToggleSwitch toggleSwitch = new EnableToggleSwitch();
+        root.getChildren().add(toggleSwitch);
 
         Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
         scene.setFill(Color.TRANSPARENT);
