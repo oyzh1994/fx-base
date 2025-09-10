@@ -29,7 +29,10 @@ public class SelectTextFiled<T> extends LimitTextField {
 
     @Override
     protected SelectTextFiledSkin<T> createDefaultSkin() {
-        return (SelectTextFiledSkin<T>) super.createDefaultSkin();
+        if (this.getSkin() != null) {
+            return (SelectTextFiledSkin<T>) this.getSkin();
+        }
+        return new SelectTextFiledSkin<>(this);
     }
 
     public void clearItem() {

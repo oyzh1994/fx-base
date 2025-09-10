@@ -150,6 +150,18 @@ public class FileChooserHelper {
     /**
      * 选择文件
      *
+     * @param title  标题
+     * @param filter 过滤器
+     * @param owner  父窗口
+     * @return 文件
+     */
+    public static List<File> chooseMultiple(String title, FileExtensionFilter filter, Window owner) {
+        return chooseMultiple(title, List.of(filter), owner);
+    }
+
+    /**
+     * 选择文件
+     *
      * @param title   标题
      * @param filters 过滤器
      * @param owner   父窗口

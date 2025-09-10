@@ -23,18 +23,18 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
         this.setTipText(I18nHelper.pleaseSelectFont());
     }
 
-    @Override
-    public FontFamilyTextFieldSkin skin() {
-        return (FontFamilyTextFieldSkin) super.skin();
-    }
-
-    @Override
-    protected FontFamilyTextFieldSkin createDefaultSkin() {
-        if (this.getSkin() != null) {
-            return (FontFamilyTextFieldSkin) this.getSkin();
-        }
-        return new FontFamilyTextFieldSkin(this);
-    }
+    // @Override
+    // public FontFamilyTextFieldSkin skin() {
+    //     return (FontFamilyTextFieldSkin) super.skin();
+    // }
+    //
+    // @Override
+    // protected FontFamilyTextFieldSkin createDefaultSkin() {
+    //     if (this.getSkin() != null) {
+    //         return (FontFamilyTextFieldSkin) this.getSkin();
+    //     }
+    //     return new FontFamilyTextFieldSkin(this);
+    // }
 
     @Override
     protected void onTextChanged(String newValue) {

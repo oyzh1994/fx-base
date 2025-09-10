@@ -654,6 +654,9 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      * @param end   结束位置
      */
     public void selectRange(int start, int end) {
+        if (start < 0 || end < 0) {
+            return;
+        }
         EditorTextPos pos = this.getPosByIndex(start, end);
         FXUtil.runWait(() -> super.select(pos.getStart(), pos.getEnd()));
     }
@@ -664,6 +667,9 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
      * @param caretPosition 光标位置
      */
     public void positionCaret(int caretPosition) {
+        if (caretPosition < 0) {
+            caretPosition = 0;
+        }
         int len = this.getLength();
         if (caretPosition > len) {
             caretPosition = len;
