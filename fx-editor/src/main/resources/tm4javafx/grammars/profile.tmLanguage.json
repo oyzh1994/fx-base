@@ -1,1 +1,93 @@
-{"$schema":"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json","name":"Linux Profile","scopeName":"source.shell.profile","fileTypes":["profile","bashrc","bash_profile","zshrc","profile.d"],"uuid":"d94e5b82-8c7f-6d3e-9f8a-4b3c2d1e0f9g","patterns":[{"name":"comment.line.number-sign.profile","match":"^\\s*#.*$"},{"name":"keyword.export.profile","match":"\\bexport\\b"},{"name":"variable.assignment.profile","match":"\\b(\\w+)(=)","captures":{"1":{"name":"variable.name.profile"},"2":{"name":"punctuation.operator.assignment.profile"}}},{"name":"variable.reference.profile","match":"\\$\\{?\\w+\\}?"},{"name":"constant.path.profile","match":"\\b(/[\\w\\-./]+)+\\b"},{"name":"keyword.command.profile","match":"\\b(alias|unalias|cd|echo|source|eval|exec|export|readonly|unset|shift|set|unset)\\b"},{"name":"string.quoted.double.profile","begin":"\"","end":"\"","patterns":[{"name":"variable.reference.profile","match":"\\$\\{?\\w+\\}?"},{"name":"constant.character.escape.profile","match":"\\\\."}]},{"name":"string.quoted.single.profile","begin":"'","end":"'","patterns":[{"name":"constant.character.escape.profile","match":"\\\\'"}]},{"name":"meta.alias.profile","match":"\\balias\\s+([\\w-]+)=([\"']?.*?[\"']?)","captures":{"1":{"name":"variable.name.alias.profile"},"2":{"name":"string.quoted.alias.profile"}}},{"name":"meta.path-modification.profile","match":"\\bPATH=\\$?PATH(:|\\+)=[^\\n]+","patterns":[{"name":"variable.name.profile","match":"\\bPATH\\b"},{"name":"operator.path.profile","match":":=|=:|="},{"name":"constant.path.profile","match":"/[\\w\\-./]+"},{"name":"variable.reference.profile","match":"\\$PATH"}]}]}
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Linux Profile",
+	"scopeName": "source.shell.profile",
+	"fileTypes": ["profile", "bashrc", "bash_profile", "zshrc", "profile.d"],
+	"uuid": "d94e5b82-8c7f-6d3e-9f8a-4b3c2d1e0f9g",
+	"patterns": [
+		{
+			"name": "comment.line.number-sign.profile",
+			"match": "^\\s*#.*$"
+		},
+		{
+			"name": "keyword.export.profile",
+			"match": "\\bexport\\b"
+		},
+		{
+			"name": "variable.assignment.profile",
+			"match": "\\b(\\w+)(=)",
+			"captures": {
+				"1": { "name": "variable.name.profile" },
+				"2": { "name": "punctuation.operator.assignment.profile" }
+			}
+		},
+		{
+			"name": "variable.reference.profile",
+			"match": "\\$\\{?\\w+\\}?"
+		},
+		{
+			"name": "constant.path.profile",
+			"match": "\\b(/[\\w\\-./]+)+\\b"
+		},
+		{
+			"name": "keyword.command.profile",
+			"match": "\\b(alias|unalias|cd|echo|source|eval|exec|export|readonly|unset|shift|set|unset)\\b"
+		},
+		{
+			"name": "string.quoted.double.profile",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "variable.reference.profile",
+					"match": "\\$\\{?\\w+\\}?"
+				},
+				{
+					"name": "constant.character.escape.profile",
+					"match": "\\\\."
+				}
+			]
+		},
+		{
+			"name": "string.quoted.single.profile",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.profile",
+					"match": "\\\\'"
+				}
+			]
+		},
+		{
+			"name": "meta.alias.profile",
+			"match": "\\balias\\s+([\\w-]+)=([\"']?.*?[\"']?)",
+			"captures": {
+				"1": { "name": "variable.name.alias.profile" },
+				"2": { "name": "string.quoted.alias.profile" }
+			}
+		},
+		{
+			"name": "meta.path-modification.profile",
+			"match": "\\bPATH=\\$?PATH(:|\\+)=[^\\n]+",
+			"patterns": [
+				{
+					"name": "variable.name.profile",
+					"match": "\\bPATH\\b"
+				},
+				{
+					"name": "operator.path.profile",
+					"match": ":=|=:|="
+				},
+				{
+					"name": "constant.path.profile",
+					"match": "/[\\w\\-./]+"
+				},
+				{
+					"name": "variable.reference.profile",
+					"match": "\\$PATH"
+				}
+			]
+		}
+	]
+}

@@ -1,1 +1,110 @@
-{"$schema":"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json","name":"FXML","scopeName":"text.fxml","fileTypes":["fxml"],"uuid":"a61d2a90-5f6e-4d0f-9a6b-8a7c3d8a1b2c","patterns":[{"name":"comment.block.fxml","begin":"<!--","end":"-->","patterns":[{"name":"constant.character.entity.fxml","match":"&[a-zA-Z0-9#]+;"}]},{"name":"meta.tag.fxml","begin":"(<)([a-zA-Z_][a-zA-Z0-9_:-]*)","beginCaptures":{"1":{"name":"punctuation.definition.tag.begin.fxml"},"2":{"name":"entity.name.tag.fxml"}},"end":"(/>)|(</)([a-zA-Z_][a-zA-Z0-9_:-]*)(>)","endCaptures":{"1":{"name":"punctuation.definition.tag.selfclosing.fxml"},"2":{"name":"punctuation.definition.tag.begin.fxml"},"3":{"name":"entity.name.tag.fxml"},"4":{"name":"punctuation.definition.tag.end.fxml"}},"patterns":[{"name":"meta.tag.attribute.fxml","match":"\\s+([a-zA-Z_][a-zA-Z0-9_:-]*)(=)","captures":{"1":{"name":"entity.other.attribute-name.fxml"},"2":{"name":"punctuation.separator.key-value.fxml"}}},{"name":"string.quoted.double.fxml","begin":"\"","end":"\"","patterns":[{"name":"constant.character.escape.fxml","match":"\\\\."},{"name":"meta.embedded.expression.fxml","begin":"\\$\\{","end":"\\}","patterns":[{"include":"source.java"}]}]},{"name":"string.quoted.single.fxml","begin":"'","end":"'","patterns":[{"name":"constant.character.escape.fxml","match":"\\\\."},{"name":"meta.embedded.expression.fxml","begin":"\\$\\{","end":"\\}","patterns":[{"include":"source.java"}]}]},{"name":"meta.namespace.fxml","match":"\\s+(xmlns(:[a-zA-Z0-9_]+)?)=(\"[^\"]+\"|'[^']+')","captures":{"1":{"name":"entity.other.attribute-name.namespace.fxml"},"2":{"name":"punctuation.separator.key-value.fxml"},"3":{"name":"string.quoted.fxml"}}}]},{"name":"constant.character.entity.fxml","match":"&[a-zA-Z0-9#]+;"},{"name":"meta.embedded.expression.fxml","begin":"\\$\\{","end":"\\}","patterns":[{"include":"source.java"}]}]}
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "FXML",
+	"scopeName": "text.fxml",
+	"fileTypes": ["fxml"],
+	"uuid": "a61d2a90-5f6e-4d0f-9a6b-8a7c3d8a1b2c",
+	"patterns": [
+		{
+			"name": "comment.block.fxml",
+			"begin": "<!--",
+			"end": "-->",
+			"patterns": [
+				{
+					"name": "constant.character.entity.fxml",
+					"match": "&[a-zA-Z0-9#]+;"
+				}
+			]
+		},
+		{
+			"name": "meta.tag.fxml",
+			"begin": "(<)([a-zA-Z_][a-zA-Z0-9_:-]*)",
+			"beginCaptures": {
+				"1": { "name": "punctuation.definition.tag.begin.fxml" },
+				"2": { "name": "entity.name.tag.fxml" }
+			},
+			"end": "(/>)|(</)([a-zA-Z_][a-zA-Z0-9_:-]*)(>)",
+			"endCaptures": {
+				"1": { "name": "punctuation.definition.tag.selfclosing.fxml" },
+				"2": { "name": "punctuation.definition.tag.begin.fxml" },
+				"3": { "name": "entity.name.tag.fxml" },
+				"4": { "name": "punctuation.definition.tag.end.fxml" }
+			},
+			"patterns": [
+				{
+					"name": "meta.tag.attribute.fxml",
+					"match": "\\s+([a-zA-Z_][a-zA-Z0-9_:-]*)(=)",
+					"captures": {
+						"1": { "name": "entity.other.attribute-name.fxml" },
+						"2": { "name": "punctuation.separator.key-value.fxml" }
+					}
+				},
+				{
+					"name": "string.quoted.double.fxml",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.fxml",
+							"match": "\\\\."
+						},
+						{
+							"name": "meta.embedded.expression.fxml",
+							"begin": "\\$\\{",
+							"end": "\\}",
+							"patterns": [
+								{
+									"include": "source.java"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.fxml",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{
+							"name": "constant.character.escape.fxml",
+							"match": "\\\\."
+						},
+						{
+							"name": "meta.embedded.expression.fxml",
+							"begin": "\\$\\{",
+							"end": "\\}",
+							"patterns": [
+								{
+									"include": "source.java"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "meta.namespace.fxml",
+					"match": "\\s+(xmlns(:[a-zA-Z0-9_]+)?)=(\"[^\"]+\"|'[^']+')",
+					"captures": {
+						"1": { "name": "entity.other.attribute-name.namespace.fxml" },
+						"2": { "name": "punctuation.separator.key-value.fxml" },
+						"3": { "name": "string.quoted.fxml" }
+					}
+				}
+			]
+		},
+		{
+			"name": "constant.character.entity.fxml",
+			"match": "&[a-zA-Z0-9#]+;"
+		},
+		{
+			"name": "meta.embedded.expression.fxml",
+			"begin": "\\$\\{",
+			"end": "\\}",
+			"patterns": [
+				{
+					"include": "source.java"
+				}
+			]
+		}
+	]
+}

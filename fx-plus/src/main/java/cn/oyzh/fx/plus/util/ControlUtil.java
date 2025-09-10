@@ -288,11 +288,11 @@ public class ControlUtil {
     /***
      * 生成指定宽度的边框，仅底部
      * @param stroke 颜色
-     * @param width 宽度
+     * @param size 宽度
      * @return 指定宽度边框
      */
-    public static Border strokeOfWidthBottom(Paint stroke, double width) {
-        return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(0, 0, width, 0)));
+    public static Border strokeOfWidthBottom(Paint stroke, double size) {
+        return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(0, 0, size, 0)));
     }
 
     /***

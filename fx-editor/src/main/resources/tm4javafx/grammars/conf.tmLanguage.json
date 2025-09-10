@@ -1,1 +1,83 @@
-{"$schema":"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json","name":"Linux Config","scopeName":"source.linux-conf","fileTypes":["conf","cfg","config"],"uuid":"a6f3f9b0-7d8e-4f2a-9b8d-1e7c8d7a6f1e","patterns":[{"name":"comment.line.number-sign.linux-conf","match":"^\\s*#.*$"},{"name":"comment.line.semicolon.linux-conf","match":"^\\s*;.*$"},{"name":"keyword.other.section.linux-conf","match":"^\\s*\\[.*?\\]\\s*$"},{"begin":"^\\s*([a-zA-Z0-9_.-]+)\\s*=","beginCaptures":{"1":{"name":"variable.other.linux-conf"}},"end":"$","name":"meta.key-value.linux-conf","patterns":[{"name":"string.unquoted.linux-conf","match":".*?(?=\\s*$)"},{"name":"string.quoted.double.linux-conf","begin":"\"","end":"\"","patterns":[{"name":"constant.character.escape.linux-conf","match":"\\\\."}]},{"name":"string.quoted.single.linux-conf","begin":"'","end":"'","patterns":[{"name":"constant.character.escape.linux-conf","match":"\\\\."}]}]},{"begin":"^\\s*([a-zA-Z0-9_.-]+)\\s+","beginCaptures":{"1":{"name":"variable.other.linux-conf"}},"end":"$","name":"meta.key-value-space.linux-conf","patterns":[{"name":"string.unquoted.linux-conf","match":".*"}]},{"name":"constant.numeric.linux-conf","match":"\\b(0x[0-9a-fA-F]+|\\d+)\\b"},{"name":"constant.language.boolean.linux-conf","match":"\\b(true|false|yes|no|on|off)\\b"}]}
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Linux Config",
+	"scopeName": "source.linux-conf",
+	"fileTypes": ["conf", "cfg", "config"],
+	"uuid": "a6f3f9b0-7d8e-4f2a-9b8d-1e7c8d7a6f1e",
+	"patterns": [
+		{
+			"name": "comment.line.number-sign.linux-conf",
+			"match": "^\\s*#.*$"
+		},
+		{
+			"name": "comment.line.semicolon.linux-conf",
+			"match": "^\\s*;.*$"
+		},
+		{
+			"name": "keyword.other.section.linux-conf",
+			"match": "^\\s*\\[.*?\\]\\s*$"
+		},
+		{
+			"begin": "^\\s*([a-zA-Z0-9_.-]+)\\s*=",
+			"beginCaptures": {
+				"1": {
+					"name": "variable.other.linux-conf"
+				}
+			},
+			"end": "$",
+			"name": "meta.key-value.linux-conf",
+			"patterns": [
+				{
+					"name": "string.unquoted.linux-conf",
+					"match": ".*?(?=\\s*$)"
+				},
+				{
+					"name": "string.quoted.double.linux-conf",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.linux-conf",
+							"match": "\\\\."
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.linux-conf",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{
+							"name": "constant.character.escape.linux-conf",
+							"match": "\\\\."
+						}
+					]
+				}
+			]
+		},
+		{
+			"begin": "^\\s*([a-zA-Z0-9_.-]+)\\s+",
+			"beginCaptures": {
+				"1": {
+					"name": "variable.other.linux-conf"
+				}
+			},
+			"end": "$",
+			"name": "meta.key-value-space.linux-conf",
+			"patterns": [
+				{
+					"name": "string.unquoted.linux-conf",
+					"match": ".*"
+				}
+			]
+		},
+		{
+			"name": "constant.numeric.linux-conf",
+			"match": "\\b(0x[0-9a-fA-F]+|\\d+)\\b"
+		},
+		{
+			"name": "constant.language.boolean.linux-conf",
+			"match": "\\b(true|false|yes|no|on|off)\\b"
+		}
+	]
+}

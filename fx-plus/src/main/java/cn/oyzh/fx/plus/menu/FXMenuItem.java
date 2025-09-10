@@ -72,9 +72,9 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         return w;
     }
 
-    public void fixed() {
-
-    }
+    // public void fixed() {
+    //
+    // }
 
     /**
      * 使用svg和文字来生成菜单项

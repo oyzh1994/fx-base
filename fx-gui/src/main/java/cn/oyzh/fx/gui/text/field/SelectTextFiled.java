@@ -24,7 +24,7 @@ public class SelectTextFiled<T> extends LimitTextField {
         if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
         }
-        return (SelectTextFiledSkin) this.getSkin();
+        return (SelectTextFiledSkin<T>) this.getSkin();
     }
 
     @Override

@@ -1,1 +1,136 @@
-{"$schema":"https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json","name":"XAML","scopeName":"text.xaml","fileTypes":["xaml","xaml.cs"],"uuid":"b72e3c81-6g7f-5e1e-8b7c-4b8d2e3f4g5h","patterns":[{"name":"comment.block.xaml","begin":"<!--","end":"-->","patterns":[{"name":"constant.character.entity.xaml","match":"&[a-zA-Z0-9#]+;"}]},{"name":"meta.tag.xaml","begin":"(<)([a-zA-Z_][a-zA-Z0-9_:\\.]*)(\\s|/?>)","beginCaptures":{"1":{"name":"punctuation.definition.tag.begin.xaml"},"2":{"name":"entity.name.tag.xaml"}},"end":"(/>)|(</)([a-zA-Z_][a-zA-Z0-9_:\\.]*)(>)","endCaptures":{"1":{"name":"punctuation.definition.tag.selfclosing.xaml"},"2":{"name":"punctuation.definition.tag.begin.xaml"},"3":{"name":"entity.name.tag.xaml"},"4":{"name":"punctuation.definition.tag.end.xaml"}},"patterns":[{"name":"meta.tag.attribute.xaml","match":"\\s+([a-zA-Z_][a-zA-Z0-9_:\\-\\.]*)(=)","captures":{"1":{"name":"entity.other.attribute-name.xaml"},"2":{"name":"punctuation.separator.key-value.xaml"}}},{"name":"string.quoted.double.xaml","begin":"\"","end":"\"","patterns":[{"name":"constant.character.escape.xaml","match":"\\\\."},{"name":"meta.binding.expression.xaml","begin":"\\{Binding","end":"\\}","patterns":[{"name":"keyword.operator.binding.xaml","match":"\\b(Path|Source|Mode|UpdateSourceTrigger|Converter|ElementName|RelativeSource|NotifyOnValidationError)\\b"},{"name":"punctuation.separator.binding.xaml","match":"[,=:]"},{"name":"string.quoted.single.binding.xaml","begin":"'","end":"'","patterns":[{"name":"constant.character.escape.xaml","match":"\\\\."}]}]},{"name":"meta.markup.extension.xaml","begin":"\\{[a-zA-Z_][a-zA-Z0-9_:\\.]*","end":"\\}","patterns":[{"name":"entity.name.type.markup-extension.xaml","match":"[a-zA-Z_][a-zA-Z0-9_:\\.]*"},{"name":"punctuation.separator.markup-extension.xaml","match":"[,=:]"},{"name":"string.quoted.single.markup-extension.xaml","begin":"'","end":"'"}]}]},{"name":"string.quoted.single.xaml","begin":"'","end":"'","patterns":[{"name":"constant.character.escape.xaml","match":"\\\\."}]},{"name":"meta.namespace.xaml","match":"\\s+(xmlns(:[a-zA-Z0-9_]+)?)=(\"[^\"]+\"|'[^']+')","captures":{"1":{"name":"entity.other.attribute-name.namespace.xaml"},"2":{"name":"punctuation.separator.key-value.xaml"},"3":{"name":"string.quoted.xaml"}}}]},{"name":"constant.character.entity.xaml","match":"&[a-zA-Z0-9#]+;"},{"name":"meta.directive.xaml","match":"(<\\?)(xml)(\\s+[^?]*)(\\?>)","captures":{"1":{"name":"punctuation.definition.directive.begin.xaml"},"2":{"name":"keyword.directive.xml.xaml"},"3":{"name":"meta.directive.attribute.xaml"},"4":{"name":"punctuation.definition.directive.end.xaml"}}}]}
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "XAML",
+	"scopeName": "text.xaml",
+	"fileTypes": ["xaml", "xaml.cs"],
+	"uuid": "b72e3c81-6g7f-5e1e-8b7c-4b8d2e3f4g5h",
+	"patterns": [
+		{
+			"name": "comment.block.xaml",
+			"begin": "<!--",
+			"end": "-->",
+			"patterns": [
+				{
+					"name": "constant.character.entity.xaml",
+					"match": "&[a-zA-Z0-9#]+;"
+				}
+			]
+		},
+		{
+			"name": "meta.tag.xaml",
+			"begin": "(<)([a-zA-Z_][a-zA-Z0-9_:\\.]*)(\\s|/?>)",
+			"beginCaptures": {
+				"1": { "name": "punctuation.definition.tag.begin.xaml" },
+				"2": { "name": "entity.name.tag.xaml" }
+			},
+			"end": "(/>)|(</)([a-zA-Z_][a-zA-Z0-9_:\\.]*)(>)",
+			"endCaptures": {
+				"1": { "name": "punctuation.definition.tag.selfclosing.xaml" },
+				"2": { "name": "punctuation.definition.tag.begin.xaml" },
+				"3": { "name": "entity.name.tag.xaml" },
+				"4": { "name": "punctuation.definition.tag.end.xaml" }
+			},
+			"patterns": [
+				{
+					"name": "meta.tag.attribute.xaml",
+					"match": "\\s+([a-zA-Z_][a-zA-Z0-9_:\\-\\.]*)(=)",
+					"captures": {
+						"1": { "name": "entity.other.attribute-name.xaml" },
+						"2": { "name": "punctuation.separator.key-value.xaml" }
+					}
+				},
+				{
+					"name": "string.quoted.double.xaml",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.xaml",
+							"match": "\\\\."
+						},
+						{
+							"name": "meta.binding.expression.xaml",
+							"begin": "\\{Binding",
+							"end": "\\}",
+							"patterns": [
+								{
+									"name": "keyword.operator.binding.xaml",
+									"match": "\\b(Path|Source|Mode|UpdateSourceTrigger|Converter|ElementName|RelativeSource|NotifyOnValidationError)\\b"
+								},
+								{
+									"name": "punctuation.separator.binding.xaml",
+									"match": "[,=:]"
+								},
+								{
+									"name": "string.quoted.single.binding.xaml",
+									"begin": "'",
+									"end": "'",
+									"patterns": [
+										{
+											"name": "constant.character.escape.xaml",
+											"match": "\\\\."
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "meta.markup.extension.xaml",
+							"begin": "\\{[a-zA-Z_][a-zA-Z0-9_:\\.]*",
+							"end": "\\}",
+							"patterns": [
+								{
+									"name": "entity.name.type.markup-extension.xaml",
+									"match": "[a-zA-Z_][a-zA-Z0-9_:\\.]*"
+								},
+								{
+									"name": "punctuation.separator.markup-extension.xaml",
+									"match": "[,=:]"
+								},
+								{
+									"name": "string.quoted.single.markup-extension.xaml",
+									"begin": "'",
+									"end": "'"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.xaml",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{
+							"name": "constant.character.escape.xaml",
+							"match": "\\\\."
+						}
+					]
+				},
+				{
+					"name": "meta.namespace.xaml",
+					"match": "\\s+(xmlns(:[a-zA-Z0-9_]+)?)=(\"[^\"]+\"|'[^']+')",
+					"captures": {
+						"1": { "name": "entity.other.attribute-name.namespace.xaml" },
+						"2": { "name": "punctuation.separator.key-value.xaml" },
+						"3": { "name": "string.quoted.xaml" }
+					}
+				}
+			]
+		},
+		{
+			"name": "constant.character.entity.xaml",
+			"match": "&[a-zA-Z0-9#]+;"
+		},
+		{
+			"name": "meta.directive.xaml",
+			"match": "(<\\?)(xml)(\\s+[^?]*)(\\?>)",
+			"captures": {
+				"1": { "name": "punctuation.definition.directive.begin.xaml" },
+				"2": { "name": "keyword.directive.xml.xaml" },
+				"3": { "name": "meta.directive.attribute.xaml" },
+				"4": { "name": "punctuation.definition.directive.end.xaml" }
+			}
+		}
+	]
+}
