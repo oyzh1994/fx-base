@@ -212,8 +212,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
                 }
                 this.syntaxesName = syntaxesName;
                 String path = "/tm4javafx/grammars/" + syntaxesName;
-                String url = ResourceUtil.getPath(path);
-                this.styleProvider.setGrammar(IGrammarSource.fromFile(Path.of(url)));
+                this.styleProvider.setGrammar(IGrammarSource.fromResource(Editor.class, path));
             }
             if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
                 d.refresh(this.getModel());
@@ -861,10 +860,8 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
                     path = "/tm4javafx/themes/vitesse-light.json";
                 }
             }
-            // 获取资源
-            String url = ResourceUtil.getPath(path);
             // 设置主题
-            this.styleProvider.setTheme(IThemeSource.fromFile(Path.of(url)));
+            this.styleProvider.setTheme(IThemeSource.fromResource(Editor.class, path));
             // 应用颜色
             StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
             // TODO: 修复主题色可能不生效问题
@@ -879,6 +876,7 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             this.initTextStyle();
         } catch (Exception ex) {
             ex.printStackTrace();
+            JulLog.error("changeTheme error", ex);
         }
     }
 
