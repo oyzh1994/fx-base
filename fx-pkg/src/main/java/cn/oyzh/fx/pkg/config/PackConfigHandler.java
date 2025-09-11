@@ -41,7 +41,7 @@ public class PackConfigHandler implements PreHandler {
             }
             packConfig.setJdkPath(javaHome);
         }
-        String appVersion = packConfig.appVersion();
+        String appVersion = packConfig.mainAppVersion();
         if (appVersion != null) {
             packConfig.setDest(StringUtil.replace(packConfig.getDest(), "${appVersion}", appVersion));
             packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${appVersion}", appVersion));

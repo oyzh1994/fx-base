@@ -33,7 +33,7 @@ public class JarUtil {
      * @param jarFile jar文件
      * @return 结果
      */
-    public static boolean hasClass( String jarFile) throws IOException {
+    public static boolean hasClass(String jarFile) throws IOException {
         if (!FileUtil.exist(jarFile)) {
             throw new RuntimeException("jarFile " + jarFile + " is not exist.");
         }
@@ -63,7 +63,7 @@ public class JarUtil {
      * @param src     源文件
      * @param destDir 目标目录
      */
-    public static File unJar( String src,  String destDir) {
+    public static File unJar(String src, String destDir) {
         if (!FileUtil.exist(src)) {
             throw new RuntimeException("src " + src + " is not exist.");
         }
