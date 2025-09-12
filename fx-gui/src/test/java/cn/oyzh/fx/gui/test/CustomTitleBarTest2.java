@@ -16,7 +16,9 @@ import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HeaderBar;
@@ -37,16 +39,21 @@ public class CustomTitleBarTest2 extends Application {
 
     public static void main(String[] args) {
         System.setProperty("javafx.enablePreview", "true");
-        // System.setProperty("javafx.suppressPreviewWarning", "true");
+        System.setProperty("javafx.suppressPreviewWarning", "true");
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        // ThemeManager.apply(Themes.PRIMER_LIGHT);
         // ThemeManager.apply(Themes.PRIMER_DARK);
-        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
-        FXHeaderBar headerBar = new FXHeaderBar();
+        // Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+        // test1(stage);
+        test2(stage);
+    }
+
+    private void test1(Stage stage) {
+        HeaderBar headerBar = new HeaderBar();
         Button button1 = new Button("test1");
         Button button2 = new Button("test2");
         Button button3 = new Button("test3");
@@ -66,7 +73,7 @@ public class CustomTitleBarTest2 extends Application {
         // hBox.addChild(button7);
         // hBox.addChild(button8);
         // hBox.addChild(button9);
-        headerBar.setContent(hBox);
+        headerBar.setLeading(hBox);
         // HeaderBar.setDragType(headerBar, HeaderDragType.DRAGGABLE);
         // headerBar.setTitle("测试标题");
         headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
@@ -134,6 +141,54 @@ public class CustomTitleBarTest2 extends Application {
         Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
         scene.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.EXTENDED);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            System.out.println(event.getTarget());
+        });
+    }
+
+    private void test2(Stage stage) {
+        HeaderBar headerBar = new HeaderBar();
+        Button button1 = new Button("test1");
+        headerBar.setLeading(button1);
+        headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
+
+        System.out.println(headerBar.getStyle());
+        Set<Node> nodes = headerBar.lookupAll("*");
+        for (Node node : nodes) {
+            System.out.println(node);
+        }
+        VBox root = new VBox();
+        root.getChildren().add(headerBar);
+        root.getChildren().add(new Label("1111"));
+        TreeView treeView = new TreeView<>() {
+        };
+        treeView.setCellFactory((Callback<TreeView<?>, TreeCell<?>>) param -> new TestTreeCell<>());
+
+
+        TreeItem rootItem = new TreeItem<>("根节点");
+
+        int index = 1;
+        for (int i = 0; i < 3; i++) {
+            ParentTreeItem1 pItem1 = new ParentTreeItem1("父节点" + i);
+            rootItem.getChildren().add(pItem1);
+            for (int j = 0; j < 10; j++) {
+                int finalIndex = index;
+                SubTreeItem1 sItem1 = new SubTreeItem1("子节点" + finalIndex);
+                pItem1.getChildren().add(sItem1);
+                index++;
+            }
+        }
+
+        treeView.setRoot(rootItem);
+        treeView.setPrefHeight(500);
+        root.getChildren().add(treeView);
+
+        Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
+        scene.setFill(Color.TRANSPARENT);
+        // stage.initStyle(StageStyle.EXTENDED);
         stage.setScene(scene);
         stage.show();
 
