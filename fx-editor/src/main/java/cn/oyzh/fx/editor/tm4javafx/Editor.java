@@ -6,6 +6,7 @@ import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
+import cn.oyzh.fx.plus.adapter.ScrollBarAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
@@ -67,7 +68,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdapter, NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
+public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
 
     /**
      * 默认提示词颜色
@@ -166,11 +167,13 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         });
         // 高亮变化事件
         this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
-            TextPos caretPosition = this.getCaretPosition();
+            // 获取滚动条值
+            Double scrollValue = this.getScrollValue();
             this.syntaxDecorator.setHighlight(t1);
             this.initTextStyle();
+            // 清除高亮的时候滚动到原位置
             if (StringUtil.isEmpty(t1)) {
-                this.positionCaret(caretPosition);
+                FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
             }
         });
         // 行号策略变化事件
