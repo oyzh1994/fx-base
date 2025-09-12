@@ -78,7 +78,7 @@ public enum EditorFormatType {
     PUG("PUG", "pug"),
     TEX("TEX", "tex"),
     VIML("VIML", "vim,vimrc,gvimrc,nvimrc,_vimrc,vmb,ideavimrc"),
-    GIT_COMMIT("GIT COMMIT", "txt"),
+    GIT_COMMIT("GIT COMMIT", ""),
     GIT_REBASE("GIT REBASE", "git-rebase-todo"),
     BIBTEX("BIBTEX", "bib"),
     DIFF("DIFF", "diff"),
