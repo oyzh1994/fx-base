@@ -3,7 +3,6 @@ package cn.oyzh.fx.editor.tm4javafx;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
-import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
@@ -57,7 +56,6 @@ import tm4javafx.richtext.StyleHelper;
 import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.TextFlowModel;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -168,8 +166,12 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
         });
         // 高亮变化事件
         this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
+            TextPos caretPosition = this.getCaretPosition();
             this.syntaxDecorator.setHighlight(t1);
             this.initTextStyle();
+            if (StringUtil.isEmpty(t1)) {
+                this.positionCaret(caretPosition);
+            }
         });
         // 行号策略变化事件
         this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
@@ -674,6 +676,16 @@ public class Editor extends CodeArea implements ContextMenuAdapter, MenuItemAdap
             caretPosition = len;
         }
         this.selectRange(caretPosition, caretPosition);
+        super.requestFocus();
+    }
+
+    /**
+     * 设置光标位置
+     *
+     * @param caretPosition 光标位置
+     */
+    public void positionCaret(TextPos caretPosition) {
+        this.select(caretPosition);
         super.requestFocus();
     }
 
