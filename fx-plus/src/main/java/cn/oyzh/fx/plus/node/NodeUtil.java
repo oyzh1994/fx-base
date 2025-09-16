@@ -2,12 +2,10 @@ package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.StyleUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
-import javafx.css.Styleable;
 import javafx.event.EventTarget;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
@@ -819,37 +817,37 @@ public class NodeUtil {
         }
     }
 
-// /**
-//  * 取消焦点
-//  *
-//  * @param node
-//  */
-// public static void unFocus(Node node) {
-//     if (node != null && node.getParent() != null) {
-//         FXUtil.runWait(() -> {
-//             node.getScene().getRoot().requestFocus();
-//         });
-//     }
-// }
-//
-// /**
-//  * 清楚焦点
-//  *
-//  * @param node 节点
-//  */
-// public static void clearFocus(Node node) {
-//     if (node != null && node.getScene() != null) {
-//         Scene scene = node.getScene();
-//         FXUtil.runWait(() -> {
-//             Node focusOwner = scene.getFocusOwner();
-//             if (focusOwner != null) {
-//                 focusOwner.setFocusTraversable(false);
-//             }
-//             scene.getRoot().setFocusTraversable(true);
-//             scene.getRoot().requestFocus();
-//         });
-//     }
-// }
+    /**
+     * 取消焦点
+     *
+     * @param node
+     */
+    public static void unFocus(Node node) {
+        if (node != null && node.getParent() != null) {
+            FXUtil.runWait(() -> {
+                node.getScene().getRoot().requestFocus();
+            });
+        }
+    }
+
+    /**
+     * 清除焦点
+     *
+     * @param node 节点
+     */
+    public static void clearFocus(Node node) {
+        if (node != null && node.getScene() != null) {
+            Scene scene = node.getScene();
+            FXUtil.runWait(() -> {
+                Node focusOwner = scene.getFocusOwner();
+                if (focusOwner != null) {
+                    focusOwner.setFocusTraversable(false);
+                }
+                scene.getRoot().setFocusTraversable(true);
+                scene.getRoot().requestFocus();
+            });
+        }
+    }
 
     /**
      * 是否从右到左布局
