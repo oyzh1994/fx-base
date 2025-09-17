@@ -21,8 +21,12 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.layout.HeaderDragType;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -160,9 +164,12 @@ public class CustomTitleBarTest2 extends Application {
         for (Node node : nodes) {
             System.out.println(node);
         }
+        HBox pane1 = new HBox();
+        pane1.getChildren().add(headerBar);
+
         VBox root = new VBox();
-        root.getChildren().add(headerBar);
-        root.getChildren().add(new Label("1111"));
+        root.getChildren().add(pane1);
+        // root.getChildren().add(new Label("1111"));
         TreeView treeView = new TreeView<>() {
         };
         treeView.setCellFactory((Callback<TreeView<?>, TreeCell<?>>) param -> new TestTreeCell<>());
@@ -187,8 +194,8 @@ public class CustomTitleBarTest2 extends Application {
         root.getChildren().add(treeView);
 
         Scene scene = new Scene(root, (double) 800.0F, (double) 600.0F);
-        scene.setFill(Color.TRANSPARENT);
-        // stage.initStyle(StageStyle.EXTENDED);
+        // scene.setFill(Color.TRANSPARENT);
+        stage.initStyle(StageStyle.EXTENDED);
         stage.setScene(scene);
         stage.show();
 

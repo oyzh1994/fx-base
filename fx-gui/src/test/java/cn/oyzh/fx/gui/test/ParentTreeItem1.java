@@ -26,6 +26,7 @@ public class ParentTreeItem1 extends TreeItem implements DragNodeItem {
     @Override
     public void onDropNode(DragNodeItem item) {
         if (item instanceof SubTreeItem1 subTreeItem) {
+            subTreeItem.getParent().getChildren().remove(subTreeItem);
             this.getChildren().add(subTreeItem);
         }
     }
