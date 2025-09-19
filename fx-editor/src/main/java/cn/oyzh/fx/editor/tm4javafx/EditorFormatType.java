@@ -27,6 +27,7 @@ public enum EditorFormatType {
     MARKDOWN("MARKDOWN", "md"),
     CONF("CONFIG", "conf,cfg,config"),
     PROTO("Protocol Buffers", "proto"),
+    TOML("TOML", "toml"),
     JSONC("JSON with Comments", "jsonc"),
     JSONL("JSON Lines", "jsonl"),
     // 语言
