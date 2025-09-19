@@ -1,0 +1,250 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Gradle",
+	"scopeName": "source.gradle",
+	"fileTypes": ["gradle", "build.gradle", "settings.gradle"],
+	"uuid": "e2f3a4b5-c6d7-8901-2345-6789abcdef01",
+	"patterns": [
+		{ "include": "#comments" },
+		{ "include": "#gradle-keywords" },
+		{ "include": "#tasks" },
+		{ "include": "#properties" },
+		{ "include": "#methods" },
+		{ "include": "#strings" },
+		{ "include": "#numbers" },
+		{ "include": "#operators" },
+		{ "include": "#groovy-elements" }
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.double-slash.gradle",
+					"match": "//.*$"
+				},
+				{
+					"name": "comment.block.gradle",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"patterns": [
+						{
+							"name": "comment.block.nested.gradle",
+							"begin": "/\\*",
+							"end": "\\*/"
+						}
+					]
+				}
+			]
+		},
+
+		"gradle-keywords": {
+			"patterns": [
+				{
+					"name": "keyword.gradle.core",
+					"match": "\\b(buildscript|allprojects|subprojects|repositories|dependencies|task|apply|plugins|project|rootProject|gradle)\\b"
+				},
+				{
+					"name": "keyword.gradle.plugin",
+					"match": "\\b(id|implementation|api|compile|runtime|testImplementation|testRuntime|classpath)\\b"
+				},
+				{
+					"name": "keyword.gradle.repo",
+					"match": "\\b(mavenCentral|jcenter|google|mavenLocal|maven)\\b"
+				},
+				{
+					"name": "keyword.gradle.task",
+					"match": "\\b(dependsOn|mustRunAfter|shouldRunAfter|onlyIf|doFirst|doLast|type)\\b"
+				}
+			]
+		},
+
+		"tasks": {
+			"patterns": [
+				{
+					"name": "meta.task.definition.gradle",
+					"begin": "\\btask\\s+([a-zA-Z0-9_]+)\\b",
+					"beginCaptures": {
+						"1": { "name": "entity.name.task.gradle" }
+					},
+					"end": "(?=\\{|;|\\n)",
+					"patterns": [
+						{ "include": "#gradle-keywords" },
+						{ "include": "#strings" }
+					]
+				},
+				{
+					"name": "meta.task.type.gradle",
+					"match": "\\btype\\s*:\\s*([A-Z][a-zA-Z0-9]+)",
+					"captures": {
+						"1": { "name": "support.class.tasktype.gradle" }
+					}
+				}
+			]
+		},
+
+		"properties": {
+			"patterns": [
+				{
+					"name": "variable.gradle.property",
+					"match": "\\b([a-z][a-zA-Z0-9_]*)\\s*=\\s*",
+					"captures": {
+						"1": { "name": "variable.assignment.gradle" }
+					}
+				},
+				{
+					"name": "variable.gradle.project",
+					"match": "\\bproject\\.([a-zA-Z0-9_]+)\\b",
+					"captures": {
+						"1": { "name": "variable.member.gradle" }
+					}
+				},
+				{
+					"name": "variable.gradle.system",
+					"match": "\\bsystemProp\\.([a-zA-Z0-9_.]+)\\b",
+					"captures": {
+						"1": { "name": "variable.system.gradle" }
+					}
+				}
+			]
+		},
+
+		"methods": {
+			"patterns": [
+				{
+					"name": "support.method.gradle",
+					"match": "\\b(println|file|files|dir|mkdir|copy|delete|exec|java|android|kotlin|groovy)\\s*\\(",
+					"captures": {
+						"1": { "name": "support.function.gradle" }
+					}
+				},
+				{
+					"name": "meta.method.call.gradle",
+					"begin": "\\b([a-zA-Z0-9_]+)\\s*\\(",
+					"beginCaptures": {
+						"1": { "name": "entity.name.function.gradle" }
+					},
+					"end": "\\)",
+					"patterns": [
+						{ "include": "$self" }
+					]
+				}
+			]
+		},
+
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.gradle",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.gradle",
+							"match": "\\\\."
+						},
+						{
+							"name": "string.interpolation.gradle",
+							"begin": "\\$\\{",
+							"end": "\\}",
+							"patterns": [
+								{ "include": "$self" }
+							]
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.gradle",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{
+							"name": "constant.character.escape.gradle",
+							"match": "\\\\'"
+						}
+					]
+				},
+				{
+					"name": "string.heredoc.gradle",
+					"begin": "<<<([A-Za-z0-9_]+)",
+					"beginCaptures": {
+						"0": { "name": "punctuation.definition.string.begin.gradle" },
+						"1": { "name": "string.heredoc.delimiter.gradle" }
+					},
+					"end": "^\\1",
+					"endCaptures": {
+						"0": { "name": "string.heredoc.delimiter.gradle" }
+					}
+				}
+			]
+		},
+
+		"numbers": {
+			"patterns": [
+				{
+					"name": "constant.numeric.integer.gradle",
+					"match": "\\b\\d+\\b"
+				},
+				{
+					"name": "constant.numeric.float.gradle",
+					"match": "\\b\\d+\\.\\d+([eE][+-]?\\d+)?\\b"
+				}
+			]
+		},
+
+		"operators": {
+			"patterns": [
+				{
+					"name": "operator.assignment.gradle",
+					"match": "=|\\+=|-=|\\*=|/=|:=|\\?="
+				},
+				{
+					"name": "operator.comparison.gradle",
+					"match": "==|!=|<|>|<=|>=|=~|!~"
+				},
+				{
+					"name": "operator.logical.gradle",
+					"match": "&&|\\|\\||!"
+				},
+				{
+					"name": "operator.arithmetic.gradle",
+					"match": "\\+|-|\\*|/|%|\\+\\+|--"
+				},
+				{
+					"name": "punctuation.gradle",
+					"match": "\\.|,|;|:|\\(|\\)|\\[|\\]|\\{|\\}|->|@"
+				}
+			]
+		},
+
+		"groovy-elements": {
+			"patterns": [
+				{
+					"name": "keyword.groovy.control",
+					"match": "\\b(if|else|switch|case|default|for|while|do|break|continue|return|try|catch|finally|throw)\\b"
+				},
+				{
+					"name": "keyword.groovy.modifier",
+					"match": "\\b(abstract|final|static|public|private|protected)\\b"
+				},
+				{
+					"name": "keyword.groovy.type",
+					"match": "\\b(void|boolean|int|long|float|double|String|List|Map|Set)\\b"
+				},
+				{
+					"name": "meta.closure.gradle",
+					"begin": "\\{",
+					"beginCaptures": {
+						"0": { "name": "punctuation.closure.begin.gradle" }
+					},
+					"end": "\\}",
+					"endCaptures": {
+						"0": { "name": "punctuation.closure.end.gradle" }
+					},
+					"patterns": [
+						{ "include": "$self" }
+					]
+				}
+			]
+		}
+	}
+}

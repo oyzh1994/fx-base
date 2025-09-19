@@ -13,8 +13,8 @@ public enum EditorFormatType {
     RAW("RAW", ""),
     // 常见文件
     JSON("JSON", "json"),
-    XML("XML", "xml"),
-    HTML("HTML", "html,htm"),
+    XML("XML", "xml,admx,adml,artdef,resx,pom,svg,ps1xml,filters,kuip"),
+    HTML("HTML", "html,htm,ftl"),
     YAML("YAML", "yaml,yml"),
     CSS("CSS", "css"),
     PROPERTIES("PROPERTIES", "properties"),
@@ -25,22 +25,23 @@ public enum EditorFormatType {
     DOCKERFILE("DOCKERFILE", "dockerfile"),
     MAKEFILE("MAKEFILE", "makefile"),
     MARKDOWN("MARKDOWN", "md"),
-    CONF("CONFIG", "conf,cfg,config"),
+    CONF("CONFIG", "conf,cfg,config,fsc"),
     PROTO("Protocol Buffers", "proto"),
     TOML("TOML", "toml"),
     JSONC("JSON with Comments", "jsonc"),
     JSONL("JSON Lines", "jsonl"),
+    CMAKE("CMAKE", "cmake"),
     // 语言
-    C("C", "c"),
-    C_H("C header files", "h"),
-    CPP("C++", "cpp"),
-    CPP_H("C++ header files", "hpp,hxx"),
+    C("C", "c,h,frag"),
+    //C_H("C header files", "h"),
+    CPP("C++", "cpp,hpp,hxx"),
+    //CPP_H("C++ header files", "hpp,hxx"),
     JAVASCRIPT("JAVASCRIPT", "js"),
     JAVASCRIPTREACT("JAVASCRIPT (with React support)", "jsx"),
     PYTHON("PYTHON", "py"),
     JAVA("JAVA", "java"),
     CSHARP("C#", "cs"),
-    CUDA_CPP("CUDA C++", "cu"),
+    CUDA_CPP("CUDA C++", "cu,cuh"),
     RUST("RUST", "rs"),
     RUBY("RUBY", "rb"),
     GO("GO", "go"),
@@ -53,7 +54,7 @@ public enum EditorFormatType {
     GROOVY("GROOVY", "groovy"),
     COFFEESCRIPT("COFFEESCRIPT", "coffee"),
     HANDLEBARS("HANDLEBARS", "hbs"),
-    JSP("JSP", "jsp,jspf,tag"),
+    JSP("JSP", "jsp,tag,jspf"),
     KOTLIN("KOTLIN", "kt,kts", "xml"),
     R("R", "r"),
     SWIFT("SWIFT", "swift"),
@@ -68,7 +69,8 @@ public enum EditorFormatType {
     CPP_EMBEDDED_LATEX("CPP EMBEDDED LATEX", "cpp"),
     // 配置文件
     CSV("CSV", "csv,tsv"),
-    INI("INI", "ini"),
+    INI("INI", "ini,repositories"),
+    INF("INF", "inf,ks"),
     VB("VB", "vb"),
     XSL("XSL", "xsl"),
     LESS("LESS", "less"),
@@ -84,14 +86,15 @@ public enum EditorFormatType {
     BIBTEX("BIBTEX", "bib"),
     DIFF("DIFF", "diff"),
     KCONFIG("KCONFIG", "kconfig"),
-    SVG("SVG", "svg"),
+    GRADLE("GRADLE", "gradle"),
+    //SVG("SVG", "svg"),
     // 无示例
     TERRAFORM("TERRAFORM", "tf,tfvars"),
     HCL("HCL", "hcl"),
     HLSL("HLSL", "hlsl"),
     SAS("SAS", "sas,sas7bdat"),
     // 无示例
-    TWIG("TWIG", "twig,html.twig", "xml"),
+    TWIG("TWIG", "twig", "xml"),
     RAKU("RAKU", "pl6"),
     RAZOR("RAZOR", "razor"),
     RESTRUCTUREDTEXT("RESTRUCTUREDTEXT", "rst"),
@@ -114,7 +117,10 @@ public enum EditorFormatType {
     TEXT_HTML_BASIC("TEXT HTML BASIC", ""),
     MDX("MDX", ""),
     MDX_MARKDOWN("MDX MARKDOWN", ""),
-    ASCIIDOCTOR("ASCIIDOCTOR", "ad,asc,adoc,asciidoc"),
+    ASCIIDOCTOR("ASCIIDOCTOR", "adoc,asciidoc,ad,asc"),
+    ACCESS("ACCESS", "access"),
+    ASCX("ASCX", "ascx"),
+    AWK("AWK", "awk,gawk,mawk"),
     // 无示例
     BICEP("BICEP", "bicep", "xml"),
     NSIS_SCRIPT("NSIS SCRIPT", "nsh,nsi"),
@@ -156,14 +162,14 @@ public enum EditorFormatType {
      * @return 语法名称
      */
     public String getSyntaxesName() {
-        // c头文件类型重定位
-        if (this == C_H) {
-            return C.getSyntaxesName();
-        }
-        // c++头文件类型重定位
-        if (this == CPP_H) {
-            return CPP.getSyntaxesName();
-        }
+        //// c头文件类型重定位
+        //if (this == C_H) {
+        //    return C.getSyntaxesName();
+        //}
+        //// c++头文件类型重定位
+        //if (this == CPP_H) {
+        //    return CPP.getSyntaxesName();
+        //}
         return this.toString().toLowerCase().replace("_", "-");
     }
 
