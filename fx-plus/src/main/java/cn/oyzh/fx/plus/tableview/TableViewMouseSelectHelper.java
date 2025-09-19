@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.tableview;
 
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.TableRow;
@@ -117,15 +118,26 @@ public class TableViewMouseSelectHelper {
         AtomicReference<Double> startX = new AtomicReference<>(0D);
         AtomicReference<Double> startY = new AtomicReference<>(0D);
 
+        /**
+         * 清除函数
+         */
+        Runnable clearFunc = () -> {
+            startX.set(0d);
+            startY.set(0d);
+            this.clearRectangle();
+        };
+
         // 监听鼠标按下事件
         tableView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            if (FXUtil.isPointInNode(event, FXUtil.getVScrollBar(tableView))) {
+                clearFunc.run();
+                return;
+            }
             if (event.getClickCount() == 1 && event.getButton() == MouseButton.PRIMARY) {
                 startX.set(event.getSceneX());
                 startY.set(event.getSceneY());
             } else {
-                startX.set(0d);
-                startY.set(0d);
-                this.clearRectangle();
+                clearFunc.run();
             }
         });
 
@@ -150,9 +162,7 @@ public class TableViewMouseSelectHelper {
                 rectangle.setHeight(Math.abs(endY - startY.get()));
                 this.onMouseSelection(rectangle);
             } else {
-                startX.set(0d);
-                startY.set(0d);
-                this.clearRectangle();
+                clearFunc.run();
             }
         });
 
@@ -165,15 +175,13 @@ public class TableViewMouseSelectHelper {
                     this.clearRectangle();
                 }
             } else {
-                startX.set(0d);
-                startY.set(0d);
-                this.clearRectangle();
+                clearFunc.run();
             }
         });
 
         // 监听鼠标离开事件
         tableView.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
-            this.clearRectangle();
+            clearFunc.run();
         });
     }
 

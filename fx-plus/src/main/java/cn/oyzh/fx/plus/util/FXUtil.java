@@ -14,8 +14,11 @@ import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.robot.Robot;
 import javafx.stage.Screen;
@@ -38,6 +41,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * fx工具类
@@ -434,5 +438,80 @@ public class FXUtil {
     // public static BufferedImage toAwtImage(WritableImage fxImage) {
     //    return SwingFXUtils.fromFXImage(fxImage, null);
     // }
+
+    /**
+     * 获取滚动条
+     *
+     * @param node 节点
+     * @return 滚动条
+     */
+    public static ScrollBar getScrollBar(Node node) {
+        return (ScrollBar) node.lookup("ScrollBar");
+    }
+
+    /**
+     * 获取垂直滚动条
+     *
+     * @param parent 节点
+     * @return 水平滚动条
+     */
+    public static ScrollBar getVScrollBar(Parent parent) {
+        return getScrollBars(parent).stream()
+                .filter(sb -> sb.getOrientation().equals(javafx.geometry.Orientation.VERTICAL))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * 获取水平滚动条
+     *
+     * @param parent 节点
+     * @return 水平滚动条
+     */
+    public static ScrollBar getHScrollBar(Parent parent) {
+        return getScrollBars(parent).stream()
+                .filter(sb -> sb.getOrientation().equals(javafx.geometry.Orientation.HORIZONTAL))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * 递归查找所有ScrollBar
+     *
+     * @param parent 节点
+     * @return 滚动条列表
+     */
+    public static List<ScrollBar> getScrollBars(Parent parent) {
+        return parent.getChildrenUnmodifiable().stream()
+                .flatMap(node -> {
+                    if (node instanceof ScrollBar) {
+                        return java.util.stream.Stream.of((ScrollBar) node);
+                    } else if (node instanceof Parent) {
+                        return getScrollBars((Parent) node).stream();
+                    } else {
+                        return java.util.stream.Stream.empty();
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 判断鼠标事件是否在节点内
+     *
+     * @param event 事件
+     * @param node  节点
+     * @return 结果
+     */
+    public static boolean isPointInNode(MouseEvent event, Node node) {
+        if (event == null || node == null) {
+            return false;
+        }
+        // 将鼠标事件的屏幕坐标转换为目标组件的本地坐标
+        double localX = node.screenToLocal(event.getScreenX(), event.getScreenY()).getX();
+        double localY = node.screenToLocal(event.getScreenX(), event.getScreenY()).getY();
+
+        // 判断本地坐标是否在组件范围内
+        return node.contains(localX, localY);
+    }
 
 }
