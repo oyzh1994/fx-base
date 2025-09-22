@@ -239,7 +239,7 @@ public class PkgUtil {
             }
         }
         if (config.getDescription() != null) {
-            cmdStr += " --description " + config.getDescription();
+            cmdStr += " --description '" + config.getDescription() + "'";
         }
         if (config.getIcon() != null) {
             cmdStr += " --icon " + config.getIcon();
