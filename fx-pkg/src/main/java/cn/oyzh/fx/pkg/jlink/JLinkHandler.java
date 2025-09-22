@@ -68,6 +68,8 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         // 执行jlink
 //        RuntimeUtil.execAndWait(cmdStr);
         ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+        builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
         builder.directory(jdkPath + "/bin");
         builder.timeout(30_000);
         ProcessExecResult result = builder.exec();
