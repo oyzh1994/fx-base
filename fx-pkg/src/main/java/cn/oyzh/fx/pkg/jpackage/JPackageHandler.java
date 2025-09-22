@@ -98,6 +98,7 @@ public class JPackageHandler implements PackHandler {
         // 执行jpackage
         // RuntimeUtil.execAndWait(cmdStr);
         ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+        builder.env("JAVA_OPTS","-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
         builder.timeout(60_000);
         ProcessExecResult result = builder.exec();
         JulLog.info("JPackage result:{}", result);
