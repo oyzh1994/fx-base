@@ -2,7 +2,7 @@ package cn.oyzh.fx.pkg.jlink;
 
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.thread.ProcessExecBuilder;
+import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -63,16 +63,16 @@ public class JLinkHandler implements PreHandler, SingleHandler {
             FileUtil.del(jLinkConfig.getOutput());
         }
         String cmdStr = PkgUtil.getJLinkCMD(jLinkConfig);
-        //cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
         JulLog.info("JLink cmd:{}", "\n" + cmdStr);
         // 执行jlink
 //        RuntimeUtil.execAndWait(cmdStr);
-        ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
-        builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
-        builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
-        builder.directory(jdkPath + "/bin");
-        builder.timeout(30_000);
-        ProcessExecResult result = builder.exec();
+//        ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+//        builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+//        builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+//        builder.directory(jdkPath + "/bin");
+//        builder.timeout(30_000);
+        ProcessExecResult result = RuntimeUtil.execForResult(cmdStr);
         JulLog.info("JLink result:{}", result);
         if (!result.isSuccess()) {
             JulLog.error("JLink error:{}", result.getError());
