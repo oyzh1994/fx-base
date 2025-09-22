@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg.jlink;
 
-import cn.hutool.core.io.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.ProcessExecBuilder;
 import cn.oyzh.common.thread.ProcessExecResult;
@@ -63,11 +63,12 @@ public class JLinkHandler implements PreHandler, SingleHandler {
             FileUtil.del(jLinkConfig.getOutput());
         }
         String cmdStr = PkgUtil.getJLinkCMD(jLinkConfig);
-        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+        //cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
         JulLog.info("JLink cmd:{}", "\n" + cmdStr);
         // 执行jlink
 //        RuntimeUtil.execAndWait(cmdStr);
         ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+        builder.directory(jdkPath + "/bin");
         builder.timeout(30_000);
         ProcessExecResult result = builder.exec();
         JulLog.info("JLink result:{}", result);

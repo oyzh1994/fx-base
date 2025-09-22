@@ -294,9 +294,6 @@ public class PkgUtil {
         if (jdkPath == null) {
             return cmd;
         }
-//        if (OSUtil.isWindows()) {
         return FileNameUtil.concat(jdkPath, "bin", cmd);
-//        }
-//        return "sh " + FileNameUtil.concat(jdkPath, "bin", cmd);
     }
 }

@@ -93,12 +93,13 @@ public class JPackageHandler implements PackHandler {
             FileUtil.del(packConfig.getDest());
         }
         String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
-        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+        //cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
         JulLog.info("JPackage cmd:{}", "\n" + cmdStr);
         // 执行jpackage
         // RuntimeUtil.execAndWait(cmdStr);
         ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
-        builder.env("JAVA_OPTS","-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+        builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+        builder.directory(jdkPath + "/bin");
         builder.timeout(60_000);
         ProcessExecResult result = builder.exec();
         JulLog.info("JPackage result:{}", result);
