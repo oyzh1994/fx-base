@@ -6,6 +6,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.ProcessExecBuilder;
 import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
@@ -60,6 +61,11 @@ public class JPackageHandler implements PackHandler {
         }
         if (jPackageConfig.getMainJar() == null) {
             jPackageConfig.setMainJar(packConfig.mainJarName());
+        }
+        // 覆盖dest设置
+        String dest = (String) packConfig.getProperty(PackCost.DEST);
+        if (StringUtil.isNotBlank(dest)) {
+            packConfig.setDest(dest);
         }
         if (jPackageConfig.getDest() == null) {
             jPackageConfig.setDest(packConfig.getDest());
