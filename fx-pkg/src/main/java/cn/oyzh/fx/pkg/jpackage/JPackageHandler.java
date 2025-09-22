@@ -92,7 +92,7 @@ public class JPackageHandler implements PackHandler {
         // 执行jpackage
         // RuntimeUtil.execAndWait(cmdStr);
         ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
-        builder.timeout(30_000);
+        builder.timeout(60_000);
         ProcessExecResult result = builder.exec();
         JulLog.info("JPackage result:{}", result);
         if (!result.isSuccess()) {
