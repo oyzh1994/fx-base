@@ -1,7 +1,6 @@
 package cn.oyzh.fx.editor.tm4javafx;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -132,9 +131,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     private void initEditor() {
         // 处理输入法不支持中文的问题
-        if (OSUtil.isMacOS() || OSUtil.isLinux()) {
-            EditorUtil.setupIMESupport(this);
-        }
+        EditorUtil.setupIMESupport(this);
         // 默认自动换行
         this.setWrapText(true);
         // 默认为内容宽高，避免布局问题

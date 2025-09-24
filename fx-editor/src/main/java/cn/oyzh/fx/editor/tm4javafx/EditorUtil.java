@@ -36,7 +36,7 @@ public class EditorUtil {
             Integer end = lastComposedEnd.get();
             Integer start = lastComposedStart.get();
             if (start != null && end != null) {
-                editor.deleteText(start, end, false);
+                editor.deleteText(start, end);
             }
             TextPos textPos = editor.getCaretPosition();
             int caretPosition = editor.caretPosition();
@@ -44,7 +44,7 @@ public class EditorUtil {
             String committed = event.getCommitted();
             ObservableList<InputMethodTextRun> composed = event.getComposed();
             if (StringUtil.isNotEmpty(committed)) {
-                StyledInput input = StyledInput.of(committed, editor.getActiveStyleAttributeMap());
+                StyledInput input = StyledInput.of(committed);
                 // 插入内容
                 editor.insertText(textPos, input);
                 int caretEnd = caretPosition + committed.length();
