@@ -361,10 +361,10 @@ public abstract class TerminalPane extends Editor implements Terminal {
 
     }
 
-    @Override
-    public int caretPosition() {
-        return super.caretPosition();
-    }
+    // @Override
+    // public int caretPosition() {
+    //     return super.caretPosition();
+    // }
 
     @Override
     public void caretPosition(int caretPosition) {

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.editor.tm4javafx;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -17,6 +18,7 @@ import cn.oyzh.fx.plus.menu.MenuItemManager;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -37,6 +39,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.Border;
@@ -128,6 +131,10 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * 初始化编辑器
      */
     private void initEditor() {
+        // 处理输入法不支持中文的问题
+        if (OSUtil.isMacOS() || OSUtil.isLinux()) {
+            EditorUtil.setupIMESupport(this);
+        }
         // 默认自动换行
         this.setWrapText(true);
         // 默认为内容宽高，避免布局问题
@@ -576,10 +583,26 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param content 内容
      */
     public void replaceText(int start, int end, String content) {
+        this.replaceText(start, end, content, true);
+    }
+
+    /**
+     * 替换内容
+     *
+     * @param start     开始位置
+     * @param end       结束位置
+     * @param content   内容
+     * @param allowUndo 是否允许撤销
+     */
+    public void replaceText(int start, int end, String content, boolean allowUndo) {
         if (content != null) {
             try {
+                int length = this.getLength();
+                if (end > length) {
+                    end = length;
+                }
                 EditorTextPos pos = this.getPosByIndex(start, end);
-                super.replaceText(pos.getStart(), pos.getEnd(), content, true);
+                super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -633,18 +656,21 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             return Optional.empty();
         }
         TextPos pos = this.getCaretPosition();
-        int lLen = (pos.index() + "").length();
+        int lLen = (pos.offset() + "").length();
         Point2D point2D = this.localToScreen(0, 0);
         double fSize = FontUtil.stringWidth("a", this.getFont());
-        // 获取内边距左
-        Insets insets = this.getContentPadding();
-        double insetsLeft = insets == null ? 0 : insets.getLeft();
-        // 获取边框宽
-        Border border = this.getBorder();
-        BorderStroke stroke = border == null ? null : CollectionUtil.getFirst(border.getStrokes());
-        double borderW = stroke == null ? 0 : stroke.getWidths().getLeft();
-        // 获取左侧宽 = 内边距左 + 边框左 + (内容长度 + 1) * 字符宽
-        double leftW = insetsLeft + borderW + (lLen + 1) * fSize;
+        // // 获取内边距左
+        // Insets insets = this.getContentPadding();
+        // double insetsLeft = insets == null ? 0 : insets.getLeft();
+        // 获取行号宽
+        Node leftSide = flow.lookup(".left-side");
+        double leftSideW = leftSide == null ? 0 : NodeUtil.getWidth(leftSide);
+        // // 获取边框宽
+        // Border border = this.getBorder();
+        // BorderStroke stroke = border == null ? null : CollectionUtil.getFirst(border.getStrokes());
+        // double borderW = stroke == null ? 0 : stroke.getWidths().getLeft();
+        // 获取左侧宽 = 行号宽 + 内容长度 * 字符宽
+        double leftW = leftSideW + lLen * fSize;
         double x = point2D.getX() + caretInfo.getMaxX() + leftW;
         double y = point2D.getY() + caretInfo.getMaxY();
         BoundingBox box = new BoundingBox(x, y, fSize, fSize);
@@ -679,7 +705,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             caretPosition = len;
         }
         this.selectRange(caretPosition, caretPosition);
-        super.requestFocus();
+        // super.requestFocus();
     }
 
     /**
@@ -719,8 +745,19 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param end   结束位置
      */
     public void deleteText(int start, int end) {
+        this.deleteText(start, end, true);
+    }
+
+    /**
+     * 删除内容
+     *
+     * @param start     开始位置
+     * @param end       结束位置
+     * @param allowUndo 允许撤销
+     */
+    public void deleteText(int start, int end, boolean allowUndo) {
         try {
-            this.replaceText(start, end, "");
+            this.replaceText(start, end, "", allowUndo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1202,5 +1239,34 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getSelectedText() {
+        SelectionSegment segment = this.getSelection();
+        if (segment == null) {
+            return "";
+        }
+        if (segment.getMin().equals(segment.getMax())) {
+            return "";
+        }
+        TextPos min = segment.getMin();
+        TextPos max = segment.getMax();
+        StringBuilder builder = new StringBuilder();
+        for (int i = min.index(); i <= max.index(); i++) {
+            String text = this.getPlainText(i);
+            if (i == min.index() && i == max.index()) {
+                text = text.substring(min.offset(), max.offset());
+            } else if (i == min.index()) {
+                text = text.substring(min.offset());
+            } else if (i == max.index()) {
+                text = text.substring(0, max.offset());
+            }
+            builder.append(System.lineSeparator()).append(text);
+        }
+        if (builder.isEmpty()) {
+            return "";
+        }
+        return builder.substring(1);
+
     }
 }

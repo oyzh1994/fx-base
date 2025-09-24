@@ -29,7 +29,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import jfx.incubator.scene.control.richtext.RichTextArea;
 
 import java.io.InputStream;
 import java.util.Collections;
@@ -250,6 +249,12 @@ public class EditorTest extends Application {
         });
         hBox4.addChild(btn_45);
 
+        Button btn_46 = new Button("获取选中文本");
+        btn_46.setOnAction(event -> {
+            MessageBox.info(editor.getSelectedText());
+        });
+        hBox4.addChild(btn_46);
+
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
         vBox.addChild(hBox3);
@@ -272,17 +277,18 @@ public class EditorTest extends Application {
 
         TextField textField = new TextField();
 
-        RichTextArea editor = new RichTextArea();
+        Editor editor = new Editor();
         // CodeArea editor = new CodeArea();
 
+        // EditorUtil.setupMacosIMESupport(editor);
 
         HBox hBox1 = new HBox();
-       Label label1= new Label("TextField");
+        Label label1 = new Label("TextField");
         label1.setPrefWidth(100);
         hBox1.getChildren().addAll(label1, textField);
 
         HBox hBox2 = new HBox();
-        Label label2= new Label("RichTextArea");
+        Label label2 = new Label("RichTextArea");
         label2.setPrefWidth(100);
         hBox2.getChildren().addAll(label2, editor);
 
@@ -297,6 +303,41 @@ public class EditorTest extends Application {
 
         stage.setScene(scene);
         stage.show();
+    }
+
+
+    // private static void handleChineseInput(Editor control, KeyEvent event) {
+    //     String character = event.getCharacter();
+    //     // 检查是否是中文字符
+    //     if (isChineseCharacter(character)) {
+    //
+    //         int caretPosition = control.caretPosition();
+    //         String currentText = control.getText();
+    //
+    //         // 插入中文字符到当前位置
+    //         String newText = currentText.substring(0, caretPosition) +
+    //                 character +
+    //                 currentText.substring(caretPosition);
+    //         control.setText(newText);
+    //
+    //         // 移动光标到插入位置后
+    //         control.positionCaret(caretPosition + character.length());
+    //
+    //         event.consume(); // 阻止默认处理
+    //     }
+    // }
+
+    private static boolean isChineseCharacter(String str) {
+        if (str == null || str.isEmpty()) return false;
+
+        char c = str.charAt(0);
+        // 检查字符是否在中文Unicode范围内
+        return (c >= 0x4E00 && c <= 0x9FFF) ||
+                (c >= 0x3400 && c <= 0x4DBF) ||
+                (c >= 0x20000 && c <= 0x2A6DF) ||
+                (c >= 0x2A700 && c <= 0x2B73F) ||
+                (c >= 0x2B740 && c <= 0x2B81F) ||
+                (c >= 0x2B820 && c <= 0x2CEAF);
     }
 
     public static class EditorTestStarter {
