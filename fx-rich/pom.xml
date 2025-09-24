@@ -67,6 +67,42 @@
            <version>${javafx.version}</version>
            <scope>provided</scope>
        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jspecify/jspecify -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>${jspecify.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.github.mkpaz/tm4javafx -->
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>tm4javafx</artifactId>
+            <version>${tm4javafx.version}</version>
+        </dependency>
+
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/dev.secondsun/org.eclipse.tm4e.core &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>dev.secondsun</groupId> -->
+        <!--     <artifactId>org.eclipse.tm4e.core</artifactId> -->
+        <!--     <version>0.5.0</version> -->
+        <!-- </dependency> -->
+
+        <!-- &lt;!&ndash; 用于解析TextMate语法的库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.github.ebrepo</groupId> -->
+        <!--     <artifactId>textmate-core</artifactId> -->
+        <!--     <version>1.0.0</version> &lt;!&ndash; 请检查最新版本 &ndash;&gt; -->
+        <!-- </dependency> -->
+
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/com.jetbrains.intellij.textmate/textmate &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.jetbrains.intellij.textmate</groupId> -->
+        <!--     <artifactId>textmate</artifactId> -->
+        <!--     <version>252.25557.178</version> -->
+        <!--     <scope>runtime</scope> -->
+        <!-- </dependency> -->
     </dependencies>
 
 </project>

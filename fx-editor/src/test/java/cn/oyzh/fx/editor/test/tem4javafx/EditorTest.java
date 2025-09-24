@@ -23,8 +23,13 @@ import javafx.application.Application;
 import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import jfx.incubator.scene.control.richtext.RichTextArea;
 
 import java.io.InputStream;
 import java.util.Collections;
@@ -46,7 +51,8 @@ public class EditorTest extends Application {
     public void start(Stage stage) throws Exception {
         ThemeManager.apply(Themes.PRIMER_LIGHT);
         // ThemeManager.apply(Themes.PRIMER_DARK);
-        test1(stage);
+        // test1(stage);
+        test2(stage);
         stage.setTitle("编辑器测试");
     }
 
@@ -250,6 +256,38 @@ public class EditorTest extends Application {
         vBox.addChild(hBox4);
         vBox.addChild(editor);
         // vBox.addChild(editor1);
+
+
+        Scene scene = new Scene(vBox);
+
+        stage.setWidth(800);
+        stage.setHeight(600);
+
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void test2(Stage stage) {
+        VBox vBox = new VBox();
+
+        TextField textField = new TextField();
+
+        RichTextArea editor = new RichTextArea();
+        // CodeArea editor = new CodeArea();
+
+
+        HBox hBox1 = new HBox();
+       Label label1= new Label("TextField");
+        label1.setPrefWidth(100);
+        hBox1.getChildren().addAll(label1, textField);
+
+        HBox hBox2 = new HBox();
+        Label label2= new Label("RichTextArea");
+        label2.setPrefWidth(100);
+        hBox2.getChildren().addAll(label2, editor);
+
+        vBox.getChildren().add(hBox1);
+        vBox.getChildren().add(hBox2);
 
 
         Scene scene = new Scene(vBox);

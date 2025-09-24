@@ -647,6 +647,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openConnect(), new OpenSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem openSFTP(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openSFTP(), new OpenSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem clearData(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearData(), new ClearSVGGlyph(iconSize), action);
     }

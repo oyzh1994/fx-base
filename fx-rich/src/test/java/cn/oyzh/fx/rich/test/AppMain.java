@@ -1,9 +1,11 @@
 package cn.oyzh.fx.rich.test;
 
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.fxmisc.richtext.CodeArea;
 
 
 /**
@@ -18,12 +20,12 @@ public class AppMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-       ThemeManager.apply(Themes.PRIMER_LIGHT);
-       Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
 //        test1(stage);
         // test2(stage);
         // test3(stage);
-       // test4(stage);
+        // test4(stage);
 //        test5(stage);
 //        test6(stage);
     }
@@ -283,5 +285,18 @@ public class AppMain extends Application {
 //        stage.show();
 //
 //    }
+
+    public void test7(Stage stage) {
+
+        FXHBox hBox = new FXHBox();
+
+        CodeArea codeArea = new CodeArea();
+        codeArea.appendText("0123456789\n");
+        codeArea.appendText("0123456789");
+
+
+        stage.show();
+
+    }
 
 }
