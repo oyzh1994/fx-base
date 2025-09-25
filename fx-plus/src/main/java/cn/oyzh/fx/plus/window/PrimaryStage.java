@@ -28,4 +28,10 @@ public class PrimaryStage implements StageAdapter, OpacityAdapter {
     public Stage stage() {
         return this.stage;
     }
+
+    @Override
+    public void onWindowClosed() {
+        // StageAdapter.super.onWindowClosed();
+        // TODO: 什么都不做
+    }
 }

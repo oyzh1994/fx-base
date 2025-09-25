@@ -51,10 +51,10 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     @Override
     default void onWindowClosed() {
         try {
-            // 主页面不处理
-            if (this instanceof PrimaryStage) {
-                return;
-            }
+            // // 主页面不处理
+            // if (this instanceof PrimaryStage) {
+            //     return;
+            // }
             Stage stage = this.stage();
             WindowAdapter.super.onWindowClosed();
             DragUtil.clearDragFile(this.scene());
