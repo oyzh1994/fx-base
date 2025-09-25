@@ -50,8 +50,8 @@ public class EditorTest extends Application {
     public void start(Stage stage) throws Exception {
         ThemeManager.apply(Themes.PRIMER_LIGHT);
         // ThemeManager.apply(Themes.PRIMER_DARK);
-        // test1(stage);
-        test2(stage);
+        test1(stage);
+        // test2(stage);
         stage.setTitle("编辑器测试");
     }
 
@@ -149,7 +149,7 @@ public class EditorTest extends Application {
         // 替换
         Button btn_31 = new Button("替换");
         btn_31.setOnAction(event -> {
-            editor.replaceText(5, 10, "test");
+            editor.replaceText(5, 9, "test");
         });
         hBox3.addChild(btn_31);
         // 追加

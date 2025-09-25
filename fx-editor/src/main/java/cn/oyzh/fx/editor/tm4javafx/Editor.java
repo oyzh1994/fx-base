@@ -592,17 +592,17 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param allowUndo 是否允许撤销
      */
     public void replaceText(int start, int end, String content, boolean allowUndo) {
-        if (content != null) {
-            try {
-                int length = this.getLength();
-                if (end > length) {
-                    end = length;
-                }
-                EditorTextPos pos = this.getPosByIndex(start, end);
-                super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        if (start > end) {
+            return;
+        }
+        if (content == null) {
+            return;
+        }
+        try {
+            EditorTextPos pos = this.getPosByIndex(start, end);
+            super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
