@@ -8,6 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.InputMethodRequests;
 import javafx.scene.input.InputMethodTextRun;
+import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.StyledInput;
 
@@ -32,6 +33,11 @@ public class EditorUtil {
         AtomicReference<Integer> lastComposedStart = new AtomicReference<>();
         // 输入法文本变更事件
         editor.addEventFilter(InputMethodEvent.INPUT_METHOD_TEXT_CHANGED, event -> {
+            // 删除选中内容
+            if (editor.isSelectedText()) {
+                SelectionSegment segment = editor.getSelection();
+                editor.deleteText(segment.getMin(), segment.getMax());
+            }
             // 删除未提交内容
             Integer end = lastComposedEnd.get();
             Integer start = lastComposedStart.get();

@@ -741,6 +741,16 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param start 开始位置
      * @param end   结束位置
      */
+    public void deleteText(TextPos start, TextPos end) {
+        this.replaceText(start, end, "", true);
+    }
+
+    /**
+     * 删除内容
+     *
+     * @param start 开始位置
+     * @param end   结束位置
+     */
     public void deleteText(int start, int end) {
         this.deleteText(start, end, true);
     }
