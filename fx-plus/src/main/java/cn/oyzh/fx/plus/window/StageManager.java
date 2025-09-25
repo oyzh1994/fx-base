@@ -222,7 +222,11 @@ public class StageManager {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
         }
         // 获取舞台
-        StageAdapter stage = getStage(clazz);
+        StageAdapter stage = null;
+        // 如果不是多实例，则获取当前实例
+        if (!attribute.multipliable()) {
+            stage = getStage(clazz);
+        }
         // 创建舞台
         if (stage == null) {
             AtomicReference<StageAdapter> ref = new AtomicReference<>();
