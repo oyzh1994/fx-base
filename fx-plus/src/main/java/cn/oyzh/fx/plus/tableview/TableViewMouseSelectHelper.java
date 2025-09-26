@@ -118,9 +118,7 @@ public class TableViewMouseSelectHelper {
         AtomicReference<Double> startX = new AtomicReference<>(0D);
         AtomicReference<Double> startY = new AtomicReference<>(0D);
 
-        /**
-         * 清除函数
-         */
+        // 清除函数
         Runnable clearFunc = () -> {
             startX.set(0d);
             startY.set(0d);
@@ -181,7 +179,7 @@ public class TableViewMouseSelectHelper {
 
         // 监听鼠标离开事件
         tableView.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
-            clearFunc.run();
+            this.clearRectangle();
         });
     }
 
