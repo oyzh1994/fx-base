@@ -3,6 +3,7 @@ package cn.oyzh.fx.editor.tm4javafx;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
+import jfx.incubator.scene.control.richtext.model.CodeTextModel;
 import jfx.incubator.scene.control.richtext.model.RichParagraph;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import org.jspecify.annotations.Nullable;
@@ -235,5 +236,8 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         return tokens;
     }
 
-
+    @Override
+    public RichParagraph createRichParagraph(CodeTextModel model, int index) {
+        return super.createRichParagraph(model, index);
+    }
 }

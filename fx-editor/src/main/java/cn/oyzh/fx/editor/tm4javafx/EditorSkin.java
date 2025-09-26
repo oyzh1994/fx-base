@@ -1,6 +1,5 @@
 package cn.oyzh.fx.editor.tm4javafx;
 
-import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
@@ -55,24 +54,59 @@ public class EditorSkin extends CodeAreaSkin {
         return null;
     }
 
+    /**
+     * 获取光标信息
+     *
+     * @return 光标信息
+     */
     public CaretInfo getCaretInfo() {
         VFlow vFlow = this.getVFlow();
         return vFlow == null ? null : vFlow.getCaretInfo();
     }
 
+    /**
+     * 获取光标组件
+     *
+     * @return 组件
+     */
     public Path getCaretPath() {
         VFlow vFlow = this.getVFlow();
-        return ReflectUtil.getFieldValue(vFlow, "caretPath");
+        return (Path) vFlow.lookup("Path.caret");
+        // Node node = vFlow.lookup("Path.caret");
+        // if (node instanceof Path path) {
+        //     return path;
+        // }
+        // return ReflectUtil.getFieldValue(vFlow, "caretPath");
     }
 
+    /**
+     * 获取选区高亮组件
+     *
+     * @return 组件
+     */
     public Path getSelectionHighlight() {
         VFlow vFlow = this.getVFlow();
-        return ReflectUtil.getFieldValue(vFlow, "selectionHighlight");
+        return (Path) vFlow.lookup("Path.selection-highlight");
+        // Node node = vFlow.lookup("Path.selection-highlight");
+        // if (node instanceof Path path) {
+        //     return path;
+        // }
+        // return ReflectUtil.getFieldValue(vFlow, "selectionHighlight");
     }
 
+    /**
+     * 获取光标行组件
+     *
+     * @return 组件
+     */
     public Path getCaretLineHighlight() {
         VFlow vFlow = this.getVFlow();
-        return ReflectUtil.getFieldValue(vFlow, "caretLineHighlight");
+        return (Path) vFlow.lookup("Path.caret-line");
+        // Node node = vFlow.lookup("Path.caret-line");
+        // if (node instanceof Path path) {
+        //     return path;
+        // }
+        // return ReflectUtil.getFieldValue(vFlow, "caretLineHighlight");
     }
 
     /**

@@ -2,7 +2,6 @@ package cn.oyzh.fx.editor.test.tem4javafx;
 
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
-import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.tm4javafx.Editor;
 import cn.oyzh.fx.editor.tm4javafx.EditorFormatTypeComboBox;
@@ -19,19 +18,27 @@ import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.FXUtil;
+import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import jfx.incubator.scene.control.richtext.RichTextArea;
+import jfx.incubator.scene.control.richtext.TextPos;
+import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
+import jfx.incubator.scene.control.richtext.model.StyledTextModel;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -52,6 +59,7 @@ public class EditorTest extends Application {
         // ThemeManager.apply(Themes.PRIMER_DARK);
         test1(stage);
         // test2(stage);
+        // test3(stage);
         stage.setTitle("编辑器测试");
     }
 
@@ -96,12 +104,26 @@ public class EditorTest extends Application {
         FXTextField text_32 = new FXTextField();
         text_32.setPromptText("提示词");
         text_32.addTextChangeListener((observableValue, s, t1) -> {
-            if (t1.contains(",")) {
-                editor.setPrompts(Set.of(t1.split(",")));
-            } else if (StringUtil.isBlank(t1)) {
-                editor.setPrompts(Collections.emptySet());
-            } else {
-                editor.setPrompts(Set.of(t1));
+            // if (t1.contains(",")) {
+            //     editor.setPrompts(Set.of(t1.split(",")));
+            // } else if (StringUtil.isBlank(t1)) {
+            //     editor.setPrompts(Collections.emptySet());
+            // } else {
+            //     editor.setPrompts(Set.of(t1));
+            // }
+
+
+            Set<Node> nodes= editor.lookupAll("*");
+
+
+            for (Node node : nodes) {
+                if(node instanceof Text text){
+                    System.out.println(text.getText());
+                }else if(node instanceof VFlow vFlow){
+
+                }else if(node instanceof TextFlow textFlow){
+
+                }
             }
         });
         hBox.addChild(text_32);
@@ -255,6 +277,17 @@ public class EditorTest extends Application {
         });
         hBox4.addChild(btn_46);
 
+        Button btn_47 = new Button("设置文字背景");
+        btn_47.setOnAction(event -> {
+            TextPos start = TextPos.ofLeading(0, 0);
+            TextPos end = TextPos.ofLeading(0, 10);
+            // StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
+            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
+            StyledTextModel model = editor.getModel();
+            model.applyStyle(start, end, attributeMap, true);
+        });
+        hBox4.addChild(btn_47);
+
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
         vBox.addChild(hBox3);
@@ -305,40 +338,39 @@ public class EditorTest extends Application {
         stage.show();
     }
 
+    private void test3(Stage stage) {
+        FXVBox vBox = new FXVBox();
+        vBox.setFlexWidth("100%");
+        vBox.setFlexHeight("100%");
 
-    // private static void handleChineseInput(Editor control, KeyEvent event) {
-    //     String character = event.getCharacter();
-    //     // 检查是否是中文字符
-    //     if (isChineseCharacter(character)) {
-    //
-    //         int caretPosition = control.caretPosition();
-    //         String currentText = control.getText();
-    //
-    //         // 插入中文字符到当前位置
-    //         String newText = currentText.substring(0, caretPosition) +
-    //                 character +
-    //                 currentText.substring(caretPosition);
-    //         control.setText(newText);
-    //
-    //         // 移动光标到插入位置后
-    //         control.positionCaret(caretPosition + character.length());
-    //
-    //         event.consume(); // 阻止默认处理
-    //     }
-    // }
+        RichTextArea editor = new RichTextArea();
 
-    private static boolean isChineseCharacter(String str) {
-        if (str == null || str.isEmpty()) return false;
+        FXHBox hBox = new FXHBox();
 
-        char c = str.charAt(0);
-        // 检查字符是否在中文Unicode范围内
-        return (c >= 0x4E00 && c <= 0x9FFF) ||
-                (c >= 0x3400 && c <= 0x4DBF) ||
-                (c >= 0x20000 && c <= 0x2A6DF) ||
-                (c >= 0x2A700 && c <= 0x2B73F) ||
-                (c >= 0x2B740 && c <= 0x2B81F) ||
-                (c >= 0x2B820 && c <= 0x2CEAF);
+        Button btn_47 = new Button("设置文字背景");
+        btn_47.setOnAction(event -> {
+            TextPos start = TextPos.ofLeading(0, 0);
+            TextPos end = TextPos.ofLeading(0, 5);
+            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
+            // StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
+            StyledTextModel model = editor.getModel();
+            model.applyStyle(start, end, attributeMap, false);
+        });
+        hBox.addChild(btn_47);
+
+        vBox.addChild(hBox);
+        vBox.addChild(editor);
+
+        Scene scene = new Scene(vBox);
+
+        stage.setWidth(800);
+        stage.setHeight(600);
+
+        stage.setScene(scene);
+        stage.show();
     }
+
+
 
     public static class EditorTestStarter {
 
