@@ -13,6 +13,7 @@ import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
@@ -62,8 +63,27 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         this.setFixedCellSize(30);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         this.initEvenListener();
+        this.setReorderable(false);
 //        this.setFocusTraversable(false);
 //        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+
+        // 监听列
+        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
+            c.next();
+            if (c.wasAdded() || c.wasReplaced()) {
+                c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
+            }
+        });
+    }
+
+    private boolean reorderable;
+
+    public void setReorderable(boolean reorderable) {
+        this.reorderable = reorderable;
+    }
+
+    public boolean isReorderable() {
+        return reorderable;
     }
 
     private Runnable ctrlSAction;
