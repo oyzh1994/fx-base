@@ -14,7 +14,7 @@ public class SwingFileChooser extends JFileChooser {
         // 在事件分发线程中运行 GUI 代码
         SwingUtilities.invokeLater(() -> {
             if (this.getCurrentDirectory() == null) {
-                this.setCurrentDirectory(FXChooser.DESKTOP_DIR);
+                this.setCurrentDirectory(FXChooser.HOME_DIR);
             }
             this.setMultiSelectionEnabled(true);
             int result = this.showOpenDialog(null);

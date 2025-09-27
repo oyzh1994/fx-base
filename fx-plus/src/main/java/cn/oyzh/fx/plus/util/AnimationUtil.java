@@ -21,7 +21,6 @@ import javafx.util.Duration;
  * @author oyzh
  * @since 2023/3/13
  */
-
 public class AnimationUtil {
 
     /**

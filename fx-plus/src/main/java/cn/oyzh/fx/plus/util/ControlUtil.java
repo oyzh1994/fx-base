@@ -26,7 +26,6 @@ import javafx.scene.text.Text;
  * @author oyzh
  * @since 2022/1/19
  */
-
 public class ControlUtil {
 
     /**

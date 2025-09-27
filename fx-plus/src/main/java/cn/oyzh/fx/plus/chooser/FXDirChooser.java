@@ -26,7 +26,7 @@ public class FXDirChooser {
     /**
      * 初始文件夹
      */
-    private File initDir = FXChooser.DESKTOP_DIR;
+    private File initDir = FXChooser.HOME_DIR;
 
     /**
      * 设置初始化目录
@@ -64,7 +64,7 @@ public class FXDirChooser {
         if (this.initDir != null) {
             chooser.setInitialDirectory(this.initDir);
         } else {
-            chooser.setInitialDirectory(FXChooser.DESKTOP_DIR);
+            chooser.setInitialDirectory(FXChooser.HOME_DIR);
         }
         return chooser;
     }

@@ -6,7 +6,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
 
 /**
- * 文本组件适配器
+ * 文本适配器
  *
  * @author oyzh
  * @since 2023/1/29

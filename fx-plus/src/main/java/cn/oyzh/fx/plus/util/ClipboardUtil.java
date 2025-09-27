@@ -14,7 +14,6 @@ import java.awt.datatransfer.StringSelection;
  * @author oyzh
  * @since 2023/11/22
  */
-
 public class ClipboardUtil {
 
     /**

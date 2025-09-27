@@ -12,7 +12,6 @@ import java.util.concurrent.Executors;
  * @author oyzh
  * @since 2023/12/01
  */
-
 public class BackgroundService {
 
     /**

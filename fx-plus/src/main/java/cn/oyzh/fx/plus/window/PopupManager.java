@@ -12,7 +12,6 @@ import javafx.stage.Window;
  * @author oyzh
  * @since 2024/07/12
  */
-
 public class PopupManager {
 
     /**

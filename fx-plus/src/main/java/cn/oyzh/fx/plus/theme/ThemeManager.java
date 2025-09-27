@@ -27,7 +27,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author oyzh
  * @since 2023/12/18
  */
-
 public class ThemeManager {
 
     static {

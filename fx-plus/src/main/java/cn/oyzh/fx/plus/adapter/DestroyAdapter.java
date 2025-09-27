@@ -7,7 +7,7 @@ import javafx.scene.control.MenuItem;
 
 
 /**
- * 文本组件适配器
+ * 可销毁适配器
  *
  * @author oyzh
  * @since 2023/1/29

@@ -5,7 +5,7 @@ import javafx.event.EventTarget;
 import javafx.scene.input.KeyCombination;
 
 /**
- * 提示标题
+ * 提示适配器
  *
  * @author oyzh
  * @since 2023/3/15

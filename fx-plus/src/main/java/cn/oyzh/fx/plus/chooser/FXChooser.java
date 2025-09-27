@@ -16,7 +16,7 @@ public class FXChooser {
     /**
      * 桌面路径
      */
-    public static final File DESKTOP_DIR = FileSystemView.getFileSystemView().getHomeDirectory();
+    public static final File HOME_DIR = FileSystemView.getFileSystemView().getHomeDirectory();
 
     /**
      * 获取类型过滤器
@@ -115,12 +115,17 @@ public class FXChooser {
         return new FileExtensionFilter(I18nHelper.gifType(), "*.gif");
     }
 
+    /**
+     * 获取下载路径
+     *
+     * @return 结果
+     */
     public static String getDownloadDirectory() {
         File file = new File(SystemUtil.userHome(), "Downloads");
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }
-        return DESKTOP_DIR.getPath();
+        return HOME_DIR.getPath();
     }
 
     /**
@@ -133,6 +138,19 @@ public class FXChooser {
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }
-        return DESKTOP_DIR.getPath();
+        return HOME_DIR.getPath();
+    }
+
+    /**
+     * 获取文档路径
+     *
+     * @return 结果
+     */
+    public static String getDocumentsDirectory() {
+        File file = new File(SystemUtil.userHome(), "Documents");
+        if (file.exists() && file.isDirectory()) {
+            return file.getPath();
+        }
+        return HOME_DIR.getPath();
     }
 }

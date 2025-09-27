@@ -4,6 +4,7 @@ package cn.oyzh.fx.terminal;
  * @author oyzh
  * @since 2024-09-29
  */
+@Deprecated
 public class TerminalConst {
 
     @Deprecated

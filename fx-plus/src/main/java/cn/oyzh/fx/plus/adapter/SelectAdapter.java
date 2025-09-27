@@ -19,6 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * 选择组件适配器
  *
+ * @author oyzh
+ * @since 2023/4/11
  * @param <T> 数据类型
  */
 public interface SelectAdapter<T> extends PropAdapter {

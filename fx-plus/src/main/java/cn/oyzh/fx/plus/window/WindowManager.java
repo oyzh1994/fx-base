@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
  * @author oyzh
  * @since 2024/07/12
  */
-
 public class WindowManager {
 
     /**

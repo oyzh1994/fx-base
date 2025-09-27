@@ -6,12 +6,11 @@ import javafx.stage.Window;
 import java.io.File;
 
 /**
- * 文件选择器
+ * 文件夹选择器
  *
  * @author oyzh
  * @since 2020/10/21
  */
-
 public class DirChooserHelper {
 
     /**

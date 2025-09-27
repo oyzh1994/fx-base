@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
 
 /**
+ * 滚动条适配器
  *
  * @author oyzh
  * @since 2025-09-12

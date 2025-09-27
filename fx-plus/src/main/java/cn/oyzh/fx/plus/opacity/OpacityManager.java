@@ -13,7 +13,6 @@ import java.util.List;
  * @author oyzh
  * @since 2024/04/19
  */
-
 public class OpacityManager {
 
     /**

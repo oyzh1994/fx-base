@@ -11,7 +11,6 @@ import javafx.scene.input.MouseEvent;
  * @author oyzh
  * @since 2023/2/28
  */
-
 public class MouseUtil {
 
     public static double getMouseX() {
