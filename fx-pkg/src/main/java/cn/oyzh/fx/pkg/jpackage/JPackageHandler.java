@@ -3,7 +3,7 @@ package cn.oyzh.fx.pkg.jpackage;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.thread.ProcessExecBuilder;
+import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackCost;
@@ -97,9 +97,16 @@ public class JPackageHandler implements PackHandler {
         JulLog.info("JPackage cmd:{}", "\n" + cmdStr);
         // 执行jpackage
         // RuntimeUtil.execAndWait(cmdStr);
-        ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
-        // builder.timeout(30_000);
-        ProcessExecResult result = builder.exec();
+        //ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+
+
+        //builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        //builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+
+
+        //builder.directory(jdkPath + "/bin");
+        //builder.timeout(60_000);
+        ProcessExecResult result = RuntimeUtil.execForResult(new String[]{cmdStr});
         JulLog.info("JPackage result:{}", result);
         if (!result.isSuccess()) {
             JulLog.error("JPackage error:{}", result.getError());
