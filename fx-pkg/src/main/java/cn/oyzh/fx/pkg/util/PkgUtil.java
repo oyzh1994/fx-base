@@ -8,6 +8,7 @@ import cn.hutool.extra.compress.archiver.Archiver;
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -15,6 +16,8 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author oyzh
@@ -222,6 +225,7 @@ public class PkgUtil {
      * @param config jpackage配置
      * @return jlink命令
      */
+    @Deprecated
     public static String getJPackageCMD(JPackageConfig config) {
         String cmdStr = "jpackage";
         if (config.isVerbose()) {
@@ -283,6 +287,85 @@ public class PkgUtil {
     }
 
     /**
+     * 获取jpackage命令
+     *
+     * @param config jpackage配置
+     * @return jlink命令
+     */
+    public static String[] getJPackageCMD1(JPackageConfig config) {
+        List<String> cmdList = new ArrayList<>();
+        cmdList.add("jpackage");
+        if (config.isVerbose()) {
+            cmdList.add("--verbose");
+        }
+        if (config.getVendor() != null) {
+            cmdList.add("--vendor");
+            cmdList.add(config.getVendor());
+        }
+        if (CollectionUtil.isNotEmpty(config.getJavaOptions())) {
+            for (String javaOption : config.getJavaOptions()) {
+                String[] options = javaOption.split(" ");
+                for (String option : options) {
+                    cmdList.add("--java-options");
+                    cmdList.add(option);
+                }
+            }
+        }
+        if (config.getDescription() != null) {
+            cmdList.add("--description");
+            cmdList.add( config.getDescription() );
+        }
+        if (config.getIcon() != null) {
+            cmdList.add("--icon");
+            cmdList.add(config.getIcon());
+        }
+        if (config.getInput() != null) {
+            cmdList.add("--input");
+            cmdList.add(config.getInput());
+        }
+        if (config.getMainJar() != null) {
+            cmdList.add("--main-jar");
+            cmdList.add(config.getMainJar());
+        }
+        if (config.getName() != null) {
+            cmdList.add("--name");
+            cmdList.add(config.getName());
+        }
+        if (config.getType() != null) {
+            cmdList.add("--type");
+            cmdList.add(config.getType());
+        }
+        if (config.getAppVersion() != null) {
+            cmdList.add("--app-version");
+            cmdList.add(config.getAppVersion());
+        }
+        if (config.getRuntimeImage() != null) {
+            cmdList.add("--runtime-image");
+            cmdList.add(config.getRuntimeImage());
+        }
+        if (OSUtil.isWindows()) {
+            if (config.isWinMenu()) {
+                cmdList.add("--win-menu");
+            }
+            if (config.isWinShortcut()) {
+                cmdList.add("--win-shortcut");
+            }
+            if (config.isWinDirChooser()) {
+                cmdList.add("--win-dir-chooser");
+            }
+        }
+        if (OSUtil.isMacOS()) {
+            if (config.getMacPackageIdentifier() != null) {
+                cmdList.add("--mac-package-identifier");
+                cmdList.add(config.getMacPackageIdentifier());
+            }
+        }
+        cmdList.add("--dest");
+        cmdList.add(config.getDest());
+        return ArrayUtil.toArray(cmdList, String.class);
+    }
+
+    /**
      * 获取jdk执行命令
      *
      * @param jdkPath jdk目录
@@ -295,5 +378,17 @@ public class PkgUtil {
             return cmd;
         }
         return FileNameUtil.concat(jdkPath, "bin", cmd);
+    }
+
+    /**
+     * 获取jdk执行命令
+     *
+     * @param jdkPath jdk目录
+     * @param cmd     命令
+     * @return 执行命令
+     */
+    public static String[] getJDKExecCMD(String jdkPath, String[] cmd) {
+        cmd[0] = getJDKExecCMD(jdkPath, cmd[0]);
+        return cmd;
     }
 }

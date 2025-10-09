@@ -92,21 +92,24 @@ public class JPackageHandler implements PackHandler {
         if (FileUtil.exist(packConfig.getDest())) {
             FileUtil.del(packConfig.getDest());
         }
-        String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
-        cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+        // String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
+        // cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+        String[] cmd = PkgUtil.getJPackageCMD1(jPackageConfig);
+        cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
+        String cmdStr = StringUtil.join(" ", cmd);
         JulLog.info("JPackage cmd:{}", "\n" + cmdStr);
         // 执行jpackage
         // RuntimeUtil.execAndWait(cmdStr);
-        //ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+        // ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
 
 
-        //builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
-        //builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+        // builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        // builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
 
 
-        //builder.directory(jdkPath + "/bin");
-        //builder.timeout(60_000);
-        ProcessExecResult result = RuntimeUtil.execForResult(new String[]{cmdStr});
+        // builder.directory(jdkPath + "/bin");
+        // builder.timeout(60_000);
+        ProcessExecResult result = RuntimeUtil.execForResult(cmd);
         JulLog.info("JPackage result:{}", result);
         if (!result.isSuccess()) {
             JulLog.error("JPackage error:{}", result.getError());
