@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Tab;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -60,14 +61,20 @@ public interface ThemeAdapter extends PropAdapter {
      */
     default void changeTheme(ThemeStyle style) {
         if (this.isEnableTheme() && style != null) {
-            switch (this) {
-                case Canvas node -> this.handleStyle(node, style);
-                case Parent node -> this.handleStyle(node, style);
-                case Popup popup -> this.handleStyle(popup.getContent(), style);
-                case StageAdapter wrapper -> this.handleStyle(wrapper.root(), style);
-                case Stage stage -> this.handleStyle(stage.getScene().getRoot(), style);
-                default -> {
-                }
+            if (this instanceof Canvas node) {
+                this.handleStyle(node, style);
+            // } else if (NodeUtil.isSwingImport && this instanceof javafx.embed.swing.SwingNode node) {
+            //     this.handleStyle(node, style);
+            } else if (this instanceof Parent node) {
+                this.handleStyle(node, style);
+            } else if (this instanceof Popup node) {
+                this.handleStyle(node.getContent(), style);
+            } else if (this instanceof Tab node) {
+                this.handleStyle(node.getContent(), style);
+            } else if (this instanceof StageAdapter node) {
+                this.handleStyle(node.root(), style);
+            } else if (this instanceof Stage node) {
+                this.handleStyle(node.getScene().getRoot(), style);
             }
         }
     }
@@ -104,5 +111,23 @@ public interface ThemeAdapter extends PropAdapter {
      */
     private void handleStyle(Node node, ThemeStyle style) {
         style.handleStyle(node);
+    }
+
+    // /**
+    //  * 处理样式
+    //  *
+    //  * @param node  节点
+    //  * @param style 主题风格
+    //  */
+    // private void handleStyle(javafx.embed.swing.SwingNode node, ThemeStyle style) {
+    //     style.handleStyle(node);
+    //     cn.oyzh.fx.plus.swing.SwingUtil.applyTheme(node.getContent());
+    // }
+
+    /**
+     * 应用主题
+     */
+    default void applyTheme(){
+        this.changeTheme(ThemeManager.currentTheme());
     }
 }

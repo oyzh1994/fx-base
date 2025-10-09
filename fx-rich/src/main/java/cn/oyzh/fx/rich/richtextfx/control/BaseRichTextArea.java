@@ -1,7 +1,7 @@
 package cn.oyzh.fx.rich.richtextfx.control;
 
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.MD5Util;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -22,8 +22,12 @@ import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.StyleUtil;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.RichLineNumberFactory;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.css.Styleable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
@@ -39,19 +43,17 @@ import javafx.scene.text.Text;
 import org.fxmisc.richtext.CaretNode;
 import org.fxmisc.richtext.GenericStyledArea;
 import org.fxmisc.richtext.InlineCssTextArea;
-import org.fxmisc.richtext.LineNumberFactory;
-import org.fxmisc.richtext.model.TwoDimensional;
 import org.fxmisc.richtext.util.UndoUtils;
 import org.reactfx.value.Val;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
@@ -62,6 +64,7 @@ import java.util.regex.Pattern;
  * @author oyzh
  * @since 2023/9/28
  */
+@Deprecated
 public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, AreaAdapter, I18nAdapter, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
@@ -71,10 +74,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     /**
      * 高亮文本
      */
-    private String highlightText;
+    private StringProperty highlightTextProperty;
 
     public String getHighlightText() {
-        return highlightText;
+        return this.highlightTextProperty == null ? null : this.highlightTextProperty.get();
     }
 
     /**
@@ -83,8 +86,14 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * @param highlightText 高亮文本
      */
     public void setHighlightText(String highlightText) {
-        this.highlightText = highlightText;
-        this.initTextStyle();
+        this.highlightTextProperty().setValue(highlightText);
+    }
+
+    public StringProperty highlightTextProperty() {
+        if (this.highlightTextProperty == null) {
+            this.highlightTextProperty = new SimpleStringProperty();
+        }
+        return this.highlightTextProperty;
     }
 
     /**
@@ -93,7 +102,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * @return 高亮正则模式
      */
     protected Pattern highlightPattern() {
-        return Pattern.compile(this.highlightText);
+        return Pattern.compile(this.getHighlightText(), Pattern.CASE_INSENSITIVE);
     }
 
     @Override
@@ -111,7 +120,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 
     @Override
     public void setFontSize(double fontSize) {
-        NodeUtil.replaceStyle(this, "-fx-font-size", fontSize + "px");
+        StyleUtil.replaceStyle(this, "-fx-font-size", fontSize + "px");
     }
 
 //    @Override
@@ -141,34 +150,34 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 //    }
 
     /**
-     * 基础内容正则模式
+     * 提示词正则模式
      */
-    protected Pattern contentPrompts;
+    protected Pattern promptsPattern;
 
     /**
-     * 设置内容提示词
+     * 设置提示词
      *
-     * @param prompts 内容提示词列表
+     * @param prompts 提示词列表
      */
-    public void setContentPrompts(Set<String> prompts) {
+    public void setPrompts(Set<String> prompts) {
         if (prompts == null || prompts.isEmpty()) {
-            this.contentPrompts = null;
+            this.promptsPattern = null;
         } else {
             StringBuilder regex = new StringBuilder("\\b(");
             for (String s : prompts) {
                 regex.append(s).append("|");
             }
             regex.append(")\\b");
-            this.contentPrompts = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
+            this.promptsPattern = Pattern.compile(regex.toString().replaceFirst("\\|\\)", ")"), Pattern.CASE_INSENSITIVE);
         }
-        this.initTextStyle();
+        // this.initTextStyle();
     }
 
-    /**
-     * 初始化内容提示词
-     */
-    public void initContentPrompts() {
-    }
+    // /**
+    //  * 初始化内容提示词
+    //  */
+    // public void initContentPrompts() {
+    // }
 
     /**
      * 应用丰富操作管理器
@@ -239,10 +248,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setText(String text) {
         if (text != null) {
-//            FXUtil.runWait(() -> {
             this.clear();
             this.replaceText(text);
-//            });
         }
     }
 
@@ -380,7 +387,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * 忘记历史记录
      */
     public void forgetHistory() {
-        this.getUndoManager().forgetHistory();
+        try {
+            this.getUndoManager().forgetHistory();
+        } catch (NoSuchElementException | IllegalStateException ignored) {
+        }
     }
 //
 //    /**
@@ -402,11 +412,19 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      * 初始化文字样式
      */
     public void initTextStyle() {
-//        if (!this.checkInvalidStyle()) {
-//            return;
-//        }
+        this.initTextStyle(true);
+    }
+
+    /**
+     * 初始化文字样式
+     *
+     * @param clear 是否清除旧样式
+     */
+    public void initTextStyle(boolean clear) {
         try {
-            this.clearTextStyle();
+            if (clear) {
+                this.clearTextStyle();
+            }
             // 初始化颜色
             if (this.isEnableTheme()) {
                 Node placeholder = this.getPlaceholder();
@@ -415,9 +433,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
                 Color foregroundColor = ThemeManager.currentForegroundColor();
                 Color backgroundColor = ThemeManager.currentBackgroundColor();
                 String fgColor = FXColorUtil.getColorHex(foregroundColor);
+                // 设置前景色
+                this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
                 FXUtil.runWait(() -> {
                     // 设置光标颜色
-                    this.setStyle(0, this.getLength(), "-fx-fill:" + fgColor);
                     caretNode.setStroke(accentColor);
                     // 设置背景文字颜色
                     if (placeholder != null) {
@@ -428,28 +447,62 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
                 });
             }
             // 高亮
-            if (StringUtil.isNotBlank(this.highlightText)) {
-                String text = this.getText();
-                Matcher matcher = this.highlightPattern().matcher(text);
-                List<RichTextStyle> styles = new ArrayList<>();
-                while (matcher.find()) {
-                    styles.add(new RichTextStyle(matcher.start(), matcher.end(), "-fx-fill: #FF6600;"));
-                }
-                this.setStyles(styles);
-            }
-            // 内容提示
-            if (this.contentPrompts != null) {
-                String text = this.getText();
-                Matcher matcher1 = this.contentPrompts.matcher(text);
-                List<RichTextStyle> styles = new ArrayList<>();
-                while (matcher1.find()) {
-                    styles.add(new RichTextStyle(matcher1.start(), matcher1.end(), "-fx-fill: #008B45;"));
-                }
-                this.setStyles(styles);
-                this.forgetHistory();
-            }
+            this.initHighlightStyle();
+            // 提示词
+            this.initPromptStyle();
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 初始化样式，延迟
+     */
+    public void initTextStyleDelay() {
+        FXUtil.runLater(this::initTextStyle, 500);
+    }
+
+    /**
+     * 高亮样式
+     */
+    public static final String HIGHLIGHT_STYLE = "-fx-fill: #FF6600";
+
+    /**
+     * 初始化可视区样式
+     */
+    protected void initHighlightStyle() {
+        if (StringUtil.isBlank(this.getHighlightText())) {
+            return;
+        }
+        String text = this.getText();
+        // 高亮
+        ThreadUtil.start(() -> {
+            Matcher matcher = this.highlightPattern().matcher(text);
+            while (matcher.find()) {
+                RichTextStyle style = new RichTextStyle(matcher.start(), matcher.end(), HIGHLIGHT_STYLE);
+                this.setStyle(style);
+            }
+        });
+    }
+
+    /**
+     * 提示词样式
+     */
+    public static final String PROMPT_STYLE = "-fx-fill: #008B45";
+
+    /**
+     * 初始化提示词样式
+     */
+    protected void initPromptStyle() {
+        // 内容提示
+        if (this.promptsPattern != null) {
+            String text = this.getText();
+            Matcher matcher1 = this.promptsPattern.matcher(text);
+            while (matcher1.find()) {
+                RichTextStyle style = new RichTextStyle(matcher1.start(), matcher1.end(), PROMPT_STYLE);
+                this.setStyle(style);
+            }
+            this.forgetHistory();
         }
     }
 
@@ -460,7 +513,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setStyle(RichTextStyle style) {
         if (style != null) {
-            FXUtil.runWait(() -> this.setStyle(style.start(), style.end(), style.style()));
+            this.setStyle(style.start(), style.end(), style.style());
         }
     }
 
@@ -472,10 +525,26 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
         if (to < from) {
             to = from;
         }
-        if (to > this.getLength()) {
-            to = this.getLength();
+        int len = this.getLength();
+        if (to > len) {
+            to = len;
         }
-        super.setStyle(from, to, style);
+        // TODO: 修复输入内容时，滚动条异常上滚的问题
+        FXVirtualizedScrollPane<?> scrollPane = null;
+        if (this.getParent() instanceof FXVirtualizedScrollPane<?> pane) {
+            scrollPane = pane;
+            scrollPane.setIgnoreVChanged(true);
+        }
+        this.setAutoScrollOnDragDesired(false);
+        int finalTo = to;
+        int finalFrom = from;
+        // super.setStyle(finalFrom, finalTo, style);
+        // ThreadUtil.sleep(10);
+        FXUtil.runWait(() -> super.setStyle(finalFrom, finalTo, style));
+        this.setAutoScrollOnDragDesired(true);
+        if (scrollPane != null) {
+            scrollPane.setIgnoreVChanged(false);
+        }
     }
 
     /**
@@ -485,7 +554,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
      */
     public void setStyles(List<RichTextStyle> styles) {
         if (CollectionUtil.isNotEmpty(styles)) {
-            FXUtil.runWait(() -> {
+            FXUtil.runLater(() -> {
                 for (RichTextStyle style : styles) {
                     this.setStyle(style.start(), style.end(), style.style());
                 }
@@ -512,9 +581,8 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     public void initNode() {
         this.setWrapText(true);
         this.setPickOnBounds(true);
-//        this.setFocusTraversable(false);
         this.setAutoScrollOnDragDesired(true);
-        this.setPadding(new Insets(5, 5, 5, 5));
+        this.setPadding(new Insets(5));
         Color color = ThemeManager.currentAccentColor();
         BorderStroke stroke = new BorderStroke(color, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         this.setBorder(new Border(stroke));
@@ -534,11 +602,17 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
                 ReflectUtil.setFieldValue(field, false, this);
             }
         });
+        this.highlightTextProperty().addListener((observableValue, s, t1) -> {
+            this.initTextStyle();
+        });
+        this.textProperty().addListener((observableValue, s, t1) -> {
+            this.initTextStyle();
+        });
     }
 
     @Override
     public void requestFocus() {
-        FXUtil.runWait(super::requestFocus, 1);
+        FXUtil.runLater(super::requestFocus, 1);
     }
 
     @Override
@@ -578,7 +652,9 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
             return;
         }
         int start = selection.getStart();
-        TwoDimensional.Position position = this.offsetToPosition(start, TwoDimensional.Bias.Forward);
+        Position position = this.offsetToPosition(start, Bias.Forward);
         this.showParagraphAtTop(position.getMajor());
     }
+
+
 }

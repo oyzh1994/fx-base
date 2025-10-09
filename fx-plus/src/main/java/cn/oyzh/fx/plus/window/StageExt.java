@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.opacity.OpacityAdapter;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -12,9 +13,9 @@ import javafx.stage.Window;
  * @author oyzh
  * @since 2023/10/12
  */
-public class StageExt extends Stage implements StageAdapter, OpacityAdapter {
+public class StageExt extends Stage implements StageAdapter, OpacityAdapter, ThemeAdapter {
 
-    public StageExt( StageAttribute attribute, Window owner) {
+    public StageExt(StageAttribute attribute, Window owner) {
         this.init(attribute, owner);
         this.setProp(StageManager.REF_ATTR, this);
     }

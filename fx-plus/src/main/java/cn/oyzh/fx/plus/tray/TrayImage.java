@@ -1,15 +1,15 @@
 package cn.oyzh.fx.plus.tray;
 
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageExt;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.scene.robot.Robot;
 import javafx.stage.StageStyle;
 
-import java.awt.*;
+import java.awt.Image;
+import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 
 /**
@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent;
  * @author oyzh
  * @since 2023/3/2
  */
-public class TrayImage extends TrayIcon implements ThemeAdapter {
+public class TrayImage extends TrayIcon {
 
     /**
      * 窗口
@@ -258,7 +258,9 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
         // 初始化窗口
         if (this.stage == null) {
             this.stage = StageManager.newStage(null);
-            this.stage.setScene(new Scene(this.menu));
+            Scene scene = new Scene(this.menu);
+            scene.setFill(Color.TRANSPARENT);
+            this.stage.setScene(scene);
             this.stage.setMaximized(false);
             this.stage.setResizable(false);
             this.stage.initStyle(StageStyle.TRANSPARENT);
@@ -278,6 +280,8 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
                     this.stage.setWidth(this.menu.realWidth());
                     this.stage.setHeight(this.menu.realHeight());
                     this.stage.setAlwaysOnTop(true);
+                    this.stage.toFront();
+                    this.stage.requestFocus();
                 }
             });
             // 隐藏窗口的任务栏图标
@@ -294,11 +298,11 @@ public class TrayImage extends TrayIcon implements ThemeAdapter {
         }
     }
 
-    @Override
-    public void changeTheme(ThemeStyle style) {
-        ThemeAdapter.super.changeTheme(style);
-        if (this.menu != null) {
-            this.menu.changeTheme(style);
-        }
-    }
+    // @Override
+    // public void changeTheme(ThemeStyle style) {
+    //     ThemeAdapter.super.changeTheme(style);
+    //     if (this.menu != null) {
+    //         this.menu.changeTheme(style);
+    //     }
+    // }
 }

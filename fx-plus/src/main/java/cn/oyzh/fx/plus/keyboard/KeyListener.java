@@ -17,8 +17,6 @@ import javafx.stage.Stage;
  * @author oyzh
  * @since 2023/1/16
  */
-//@Slf4j
-
 public class KeyListener {
 
     /**
@@ -105,7 +103,9 @@ public class KeyListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(keyHandler);
-            JulLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.getKeyType(), keyHandler.getKeyCode());
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("addKeyEventHandler, keyType:{} keyCode:{}", keyHandler.getKeyType(), keyHandler.getKeyCode());
+            }
         }
     }
 
@@ -119,7 +119,9 @@ public class KeyListener {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyHandler.getKeyCode(), keyHandler.getKeyType());
-            JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.getKeyType(), keyHandler.getKeyCode());
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyHandler.getKeyType(), keyHandler.getKeyCode());
+            }
         }
     }
 
@@ -134,7 +136,9 @@ public class KeyListener {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyCode, keyType);
-            JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyType, keyCode);
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("removeHandler, keyType:{} keyCode:{}", keyType, keyCode);
+            }
         }
     }
 

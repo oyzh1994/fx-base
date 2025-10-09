@@ -6,7 +6,6 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.ColorScheme;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 
@@ -75,7 +74,9 @@ public class SystemTheme implements Theme, ThemeStyle {
     public String getUserAgentStylesheet() {
         if (this.themePath == null) {
             this.updateThemeCss();
-            JulLog.info("themePath:{}", this.themePath);
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("themePath:{}", this.themePath);
+            }
         }
         return new File(this.themePath).toURI().toString();
 //        return this.themePath;
@@ -93,22 +94,22 @@ public class SystemTheme implements Theme, ThemeStyle {
 
     @Override
     public boolean isDarkMode() {
-        return Platform.getPreferences().getColorScheme() == ColorScheme.DARK;
+        return FXUtil.getPreferences().getColorScheme() == ColorScheme.DARK;
     }
 
     @Override
     public Color getAccentColor() {
-        return Platform.getPreferences().getAccentColor();
+        return FXUtil.getPreferences().getAccentColor();
     }
 
     @Override
     public Color getForegroundColor() {
-        return Platform.getPreferences().getForegroundColor();
+        return FXUtil.getPreferences().getForegroundColor();
     }
 
     @Override
     public Color getBackgroundColor() {
-        return Platform.getPreferences().getBackgroundColor();
+        return FXUtil.getPreferences().getBackgroundColor();
     }
 
     /**
@@ -122,10 +123,10 @@ public class SystemTheme implements Theme, ThemeStyle {
 //            Platform.getPreferences().foregroundColorProperty().addListener(colorWeakChangeListener);
 //            Platform.getPreferences().backgroundColorProperty().addListener(colorWeakChangeListener);
 //            Platform.getPreferences().colorSchemeProperty().addListener(new WeakChangeListener<>(this.colorSchemeChangeListener));
-            Platform.getPreferences().accentColorProperty().addListener(this.colorListener);
-            Platform.getPreferences().foregroundColorProperty().addListener(this.colorListener);
-            Platform.getPreferences().backgroundColorProperty().addListener(this.colorListener);
-            Platform.getPreferences().colorSchemeProperty().addListener(this.colorSchemeChangeListener);
+            FXUtil.getPreferences().accentColorProperty().addListener(this.colorListener);
+            FXUtil.getPreferences().foregroundColorProperty().addListener(this.colorListener);
+            FXUtil.getPreferences().backgroundColorProperty().addListener(this.colorListener);
+            FXUtil.getPreferences().colorSchemeProperty().addListener(this.colorSchemeChangeListener);
         }
     }
 
@@ -134,18 +135,20 @@ public class SystemTheme implements Theme, ThemeStyle {
      */
     public synchronized void unListener() {
         this.following = false;
-        Platform.getPreferences().accentColorProperty().removeListener(this.colorListener);
-        Platform.getPreferences().foregroundColorProperty().removeListener(this.colorListener);
-        Platform.getPreferences().backgroundColorProperty().removeListener(this.colorListener);
-        Platform.getPreferences().colorSchemeProperty().removeListener(this.colorSchemeChangeListener);
+        FXUtil.getPreferences().accentColorProperty().removeListener(this.colorListener);
+        FXUtil.getPreferences().foregroundColorProperty().removeListener(this.colorListener);
+        FXUtil.getPreferences().backgroundColorProperty().removeListener(this.colorListener);
+        FXUtil.getPreferences().colorSchemeProperty().removeListener(this.colorSchemeChangeListener);
     }
 
     /**
      * 变更主题
      */
     protected void changeTheme() {
-        JulLog.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
-        TaskManager.startDelay("changeTheme", () -> FXUtil.runLater(() -> {
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
+        }
+        TaskManager.startDelay(() -> FXUtil.runLater(() -> {
             this.updateThemeCss();
             ThemeManager.apply(this);
         }), 1000);

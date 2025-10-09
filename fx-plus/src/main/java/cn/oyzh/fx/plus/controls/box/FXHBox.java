@@ -35,4 +35,44 @@ public class FXHBox extends HBox implements FlexAdapter, NodeGroup, ThemeAdapter
         super.resize(size[0], size[1]);
         this.resizeNode();
     }
+
+    // @Override
+    // protected double computeMinWidth(double var1) {
+    //     // Insets insets = getInsets();
+    //     // double minWidth = this.getMinWidth();
+    //     // return snapSpaceX(insets.getLeft()) + minWidth + snapSpaceX(insets.getRight());
+    //     return this.getMinWidth();
+    // }
+    //
+    // @Override
+    // protected double computeMinHeight(double var1) {
+    //     // Insets insets = getInsets();
+    //     // double minHeight = this.getMinHeight();
+    //     // return snapSpaceY(insets.getTop()) + minHeight + snapSpaceY(insets.getBottom());
+    //     return this.realHeight();
+    // }
+    //
+    // @Override
+    // protected double computePrefWidth(double var1) {
+    //     // Insets insets = getInsets();
+    //     // double prefWidth = this.getPrefWidth();
+    //     // return snapSpaceX(insets.getLeft()) + prefWidth + snapSpaceX(insets.getRight());
+    //     return this.getPrefWidth();
+    // }
+    //
+    // @Override
+    // protected double computePrefHeight(double var1) {
+    //     // Insets insets = getInsets();
+    //     // double prefHeight = this.getPrefHeight();
+    //     // return snapSpaceY(insets.getTop()) + prefHeight + snapSpaceY(insets.getBottom());
+    //     return this.realHeight();
+    // }
+
+    @Override
+    protected void layoutChildren() {
+        for (Node child : this.getChildren()) {
+            child.autosize();
+        }
+        super.layoutChildren();
+    }
 }

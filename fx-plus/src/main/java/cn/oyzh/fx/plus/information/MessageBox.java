@@ -3,11 +3,15 @@ package cn.oyzh.fx.plus.information;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.tooltip.TooltipUtil;
+import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
-import cn.oyzh.fx.plus.util.TooltipUtil;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -24,7 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Window;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -35,7 +39,6 @@ import java.util.function.Function;
  * @author oyzh
  * @since 2023/10/24
  */
-
 public class MessageBox {
 
     /**
@@ -58,7 +61,7 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(String content) {
-        return confirm(I18nHelper.tips(), content);
+        return confirm(I18nHelper.tips(), content, null, StageManager.getFrontWindow());
     }
 
     /**
@@ -68,6 +71,29 @@ public class MessageBox {
      * @param content 文本信息
      */
     public static boolean confirm(String title, String content) {
+        return confirm(title, content, null, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param title   标题信息
+     * @param content 文本信息
+     * @param header  头信息
+     */
+    public static boolean confirm(String title, String content, String header) {
+        return confirm(title, content, header, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param title      标题信息
+     * @param content    文本信息
+     * @param headerText 头信息
+     * @param owner      父窗口
+     */
+    public static boolean confirm(String title, String content, String headerText, Window owner) {
         String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
@@ -75,7 +101,21 @@ public class MessageBox {
             ButtonType button2 = new ButtonType(I18nHelper.cancel());
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
             alert.setTitle(title);
-            alert.setHeaderText(null);
+            alert.initOwner(owner);
+            alert.setHeaderText(headerText);
+//            // 监听回车，触发按钮
+//            Scene scene = alert.getDialogPane().getScene();
+//            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+//                if (event.getCode() == KeyCode.ENTER) {
+//                    // 获取当前选中的按钮
+//                    ButtonType selectedButton = alert.getResult();
+//                    if (selectedButton != null) {
+//                        // 模拟点击当前选中的按钮
+//                        alert.setResult(selectedButton);
+//                        alert.hide();
+//                    }
+//                }
+//            });
             Optional<ButtonType> optional = alert.showAndWait();
             result.set(optional.map(b -> b.equals(button1)).orElse(false));
         });
@@ -199,10 +239,10 @@ public class MessageBox {
             });
         } else {// 使用swing消息框
             int msgType = switch (type) {
-                case NONE -> JOptionPane.NO_OPTION;
+                case NONE -> JOptionPane.PLAIN_MESSAGE;
                 case INFORMATION -> JOptionPane.INFORMATION_MESSAGE;
                 case WARNING -> JOptionPane.WARNING_MESSAGE;
-                case CONFIRMATION -> JOptionPane.YES_NO_OPTION;
+                case CONFIRMATION -> JOptionPane.QUESTION_MESSAGE;
                 case ERROR -> JOptionPane.ERROR_MESSAGE;
             };
             JOptionPane.showMessageDialog(null, content, title, msgType);
@@ -272,12 +312,18 @@ public class MessageBox {
     public static String prompt(String title, String initText) {
         title = title == null ? I18nHelper.tips() : title;
         initText = initText == null ? "" : initText;
-        TextInputDialog dialog = new TextInputDialog(initText);
-        dialog.setTitle(title);
-        dialog.setGraphic(null);
-        dialog.setHeaderText(null);
-        Optional<String> result = dialog.showAndWait();
-        return result.orElse(null);
+        String finalTitle = title;
+        String finalInitText = initText;
+        AtomicReference<String> ref = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            TextInputDialog dialog = new TextInputDialog(finalInitText);
+            dialog.setTitle(finalTitle);
+            dialog.setGraphic(null);
+            dialog.setHeaderText(null);
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(ref::set);
+        });
+        return ref.get();
     }
 
     /**
@@ -303,12 +349,12 @@ public class MessageBox {
         TooltipExt tooltip = new TooltipExt();
         try {
             // 隐藏旧工具条
-            TooltipExt old = (TooltipExt) node.getProperties().remove("tipTool");
+            TooltipExt old = (TooltipExt) PropertiesUtil.remove(node, "tipTool");
             if (old != null) {
                 old.hide();
             }
             // 设置标志位
-            node.getProperties().put("tipTool", tooltip);
+            PropertiesUtil.set(node, "tipTool", tooltip);
             // 获取字体
             Font font = FontUtil.getFont(node);
             // 初始化提示条
@@ -326,7 +372,7 @@ public class MessageBox {
             // 提示条隐藏事件
             tooltip.setOnHidden(windowEvent -> {
                 tooltip.hide();
-                node.getProperties().remove("tipTool");
+                PropertiesUtil.remove(node, "tipTool");
                 Tooltip.uninstall(node, tooltip);
             });
             FXUtil.runLater(() -> {
@@ -408,14 +454,18 @@ public class MessageBox {
      */
     private static void showToast(String msg, SVGGlyph icon, Window owner) {
         Toast toast = new Toast(msg);
+        CornerRadii radii = new CornerRadii(3);
+        Color color1 = ThemeManager.currentForegroundColor();
+        Color color2 = ThemeManager.currentBackgroundColor();
+        Color color3 = ThemeManager.currentAccentColor();
         // 边框
-        Border border = new Border(new BorderStroke(Color.valueOf("#CCCCCC"), BorderStrokeStyle.SOLID, new CornerRadii(3), BorderStroke.THIN));
+        Border border = new Border(new BorderStroke(color1, BorderStrokeStyle.SOLID, radii, ControlUtil.BW_HALF));
         // 背景
-        Background background = new Background(new BackgroundFill(Color.valueOf("#FFFAFA"), new CornerRadii(3), null));
+        Background background = new Background(new BackgroundFill(color2, radii, Insets.EMPTY));
         // 设置参数
         toast.setIcon(icon);
         toast.setBorder(border);
-        toast.setTextFill(Color.valueOf("#242424"));
+        toast.setTextFill(color3);
         toast.setBackground(background);
         // 显示组件
         FXUtil.runLater(() -> toast.show(owner));

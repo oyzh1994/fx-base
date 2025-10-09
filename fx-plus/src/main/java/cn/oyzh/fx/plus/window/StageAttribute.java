@@ -69,6 +69,13 @@ public @interface StageAttribute {
     boolean resizable() default true;
 
     /**
+     * 是否可以打开多个页面
+     *
+     * @return 结果
+     */
+    boolean multipliable() default false;
+
+    /**
      * 是否可全屏
      *
      * @return 是否可全屏
@@ -95,4 +102,12 @@ public @interface StageAttribute {
      * @return 结果
      */
     boolean usePrimary() default false;
+
+    /**
+     * 场景透明
+     *
+     * @return 结果
+     */
+    boolean sceneTransparent() default true;
+
 }

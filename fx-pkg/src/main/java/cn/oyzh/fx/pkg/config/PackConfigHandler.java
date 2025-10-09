@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.config;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 
@@ -41,12 +42,12 @@ public class PackConfigHandler implements PreHandler {
             }
             packConfig.setJdkPath(javaHome);
         }
-        String appVersion = packConfig.appVersion();
+        String appVersion = packConfig.mainAppVersion();
         if (appVersion != null) {
             packConfig.setDest(StringUtil.replace(packConfig.getDest(), "${appVersion}", appVersion));
             packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${appVersion}", appVersion));
         }
-        String projectPath = (String) packConfig.getProperty("projectPath");
+        String projectPath = (String) packConfig.getProperty(PackCost.PROJECT_PATH);
         if (projectPath != null) {
             packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${projectPath}", projectPath));
             packConfig.setAppIcon(StringUtil.replace(packConfig.getAppIcon(), "${projectPath}", projectPath));

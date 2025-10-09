@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -13,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.HorizontalDirection;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.input.MouseEvent;
 
 /**
  * 切换开关组件
@@ -24,6 +26,41 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
 
     {
         NodeManager.init(this);
+        // this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        //     // if (MouseUtil.isPrimaryButton(event) && MouseUtil.isSingleClick(event)) {
+        //     //     this.setSelected(!this.isSelected());
+        //     //     event.consume();
+        //     // }
+        //     System.out.println("-----");
+        // });
+        // this.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        //     @Override
+        //     public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+        //         System.out.println("-----1");
+        //
+        //     }
+        // });
+    }
+
+    /**
+     * 开启鼠标事件选中功能
+     * TODO: 临时解决方案，解决部分情况下，点击选中可能异常问题
+     */
+    public void setEnableSelectOnClick(boolean enableSelectOnClick) {
+        if (enableSelectOnClick) {
+            this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                if (MouseUtil.isPrimaryButton(event) && MouseUtil.isSingleClick(event)) {
+                    this.setSelected(!this.isSelected());
+                    event.consume();
+                }
+            });
+        }
+        this.setProp("enableSelectOnClick", enableSelectOnClick);
+    }
+
+    public boolean isEnableSelectOnClick() {
+        Boolean enableSelectOnClick = this.getProp("enableSelectOnClick");
+        return enableSelectOnClick != null && enableSelectOnClick;
     }
 
     /**
@@ -92,7 +129,7 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
      *
      * @param listener 监听器
      */
-    public void selectedChanged( ChangeListener<Boolean> listener) {
+    public void selectedChanged(ChangeListener<Boolean> listener) {
         this.selectedProperty().addListener(listener);
 //        this.selectedProperty().addListener(new WeakChangeListener<>(listener));
     }
@@ -101,5 +138,14 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
     public void initNode() {
         NodeAdapter.super.initNode();
         this.setPadding(Insets.EMPTY);
+        this.setPickOnBounds(true);
+    }
+
+    @Override
+    public void setTipText(String tipText) {
+        TipAdapter.super.setTipText(tipText);
+        if (this.getText() == null || this.getText().isEmpty()) {
+            this.setText(tipText);
+        }
     }
 }

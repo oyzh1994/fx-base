@@ -81,9 +81,9 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
         // 秒下拉框
         FXComboBox<String> second = new FXComboBox<>();
         second.setRealWidth(70);
-
-        HBox.setMargin(labelHour, new Insets(0, 5, 0, 5));
-        HBox.setMargin(labelMinute, new Insets(0, 5, 0, 5));
+        Insets insets1 = new Insets(0, 5, 0, 5);
+        HBox.setMargin(labelHour, insets1);
+        HBox.setMargin(labelMinute, insets1);
         HBox.setMargin(labelSecond, new Insets(0, 0, 0, 5));
 
         for (int i = 0; i < 24; i++) {

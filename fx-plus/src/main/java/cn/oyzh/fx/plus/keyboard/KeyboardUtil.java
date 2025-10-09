@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.keyboard;
 
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -15,75 +16,128 @@ import java.util.List;
  * @author oyzh
  * @since 2024/07/02
  */
-
 public class KeyboardUtil {
 
     /**
-     * 保存键组合
+     * 保存快捷键
      */
-    public static KeyCombination saveKeyCombination;
+    public static KeyCombination save_keyCombination;
 
     /**
-     * 全选键组合
+     * 全选快捷键
      */
-    public static KeyCombination selectAllKeyCombination;
+    public static KeyCombination selectAll_keyCombination;
 
     /**
-     * 撤销键组合
+     * 撤销快捷键
      */
-    public static KeyCombination redoKeyCombination;
+    public static KeyCombination redo_keyCombination;
 
     /**
-     * 重做键组合
+     * 重做快捷键
      */
-    public static KeyCombination undoKeyCombination;
+    public static KeyCombination undo_keyCombination;
 
     /**
-     * 剪切键组合
+     * 剪切快捷键
      */
-    public static KeyCombination cutKeyCombination;
+    public static KeyCombination cut_keyCombination;
 
     /**
-     * 粘贴键组合
+     * 粘贴快捷键
      */
-    public static KeyCombination pasteKeyCombination;
+    public static KeyCombination paste_keyCombination;
 
     /**
-     * 复制键组合
+     * 复制快捷键
      */
-    public static KeyCombination copyKeyCombination;
+    public static KeyCombination copy_keyCombination;
 
     /**
-     * 搜索键组合
+     * 搜索快捷键
      */
-    public static KeyCombination searchKeyCombination;
+    public static KeyCombination search_keyCombination;
 
     /**
-     * 运行键组合
+     * 运行快捷键
      */
-    public static KeyCombination runKeyCombination;
+    public static KeyCombination run_keyCombination;
+
+    /**
+     * 应用快捷键
+     */
+    public final static KeyCombination apply_keyCombination;
+
+    /**
+     * 停止快捷键
+     */
+    public final static KeyCombination stop_keyCombination;
+
+    /**
+     * 重启快捷键
+     */
+    public final static KeyCombination restart_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.SHIFT_DOWN);
+
+    /**
+     * 删除快捷键
+     */
+    public final static KeyCombination delete_keyCombination = new KeyCodeCombination(KeyCode.DELETE);
+
+    /**
+     * 重命名快捷键
+     */
+    public final static KeyCombination rename_keyCombination = new KeyCodeCombination(KeyCode.F2);
+
+    /**
+     * 刷新快捷键
+     */
+    public final static KeyCombination refresh_keyCombination = new KeyCodeCombination(KeyCode.F5);
+
+    /**
+     * 信息快捷键
+     */
+    public final static KeyCombination info_keyCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.SHIFT_DOWN);
+
+    /**
+     * 编辑快捷键
+     */
+    public static final KeyCombination edit_keyCombination = new KeyCodeCombination(KeyCode.E, KeyCombination.SHIFT_DOWN);
+
+    /**
+     * 暂停快捷键
+     */
+    public static final KeyCombination pause_keyCombination = new KeyCodeCombination(KeyCode.PAUSE);
+
+    /**
+     * 隐藏快捷键
+     */
+    public final static KeyCombination hide_keyCombination = new KeyCodeCombination(KeyCode.H, KeyCombination.SHIFT_DOWN);
 
     static {
         if (OSUtil.isMacOS()) {
-            saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
-            selectAllKeyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.META_DOWN);
-            undoKeyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
-            redoKeyCombination = new KeyCodeCombination(KeyCode.Y, KeyCombination.META_DOWN);
-            cutKeyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.META_DOWN);
-            pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.META_DOWN);
-            copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.META_DOWN);
-            searchKeyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.META_DOWN);
-            runKeyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.META_DOWN);
+            save_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
+            selectAll_keyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.META_DOWN);
+            undo_keyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
+            redo_keyCombination = new KeyCodeCombination(KeyCode.Y, KeyCombination.META_DOWN);
+            cut_keyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.META_DOWN);
+            paste_keyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.META_DOWN);
+            copy_keyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.META_DOWN);
+            search_keyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.META_DOWN);
+            run_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.META_DOWN);
+            stop_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
+            apply_keyCombination = new KeyCodeCombination(KeyCode.T, KeyCombination.META_DOWN);
         } else {
-            saveKeyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-            selectAllKeyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
-            undoKeyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-            redoKeyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-            cutKeyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN);
-            pasteKeyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
-            copyKeyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-            searchKeyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
-            runKeyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
+            save_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+            selectAll_keyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
+            undo_keyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+            redo_keyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+            cut_keyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN);
+            paste_keyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+            copy_keyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+            search_keyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
+            run_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
+            stop_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+            apply_keyCombination = new KeyCodeCombination(KeyCode.T, KeyCombination.META_DOWN);
         }
     }
 
@@ -97,7 +151,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return saveKeyCombination.match(event);
+        return save_keyCombination.match(event);
     }
 
     /**
@@ -110,7 +164,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return saveKeyCombination.match(event);
+        return save_keyCombination.match(event);
     }
 
     /**
@@ -123,7 +177,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return cutKeyCombination.match(event);
+        return cut_keyCombination.match(event);
     }
 
     /**
@@ -136,7 +190,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return copyKeyCombination.match(event);
+        return copy_keyCombination.match(event);
     }
 
     /**
@@ -149,7 +203,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return selectAllKeyCombination.match(event);
+        return selectAll_keyCombination.match(event);
     }
 
     /**
@@ -162,7 +216,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return undoKeyCombination.match(event);
+        return undo_keyCombination.match(event);
     }
 
     /**
@@ -175,7 +229,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return redoKeyCombination.match(event);
+        return redo_keyCombination.match(event);
     }
 
     /**
@@ -188,7 +242,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return pasteKeyCombination.match(event);
+        return paste_keyCombination.match(event);
     }
 
     /**
@@ -214,7 +268,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return runKeyCombination.match(event);
+        return run_keyCombination.match(event);
     }
 
     /**
@@ -319,5 +373,64 @@ public class KeyboardUtil {
         // 连字符
         codes.add(KeyCode.MINUS);
         return codes;
+    }
+
+    /**
+     * 获取按键字符
+     *
+     * @param e 事件
+     * @return 按键字符
+     */
+    public static char getKeyChar(KeyEvent e) {
+        char keyChar;
+        if (!e.getText().isEmpty()) {
+            keyChar = e.getText().charAt(0);
+        } else {
+            keyChar = '\uffff';
+        }
+        return keyChar;
+    }
+
+    /**
+     * 获取按键的数字
+     *
+     * @param code 按键
+     * @return 数字
+     */
+    public static int getDigit(KeyCode code) {
+        if (code.isDigitKey()) {
+            return switch (code) {
+                case NUMPAD0, DIGIT0 -> 0;
+                case NUMPAD1, DIGIT1 -> 1;
+                case NUMPAD2, DIGIT2 -> 2;
+                case NUMPAD3, DIGIT3 -> 3;
+                case NUMPAD4, DIGIT4 -> 4;
+                case NUMPAD5, DIGIT5 -> 5;
+                case NUMPAD6, DIGIT6 -> 6;
+                case NUMPAD7, DIGIT7 -> 7;
+                case NUMPAD8, DIGIT8 -> 8;
+                case NUMPAD9, DIGIT9 -> 9;
+                default -> -1;
+            };
+        }
+        return -1;
+    }
+
+    /**
+     * 是否匹配快捷键
+     *
+     * @param combinations 快捷键列表
+     * @param event        事件
+     * @return 结果
+     */
+    public static boolean match(List<KeyCombination> combinations, KeyEvent event) {
+        if (CollectionUtil.isNotEmpty(combinations)) {
+            for (KeyCombination combination : combinations) {
+                if (combination.match(event)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

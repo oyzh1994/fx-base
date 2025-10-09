@@ -8,7 +8,9 @@ import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -17,110 +19,93 @@ import java.util.stream.Collectors;
  * @author oyzh
  * @since 2023/7/21
  */
-
 public class TerminalManager {
 
     /**
      * 命令处理器列表
+     * key: 终端名称 value: 命令处理器列表
      */
-    private static final List<TerminalCommandHandler<?, ?>> COMMAND_HANDLERS = new ArrayList<>(128);
-
-    // static {
-    //     scanHandler();
-    // }
-    //
-    // private static void scanHandler() {
-    //     try {
-    //         JulLog.info("scanHandler start");
-    //         // 类过滤器
-    //         Predicate<Class<?>> filter = c -> {
-    //             if (c.isArray() || c.isAnnotation() || c.isEnum() || c.isHidden() || c.isInterface() || c.isRecord()) {
-    //                 return false;
-    //             }
-    //             int modifiers = c.getModifiers();
-    //             if (Modifier.isAbstract(modifiers)) {
-    //                 return false;
-    //             }
-    //             if (TerminalCommandHandler.class.isAssignableFrom(c)) {
-    //                 registerHandler(c);
-    //                 return true;
-    //             }
-    //             return false;
-    //         };
-    //         // 标准命令
-    //         String standard = TerminalConst.standard();
-    //         List<Class<?>> list = ClassUtil.scanClasses(standard, filter);
-    //         // 扩展命令
-    //         String packageBase = TerminalConst.scanBase();
-    //         if (packageBase != null) {
-    //             List<Class<?>> list1 = ClassUtil.scanClasses(packageBase, filter);
-    //             list.addAll(list1);
-    //         }
-    //         JulLog.info("scanHandler finish classList:{}", list);
-    //     } catch (Exception ex) {
-    //         ex.printStackTrace();
-    //         JulLog.warn("scanHandler error", ex);
-    //     }
-    // }
+    private static final Map<String, List<TerminalCommandHandler<?, ?>>> COMMAND_HANDLERS = HashMap.newHashMap(128);
 
     /**
-     * 加载处理器操作
+     * 处理器加载操作列表
+     * key: 终端名称 value: 操作器
      */
-    private static Runnable loadHandlerAction;
+    private static final Map<String, Runnable> LOAD_HANDLES = HashMap.newHashMap(2);
 
-    public static void setLoadHandlerAction(Runnable loadHandlerAction) {
-        TerminalManager.loadHandlerAction = loadHandlerAction;
-    }
+    /**
+     * 处理器加载标记列表
+     * key: 终端名称 value: 标记
+     */
+    private static final Map<String, Boolean> LOAD_FLAGS = HashMap.newHashMap(2);
 
-    public static Runnable getLoadHandlerAction() {
-        return loadHandlerAction;
+    /**
+     * 设置加载操作
+     *
+     * @param name        终端名称
+     * @param loadHandler 加载操作
+     */
+    public static void setLoadHandler(String name, Runnable loadHandler) {
+        LOAD_HANDLES.put(name, loadHandler);
     }
 
     /**
-     * 是否已经加载
+     * 获取加载操作
+     *
+     * @param name 终端名称
+     * @return 加载操作
      */
-    private static boolean loaded = false;
+    public static Runnable getLoadHandler(String name) {
+        return LOAD_HANDLES.get(name);
+    }
 
     /**
      * 加载处理器
+     *
+     * @param name 终端名称
      */
-    private static void doLoadHandler() {
+    private static void doLoadHandler(String name) {
+        if (LOAD_FLAGS.containsKey(name)) {
+            return;
+        }
         try {
-            if (!loaded && loadHandlerAction != null) {
-                loaded = true;
-                loadHandlerAction.run();
+            Runnable loadHandler = getLoadHandler(name);
+            if (loadHandler != null) {
+                LOAD_FLAGS.put(name, true);
+                loadHandler.run();
             }
         } catch (Exception ex) {
-            loaded = false;
+            LOAD_FLAGS.put(name, false);
             ex.printStackTrace();
-            JulLog.warn("doLoadHandlers error", ex);
+            JulLog.warn("doLoadHandler error", ex);
         }
     }
 
     /**
      * 列表命令处理器
      *
+     * @param name 终端名称
      * @return 命令处理器列表
      */
-    public static Collection<TerminalCommandHandler<?, ?>> listHandler() {
-        doLoadHandler();
-        return new ArrayList<>(COMMAND_HANDLERS);
+    public static Collection<TerminalCommandHandler<?, ?>> listHandler(String name) {
+        doLoadHandler(name);
+        return new ArrayList<>(COMMAND_HANDLERS.get(name));
     }
 
     /**
      * 列表命令处理器
      *
+     * @param name                终端名称
      * @param commandHandlerClass 处理器类
      */
-    public static void registerHandler(Class<? extends TerminalCommandHandler<?, ?>> commandHandlerClass) {
+    public static void registerHandler(String name, Class<? extends TerminalCommandHandler<?, ?>> commandHandlerClass) {
         try {
-            if (findHandler(commandHandlerClass) != null) {
+            if (findHandler(name, commandHandlerClass) != null) {
                 JulLog.warn("commandHandlerClass:{} is registered", commandHandlerClass);
-                // throw new TerminalException("Multiple Command Handler for: " + commandHandlerClass);
                 return;
             }
             TerminalCommandHandler<?, ?> object = ClassUtil.newInstance(commandHandlerClass);
-            registerHandler(object);
+            registerHandler(name, object);
             if (object != null) {
                 JulLog.info("registerHandler success, commandHandlerClass:{}", commandHandlerClass);
             } else {
@@ -135,12 +120,14 @@ public class TerminalManager {
     /**
      * 列举命令处理器
      *
+     * @param name           终端名称
      * @param commandHandler 处理器
      */
-    public static void registerHandler(TerminalCommandHandler<?, ?> commandHandler) {
+    public static void registerHandler(String name, TerminalCommandHandler<?, ?> commandHandler) {
         try {
             if (commandHandler != null) {
-                COMMAND_HANDLERS.add(commandHandler);
+                List<TerminalCommandHandler<?, ?>> list = COMMAND_HANDLERS.computeIfAbsent(name, k -> new ArrayList<>());
+                list.add(commandHandler);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -151,14 +138,15 @@ public class TerminalManager {
     /**
      * 寻找命令处理器
      *
+     * @param name                终端名称
      * @param commandHandlerClass 处理器类
      * @return 处理器
      */
-    public static <T extends TerminalCommandHandler<?, ?>> T findHandler(Class<?> commandHandlerClass) {
+    public static <T extends TerminalCommandHandler<?, ?>> T findHandler(String name, Class<?> commandHandlerClass) {
         try {
             if (commandHandlerClass != null) {
-                doLoadHandler();
-                for (TerminalCommandHandler<?, ?> commandHandler : COMMAND_HANDLERS) {
+                Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
+                for (TerminalCommandHandler<?, ?> commandHandler : handlers) {
                     if (commandHandler != null && commandHandler.getClass() == commandHandlerClass) {
                         return (T) commandHandler;
                     }
@@ -174,15 +162,16 @@ public class TerminalManager {
     /**
      * 寻找命令处理器
      *
+     * @param name        终端名称
      * @param commandText 命令内容
      * @param matchType   匹配类型 1: 命令开头匹配内容 2: 命令匹配内容 3: 命令开头匹配内容或者内容开庭匹配命令
      * @return 命令处理器列表
      */
-    public static List<TerminalCommandHandler<?, ?>> findHandlers(String commandText, int matchType) {
+    public static List<TerminalCommandHandler<?, ?>> findHandlers(String name, String commandText, int matchType) {
         try {
-            doLoadHandler();
-            List<TerminalCommandHandler<?, ?>> commands = new ArrayList<>(COMMAND_HANDLERS.size());
-            for (TerminalCommandHandler<?, ?> value : COMMAND_HANDLERS) {
+            Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
+            List<TerminalCommandHandler<?, ?>> commands = new ArrayList<>(handlers.size());
+            for (TerminalCommandHandler<?, ?> value : handlers) {
                 String command = value.commandFullName();
                 if (matchType == 1 && StringUtil.startWithIgnoreCase(command, commandText)) {
                     commands.add(value);
@@ -203,15 +192,16 @@ public class TerminalManager {
     /**
      * 获取命令处理器
      *
+     * @param name  终端名称
      * @param input 输入
      * @return 命令处理器
      */
-    public static TerminalCommandHandler<?, ?> findHandler(String input) {
+    public static TerminalCommandHandler<?, ?> findHandler(String name, String input) {
         try {
             if (input != null) {
-                doLoadHandler();
+                Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
                 String[] words = TerminalUtil.split(input);
-                List<TerminalCommandHandler<?, ?>> list = COMMAND_HANDLERS.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
+                List<TerminalCommandHandler<?, ?>> list = handlers.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
                 if (!list.isEmpty()) {
                     if (words.length >= 2) {
                         List<TerminalCommandHandler<?, ?>> list1 = list.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();

@@ -54,7 +54,7 @@ public interface ContextMenuAdapter {
      * @param menuItems 菜单列表
      * @param event     鼠标事件
      */
-    default void showContextMenu(List<MenuItem> menuItems,  MouseEvent event) {
+    default void showContextMenu(List<MenuItem> menuItems, MouseEvent event) {
         this.showContextMenu(menuItems, event.getScreenX(), event.getScreenY());
     }
 
@@ -68,10 +68,11 @@ public interface ContextMenuAdapter {
         ContextMenu contextMenu = this.contextMenu();
         if (CollectionUtil.isNotEmpty(menuItems)) {
             if (contextMenu == null) {
-                contextMenu = new FXContextMenu(menuItems);
+                contextMenu = ContextMenuManager.getContextMenu(menuItems);
                 this.contextMenu(contextMenu);
-            } else {
-                DestroyUtil.destroy(contextMenu.getItems());
+            } else if (!contextMenu.getItems().equals(menuItems)) {
+                MenuItemManager.returnMenuItem(contextMenu.getItems());
+                // DestroyUtil.destroy(contextMenu.getItems());
                 contextMenu.getItems().setAll(menuItems);
             }
             return contextMenu;
@@ -114,8 +115,9 @@ public interface ContextMenuAdapter {
     default void clearContextMenu() {
         ContextMenu menu = this.contextMenu();
         if (menu != null) {
-            menu.hide();
-            DestroyUtil.destroy(menu.getItems());
+            MenuItemManager.returnMenuItem(menu.getItems());
+            ContextMenuManager.returnContextMenu(menu);
+            // DestroyUtil.destroy(menu.getItems());
             this.contextMenu(null);
         }
     }

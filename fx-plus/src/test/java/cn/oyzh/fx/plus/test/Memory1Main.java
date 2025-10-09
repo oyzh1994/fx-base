@@ -28,7 +28,7 @@
 // import javafx.scene.control.TreeItem;
 // import javafx.scene.control.TreeView;
 // import javafx.scene.layout.HBox;
-// import javafx.scene.layout.VBox;
+// import javafx.scene.layout.LVBox;
 // import javafx.scene.paint.Color;
 // import javafx.stage.Stage;
 //
@@ -72,7 +72,7 @@
 //
 //         treeView.setPrefHeight(200);
 //
-//         VBox vBox = new VBox(treeView);
+//         LVBox vBox = new LVBox(treeView);
 //
 //         stage.setScene(new Scene(vBox, 800, 800));
 //         stage.show();

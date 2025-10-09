@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.chooser;
 
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;
 
@@ -10,13 +11,12 @@ import java.io.File;
  * @author oyzh
  * @since 2025-03-07
  */
-
 public class FXChooser {
 
     /**
      * 桌面路径
      */
-    public static final File DESKTOP_DIR = FileSystemView.getFileSystemView().getHomeDirectory();
+    public static final File HOME_DIR = FileSystemView.getFileSystemView().getHomeDirectory();
 
     /**
      * 获取类型过滤器
@@ -87,6 +87,10 @@ public class FXChooser {
         return new FileExtensionFilter(I18nHelper.excelType(), "*.xls", "*.xlsx");
     }
 
+    public static FileExtensionFilter wordExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.wordType(), "*.doc", "*.docx");
+    }
+
     public static FileExtensionFilter allExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.allType(), "*.*");
     }
@@ -111,11 +115,42 @@ public class FXChooser {
         return new FileExtensionFilter(I18nHelper.gifType(), "*.gif");
     }
 
+    /**
+     * 获取下载路径
+     *
+     * @return 结果
+     */
     public static String getDownloadDirectory() {
-        File file = new File(System.getProperty("user.home"), "Downloads");
+        File file = new File(SystemUtil.userHome(), "Downloads");
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }
-        return DESKTOP_DIR.getPath();
+        return HOME_DIR.getPath();
+    }
+
+    /**
+     * 获取桌面路径
+     *
+     * @return 结果
+     */
+    public static String getDesktopDirectory() {
+        File file = new File(SystemUtil.userHome(), "Desktop");
+        if (file.exists() && file.isDirectory()) {
+            return file.getPath();
+        }
+        return HOME_DIR.getPath();
+    }
+
+    /**
+     * 获取文档路径
+     *
+     * @return 结果
+     */
+    public static String getDocumentsDirectory() {
+        File file = new File(SystemUtil.userHome(), "Documents");
+        if (file.exists() && file.isDirectory()) {
+            return file.getPath();
+        }
+        return HOME_DIR.getPath();
     }
 }

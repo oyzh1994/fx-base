@@ -7,6 +7,7 @@ import cn.hutool.extra.compress.CompressUtil;
 import cn.hutool.extra.compress.archiver.Archiver;
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -190,6 +191,8 @@ public class PkgUtil {
             cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
         }
         cmdStr += " --output " + config.getOutput();
+        // cmdStr += " --bind-services";
+        // cmdStr += " --exclude-modules jdk.localedata";
         return cmdStr;
     }
 
@@ -224,23 +227,19 @@ public class PkgUtil {
         if (config.isVerbose()) {
             cmdStr += " --verbose";
         }
-        if (config.isWinMenu()) {
-            cmdStr += " --win-menu";
-        }
-        if (config.isWinShortcut()) {
-            cmdStr += " --win-shortcut";
-        }
-        if (config.isWinDirChooser()) {
-            cmdStr += " --win-dir-chooser";
-        }
-        if (config.getMacPackageIdentifier() != null) {
-            cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
-        }
         if (config.getVendor() != null) {
             cmdStr += " --vendor " + config.getVendor();
         }
+        if (CollectionUtil.isNotEmpty(config.getJavaOptions())) {
+            for (String javaOption : config.getJavaOptions()) {
+                String[] options = javaOption.split(" ");
+                for (String option : options) {
+                    cmdStr += " --java-options " + option;
+                }
+            }
+        }
         if (config.getDescription() != null) {
-            cmdStr += " --description " + config.getDescription();
+            cmdStr += " --description \"" + config.getDescription() + "\"";
         }
         if (config.getIcon() != null) {
             cmdStr += " --icon " + config.getIcon();
@@ -263,6 +262,22 @@ public class PkgUtil {
         if (config.getRuntimeImage() != null) {
             cmdStr += " --runtime-image " + config.getRuntimeImage();
         }
+        if (OSUtil.isWindows()) {
+            if (config.isWinMenu()) {
+                cmdStr += " --win-menu";
+            }
+            if (config.isWinShortcut()) {
+                cmdStr += " --win-shortcut";
+            }
+            if (config.isWinDirChooser()) {
+                cmdStr += " --win-dir-chooser";
+            }
+        }
+        if (OSUtil.isMacOS()) {
+            if (config.getMacPackageIdentifier() != null) {
+                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
+            }
+        }
         cmdStr += " -d " + config.getDest();
         return cmdStr;
     }
@@ -279,9 +294,6 @@ public class PkgUtil {
         if (jdkPath == null) {
             return cmd;
         }
-//        if (OSUtil.isWindows()) {
         return FileNameUtil.concat(jdkPath, "bin", cmd);
-//        }
-//        return "sh " + FileNameUtil.concat(jdkPath, "bin", cmd);
     }
 }

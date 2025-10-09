@@ -10,6 +10,7 @@ import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.config.PackConfigHandler;
 import cn.oyzh.fx.pkg.config.PackConfigParser;
 import cn.oyzh.fx.pkg.config.ProjectHandler;
+import cn.oyzh.fx.pkg.github.GitHubHandler;
 import cn.oyzh.fx.pkg.jar.JarHandler;
 import cn.oyzh.fx.pkg.jdeps.JDepsHandler;
 import cn.oyzh.fx.pkg.jlink.JLinkHandler;
@@ -95,6 +96,10 @@ public class Packer {
 
     public void registerJdepsHandler() {
         this.registerHandler(new JDepsHandler());
+    }
+
+    public void registerGitHubHandler() {
+        this.registerHandler(new GitHubHandler());
     }
 
     public void registerJLinkHandler() {

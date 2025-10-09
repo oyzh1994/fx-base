@@ -9,7 +9,6 @@ import javafx.stage.Stage;
  * @author oyzh
  * @since 2024-11-18
  */
-
 public class NodeLifeCycleUtil {
 
     public static void onStageDestroy(Stage stage) {

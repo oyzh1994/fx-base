@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.tray;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -15,18 +16,20 @@ import javafx.scene.input.MouseEvent;
  * @author oyzh
  * @since 2023/3/2
  */
-public class TrayItem extends FXLabel {
+public class TrayItem extends FXLabel implements BaseTrayItem {
 
     {
         this.setHeight(25);
         this.setCursor(Cursor.HAND);
     }
 
-    public TrayItem( String label, Runnable action) {
+    private final Runnable action;
+
+    public TrayItem(String label, Runnable action) {
         this(label, null, action);
     }
 
-    public TrayItem( String label, Node icon, Runnable action) {
+    public TrayItem(String label, Node icon, Runnable action) {
         super(label);
         if (icon != null) {
             this.setGraphic(icon);
@@ -34,6 +37,7 @@ public class TrayItem extends FXLabel {
         if (action != null) {
             this.addActionHandler(e -> FXUtil.runLater(action));
         }
+        this.action = action;
     }
 
     /**
@@ -53,8 +57,13 @@ public class TrayItem extends FXLabel {
     public double getRealWidth() {
         double tLen = FontUtil.stringWidth(this.getText(), this.getFont());
         if (this.getGraphic() != null) {
-            return this.getGraphic().maxWidth(-1) + 3 + tLen;
+            return NodeUtil.getWidth(this.getGraphic()) + 8 + tLen;
         }
         return tLen;
     }
+
+    //@Override
+    //public DorkboxTrayItem toDorkboxTrayItem() {
+    //    return new DorkboxTrayItem(this.getText(), this.action);
+    //}
 }

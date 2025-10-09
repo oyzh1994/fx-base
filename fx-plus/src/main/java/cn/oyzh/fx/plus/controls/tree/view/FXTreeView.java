@@ -175,7 +175,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
      * 刷新坐标，防止出现白屏
      */
     public void flushLocal() {
-        TaskManager.startDelay("tree:flushLocal:" + this.hashCode(), () -> FXUtil.runLater(() -> {
+        TaskManager.startDelay(() -> FXUtil.runLater(() -> {
             this.layoutChildren();
             this.localToScreen(this.getBoundsInLocal());
             this.refresh();

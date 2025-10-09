@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.comporess;
 
-import cn.hutool.json.JSONObject;
 import cn.oyzh.fx.pkg.ConfigParser;
+import com.alibaba.fastjson2.JSONObject;
 
 /**
  * 压缩配置解析器
@@ -14,11 +14,11 @@ public class CompressConfigParser implements ConfigParser<CompressConfig> {
     @Override
     public CompressConfig parse(JSONObject object) {
         CompressConfig config = new CompressConfig();
-        String name = object.getStr("name");
+        String name = object.getString("name");
         if (name != null) {
             config.setName(name);
         }
-        String type = object.getStr("type");
+        String type = object.getString("type");
         if (type != null) {
             config.setType(type);
         }

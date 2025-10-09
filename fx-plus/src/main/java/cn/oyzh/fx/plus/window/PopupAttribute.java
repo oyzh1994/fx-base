@@ -37,7 +37,7 @@ public @interface PopupAttribute {
      * 箭头位置
      * @return 箭头位置
      */
-    Popover.ArrowLocation arrowLocation() default Popover.ArrowLocation.LEFT_TOP;
+    Popover.ArrowLocation arrowLocation() default Popover.ArrowLocation.TOP_LEFT;
 
     /**
      * 弹窗位置

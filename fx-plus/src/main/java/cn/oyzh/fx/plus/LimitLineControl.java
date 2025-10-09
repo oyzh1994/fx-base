@@ -4,6 +4,8 @@ import cn.oyzh.common.util.NumberUtil;
 import javafx.scene.control.TextFormatter;
 
 /**
+ * 范围控制
+ *
  * @author oyzh
  * @since 2024/06/21
  */

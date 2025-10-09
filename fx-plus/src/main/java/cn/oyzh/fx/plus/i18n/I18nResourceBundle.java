@@ -11,6 +11,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
+ * i18n资源绑定器
+ *
  * @author oyzh
  * @since 2024/4/10
  */
@@ -40,7 +42,7 @@ public class I18nResourceBundle extends ResourceBundle {
     }
 
     @Override
-    protected Object handleGetObject( String key) {
+    protected Object handleGetObject(String key) {
         try {
             ResourceBundle resource = this.initResource(key);
             if (resource != null) {
@@ -52,7 +54,7 @@ public class I18nResourceBundle extends ResourceBundle {
         return null;
     }
 
-    
+
     @Override
     public Enumeration<String> getKeys() {
         return new Enumeration<>() {
@@ -93,7 +95,7 @@ public class I18nResourceBundle extends ResourceBundle {
     }
 
     @Override
-    public boolean containsKey( String key) {
+    public boolean containsKey(String key) {
         ResourceBundle resource = this.initResource(key);
         return resource.containsKey(key);
     }

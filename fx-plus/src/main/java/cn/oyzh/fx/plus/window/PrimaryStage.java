@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.fx.plus.opacity.OpacityAdapter;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -17,14 +18,20 @@ public class PrimaryStage implements StageAdapter, OpacityAdapter {
      */
     private final Stage stage;
 
-    public PrimaryStage( Stage primaryStage,  StageAttribute attribute, Window owner) {
+    public PrimaryStage(Stage primaryStage, StageAttribute attribute, Window owner) {
         this.stage = primaryStage;
-        this.stage.getProperties().put(StageManager.REF_ATTR, this);
+        PropertiesUtil.set(this.stage, StageManager.REF_ATTR, this);
         this.init(attribute, owner);
     }
 
     @Override
     public Stage stage() {
         return this.stage;
+    }
+
+    @Override
+    public void onWindowClosed() {
+        // StageAdapter.super.onWindowClosed();
+        // TODO: 什么都不做
     }
 }

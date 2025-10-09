@@ -16,6 +16,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -87,7 +88,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param listener 监听器
      */
-    public void selectedTabChanged( ChangeListener<Tab> listener) {
+    public void selectedTabChanged(ChangeListener<Tab> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
@@ -118,7 +119,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tab tab
      */
-    public void addTab( Tab tab) {
+    public void addTab(Tab tab) {
         FXUtil.runWait(() -> this.getTabs().add(tab));
     }
 
@@ -127,7 +128,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tab tab
      */
-    public void setTab( Tab tab) {
+    public void setTab(Tab tab) {
         FXUtil.runWait(() -> this.getTabs().setAll(tab));
     }
 
@@ -136,7 +137,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tabs tab列表
      */
-    public void setTab( Tab... tabs) {
+    public void setTab(Tab... tabs) {
         FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
 
@@ -165,7 +166,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tabs tab列表
      */
-    public void setTab( Collection<Tab> tabs) {
+    public void setTab(Collection<Tab> tabs) {
         FXUtil.runWait(() -> this.getTabs().setAll(tabs));
     }
 
@@ -174,7 +175,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param tab tab
      */
-    public void removeTab( Tab tab) {
+    public void removeTab(Tab tab) {
         FXUtil.runLater(() -> this.getTabs().remove(tab));
     }
 
@@ -199,6 +200,21 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
                 break;
             }
         }
+    }
+
+    /**
+     * 移除tab
+     *
+     * @param tabIds tabId列表
+     */
+    public void removeTabs(String... tabIds) {
+        List<Tab> tabs = new ArrayList<>(tabIds.length);
+        for (Tab tab : this.getTabs()) {
+            if (StringUtil.equalsAny(tab.getId(), tabIds)) {
+                tabs.add(tab);
+            }
+        }
+        this.removeTab(tabs);
     }
 
     /**
@@ -276,13 +292,13 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         this.setTabMaxHeight(height);
         this.setTabMinHeight(height);
     }
-
-    public <T extends Tab> T getTab(int index) {
-        if (index < this.getTabs().size()) {
-            return (T) this.getTabs().get(index);
-        }
-        return null;
-    }
+    //
+    // public <T extends Tab> T getTab(int index) {
+    //     if (index < this.getTabs().size()) {
+    //         return (T) this.getTabs().get(index);
+    //     }
+    //     return null;
+    // }
 
     public int tabSize() {
         return this.getTabs().size();
@@ -312,5 +328,20 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
                 NodeUtil.setHeight(tab.getContent(), height);
             }
         }
+    }
+
+    @Override
+    public void initNode() {
+        FlexAdapter.super.initNode();
+        this.setTabRealHeight(24);
+    }
+
+    public void setTabRealHeight(double tabHeight) {
+        super.setTabMaxHeight(tabHeight);
+        super.setTabMinHeight(tabHeight);
+    }
+
+    public double getTabRealHeight() {
+        return Math.max(this.getTabMaxHeight(), this.getTabMinHeight());
     }
 }

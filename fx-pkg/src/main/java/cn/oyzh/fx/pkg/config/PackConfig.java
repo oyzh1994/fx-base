@@ -51,7 +51,7 @@ public class PackConfig {
      * jpackage win打包的exe不能重启，mac打包的不能启动，不建议使用
      * packr
      */
-    private String packMode = "packr";
+    private String packMode = "jpackage";
 
     /**
      * 最小化后的主程序
@@ -184,6 +184,14 @@ public class PackConfig {
             return this.appVersion.substring(1);
         }
         return this.appVersion;
+    }
+
+    public String mainAppVersion() {
+        String appVersion = this.appVersion();
+        if (StringUtil.checkCountOccurrences(appVersion, '.',3) ) {
+            return appVersion.substring(0, appVersion.lastIndexOf("."));
+        }
+        return appVersion;
     }
 
     public boolean isParkByPackr() {

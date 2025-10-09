@@ -16,9 +16,9 @@ import java.util.function.Consumer;
  */
 public class ChooseFileTextField extends LimitTextField {
 
-    {
-        this.setEditable(false);
-    }
+    // {
+    //     this.setEditable(false);
+    // }
 
     /**
      * 当前皮肤

@@ -84,7 +84,7 @@ public class FXTextArea extends TextArea implements FlexAdapter, LimitLineContro
 
     @Override
     public void setTipText(String tipText) {
-        TipAdapter.super.tipText(tipText);
+        TipAdapter.super.setTipText(tipText);
         if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
             this.setPromptText(tipText);
         }

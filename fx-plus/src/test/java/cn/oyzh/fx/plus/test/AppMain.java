@@ -38,7 +38,7 @@
 // import javafx.scene.control.TextFormatter;
 // import javafx.scene.control.TitledPane;
 // import javafx.scene.layout.HBox;
-// import javafx.scene.layout.VBox;
+// import javafx.scene.layout.LVBox;
 // import javafx.scene.shape.SVGPath;
 // import javafx.stage.Stage;
 // import org.fxmisc.richtext.InlineCssTextArea;
@@ -470,7 +470,7 @@
 //     //     HBox hBox1 = new HBox(button);
 //     //     HBox hBox2 = new HBox(toggleSwitch);
 //     //     HBox hBox3 = new HBox(toggleSwitch1);
-//     //     VBox vBox = new VBox(hBox1, hBox2, hBox3);
+//     //     LVBox vBox = new LVBox(hBox1, hBox2, hBox3);
 //     //     button.setOnAction(actionEvent -> {
 //     //         ToggleSwitch toggleSwitch2 = new ToggleSwitch();
 //     //         toggleSwitch2.setFontSize(12);
@@ -495,7 +495,7 @@
 //         textField2.setRealHeight(30);
 //         textField3.setRealHeight(50);
 //
-//         VBox hBox = new VBox(textField, textField1, textField2, textField3);
+//         LVBox hBox = new LVBox(textField, textField1, textField2, textField3);
 //         // // 设置HBox的间距
 //         hBox.setSpacing(10);
 //         stage.setScene(new Scene(hBox, 500, 500));
@@ -525,7 +525,7 @@
 //         textField3.setRealHeight(50);
 //         decimalTextField3.setRealHeight(50);
 //
-//         VBox hBox = new VBox(textField, decimalTextField, textField1, decimalTextField1, textField2, decimalTextField2, textField3, decimalTextField3);
+//         LVBox hBox = new LVBox(textField, decimalTextField, textField1, decimalTextField1, textField2, decimalTextField2, textField3, decimalTextField3);
 //         // // 设置HBox的间距
 //         hBox.setSpacing(10);
 //         stage.setScene(new Scene(hBox, 500, 500));
@@ -675,7 +675,7 @@
 //
 //     private void test18(Stage stage) throws InterruptedException {
 //
-//         VBox vBox = new VBox();
+//         LVBox vBox = new LVBox();
 //
 //         StateManager stateManager = new StateManager();
 //         stateManager.setManagedBindVisible(true);
@@ -726,7 +726,7 @@
 //         titledPane1.setText("内容");
 //         titledPane1.setCollapsible(false);
 //
-//         VBox vBox = new VBox(titledPane, titledPane1);
+//         LVBox vBox = new LVBox(titledPane, titledPane1);
 //
 //         stage.setScene(new Scene(vBox, 500, 500));
 //         stage.show();
@@ -747,7 +747,7 @@
 //         numberTextField.setMax(20000L);
 //         numberTextField.setValue(20L);
 //
-//         VBox hBox = new VBox(decimalTextField, numberTextField);
+//         LVBox hBox = new LVBox(decimalTextField, numberTextField);
 //         // // 设置HBox的间距
 //         hBox.setSpacing(10);
 //         stage.setScene(new Scene(hBox, 500, 500));
@@ -799,7 +799,7 @@
 //             }
 //         }
 //         treeView.setRoot(rootItem);
-//         VBox vBox = new VBox(hBox, treeView);
+//         LVBox vBox = new LVBox(hBox, treeView);
 //         stage.setScene(new Scene(vBox, 500, 500));
 //         stage.show();
 //     }
@@ -820,7 +820,7 @@
 //                 textArea.setScrollTop(Double.MAX_VALUE);
 //             }
 //         });
-//         VBox vBox = new VBox(textArea);
+//         LVBox vBox = new LVBox(textArea);
 //         stage.setScene(new Scene(vBox, 500, 500));
 //         stage.show();
 //     }
@@ -848,7 +848,7 @@
 //             }
 //         });
 //         HBox hBox = new HBox(start, pause);
-//         VBox vBox = new VBox(textArea, hBox);
+//         LVBox vBox = new LVBox(textArea, hBox);
 //
 //         stage.setScene(new Scene(vBox, 500, 500));
 //         stage.show();
@@ -969,7 +969,7 @@
 // //
 // //
 // //         Spinner<Integer> spinner2 = new Spinner<>(new IntegerSpinnerValueFactory(0, 100));
-// //         VBox vBox = new VBox(spinner, spinner2);
+// //         LVBox vBox = new LVBox(spinner, spinner2);
 // //         spinner.setEditable(true);
 // //         stage.setScene(new Scene(vBox, 500, 500));
 // //         stage.show();

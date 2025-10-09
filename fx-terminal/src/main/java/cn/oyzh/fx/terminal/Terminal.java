@@ -237,28 +237,28 @@ public interface Terminal {
      *
      * @return 字体类型
      */
-    String getFontFamily();
+    String fontFamily();
 
     /**
      * 设置字体类型
      *
      * @param fontFamily 字体类型
      */
-    void setFontFamily(String fontFamily);
+    void fontFamily(String fontFamily);
 
     /**
      * 获取字体大小
      *
      * @return 字体大小
      */
-    double getFontSize();
+    double fontSize();
 
     /**
      * 设置字体大小
      *
      * @param fontSize 字体大小
      */
-    void setFontSize(double fontSize);
+    void fontSize(double fontSize);
 
     /**
      * 字体大小递增
@@ -365,4 +365,11 @@ public interface Terminal {
             this.historyHandler().clearHistory();
         }
     }
+
+    /**
+     * 终端唯一名称
+     *
+     * @return 名称
+     */
+    String terminalName();
 }

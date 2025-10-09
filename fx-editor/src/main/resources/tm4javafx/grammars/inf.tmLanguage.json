@@ -1,0 +1,46 @@
+
+{
+	"name": "INF File",
+	"scopeName": "source.inf",
+	"fileTypes": [".inf"],
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#sections"
+		},
+		{
+			"include": "#directives"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"comments": {
+			"name": "comment.line.inf",
+			"match": ";.*$"
+		},
+		"sections": {
+			"name": "entity.name.section.inf",
+			"match": "^\\s*\\[([^\\]]+)\\]"
+		},
+		"directives": {
+			"patterns": [
+				{
+					"name": "keyword.control.inf",
+					"match": "\\b(Signature|Class|ClassGuid|Provider|CatalogFile|DriverVer|Manufacturer|Version|Strings|DefaultInstall)\\b"
+				},
+				{
+					"name": "keyword.operator.inf",
+					"match": "="
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.inf",
+			"match": "%[^%]+%"
+		}
+	}
+}

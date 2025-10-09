@@ -65,7 +65,7 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
                 }
             }
             // 设置宽度
-            this.setMaxWidth(maxWidth);
+            //this.setMaxWidth(maxWidth);
             this.setMinWidth(maxWidth);
             this.setPrefWidth(maxWidth);
         }
@@ -91,7 +91,7 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
     }
 
     public void setItem(Collection<? extends MenuItem> items) {
-        if (items != null) {
+        if (items != null && !this.getItems().equals(items)) {
             DestroyUtil.destroy(this.getItems());
             this.getItems().setAll(items);
         }

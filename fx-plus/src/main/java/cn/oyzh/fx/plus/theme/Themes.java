@@ -9,7 +9,6 @@ import java.util.List;
  * @author oyzh
  * @since 2024/4/3
  */
-
 public class Themes {
 
     public static final SystemTheme SYSTEM = new SystemTheme();

@@ -19,6 +19,14 @@ public class FXPane extends Pane implements FlexAdapter, LayoutAdapter, NodeAdap
         NodeManager.init(this);
     }
 
+    public FXPane() {
+        super();
+    }
+
+    public FXPane(Node...nodes) {
+        super(nodes);
+    }
+
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);

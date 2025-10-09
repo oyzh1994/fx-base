@@ -81,12 +81,12 @@ public class TabSwitchHandler {
      */
     private WeakReference<Parent> rootRef;
 
-    public TabSwitchHandler( Parent root) {
+    public TabSwitchHandler(Parent root) {
         this.rootRef = new WeakReference<>(root);
         this.init();
     }
 
-    public TabSwitchHandler( Window window) {
+    public TabSwitchHandler(Window window) {
         if (window.getScene() == null || window.getScene().getRoot() == null) {
             throw new RuntimeException("stage.getScene().getRoot() is null!");
         }
@@ -119,7 +119,7 @@ public class TabSwitchHandler {
      * @param root     根节点
      * @param nodeList 节点列表
      */
-    protected void findNodes(Parent root,  List<Node> nodeList) {
+    protected void findNodes(Parent root, List<Node> nodeList) {
         for (Node n : root.getChildrenUnmodifiable()) {
             if (n.isManaged() && n.isVisible()) {
                 if (n instanceof ComboBoxBase<?>
@@ -141,7 +141,7 @@ public class TabSwitchHandler {
      * @param current  当前节点
      * @return 支持tab索引的节点
      */
-    protected Node getNextNode( List<Node> nodeList,  Node current) {
+    protected Node getNextNode(List<Node> nodeList, Node current) {
         List<Node> list = nodeList.parallelStream().filter(f -> f.getViewOrder() > current.getViewOrder()).toList();
         if (!list.isEmpty()) {
             return list.getFirst();

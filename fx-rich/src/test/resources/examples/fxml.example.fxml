@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import cn.oyzh.easy.jfx.controls.*?>
+<?import cn.oyzh.easy.zk.jfx.CharsetComboBox?>
+<?import cn.oyzh.easy.zk.jfx.ZKInfoComboBox?>
+<?import cn.oyzh.easy.zk.jfx.ZKTreeView?>
+<?import cn.oyzh.easy.zk.ZKACLVBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.*?>
+<JFXPane autoWidth="100%" autoHeight="calc(100% - 30)"
+         styleClass="mainPane,panel,panel-primary"
+         xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="cn.oyzh.easy.easyzk.controller.ZKMainController">
+    <JFXVBox prefWidth="440.0" autoHeight="100%">
+        <JFXHBox prefHeight="36" autoWidth="100%">
+            <ZKInfoComboBox tipTitle="zk连接列表" fx:id="zkInfos" prefHeight="24" prefWidth="120">
+                <HBox.margin>
+                    <Insets left="10" top="6"/>
+                </HBox.margin>
+            </ZKInfoComboBox>
+            <!--<JFXSVGGlyph tipTitle="新增连接" svgSize="16" url="/font/add.svg" onPrimaryMouseClicked="#addZKInfo">-->
+            <!--    <HBox.margin>-->
+            <!--        <Insets left="5" top="10"/>-->
+            <!--    </HBox.margin>-->
+            <!--</JFXSVGGlyph>-->
+            <!--<JFXSVGGlyph tipTitle="编辑连接" disable="true" fx:id="editZKInfo" svgSize="16" url="/font/edit.svg"-->
+            <!--             onPrimaryMouseClicked="#editZKInfo">-->
+            <!--    <HBox.margin>-->
+            <!--        <Insets left="5" top="10"/>-->
+            <!--    </HBox.margin>-->
+            <!--</JFXSVGGlyph>-->
+            <!--<JFXSVGGlyph tipTitle="删除连接" disable="true" fx:id="deleteZKInfo" svgSize="16" url="/font/delete.svg"-->
+            <!--             onPrimaryMouseClicked="#deleteZKInfo">-->
+            <!--    <HBox.margin>-->
+            <!--        <Insets left="5" top="10"/>-->
+            <!--    </HBox.margin>-->
+            <!--</JFXSVGGlyph>-->
+            <JFXSVGGlyph tipTitle="连接ZK节点" disable="true" fx:id="openZKClient" svgSize="16"
+                         onPrimaryMouseClicked="#openZKClient" url="/font/play-circle.svg">
+                <HBox.margin>
+                    <Insets left="5" top="10"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+            <JFXSVGGlyph tipTitle="断开ZK连接" fx:id="closeZKClient" svgSize="16" managed="false" visible="false"
+                         onPrimaryMouseClicked="#closeZKClient" url="/font/poweroff.svg">
+                <HBox.margin>
+                    <Insets left="5" top="10"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+            <JFXSVGGlyph tipTitle="查看zk配置信息" fx:id="leftZKConfigInfo" svgSize="16" disable="true"
+                         onPrimaryMouseClicked="#zkConfigInfo" visible="false" url="/font/info-circle.svg">
+                <HBox.margin>
+                    <Insets left="5" top="10"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+            <JFXSVGGlyph tipTitle="导入zk脚本" fx:id="leftImportZKNode" svgSize="16"
+                         onPrimaryMouseClicked="#importZKNode" visible="false" url="/font/Import.svg">
+                <HBox.margin>
+                    <Insets left="5" top="10"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+            <JFXSVGGlyph tipTitle="授权管理" fx:id="leftAuthList" svgSize="16"
+                         onPrimaryMouseClicked="#authList" visible="false" url="/font/audit.svg">
+                <HBox.margin>
+                    <Insets left="5" top="10"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+        </JFXHBox>
+        <JFXHBox fx:id="leftFilterPane" prefHeight="36" autoWidth="100%" disable="true">
+            <JFXTextField fx:id="leftFilterKeyword" prefHeight="24"
+                          prefWidth="220"
+                          promptText="请输入过滤关键字(多个以,分隔)">
+                <HBox.margin>
+                    <Insets left="10.0" top="6"/>
+                </HBox.margin>
+            </JFXTextField>
+            <JFXComboBox tipTitle="显示zk节点类型" fx:id="leftShowNodeType" prefHeight="24" prefWidth="120">
+                <HBox.margin>
+                    <Insets left="5" top="6"/>
+                </HBox.margin>
+            </JFXComboBox>
+            <JFXSVGGlyph tipTitle="对zk节点过滤" svgSize="16"
+                         onPrimaryMouseClicked="#filterZKPath" url="/font/filter.svg">
+                <HBox.margin>
+                    <Insets left="5" top="10"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+            <JFXSVGGlyph tipTitle="对zk节点排序" fx:id="leftFilterSort" svgSize="16"
+                         onPrimaryMouseClicked="#sortSubNodes" url="/font/sort-ascending.svg">
+                <HBox.margin>
+                    <Insets left="5" top="10"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+        </JFXHBox>
+        <JFXFlowPane prefHeight="28" autoWidth="100%" disable="true">
+            <JFXLabel fx:id="leftNodePath" maxWidth="410" prefHeight="12">
+                <FlowPane.margin>
+                    <Insets left="10.0"/>
+                </FlowPane.margin>
+            </JFXLabel>
+            <JFXSVGGlyph fx:id="leftCopyZKNode" visible="false" tipTitle="复制路径" svgSize="12"
+                         onPrimaryMouseClicked="#copyZKNode" url="/font/copy.svg">
+                <FlowPane.margin>
+                    <Insets left="3"/>
+                </FlowPane.margin>
+            </JFXSVGGlyph>
+        </JFXFlowPane>
+        <ZKTreeView fx:id="leftTree" disable="true" autoHeight="calc(100% - 100)" autoWidth="100%"/>
+    </JFXVBox>
+    <JFXTabPane fx:id="rightNodeTabPane" disable="true" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="40"
+                tabMinHeight="40" tabMinWidth="100" tabMaxWidth="100" layoutX="440.0" autoWidth="calc(100% - 440)"
+                autoHeight="62%">
+        <JFXTab text="节点数据">
+            <JFXPane autoHeight="100%" autoWidth="100%">
+                <JFXHBox prefHeight="50.0" autoWidth="100%">
+                    <!--<JFXSVGGlyph tipTitle="复制节点路径及数据" svgSize="16" fx:id="copyZKPathAndData"-->
+                    <!--             onPrimaryMouseClicked="#copyZKPathAndData"-->
+                    <!--             url="/font/copy.svg">-->
+                    <!--    <HBox.margin>-->
+                    <!--        <Insets left="10"/>-->
+                    <!--    </HBox.margin>-->
+                    <!--</JFXSVGGlyph>-->
+                    <!--<JFXSVGGlyph tipTitle="复制节点数据(Ctrl+C)" svgSize="16" fx:id="copyZKData"-->
+                    <!--             onPrimaryMouseClicked="#copyZKData"-->
+                    <!--             url="/font/file-copy.svg">-->
+                    <!--    <HBox.margin>-->
+                    <!--        <Insets left="5"/>-->
+                    <!--    </HBox.margin>-->
+                    <!--</JFXSVGGlyph>-->
+                    <JFXSVGGlyph tipTitle="格式化为JSON(Ctrl+J)" fx:id="toJsonView" svgSize="16"
+                                 onPrimaryMouseClicked="#toJsonView" url="/font/json.svg">
+                        <HBox.margin>
+                            <Insets left="5"/>
+                        </HBox.margin>
+                    </JFXSVGGlyph>
+                    <JFXSVGGlyph tipTitle="把节点信息转成二维码" svgSize="16" onPrimaryMouseClicked="#zkData2QRCode"
+                                 url="/font/qrcode.svg">
+                        <HBox.margin>
+                            <Insets left="5"/>
+                        </HBox.margin>
+                    </JFXSVGGlyph>
+                    <JFXSVGGlyph tipTitle="保存节点数据(Ctrl+S)" svgSize="16" onPrimaryMouseClicked="#saveZKData"
+                                 url="/font/save.svg">
+                        <HBox.margin>
+                            <Insets left="5"/>
+                        </HBox.margin>
+                    </JFXSVGGlyph>
+                    <CharsetComboBox prefHeight="16" fx:id="charset">
+                        <HBox.margin>
+                            <Insets left="5" top="-5"/>
+                        </HBox.margin>
+                    </CharsetComboBox>
+                    <padding>
+                        <Insets top="14.0"/>
+                    </padding>
+                </JFXHBox>
+                <JFXTextArea style="-fx-font-size: 14" layoutY="53" fx:id="rightNodeData" autoHeight="calc(100% - 102)"
+                             autoWidth="calc(100% - 18)"
+                             text="未连接"/>
+            </JFXPane>
+        </JFXTab>
+        <JFXTab text="节点状态">
+            <JFXPane autoHeight="100%" autoWidth="100%">
+                <JFXFlowPane prefHeight="50.0" autoWidth="100%">
+                    <fx:define>
+                        <ToggleGroup fx:id="rightStatView"/>
+                    </fx:define>
+                    <JFXSVGGlyph tipTitle="复制节点状态" svgSize="16" onPrimaryMouseClicked="#copyZKStat"
+                                 url="/font/file-copy.svg">
+                        <FlowPane.margin>
+                            <Insets left="15" top="17"/>
+                        </FlowPane.margin>
+                    </JFXSVGGlyph>
+                    <JFXRadioButton toggleGroup="$rightStatView" prefHeight="16" selected="true" text="友好视图"
+                                    userData="1">
+                        <FlowPane.margin>
+                            <Insets left="10" top="17"/>
+                        </FlowPane.margin>
+                    </JFXRadioButton>
+                    <JFXRadioButton toggleGroup="$rightStatView" prefHeight="16" text="专业视图" userData="2">
+                        <FlowPane.margin>
+                            <Insets left="10" top="17"/>
+                        </FlowPane.margin>
+                    </JFXRadioButton>
+                </JFXFlowPane>
+                <JFXVBox fx:id="rightStatPane" layoutY="50.0" autoHeight="calc(100% - 100)" autoWidth="calc(100% - 48)"
+                         layoutX="15" style="-fx-font-size: 12">
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                    <JFXHBox autoWidth="100%" prefHeight="30">
+                        <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                            <HBox.margin>
+                                <Insets right="5"/>
+                            </HBox.margin>
+                        </JFXLabel>
+                        <JFXTextField editable="false" prefHeight="20" autoWidth="calc(100% - 340)"/>
+                    </JFXHBox>
+                </JFXVBox>
+            </JFXPane>
+        </JFXTab>
+        <JFXTab text="权限控制">
+            <JFXPane fx:id="rightACLPane" autoHeight="100%" autoWidth="100%">
+                <JFXFlowPane prefHeight="50.0" autoWidth="100%">
+                    <fx:define>
+                        <ToggleGroup fx:id="rightACLView"/>
+                    </fx:define>
+                    <JFXSVGGlyph tipTitle="添加权限" svgSize="16" onPrimaryMouseClicked="#addACL" url="/font/add.svg">
+                        <FlowPane.margin>
+                            <Insets left="17" top="17"/>
+                        </FlowPane.margin>
+                    </JFXSVGGlyph>
+                    <JFXRadioButton toggleGroup="$rightACLView" prefHeight="16" selected="true" text="友好视图"
+                                    userData="1">
+                        <FlowPane.margin>
+                            <Insets left="10" top="17"/>
+                        </FlowPane.margin>
+                    </JFXRadioButton>
+                    <JFXRadioButton toggleGroup="$rightACLView" prefHeight="16" text="专业视图" userData="2">
+                        <FlowPane.margin>
+                            <Insets left="10" top="17"/>
+                        </FlowPane.margin>
+                    </JFXRadioButton>
+                </JFXFlowPane>
+                <JFXVBox layoutY="50.0" autoHeight="calc(100% - 100)" autoWidth="calc(100% - 48)"
+                         layoutX="10" style="-fx-font-size: 12">
+                    <JFXFlowPane autoWidth="100%" prefHeight="30">
+                        <JFXSVGGlyph onPrimaryMouseClicked="#prevACLPage" tipTitle="上一页" url="/font/arrowleft.svg"
+                                     svgSize="14" svgColor="#0E932E">
+                            <FlowPane.margin>
+                                <Insets left="5" top="8"/>
+                            </FlowPane.margin>
+                        </JFXSVGGlyph>
+                        <JFXSVGGlyph onPrimaryMouseClicked="#nextACLPage" tipTitle="下一页" url="/font/arrowright.svg"
+                                     svgSize="14" svgColor="#0E932E">
+                            <FlowPane.margin>
+                                <Insets left="5" top="8"/>
+                            </FlowPane.margin>
+                        </JFXSVGGlyph>
+                        <JFXText>
+                            <FlowPane.margin>
+                                <Insets left="5" top="7"/>
+                            </FlowPane.margin>
+                        </JFXText>
+                    </JFXFlowPane>
+                    <ZKACLVBox autoWidth="100%" prefHeight="106" styleClass="acl-item">
+                        <VBox.margin>
+                            <Insets top="5"/>
+                        </VBox.margin>
+                        <padding>
+                            <Insets left="5" bottom="5"/>
+                        </padding>
+                        <JFXFlowPane autoWidth="100%" prefHeight="24">
+                            <JFXSVGGlyph tipTitle="编辑权限" url="/font/edit.svg" svgSize="14"
+                                         onPrimaryMouseClicked="#updateACL">
+                                <FlowPane.margin>
+                                    <Insets top="5"/>
+                                </FlowPane.margin>
+                            </JFXSVGGlyph>
+                            <JFXSVGGlyph tipTitle="删除权限" url="/font/delete.svg" svgSize="14"
+                                         onPrimaryMouseClicked="#deleteACL">
+                                <FlowPane.margin>
+                                    <Insets left="5" top="5"/>
+                                </FlowPane.margin>
+                            </JFXSVGGlyph>
+                        </JFXFlowPane>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                    </ZKACLVBox>
+                    <ZKACLVBox autoWidth="100%" prefHeight="106" styleClass="acl-item">
+                        <VBox.margin>
+                            <Insets top="5"/>
+                        </VBox.margin>
+                        <padding>
+                            <Insets left="5" bottom="5"/>
+                        </padding>
+                        <JFXFlowPane autoWidth="100%" prefHeight="24">
+                            <JFXSVGGlyph tipTitle="编辑权限" url="/font/edit.svg" svgSize="14"
+                                         onPrimaryMouseClicked="#updateACL">
+                                <FlowPane.margin>
+                                    <Insets top="5"/>
+                                </FlowPane.margin>
+                            </JFXSVGGlyph>
+                            <JFXSVGGlyph tipTitle="删除权限" url="/font/delete.svg" svgSize="14"
+                                         onPrimaryMouseClicked="#deleteACL">
+                                <FlowPane.margin>
+                                    <Insets left="5" top="5"/>
+                                </FlowPane.margin>
+                            </JFXSVGGlyph>
+                        </JFXFlowPane>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                    </ZKACLVBox>
+                    <ZKACLVBox autoWidth="100%" prefHeight="106" styleClass="acl-item">
+                        <VBox.margin>
+                            <Insets top="5"/>
+                        </VBox.margin>
+                        <padding>
+                            <Insets left="5" bottom="5"/>
+                        </padding>
+                        <JFXFlowPane autoWidth="100%" prefHeight="24">
+                            <JFXSVGGlyph tipTitle="编辑权限" url="/font/edit.svg" svgSize="14"
+                                         onPrimaryMouseClicked="#updateACL">
+                                <FlowPane.margin>
+                                    <Insets top="5"/>
+                                </FlowPane.margin>
+                            </JFXSVGGlyph>
+                            <JFXSVGGlyph tipTitle="删除权限" url="/font/delete.svg" svgSize="14"
+                                         onPrimaryMouseClicked="#deleteACL">
+                                <FlowPane.margin>
+                                    <Insets left="5" top="5"/>
+                                </FlowPane.margin>
+                            </JFXSVGGlyph>
+                        </JFXFlowPane>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                        <JFXHBox autoWidth="100%" prefHeight="24">
+                            <JFXLabel prefWidth="135" styleClass="item-label,lbl,lbl-primary">
+                                <HBox.margin>
+                                    <Insets right="5"/>
+                                </HBox.margin>
+                            </JFXLabel>
+                            <JFXTextField prefHeight="20" autoWidth="calc(100% - 340)" editable="false"/>
+                        </JFXHBox>
+                    </ZKACLVBox>
+                </JFXVBox>
+            </JFXPane>
+        </JFXTab>
+        <JFXTab text="节点标签">
+            <JFXFlowPane fx:id="rightTagPane" autoHeight="calc(100% - 50)" autoWidth="100%"/>
+        </JFXTab>
+    </JFXTabPane>
+    <JFXPane fx:id="rightZKMsgPane" layoutX="440.0" autoWidth="calc(100% - 440)" autoLayoutY="62%"
+             autoHeight="38%" disable="true">
+        <JFXHBox prefHeight="50">
+            <JFXSVGGlyph fx:id="shrinkMsg" tipTitle="收缩消息框" svgSize="16" onPrimaryMouseClicked="#shrinkZKMsg"
+                         url="/font/shrink.svg">
+                <HBox.margin>
+                    <Insets left="10.0" top="17"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+            <JFXSVGGlyph visible="false" managed="false" fx:id="extendMsg" tipTitle="展开消息框" svgSize="14"
+                         onPrimaryMouseClicked="#extendZKMsg" url="/font/arrawsalt.svg">
+                <HBox.margin>
+                    <Insets left="10.0" top="18"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+            <JFXSVGGlyph fx:id="clearMsg" tipTitle="清空消息框" svgSize="16" onPrimaryMouseClicked="#clearZKMsg"
+                         url="/font/clear.svg">
+                <HBox.margin>
+                    <Insets left="10.0" top="17"/>
+                </HBox.margin>
+            </JFXSVGGlyph>
+        </JFXHBox>
+        <JFXTextArea layoutY="50.0" fx:id="rightZKMsg" editable="false" autoHeight="calc(100% - 90)"
+                     autoWidth="calc(100% - 18)"/>
+    </JFXPane>
+</JFXPane>

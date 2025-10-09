@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -39,6 +40,10 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         });
     }
 
+    public FXMenuItem() {
+        super();
+    }
+
     public FXMenuItem(Node graphic, String text, Runnable action) {
         if (text != null) {
             super.setText(text);
@@ -62,10 +67,14 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         Node graphic = this.getGraphic();
         double w = FontUtil.stringWidth(str);
         if (graphic != null) {
-            w += graphic.maxWidth(-1);
+            w += NodeUtil.getWidth(graphic);
         }
         return w;
     }
+
+    // public void fixed() {
+    //
+    // }
 
     /**
      * 使用svg和文字来生成菜单项
@@ -75,11 +84,12 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
      * @param action 执行业务
      * @return 菜单项
      */
+    @Deprecated
     public static FXMenuItem newItem(String text, SVGGlyph glyph, Runnable action) {
         // 生成标签
         SVGLabel label = new SVGLabel(text, glyph);
         // 设置边距
-        label.setPadding(new Insets(0, 0, 0, 0));
+        label.setPadding(Insets.EMPTY);
         // 计算宽度
         double w = FontUtil.stringWidth(text);
         if (glyph != null) {
@@ -100,12 +110,16 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
      * @param action 执行业务
      * @return 菜单项
      */
+    @Deprecated
     public static FXMenuItem newItem(String text, Runnable action) {
         return new FXMenuItem(null, text, action);
     }
 
     @Override
     public void destroy() {
+        if (this.getParentMenu() != null) {
+            return;
+        }
 //        if (this.disableListener != null) {
 //            this.disableProperty().removeListener(this.disableListener);
         this.disableProperty().unbind();

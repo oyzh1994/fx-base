@@ -1,0 +1,18 @@
+<?import cn.oyzh.fx.plus.controls.box.FXHBox?>
+<?import cn.oyzh.fx.plus.controls.box.FXVBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HeaderBar?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<Pane xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="cn.oyzh.fx.plus.test.headerbar.HeaderBarTestController">
+    <HeaderBar fx:id="headerBar">
+        <leading>
+            <HBox>
+                <Button text="test1">
+
+                </Button>
+            </HBox>
+        </leading>
+    </HeaderBar>
+</Pane>

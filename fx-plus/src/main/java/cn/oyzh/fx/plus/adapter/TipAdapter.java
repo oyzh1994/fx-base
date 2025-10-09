@@ -1,10 +1,11 @@
 package cn.oyzh.fx.plus.adapter;
 
-import cn.oyzh.fx.plus.util.TooltipUtil;
+import cn.oyzh.fx.plus.tooltip.TooltipUtil;
 import javafx.event.EventTarget;
+import javafx.scene.input.KeyCombination;
 
 /**
- * 提示标题
+ * 提示适配器
  *
  * @author oyzh
  * @since 2023/3/15
@@ -29,7 +30,7 @@ public interface TipAdapter extends EventTarget, PropAdapter {
      *
      * @return 提示标题
      */
-    default String tipText() {
+    private String tipText() {
         return TooltipUtil.getTipText(this);
     }
 
@@ -39,8 +40,13 @@ public interface TipAdapter extends EventTarget, PropAdapter {
      * @param tipText 提示标题
      */
     default void setTipText(String tipText) {
-        this.tipText(tipText);
         this.setProp("_tipText", tipText);
+        KeyCombination combination = this.getTipKeyCombination();
+        if (combination != null) {
+            this.tipText(tipText + "(" + combination + ")");
+        } else {
+            this.tipText(tipText);
+        }
     }
 
     /**
@@ -48,7 +54,7 @@ public interface TipAdapter extends EventTarget, PropAdapter {
      *
      * @param tipText 提示标题
      */
-    default void tipText(String tipText) {
+    private void tipText(String tipText) {
         TooltipUtil.setTipText(this, tipText);
     }
 
@@ -57,6 +63,7 @@ public interface TipAdapter extends EventTarget, PropAdapter {
      *
      * @param appendTipText 追加提示标题
      */
+    @Deprecated
     default void setAppendTipText(String appendTipText) {
         String tipText = this.getTipText();
         this.tipText(tipText == null ? appendTipText : tipText + appendTipText);
@@ -65,7 +72,28 @@ public interface TipAdapter extends EventTarget, PropAdapter {
     /**
      * 获取追加提示标题
      */
+    @Deprecated
     default String getAppendTipText() {
         return null;
     }
+
+    /**
+     * 设置提示快捷键
+     *
+     * @param combination 快捷键
+     */
+    default void setTipKeyCombination(KeyCombination combination) {
+        this.setProp("keyCombination", combination);
+        String tipText = this.getTipText();
+        String text = combination.toString();
+        this.tipText(tipText == null ? text : tipText + "(" + text + ")");
+    }
+
+    /**
+     * 获取提示快捷键
+     */
+    default KeyCombination getTipKeyCombination() {
+        return this.getProp("keyCombination");
+    }
+
 }

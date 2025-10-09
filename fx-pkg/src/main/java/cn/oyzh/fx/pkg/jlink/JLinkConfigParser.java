@@ -2,9 +2,10 @@ package cn.oyzh.fx.pkg.jlink;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,14 +37,14 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         }
         // 临时jre目录
         String tmpJreDir = new File(FileUtil.getTmpDir(), "_temp_jre_" + UUID.fastUUID().toString(true)).getPath();
-        config.setVm(object.getStr("vm", "server"));
-        config.setOutput(object.getStr("output", tmpJreDir));
-        config.setCompress(object.getInt("compress", 2));
-        config.setVerbose(object.getBool("verbose", true));
-        config.setNoManPages(object.getBool("no-man-pages", true));
-        config.setStripDebug(object.getBool("strip-debug", true));
-        config.setNoHeaderFiles(object.getBool("no-header-files", true));
-        config.setStripJavaDebugAttributes(object.getBool("strip-java-debug-attributes", true));
+        config.setVm(StringUtil.emptyToDefault(object.getString("vm"), "server"));
+        config.setOutput(StringUtil.emptyToDefault(object.getString("output"), tmpJreDir));
+        config.setCompress(object.getIntValue("compress", 2));
+        config.setVerbose(object.getBooleanValue("verbose", true));
+        config.setNoManPages(object.getBooleanValue("no-man-pages", true));
+        config.setStripDebug(object.getBooleanValue("strip-debug", true));
+        config.setNoHeaderFiles(object.getBooleanValue("no-header-files", true));
+        config.setStripJavaDebugAttributes(object.getBooleanValue("strip-java-debug-attributes", true));
         return config;
     }
 

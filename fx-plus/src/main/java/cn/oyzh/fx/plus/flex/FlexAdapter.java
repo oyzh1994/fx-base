@@ -239,6 +239,8 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         } else {
             size[1] = computeHeight1;
         }
+        size[0] = Math.max(0, size[0]);
+        size[1] = Math.max(0, size[1]);
         return size;
     }
 
@@ -292,9 +294,18 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
             this.setRealWidth(width);
         }
 
-        // 处理高度，y轴
+        // 处理高度
         if (changeHeight) {
             this.setRealHeight(height);
+        }
+
+        // 处理布局
+        if (changeHeight || changeWidth) {
+            // 处理x轴
+            if (StringUtil.isNotBlank(this.getFlexX())) {
+                this.setLayoutY(this.computeX());
+            }
+            // 处理y轴
             if (StringUtil.isNotBlank(this.getFlexY())) {
                 this.setLayoutY(this.computeY());
             }

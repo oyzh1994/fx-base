@@ -3,7 +3,7 @@
 // import cn.oyzh.fx.plus.controls.calendar.YearPicker;
 // import javafx.application.Application;
 // import javafx.scene.Scene;
-// import javafx.scene.layout.VBox;
+// import javafx.scene.layout.LVBox;
 // import javafx.stage.Stage;
 //
 // public class YearPickerTest extends Application {
@@ -27,7 +27,7 @@
 //         // comboBox.getItems().add("2");
 //         // comboBox.getItems().add("3");
 //
-//         final VBox vBox = new VBox();
+//         final LVBox vBox = new LVBox();
 //         // vBox.getChildren().add(choiceBox);
 //         // vBox.getChildren().add(comboBox);
 //         vBox.getChildren().add(picker);

@@ -1,16 +1,16 @@
 package cn.oyzh.fx.plus.chooser;
 
+import cn.oyzh.fx.plus.window.StageManager;
 import javafx.stage.Window;
 
 import java.io.File;
 
 /**
- * 文件选择器
+ * 文件夹选择器
  *
  * @author oyzh
  * @since 2020/10/21
  */
-
 public class DirChooserHelper {
 
     /**
@@ -20,7 +20,7 @@ public class DirChooserHelper {
      * @return 文件夹
      */
     public static File choose(String title) {
-        return choose(title, null, null);
+        return choose(title, null, StageManager.getFrontWindow());
     }
 
     /**
@@ -30,7 +30,17 @@ public class DirChooserHelper {
      * @return 文件夹
      */
     public static File chooseDownload(String title) {
-        return choose(title, FXChooser.getDownloadDirectory(), null);
+        return choose(title, FXChooser.getDownloadDirectory(), StageManager.getFrontWindow());
+    }
+
+    /**
+     * 选择桌面文件夹
+     *
+     * @param title 标题
+     * @return 文件夹
+     */
+    public static File chooseDesktop(String title) {
+        return choose(title, FXChooser.getDesktopDirectory(), StageManager.getFrontWindow());
     }
 
     /**

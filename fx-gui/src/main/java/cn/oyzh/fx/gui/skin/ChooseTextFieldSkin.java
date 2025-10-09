@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 public class ChooseTextFieldSkin extends ActionTextFieldSkin {
 
     public ChooseTextFieldSkin(TextField textField) {
-        super(textField,new ChooseSVGGlyph("13"));
+        super(textField,new ChooseSVGGlyph());
         this.button.disappear();
         this.button.setTipText(I18nHelper.choose());
     }

@@ -35,7 +35,7 @@ public class JLinkConfig {
     private boolean verbose = true;
 
     /**
-     * 不无需主页面
+     * 无需man手册
      */
     private boolean noManPages = true;
 

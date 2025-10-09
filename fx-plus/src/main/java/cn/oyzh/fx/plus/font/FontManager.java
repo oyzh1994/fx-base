@@ -34,7 +34,7 @@ public class FontManager {
     /**
      * 字体缓存
      */
-    private static final FontCache FONTS_CACHE = new FontCache();
+    private static final FontCache CACHE = new FontCache();
 
     /**
      * 当前字体
@@ -81,9 +81,9 @@ public class FontManager {
             // 缓存字体
             font = cacheFont(font);
             // 变更颜色
-            List<StageAdapter> wrappers = StageManager.allStages();
-            for (StageAdapter wrapper : wrappers) {
-                applyCycle(wrapper.root(), font);
+            List<StageAdapter> adapters = StageManager.allStages();
+            for (StageAdapter adapter : adapters) {
+                applyCycle(adapter.root(), font);
             }
             // 设置当前字体
             currentFont = font;
@@ -128,12 +128,16 @@ public class FontManager {
     public static Font cacheFont(Font font) {
         if (font != null) {
             // 从缓存中获取
-            if (!FONTS_CACHE.contains(font)) {
-                FONTS_CACHE.add(font);
+            if (!CACHE.contains(font)) {
+                CACHE.add(font);
             } else {
-                font = FONTS_CACHE.get(font);
-//                JulLog.info("get font from cache, font:{}", font);
-                JulLog.debug("get font from cache, font:{}", font);
+                font = CACHE.get(font);
+                //if (JulLog.isInfoEnabled()) {
+                //    JulLog.info("get font from cache, font:{}", font);
+                //}
+                if (JulLog.isDebugEnabled()) {
+                    JulLog.debug("get font from cache, font:{}", font);
+                }
             }
         }
         return font;
@@ -146,6 +150,10 @@ public class FontManager {
      * @return font
      */
     public static Font toFont(FontConfig config) {
-        return Font.font(config.getFamily(), FontWeight.findByWeight(config.getWeight()), config.getSize());
+        if (config == null) {
+            return Font.getDefault();
+        }
+        Font font = Font.font(config.getFamily(), FontWeight.findByWeight(config.getWeight()), config.getSize());
+        return cacheFont(font);
     }
 }

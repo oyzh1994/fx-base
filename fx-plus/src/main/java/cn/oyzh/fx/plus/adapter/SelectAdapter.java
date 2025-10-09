@@ -13,11 +13,14 @@ import javafx.scene.control.TreeView;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
  * 选择组件适配器
  *
+ * @author oyzh
+ * @since 2023/4/11
  * @param <T> 数据类型
  */
 public interface SelectAdapter<T> extends PropAdapter {
@@ -81,6 +84,11 @@ public interface SelectAdapter<T> extends PropAdapter {
                 node.getSelectionModel().select(index);
             } else if (this instanceof TabPane node) {
                 node.getSelectionModel().select(index);
+                // TODO: 需要让内容获取焦点，不然可能会导致后续切换无效
+                Tab tab = (Tab) this.getItem(index);
+                if (tab != null && tab.getContent() != null) {
+                    tab.getContent().requestFocus();
+                }
             } else if (this instanceof ComboBox<?> node) {
                 node.getSelectionModel().select(index);
             } else if (this instanceof ListView<?> node) {
@@ -103,7 +111,12 @@ public interface SelectAdapter<T> extends PropAdapter {
             } else if (this instanceof TableView node) {
                 node.getSelectionModel().select(obj);
             } else if (this instanceof TabPane node) {
-                node.getSelectionModel().select((Tab) obj);
+                Tab tab = (Tab) obj;
+                node.getSelectionModel().select(tab);
+                // TODO: 需要让内容获取焦点，不然可能会导致后续切换无效
+                if (tab != null && tab.getContent() != null) {
+                    tab.getContent().requestFocus();
+                }
             } else if (this instanceof ComboBox node) {
                 node.getSelectionModel().select(obj);
             } else if (this instanceof ListView node) {
@@ -154,21 +167,25 @@ public interface SelectAdapter<T> extends PropAdapter {
      * @return 结果
      */
     default T getSelectedItem() {
-        Object o = null;
-        if (this instanceof TreeView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TreeTableView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TableView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof TabPane node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof ComboBox<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        } else if (this instanceof ListView<?> node) {
-            o = node.getSelectionModel().getSelectedItem();
-        }
-        return (T) o;
+        AtomicReference<T> ref = new AtomicReference<>();
+        FXUtil.runWait(() -> {
+            Object o = null;
+            if (this instanceof TreeView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof TreeTableView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof TableView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof TabPane node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof ComboBox<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            } else if (this instanceof ListView<?> node) {
+                o = node.getSelectionModel().getSelectedItem();
+            }
+            ref.set((T) o);
+        });
+        return ref.get();
     }
 
     /**
@@ -235,7 +252,7 @@ public interface SelectAdapter<T> extends PropAdapter {
      *
      * @param listener 监听器
      */
-    default void selectedIndexChanged( ChangeListener<Number> listener) {
+    default void selectedIndexChanged(ChangeListener<Number> listener) {
         if (this instanceof TreeView<?> node) {
             node.getSelectionModel().selectedIndexProperty().addListener((observableValue, t, t1) -> {
                 if (!this.isIgnoreChanged()) {
@@ -498,6 +515,11 @@ public interface SelectAdapter<T> extends PropAdapter {
                     return null;
                 }
                 return node.getItems().get(index);
+            } else if (this instanceof TabPane node) {
+                if (node.getTabs().size() <= index) {
+                    return null;
+                }
+                return node.getTabs().get(index);
             }
         }
         return null;
@@ -562,9 +584,13 @@ public interface SelectAdapter<T> extends PropAdapter {
 
     /**
      * 移除已选中节点
+     *
+     * @return 选中的节点
      */
-    default void removeSelectedItem() {
-        this.removeItem(this.getSelectedItem());
+    default T removeSelectedItem() {
+        T item = this.getSelectedItem();
+        this.removeItem(item);
+        return item;
     }
 
     /**
@@ -580,19 +606,16 @@ public interface SelectAdapter<T> extends PropAdapter {
      * 选中末尾节点
      */
     default void selectLast() {
-        // int lastIndex = this.getLastIndex();
-        // this.select(lastIndex);
-        // if (this instanceof ListView<?> node) {
-        //     node.scrollTo(this.getItemSize());
-        // } else if (this instanceof TableView<?> node) {
-        //     node.scrollTo(this.getItemSize());
-        // }
         if (this instanceof ListView<?> node) {
             node.getSelectionModel().selectLast();
             node.scrollTo(this.getItemSize());
         } else if (this instanceof TableView<?> node) {
             node.getSelectionModel().selectLast();
             node.scrollTo(this.getItemSize());
+        } else if (this instanceof ComboBox<?> node) {
+            node.getSelectionModel().selectLast();
+        } else if (this instanceof TabPane node) {
+            node.getSelectionModel().selectLast();
         }
     }
 }

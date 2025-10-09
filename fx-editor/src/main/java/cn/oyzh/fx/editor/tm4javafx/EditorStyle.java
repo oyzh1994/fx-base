@@ -1,0 +1,62 @@
+// package cn.oyzh.fx.editor.tm4javafx;
+//
+// import javafx.scene.paint.Color;
+//
+// /**
+//  * @author oyzh
+//  * @since 2023/10/8
+//  */
+// public class EditorStyle {
+//
+//     private int start;
+//
+//     private int end;
+//
+//     private String style;
+//
+//     private Color color;
+//
+//     public EditorStyle(int start, int end, Color color) {
+//         this.start = start;
+//         this.end = end;
+//         this.color = color;
+//     }
+//
+//     public EditorStyle(int start, int end, String style) {
+//         this.start = start;
+//         this.end = end;
+//         this.style = style;
+//     }
+//
+//     public int start() {
+//         return start;
+//     }
+//
+//     public void start(int start) {
+//         this.start = start;
+//     }
+//
+//     public int end() {
+//         return end;
+//     }
+//
+//     public void end(int end) {
+//         this.end = end;
+//     }
+//
+//     public String style() {
+//         return style;
+//     }
+//
+//     public void style(String style) {
+//         this.style = style;
+//     }
+//
+//     public Color color() {
+//         return color;
+//     }
+//
+//     public void color(Color color) {
+//         this.color = color;
+//     }
+// }

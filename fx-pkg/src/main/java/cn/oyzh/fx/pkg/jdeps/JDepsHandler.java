@@ -73,8 +73,14 @@ public class JDepsHandler implements PreHandler {
         } else {
             cmdStr = new StringBuilder("java --list-modules");
         }
+        //ProcessExecBuilder builder = ProcessExecBuilder.newBuilder("java --list-modules");
+        //builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        //builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+        //builder.directory(jdkPath + "/bin");
+        //builder.timeout(30_000);
         String result = RuntimeUtil.execForStr(cmdStr.toString());
-//        String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        //String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        //String result = builder.execForInput();
         JulLog.info("list modules:{}", result);
 //        System.out.println(result);
         result.lines().forEach(r -> {
@@ -106,6 +112,12 @@ public class JDepsHandler implements PreHandler {
         // 列举模块
         cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, cmdStr.toString()));
         result = RuntimeUtil.execForStr(cmdStr.toString());
+        //builder = ProcessExecBuilder.newBuilder(cmdStr.toString());
+        //builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        //builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+        //builder.timeout(30_000);
+        //builder.directory(jdkPath + "/bin");
+        //result = builder.execForInput();
 //        System.out.println(result);
 //        result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
         JulLog.info("Jdeps result:{}", result);

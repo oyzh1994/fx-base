@@ -1,0 +1,54 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "JMX Remote Access",
+	"scopeName": "source.jmxremote.access",
+	"fileTypes": ["access"],
+	"uuid": "9f8d7e6c-5b4a-3c2d-1e0f-9a8b7c6d5e4f",
+	"patterns": [
+		{ "include": "#comments" },
+		{ "include": "#access-entries" },
+		{ "include": "#whitespace" }
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.number-sign.jmx",
+					"match": "#.*$"
+				}
+			]
+		},
+		"access-entries": {
+			"patterns": [
+				{
+					"name": "meta.access-entry.jmx",
+					"match": "^\\s*([a-zA-Z0-9_.-]+)\\s+(readonly|readwrite)\\s*$",
+					"captures": {
+						"1": { "name": "entity.name.user.jmx" },
+						"2": {
+							"name": "keyword.access-level.jmx",
+							"patterns": [
+								{
+									"match": "readonly",
+									"name": "keyword.access-level.readonly.jmx"
+								},
+								{
+									"match": "readwrite",
+									"name": "keyword.access-level.readwrite.jmx"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"whitespace": {
+			"patterns": [
+				{
+					"name": "whitespace.jmx",
+					"match": "\\s+"
+				}
+			]
+		}
+	}
+}

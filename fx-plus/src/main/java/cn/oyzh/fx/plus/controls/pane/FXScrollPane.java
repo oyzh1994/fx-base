@@ -43,4 +43,10 @@ public class FXScrollPane extends ScrollPane implements FlexAdapter, ThemeAdapte
             NodeUtil.setHeight(this.getContent(), height);
         }
     }
+
+    @Override
+    public void initNode() {
+        FlexAdapter.super.initNode();
+        this.setFitToWidth(true);
+    }
 }

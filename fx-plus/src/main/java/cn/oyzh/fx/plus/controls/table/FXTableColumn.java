@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -26,14 +28,14 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapte
      */
     public void setCell(TableCell<S, T> cell) {
         this.setCellFactory((c) -> cell);
-        this.getTableView().getProperties().put("cell", cell);
+        PropertiesUtil.set(this.getTableView(), "cell", cell);
     }
 
     /**
      * 设置列处理器
      */
     public TableCell<S, T> getCell() {
-        return (TableCell<S, T>) this.getTableView().getProperties().get("cell");
+        return (TableCell<S, T>) PropertiesUtil.get(this.getTableView(), "cell");
     }
 
     public void setLineHeight(double lineHeight) {
@@ -81,5 +83,9 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapte
 
     public String getValueName() {
         return this.getProp("_valueName");
+    }
+
+    public void setTextExt(String text) {
+        FXUtil.runWait(() -> super.setText(text));
     }
 }

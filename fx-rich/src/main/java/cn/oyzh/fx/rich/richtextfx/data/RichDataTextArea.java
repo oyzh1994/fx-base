@@ -3,12 +3,11 @@ package cn.oyzh.fx.rich.richtextfx.data;
 import cn.oyzh.common.util.RegexHelper;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
+import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.control.BaseRichTextArea;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.control.IndexRange;
-import org.fxmisc.richtext.model.TwoDimensional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +21,7 @@ import java.util.regex.Matcher;
  * @author oyzh
  * @since 2024/04/17
  */
-
+@Deprecated
 public class RichDataTextArea extends BaseRichTextArea {
 
     /**
@@ -331,8 +330,6 @@ public class RichDataTextArea extends BaseRichTextArea {
             }
             Matcher matcher2 = RegexHelper.jsonKeyPattern().matcher(text);
             while (matcher2.find()) {
-//                styles.add(new RichTextStyle(matcher2.start(1), matcher2.end(1), "-fx-fill: #EE2C2C;"));
-//                styles.add(new RichTextStyle(matcher2.start(1), matcher2.end(1) - 1, "-fx-fill: #EE2C2C;"));
                 styles.add(new RichTextStyle(matcher2.start(1) - 1, matcher2.end(1) + 1, "-fx-fill: #22509F;"));
             }
             Matcher matcher3 = RegexHelper.jsonValuePattern().matcher(text);

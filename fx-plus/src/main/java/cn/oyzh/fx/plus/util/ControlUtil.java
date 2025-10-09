@@ -1,8 +1,12 @@
 package cn.oyzh.fx.plus.util;
 
+import cn.oyzh.common.util.ReflectUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -22,8 +26,12 @@ import javafx.scene.text.Text;
  * @author oyzh
  * @since 2022/1/19
  */
-
 public class ControlUtil {
+
+    /**
+     * 边框长度-0.5
+     */
+    public static BorderWidths BW_HALF = new BorderWidths(0.5);
 
     // /**
     //  * 初始化提示组件
@@ -279,11 +287,11 @@ public class ControlUtil {
     /***
      * 生成指定宽度的边框，仅底部
      * @param stroke 颜色
-     * @param width 宽度
+     * @param size 宽度
      * @return 指定宽度边框
      */
-    public static Border strokeOfWidthBottom(Paint stroke, double width) {
-        return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(0, 0, width, 0)));
+    public static Border strokeOfWidthBottom(Paint stroke, double size) {
+        return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, new BorderWidths(0, 0, size, 0)));
     }
 
     /***
@@ -385,29 +393,29 @@ public class ControlUtil {
         return range != null && range.getLength() > 0;
     }
 
-    /**
-     * 获取组件宽度
-     *
-     * @param node 节点
-     * @return 组件宽度
-     */
-    public static double boundedWidth(Node node) {
-        double min = node.minWidth(-1);
-        double max = node.maxWidth(-1);
-        return Math.min(Math.max(node.prefWidth(-1), min), Math.max(min, max));
-    }
-
-    /**
-     * 获取组件高度
-     *
-     * @param node 节点
-     * @return 组件高度
-     */
-    public static double boundedHeight(Node node) {
-        double min = node.minHeight(-1);
-        double max = node.maxHeight(-1);
-        return Math.min(Math.max(node.prefHeight(-1), min), Math.max(min, max));
-    }
+    // /**
+    //  * 获取组件宽度
+    //  *
+    //  * @param node 节点
+    //  * @return 组件宽度
+    //  */
+    // public static double boundedWidth(Node node) {
+    //     double min = node.minWidth(-1);
+    //     double max = node.maxWidth(-1);
+    //     return Math.min(Math.max(node.prefWidth(-1), min), Math.max(min, max));
+    // }
+    //
+    // /**
+    //  * 获取组件高度
+    //  *
+    //  * @param node 节点
+    //  * @return 组件高度
+    //  */
+    // public static double boundedHeight(Node node) {
+    //     double min = node.minHeight(-1);
+    //     double max = node.maxHeight(-1);
+    //     return Math.min(Math.max(node.prefHeight(-1), min), Math.max(min, max));
+    // }
 
     /**
      * 获取背景颜色
@@ -425,4 +433,49 @@ public class ControlUtil {
         }
         return bg.getFills().getFirst().getFill();
     }
+
+    /**
+     * 获取 ScrollPane 垂直滚动条的宽度
+     *
+     * @param scrollPane 滚动面板
+     */
+    public static double getVBarWidth(ScrollPane scrollPane) {
+        Skin<?> skin =  scrollPane.getSkin();
+        if(skin == null) {
+            return 0;
+        }
+        // 通过反射获取垂直滚动条
+        ScrollBar scrollBar = ReflectUtil.getFieldValue(skin, "vsb");
+        // 确保滚动条可见并已布局
+        if (scrollBar == null ) {
+            return 0;
+        }
+        // // 强制布局并获取宽度
+        // scrollBar.applyCss();
+        // scrollBar.layout();
+        return NodeUtil.getWidth(scrollBar);
+    }
+
+    /**
+     * 获取 ScrollPane 水平滚动条的高度
+     *
+     * @param scrollPane 滚动面板
+     */
+    public static double getHBarHeight(ScrollPane scrollPane) {
+        Skin<?> skin =  scrollPane.getSkin();
+        if(skin == null) {
+            return 0;
+        }
+        // 通过反射获取垂直滚动条
+        ScrollBar scrollBar = ReflectUtil.getFieldValue(skin, "hsb");
+        // 确保滚动条可见并已布局
+        if (scrollBar == null ) {
+            return 0;
+        }
+        // 强制布局并获取宽度
+        scrollBar.applyCss();
+        scrollBar.layout();
+        return NodeUtil.getHeight(scrollBar);
+    }
+
 }

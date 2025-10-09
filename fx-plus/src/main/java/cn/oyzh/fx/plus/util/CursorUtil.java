@@ -10,7 +10,6 @@ import javafx.stage.Window;
  * @author oyzh
  * @since 2022/3/8
  */
-
 public class CursorUtil {
 
     /**
@@ -54,7 +53,7 @@ public class CursorUtil {
      *
      * @param node 组件
      */
-    public static void handCursor( Node node) {
+    public static void handCursor(Node node) {
         setCursor(node, Cursor.HAND);
     }
 
@@ -63,7 +62,7 @@ public class CursorUtil {
      *
      * @param node 组件
      */
-    public static void defaultCursor( Node node) {
+    public static void defaultCursor(Node node) {
         setCursor(node, Cursor.DEFAULT);
     }
 
@@ -73,7 +72,7 @@ public class CursorUtil {
      * @param node   组件
      * @param cursor 鼠标样式
      */
-    public static void setCursor(Node node,  Cursor cursor) {
+    public static void setCursor(Node node, Cursor cursor) {
         if (node != null && node.getCursor() != cursor) {
             FXUtil.runWait(() -> node.setCursor(cursor));
         }
@@ -85,7 +84,7 @@ public class CursorUtil {
      * @param stage  页面
      * @param cursor 鼠标
      */
-    public static void setCursor(Window stage,  Cursor cursor) {
+    public static void setCursor(Window stage, Cursor cursor) {
         if (stage != null && stage.getScene() != null) {
             CursorUtil.setCursor(stage.getScene().getRoot(), cursor);
         }

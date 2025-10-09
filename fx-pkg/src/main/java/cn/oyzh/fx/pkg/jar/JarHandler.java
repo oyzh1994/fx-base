@@ -34,6 +34,8 @@ public class JarHandler implements PreHandler {
 
     private RegFilter filter;
 
+    private RegFilter skipFilter;
+
     @Override
     public String name() {
         return "jar处理器";
@@ -50,6 +52,7 @@ public class JarHandler implements PreHandler {
             throw new Exception("jdkPath为空！");
         }
         this.filter = new RegFilter(jarConfig.getExcludes());
+        this.skipFilter = new RegFilter(jarConfig.getSkipsJar());
         // 来源文件
         String src = packConfig.getMainJar();
         // 目标文件
@@ -108,6 +111,11 @@ public class JarHandler implements PreHandler {
                 if (!JarUtil.isJar(file)) {
                     continue;
                 }
+                // 符合跳过jar，忽略文件
+                if (!this.skipFilter.apply(file.getName())) {
+                    JulLog.warn("类库:{}被跳过, 已忽略.", file.getName());
+                    continue;
+                }
                 // 符合排除jar，删除文件
                 if (!this.filter.apply(file.getName())) {
                     FileUtil.del(file);
@@ -151,6 +159,7 @@ public class JarHandler implements PreHandler {
             // 合并lib目录到主jar文件
             String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ./BOOT-INF/lib";
             cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+            JulLog.info(cmdStr);
             RuntimeUtil.execAndWait(cmdStr, dir);
         } else {// 单个jar逐个合并
             List<File> files = FileUtil.loopFiles(dir);
@@ -159,6 +168,7 @@ public class JarHandler implements PreHandler {
                 String fName = file.getPath().replace(dir.getPath(), "");
                 String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ." + fName;
                 cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+                JulLog.info(cmdStr);
                 RuntimeUtil.execAndWait(cmdStr, dir);
             }
         }

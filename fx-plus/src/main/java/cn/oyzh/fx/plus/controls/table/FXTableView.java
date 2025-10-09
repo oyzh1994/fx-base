@@ -11,12 +11,16 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.skin.NestedTableColumnHeader;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 /**
  * @author oyzh
@@ -28,13 +32,10 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         NodeManager.init(this);
     }
 
-    public FXTableView() {
-    }
-
-    protected void initTableView() {
-        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        this.initEvenListener();
-    }
+//    protected void initTableView() {
+//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+//        this.initEvenListener();
+//    }
 
     /**
      * 初始化事件监听器
@@ -58,10 +59,31 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void initNode() {
-        this.setFixedCellSize(35.f);
-        this.initTableView();
+        this.setHeaderHeight(30);
+        this.setFixedCellSize(30);
+        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        this.initEvenListener();
+        this.setReorderable(false);
 //        this.setFocusTraversable(false);
 //        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+
+        // 监听列
+        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
+            c.next();
+            if (c.wasAdded() || c.wasReplaced()) {
+                c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
+            }
+        });
+    }
+
+    private boolean reorderable;
+
+    public void setReorderable(boolean reorderable) {
+        this.reorderable = reorderable;
+    }
+
+    public boolean isReorderable() {
+        return reorderable;
     }
 
     private Runnable ctrlSAction;
@@ -114,23 +136,63 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void resizeNode(Double width, Double height) {
-        // 调用父类的resizeNode方法来调整节点大小
         FlexAdapter.super.resizeNode(width, height);
-
-        // 获取表格中的列
         ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
-        // 遍历每一列
         for (TableColumn<?, ?> column : columns) {
-            // 判断列是否是FlexAdapter的实例
             if (column instanceof FlexAdapter flexNode) {
-                // 如果列可见，则设置实际宽度为计算得到的弹性宽度
                 if (column.isVisible()) {
-                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                    if (column.isResizable()) {
+                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                    }
                 } else {
-                    // 否则将列宽度设置为0
                     NodeUtil.setWidth(column, 0D);
                 }
             }
         }
+    }
+
+    /**
+     * 获取表头组件
+     *
+     * @return 表头组件
+     */
+    public Pane getHeader() {
+        return TableViewUtil.getHeader(this);
+    }
+
+    /**
+     * 获取表头高
+     *
+     * @return 表头高
+     */
+    public double getHeaderHeight() {
+        Pane header = this.getHeader();
+        return header == null ? -1D : header.getHeight();
+    }
+
+    /**
+     * 设置表头高
+     *
+     * @param height 高
+     */
+    public void setHeaderHeight(double height) {
+        Pane header = this.getHeader();
+        if (header != null) {
+            NestedTableColumnHeader columnHeader = TableViewUtil.getHeaderColumn(this);
+            if (columnHeader != null) {
+                columnHeader.maxHeightProperty().bind(header.maxHeightProperty());
+                columnHeader.minHeightProperty().bind(header.minHeightProperty());
+                columnHeader.prefHeightProperty().bind(header.prefHeightProperty());
+            }
+            header.setMaxHeight(height);
+            header.setPrefHeight(height);
+        } else {
+            FXUtil.runPulse(() -> setHeaderHeight(height));
+        }
+    }
+
+    @Override
+    public void refresh() {
+        FXUtil.runLater(super::refresh);
     }
 }

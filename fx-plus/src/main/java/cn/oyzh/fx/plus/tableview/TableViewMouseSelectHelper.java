@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.tableview;
 
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.TableRow;
@@ -17,11 +18,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * 鼠标辅助选择
+ *
  * @author oyzh
  * @since 2025-03-06
  */
 public class TableViewMouseSelectHelper {
 
+    /**
+     * tableview
+     */
     private final Reference<TableView<?>> reference;
 
     public TableViewMouseSelectHelper(TableView<?> tableView) {
@@ -112,11 +118,24 @@ public class TableViewMouseSelectHelper {
         AtomicReference<Double> startX = new AtomicReference<>(0D);
         AtomicReference<Double> startY = new AtomicReference<>(0D);
 
+        // 清除函数
+        Runnable clearFunc = () -> {
+            startX.set(0d);
+            startY.set(0d);
+            this.clearRectangle();
+        };
+
         // 监听鼠标按下事件
         tableView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            if (FXUtil.isPointInNode(event, FXUtil.getVScrollBar(tableView))) {
+                clearFunc.run();
+                return;
+            }
             if (event.getClickCount() == 1 && event.getButton() == MouseButton.PRIMARY) {
                 startX.set(event.getSceneX());
                 startY.set(event.getSceneY());
+            } else {
+                clearFunc.run();
             }
         });
 
@@ -132,12 +151,16 @@ public class TableViewMouseSelectHelper {
                 if (rectangle == null) {
                     rectangle = this.initRectangle();
                 }
+                if (rectangle == null) {
+                    return;
+                }
                 rectangle.setX(Math.min(startX.get(), endX));
                 rectangle.setY(Math.min(startY.get(), endY));
                 rectangle.setWidth(Math.abs(endX - startX.get()));
                 rectangle.setHeight(Math.abs(endY - startY.get()));
-//                selectionRect.setVisible(true);
                 this.onMouseSelection(rectangle);
+            } else {
+                clearFunc.run();
             }
         });
 
@@ -147,10 +170,16 @@ public class TableViewMouseSelectHelper {
                 Rectangle rectangle = this.findRectangle();
                 if (rectangle != null) {
                     this.onMouseSelection(rectangle);
-//                    selectionRect.setVisible(false);
                     this.clearRectangle();
                 }
+            } else {
+                clearFunc.run();
             }
+        });
+
+        // 监听鼠标离开事件
+        tableView.addEventFilter(MouseEvent.MOUSE_EXITED, event -> {
+            this.clearRectangle();
         });
     }
 
@@ -166,35 +195,27 @@ public class TableViewMouseSelectHelper {
         }
         // 行高
         double rowHeight = TableViewUtil.getRowHeight(tableView);
-//        double headerRowHeight = TableViewUtil.getHeaderRowHeight(tableView);
-//        double rowSpacing = TableViewUtil.getRowSpacing(tableView);
-//        double startY = tableView.getLayoutBounds().getMinY();
-//        double endY = tableView.getLayoutBounds().getMaxY();
         // 选区开始和结束
-        double selectionStart = rectangle.getLayoutBounds().getMinY();
+        Point2D rectanglePoint = rectangle.localToScene(0, 0);
+        double selectionStart = rectanglePoint.getY() + rectangle.getLayoutBounds().getMinY();
         double selectionEnd = rectangle.getLayoutBounds().getMaxY();
+        // 选中节点
         List<Integer> selected = new ArrayList<>();
-//        double indexY = startY + headerRowHeight + rowSpacing;
-//        for (int i = 0; i < tableView.getItems().size(); i++) {
-//            if (indexY >= endY || indexY >= selectionEnd) {
-//                break;
-//            }
-//            indexY += rowHeight + rowSpacing;
-//            if (indexY >= selectionStart - rowHeight - rowSpacing) {
-//                selected.add(i);
-//            }
-//        }
         // 计算位置
         List<TableRow<?>> rows = TableViewUtil.getRows(tableView);
         for (TableRow<?> row : rows) {
             Point2D point = row.localToScene(0, 0);
+            double rowEnd = point.getY() + row.getLayoutBounds().getMaxY();
+            double rowStart = point.getY() + row.getLayoutBounds().getMinY();
             // 判断是否在选区内
-            if (point.getY() >= selectionStart && point.getY() - rowHeight <= selectionEnd) {
+            if (rowStart + rowHeight >= selectionStart && rowEnd + 5 <= selectionEnd) {
                 selected.add(row.getIndex());
             }
         }
         // 清除选择
         tableView.getSelectionModel().clearSelection();
+        // 进行排序
+        selected.sort(Integer::compareTo);
         // 选择多个
         if (selected.size() > 1) {
             int startIndex = selected.getFirst();
@@ -206,6 +227,11 @@ public class TableViewMouseSelectHelper {
         }
     }
 
+    /**
+     * 安装鼠标多选辅助器
+     *
+     * @param tableView 组件
+     */
     public static void install(TableView<?> tableView) {
         if (tableView != null) {
             new TableViewMouseSelectHelper(tableView);

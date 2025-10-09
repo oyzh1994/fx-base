@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
-import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -30,7 +30,8 @@ public class TooltipExt extends Tooltip implements PropAdapter {
         // 获取组件坐标
         Point2D point2D = node.localToScreen(node.getScaleX(), node.getScaleY());
         // 获取组件宽度
-        double width = ControlUtil.boundedWidth(node);
+        double width = NodeUtil.getWidth(node);
+        // double width = ControlUtil.boundedWidth(node);
         // 获取内容宽度
         double strWidth = FontUtil.stringWidth(this.getText(), this.getFont());
         // 显示提示条

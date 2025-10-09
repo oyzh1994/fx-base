@@ -23,17 +23,17 @@ public class FXMLLoaderExt extends FXMLLoader {
     /**
      * 加载
      *
-     * @param fxmlUrl  fxml地址
+     * @param fxmlUrl fxml地址
      * @return 内容
      */
-    public <T> T load( String fxmlUrl) {
+    public <T> T load(String fxmlUrl) {
         try {
             this.setLocation(ResourceUtil.getResource(fxmlUrl));
             this.setResources(I18nResourceBundle.INSTANCE);
             return super.load();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JulLog.warn("load fxml fail, url:{}", fxmlUrl);
+            JulLog.warn("load fxml fail, url:{} err:{}", fxmlUrl, ex.getMessage());
         }
         return null;
     }
@@ -42,9 +42,10 @@ public class FXMLLoaderExt extends FXMLLoader {
      * 从地址加载
      *
      * @param fxmlUrl 资源地址
-     * @return 内容
+     * @return 加载结果
      */
-    public static <T> T loadFromUrl( String fxmlUrl) {
-        return new FXMLLoaderExt().load(fxmlUrl);
+    public static FXMLResult loadFromUrl(String fxmlUrl) {
+        FXMLLoaderExt loader = new FXMLLoaderExt();
+        return new FXMLResult(loader.load(fxmlUrl), loader.getController());
     }
 }

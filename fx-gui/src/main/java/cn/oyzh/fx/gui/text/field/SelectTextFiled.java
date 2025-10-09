@@ -1,48 +1,58 @@
 package cn.oyzh.fx.gui.text.field;
 
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.gui.skin.SelectTextFiledSkin;
-import javafx.beans.value.ChangeListener;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author oyzh
  * @since 2024/07/12
  */
-public class SelectTextFiled extends LimitTextField {
-
-    {
-        this.setSkin(new SelectTextFiledSkin(this));
-    }
+public class SelectTextFiled<T> extends LimitTextField {
 
     /**
      * 当前皮肤
      *
      * @return 皮肤
      */
-    public SelectTextFiledSkin skin() {
-        return (SelectTextFiledSkin) this.getSkin();
+    public SelectTextFiledSkin<T> skin() {
+        if (this.getSkin() == null) {
+            this.setSkin(this.createDefaultSkin());
+        }
+        return (SelectTextFiledSkin<T>) this.getSkin();
     }
 
-    public void clearData( ) {
+    @Override
+    protected SelectTextFiledSkin<T> createDefaultSkin() {
+        if (this.getSkin() != null) {
+            return (SelectTextFiledSkin<T>) this.getSkin();
+        }
+        return new SelectTextFiledSkin<>(this);
+    }
+
+    public void clearItem() {
         if (this.getItemList() != null) {
             this.getItemList().clear();
         }
     }
 
-    public void addData(String data) {
+    public void addItem(T item) {
         if (this.getItemList() == null) {
             this.setItemList(new ArrayList<>());
         }
-        this.getItemList().add(data);
+        this.getItemList().add(item);
     }
 
-    public void setItemList(List<String> itemList) {
+    public void setItemList(List<T> itemList) {
         this.skin().setItemList(itemList);
     }
 
-    public List<String> getItemList() {
+    public List<T> getItemList() {
         return this.skin().getItemList();
     }
 
@@ -58,15 +68,59 @@ public class SelectTextFiled extends LimitTextField {
         return this.skin().getLineHeight();
     }
 
-    public void selectIndexChanged(ChangeListener<Number> listener) {
-        this.skin().setSelectIndexChanged(listener);
-    }
+    // public void selectIndexChanged(ChangeListener<Number> listener) {
+    //     this.skin().selectIndexChanged(listener);
+    // }
 
-    public void selectItem(String item) {
+    public void selectItem(T item) {
         this.skin().selectItem(item);
+        this.skin().setTexting();
+        SelectTextFiledSkin<T> skin = this.skin();
+        if (skin != null && skin.getConverter() != null) {
+            this.text(skin.getConverter().toString(item));
+        } else {
+            this.text(item.toString());
+        }
+        this.skin().clearTexting();
     }
 
     public void selectIndex(int index) {
         this.skin().selectIndex(index);
+    }
+
+    public T getSelectedItem() {
+        return this.skin().getSelectedItem();
+    }
+
+    public void selectedItemChanged(Consumer<T> listener) {
+        this.skin().selectItemChanged(listener);
+    }
+
+    /**
+     * 文本变更事件
+     *
+     * @param newValue 新文本
+     */
+    protected void onTextChanged(String newValue) {
+        if (this.skin().isTexting()) {
+            this.skin().clearTexting();
+            return;
+        }
+        if (!this.isFocused()) {
+            return;
+        }
+    }
+
+    @Override
+    public void initNode() {
+        super.initNode();
+        this.addTextChangeListener((observableValue, s, t1) -> {
+            TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
+        });
+        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
+                this.skin().selectFirst();
+            }
+        });
     }
 }

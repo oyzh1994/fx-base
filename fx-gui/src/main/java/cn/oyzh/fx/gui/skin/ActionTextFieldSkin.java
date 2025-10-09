@@ -3,12 +3,10 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 /**
  * 文本域皮肤扩展
@@ -56,13 +54,23 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
         // 按钮大小，组件高度/2，最大20，最小10
         double size = NumberUtil.limit(h * 0.5, this.getButtonSizeMin(), this.getButtonSizeMax());
         // 设置按钮大小
-        this.button.setSize(size);
+        this.setButtonSize(size);
         // 计算组件大小
         double btnSize = this.snapSizeX(size);
-        // 位移的areaX值，规则 组件宽+x-按钮大小
-        double areaX = w + x - btnSize - 8;
+        // 位移的areaX值，规则 组件宽 + x -按钮大小
+        double areaX = w + x - btnSize - this.getButtonMargin();
         // 设置位置
-        super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+        // super.positionInArea(this.button, areaX, y, btnSize, h, 0, HPos.CENTER, VPos.CENTER);
+        super.positionInArea(this.button, areaX, y, 0, h, 0, HPos.CENTER, VPos.CENTER);
+    }
+
+    /**
+     * 设置按钮大小
+     *
+     * @param size 大小
+     */
+    protected void setButtonSize(double size) {
+        this.button.setSize(size);
     }
 
 //    @Override
@@ -83,5 +91,14 @@ public class ActionTextFieldSkin extends FXTextFieldSkin {
 
     protected double getButtonSizeMax() {
         return 20;
+    }
+
+    /**
+     * 获取按钮边距
+     *
+     * @return 按钮边距
+     */
+    protected double getButtonMargin() {
+        return 5;
     }
 }

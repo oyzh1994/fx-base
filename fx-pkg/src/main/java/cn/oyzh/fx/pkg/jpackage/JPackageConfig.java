@@ -2,6 +2,7 @@ package cn.oyzh.fx.pkg.jpackage;
 
 
 import java.io.File;
+import java.util.List;
 
 /**
  * JPackage配置
@@ -62,9 +63,14 @@ public class JPackageConfig {
     private String runtimeImage;
 
     /**
-     * 过程信息
+     * 详细信息
      */
     private boolean verbose = true;
+
+    /**
+     * vm参数
+     */
+    private List<String> javaOptions;
 
     /**
      * 是否创建开始菜单、仅windows
@@ -85,6 +91,11 @@ public class JPackageConfig {
      * mac程序唯一id、仅macos
      */
     private String macPackageIdentifier;
+
+    /**
+     * 是否启用
+     */
+    private boolean enable = true;
 
     public String destParent() {
         return new File(dest).getParent();
@@ -208,5 +219,21 @@ public class JPackageConfig {
 
     public void setMacPackageIdentifier(String macPackageIdentifier) {
         this.macPackageIdentifier = macPackageIdentifier;
+    }
+
+    public List<String> getJavaOptions() {
+        return javaOptions;
+    }
+
+    public void setJavaOptions(List<String> javaOptions) {
+        this.javaOptions = javaOptions;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }

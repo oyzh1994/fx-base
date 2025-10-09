@@ -22,6 +22,7 @@ public class FXText extends Text implements FlexAdapter, StateAdapter, TipAdapte
 
     {
         NodeManager.init(this);
+        this.applyTheme();
     }
 
     public FXText() {

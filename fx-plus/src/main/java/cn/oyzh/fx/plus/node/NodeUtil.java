@@ -1,11 +1,13 @@
 package cn.oyzh.fx.plus.node;
 
-import atlantafx.base.theme.Styles;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import javafx.application.ConditionalFeature;
+import javafx.application.Platform;
 import javafx.event.EventTarget;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Labeled;
@@ -25,56 +27,109 @@ import javafx.stage.Window;
  * @author oyzh
  * @since 2023/05/15
  */
-
 public class NodeUtil {
 
-    public static Object getProperty(Node node, Object key) {
-        if (node.hasProperties()) {
-            return node.getProperties().get(key);
-        }
-        return null;
-    }
-
-    public static void setProperty(Node node, Object key, Object value) {
-        if (key != null && value != null) {
-            node.getProperties().put(key, value);
-        }
-    }
+    /**
+     * web是个可选模块，避免强依赖
+     */
+    public static boolean isWebImport;
 
     /**
-     * 获取样式值
-     *
-     * @param node 节点
-     * @param prop 属性
-     * @return 样式值
+     * swing是个可选模块，避免强依赖
      */
-    public static String getStyle(Node node, String prop) {
-        String currentStyle = node.getStyle();
-        if (currentStyle != null && !currentStyle.isBlank()) {
-            if (prop != null && !prop.isBlank()) {
-                String[] stylePairs = currentStyle.split(";");
-                for (String stylePair : stylePairs) {
-                    String[] styleParts = stylePair.split(":");
-                    if (styleParts[0].trim().equals(prop)) {
-                        return styleParts[1];
-                    }
-                }
-            }
-        }
-        return currentStyle;
-    }
+    public static boolean isSwingImport;
 
     /**
-     * 替换样式
-     *
-     * @param node  节点
-     * @param prop  属性
-     * @param value 值
+     * media是个可选模块，避免强依赖
      */
-    public static void replaceStyle(Node node, String prop, Object value) {
-        Styles.removeStyle(node, prop);
-        Styles.appendStyle(node, prop, value.toString());
+    public static boolean isMediaImport;
+
+    /**
+     * richtext是个可选模块，避免强依赖
+     */
+    public static boolean isRichtextImport;
+
+    static {
+        isWebImport = Platform.isSupported(ConditionalFeature.WEB);
+        isMediaImport = Platform.isSupported(ConditionalFeature.MEDIA);
+        isSwingImport = Platform.isSupported(ConditionalFeature.SWING);
+        try {
+            Class.forName("org.fxmisc.richtext");
+            isRichtextImport = true;
+        } catch (ClassNotFoundException ignored) {
+
+        }
     }
+
+//     /**
+//      * 递归布局
+//      *
+//      * @param node 节点
+//      */
+//     public static void layoutRecursive(EventTarget node) {
+//         if (node instanceof TabPane tabPane) {
+//             tabPane.requestLayout();
+// //            tabPane.layout();
+//             for (Tab tab : tabPane.getTabs()) {
+//                 layoutRecursive(tab.getContent());
+//             }
+//         } else if (node instanceof Pane pane) {
+//             pane.requestLayout();
+// //            pane.layout();
+//             for (Node node1 : pane.getChildren()) {
+//                 layoutRecursive(node1);
+//             }
+//         } else if (node instanceof Region region) {
+//             region.requestLayout();
+// //            region.layout();
+//             for (Node node1 : region.getChildrenUnmodifiable()) {
+//                 layoutRecursive(node1);
+//             }
+//         } else if (node instanceof Parent parent) {
+//             parent.requestLayout();
+// //            parent.layout();
+//             for (Node node1 : parent.getChildrenUnmodifiable()) {
+//                 layoutRecursive(node1);
+//             }
+//         } else if (node instanceof Node parent) {
+//             parent.autosize();
+//         }
+//     }
+
+    // /**
+    //  * 获取样式值
+    //  *
+    //  * @param node 节点
+    //  * @param prop 属性
+    //  * @return 样式值
+    //  */
+    // public static String getStyle(Styleable node, String prop) {
+    //     String currentStyle = node.getStyle();
+    //     if (currentStyle != null && !currentStyle.isBlank()) {
+    //         if (prop != null && !prop.isBlank()) {
+    //             String[] stylePairs = currentStyle.split(";");
+    //             for (String stylePair : stylePairs) {
+    //                 String[] styleParts = stylePair.split(":");
+    //                 if (styleParts[0].trim().equals(prop)) {
+    //                     return styleParts[1];
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return currentStyle;
+    // }
+    //
+    // /**
+    //  * 替换样式
+    //  *
+    //  * @param node  节点
+    //  * @param prop  属性
+    //  * @param value 值
+    //  */
+    // public static void replaceStyle(Styleable node, String prop, Object value) {
+    //     StyleUtil.removeStyle(node, prop);
+    //     StyleUtil.appendStyle(node, prop, value.toString());
+    // }
 
     /**
      * 获取宽度
@@ -92,11 +147,43 @@ public class NodeUtil {
 //                }
 //            }
 //        }
-
+        if (target instanceof ImageView node) {
+            double w4 = node.getFitWidth();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxWidth(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
         if (target instanceof Region region) {
             double w1 = region.getWidth();
+            if (w1 > 0) {
+                return w1;
+            }
+            double w3 = region.getPrefWidth();
+            if (w3 > 0) {
+                return w3;
+            }
             double w2 = region.getMinWidth();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w4 = region.getMaxWidth();
+            if (w4 > 0) {
+                return w4;
+            }
+            return Double.NaN;
         }
 
         // if (target instanceof Parent parent) {
@@ -107,8 +194,18 @@ public class NodeUtil {
 
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             double w1 = columnBase.getWidth();
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = columnBase.getMinWidth();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = columnBase.getMaxWidth();
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
         }
 
         // if (target instanceof Shape shape) {
@@ -123,24 +220,83 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getWidth();
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = stage.getMinWidth();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = stage.getMaxWidth();
+            if (w3 > 0) {
+                return w3;
+            }
         }
 
-        if (target instanceof StageAdapter wrapper) {
-            double w1 = wrapper.stage().getWidth();
-            double w2 = wrapper.stage().getMinWidth();
-            return Math.max(w1, w2);
+        if (target instanceof StageAdapter adapter) {
+            return getWidth(adapter.stage());
         }
 
         if (target instanceof Window window) {
             return window.getWidth();
         }
 
+        if (isMediaImport && target instanceof javafx.scene.media.MediaView node) {
+            double w4 = node.getFitWidth();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minWidth(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxWidth(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
+
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         int w5 = node.getContent().getWidth();
+        //         if (w5 > 0) {
+        //             return w5;
+        //         }
+        //     }
+        //     double w4 = node.prefWidth(-1);
+        //     if (w4 > 0) {
+        //         return w4;
+        //     }
+        //     double w1 = node.minWidth(-1);
+        //     if (w1 > 0) {
+        //         return w1;
+        //     }
+        //     double w2 = node.maxWidth(-1);
+        //     if (w2 > 0) {
+        //         return w2;
+        //     }
+        //     return Double.NaN;
+        // }
+
         if (target instanceof Node node) {
             double w1 = node.prefWidth(-1);
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = node.minWidth(-1);
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxWidth(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
         }
 
         return Double.NaN;
@@ -162,13 +318,43 @@ public class NodeUtil {
 //                }
 //            }
 //        }
-
+        if (target instanceof ImageView node) {
+            double w4 = node.getFitHeight();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefHeight(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
         if (target instanceof Region region) {
-            double w1 = region.getPrefHeight();
-            double w2 = region.getMinHeight();
-            double w3 = region.getMaxHeight();
             double w4 = region.getHeight();
-            return Math.max(Math.max(w1, w2), Math.max(w3, w4));
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = region.getPrefHeight();
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = region.getMinHeight();
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = region.getMaxHeight();
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
         }
 
         // if (target instanceof Parent parent) {
@@ -183,24 +369,84 @@ public class NodeUtil {
 
         if (target instanceof Stage stage) {
             double w1 = stage.getHeight();
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = stage.getMinHeight();
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = stage.getMaxHeight();
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
         }
 
-        if (target instanceof StageAdapter wrapper) {
-            double w1 = wrapper.stage().getHeight();
-            double w2 = wrapper.stage().getMinHeight();
-            return Math.max(w1, w2);
+        if (target instanceof StageAdapter adapter) {
+            return getHeight(adapter.stage());
         }
 
         if (target instanceof Window window) {
             return window.getHeight();
         }
 
+        if (isMediaImport && target instanceof javafx.scene.media.MediaView node) {
+            double w4 = node.getFitHeight();
+            if (w4 > 0) {
+                return w4;
+            }
+            double w1 = node.prefHeight(-1);
+            if (w1 > 0) {
+                return w1;
+            }
+            double w2 = node.minHeight(-1);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
+        }
+
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         int w5 = node.getContent().getHeight();
+        //         if (w5 > 0) {
+        //             return w5;
+        //         }
+        //     }
+        //     double w4 = node.prefHeight(-1);
+        //     if (w4 > 0) {
+        //         return w4;
+        //     }
+        //     double w2 = node.minHeight(-1);
+        //     if (w2 > 0) {
+        //         return w2;
+        //     }
+        //     double w3 = node.maxHeight(-1);
+        //     if (w3 > 0) {
+        //         return w3;
+        //     }
+        //     return Double.NaN;
+        // }
+
         if (target instanceof Node node) {
             double w1 = node.prefHeight(-1);
+            if (w1 > 0) {
+                return w1;
+            }
             double w2 = node.minHeight(-1);
-            return Math.max(w1, w2);
+            if (w2 > 0) {
+                return w2;
+            }
+            double w3 = node.maxHeight(-1);
+            if (w3 > 0) {
+                return w3;
+            }
+            return Double.NaN;
         }
 
         return Double.NaN;
@@ -228,57 +474,87 @@ public class NodeUtil {
         if (target == null || width == null || Double.isNaN(width) || width <= 0) {
             return;
         }
-        switch (target) {
-            case TableColumnBase<?, ?> columnBase -> {
-                if (!columnBase.prefWidthProperty().isBound()) {
-                    columnBase.setPrefWidth(width);
-                }
-                if (!columnBase.minWidthProperty().isBound()) {
-                    columnBase.setMinWidth(width);
-                }
-                if (!columnBase.isResizable()) {
-                    if (!columnBase.maxWidthProperty().isBound()) {
-                        columnBase.setMaxWidth(width);
-                    }
-                }
-            }
-            case PopupControl control -> {
-                if (!control.prefWidthProperty().isBound()) {
-                    control.setPrefWidth(width);
-                }
-                if (!control.minWidthProperty().isBound()) {
-                    control.setMinWidth(width);
-                }
-                if (!control.maxWidthProperty().isBound()) {
-                    control.setMaxWidth(width);
-                }
-            }
-            case Region region -> {
-                if (!region.prefWidthProperty().isBound()) {
-                    region.setPrefWidth(width);
-                }
-                if (!region.minWidthProperty().isBound()) {
-                    region.setMinWidth(width);
-                }
-                if (!region.maxWidthProperty().isBound()) {
-                    region.setMaxWidth(width);
-                }
-            }
-            case Shape shape -> {
-                if (!shape.strokeWidthProperty().isBound()) {
-                    shape.setStrokeWidth(width);
-                }
-            }
-            case Stage stage -> stage.setWidth(width);
-            case Window window -> window.setWidth(width);
-            case Scene scene -> {
-                if (scene.getWindow() != null) {
-                    scene.getWindow().setWidth(width);
-                }
-            }
-            default -> {
+        if (target instanceof Node node && !node.isManaged()) {
+            return;
+        }
+        if (target instanceof ImageView image) {
+            if (!image.fitWidthProperty().isBound()) {
+                image.setFitWidth(width);
             }
         }
+        if (target instanceof Labeled labeled) {
+            if (!labeled.prefWidthProperty().isBound()) {
+                labeled.setPrefWidth(width);
+            }
+            if (!labeled.minWidthProperty().isBound()) {
+                labeled.setMinWidth(width);
+            }
+            if (!labeled.maxWidthProperty().isBound()) {
+                labeled.setMaxWidth(width);
+            }
+        }
+        if (target instanceof TableColumnBase<?, ?> columnBase) {
+            if (!columnBase.prefWidthProperty().isBound()) {
+                columnBase.setPrefWidth(width);
+            }
+            if (!columnBase.minWidthProperty().isBound()) {
+                columnBase.setMinWidth(width);
+            }
+            if (!columnBase.maxWidthProperty().isBound()) {
+                columnBase.setMaxWidth(width);
+            }
+        }
+        if (target instanceof PopupControl control) {
+            if (!control.prefWidthProperty().isBound()) {
+                control.setPrefWidth(width);
+            }
+            if (!control.minWidthProperty().isBound()) {
+                control.setMinWidth(width);
+            }
+            if (!control.maxWidthProperty().isBound()) {
+                control.setMaxWidth(width);
+            }
+        }
+        if (target instanceof Region region) {
+            if (!region.prefWidthProperty().isBound()) {
+                region.setPrefWidth(width);
+            }
+            if (!region.minWidthProperty().isBound()) {
+                region.setMinWidth(width);
+            }
+            if (!region.maxWidthProperty().isBound()) {
+                region.setMaxWidth(width);
+            }
+        }
+        if (target instanceof Shape shape) {
+            if (!shape.strokeWidthProperty().isBound()) {
+                shape.setStrokeWidth(width);
+            }
+        }
+        if (target instanceof Stage stage) {
+            stage.setWidth(width);
+        }
+        if (target instanceof Window window) {
+            window.setWidth(width);
+        }
+        if (target instanceof Scene scene) {
+            setWidth(scene.getWindow(), width);
+        }
+        if (isMediaImport && target instanceof javafx.scene.media.MediaView media) {
+            if (!media.fitWidthProperty().isBound()) {
+                media.setFitWidth(width);
+            }
+        }
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
+        //             Dimension dimension = new Dimension(width.intValue(), node.getContent().getHeight());
+        //             node.getContent().setSize(dimension);
+        //             node.getContent().setMinimumSize(dimension);
+        //             node.getContent().setMaximumSize(dimension);
+        //         });
+        //     }
+        // }
     }
 
     /**
@@ -291,55 +567,71 @@ public class NodeUtil {
         if (target == null || height == null || Double.isNaN(height) || height < 0) {
             return;
         }
-        switch (target) {
-            case ImageView image -> {
-                if (!image.fitHeightProperty().isBound()) {
-                    image.setFitHeight(height);
-                }
-            }
-            case Labeled labeled -> {
-                if (!labeled.prefHeightProperty().isBound()) {
-                    labeled.setPrefHeight(height);
-                }
-                 if (!labeled.minHeightProperty().isBound()) {
-                     labeled.setMinHeight(height);
-                 }
-                 if (!labeled.maxHeightProperty().isBound()) {
-                     labeled.setMaxHeight(height);
-                 }
-            }
-            case Region region -> {
-                if (!region.prefHeightProperty().isBound()) {
-                    region.setPrefHeight(height);
-                }
-                if (!region.minHeightProperty().isBound()) {
-                    region.setMinHeight(height);
-                }
-                if (!region.maxHeightProperty().isBound()) {
-                    region.setMaxHeight(height);
-                }
-            }
-            case PopupControl control -> {
-                if (!control.prefHeightProperty().isBound()) {
-                    control.setPrefHeight(height);
-                }
-                if (!control.minHeightProperty().isBound()) {
-                    control.setMinHeight(height);
-                }
-                if (!control.maxHeightProperty().isBound()) {
-                    control.setMaxHeight(height);
-                }
-            }
-            case Stage stage -> stage.setHeight(height);
-            case Window window -> window.setHeight(height);
-            case Scene scene -> {
-                if (scene.getWindow() != null) {
-                    scene.getWindow().setHeight(height);
-                }
-            }
-            default -> {
+        if (target instanceof Node node && !node.isManaged()) {
+            return;
+        }
+        if (target instanceof ImageView image) {
+            if (!image.fitHeightProperty().isBound()) {
+                image.setFitHeight(height);
             }
         }
+        if (target instanceof Labeled labeled) {
+            if (!labeled.prefHeightProperty().isBound()) {
+                labeled.setPrefHeight(height);
+            }
+            if (!labeled.minHeightProperty().isBound()) {
+                labeled.setMinHeight(height);
+            }
+            if (!labeled.maxHeightProperty().isBound()) {
+                labeled.setMaxHeight(height);
+            }
+        }
+        if (target instanceof PopupControl control) {
+            if (!control.prefHeightProperty().isBound()) {
+                control.setPrefHeight(height);
+            }
+            if (!control.minHeightProperty().isBound()) {
+                control.setMinHeight(height);
+            }
+            if (!control.maxHeightProperty().isBound()) {
+                control.setMaxHeight(height);
+            }
+        }
+        if (target instanceof Region region) {
+            if (!region.prefHeightProperty().isBound()) {
+                region.setPrefHeight(height);
+            }
+            if (!region.minHeightProperty().isBound()) {
+                region.setMinHeight(height);
+            }
+            if (!region.maxHeightProperty().isBound()) {
+                region.setMaxHeight(height);
+            }
+        }
+        if (target instanceof Stage stage) {
+            stage.setHeight(height);
+        }
+        if (target instanceof Window window) {
+            window.setHeight(height);
+        }
+        if (target instanceof Scene scene) {
+            setHeight(scene.getWindow(), height);
+        }
+        if (isMediaImport && target instanceof javafx.scene.media.MediaView media) {
+            if (!media.fitHeightProperty().isBound()) {
+                media.setFitHeight(height);
+            }
+        }
+        // if (isSwingImport && target instanceof javafx.embed.swing.SwingNode node) {
+        //     if (node.getContent() != null) {
+        //         cn.oyzh.fx.plus.swing.SwingUtil.runLater(() -> {
+        //             Dimension dimension = new Dimension(node.getContent().getWidth(), height.intValue());
+        //             node.getContent().setSize(dimension);
+        //             node.getContent().setMinimumSize(dimension);
+        //             node.getContent().setMaximumSize(dimension);
+        //         });
+        //     }
+        // }
     }
 
     /**
@@ -348,11 +640,14 @@ public class NodeUtil {
      * @param target  对象
      * @param layoutY y坐标
      */
-    public static void setLayoutY( EventTarget target, Double layoutY) {
+    public static void setLayoutY(EventTarget target, Double layoutY) {
         if (layoutY == null || Double.isNaN(layoutY) || layoutY <= 0) {
             return;
         }
         if (target instanceof Node node) {
+            if (!node.isManaged()) {
+                return;
+            }
             if (!node.layoutYProperty().isBound() && node.getLayoutY() != layoutY) {
                 node.setLayoutY(layoutY);
             }
@@ -445,9 +740,10 @@ public class NodeUtil {
                 FXUtil.runWait(stage::show);
             }
         } else if (obj instanceof StageAdapter stage) {
-            if (!stage.stage().isShowing()) {
-                FXUtil.runWait(stage.stage()::show);
-            }
+            // if (!stage.stage().isShowing()) {
+            //    FXUtil.runWait(stage.stage()::show);
+            //}
+            display(stage.stage());
         }
     }
 
@@ -457,37 +753,41 @@ public class NodeUtil {
      * @param obj 节点
      */
     public static void disappear(Object obj) {
-        if (obj instanceof Node node) {
-            if (!node.visibleProperty().isBound()) {
-                node.setVisible(false);
+        try {
+            if (obj instanceof Node node) {
+                if (!node.visibleProperty().isBound()) {
+                    node.setVisible(false);
+                }
+                if (!node.managedProperty().isBound()) {
+                    node.setManaged(false);
+                }
+            } else if (obj instanceof MenuItem item) {
+                if (!item.visibleProperty().isBound()) {
+                    item.setVisible(false);
+                }
+            } else if (obj instanceof Tab tab) {
+                if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
+                    tab.getContent().setVisible(false);
+                }
+            } else if (obj instanceof Stage stage) {
+                if (stage.isShowing()) {
+                    FXUtil.runWait(stage::close);
+                }
+            } else if (obj instanceof Window window) {
+                if (window.isShowing()) {
+                    FXUtil.runWait(window::hide);
+                }
+            } else if (obj instanceof PopupAdapter wrapper) {
+                if (wrapper.popup().isShowing()) {
+                    FXUtil.runWait(wrapper.popup()::hide);
+                }
+            } else if (obj instanceof StageAdapter wrapper) {
+                if (wrapper.stage().isShowing()) {
+                    FXUtil.runWait(wrapper.stage()::close);
+                }
             }
-            if (!node.managedProperty().isBound()) {
-                node.setManaged(false);
-            }
-        } else if (obj instanceof MenuItem item) {
-            if (!item.visibleProperty().isBound()) {
-                item.setVisible(false);
-            }
-        } else if (obj instanceof Tab tab) {
-            if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
-                tab.getContent().setVisible(false);
-            }
-        } else if (obj instanceof Stage stage) {
-            if (stage.isShowing()) {
-                FXUtil.runWait(stage::close);
-            }
-        } else if (obj instanceof Window window) {
-            if (window.isShowing()) {
-                FXUtil.runWait(window::hide);
-            }
-        } else if (obj instanceof PopupAdapter wrapper) {
-            if (wrapper.popup().isShowing()) {
-                FXUtil.runWait(wrapper.popup()::hide);
-            }
-        } else if (obj instanceof StageAdapter wrapper) {
-            if (wrapper.stage().isShowing()) {
-                FXUtil.runWait(wrapper.stage()::close);
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -517,9 +817,45 @@ public class NodeUtil {
         }
     }
 
+    /**
+     * 取消焦点
+     *
+     * @param node
+     */
     public static void unFocus(Node node) {
         if (node != null && node.getParent() != null) {
-            node.getParent().requestFocus();
+            FXUtil.runWait(() -> {
+                node.getScene().getRoot().requestFocus();
+            });
         }
+    }
+
+    /**
+     * 清除焦点
+     *
+     * @param node 节点
+     */
+    public static void clearFocus(Node node) {
+        if (node != null && node.getScene() != null) {
+            Scene scene = node.getScene();
+            FXUtil.runWait(() -> {
+                Node focusOwner = scene.getFocusOwner();
+                if (focusOwner != null) {
+                    focusOwner.setFocusTraversable(false);
+                }
+                scene.getRoot().setFocusTraversable(true);
+                scene.getRoot().requestFocus();
+            });
+        }
+    }
+
+    /**
+     * 是否从右到左布局
+     *
+     * @param node 节点
+     * @return 结果
+     */
+    public static boolean isOrientationRightToLeft(Node node) {
+        return node.getNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT || node.getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT;
     }
 }

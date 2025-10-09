@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeCell;
 import cn.oyzh.fx.plus.drag.DragNodeHandler;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
@@ -45,7 +46,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
             if (node instanceof RichTreeItemBox box) {
                 box.init(value, treeView.highlightText, treeView.highlightMatchCase);
             } else {
-                this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase));
+                FXUtil.runWait(()-> this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase)));
             }
             this.setText(null);
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);

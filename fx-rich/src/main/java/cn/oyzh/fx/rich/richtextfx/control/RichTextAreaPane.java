@@ -23,6 +23,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/5/17
  */
+@Deprecated
 public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {
 
     public RichTextAreaPane(E content) {
@@ -161,8 +162,22 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
         return this.getContent().getCaretPosition();
     }
 
+    public void scrollYTo(double y) {
+        super.scrollYBy(y);
+        super.scrollYToPixel(y);
+    }
+
+    public void scrollXTo(double x) {
+        super.scrollXBy(x);
+        super.scrollXToPixel(x);
+    }
+
+    public void scrollToTop() {
+        FXUtil.runPulse(() -> this.scrollYTo(0), 30);
+    }
+
     public void scrollToEnd() {
-        FXUtil.runPulse(() -> this.scrollYBy(Double.MAX_VALUE), 30);
+        FXUtil.runPulse(() -> this.scrollYTo(Double.MAX_VALUE), 30);
     }
 
     public void replaceText(int start, int end, String text) {
@@ -213,6 +228,10 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
         this.getContent().initTextStyle();
     }
 
+    // public void initTextStyleDelay() {
+    //     this.getContent().initTextStyleDelay();
+    // }
+
     public void clearTextStyle() {
         this.getContent().clearTextStyle();
     }
@@ -244,19 +263,19 @@ public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVir
     }
 
     /**
-     * 设置内容提示词
+     * 设置提示词
      *
-     * @param prompts 内容提示词列表
+     * @param prompts 提示词列表
      */
-    public void setContentPrompts(Set<String> prompts) {
-        this.getContent().setContentPrompts(prompts);
+    public void setPrompts(Set<String> prompts) {
+        this.getContent().setPrompts(prompts);
     }
 
     /**
-     * 初始化内容提示词
+     * 初始化提示词
      */
-    public void initContentPrompts() {
-        this.getContent().initContentPrompts();
+    public void initPrompts() {
+        // this.getContent().initContentPrompts();
     }
 
     public Optional<Bounds> getCaretBounds() {

@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -30,6 +31,10 @@ public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapt
         super("");
     }
 
+    public FXLabel(Node graphic) {
+        super("", graphic);
+    }
+
     public FXLabel(String text) {
         super(text);
     }
@@ -37,16 +42,6 @@ public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapt
     public FXLabel(String text, Node graphic) {
         super(text, graphic);
     }
-
-//    @Override
-//    public boolean isEnableTheme() {
-//        return ThemeAdapter.super.isEnableTheme();
-//    }
-//
-//    @Override
-//    public void setEnableTheme(boolean enableTheme) {
-//        ThemeAdapter.super.setEnableTheme(enableTheme);
-//    }
 
     public boolean isEmpty() {
         return StringUtil.isEmpty(this.getText());
@@ -67,5 +62,13 @@ public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapt
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        ThemeAdapter.super.changeTheme(style);
+        if (this.getGraphic() instanceof ThemeAdapter adapter) {
+            adapter.changeTheme(style);
+        }
     }
 }

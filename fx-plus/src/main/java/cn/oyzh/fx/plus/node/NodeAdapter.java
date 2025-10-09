@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.util.ReflectUtil;
-import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.EventTarget;
@@ -10,11 +9,11 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -103,18 +102,19 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentWidth() {
         Parent parent = this.parent();
-        if (parent instanceof Region region) {
-            return region.getWidth();
-        }
-        if (parent != null) {
-            return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
-//            return NodeUtil.getWidth(parent);
-        }
-        if (this instanceof Node node && node.getScene() != null) {
-            return node.getScene().getWidth();
-//            return NodeUtil.getWidth(node.getScene());
-        }
-        return Double.NaN;
+//         if (parent instanceof Region region) {
+//             return region.getWidth();
+//         }
+//         if (parent != null) {
+//             return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
+// //            return NodeUtil.getWidth(parent);
+//         }
+//         if (this instanceof Node node && node.getScene() != null) {
+//             return node.getScene().getWidth();
+// //            return NodeUtil.getWidth(node.getScene());
+//         }
+//         return Double.NaN;
+        return NodeUtil.getWidth(parent);
     }
 
     /**
@@ -124,18 +124,19 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentHeight() {
         Parent parent = this.parent();
-        if (parent instanceof Region region) {
-            return region.getHeight();
-        }
-        if (parent != null) {
-            return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
-//            return NodeUtil.getHeight(parent);
-        }
-        if (this instanceof Node node && node.getScene() != null) {
-            return node.getScene().getHeight();
-//            return NodeUtil.getHeight(node.getScene());
-        }
-        return Double.NaN;
+//         if (parent instanceof Region region) {
+//             return region.getHeight();
+//         }
+//         if (parent != null) {
+//             return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
+// //            return NodeUtil.getHeight(parent);
+//         }
+//         if (this instanceof Node node && node.getScene() != null) {
+//             return node.getScene().getHeight();
+// //            return NodeUtil.getHeight(node.getScene());
+//         }
+//         return Double.NaN;
+        return NodeUtil.getHeight(parent);
     }
 
     /**
@@ -148,6 +149,8 @@ public interface NodeAdapter extends EventTarget {
             return node.getChildren().isEmpty();
         } else if (this instanceof Group node) {
             return node.getChildren().isEmpty();
+        } else if (this instanceof TabPane node) {
+            return node.getTabs().isEmpty();
         }
         return true;
     }
@@ -164,6 +167,9 @@ public interface NodeAdapter extends EventTarget {
             }
             case Group group -> {
                 return group.getChildren().getFirst();
+            }
+            case ScrollPane scrollPane -> {
+                return scrollPane.getContent();
             }
             case Parent parent -> {
                 return parent.getChildrenUnmodifiable().getFirst();
@@ -184,6 +190,8 @@ public interface NodeAdapter extends EventTarget {
             FXUtil.runWait(() -> group.getChildren().clear());
         } else if (this instanceof TabPane tabPane) {
             FXUtil.runWait(() -> tabPane.getTabs().clear());
+        } else if (this instanceof ScrollPane scrollPane) {
+            FXUtil.runWait(() -> scrollPane.setContent(null));
         }
     }
 
@@ -271,8 +279,10 @@ public interface NodeAdapter extends EventTarget {
                     pane.getChildren().setAll(node);
                 } else if (this instanceof Group group) {
                     group.getChildren().setAll(node);
-                } else if (this instanceof FXTab tab) {
+                } else if (this instanceof Tab tab) {
                     tab.setContent(node);
+                } else if (this instanceof ScrollPane scrollPane) {
+                    scrollPane.setContent(node);
                 }
             });
         }
@@ -451,9 +461,12 @@ public interface NodeAdapter extends EventTarget {
                 return scene.getWindow();
             }
         } else if (this instanceof Tab node) {
-            Scene scene = node.getContent().getScene();
-            if (scene != null) {
-                return scene.getWindow();
+            TabPane tabPane = node.getTabPane();
+            if (tabPane != null) {
+                Scene scene = tabPane.getScene();
+                if (scene != null) {
+                    return scene.getWindow();
+                }
             }
         }
         return null;
@@ -509,6 +522,16 @@ public interface NodeAdapter extends EventTarget {
                     ex.printStackTrace();
                 }
             });
+        }
+    }
+
+    default void setOpaque(boolean opaque) {
+        if (this instanceof Node node) {
+            if (opaque) {
+                node.setOpacity(1.0);
+            } else {
+                node.setOpacity(0.5);
+            }
         }
     }
 }

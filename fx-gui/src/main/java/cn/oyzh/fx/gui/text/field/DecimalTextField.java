@@ -112,16 +112,16 @@ public class DecimalTextField extends DigitalTextField {
                         this.setValue(decimal.setScale(this.scaleLen, RoundingMode.HALF_UP).doubleValue());
                         return null;
                     }
-                    // 如果超过了最大值，则将组件值设置为最大值
-                    if (this.maxVal != null && cn.oyzh.common.util.NumberUtil.isGT(decimal.doubleValue(), this.maxVal)) {
-                        this.setValue(this.maxVal.doubleValue());
-                        return null;
-                    }
-                    // 如果小于了最小值，则将组件值设置为最小值
-                    if (this.minVal != null && cn.oyzh.common.util.NumberUtil.isLT(decimal.doubleValue(), this.minVal)) {
-                        this.setValue(this.minVal.doubleValue());
-                        return null;
-                    }
+                    // // 如果超过了最大值，则将组件值设置为最大值
+                    // if (this.maxVal != null && cn.oyzh.common.util.NumberUtil.isGT(decimal.doubleValue(), this.maxVal)) {
+                    //     this.setValue(this.maxVal.doubleValue());
+                    //     return null;
+                    // }
+                    // // 如果小于了最小值，则将组件值设置为最小值
+                    // if (this.minVal != null && cn.oyzh.common.util.NumberUtil.isLT(decimal.doubleValue(), this.minVal)) {
+                    //     this.setValue(this.minVal.doubleValue());
+                    //     return null;
+                    // }
                 } catch (Exception ignored) {
                 }
             }

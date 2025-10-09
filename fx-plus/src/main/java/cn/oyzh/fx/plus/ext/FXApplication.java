@@ -6,12 +6,15 @@ import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.window.StageManager;
 import com.sun.javafx.application.LauncherImpl;
+import com.sun.javafx.runtime.VersionInfo;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 import javafx.application.Preloader;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -35,7 +38,9 @@ public abstract class FXApplication extends Application {
         FXUtil.disableCSSLogger();
         // 调用父类
         super.init();
-        JulLog.info("{} init finish.", SysConst.projectName());
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("{} init finish.", SysConst.projectName());
+        }
     }
 
     @Override
@@ -47,19 +52,25 @@ public abstract class FXApplication extends Application {
             this.showMainView();
             // 启动耗时
             long startCost = System.currentTimeMillis() - this.startAt;
-            JulLog.info("启动耗时:{}ms-------------------------------", startCost);
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("启动耗时:{}ms-------------------------------", startCost);
+            }
             // 内存消耗
             double usedMemory = SystemUtil.getUsedMemory();
-            JulLog.info("内存消耗:{}mb-------------------------------", usedMemory);
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("内存消耗:{}mb-------------------------------", usedMemory);
+            }
             // 打印特性支持情况
             for (ConditionalFeature feature : ConditionalFeature.values()) {
-                JulLog.info("{}={}", feature.name(), Platform.isSupported(feature) ? "支持" : "不支持");
+                if (JulLog.isInfoEnabled()) {
+                    JulLog.info("{}={}", feature.name(), Platform.isSupported(feature) ? "支持" : "不支持");
+                }
             }
             // 初始化系统托盘
             this.initSystemTray();
-            // 开启定期gc
-            SystemUtil.gcInterval(60_000);
-            JulLog.info("{} start.", SysConst.projectName());
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("{} start.", SysConst.projectName());
+            }
         } catch (Exception ex) {
             JulLog.error("start fail", ex);
         }
@@ -77,9 +88,14 @@ public abstract class FXApplication extends Application {
         try {
             // 运行时间
             long runAlive = System.currentTimeMillis() - this.startAt;
-            JulLog.info("运行时间:{}ms-------------------------------", runAlive);
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("运行时间:{}ms-------------------------------", runAlive);
+            }
             super.stop();
-            JulLog.info("{} stop.", SysConst.projectName());
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("{} stop.", SysConst.projectName());
+            }
+            System.exit(0);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -96,35 +112,60 @@ public abstract class FXApplication extends Application {
      * @param appClass app类
      * @param args     参数
      */
-    public static void launch( Class<? extends Application> appClass, String... args) {
+    public static void launch(Class<? extends Application> appClass, String... args) {
         try {
-            JulLog.info("appClass:{}", appClass.getName());
+            // 注册fx属性
+            VersionInfo.setupSystemProperties();
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("appClass:{}", appClass.getName());
+            }
             if (args != null && args.length > 0) {
-                JulLog.info("=============launch args start---------->");
-                for (String arg : args) {
-                    JulLog.info("launch arg={}", arg);
+                if (JulLog.isInfoEnabled()) {
+                    JulLog.info("=============launch args start---------->");
                 }
-                JulLog.info("=============launch args end---------->");
+                for (String arg : args) {
+                    if (JulLog.isInfoEnabled()) {
+                        JulLog.info("launch arg={}", arg);
+                    }
+                }
+                if (JulLog.isInfoEnabled()) {
+                    JulLog.info("=============launch args end---------->");
+                }
             }
             // 移除可选属性
-            SystemUtil.removeOptionalProperties();
+            // TODO: 暂时注释
+//            SystemUtil.removeOptionalProperties();
             Properties properties = System.getProperties();
             if (!properties.isEmpty()) {
-                JulLog.info("=============System Properties start---------->");
-                for (String key : properties.stringPropertyNames()) {
-                    JulLog.info("System Property {}={}", key, System.getProperty(key));
+                if (JulLog.isInfoEnabled()) {
+                    JulLog.info("=============System Properties start---------->");
                 }
-                JulLog.info("=============System Properties end---------->");
+                // 对名称进行排序
+                List<String> keys = new ArrayList<>(properties.stringPropertyNames());
+                keys.sort(String.CASE_INSENSITIVE_ORDER);
+                // 打印属性
+                for (String key : keys) {
+                    if (JulLog.isInfoEnabled()) {
+                        JulLog.info("System Property {}={}", key, System.getProperty(key));
+                    }
+                }
+                if (JulLog.isInfoEnabled()) {
+                    JulLog.info("=============System Properties end---------->");
+                }
             }
             // 启动工程
-            JulLog.info("=============launchApplication start---------->");
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("=============launchApplication start---------->");
+            }
             if (Preloader.class.isAssignableFrom(appClass)) {
                 Class<Preloader> preloaderClass = (Class<Preloader>) appClass;
                 LauncherImpl.launchApplication(appClass, preloaderClass, args);
             } else {
                 LauncherImpl.launchApplication(appClass, args);
             }
-            JulLog.info("=============launchApplication finish---------->");
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("=============launchApplication finish---------->");
+            }
         } catch (Exception ex) {
             JulLog.error("launch fail", ex);
             ex.printStackTrace();

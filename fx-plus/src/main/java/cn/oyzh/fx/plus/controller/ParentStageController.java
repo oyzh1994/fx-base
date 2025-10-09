@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controller;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.stage.WindowEvent;
@@ -16,10 +17,14 @@ import java.util.List;
 public class ParentStageController extends StageController {
 
     @Override
-    protected void setWindow( StageAdapter stage) {
+    protected void setWindow(StageAdapter stage) {
         super.setWindow(stage);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    JulLog.warn("controller is null!");
+                    continue;
+                }
                 controller.setWindow(stage);
                 if (controller instanceof SubStageController subController) {
                     subController.setParent(this);
@@ -33,6 +38,9 @@ public class ParentStageController extends StageController {
         super.onWindowShowing(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    continue;
+                }
                 controller.onWindowShowing(event);
             }
         }
@@ -43,6 +51,10 @@ public class ParentStageController extends StageController {
         super.onWindowShown(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    JulLog.warn("controller is null!");
+                    continue;
+                }
                 controller.onWindowShown(event);
             }
         }
@@ -53,6 +65,10 @@ public class ParentStageController extends StageController {
         super.onWindowCloseRequest(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    JulLog.warn("controller is null!");
+                    continue;
+                }
                 controller.onWindowCloseRequest(event);
             }
         }
@@ -63,6 +79,10 @@ public class ParentStageController extends StageController {
         super.onWindowHiding(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    JulLog.warn("controller is null!");
+                    continue;
+                }
                 controller.onWindowHiding(event);
             }
         }
@@ -73,6 +93,10 @@ public class ParentStageController extends StageController {
         super.onWindowHidden(event);
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    JulLog.warn("controller is null!");
+                    continue;
+                }
                 controller.onWindowHidden(event);
             }
         }
@@ -83,7 +107,25 @@ public class ParentStageController extends StageController {
         super.onSystemExit();
         if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
             for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    JulLog.warn("controller is null!");
+                    continue;
+                }
                 controller.onSystemExit();
+            }
+        }
+    }
+
+    @Override
+    public void onStageInitialize(StageAdapter stage) {
+        super.onStageInitialize(stage);
+        if (CollectionUtil.isNotEmpty(this.getSubControllers())) {
+            for (StageController controller : this.getSubControllers()) {
+                if (controller == null) {
+                    JulLog.warn("controller is null!");
+                    continue;
+                }
+                controller.onStageInitialize(stage);
             }
         }
     }

@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
  * @author oyzh
  * @since 2024-12-05
  */
-
 public class FXBeanUtil {
 
     public static Method getSetterMethod(Class<?> clazz, String name) {

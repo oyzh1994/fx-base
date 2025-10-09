@@ -7,7 +7,7 @@ import javafx.scene.control.MenuItem;
 
 
 /**
- * 文本组件适配器
+ * 可销毁适配器
  *
  * @author oyzh
  * @since 2023/1/29
@@ -26,7 +26,9 @@ public interface DestroyAdapter extends Destroyable {
             node.sceneProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null) {
                     this.destroy();
-                    JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
+                    if (JulLog.isDebugEnabled()) {
+                        JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
+                    }
                 }
             });
         } else if (this instanceof MenuItem node) {
@@ -40,7 +42,9 @@ public interface DestroyAdapter extends Destroyable {
             node.parentPopupProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null) {
                     this.destroy();
-                    JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
+                    if (JulLog.isDebugEnabled()) {
+                        JulLog.debug("{} is destroyed.", this.getClass().getSimpleName() + "@" + this);
+                    }
                 }
             });
         }

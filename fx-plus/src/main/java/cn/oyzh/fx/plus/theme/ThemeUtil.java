@@ -18,7 +18,6 @@ import java.util.List;
  * @author oyzh
  * @since 2024/4/3
  */
-
 public class ThemeUtil {
 
     /**
@@ -85,7 +84,9 @@ public class ThemeUtil {
     public static String updateThemeCss(ThemeStyle style, String fgColor, String bgColor, String accentColor) {
         // 读取资源
         URL url = ResourceUtil.getResource(style.getUserAgentStylesheet());
-        JulLog.info("style url:{}", url);
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("style url:{}", url);
+        }
         // 读取内容
         List<String> lines = FileUtil.readLines(url, StandardCharsets.UTF_8);
         // 替换颜色

@@ -177,7 +177,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return this.bitValue().get(6);
     }
 
-    public RichTreeItem( RichTreeView treeView) {
+    public RichTreeItem(RichTreeView treeView) {
         super(treeView);
     }
 
@@ -221,6 +221,11 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return (ObservableList<TreeItem<?>>) list;
     }
 
+    /**
+     * 获取显示子节点数量
+     *
+     * @return 子节点数量
+     */
     public int unfilteredChildrenSize() {
         return super.getChildren().size();
     }
@@ -272,7 +277,6 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
             children.clear();
         };
         FXUtil.runWait(() -> {
-//        this.service().submitFX(() -> {
             ObservableList<TreeItem<V>> children = super.getChildren();
             for (TreeItem<?> child : children) {
                 clearChildren.accept(child);
@@ -310,7 +314,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void setChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
             FXUtil.runWait(() -> this.unfilteredChildren().setAll(items));
-//            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
+            //this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
         }
     }
 
@@ -318,7 +322,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void addChild(TreeItem<?> item) {
         if (item != null) {
             FXUtil.runWait(() -> this.unfilteredChildren().add(item));
-//            this.service().submitFX(() -> this.unfilteredChildren().add(item));
+            //this.service().submitFX(() -> this.unfilteredChildren().add(item));
         }
     }
 

@@ -11,7 +11,9 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ComboBox;
@@ -54,7 +56,8 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
     @Override
     public boolean validate() {
         if (this.require && this.getSelectedItem() == null) {
-            this.requestFocus();
+//            this.requestFocus();
+            ValidatorUtil.validFail(this);
             return false;
         }
         return Verifiable.super.validate();
@@ -65,7 +68,7 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
      *
      * @param listener 监听器
      */
-    public void selectedItemChanged( ChangeListener<T> listener) {
+    public void selectedItemChanged(ChangeListener<T> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
@@ -74,11 +77,18 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
     }
 
     /**
+     * 选中内容属性
+     */
+    public ReadOnlyObjectProperty<T> selectedItemProperty() {
+        return this.getSelectionModel().selectedItemProperty();
+    }
+
+    /**
      * 是否包含数据
      *
      * @param item 数据
      */
-    public boolean containsItem( T item) {
+    public boolean containsItem(T item) {
         return this.getItems().contains(item);
     }
 
@@ -87,7 +97,7 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
      *
      * @param collection 数据集合
      */
-    public void addItems( Collection<T> collection) {
+    public void addItems(Collection<T> collection) {
         FXUtil.runWait(() -> this.getItems().addAll(collection));
     }
 
@@ -96,7 +106,7 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
      *
      * @param items 数据数组
      */
-    public void addItems( T[] items) {
+    public void addItems(T[] items) {
         FXUtil.runWait(() -> this.getItems().addAll(items));
     }
 

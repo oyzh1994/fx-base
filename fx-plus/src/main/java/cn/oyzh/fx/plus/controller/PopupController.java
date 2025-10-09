@@ -23,7 +23,7 @@ public class PopupController extends Controller implements PopupListener {
      *
      * @param window 窗口
      */
-    protected void setWindow( PopupAdapter window) {
+    protected void setWindow(PopupAdapter window) {
         this.window = window;
     }
 
@@ -41,9 +41,38 @@ public class PopupController extends Controller implements PopupListener {
         }
     }
 
+//    @Override
+//    protected <T> T getWindowProp(String key) {
+//        return this.window == null ? null : this.window.getProp(key);
+//    }
+
     @Override
-    protected <T> T getWindowProp(String key) {
+    public void setProp(String key, Object value) {
+        if (this.window != null) {
+            this.window.setProp(key, value);
+        }
+    }
+
+    @Override
+    public <T> T getProp(String key) {
         return this.window == null ? null : this.window.getProp(key);
+    }
+
+    @Override
+    public boolean hasProp(String key) {
+        return this.window != null && this.window.hasProp(key);
+    }
+
+    @Override
+    public <T> T removeProp(String key) {
+        return this.window == null ? null : this.window.removeProp(key);
+    }
+
+    @Override
+    public void clearProps() {
+        if (this.window != null) {
+            this.window.clearProps();
+        }
     }
 
     protected <T> void submit(T obj) {

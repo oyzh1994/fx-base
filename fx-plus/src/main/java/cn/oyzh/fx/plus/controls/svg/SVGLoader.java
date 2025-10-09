@@ -55,7 +55,8 @@ public class SVGLoader {
             return null;
         }
         // 返回常量池地址
-        url = url.trim().intern();
+        url = url.trim();
+        // url = url.trim().intern();
         // 缓存
         if (this.cache.containsKey(url)) {
             return this.cache.get(url);

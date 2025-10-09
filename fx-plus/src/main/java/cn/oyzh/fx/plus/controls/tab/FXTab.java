@@ -1,9 +1,12 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -17,7 +20,7 @@ import javafx.scene.control.TabPane;
  * @author oyzh
  * @since 2022/1/21
  */
-public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
+public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
 
     {
         NodeManager.init(this);
@@ -59,6 +62,8 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
             TabPane tabPane = this.getTabPane();
             if (tabPane != null) {
                 FXUtil.runLater(() -> tabPane.getTabs().remove(this));
+                // 手动触发关闭事件
+                Event.fireEvent(this, new Event(Tab.CLOSED_EVENT));
             }
         }
     }
@@ -70,6 +75,17 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
         if (!this.isSelected()) {
             FXUtil.runLater(() -> this.getTabPane().getSelectionModel().select(this));
         }
+    }
+
+    /**
+     * 刷新tab
+     */
+    public void flush() {
+        FXUtil.runWait(() -> {
+            this.flushGraphic();
+            this.flushGraphicColor();
+            this.flushTitle();
+        });
     }
 
     /**
@@ -99,11 +115,33 @@ public class FXTab extends Tab implements MenuItemAdapter, NodeGroup, NodeAdapte
 //        this.addEventFilter(Tab.TAB_CLOSE_REQUEST_EVENT, this::onTabCloseRequest);
     }
 
+    /**
+     * tab关闭事件
+     *
+     * @param event 事件
+     */
     protected void onTabClosed(Event event) {
-
+        NodeDisposeUtil.dispose(this);
     }
 
     protected void onTabCloseRequest(Event event) {
 
+    }
+
+    public void setAppendText(String appendText) {
+        if (StringUtil.isEmpty(appendText)) {
+            return;
+        }
+        String text = this.getText();
+        if (StringUtil.isEmpty(text)) {
+            this.setText(appendText);
+        } else {
+            this.setText(text + appendText);
+        }
+        this.setProp("appendText", appendText);
+    }
+
+    public String getAppendText() {
+        return this.getProp("appendText");
     }
 }

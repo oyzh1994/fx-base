@@ -1,26 +1,33 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.thread.DownLatch;
 import cn.oyzh.common.thread.Task;
 import cn.oyzh.common.thread.TaskBuilder;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.FXConst;
-import com.sun.javafx.application.PlatformImpl;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
 import javafx.scene.robot.Robot;
+import javafx.stage.Screen;
 import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,6 +40,8 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * fx工具类
@@ -40,7 +49,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author oyzh
  * @since 2021/8/19
  */
-
 public class FXUtil {
 
     /**
@@ -60,6 +68,27 @@ public class FXUtil {
             }
         }
         return robot;
+    }
+
+    /**
+     * 偏好设置
+     */
+    private static Platform.Preferences preferences;
+
+    /**
+     * 获取偏好设置
+     *
+     * @return 偏好设置
+     */
+    public static Platform.Preferences getPreferences() {
+        if (preferences == null) {
+            AtomicReference<Platform.Preferences> preferencesRef = new AtomicReference<>();
+            synchronized (FXUtil.class) {
+                FXUtil.runWait(() -> preferencesRef.set(Platform.getPreferences()));
+            }
+            preferences = preferencesRef.get();
+        }
+        return preferences;
     }
 
     /**
@@ -127,7 +156,20 @@ public class FXUtil {
      * @param task 任务
      */
     public static void runWait(Runnable task) {
-        runWaitByTimeout(task, -1);
+        // runWaitByTimeout(task, -1);
+        if (Platform.isFxApplicationThread()) {
+            task.run();
+        } else {
+            DownLatch latch = DownLatch.of();
+            Platform.runLater(() -> {
+                try {
+                    task.run();
+                } finally {
+                    latch.countDown();
+                }
+            });
+            latch.await();
+        }
     }
 
     /**
@@ -136,8 +178,9 @@ public class FXUtil {
      * @param task  任务
      * @param delay 延迟时间
      */
+    @Deprecated
     public static void runWait(Runnable task, int delay) {
-        TaskManager.startDelay(() -> runWait(task), delay);
+        TaskManager.startDelay(() -> Platform.runLater(task), delay);
     }
 
     /**
@@ -146,6 +189,7 @@ public class FXUtil {
      * @param task    任务
      * @param timeout 超时时间
      */
+    @Deprecated
     public static void runWaitByTimeout(Runnable task, int timeout) {
         if (Platform.isFxApplicationThread()) {
             task.run();
@@ -188,7 +232,7 @@ public class FXUtil {
      * @param delay 延迟时间
      */
     public static void runLater(Runnable task, int delay) {
-        TaskManager.startDelay(() -> runLater(task), delay);
+        TaskManager.startDelay(() -> Platform.runLater(task), delay);
     }
 
     /**
@@ -265,7 +309,9 @@ public class FXUtil {
     public static List<Image> getImages(List<String> imgUrls) {
         List<Image> icons = new ArrayList<>(imgUrls.size());
         for (String url : imgUrls) {
-            JulLog.info("load imgUrl:{}", url);
+            if (JulLog.isInfoEnabled()) {
+                JulLog.info("load imgUrl:{}", url);
+            }
             InputStream stream = ResourceUtil.getResourceAsStream(url);
             if (stream == null) {
                 JulLog.warn("img stream is null.");
@@ -283,15 +329,35 @@ public class FXUtil {
      * @return 图片
      */
     public static Image getImage(String imgUrl) {
-        JulLog.info("load imgUrl:{}", imgUrl);
-        InputStream stream = ResourceUtil.getResourceAsStream(imgUrl);
-        if (stream == null) {
-            JulLog.warn("img stream is null.");
-            return null;
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("load imgUrl:{}", imgUrl);
         }
-        return new Image(stream);
+        InputStream stream = ResourceUtil.getResourceAsStream(imgUrl);
+        if (stream != null) {
+            return new Image(stream);
+        }
+        return new Image(ResourceUtil.getLocalFileUrl(imgUrl));
     }
 
+    /**
+     * 获取媒体
+     *
+     * @param mediaUrl 媒体地址
+     * @return 媒体
+     */
+    public static Media getMedia(String mediaUrl) {
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("load mediaUrl:{}", mediaUrl);
+        }
+        return new Media(ResourceUtil.getLocalFileUrl(mediaUrl));
+    }
+
+    /**
+     * 转换为fx的图片
+     *
+     * @param bufferedImage awt图片
+     * @return fx图片
+     */
     public static Image toImage(BufferedImage bufferedImage) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
@@ -313,13 +379,20 @@ public class FXUtil {
      */
     public static boolean isInitialized() {
         try {
-            PlatformImpl.getPlatformPreferences();
+            Platform.runLater(() -> {
+            });
+            // PlatformImpl.getPlatformPreferences();
         } catch (IllegalStateException ignored) {
             return false;
         }
         return true;
     }
 
+    /**
+     * 显示文档
+     *
+     * @param url 地址
+     */
     public static void showDocument(String url) {
         if (url == null) {
             return;
@@ -346,4 +419,99 @@ public class FXUtil {
         }
         return refreshRate;
     }
+
+    /**
+     * 获取屏幕缩放
+     *
+     * @return 屏幕缩放
+     */
+    public static double screenScale() {
+        Screen primaryScreen = Screen.getPrimary();
+        return primaryScreen.getOutputScaleX();
+    }
+
+    // /**
+    //  * 将JavaFX的WritableImage转换为AWT的BufferedImage
+    //  * @param fxImage JavaFX图像对象
+    //  * @return AWT图像对象，转换失败时返回null
+    //  */
+    // public static BufferedImage toAwtImage(WritableImage fxImage) {
+    //    return SwingFXUtils.fromFXImage(fxImage, null);
+    // }
+
+    /**
+     * 获取滚动条
+     *
+     * @param node 节点
+     * @return 滚动条
+     */
+    public static ScrollBar getScrollBar(Node node) {
+        return (ScrollBar) node.lookup("ScrollBar");
+    }
+
+    /**
+     * 获取垂直滚动条
+     *
+     * @param parent 节点
+     * @return 水平滚动条
+     */
+    public static ScrollBar getVScrollBar(Parent parent) {
+        return getScrollBars(parent).stream()
+                .filter(sb -> sb.getOrientation().equals(javafx.geometry.Orientation.VERTICAL))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * 获取水平滚动条
+     *
+     * @param parent 节点
+     * @return 水平滚动条
+     */
+    public static ScrollBar getHScrollBar(Parent parent) {
+        return getScrollBars(parent).stream()
+                .filter(sb -> sb.getOrientation().equals(javafx.geometry.Orientation.HORIZONTAL))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * 递归查找所有ScrollBar
+     *
+     * @param parent 节点
+     * @return 滚动条列表
+     */
+    public static List<ScrollBar> getScrollBars(Parent parent) {
+        return parent.getChildrenUnmodifiable().stream()
+                .flatMap(node -> {
+                    if (node instanceof ScrollBar) {
+                        return java.util.stream.Stream.of((ScrollBar) node);
+                    } else if (node instanceof Parent) {
+                        return getScrollBars((Parent) node).stream();
+                    } else {
+                        return java.util.stream.Stream.empty();
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 判断鼠标事件是否在节点内
+     *
+     * @param event 事件
+     * @param node  节点
+     * @return 结果
+     */
+    public static boolean isPointInNode(MouseEvent event, Node node) {
+        if (event == null || node == null) {
+            return false;
+        }
+        // 将鼠标事件的屏幕坐标转换为目标组件的本地坐标
+        double localX = node.screenToLocal(event.getScreenX(), event.getScreenY()).getX();
+        double localY = node.screenToLocal(event.getScreenX(), event.getScreenY()).getY();
+
+        // 判断本地坐标是否在组件范围内
+        return node.contains(localX, localY);
+    }
+
 }

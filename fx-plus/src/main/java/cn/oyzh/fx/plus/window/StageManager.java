@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -9,6 +11,7 @@ import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 舞台工具类
@@ -16,7 +19,6 @@ import java.util.List;
  * @author oyzh
  * @since 2023/10/12
  */
-
 public class StageManager {
 
     /**
@@ -36,17 +38,23 @@ public class StageManager {
         for (StageAdapter adapter : allStages()) {
             if (adapter.controller() instanceof StageListener listener) {
                 try {
-                    JulLog.info("exit listener:{}", listener.getClass());
+                    if (JulLog.isInfoEnabled()) {
+                        JulLog.info("exit listener:{}", listener.getClass());
+                    }
                     listener.onSystemExit();
-                    JulLog.info("exit listener:{} success.", listener.getClass());
+                    if (JulLog.isInfoEnabled()) {
+                        JulLog.info("exit listener:{} success.", listener.getClass());
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         }
-        JulLog.info("system exit...");
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("system exit...");
+        }
         Platform.exit();
-        System.exit(0);
+//        System.exit(0);
     }
 
     /**
@@ -55,11 +63,18 @@ public class StageManager {
     public static List<StageAdapter> allStages() {
         List<StageAdapter> list = new ArrayList<>();
         for (Window window : Window.getWindows()) {
-            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-                list.add((StageAdapter) window.getProperties().get(REF_ATTR));
+            if (PropertiesUtil.has(window, REF_ATTR)) {
+                list.add((StageAdapter) PropertiesUtil.get(window, REF_ATTR));
             }
         }
         return list;
+    }
+
+    /**
+     * 获取所有窗口
+     */
+    public static List<Window> allWindows() {
+        return new ArrayList<>(Window.getWindows());
     }
 
     /**
@@ -70,8 +85,8 @@ public class StageManager {
      */
     public static StageAdapter getStage(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
-            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-                StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
+            if (PropertiesUtil.has(window, REF_ATTR)) {
+                StageAdapter adapter = (StageAdapter) PropertiesUtil.get(window, REF_ATTR);
                 if (adapter.controllerClass() == controllerClass) {
                     return adapter;
                 }
@@ -81,16 +96,48 @@ public class StageManager {
     }
 
     /**
+     * 是否stage适配器
+     *
+     * @param window 窗口
+     * @return 结果
+     */
+    public static boolean isAdapter(Window window) {
+        if (window == null) {
+            return false;
+        }
+        if (PropertiesUtil.has(window, REF_ATTR)) {
+            return PropertiesUtil.get(window, REF_ATTR) != null;
+        }
+        return false;
+    }
+
+    /**
+     * 获取stage适配器
+     *
+     * @param window 窗口
+     * @return stage适配器
+     */
+    public static StageAdapter getAdapter(Window window) {
+        if (window == null) {
+            return null;
+        }
+        if (PropertiesUtil.has(window, REF_ATTR)) {
+            return (StageAdapter) PropertiesUtil.get(window, REF_ATTR);
+        }
+        return null;
+    }
+
+    /**
      * 获取舞台
      *
      * @param controllerClass controller类
-     * @return List<StageAdapter>
+     * @return 舞台列表
      */
     public static List<StageAdapter> listStage(Class<?> controllerClass) {
         List<StageAdapter> list = new ArrayList<>();
         for (Window window : Window.getWindows()) {
-            if (window.hasProperties() && window.getProperties().containsKey(REF_ATTR)) {
-                StageAdapter adapter = (StageAdapter) window.getProperties().get(REF_ATTR);
+            if (PropertiesUtil.has(window, REF_ATTR)) {
+                StageAdapter adapter = (StageAdapter) PropertiesUtil.get(window, REF_ATTR);
                 if (adapter.controllerClass() == controllerClass) {
                     list.add(adapter);
                 }
@@ -155,9 +202,10 @@ public class StageManager {
      * @return StageAdapter
      */
     public static StageAdapter parseStage(Class<?> clazz) {
-        if (Primary_Stage != null && Primary_Stage.isShowing()) {
-            return parseStage(clazz, Primary_Stage);
-        }
+//        Window frontWindow = getFrontWindow();
+//        if (Primary_Stage != null && Primary_Stage.isShowing()) {
+//            return parseStage(clazz, Primary_Stage);
+//        }
         return parseStage(clazz, null);
     }
 
@@ -174,15 +222,25 @@ public class StageManager {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
         }
         // 获取舞台
-        StageAdapter stage = getStage(clazz);
+        StageAdapter stage = null;
+        // 如果不是多实例，则获取当前实例
+        if (!attribute.multipliable()) {
+            stage = getStage(clazz);
+        }
         // 创建舞台
         if (stage == null) {
-            // 主舞台
-            if (attribute.usePrimary()) {
-                stage = new PrimaryStage(Primary_Stage, attribute, owner);
-            } else {// 一般舞台
-                stage = new StageExt(attribute, owner);
-            }
+            AtomicReference<StageAdapter> ref = new AtomicReference<>();
+            FXUtil.runWait(() -> {
+                // 主舞台
+                if (attribute.usePrimary()) {
+                    StageAdapter stage1 = new PrimaryStage(Primary_Stage, attribute, owner);
+                    ref.set(stage1);
+                } else {// 一般舞台
+                    StageAdapter stage1 = new StageExt(attribute, owner);
+                    ref.set(stage1);
+                }
+            });
+            stage = ref.get();
         }
         return stage;
     }
@@ -250,15 +308,86 @@ public class StageManager {
         return transparentStage;
     }
 
+    /**
+     * 显示遮罩面板
+     *
+     * @param callback 遮罩关闭处理完成后的回调
+     */
     public static void showMask(Runnable callback) {
-        for (Window window : Window.getWindows()) {
-            if (window.isShowing() && window.isFocused()) {
-                StageMask.showMask(window, callback);
-                break;
-            }
+        Window window = getFrontWindow();
+        if (window == null || !window.isShowing()) {
+            window = getPrimaryStage();
+        }
+        showMask(window, callback);
+    }
+
+    /**
+     * 显示遮罩面板
+     *
+     * @param adapter  需要遮罩的窗口
+     * @param callback 遮罩关闭处理完成后的回调
+     */
+    public static void showMask(StageAdapter adapter, Runnable callback) {
+        if (adapter != null) {
+            StageMask.showMask(adapter.stage(), callback);
+        } else {
+            StageMask.showMask(null, callback);
         }
     }
 
+    public static final String MASK_SHOWING_KEY = "mask:showing";
+
+    /**
+     * 显示遮罩面板
+     *
+     * @param window   需要遮罩的窗口
+     * @param callback 遮罩关闭处理完成后的回调
+     */
+    public static void showMask(Window window, Runnable callback) {
+        // // TODO: 关闭可能存在的mask面板
+        // try {
+        //     List<Window> windows = new ArrayList<>(Window.getWindows());
+        //     for (Window w : windows) {
+        //         if (w instanceof StageMask mask && mask.isShowing()) {
+        //             mask.close();
+        //         }
+        //     }
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
+        // if (window != null && window.isShowing()) {
+        //     StageMask.showMask(window, callback);
+        // } else {
+        //     callback.run();
+        // }
+        // 判断是否处于mask状态
+        if (!PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
+            // 设置状态位
+            PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
+            // 显示遮罩
+            StageMask.showMask(window, () -> {
+                try {
+                    if (callback != null) {
+                        callback.run();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JulLog.warn("showMask callback error:{}", ex);
+                } finally {
+                    // 移除标志位
+                    PropertiesUtil.remove(window, MASK_SHOWING_KEY);
+                }
+            });
+        } else {// 直接执行
+            callback.run();
+        }
+    }
+
+    /**
+     * 获取前台窗口
+     *
+     * @return 前台窗口
+     */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
             if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {

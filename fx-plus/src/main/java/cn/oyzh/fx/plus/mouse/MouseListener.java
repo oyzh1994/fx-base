@@ -17,27 +17,25 @@ import javafx.stage.Stage;
  * @author oyzh
  * @since 2023/1/16
  */
-//@Slf4j
-
 public class MouseListener {
 
     /**
      * 监听按键
      *
-     * @param target     事件目标
+     * @param target       事件目标
      * @param mouseHandler 按键处理器
      */
-    public static void listen( Object target,  MouseHandler mouseHandler) {
+    public static void listen(Object target, MouseHandler mouseHandler) {
         addHandler(target, mouseHandler);
     }
 
     /**
      * 取消监听按键
      *
-     * @param target     事件目标
+     * @param target       事件目标
      * @param mouseHandler 按键处理器
      */
-    public static void unListen( EventTarget target,  MouseHandler mouseHandler) {
+    public static void unListen(EventTarget target, MouseHandler mouseHandler) {
         removeHandler(target, mouseHandler);
     }
 
@@ -75,9 +73,9 @@ public class MouseListener {
         }
         if (eventHandler != null) {
             eventHandler.addHandler(mouseHandler);
-//            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 JulLog.debug("addHandler, button:{} clickCount:{}", mouseHandler.getButton(), mouseHandler.getClickCount());
-//            }
+            }
         }
     }
 
@@ -94,7 +92,7 @@ public class MouseListener {
         handler1.setButton(button);
         handler1.setType(type);
         handler1.setHandler(handler);
-        addHandler(target,handler1);
+        addHandler(target, handler1);
     }
 
     /**
@@ -107,9 +105,9 @@ public class MouseListener {
         MouseEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(mouseHandler);
-//            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 JulLog.debug("removeMouseEventHandler, button:{} clickCount:{}", mouseHandler.getButton(), mouseHandler.getClickCount());
-//            }
+            }
         }
     }
 

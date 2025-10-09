@@ -6,6 +6,10 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.control.DatePicker;
 
+/**
+ * @author oyzh
+ * @since 2024/04/04
+ */
 public class FXDatePicker extends DatePicker implements ThemeAdapter, FlexAdapter, TipAdapter {
 
     {

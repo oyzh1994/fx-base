@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.common.SysConst;
 import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.Application;
@@ -26,7 +27,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author oyzh
  * @since 2023/12/18
  */
-
 public class ThemeManager {
 
     static {
@@ -112,14 +112,18 @@ public class ThemeManager {
                 Themes.SYSTEM.unListener();
             }
             // 设置当前主题
-//            currentTheme = style;
             currentThemeProperty.set(style);
             // 设置应用样式
             Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
             // 变更样式
-            List<StageAdapter> wrappers = StageManager.allStages();
-            for (StageAdapter wrapper : wrappers) {
-                applyCycle(wrapper.root(), style);
+            List<Window> windows = StageManager.allWindows();
+            for (Window window : windows) {
+                // 检查装饰器并处理
+                if (StageManager.isAdapter(window)) {
+                    StageAdapter adapter = StageManager.getAdapter(window);
+                    adapter.changeTheme(style);
+                }
+                applyCycle(window, style);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -144,12 +148,12 @@ public class ThemeManager {
             for (Node node : new CopyOnWriteArrayList<>(popup.getContent())) {
                 applyCycle(node, style);
             }
+        } else if (root instanceof Scene scene) {
+            applyCycle(scene.getRoot(), style);
         } else if (root instanceof Stage stage) {
             applyCycle(stage.getScene(), style);
         } else if (root instanceof Window window) {
             applyCycle(window.getScene(), style);
-        } else if (root instanceof Scene scene) {
-            applyCycle(scene.getRoot(), style);
         }
     }
 
@@ -161,7 +165,9 @@ public class ThemeManager {
         if (files != null) {
             for (File file : files) {
                 if (file.getName().startsWith("theme") && file.getName().endsWith(".css")) {
-                    file.delete();
+                    if (!file.delete()) {
+                        JulLog.warn("clear theme tmp file:{} failed", file.getPath());
+                    }
                 }
             }
         }

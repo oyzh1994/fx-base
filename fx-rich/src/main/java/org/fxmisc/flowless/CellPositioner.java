@@ -1,7 +1,9 @@
 package org.fxmisc.flowless;
 
+import javafx.scene.Node;
 import org.reactfx.collection.MemoizationList;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -30,13 +32,12 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
 
     public C getVisibleCell(int itemIndex) {
         C cell = cellManager.getPresentCell(itemIndex);
-        // if(cell.getNode().isVisible()) {
-        //     return cell;
-        // } else {
-        //     throw new NoSuchElementException(
-        //             "Cell " + itemIndex + " is not visible");
-        // }
-        return cell;
+        if (cell.getNode().isVisible()) {
+            return cell;
+        } else {
+            throw new NoSuchElementException(
+                    "Cell " + itemIndex + " is not visible");
+        }
     }
 
     public Optional<C> getCellIfVisible(int itemIndex) {
@@ -47,9 +48,9 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
     public OptionalInt lastVisibleBefore(int position) {
         MemoizationList<C> cells = cellManager.getLazyCellList();
         int presentBefore = cells.getMemoizedCountBefore(position);
-        for(int i = presentBefore - 1; i >= 0; --i) {
+        for (int i = presentBefore - 1; i >= 0; --i) {
             C cell = cells.memoizedItems().get(i);
-            if(cell.getNode().isVisible()) {
+            if (cell.getNode().isVisible()) {
                 return OptionalInt.of(cells.indexOfMemoizedItem(i));
             }
         }
@@ -60,9 +61,9 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
         MemoizationList<C> cells = cellManager.getLazyCellList();
         int presentBefore = cells.getMemoizedCountBefore(position);
         int present = cells.getMemoizedCount();
-        for(int i = presentBefore; i < present; ++i) {
+        for (int i = presentBefore; i < present; ++i) {
             C cell = cells.memoizedItems().get(i);
-            if(cell.getNode().isVisible()) {
+            if (cell.getNode().isVisible()) {
                 return OptionalInt.of(cells.indexOfMemoizedItem(i));
             }
         }
@@ -91,8 +92,8 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
         double gapAfter = sizeTracker.getViewportLength() - (cellMinY + toY);
 
         return (gapBefore < 0 && gapAfter > 0) ? Math.min(-gapBefore, gapAfter) :
-               (gapBefore > 0 && gapAfter < 0) ? Math.max(-gapBefore, gapAfter) :
-               0.0;
+                (gapBefore > 0 && gapAfter < 0) ? Math.max(-gapBefore, gapAfter) :
+                        0.0;
     }
 
     /**
@@ -120,7 +121,7 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
      *     |
      * </code></pre>
      *
-     * @param itemIndex the index of the item in the list of all (not currently visible) cells
+     * @param itemIndex     the index of the item in the list of all (not currently visible) cells
      * @param startOffStart the amount by which to offset the "layoutY" value of the cell's node
      */
     public C placeStartAt(int itemIndex, double startOffStart) {
@@ -146,7 +147,7 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
      *      --------- top of cell's node if endOffStart is positive
      * </code></pre>
      *
-     * @param itemIndex the index of the item in the list of all (not currently visible) cells
+     * @param itemIndex   the index of the item in the list of all (not currently visible) cells
      * @param endOffStart the amount by which to offset the "layoutY" value of the cell's node
      */
     public C placeEndFromStart(int itemIndex, double endOffStart) {
@@ -198,7 +199,7 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
      *     |
      * </code></pre>
      *
-     * @param itemIndex the index of the item in the list of all (not currently visible) cells
+     * @param itemIndex   the index of the item in the list of all (not currently visible) cells
      * @param startOffEnd the amount by which to offset the "layoutY" value of the cell's node
      */
     public C placeStartFromEnd(int itemIndex, double startOffEnd) {
@@ -227,6 +228,8 @@ final class CellPositioner<T, C extends Cell<T, ?>> {
     }
 
     private void relocate(C cell, double breadth0, double length0) {
+        Node node = cell.getNode();
+
         orientation.relocate(cell, breadth0, length0);
     }
 }

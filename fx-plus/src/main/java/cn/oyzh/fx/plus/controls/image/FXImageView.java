@@ -66,7 +66,6 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
     public void initNode() {
         this.setPickOnBounds(true);
         this.setPreserveRatio(true);
-//        this.setFocusTraversable(false);
     }
 
     @Override
@@ -88,5 +87,10 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
             imageRef.set(image1);
         });
         return imageRef.get();
+    }
+
+    @Override
+    public boolean isResizable() {
+        return true;
     }
 }

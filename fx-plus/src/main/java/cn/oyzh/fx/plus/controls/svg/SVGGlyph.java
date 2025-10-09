@@ -7,12 +7,11 @@ import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXColorUtil;
-import javafx.animation.RotateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -69,17 +68,18 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     /**
      * 是否开启动画功能
      */
-    private boolean enableWaiting = true;
+    private boolean enableWaiting;
+    // private boolean enableWaiting = true;
 
     /**
      * 原始svg组件
      */
     private FXSVGPath original;
 
-    /**
-     * 等待动画
-     */
-    private RotateTransition waitingAnimation;
+//    /**
+//     * 等待动画
+//     */
+//    private RotateTransition waitingAnimation;
 
     /**
      * 是否激活状态
@@ -195,6 +195,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 //            FXUtil.runWait(this.waitingAnimation::stop);
 //            this.waitingAnimation = null;
 //        }
+        this.setWaiting(false);
         // 恢复原始图标，并更新内容
         this.setChild(this.original);
         this.updateContent();
@@ -222,24 +223,24 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public SVGGlyph() {
     }
 
-    public SVGGlyph( String url) {
+    public SVGGlyph(String url) {
         this();
         this.setUrl(url);
     }
 
-    public SVGGlyph( String url,  Paint color) {
+    public SVGGlyph(String url, Paint color) {
         this();
         this.setUrl(url);
         this.setColor(color);
     }
 
-    public SVGGlyph( String url,  String size) {
+    public SVGGlyph(String url, String size) {
         this();
         this.setUrl(url);
         this.setSizeStr(size);
     }
 
-    public SVGGlyph( String url, double size) {
+    public SVGGlyph(String url, double size) {
         this();
         this.setUrl(url);
         this.setSize(size);
@@ -250,8 +251,9 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      *
      * @param url svg地址
      */
-    public void setUrl( String url) {
-        this.url = url.intern();
+    public void setUrl(String url) {
+        this.url = url;
+        // this.url = url.intern();
         // 创建图标
         this.original = SVGManager.load(this.url);
         if (this.original == null) {
@@ -305,6 +307,18 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     }
 
     /**
+     * 设置大小
+     *
+     * @param width  宽
+     * @param height 高
+     */
+    public void setSize(double width, double height) {
+        if (width > 0 && height > 0) {
+            this.setSizeStr(width + "," + height);
+        }
+    }
+
+    /**
      * 获取大小
      *
      * @return 大小
@@ -319,7 +333,8 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * @return 大小字符串形式
      */
     public String getSizeStr() {
-        return ControlUtil.boundedWidth(this) + "," + ControlUtil.boundedHeight(this);
+        return NodeUtil.getWidth(this) + "," + NodeUtil.getHeight(this);
+        // return ControlUtil.boundedWidth(this) + "," + ControlUtil.boundedHeight(this);
     }
 
     /**
@@ -330,18 +345,18 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public void setSizeStr(String size) {
         if (StringUtil.isNotBlank(size)) {
             try {
-                size = size.trim();
+                // size = size.trim();
                 double w, h;
                 if (size.contains(",")) {
                     String[] strArr = size.split(",");
-                    w = Double.parseDouble(strArr[0]);
-                    h = Double.parseDouble(strArr[1]);
+                    w = Double.parseDouble(strArr[0].trim());
+                    h = Double.parseDouble(strArr[1].trim());
                 } else {
                     w = h = Double.parseDouble(size);
                 }
                 this.setMaxSize(w, h);
                 this.setMinSize(w, h);
-                this.setPrefSize(w, h);
+                // this.setPrefSize(w, h);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -467,11 +482,11 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.original = original;
     }
 
-    public RotateTransition getWaitingAnimation() {
-        return waitingAnimation;
-    }
-
-    public void setWaitingAnimation(RotateTransition waitingAnimation) {
-        this.waitingAnimation = waitingAnimation;
-    }
+//    public RotateTransition getWaitingAnimation() {
+//        return waitingAnimation;
+//    }
+//
+//    public void setWaitingAnimation(RotateTransition waitingAnimation) {
+//        this.waitingAnimation = waitingAnimation;
+//    }
 }

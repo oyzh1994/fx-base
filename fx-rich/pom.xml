@@ -4,12 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cn.oyzh</groupId>
+        <groupId>io.github.oyzh1994</groupId>
         <artifactId>fx-base</artifactId>
-        <version>1.3.4</version>
+        <version>1.3.6</version>
     </parent>
 
+    <name>fx-rich</name>
     <artifactId>fx-rich</artifactId>
+    <description>
+        javafx基础模块，富文本的实现
+    </description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,7 +22,7 @@
     <dependencies>
         <!-- 自定义类库，fx相关 -->
         <dependency>
-            <groupId>cn.oyzh</groupId>
+            <groupId>io.github.oyzh1994</groupId>
             <artifactId>fx-plus</artifactId>
         </dependency>
 
@@ -55,6 +59,50 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+       <!-- https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext -->
+       <dependency>
+           <groupId>org.openjfx</groupId>
+           <artifactId>jfx-incubator-richtext</artifactId>
+           <version>${javafx.version}</version>
+           <scope>provided</scope>
+       </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jspecify/jspecify -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>${jspecify.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.github.mkpaz/tm4javafx -->
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>tm4javafx</artifactId>
+            <version>${tm4javafx.version}</version>
+        </dependency>
+
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/dev.secondsun/org.eclipse.tm4e.core &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>dev.secondsun</groupId> -->
+        <!--     <artifactId>org.eclipse.tm4e.core</artifactId> -->
+        <!--     <version>0.5.0</version> -->
+        <!-- </dependency> -->
+
+        <!-- &lt;!&ndash; 用于解析TextMate语法的库 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.github.ebrepo</groupId> -->
+        <!--     <artifactId>textmate-core</artifactId> -->
+        <!--     <version>1.0.0</version> &lt;!&ndash; 请检查最新版本 &ndash;&gt; -->
+        <!-- </dependency> -->
+
+        <!-- &lt;!&ndash; https://mvnrepository.com/artifact/com.jetbrains.intellij.textmate/textmate &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.jetbrains.intellij.textmate</groupId> -->
+        <!--     <artifactId>textmate</artifactId> -->
+        <!--     <version>252.25557.178</version> -->
+        <!--     <scope>runtime</scope> -->
+        <!-- </dependency> -->
     </dependencies>
 
 </project>

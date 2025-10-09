@@ -4,15 +4,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
-import org.fxmisc.richtext.GenericStyledArea;
 
 /**
- * 文本组件适配器
+ * 文本适配器
  *
  * @author oyzh
  * @since 2023/1/29
  */
-public interface TextAdapter {
+public interface TextAdapter extends PropAdapter{
 
     /**
      * 解除文本变化监听器
@@ -24,7 +23,7 @@ public interface TextAdapter {
             labeled.textProperty().unbind();
         } else if (this instanceof TextInputControl inputControl) {
             inputControl.textProperty().unbind();
-        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+        // } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
         }
     }
 
@@ -43,8 +42,8 @@ public interface TextAdapter {
             labeled.textProperty().removeListener(listener);
         } else if (this instanceof TextInputControl inputControl) {
             inputControl.textProperty().removeListener(listener);
-        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-            area.textProperty().removeListener(listener);
+        // } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+        //     area.textProperty().removeListener(listener);
         }
     }
 
@@ -65,8 +64,8 @@ public interface TextAdapter {
                 } else if (this instanceof TextInputControl inputControl) {
                     inputControl.textProperty().addListener(listener);
 //                    inputControl.textProperty().addListener(new WeakChangeListener<>(listener));
-                } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-                    area.textProperty().addListener(listener);
+//                 } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+//                     area.textProperty().addListener(listener);
 //                    area.textProperty().addListener(new WeakChangeListener<>(listener));
                 }
 //            }
@@ -86,9 +85,29 @@ public interface TextAdapter {
             str = labeled.getText();
         } else if (this instanceof TextInputControl inputControl) {
             str = inputControl.getText();
-        } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
-            str = area.getText();
+        // } else if (this instanceof GenericStyledArea<?, ?, ?> area) {
+        //     str = area.getText();
         }
         return str == null ? null : str.trim();
+    }
+
+
+    /**
+     * 是否忽略节点改变事件
+     *
+     * @return 结果
+     */
+    default boolean isIgnoreChanged() {
+        Object _ignoreChanged = this.getProp("_ignoreChanged");
+        return _ignoreChanged instanceof Boolean && (boolean) _ignoreChanged;
+    }
+
+    /**
+     * 设置忽略节点改变事件
+     *
+     * @param ignoreChanged 忽略节点改变事件
+     */
+    default void setIgnoreChanged(boolean ignoreChanged) {
+        this.setProp("_ignoreChanged", ignoreChanged);
     }
 }

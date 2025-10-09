@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.tabs;
 
+import cn.oyzh.fx.plus.controls.tab.FXTab;
 import javafx.event.Event;
 
 import java.net.URL;
@@ -16,9 +17,12 @@ import java.util.ResourceBundle;
 public class ParentTabController extends RichTabController {
 
     @Override
-    protected void setTab(RichTab tab) {
+    protected void setTab(FXTab tab) {
         super.setTab(tab);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             if (controller instanceof SubTabController subTabController) {
                 subTabController.parent(this);
             }
@@ -27,9 +31,12 @@ public class ParentTabController extends RichTabController {
     }
 
     @Override
-    public void onTabInit(RichTab tab) {
+    public void onTabInit(FXTab tab) {
         super.onTabInit(tab);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             controller.onTabInit(tab);
         }
     }
@@ -38,6 +45,9 @@ public class ParentTabController extends RichTabController {
     public void onTabClosed(Event event) {
         super.onTabClosed(event);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             controller.onTabClosed(event);
         }
     }
@@ -46,17 +56,23 @@ public class ParentTabController extends RichTabController {
     public void initialize(URL location, ResourceBundle resourceBundle) {
         super.initialize(location, resourceBundle);
         for (RichTabController controller : this.getSubControllers()) {
+            if (controller == null) {
+                continue;
+            }
             controller.initialize(location, resourceBundle);
         }
     }
-
-    @Override
-    protected void bindListeners() {
-        super.bindListeners();
-        for (RichTabController controller : this.getSubControllers()) {
-            controller.bindListeners();
-        }
-    }
+    //
+    // @Override
+    // protected void bindListeners() {
+    //     super.bindListeners();
+    //     for (RichTabController controller : this.getSubControllers()) {
+    //         if (controller == null) {
+    //             continue;
+    //         }
+    //         controller.bindListeners();
+    //     }
+    // }
 
     /**
      * 获取子控制器列表

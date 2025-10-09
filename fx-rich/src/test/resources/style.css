@@ -1,0 +1,249 @@
+/* GitHub Light Theme for RichTextFX - Converted from TextMate theme */
+/* 注释相关样式 */
+.comment, .punctuation-definition-comment, .string-comment {
+    -fx-fill: #6a737d;
+}
+
+/* 常量相关样式 */
+.constant, .entity-name-constant, .variable-other-constant,
+.variable-other-enummember, .variable-language {
+    -fx-fill: #005cc5;
+}
+
+/* 实体相关样式 */
+.entity, .entity-name {
+    -fx-fill: #6f42c1;
+}
+
+/* 函数参数 */
+.variable-parameter-function {
+    -fx-fill: #24292e;
+}
+
+/* 标签 */
+.entity-name-tag {
+    -fx-fill: #22863a;
+}
+
+/* 关键字 */
+.keyword {
+    -fx-fill: #d73a49;
+}
+
+/* 存储类型 */
+.storage, .storage-type {
+    -fx-fill: #d73a49;
+}
+
+/* Java特定存储类型 */
+.storage-modifier-package, .storage-modifier-import, .storage-type-java {
+    -fx-fill: #24292e;
+}
+
+/* 字符串 */
+.string, .punctuation-definition-string, .string-punctuation-section-embedded-source {
+    -fx-fill: #032f62;
+}
+
+/* 支持类 */
+.support {
+    -fx-fill: #005cc5;
+}
+
+/* 属性名 */
+.meta-property-name {
+    -fx-fill: #005cc5;
+}
+
+/* 变量 */
+.variable {
+    -fx-fill: #e36209;
+}
+
+/* 其他变量 */
+.variable-other {
+    -fx-fill: #24292e;
+}
+
+/* 无效代码 */
+.invalid-broken, .invalid-deprecated, .invalid-illegal, .invalid-unimplemented {
+    -fx-fill: #b31d28;
+    -fx-font-style: italic;
+}
+
+/* 错误消息 */
+.message-error {
+    -fx-fill: #b31d28;
+}
+
+/* 字符串中的变量 */
+.string-variable {
+    -fx-fill: #005cc5;
+}
+
+/* 正则表达式 */
+.source-regexp, .string-regexp {
+    -fx-fill: #032f62;
+}
+
+/* 正则表达式字符类 */
+.string-regexp-character-class, .string-regexp-constant-character-escape,
+.string-regexp-source-ruby-embedded, .string-regexp-string-regexp-arbitrary-repitition {
+    -fx-fill: #032f62;
+}
+
+/* 正则表达式转义字符 */
+.string-regexp-constant-character-escape {
+    -fx-fill: #22863a;
+    -fx-font-weight: bold;
+}
+
+/* 支持常量 */
+.support-constant {
+    -fx-fill: #005cc5;
+}
+
+/* 支持变量 */
+.support-variable {
+    -fx-fill: #005cc5;
+}
+
+/* 模块引用 */
+.meta-module-reference {
+    -fx-fill: #005cc5;
+}
+
+/* Markdown列表 */
+.punctuation-definition-list-begin-markdown {
+    -fx-fill: #e36209;
+}
+
+/* Markdown标题 */
+.markup-heading, .markup-heading-entity-name {
+    -fx-fill: #005cc5;
+    -fx-font-weight: bold;
+}
+
+/* Markdown引用 */
+.markup-quote {
+    -fx-fill: #22863a;
+}
+
+/* Markdown斜体 */
+.markup-italic {
+    -fx-fill: #24292e;
+    -fx-font-style: italic;
+}
+
+/* Markdown粗体 */
+.markup-bold {
+    -fx-fill: #24292e;
+    -fx-font-weight: bold;
+}
+
+/* Markdown下划线 */
+.markup-underline {
+    -fx-underline: true;
+}
+
+/* Markdown删除线 */
+.markup-strikethrough {
+    -fx-strikethrough: true;
+}
+
+/* Markdown原始文本 */
+.markup-inline-raw {
+    -fx-fill: #005cc5;
+}
+
+/* 删除的文本 */
+.markup-deleted, .meta-diff-header-from-file, .punctuation-definition-deleted {
+    -fx-fill: #b31d28;
+    -rtfx-background-color: #ffeef0;
+}
+
+/* 插入的文本 */
+.markup-inserted, .meta-diff-header-to-file, .punctuation-definition-inserted {
+    -fx-fill: #22863a;
+    -rtfx-background-color: #f0fff4;
+}
+
+/* 修改的文本 */
+.markup-changed, .punctuation-definition-changed {
+    -fx-fill: #e36209;
+    -rtfx-background-color: #ffebda;
+}
+
+/* 忽略的文本 */
+.markup-ignored, .markup-untracked {
+    -fx-fill: #f6f8fa;
+    -rtfx-background-color: #005cc5;
+}
+
+/* Diff范围 */
+.meta-diff-range {
+    -fx-fill: #6f42c1;
+    -fx-font-weight: bold;
+}
+
+/* Diff头部 */
+.meta-diff-header {
+    -fx-fill: #005cc5;
+}
+
+/* 分隔符 */
+.meta-separator {
+    -fx-fill: #005cc5;
+    -fx-font-weight: bold;
+}
+
+/* 输出 */
+.meta-output {
+    -fx-fill: #005cc5;
+}
+
+/* 括号高亮 */
+.brackethighlighter-tag, .brackethighlighter-curly, .brackethighlighter-round,
+.brackethighlighter-square, .brackethighlighter-angle, .brackethighlighter-quote {
+    -fx-fill: #586069;
+}
+
+/* 不匹配的括号 */
+.brackethighlighter-unmatched {
+    -fx-fill: #b31d28;
+}
+
+/* 链接 */
+.constant-other-reference-link, .string-other-link {
+    -fx-fill: #032f62;
+    -fx-underline: true;
+}
+
+/* 编辑器背景和基本样式 */
+.code-area {
+    -fx-background-color: #fff;
+    -rtfx-background-color: #fff;
+}
+
+.code-area .text {
+    -fx-fill: #24292e;
+}
+
+/* 选择文本样式 */
+.code-area .selection {
+    -rtfx-background-color: #0366d625;
+}
+
+/* 行高亮 */
+.code-area .line-highlight {
+    -rtfx-background-color: #f6f8fa;
+}
+
+/* 查找匹配 */
+.code-area .find-match {
+    -rtfx-background-color: #ffdf5d;
+}
+
+.code-area .find-match-highlight {
+    -rtfx-background-color: #ffdf5d66;
+}

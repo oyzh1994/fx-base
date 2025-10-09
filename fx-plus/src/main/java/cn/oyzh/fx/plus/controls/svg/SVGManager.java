@@ -24,15 +24,15 @@ public class SVGManager {
         return SVGLoader.INSTANCE.load(url);
     }
 
-    /**
-     * 加载svg内容
-     *
-     * @param url 地址
-     * @return svg路径
-     */
-    public static String loadContent(String url) {
-        return SVGLoader.INSTANCE.loadContent(url);
-    }
+    // /**
+    //  * 加载svg内容
+    //  *
+    //  * @param url 地址
+    //  * @return svg路径
+    //  */
+    // public static String loadContent(String url) {
+    //     return SVGLoader.INSTANCE.loadContent(url);
+    // }
 
 //    /**
 //     * 是否loading的svg路径

@@ -5,6 +5,7 @@ import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
@@ -38,6 +39,18 @@ public class FontUtil {
     /**
      * 创建一个新字体
      *
+     * @param family 字体名称
+     * @param size   字体大小
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFontBySize(String family, double size) {
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, size);
+        return FontManager.cacheFont(font1);
+    }
+
+    /**
+     * 创建一个新字体
+     *
      * @param font   原字体
      * @param family 字体名称
      * @return 新字体
@@ -56,8 +69,61 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontByWeight(javafx.scene.text.Font font, String style) {
+        if (StringUtil.isBlank(style)) {
+            return font;
+        }
         FontWeight weight = getWeight(style);
         return newFontByWeight(font, weight);
+    }
+
+    /**
+     * 创建一个新字体
+     *
+     * @param family  字体名称
+     * @param posture 字体形式
+     * @param size    字体大小
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFont(String family, FontPosture posture, double size) {
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, posture, size);
+        return FontManager.cacheFont(font1);
+    }
+
+    /**
+     * 创建一个新字体
+     *
+     * @param family 字体名称
+     * @param weight 字体粗细
+     * @param size   字体大小
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFont(String family, FontWeight weight, double size) {
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, size);
+        return FontManager.cacheFont(font1);
+    }
+
+    /**
+     * 创建一个新字体
+     *
+     * @param family  字体名称
+     * @param weight  字体粗细
+     * @param posture 字体形式
+     * @param size    字体大小
+     * @return 新字体
+     */
+    public static javafx.scene.text.Font newFont(String family, FontWeight weight, FontPosture posture, double size) {
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, posture, size);
+        return FontManager.cacheFont(font1);
+    }
+
+    /**
+     * 获取字体重量
+     *
+     * @param font 字体
+     * @return 字体重量
+     */
+    public static FontWeight getWeight(javafx.scene.text.Font font) {
+        return getWeight(font.getStyle());
     }
 
     /**
@@ -152,7 +218,7 @@ public class FontUtil {
      * @param fontSize 字体大小
      * @return 字体高度
      */
-    public static double calcFontHeight( String fontName, int fontSize) {
+    public static double calcFontHeight(String fontName, int fontSize) {
         FontMetrics fontMetrics = fontMetrics(fontName, fontSize);
         return fontMetrics.getHeight();
     }
@@ -162,7 +228,7 @@ public class FontUtil {
      * @param font 字体
      * @return 字体高度
      */
-    public static double calcFontHeight( javafx.scene.text.Font font) {
+    public static double calcFontHeight(javafx.scene.text.Font font) {
         FontMetrics fontMetrics = fontMetrics(font);
         return fontMetrics.getHeight();
     }
@@ -184,7 +250,7 @@ public class FontUtil {
      * @param fontSize 字体大小
      * @return FontMetrics
      */
-    public static FontMetrics fontMetrics( String fontName, int fontSize) {
+    public static FontMetrics fontMetrics(String fontName, int fontSize) {
         Font font = new Font(fontName, Font.PLAIN, fontSize);
         return new JLabel().getFontMetrics(font);
     }

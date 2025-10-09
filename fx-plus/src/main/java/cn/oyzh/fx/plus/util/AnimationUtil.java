@@ -1,8 +1,5 @@
 package cn.oyzh.fx.plus.util;
 
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGPane;
-import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.window.StageManager;
 import javafx.animation.Animation;
@@ -11,17 +8,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.shape.Path;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.SVGPath;
-import javafx.scene.shape.Shape;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
@@ -31,7 +21,6 @@ import javafx.util.Duration;
  * @author oyzh
  * @since 2023/3/13
  */
-
 public class AnimationUtil {
 
     /**
@@ -76,11 +65,8 @@ public class AnimationUtil {
     public static void move(Window window, Node node, Node source, Node target) {
         Point2D point1 = source.localToScene(0, 0);
         Point2D point2 = target.localToScene(0, 0);
-        double x1 = target.getLayoutBounds().getMaxY();
-        double y1 = target.getLayoutBounds().getMaxX();
-        double w = NodeUtil.getWidth(target);
         double h = NodeUtil.getHeight(target);
-        move(window, node, point1.getX(), point1.getY(), point2.getX() - w - x1 - 30, point2.getY() - h - y1 - 40);
+        move(window, node, point1.getX(), point1.getY(), point2.getX(), point2.getY() - h);
     }
 
     /**
@@ -107,6 +93,8 @@ public class AnimationUtil {
         } else {
             return;
         }
+        endX = Math.abs(endX);
+        endY = Math.abs(endY);
         // 添加的目标阶段
         pane.getChildren().add(node);
         node.setLayoutX(startX);
@@ -131,8 +119,6 @@ public class AnimationUtil {
 
         // 将关键帧添加到时间轴
         timeline.getKeyFrames().addAll(startFrame, endFrame);
-        timeline.play();
-
         // 动画结束后移除矩形
         timeline.setOnFinished(e -> pane.getChildren().remove(node));
         // 播放动画

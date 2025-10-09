@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.node.NodeUtil;
-import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
 import javafx.util.Duration;
@@ -48,29 +46,18 @@ public class PopupExt extends Popover implements PopupAdapter {
     }
 
     @Override
-    public void showPopup( Node owner) {
-        if (owner instanceof SVGGlyph) {
-            Bounds bounds = owner.localToScreen(owner.getBoundsInLocal());
-            if (bounds == null) {
-                throw new IllegalStateException(
-                        "The owner node is not added to the scene. It cannot be used as a popover anchor."
-                );
-            }
-            int offset = 4;
-            switch (this.getArrowLocation()) {
-                case BOTTOM_LEFT -> super.show(owner, bounds.getMinX() + 8, bounds.getMinY() + offset);
-                case TOP_CENTER -> {
-                    super.show(owner, bounds.getMinX() + 8, bounds.getMaxY() - 8 - NodeUtil.getHeight(owner));
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + this.getArrowLocation());
-            }
-        } else {
+    public void showPopup(Node owner) {
+        Point2D pos = owner.localToScreen(0, 0);
+        if (pos == null) {
             super.show(owner);
+        } else {
+            int offset = 4;
+            super.show(owner, pos.getX() + offset, pos.getY() + offset);
         }
     }
 
     @Override
-    public void showPopup( Node owner, double x, double y) {
+    public void showPopup(Node owner, double x, double y) {
         super.show(owner, x, y);
     }
 

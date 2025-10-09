@@ -66,7 +66,7 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public SaveFileTextFieldSkin(TextField textField) {
-        super(textField, new ChooseSVGGlyph("13"));
+        super(textField, new ChooseSVGGlyph());
         this.button.disappear();
         this.button.setTipText(I18nHelper.save());
     }

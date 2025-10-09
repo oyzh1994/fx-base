@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 
@@ -18,7 +19,8 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
         try {
             this.unSwitchOnTab();
             this.unHideOnEscape();
-            this.clearProps();
+            // 延迟清理
+            TaskManager.startDelay(this::clearProps, 100);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

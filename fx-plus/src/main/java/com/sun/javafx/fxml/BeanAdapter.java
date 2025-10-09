@@ -151,7 +151,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * Returns the Bean object this adapter wraps.
      *
      * @return
-     * The Bean object, or <tt>null</tt> if no Bean has been set.
+     * The Bean object, or <code>null</code> if no Bean has been set.
      */
     public Object getBean() {
         return bean;
@@ -201,7 +201,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * The property name.
      *
      * @return
-     * The value returned by the method, or <tt>null</tt> if no such method
+     * The value returned by the method, or <code>null</code> if no such method
      * exists.
      */
     @Override
@@ -245,7 +245,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * The new property value.
      *
      * @return
-     * Returns <tt>null</tt>, since returning the previous value would require
+     * Returns <code>null</code>, since returning the previous value would require
      * an unnecessary call to the getter method.
      *
      * @throws PropertyNotFoundException
@@ -282,7 +282,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * The property name.
      *
      * @return
-     * <tt>true</tt> if the property exists; <tt>false</tt>, otherwise.
+     * <code>true</code> if the property exists; <code>false</code>, otherwise.
      */
     @Override
     public boolean containsKey(Object key) {
@@ -305,7 +305,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * The property name.
      *
      * @return
-     * <tt>true</tt> if the property is read-only; <tt>false</tt>, otherwise.
+     * <code>true</code> if the property is read-only; <code>false</code>, otherwise.
      */
     public boolean isReadOnly(String key) {
         if (key == null) {
@@ -322,7 +322,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * The property name.
      *
      * @return
-     * The named property model, or <tt>null</tt> if no such property exists.
+     * The named property model, or <code>null</code> if no such property exists.
      */
     @SuppressWarnings("unchecked")
     public <T> ObservableValue<T> getPropertyModel(String key) {
@@ -539,7 +539,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * The property name.
      *
      * @return
-     * The value returned by the method, or <tt>null</tt> if no such method
+     * The value returned by the method, or <code>null</code> if no such method
      * exists.
      */
     @SuppressWarnings("unchecked")
@@ -564,7 +564,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
 
     /**
      * Invokes a static setter method for the given property. If the value is
-     * <tt>null</tt> or there is no explicit setter for a given type, the
+     * <code>null</code> or there is no explicit setter for a given type, the
      * {@link #coerce(Object, Class)} method is used to attempt to convert the
      * value to the actual property type (defined by the return value of the
      * getter method).
@@ -630,7 +630,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
      * The type of the object to which the property applies.
      *
      * @return
-     * <tt>true</tt> if the property exists; <tt>false</tt>, otherwise.
+     * <code>true</code> if the property exists; <code>false</code>, otherwise.
      */
     public static boolean isDefined(Class<?> sourceType, String key, Class<?> targetType) {
         return (getStaticGetterMethod(sourceType, key, targetType) != null);

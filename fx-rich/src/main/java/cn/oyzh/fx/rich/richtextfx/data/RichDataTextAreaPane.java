@@ -2,16 +2,15 @@ package cn.oyzh.fx.rich.richtextfx.data;
 
 import cn.oyzh.fx.plus.menu.FXContextMenu;
 import cn.oyzh.fx.plus.node.NodeGroup;
+import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import javafx.beans.property.BooleanProperty;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 /**
  * @author oyzh
  * @since 2024/5/17
  */
+@Deprecated
 public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> implements NodeGroup {
 
     {
@@ -59,6 +58,18 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         this.showData(RichDataType.STRING, rawData);
     }
 
+    public void showJavaData(Object rawData) {
+        this.showData(RichDataType.JAVA, rawData);
+    }
+
+    public void showPythonData(Object rawData) {
+        this.showData(RichDataType.PYTHON, rawData);
+    }
+
+    public void showJavaScriptData(Object rawData) {
+        this.showData(RichDataType.JAVASCRIPT, rawData);
+    }
+
     public void showRawData(Object rawData) {
         this.showData(RichDataType.RAW, rawData);
     }
@@ -91,6 +102,10 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
         this.showLineNum();
         // 覆盖默认的菜单
         this.setContextMenu(FXContextMenu.EMPTY);
+    }
+
+    public boolean isEmpty() {
+        return this.getContent().isEmpty();
     }
 
 //    /**

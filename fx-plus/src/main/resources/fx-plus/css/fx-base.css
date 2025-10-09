@@ -1,15 +1,13 @@
-/* 根节点默认字体，覆盖atlantafx的默认字体 */
-.root {
-    -fx-font-size: 11px;
-}
-
-/* 根节点默认字体，覆盖atlantafx的默认字体 */
+/*!* 根节点默认字体，覆盖atlantafx的默认字体 *!*/
+/*.root {*/
+/*    -fx-font-size: 11px;*/
+/*}*/
+/*!* 根节点默认字体，覆盖atlantafx的默认字体 *!*/
 
 /* tab，修复atlantafx的样式异常问题 */
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
     -fx-padding: 0.1em 0.1em 0.1em 0.1em;
 }
-
 /* tab，修复atlantafx的显样式异常问题 */
 
 /* tree-cell，修复atlantafx的样式异常问题 */
@@ -18,51 +16,43 @@
     -fx-padding: 0.5em 0.5em 0 0;
     -fx-rotate: 0;
 }
-
 .tree-cell > .tree-disclosure-node > .arrow,
 .tree-table-row-cell > .tree-disclosure-node > .arrow {
     -fx-padding: 0.5em 0.5em 0 0;
 }
-
 /* tree-cell，修复atlantafx的样式异常问题 */
 
 /* text-input，修复atlantafx的样式异常问题 */
 .text-input {
     -fx-padding: 3px 5px 3px 5px;
 }
-
 /* text-input，修复atlantafx的样式异常问题 */
 
 /* button，修复atlantafx的样式异常问题 */
 .button {
     -fx-padding: 6px 12px 6px 12px;
 }
-
 /* button，修复atlantafx的样式异常问题 */
 
 /* check-box，修复atlantafx的样式异常问题 */
 .check-box {
     -fx-label-padding: 1px 0 1px 3px;
 }
-
 .check-box > .box {
     -fx-padding: 4px;
 }
-
 .check-box > .box > .mark {
     -fx-min-height: 0.75em;
     -fx-max-height: 0.75em;
     -fx-min-width: 0.75em;
     -fx-max-width: 0.75em;
 }
-
 /* check-box，修复atlantafx的样式异常问题 */
 
 /* text-area，修复atlantafx的样式异常问题 */
 .text-area {
     -fx-padding: 1px;
 }
-
 .text-area .content {
     -fx-padding: 3px 3px 3px 5px;
     -fx-fill: -color-fg-default;
@@ -87,7 +77,6 @@
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
 }
-
 /* rich-text-area，支持atlantafx的样式 */
 
 /* rich-text-field，支持atlantafx的样式 */
@@ -96,47 +85,33 @@
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
 }
-
 /* rich-text-field，支持atlantafx的样式 */
-
-/*!* terminal-text-area，修复atlantafx的样式异常问题 *!*/
-/*.terminal-text-area {*/
-/*    -fx-font-family: Monospaced;*/
-/*}*/
-
-/*!* terminal-text-area，修复atlantafx的样式异常问题 *!*/
 
 /* svg-glyph，支持atlantafx的样式 */
 .svg-glyph {
     -fx-background-color: -color-fg-default;
 }
-
 .svg-glyph:disabled {
     -fx-opacity: 0.4;
 }
-
 /* svg-glyph，支持atlantafx的样式 */
 
 /* titled-pane，修复atlantafx的样式异常问题 */
 .titled-pane > .content {
     -fx-padding: 3px 3px 3px 5px;
 }
-
 .titled-pane > .title {
     -fx-padding: 3px 3px 3px 5px;
 }
-
 .titled-pane > .title > .text {
     -fx-font-size: 1em;
 }
-
 /* titled-pane，修复atlantafx的样式异常问题 */
 
 /* combo-box，修复atlantafx的样式异常问题 */
 .combo-box > .list-cell {
     -fx-padding: 3px 3px 3px 5px;
 }
-
 /* combo-box，修复atlantafx的样式异常问题 */
 
 /* chart，修复atlantafx、javafx的样式异常问题 */
@@ -144,59 +119,47 @@
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
 }
-
 .chart-legend-item {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
 }
-
 .chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-default;
 }
-
 .default-color0.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-1;
 }
-
 .default-color1.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-2;
 }
-
 .default-color2.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-3;
 }
-
 .default-color3.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-4;
 }
-
 .default-color4.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-5;
 }
-
 .default-color5.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-6;
 }
-
 .default-color6.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-7;
 }
-
 .default-color6.chart-legend-item-symbol {
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-chart-8;
 }
-
 /* chart，修复atlantafx的样式异常问题 */
-
 
 /* lineno，修复atlantafx的样式异常问题 */
 .lineno {
@@ -206,18 +169,15 @@
     -fx-text-fill: -color-fg-default;
     -fx-background-color: -color-bg-subtle;
 }
-
 /* lineno，修复atlantafx的样式异常问题 */
 
 /* popover，修复atlantafx的样式异常问题 */
 .popover > .content {
     -fx-padding: 5px 5px 5px 5px;
 }
-
 .popover-item {
     -fx-border-width: 0 0 0.5 0;
     -fx-border-style: SOLID;
     -fx-border-color: color-fg-default;
 }
-
 /* popover，修复atlantafx的样式异常问题 */

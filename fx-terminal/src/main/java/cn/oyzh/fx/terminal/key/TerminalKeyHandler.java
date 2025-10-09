@@ -38,8 +38,8 @@ public interface TerminalKeyHandler<T extends Terminal> {
                 helpHandler.help(input, terminal);
             }
         } else if (input != null) {
-            terminal.saveHistory(input);
             terminal.onCommand(input);
+            terminal.saveHistory(input);
         }
         return false;
     }

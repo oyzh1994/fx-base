@@ -14,7 +14,6 @@ import java.awt.datatransfer.StringSelection;
  * @author oyzh
  * @since 2023/11/22
  */
-
 public class ClipboardUtil {
 
     /**
@@ -68,7 +67,7 @@ public class ClipboardUtil {
      * @param content 内容
      * @return 结果
      */
-    public static boolean setString( String content) {
+    public static boolean setString(String content) {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
@@ -85,7 +84,7 @@ public class ClipboardUtil {
      * @param content 内容
      * @return 结果
      */
-    public static boolean setStringAndTip( String content) {
+    public static boolean setStringAndTip(String content) {
         try {
             StringSelection stringSelection = new StringSelection(content);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
@@ -98,26 +97,26 @@ public class ClipboardUtil {
         return false;
     }
 
-    /**
-     * 设置字符串到粘贴板，并提示
-     *
-     * @param content 内容
-     * @param tipText 提示标题
-     * @return 结果
-     */
-    @Deprecated
-    public static boolean setStringAndTip( String content, String tipText) {
-        try {
-            StringSelection stringSelection = new StringSelection(content);
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
-            MessageBox.okToast(I18nHelper.copySuccess());
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageBox.warn(I18nHelper.copyFail());
-        }
-        return false;
-    }
+    // /**
+    //  * 设置字符串到粘贴板，并提示
+    //  *
+    //  * @param content 内容
+    //  * @param tipText 提示标题
+    //  * @return 结果
+    //  */
+    // @Deprecated
+    // public static boolean setStringAndTip(String content, String tipText) {
+    //     try {
+    //         StringSelection stringSelection = new StringSelection(content);
+    //         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
+    //         MessageBox.okToast(I18nHelper.copySuccess());
+    //         return true;
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         MessageBox.warn(I18nHelper.copyFail());
+    //     }
+    //     return false;
+    // }
 
     /**
      * 获取粘贴板字符串
@@ -137,5 +136,21 @@ public class ClipboardUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 粘贴板是否有字符串
+     *
+     * @return 结果
+     */
+    public static boolean hasString() {
+        try {
+            // 获取系统剪贴板
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            return clipboard.hasString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

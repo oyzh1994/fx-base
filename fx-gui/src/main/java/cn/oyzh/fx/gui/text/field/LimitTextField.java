@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.text.field;
 import cn.oyzh.fx.plus.LimitLenControl;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.operator.LimitOperator;
+import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import javafx.scene.control.TextFormatter;
 
 /**
@@ -46,5 +47,17 @@ public class LimitTextField extends FXTextField implements LimitLenControl {
         if (maxLen != null && this.getTextFormatter() == null) {
             this.setTextFormatter(new TextFormatter<>(new LimitOperator()));
         }
+    }
+
+    @Override
+    public boolean validate() {
+        if (!super.validate()) {
+            return false;
+        }
+        if (this.maxLen != null && this.getText().length() > this.maxLen) {
+            ValidatorUtil.validFail(this);
+            return false;
+        }
+        return true;
     }
 }

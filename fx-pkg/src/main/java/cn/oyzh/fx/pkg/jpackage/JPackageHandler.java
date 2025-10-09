@@ -3,9 +3,10 @@ package cn.oyzh.fx.pkg.jpackage;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.thread.ProcessExecBuilder;
+import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
@@ -42,6 +43,10 @@ public class JPackageHandler implements PackHandler {
         if (jPackageConfig == null) {
             return;
         }
+        if (!jPackageConfig.isEnable()) {
+            JulLog.warn("jpackage未启用，跳过jpackage");
+            return;
+        }
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
@@ -57,6 +62,11 @@ public class JPackageHandler implements PackHandler {
         if (jPackageConfig.getMainJar() == null) {
             jPackageConfig.setMainJar(packConfig.mainJarName());
         }
+        // 覆盖dest设置
+        String dest = (String) packConfig.getProperty(PackCost.DEST);
+        if (StringUtil.isNotBlank(dest)) {
+            packConfig.setDest(dest);
+        }
         if (jPackageConfig.getDest() == null) {
             jPackageConfig.setDest(packConfig.getDest());
         }
@@ -68,7 +78,7 @@ public class JPackageHandler implements PackHandler {
             jPackageConfig.setName(packConfig.getAppName());
 //            jPackageConfig.setName(packConfig.getAppName() + "_v" + packConfig.appVersion());
         } else {
-            name = name.replace("${projectName}", packConfig.getAppName());
+            name = name.replace("${appName}", packConfig.getAppName());
             name = name.replace("${os.arch}", System.getProperty("os.arch"));
             jPackageConfig.setName(name);
         }
@@ -87,9 +97,20 @@ public class JPackageHandler implements PackHandler {
         JulLog.info("JPackage cmd:{}", "\n" + cmdStr);
         // 执行jpackage
         // RuntimeUtil.execAndWait(cmdStr);
-        ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
-        builder.timeout(30_000);
-        ProcessExecResult result = builder.exec();
+        //ProcessExecBuilder builder = ProcessExecBuilder.newBuilder(cmdStr);
+
+
+        //builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        //builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+
+
+        //builder.directory(jdkPath + "/bin");
+        //builder.timeout(60_000);
+        ProcessExecResult result = RuntimeUtil.execForResult(cmdStr);
         JulLog.info("JPackage result:{}", result);
+        if (!result.isSuccess()) {
+            JulLog.error("JPackage error:{}", result.getError());
+            throw new Exception("JPackage error:" + result.getError());
+        }
     }
 }
