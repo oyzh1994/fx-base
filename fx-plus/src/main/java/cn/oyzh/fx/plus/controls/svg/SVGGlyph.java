@@ -12,6 +12,8 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -50,10 +52,10 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      */
     private Paint color;
 
-    /**
-     * 是否激活态
-     */
-    protected Boolean active;
+    // /**
+    //  * 是否激活态
+    //  */
+    // protected Boolean active;
 
     /**
      * 激活时的颜色
@@ -87,7 +89,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * @return 结果
      */
     public boolean isActive() {
-        return this.active != null && this.active;
+        return this.activeProperty != null && this.activeProperty().get();
     }
 
     /**
@@ -413,8 +415,9 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * @param active 激活态
      */
     public void setActive(boolean active) {
-        this.active = active;
-        this.updateContent();
+        // this.active = active;
+        this.activeProperty().set(active);
+        // this.updateContent();
     }
 
     @Override
@@ -442,13 +445,13 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         return color;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    // public Boolean getActive() {
+    //     return active;
+    // }
+    //
+    // public void setActive(Boolean active) {
+    //     this.active = active;
+    // }
 
     public Color getActiveColor() {
         return activeColor;
@@ -489,4 +492,17 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 //    public void setWaitingAnimation(RotateTransition waitingAnimation) {
 //        this.waitingAnimation = waitingAnimation;
 //    }
+
+    private BooleanProperty activeProperty;
+
+    public BooleanProperty activeProperty() {
+        if (this.activeProperty == null) {
+            this.activeProperty = new SimpleBooleanProperty(false);
+            this.activeProperty.addListener((observable, oldValue, newValue) -> {
+                // this.setActive(newValue);
+                this.updateContent();
+            });
+        }
+        return activeProperty;
+    }
 }
