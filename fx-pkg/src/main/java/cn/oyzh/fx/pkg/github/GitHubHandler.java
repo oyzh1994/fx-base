@@ -2,9 +2,11 @@ package cn.oyzh.fx.pkg.github;
 
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
+import cn.oyzh.fx.pkg.comporess.CompressConfig;
 import cn.oyzh.fx.pkg.config.PackConfig;
 
 import java.io.File;
@@ -44,11 +46,10 @@ public class GitHubHandler implements PostHandler {
                 JulLog.warn("githubDist 目录不存在，创建目录");
                 FileUtil.mkdir(githubDist);
             }
-            List<File> files = FileUtil.getAllFiles(packConfig.getDest());
-            for (File file : files) {
-                if (!file.isFile()) {
-                    continue;
-                }
+            // 压缩包
+            CompressConfig compressConfig = packConfig.getCompressConfig();
+            if (compressConfig != null && StringUtil.isNotBlank(compressConfig.getType())) {
+                File file = packConfig.getCompressFile();
                 File file1 = new File(githubDist, file.getName());
                 boolean success = FileUtil.move(file, file1, true);
                 if (success) {
@@ -56,7 +57,22 @@ public class GitHubHandler implements PostHandler {
                 } else {
                     JulLog.warn("file:{} 移动到dist目录失败", file.getPath());
                 }
+            } else {// 正常构建
+                List<File> files = FileUtil.getAllFiles(packConfig.getDest());
+                for (File file : files) {
+                    if (!file.isFile()) {
+                        continue;
+                    }
+                    File file1 = new File(githubDist, file.getName());
+                    boolean success = FileUtil.move(file, file1, true);
+                    if (success) {
+                        JulLog.info("file:{} 移动到dist目录成功", file.getPath());
+                    } else {
+                        JulLog.warn("file:{} 移动到dist目录失败", file.getPath());
+                    }
+                }
             }
+
         } else {
             JulLog.warn("githubDist 未找到参数设置");
         }
