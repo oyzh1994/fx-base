@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg.pack;
 
-import cn.hutool.core.io.FileUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
@@ -30,8 +30,13 @@ public class EndHandler implements PostHandler {
     @Override
     public void handle(PackConfig packConfig) throws Exception {
         // 删除打包目录
-        if (packConfig.getCompressFile() != null) {
-            FileUtil.del(packConfig.getDest());
+        try {
+            if (packConfig.getCompressFile() != null) {
+                FileUtil.del(packConfig.getDest());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.error("delete dest error!", ex);
         }
         // 删除jlink的jre目录
         if (packConfig.getJlinkJre() != null) {
