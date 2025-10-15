@@ -215,9 +215,11 @@ public class PkgUtil {
         if (config.getVm() != null) {
             cmdList.add("--vm=" + config.getVm());
         }
-        if (config.getCompress() != null) {
-            cmdList.add("--compress=" + config.getCompress());
-        }
+
+        // 参数已过时
+        // if (config.getCompress() != null) {
+        //     cmdList.add("--compress=" + config.getCompress());
+        // }
         if (config.isNoHeaderFiles()) {
             cmdList.add("--no-header-files");
         }
