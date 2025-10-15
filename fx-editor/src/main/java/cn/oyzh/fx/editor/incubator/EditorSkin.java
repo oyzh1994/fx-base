@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor.tm4javafx;
+package cn.oyzh.fx.editor.incubator;
 
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;

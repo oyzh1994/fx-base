@@ -1,10 +1,10 @@
-package cn.oyzh.fx.editor.test.tem4javafx;
+package cn.oyzh.fx.editor.test.incubator;
 
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
-import cn.oyzh.fx.editor.tm4javafx.Editor;
-import cn.oyzh.fx.editor.tm4javafx.EditorFormatTypeComboBox;
+import cn.oyzh.fx.editor.incubator.Editor;
+import cn.oyzh.fx.editor.incubator.EditorFormatTypeComboBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;

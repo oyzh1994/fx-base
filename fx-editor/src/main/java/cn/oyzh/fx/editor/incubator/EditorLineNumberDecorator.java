@@ -1,4 +1,4 @@
-package cn.oyzh.fx.editor.tm4javafx;
+package cn.oyzh.fx.editor.incubator;
 
 import jfx.incubator.scene.control.richtext.LineNumberDecorator;
 

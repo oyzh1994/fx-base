@@ -4,7 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.editor.tm4javafx.Editor;
+import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
