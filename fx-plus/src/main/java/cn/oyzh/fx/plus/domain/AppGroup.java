@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.domain;
 
 import cn.oyzh.common.object.ObjectCopier;
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.store.jdbc.Column;
 import cn.oyzh.store.jdbc.PrimaryKey;
 
@@ -20,6 +21,12 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
     @Column
     @PrimaryKey
     private String gid;
+
+    /**
+     * 父id
+     */
+    @Column
+    private String pid;
 
     /**
      * 分组名称
@@ -47,7 +54,7 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
      * @return 结果
      */
     public boolean isExpand() {
-        return Boolean.TRUE == this.expand;
+        return BooleanUtil.isTrue(expand);
     }
 
     public AppGroup() {
@@ -84,11 +91,15 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
         this.name = name;
     }
 
-    public Boolean getExpand() {
-        return expand;
+    public void setExpand(boolean expand) {
+        this.expand = expand;
     }
 
-    public void setExpand(Boolean expand) {
-        this.expand = expand;
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 }
