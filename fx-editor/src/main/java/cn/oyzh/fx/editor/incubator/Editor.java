@@ -1049,11 +1049,23 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     }
 
     /**
+     * 是否已格式化
+     */
+    private boolean formated;
+
+    /**
      * 格式化
      */
     public void formatting() {
         String text = this.getText();
-        String text1 = EditorFormatter.formatText(this.getFormatType(), text);
+        String text1;
+        if (this.formated) {
+            this.formated = false;
+            text1 = EditorFormatter.unformatText(this.getFormatType(), text);
+        } else {
+            this.formated = true;
+            text1 = EditorFormatter.formatText(this.getFormatType(), text);
+        }
         if (StringUtil.notEquals(text, text1)) {
             this.setText(text1);
         }
@@ -1274,6 +1286,5 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             return "";
         }
         return builder.substring(1);
-
     }
 }

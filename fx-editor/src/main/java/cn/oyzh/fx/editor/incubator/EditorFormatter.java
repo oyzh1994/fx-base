@@ -30,6 +30,20 @@ public class EditorFormatter {
     }
 
     /**
+     * 取消格式化
+     *
+     * @param formatType 类型
+     * @param text       文本
+     * @return 格式化后的文本
+     */
+    public String unformat(EditorFormatType formatType, String text) {
+        if (formatType == EditorFormatType.JSON) {
+            return JSONUtil.unPretty(text);
+        }
+        return text;
+    }
+
+    /**
      * 格式化文本
      *
      * @param formatType 类型
@@ -38,6 +52,17 @@ public class EditorFormatter {
      */
     public static String formatText(EditorFormatType formatType, String text) {
         return INSTANCE.format(formatType, text);
+    }
+
+    /**
+     * 取消格式化文本
+     *
+     * @param formatType 类型
+     * @param text       文本
+     * @return 格式化后的文本
+     */
+    public static String unformatText(EditorFormatType formatType, String text) {
+        return INSTANCE.unformat(formatType, text);
     }
 
 }
