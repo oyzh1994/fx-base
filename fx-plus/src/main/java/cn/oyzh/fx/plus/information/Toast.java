@@ -143,7 +143,7 @@ public class Toast {
         scene.setFill(Color.TRANSPARENT);
         this.window.setScene(scene);
         this.window.initOwner(owner);
-        // this.window.setAlwaysOnTop(true);
+         this.window.setAlwaysOnTop(true);
         this.window.initModality(Modality.NONE);
         // } else {// Popup
         //     Popup popup = new FXPopup();
