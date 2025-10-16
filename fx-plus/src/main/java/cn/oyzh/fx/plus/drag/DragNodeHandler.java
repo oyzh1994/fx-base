@@ -14,6 +14,8 @@ import javafx.scene.input.TransferMode;
  * @author oyzh
  * @since 2023/5/14
  */
+// TODO: 有严重bug，标记为过时
+@Deprecated
 public class DragNodeHandler {
 
     /**

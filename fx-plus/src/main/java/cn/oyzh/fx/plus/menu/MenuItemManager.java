@@ -28,28 +28,43 @@ public class MenuItemManager {
      */
     private static final SeparatorMenuItemPool SEPARATOR_MENU_ITEM_POOL = new SeparatorMenuItemPool();
 
-    /**
-     * 获取菜单
-     *
-     * @return 菜单
-     */
-    public static Menu getMenu(String text) {
-        return getMenu(text, null);
-    }
+    // /**
+    //  * 获取菜单
+    //  *
+    //  * @return 菜单
+    //  */
+    // public static Menu getMenu(String text) {
+    //     return getMenu(text, null);
+    // }
+
+    // /**
+    //  * 获取菜单
+    //  *
+    //  * @param text    文字
+    //  * @param graphic 图标
+    //  * @return 菜单
+    //  */
+    // public static Menu getMenu(String text, Node graphic) {
+    //     // Menu menu = MENU_POOL.borrowObject();
+    //     // menu.setText(text);
+    //     // if (graphic != null) {
+    //     //     menu.setGraphic(graphic);
+    //     // }
+    //     // return menu;
+    //     // return new FXMenu(graphic, text,null);
+    //     return getMenu(text, graphic, null);
+    // }
 
     /**
      * 获取菜单
      *
+     * @param text    文字
+     * @param graphic 图标
+     * @param action  操作
      * @return 菜单
      */
-    public static Menu getMenu(String text, Node graphic) {
-        // Menu menu = MENU_POOL.borrowObject();
-        // menu.setText(text);
-        // if (graphic != null) {
-        //     menu.setGraphic(graphic);
-        // }
-        // return menu;
-        return new FXMenu(graphic, text);
+    public static Menu getMenu(String text, Node graphic, Runnable action) {
+        return new FXMenu(graphic, text, action);
     }
 
     /**
@@ -154,8 +169,8 @@ public class MenuItemManager {
     public static void returnMenuItem(MenuItem menuItem) {
         if (menuItem instanceof SeparatorMenuItem item) {
             SEPARATOR_MENU_ITEM_POOL.returnObject(item);
-        // } else if (menuItem instanceof Menu menu) {
-        //     MENU_POOL.returnObject(menu);
+            // } else if (menuItem instanceof Menu menu) {
+            //     MENU_POOL.returnObject(menu);
         } else if (menuItem instanceof FXMenuItem) {
             MENU_ITEM_POOL.returnObject(menuItem);
         }

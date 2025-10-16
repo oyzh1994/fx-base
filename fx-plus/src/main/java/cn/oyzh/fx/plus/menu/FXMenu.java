@@ -33,12 +33,15 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter {
         super();
     }
 
-    public FXMenu(Node graphic, String text) {
+    public FXMenu(Node graphic, String text, Runnable action) {
         if (text != null) {
             super.setText(text);
         }
         if (graphic != null) {
             super.setGraphic(graphic);
+        }
+        if (action != null) {
+            super.setOnAction(event -> action.run());
         }
     }
 
