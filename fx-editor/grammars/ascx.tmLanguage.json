@@ -1,0 +1,280 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "ASP.NET User Control",
+	"scopeName": "text.html.ascx",
+	"fileTypes": ["ascx"],
+	"uuid": "a1b2c3d4-5678-90ef-ghij-klmnopqrstuv",
+	"patterns": [
+		{ "include": "#directives" },
+		{ "include": "#server-controls" },
+		{ "include": "#asp-code-blocks" },
+		{ "include": "text.html.basic" },
+		{ "include": "#server-script-blocks" },
+		{ "include": "#comments" }
+	],
+	"repository": {
+		"directives": {
+			"patterns": [
+				{
+					"name": "meta.directive.control.ascx",
+					"match": "<%@\\s+Control\\s+([^%>]+)\\s*%>",
+					"captures": {
+						"1": {
+							"patterns": [
+								{
+									"name": "entity.other.attribute-name.directive.ascx",
+									"match": "\\b(ClassName|CodeBehind|CodeFile|Inherits|Src|Language)\\s*="
+								},
+								{
+									"name": "string.quoted.double.ascx",
+									"begin": "\"",
+									"end": "\"",
+									"patterns": [
+										{ "include": "#string-escapes" }
+									]
+								},
+								{
+									"name": "string.quoted.single.ascx",
+									"begin": "'",
+									"end": "'",
+									"patterns": [
+										{ "include": "#string-escapes" }
+									]
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "meta.directive.register.ascx",
+					"match": "<%@\\s+Register\\s+([^%>]+)\\s*%>",
+					"captures": {
+						"1": {
+							"patterns": [
+								{
+									"name": "entity.other.attribute-name.directive.ascx",
+									"match": "\\b(TagPrefix|TagName|Src|Namespace|Assembly)\\s*="
+								},
+								{ "include": "#strings" }
+							]
+						}
+					}
+				}
+			]
+		},
+
+		"server-controls": {
+			"patterns": [
+				{
+					"name": "meta.tag.server-control.asp.ascx",
+					"begin": "<(asp:)([A-Z][A-Za-z0-9]+)\\b",
+					"beginCaptures": {
+						"1": { "name": "keyword.namespace.asp.ascx" },
+						"2": { "name": "tag.name.server-control.asp.ascx" }
+					},
+					"end": "/?>",
+					"patterns": [
+						{ "include": "#server-control-attributes" }
+					]
+				},
+				{
+					"name": "meta.tag.server-control.custom.ascx",
+					"begin": "<([A-Za-z0-9]+):([A-Z][A-Za-z0-9]+)\\b",
+					"beginCaptures": {
+						"1": { "name": "keyword.namespace.custom.ascx" },
+						"2": { "name": "tag.name.server-control.custom.ascx" }
+					},
+					"end": "/?>",
+					"patterns": [
+						{ "include": "#server-control-attributes" }
+					]
+				},
+				{
+					"name": "meta.tag.server-control.html.ascx",
+					"begin": "<([a-z]+)\\s+runat\\s*=\\s*[\"']server[\"']",
+					"beginCaptures": {
+						"1": { "name": "tag.name.server-control.html.ascx" }
+					},
+					"end": "/?>",
+					"patterns": [
+						{ "include": "#server-control-attributes" }
+					]
+				}
+			]
+		},
+
+		"server-control-attributes": {
+			"patterns": [
+				{
+					"name": "entity.other.attribute-name.server-control.ascx",
+					"match": "\\b(ID|runat|Visible|Enabled|CssClass|Text|NavigateUrl|OnClick|OnCommand)\\s*="
+				},
+				{
+					"name": "entity.other.attribute-name.data-binding.ascx",
+					"match": "\\b(DataBind|DataSource|DataSourceID|DataMember|DataTextField|DataValueField)\\s*="
+				},
+				{
+					"name": "string.quoted.double.ascx",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{ "include": "#string-escapes" },
+						{ "include": "#data-binding-expressions" }
+					]
+				},
+				{
+					"name": "string.quoted.single.ascx",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{ "include": "#string-escapes" },
+						{ "include": "#data-binding-expressions" }
+					]
+				}
+			]
+		},
+
+		"asp-code-blocks": {
+			"patterns": [
+				{
+					"name": "meta.code.expression.ascx",
+					"begin": "<%=\\s*",
+					"beginCaptures": {
+						"0": { "name": "punctuation.definition.code.begin.ascx" }
+					},
+					"end": "\\s*%>",
+					"endCaptures": {
+						"0": { "name": "punctuation.definition.code.end.ascx" }
+					},
+					"patterns": [
+						{ "include": "source.cs" }
+					]
+				},
+				{
+					"name": "meta.code.data-binding.ascx",
+					"begin": "<%#\\s*",
+					"beginCaptures": {
+						"0": { "name": "punctuation.definition.data-binding.begin.ascx" }
+					},
+					"end": "\\s*%>",
+					"endCaptures": {
+						"0": { "name": "punctuation.definition.data-binding.end.ascx" }
+					},
+					"patterns": [
+						{ "include": "source.cs" }
+					]
+				},
+				{
+					"name": "meta.code.block.ascx",
+					"begin": "<%(!|--)?\\s*",
+					"beginCaptures": {
+						"0": { "name": "punctuation.definition.code.begin.ascx" }
+					},
+					"end": "\\s*%>",
+					"endCaptures": {
+						"0": { "name": "punctuation.definition.code.end.ascx" }
+					},
+					"patterns": [
+						{ "include": "source.cs" }
+					]
+				}
+			]
+		},
+
+		"server-script-blocks": {
+			"patterns": [
+				{
+					"name": "meta.script.server.ascx",
+					"begin": "<script\\s+runat\\s*=\\s*[\"']server[\"']",
+					"beginCaptures": {
+						"0": { "name": "tag.script.server.ascx" }
+					},
+					"end": "</script>",
+					"endCaptures": {
+						"0": { "name": "tag.script.server.ascx" }
+					},
+					"patterns": [
+						{
+							"match": "\\slanguage\\s*=\\s*[\"'](C#|VB)['\"]",
+							"captures": {
+								"1": { "name": "string.quoted.ascx" }
+							}
+						},
+						{
+							"begin": "(?<=>)",
+							"end": "(?=</script>)",
+							"patterns": [
+								{ "include": "source.cs" }
+							]
+						}
+					]
+				}
+			]
+		},
+
+		"data-binding-expressions": {
+			"patterns": [
+				{
+					"name": "meta.data-binding.expression.ascx",
+					"match": "\\{\\s*([A-Za-z0-9_]+)\\s*:\\s*([^}]+)\\s*\\}",
+					"captures": {
+						"1": { "name": "keyword.data-binding.ascx" },
+						"2": {
+							"patterns": [
+								{ "include": "source.cs" }
+							]
+						}
+					}
+				}
+			]
+		},
+
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.html.ascx",
+					"match": "<!--[\\s\\S]*?-->"
+				},
+				{
+					"name": "comment.line.double-slash.asp.ascx",
+					"match": "(?<=<%|//)\\s*//.*?(?=%>)"
+				},
+				{
+					"name": "comment.block.asp.ascx",
+					"begin": "(?<=<%|/\\*)\\s*/\\*",
+					"end": "\\*/\\s*(?=%>)"
+				}
+			]
+		},
+
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.ascx",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{ "include": "#string-escapes" }
+					]
+				},
+				{
+					"name": "string.quoted.single.ascx",
+					"begin": "'",
+					"end": "'",
+					"patterns": [
+						{ "include": "#string-escapes" }
+					]
+				}
+			]
+		},
+
+		"string-escapes": {
+			"patterns": [
+				{
+					"name": "constant.character.escape.ascx",
+					"match": "\\\\([\"'\\\\rn])"
+				}
+			]
+		}
+	}
+}

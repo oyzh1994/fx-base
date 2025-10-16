@@ -1,0 +1,179 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Protocol Buffers",
+	"scopeName": "source.proto",
+	"fileTypes": ["proto"],
+	"uuid": "b2d9f3a0-8c6e-4e2a-8b7d-3e8c7d6f2e1a",
+	"patterns": [
+		{
+			"name": "comment.line.double-slash.proto",
+			"match": "//.*$"
+		},
+		{
+			"name": "comment.block.proto",
+			"begin": "/\\*",
+			"end": "\\*/",
+			"patterns": [
+				{
+					"name": "comment.block.nested.proto",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},
+		{
+			"name": "meta.syntax.proto",
+			"match": "^\\s*syntax\\s*=\\s*\"(proto2|proto3)\"\\s*;\\s*$",
+			"captures": {
+				"1": {
+					"name": "string.quoted.double.proto"
+				}
+			}
+		},
+		{
+			"name": "meta.import.proto",
+			"match": "^\\s*import\\s+(public|weak)?\\s*\"([^\"]+)\"\\s*;\\s*$",
+			"captures": {
+				"1": {
+					"name": "keyword.import.modifier.proto"
+				},
+				"2": {
+					"name": "string.quoted.double.proto"
+				}
+			}
+		},
+		{
+			"name": "meta.package.proto",
+			"match": "^\\s*package\\s+([a-zA-Z0-9_.]+)\\s*;\\s*$",
+			"captures": {
+				"1": {
+					"name": "entity.name.package.proto"
+				}
+			}
+		},
+		{
+			"name": "meta.option.proto",
+			"match": "^\\s*option\\s+([a-zA-Z0-9_.]+)\\s*=\\s*([^;]+);\\s*$",
+			"captures": {
+				"1": {
+					"name": "variable.option.proto"
+				},
+				"2": {
+					"name": "string.unquoted.proto"
+				}
+			}
+		},
+		{
+			"name": "keyword.proto",
+			"match": "\\b(syntax|import|public|weak|package|option|message|enum|service|rpc|returns|extend|extensions|required|optional|repeated|oneof|map|reserved)\\b"
+		},
+		{
+			"name": "storage.type.proto",
+			"match": "\\b(double|float|int32|int64|uint32|uint64|sint32|sint64|fixed32|fixed64|sfixed32|sfixed64|bool|string|bytes)\\b"
+		},
+		{
+			"begin": "\\bmessage\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\{",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.type.message.proto"
+				}
+			},
+			"end": "\\}",
+			"name": "meta.message.proto",
+			"patterns": [
+				{
+					"include": "$self"
+				}
+			]
+		},
+		{
+			"begin": "\\benum\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\{",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.type.enum.proto"
+				}
+			},
+			"end": "\\}",
+			"name": "meta.enum.proto",
+			"patterns": [
+				{
+					"include": "$self"
+				}
+			]
+		},
+		{
+			"begin": "\\bservice\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\{",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.type.service.proto"
+				}
+			},
+			"end": "\\}",
+			"name": "meta.service.proto",
+			"patterns": [
+				{
+					"include": "$self"
+				}
+			]
+		},
+		{
+			"begin": "\\brpc\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(([^)]*)\\)\\s*returns\\s*\\(([^)]*)\\)\\s*;",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.function.rpc.proto"
+				},
+				"2": {
+					"name": "type.argument.proto"
+				},
+				"3": {
+					"name": "type.return.proto"
+				}
+			},
+			"end": ";",
+			"name": "meta.rpc.proto"
+		},
+		{
+			"match": "\\s*([0-9]+)\\s*:\\s*([a-zA-Z0-9_.]+)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*=\\s*([^;]+);",
+			"captures": {
+				"1": {
+					"name": "constant.numeric.field-number.proto"
+				},
+				"2": {
+					"name": "storage.type.proto"
+				},
+				"3": {
+					"name": "entity.name.variable.field.proto"
+				},
+				"4": {
+					"name": "constant.assignment.proto"
+				}
+			}
+		},
+		{
+			"match": "\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*=\\s*([0-9]+)\\s*;",
+			"captures": {
+				"1": {
+					"name": "entity.name.constant.enum.proto"
+				},
+				"2": {
+					"name": "constant.numeric.enum-value.proto"
+				}
+			}
+		},
+		{
+			"name": "string.quoted.double.proto",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.proto",
+					"match": "\\\\."
+				}
+			]
+		},
+		{
+			"name": "constant.numeric.proto",
+			"match": "\\b(0x[0-9a-fA-F]+|\\d+)\\b"
+		}
+	]
+}

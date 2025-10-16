@@ -17,10 +17,12 @@ public class CompressResourceTest {
             String fileName = file.getName();
             String suffix = FileNameUtil.getSuffix(fileName);
             if (FileNameUtil.isJsonType(suffix)) {
+                File file1 = new File(file.getParentFile(), fileName+".gz.json");
                 String json = FileUtil.readUtf8String(file);
                 String compressJson = JSONUtil.toCompress(json);
+                //String compressJson = JsonFormatter.removeJsonFormatting(json);
                 //System.out.println(compressJson);
-                FileUtil.writeUtf8String(compressJson, file);
+                FileUtil.writeUtf8String(compressJson, file1);
             }
         });
 

@@ -1,0 +1,106 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "SAS",
+	"scopeName": "source.sas",
+	"fileTypes": ["sas", "sas7bdat"],
+	"uuid": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+	"patterns": [
+		{
+			"name": "comment.line.star.sas",
+			"match": "^\\*.*$"
+		},
+		{
+			"name": "comment.line.slash.sas",
+			"match": "//.*$"
+		},
+		{
+			"name": "comment.block.sas",
+			"begin": "/\\*",
+			"end": "\\*/"
+		},
+		{
+			"name": "keyword.proc.sas",
+			"match": "\\b(proc)\\s+([a-zA-Z]+)",
+			"captures": {
+				"1": {
+					"name": "keyword.proc.sas"
+				},
+				"2": {
+					"name": "entity.name.proc.sas"
+				}
+			}
+		},
+		{
+			"name": "keyword.data.sas",
+			"match": "\\bdata\\b"
+		},
+		{
+			"name": "keyword.run.sas",
+			"match": "\\brun\\b|\\bquit\\b"
+		},
+		{
+			"name": "keyword.statement.sas",
+			"match": "\\b(input|output|set|merge|by|if|then|else|do|end|where|format|informat|length|label|keep|drop|rename|retain|array|call|function|return|stop|abort|include|libname|filename|title|footnote|options|ods)\\b"
+		},
+		{
+			"name": "support.function.sas",
+			"match": "\\b(sum|mean|median|min|max|count|n|nmiss|abs|sqrt|log|exp|sin|cos|tan|int|round|ceil|floor|substr|index|scan|cat|cats|catx|strip|trim|left|right|upcase|lowcase|propcase|input|put|date|today|year|month|day|hour|minute|second|compress|tranwrd)\\b"
+		},
+		{
+			"name": "string.quoted.double.sas",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.sas",
+					"match": "\\\\."
+				}
+			]
+		},
+		{
+			"name": "string.quoted.single.sas",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.sas",
+					"match": "\\\\."
+				}
+			]
+		},
+		{
+			"name": "constant.numeric.sas",
+			"match": "\\b(\\d+\\.?\\d*|\\.\\d+)(e[+-]?\\d+)?\\b"
+		},
+		{
+			"name": "constant.date.sas",
+			"match": "\\b\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}\\b"
+		},
+		{
+			"name": "variable.name.sas",
+			"match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+		},
+		{
+			"name": "keyword.operator.sas",
+			"match": "(=|==|!=|<|>|<=|>=|&&|\\|\\||!|\\+|\\-|\\*|/|%|\\+\\+|\\-\\-|&|\\|\\^)"
+		},
+		{
+			"name": "meta.macro.sas",
+			"begin": "%[a-zA-Z_]",
+			"end": "(;|\\s)",
+			"patterns": [
+				{
+					"name": "keyword.macro.sas",
+					"match": "%[a-zA-Z_]+"
+				},
+				{
+					"include": "$self"
+				}
+			]
+		},
+		{
+			"name": "meta.format.sas",
+			"match": "\\b[a-zA-Z0-9_]+\\.\\s*(\\$)?[a-zA-Z0-9_]+\\b"
+		}
+	]
+}

@@ -38,7 +38,7 @@ public class EditorFormatter {
      */
     public String unformat(EditorFormatType formatType, String text) {
         if (formatType == EditorFormatType.JSON) {
-            return JSONUtil.unPretty(text);
+            return JSONUtil.toCompress(text);
         }
         return text;
     }
