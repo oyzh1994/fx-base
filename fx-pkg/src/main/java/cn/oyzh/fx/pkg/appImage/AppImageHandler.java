@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class AppImageHandler implements PostHandler {
 
-    private int order = PackOrder.ORDER_M7;
+    private int order = PackOrder.ORDER_M6;
 
     @Override
     public int order() {
