@@ -51,6 +51,7 @@ public class PackConfigHandler implements PreHandler {
         if (projectPath != null) {
             packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${projectPath}", projectPath));
             packConfig.setAppIcon(StringUtil.replace(packConfig.getAppIcon(), "${projectPath}", projectPath));
+            packConfig.setAppImageRuntime(StringUtil.replace(packConfig.getAppImageRuntime(), "${projectPath}", projectPath));
         }
     }
 }

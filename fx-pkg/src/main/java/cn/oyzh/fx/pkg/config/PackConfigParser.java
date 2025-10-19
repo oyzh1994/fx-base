@@ -33,13 +33,13 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         config.setDest(object.getString("dest"));
         config.setAppName(object.getString("appName"));
         config.setAppIcon(object.getString("appIcon"));
-        config.setAppVersion(object.getString("appVersion"));
         config.setMainJar(object.getString("mainJar"));
         config.setJdkPath(object.getString("jdkPath"));
         config.setJrePath(object.getString("jrePath"));
         config.setPlatform(object.getString("platform"));
         config.setPackMode(object.getString("packMode"));
         config.setBuildType(object.getString("buildType"));
+        config.setAppVersion(object.getString("appVersion"));
         config.setAppImageRuntime(object.getString("appImageRuntime"));
 
         if (object.containsKey("jre")) {
