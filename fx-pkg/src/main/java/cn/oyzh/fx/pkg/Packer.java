@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.pkg.appImage.AppImageHandler;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
 import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
 import cn.oyzh.fx.pkg.config.AppConfigHandler;
@@ -100,6 +101,10 @@ public class Packer {
 
     public void registerGitHubHandler() {
         this.registerHandler(new GitHubHandler());
+    }
+
+    public void registerAppImageHandler() {
+        this.registerHandler(new AppImageHandler());
     }
 
     public void registerJLinkHandler() {
