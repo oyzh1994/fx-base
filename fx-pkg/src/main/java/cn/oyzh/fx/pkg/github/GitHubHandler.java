@@ -2,11 +2,9 @@ package cn.oyzh.fx.pkg.github;
 
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
-import cn.oyzh.fx.pkg.comporess.CompressConfig;
 import cn.oyzh.fx.pkg.config.PackConfig;
 
 import java.io.File;
@@ -47,15 +45,14 @@ public class GitHubHandler implements PostHandler {
                 FileUtil.mkdir(githubDist);
             }
             // 压缩包
-            CompressConfig compressConfig = packConfig.getCompressConfig();
-            if (compressConfig != null && StringUtil.isNotBlank(compressConfig.getType())) {
-                File file = packConfig.getCompressFile();
-                File file1 = new File(githubDist, file.getName());
-                boolean success = FileUtil.move(file, file1, true);
+            File compressFile = packConfig.getCompressFile();
+            if (compressFile != null && compressFile.exists()) {
+                File file1 = new File(githubDist, compressFile.getName());
+                boolean success = FileUtil.move(compressFile, file1, true);
                 if (success) {
-                    JulLog.info("file:{} 移动到dist目录成功", file.getPath());
+                    JulLog.info("file:{} 移动到dist目录成功", compressFile.getPath());
                 } else {
-                    JulLog.warn("file:{} 移动到dist目录失败", file.getPath());
+                    JulLog.warn("file:{} 移动到dist目录失败", compressFile.getPath());
                 }
             } else {// 正常构建
                 List<File> files = FileUtil.getAllFiles(packConfig.getDest());
