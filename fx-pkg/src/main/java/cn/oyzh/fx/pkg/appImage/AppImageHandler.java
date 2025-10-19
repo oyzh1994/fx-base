@@ -3,8 +3,11 @@ package cn.oyzh.fx.pkg.appImage;
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.thread.ProcessExecResult;
+import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
@@ -43,14 +46,21 @@ public class AppImageHandler implements PostHandler {
         this.copyAppIcon(packConfig);
         this.initDesktop(packConfig);
         this.initAppRun(packConfig);
-        String[] arr = new String[]{
-                "appimagtool",
-                packConfig.getDest(),
-                packConfig.getAppName() + ".AppImage",
-                "--runtime-file",
-                "runtime-x86_64"
-        };
-        ProcessExecResult result = RuntimeUtil.execForResult(arr);
+        String pDir = new File(packConfig.getDest()).getParent();
+        List<String> cmdList = new ArrayList<>();
+        cmdList.add("appimagtool");
+        cmdList.add(packConfig.getDest());
+        cmdList.add(pDir + "/" + packConfig.getAppName() + ".AppImage");
+        if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
+            cmdList.add("--runtime-file");
+            if (OSUtil.isAarch64()) {
+                cmdList.add(FileNameUtil.concat(packConfig.getAppImageRuntime(), "runtime-aarch64"));
+            } else if (OSUtil.isX64()) {
+                cmdList.add(FileNameUtil.concat(packConfig.getAppImageRuntime(), "runtime-x86_64"));
+            }
+        }
+        String[] cmdArr = ArrayUtil.toArray(cmdList, String.class);
+        ProcessExecResult result = RuntimeUtil.execForResult(cmdArr);
         JulLog.info("AppImage result:{}", result);
         if (!result.isSuccess()) {
             JulLog.error("AppImage error:{}", result.getError());
@@ -58,6 +68,12 @@ public class AppImageHandler implements PostHandler {
         }
     }
 
+    /**
+     * 复制app图标
+     *
+     * @param packConfig 打包配置
+     * @throws Exception 异常
+     */
     private void copyAppIcon(PackConfig packConfig) throws Exception {
         File icon = new File(packConfig.getAppIcon());
         String extName = FileNameUtil.extName(packConfig.getAppIcon());
@@ -65,6 +81,11 @@ public class AppImageHandler implements PostHandler {
         FileUtil.copy(icon, iconNew);
     }
 
+    /**
+     * 初始化Desktop文件
+     *
+     * @param packConfig 打包配置
+     */
     private void initDesktop(PackConfig packConfig) {
         File desktop = new File(packConfig.getDest(), packConfig.getAppName() + ".desktop");
         List<String> lines = new ArrayList<>();
@@ -78,15 +99,22 @@ public class AppImageHandler implements PostHandler {
         FileUtil.writeUtf8Lines(lines, desktop);
     }
 
+    /**
+     * 初始化AppRun脚本
+     *
+     * @param packConfig 打包配置
+     */
     private void initAppRun(PackConfig packConfig) {
-        File desktop = new File(packConfig.getDest(), "AppRun");
+        File dir = new File(packConfig.getDest());
+        File file = new File(packConfig.getDest(), "AppRun");
         List<String> lines = new ArrayList<>();
         lines.add("#!/bin/bash");
         lines.add("APPDIR=$(dirname \"$0\")");
-        lines.add("Type=Application");
         lines.add("export LinuxAppImage=true");
-        lines.add("exec \"$APPDIR/bin/" + packConfig.getAppName() + "\" \"$@\"");
-        FileUtil.writeUtf8Lines(lines, desktop);
+        lines.add("exec \"$APPDIR/" + packConfig.getAppName() + "/bin/" + packConfig.getAppName() + "\" \"$@\"");
+        FileUtil.writeUtf8Lines(lines, file);
+        // 设置权限
+        RuntimeUtil.exec("chmod +x AppRun", null, dir);
     }
 
 }

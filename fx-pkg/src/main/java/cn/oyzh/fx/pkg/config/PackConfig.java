@@ -94,6 +94,11 @@ public class PackConfig {
     private String jrePath;
 
     /**
+     * appImageRuntime目录
+     */
+    private String appImageRuntime;
+
+    /**
      * 执行用的jdk路径
      */
     private String jdkPath;
@@ -406,5 +411,13 @@ public class PackConfig {
 
     public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    public String getAppImageRuntime() {
+        return appImageRuntime;
+    }
+
+    public void setAppImageRuntime(String appImageRuntime) {
+        this.appImageRuntime = appImageRuntime;
     }
 }

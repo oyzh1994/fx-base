@@ -40,6 +40,7 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         config.setPlatform(object.getString("platform"));
         config.setPackMode(object.getString("packMode"));
         config.setBuildType(object.getString("buildType"));
+        config.setAppImageRuntime(object.getString("appImageRuntime"));
 
         if (object.containsKey("jre")) {
             JreConfig jreConfig = JreConfigParser.parseConfig(object.getJSONObject("jre"));
