@@ -214,7 +214,7 @@ public class Packer {
             this.registerJPackageHandler();
         }
         // AppImage
-        if (StringUtil.isBlank(packConfig.getAppImageRuntime())) {
+        if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
             this.registerAppImageHandler();
         }
         for (PreHandler preHandler : this.preHandlers()) {

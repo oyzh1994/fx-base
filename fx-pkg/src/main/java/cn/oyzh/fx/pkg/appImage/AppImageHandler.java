@@ -48,7 +48,7 @@ public class AppImageHandler implements PostHandler {
         this.initAppRun(packConfig);
         String pDir = new File(packConfig.getDest()).getParent();
         List<String> cmdList = new ArrayList<>();
-        cmdList.add("appimagtool");
+        cmdList.add("appimagetool");
         cmdList.add(packConfig.getDest());
         cmdList.add(pDir + "/" + packConfig.getAppName() + ".AppImage");
         if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
@@ -60,6 +60,8 @@ public class AppImageHandler implements PostHandler {
             }
         }
         String[] cmdArr = ArrayUtil.toArray(cmdList, String.class);
+        String cmdStr = StringUtil.join(" ", cmdArr);
+        JulLog.info("AppImage cmd:{}", "\n" + cmdStr);
         ProcessExecResult result = RuntimeUtil.execForResult(cmdArr);
         JulLog.info("AppImage result:{}", result);
         if (!result.isSuccess()) {
