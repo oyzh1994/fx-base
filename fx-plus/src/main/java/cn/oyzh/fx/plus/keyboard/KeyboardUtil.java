@@ -76,6 +76,7 @@ public class KeyboardUtil {
     /**
      * 重启快捷键
      */
+    @Deprecated
     public final static KeyCombination restart_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.SHIFT_DOWN);
 
     /**
@@ -96,11 +97,13 @@ public class KeyboardUtil {
     /**
      * 信息快捷键
      */
+    @Deprecated
     public final static KeyCombination info_keyCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.SHIFT_DOWN);
 
     /**
      * 编辑快捷键
      */
+    @Deprecated
     public static final KeyCombination edit_keyCombination = new KeyCodeCombination(KeyCode.E, KeyCombination.SHIFT_DOWN);
 
     /**
@@ -111,6 +114,7 @@ public class KeyboardUtil {
     /**
      * 隐藏快捷键
      */
+    @Deprecated
     public final static KeyCombination hide_keyCombination = new KeyCodeCombination(KeyCode.H, KeyCombination.SHIFT_DOWN);
 
     static {
