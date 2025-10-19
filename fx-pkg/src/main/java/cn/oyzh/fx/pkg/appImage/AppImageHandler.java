@@ -43,11 +43,12 @@ public class AppImageHandler implements PostHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
+        this.installAppImageTool(packConfig);
         this.copyAppIcon(packConfig);
         this.initDesktop(packConfig);
         this.initAppRun(packConfig);
         String pDir = new File(packConfig.getDest()).getParent();
-        String file=pDir + "/" + packConfig.getAppName() + ".AppImage";
+        String file = pDir + "/" + packConfig.getAppName() + ".AppImage";
         List<String> cmdList = new ArrayList<>();
         cmdList.add("appimagetool");
         cmdList.add(packConfig.getDest());
@@ -71,6 +72,29 @@ public class AppImageHandler implements PostHandler {
         }
         // 设置为压缩包
         packConfig.setCompressFile(new File(file));
+    }
+
+    /**
+     * 安装AppImage工具
+     *
+     * @param packConfig 配置
+     * @throws Exception 异常
+     */
+    private void installAppImageTool(PackConfig packConfig) throws Exception {
+        String output = RuntimeUtil.execForStr("which appimagetool");
+        if (StringUtil.isBlank(output)) {
+            File source = null;
+            File target = new File("/usr/local/bin/appimagetool");
+            if (OSUtil.isAarch64()) {
+                source = new File(packConfig.getAppImageRuntime(), "appimagetool-aarch64.AppImage");
+            } else if (OSUtil.isX64()) {
+                source = new File(packConfig.getAppImageRuntime(), "appimagetool-x86_64.AppImage");
+            }
+            if (source != null) {
+                FileUtil.copy(source, target);
+                RuntimeUtil.exec("chmod +x appimagetool", null, new File("/usr/local/bin/"));
+            }
+        }
     }
 
     /**
