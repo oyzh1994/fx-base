@@ -47,10 +47,11 @@ public class AppImageHandler implements PostHandler {
         this.initDesktop(packConfig);
         this.initAppRun(packConfig);
         String pDir = new File(packConfig.getDest()).getParent();
+        String file=pDir + "/" + packConfig.getAppName() + ".AppImage";
         List<String> cmdList = new ArrayList<>();
         cmdList.add("appimagetool");
         cmdList.add(packConfig.getDest());
-        cmdList.add(pDir + "/" + packConfig.getAppName() + ".AppImage");
+        cmdList.add(file);
         if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
             cmdList.add("--runtime-file");
             if (OSUtil.isAarch64()) {
@@ -68,6 +69,8 @@ public class AppImageHandler implements PostHandler {
             JulLog.error("AppImage error:{}", result.getError());
             throw new Exception("AppImage error:" + result.getError());
         }
+        // 设置为压缩包
+        packConfig.setCompressFile(new File(file));
     }
 
     /**

@@ -85,6 +85,10 @@ public class PackConfig {
 
     /**
      * 最终压缩文件
+     * 可能是以下类型
+     * zip
+     * tar.gz
+     * AppImage
      */
     private File compressFile;
 
@@ -193,7 +197,7 @@ public class PackConfig {
 
     public String mainAppVersion() {
         String appVersion = this.appVersion();
-        if (StringUtil.checkCountOccurrences(appVersion, '.',3) ) {
+        if (StringUtil.checkCountOccurrences(appVersion, '.', 3)) {
             return appVersion.substring(0, appVersion.lastIndexOf("."));
         }
         return appVersion;
