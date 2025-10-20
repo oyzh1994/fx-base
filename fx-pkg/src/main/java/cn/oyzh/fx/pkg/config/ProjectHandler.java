@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg.config;
 
-import cn.hutool.core.io.resource.ResourceUtil;
+import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 
