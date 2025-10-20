@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * github处理器
+ * AppImage处理器
  *
  * @author oyzh
- * @since 2025/09/22
+ * @since 2025/10/20
  */
 public class AppImageHandler implements PostHandler {
 
