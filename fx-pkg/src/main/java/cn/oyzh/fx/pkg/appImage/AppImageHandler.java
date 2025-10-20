@@ -43,7 +43,6 @@ public class AppImageHandler implements PostHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        this.installAppImageTool(packConfig);
         this.copyAppIcon(packConfig);
         this.initDesktop(packConfig);
         this.initAppRun(packConfig);
@@ -54,6 +53,7 @@ public class AppImageHandler implements PostHandler {
         cmdList.add(packConfig.getDest());
         cmdList.add(file);
         if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
+            this.installAppImageTool(packConfig);
             cmdList.add("--runtime-file");
             if (OSUtil.isAarch64()) {
                 cmdList.add(FileNameUtil.concat(packConfig.getAppImageRuntime(), "runtime-aarch64"));
@@ -82,7 +82,7 @@ public class AppImageHandler implements PostHandler {
      */
     private void installAppImageTool(PackConfig packConfig) throws Exception {
         String output = RuntimeUtil.execForStr("which appimagetool");
-        if (StringUtil.isBlank(output)) {
+        if (StringUtil.isBlank(output) || StringUtil.contains(output, "no appimagetool in")) {
             File source = null;
             File target = new File("/usr/local/bin/appimagetool");
             if (OSUtil.isAarch64()) {
