@@ -7,10 +7,10 @@ package cn.oyzh.fx.pkg;
  */
 public class PackCost {
 
-    public static final String DEST="dest";
+    public static final String DEST = "dest";
 
-    public static final String GITHUB_DIST="githubDist";
+    public static final String GITHUB_DIST = "githubDist";
 
-    public static final String PROJECT_PATH="projectPath";
+    public static final String PROJECT_PATH = "projectPath";
 
 }

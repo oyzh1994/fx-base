@@ -48,7 +48,7 @@ public class GitHubHandler implements PostHandler {
             File compressFile = packConfig.getCompressFile();
             if (compressFile != null && compressFile.exists()) {
                 File file1 = new File(githubDist, compressFile.getName());
-                boolean success = FileUtil.move(compressFile, file1, true);
+                boolean success = FileUtil.renameFile(compressFile, file1, true);
                 if (success) {
                     JulLog.info("file:{} 移动到dist目录成功", compressFile.getPath());
                 } else {
@@ -61,7 +61,7 @@ public class GitHubHandler implements PostHandler {
                         continue;
                     }
                     File file1 = new File(githubDist, file.getName());
-                    boolean success = FileUtil.move(file, file1, true);
+                    boolean success = FileUtil.renameFile(file, file1, true);
                     if (success) {
                         JulLog.info("file:{} 移动到dist目录成功", file.getPath());
                     } else {
