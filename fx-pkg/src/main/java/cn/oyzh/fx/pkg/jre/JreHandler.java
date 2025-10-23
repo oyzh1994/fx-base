@@ -68,18 +68,18 @@ public class JreHandler implements PreHandler, SingleHandler {
         File dest = new File(FileUtil.getTmpDirPath(), "_minimize_jre_" + UUID.randomUUID().toString(true));
         FileUtil.copyContent(new File(src), dest, false);
         List<File> fileList = FileUtil.loopFiles(dest);
-        List<Runnable> tasks = new ArrayList<>();
+        // List<Runnable> tasks = new ArrayList<>();
         for (File file : fileList) {
             // 异步执行
-            tasks.add(() -> {
+            // tasks.add(() -> {
                 if (!filter.apply(file.getName())) {
                     FileUtil.del(file);
                     JulLog.info("文件:{}被过滤.", file.getName());
                 }
-            });
+            // });
         }
-        // 执行业务
-        ThreadUtil.submit(tasks);
+        // // 执行业务
+        // ThreadUtil.submit(tasks);
         // 设置最小化后的jre
         packConfig.setMinimizeJre(dest.getPath());
         this.executed = true;

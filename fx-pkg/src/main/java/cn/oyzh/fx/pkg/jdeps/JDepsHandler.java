@@ -95,9 +95,8 @@ public class JDepsHandler implements PreHandler {
         Set<String> deps = new HashSet<>();
         List<File> files = FileUtil.loopFiles(jarUnDir);
         cmdStr = new StringBuilder(PkgUtil.getJDepsCMD(jDepsConfig));
-
-        StringBuilder finalCmdStr = cmdStr;
-        List<Runnable> tasks = new ArrayList<>();
+        // StringBuilder finalCmdStr = cmdStr;
+        // List<Runnable> tasks = new ArrayList<>();
         for (File file : files) {
             try {
                 // 非jar，跳过
@@ -105,22 +104,22 @@ public class JDepsHandler implements PreHandler {
                     continue;
                 }
                 // 异步处理
-                tasks.add(() -> {
-                    JulLog.info("jdeps jar: {}.", file.getName());
-                    // 判断是否被过滤
-                    if (fileFilter.apply(file.getName())) {
-                        // 拼接到命令
-                        finalCmdStr.append(" ").append(file.getPath());
-                    }
-                });
+                // tasks.add(() -> {
+                JulLog.info("jdeps jar: {}.", file.getName());
+                // 判断是否被过滤
+                if (fileFilter.apply(file.getName())) {
+                    // 拼接到命令
+                    cmdStr.append(" ").append(file.getPath());
+                }
+                // });
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        // 执行业务
-        ThreadUtil.submit(tasks);
+        // // 执行业务
+        // ThreadUtil.submit(tasks);
         // 列举模块
-        cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, finalCmdStr.toString()));
+        cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, cmdStr.toString()));
         result = RuntimeUtil.execForStr(cmdStr.toString());
         // builder = ProcessExecBuilder.newBuilder(cmdStr.toString());
         // builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
