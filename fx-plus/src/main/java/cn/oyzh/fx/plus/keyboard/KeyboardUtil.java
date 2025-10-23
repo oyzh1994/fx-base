@@ -259,7 +259,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return event.isControlDown() && event.getCode() == KeyCode.SLASH;
+        return isMainModifierDown(event) && event.getCode() == KeyCode.SLASH;
     }
 
     /**

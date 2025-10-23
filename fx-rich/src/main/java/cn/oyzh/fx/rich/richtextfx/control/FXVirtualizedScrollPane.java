@@ -46,10 +46,10 @@ public class FXVirtualizedScrollPane<V extends Region & Virtualized> extends Vir
         super.resize(size[0], size[1]);
     }
 
-    @Override
-    protected void setVPosition(double pos) {
-        if (!this.isIgnoreVChanged()) {
-            super.setVPosition(pos);
-        }
-    }
+    // @Override
+    // protected void setVPosition(double pos) {
+    //     if (!this.isIgnoreVChanged()) {
+    //         super.setVPosition(pos);
+    //     }
+    // }
 }

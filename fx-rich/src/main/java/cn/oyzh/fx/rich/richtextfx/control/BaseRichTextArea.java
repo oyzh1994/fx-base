@@ -15,7 +15,6 @@ import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -27,7 +26,6 @@ import cn.oyzh.fx.rich.RichTextStyle;
 import cn.oyzh.fx.rich.richtextfx.RichLineNumberFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.css.Styleable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
@@ -64,7 +62,6 @@ import java.util.regex.Pattern;
  * @author oyzh
  * @since 2023/9/28
  */
-@Deprecated
 public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, AreaAdapter, I18nAdapter, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
@@ -373,7 +370,11 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
     }
 
     public void positionCaret(int caretPosition) {
-        FXUtil.runWait(() -> this.displaceCaret(caretPosition));
+        if (caretPosition > this.getLength()) {
+            caretPosition = this.getLength();
+        }
+        int finalCaretPosition = caretPosition;
+        FXUtil.runWait(() -> this.displaceCaret(finalCaretPosition));
     }
 
     /**
@@ -656,5 +657,9 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
         this.showParagraphAtTop(position.getMajor());
     }
 
-
+    @Override
+    public String getTextTrim() {
+        String text = this.getText();
+        return text == null ? null : text.trim();
+    }
 }

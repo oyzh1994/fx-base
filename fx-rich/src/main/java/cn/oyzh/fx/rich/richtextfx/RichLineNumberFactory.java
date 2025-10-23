@@ -13,7 +13,6 @@ import java.util.function.IntFunction;
  * @author oyzh
  * @since 2025-03-25
  */
-@Deprecated
 public class RichLineNumberFactory implements IntFunction<Node> {
 
     private final LineNumberFactory<Node> factory;

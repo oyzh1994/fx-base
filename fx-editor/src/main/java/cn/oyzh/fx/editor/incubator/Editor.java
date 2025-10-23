@@ -39,6 +39,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.DataFormat;
 import javafx.scene.layout.Border;
@@ -60,7 +61,10 @@ import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.TextFlowModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -1286,5 +1290,40 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             return "";
         }
         return builder.substring(1);
+    }
+
+    /**
+     * 获取选区range
+     *
+     * @return 选区range
+     */
+    public IndexRange getSelectionRange() {
+        SelectionSegment segment = this.getSelection();
+        if (segment == null) {
+            return null;
+        }
+        int start = getOffsetByPos(segment.getMin());
+        int end = getOffsetByPos(segment.getMax());
+        return new IndexRange(start, end);
+    }
+
+    /**
+     * 获取选区行
+     *
+     * @return 选区行列表，key: 行 value: 内容
+     */
+    public Map<Integer, String> getSelectionLines() {
+        SelectionSegment segment = this.getSelection();
+        if (segment == null) {
+            return Collections.emptyMap();
+        }
+        TextPos min = segment.getMin();
+        TextPos max = segment.getMax();
+        Map<Integer, String> lines = new HashMap<>();
+        for (int i = min.index(); i <= max.index(); i++) {
+            String text = this.getPlainText(i);
+            lines.put(i, text);
+        }
+        return lines;
     }
 }
