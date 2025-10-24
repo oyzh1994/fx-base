@@ -6,6 +6,7 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -353,7 +354,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
         } else if (!StringUtil.endWith(text, prompt)) {
             this.appendContent(prompt);
         }
-        this.flushNOP();
+        FXUtil.runLater(this::flushNOP, 1);
     }
 
     @Override
