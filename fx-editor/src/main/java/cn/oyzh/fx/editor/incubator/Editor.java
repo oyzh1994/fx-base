@@ -628,11 +628,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
             String text = this.getText();
-            if (text != null && !text.isEmpty() && !text.endsWith(System.lineSeparator()) && !content.startsWith(System.lineSeparator())) {
+            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
                 content = System.lineSeparator() + content;
             }
             if (endLine && !content.endsWith(System.lineSeparator())) {
-                content = content + System.lineSeparator();
+                content += System.lineSeparator();
             }
             this.appendContent(content);
         }
