@@ -628,11 +628,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
             String text = this.getText();
-            if (text != null && !text.isEmpty() && !text.endsWith("\n") && !content.startsWith("\n")) {
+            if (text != null && !text.isEmpty() && !text.endsWith(System.lineSeparator()) && !content.startsWith(System.lineSeparator())) {
                 content = System.lineSeparator() + content;
             }
             if (endLine && !content.endsWith(System.lineSeparator())) {
-                content = content + "\n";
+                content = content + System.lineSeparator();
             }
             this.appendContent(content);
         }
@@ -733,10 +733,10 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * 移动光标到末尾
      */
     public void moveCaretEnd() {
-        FXUtil.runWait(() -> {
+        FXUtil.runLater(() -> {
             super.moveDocumentEnd();
             super.requestFocus();
-        });
+        }, 1);
     }
 
     /**
