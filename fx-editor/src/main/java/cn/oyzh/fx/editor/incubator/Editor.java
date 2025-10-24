@@ -1264,6 +1264,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         }
     }
 
+    /**
+     * 获取选区文字
+     *
+     * @return 结果
+     */
     public String getSelectedText() {
         SelectionSegment segment = this.getSelection();
         if (segment == null) {
