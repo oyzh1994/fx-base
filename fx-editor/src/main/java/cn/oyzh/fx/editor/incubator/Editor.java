@@ -733,10 +733,10 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * 移动光标到末尾
      */
     public void moveCaretEnd() {
-        FXUtil.runLater(() -> {
+        FXUtil.runWait(() -> {
             super.moveDocumentEnd();
             super.requestFocus();
-        }, 1);
+        });
     }
 
     /**
@@ -1159,6 +1159,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public void appendContent(String text) {
         FXUtil.runWait(() -> super.appendText(text));
+        //super.appendText(text);
     }
 
     @Override
