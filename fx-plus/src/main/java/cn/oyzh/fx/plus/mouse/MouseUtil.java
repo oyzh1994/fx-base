@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.mouse;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
@@ -103,4 +104,21 @@ public class MouseUtil {
     public static boolean isForwardButton(MouseEvent event) {
         return event != null && event.getButton() == MouseButton.FORWARD;
     }
+
+    /**
+     * 判断当前平台的“主要修饰键”是否按下（Ctrl for Windows/Linux，Command for macOS）
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isMainModifierDown(MouseEvent event) {
+        if (OSUtil.isMacOS()) {
+            // macOS 用 Command 键（对应 Meta 修饰符）
+            return event.isMetaDown();
+        } else {
+            // Windows/Linux 用 Ctrl 键
+            return event.isControlDown();
+        }
+    }
+
 }

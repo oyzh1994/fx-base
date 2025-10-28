@@ -44,19 +44,32 @@ public class GitHubHandler implements PostHandler {
                 JulLog.warn("githubDist 目录不存在，创建目录");
                 FileUtil.mkdir(githubDist);
             }
-            List<File> files = FileUtil.getAllFiles(packConfig.getDest());
-            for (File file : files) {
-                if (!file.isFile()) {
-                    continue;
-                }
-                File file1 = new File(githubDist, file.getName());
-                boolean success = FileUtil.move(file, file1, true);
+            // 压缩包
+            File compressFile = packConfig.getCompressFile();
+            if (compressFile != null && compressFile.exists()) {
+                File file1 = new File(githubDist, compressFile.getName());
+                boolean success = FileUtil.renameFile(compressFile, file1, true);
                 if (success) {
-                    JulLog.info("file:{} 移动到dist目录成功", file.getPath());
+                    JulLog.info("file:{} 移动到dist目录成功", compressFile.getPath());
                 } else {
-                    JulLog.warn("file:{} 移动到dist目录失败", file.getPath());
+                    JulLog.warn("file:{} 移动到dist目录失败", compressFile.getPath());
+                }
+            } else {// 正常构建
+                List<File> files = FileUtil.getAllFiles(packConfig.getDest());
+                for (File file : files) {
+                    if (!file.isFile()) {
+                        continue;
+                    }
+                    File file1 = new File(githubDist, file.getName());
+                    boolean success = FileUtil.renameFile(file, file1, true);
+                    if (success) {
+                        JulLog.info("file:{} 移动到dist目录成功", file.getPath());
+                    } else {
+                        JulLog.warn("file:{} 移动到dist目录失败", file.getPath());
+                    }
                 }
             }
+
         } else {
             JulLog.warn("githubDist 未找到参数设置");
         }

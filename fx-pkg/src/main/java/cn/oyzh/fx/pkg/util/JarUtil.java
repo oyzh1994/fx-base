@@ -94,10 +94,7 @@ public class JarUtil {
      * @param name 名称
      */
     public static boolean isJar(String name) {
-        if (StringUtil.isBlank(name)) {
-            return false;
-        }
-        return name.toLowerCase().endsWith(FileUtil.JAR_FILE_EXT);
+        return StringUtil.endWithIgnoreCase(name, "jar");
     }
 
     /**

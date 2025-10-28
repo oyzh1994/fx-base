@@ -2,8 +2,6 @@ package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeCell;
-import cn.oyzh.fx.plus.drag.DragNodeHandler;
-import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -25,10 +23,10 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         this.setCursor(Cursor.HAND);
     }
 
-    /**
-     * 拖动处理
-     */
-    private DragNodeHandler dragNodeHandler;
+    // /**
+    //  * 拖动处理
+    //  */
+    // private DragNodeHandler dragNodeHandler;
 
     @Override
     protected void updateItem(T value, boolean empty) {
@@ -76,11 +74,11 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
             this.setText(value.text());
             this.setContentDisplay(ContentDisplay.LEFT);
         }
-        // 初始化拖动
-        if (treeItem instanceof DragNodeItem dragItem && dragItem.allowDragDrop() && this.dragNodeHandler == null) {
-            this.dragNodeHandler = new DragNodeHandler();
-            this.dragNodeHandler.initEvent(this, treeView.getDragContent());
-            // BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
-        }
+        // // 初始化拖动
+        // if (treeItem instanceof DragNodeItem dragItem && dragItem.allowDragDrop() && this.dragNodeHandler == null) {
+        //     this.dragNodeHandler = new DragNodeHandler();
+        //     this.dragNodeHandler.initEvent(this, treeView.getDragContent());
+        //     // BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
+        // }
     }
 }

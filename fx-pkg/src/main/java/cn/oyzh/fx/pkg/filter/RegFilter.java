@@ -1,6 +1,6 @@
 package cn.oyzh.fx.pkg.filter;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 
 import java.util.Collection;

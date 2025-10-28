@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
@@ -96,7 +95,7 @@ public class Toast {
         this.resetDefault();
         // 创建组件
         HBox box = new HBox();
-        box.setCursor(Cursor.NONE);
+        // box.setCursor(Cursor.NONE);
         box.setFocusTraversable(false);
         // 设置间距等
         box.setAlignment(Pos.CENTER);
@@ -141,11 +140,11 @@ public class Toast {
         // this.window = stage;
         Scene scene = new Scene(box);
         // scene.setCursor(Cursor.NONE);
+        scene.setFill(Color.TRANSPARENT);
         this.window.setScene(scene);
         this.window.initOwner(owner);
-        this.window.setAlwaysOnTop(true);
+         this.window.setAlwaysOnTop(true);
         this.window.initModality(Modality.NONE);
-        scene.setFill(Color.TRANSPARENT);
         // } else {// Popup
         //     Popup popup = new FXPopup();
         //     this.window = popup;
@@ -158,7 +157,7 @@ public class Toast {
         // 设置透明度
         this.window.setOpacity(0.9);
         // 设置自动隐藏，位置定位
-        if (owner != null || this.duration > 0) {
+        if (this.duration > 0) {
             this.window.setOnShown(e -> {
                 // 计算位置
                 FXUtil.computePos(owner, this.window);
@@ -185,6 +184,9 @@ public class Toast {
         // } else if (this.window instanceof Stage stage) {
         this.window.show();
         // }
+        if (owner != null) {
+            owner.requestFocus();
+        }
     }
 
     /**
@@ -199,9 +201,13 @@ public class Toast {
             this.textFill = null;
             this.background = null;
             if (this.window != null) {
-                FXUtil.runLater(this.window::hide);
+                // Window owner = this.window.getOwner();
+                FXUtil.runWait(this.window::hide);
+                // if (owner != null && owner.getScene() != null) {
+                //     owner.getScene().setCursor(Cursor.DEFAULT);
+                // }
+                this.window = null;
             }
-            this.window = null;
         } catch (Exception ex) {
             ex.printStackTrace();
         }

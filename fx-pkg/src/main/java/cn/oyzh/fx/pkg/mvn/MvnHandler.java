@@ -84,13 +84,13 @@ public class MvnHandler implements PreHandler, SingleHandler {
         // 安装依赖工程
         if (CollectionUtil.isNotEmpty(this.dependencies)) {
             for (String dependency : this.dependencies) {
-                String mvnCommand = mvnExe + " -X install -DskipTests";
-                RuntimeUtil.execAndWait(mvnCommand, new File(dependency));
+                String[] mvnCommand = new String[]{mvnExe, "-X", "install", "-DskipTests"};
+                RuntimeUtil.execForResult(mvnCommand, null, new File(dependency));
             }
         }
         // 打包项目工程
-        String mvnCommand = mvnExe + " -X package -DskipTests";
-        RuntimeUtil.execAndWait(mvnCommand, new File(this.projectDir));
+        String[] mvnCommand = new String[]{mvnExe, "-X", "package", "-DskipTests"};
+        RuntimeUtil.execForResult(mvnCommand, null, new File(this.projectDir));
         this.executed = true;
     }
 

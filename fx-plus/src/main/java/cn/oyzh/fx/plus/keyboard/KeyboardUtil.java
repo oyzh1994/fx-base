@@ -76,6 +76,7 @@ public class KeyboardUtil {
     /**
      * 重启快捷键
      */
+    @Deprecated
     public final static KeyCombination restart_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.SHIFT_DOWN);
 
     /**
@@ -96,11 +97,13 @@ public class KeyboardUtil {
     /**
      * 信息快捷键
      */
+    @Deprecated
     public final static KeyCombination info_keyCombination = new KeyCodeCombination(KeyCode.I, KeyCombination.SHIFT_DOWN);
 
     /**
      * 编辑快捷键
      */
+    @Deprecated
     public static final KeyCombination edit_keyCombination = new KeyCodeCombination(KeyCode.E, KeyCombination.SHIFT_DOWN);
 
     /**
@@ -111,6 +114,7 @@ public class KeyboardUtil {
     /**
      * 隐藏快捷键
      */
+    @Deprecated
     public final static KeyCombination hide_keyCombination = new KeyCodeCombination(KeyCode.H, KeyCombination.SHIFT_DOWN);
 
     static {
@@ -255,7 +259,7 @@ public class KeyboardUtil {
         if (event == null) {
             return false;
         }
-        return event.isControlDown() && event.getCode() == KeyCode.SLASH;
+        return isMainModifierDown(event) && event.getCode() == KeyCode.SLASH;
     }
 
     /**
@@ -432,5 +436,21 @@ public class KeyboardUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * 判断当前平台的“主要修饰键”是否按下（Ctrl for Windows/Linux，Command for macOS）
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static boolean isMainModifierDown(KeyEvent event) {
+        if (OSUtil.isMacOS()) {
+            // macOS 用 Command 键（对应 Meta 修饰符）
+            return event.isMetaDown();
+        } else {
+            // Windows/Linux 用 Ctrl 键
+            return event.isControlDown();
+        }
     }
 }

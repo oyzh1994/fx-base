@@ -4,6 +4,8 @@ import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.RuntimeUtil;
+import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -14,6 +16,7 @@ import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,14 +76,14 @@ public class JDepsHandler implements PreHandler {
         } else {
             cmdStr = new StringBuilder("java --list-modules");
         }
-        //ProcessExecBuilder builder = ProcessExecBuilder.newBuilder("java --list-modules");
-        //builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
-        //builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
-        //builder.directory(jdkPath + "/bin");
-        //builder.timeout(30_000);
+        // ProcessExecBuilder builder = ProcessExecBuilder.newBuilder("java --list-modules");
+        // builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        // builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+        // builder.directory(jdkPath + "/bin");
+        // builder.timeout(30_000);
         String result = RuntimeUtil.execForStr(cmdStr.toString());
-        //String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
-        //String result = builder.execForInput();
+        // String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
+        // String result = builder.execForInput();
         JulLog.info("list modules:{}", result);
 //        System.out.println(result);
         result.lines().forEach(r -> {
@@ -92,32 +95,38 @@ public class JDepsHandler implements PreHandler {
         Set<String> deps = new HashSet<>();
         List<File> files = FileUtil.loopFiles(jarUnDir);
         cmdStr = new StringBuilder(PkgUtil.getJDepsCMD(jDepsConfig));
+        // StringBuilder finalCmdStr = cmdStr;
+        // List<Runnable> tasks = new ArrayList<>();
         for (File file : files) {
             try {
                 // 非jar，跳过
                 if (!JarUtil.isJar(file)) {
                     continue;
                 }
+                // 异步处理
+                // tasks.add(() -> {
                 JulLog.info("jdeps jar: {}.", file.getName());
-                // 被过滤
-                if (!fileFilter.apply(file.getName())) {
-                    continue;
+                // 判断是否被过滤
+                if (fileFilter.apply(file.getName())) {
+                    // 拼接到命令
+                    cmdStr.append(" ").append(file.getPath());
                 }
-                // 拼接到命令
-                cmdStr.append(" ").append(file.getPath());
+                // });
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+        // // 执行业务
+        // ThreadUtil.submit(tasks);
         // 列举模块
         cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, cmdStr.toString()));
         result = RuntimeUtil.execForStr(cmdStr.toString());
-        //builder = ProcessExecBuilder.newBuilder(cmdStr.toString());
-        //builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
-        //builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
-        //builder.timeout(30_000);
-        //builder.directory(jdkPath + "/bin");
-        //result = builder.execForInput();
+        // builder = ProcessExecBuilder.newBuilder(cmdStr.toString());
+        // builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
+        // builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
+        // builder.timeout(30_000);
+        // builder.directory(jdkPath + "/bin");
+        // result = builder.execForInput();
 //        System.out.println(result);
 //        result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
         JulLog.info("Jdeps result:{}", result);

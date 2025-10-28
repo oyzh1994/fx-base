@@ -157,19 +157,21 @@ public class JarHandler implements PreHandler {
         // lib目录合并
         if (FileUtil.exist(jarUnDir + "/BOOT-INF/lib")) {
             // 合并lib目录到主jar文件
-            String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ./BOOT-INF/lib";
-            cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+            String[] cmdArr = new String[]{"jar", "-uvf0", mainJarNewFile.getName(), "./BOOT-INF/lib"};
+            cmdArr = PkgUtil.getJDKExecCMD(jdkPath, cmdArr);
+            String cmdStr = StringUtil.join(" ", cmdArr);
             JulLog.info(cmdStr);
-            RuntimeUtil.execAndWait(cmdStr, dir);
+            RuntimeUtil.execForResult(cmdArr, null, dir);
         } else {// 单个jar逐个合并
             List<File> files = FileUtil.loopFiles(dir);
             files = files.parallelStream().filter(f -> f.isFile() && f.getName().endsWith(".jar")).toList();
             for (File file : files) {
                 String fName = file.getPath().replace(dir.getPath(), "");
-                String cmdStr = "jar -uvf0 " + mainJarNewFile.getName() + " ." + fName;
-                cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
+                String[] cmdArr = new String[]{"jar", "-uvf0", mainJarNewFile.getName(), "." + fName};
+                cmdArr = PkgUtil.getJDKExecCMD(jdkPath, cmdArr);
+                String cmdStr = StringUtil.join(" ", cmdArr);
                 JulLog.info(cmdStr);
-                RuntimeUtil.execAndWait(cmdStr, dir);
+                RuntimeUtil.execForResult(cmdArr, null, dir);
             }
         }
         // 移动主jar文件到原始目录

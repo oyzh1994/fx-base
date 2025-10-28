@@ -1,0 +1,90 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "CSV",
+  "scopeName": "source.csv",
+  "fileTypes": ["csv", "tsv"],
+  "uuid": "b47f5c7a-7d3a-4e8e-9a1b-8c7d6e5f4a3b",
+  "patterns": [
+    {
+      "name": "comment.line.number-sign.csv",
+      "match": "^#.*$"
+    },
+    {
+      "name": "string.quoted.double.csv",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.csv",
+          "match": "\"\""
+        }
+      ]
+    },
+    {
+      "name": "string.quoted.single.csv",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        {
+          "name": "constant.character.escape.csv",
+          "match": "''"
+        }
+      ]
+    },
+    {
+      "name": "constant.numeric.csv",
+      "match": "\\b(?:0x[0-9a-fA-F]+|0b[01]+|\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?|\\.\\d+(?:[eE][+-]?\\d+)?|NaN|Infinity)\\b"
+    },
+    {
+      "name": "keyword.operator.csv",
+      "match": "(?<=^|,|\\t)(?=\")|(?<=\")(?=,|\\t|$)|[,\\t]"
+    },
+    {
+      "name": "constant.language.boolean.csv",
+      "match": "\\b(true|false|TRUE|FALSE)\\b"
+    },
+    {
+      "name": "constant.language.null.csv",
+      "match": "\\b(null|NULL)\\b"
+    }
+  ],
+  "repository": {
+    "value": {
+      "patterns": [
+        {
+          "include": "#quoted_value"
+        },
+        {
+          "include": "#unquoted_value"
+        }
+      ]
+    },
+    "quoted_value": {
+      "patterns": [
+        {
+          "include": "string.quoted.double.csv"
+        },
+        {
+          "include": "string.quoted.single.csv"
+        }
+      ]
+    },
+    "unquoted_value": {
+      "patterns": [
+        {
+          "include": "constant.numeric.csv"
+        },
+        {
+          "include": "constant.language.boolean.csv"
+        },
+        {
+          "include": "constant.language.null.csv"
+        },
+        {
+          "name": "text.csv",
+          "match": "[^,\\t\\n\"']+"
+        }
+      ]
+    }
+  }
+}

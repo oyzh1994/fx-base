@@ -82,7 +82,7 @@ public class MenuItemHelper {
      * @return 菜单
      */
     public static Menu menu(String text) {
-        return MenuItemManager.getMenu(text);
+        return MenuItemManager.getMenu(text, null, null);
     }
 
     /**
@@ -93,7 +93,19 @@ public class MenuItemHelper {
      * @return 菜单
      */
     public static Menu menu(String text, Node graphic) {
-        return MenuItemManager.getMenu(text, graphic);
+        return MenuItemManager.getMenu(text, graphic, null);
+    }
+
+    /**
+     * 菜单
+     *
+     * @param text    文本
+     * @param graphic 图标
+     * @param action  操作
+     * @return 菜单
+     */
+    public static Menu menu(String text, Node graphic, Runnable action) {
+        return MenuItemManager.getMenu(text, graphic, action);
     }
 
     /**

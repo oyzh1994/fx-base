@@ -327,18 +327,19 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         // 初始化stage
         stage.setResizable(attribute.resizable());
         // 设置icon
-        if (this.isExtendedHeader()) {
-            // FXHeaderBar headerBar = HeaderBarUtil.getHeaderBar(root);
-            // if (headerBar != null) {
-            //     if (StringUtil.isNotEmpty(attribute.iconUrl())) {
-            //         headerBar.setIcon(HeaderBarUtil.getIcon(attribute.iconUrl()));
-            //     } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
-            //         headerBar.setIcon(HeaderBarUtil.getIcon(FXConst.appIcon()));
-            //     }
-            // } else {
-            //     JulLog.warn("headerBar is null");
-            // }
-        } else if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+        //if (this.isExtendedHeader()) {
+        //     FXHeaderBar headerBar = HeaderBarUtil.getHeaderBar(root);
+        //     if (headerBar != null) {
+        //         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
+        //             headerBar.setIcon(HeaderBarUtil.getIcon(attribute.iconUrl()));
+        //         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
+        //             headerBar.setIcon(HeaderBarUtil.getIcon(FXConst.appIcon()));
+        //         }
+        //     } else {
+        //         JulLog.warn("headerBar is null");
+        //     }
+        //}
+        if (StringUtil.isNotEmpty(attribute.iconUrl())) {
             stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
             stage.getIcons().setAll(IconUtil.getIcon(FXConst.appIcon()));

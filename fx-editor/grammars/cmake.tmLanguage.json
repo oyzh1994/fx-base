@@ -1,0 +1,185 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "CMake",
+	"scopeName": "source.cmake",
+	"fileTypes": ["cmake", "CMakeLists.txt"],
+	"uuid": "d4e5f6a7-b8c9-0123-4567-89abcdef0123",
+	"patterns": [
+		{ "include": "#comments" },
+		{ "include": "#commands" },
+		{ "include": "#variables" },
+		{ "include": "#strings" },
+		{ "include": "#numbers" },
+		{ "include": "#keywords" },
+		{ "include": "#operators" }
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.hash.cmake",
+					"match": "#.*$"
+				},
+				{
+					"name": "comment.block.cmake",
+					"begin": "\\[=*\\[",
+					"beginCaptures": {
+						"0": { "name": "punctuation.definition.comment.begin.cmake" }
+					},
+					"end": "\\]=*\\]",
+					"endCaptures": {
+						"0": { "name": "punctuation.definition.comment.end.cmake" }
+					}
+				}
+			]
+		},
+
+		"commands": {
+			"patterns": [
+				{
+					"name": "meta.command.cmake",
+					"match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*\\(",
+					"captures": {
+						"1": {
+							"name": "support.function.cmake",
+							"patterns": [
+								{
+									"name": "keyword.command.cmake",
+									"match": "\\b(add_executable|add_library|add_subdirectory|cmake_minimum_required|project|include|find_package|target_link_libraries|target_include_directories|set|get_property|set_property|if|else|elseif|endif|foreach|endforeach|function|endfunction|macro|endmacro|message|option|install)\\b"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "meta.command.invocation.cmake",
+					"begin": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*\\(",
+					"beginCaptures": {
+						"1": { "name": "support.function.cmake" }
+					},
+					"end": "\\)",
+					"patterns": [
+						{ "include": "$self" }
+					]
+				}
+			]
+		},
+
+		"variables": {
+			"patterns": [
+				{
+					"name": "variable.builtin.cmake",
+					"match": "\\${\\s*CMAKE_(PROJECT_NAME|SOURCE_DIR|CURRENT_SOURCE_DIR|CURRENT_BINARY_DIR|INSTALL_PREFIX|VERSION)\\s*}"
+				},
+				{
+					"name": "variable.cmake",
+					"match": "\\${\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*}"
+				},
+				{
+					"name": "variable.environment.cmake",
+					"match": "\\$ENV{\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*}"
+				},
+				{
+					"name": "variable.cache.cmake",
+					"match": "\\${\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*:\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*}"
+				}
+			]
+		},
+
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.cmake",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{ "include": "#variables" },
+						{
+							"name": "constant.character.escape.cmake",
+							"match": "\\\\."
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.cmake",
+					"begin": "'",
+					"end": "'"
+				},
+				{
+					"name": "string.verbatim.cmake",
+					"begin": "\\[=*\\[",
+					"beginCaptures": {
+						"0": { "name": "punctuation.definition.string.begin.cmake" }
+					},
+					"end": "\\]=*\\]",
+					"endCaptures": {
+						"0": { "name": "punctuation.definition.string.end.cmake" }
+					}
+				}
+			]
+		},
+
+		"numbers": {
+			"patterns": [
+				{
+					"name": "constant.numeric.integer.cmake",
+					"match": "\\b\\d+\\b"
+				},
+				{
+					"name": "constant.numeric.float.cmake",
+					"match": "\\b\\d+\\.\\d+\\b"
+				},
+				{
+					"name": "constant.numeric.hex.cmake",
+					"match": "\\b0x[0-9a-fA-F]+\\b"
+				}
+			]
+		},
+
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.cmake",
+					"match": "\\b(if|else|elseif|endif|foreach|endforeach|while|endwhile|function|endfunction|macro|endmacro|return|break|continue)\\b"
+				},
+				{
+					"name": "keyword.operator.cmake",
+					"match": "\\b(NOT|AND|OR|TARGET|DEFINED|EXISTS|IS_DIRECTORY|IS_FILE|STREQUAL|STRLESS|STRGREATER|IN_LIST)\\b"
+				},
+				{
+					"name": "keyword.other.cmake",
+					"match": "\\b(PRIVATE|PUBLIC|INTERFACE|REQUIRED|ALL|DEBUG|RELEASE|MVSC|GNU|UNIX|WIN32|APPLE)\\b"
+				}
+			]
+		},
+
+		"operators": {
+			"patterns": [
+				{
+					"name": "operator.assignment.cmake",
+					"match": "="
+				},
+				{
+					"name": "operator.comparison.cmake",
+					"match": "==|!=|<|>|<=|>="
+				},
+				{
+					"name": "punctuation.parentheses.cmake",
+					"match": "\\(|\\)"
+				},
+				{
+					"name": "punctuation.braces.cmake",
+					"match": "\\{|\\}"
+				},
+				{
+					"name": "punctuation.brackets.cmake",
+					"match": "\\[|\\]"
+				},
+				{
+					"name": "punctuation.separator.cmake",
+					"match": ","
+				}
+			]
+		}
+	}
+}

@@ -85,6 +85,10 @@ public class PackConfig {
 
     /**
      * 最终压缩文件
+     * 可能是以下类型
+     * zip
+     * tar.gz
+     * AppImage
      */
     private File compressFile;
 
@@ -92,6 +96,11 @@ public class PackConfig {
      * 打包用的jre路径
      */
     private String jrePath;
+
+    /**
+     * appImageRuntime目录
+     */
+    private String appImageRuntime;
 
     /**
      * 执行用的jdk路径
@@ -188,7 +197,7 @@ public class PackConfig {
 
     public String mainAppVersion() {
         String appVersion = this.appVersion();
-        if (StringUtil.checkCountOccurrences(appVersion, '.',3) ) {
+        if (StringUtil.checkCountOccurrences(appVersion, '.', 3)) {
             return appVersion.substring(0, appVersion.lastIndexOf("."));
         }
         return appVersion;
@@ -406,5 +415,13 @@ public class PackConfig {
 
     public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    public String getAppImageRuntime() {
+        return appImageRuntime;
+    }
+
+    public void setAppImageRuntime(String appImageRuntime) {
+        this.appImageRuntime = appImageRuntime;
     }
 }

@@ -1,6 +1,8 @@
 package cn.oyzh.fx.pkg.jpackage;
 
 
+import cn.oyzh.common.util.StringUtil;
+
 import java.io.File;
 import java.util.List;
 
@@ -235,5 +237,12 @@ public class JPackageConfig {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public String fixedType() {
+        if (StringUtil.equalsIgnoreCase(this.type, "AppImage")) {
+            return "app-image";
+        }
+        return this.type;
     }
 }
