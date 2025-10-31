@@ -357,20 +357,18 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         if (this.selectCount == null) {
             this.selectCount = new AtomicInteger(0);
         }
-        int index = this.getSelectedIndex();
         if (this.selectCount.incrementAndGet() == 2) {
-            if (index != 0) {
-                this.selectFirst();
-                FXUtil.runAsync(() -> {
-                    this.select(index);
+            if (newValue != null) {
+                this.setIgnoreChanged(true);
+                this.clearSelection();
+                FXUtil.runPulse(() -> {
+                    this.select(newValue);
+                    this.setIgnoreChanged(false);
                 });
             }
             this.removeSelectCountListener();
         }
         this.applyCss();
-        // if (newValue != null && newValue.getContent() != null) {
-        //     newValue.getContent().applyCss();
-        // }
     }
 
     /**
@@ -391,15 +389,14 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         return Math.max(this.getTabMaxHeight(), this.getTabMinHeight());
     }
 
-    // /**
-    //  * 刷新tab，解决部分情况下组件冻结的问题
-    //  */
-    // public void refresh() {
-    //     Tab tab = this.getSelectedItem();
-    //     this.clearSelection();
-    //     if (tab != null) {
-    //         this.select(tab);
-    //     }
-    // }
-
+    /**
+     * 刷新tab，解决部分情况下组件冻结的问题
+     */
+    public void refresh() {
+        Tab tab = this.getSelectedItem();
+        this.clearSelection();
+        if (tab != null) {
+            this.select(tab);
+        }
+    }
 }
