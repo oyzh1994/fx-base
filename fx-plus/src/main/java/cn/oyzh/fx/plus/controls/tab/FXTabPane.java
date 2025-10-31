@@ -344,4 +344,15 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     public double getTabRealHeight() {
         return Math.max(this.getTabMaxHeight(), this.getTabMinHeight());
     }
+
+    /**
+     * 刷新tab，解决部分情况下组件冻结的问题
+     */
+    public void refresh() {
+        Tab tab = this.getSelectedItem();
+        this.clearSelection();
+        if (tab != null) {
+            this.select(tab);
+        }
+    }
 }
