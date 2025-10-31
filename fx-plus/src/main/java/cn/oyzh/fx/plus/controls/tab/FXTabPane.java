@@ -387,7 +387,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     protected void removeSelectCountListener() {
         JulLog.info("select count listener removed.");
         this.selectCount = null;
-        this.getSelectionModel().selectedItemProperty().removeListener(this::setupSelectCountListener);
+        this.getSelectionModel().selectedItemProperty().removeListener(this::selectCountListener);
     }
 
     public void setTabRealHeight(double tabHeight) {
