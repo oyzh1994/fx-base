@@ -337,7 +337,15 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     public void initNode() {
         FlexAdapter.super.initNode();
         this.setTabRealHeight(24);
-        this.selectedItemChanged(this::setupSelectCountListener);
+        // this.selectedItemChanged(this::setupSelectCountListener);
+    }
+
+    /**
+     * 安装选中计数器
+     *
+     */
+    protected void setupSelectCountListener(){
+        this.selectedItemChanged(this::selectCountListener);
     }
 
     /**
@@ -346,13 +354,13 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     private AtomicInteger selectCount;
 
     /**
-     * 安装选中计数器
+     * 选中计数器
      *
      * @param observable 监听对象
      * @param oldValue   旧值
      * @param newValue   新值
      */
-    public void setupSelectCountListener(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+    public void selectCountListener(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
         JulLog.info("select count listener setup.");
         if (this.selectCount == null) {
             this.selectCount = new AtomicInteger(0);
