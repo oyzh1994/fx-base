@@ -84,10 +84,15 @@ public class NodeManager {
             region.setSnapToPixel(true);
         }
         //// TODO: 延迟执行主题处理，否则可能出现部分组件样式异常
-        //if (node instanceof ThemeAdapter adapter) {
+        // if (node instanceof ThemeAdapter adapter) {
         //    // adapter.changeTheme(ThemeManager.currentTheme());
         //    ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 150);
         //}
+        //
+        // // TODO: 解决部分css可能不生效问题
+        // if (node instanceof Node node1) {
+        //     node1.applyCss();
+        // }
     }
 
 }
