@@ -344,7 +344,9 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      * 安装选中计数器
      *
      */
-    protected void setupSelectCountListener(){
+    protected void setupSelectCountListener() {
+        this.applyCss();
+        this.requestLayout();
         this.selectedItemChanged(this::selectCountListener);
     }
 
@@ -361,24 +363,26 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      * @param newValue   新值
      */
     public void selectCountListener(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
-        JulLog.info("select count listener setup.");
+        this.applyCss();
+        this.requestLayout();
         if (this.selectCount == null) {
             this.selectCount = new AtomicInteger(0);
+            JulLog.info("select count listener setup.");
         }
-        if (this.selectCount.incrementAndGet() < 2) {
+        if (this.selectCount.incrementAndGet() <= 2) {
             if (newValue != null) {
-                this.setIgnoreChanged(true);
-                this.clearSelection();
-                FXUtil.runPulse(() -> {
-                    this.select(newValue);
-                    this.setIgnoreChanged(false);
-                });
+                // this.setIgnoreChanged(true);
+                // this.clearSelection();
+                // FXUtil.runPulse(() -> {
+                //     this.select(newValue);
+                //     this.setIgnoreChanged(false);
+                // });
+                this.refresh();
             }
             if (this.selectCount.get() == 2) {
                 this.removeSelectCountListener();
             }
         }
-        this.applyCss();
     }
 
     /**
@@ -403,10 +407,17 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      * 刷新tab，解决部分情况下组件冻结的问题
      */
     public void refresh() {
+        this.setIgnoreChanged(true);
         Tab tab = this.getSelectedItem();
         this.clearSelection();
         if (tab != null) {
-            this.select(tab);
+            // this.select(tab);
+            FXUtil.runAsync(() -> {
+                this.select(tab);
+                this.setIgnoreChanged(false);
+            });
+        } else {
+            this.setIgnoreChanged(false);
         }
     }
 }
