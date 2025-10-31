@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import atlantafx.base.theme.Theme;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.paint.Color;
 
 import java.io.File;
@@ -84,12 +85,13 @@ public class CustomTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        if (locale == Locale.TRADITIONAL_CHINESE) {
-            return "定制主題";
-        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-            return "定制主题";
-        }
-        return "Custom";
+        // if (locale == Locale.TRADITIONAL_CHINESE) {
+        //     return "定制主題";
+        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+        //     return "定制主题";
+        // }
+        // return "Custom";
+        return I18nHelper.custom();
     }
 
     @Override

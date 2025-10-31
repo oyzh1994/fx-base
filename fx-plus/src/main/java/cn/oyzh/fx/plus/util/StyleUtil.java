@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.StringUtil;
 import javafx.css.Styleable;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -164,8 +165,8 @@ public class StyleUtil {
     /**
      * 设置样式
      *
-     * @param node 节点
-     * @param style  样式
+     * @param node  节点
+     * @param style 样式
      */
     public static void setStyle(Object node, String style) {
         if (node instanceof Node node1) {
@@ -184,18 +185,16 @@ public class StyleUtil {
      */
     public static String getStyle(Styleable node, String prop) {
         String currentStyle = node.getStyle();
-        if (currentStyle != null && !currentStyle.isBlank()) {
-            if (prop != null && !prop.isBlank()) {
-                String[] stylePairs = currentStyle.split(";");
-                for (String stylePair : stylePairs) {
-                    String[] styleParts = stylePair.split(":");
-                    if (styleParts[0].trim().equals(prop)) {
-                        return styleParts[1];
-                    }
+        if (StringUtil.isNotBlank(currentStyle) && StringUtil.isNotBlank(prop)) {
+            String[] stylePairs = currentStyle.split(";");
+            for (String stylePair : stylePairs) {
+                String[] styleParts = stylePair.split(":");
+                if (styleParts[0].trim().equals(prop)) {
+                    return styleParts[1];
                 }
             }
         }
-        return currentStyle;
+        return "";
     }
 
     /**

@@ -5,6 +5,7 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.application.ColorScheme;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
@@ -62,12 +63,13 @@ public class SystemTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        if (locale == Locale.TRADITIONAL_CHINESE) {
-            return "跟隨系統";
-        } else if (locale == Locale.SIMPLIFIED_CHINESE) {
-            return "跟随系统";
-        }
-        return "System";
+        // if (locale == Locale.TRADITIONAL_CHINESE) {
+        //     return "跟隨系統";
+        // } else if (locale == Locale.SIMPLIFIED_CHINESE) {
+        //     return "跟随系统";
+        // }
+        // return "System";
+        return I18nHelper.followSystem();
     }
 
     @Override
