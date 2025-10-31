@@ -357,7 +357,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         if (this.selectCount == null) {
             this.selectCount = new AtomicInteger(0);
         }
-        if (this.selectCount.incrementAndGet() == 2) {
+        if (this.selectCount.incrementAndGet() < 2) {
             if (newValue != null) {
                 this.setIgnoreChanged(true);
                 this.clearSelection();
@@ -366,7 +366,9 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
                     this.setIgnoreChanged(false);
                 });
             }
-            this.removeSelectCountListener();
+            if (this.selectCount.get() == 2) {
+                this.removeSelectCountListener();
+            }
         }
         this.applyCss();
     }
