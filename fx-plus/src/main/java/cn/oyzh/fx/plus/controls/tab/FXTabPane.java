@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
@@ -13,12 +14,14 @@ import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author oyzh
@@ -88,7 +91,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param listener 监听器
      */
-    public void selectedTabChanged(ChangeListener<Tab> listener) {
+    public void selectedItemChanged(ChangeListener<Tab> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
@@ -250,7 +253,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      */
     public void onTabSelected(String tabId, Runnable task) {
         if (tabId != null && task != null) {
-            this.selectedTabChanged((observable, oldValue, newValue) -> {
+            this.selectedItemChanged((observable, oldValue, newValue) -> {
                 if (newValue != null && StringUtil.equals(tabId, newValue.getId())) {
                     task.run();
                 }
@@ -334,6 +337,61 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     public void initNode() {
         FlexAdapter.super.initNode();
         this.setTabRealHeight(24);
+        // this.selectedItemChanged(this::setupSelectCountListener);
+    }
+
+    /**
+     * 安装选中计数器
+     *
+     */
+    protected void setupSelectCountListener() {
+        this.applyCss();
+        this.requestLayout();
+        this.selectedItemChanged(this::selectCountListener);
+    }
+
+    /**
+     * 选中计数
+     */
+    private AtomicInteger selectCount;
+
+    /**
+     * 选中计数器
+     *
+     * @param observable 监听对象
+     * @param oldValue   旧值
+     * @param newValue   新值
+     */
+    public void selectCountListener(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+        this.applyCss();
+        this.requestLayout();
+        if (this.selectCount == null) {
+            this.selectCount = new AtomicInteger(0);
+            JulLog.info("select count listener setup.");
+        }
+        if (this.selectCount.incrementAndGet() <= 2) {
+            if (newValue != null) {
+                // this.setIgnoreChanged(true);
+                // this.clearSelection();
+                // FXUtil.runPulse(() -> {
+                //     this.select(newValue);
+                //     this.setIgnoreChanged(false);
+                // });
+                this.refresh();
+            }
+            if (this.selectCount.get() == 2) {
+                this.removeSelectCountListener();
+            }
+        }
+    }
+
+    /**
+     * 移除选中计数监听器
+     */
+    protected void removeSelectCountListener() {
+        JulLog.info("select count listener removed.");
+        this.selectCount = null;
+        this.getSelectionModel().selectedItemProperty().removeListener(this::selectCountListener);
     }
 
     public void setTabRealHeight(double tabHeight) {
@@ -343,5 +401,23 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
 
     public double getTabRealHeight() {
         return Math.max(this.getTabMaxHeight(), this.getTabMinHeight());
+    }
+
+    /**
+     * 刷新tab，解决部分情况下组件冻结的问题
+     */
+    public void refresh() {
+        this.setIgnoreChanged(true);
+        Tab tab = this.getSelectedItem();
+        this.clearSelection();
+        if (tab != null) {
+            // this.select(tab);
+            FXUtil.runAsync(() -> {
+                this.select(tab);
+                this.setIgnoreChanged(false);
+            });
+        } else {
+            this.setIgnoreChanged(false);
+        }
     }
 }

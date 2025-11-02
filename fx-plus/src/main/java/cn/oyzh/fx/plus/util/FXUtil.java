@@ -236,6 +236,15 @@ public class FXUtil {
     }
 
     /**
+     * 异步执行
+     *
+     * @param task 任务
+     */
+    public static void runAsync(Runnable task) {
+        runLater(task, 1);
+    }
+
+    /**
      * 获取fx线程
      *
      * @return fx线程
