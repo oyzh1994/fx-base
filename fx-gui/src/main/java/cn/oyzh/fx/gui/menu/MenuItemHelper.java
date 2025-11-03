@@ -323,6 +323,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSqlFile(), new RunSqlFileSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem runSelected(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSelected(), action);
+    }
+
     public static FXMenuItem runImage(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runImage(), new RunSVGGlyph(iconSize), action);
     }
