@@ -517,7 +517,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             int pCount = super.getParagraphCount();
             for (int i = 0; i < pCount; i++) {
                 int len = this.getParagraphLength(i);
-                length += len + 1;
+                length += len;
                 if (startIndex == -1 && length >= start) {
                     startIndex = i;
                     startOffset = start - lastLen;
@@ -527,6 +527,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                     endOffset = end - lastLen;
                     break;
                 }
+                length += 1;
                 lastLen = length;
             }
             endPos = TextPos.ofLeading(endIndex, endOffset);
@@ -1159,7 +1160,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public void appendContent(String text) {
         FXUtil.runWait(() -> super.appendText(text));
-        //super.appendText(text);
+        // super.appendText(text);
     }
 
     @Override
