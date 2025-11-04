@@ -863,6 +863,14 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.fieldInfo(), action);
     }
 
+    public static FXMenuItem columnInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.columnInfo(), action);
+    }
+
+    public static FXMenuItem copyColumnName(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyColumnName(), action);
+    }
+
     public static FXMenuItem closeDatabase(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.closeDatabase(), new CloseSVGGlyph(iconSize), action);
     }
