@@ -22,6 +22,8 @@ import javafx.scene.control.skin.NestedTableColumnHeader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.List;
+
 /**
  * @author oyzh
  * @since 2022/1/18
@@ -194,5 +196,21 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     @Override
     public void refresh() {
         FXUtil.runLater(super::refresh);
+    }
+
+    public <T extends TableColumn<S, ?>> void addColumn(T column) {
+        FXUtil.runWait(() -> super.getColumns().add(column));
+    }
+
+    public void addColumns(List<? extends TableColumn<S, ?>> columns) {
+        FXUtil.runWait(() -> super.getColumns().addAll(columns));
+    }
+
+    public void setColumns(List<? extends TableColumn<S, ?>> columns) {
+        FXUtil.runWait(() -> super.getColumns().setAll(columns));
+    }
+
+    public void clearColumns() {
+        FXUtil.runWait(() -> super.getColumns().clear());
     }
 }
