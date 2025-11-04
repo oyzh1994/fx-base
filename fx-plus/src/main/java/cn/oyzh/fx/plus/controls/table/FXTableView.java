@@ -202,11 +202,11 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FXUtil.runWait(() -> super.getColumns().add(column));
     }
 
-    public void addColumns(List<? extends TableColumn<S, ?>> columns) {
+    public void addColumnsAll(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().addAll(columns));
     }
 
-    public void setColumns(List<? extends TableColumn<S, ?>> columns) {
+    public void setColumnsAll(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().setAll(columns));
     }
 
