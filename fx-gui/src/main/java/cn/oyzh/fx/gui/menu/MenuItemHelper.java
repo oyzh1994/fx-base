@@ -775,6 +775,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copy(), action);
     }
 
+    public static FXMenuItem copyAsInsertStatement(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAsInsertStatement(), action);
+    }
+
     public static FXMenuItem copy(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copy(), new CopySVGGlyph(iconSize), action);
     }
