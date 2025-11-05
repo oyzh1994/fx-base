@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.ReflectUtil;
 import javafx.beans.property.Property;
 import javafx.scene.Node;
@@ -15,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 import javafx.stage.Window;
 
 import java.lang.reflect.Field;
@@ -77,6 +80,16 @@ public class NodeDisposeUtil {
             }
         } else if (node instanceof Tab tab) {
             dispose(tab.getContent());
+        } else if (node instanceof Shape shape) {
+            unbindProperty(shape);
+        } else if (node instanceof Node node1) {
+            unbindProperty(node1);
+        } else if (!(node instanceof Destroyable)) {
+            JulLog.warn("UnSupport type:{}", node.getClass());
+        }
+        // 自定义处理
+        if (node instanceof Destroyable destroyable) {
+            destroyable.destroy();
         }
         unbindProperty(node);
     }
