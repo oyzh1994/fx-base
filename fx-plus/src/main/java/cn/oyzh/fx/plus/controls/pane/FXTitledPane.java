@@ -53,11 +53,11 @@ public class FXTitledPane extends TitledPane implements FlexAdapter, NodeGroup, 
 //                this.expandedProperty().addListener(new WeakChangeListener<>(this.autoHideListener));
             }
         } else {
-//            if (this.autoHideListener != null) {
-            this.expandedProperty().unbind();
-//                this.expandedProperty().removeListener(this.autoHideListener);
-            this.autoHideListener = null;
-//            }
+            if (this.autoHideListener != null) {
+                // this.expandedProperty().unbind();
+                this.expandedProperty().removeListener(this.autoHideListener);
+                this.autoHideListener = null;
+            }
         }
         this.setProp("autoHide", autoHide);
     }

@@ -132,12 +132,18 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         if (StringUtil.isEmpty(appendText)) {
             return;
         }
-        String text = this.getText();
+        String text;
+        if (this.hasProp("appendText")) {
+            text = this.getProp("text");
+        } else {
+            text = this.getText();
+        }
         if (StringUtil.isEmpty(text)) {
             this.setText(appendText);
         } else {
             this.setText(text + appendText);
         }
+        this.setProp("text", text);
         this.setProp("appendText", appendText);
     }
 
