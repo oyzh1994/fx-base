@@ -755,6 +755,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearTable(), new ClearSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem clearTableData(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearTableData(), new ClearSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem truncateTable(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.truncateTable(), new TruncateSVGGlyph(iconSize), action);
     }
