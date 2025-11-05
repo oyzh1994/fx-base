@@ -3,7 +3,9 @@ package cn.oyzh.fx.plus.node;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.ReflectUtil;
+import javafx.beans.Observable;
 import javafx.beans.property.Property;
+import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +23,9 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Window;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * 节点销毁工具类
@@ -80,8 +85,8 @@ public class NodeDisposeUtil {
             }
         } else if (node instanceof Tab tab) {
             dispose(tab.getContent());
-        } else if (node instanceof Shape shape) {
-            unbindProperty(shape);
+            // } else if (node instanceof Shape shape) {
+            //     unbindProperty(shape);
         } else if (node instanceof Node node1) {
             unbindProperty(node1);
         } else if (!(node instanceof Destroyable)) {
@@ -109,19 +114,44 @@ public class NodeDisposeUtil {
             try {
                 // 过滤属性类型
                 Class<?> clazz = field.getType();
+                // 设置可访问
+                field.setAccessible(true);
+                // 获取属性值
+                Object value = field.get(object);
                 // 属性类型
                 if (Property.class.isAssignableFrom(clazz)) {
-                    field.setAccessible(true);
-                    // 获取属性值
-                    Object value = field.get(object);
-                    // 如果值为Property，解绑属性
-                    if (value instanceof Property<?> property) {
+                    Property<?> property = (Property<?>) value;
+                    // 解绑属性
+                    if (property != null) {
                         property.unbind();
-                        // System.out.println("property:" + property.getName() + " unbind");
                     }
+                } else if (FXCollections.class.isAssignableFrom(clazz)) {// 集合类型
+                    Collection<?> collection = (Collection<?>) value;
+                    // 清除结果
+                    if (collection != null) {
+                        collection.clear();
+                    }
+                } else if (Collection.class.isAssignableFrom(clazz)) {// 集合类型
+                    Collection<?> collection = (Collection<?>) value;
+                    // 清除结果
+                    if (collection != null) {
+                        collection.clear();
+                    }
+                // } else if (Observable.class.isAssignableFrom(clazz)) {// 可观察对象
+                // } else if (Node.class.isAssignableFrom(clazz)) {// node
+                // } else if (Object.class.isAssignableFrom(clazz)) {// 对象类型
+                //     int modifiers = field.getModifiers();
+                //     // 设置为null
+                //     if (!Modifier.isFinal(modifiers) &&
+                //             !Modifier.isStatic(modifiers) &&
+                //             !field.isEnumConstant()
+                //     ) {
+                //         field.set(object, null);
+                //     }
+                    // } else {
+                    //     JulLog.warn("UnSupport clazz:{}", clazz);
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception ignore) {
             }
         }
     }

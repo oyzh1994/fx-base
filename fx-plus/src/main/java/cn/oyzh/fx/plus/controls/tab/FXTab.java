@@ -121,7 +121,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      * @param event 事件
      */
     protected void onTabClosed(Event event) {
-        NodeDisposeUtil.dispose(this);
+        // NodeDisposeUtil.dispose(this);
     }
 
     protected void onTabCloseRequest(Event event) {
