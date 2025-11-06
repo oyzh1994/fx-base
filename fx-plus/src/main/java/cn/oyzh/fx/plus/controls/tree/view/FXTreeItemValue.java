@@ -92,7 +92,7 @@ public class FXTreeItemValue implements Destroyable {
 
     @Override
     public synchronized void destroy() {
-        NodeDestroyUtil.destroy(this.item);
+        // NodeDestroyUtil.destroy(this.item);
         NodeDestroyUtil.destroy(this.graphic);
         this.item = null;
         this.graphic = null;
