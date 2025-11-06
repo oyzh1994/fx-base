@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
-import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -121,7 +120,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      * @param event 事件
      */
     protected void onTabClosed(Event event) {
-        // NodeDisposeUtil.dispose(this);
+        // NodeDestroyUtil.dispose(this);
     }
 
     protected void onTabCloseRequest(Event event) {

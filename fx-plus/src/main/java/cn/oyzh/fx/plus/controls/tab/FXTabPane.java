@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
-import cn.oyzh.fx.plus.node.NodeDisposeUtil;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -340,10 +340,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         // 监听tab移除，防止内存泄露
         this.getTabs().addListener((ListChangeListener<Tab>) c -> {
             if (c.next()) {
-                List<? extends Tab> tabs = c.getRemoved();
-                for (Tab tab : tabs) {
-                    NodeDisposeUtil.dispose(tab);
-                }
+                c.getRemoved().forEach(NodeDestroyUtil::destroy);
             }
         });
     }

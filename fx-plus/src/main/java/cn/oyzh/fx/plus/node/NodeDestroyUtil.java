@@ -31,16 +31,16 @@ import java.util.Collection;
  * @author oyzh
  * @since 2025-06-12
  */
-public class NodeDisposeUtil {
+public class NodeDestroyUtil {
 
     /**
      * 销毁
      *
      * @param node 节点
      */
-    public static void dispose(Object node) {
+    public static void destroy(Object node) {
         // 异步执行
-        ThreadUtil.startVirtual(() -> doDispose(node));
+        ThreadUtil.startVirtual(() -> doDestroy(node));
     }
 
     /**
@@ -48,55 +48,55 @@ public class NodeDisposeUtil {
      *
      * @param node 节点
      */
-    private static void doDispose(Object node) {
+    private static void doDestroy(Object node) {
         if (node instanceof Window window) {
-            dispose(window.getScene());
+            doDestroy(window.getScene());
         } else if (node instanceof Scene scene) {
-            dispose(scene.getRoot());
+            doDestroy(scene.getRoot());
         } else if (node instanceof TabPane pane) {
             for (Tab tab : pane.getTabs()) {
-                dispose(tab);
+                doDestroy(tab);
             }
         } else if (node instanceof Pane pane) {
             for (Node item : pane.getChildren()) {
-                dispose(item);
+                doDestroy(item);
             }
         } else if (node instanceof ListView<?> view) {
             for (Object item : view.getItems()) {
-                dispose(item);
+                doDestroy(item);
             }
         } else if (node instanceof TableView<?> view) {
             for (Object item : view.getItems()) {
-                dispose(item);
+                doDestroy(item);
             }
         } else if (node instanceof ComboBox<?> comboBox) {
             for (Object item : comboBox.getItems()) {
-                dispose(item);
+                doDestroy(item);
             }
         } else if (node instanceof ChoiceBox<?> choiceBox) {
             for (Object item : choiceBox.getItems()) {
-                dispose(item);
+                doDestroy(item);
             }
         } else if (node instanceof TableColumnBase<?, ?> columnBase) {
             for (TableColumnBase<?, ?> item : columnBase.getColumns()) {
-                disposeField(item);
+                destroyField(item);
             }
         } else if (node instanceof TreeView<?> view) {
-            dispose(view.getRoot());
+            doDestroy(view.getRoot());
         } else if (node instanceof TreeItem<?> treeItem) {
             for (TreeItem<?> item : treeItem.getChildren()) {
-                disposeField(item);
+                destroyField(item);
             }
         } else if (node instanceof Parent parent) {
             for (Node item : parent.getChildrenUnmodifiable()) {
-                dispose(item);
+                doDestroy(item);
             }
         } else if (node instanceof Tab tab) {
-            dispose(tab.getContent());
+            doDestroy(tab.getContent());
             // } else if (node instanceof Shape shape) {
             //     unbindProperty(shape);
         } else if (node instanceof Node node1) {
-            disposeField(node1);
+            destroyField(node1);
         } else if (!(node instanceof Destroyable)) {
             JulLog.warn("UnSupport type:{}", node.getClass());
         }
@@ -104,7 +104,7 @@ public class NodeDisposeUtil {
         if (node instanceof Destroyable destroyable) {
             destroyable.destroy();
         }
-        disposeField(node);
+        destroyField(node);
     }
 
     /**
@@ -112,7 +112,7 @@ public class NodeDisposeUtil {
      *
      * @param object 节点
      */
-    private static void disposeField(Object object) {
+    private static void destroyField(Object object) {
         if (object == null) {
             return;
         }
@@ -147,8 +147,8 @@ public class NodeDisposeUtil {
                     Property<?> property = (Property<?>) value;
                     // 解绑属性
                     if (property != null) {
-                        disposeField(property.getBean());
-                        disposeField(property.getValue());
+                        destroyField(property.getBean());
+                        destroyField(property.getValue());
                         property.unbind();
                     }
                     setNullable = true;
@@ -164,13 +164,13 @@ public class NodeDisposeUtil {
                     // 清除结果
                     if (collection != null) {
                         for (Object o : collection) {
-                            disposeField(o);
+                            destroyField(o);
                         }
                         collection.clear();
                     }
                     setNullable = true;
                 } else if (EventTarget.class.isAssignableFrom(clazz)) {// javafx
-                    disposeField(value);
+                    destroyField(value);
                     setNullable = true;
                 } else if (Object.class.isAssignableFrom(clazz)) {// 对象
                     setNullable = true;
