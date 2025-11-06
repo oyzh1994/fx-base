@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.paint.Color;
 
@@ -90,7 +91,9 @@ public class FXTreeItemValue implements Destroyable {
     }
 
     @Override
-    public void destroy() {
+    public synchronized void destroy() {
+        NodeDestroyUtil.destroy(this.item);
+        NodeDestroyUtil.destroy(this.graphic);
         this.item = null;
         this.graphic = null;
     }

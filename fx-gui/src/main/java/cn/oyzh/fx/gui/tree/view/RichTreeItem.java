@@ -262,19 +262,23 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         // 清理子节点
         Consumer<TreeItem<?>> clearChildren = (treeItem) -> {
             ObservableList<? extends TreeItem<?>> children;
-            if (treeItem instanceof RichTreeItem<?> richTreeItem) {
-                children = richTreeItem.unfilteredChildren();
+            if (treeItem instanceof RichTreeItem<?> item) {
+                children = item.unfilteredChildren();
             } else {
                 children = treeItem.getChildren();
             }
             for (TreeItem<?> child : children) {
                 if (child instanceof RichTreeItem<?> item) {
-                    item.clearChild();
+                    item.destroy();
                 } else {
                     child.getChildren().clear();
                 }
             }
-            children.clear();
+            if (treeItem instanceof RichTreeItem<?> item) {
+                item.destroy();
+            } else {
+                children.clear();
+            }
         };
         FXUtil.runWait(() -> {
             ObservableList<TreeItem<V>> children = super.getChildren();
@@ -314,7 +318,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void setChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
             FXUtil.runWait(() -> this.unfilteredChildren().setAll(items));
-            //this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
+            // this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
         }
     }
 
@@ -322,7 +326,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void addChild(TreeItem<?> item) {
         if (item != null) {
             FXUtil.runWait(() -> this.unfilteredChildren().add(item));
-            //this.service().submitFX(() -> this.unfilteredChildren().add(item));
+            // this.service().submitFX(() -> this.unfilteredChildren().add(item));
         }
     }
 
@@ -517,7 +521,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     }
 
     @Override
-    public void destroy() {
+    public synchronized void destroy() {
         super.destroy();
         this.bitValue = null;
     }

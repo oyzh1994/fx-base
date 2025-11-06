@@ -9,6 +9,7 @@ import javafx.scene.effect.Effect;
  * @author oyzh
  * @since 2023/9/12
  */
+@Deprecated
 public interface DragNodeItem {
 
     /**

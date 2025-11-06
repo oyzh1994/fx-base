@@ -8,8 +8,11 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.thread.QueueService;
+import javafx.collections.ListChangeListener;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -28,11 +31,17 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     {
         NodeManager.init(this);
+        // 监听节点
+        this.getChildren().addListener((ListChangeListener<TreeItem<V>>) c -> {
+            if (c.next()) {
+                c.getRemoved().forEach(NodeDestroyUtil::destroy);
+            }
+        });
     }
 
     private FXTreeView treeView;
 
-    public FXTreeItem( FXTreeView treeView) {
+    public FXTreeItem(FXTreeView treeView) {
         this.setTreeView(treeView);
     }
 
@@ -418,20 +427,13 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     }
 
     @Override
-    public void destroy() {
-        for (TreeItem<V> child : super.getChildren()) {
-            if (child instanceof Destroyable destroyable) {
-                destroyable.destroy();
-            }
-        }
-        Object value = this.getValue();
-        if (value instanceof Destroyable destroyable) {
-            destroyable.destroy();
-        }
-        this.setValue(null);
-//        this.setParent(null);
-        this.setGraphic(null);
+    public synchronized void destroy() {
+        super.getChildren().forEach(NodeDestroyUtil::destroy);
         this.clearChild();
+        NodeDestroyUtil.destroy(this.getValue());
+        this.setValue(null);
+        NodeDestroyUtil.destroy(this.getGraphic());
+        this.setGraphic(null);
         this.treeView = null;
     }
 

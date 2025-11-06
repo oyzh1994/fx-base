@@ -110,7 +110,7 @@ public class NodeMutexes implements Destroyable {
     }
 
     @Override
-    public void destroy() {
+    public synchronized void destroy() {
         this.nodes = null;
         this.manageBindVisible = null;
     }

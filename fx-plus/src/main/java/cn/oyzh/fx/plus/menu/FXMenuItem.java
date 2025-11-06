@@ -116,7 +116,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
     }
 
     @Override
-    public void destroy() {
+    public synchronized void destroy() {
         if (this.getParentMenu() != null) {
             return;
         }
