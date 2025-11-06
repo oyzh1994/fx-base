@@ -66,6 +66,8 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
     public void initNode() {
         this.setPickOnBounds(true);
         this.setPreserveRatio(true);
+        FlexAdapter.super.initNode();
+
     }
 
     @Override

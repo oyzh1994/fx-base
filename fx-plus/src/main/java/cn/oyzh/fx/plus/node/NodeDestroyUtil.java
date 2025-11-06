@@ -97,11 +97,7 @@ public class NodeDestroyUtil {
             //     unbindProperty(shape);
         } else if (node instanceof Node node1) {
             destroyField(node1);
-        } else if (!(node instanceof Destroyable)) {
-            JulLog.warn("UnSupport type:{}", node.getClass());
-        }
-        // 自定义处理
-        if (node instanceof Destroyable destroyable) {
+        } else if (node instanceof Destroyable destroyable) { // 自定义处理
             destroyable.destroy();
         }
         destroyField(node);

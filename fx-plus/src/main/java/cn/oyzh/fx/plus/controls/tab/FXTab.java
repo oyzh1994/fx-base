@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.tab;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
@@ -107,6 +108,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void initNode() {
+        NodeAdapter.super.initNode();
         this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);

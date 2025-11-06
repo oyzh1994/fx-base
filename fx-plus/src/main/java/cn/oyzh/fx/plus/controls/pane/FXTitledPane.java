@@ -26,6 +26,7 @@ public class FXTitledPane extends TitledPane implements FlexAdapter, NodeGroup, 
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setAnimated(true);
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);

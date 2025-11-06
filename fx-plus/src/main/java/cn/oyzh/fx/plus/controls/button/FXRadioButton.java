@@ -25,5 +25,6 @@ public class FXRadioButton extends RadioButton implements NodeGroup, NodeAdapter
     public void initNode() {
         this.setCursor(Cursor.HAND);
         this.setMnemonicParsing(false);
+        NodeAdapter.super.initNode();
     }
 }

@@ -187,6 +187,7 @@ public class FXTextArea extends TextArea implements FlexAdapter, LimitLineContro
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setWrapText(true);
         this.setOnScroll(event -> {
             if (event.isControlDown()) {

@@ -1,10 +1,13 @@
 package cn.oyzh.fx.rich.richtextfx.data;
 
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.menu.FXContextMenu;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.rich.RichDataType;
 import cn.oyzh.fx.rich.richtextfx.control.RichTextAreaPane;
 import javafx.beans.property.BooleanProperty;
+import javafx.scene.Node;
 
 /**
  * @author oyzh
@@ -96,6 +99,7 @@ public class RichDataTextAreaPane extends RichTextAreaPane<RichDataTextArea> imp
 
     @Override
     public void initNode() {
+        super.initNode();
 //        // 初始化字体
 //        this.initFont();
         // 显示行号

@@ -580,6 +580,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setWrapText(true);
         this.setPickOnBounds(true);
         this.setAutoScrollOnDragDesired(true);

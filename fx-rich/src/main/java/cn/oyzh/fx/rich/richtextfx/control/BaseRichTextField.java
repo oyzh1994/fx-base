@@ -80,6 +80,7 @@ public class BaseRichTextField extends InlineCssTextField implements FlexAdapter
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setPickOnBounds(true);
 //        this.setFocusTraversable(false);
         this.getStyleClass().add("rich-text-field");

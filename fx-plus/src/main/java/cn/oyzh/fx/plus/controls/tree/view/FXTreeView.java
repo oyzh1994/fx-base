@@ -190,6 +190,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.initTreeView();
         this.initRoot();
     }

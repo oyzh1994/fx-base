@@ -76,6 +76,7 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setPickOnBounds(true);
     }
 

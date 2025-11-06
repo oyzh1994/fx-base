@@ -50,6 +50,7 @@ public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, 
     public void initNode() {
         this.setPickOnBounds(true);
         this.setPreserveRatio(true);
+        FlexAdapter.super.initNode();
     }
 
     @Override

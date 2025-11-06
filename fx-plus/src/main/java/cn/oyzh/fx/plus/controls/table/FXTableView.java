@@ -62,6 +62,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setHeaderHeight(30);
         this.setFixedCellSize(30);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);

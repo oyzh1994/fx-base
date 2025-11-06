@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
@@ -367,6 +368,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 
     @Override
     public void initNode() {
+        NodeAdapter.super.initNode();
         this.setSize(DEFAULT_SIZE);
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);

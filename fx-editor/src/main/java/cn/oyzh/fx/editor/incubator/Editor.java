@@ -74,7 +74,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
+public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
 
     /**
      * 默认提示词颜色
@@ -946,6 +946,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         // 初始化编辑器
         this.initEditor();
         // 尝试初始化提示词
