@@ -41,9 +41,10 @@ public class NodeDestroyUtil {
      */
     public static void destroy(Object node) {
         if (node != null) {
-            System.out.println("destroy:" + node);
-            // 异步执行
-            ThreadUtil.startVirtual(() -> doDestroy(node));
+            // System.out.println("destroy:" + node);
+            // // 异步执行
+            // ThreadUtil.startVirtual(() -> doDestroy(node));
+            doDestroy(node);
         }
     }
 

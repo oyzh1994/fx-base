@@ -171,16 +171,16 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         return item != null && this.getSelectedItem() == item;
     }
 
-    /**
-     * 刷新坐标，防止出现白屏
-     */
-    public void flushLocal() {
-        TaskManager.startDelay(() -> FXUtil.runLater(() -> {
-            this.layoutChildren();
-            this.localToScreen(this.getBoundsInLocal());
-            this.refresh();
-        }), 100);
-    }
+    // /**
+    //  * 刷新坐标，防止出现白屏
+    //  */
+    // public void flushLocal() {
+    //     TaskManager.startDelay(() -> FXUtil.runLater(() -> {
+    //         this.layoutChildren();
+    //         this.localToScreen(this.getBoundsInLocal());
+    //         this.refresh();
+    //     }), 100);
+    // }
 
     @Override
     public void changeTheme(ThemeStyle style) {
@@ -210,22 +210,22 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         this.scrollTo(this.getSelectedItem());
     }
 
-    /**
-     * 渲染服务
-     */
-    protected QueueService service;
-
-    /**
-     * 获取渲染服务
-     *
-     * @return 渲染服务
-     */
-    public QueueService service() {
-        if (this.service == null) {
-            this.service = new QueueService();
-        }
-        return this.service;
-    }
+    // /**
+    //  * 渲染服务
+    //  */
+    // protected QueueService service;
+    //
+    // /**
+    //  * 获取渲染服务
+    //  *
+    //  * @return 渲染服务
+    //  */
+    // public QueueService service() {
+    //     if (this.service == null) {
+    //         this.service = new QueueService();
+    //     }
+    //     return this.service;
+    // }
 
     @Override
     public FXTreeItem<?> getSelectedItem() {
@@ -240,7 +240,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         if (item != null) {
             item.expend();
             this.select(item);
-            this.flushLocal();
+            // this.flushLocal();
         }
     }
 
@@ -252,7 +252,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         if (item != null) {
             item.collapse();
             this.select(item);
-            this.flushLocal();
+            // this.flushLocal();
         }
     }
 

@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author oyzh
  * @since 2024/03/26
  */
+@Deprecated
 public class QueueService {
 
     /**

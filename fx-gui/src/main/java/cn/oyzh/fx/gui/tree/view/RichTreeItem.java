@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
-import cn.oyzh.fx.plus.thread.QueueService;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -274,11 +274,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                     child.getChildren().clear();
                 }
             }
-            if (treeItem instanceof RichTreeItem<?> item) {
-                item.destroy();
-            } else {
-                children.clear();
-            }
+            children.clear();
         };
         FXUtil.runWait(() -> {
             ObservableList<TreeItem<V>> children = super.getChildren();
@@ -396,11 +392,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 子节点排序
      */
     protected void sortChild(boolean sortAsc) {
-        QueueService service = this.service();
-        if (service == null) {
-            return;
-        }
-        service.submitFX(() -> {
+        BackgroundService.submitFX(() -> {
             this.setSorting(true);
             try {
                 // 执行排序
@@ -440,12 +432,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * @param itemFilter 节点过滤器
      */
     public synchronized void doFilter(RichTreeItemFilter itemFilter) {
-        QueueService service = this.service();
-        if (service != null) {
-            List<RichTreeItem<?>> items = this.richChildren();
-            List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
-            service.submit(() -> this.doFilter(itemFilter, list));
-        }
+        List<RichTreeItem<?>> items = this.richChildren();
+        List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
+        BackgroundService.submit(() -> this.doFilter(itemFilter, list));
     }
 
     /**
