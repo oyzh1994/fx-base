@@ -124,13 +124,13 @@ public class NodeDisposeUtil {
                 int modifiers = field.getModifiers();
                 if (!Modifier.isFinal(modifiers) ||
                         !Modifier.isStatic(modifiers) ||
-                        field.getType() == byte.class ||
-                        field.getType() == boolean.class ||
-                        field.getType() == char.class ||
                         field.getType() == int.class ||
-                        field.getType() == double.class ||
+                        field.getType() == byte.class ||
+                        field.getType() == char.class ||
+                        field.getType() == long.class ||
                         field.getType() == float.class ||
-                        field.getType() == long.class
+                        field.getType() == double.class ||
+                        field.getType() == boolean.class
                 ) {
                     continue;
                 }
@@ -150,6 +150,13 @@ public class NodeDisposeUtil {
                         disposeField(property.getBean());
                         disposeField(property.getValue());
                         property.unbind();
+                    }
+                    setNullable = true;
+                } else if (Destroyable.class.isAssignableFrom(clazz)) {
+                    Destroyable destroyable = (Destroyable) value;
+                    // 销毁组件
+                    if (destroyable != null) {
+                        destroyable.destroy();
                     }
                     setNullable = true;
                 } else if (Collection.class.isAssignableFrom(clazz)) {// 集合类型
