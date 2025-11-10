@@ -62,7 +62,7 @@ public class TrayMenu extends FXVBox {
     protected void initSize() {
         TrayItem trayItem = (TrayItem) this.getChild(0);
         // 计算高度
-        double h = this.getChildren().size() * trayItem.realHeight() + 5;
+        double h = this.getChildren().size() * trayItem.getRealHeight() + 5;
         // 计算宽度
         double w = 0;
         for (Node child : this.getChildren()) {

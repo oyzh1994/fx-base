@@ -277,8 +277,8 @@ public class TrayImage extends TrayIcon {
                     Robot robot = FXUtil.getRobot();
                     this.stage.setX(robot.getMouseX() - 2);
                     this.stage.setY(robot.getMouseY() - this.stage.getHeight() - 12);
-                    this.stage.setWidth(this.menu.realWidth());
-                    this.stage.setHeight(this.menu.realHeight());
+                    this.stage.setWidth(this.menu.getRealWidth());
+                    this.stage.setHeight(this.menu.getRealHeight());
                     this.stage.setAlwaysOnTop(true);
                     this.stage.toFront();
                     this.stage.requestFocus();

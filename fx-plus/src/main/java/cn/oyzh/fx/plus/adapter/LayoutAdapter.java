@@ -17,17 +17,18 @@ public interface LayoutAdapter extends EventTarget {
      * @return 真实宽度
      */
     default double getRealWidth() {
-        return this.realWidth();
+        return NodeUtil.getWidth(this);
+        // return this.realWidth();
     }
 
-    /**
-     * 获取真实宽度实现
-     *
-     * @return 真实宽度
-     */
-    default double realWidth() {
-        return NodeUtil.getWidth(this);
-    }
+    // /**
+    //  * 获取真实宽度实现
+    //  *
+    //  * @return 真实宽度
+    //  */
+    // default double realWidth() {
+    //     return NodeUtil.getWidth(this);
+    // }
 
     /**
      * 设置真实宽度
@@ -35,17 +36,18 @@ public interface LayoutAdapter extends EventTarget {
      * @param width 真实宽度
      */
     default void setRealWidth(double width) {
-        this.realWidth(width);
-    }
-
-    /**
-     * 设置真实宽度实现
-     *
-     * @param width 真实宽度
-     */
-    default void realWidth(double width) {
+        // this.realWidth(width);
         NodeUtil.setWidth(this, width);
     }
+    //
+    // /**
+    //  * 设置真实宽度实现
+    //  *
+    //  * @param width 真实宽度
+    //  */
+    // default void realWidth(double width) {
+    //     NodeUtil.setWidth(this, width);
+    // }
 
     /**
      * 获取真实高度
@@ -53,17 +55,18 @@ public interface LayoutAdapter extends EventTarget {
      * @return 真实高度
      */
     default double getRealHeight() {
-        return this.realHeight();
+        return NodeUtil.getHeight(this);
+        // return this.realHeight();
     }
 
-    /**
-     * 获取真实高度实现
-     *
-     * @return 真实高度
-     */
-    default double realHeight() {
-        return NodeUtil.getHeight(this);
-    }
+    // /**
+    //  * 获取真实高度实现
+    //  *
+    //  * @return 真实高度
+    //  */
+    // default double realHeight() {
+    //     return NodeUtil.getHeight(this);
+    // }
 
     /**
      * 设置真实高度
