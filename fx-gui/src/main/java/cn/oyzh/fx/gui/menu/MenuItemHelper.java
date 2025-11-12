@@ -183,6 +183,22 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteView(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem cloneView(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneView(), new CopySVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem cloneFunction(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneFunction(), new CopySVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem cloneProcedure(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneProcedure(), new CopySVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem cloneEvent(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneEvent(), new CopySVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem addView(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addView(), new AddSVGGlyph(iconSize), action);
     }
