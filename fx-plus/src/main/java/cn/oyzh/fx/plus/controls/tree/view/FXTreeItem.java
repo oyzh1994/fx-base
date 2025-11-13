@@ -32,6 +32,13 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     {
         NodeManager.init(this);
+        this.autoDestroy();
+    }
+
+    /**
+     * 自动销毁
+     */
+    protected void autoDestroy() {
         // 监听节点
         super.getChildren().addListener((ListChangeListener<TreeItem<V>>) c -> {
             if (c.next()) {
