@@ -43,6 +43,8 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         }
         if (object.containsKey("output")) {
             config.setOutput(StringUtil.emptyToDefault(object.getString("output"), tmpJreDir));
+        } else {
+            config.setOutput(tmpJreDir);
         }
         if (object.containsKey("compress")) {
             config.setCompress(object.getIntValue("compress", 2));
