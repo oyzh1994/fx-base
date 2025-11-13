@@ -1,6 +1,8 @@
 package cn.oyzh.fx.pkg.jar;
 
 
+import cn.oyzh.fx.pkg.ConfigMargeAble;
+
 import java.util.Set;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/06/17
  */
-public class JarConfig {
+public class JarConfig implements ConfigMargeAble<JarConfig> {
 
     /**
      * 是否移除空jar
@@ -48,5 +50,23 @@ public class JarConfig {
 
     public void setSkipsJar(Set<String> skipsJar) {
         this.skipsJar = skipsJar;
+    }
+
+    @Override
+    public void marge(JarConfig config) {
+        if (config == null) {
+            return;
+        }
+        if (this.skipsJar == null) {
+            this.skipsJar = config.skipsJar;
+        } else if (config.skipsJar != null) {
+            this.skipsJar.addAll(config.skipsJar);
+        }
+        if (this.excludes == null) {
+            this.excludes = config.excludes;
+        } else  if (config.excludes != null){
+            this.excludes.addAll(config.excludes);
+        }
+        this.removeEmpty = config.removeEmpty;
     }
 }

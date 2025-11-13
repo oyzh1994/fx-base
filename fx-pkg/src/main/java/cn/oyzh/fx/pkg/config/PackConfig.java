@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.config;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.pkg.ConfigMargeAble;
 import cn.oyzh.fx.pkg.comporess.CompressConfig;
 import cn.oyzh.fx.pkg.jar.JarConfig;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author oyzh
  * @since 2024/6/14
  */
-public class PackConfig {
+public class PackConfig implements ConfigMargeAble<PackConfig> {
 
     /**
      * 目标目录
@@ -37,9 +38,9 @@ public class PackConfig {
     private String minimizeJre;
 
     /**
-     * jpackage输入目录
+     * jPackage输入目录
      */
-    private String jpackageInput;
+    private String jPackageInput;
 
     /**
      * jar解压目录
@@ -51,6 +52,7 @@ public class PackConfig {
      * jpackage win打包的exe不能重启，mac打包的不能启动，不建议使用
      * packr
      */
+    @Deprecated
     private String packMode = "jpackage";
 
     /**
@@ -135,10 +137,11 @@ public class PackConfig {
     /**
      * packr配置
      */
+    @Deprecated
     private PackrConfig packrConfig;
 
     /**
-     * jpackage配置
+     * jPackage配置
      */
     private JPackageConfig jPackageConfig;
 
@@ -253,12 +256,12 @@ public class PackConfig {
         this.minimizeJre = minimizeJre;
     }
 
-    public String getJpackageInput() {
-        return jpackageInput;
+    public String getJPackageInput() {
+        return jPackageInput;
     }
 
-    public void setJpackageInput(String jpackageInput) {
-        this.jpackageInput = jpackageInput;
+    public void setJPackageInput(String jPackageInput) {
+        this.jPackageInput = jPackageInput;
     }
 
     public String getJarUnDir() {
@@ -373,19 +376,19 @@ public class PackConfig {
         this.jreConfig = jreConfig;
     }
 
-    public JDepsConfig getjDepsConfig() {
+    public JDepsConfig getJDepsConfig() {
         return jDepsConfig;
     }
 
-    public void setjDepsConfig(JDepsConfig jDepsConfig) {
+    public void setJDepsConfig(JDepsConfig jDepsConfig) {
         this.jDepsConfig = jDepsConfig;
     }
 
-    public JLinkConfig getjLinkConfig() {
+    public JLinkConfig getJLinkConfig() {
         return jLinkConfig;
     }
 
-    public void setjLinkConfig(JLinkConfig jLinkConfig) {
+    public void setJLinkConfig(JLinkConfig jLinkConfig) {
         this.jLinkConfig = jLinkConfig;
     }
 
@@ -423,5 +426,69 @@ public class PackConfig {
 
     public void setAppImageRuntime(String appImageRuntime) {
         this.appImageRuntime = appImageRuntime;
+    }
+
+    @Override
+    public void marge(PackConfig config) {
+        if (config == null) {
+            return;
+        }
+        if (config.dest != null) {
+            this.dest = config.dest;
+        }
+        if (config.appIcon != null) {
+            this.appIcon = config.appIcon;
+        }
+        if (config.jdkPath != null) {
+            this.jdkPath = config.jdkPath;
+        }
+        if (config.appName != null) {
+            this.appName = config.appName;
+        }
+        if (config.mainJar != null) {
+            this.mainJar = config.mainJar;
+        }
+        if (config.platform != null) {
+            this.platform = config.platform;
+        }
+        if (config.appVersion != null) {
+            this.appVersion = config.appVersion;
+        }
+        if (config.buildType != null) {
+            this.buildType = config.buildType;
+        }
+        if (config.appImageRuntime != null) {
+            this.appImageRuntime = config.appImageRuntime;
+        }
+        if (this.jarConfig == null) {
+            this.jarConfig = config.jarConfig;
+        } else {
+            this.jarConfig.marge(config.jarConfig);
+        }
+        if (this.jreConfig == null) {
+            this.jreConfig = config.jreConfig;
+        } else {
+            this.jreConfig.marge(config.jreConfig);
+        }
+        if (this.jLinkConfig == null) {
+            this.jLinkConfig = config.jLinkConfig;
+        } else {
+            this.jLinkConfig.marge(config.jLinkConfig);
+        }
+        if (this.jDepsConfig == null) {
+            this.jDepsConfig = config.jDepsConfig;
+        } else {
+            this.jDepsConfig.marge(config.jDepsConfig);
+        }
+        if (this.compressConfig == null) {
+            this.compressConfig = config.compressConfig;
+        } else {
+            this.compressConfig.marge(config.compressConfig);
+        }
+        if (this.jPackageConfig == null) {
+            this.jPackageConfig = config.jPackageConfig;
+        } else {
+            this.jPackageConfig.marge(config.jPackageConfig);
+        }
     }
 }

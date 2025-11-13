@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.jpackage;
 import cn.oyzh.fx.pkg.ConfigParser;
 import com.alibaba.fastjson2.JSONObject;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -58,7 +59,7 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         }
         List<String> javaOptions = object.getList("java-options", String.class);
         if (javaOptions != null) {
-            config.setJavaOptions(javaOptions);
+            config.setJavaOptions(new HashSet<>(javaOptions));
         }
         Boolean winMenu = object.getBoolean("win-menu");
         if (winMenu != null) {

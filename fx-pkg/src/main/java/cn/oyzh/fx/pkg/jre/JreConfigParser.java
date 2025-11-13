@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * jre配置解析器
@@ -19,7 +20,7 @@ public class JreConfigParser implements ConfigParser<JreConfig> {
         JreConfig config = new JreConfig();
         JSONArray excludes = object.getJSONArray("excludes");
         if (excludes != null) {
-            config.setExcludes(new ArrayList<>());
+            config.setExcludes(new HashSet<>());
             for (Object o : excludes) {
                 config.getExcludes().add(o.toString());
             }

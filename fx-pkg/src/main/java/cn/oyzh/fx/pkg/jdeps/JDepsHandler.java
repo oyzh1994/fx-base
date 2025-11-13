@@ -46,11 +46,11 @@ public class JDepsHandler implements PreHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        JLinkConfig jLinkConfig = packConfig.getjLinkConfig();
+        JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
         if (jLinkConfig == null) {
             return;
         }
-        JDepsConfig jDepsConfig = packConfig.getjDepsConfig();
+        JDepsConfig jDepsConfig = packConfig.getJDepsConfig();
         RegFilter fileFilter = new RegFilter();
         RegFilter moduleFilter = new RegFilter();
         if (jDepsConfig != null) {

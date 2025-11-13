@@ -2,9 +2,11 @@ package cn.oyzh.fx.pkg.jpackage;
 
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.pkg.ConfigMargeAble;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * JPackage配置
@@ -12,7 +14,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/3/8
  */
-public class JPackageConfig {
+public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
 
     /**
      * 程序名
@@ -72,7 +74,7 @@ public class JPackageConfig {
     /**
      * vm参数
      */
-    private List<String> javaOptions;
+    private Set<String> javaOptions;
 
     /**
      * 是否创建开始菜单、仅windows
@@ -223,11 +225,11 @@ public class JPackageConfig {
         this.macPackageIdentifier = macPackageIdentifier;
     }
 
-    public List<String> getJavaOptions() {
+    public Set<String> getJavaOptions() {
         return javaOptions;
     }
 
-    public void setJavaOptions(List<String> javaOptions) {
+    public void setJavaOptions(Set<String> javaOptions) {
         this.javaOptions = javaOptions;
     }
 
@@ -239,10 +241,60 @@ public class JPackageConfig {
         this.enable = enable;
     }
 
-    public String fixedType() {
-        if (StringUtil.equalsIgnoreCase(this.type, "AppImage")) {
-            return "app-image";
+    // public String fixedType() {
+    //     if (StringUtil.equalsIgnoreCase(this.type, "AppImage")) {
+    //         return "app-image";
+    //     }
+    //     return this.type;
+    // }
+
+    @Override
+    public void marge(JPackageConfig config) {
+        if (config == null) {
+            return;
         }
-        return this.type;
+        if (config.name != null) {
+            this.name = config.name;
+        }
+        if (config.dest != null) {
+            this.dest = config.dest;
+        }
+        if (config.type != null) {
+            this.type = config.type;
+        }
+        if (config.icon != null) {
+            this.icon = config.icon;
+        }
+        if (config.input != null) {
+            this.input = config.input;
+        }
+        if (config.vendor != null) {
+            this.vendor = config.vendor;
+        }
+        if (config.mainJar != null) {
+            this.mainJar = config.mainJar;
+        }
+        if (config.appVersion != null) {
+            this.appVersion = config.appVersion;
+        }
+        if (config.description != null) {
+            this.description = config.description;
+        }
+        if (config.runtimeImage != null) {
+            this.runtimeImage = config.runtimeImage;
+        }
+        if (config.macPackageIdentifier != null) {
+            this.macPackageIdentifier = config.macPackageIdentifier;
+        }
+        if (this.javaOptions == null) {
+            this.javaOptions = config.javaOptions;
+        } else if (config.javaOptions != null) {
+            this.javaOptions.addAll(config.javaOptions);
+        }
+        this.enable = config.enable;
+        this.verbose = config.verbose;
+        this.winMenu = config.winMenu;
+        this.winShortcut = config.winShortcut;
+        this.winDirChooser = config.winDirChooser;
     }
 }

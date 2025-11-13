@@ -31,9 +31,15 @@ public class JDepsConfigParser implements ConfigParser<JDepsConfig> {
                 config.getExcludes().add(o.toString());
             }
         }
-        config.setMultiRelease(object.getInteger("multi-release"));
-        config.setSummary(object.getBooleanValue("summary", true));
-        config.setVerbose(object.getBooleanValue("verbose", false));
+        if (object.containsKey("multi-release")) {
+            config.setMultiRelease(object.getInteger("multi-release"));
+        }
+        if (object.containsKey("summary")) {
+            config.setSummary(object.getBooleanValue("summary", true));
+        }
+        if (object.containsKey("verbose")) {
+            config.setVerbose(object.getBooleanValue("verbose", false));
+        }
         return config;
     }
 

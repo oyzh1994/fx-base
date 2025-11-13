@@ -1,10 +1,13 @@
 package cn.oyzh.fx.pkg.jlink;
 
 import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.fx.pkg.ConfigMargeAble;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * jlink配置
@@ -12,7 +15,7 @@ import java.util.List;
  * @author oyzh
  * @since 2024/06/17
  */
-public class JLinkConfig {
+public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
 
     /**
      * vm类型
@@ -57,23 +60,19 @@ public class JLinkConfig {
     /**
      * 添加的模块
      */
-    private List<String> addModules;
+    private Set<String> addModules;
 
     /**
      * 排除文件
      */
-    private List<String> excludeFiles;
+    private Set<String> excludeFiles;
 
     public void margeAddModules(Collection<String> addModules) {
         if (CollectionUtil.isNotEmpty(addModules)) {
             if (this.addModules == null || this.addModules.isEmpty()) {
-                this.addModules = new ArrayList<>(addModules);
+                this.addModules = new HashSet<>(addModules);
             } else {
-                for (String addModule : addModules) {
-                    if (!this.addModules.contains(addModule)) {
-                        this.addModules.add(addModule);
-                    }
-                }
+                this.addModules.addAll(addModules);
             }
         }
     }
@@ -142,19 +141,50 @@ public class JLinkConfig {
         this.stripJavaDebugAttributes = stripJavaDebugAttributes;
     }
 
-    public List<String> getAddModules() {
+    public Set<String> getAddModules() {
         return addModules;
     }
 
-    public void setAddModules(List<String> addModules) {
+    public void setAddModules(Set<String> addModules) {
         this.addModules = addModules;
     }
 
-    public List<String> getExcludeFiles() {
+    public Set<String> getExcludeFiles() {
         return excludeFiles;
     }
 
-    public void setExcludeFiles(List<String> excludeFiles) {
+    public void setExcludeFiles(Set<String> excludeFiles) {
         this.excludeFiles = excludeFiles;
+    }
+
+    @Override
+    public void marge(JLinkConfig config) {
+        if (config == null) {
+            return;
+        }
+        if (config.vm != null) {
+            this.vm = config.vm;
+        }
+        if (config.output != null) {
+            this.output = config.output;
+        }
+        if (config.compress != null) {
+            this.compress = config.compress;
+        }
+        if (this.addModules == null) {
+            this.addModules = config.addModules;
+        } else if (config.addModules != null) {
+            this.addModules.addAll(config.addModules);
+        }
+        if (this.excludeFiles == null) {
+            this.excludeFiles = config.excludeFiles;
+        } else if (config.excludeFiles != null) {
+            this.excludeFiles.addAll(config.excludeFiles);
+        }
+        this.verbose = config.verbose;
+        this.stripDebug = config.stripDebug;
+        this.noManPages = config.noManPages;
+        this.noHeaderFiles = config.noHeaderFiles;
+        this.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
     }
 }

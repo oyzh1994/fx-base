@@ -54,9 +54,9 @@ public class EndHandler implements PostHandler {
         if (packConfig.getJarUnDir() != null) {
             FileUtil.del(packConfig.getJarUnDir());
         }
-        // 删除临时的jpackage目录
-        if (packConfig.getJpackageInput() != null) {
-            FileUtil.del(packConfig.getJpackageInput());
+        // 删除临时的jPackage目录
+        if (packConfig.getJPackageInput() != null) {
+            FileUtil.del(packConfig.getJPackageInput());
         }
         long startTime = (Long) packConfig.getProperty("startTime");
         long endTime = System.currentTimeMillis();
