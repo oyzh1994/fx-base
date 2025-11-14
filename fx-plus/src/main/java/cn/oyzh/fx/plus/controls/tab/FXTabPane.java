@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import atlantafx.base.theme.Styles;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
@@ -334,8 +335,8 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
 
     @Override
     public void initNode() {
-        FlexAdapter.super.initNode();
         this.setTabRealHeight(24);
+        this.getStyleClass().add(Styles.TABS_CLASSIC);
         // this.selectedItemChanged(this::setupSelectCountListener);
         // 监听tab移除，防止内存泄露
         this.getTabs().addListener((ListChangeListener<Tab>) c -> {
@@ -343,6 +344,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
                 c.getRemoved().forEach(NodeDestroyUtil::destroy);
             }
         });
+        FlexAdapter.super.initNode();
     }
 
     /**
