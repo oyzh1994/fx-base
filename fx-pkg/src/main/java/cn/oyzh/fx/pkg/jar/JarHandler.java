@@ -84,13 +84,12 @@ public class JarHandler implements PreHandler {
      * @return 结果
      */
     private boolean jarFilter(String name) {
-        boolean accept;
         // jar包不处理
         if (name.endsWith(".jar")) {
-            accept = false;
-        } else {// 其他文件
-            accept = this.filter.apply(name);
+            return false;
         }
+        // 其他文件
+        boolean accept = this.filter.apply(name);
         if (!accept) {
             JulLog.info("文件:{}被过滤.", name);
         }
