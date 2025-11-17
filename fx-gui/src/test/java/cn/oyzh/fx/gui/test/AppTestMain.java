@@ -14,11 +14,19 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -38,7 +46,8 @@ public class AppTestMain extends Application {
     public void start(Stage stage) throws Exception {
         // test1(stage);
         // test2(stage);
-        test3(stage);
+        // test3(stage);
+        test4(stage);
     }
 
     private void test1(Stage stage) {
@@ -132,6 +141,55 @@ public class AppTestMain extends Application {
         accordion.getPanes().addAll(titledPane1, titledPane2, titledPane3);
         accordion.setExpandedPane(titledPane1);
         vbox.getChildren().addAll(accordion);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("titledPane测试");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void test4(Stage stage) {
+        // 创建一个轻量级HBox
+        VBox vbox = new VBox();
+
+        Pagination pagination = new Pagination();
+        pagination.setPageCount(10);
+        pagination.setMaxPageIndicatorCount(3);
+        pagination.setCurrentPageIndex(3);
+
+        vbox.getChildren().addAll(pagination);
+
+        Slider slider = new Slider();
+        vbox.getChildren().addAll(slider);
+
+        Spinner<Integer> spinner = new Spinner<>();
+        spinner.setEditable(true);
+        spinner.setValueFactory(new SpinnerValueFactory<>() {
+            @Override
+            public void decrement(int steps) {
+
+            }
+
+            @Override
+            public void increment(int steps) {
+
+            }
+        });
+
+        vbox.getChildren().addAll(spinner);
+
+
+        SplitMenuButton button = new SplitMenuButton();
+        SplitPane button1 = new SplitPane();
+
+        vbox.getChildren().addAll(button);
+        // vbox.getChildren().addAll(button1);
+
+        ToolBar toolBar = new ToolBar();
+        toolBar.getItems().addAll(new Button("aaa"));
+        toolBar.getItems().addAll(new Button("aaa"));
+        toolBar.getItems().addAll(new OpenSVGGlyph());
+        vbox.getChildren().addAll(toolBar);
 
         Scene scene = new Scene(vbox, 400, 300);
         stage.setTitle("titledPane测试");
