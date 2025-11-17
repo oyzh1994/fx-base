@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.pane;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -10,7 +11,6 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.TitledPane;
 
@@ -34,52 +34,75 @@ public class FXTitledPane extends TitledPane implements FlexAdapter, NodeGroup, 
 //        this.setFocusTraversable(false);
     }
 
-    private ChangeListener<Boolean> autoHideListener;
+//     private ChangeListener<Boolean> autoHideListener;
+//
+//     public void setAutoHide(boolean autoHide) {
+//         if (autoHide) {
+//             if (this.autoHideListener == null) {
+//                 this.autoHideListener = (observable, oldValue, newValue) -> {
+//                     if (newValue) {
+//                         NodeUtil.display(this.getContent());
+//                     } else {
+//                         this.setHeight(0);
+//                         this.setMinHeight(0);
+//                         this.setMaxHeight(0);
+//                         this.setPrefHeight(0);
+//                         NodeUtil.disappear(this.getContent());
+//                     }
+//                 };
+//                 this.expandedProperty().addListener(this.autoHideListener);
+// //                this.expandedProperty().addListener(new WeakChangeListener<>(this.autoHideListener));
+//             }
+//         } else {
+//             if (this.autoHideListener != null) {
+//                 // this.expandedProperty().unbind();
+//                 this.expandedProperty().removeListener(this.autoHideListener);
+//                 this.autoHideListener = null;
+//             }
+//         }
+//         this.setProp("autoHide", autoHide);
+//     }
+//
+//     public boolean getAutoHide() {
+//         Object object = this.getProp("autoHide");
+//         if (object == null) {
+//             return false;
+//         }
+//         return (boolean) object;
+//     }
 
-    public void setAutoHide(boolean autoHide) {
-        if (autoHide) {
-            if (this.autoHideListener == null) {
-                this.autoHideListener = (observable, oldValue, newValue) -> {
-                    if (newValue) {
-                        NodeUtil.display(this.getContent());
-                    } else {
-                        this.setHeight(0);
-                        this.setMinHeight(0);
-                        this.setMaxHeight(0);
-                        this.setPrefHeight(0);
-                        NodeUtil.disappear(this.getContent());
-                    }
-                };
-                this.expandedProperty().addListener(this.autoHideListener);
-//                this.expandedProperty().addListener(new WeakChangeListener<>(this.autoHideListener));
-            }
+    // public void appendText(String text) {
+    //     if (text != null) {
+    //         String titleText = this.getProp("titleText");
+    //         if (titleText == null) {
+    //             this.setProp("titleText", this.getText());
+    //             titleText = this.getText();
+    //         }
+    //         this.setText(titleText + text);
+    //     }
+    // }
+
+    public void setAppendText(String appendText) {
+        if (StringUtil.isEmpty(appendText)) {
+            return;
+        }
+        String text;
+        if (this.hasProp("appendText")) {
+            text = this.getProp("text");
         } else {
-            if (this.autoHideListener != null) {
-                // this.expandedProperty().unbind();
-                this.expandedProperty().removeListener(this.autoHideListener);
-                this.autoHideListener = null;
-            }
+            text = this.getText();
         }
-        this.setProp("autoHide", autoHide);
+        if (StringUtil.isEmpty(text)) {
+            this.setText(appendText);
+        } else {
+            this.setText(text + appendText);
+        }
+        this.setProp("text", text);
+        this.setProp("appendText", appendText);
     }
 
-    public boolean getAutoHide() {
-        Object object = this.getProp("autoHide");
-        if (object == null) {
-            return false;
-        }
-        return (boolean) object;
-    }
-
-    public void appendText(String text) {
-        if (text != null) {
-            String titleText = this.getProp("titleText");
-            if (titleText == null) {
-                this.setProp("titleText", this.getText());
-                titleText = this.getText();
-            }
-            this.setText(titleText + text);
-        }
+    public String getAppendText() {
+        return this.getProp("appendText");
     }
 
     @Override
