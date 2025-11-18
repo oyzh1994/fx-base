@@ -1,11 +1,8 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.object.Destroyable;
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import javafx.beans.property.Property;
-import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,7 +21,6 @@ import javafx.stage.Window;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
 
 /**
  * 节点销毁工具类
@@ -140,8 +136,8 @@ public class NodeDestroyUtil {
                 field.setAccessible(true);
                 // 获取属性值
                 Object value = field.get(object);
-                // 可设置为null
-                boolean setNullable = false;
+                // // 可设置为null
+                // boolean setNullable = false;
                 // 属性类型
                 if (Property.class.isAssignableFrom(clazz)) {
                     Property<?> property = (Property<?>) value;
@@ -149,12 +145,12 @@ public class NodeDestroyUtil {
                     if (property != null) {
                         property.unbind();
                     }
-                } else if (Destroyable.class.isAssignableFrom(clazz)) {
-                    Destroyable destroyable = (Destroyable) value;
-                    // 销毁组件
-                    if (destroyable != null) {
-                        destroyable.destroy();
-                    }
+                // } else if (Destroyable.class.isAssignableFrom(clazz)) {
+                //     Destroyable destroyable = (Destroyable) value;
+                //     // 销毁组件
+                //     if (destroyable != null) {
+                //         destroyable.destroy();
+                //     }
                     // } else if (Collection.class.isAssignableFrom(clazz)) {// 集合类型
                     //     Collection<?> collection = (Collection<?>) value;
                     //     // 清除结果
@@ -169,15 +165,15 @@ public class NodeDestroyUtil {
                     //     if (value != object) {
                     //         destroyField(value);
                     //     }
-                } else if (String.class.isAssignableFrom(clazz)) {// 对象
-                    if (value != null) {
-                        setNullable = true;
-                    }
+                // } else if (String.class.isAssignableFrom(clazz)) {// 对象
+                //     if (value != null) {
+                //         setNullable = true;
+                //     }
                 }
                 // 设置为null
-                if (setNullable) {
+                // if (setNullable) {
                     // field.set(object, null);
-                }
+                // }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

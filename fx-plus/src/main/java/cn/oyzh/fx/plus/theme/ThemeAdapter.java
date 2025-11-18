@@ -75,6 +75,8 @@ public interface ThemeAdapter extends PropAdapter {
                 this.handleStyle(node.root(), style);
             } else if (this instanceof Stage node) {
                 this.handleStyle(node.getScene().getRoot(), style);
+            } else if (this instanceof Node node) {
+                this.handleStyle(node, style);
             }
         }
     }
