@@ -46,7 +46,7 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
             if (node instanceof RichTreeItemBox box) {
                 box.init(value, treeView.highlightText, treeView.highlightMatchCase);
             } else {
-                FXUtil.runWait(()-> this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase)));
+                FXUtil.runWait(() -> this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase)));
             }
             this.setText(null);
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -83,4 +83,13 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
             // BackgroundService.submit(() -> DragUtil.initDragNode(this.dragNodeHandler, this, treeView.getDragContent()));
         }
     }
+
+    // @Override
+    // public void destroy() {
+    //     if (this.dragNodeHandler != null) {
+    //         this.dragNodeHandler.destroy();
+    //     }
+    //     this.setText(null);
+    //     this.setGraphic(null);
+    // }
 }
