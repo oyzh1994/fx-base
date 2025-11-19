@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -77,12 +76,12 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
                 c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
             }
         });
-        // 监听数据
-        this.itemList().addListener((ListChangeListener<S>) c -> {
-            if (c.next()) {
-                c.getRemoved().forEach(NodeDestroyUtil::destroy);
-            }
-        });
+        // // 监听数据
+        // this.itemList().addListener((ListChangeListener<S>) c -> {
+        //     if (c.next()) {
+        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
+        //     }
+        // });
     }
 
     private boolean reorderable;

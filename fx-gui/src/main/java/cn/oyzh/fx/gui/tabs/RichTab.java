@@ -132,14 +132,17 @@ public abstract class RichTab extends FXTab {
     public List<MenuItem> getMenuItems() {
         List<MenuItem> items = new ArrayList<>();
         FXMenuItem closeTab = MenuItemHelper.closeCurrTab(this::closeTab);
-        FXMenuItem closeLeftTab = MenuItemHelper.closeLeftTab(this::closeLeftTab);
-        FXMenuItem closeRightTab = MenuItemHelper.closeRightTab(this::closeRightTab);
-        FXMenuItem closeOtherTab = MenuItemHelper.closeOtherTab(this::closeOtherTab);
-        FXMenuItem closeAllTab = MenuItemHelper.closeAllTab(this::closeAllTab);
+        if (!this.isClosable()) {
+            closeTab.setDisable(true);
+        }
         items.add(closeTab);
+        FXMenuItem closeLeftTab = MenuItemHelper.closeLeftTab(this::closeLeftTab);
         items.add(closeLeftTab);
+        FXMenuItem closeRightTab = MenuItemHelper.closeRightTab(this::closeRightTab);
         items.add(closeRightTab);
+        FXMenuItem closeOtherTab = MenuItemHelper.closeOtherTab(this::closeOtherTab);
         items.add(closeOtherTab);
+        FXMenuItem closeAllTab = MenuItemHelper.closeAllTab(this::closeAllTab);
         items.add(closeAllTab);
         return items;
     }
@@ -154,7 +157,9 @@ public abstract class RichTab extends FXTab {
                 if (tab == this) {
                     break;
                 }
-                list.add(tab);
+                if (tab.isClosable()) {
+                    list.add(tab);
+                }
             }
             this.tabs().removeAll(list);
         });
@@ -170,7 +175,7 @@ public abstract class RichTab extends FXTab {
             for (Tab tab : this.tabs()) {
                 if (tab == this) {
                     start = true;
-                } else if (start) {
+                } else if (start && tab.isClosable()) {
                     list.add(tab);
                 }
             }
@@ -182,14 +187,28 @@ public abstract class RichTab extends FXTab {
      * 关闭全部tab
      */
     public void closeAllTab() {
-        FXUtil.runLater(() -> this.tabs().clear());
+        List<Tab> list = this.tabs();
+        List<Tab> tabs = new ArrayList<>();
+        for (Tab tab : list) {
+            if (tab.isClosable()) {
+                tabs.add(tab);
+            }
+        }
+        FXUtil.runLater(() -> this.tabs().removeAll(tabs));
     }
 
     /**
      * 关闭其他tab
      */
     public void closeOtherTab() {
-        FXUtil.runLater(() -> this.tabs().removeIf(tab -> tab != this));
+        List<Tab> list = this.tabs();
+        List<Tab> tabs = new ArrayList<>();
+        for (Tab tab : list) {
+            if (tab != this && tab.isClosable()) {
+                tabs.add(tab);
+            }
+        }
+        FXUtil.runLater(() -> this.tabs().removeAll(tabs));
     }
 
     /**

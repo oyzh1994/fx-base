@@ -8,14 +8,12 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.ListChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
@@ -338,12 +336,12 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         this.setTabRealHeight(24);
         this.getStyleClass().add(Styles.TABS_CLASSIC);
         // this.selectedItemChanged(this::setupSelectCountListener);
-        // 监听tab移除，防止内存泄露
-        this.getTabs().addListener((ListChangeListener<Tab>) c -> {
-            if (c.next()) {
-                c.getRemoved().forEach(NodeDestroyUtil::destroy);
-            }
-        });
+        // // 监听tab移除，防止内存泄露
+        // this.getTabs().addListener((ListChangeListener<Tab>) c -> {
+        //     if (c.next()) {
+        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
+        //     }
+        // });
         FlexAdapter.super.initNode();
     }
 

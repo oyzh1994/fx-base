@@ -139,6 +139,9 @@ public class NodeDestroyUtil {
                 field.setAccessible(true);
                 // 获取属性值
                 Object value = field.get(object);
+                if(value == null){
+                    continue;
+                }
                 // // 可设置为null
                 // boolean setNullable = false;
                 // 属性类型
