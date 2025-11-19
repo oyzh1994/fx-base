@@ -52,7 +52,8 @@ public class NodeDestroyUtil {
     private static void doDestroy(Object node) {
         if (node instanceof Destroyable destroyable) {
             destroyable.destroy();
-        } else if (node instanceof Window window) {
+        }
+        if (node instanceof Window window) {
             doDestroy(window.getScene());
         } else if (node instanceof Scene scene) {
             doDestroy(scene.getRoot());
@@ -100,6 +101,8 @@ public class NodeDestroyUtil {
             destroyField(shape);
         } else if (node instanceof Node node1) {
             destroyField(node1);
+        } else {
+            destroyField(node);
         }
     }
 
@@ -145,12 +148,12 @@ public class NodeDestroyUtil {
                     if (property != null) {
                         property.unbind();
                     }
-                // } else if (Destroyable.class.isAssignableFrom(clazz)) {
-                //     Destroyable destroyable = (Destroyable) value;
-                //     // 销毁组件
-                //     if (destroyable != null) {
-                //         destroyable.destroy();
-                //     }
+                    // } else if (Destroyable.class.isAssignableFrom(clazz)) {
+                    //     Destroyable destroyable = (Destroyable) value;
+                    //     // 销毁组件
+                    //     if (destroyable != null) {
+                    //         destroyable.destroy();
+                    //     }
                     // } else if (Collection.class.isAssignableFrom(clazz)) {// 集合类型
                     //     Collection<?> collection = (Collection<?>) value;
                     //     // 清除结果
@@ -165,14 +168,14 @@ public class NodeDestroyUtil {
                     //     if (value != object) {
                     //         destroyField(value);
                     //     }
-                // } else if (String.class.isAssignableFrom(clazz)) {// 对象
-                //     if (value != null) {
-                //         setNullable = true;
-                //     }
+                    // } else if (String.class.isAssignableFrom(clazz)) {// 对象
+                    //     if (value != null) {
+                    //         setNullable = true;
+                    //     }
                 }
                 // 设置为null
                 // if (setNullable) {
-                    // field.set(object, null);
+                // field.set(object, null);
                 // }
             } catch (Exception ex) {
                 ex.printStackTrace();
