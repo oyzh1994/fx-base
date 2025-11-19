@@ -438,6 +438,7 @@ public class FXRichTextArea extends RichTextArea {
     */
    public final void setText(String text) {
        TextPos end = getDocumentEnd();
-       getModel().replace(null, TextPos.ZERO, end, text, true);
+       // getModel().replace(null, TextPos.ZERO, end, text, true);
+       getModel().replace(null, TextPos.ZERO, end, text);
    }
 }

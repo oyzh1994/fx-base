@@ -605,7 +605,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         }
         try {
             EditorTextPos pos = this.getPosByIndex(start, end);
-            super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
+            super.replaceText(pos.getStart(), pos.getEnd(), content);
+            // super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -747,7 +748,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param end   结束位置
      */
     public void deleteText(TextPos start, TextPos end) {
-        this.replaceText(start, end, "", true);
+        this.replaceText(start, end, "");
+        // this.replaceText(start, end, "", true);
     }
 
     /**
