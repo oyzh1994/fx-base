@@ -14,7 +14,6 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -605,8 +604,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         }
         try {
             EditorTextPos pos = this.getPosByIndex(start, end);
-            // super.replaceText(pos.getStart(), pos.getEnd(), content);
-            super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
+            super.replaceText(pos.getStart(), pos.getEnd(), content);
+            // super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -748,8 +747,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param end   结束位置
      */
     public void deleteText(TextPos start, TextPos end) {
-        // this.replaceText(start, end, "");
-        this.replaceText(start, end, "", true);
+        this.replaceText(start, end, "");
+        // this.replaceText(start, end, "", true);
     }
 
     /**
