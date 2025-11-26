@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.button;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
@@ -53,6 +54,7 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
+        NodeAdapter.super.initNode();
     }
 
     /**

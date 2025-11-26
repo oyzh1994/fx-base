@@ -13,7 +13,7 @@ import cn.oyzh.fx.plus.drag.DragUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
-import cn.oyzh.fx.plus.node.NodeDisposeUtil;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeLifeCycleUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -60,7 +60,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
             DragUtil.clearDragFile(this.scene());
             NodeLifeCycleUtil.onStageDestroy(stage);
             // 销毁节点
-            NodeDisposeUtil.dispose(stage);
+            NodeDestroyUtil.destroy(stage);
             this.clearTitle();
             this.clearScene();
             this.clearListener();

@@ -30,53 +30,67 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         PackConfig config = new PackConfig();
 
         // 扩展配置
-        config.setDest(object.getString("dest"));
-        config.setAppName(object.getString("appName"));
-        config.setAppIcon(object.getString("appIcon"));
-        config.setMainJar(object.getString("mainJar"));
-        config.setJdkPath(object.getString("jdkPath"));
-        config.setJrePath(object.getString("jrePath"));
-        config.setPlatform(object.getString("platform"));
-        config.setPackMode(object.getString("packMode"));
-        config.setBuildType(object.getString("buildType"));
-        config.setAppVersion(object.getString("appVersion"));
-        config.setAppImageRuntime(object.getString("appImageRuntime"));
-
+        if (object.containsKey("dest")) {
+            config.setDest(object.getString("dest"));
+        }
+        if (object.containsKey("appName")) {
+            config.setAppName(object.getString("appName"));
+        }
+        if (object.containsKey("appIcon")) {
+            config.setAppIcon(object.getString("appIcon"));
+        }
+        if (object.containsKey("mainJar")) {
+            config.setMainJar(object.getString("mainJar"));
+        }
+        if (object.containsKey("jdkPath")) {
+            config.setJdkPath(object.getString("jdkPath"));
+        }
+        if (object.containsKey("jrePath")) {
+            config.setJrePath(object.getString("jrePath"));
+        }
+        if (object.containsKey("jrePath")) {
+            config.setPlatform(object.getString("jrePath"));
+        }
+        if (object.containsKey("packMode")) {
+            config.setPackMode(object.getString("packMode"));
+        }
+        if (object.containsKey("buildType")) {
+            config.setBuildType(object.getString("buildType"));
+        }
+        if (object.containsKey("appVersion")) {
+            config.setAppVersion(object.getString("appVersion"));
+        }
+        if (object.containsKey("appImageRuntime")) {
+            config.setAppImageRuntime(object.getString("appImageRuntime"));
+        }
         if (object.containsKey("jre")) {
             JreConfig jreConfig = JreConfigParser.parseConfig(object.getJSONObject("jre"));
             config.setJreConfig(jreConfig);
         }
-
         if (object.containsKey("jar")) {
             JarConfig jarConfig = JarConfigParser.parseConfig(object.getJSONObject("jar"));
             config.setJarConfig(jarConfig);
         }
-
-        if (object.containsKey("packr")) {
-            PackrConfig packrConfig = PackrConfigParser.parseConfig(object.getJSONObject("packr"));
-            config.setPackrConfig(packrConfig);
-        }
-
+        // if (object.containsKey("packr")) {
+        //     PackrConfig packrConfig = PackrConfigParser.parseConfig(object.getJSONObject("packr"));
+        //     config.setPackrConfig(packrConfig);
+        // }
         if (object.containsKey("jlink")) {
             JLinkConfig jLinkConfig = JLinkConfigParser.parseConfig(object.getJSONObject("jlink"));
-            config.setjLinkConfig(jLinkConfig);
+            config.setJLinkConfig(jLinkConfig);
         }
-
         if (object.containsKey("jdeps")) {
             JDepsConfig jDepsConfig = JDepsConfigParser.parseConfig(object.getJSONObject("jdeps"));
-            config.setjDepsConfig(jDepsConfig);
+            config.setJDepsConfig(jDepsConfig);
         }
-
         if (object.containsKey("compress")) {
             CompressConfig compressConfig = CompressConfigParser.parseConfig(object.getJSONObject("compress"));
             config.setCompressConfig(compressConfig);
         }
-
         if (object.containsKey("jpackage")) {
             JPackageConfig jPackageConfig = JPackageConfigParser.parseConfig(object.getJSONObject("jpackage"));
             config.setjPackageConfig(jPackageConfig);
         }
-
         return config;
     }
 

@@ -580,6 +580,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setWrapText(true);
         this.setPickOnBounds(true);
         this.setAutoScrollOnDragDesired(true);
@@ -613,7 +614,7 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
 
     @Override
     public void requestFocus() {
-        FXUtil.runLater(super::requestFocus, 1);
+        FXUtil.runAsync(super::requestFocus);
     }
 
     @Override

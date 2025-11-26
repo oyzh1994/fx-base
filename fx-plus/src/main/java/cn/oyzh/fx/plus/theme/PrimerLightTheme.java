@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.theme;
 import atlantafx.base.theme.PrimerLight;
 import atlantafx.base.theme.Theme;
 import cn.oyzh.fx.plus.FXStyle;
-import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -23,7 +22,8 @@ public class PrimerLightTheme implements Theme, ThemeStyle {
 
     @Override
     public String getDesc(Locale locale) {
-        return I18nHelper.themePrimerLight();
+        return THEME.getName();
+        // return I18nHelper.themePrimerLight();
     }
 
     @Override

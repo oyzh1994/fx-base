@@ -102,6 +102,7 @@ public class FXTextField extends TextField implements FlexAdapter, Verifiable, N
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setPickOnBounds(true);
 //        this.setFocusTraversable(false);
     }

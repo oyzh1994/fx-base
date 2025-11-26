@@ -12,10 +12,10 @@ import javafx.application.HostServices;
  */
 public class FXConst {
 
-    // /**
-    //  * tab地址
-    //  */
-    // public final static String TAB_PATH = "/tabs/";
+    /**
+     * tab地址
+     */
+    public final static String TAB_PATH = "/tabs/";
 
     /**
      * 页面地址

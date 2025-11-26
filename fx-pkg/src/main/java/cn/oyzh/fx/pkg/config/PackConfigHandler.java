@@ -47,11 +47,15 @@ public class PackConfigHandler implements PreHandler {
             packConfig.setDest(StringUtil.replace(packConfig.getDest(), "${appVersion}", appVersion));
             packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${appVersion}", appVersion));
         }
+        String pkgPath = (String) packConfig.getProperty(PackCost.PKG_PATH);
+        if (pkgPath != null) {
+            packConfig.setAppImageRuntime(StringUtil.replace(packConfig.getAppImageRuntime(), "${" + PackCost.PKG_PATH + "}", pkgPath));
+        }
         String projectPath = (String) packConfig.getProperty(PackCost.PROJECT_PATH);
         if (projectPath != null) {
-            packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${projectPath}", projectPath));
-            packConfig.setAppIcon(StringUtil.replace(packConfig.getAppIcon(), "${projectPath}", projectPath));
-            packConfig.setAppImageRuntime(StringUtil.replace(packConfig.getAppImageRuntime(), "${projectPath}", projectPath));
+            packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${" + PackCost.PROJECT_PATH + "}", projectPath));
+            packConfig.setAppIcon(StringUtil.replace(packConfig.getAppIcon(), "${" + PackCost.PROJECT_PATH + "}", projectPath));
+            packConfig.setAppImageRuntime(StringUtil.replace(packConfig.getAppImageRuntime(), "${" + PackCost.PROJECT_PATH + "}", projectPath));
         }
     }
 }

@@ -26,6 +26,7 @@ public class FXSlider extends Slider implements FlexAdapter, ThemeAdapter, TipAd
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setCursor(Cursor.HAND);
         this.valueProperty().addListener((observableValue, number, t1) -> this.setTipText(t1 != null ? t1.intValue() + "" : ""));
     }

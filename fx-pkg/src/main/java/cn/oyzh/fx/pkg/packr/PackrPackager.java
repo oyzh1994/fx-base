@@ -12,6 +12,7 @@ import java.io.IOException;
  * @author oyzh
  * @since 2023/3/8
  */
+@Deprecated
 public class PackrPackager extends Packr {
 
     @Override

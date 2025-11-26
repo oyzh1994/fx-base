@@ -6,10 +6,11 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListView;
 
@@ -17,7 +18,7 @@ import javafx.scene.control.ListView;
  * @author oyzh
  * @since 2023/4/24
  */
-public class FXListView<T> extends ListView<T> implements FlexAdapter, NodeAdapter, TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
+public class FXListView<T> extends ListView<T> implements FlexAdapter, TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
 
     {
         NodeManager.init(this);
@@ -25,7 +26,13 @@ public class FXListView<T> extends ListView<T> implements FlexAdapter, NodeAdapt
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setCursor(Cursor.HAND);
+        // this.getItems().addListener((ListChangeListener<T>) c -> {
+        //     if (c.next()) {
+        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
+        //     }
+        // });
     }
 
     /**

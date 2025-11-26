@@ -2,8 +2,6 @@ package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.DownLatch;
-import cn.oyzh.common.thread.Task;
-import cn.oyzh.common.thread.TaskBuilder;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
@@ -37,8 +35,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -160,57 +156,63 @@ public class FXUtil {
         if (Platform.isFxApplicationThread()) {
             task.run();
         } else {
+            AtomicReference<Throwable> errorRef = new AtomicReference<>();
             DownLatch latch = DownLatch.of();
             Platform.runLater(() -> {
                 try {
                     task.run();
+                } catch (Throwable ex) {
+                    errorRef.set(ex);
                 } finally {
                     latch.countDown();
                 }
             });
             latch.await();
-        }
-    }
-
-    /**
-     * 同步运行
-     *
-     * @param task  任务
-     * @param delay 延迟时间
-     */
-    @Deprecated
-    public static void runWait(Runnable task, int delay) {
-        TaskManager.startDelay(() -> Platform.runLater(task), delay);
-    }
-
-    /**
-     * 同步运行
-     *
-     * @param task    任务
-     * @param timeout 超时时间
-     */
-    @Deprecated
-    public static void runWaitByTimeout(Runnable task, int timeout) {
-        if (Platform.isFxApplicationThread()) {
-            task.run();
-        } else {
-            // 等待执行完成
-            CountDownLatch latch = new CountDownLatch(1);
-            try {
-                // 包装线程
-                Task task1 = TaskBuilder.newBuilder().onStart(task::run).onFinish(latch::countDown).build();
-                Platform.runLater(task1);
-                if (timeout <= 0) {
-                    latch.await();
-                } else if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
-                    JulLog.warn("latch.await fail!");
-                }
-                // 抛出异常(如果有)
-                task1.throwRuntimeException();
-            } catch (InterruptedException ignored) {
+            if (errorRef.get() != null) {
+                throw new RuntimeException(errorRef.get());
             }
         }
     }
+
+    // /**
+    //  * 同步运行
+    //  *
+    //  * @param task  任务
+    //  * @param delay 延迟时间
+    //  */
+    // @Deprecated
+    // public static void runWait(Runnable task, int delay) {
+    //     TaskManager.startDelay(() -> Platform.runLater(task), delay);
+    // }
+    //
+    // /**
+    //  * 同步运行
+    //  *
+    //  * @param task    任务
+    //  * @param timeout 超时时间
+    //  */
+    // @Deprecated
+    // public static void runWaitByTimeout(Runnable task, int timeout) {
+    //     if (Platform.isFxApplicationThread()) {
+    //         task.run();
+    //     } else {
+    //         // 等待执行完成
+    //         CountDownLatch latch = new CountDownLatch(1);
+    //         try {
+    //             // 包装线程
+    //             Task task1 = TaskBuilder.newBuilder().onStart(task::run).onFinish(latch::countDown).build();
+    //             Platform.runLater(task1);
+    //             if (timeout <= 0) {
+    //                 latch.await();
+    //             } else if (!latch.await(timeout, TimeUnit.MILLISECONDS)) {
+    //                 JulLog.warn("latch.await fail!");
+    //             }
+    //             // 抛出异常(如果有)
+    //             task1.throwRuntimeException();
+    //         } catch (InterruptedException ignored) {
+    //         }
+    //     }
+    // }
 
     /**
      * 稍后执行
@@ -232,7 +234,16 @@ public class FXUtil {
      * @param delay 延迟时间
      */
     public static void runLater(Runnable task, int delay) {
-        TaskManager.startDelay(() -> Platform.runLater(task), delay);
+        TaskManager.startDelay(() -> runLater(task), delay);
+    }
+
+    /**
+     * 异步执行
+     *
+     * @param task 任务
+     */
+    public static void runAsync(Runnable task) {
+        runLater(task, 1);
     }
 
     /**

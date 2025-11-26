@@ -5,6 +5,7 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.IOUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.moandjiezana.toml.Toml;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -31,10 +32,14 @@ public interface ConfigParser<C> {
             object = JSONObject.parse(FileUtil.readUtf8String(configFile));
         } else if (FileNameUtil.isYamlType(extName)) {
             Yaml yaml = new Yaml();
-            InputStream in = cn.oyzh.common.file.FileUtil.getInputStream(configFile);
+            InputStream in = FileUtil.getInputStream(configFile);
             Map<String, Object> yamlData = yaml.load(in);
             IOUtil.close(in);
             object = JSONObject.parseObject(JSON.toJSONString(yamlData));
+        } else if (FileNameUtil.isTomlType(extName)) {
+            Toml toml = new Toml().read(FileUtil.readUtf8String(configFile));
+            Map<String, Object> tomlData = toml.toMap();
+            object = JSONObject.parseObject(JSON.toJSONString(tomlData));
         }
         return this.parse(object);
     }

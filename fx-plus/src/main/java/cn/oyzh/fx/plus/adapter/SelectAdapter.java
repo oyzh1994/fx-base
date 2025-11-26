@@ -88,6 +88,7 @@ public interface SelectAdapter<T> extends PropAdapter {
                 Tab tab = (Tab) this.getItem(index);
                 if (tab != null && tab.getContent() != null) {
                     tab.getContent().requestFocus();
+                    tab.getContent().applyCss();
                 }
             } else if (this instanceof ComboBox<?> node) {
                 node.getSelectionModel().select(index);
@@ -116,6 +117,7 @@ public interface SelectAdapter<T> extends PropAdapter {
                 // TODO: 需要让内容获取焦点，不然可能会导致后续切换无效
                 if (tab != null && tab.getContent() != null) {
                     tab.getContent().requestFocus();
+                    tab.getContent().applyCss();
                 }
             } else if (this instanceof ComboBox node) {
                 node.getSelectionModel().select(obj);

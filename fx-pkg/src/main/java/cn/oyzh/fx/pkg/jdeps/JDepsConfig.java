@@ -1,6 +1,8 @@
 package cn.oyzh.fx.pkg.jdeps;
 
 
+import cn.oyzh.fx.pkg.ConfigMargeAble;
+
 import java.util.Set;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2024/06/17
  */
-public class JDepsConfig {
+public class JDepsConfig implements ConfigMargeAble<JDepsConfig> {
 
     /**
      * 简要模式
@@ -74,5 +76,27 @@ public class JDepsConfig {
 
     public void setMultiRelease(Integer multiRelease) {
         this.multiRelease = multiRelease;
+    }
+
+    @Override
+    public void marge(JDepsConfig config) {
+        if (config == null) {
+            return;
+        }
+        if (config.multiRelease != null) {
+            this.multiRelease = config.multiRelease;
+        }
+        if (this.skips == null) {
+            this.skips = config.skips;
+        } else if (config.skips != null) {
+            this.skips.addAll(config.skips);
+        }
+        if (this.excludes == null) {
+            this.excludes = config.excludes;
+        } else if (config.excludes != null) {
+            this.excludes.addAll(config.excludes);
+        }
+        this.summary = config.summary;
+        this.verbose = config.verbose;
     }
 }

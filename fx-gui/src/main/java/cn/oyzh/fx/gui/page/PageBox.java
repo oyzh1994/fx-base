@@ -406,11 +406,18 @@ public class PageBox<T> extends FXHBox {
     }
 
     /**
+     * 刷新
+     */
+    public void flush() {
+        this.formatPage();
+    }
+
+    /**
      * 设置分页信息
      *
      * @param paging 分页信息
      */
-    public void setPaging( Paging<T> paging) {
+    public void setPaging(Paging<T> paging) {
         this.paging = paging;
         this.formatPage();
         if (this.hideIfLessPage) {

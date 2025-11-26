@@ -31,7 +31,9 @@ public class JarConfigParser implements ConfigParser<JarConfig> {
                 config.getSkipsJar().add(o.toString());
             }
         }
-        config.setRemoveEmpty(object.getBooleanValue("removeEmpty", true));
+        if (object.containsKey("removeEmpty")) {
+            config.setRemoveEmpty(object.getBooleanValue("removeEmpty", true));
+        }
         return config;
     }
 

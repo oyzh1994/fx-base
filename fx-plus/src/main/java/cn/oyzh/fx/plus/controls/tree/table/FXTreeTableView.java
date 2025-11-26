@@ -11,7 +11,7 @@
 // import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 // import cn.oyzh.fx.plus.mouse.MouseAdapter;
 // import cn.oyzh.fx.plus.node.NodeAdapter;
-// import cn.oyzh.fx.plus.node.NodeDisposeUtil;
+// import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 // import cn.oyzh.fx.plus.node.NodeManager;
 // import cn.oyzh.fx.plus.node.NodeUtil;
 // import cn.oyzh.fx.plus.theme.ThemeAdapter;

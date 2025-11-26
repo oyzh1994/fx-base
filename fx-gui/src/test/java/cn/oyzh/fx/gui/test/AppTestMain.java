@@ -1,5 +1,8 @@
 package cn.oyzh.fx.gui.test;
 
+import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.OpenSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SaveSVGGlyph;
 import cn.oyzh.fx.gui.text.field.DecimalTextField;
 import cn.oyzh.fx.gui.text.field.DigitalTextField;
 import cn.oyzh.fx.gui.text.field.LimitTextField;
@@ -10,8 +13,20 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -29,10 +44,13 @@ public class AppTestMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        test1(stage);
+        // test1(stage);
+        // test2(stage);
+        // test3(stage);
+        test4(stage);
     }
 
-    private void test1(Stage stage){
+    private void test1(Stage stage) {
         // 创建一个轻量级HBox
         VBox vbox = new VBox();
         NumberTextField textField = new NumberTextField();
@@ -62,7 +80,7 @@ public class AppTestMain extends Application {
         textField2.setMaxWidth(200);
         vbox.getChildren().addAll(textField2);
 
-        DigitalTextField textField3 = new DigitalTextField(false,10L) {
+        DigitalTextField textField3 = new DigitalTextField(false, 10L) {
             @Override
             protected DigitalConverter getConverter() {
                 return null;
@@ -96,7 +114,90 @@ public class AppTestMain extends Application {
         stage.show();
     }
 
-    public static class AppTestMainApp{
+    private void test2(Stage stage) {
+        // 创建一个轻量级HBox
+        VBox vbox = new VBox();
+
+        MenuBar menuBar = new MenuBar();
+        Menu m1 = new Menu("11");
+        m1.setGraphic(new SaveSVGGlyph());
+        menuBar.getMenus().add(m1);
+        vbox.getChildren().addAll(menuBar);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("菜单测试");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void test3(Stage stage) {
+        // 创建一个轻量级HBox
+        VBox vbox = new VBox();
+
+        Accordion accordion = new Accordion();
+        TitledPane titledPane1 = new TitledPane("测试1", new SaveSVGGlyph());
+        TitledPane titledPane2 = new TitledPane("测试2", new OpenSVGGlyph());
+        TitledPane titledPane3 = new TitledPane("测试3", new CloseSVGGlyph());
+        accordion.getPanes().addAll(titledPane1, titledPane2, titledPane3);
+        accordion.setExpandedPane(titledPane1);
+        vbox.getChildren().addAll(accordion);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("titledPane测试");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void test4(Stage stage) {
+        // 创建一个轻量级HBox
+        VBox vbox = new VBox();
+
+        Pagination pagination = new Pagination();
+        pagination.setPageCount(10);
+        pagination.setMaxPageIndicatorCount(3);
+        pagination.setCurrentPageIndex(3);
+
+        vbox.getChildren().addAll(pagination);
+
+        Slider slider = new Slider();
+        vbox.getChildren().addAll(slider);
+
+        Spinner<Integer> spinner = new Spinner<>();
+        spinner.setEditable(true);
+        spinner.setValueFactory(new SpinnerValueFactory<>() {
+            @Override
+            public void decrement(int steps) {
+
+            }
+
+            @Override
+            public void increment(int steps) {
+
+            }
+        });
+
+        vbox.getChildren().addAll(spinner);
+
+
+        SplitMenuButton button = new SplitMenuButton();
+        SplitPane button1 = new SplitPane();
+
+        vbox.getChildren().addAll(button);
+        // vbox.getChildren().addAll(button1);
+
+        ToolBar toolBar = new ToolBar();
+        toolBar.getItems().addAll(new Button("aaa"));
+        toolBar.getItems().addAll(new Button("aaa"));
+        toolBar.getItems().addAll(new OpenSVGGlyph());
+        vbox.getChildren().addAll(toolBar);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("titledPane测试");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static class AppTestMainApp {
 
         public static void main(String[] args) {
             AppTestMain.main(args);

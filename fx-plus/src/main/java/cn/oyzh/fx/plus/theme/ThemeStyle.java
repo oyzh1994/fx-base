@@ -108,7 +108,7 @@ public interface ThemeStyle {
     ///**
     // * 重应用css尾缀
     // */
-    //String REAPPLY_CSS_SUFFIX = ":reapply:css";
+    // String REAPPLY_CSS_SUFFIX = ":reapply:css";
 
     /**
      * 处理样式
@@ -117,18 +117,18 @@ public interface ThemeStyle {
      */
     default void handleStyle(Parent node) {
         if (node != null) {
-            TaskManager.startDelay(() -> FXUtil.runLater(() -> {
+            FXUtil.runWait(() -> {
                 try {
                     // 更新fx-base样式文件
                     node.getStylesheets().remove(FXStyle.FX_BASE);
                     node.getStylesheets().add(FXStyle.FX_BASE);
                     // 重新应用样式
-                    //node.reapplyCss();
                     ReflectUtil.invoke(node, "reapplyCss");
+                    node.applyCss();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            }), 50);
+            });
         }
         // FXUtil.runLater(() -> {
         //     // if (node instanceof Parent parent) {

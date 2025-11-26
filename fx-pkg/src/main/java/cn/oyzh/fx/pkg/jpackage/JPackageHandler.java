@@ -57,7 +57,7 @@ public class JPackageHandler implements PackHandler {
             File target = new File(dir, packConfig.mainJarName());
             FileUtil.copyFile(packConfig.mainJar(), target.getPath());
             jPackageConfig.setInput(dir.getPath());
-            packConfig.setJpackageInput(jPackageConfig.getInput());
+            packConfig.setJPackageInput(jPackageConfig.getInput());
         }
         if (jPackageConfig.getMainJar() == null) {
             jPackageConfig.setMainJar(packConfig.mainJarName());

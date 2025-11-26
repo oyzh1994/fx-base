@@ -24,7 +24,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
 
     {
         NodeManager.init(this);
@@ -114,6 +114,7 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
     public void initNode() {
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
+        FlexAdapter.super.initNode();
 //        this.setFocusTraversable(false);
     }
 

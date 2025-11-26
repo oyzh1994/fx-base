@@ -22,6 +22,8 @@ import javafx.scene.control.skin.NestedTableColumnHeader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.List;
+
 /**
  * @author oyzh
  * @since 2022/1/18
@@ -59,6 +61,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setHeaderHeight(30);
         this.setFixedCellSize(30);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -69,11 +72,16 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
         // 监听列
         this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
-            c.next();
-            if (c.wasAdded() || c.wasReplaced()) {
+            if (c.next()) {
                 c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
             }
         });
+        // // 监听数据
+        // this.itemList().addListener((ListChangeListener<S>) c -> {
+        //     if (c.next()) {
+        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
+        //     }
+        // });
     }
 
     private boolean reorderable;
@@ -194,5 +202,21 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     @Override
     public void refresh() {
         FXUtil.runLater(super::refresh);
+    }
+
+    public <T extends TableColumn<S, ?>> void addColumn(T column) {
+        FXUtil.runWait(() -> super.getColumns().add(column));
+    }
+
+    public void addColumnsAll(List<? extends TableColumn<S, ?>> columns) {
+        FXUtil.runWait(() -> super.getColumns().addAll(columns));
+    }
+
+    public void setColumnsAll(List<? extends TableColumn<S, ?>> columns) {
+        FXUtil.runWait(() -> super.getColumns().setAll(columns));
+    }
+
+    public void clearColumns() {
+        FXUtil.runWait(() -> super.getColumns().clear());
     }
 }

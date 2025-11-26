@@ -51,7 +51,7 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         if (this.executed) {
             return;
         }
-        JLinkConfig jLinkConfig = packConfig.getjLinkConfig();
+        JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
         if (jLinkConfig == null) {
             return;
         }

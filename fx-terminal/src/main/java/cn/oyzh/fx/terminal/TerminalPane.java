@@ -354,7 +354,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
         } else if (!StringUtil.endWith(text, prompt)) {
             this.appendContent(prompt);
         }
-        FXUtil.runLater(this::flushNOP, 1);
+        FXUtil.runAsync(this::flushNOP);
     }
 
     @Override

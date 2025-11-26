@@ -49,6 +49,7 @@ public class FXColorPicker extends ColorPicker implements FlexAdapter, TipAdapte
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
 //        this.setFocusTraversable(false);

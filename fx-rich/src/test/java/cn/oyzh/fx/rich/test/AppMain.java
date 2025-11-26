@@ -4,7 +4,6 @@ import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
-import cn.oyzh.fx.rich.incubator.FXRichTextArea;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,7 +35,7 @@ public class AppMain extends Application {
         // test4(stage);
        // test5(stage);
 //        test6(stage);
-       test8(stage);
+//        test8(stage);
     }
 
    // private void test1(Stage stage) {
@@ -308,45 +307,45 @@ public class AppMain extends Application {
 
     }
 
-    public void test8(Stage stage) {
-
-        FXHBox hBox = new FXHBox();
-
-        FXRichTextArea richTextArea = new FXRichTextArea();
-        // FXRichTextArea1 richTextArea = new FXRichTextArea1();
-
-        richTextArea.setWrapText(true);
-        richTextArea.appendText("test1 test2");
-        StyleAttribute<Color> attribute = StyleAttributeMap.TEXT_COLOR;
-
-        StyleAttributeMap attributeMap = StyleAttributeMap.of(attribute, Color.BLUE);
-        TextPos start = TextPos.ofLeading(0, 1);
-        TextPos end = TextPos.ofLeading(0, 3);
-        richTextArea.setStyle(start, end, attributeMap);
-
-        StyleAttribute<Color> attribute1 = StyleAttributeMap.TEXT_COLOR;
-
-        StyleAttributeMap attributeMap1 = StyleAttributeMap.of(attribute1, Color.RED);
-        TextPos start1 = TextPos.ofLeading(0, 4);
-        TextPos end1 = TextPos.ofLeading(0, 9);
-        richTextArea.setStyle(start1, end1, attributeMap1);
-
-        richTextArea.setLineNumbersEnabled(true);
-
-        stage.setScene(new Scene(new FXVBox(hBox, richTextArea)));
-        Button btn1 = new Button("重做");
-        Button btn2 = new Button("撤销");
-        hBox.addChild(btn1);
-        hBox.addChild(btn2);
-
-        btn1.setOnAction(e -> {
-            richTextArea.redo();
-        });
-        btn2.setOnAction(e -> {
-            richTextArea.undo();
-        });
-        stage.show();
-
-    }
+    // public void test8(Stage stage) {
+    //
+    //     FXHBox hBox = new FXHBox();
+    //
+    //     FXRichTextArea richTextArea = new FXRichTextArea();
+    //     // FXRichTextArea1 richTextArea = new FXRichTextArea1();
+    //
+    //     richTextArea.setWrapText(true);
+    //     richTextArea.appendText("test1 test2");
+    //     StyleAttribute<Color> attribute = StyleAttributeMap.TEXT_COLOR;
+    //
+    //     StyleAttributeMap attributeMap = StyleAttributeMap.of(attribute, Color.BLUE);
+    //     TextPos start = TextPos.ofLeading(0, 1);
+    //     TextPos end = TextPos.ofLeading(0, 3);
+    //     richTextArea.setStyle(start, end, attributeMap);
+    //
+    //     StyleAttribute<Color> attribute1 = StyleAttributeMap.TEXT_COLOR;
+    //
+    //     StyleAttributeMap attributeMap1 = StyleAttributeMap.of(attribute1, Color.RED);
+    //     TextPos start1 = TextPos.ofLeading(0, 4);
+    //     TextPos end1 = TextPos.ofLeading(0, 9);
+    //     richTextArea.setStyle(start1, end1, attributeMap1);
+    //
+    //     richTextArea.setLineNumbersEnabled(true);
+    //
+    //     stage.setScene(new Scene(new FXVBox(hBox, richTextArea)));
+    //     Button btn1 = new Button("重做");
+    //     Button btn2 = new Button("撤销");
+    //     hBox.addChild(btn1);
+    //     hBox.addChild(btn2);
+    //
+    //     btn1.setOnAction(e -> {
+    //         richTextArea.redo();
+    //     });
+    //     btn2.setOnAction(e -> {
+    //         richTextArea.undo();
+    //     });
+    //     stage.show();
+    //
+    // }
 
 }

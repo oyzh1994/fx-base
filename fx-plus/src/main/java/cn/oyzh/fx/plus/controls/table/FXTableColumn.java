@@ -88,4 +88,16 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapte
     public void setTextExt(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }
+
+    @Override
+    public void setRealWidth(double width) {
+        if (this.isResizable()) {
+            if (!Double.isNaN(width) && width > 0) {
+                this.setPrefWidth(width);
+                this.setMinWidth(width);
+            }
+        } else {
+            FlexAdapter.super.setRealWidth(width);
+        }
+    }
 }

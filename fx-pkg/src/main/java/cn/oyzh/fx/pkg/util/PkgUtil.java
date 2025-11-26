@@ -399,7 +399,7 @@ public class PkgUtil {
         }
         if (config.getType() != null) {
             cmdList.add("--type");
-            cmdList.add(config.fixedType());
+            cmdList.add(config.getType());
         }
         if (config.getAppVersion() != null) {
             cmdList.add("--app-version");

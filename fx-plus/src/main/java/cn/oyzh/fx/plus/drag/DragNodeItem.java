@@ -60,7 +60,7 @@ public interface DragNodeItem {
      * 是否允许拖动或者投放
      */
     default boolean allowDragDrop() {
-        return this.allowDrag()||this.allowDrop();
+        return this.allowDrag() || this.allowDrop();
     }
 
     /**

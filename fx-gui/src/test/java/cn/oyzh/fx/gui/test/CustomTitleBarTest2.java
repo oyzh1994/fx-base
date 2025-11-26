@@ -5,13 +5,8 @@ import cn.oyzh.fx.gui.tree.view.RichTreeCell;
 import cn.oyzh.fx.gui.tree.view.RichTreeItem;
 import cn.oyzh.fx.gui.tree.view.RichTreeItemValue;
 import cn.oyzh.fx.gui.tree.view.RichTreeView;
-import cn.oyzh.fx.plus.controls.FXHeaderBar;
-import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
-import cn.oyzh.fx.plus.controls.toggle.FXToggleSwitch;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -22,7 +17,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HeaderBar;
-import javafx.scene.layout.HeaderDragType;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -48,8 +42,8 @@ public class CustomTitleBarTest2 extends Application {
         // ThemeManager.apply(Themes.PRIMER_LIGHT);
         // ThemeManager.apply(Themes.PRIMER_DARK);
         // Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
-        // test1(stage);
-        test2(stage);
+        test1(stage);
+        // test2(stage);
     }
 
     private void test1(Stage stage) {

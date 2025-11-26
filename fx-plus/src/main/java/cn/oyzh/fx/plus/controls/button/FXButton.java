@@ -17,7 +17,7 @@ import javafx.scene.control.Button;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXButton extends Button implements FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
+public class FXButton extends Button implements FlexAdapter, NodeGroup, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -28,6 +28,7 @@ public class FXButton extends Button implements FlexAdapter, NodeGroup, NodeAdap
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setMnemonicParsing(false);
+        FlexAdapter.super.initNode();
 //        this.setFocusTraversable(false);
     }
 

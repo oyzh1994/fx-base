@@ -8,8 +8,12 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.thread.QueueService;
+import javafx.collections.ListChangeListener;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -28,11 +32,24 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     {
         NodeManager.init(this);
+        // this.autoDestroy();
     }
+
+    // /**
+    //  * 自动销毁
+    //  */
+    // protected void autoDestroy() {
+    //     // 监听节点
+    //     super.getChildren().addListener((ListChangeListener<TreeItem<V>>) c -> {
+    //         if (c.next()) {
+    //             c.getRemoved().forEach(NodeDestroyUtil::destroy);
+    //         }
+    //     });
+    // }
 
     private FXTreeView treeView;
 
-    public FXTreeItem( FXTreeView treeView) {
+    public FXTreeItem(FXTreeView treeView) {
         this.setTreeView(treeView);
     }
 
@@ -44,17 +61,17 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
         return treeView;
     }
 
-    /**
-     * 获取渲染服务
-     *
-     * @return 渲染服务
-     */
-    protected QueueService service() {
-        if (this.treeView == null) {
-            return null;
-        }
-        return this.treeView.service();
-    }
+    // /**
+    //  * 获取渲染服务
+    //  *
+    //  * @return 渲染服务
+    //  */
+    // protected QueueService service() {
+    //     if (this.treeView == null) {
+    //         return null;
+    //     }
+    //     return this.treeView.service();
+    // }
 
     /**
      * 获取子节点大小
@@ -160,7 +177,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void reExpanded() {
         if (this.isExpanded()) {
-            this.service().submitFX(() -> {
+            BackgroundService.submitFX(() -> {
                 this.setExpanded(false);
                 this.setExpanded(true);
             });
@@ -241,7 +258,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     public void setChild(TreeItem<?>... items) {
         if (ArrayUtil.isNotEmpty(items)) {
             TreeItem[] treeItems = items;
-            this.service().submitFX(() -> this.getChildren().setAll(treeItems));
+            BackgroundService.submitFX(() -> this.getChildren().setAll(treeItems));
         }
     }
 
@@ -252,7 +269,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void setChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            this.service().submitFX(() -> this.getChildren().setAll((List) items));
+            BackgroundService.submitFX(() -> this.getChildren().setAll((List) items));
         }
     }
 
@@ -263,7 +280,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void addChild(TreeItem<?> item) {
         if (item != null) {
-            this.service().submitFX(() -> this.getChildren().add((TreeItem) item));
+            BackgroundService.submitFX(() -> this.getChildren().add((TreeItem) item));
         }
     }
 
@@ -274,7 +291,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void addChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            this.service().submitFX(() -> this.getChildren().addAll((List) items));
+            BackgroundService.submitFX(() -> this.getChildren().addAll((List) items));
         }
     }
 
@@ -285,7 +302,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void removeChild(TreeItem<?> item) {
         if (item != null) {
-            this.service().submitFX(() -> this.getChildren().remove(item));
+            BackgroundService.submitFX(() -> this.getChildren().remove(item));
         }
     }
 
@@ -296,7 +313,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void removeChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            this.service().submitFX(() -> this.getChildren().removeAll(items));
+            BackgroundService.submitFX(() -> this.getChildren().removeAll(items));
         }
     }
 
@@ -338,10 +355,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void expend() {
         if (!this.isExpanded()) {
-            QueueService service = this.service();
-            if (service != null) {
-                service.submitFX(() -> this.setExpanded(true));
-            }
+            BackgroundService.submitFX(() -> this.setExpanded(true));
         }
     }
 
@@ -350,7 +364,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void collapse() {
         if (this.isExpanded()) {
-            this.service().submitFX(() -> this.setExpanded(false));
+            BackgroundService.submitFX(() -> this.setExpanded(false));
         }
     }
 
@@ -382,26 +396,20 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      * 刷新treeview
      */
     public void refresh() {
-        QueueService service = this.service();
-        if (service != null) {
-            service.submitFXLater(() -> {
-                FXTreeView treeView = this.getTreeView();
-                if (treeView != null) {
-                    treeView.refresh();
-                }
-            });
-        }
+        BackgroundService.submitFXLater(() -> {
+            FXTreeView treeView = this.getTreeView();
+            if (treeView != null) {
+                treeView.refresh();
+            }
+        });
     }
 
-    /**
-     * 刷新坐标，防止出现白屏
-     */
-    public void flushLocal() {
-        QueueService service = this.service();
-        if (service != null) {
-            service.submit(() -> this.getTreeView().flushLocal());
-        }
-    }
+    // /**
+    //  * 刷新坐标，防止出现白屏
+    //  */
+    // public void flushLocal() {
+    //     BackgroundService.submit(() -> this.getTreeView().flushLocal());
+    // }
 
     /**
      * 鼠标主按钮单击事件
@@ -418,20 +426,13 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     }
 
     @Override
-    public void destroy() {
-        for (TreeItem<V> child : super.getChildren()) {
-            if (child instanceof Destroyable destroyable) {
-                destroyable.destroy();
-            }
-        }
-        Object value = this.getValue();
-        if (value instanceof Destroyable destroyable) {
-            destroyable.destroy();
-        }
-        this.setValue(null);
-//        this.setParent(null);
-        this.setGraphic(null);
+    public synchronized void destroy() {
+        super.getChildren().forEach(NodeDestroyUtil::destroy);
         this.clearChild();
+        NodeDestroyUtil.destroy(this.getValue());
+        this.setValue(null);
+        NodeDestroyUtil.destroy(this.getGraphic());
+        this.setGraphic(null);
         this.treeView = null;
     }
 

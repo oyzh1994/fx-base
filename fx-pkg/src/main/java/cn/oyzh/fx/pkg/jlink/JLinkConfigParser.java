@@ -9,6 +9,7 @@ import com.alibaba.fastjson2.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * jlink配置解析器
@@ -23,28 +24,46 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         JLinkConfig config = new JLinkConfig();
         JSONArray excludeFiles = object.getJSONArray("exclude-files");
         if (excludeFiles != null) {
-            config.setExcludeFiles(new ArrayList<>());
+            config.setExcludeFiles(new HashSet<>());
             for (Object o : excludeFiles) {
                 config.getExcludeFiles().add(o.toString());
             }
         }
         JSONArray addModules = object.getJSONArray("add-modules");
         if (addModules != null) {
-            config.setAddModules(new ArrayList<>());
+            config.setAddModules(new HashSet<>());
             for (Object o : addModules) {
                 config.getAddModules().add(o.toString());
             }
         }
         // 临时jre目录
         String tmpJreDir = new File(FileUtil.getTmpDir(), "_temp_jre_" + UUID.fastUUID().toString(true)).getPath();
-        config.setVm(StringUtil.emptyToDefault(object.getString("vm"), "server"));
-        config.setOutput(StringUtil.emptyToDefault(object.getString("output"), tmpJreDir));
-        config.setCompress(object.getIntValue("compress", 2));
-        config.setVerbose(object.getBooleanValue("verbose", true));
-        config.setNoManPages(object.getBooleanValue("no-man-pages", true));
-        config.setStripDebug(object.getBooleanValue("strip-debug", true));
-        config.setNoHeaderFiles(object.getBooleanValue("no-header-files", true));
-        config.setStripJavaDebugAttributes(object.getBooleanValue("strip-java-debug-attributes", true));
+        if (object.containsKey("vm")) {
+            config.setVm(StringUtil.emptyToDefault(object.getString("vm"), "server"));
+        }
+        if (object.containsKey("output")) {
+            config.setOutput(StringUtil.emptyToDefault(object.getString("output"), tmpJreDir));
+        } else {
+            config.setOutput(tmpJreDir);
+        }
+        if (object.containsKey("compress")) {
+            config.setCompress(object.getIntValue("compress", 2));
+        }
+        if (object.containsKey("verbose")) {
+            config.setVerbose(object.getBooleanValue("verbose", true));
+        }
+        if (object.containsKey("no-man-pages")) {
+            config.setNoManPages(object.getBooleanValue("no-man-pages", true));
+        }
+        if (object.containsKey("strip-debug")) {
+            config.setStripDebug(object.getBooleanValue("strip-debug", true));
+        }
+        if (object.containsKey("no-header-files")) {
+            config.setNoHeaderFiles(object.getBooleanValue("no-header-files", true));
+        }
+        if (object.containsKey("strip-java-debug-attributes")) {
+            config.setStripJavaDebugAttributes(object.getBooleanValue("strip-java-debug-attributes", true));
+        }
         return config;
     }
 

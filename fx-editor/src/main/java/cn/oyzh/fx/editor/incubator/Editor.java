@@ -14,7 +14,6 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -74,7 +73,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, NodeAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
+public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
 
     /**
      * 默认提示词颜色
@@ -517,7 +516,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             int pCount = super.getParagraphCount();
             for (int i = 0; i < pCount; i++) {
                 int len = this.getParagraphLength(i);
-                length += len + 1;
+                length += len;
                 if (startIndex == -1 && length >= start) {
                     startIndex = i;
                     startOffset = start - lastLen;
@@ -527,6 +526,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                     endOffset = end - lastLen;
                     break;
                 }
+                length += 1;
                 lastLen = length;
             }
             endPos = TextPos.ofLeading(endIndex, endOffset);
@@ -604,7 +604,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         }
         try {
             EditorTextPos pos = this.getPosByIndex(start, end);
-            super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
+            super.replaceText(pos.getStart(), pos.getEnd(), content);
+            // super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -628,11 +629,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
             String text = this.getText();
-            if (text != null && !text.isEmpty() && !text.endsWith(System.lineSeparator()) && !content.startsWith(System.lineSeparator())) {
+            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
                 content = System.lineSeparator() + content;
             }
             if (endLine && !content.endsWith(System.lineSeparator())) {
-                content = content + System.lineSeparator();
+                content += System.lineSeparator();
             }
             this.appendContent(content);
         }
@@ -746,7 +747,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param end   结束位置
      */
     public void deleteText(TextPos start, TextPos end) {
-        this.replaceText(start, end, "", true);
+        this.replaceText(start, end, "");
+        // this.replaceText(start, end, "", true);
     }
 
     /**
@@ -945,6 +947,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     @Override
     public void initNode() {
+        FlexAdapter.super.initNode();
         // 初始化编辑器
         this.initEditor();
         // 尝试初始化提示词
@@ -1159,7 +1162,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public void appendContent(String text) {
         FXUtil.runWait(() -> super.appendText(text));
-        //super.appendText(text);
+        // super.appendText(text);
     }
 
     @Override

@@ -3,10 +3,10 @@ package cn.oyzh.fx.plus.controls.tab;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
-import cn.oyzh.fx.plus.node.NodeDisposeUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -108,6 +108,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void initNode() {
+        NodeAdapter.super.initNode();
         this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
@@ -121,7 +122,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      * @param event 事件
      */
     protected void onTabClosed(Event event) {
-        NodeDisposeUtil.dispose(this);
+        // NodeDestroyUtil.dispose(this);
     }
 
     protected void onTabCloseRequest(Event event) {
@@ -132,12 +133,18 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         if (StringUtil.isEmpty(appendText)) {
             return;
         }
-        String text = this.getText();
+        String text;
+        if (this.hasProp("appendText")) {
+            text = this.getProp("text");
+        } else {
+            text = this.getText();
+        }
         if (StringUtil.isEmpty(text)) {
             this.setText(appendText);
         } else {
             this.setText(text + appendText);
         }
+        this.setProp("text", text);
         this.setProp("appendText", appendText);
     }
 

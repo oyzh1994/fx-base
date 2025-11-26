@@ -1,13 +1,15 @@
 package cn.oyzh.fx.pkg.comporess;
 
 
+import cn.oyzh.fx.pkg.ConfigMargeAble;
+
 /**
  * 压缩配置
  *
  * @author oyzh
  * @since 2024/06/18
  */
-public class CompressConfig {
+public class CompressConfig implements ConfigMargeAble<CompressConfig> {
 
     /**
      * 压缩类型
@@ -33,5 +35,18 @@ public class CompressConfig {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void marge(CompressConfig config) {
+        if (config == null) {
+            return;
+        }
+        if (config.type != null) {
+            this.type = config.type;
+        }
+        if (config.name != null) {
+            this.name = config.name;
+        }
     }
 }

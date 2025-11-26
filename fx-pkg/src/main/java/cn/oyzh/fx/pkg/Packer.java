@@ -190,7 +190,7 @@ public class Packer {
      * @throws Exception 异常
      */
     public void pack(String configFile) throws Exception {
-        this.pack(configFile, null);
+        this.pack(configFile, null, null);
     }
 
     /**
@@ -201,8 +201,25 @@ public class Packer {
      * @throws Exception 异常
      */
     public void pack(String configFile, Map<String, Object> properties) throws Exception {
+        this.pack(configFile, null, properties);
+    }
+
+    /**
+     * 执行打包
+     *
+     * @param configFile         打包配置
+     * @param platformConfigFile 平台打包配置
+     * @param properties         属性
+     * @throws Exception 异常
+     */
+    public void pack(String configFile, String platformConfigFile, Map<String, Object> properties) throws Exception {
         // 解析配置
         PackConfig packConfig = this.configParser.parse(configFile);
+        // 平台配置
+        if (platformConfigFile != null) {
+            PackConfig platformPackConfig = this.configParser.parse(platformConfigFile);
+            packConfig.marge(platformPackConfig);
+        }
         if (CollectionUtil.isNotEmpty(properties)) {
             for (Map.Entry<String, Object> entry : properties.entrySet()) {
                 packConfig.putProperty(entry.getKey(), entry.getValue());

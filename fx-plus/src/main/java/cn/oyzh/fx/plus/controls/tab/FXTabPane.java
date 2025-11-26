@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import atlantafx.base.theme.Styles;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
@@ -88,7 +89,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      *
      * @param listener 监听器
      */
-    public void selectedTabChanged(ChangeListener<Tab> listener) {
+    public void selectedItemChanged(ChangeListener<Tab> listener) {
         this.getSelectionModel().selectedItemProperty().addListener((observableValue, t, t1) -> {
             if (!this.isIgnoreChanged()) {
                 listener.changed(observableValue, t, t1);
@@ -250,7 +251,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      */
     public void onTabSelected(String tabId, Runnable task) {
         if (tabId != null && task != null) {
-            this.selectedTabChanged((observable, oldValue, newValue) -> {
+            this.selectedItemChanged((observable, oldValue, newValue) -> {
                 if (newValue != null && StringUtil.equals(tabId, newValue.getId())) {
                     task.run();
                 }
@@ -332,9 +333,80 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
 
     @Override
     public void initNode() {
-        FlexAdapter.super.initNode();
         this.setTabRealHeight(24);
+        this.getStyleClass().add(Styles.TABS_CLASSIC);
+        // this.selectedItemChanged(this::setupSelectCountListener);
+        // // 监听tab移除，防止内存泄露
+        // this.getTabs().addListener((ListChangeListener<Tab>) c -> {
+        //     if (c.next()) {
+        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
+        //     }
+        // });
+        FlexAdapter.super.initNode();
     }
+
+    /**
+     * 安装刷新监听器
+     */
+    protected void setupRefreshListener() {
+        this.selectedItemChanged((observableValue, tab, t1) -> {
+            this.refresh();
+        });
+    }
+
+    // /**
+    //  * 安装选中计数器
+    //  *
+    //  */
+    // protected void setupSelectCountListener() {
+    //     this.applyCss();
+    //     this.requestLayout();
+    //     this.selectedItemChanged(this::selectCountListener);
+    // }
+    //
+    // /**
+    //  * 选中计数
+    //  */
+    // private AtomicInteger selectCount;
+    //
+    // /**
+    //  * 选中计数器
+    //  *
+    //  * @param observable 监听对象
+    //  * @param oldValue   旧值
+    //  * @param newValue   新值
+    //  */
+    // public void selectCountListener(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+    //     this.applyCss();
+    //     this.requestLayout();
+    //     if (this.selectCount == null) {
+    //         this.selectCount = new AtomicInteger(0);
+    //         JulLog.info("select count listener setup.");
+    //     }
+    //     if (this.selectCount.incrementAndGet() <= 2) {
+    //         if (newValue != null) {
+    //             // this.setIgnoreChanged(true);
+    //             // this.clearSelection();
+    //             // FXUtil.runPulse(() -> {
+    //             //     this.select(newValue);
+    //             //     this.setIgnoreChanged(false);
+    //             // });
+    //             this.refresh();
+    //         }
+    //         if (this.selectCount.get() == 2) {
+    //             this.removeSelectCountListener();
+    //         }
+    //     }
+    // }
+    //
+    // /**
+    //  * 移除选中计数监听器
+    //  */
+    // protected void removeSelectCountListener() {
+    //     JulLog.info("select count listener removed.");
+    //     this.selectCount = null;
+    //     this.getSelectionModel().selectedItemProperty().removeListener(this::selectCountListener);
+    // }
 
     public void setTabRealHeight(double tabHeight) {
         super.setTabMaxHeight(tabHeight);
@@ -343,5 +415,26 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
 
     public double getTabRealHeight() {
         return Math.max(this.getTabMaxHeight(), this.getTabMinHeight());
+    }
+
+    /**
+     * 刷新tab，解决部分情况下组件冻结的问题
+     */
+    public void refresh() {
+        // this.setIgnoreChanged(true);
+        // Tab tab = this.getSelectedItem();
+        // this.clearSelection();
+        // if (tab != null) {
+        //     // this.select(tab);
+        //     FXUtil.runAsync(() -> {
+        //         this.select(tab);
+        //         this.setIgnoreChanged(false);
+        //     });
+        // } else {
+        //     this.setIgnoreChanged(false);
+        // }
+        this.applyCss();
+        this.autosize();
+        this.requestLayout();
     }
 }

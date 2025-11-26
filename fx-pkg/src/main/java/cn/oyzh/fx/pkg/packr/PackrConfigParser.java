@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author oyzh
  * @since 2024/6/17
  */
+@Deprecated
 public class PackrConfigParser implements ConfigParser<PackrConfig> {
 
     @Override

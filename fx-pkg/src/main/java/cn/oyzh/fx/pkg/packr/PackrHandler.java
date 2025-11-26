@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @author oyzh
  * @since 2024/6/14
  */
+@Deprecated
 public class PackrHandler implements PackHandler {
 
     private int order = PackOrder.ORDER_0;

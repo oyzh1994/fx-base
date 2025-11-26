@@ -103,7 +103,7 @@ public class FXContextMenu extends ContextMenu implements LayoutAdapter, ThemeAd
     }
 
     @Override
-    public void destroy() {
+    public synchronized void destroy() {
         this.getItems().removeListener(this.itemsListener);
         this.cleaItem();
         this.itemsListener = null;
