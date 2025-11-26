@@ -32,20 +32,20 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     {
         NodeManager.init(this);
-        this.autoDestroy();
+        // this.autoDestroy();
     }
 
-    /**
-     * 自动销毁
-     */
-    protected void autoDestroy() {
-        // 监听节点
-        super.getChildren().addListener((ListChangeListener<TreeItem<V>>) c -> {
-            if (c.next()) {
-                c.getRemoved().forEach(NodeDestroyUtil::destroy);
-            }
-        });
-    }
+    // /**
+    //  * 自动销毁
+    //  */
+    // protected void autoDestroy() {
+    //     // 监听节点
+    //     super.getChildren().addListener((ListChangeListener<TreeItem<V>>) c -> {
+    //         if (c.next()) {
+    //             c.getRemoved().forEach(NodeDestroyUtil::destroy);
+    //         }
+    //     });
+    // }
 
     private FXTreeView treeView;
 

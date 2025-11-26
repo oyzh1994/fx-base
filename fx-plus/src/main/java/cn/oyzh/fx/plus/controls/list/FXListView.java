@@ -28,11 +28,11 @@ public class FXListView<T> extends ListView<T> implements FlexAdapter, TipAdapte
     public void initNode() {
         FlexAdapter.super.initNode();
         this.setCursor(Cursor.HAND);
-        this.getItems().addListener((ListChangeListener<T>) c -> {
-            if (c.next()) {
-                c.getRemoved().forEach(NodeDestroyUtil::destroy);
-            }
-        });
+        // this.getItems().addListener((ListChangeListener<T>) c -> {
+        //     if (c.next()) {
+        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
+        //     }
+        // });
     }
 
     /**
