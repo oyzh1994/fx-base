@@ -234,7 +234,7 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         super.onSizeChanged();
         TextField textField = this.getSkinnable();
         double h = NodeUtil.getHeight(textField);
-        double size = h * 0.4 - 1;
+        double size = h * 0.325 - 1;
         if (size <= 0) {
             size = 10;
         }

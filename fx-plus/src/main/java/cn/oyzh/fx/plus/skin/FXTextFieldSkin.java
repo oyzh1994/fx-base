@@ -24,12 +24,12 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
     /**
      * 大小改变
      */
-    protected final InvalidationListener sizeChanged = observable -> this.onSizeChanged();
+    protected InvalidationListener sizeChanged = observable -> this.onSizeChanged();
 
     /**
      * 可见监听器
      */
-    protected final InvalidationListener visibilityChanged = observable -> this.updateButtonVisibility();
+    protected InvalidationListener visibilityChanged = observable -> this.updateButtonVisibility();
 
     /**
      * 修改按钮显示状态
@@ -45,16 +45,15 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
         control.focusedProperty().addListener(visibilityChangedListener);
         control.visibleProperty().addListener(visibilityChangedListener);
         control.disableProperty().addListener(visibilityChangedListener);
+        WeakInvalidationListener sizeChangedListener = new WeakInvalidationListener(this.sizeChanged);
+        control.widthProperty().addListener(sizeChangedListener);
+        control.heightProperty().addListener(sizeChangedListener);
         // 更新一次按钮显示状态
         this.updateButtonVisibility();
 //        control.textProperty().addListener(this.visibilityChanged);
 //        control.focusedProperty().addListener(this.visibilityChanged);
 //        control.visibleProperty().addListener(this.visibilityChanged);
 //        control.disableProperty().addListener(this.visibilityChanged);
-
-        WeakInvalidationListener sizeChangedListener = new WeakInvalidationListener(this.sizeChanged);
-        control.widthProperty().addListener(sizeChangedListener);
-        control.heightProperty().addListener(sizeChangedListener);
     }
 
     /**
@@ -104,10 +103,14 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
     @Override
     public void dispose() {
         // 清除监听器
+        this.getSkinnable().widthProperty().removeListener(this.sizeChanged);
+        this.getSkinnable().heightProperty().removeListener(this.sizeChanged);
+        this.sizeChanged = null;
         this.getSkinnable().textProperty().removeListener(this.visibilityChanged);
         this.getSkinnable().focusedProperty().removeListener(this.visibilityChanged);
         this.getSkinnable().visibleProperty().removeListener(this.visibilityChanged);
         this.getSkinnable().disableProperty().removeListener(this.visibilityChanged);
+        this.visibilityChanged = null;
         this.getSkinnable().setOnMouseExited(null);
         this.getSkinnable().setOnMouseEntered(null);
         if (this.leftProperty != null) {
