@@ -264,13 +264,13 @@ public abstract class DigitalTextField extends LimitTextField {
         return new DigitalTextFieldSkin(this, this::incrValue, this::decrValue);
     }
 
-    public void setBtnMarginRight(float btnMarginRight) {
-        this.skin().setBtnMarginRight(btnMarginRight);
-    }
-
-    public float getBtnMarginRight() {
-        return this.skin().getBtnMarginRight();
-    }
+    // public void setBtnMarginRight(float btnMarginRight) {
+    //     this.skin().setBtnMarginRight(btnMarginRight);
+    // }
+    //
+    // public float getBtnMarginRight() {
+    //     return this.skin().getBtnMarginRight();
+    // }
 
     @Override
     protected void onBlur() {

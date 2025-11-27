@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.ExampleSVGGlyph;
-import cn.oyzh.i18n.I18nHelper;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
@@ -33,9 +33,19 @@ public class ExampleTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public ExampleTextFieldSkin(TextField textField) {
-        super(textField,new ExampleSVGGlyph("13"));
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.example());
+        super(textField);
+        // super(textField, new ExampleSVGGlyph("13"));
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.example());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new ExampleSVGGlyph("13");
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override

@@ -5,6 +5,7 @@ import cn.oyzh.fx.gui.svg.glyph.EnlargeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
@@ -99,9 +100,19 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
     }
 
     public EnlargeTextFiledSkin(TextField textField) {
-        super(textField, new EnlargeSVGGlyph("13"));
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.enlarge());
+        super(control);
+        // super(textField, new EnlargeSVGGlyph("13"));
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.enlarge());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (this.button == null) {
+            this.button = new EnlargeSVGGlyph("13");
+            super.initButton(this.button);
+        }
+        return this.button;
     }
 
     @Override

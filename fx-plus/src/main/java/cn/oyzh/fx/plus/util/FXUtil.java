@@ -6,6 +6,7 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.FXConst;
+import com.sun.javafx.tk.quantum.QuantumToolkit;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.HostServices;
@@ -23,9 +24,7 @@ import javafx.stage.Screen;
 import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
-import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -523,6 +522,22 @@ public class FXUtil {
 
         // 判断本地坐标是否在组件范围内
         return node.contains(localX, localY);
+    }
+
+    /**
+     * 判断是否周期脉冲动画
+     *
+     * @return 结果
+     */
+    public static boolean isPulseFromQueue() {
+        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+        for (StackTraceElement element : elements) {
+            if (element.getClassName().equals(QuantumToolkit.class.getName())
+                    && element.getMethodName().equals("pulseFromQueue")) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

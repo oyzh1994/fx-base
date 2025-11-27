@@ -1,12 +1,15 @@
 package cn.oyzh.fx.plus.skin;
 
+import atlantafx.base.controls.CustomTextFieldSkin;
 import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.paint.Color;
 import javafx.stage.Window;
 
@@ -16,7 +19,7 @@ import javafx.stage.Window;
  * @author oyzh
  * @since 2023/10/25
  */
-public class FXTextFieldSkin extends TextFieldSkin {
+public class FXTextFieldSkin extends CustomTextFieldSkin {
 
     /**
      * 可见监听器
@@ -37,10 +40,56 @@ public class FXTextFieldSkin extends TextFieldSkin {
         control.focusedProperty().addListener(weakInvalidationListener);
         control.visibleProperty().addListener(weakInvalidationListener);
         control.disableProperty().addListener(weakInvalidationListener);
+        // 更新一次按钮显示状态
+        this.updateButtonVisibility();
 //        control.textProperty().addListener(this.visibilityChanged);
 //        control.focusedProperty().addListener(this.visibilityChanged);
 //        control.visibleProperty().addListener(this.visibilityChanged);
 //        control.disableProperty().addListener(this.visibilityChanged);
+    }
+
+    /**
+     * 左边组件属性
+     */
+    protected SimpleObjectProperty<Node> leftProperty;
+
+    @Override
+    public ObjectProperty<Node> leftProperty() {
+        if (this.leftProperty == null) {
+            this.leftProperty = new SimpleObjectProperty<>();
+        }
+        return this.leftProperty;
+    }
+
+    /**
+     * 获取左边组件
+     *
+     * @return 组件
+     */
+    public Node getLeft() {
+        return this.leftProperty == null ? null : this.leftProperty.get();
+    }
+
+    /**
+     * 右边组件属性
+     */
+    protected SimpleObjectProperty<Node> rightProperty;
+
+    @Override
+    public ObjectProperty<Node> rightProperty() {
+        if (this.rightProperty == null) {
+            this.rightProperty = new SimpleObjectProperty<>();
+        }
+        return this.rightProperty;
+    }
+
+    /**
+     * 获取右边组件
+     *
+     * @return 组件
+     */
+    public Node getRight() {
+        return this.rightProperty == null ? null : this.rightProperty.get();
     }
 
     @Override
@@ -52,6 +101,14 @@ public class FXTextFieldSkin extends TextFieldSkin {
         this.getSkinnable().disableProperty().removeListener(this.visibilityChanged);
         this.getSkinnable().setOnMouseExited(null);
         this.getSkinnable().setOnMouseEntered(null);
+        if (this.leftProperty != null) {
+            this.leftProperty.unbind();
+            this.leftProperty = null;
+        }
+        if (this.rightProperty != null) {
+            this.rightProperty.unbind();
+            this.rightProperty = null;
+        }
         FXUtil.runLater(super::dispose);
     }
 

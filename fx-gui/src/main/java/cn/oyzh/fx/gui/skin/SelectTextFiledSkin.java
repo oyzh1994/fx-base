@@ -4,11 +4,11 @@ import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
-import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.ListCell;
@@ -228,9 +228,19 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     public SelectTextFiledSkin(TextField textField) {
-        super(textField, new SelectSVGGlyph());
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.select());
+        super(textField);
+        // super(textField, new SelectSVGGlyph());
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.select());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new SelectSVGGlyph();
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override
@@ -423,8 +433,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         PropertiesUtil.remove(this.getSkinnable(), "texting");
     }
 
-    @Override
-    protected double getButtonMargin() {
-        return -3;
-    }
+    // @Override
+    // protected double getButtonMargin() {
+    //     return -3;
+    // }
 }

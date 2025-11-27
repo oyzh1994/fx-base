@@ -1,19 +1,11 @@
 package cn.oyzh.fx.gui.skin;
 
-import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EyeSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ShowSVGGlyph;
 import cn.oyzh.fx.gui.text.field.PasswordTextField;
-import cn.oyzh.fx.plus.information.TooltipExt;
-import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.beans.InvalidationListener;
-import javafx.beans.WeakInvalidationListener;
 import javafx.scene.control.TextField;
-import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.stage.Window;
 
 /**
  * 文本域皮肤扩展
@@ -24,9 +16,19 @@ import javafx.stage.Window;
 public class PasswordTextFieldSkin extends ActionTextFieldSkin {
 
     public PasswordTextFieldSkin(PasswordTextField textField) {
-        super(textField, new EyeSVGGlyph());
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.showPassword());
+        super(control);
+        // super(textField, new EyeSVGGlyph());
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.showPassword());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new EyeSVGGlyph();
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override

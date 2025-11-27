@@ -3,17 +3,21 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.gui.svg.glyph.DownSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UpSVGGlyph;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.beans.property.ObjectProperty;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 
 /**
  * @author oyzh
@@ -31,34 +35,34 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
      */
     protected SVGGlyph decrButton;
 
-    /**
-     * 按钮右边距
-     */
-    private float btnMarginRight = 0.0f;
+    // /**
+    //  * 按钮右边距
+    //  */
+    // private float btnMarginRight = 0.0f;
 
-    public SVGGlyph getIncrButton() {
-        return incrButton;
-    }
+    // public SVGGlyph getIncrButton() {
+    //     return incrButton;
+    // }
+    //
+    // public void setIncrButton(SVGGlyph incrButton) {
+    //     this.incrButton = incrButton;
+    // }
+    //
+    // public SVGGlyph getDecrButton() {
+    //     return decrButton;
+    // }
+    //
+    // public void setDecrButton(SVGGlyph decrButton) {
+    //     this.decrButton = decrButton;
+    // }
 
-    public void setIncrButton(SVGGlyph incrButton) {
-        this.incrButton = incrButton;
-    }
+    // public float getBtnMarginRight() {
+    //     return btnMarginRight;
+    // }
 
-    public SVGGlyph getDecrButton() {
-        return decrButton;
-    }
-
-    public void setDecrButton(SVGGlyph decrButton) {
-        this.decrButton = decrButton;
-    }
-
-    public float getBtnMarginRight() {
-        return btnMarginRight;
-    }
-
-    public void setBtnMarginRight(float btnMarginRight) {
-        this.btnMarginRight = btnMarginRight;
-    }
+    // public void setBtnMarginRight(float btnMarginRight) {
+    //     this.btnMarginRight = btnMarginRight;
+    // }
 
     @Override
     protected void updateButtonVisibility() {
@@ -74,30 +78,30 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
 
     public DigitalTextFieldSkin(TextField textField, Runnable onIncr, Runnable onDecr) {
         super(textField);
-        double h = textField.getHeight() / 2.d - 1;
-        if (h <= 0) {
-            h = 10;
-        }
-        // 初始化增加、减少按钮
-        this.incrButton = new UpSVGGlyph();
-        this.incrButton.setSize(h);
-        this.incrButton.setVisible(false);
-        this.incrButton.managedBindVisible();
-        this.incrButton.setEnableWaiting(false);
-        this.incrButton.setFocusTraversable(false);
-        this.incrButton.setColor(this.getButtonColor());
-        this.incrButton.setTipText(I18nHelper.addValue());
-        this.incrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
-
-        this.decrButton = new DownSVGGlyph();
-        this.decrButton.setSize(h);
-        this.decrButton.setVisible(false);
-        this.decrButton.managedBindVisible();
-        this.decrButton.setEnableWaiting(false);
-        this.decrButton.setFocusTraversable(false);
-        this.decrButton.setColor(this.getButtonColor());
-        this.decrButton.setTipText(I18nHelper.reduceValue());
-        this.decrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
+        // double h = textField.getHeight() / 2.d - 1;
+        // if (h <= 0) {
+        //     h = 10;
+        // }
+        // // 初始化增加、减少按钮
+        // this.incrButton = new UpSVGGlyph();
+        // this.incrButton.setSize(h);
+        // this.incrButton.setVisible(false);
+        // this.incrButton.managedBindVisible();
+        // this.incrButton.setEnableWaiting(false);
+        // this.incrButton.setFocusTraversable(false);
+        // this.incrButton.setColor(this.getButtonColor());
+        // this.incrButton.setTipText(I18nHelper.addValue());
+        // this.incrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
+        //
+        // this.decrButton = new DownSVGGlyph();
+        // this.decrButton.setSize(h);
+        // this.decrButton.setVisible(false);
+        // this.decrButton.managedBindVisible();
+        // this.decrButton.setEnableWaiting(false);
+        // this.decrButton.setFocusTraversable(false);
+        // this.decrButton.setColor(this.getButtonColor());
+        // this.decrButton.setTipText(I18nHelper.reduceValue());
+        // this.decrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
         // 绑定事件到按钮
         if (onIncr != null) {
             this.incrButton.setOnMousePrimaryClicked(event -> onIncr.run());
@@ -121,8 +125,48 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
                 }
             });
         }
-        // 添加到组件
-        this.getChildren().addAll(this.incrButton, this.decrButton);
+        // // 添加到组件
+        // this.getChildren().addAll(this.incrButton, this.decrButton);
+    }
+
+    @Override
+    public ObjectProperty<Node> rightProperty() {
+        if (super.rightProperty == null) {
+            TextField textField = this.getSkinnable();
+            double h = NodeUtil.getHeight(textField);
+            double size = h / 2 - 1;
+            if (size <= 0) {
+                size = 10;
+            }
+            // 初始化增加、减少按钮
+            this.incrButton = new UpSVGGlyph();
+            this.incrButton.setSize(size);
+            this.incrButton.setVisible(false);
+            this.incrButton.managedBindVisible();
+            this.incrButton.setEnableWaiting(false);
+            this.incrButton.setFocusTraversable(false);
+            this.incrButton.setColor(this.getButtonColor());
+            this.incrButton.setTipText(I18nHelper.addValue());
+
+            this.decrButton = new DownSVGGlyph();
+            this.decrButton.setSize(h);
+            this.decrButton.setVisible(false);
+            this.decrButton.managedBindVisible();
+            this.decrButton.setEnableWaiting(false);
+            this.decrButton.setFocusTraversable(false);
+            this.decrButton.setColor(this.getButtonColor());
+            this.decrButton.setTipText(I18nHelper.reduceValue());
+            // 组件
+            FXVBox vBox = new FXVBox(this.incrButton, this.decrButton);
+            // 计算边距
+            double top = h - (size - 2) * 2;
+            VBox.setMargin(this.incrButton, new Insets(top, 0, 1, 0));
+            // 绑定属性
+            vBox.prefHeightProperty().bind(textField.prefHeightProperty());
+            // 绑定组件到按钮
+            super.rightProperty().set(vBox);
+        }
+        return super.rightProperty();
     }
 
     @Override
@@ -177,5 +221,15 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
      */
     public void enableIncrButton() {
         this.incrButton.setDisable(false);
+    }
+
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroy(this.incrButton);
+        this.incrButton = null;
+        NodeDestroyUtil.destroy(this.decrButton);
+        this.decrButton = null;
+        super.dispose();
     }
 }

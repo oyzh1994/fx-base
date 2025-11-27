@@ -4,6 +4,7 @@ import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.chooser.FXChooser;
 import cn.oyzh.fx.plus.chooser.FileChooserHelper;
 import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -85,9 +86,19 @@ public class ChooseFileTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public ChooseFileTextFieldSkin(TextField textField) {
-        super(textField, new ChooseSVGGlyph("13"));
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.choose());
+        super(textField);
+        // super(textField, new ChooseSVGGlyph("13"));
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.choose());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new ChooseSVGGlyph("12");
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override

@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -188,9 +189,19 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public DateTimeTextFieldSkin(TextField textField) {
-        super(textField, new DateSVGGlyph("13"));
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.choose());
+        super(textField);
+        // super(textField, new DateSVGGlyph("13"));
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.choose());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new DateSVGGlyph();
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override
