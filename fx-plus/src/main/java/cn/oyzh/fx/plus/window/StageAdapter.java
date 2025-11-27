@@ -550,9 +550,8 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
                 } else {
                     JulLog.warn("headerBar is null!");
                 }
-            } else {
-                FXUtil.runWait(() -> stage.setTitle(title));
             }
+            FXUtil.runWait(() -> stage.setTitle(title));
         }
     }
 
