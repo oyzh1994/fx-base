@@ -9,9 +9,8 @@ import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 
 /**
@@ -30,5 +29,13 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeGroup, No
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    protected void layoutChildren() {
+        for (Node child : this.getChildren()) {
+            child.autosize();
+        }
+        super.layoutChildren();
     }
 }

@@ -135,18 +135,17 @@ public class NodeDestroyUtil {
                 }
                 // 过滤属性类型
                 Class<?> clazz = field.getType();
-                // 设置可访问
-                field.setAccessible(true);
-                // 获取属性值
-                Object value = field.get(object);
-                if(value == null){
+                if (!field.trySetAccessible()) {
                     continue;
                 }
                 // // 可设置为null
                 // boolean setNullable = false;
                 // 属性类型
                 if (Property.class.isAssignableFrom(clazz)) {
-                    Property<?> property = (Property<?>) value;
+                    // 设置可访问
+                    field.setAccessible(true);
+                    // 获取属性值
+                    Property<?> property = (Property<?>) field.get(object);
                     // 解绑属性
                     if (property != null) {
                         property.unbind();
