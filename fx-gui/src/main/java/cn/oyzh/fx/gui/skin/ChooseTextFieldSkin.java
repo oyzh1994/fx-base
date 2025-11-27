@@ -36,4 +36,9 @@ public class ChooseTextFieldSkin extends ActionTextFieldSkin {
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
     }
+
+    @Override
+    protected double getButtonSizeMax() {
+        return 12;
+    }
 }

@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 public class PasswordTextFieldSkin extends ActionTextFieldSkin {
 
     public PasswordTextFieldSkin(PasswordTextField textField) {
-        super(control);
+        super(textField);
         // super(textField, new EyeSVGGlyph());
         // this.button.disappear();
         // this.button.setTipText(I18nHelper.showPassword());
@@ -52,8 +52,8 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
-    @Override
-    protected void setButtonSize(double size) {
-        this.button.setSize(size * 1.2, size);
-    }
+    // @Override
+    // protected void setButtonSize(double size) {
+    //     this.button.setSize(size * 1.2, size);
+    // }
 }

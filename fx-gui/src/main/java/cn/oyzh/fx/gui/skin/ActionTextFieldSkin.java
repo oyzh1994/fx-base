@@ -2,6 +2,7 @@ package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
@@ -121,14 +122,23 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
         this.button.setColor(this.getButtonColor());
     }
 
-    //
-    // protected double getButtonSizeMin() {
-    //     return 10;
-    // }
-    //
-    // protected double getButtonSizeMax() {
-    //     return 20;
-    // }
+    /**
+     * 获取按钮大小最小值
+     *
+     * @return 结果
+     */
+    protected double getButtonSizeMin() {
+        return 8;
+    }
+
+    /**
+     * 获取按钮大小最大值
+     *
+     * @return 结果
+     */
+    protected double getButtonSizeMax() {
+        return 14;
+    }
 
     // /**
     //  * 获取按钮边距
@@ -158,5 +168,20 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
         }
         this.action = null;
         super.dispose();
+    }
+
+    @Override
+    protected void onSizeChanged() {
+        super.onSizeChanged();
+        TextField textField = this.getSkinnable();
+        double h = NodeUtil.getHeight(textField);
+        double size = h * 0.8;
+        if (size < this.getButtonSizeMin()) {
+            size = this.getButtonSizeMin();
+        } else if (size > this.getButtonSizeMax()) {
+            size = this.getButtonSizeMax();
+        }
+        // 设置大小
+        this.button.setSize(size);
     }
 }

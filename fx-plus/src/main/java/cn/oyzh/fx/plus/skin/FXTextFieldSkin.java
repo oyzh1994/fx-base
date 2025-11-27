@@ -22,12 +22,17 @@ import javafx.stage.Window;
 public class FXTextFieldSkin extends CustomTextFieldSkin {
 
     /**
+     * 大小改变
+     */
+    protected final InvalidationListener sizeChanged = observable -> this.onSizeChanged();
+
+    /**
      * 可见监听器
      */
     protected final InvalidationListener visibilityChanged = observable -> this.updateButtonVisibility();
 
     /**
-     * 修改按钮状态
+     * 修改按钮显示状态
      */
     protected void updateButtonVisibility() {
     }
@@ -35,17 +40,21 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
     public FXTextFieldSkin(TextField control) {
         super(control);
         // 初始化监听器
-        WeakInvalidationListener weakInvalidationListener = new WeakInvalidationListener(this.visibilityChanged);
-        control.textProperty().addListener(weakInvalidationListener);
-        control.focusedProperty().addListener(weakInvalidationListener);
-        control.visibleProperty().addListener(weakInvalidationListener);
-        control.disableProperty().addListener(weakInvalidationListener);
+        WeakInvalidationListener visibilityChangedListener = new WeakInvalidationListener(this.visibilityChanged);
+        control.textProperty().addListener(visibilityChangedListener);
+        control.focusedProperty().addListener(visibilityChangedListener);
+        control.visibleProperty().addListener(visibilityChangedListener);
+        control.disableProperty().addListener(visibilityChangedListener);
         // 更新一次按钮显示状态
         this.updateButtonVisibility();
 //        control.textProperty().addListener(this.visibilityChanged);
 //        control.focusedProperty().addListener(this.visibilityChanged);
 //        control.visibleProperty().addListener(this.visibilityChanged);
 //        control.disableProperty().addListener(this.visibilityChanged);
+
+        WeakInvalidationListener sizeChangedListener = new WeakInvalidationListener(this.sizeChanged);
+        control.widthProperty().addListener(sizeChangedListener);
+        control.heightProperty().addListener(sizeChangedListener);
     }
 
     /**
@@ -156,5 +165,11 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
 
     protected Window getWindow() {
         return this.getSkinnable().getScene().getWindow();
+    }
+
+    /**
+     * 组件大小改变事件
+     */
+    protected void onSizeChanged() {
     }
 }

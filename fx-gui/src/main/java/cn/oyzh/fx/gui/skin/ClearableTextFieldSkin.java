@@ -36,14 +36,6 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkin {
         if (super.button == null) {
             this.button = new CloseSVGGlyph();
             super.initButton(this.button);
-            double height = NodeUtil.getHeight(this.getSkinnable());
-            double bthSize = height * 0.325;
-            if (bthSize < 8) {
-                bthSize = 8;
-            } else if (bthSize > 12) {
-                bthSize = 12;
-            }
-            this.button.setSize(bthSize);
         }
         return super.button;
     }
@@ -52,9 +44,22 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkin {
     protected void onButtonClicked(MouseEvent e) {
         this.setText("");
     }
-    //
+
+    @Override
+    protected double getButtonSizeMax() {
+        return 12;
+    }
+
     // @Override
-    // protected double getButtonSizeMax() {
-    //     return 12;
+    // protected void onSizeChanged() {
+    //     super.onSizeChanged();
+    //     double height = NodeUtil.getHeight(this.getSkinnable());
+    //     double bthSize = height * 0.325;
+    //     if (bthSize < 8) {
+    //         bthSize = 8;
+    //     } else if (bthSize > 12) {
+    //         bthSize = 12;
+    //     }
+    //     this.button.setSize(bthSize);
     // }
 }

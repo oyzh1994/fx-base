@@ -70,6 +70,7 @@ public class FXVBox extends VBox implements FlexAdapter, NodeGroup, ThemeAdapter
 
     @Override
     protected void layoutChildren() {
+        //System.out.println("-----------------");
         for (Node child : this.getChildren()) {
             child.autosize();
         }

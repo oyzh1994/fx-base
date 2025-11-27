@@ -100,7 +100,7 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
     }
 
     public EnlargeTextFiledSkin(TextField textField) {
-        super(control);
+        super(textField);
         // super(textField, new EnlargeSVGGlyph("13"));
         // this.button.disappear();
         // this.button.setTipText(I18nHelper.enlarge());
