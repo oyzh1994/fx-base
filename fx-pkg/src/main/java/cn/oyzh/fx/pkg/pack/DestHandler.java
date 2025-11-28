@@ -44,6 +44,9 @@ public class DestHandler implements PostHandler {
         } else {// 正常构建
             List<File> files = FileUtil.getAllFiles(packConfig.getDest());
             for (File file : files) {
+                if (file.isDirectory()) {
+                    continue;
+                }
                 String fileName = "";
                 if (packConfig.getAppName() != null) {
                     fileName += packConfig.getAppName();
