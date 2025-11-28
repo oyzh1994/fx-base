@@ -5,15 +5,15 @@ import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * 压缩名称处理器
  *
  * @author oyzh
+ * TODO: 由以下类替代
+ * @see cn.oyzh.fx.pkg.pack.DestHandler
  * @since 2024/06/18
  */
+@Deprecated
 public class CompressNameHandler implements PostHandler {
 
     private int order = PackOrder.ORDER_M5;
@@ -45,12 +45,12 @@ public class CompressNameHandler implements PostHandler {
         if (packConfig.getPlatform() != null) {
             compressName = compressName + "_" + packConfig.getPlatform();
         }
-            compressName = compressName + "_" + OSUtil.getArchName();
+        compressName = compressName + "_" + OSUtil.getArchName();
         // compressName += "_" + new SimpleDateFormat("yyyyMMdd").format(new Date());
         if (packConfig.getBuildType() != null) {
             compressName = compressName + "_" + packConfig.getBuildType();
-        // } else {
-        //     compressName = compressName + "_release";
+            // } else {
+            //     compressName = compressName + "_release";
         }
         compressConfig.setName(compressName);
     }

@@ -38,16 +38,14 @@ public class DestHandler implements PostHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-        // 压缩包
-        File compressFile = packConfig.getCompressFile();
-        if (compressFile != null && compressFile.exists()) {
-            String extName = FileNameUtil.extName(compressFile);
-            if (StringUtil.equals(extName, "appimage")) {
+
+        // app-image格式仅处理压缩包
+        if (StringUtil.equalsIgnoreCase(packConfig.packageType(), "app-image")) {
+            File compressFile = packConfig.getCompressFile();
+            if (compressFile != null && compressFile.exists()) {
                 this.handler(packConfig, compressFile);
-            } else {
-                JulLog.warn("最终产物是压缩文件，忽略处理");
             }
-        } else {// 正常构建
+        } else {// msi、exe、dmg、pkg、rpm、deb
             List<File> files = FileUtil.getAllFiles(packConfig.getDest());
             for (File file : files) {
                 if (file.isDirectory() || !file.exists()) {
@@ -57,6 +55,25 @@ public class DestHandler implements PostHandler {
                 break;
             }
         }
+        //// 压缩包
+        //File compressFile = packConfig.getCompressFile();
+        //if (compressFile != null && compressFile.exists()) {
+        //    String extName = FileNameUtil.extName(compressFile);
+        //    if (StringUtil.equals(extName, "appimage")) {
+        //        this.handler(packConfig, compressFile);
+        //    } else {
+        //        JulLog.warn("最终产物是压缩文件，忽略处理");
+        //    }
+        //} else {// 正常构建
+        //    List<File> files = FileUtil.getAllFiles(packConfig.getDest());
+        //    for (File file : files) {
+        //        if (file.isDirectory() || !file.exists()) {
+        //            continue;
+        //        }
+        //        this.handler(packConfig, file);
+        //        break;
+        //    }
+        //}
     }
 
     /**
