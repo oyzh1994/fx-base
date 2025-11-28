@@ -4,9 +4,9 @@ import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.geometry.HPos;
+import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,7 +23,7 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
     /**
      * 搜索历史按钮
      */
-    protected final SVGGlyph historyButton;
+    protected SVGGlyph history;
 
     /**
      * 搜索历史弹窗
@@ -89,17 +89,17 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
 
     public SearchTextFieldSkin(TextField textField) {
         super(textField);
-        // 初始化历史按钮
-        this.historyButton = new HistorySVGGlyph();
-        this.historyButton.setTipText(I18nHelper.his());
-//        this.historyButton.setColor(this.getButtonColor());
-        this.historyButton.setEnableWaiting(false);
-        this.historyButton.setFocusTraversable(false);
-//        this.historyButton.setPadding(new Insets(0));
-        this.historyButton.setOnMousePrimaryClicked(e -> this.showHistoryPopup());
-        this.historyButton.setOnMouseMoved(mouseEvent -> this.historyButton.setColor("#E36413"));
-        this.historyButton.setOnMouseExited(mouseEvent -> this.historyButton.setColor(this.getButtonColor()));
-        this.getChildren().add(this.historyButton);
+//         // 初始化历史按钮
+//         this.historyButton = new HistorySVGGlyph();
+//         this.historyButton.setTipText(I18nHelper.his());
+// //        this.historyButton.setColor(this.getButtonColor());
+//         this.historyButton.setEnableWaiting(false);
+//         this.historyButton.setFocusTraversable(false);
+// //        this.historyButton.setPadding(new Insets(0));
+//         this.historyButton.setOnMousePrimaryClicked(e -> this.showHistoryPopup());
+//         this.historyButton.setOnMouseMoved(mouseEvent -> this.historyButton.setColor("#E36413"));
+//         this.historyButton.setOnMouseExited(mouseEvent -> this.historyButton.setColor(this.getButtonColor()));
+//         this.getChildren().add(this.historyButton);
 
         // 按键监听
         this.getSkinnable().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -138,26 +138,41 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
 //        return super.getButtonColor();
 //    }
 
+    // @Override
+    // protected void layoutChildren(double x, double y, double w, double h) {
+    //     super.layoutChildren(x, y, w, h);
+    //     // 组件大小
+    //     double size = h * .8;
+    //     // 计算组件大小
+    //     double btnSize = this.snapSizeX(size);
+    //     // 设置组件大小
+    //     this.historyButton.setSize(size);
+    //     // 获取边距
+    //     Insets padding = this.getSkinnable().getPadding();
+    //     // 计算左边距
+    //     double paddingLeft = btnSize + 8;
+    //     // 设置左边距
+    //     if (padding.getLeft() != paddingLeft) {
+    //         padding = new Insets(padding.getTop(), padding.getRight(), padding.getBottom(), paddingLeft);
+    //         this.getSkinnable().setPadding(padding);
+    //     }
+    //     // 设置组件位置
+    //     // super.positionInArea(this.historyButton, 3, y * 0.9, w, h, btnSize, HPos.LEFT, VPos.CENTER);
+    //     super.positionInArea(this.historyButton, 3, y * 0.9, 0, h, btnSize, HPos.LEFT, VPos.CENTER);
+    // }
+
     @Override
-    protected void layoutChildren(double x, double y, double w, double h) {
-        super.layoutChildren(x, y, w, h);
-        // 组件大小
-        double size = h * .8;
-        // 计算组件大小
-        double btnSize = this.snapSizeX(size);
-        // 设置组件大小
-        this.historyButton.setSize(size);
-        // 获取边距
-        Insets padding = this.getSkinnable().getPadding();
-        // 计算左边距
-        double paddingLeft = btnSize + 8;
-        // 设置左边距
-        if (padding.getLeft() != paddingLeft) {
-            padding = new Insets(padding.getTop(), padding.getRight(), padding.getBottom(), paddingLeft);
-            this.getSkinnable().setPadding(padding);
+    public ObjectProperty<Node> leftProperty() {
+        if (super.leftProperty() == null) {
+            this.history = new HistorySVGGlyph();
+            this.history.setTipText(I18nHelper.his());
+            this.history.setFocusTraversable(false);
+            this.history.setPadding(Insets.EMPTY);
+            this.history.setOnMousePrimaryClicked(e -> this.showHistoryPopup());
+            this.history.setOnMouseMoved(mouseEvent -> this.history.setColor("#E36413"));
+            this.history.setOnMouseExited(mouseEvent -> this.history.setColor(this.getButtonColor()));
+            super.leftProperty().set(this.history);
         }
-        // 设置组件位置
-        // super.positionInArea(this.historyButton, 3, y * 0.9, w, h, btnSize, HPos.LEFT, VPos.CENTER);
-        super.positionInArea(this.historyButton, 3, y * 0.9, 0, h, btnSize, HPos.LEFT, VPos.CENTER);
+        return super.leftProperty();
     }
 }

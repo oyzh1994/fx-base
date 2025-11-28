@@ -443,18 +443,18 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         return 12;
     }
 
-    @Override
-    protected void onSizeChanged() {
-        super.onSizeChanged();
-        TextField textField = this.getSkinnable();
-        double h = NodeUtil.getHeight(textField);
-        double size = h * 0.8;
-        if (size < this.getButtonSizeMin()) {
-            size = this.getButtonSizeMin();
-        } else if (size > this.getButtonSizeMax()) {
-            size = this.getButtonSizeMax();
-        }
-        // 设置大小
-        this.button.setSize(size, size * 0.8);
-    }
+    // @Override
+    // protected void onSizeChanged() {
+    //     super.onSizeChanged();
+    //     TextField textField = this.getSkinnable();
+    //     double h = NodeUtil.getHeight(textField);
+    //     double size = h * 0.8;
+    //     if (size < this.getButtonSizeMin()) {
+    //         size = this.getButtonSizeMin();
+    //     } else if (size > this.getButtonSizeMax()) {
+    //         size = this.getButtonSizeMax();
+    //     }
+    //     // 设置大小
+    //     this.button.setSize(size, size * 0.8);
+    // }
 }

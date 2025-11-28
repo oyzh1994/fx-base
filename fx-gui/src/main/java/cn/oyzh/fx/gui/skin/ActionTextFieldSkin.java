@@ -18,6 +18,9 @@ import javafx.scene.input.MouseEvent;
  */
 public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
 
+    /**
+     * 操作
+     */
     private Runnable action;
 
     public Runnable getAction() {
@@ -33,8 +36,8 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
      */
     protected SVGGlyph button;
 
-    public ActionTextFieldSkin(TextField control) {
-        super(control);
+    public ActionTextFieldSkin(TextField textField) {
+        super(textField);
     }
 
     // public ActionTextFieldSkin(TextField control, SVGGlyph button) {
@@ -60,8 +63,8 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
         this.button.setPadding(Insets.EMPTY);
         this.button.setFocusTraversable(false);
         button.setOnMousePrimaryClicked(this::onButtonClicked);
-        button.setOnMouseExited(mouseEvent -> this.resetButtonColor());
-        button.setOnMouseEntered(mouseEvent -> button.setColor("#DC143C"));
+        button.setOnMouseExited(e -> this.resetButtonColor());
+        button.setOnMouseEntered(e -> button.setColor("#DC143C"));
     }
 
     /**
@@ -182,6 +185,6 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
             size = this.getButtonSizeMax();
         }
         // 设置大小
-        this.button.setSize(size);
+        this.setButtonSize(size);
     }
 }

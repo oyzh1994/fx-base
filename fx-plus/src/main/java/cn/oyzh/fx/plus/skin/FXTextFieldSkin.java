@@ -22,7 +22,7 @@ import javafx.stage.Window;
 public class FXTextFieldSkin extends CustomTextFieldSkin {
 
     /**
-     * 大小改变
+     * 大小监听器
      */
     protected InvalidationListener sizeChanged = observable -> this.onSizeChanged();
 
@@ -166,6 +166,11 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
         this.getSkinnable().setTooltip(tooltip);
     }
 
+    /**
+     * 获取组件所属窗口
+     *
+     * @return 组件
+     */
     protected Window getWindow() {
         return this.getSkinnable().getScene().getWindow();
     }
@@ -174,5 +179,10 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
      * 组件大小改变事件
      */
     protected void onSizeChanged() {
+    }
+
+    @Override
+    protected final void layoutChildren(double x, double y, double w, double h) {
+        super.layoutChildren(x, y, w, h);
     }
 }
