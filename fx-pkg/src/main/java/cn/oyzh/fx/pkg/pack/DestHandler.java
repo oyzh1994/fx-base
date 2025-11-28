@@ -4,6 +4,7 @@ import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
@@ -40,37 +41,52 @@ public class DestHandler implements PostHandler {
         // 压缩包
         File compressFile = packConfig.getCompressFile();
         if (compressFile != null && compressFile.exists()) {
-            JulLog.info("最终产物是压缩文件，忽略处理");
+            String extName = FileNameUtil.extName(compressFile);
+            if (StringUtil.equals(extName, "appimage")) {
+                this.handler(packConfig, compressFile);
+            } else {
+                JulLog.warn("最终产物是压缩文件，忽略处理");
+            }
         } else {// 正常构建
             List<File> files = FileUtil.getAllFiles(packConfig.getDest());
             for (File file : files) {
                 if (file.isDirectory() || !file.exists()) {
                     continue;
                 }
-                String fileName = "";
-                if (packConfig.getAppName() != null) {
-                    fileName += packConfig.getAppName();
-                }
-                if (packConfig.appVersion() != null) {
-                    fileName = fileName + "_v" + packConfig.appVersion();
-                }
-                if (packConfig.getPlatform() != null) {
-                    fileName = fileName + "_" + packConfig.getPlatform();
-                }
-                fileName = fileName + "_" + OSUtil.getArchName();
-                if (packConfig.getBuildType() != null) {
-                    fileName = fileName + "_" + packConfig.getBuildType();
-                }
-                String extName = FileNameUtil.extName(file.getName());
-                fileName = fileName + "." + extName;
-                File finalFile = new File(file.getParent(), fileName);
-                FileUtil.renameFile(file, finalFile, true);
-                // 以防万一
-                FileUtil.del(file);
-                JulLog.info("最终产物名称:{} 处理后名称:{}", file.getName(), fileName);
+                this.handler(packConfig, file);
                 break;
             }
-
         }
+    }
+
+    /**
+     * 执行出来
+     *
+     * @param packConfig 打包配置
+     * @param file       文件
+     * @throws Exception 异常
+     */
+    private void handler(PackConfig packConfig, File file) throws Exception {
+        String fileName = "";
+        if (packConfig.getAppName() != null) {
+            fileName += packConfig.getAppName();
+        }
+        if (packConfig.appVersion() != null) {
+            fileName = fileName + "_v" + packConfig.appVersion();
+        }
+        if (packConfig.getPlatform() != null) {
+            fileName = fileName + "_" + packConfig.getPlatform();
+        }
+        fileName = fileName + "_" + OSUtil.getArchName();
+        if (packConfig.getBuildType() != null) {
+            fileName = fileName + "_" + packConfig.getBuildType();
+        }
+        String extName = FileNameUtil.extName(file.getName());
+        fileName = fileName + "." + extName;
+        File finalFile = new File(file.getParent(), fileName);
+        FileUtil.renameFile(file, finalFile, true);
+        // 以防万一
+        FileUtil.del(file);
+        JulLog.info("最终产物名称:{} 处理后名称:{}", file.getName(), fileName);
     }
 }
