@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class DestHandler implements PostHandler {
 
-    private int order = PackOrder.ORDER_M8;
+    private int order = PackOrder.ORDER_M7;
 
     @Override
     public int order() {
@@ -64,8 +64,7 @@ public class DestHandler implements PostHandler {
                 String extName = FileNameUtil.extName(file.getName());
                 fileName = fileName + "." + extName;
                 File finalFile = new File(file.getParent(), fileName);
-                FileUtil.renameFile(file, new File(file.getParent(), fileName), true);
-                packConfig.setDest(finalFile.getPath());
+                FileUtil.renameFile(file, finalFile, true);
                 JulLog.info("最终产物名称:{} 处理后名称:{}", file.getName(), fileName);
                 break;
             }
