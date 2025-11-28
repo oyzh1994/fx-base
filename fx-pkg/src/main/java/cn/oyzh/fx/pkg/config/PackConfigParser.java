@@ -48,8 +48,8 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         if (object.containsKey("jrePath")) {
             config.setJrePath(object.getString("jrePath"));
         }
-        if (object.containsKey("jrePath")) {
-            config.setPlatform(object.getString("jrePath"));
+        if (object.containsKey("platform")) {
+            config.setPlatform(object.getString("platform"));
         }
         if (object.containsKey("packMode")) {
             config.setPackMode(object.getString("packMode"));
