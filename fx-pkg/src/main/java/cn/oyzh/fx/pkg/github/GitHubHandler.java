@@ -69,7 +69,6 @@ public class GitHubHandler implements PostHandler {
                     }
                 }
             }
-
         } else {
             JulLog.warn("githubDist 未找到参数设置");
         }

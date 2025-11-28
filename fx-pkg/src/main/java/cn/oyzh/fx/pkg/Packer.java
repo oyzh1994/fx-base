@@ -18,9 +18,9 @@ import cn.oyzh.fx.pkg.jlink.JLinkHandler;
 import cn.oyzh.fx.pkg.jpackage.JPackageHandler;
 import cn.oyzh.fx.pkg.jre.JreHandler;
 import cn.oyzh.fx.pkg.mvn.MvnHandler;
+import cn.oyzh.fx.pkg.pack.DestHandler;
 import cn.oyzh.fx.pkg.pack.EndHandler;
 import cn.oyzh.fx.pkg.pack.StartHandler;
-import cn.oyzh.fx.pkg.packr.PackrHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,7 @@ public class Packer {
         this.registerEndHandler();
         this.registerJarHandler();
         this.registerJreHandler();
+        this.registerDestHandler();
         this.registerJLinkHandler();
         this.registerStartHandler();
         this.registerJdepsHandler();
@@ -53,6 +54,10 @@ public class Packer {
         this.registerAppConfigHandler();
         this.registerPackConfigHandler();
         this.registerCompressNameHandler();
+    }
+
+    public void registerDestHandler() {
+        this.registerHandler(new DestHandler());
     }
 
     public void registerEndHandler() {
@@ -63,9 +68,9 @@ public class Packer {
         this.registerHandler(new StartHandler());
     }
 
-    public void registerPackrHandler() {
-        this.registerHandler(new PackrHandler());
-    }
+    // public void registerPackrHandler() {
+    //     this.registerHandler(new PackrHandler());
+    // }
 
     public void registerJPackageHandler() {
         this.registerHandler(new JPackageHandler());
@@ -225,11 +230,11 @@ public class Packer {
                 packConfig.putProperty(entry.getKey(), entry.getValue());
             }
         }
-        if (packConfig.isParkByPackr()) {
-            this.registerPackrHandler();
-        } else {
+        // if (packConfig.isParkByPackr()) {
+        //     this.registerPackrHandler();
+        // } else {
             this.registerJPackageHandler();
-        }
+        // }
         // AppImage
         if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
             this.registerAppImageHandler();
