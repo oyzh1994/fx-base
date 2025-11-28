@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -122,5 +123,12 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         boolean hasFocus = this.getSkinnable().isFocused();
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
+    }
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroy(this.popup);
+        this.popup = null;
+        super.dispose();
     }
 }

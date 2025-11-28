@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ListViewUtil;
@@ -457,4 +458,13 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     //     // 设置大小
     //     this.button.setSize(size, size * 0.8);
     // }
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroy(this.popup);
+        this.popup = null;
+        this.converter = null;
+        this.selectItemChanged = null;
+        super.dispose();
+    }
 }

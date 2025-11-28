@@ -56,4 +56,10 @@ public class ExampleTextFieldSkin extends ActionTextFieldSkin {
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
     }
+
+    @Override
+    public void dispose() {
+        this.exampleText = null;
+        super.dispose();
+    }
 }

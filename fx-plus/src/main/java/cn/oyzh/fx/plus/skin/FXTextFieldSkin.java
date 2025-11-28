@@ -37,23 +37,23 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
     protected void updateButtonVisibility() {
     }
 
-    public FXTextFieldSkin(TextField control) {
-        super(control);
+    public FXTextFieldSkin(TextField textField) {
+        super(textField);
         // 初始化监听器
-        WeakInvalidationListener visibilityChangedListener = new WeakInvalidationListener(this.visibilityChanged);
-        control.textProperty().addListener(visibilityChangedListener);
-        control.focusedProperty().addListener(visibilityChangedListener);
-        control.visibleProperty().addListener(visibilityChangedListener);
-        control.disableProperty().addListener(visibilityChangedListener);
-        WeakInvalidationListener sizeChangedListener = new WeakInvalidationListener(this.sizeChanged);
-        control.widthProperty().addListener(sizeChangedListener);
-        control.heightProperty().addListener(sizeChangedListener);
+        // WeakInvalidationListener visibilityChangedListener = new WeakInvalidationListener(this.visibilityChanged);
+        // control.textProperty().addListener(visibilityChangedListener);
+        // control.focusedProperty().addListener(visibilityChangedListener);
+        // control.visibleProperty().addListener(visibilityChangedListener);
+        // control.disableProperty().addListener(visibilityChangedListener);
+        textField.textProperty().addListener(this.visibilityChanged);
+        textField.focusedProperty().addListener(this.visibilityChanged);
+        textField.visibleProperty().addListener(this.visibilityChanged);
+        textField.disableProperty().addListener(this.visibilityChanged);
+        // WeakInvalidationListener sizeChangedListener = new WeakInvalidationListener(this.sizeChanged);
+        textField.widthProperty().addListener(this.sizeChanged);
+        textField.heightProperty().addListener(this.sizeChanged);
         // 更新一次按钮显示状态
         this.updateButtonVisibility();
-//        control.textProperty().addListener(this.visibilityChanged);
-//        control.focusedProperty().addListener(this.visibilityChanged);
-//        control.visibleProperty().addListener(this.visibilityChanged);
-//        control.disableProperty().addListener(this.visibilityChanged);
     }
 
     /**
@@ -181,8 +181,8 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
     protected void onSizeChanged() {
     }
 
-    @Override
-    protected final void layoutChildren(double x, double y, double w, double h) {
-        super.layoutChildren(x, y, w, h);
-    }
+    // @Override
+    // protected final void layoutChildren(double x, double y, double w, double h) {
+    //     super.layoutChildren(x, y, w, h);
+    // }
 }

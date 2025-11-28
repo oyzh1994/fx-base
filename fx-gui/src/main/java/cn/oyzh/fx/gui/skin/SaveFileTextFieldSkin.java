@@ -90,4 +90,12 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
     }
+
+    @Override
+    public void dispose() {
+        this.extension = null;
+        this.initFileName = null;
+        this.onFileSelected = null;
+        super.dispose();
+    }
 }

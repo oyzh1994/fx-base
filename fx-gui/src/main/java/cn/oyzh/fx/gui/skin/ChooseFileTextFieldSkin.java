@@ -1,10 +1,8 @@
 package cn.oyzh.fx.gui.skin;
 
-import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.chooser.FXChooser;
 import cn.oyzh.fx.plus.chooser.FileChooserHelper;
 import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -18,7 +16,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseFileTextFieldSkin extends ActionTextFieldSkin {
+public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
 
     /**
      * 文件
@@ -92,30 +90,39 @@ public class ChooseFileTextFieldSkin extends ActionTextFieldSkin {
         // this.button.setTipText(I18nHelper.choose());
     }
 
-    @Override
-    protected SVGGlyph getButton() {
-        if (super.button == null) {
-            super.button = new ChooseSVGGlyph("12");
-            super.initButton(super.button);
-        }
-        return super.button;
-    }
+    // @Override
+    // protected SVGGlyph getButton() {
+    //     if (super.button == null) {
+    //         super.button = new ChooseSVGGlyph("13");
+    //         super.initButton(super.button);
+    //     }
+    //     return super.button;
+    // }
 
     @Override
     protected void updateButtonVisibility() {
         if (this.alwaysShowGraphic) {
             this.button.display();
         } else {
-            boolean visible = this.getSkinnable().isVisible();
-            boolean disable = this.getSkinnable().isDisable();
-            boolean hasFocus = this.getSkinnable().isFocused();
-            boolean shouldBeVisible = !disable && visible && hasFocus;
-            this.button.setVisible(shouldBeVisible);
+            // boolean visible = this.getSkinnable().isVisible();
+            // boolean disable = this.getSkinnable().isDisable();
+            // boolean hasFocus = this.getSkinnable().isFocused();
+            // boolean shouldBeVisible = !disable && visible && hasFocus;
+            // this.button.setVisible(shouldBeVisible);
+            super.updateButtonVisibility();
         }
     }
 
     public void setAlwaysShowGraphic(boolean alwaysShowGraphic) {
         this.alwaysShowGraphic = alwaysShowGraphic;
         this.updateButtonVisibility();
+    }
+
+    @Override
+    public void dispose() {
+        this.file = null;
+        this.filter = null;
+        this.onSelectedFile = null;
+        super.dispose();
     }
 }
