@@ -36,23 +36,19 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
      */
     protected SVGGlyph button;
 
-    public ActionTextFieldSkin(TextField textField) {
-        super(textField);
+    public ActionTextFieldSkin(TextField control) {
+        super(control);
+        // this.button = button;
+        // this.button.managedBindVisible();
+        // this.button.setEnableWaiting(false);
+        // this.button.setFocusTraversable(false);
+        // this.button.setPadding(new Insets(0));
+        // this.button.setColor(this.getButtonColor());
+        // this.button.setOnMousePrimaryClicked(this::onButtonClicked);
+        // this.button.setOnMouseExited(mouseEvent -> this.resetButtonColor());
+        // this.button.setOnMouseMoved(mouseEvent -> this.button.setColor("#DC143C"));
+        // this.getChildren().add(this.button);
     }
-
-    // public ActionTextFieldSkin(TextField control, SVGGlyph button) {
-    //     super(control);
-    // this.button = button;
-    // this.button.managedBindVisible();
-    // this.button.setEnableWaiting(false);
-//        this.button.setFocusTraversable(false);
-//        this.button.setPadding(new Insets(0));
-//         this.button.setColor(this.getButtonColor());
-//         this.button.setOnMousePrimaryClicked(this::onButtonClicked);
-//         this.button.setOnMouseExited(mouseEvent -> this.resetButtonColor());
-//         this.button.setOnMouseMoved(mouseEvent -> this.button.setColor("#DC143C"));
-//         this.getChildren().add(this.button);
-//     }
 
     /**
      * 初始化按钮

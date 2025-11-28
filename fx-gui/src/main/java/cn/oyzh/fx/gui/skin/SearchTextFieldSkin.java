@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
 import cn.oyzh.fx.plus.controls.popup.SearchHistoryPopup;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
@@ -28,10 +29,10 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
     /**
      * 搜索历史弹窗
      */
-    protected SearchHistoryPopup historyPopup;
+    protected SearchHistoryPopup popup;
 
-    public SearchHistoryPopup getHistoryPopup() {
-        return historyPopup;
+    public SearchHistoryPopup getPopup() {
+        return popup;
     }
 
     /**
@@ -39,22 +40,22 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
      *
      * @param popup 弹窗组件
      */
-    public void setHistoryPopup(SearchHistoryPopup popup) {
-        this.historyPopup = popup;
-        if (this.historyPopup != null) {
-            this.historyPopup.setOnHistorySelected(this::onHistorySelected);
+    public void setPopup(SearchHistoryPopup popup) {
+        this.popup = popup;
+        if (this.popup != null) {
+            this.popup.setOnHistorySelected(this::onHistorySelected);
         }
     }
 
     /**
      * 显示历史弹窗组件
      */
-    protected void showHistoryPopup() {
-        if (this.historyPopup != null) {
-            if (this.historyPopup.isShowing()) {
-                this.closeHistoryPopup();
+    protected void showPopup() {
+        if (this.popup != null) {
+            if (this.popup.isShowing()) {
+                this.closePopup();
             } else {
-                this.historyPopup.show(this.getSkinnable());
+                this.popup.show(this.getSkinnable());
             }
         }
     }
@@ -62,9 +63,9 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
     /**
      * 关闭历史弹窗组件
      */
-    protected void closeHistoryPopup() {
-        if (this.historyPopup != null && this.historyPopup.isShowing()) {
-            this.historyPopup.hide();
+    protected void closePopup() {
+        if (this.popup != null && this.popup.isShowing()) {
+            this.popup.hide();
         }
     }
 
@@ -74,7 +75,7 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
      * @param text 文本
      */
     protected void onSearch(String text) {
-        this.closeHistoryPopup();
+        this.closePopup();
     }
 
     /**
@@ -84,7 +85,7 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
      */
     protected void onHistorySelected(String text) {
         this.setText(text);
-        this.closeHistoryPopup();
+        this.closePopup();
     }
 
     public SearchTextFieldSkin(TextField textField) {
@@ -106,28 +107,28 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
             if (event.getCode() == KeyCode.ENTER) {
                 this.onSearch(this.getText());
             } else if (event.getCode() == KeyCode.UP) {
-                if (this.historyPopup != null) {
+                if (this.popup != null) {
                     String kw = this.getText();
-                    String text = this.historyPopup.getPrevHistory(kw);
+                    String text = this.popup.getPrevHistory(kw);
                     if (text != null) {
                         this.onHistorySelected(text);
                         event.consume();
                     }
                 }
             } else if (event.getCode() == KeyCode.DOWN) {
-                if (this.historyPopup != null) {
+                if (this.popup != null) {
                     String kw = this.getText();
-                    String text = this.historyPopup.getNextHistory(kw);
+                    String text = this.popup.getNextHistory(kw);
                     if (text != null) {
                         this.onHistorySelected(text);
                         event.consume();
                     }
                 }
             }
-            this.closeHistoryPopup();
+            this.closePopup();
         });
         // 鼠标监听
-        this.getSkinnable().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> this.closeHistoryPopup());
+        this.getSkinnable().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> this.closePopup());
     }
 
 //    @Override
@@ -168,11 +169,20 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
             this.history.setTipText(I18nHelper.his());
             this.history.setFocusTraversable(false);
             this.history.setPadding(Insets.EMPTY);
-            this.history.setOnMousePrimaryClicked(e -> this.showHistoryPopup());
+            this.history.setOnMousePrimaryClicked(e -> this.showPopup());
             this.history.setOnMouseMoved(mouseEvent -> this.history.setColor("#E36413"));
             this.history.setOnMouseExited(mouseEvent -> this.history.setColor(this.getButtonColor()));
             super.leftProperty().set(this.history);
         }
         return super.leftProperty();
+    }
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroy(this.history);
+        this.history = null;
+        NodeDestroyUtil.destroy(this.popup);
+        this.popup = null;
+        super.dispose();
     }
 }
