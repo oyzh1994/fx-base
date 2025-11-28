@@ -1,5 +1,6 @@
 package cn.oyzh.fx.pkg.comporess;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PostHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
@@ -44,11 +45,12 @@ public class CompressNameHandler implements PostHandler {
         if (packConfig.getPlatform() != null) {
             compressName = compressName + "_" + packConfig.getPlatform();
         }
-        compressName += "_" + new SimpleDateFormat("yyyyMMdd").format(new Date());
+            compressName = compressName + "_" + OSUtil.getArchName();
+        // compressName += "_" + new SimpleDateFormat("yyyyMMdd").format(new Date());
         if (packConfig.getBuildType() != null) {
             compressName = compressName + "_" + packConfig.getBuildType();
-        } else {
-            compressName = compressName + "_release";
+        // } else {
+        //     compressName = compressName + "_release";
         }
         compressConfig.setName(compressName);
     }
