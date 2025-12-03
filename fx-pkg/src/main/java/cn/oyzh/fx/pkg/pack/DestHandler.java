@@ -38,7 +38,6 @@ public class DestHandler implements PostHandler {
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
-
         // app-image格式仅处理压缩包
         if (StringUtil.equalsIgnoreCase(packConfig.packageType(), "app-image")) {
             File compressFile = packConfig.getCompressFile();
@@ -51,13 +50,17 @@ public class DestHandler implements PostHandler {
                 if (file.isDirectory() || !file.exists()) {
                     continue;
                 }
+                String extName = FileNameUtil.extName(file.getName());
+                if (!StringUtil.equalsAnyIgnoreCase(extName, "msi", "exe", "pkg", "dmg", "rpm", "deb")) {
+                    continue;
+                }
                 this.handler(packConfig, file);
                 break;
             }
         }
         //// 压缩包
-        //File compressFile = packConfig.getCompressFile();
-        //if (compressFile != null && compressFile.exists()) {
+        // File compressFile = packConfig.getCompressFile();
+        // if (compressFile != null && compressFile.exists()) {
         //    String extName = FileNameUtil.extName(compressFile);
         //    if (StringUtil.equals(extName, "appimage")) {
         //        this.handler(packConfig, compressFile);
