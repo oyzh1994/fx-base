@@ -24,10 +24,12 @@ public class JPackageHandler implements PackHandler {
 
     private int order = PackOrder.ORDER_0;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }

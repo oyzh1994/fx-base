@@ -5,8 +5,7 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.appImage.AppImageHandler;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
-import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
-import cn.oyzh.fx.pkg.config.AppConfigHandler;
+// import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.config.PackConfigHandler;
 import cn.oyzh.fx.pkg.config.PackConfigParser;
@@ -51,9 +50,9 @@ public class Packer {
         this.registerStartHandler();
         this.registerJdepsHandler();
         this.registerCompressHandler();
-        this.registerAppConfigHandler();
+        // this.registerAppConfigHandler();
         this.registerPackConfigHandler();
-        this.registerCompressNameHandler();
+        // this.registerCompressNameHandler();
     }
 
     public void registerDestHandler() {
@@ -76,9 +75,9 @@ public class Packer {
         this.registerHandler(new JPackageHandler());
     }
 
-    public void registerAppConfigHandler() {
-        this.registerHandler(new AppConfigHandler());
-    }
+    // public void registerAppConfigHandler() {
+    //     this.registerHandler(new AppConfigHandler());
+    // }
 
     public void registerJreHandler() {
         this.registerHandler(new JreHandler());
@@ -124,9 +123,9 @@ public class Packer {
         this.registerHandler(new CompressHandler());
     }
 
-    public void registerCompressNameHandler() {
-        this.registerHandler(new CompressNameHandler());
-    }
+    // public void registerCompressNameHandler() {
+    //     this.registerHandler(new CompressNameHandler());
+    // }
 
     /**
      * 注册处理器

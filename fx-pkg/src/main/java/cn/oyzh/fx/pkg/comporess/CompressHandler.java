@@ -19,10 +19,12 @@ public class CompressHandler implements PostHandler {
 
     private int order = PackOrder.ORDER_M6;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }
