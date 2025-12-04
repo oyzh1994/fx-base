@@ -52,4 +52,9 @@ public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
     protected void updateButtonVisibility() {
         this.button.display();
     }
+
+    @Override
+    protected void setButtonSize(double size) {
+        super.button.setSize(size, size * 0.8);
+    }
 }
