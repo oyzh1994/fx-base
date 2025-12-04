@@ -122,6 +122,11 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             this.calcSize();
             TextField textField = this.getSkinnable();
             this.popup.showFixed(textField, -1, 0);
+            // 设置数据
+            FXListView<T> listView = this.listView();
+            listView.setIgnoreChanged(true);
+            listView.setItem(this.itemList);
+            listView.setIgnoreChanged(false);
         }
     }
 
@@ -328,12 +333,17 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     /**
+     * 内容列表
+     */
+    private List<T> itemList;
+
+    /**
      * 获取内容列表
      *
      * @return 内容列表
      */
     public List<T> getItemList() {
-        return this.listView().getItems();
+        return this.itemList;
     }
 
     /**
@@ -342,13 +352,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param itemList 内容列表
      */
     public void setItemList(List<T> itemList) {
-        if (itemList == null) {
-            return;
-        }
-        FXListView<T> listView = this.listView();
-        listView.setIgnoreChanged(true);
-        listView.setItem(itemList);
-        listView.setIgnoreChanged(false);
+        this.itemList = itemList;
     }
 
     /**
@@ -357,7 +361,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 内容大小
      */
     public int getItemSize() {
-        return this.listView().getItemSize();
+        return this.getItemList().size();
     }
 
     /**
@@ -366,7 +370,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 结果
      */
     public boolean isItemEmpty() {
-        return this.listView().isItemEmpty();
+        return this.getItemList().isEmpty();
     }
 
     /**
