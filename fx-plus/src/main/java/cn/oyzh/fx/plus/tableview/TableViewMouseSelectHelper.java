@@ -26,6 +26,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TableViewMouseSelectHelper {
 
     /**
+     * 选区id
+     */
+    private static final String SELECTION_ID = "table_view_selection_rect";
+
+    /**
      * tableview
      */
     private final Reference<TableView<?>> reference;
@@ -64,32 +69,34 @@ public class TableViewMouseSelectHelper {
      */
     protected Rectangle initRectangle() {
         Pane pane = this.getRoot();
-        if (pane != null) {
-            Rectangle selectionRect = (Rectangle) pane.lookup("#table_view_selection_rect");
-            if (selectionRect == null) {
-                selectionRect = new Rectangle(0, 0, 0, 0);
-                selectionRect.setFill(Color.LIGHTBLUE.deriveColor(0, 1, 1, 0.3));
-                selectionRect.managedProperty().bind(selectionRect.visibleProperty());
-                selectionRect.setId("table_view_selection_rect");
-                pane.getChildren().add(selectionRect);
-                selectionRect.setVisible(true);
-            }
-            return selectionRect;
+        if (pane == null) {
+            return null;
         }
-        return null;
+        Rectangle selectionRect = (Rectangle) pane.lookup("#" + SELECTION_ID);
+        if (selectionRect == null) {
+            selectionRect = new Rectangle(0, 0, 0, 0);
+            selectionRect.setFill(Color.LIGHTBLUE.deriveColor(0, 1, 1, 0.3));
+            selectionRect.managedProperty().bind(selectionRect.visibleProperty());
+            selectionRect.setId(SELECTION_ID);
+            pane.getChildren().add(selectionRect);
+            selectionRect.setVisible(true);
+        }
+        return selectionRect;
     }
 
     /**
      * 清除矩形
      */
-    protected void clearRectangle() {
+    public void clearRectangle() {
         Pane pane = this.getRoot();
-        if (pane != null) {
-            Node selectionRect = pane.lookup("#table_view_selection_rect");
-            if (selectionRect != null) {
-                pane.getChildren().remove(selectionRect);
-            }
+        if (pane == null) {
+            return;
         }
+        Node selectionRect = pane.lookup("#" + SELECTION_ID);
+        if (selectionRect == null) {
+            return;
+        }
+        pane.getChildren().remove(selectionRect);
     }
 
     /**
@@ -99,10 +106,10 @@ public class TableViewMouseSelectHelper {
      */
     protected Rectangle findRectangle() {
         Pane pane = this.getRoot();
-        if (pane != null) {
-            return (Rectangle) pane.lookup("#table_view_selection_rect");
+        if (pane == null) {
+            return null;
         }
-        return null;
+        return (Rectangle) pane.lookup("#" + SELECTION_ID);
     }
 
     /**
@@ -231,10 +238,12 @@ public class TableViewMouseSelectHelper {
      * 安装鼠标多选辅助器
      *
      * @param tableView 组件
+     * @return 结果
      */
-    public static void install(TableView<?> tableView) {
+    public static TableViewMouseSelectHelper install(TableView<?> tableView) {
         if (tableView != null) {
-            new TableViewMouseSelectHelper(tableView);
+            return new TableViewMouseSelectHelper(tableView);
         }
+        return null;
     }
 }

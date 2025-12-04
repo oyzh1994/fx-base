@@ -149,7 +149,7 @@ public class TableViewUtil {
      */
     public static void selectRowOnMouseClicked(Node node) {
         if (node != null) {
-            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            node.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                 TableRow<?> tableRow = findTableRow(node);
                 if (tableRow != null && tableRow.getTableView() != null) {
                     tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());

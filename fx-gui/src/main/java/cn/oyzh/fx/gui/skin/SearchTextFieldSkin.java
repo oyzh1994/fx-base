@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.property.ObjectProperty;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -88,6 +89,35 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         this.closePopup();
     }
 
+    private EventHandler<? super KeyEvent> onKeyPressed = event -> {
+        if (event.getCode() == KeyCode.ENTER) {
+            this.onSearch(this.getText());
+        } else if (event.getCode() == KeyCode.UP) {
+            if (this.popup != null) {
+                String kw = this.getText();
+                String text = this.popup.getPrevHistory(kw);
+                if (text != null) {
+                    this.onHistorySelected(text);
+                    event.consume();
+                }
+            }
+        } else if (event.getCode() == KeyCode.DOWN) {
+            if (this.popup != null) {
+                String kw = this.getText();
+                String text = this.popup.getNextHistory(kw);
+                if (text != null) {
+                    this.onHistorySelected(text);
+                    event.consume();
+                }
+            }
+        }
+        this.closePopup();
+    };
+
+    private EventHandler<? super MouseEvent> onMousePressed = event -> {
+        this.closePopup();
+    };
+
     public SearchTextFieldSkin(TextField textField) {
         super(textField);
 //         // 初始化历史按钮
@@ -101,34 +131,10 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
 //         this.historyButton.setOnMouseMoved(mouseEvent -> this.historyButton.setColor("#E36413"));
 //         this.historyButton.setOnMouseExited(mouseEvent -> this.historyButton.setColor(this.getButtonColor()));
 //         this.getChildren().add(this.historyButton);
-
         // 按键监听
-        this.getSkinnable().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                this.onSearch(this.getText());
-            } else if (event.getCode() == KeyCode.UP) {
-                if (this.popup != null) {
-                    String kw = this.getText();
-                    String text = this.popup.getPrevHistory(kw);
-                    if (text != null) {
-                        this.onHistorySelected(text);
-                        event.consume();
-                    }
-                }
-            } else if (event.getCode() == KeyCode.DOWN) {
-                if (this.popup != null) {
-                    String kw = this.getText();
-                    String text = this.popup.getNextHistory(kw);
-                    if (text != null) {
-                        this.onHistorySelected(text);
-                        event.consume();
-                    }
-                }
-            }
-            this.closePopup();
-        });
+        this.getSkinnable().addEventFilter(KeyEvent.KEY_PRESSED, this.onKeyPressed);
         // 鼠标监听
-        this.getSkinnable().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> this.closePopup());
+        this.getSkinnable().addEventFilter(MouseEvent.MOUSE_PRESSED, this.onMousePressed);
     }
 
 //    @Override
@@ -183,6 +189,10 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         this.history = null;
         NodeDestroyUtil.destroy(this.popup);
         this.popup = null;
+        this.getSkinnable().removeEventFilter(KeyEvent.KEY_PRESSED, this.onKeyPressed);
+        this.getSkinnable().removeEventFilter(MouseEvent.MOUSE_PRESSED, this.onMousePressed);
+        this.onKeyPressed = null;
+        this.onMousePressed = null;
         super.dispose();
     }
 }
