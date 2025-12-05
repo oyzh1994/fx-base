@@ -11,7 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class TableViewMouseSelectHelper {
     /**
      * tableview
      */
-    private final Reference<TableView<?>> reference;
+    private final WeakReference<TableView<?>> reference;
 
     public TableViewMouseSelectHelper(TableView<?> tableView) {
         this.reference = new WeakReference<>(tableView);
