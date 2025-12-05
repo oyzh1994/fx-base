@@ -60,7 +60,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
             DragUtil.clearDragFile(this.scene());
             NodeLifeCycleUtil.onStageDestroy(stage);
             // 销毁节点
-            NodeDestroyUtil.destroy(stage);
+            NodeDestroyUtil.destroyObject(stage);
             this.clearTitle();
             this.clearScene();
             this.clearListener();

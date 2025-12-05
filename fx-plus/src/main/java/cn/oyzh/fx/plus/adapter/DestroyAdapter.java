@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.adapter;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 
@@ -48,5 +49,10 @@ public interface DestroyAdapter extends Destroyable {
                 }
             });
         }
+    }
+
+    @Override
+    default void destroy() {
+        NodeDestroyUtil.destroyObject(this);
     }
 }

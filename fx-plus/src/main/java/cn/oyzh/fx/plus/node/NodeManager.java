@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
@@ -30,9 +29,9 @@ public class NodeManager {
         if (node instanceof NodeAdapter adapter) {
             adapter.initNode();
         }
-        if (node instanceof DestroyAdapter adapter) {
-            adapter.initDestroyListener();
-        }
+        // if (node instanceof DestroyAdapter adapter) {
+        //     adapter.initDestroyListener();
+        // }
         if (node instanceof OpacityAdapter adapter) {
             adapter.changeOpacity(OpacityManager.currentOpacity());
         }

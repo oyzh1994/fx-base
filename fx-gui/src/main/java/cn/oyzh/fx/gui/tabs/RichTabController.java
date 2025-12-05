@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.tabs;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.event.EventListener;
 import cn.oyzh.event.EventUtil;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -24,7 +25,7 @@ import java.util.ResourceBundle;
  * @author oyzh
  * @since 2023/11/3
  */
-public abstract class RichTabController implements EventListener, I18nAdapter, Initializable {
+public abstract class RichTabController implements EventListener, I18nAdapter, Initializable, DestroyAdapter {
 
     private Reference<FXTab> tabReference;
 
@@ -168,4 +169,11 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
     public void initialize(URL location, ResourceBundle resourceBundle) {
 
     }
+
+    // @Override
+    // public void destroy() {
+    //     this.tabReference.clear();
+    //     this.tabReference = null;
+    //     DestroyAdapter.super.destroy();
+    // }
 }

@@ -162,7 +162,7 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
             this.button.setOnMouseExited(null);
             this.button.setOnMouseEntered(null);
             this.button.setOnMousePrimaryClicked(null);
-            NodeDestroyUtil.destroy(this.action);
+            NodeDestroyUtil.destroyObject(this.action);
             this.button = null;
         }
         this.action = null;

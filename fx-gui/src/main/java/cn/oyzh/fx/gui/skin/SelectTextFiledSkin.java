@@ -465,7 +465,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
 
     @Override
     public void dispose() {
-        NodeDestroyUtil.destroy(this.popup);
+        NodeDestroyUtil.destroyObject(this.popup);
         this.popup = null;
         this.converter = null;
         this.selectItemChanged = null;

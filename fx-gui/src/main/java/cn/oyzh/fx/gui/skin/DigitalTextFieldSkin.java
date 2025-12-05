@@ -222,9 +222,9 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
 
     @Override
     public void dispose() {
-        NodeDestroyUtil.destroy(this.incrButton);
+        NodeDestroyUtil.destroyObject(this.incrButton);
         this.incrButton = null;
-        NodeDestroyUtil.destroy(this.decrButton);
+        NodeDestroyUtil.destroyObject(this.decrButton);
         this.decrButton = null;
         super.dispose();
     }

@@ -185,9 +185,9 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
 
     @Override
     public void dispose() {
-        NodeDestroyUtil.destroy(this.history);
+        NodeDestroyUtil.destroyObject(this.history);
         this.history = null;
-        NodeDestroyUtil.destroy(this.popup);
+        NodeDestroyUtil.destroyObject(this.popup);
         this.popup = null;
         this.getSkinnable().removeEventFilter(KeyEvent.KEY_PRESSED, this.onKeyPressed);
         this.getSkinnable().removeEventFilter(MouseEvent.MOUSE_PRESSED, this.onMousePressed);
