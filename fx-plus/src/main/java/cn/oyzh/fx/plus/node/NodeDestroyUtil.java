@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.ReflectUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
 import com.sun.javafx.event.CompositeEventHandler;
 import com.sun.javafx.event.EventHandlerManager;
 import javafx.beans.InvalidationListener;
@@ -235,7 +234,7 @@ public class NodeDestroyUtil {
         if (property == null) {
             return;
         }
-        FXUtil.runWait(() -> property.setValue(null));
+        // FXUtil.runWait(() -> property.setValue(null));
         // 解除单向绑定
         property.unbind();
     }
@@ -283,7 +282,7 @@ public class NodeDestroyUtil {
                     // 获取属性值
                     ObservableMap<?, ?> object2 = (ObservableMap<?, ?>) object1;
                     destroy(object2);
-                    setNullable = true;
+                    // setNullable = true;
                 } else if (Collection.class.isAssignableFrom(clazz)) {
                     // 获取属性值
                     Collection<?> object2 = (Collection<?>) object1;
@@ -294,11 +293,11 @@ public class NodeDestroyUtil {
                     EventHandlerManager object2 = (EventHandlerManager) object1;
                     destroy(object2);
                     setNullable = true;
-                } else if (Destroyable.class.isAssignableFrom(clazz)) {
-                    // 获取属性值
-                    Destroyable object2 = (Destroyable) object1;
-                    destroy(object2);
-                    setNullable = true;
+                // } else if (Destroyable.class.isAssignableFrom(clazz)) {
+                //     // 获取属性值
+                //     Destroyable object2 = (Destroyable) object1;
+                //     destroy(object2);
+                //     setNullable = true;
                 } else if (InvalidationListener.class.isAssignableFrom(clazz)) {
                     setNullable = true;
                 } else if (field.getAnnotation(FXML.class) != null) {
