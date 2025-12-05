@@ -282,7 +282,7 @@ public class NodeDestroyUtil {
                     // 获取属性值
                     ObservableMap<?, ?> object2 = (ObservableMap<?, ?>) object1;
                     destroy(object2);
-                    // setNullable = true;
+                    setNullable = true;
                 } else if (Collection.class.isAssignableFrom(clazz)) {
                     // 获取属性值
                     Collection<?> object2 = (Collection<?>) object1;

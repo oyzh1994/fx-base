@@ -61,7 +61,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         if (this.isClosable()) {
             TabPane tabPane = this.getTabPane();
             if (tabPane != null) {
-                FXUtil.runLater(() -> tabPane.getTabs().remove(this));
+                FXUtil.runWait(() -> tabPane.getTabs().remove(this));
                 // 手动触发关闭事件
                 Event.fireEvent(this, new Event(Tab.CLOSED_EVENT));
             }
