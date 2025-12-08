@@ -284,8 +284,9 @@ public class NodeDestroyUtil {
                     // 获取属性值
                     Property<?> object2 = (Property<?>) object1;
                     destroy(object2);
-                    // 例外1
-                    if (clazz.getName().contains("ReadOnlyObjectWrapperManualFire")) {
+                    // 例外
+                    if (field.getName().contains("scene")
+                            || field.getName().contains("focused")) {
                     } else {
                         setNullable = true;
                     }
