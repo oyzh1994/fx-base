@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.tab;
 import atlantafx.base.theme.Styles;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
@@ -25,7 +26,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab> {
+public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, DestroyAdapter {
 
     {
         NodeManager.init(this);

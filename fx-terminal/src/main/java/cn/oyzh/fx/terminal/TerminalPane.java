@@ -16,6 +16,8 @@ import cn.oyzh.fx.terminal.histroy.TerminalHistoryHandler;
 import cn.oyzh.fx.terminal.key.TerminalKeyHandler;
 import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
+import javafx.beans.InvalidationListener;
+import javafx.event.EventHandler;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -74,26 +76,36 @@ public abstract class TerminalPane extends Editor implements Terminal {
      */
     private TerminalCompleteHandler completeHandler;
 
+    /**
+     * 光标位置事件
+     */
+    private InvalidationListener caretPositionListener = observable -> {
+        int nop = this.getNOP();
+        int len = this.contentLength();
+        int caretPosition = this.caretPosition();
+        // 对边界做检查
+        if (nop > len) {
+            this.flushNOP();
+            nop = this.getNOP();
+        }
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("nop:{}, length:{}", nop, len);
+        }
+        if (caretPosition < nop) {
+            this.disableInput();
+        } else {
+            this.enableInput();
+        }
+    };
+
     {
-        this.caretPositionProperty().addListener((observableValue, number, t1) -> {
-            int nop = this.getNOP();
-            int len = this.contentLength();
-            int caretPosition = this.caretPosition();
-            // 对边界做检查
-            if (nop > len) {
-                this.flushNOP();
-                nop = this.getNOP();
-            }
-            if (JulLog.isDebugEnabled()) {
-                JulLog.debug("nop:{}, length:{}", nop, len);
-            }
-            if (caretPosition < nop) {
-                this.disableInput();
-            } else {
-                this.enableInput();
-            }
-        });
+        this.caretPositionProperty().addListener(this.caretPositionListener);
     }
+
+    /**
+     * 键盘按下事件
+     */
+    private EventHandler<? super KeyEvent> keyPressedHandler;
 
     @Override
     public void keyHandler(TerminalKeyHandler keyHandler) {
@@ -113,7 +125,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
                     : new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN);
             List<KeyCombination> incrFontCombinations = List.of(keyCombination1, keyCombination2);
             List<KeyCombination> decrFontCombinations = List.of(keyCombination3, keyCombination4);
-            this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            this.keyPressedHandler = event -> {
                 try {
                     if (KeyboardUtil.match(decrFontCombinations, event)) {
                         this.fontSizeDecr();
@@ -196,7 +208,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
                     ex.printStackTrace();
                     this.onError(ex);
                 }
-            });
+            };
+            this.addEventFilter(KeyEvent.KEY_PRESSED, this.keyPressedHandler);
         }
     }
 
@@ -205,11 +218,16 @@ public abstract class TerminalPane extends Editor implements Terminal {
         return this.mouseHandler;
     }
 
+    /**
+     * 鼠标按下事件
+     */
+    private EventHandler<? super MouseEvent> mousePressedHandler;
+
     @Override
     public void mouseHandler(TerminalMouseHandler mouseHandler) {
         this.mouseHandler = mouseHandler;
         if (mouseHandler != null) {
-            this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            this.mousePressedHandler = event -> {
                 try {
                     if (event.getButton() == MouseButton.PRIMARY) {
                         if (!mouseHandler.onPrimaryMousePressed(this)) {
@@ -223,7 +241,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
                 } catch (Exception ex) {
                     this.onError(ex);
                 }
-            });
+            };
+            this.addEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressedHandler);
         }
     }
 
@@ -566,4 +585,19 @@ public abstract class TerminalPane extends Editor implements Terminal {
     // public FontWeight getFontWeight() {
     //    return FontUtil.getWeight(this.font);
     //}
+
+    @Override
+    public void destroy() {
+        this.caretPositionProperty().removeListener(this.caretPositionListener);
+        this.caretPositionListener = null;
+        if (this.keyPressedHandler != null) {
+            this.removeEventFilter(KeyEvent.KEY_PRESSED, this.keyPressedHandler);
+            this.keyPressedHandler = null;
+        }
+        if (this.mousePressedHandler != null) {
+            this.removeEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressedHandler);
+            this.mousePressedHandler = null;
+        }
+        super.destroy();
+    }
 }

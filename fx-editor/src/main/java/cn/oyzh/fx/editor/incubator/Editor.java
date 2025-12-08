@@ -6,6 +6,7 @@ import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.EditorLineNumPolicy;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.ScrollBarAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -51,6 +52,7 @@ import javafx.scene.text.FontWeight;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
+import jfx.incubator.scene.control.richtext.model.StyledTextModel;
 import tm4java.grammar.IGrammarSource;
 import tm4java.theme.IThemeSource;
 import tm4javafx.richtext.RichTextAreaModel;
@@ -73,7 +75,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup {
+public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, DestroyAdapter {
 
     /**
      * 默认提示词颜色
@@ -108,26 +110,31 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 样式提供者
      */
-    private final StyleProvider styleProvider = new StyleProvider();
+    private StyleProvider styleProvider = new StyleProvider();
 
     /**
      * 流式文本model
      */
-    private final TextFlowModel textFlowModel = new TextFlowModel();
+    private TextFlowModel textFlowModel = new TextFlowModel();
 
     /**
      * 富文本域model
      */
-    private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
+    private RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
     /**
      * 编辑器语法装饰器
      */
-    private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
+    private EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     {
         NodeManager.init(this);
     }
+
+    /**
+     * 默认边距
+     */
+    private static final Insets DEFAULT_PADDING = new Insets(5);
 
     /**
      * 初始化编辑器
@@ -145,7 +152,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         // 默认高亮当前行
         this.setHighlightCurrentParagraph(true);
         // 内容内边距
-        this.setContentPadding(new Insets(5));
+        this.setContentPadding(DEFAULT_PADDING);
         // 行号装饰器
         this.setLeftDecorator(new EditorLineNumberDecorator());
         // 边框
@@ -249,14 +256,19 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     private StringProperty textProperty;
 
+    /**
+     * 模式监听器
+     */
+    private StyledTextModel.Listener modelListener = e -> {
+        if (e.isEdit()) {
+            this.textProperty.setValue(this.getText());
+        }
+    };
+
     public StringProperty textProperty() {
         if (this.textProperty == null) {
             this.textProperty = new SimpleStringProperty(this.getText());
-            super.getModel().addListener(e -> {
-                if (e.isEdit()) {
-                    this.textProperty.setValue(this.getText());
-                }
-            });
+            super.getModel().addListener(this.modelListener);
         }
         return this.textProperty;
     }
@@ -1334,5 +1346,41 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             lines.put(i, text);
         }
         return lines;
+    }
+
+    @Override
+    public void destroy() {
+        if (this.modelListener != null) {
+            this.getModel().removeListener(this.modelListener);
+            this.modelListener = null;
+        }
+        // if (this.textProperty != null) {
+        //     this.textProperty.unbind();
+        //     this.textProperty = null;
+        // }
+        // if (this.promptsProperty != null) {
+        //     this.promptsProperty.unbind();
+        //     this.promptsProperty = null;
+        // }
+        // if (this.formatTypeProperty != null) {
+        //     this.formatTypeProperty.unbind();
+        //     this.formatTypeProperty = null;
+        // }
+        // if (this.highlightTextProperty != null) {
+        //     this.highlightTextProperty.unbind();
+        //     this.highlightTextProperty = null;
+        // }
+        // if (this.lineNumPolicyProperty != null) {
+        //     this.lineNumPolicyProperty.unbind();
+        //     this.lineNumPolicyProperty = null;
+        // }
+        // this.fontProperty().unbind();
+        // this.editorFont = null;
+        // this.textFlowModel = null;
+        // this.styleProvider = null;
+        // this.syntaxDecorator = null;
+        // this.richTextAreaModel = null;
+        // NodeDestroyUtil.destroyObject(this);
+        DestroyAdapter.super.destroy();
     }
 }

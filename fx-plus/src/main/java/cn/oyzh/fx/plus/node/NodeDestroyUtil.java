@@ -208,7 +208,10 @@ public class NodeDestroyUtil {
         if (collection == null) {
             return;
         }
-        collection.clear();
+        // if (collection.getClass().getName().contains("FXCollections$UnmodifiableObservableSet")) {
+        //     return;
+        // }
+        // collection.clear();
     }
 
     private static void destroy(EventHandlerManager manager) {
@@ -293,11 +296,11 @@ public class NodeDestroyUtil {
                     EventHandlerManager object2 = (EventHandlerManager) object1;
                     destroy(object2);
                     setNullable = true;
-                // } else if (Destroyable.class.isAssignableFrom(clazz)) {
-                //     // 获取属性值
-                //     Destroyable object2 = (Destroyable) object1;
-                //     destroy(object2);
-                //     setNullable = true;
+                    // } else if (Destroyable.class.isAssignableFrom(clazz)) {
+                    //     // 获取属性值
+                    //     Destroyable object2 = (Destroyable) object1;
+                    //     destroy(object2);
+                    //     setNullable = true;
                 } else if (InvalidationListener.class.isAssignableFrom(clazz)) {
                     setNullable = true;
                 } else if (field.getAnnotation(FXML.class) != null) {
