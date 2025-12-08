@@ -211,7 +211,7 @@ public class NodeDestroyUtil {
         // if (collection.getClass().getName().contains("FXCollections$UnmodifiableObservableSet")) {
         //     return;
         // }
-        // collection.clear();
+        collection.clear();
     }
 
     private static void destroy(EventHandlerManager manager) {
@@ -258,12 +258,16 @@ public class NodeDestroyUtil {
         if (object == null) {
             return;
         }
+        Class<?> cType = object.getClass();
         // 获取所有字段
-        Field[] fields = ReflectUtil.getFields(object.getClass(), true, true);
+        Field[] fields = ReflectUtil.getFields(cType, true, true);
         for (Field field : fields) {
             try {
                 // 修饰符
                 int modifiers = field.getModifiers();
+                if (Modifier.isFinal(modifiers)) {
+                    continue;
+                }
                 if (Modifier.isStatic(modifiers)) {
                     continue;
                 }
@@ -280,7 +284,11 @@ public class NodeDestroyUtil {
                     // 获取属性值
                     Property<?> object2 = (Property<?>) object1;
                     destroy(object2);
-                    setNullable = true;
+                    // 例外1
+                    if (clazz.getName().contains("ReadOnlyObjectWrapperManualFire")) {
+                    } else {
+                        setNullable = true;
+                    }
                 } else if (ObservableMap.class.isAssignableFrom(clazz)) {
                     // 获取属性值
                     ObservableMap<?, ?> object2 = (ObservableMap<?, ?>) object1;
@@ -290,7 +298,7 @@ public class NodeDestroyUtil {
                     // 获取属性值
                     Collection<?> object2 = (Collection<?>) object1;
                     destroy(object2);
-                    setNullable = true;
+                    // setNullable = true;
                 } else if (EventHandlerManager.class.isAssignableFrom(clazz)) {
                     // 获取属性值
                     EventHandlerManager object2 = (EventHandlerManager) object1;
@@ -303,8 +311,21 @@ public class NodeDestroyUtil {
                     //     setNullable = true;
                 } else if (InvalidationListener.class.isAssignableFrom(clazz)) {
                     setNullable = true;
+                } else if (CharSequence.class.isAssignableFrom(clazz)
+                        || Long.class.isAssignableFrom(clazz)
+                        || Integer.class.isAssignableFrom(clazz)
+                        || Short.class.isAssignableFrom(clazz)
+                        || Character.class.isAssignableFrom(clazz)
+                        || Byte.class.isAssignableFrom(clazz)
+                        || Double.class.isAssignableFrom(clazz)
+                        || Float.class.isAssignableFrom(clazz)
+                        || Boolean.class.isAssignableFrom(clazz)
+                ) {
+                    setNullable = true;
                 } else if (field.getAnnotation(FXML.class) != null) {
                     setNullable = true;
+                } else {
+                    // System.out.println(clazz);
                 }
                 if (setNullable) {
                     ReflectUtil.setFieldValue(field, null, object);
