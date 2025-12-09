@@ -32,8 +32,8 @@ public abstract class FXApplication extends Application {
 
     @Override
     public void init() throws Exception {
-        // 设置stage全部关闭后不自动销毁进程
-        Platform.setImplicitExit(false);
+        // // 设置stage全部关闭后不自动销毁进程
+        // Platform.setImplicitExit(false);
         // 禁用css日志
         FXUtil.disableCSSLogger();
         // 调用父类
@@ -104,6 +104,7 @@ public abstract class FXApplication extends Application {
     /**
      * 初始化系统托盘
      */
+    @Deprecated
     protected abstract void initSystemTray();
 
     /**

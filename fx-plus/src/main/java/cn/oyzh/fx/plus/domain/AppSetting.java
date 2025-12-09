@@ -30,6 +30,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 标题栏透明度
      */
     @Column
+    @Deprecated
     protected Float titleBarOpacity;
 
     /**
@@ -157,6 +158,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * 1|null 记住
      */
     @Column
+    @Deprecated
     protected Byte rememberPageResize;
 
     /**
@@ -417,10 +419,12 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         this.opacity = opacity;
     }
 
+    @Deprecated
     public Float getTitleBarOpacity() {
         return titleBarOpacity;
     }
 
+    @Deprecated
     public void setTitleBarOpacity(Float titleBarOpacity) {
         this.titleBarOpacity = titleBarOpacity;
     }
@@ -557,10 +561,12 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         this.rememberPageSize = rememberPageSize;
     }
 
+    @Deprecated
     public Byte getRememberPageResize() {
         return rememberPageResize;
     }
 
+    @Deprecated
     public void setRememberPageResize(Byte rememberPageResize) {
         this.rememberPageResize = rememberPageResize;
     }
