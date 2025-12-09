@@ -286,7 +286,9 @@ public class NodeDestroyUtil {
                     destroy(object2);
                     // 例外
                     if (field.getName().contains("scene")
-                            || field.getName().contains("focused")) {
+                            || field.getName().contains("focused")
+                            || field.getName().contains("selectionModel")
+                    ) {
                     } else {
                         setNullable = true;
                     }
@@ -325,7 +327,7 @@ public class NodeDestroyUtil {
                     setNullable = true;
                 } else if (field.getAnnotation(FXML.class) != null) {
                     setNullable = true;
-                } else {
+                    // } else {
                     // System.out.println(clazz);
                 }
                 if (setNullable) {
