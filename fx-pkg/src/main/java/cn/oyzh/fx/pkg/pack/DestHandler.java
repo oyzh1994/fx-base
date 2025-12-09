@@ -42,7 +42,8 @@ public class DestHandler implements PostHandler {
         if (StringUtil.equalsIgnoreCase(packConfig.packageType(), "app-image")) {
             File compressFile = packConfig.getCompressFile();
             if (compressFile != null && compressFile.exists()) {
-                this.handler(packConfig, compressFile);
+                File targetFile = this.handler(packConfig, compressFile);
+                packConfig.setCompressFile(targetFile);
             }
         } else {// msi、exe、dmg、pkg、rpm、deb
             List<File> files = FileUtil.getAllFiles(packConfig.getDest());
@@ -80,13 +81,14 @@ public class DestHandler implements PostHandler {
     }
 
     /**
-     * 执行出来
+     * 执行处理
      *
      * @param packConfig 打包配置
      * @param file       文件
      * @throws Exception 异常
+     * @return 重命名后的文件
      */
-    private void handler(PackConfig packConfig, File file) throws Exception {
+    private File handler(PackConfig packConfig, File file) throws Exception {
         String fileName = "";
         if (packConfig.getAppName() != null) {
             fileName += packConfig.getAppName();
@@ -108,5 +110,6 @@ public class DestHandler implements PostHandler {
         // 以防万一
         FileUtil.del(file);
         JulLog.info("最终产物名称:{} 处理后名称:{}", file.getName(), fileName);
+        return finalFile;
     }
 }
