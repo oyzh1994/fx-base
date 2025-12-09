@@ -210,6 +210,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      *
      * @return 结果
      */
+    @Deprecated
     public boolean isExitTray() {
         return this.exitMode != null && this.exitMode == 0;
     }
