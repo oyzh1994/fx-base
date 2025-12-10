@@ -361,6 +361,18 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     /**
+     * 清除内容列表
+     */
+    public void clearItemList() {
+        if (this.itemList != null) {
+            this.itemList.clear();
+        }
+        if (this.popup != null) {
+            this.listView().clearItems();
+        }
+    }
+
+    /**
      * 获取内容大小
      *
      * @return 内容大小

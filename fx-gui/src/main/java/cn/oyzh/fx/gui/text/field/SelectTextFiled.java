@@ -35,11 +35,9 @@ public class SelectTextFiled<T> extends LimitTextField {
         return new SelectTextFiledSkin<>(this);
     }
 
-    public void clearItem() {
-        if (this.getItemList() != null) {
-            this.getItemList().clear();
-        }
-    }
+//    public void clearItem() {
+//        this.clearItemList();
+//    }
 
     public void addItem(T item) {
         if (this.getItemList() == null) {
@@ -54,6 +52,10 @@ public class SelectTextFiled<T> extends LimitTextField {
 
     public List<T> getItemList() {
         return this.skin().getItemList();
+    }
+
+    public void clearItemList() {
+        this.skin().clearItemList();
     }
 
     public int getItemSize() {
