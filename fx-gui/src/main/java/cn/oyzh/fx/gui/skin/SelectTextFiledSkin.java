@@ -125,7 +125,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             // 设置数据
             FXListView<T> listView = this.listView();
             listView.setIgnoreChanged(true);
-            listView.setItem(this.itemList);
+            listView.setItem(this.getItemList());
             listView.setIgnoreChanged(false);
         }
     }
@@ -142,6 +142,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         this.popup.getScene().setFill(color);
         TextField textField = this.getSkinnable();
         FXListView<T> listView = new FXListView<>();
+        // 设置数据
+        listView.setItem(this.getItemList());
         // 数据函数
         Runnable dataFunc = () -> {
             T item = listView.getSelectedItem();
@@ -311,7 +313,11 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param item 内容
      */
     public void selectItem(T item) {
-        if (item != null && this.popup != null) {
+        if (item != null) {
+            if (this.popup == null) {
+                this.initPopup();
+            }
+            System.out.println(this.listView().isItemEmpty());
             this.listView().select(item);
         }
     }

@@ -115,7 +115,8 @@ public class SelectTextFiled<T> extends LimitTextField {
     public void initNode() {
         super.initNode();
         this.addTextChangeListener((observableValue, s, t1) -> {
-            TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
+            TaskManager.startDelay(() -> this.onTextChanged(t1), 10);
+//            TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
         });
         this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
