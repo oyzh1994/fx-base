@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.rich;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.paint.Color;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author oyzh
  * @since 2025/01/22
  */
-public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, ThemeAdapter {
+public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, ThemeAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
