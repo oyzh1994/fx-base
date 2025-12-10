@@ -162,9 +162,10 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         this.font = font;
         List<Node> managed = this.getManagedChildren();
         for (Node node : managed) {
-            if (node instanceof FXText text) {
-                text.setFont(font);
-            }
+            // if (node instanceof FXText text) {
+            //     text.setFont(font);
+            // }
+            FontUtil.setFont(node, font);
         }
     }
 

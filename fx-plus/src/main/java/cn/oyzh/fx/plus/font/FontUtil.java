@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.util.StyleUtil;
+import javafx.css.Styleable;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
@@ -9,8 +11,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.util.List;
 import java.util.Optional;
 
@@ -142,6 +145,17 @@ public class FontUtil {
             }
         }
         return FontWeight.NORMAL;
+    }
+
+    /**
+     * 获取字体重量2
+     *
+     * @param style 字体样式
+     * @return 字体重量
+     */
+    public static int getWeight2(String style) {
+        FontWeight fontWeight = getWeight(style);
+        return fontWeight.getWeight();
     }
 
     /**
@@ -358,5 +372,26 @@ public class FontUtil {
             }
         }
         return javafx.scene.text.Font.getDefault().getFamily();
+    }
+
+    /**
+     * 设置字体
+     *
+     * @param node 节点
+     * @param font 字体
+     */
+    public static void setFont(Node node, javafx.scene.text.Font font) {
+        if (node instanceof Labeled obj) {
+            obj.setFont(font);
+        } else if (node instanceof Text obj) {
+            obj.setFont(font);
+        } else if (node instanceof TextInputControl obj) {
+            obj.setFont(font);
+        } else if (node instanceof Styleable obj) {
+            int weight = getWeight2(font.getStyle());
+            StyleUtil.replaceStyle(obj, "-fx-font-weight", weight);
+            StyleUtil.replaceStyle(obj, "-fx-font-size", font.getSize());
+            StyleUtil.replaceStyle(obj, "-fx-font-family", font.getFamily());
+        }
     }
 }
