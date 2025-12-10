@@ -317,7 +317,6 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             if (this.popup == null) {
                 this.initPopup();
             }
-            System.out.println(this.listView().isItemEmpty());
             this.listView().select(item);
         }
     }
