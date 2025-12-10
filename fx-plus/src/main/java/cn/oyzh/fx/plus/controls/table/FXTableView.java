@@ -260,4 +260,9 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     public void setFontWeight(FontWeight fontWeight) {
         this.setFont(FontUtil.newFontByWeight(this.getFont(), fontWeight));
     }
+
+    @Override
+    public void changeFont(Font font) {
+        FontAdapter.super.changeFont(font);
+    }
 }

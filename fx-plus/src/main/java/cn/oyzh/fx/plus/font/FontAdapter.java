@@ -271,6 +271,8 @@ public interface FontAdapter extends PropAdapter {
 
     String ENABLE_FONT_KEY = "enable:font";
 
+    String ENABLE_FONT_SIZE_KEY = "enable:font:size";
+
     /**
      * 禁用字体
      */
@@ -305,6 +307,39 @@ public interface FontAdapter extends PropAdapter {
     }
 
     /**
+     * 禁用字体大小
+     */
+    default void disableFontSize() {
+        this.setProp(ENABLE_FONT_SIZE_KEY, false);
+    }
+
+    /**
+     * 启用字体大小
+     */
+    default void enableFontSize() {
+        this.removeProp(ENABLE_FONT_SIZE_KEY);
+    }
+
+    /**
+     * 设置启用字体大小
+     *
+     * @param enableFontSize 启用字体大小
+     */
+    default void setEnableFontSize(boolean enableFontSize) {
+        this.setProp(ENABLE_FONT_SIZE_KEY, enableFontSize);
+    }
+
+    /**
+     * 是否启用字体大小
+     *
+     * @return 结果
+     */
+    default boolean isEnableFontSize() {
+        Boolean b = this.getProp(ENABLE_FONT_SIZE_KEY);
+        return b == null || b;
+    }
+
+    /**
      * 变更字体
      *
      * @param font 字体
@@ -312,9 +347,15 @@ public interface FontAdapter extends PropAdapter {
     default void changeFont(Font font) {
         if (this.isEnableFont() && font != null) {
             Font font1 = this.getFont();
-            // 检查字重
-            if (font1 != null && StringUtil.isNotBlank(font1.getStyle()) && !StringUtil.equals(font1.getStyle(), font.getStyle())) {
-                font = FontUtil.newFontByWeight(font, font1.getStyle());
+            if (font1 != null) {
+                // 检查字重
+                if (StringUtil.isNotBlank(font1.getStyle()) && !StringUtil.equals(font1.getStyle(), font.getStyle())) {
+                    font = FontUtil.newFontByWeight(font, font1.getStyle());
+                }
+                // 检查字号
+                if (!this.isEnableFontSize()) {
+                    font = FontUtil.newFontBySize(font, font1.getSize());
+                }
             }
             this.setFont(font);
         }

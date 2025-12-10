@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,8 @@ public class FontUtil {
      */
     public static javafx.scene.text.Font newFontBySize(javafx.scene.text.Font font, double size) {
         FontWeight weight = getWeight(font.getStyle());
-        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(font.getFamily(), weight, size);
+        String family = getTrueFamily(font.getFamily());
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, size);
         return FontManager.cacheFont(font1);
     }
 
@@ -47,6 +49,7 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontBySize(String family, double size) {
+        family = getTrueFamily(family);
         javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, size);
         return FontManager.cacheFont(font1);
     }
@@ -60,6 +63,7 @@ public class FontUtil {
      */
     public static javafx.scene.text.Font newFontByFamily(javafx.scene.text.Font font, String family) {
         FontWeight weight = getWeight(font.getStyle());
+        family = getTrueFamily(family);
         javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, font.getSize());
         return FontManager.cacheFont(font1);
     }
@@ -88,6 +92,7 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFont(String family, FontPosture posture, double size) {
+        family = getTrueFamily(family);
         javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, posture, size);
         return FontManager.cacheFont(font1);
     }
@@ -101,6 +106,7 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFont(String family, FontWeight weight, double size) {
+        family = getTrueFamily(family);
         javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, size);
         return FontManager.cacheFont(font1);
     }
@@ -115,6 +121,7 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFont(String family, FontWeight weight, FontPosture posture, double size) {
+        family = getTrueFamily(family);
         javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, posture, size);
         return FontManager.cacheFont(font1);
     }
@@ -166,7 +173,8 @@ public class FontUtil {
      * @return 新字体
      */
     public static javafx.scene.text.Font newFontByWeight(javafx.scene.text.Font font, FontWeight weight) {
-        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(font.getFamily(), weight, font.getSize());
+        String family = getTrueFamily(font.getFamily());
+        javafx.scene.text.Font font1 = javafx.scene.text.Font.font(family, weight, font.getSize());
         return FontManager.cacheFont(font1);
     }
 
@@ -299,7 +307,9 @@ public class FontUtil {
             return inputControl.getFont();
         }
         if (target instanceof Node) {
-            return javafx.scene.text.Font.font(getFontFamily(target), getFontSize(target));
+            String family = getFontFamily(target);
+            family = getTrueFamily(family);
+            return javafx.scene.text.Font.font(family, getFontSize(target));
         }
         return javafx.scene.text.Font.getDefault();
     }
@@ -393,5 +403,39 @@ public class FontUtil {
             StyleUtil.replaceStyle(obj, "-fx-font-size", font.getSize());
             StyleUtil.replaceStyle(obj, "-fx-font-family", font.getFamily());
         }
+    }
+
+    /**
+     * 寻找真实的字体族
+     *
+     * @param family 字体族
+     * @return 结果
+     */
+    public static String getTrueFamily(String family) {
+        List<String> families = javafx.scene.text.Font.getFamilies();
+        List<String> list = new ArrayList<>();
+        for (String fm : families) {
+            // 以这个开始，则加入列表
+            if (StringUtil.startWithIgnoreCase(family, fm)) {
+                list.add(fm);
+            }
+        }
+        // 未找到
+        if (list.isEmpty()) {
+            return family;
+        }
+        // 单个直接返回
+        if (list.size() == 1) {
+            return list.getFirst();
+        }
+        // 寻找最接近的
+        int size = 0;
+        for (String fm : list) {
+            if (fm.length() > size) {
+                size = fm.length();
+                family = fm;
+            }
+        }
+        return family;
     }
 }
