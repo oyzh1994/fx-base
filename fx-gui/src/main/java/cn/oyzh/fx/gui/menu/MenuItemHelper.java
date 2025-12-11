@@ -511,8 +511,8 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.start1Container(), new RunSVGGlyph(iconSize), action);
     }
 
-    public static FXMenuItem stopContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.stopContainer(), new StopSVGGlyph(iconSize), action);
+    public static FXMenuItem stop1Container(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.stop1Container(), new StopSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem killContainer(String iconSize, Runnable action) {
