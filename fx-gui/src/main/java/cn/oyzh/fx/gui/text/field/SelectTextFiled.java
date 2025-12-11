@@ -126,4 +126,18 @@ public class SelectTextFiled<T> extends LimitTextField {
             }
         });
     }
+
+    /**
+     * 清除选区
+     */
+    public void clearSelection() {
+        this.skin().clearSelection();
+    }
+
+    /**
+     * 选中首个
+     */
+    public void selectFirstItem() {
+        this.skin().selectFirst();
+    }
 }
