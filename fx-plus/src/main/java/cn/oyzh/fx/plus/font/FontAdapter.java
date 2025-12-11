@@ -2,17 +2,8 @@ package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
-import cn.oyzh.fx.plus.util.StyleUtil;
-import javafx.css.Styleable;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-
-import java.util.List;
 
 /**
  * 字体组件适配器
@@ -28,48 +19,49 @@ public interface FontAdapter extends PropAdapter {
      * @param font 字体
      */
     default void setFont(Font font) {
-        if (font == null) {
-            return;
-        }
-        // 缓存字体
-        font = FontManager.cacheFont(font);
-        if (this instanceof Text node) {
-            Font font1 = node.getFont();
-            if (!FontUtil.isSameFont(font, font1)) {
-                node.setFont(font);
-            }
-        } else if (this instanceof Labeled node) {
-            Font font1 = node.getFont();
-            if (!FontUtil.isSameFont(font, font1)) {
-                node.setFont(font);
-            }
-//        } else if (this instanceof TabPane node) {
-//            this.setFontSize(font.getSize());
-//            this.setFontFamily(font.getFamily());
-//            this.setFontWeight(FontUtil.getWeight(font.getStyle()));
-//            List<Tab> tabs = node.getTabs();
-//            for (Tab tab : tabs) {
-//                if (tab instanceof FontAdapter adapter) {
-//                    adapter.setFont(font);
-//                }
-//            }
-        } else if (this instanceof TextInputControl node) {
-            Font font1 = node.getFont();
-            if (!FontUtil.isSameFont(font, font1)) {
-                node.setFont(font);
-            }
-//        } else if (this instanceof Tab node) {
-//            this.setFontSize(font.getSize());
-//            this.setFontFamily(font.getFamily());
-//            this.setFontWeight(FontUtil.getWeight(font.getStyle()));
-//            if (node.getContent() instanceof FontAdapter adapter) {
-//                adapter.setFont(font);
-//            }
-        } else if (this instanceof Styleable) {
-            this.setFontSize(font.getSize());
-            this.setFontFamily(font.getFamily());
-            this.setFontWeight(FontUtil.getWeight(font.getStyle()));
-        }
+//         if (font == null) {
+//             return;
+//         }
+//         // 缓存字体
+//         font = FontManager.cacheFont(font);
+//         if (this instanceof Text node) {
+//             Font font1 = node.getFont();
+//             if (!FontUtil.isSameFont(font, font1)) {
+//                 node.setFont(font);
+//             }
+//         } else if (this instanceof Labeled node) {
+//             Font font1 = node.getFont();
+//             if (!FontUtil.isSameFont(font, font1)) {
+//                 node.setFont(font);
+//             }
+// //        } else if (this instanceof TabPane node) {
+// //            this.setFontSize(font.getSize());
+// //            this.setFontFamily(font.getFamily());
+// //            this.setFontWeight(FontUtil.getWeight(font.getStyle()));
+// //            List<Tab> tabs = node.getTabs();
+// //            for (Tab tab : tabs) {
+// //                if (tab instanceof FontAdapter adapter) {
+// //                    adapter.setFont(font);
+// //                }
+// //            }
+//         } else if (this instanceof TextInputControl node) {
+//             Font font1 = node.getFont();
+//             if (!FontUtil.isSameFont(font, font1)) {
+//                 node.setFont(font);
+//             }
+// //        } else if (this instanceof Tab node) {
+// //            this.setFontSize(font.getSize());
+// //            this.setFontFamily(font.getFamily());
+// //            this.setFontWeight(FontUtil.getWeight(font.getStyle()));
+// //            if (node.getContent() instanceof FontAdapter adapter) {
+// //                adapter.setFont(font);
+// //            }
+//         } else if (this instanceof Styleable) {
+//             this.setFontSize(font.getSize());
+//             this.setFontFamily(font.getFamily());
+//             this.setFontWeight(FontUtil.getWeight(font.getStyle()));
+//         }
+        FontUtil.setFont(this, font);
     }
 
     /**
@@ -78,19 +70,20 @@ public interface FontAdapter extends PropAdapter {
      * @return 字体
      */
     default Font getFont() {
-        if (this instanceof Text node) {
-            return node.getFont();
-        }
-        if (this instanceof Labeled node) {
-            return node.getFont();
-        }
-        if (this instanceof TextInputControl node) {
-            return node.getFont();
-        }
-        if (this instanceof Styleable) {
-            return Font.font(this.getFontFamily(), this.getFontWeight(), this.getFontSize());
-        }
-        return Font.getDefault();
+        // if (this instanceof Text node) {
+        //     return node.getFont();
+        // }
+        // if (this instanceof Labeled node) {
+        //     return node.getFont();
+        // }
+        // if (this instanceof TextInputControl node) {
+        //     return node.getFont();
+        // }
+        // if (this instanceof Styleable) {
+        //     return Font.font(this.getFontFamily(), this.getFontWeight(), this.getFontSize());
+        // }
+        // return Font.getDefault();
+        return FontUtil.getFont(this);
     }
 
     /**
@@ -99,27 +92,28 @@ public interface FontAdapter extends PropAdapter {
      * @param fontSize 字体大小
      */
     default void setFontSize(double fontSize) {
-        if (this instanceof Text node) {
-            this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
-        } else if (this instanceof Labeled node) {
-            this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
-        } else if (this instanceof TextInputControl node) {
-            this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
-        } else if (this instanceof TabPane node) {
-            StyleUtil.replaceStyle(node, "-fx-font-size", fontSize);
-            for (Tab tab : node.getTabs()) {
-                if (tab instanceof FontAdapter adapter) {
-                    adapter.setFontSize(fontSize);
-                }
-            }
-        } else if (this instanceof Tab node) {
-            StyleUtil.replaceStyle(node, "-fx-font-size", fontSize);
-            if (node.getContent() instanceof FontAdapter adapter) {
-                adapter.setFontSize(fontSize);
-            }
-        } else if (this instanceof Styleable node) {
-            StyleUtil.replaceStyle(node, "-fx-font-size", fontSize);
-        }
+        // if (this instanceof Text node) {
+        //     this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
+        // } else if (this instanceof Labeled node) {
+        //     this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
+        // } else if (this instanceof TextInputControl node) {
+        //     this.setFont(FontUtil.newFontBySize(node.getFont(), fontSize));
+        // } else if (this instanceof TabPane node) {
+        //     StyleUtil.replaceStyle(node, "-fx-font-size", fontSize);
+        //     for (Tab tab : node.getTabs()) {
+        //         if (tab instanceof FontAdapter adapter) {
+        //             adapter.setFontSize(fontSize);
+        //         }
+        //     }
+        // } else if (this instanceof Tab node) {
+        //     StyleUtil.replaceStyle(node, "-fx-font-size", fontSize);
+        //     if (node.getContent() instanceof FontAdapter adapter) {
+        //         adapter.setFontSize(fontSize);
+        //     }
+        // } else if (this instanceof Styleable node) {
+        //     StyleUtil.replaceStyle(node, "-fx-font-size", fontSize);
+        // }
+        FontUtil.setFontSize(this, fontSize);
     }
 
     /**
@@ -128,22 +122,23 @@ public interface FontAdapter extends PropAdapter {
      * @return 字体大小
      */
     default double getFontSize() {
-        if (this instanceof Text) {
-            return this.getFont().getSize();
-        }
-        if (this instanceof Labeled) {
-            return this.getFont().getSize();
-        }
-        if (this instanceof TextInputControl) {
-            return this.getFont().getSize();
-        }
-        if (this instanceof Styleable node) {
-            String size = StyleUtil.getStyle(node, "-fx-font-size");
-            if (StringUtil.isNotBlank(size)) {
-                return Double.parseDouble(size);
-            }
-        }
-        return Font.getDefault().getSize();
+        // if (this instanceof Text) {
+        //     return this.getFont().getSize();
+        // }
+        // if (this instanceof Labeled) {
+        //     return this.getFont().getSize();
+        // }
+        // if (this instanceof TextInputControl) {
+        //     return this.getFont().getSize();
+        // }
+        // if (this instanceof Styleable node) {
+        //     String size = StyleUtil.getStyle(node, "-fx-font-size");
+        //     if (StringUtil.isNotBlank(size)) {
+        //         return Double.parseDouble(size);
+        //     }
+        // }
+        // return Font.getDefault().getSize();
+        return FontUtil.getFontSize(this);
     }
 
     /**
@@ -152,31 +147,33 @@ public interface FontAdapter extends PropAdapter {
      * @param fontFamily 字体类型
      */
     default void setFontFamily(String fontFamily) {
-        if (fontFamily == null) {
-            return;
-        }
-        if (this instanceof Text node) {
-            this.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
-        } else if (this instanceof Labeled node) {
-            this.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
-        } else if (this instanceof TextInputControl node) {
-            this.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
-        } else if (this instanceof TabPane node) {
-            StyleUtil.replaceStyle(node, "-fx-font-family", fontFamily);
-            List<Tab> tabs = node.getTabs();
-            for (Tab tab : tabs) {
-                if (tab instanceof FontAdapter adapter) {
-                    adapter.setFontFamily(fontFamily);
-                }
-            }
-        } else if (this instanceof Tab node) {
-            StyleUtil.replaceStyle(node, "-fx-font-family", fontFamily);
-            if (node.getContent() instanceof FontAdapter adapter) {
-                adapter.setFontFamily(fontFamily);
-            }
-        } else if (this instanceof Styleable node) {
-            StyleUtil.replaceStyle(node, "-fx-font-family", fontFamily);
-        }
+        // if (fontFamily == null) {
+        //     return;
+        // }
+        // if (this instanceof Text node) {
+        //     this.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        // } else if (this instanceof Labeled node) {
+        //     this.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        // } else if (this instanceof TextInputControl node) {
+        //     this.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        // } else if (this instanceof TabPane node) {
+        //     fontFamily = "\"" + fontFamily + "\" !important";
+        //     StyleUtil.replaceStyle(node, "-fx-font-family", fontFamily);
+        //     List<Tab> tabs = node.getTabs();
+        //     for (Tab tab : tabs) {
+        //
+        //             FontUtil.setFont();
+        //     }
+        // } else if (this instanceof Tab node) {
+        //     fontFamily = "\"" + fontFamily + "\" !important";
+        //     StyleUtil.replaceStyle(node, "-fx-font-family", fontFamily);
+        //     // if (node.getContent() instanceof FontAdapter adapter) {
+        //     //     adapter.setFontFamily(fontFamily);
+        //     // }
+        // } else if (this instanceof Styleable node) {
+        //     StyleUtil.replaceStyle(node, "-fx-font-family", fontFamily);
+        // }
+        FontUtil.setFontFamily(this, fontFamily);
     }
 
     /**
@@ -185,22 +182,23 @@ public interface FontAdapter extends PropAdapter {
      * @return 字体类型
      */
     default String getFontFamily() {
-        if (this instanceof Text) {
-            return this.getFont().getFamily();
-        }
-        if (this instanceof Labeled) {
-            return this.getFont().getFamily();
-        }
-        if (this instanceof TextInputControl) {
-            return this.getFont().getFamily();
-        }
-        if (this instanceof Styleable node) {
-            String family = StyleUtil.getStyle(node, "-fx-font-family");
-            if (family != null) {
-                return family;
-            }
-        }
-        return Font.getDefault().getFamily();
+        // if (this instanceof Text) {
+        //     return this.getFont().getFamily();
+        // }
+        // if (this instanceof Labeled) {
+        //     return this.getFont().getFamily();
+        // }
+        // if (this instanceof TextInputControl) {
+        //     return this.getFont().getFamily();
+        // }
+        // if (this instanceof Styleable node) {
+        //     String family = StyleUtil.getStyle(node, "-fx-font-family");
+        //     if (family != null) {
+        //         return family;
+        //     }
+        // }
+        // return Font.getDefault().getFamily();
+        return FontUtil.getFontFamily(this);
     }
 
     /**
@@ -218,31 +216,32 @@ public interface FontAdapter extends PropAdapter {
      * @param fontWeight 字体粗细
      */
     default void setFontWeight(FontWeight fontWeight) {
-        if (fontWeight == null) {
-            return;
-        }
-        if (this instanceof Text node) {
-            this.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
-        } else if (this instanceof Labeled node) {
-            this.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
-        } else if (this instanceof TextInputControl node) {
-            this.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
-        } else if (this instanceof TabPane node) {
-            StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
-            List<Tab> tabs = node.getTabs();
-            for (Tab tab : tabs) {
-                if (tab instanceof FontAdapter adapter) {
-                    adapter.setFontWeight(fontWeight);
-                }
-            }
-        } else if (this instanceof Tab node) {
-            StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
-            if (node.getContent() instanceof FontAdapter adapter) {
-                adapter.setFontWeight(fontWeight);
-            }
-        } else if (this instanceof Styleable node) {
-            StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
-        }
+        // if (fontWeight == null) {
+        //     return;
+        // }
+        // if (this instanceof Text node) {
+        //     this.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        // } else if (this instanceof Labeled node) {
+        //     this.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        // } else if (this instanceof TextInputControl node) {
+        //     this.setFont(FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        // } else if (this instanceof TabPane node) {
+        //     StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
+        //     List<Tab> tabs = node.getTabs();
+        //     for (Tab tab : tabs) {
+        //         if (tab instanceof FontAdapter adapter) {
+        //             adapter.setFontWeight(fontWeight);
+        //         }
+        //     }
+        // } else if (this instanceof Tab node) {
+        //     StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
+        //     if (node.getContent() instanceof FontAdapter adapter) {
+        //         adapter.setFontWeight(fontWeight);
+        //     }
+        // } else if (this instanceof Styleable node) {
+        //     StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight());
+        // }
+        FontUtil.setFontWeight(this, fontWeight);
     }
 
     /**
@@ -251,22 +250,23 @@ public interface FontAdapter extends PropAdapter {
      * @return 字体粗细
      */
     default FontWeight getFontWeight() {
-        if (this instanceof Text) {
-            return FontUtil.getWeight(this.getFont().getStyle());
-        }
-        if (this instanceof Labeled) {
-            return FontUtil.getWeight(this.getFont().getStyle());
-        }
-        if (this instanceof TextInputControl) {
-            return FontUtil.getWeight(this.getFont().getStyle());
-        }
-        if (this instanceof Styleable node) {
-            String weight = StyleUtil.getStyle(node, "-fx-font-weight");
-            if (weight != null) {
-                return FontUtil.getWeight(weight);
-            }
-        }
-        return FontUtil.getWeight(Font.getDefault().getStyle());
+        // if (this instanceof Text) {
+        //     return FontUtil.getWeight(this.getFont().getStyle());
+        // }
+        // if (this instanceof Labeled) {
+        //     return FontUtil.getWeight(this.getFont().getStyle());
+        // }
+        // if (this instanceof TextInputControl) {
+        //     return FontUtil.getWeight(this.getFont().getStyle());
+        // }
+        // if (this instanceof Styleable node) {
+        //     String weight = StyleUtil.getStyle(node, "-fx-font-weight");
+        //     if (weight != null) {
+        //         return FontUtil.getWeight(weight);
+        //     }
+        // }
+        // return FontUtil.getWeight(Font.getDefault().getStyle());
+        return FontUtil.getFontWeight(this);
     }
 
     String ENABLE_FONT_KEY = "enable:font";

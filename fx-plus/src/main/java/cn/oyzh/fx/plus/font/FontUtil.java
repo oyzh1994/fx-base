@@ -1,11 +1,12 @@
 package cn.oyzh.fx.plus.font;
 
+import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.css.Styleable;
-import javafx.event.EventTarget;
-import javafx.scene.Node;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -16,7 +17,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 字符工具类
@@ -293,54 +293,90 @@ public class FontUtil {
     /**
      * 获取字体
      *
-     * @param target 目标
-     * @return 字体
+     * @param obj 对象
+     * @return 结果
      */
-    public static javafx.scene.text.Font getFont(EventTarget target) {
-        if (target instanceof Text text) {
+    public static javafx.scene.text.Font getFont(Object obj) {
+        if (obj instanceof Text text) {
             return text.getFont();
         }
-        if (target instanceof Labeled labeled) {
+        if (obj instanceof Labeled labeled) {
             return labeled.getFont();
         }
-        if (target instanceof TextInputControl inputControl) {
+        if (obj instanceof TextInputControl inputControl) {
             return inputControl.getFont();
         }
-        if (target instanceof Node) {
-            String family = getFontFamily(target);
-            family = getTrueFamily(family);
-            return javafx.scene.text.Font.font(family, getFontSize(target));
+        if (obj instanceof Styleable) {
+            double size = getFontSize(obj);
+            FontWeight weight = getFontWeight(obj);
+            String family = getTrueFamily(getFontFamily(obj));
+            return javafx.scene.text.Font.font(family, weight, size);
         }
         return javafx.scene.text.Font.getDefault();
     }
 
     /**
+     * 设置字体
+     *
+     * @param obj  节点
+     * @param font 字体
+     */
+    public static void setFont(Object obj, javafx.scene.text.Font font) {
+        if (obj instanceof Labeled node) {
+            node.setFont(font);
+        } else if (obj instanceof Text node) {
+            node.setFont(font);
+        } else if (obj instanceof TextInputControl node) {
+            node.setFont(font);
+        } else if (obj instanceof TabPane node) {
+            setFontSize(node, font.getSize());
+            setFontFamily(node, font.getFamily());
+            setFontWeight(node, getWeight(font.getStyle()));
+            for (Tab tab : node.getTabs()) {
+                setFont(tab, font);
+            }
+        } else if (obj instanceof Styleable node) {
+            setFontSize(node, font.getSize());
+            setFontFamily(node, font.getFamily());
+            setFontWeight(node, getWeight(font.getStyle()));
+        }
+    }
+
+    /**
      * 获取字体大小
      *
-     * @param target 目标
-     * @return 字体大小
+     * @param obj 对象
+     * @return 结果
      */
-    public static double getFontSize(EventTarget target) {
-        if (target instanceof Text text) {
+    public static double getFontSize(Object obj) {
+        if (obj instanceof Text text) {
             return text.getFont().getSize();
         }
-        if (target instanceof Labeled labeled) {
+        if (obj instanceof Labeled labeled) {
             return labeled.getFont().getSize();
         }
-        if (target instanceof TextInputControl inputControl) {
+        if (obj instanceof TextInputControl inputControl) {
             return inputControl.getFont().getSize();
         }
-        if (target instanceof Node node) {
+        if (obj instanceof Styleable node) {
+            // try {
+            //     String style = node.getStyle();
+            //     if (StringUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-size")) {
+            //         List<String> list = StringUtil.split(style, ";");
+            //         Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-size")).findAny();
+            //         if (fontSize.isPresent()) {
+            //             String size = fontSize.get().toLowerCase().trim().replace("-fx-font-size", "");
+            //             size = size.replace(":", "").trim();
+            //             return Double.parseDouble(size);
+            //         }
+            //     }
+            // } catch (Exception ex) {
+            //     ex.printStackTrace();
+            // }
             try {
-                String style = node.getStyle();
-                if (StringUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-size")) {
-                    List<String> list = StringUtil.split(style, ";");
-                    Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-size")).findAny();
-                    if (fontSize.isPresent()) {
-                        String size = fontSize.get().toLowerCase().trim().replace("-fx-font-size", "");
-                        size = size.replace(":", "").trim();
-                        return Double.parseDouble(size);
-                    }
+                String size = StyleUtil.getStyle(node, "-fx-font-size");
+                if (RegexUtil.isDecimal(size) || RegexUtil.isNumber(size)) {
+                    return Double.parseDouble(size);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -350,58 +386,142 @@ public class FontUtil {
     }
 
     /**
+     * 设置字体大小
+     *
+     * @param obj      对象
+     * @param fontSize 字体大小
+     */
+    public static void setFontSize(Object obj, double fontSize) {
+        if (obj instanceof Text node) {
+            setFont(obj, FontUtil.newFontBySize(node.getFont(), fontSize));
+        } else if (obj instanceof Labeled node) {
+            setFont(obj, FontUtil.newFontBySize(node.getFont(), fontSize));
+        } else if (obj instanceof TextInputControl node) {
+            setFont(obj, FontUtil.newFontBySize(node.getFont(), fontSize));
+        } else if (obj instanceof TabPane node) {
+            StyleUtil.replaceStyle(node, "-fx-font-size", fontSize + " !important");
+            for (Tab tab : node.getTabs()) {
+                setFontSize(tab, fontSize);
+            }
+        } else if (obj instanceof Styleable node) {
+            StyleUtil.replaceStyle(node, "-fx-font-size", fontSize + " !important");
+        }
+    }
+
+    /**
      * 获取字体类型
      *
-     * @param target 目标
-     * @return 字体类型
+     * @param obj 目标
+     * @return 结果
      */
-    public static String getFontFamily(EventTarget target) {
-        if (target instanceof Text text) {
+    public static String getFontFamily(Object obj) {
+        if (obj instanceof Text text) {
             return text.getFont().getFamily();
         }
-        if (target instanceof Labeled labeled) {
+        if (obj instanceof Labeled labeled) {
             return labeled.getFont().getFamily();
         }
-        if (target instanceof TextInputControl inputControl) {
+        if (obj instanceof TextInputControl inputControl) {
             return inputControl.getFont().getFamily();
         }
-        if (target instanceof Node node) {
-            try {
-                String style = node.getStyle();
-                if (StringUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-family")) {
-                    List<String> list = StringUtil.split(style, ";");
-                    Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-family")).findAny();
-                    if (fontSize.isPresent()) {
-                        String family = fontSize.get().toLowerCase().trim().replace("-fx-font-family", "");
-                        family = family.replace(":", "").trim();
-                        return family;
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        if (obj instanceof Styleable node) {
+            // try {
+            //     String style = node.getStyle();
+            //     if (StringUtil.isNotBlank(style) && style.toLowerCase().contains("-fx-font-family")) {
+            //         List<String> list = StringUtil.split(style, ";");
+            //         Optional<String> fontSize = list.stream().filter(f -> f.trim().toLowerCase().contains("-fx-font-family")).findAny();
+            //         if (fontSize.isPresent()) {
+            //             String family = fontSize.get().toLowerCase().trim().replace("-fx-font-family", "");
+            //             family = family.replace(":", "").trim();
+            //             return family;
+            //         }
+            //     }
+            // } catch (Exception ex) {
+            //     ex.printStackTrace();
+            // }
+            String family = StyleUtil.getStyle(node, "-fx-font-family");
+            if (family != null) {
+                return family;
             }
         }
         return javafx.scene.text.Font.getDefault().getFamily();
     }
 
     /**
-     * 设置字体
+     * 设置字体类型
      *
-     * @param node 节点
-     * @param font 字体
+     * @param obj        对象
+     * @param fontFamily 字体类型
      */
-    public static void setFont(Node node, javafx.scene.text.Font font) {
-        if (node instanceof Labeled obj) {
-            obj.setFont(font);
-        } else if (node instanceof Text obj) {
-            obj.setFont(font);
-        } else if (node instanceof TextInputControl obj) {
-            obj.setFont(font);
-        } else if (node instanceof Styleable obj) {
-            int weight = getWeight2(font.getStyle());
-            StyleUtil.replaceStyle(obj, "-fx-font-weight", weight);
-            StyleUtil.replaceStyle(obj, "-fx-font-size", font.getSize());
-            StyleUtil.replaceStyle(obj, "-fx-font-family", font.getFamily());
+    public static void setFontFamily(Object obj, String fontFamily) {
+        if (fontFamily == null) {
+            return;
+        }
+        if (obj instanceof Text node) {
+            node.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        } else if (obj instanceof Labeled node) {
+            node.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        } else if (obj instanceof TextInputControl node) {
+            node.setFont(FontUtil.newFontByFamily(node.getFont(), fontFamily));
+        } else if (obj instanceof TabPane node) {
+            StyleUtil.replaceStyle(node, "-fx-font-family", "'" + fontFamily + "' !important");
+            for (Tab tab : node.getTabs()) {
+                setFontFamily(tab, fontFamily);
+            }
+        } else if (obj instanceof Styleable node) {
+            StyleUtil.replaceStyle(node, "-fx-font-family", "'" + fontFamily + "' !important");
+        }
+    }
+
+    /**
+     * 获取字体重量
+     *
+     * @param obj 对象
+     * @return 结果
+     */
+    public static FontWeight getFontWeight(Object obj) {
+        if (obj instanceof Text) {
+            return FontUtil.getWeight(getFont(obj).getStyle());
+        }
+        if (obj instanceof Labeled) {
+            return FontUtil.getWeight(getFont(obj).getStyle());
+        }
+        if (obj instanceof TextInputControl) {
+            return FontUtil.getWeight(getFont(obj).getStyle());
+        }
+        if (obj instanceof Styleable node) {
+            String weight = StyleUtil.getStyle(node, "-fx-font-weight");
+            if (weight != null) {
+                return FontUtil.getWeight(weight);
+            }
+        }
+        return FontUtil.getWeight(javafx.scene.text.Font.getDefault().getStyle());
+    }
+
+    /**
+     * 设置字体重量
+     *
+     * @param obj        对象
+     * @param fontWeight 字体重量
+     */
+    public static void setFontWeight(Object obj, FontWeight fontWeight) {
+        if (fontWeight == null) {
+            return;
+        }
+        if (obj instanceof Text node) {
+            setFont(obj, FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        } else if (obj instanceof Labeled node) {
+            setFont(obj, FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        } else if (obj instanceof TextInputControl node) {
+            setFont(obj, FontUtil.newFontByWeight(node.getFont(), fontWeight));
+        } else if (obj instanceof TabPane node) {
+            StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight() + " !important");
+            List<Tab> tabs = node.getTabs();
+            for (Tab tab : tabs) {
+                setFontWeight(tab, fontWeight);
+            }
+        } else if (obj instanceof Styleable node) {
+            StyleUtil.replaceStyle(node, "-fx-font-weight", fontWeight.getWeight() + " !important");
         }
     }
 
@@ -438,4 +558,5 @@ public class FontUtil {
         }
         return family;
     }
+
 }
