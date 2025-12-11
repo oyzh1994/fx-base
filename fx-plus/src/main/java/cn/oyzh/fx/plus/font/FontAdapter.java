@@ -273,6 +273,8 @@ public interface FontAdapter extends PropAdapter {
 
     String ENABLE_FONT_SIZE_KEY = "enable:font:size";
 
+    String ENABLE_FONT_WEIGHT_KEY = "enable:font:weight";
+
     /**
      * 禁用字体
      */
@@ -340,6 +342,39 @@ public interface FontAdapter extends PropAdapter {
     }
 
     /**
+     * 禁用字体重量
+     */
+    default void disableFontWeight() {
+        this.setProp(ENABLE_FONT_WEIGHT_KEY, false);
+    }
+
+    /**
+     * 启用字体重量
+     */
+    default void enableFontWeight() {
+        this.removeProp(ENABLE_FONT_WEIGHT_KEY);
+    }
+
+    /**
+     * 设置启用字体重量
+     *
+     * @param enableFontWeight 启用字体重量
+     */
+    default void setEnableFontWeight(boolean enableFontWeight) {
+        this.setProp(ENABLE_FONT_WEIGHT_KEY, enableFontWeight);
+    }
+
+    /**
+     * 是否启用字体重量
+     *
+     * @return 结果
+     */
+    default boolean isEnableFontWeight() {
+        Boolean b = this.getProp(ENABLE_FONT_WEIGHT_KEY);
+        return b == null || b;
+    }
+
+    /**
      * 变更字体
      *
      * @param font 字体
@@ -355,6 +390,10 @@ public interface FontAdapter extends PropAdapter {
                 // 检查字号
                 if (!this.isEnableFontSize()) {
                     font = FontUtil.newFontBySize(font, font1.getSize());
+                }
+                // 检查字重
+                if (!this.isEnableFontWeight()) {
+                    font = FontUtil.newFontByWeight(font, font1.getStyle());
                 }
             }
             this.setFont(font);
