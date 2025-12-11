@@ -1,17 +1,9 @@
 package cn.oyzh.fx.plus.controls.table;
 
-import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableView;
-import javafx.scene.text.Font;
-
-import java.util.Set;
 
 /**
  * 表单列
@@ -64,17 +56,17 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
                 super.setText(item.toString());
                 super.setGraphic(null);
             }
-            // 设置字体
-            Font font = this.getTableViewFont();
-            Font font2 = this.getFont();
-            if (!FontUtil.isSameFont(font, font2)) {
-                super.setFont(font);
-                Set<Label> labels = TableViewUtil.getHeaderLabel(this.getTableView());
-                for (Label label : labels) {
-                    label.getParent().setStyle("-fx-font: inherit;");
-                    FontUtil.setFont(label, font);
-                }
-            }
+            // // 设置字体
+            // Font font = this.getTableViewFont();
+            // Font font2 = this.getFont();
+            // if (!FontUtil.isSameFont(font, font2)) {
+            //     super.setFont(font);
+            //     Set<Label> labels = TableViewUtil.getHeaderLabel(this.getTableView());
+            //     for (Label label : labels) {
+            //         label.getParent().setStyle("-fx-font: inherit;");
+            //         FontUtil.setFont(label, font);
+            //     }
+            // }
             // 设置行高
             if (this.lineHeight > 0) {
                 this.getTableRow().setMinHeight(this.lineHeight);
@@ -84,16 +76,16 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
         }
     }
 
-    /**
-     * 获取tableview的字体
-     *
-     * @return 结果
-     */
-    protected Font getTableViewFont() {
-        TableView<?> tableView = getTableView();
-        if (tableView instanceof FontAdapter adapter) {
-            return adapter.getFont();
-        }
-        return null;
-    }
+    // /**
+    //  * 获取tableview的字体
+    //  *
+    //  * @return 结果
+    //  */
+    // protected Font getTableViewFont() {
+    //     TableView<?> tableView = getTableView();
+    //     if (tableView instanceof FontAdapter adapter) {
+    //         return adapter.getFont();
+    //     }
+    //     return null;
+    // }
 }

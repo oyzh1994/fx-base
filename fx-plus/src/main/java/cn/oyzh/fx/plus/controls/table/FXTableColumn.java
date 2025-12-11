@@ -103,10 +103,10 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         }
     }
 
-    @Override
-    public void initNode() {
-        // 设置默认cell
-        this.setCell(new FXTableCell<>());
-        FlexAdapter.super.initNode();
-    }
+    // @Override
+    // public void initNode() {
+    //     // 设置默认cell
+    //     this.setCell(new FXTableCell<>());
+    //     FlexAdapter.super.initNode();
+    // }
 }
