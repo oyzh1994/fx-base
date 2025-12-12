@@ -56,8 +56,8 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
      * @param button 按钮
      */
     protected void initButton(SVGGlyph button) {
-        this.button.setPadding(Insets.EMPTY);
-        this.button.setFocusTraversable(false);
+        button.setPadding(Insets.EMPTY);
+        button.setFocusTraversable(false);
         button.setOnMousePrimaryClicked(this::onButtonClicked);
         button.setOnMouseExited(e -> this.resetButtonColor());
         button.setOnMouseEntered(e -> button.setColor("#DC143C"));
