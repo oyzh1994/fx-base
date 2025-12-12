@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
@@ -241,11 +242,116 @@ public class NodeDestroyUtil {
     // }
 
     /**
-     * 销毁属性
+     * 销毁对象
      *
      * @param object 节点
      */
     public static void destroyObject(Object object) {
+        // if (object == null) {
+        //     return;
+        // }
+        // Class<?> cType = object.getClass();
+        // // 获取所有字段
+        // Field[] fields = ReflectUtil.getFields(cType, true, true);
+        // for (Field field : fields) {
+        //     try {
+        //         // 修饰符
+        //         int modifiers = field.getModifiers();
+        //         if (Modifier.isFinal(modifiers)) {
+        //             continue;
+        //         }
+        //         if (Modifier.isStatic(modifiers)) {
+        //             continue;
+        //         }
+        //         // 过滤属性类型
+        //         Class<?> clazz = field.getType();
+        //         if (!field.trySetAccessible()) {
+        //             continue;
+        //         }
+        //         boolean setNullable = false;
+        //         Object object1 = field.get(object);
+        //         if (object1 == null || object1 == object) {
+        //
+        //         } else if (Property.class.isAssignableFrom(clazz)) { // 属性类型
+        //             // 获取属性值
+        //             Property<?> object2 = (Property<?>) object1;
+        //             destroy(object2);
+        //             // // 例外
+        //             // if (field.getName().contains("id")
+        //             //         || field.getName().contains("scene")
+        //             //         || field.getName().contains("style")
+        //             //         || field.getName().contains("focused")
+        //             //         || field.getName().contains("layoutX")
+        //             //         || field.getName().contains("layoutY")
+        //             //         || field.getName().contains("disable")
+        //             //         || field.getName().contains("disabled")
+        //             //         || field.getName().contains("selectionModel")
+        //             // ) {
+        //             // } else if (field.getName().contains("parent")) {
+        //             //     System.out.println(field.getName());
+        //             //     setNullable = true;
+        //             // }
+        //
+        //             if (field.getName().equals("parent")) {
+        //                 setNullable = true;
+        //             }
+        //             // } else if (ObservableMap.class.isAssignableFrom(clazz)) {
+        //             //     // 获取属性值
+        //             //     ObservableMap<?, ?> object2 = (ObservableMap<?, ?>) object1;
+        //             //     destroy(object2);
+        //             //     setNullable = true;
+        //             // } else if (Collection.class.isAssignableFrom(clazz)) {
+        //             //     // 获取属性值
+        //             //     Collection<?> object2 = (Collection<?>) object1;
+        //             //     destroy(object2);
+        //             // setNullable = true;
+        //             // } else if (EventHandlerManager.class.isAssignableFrom(clazz)) {
+        //             //     // 获取属性值
+        //             //     EventHandlerManager object2 = (EventHandlerManager) object1;
+        //             //     destroy(object2);
+        //             //     setNullable = true;
+        //             // } else if (Destroyable.class.isAssignableFrom(clazz)) {
+        //             //     // 获取属性值
+        //             //     Destroyable object2 = (Destroyable) object1;
+        //             //     destroy(object2);
+        //             //     setNullable = true;
+        //             // } else if (InvalidationListener.class.isAssignableFrom(clazz)) {
+        //             //     setNullable = true;
+        //         // } else if (CharSequence.class.isAssignableFrom(clazz)
+        //         //         || Long.class.isAssignableFrom(clazz)
+        //         //         || Integer.class.isAssignableFrom(clazz)
+        //         //         || Short.class.isAssignableFrom(clazz)
+        //         //         || Character.class.isAssignableFrom(clazz)
+        //         //         || Byte.class.isAssignableFrom(clazz)
+        //         //         || Double.class.isAssignableFrom(clazz)
+        //         //         || Float.class.isAssignableFrom(clazz)
+        //         //         || Boolean.class.isAssignableFrom(clazz)
+        //         //         || Collection.class.isAssignableFrom(clazz)
+        //         //         || ObservableMap.class.isAssignableFrom(clazz)
+        //         // ) {
+        //         //     setNullable = true;
+        //         } else if (field.getAnnotation(FXML.class) != null) {
+        //             setNullable = true;
+        //             // } else {
+        //             // System.out.println(clazz);
+        //         }
+        //         if (setNullable) {
+        //             ReflectUtil.setFieldValue(field, null, object);
+        //         }
+        //     } catch (Throwable ex) {
+        //         ex.printStackTrace();
+        //     }
+        // }
+        // 异步执行
+        ThreadUtil.startVirtual(() -> doDestroyObject(object));
+    }
+
+    /**
+     * 销毁对象
+     *
+     * @param object 节点
+     */
+    private static void doDestroyObject(Object object) {
         if (object == null) {
             return;
         }
@@ -316,19 +422,19 @@ public class NodeDestroyUtil {
                     //     setNullable = true;
                     // } else if (InvalidationListener.class.isAssignableFrom(clazz)) {
                     //     setNullable = true;
-                // } else if (CharSequence.class.isAssignableFrom(clazz)
-                //         || Long.class.isAssignableFrom(clazz)
-                //         || Integer.class.isAssignableFrom(clazz)
-                //         || Short.class.isAssignableFrom(clazz)
-                //         || Character.class.isAssignableFrom(clazz)
-                //         || Byte.class.isAssignableFrom(clazz)
-                //         || Double.class.isAssignableFrom(clazz)
-                //         || Float.class.isAssignableFrom(clazz)
-                //         || Boolean.class.isAssignableFrom(clazz)
-                //         || Collection.class.isAssignableFrom(clazz)
-                //         || ObservableMap.class.isAssignableFrom(clazz)
-                // ) {
-                //     setNullable = true;
+                    // } else if (CharSequence.class.isAssignableFrom(clazz)
+                    //         || Long.class.isAssignableFrom(clazz)
+                    //         || Integer.class.isAssignableFrom(clazz)
+                    //         || Short.class.isAssignableFrom(clazz)
+                    //         || Character.class.isAssignableFrom(clazz)
+                    //         || Byte.class.isAssignableFrom(clazz)
+                    //         || Double.class.isAssignableFrom(clazz)
+                    //         || Float.class.isAssignableFrom(clazz)
+                    //         || Boolean.class.isAssignableFrom(clazz)
+                    //         || Collection.class.isAssignableFrom(clazz)
+                    //         || ObservableMap.class.isAssignableFrom(clazz)
+                    // ) {
+                    //     setNullable = true;
                 } else if (field.getAnnotation(FXML.class) != null) {
                     setNullable = true;
                     // } else {
