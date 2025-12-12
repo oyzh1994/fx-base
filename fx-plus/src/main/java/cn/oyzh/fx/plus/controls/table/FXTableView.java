@@ -66,7 +66,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void initNode() {
-        FlexAdapter.super.initNode();
+        this.setCache(false);
         this.setHeaderHeight(30);
         this.setFixedCellSize(30);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -87,6 +87,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
         //     }
         // });
+        FlexAdapter.super.initNode();
     }
 
     private boolean reorderable;
