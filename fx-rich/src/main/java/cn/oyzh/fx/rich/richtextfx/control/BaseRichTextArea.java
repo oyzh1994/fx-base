@@ -604,10 +604,10 @@ public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, 
                 ReflectUtil.setFieldValue(field, false, this);
             }
         });
-        this.highlightTextProperty().addListener((observableValue, s, t1) -> {
+        this.highlightTextProperty().addListener((observableValue) -> {
             this.initTextStyle();
         });
-        this.textProperty().addListener((observableValue, s, t1) -> {
+        this.textProperty().addListener((observableValue) -> {
             this.initTextStyle();
         });
     }

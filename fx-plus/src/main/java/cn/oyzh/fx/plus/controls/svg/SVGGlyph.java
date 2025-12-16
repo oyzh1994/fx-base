@@ -373,9 +373,9 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
         this.setFocusTraversable(false);
-        this.cursorProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
-        this.disableProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
-        this.disabledProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
+        this.cursorProperty().addListener((observable) -> this.updateContent());
+        this.disableProperty().addListener((observable) -> this.updateContent());
+        this.disabledProperty().addListener((observable) -> this.updateContent());
         NodeAdapter.super.initNode();
     }
 
@@ -500,7 +500,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public BooleanProperty activeProperty() {
         if (this.activeProperty == null) {
             this.activeProperty = new SimpleBooleanProperty(false);
-            this.activeProperty.addListener((observable, oldValue, newValue) -> {
+            this.activeProperty.addListener((observable) -> {
                 // this.setActive(newValue);
                 this.updateContent();
             });
