@@ -201,6 +201,7 @@ public class FontUtil {
      * @param str 字符串
      * @return 字符宽度
      */
+    @Deprecated
     public static double stringWidth(String str) {
         if (StringUtil.isBlank(str)) {
             return 0;
@@ -558,5 +559,34 @@ public class FontUtil {
         }
         return family;
     }
+
+
+    /**
+     * 计算字符宽度
+     *
+     * @param str  字符串
+     * @return 字符宽度
+     */
+    public static double textWidth(String str) {
+        return textWidth(str,javafx.scene.text.Font.getDefault());
+    }
+
+    /**
+     * 计算字符宽度
+     *
+     * @param str  字符串
+     * @param font 字体
+     * @return 字符宽度
+     */
+    public static double textWidth(String str, javafx.scene.text.Font font) {
+        // 创建一个临时的Text对象来测量
+        Text text = new Text(str);
+        if (font != null) {
+            // 应用可能的字体（这里使用默认系统字体，更精确的话需获取实际字体）
+            text.setFont(font);
+        }
+        return text.getLayoutBounds().getWidth();
+    }
+
 
 }

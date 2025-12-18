@@ -26,15 +26,25 @@ public class ContextMenuPool extends Pool<ContextMenu> {
         // 尽可能清楚属性
         contextMenu.hide();
         contextMenu.setId(null);
+        contextMenu.idProperty().unbind();
         contextMenu.setStyle(null);
+        contextMenu.styleProperty().unbind();
         contextMenu.setOpacity(1);
+        contextMenu.opacityProperty().unbind();
         contextMenu.setOnAction(null);
+        contextMenu.onActionProperty().unbind();
         contextMenu.setOnShown(null);
+        contextMenu.onShownProperty().unbind();
         contextMenu.setOnHidden(null);
+        contextMenu.onHiddenProperty().unbind();
         contextMenu.setOnShowing(null);
+        contextMenu.onShowingProperty().unbind();
         contextMenu.getItems().clear();
         contextMenu.setOnAutoHide(null);
+        contextMenu.onAutoHideProperty().unbind();
         contextMenu.setOnCloseRequest(null);
+        contextMenu.onCloseRequestProperty().unbind();
+        contextMenu.setUserData(null);
         contextMenu.getProperties().clear();
         super.returnObject(contextMenu);
     }

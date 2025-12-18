@@ -4,13 +4,17 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.text.Font;
 
 /**
  * 菜单项
@@ -18,7 +22,7 @@ import javafx.scene.control.MenuItem;
  * @author oyzh
  * @since 2023/3/3
  */
-public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, DestroyAdapter {
+public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, StateAdapter, ThemeAdapter, DestroyAdapter {
 
     {
         NodeManager.init(this);
@@ -63,13 +67,19 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
      * @return 宽度
      */
     public double getWidth() {
-        String str = this.getText();
-        Node graphic = this.getGraphic();
-        double w = FontUtil.stringWidth(str);
-        if (graphic != null) {
-            w += NodeUtil.getWidth(graphic);
-        }
-        return w;
+        // String str = this.getText();
+        // Node graphic = this.getGraphic();
+        // double w = FontUtil.stringWidth(str);
+        // if (graphic != null) {
+        //     w += NodeUtil.getWidth(graphic);
+        // }
+        // KeyCombination combination = this.getAccelerator();
+        // if (combination != null) {
+        //     w = w + 60 + FontUtil.stringWidth(combination.getDisplayText());
+        //     System.out.println(w + "====");
+        // }
+        // return w;
+        return getWidth(this);
     }
 
     // public void fixed() {
@@ -91,7 +101,7 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         // 设置边距
         label.setPadding(Insets.EMPTY);
         // 计算宽度
-        double w = FontUtil.stringWidth(text);
+        double w = FontUtil.textWidth(text);
         if (glyph != null) {
             w += glyph.getWidth() + 25;
         }
@@ -115,20 +125,47 @@ public class FXMenuItem extends MenuItem implements StateAdapter, ThemeAdapter, 
         return new FXMenuItem(null, text, action);
     }
 
+//     @Override
+//     public void destroy() {
+//         if (this.getParentMenu() != null) {
+//             return;
+//         }
+// //        if (this.disableListener != null) {
+// //            this.disableProperty().removeListener(this.disableListener);
+//         this.disableProperty().unbind();
+// //            this.disableListener = null;
+// //        }
+//         this.setText(null);
+//         this.setStyle(null);
+//         this.setGraphic(null);
+//         this.setOnAction(null);
+//         this.clearProps();
+//     }
+
     @Override
-    public synchronized void destroy() {
-        if (this.getParentMenu() != null) {
-            return;
+    public void initNode() {
+        this.setMnemonicParsing(false);
+        NodeAdapter.super.initNode();
+    }
+
+    /**
+     * 获取宽度
+     *
+     * @return 宽度
+     */
+    public static double getWidth(MenuItem item) {
+        String str = item.getText();
+        Node graphic = item.getGraphic();
+        Font font = FontUtil.getFont(item);
+        double w = FontUtil.textWidth(str, font);
+        if (graphic != null) {
+            w += NodeUtil.getWidth(graphic);
         }
-//        if (this.disableListener != null) {
-//            this.disableProperty().removeListener(this.disableListener);
-        this.disableProperty().unbind();
-//            this.disableListener = null;
-//        }
-        this.setText(null);
-        this.setStyle(null);
-        this.setGraphic(null);
-        this.setOnAction(null);
-        this.clearProps();
+        KeyCombination combination = item.getAccelerator();
+        if (combination != null) {
+            w = w + 20 + FontUtil.stringWidth(combination.getDisplayText(), font);
+        }
+        w += 80;
+        return w;
     }
 }
