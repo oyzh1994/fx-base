@@ -89,14 +89,14 @@ public class DecimalTextField extends DigitalTextField {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
                 try {
                     String text = change.getControlNewText();
-                    // 如果文本为空、"+"、"."，则不进行任何操作，直接返回原change对象
-                    if (StringUtil.isEmpty(text) || text.equals("+") || ".".equals(text)) {
+                    // 如果文本为空、"+"、"-"、"."，则不进行任何操作，直接返回原change对象
+                    if (StringUtil.isEmpty(text) || StringUtil.equalsAny(text, "+", "-", ".")) {
                         return change;
                     }
-                    // 无符号判断
-                    if (this.isUnsigned() && text.startsWith("-")) {
-                        return null;
-                    }
+                    // // 无符号判断
+                    // if (this.isUnsigned() && text.startsWith("-")) {
+                    //     return null;
+                    // }
                     // 数字判断
                     if (!RegexUtil.isDecimal(text) && !RegexUtil.isNumber(text)) {
                         return null;
