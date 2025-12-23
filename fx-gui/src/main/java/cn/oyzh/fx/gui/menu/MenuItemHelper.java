@@ -1,58 +1,6 @@
 package cn.oyzh.fx.gui.menu;
 
-import cn.oyzh.fx.gui.svg.glyph.AddGroupSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.AddSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.BatchOptSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ClearSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CollapseAllSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CollectSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CopySVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.CutSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.DownloadSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ErrorInfoSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ExportSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.FileSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.FilterSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ForceKillSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ImportSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.InfoSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.KillSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.LoadAllSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.LogSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.More1SVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.MoveSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.OpenSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.PasteSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.PauseSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.PermissionSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.PortSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RefreshSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RenameSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RepeatSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.ResourceSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RestartSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RunSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.SortAscSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.SortDescSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.StopSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.TerminalSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.TimeSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.TransportSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.TruncateSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.UnCompressSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.UnPauseSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.UndoSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.*;
 import cn.oyzh.fx.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.FunctionSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.ProcedureSVGGlyph;
@@ -684,7 +632,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem openSFTP(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openSFTP(), new OpenSVGGlyph(iconSize), action);
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openSFTP(), new SFTPSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem clearData(String iconSize, Runnable action) {
