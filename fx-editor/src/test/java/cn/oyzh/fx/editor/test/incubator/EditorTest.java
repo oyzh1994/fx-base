@@ -113,15 +113,15 @@ public class EditorTest extends Application {
             // }
 
 
-            Set<Node> nodes= editor.lookupAll("*");
+            Set<Node> nodes = editor.lookupAll("*");
 
 
             for (Node node : nodes) {
-                if(node instanceof Text text){
+                if (node instanceof Text text) {
                     System.out.println(text.getText());
-                }else if(node instanceof VFlow vFlow){
+                } else if (node instanceof VFlow vFlow) {
 
-                }else if(node instanceof TextFlow textFlow){
+                } else if (node instanceof TextFlow textFlow) {
 
                 }
             }
@@ -227,11 +227,11 @@ public class EditorTest extends Application {
             editor.positionCaret(editor.getLength() / 2);
         });
         hBox3.addChild(btn_311);
-        // Button btn_312 = new Button("设置颜色");
-        // btn_312.setOnAction(event -> {
-        //     editor.setStyle(0, 10, Color.RED);
-        // });
-        // hBox3.addChild(btn_312);
+//         Button btn_312 = new Button("设置颜色");
+//         btn_312.setOnAction(event -> {
+//             editor.setStyle(0, 10, Color.RED);
+//         });
+//         hBox3.addChild(btn_312);
 
         FXHBox hBox4 = new FXHBox();
         Button btn_41 = new Button("获取光标位置");
@@ -281,10 +281,13 @@ public class EditorTest extends Application {
         btn_47.setOnAction(event -> {
             TextPos start = TextPos.ofLeading(0, 0);
             TextPos end = TextPos.ofLeading(0, 10);
-            // StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
-            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
-            StyledTextModel model = editor.getModel();
-            model.applyStyle(start, end, attributeMap, true);
+//             StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
+            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BACKGROUND, Color.ORANGE);
+//            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
+//            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.ITALIC,true);
+//            StyledTextModel model = editor.getModel();
+//            model.applyStyle(start, end, attributeMap, false);
+            editor.setStyle(start, end, attributeMap);
         });
         hBox4.addChild(btn_47);
 
@@ -369,8 +372,6 @@ public class EditorTest extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-
 
     public static class EditorTestStarter {
 

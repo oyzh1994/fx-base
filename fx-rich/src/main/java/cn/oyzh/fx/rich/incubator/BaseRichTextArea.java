@@ -139,8 +139,8 @@
 //
 //    public void replaceText(int start, int end, String text) {
 //        TextPos[] pos = this.getPosByIndex(start, end);
-//        this.replaceText(pos[0], pos[1], text, true);
-//        // this.replaceText(pos[0], pos[1], text);
+////        this.replaceText(pos[0], pos[1], text, true);
+//         this.replaceText(pos[0], pos[1], text);
 //    }
 //
 //    /**

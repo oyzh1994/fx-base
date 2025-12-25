@@ -1375,11 +1375,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         //     this.lineNumPolicyProperty = null;
         // }
         // this.fontProperty().unbind();
-        // this.editorFont = null;
-        // this.textFlowModel = null;
-        // this.styleProvider = null;
-        // this.syntaxDecorator = null;
-        // this.richTextAreaModel = null;
+         this.editorFont = null;
+         this.textFlowModel = null;
+         this.styleProvider = null;
+         this.syntaxDecorator = null;
+         this.richTextAreaModel = null;
         // NodeDestroyUtil.destroyObject(this);
         DestroyAdapter.super.destroy();
     }
