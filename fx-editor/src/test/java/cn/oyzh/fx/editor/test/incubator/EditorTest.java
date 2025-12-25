@@ -2,7 +2,6 @@ package cn.oyzh.fx.editor.test.incubator;
 
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
-import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.editor.incubator.EditorFormatTypeComboBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
@@ -72,7 +71,8 @@ public class EditorTest extends Application {
 
         editor.setFlexWidth("100%");
         editor.setFlexHeight("100% - 120");
-        editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
+        editor.showLineNum();
+//        editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
 
         FXHBox hBox = new FXHBox();
 

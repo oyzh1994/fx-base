@@ -5,7 +5,6 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.ScrollBarAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -190,14 +189,14 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                 FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
             }
         });
-        // 行号策略变化事件
-        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
-            if (t1 == EditorLineNumPolicy.NONE) {
-                this.hideLineNum();
-            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
-                this.showLineNum();
-            }
-        });
+//        // 行号策略变化事件
+//        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
+//            if (t1 == EditorLineNumPolicy.NONE) {
+//                this.hideLineNum();
+//            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
+//                this.showLineNum();
+//            }
+//        });
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
@@ -788,25 +787,25 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         }
     }
 
-    /**
-     * 行号策略
-     */
-    private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
-
-    public EditorLineNumPolicy getLineNumPolicy() {
-        return this.lineNumPolicyProperty == null ? EditorLineNumPolicy.ALWAYS : this.lineNumPolicyProperty.get();
-    }
-
-    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
-        this.lineNumPolicyProperty().set(lineNumPolicy);
-    }
-
-    public ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty() {
-        if (this.lineNumPolicyProperty == null) {
-            this.lineNumPolicyProperty = new SimpleObjectProperty<>(EditorLineNumPolicy.ALWAYS);
-        }
-        return this.lineNumPolicyProperty;
-    }
+//    /**
+//     * 行号策略
+//     */
+//    private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
+//
+//    public EditorLineNumPolicy getLineNumPolicy() {
+//        return this.lineNumPolicyProperty == null ? EditorLineNumPolicy.ALWAYS : this.lineNumPolicyProperty.get();
+//    }
+//
+//    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
+//        this.lineNumPolicyProperty().set(lineNumPolicy);
+//    }
+//
+//    public ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty() {
+//        if (this.lineNumPolicyProperty == null) {
+//            this.lineNumPolicyProperty = new SimpleObjectProperty<>(EditorLineNumPolicy.ALWAYS);
+//        }
+//        return this.lineNumPolicyProperty;
+//    }
 
     @Override
     public void resize(double width, double height) {
@@ -1149,7 +1148,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         items.add(selectAll);
 
         // 自动换行
-        MenuItem wordWrap = MenuItemManager.getMenuItem(I18nHelper.wordWrap(), this::wordWrap);
+        MenuItem wordWrap = MenuItemManager.getCheckMenuItem(I18nHelper.wordWrap(), this::wordWrap, this.isWrapText());
         items.add(wordWrap);
 
         // 移动到文档头
@@ -1160,9 +1159,20 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         MenuItem moveToTheEndOfTheDocument = MenuItemManager.getMenuItem(I18nHelper.moveToTheEndOfTheDocument(), this::moveCaretEnd);
         items.add(moveToTheEndOfTheDocument);
 
+        items.add(MenuItemManager.getSeparatorMenuItem());
+
         // 格式化文档
         MenuItem formattingDocument = MenuItemManager.getMenuItem(I18nHelper.formattingDocument(), this::formatting);
         items.add(formattingDocument);
+
+        // 行号
+        if (this.isLineNumbersEnabled()) {
+            MenuItem hideLineNum = MenuItemManager.getCheckMenuItem(I18nHelper.showLineNum(), this::hideLineNum, true);
+            items.add(hideLineNum);
+        } else {
+            MenuItem showLineNum = MenuItemManager.getCheckMenuItem(I18nHelper.showLineNum(), this::showLineNum, false);
+            items.add(showLineNum);
+        }
 
         return items;
     }
@@ -1375,11 +1385,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         //     this.lineNumPolicyProperty = null;
         // }
         // this.fontProperty().unbind();
-         this.editorFont = null;
-         this.textFlowModel = null;
-         this.styleProvider = null;
-         this.syntaxDecorator = null;
-         this.richTextAreaModel = null;
+        this.editorFont = null;
+        this.textFlowModel = null;
+        this.styleProvider = null;
+        this.syntaxDecorator = null;
+        this.richTextAreaModel = null;
         // NodeDestroyUtil.destroyObject(this);
         DestroyAdapter.super.destroy();
     }
