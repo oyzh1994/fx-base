@@ -6,11 +6,9 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.ListChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListView;
 
@@ -26,8 +24,9 @@ public class FXListView<T> extends ListView<T> implements FlexAdapter, TipAdapte
 
     @Override
     public void initNode() {
-        FlexAdapter.super.initNode();
+        this.setCache(false);
         this.setCursor(Cursor.HAND);
+        FlexAdapter.super.initNode();
         // this.getItems().addListener((ListChangeListener<T>) c -> {
         //     if (c.next()) {
         //         c.getRemoved().forEach(NodeDestroyUtil::destroy);

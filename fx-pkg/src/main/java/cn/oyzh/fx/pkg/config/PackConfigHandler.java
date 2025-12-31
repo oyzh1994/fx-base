@@ -1,10 +1,14 @@
 package cn.oyzh.fx.pkg.config;
 
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * 打包信息处理器
@@ -16,10 +20,12 @@ public class PackConfigHandler implements PreHandler {
 
     private int order = PackOrder.ORDER_P8;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }
@@ -56,6 +62,18 @@ public class PackConfigHandler implements PreHandler {
             packConfig.setMainJar(StringUtil.replace(packConfig.getMainJar(), "${" + PackCost.PROJECT_PATH + "}", projectPath));
             packConfig.setAppIcon(StringUtil.replace(packConfig.getAppIcon(), "${" + PackCost.PROJECT_PATH + "}", projectPath));
             packConfig.setAppImageRuntime(StringUtil.replace(packConfig.getAppImageRuntime(), "${" + PackCost.PROJECT_PATH + "}", projectPath));
+        }
+        // 清除打包目录
+        List<File> files = FileUtil.getAllFiles(packConfig.getDest());
+        for (File file : files) {
+            if (!file.exists()) {
+                continue;
+            }
+            if (file.isFile()) {
+                FileUtil.del(file);
+            } else {
+                FileUtil.cleanDir(file);
+            }
         }
     }
 }

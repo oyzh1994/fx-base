@@ -4,11 +4,12 @@ import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
 import cn.oyzh.fx.plus.controls.popup.FXPopup;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
-import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.ListCell;
@@ -121,6 +122,11 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             this.calcSize();
             TextField textField = this.getSkinnable();
             this.popup.showFixed(textField, -1, 0);
+            // 设置数据
+            FXListView<T> listView = this.listView();
+            listView.setIgnoreChanged(true);
+            listView.setItem(this.getItemList());
+            listView.setIgnoreChanged(false);
         }
     }
 
@@ -136,6 +142,8 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         this.popup.getScene().setFill(color);
         TextField textField = this.getSkinnable();
         FXListView<T> listView = new FXListView<>();
+        // 设置数据
+        listView.setItem(this.getItemList());
         // 数据函数
         Runnable dataFunc = () -> {
             T item = listView.getSelectedItem();
@@ -228,9 +236,19 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     public SelectTextFiledSkin(TextField textField) {
-        super(textField, new SelectSVGGlyph());
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.select());
+        super(textField);
+        // super(textField, new SelectSVGGlyph());
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.select());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new SelectSVGGlyph();
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override
@@ -295,7 +313,10 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param item 内容
      */
     public void selectItem(T item) {
-        if (item != null && this.popup != null) {
+        if (item != null) {
+            if (this.popup == null) {
+                this.initPopup();
+            }
             this.listView().select(item);
         }
     }
@@ -317,12 +338,17 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     /**
+     * 内容列表
+     */
+    private List<T> itemList;
+
+    /**
      * 获取内容列表
      *
      * @return 内容列表
      */
     public List<T> getItemList() {
-        return this.listView().getItems();
+        return this.itemList;
     }
 
     /**
@@ -331,13 +357,19 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @param itemList 内容列表
      */
     public void setItemList(List<T> itemList) {
-        if (itemList == null) {
-            return;
+        this.itemList = itemList;
+    }
+
+    /**
+     * 清除内容列表
+     */
+    public void clearItemList() {
+        if (this.itemList != null) {
+            this.itemList.clear();
         }
-        FXListView<T> listView = this.listView();
-        listView.setIgnoreChanged(true);
-        listView.setItem(itemList);
-        listView.setIgnoreChanged(false);
+        if (this.popup != null) {
+            this.listView().clearItems();
+        }
     }
 
     /**
@@ -346,7 +378,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 内容大小
      */
     public int getItemSize() {
-        return this.listView().getItemSize();
+        return this.getItemList().size();
     }
 
     /**
@@ -355,7 +387,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 结果
      */
     public boolean isItemEmpty() {
-        return this.listView().isItemEmpty();
+        return this.getItemList().isEmpty();
     }
 
     /**
@@ -423,8 +455,37 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         PropertiesUtil.remove(this.getSkinnable(), "texting");
     }
 
+    // @Override
+    // protected double getButtonMargin() {
+    //     return -3;
+    // }
+
     @Override
-    protected double getButtonMargin() {
-        return -3;
+    protected double getButtonSizeMax() {
+        return 12;
+    }
+
+    // @Override
+    // protected void onSizeChanged() {
+    //     super.onSizeChanged();
+    //     TextField textField = this.getSkinnable();
+    //     double h = NodeUtil.getHeight(textField);
+    //     double size = h * 0.8;
+    //     if (size < this.getButtonSizeMin()) {
+    //         size = this.getButtonSizeMin();
+    //     } else if (size > this.getButtonSizeMax()) {
+    //         size = this.getButtonSizeMax();
+    //     }
+    //     // 设置大小
+    //     this.button.setSize(size, size * 0.8);
+    // }
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroyObject(this.popup);
+        this.popup = null;
+        this.converter = null;
+        this.selectItemChanged = null;
+        super.dispose();
     }
 }

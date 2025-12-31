@@ -486,9 +486,9 @@ public class NodeUtil {
             if (!labeled.prefWidthProperty().isBound()) {
                 labeled.setPrefWidth(width);
             }
-            if (!labeled.minWidthProperty().isBound()) {
-                labeled.setMinWidth(width);
-            }
+            // if (!labeled.minWidthProperty().isBound()) {
+            //     labeled.setMinWidth(width);
+            // }
             if (!labeled.maxWidthProperty().isBound()) {
                 labeled.setMaxWidth(width);
             }
@@ -497,9 +497,9 @@ public class NodeUtil {
             if (!columnBase.prefWidthProperty().isBound()) {
                 columnBase.setPrefWidth(width);
             }
-            if (!columnBase.minWidthProperty().isBound()) {
-                columnBase.setMinWidth(width);
-            }
+            // if (!columnBase.minWidthProperty().isBound()) {
+            //     columnBase.setMinWidth(width);
+            // }
             if (!columnBase.maxWidthProperty().isBound()) {
                 columnBase.setMaxWidth(width);
             }
@@ -508,9 +508,9 @@ public class NodeUtil {
             if (!control.prefWidthProperty().isBound()) {
                 control.setPrefWidth(width);
             }
-            if (!control.minWidthProperty().isBound()) {
-                control.setMinWidth(width);
-            }
+            // if (!control.minWidthProperty().isBound()) {
+            //     control.setMinWidth(width);
+            // }
             if (!control.maxWidthProperty().isBound()) {
                 control.setMaxWidth(width);
             }
@@ -519,9 +519,9 @@ public class NodeUtil {
             if (!region.prefWidthProperty().isBound()) {
                 region.setPrefWidth(width);
             }
-            if (!region.minWidthProperty().isBound()) {
-                region.setMinWidth(width);
-            }
+            // if (!region.minWidthProperty().isBound()) {
+            //     region.setMinWidth(width);
+            // }
             if (!region.maxWidthProperty().isBound()) {
                 region.setMaxWidth(width);
             }
@@ -579,9 +579,9 @@ public class NodeUtil {
             if (!labeled.prefHeightProperty().isBound()) {
                 labeled.setPrefHeight(height);
             }
-            if (!labeled.minHeightProperty().isBound()) {
-                labeled.setMinHeight(height);
-            }
+            // if (!labeled.minHeightProperty().isBound()) {
+            //     labeled.setMinHeight(height);
+            // }
             if (!labeled.maxHeightProperty().isBound()) {
                 labeled.setMaxHeight(height);
             }
@@ -590,9 +590,9 @@ public class NodeUtil {
             if (!control.prefHeightProperty().isBound()) {
                 control.setPrefHeight(height);
             }
-            if (!control.minHeightProperty().isBound()) {
-                control.setMinHeight(height);
-            }
+            // if (!control.minHeightProperty().isBound()) {
+            //     control.setMinHeight(height);
+            // }
             if (!control.maxHeightProperty().isBound()) {
                 control.setMaxHeight(height);
             }
@@ -601,9 +601,9 @@ public class NodeUtil {
             if (!region.prefHeightProperty().isBound()) {
                 region.setPrefHeight(height);
             }
-            if (!region.minHeightProperty().isBound()) {
-                region.setMinHeight(height);
-            }
+            // if (!region.minHeightProperty().isBound()) {
+            //     region.setMinHeight(height);
+            // }
             if (!region.maxHeightProperty().isBound()) {
                 region.setMaxHeight(height);
             }

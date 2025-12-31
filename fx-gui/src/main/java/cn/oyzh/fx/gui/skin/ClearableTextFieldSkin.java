@@ -1,7 +1,8 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
-import cn.oyzh.i18n.I18nHelper;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
@@ -24,9 +25,19 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public ClearableTextFieldSkin(TextField textField) {
-        super(textField, new CloseSVGGlyph());
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.clear());
+        super(textField);
+        // super(textField, new CloseSVGGlyph());
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.clear());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            this.button = new CloseSVGGlyph();
+            super.initButton(this.button);
+        }
+        return super.button;
     }
 
     @Override
@@ -38,4 +49,17 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkin {
     protected double getButtonSizeMax() {
         return 12;
     }
+
+    // @Override
+    // protected void onSizeChanged() {
+    //     super.onSizeChanged();
+    //     double height = NodeUtil.getHeight(this.getSkinnable());
+    //     double bthSize = height * 0.325;
+    //     if (bthSize < 8) {
+    //         bthSize = 8;
+    //     } else if (bthSize > 12) {
+    //         bthSize = 12;
+    //     }
+    //     this.button.setSize(bthSize);
+    // }
 }

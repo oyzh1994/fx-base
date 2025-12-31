@@ -354,7 +354,7 @@ public class PageBox<T> extends FXHBox {
         this.jump = new NumberTextField(true);
         this.jump.setMinVal(1);
         this.jump.setMaxWidth(50);
-        this.jump.setBtnMarginRight(0);
+        // this.jump.setBtnMarginRight(0);
         this.jump.setFlexHeight("80%");
         this.jump.managedBindVisible();
         this.jump.addEventFilter(KeyEvent.KEY_PRESSED, event -> {

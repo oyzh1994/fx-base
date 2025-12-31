@@ -1,14 +1,14 @@
 package cn.oyzh.fx.pkg.pack;
 
 import cn.oyzh.fx.pkg.PackOrder;
-import cn.oyzh.fx.pkg.PostHandler;
+import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 
 /**
  * @author oyzh
  * @since 2024/6/14
  */
-public class StartHandler implements PostHandler {
+public class StartHandler implements PreHandler {
 
     private int order = PackOrder.ORDER_MAX;
 

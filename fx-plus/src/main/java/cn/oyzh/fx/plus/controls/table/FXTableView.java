@@ -1,8 +1,11 @@
 package cn.oyzh.fx.plus.controls.table;
 
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
+import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
@@ -21,6 +24,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.skin.NestedTableColumnHeader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.util.List;
 
@@ -28,7 +33,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S> {
+public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S>, DestroyAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -61,7 +66,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void initNode() {
-        FlexAdapter.super.initNode();
+        this.setCache(false);
         this.setHeaderHeight(30);
         this.setFixedCellSize(30);
         this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -82,6 +87,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
         //     }
         // });
+        FlexAdapter.super.initNode();
     }
 
     private boolean reorderable;
@@ -218,5 +224,46 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     public void clearColumns() {
         FXUtil.runWait(() -> super.getColumns().clear());
+    }
+
+    @Override
+    public void destroy() {
+        this.ctrlSAction = null;
+        this.clearProps();
+        this.clearItems();
+        this.clearColumns();
+        this.setTooltip(null);
+    }
+
+    private Font font;
+
+    @Override
+    public void setFont(Font font) {
+        this.font = font;
+    }
+
+    @Override
+    public Font getFont() {
+        return font;
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        this.setFont(FontUtil.newFontBySize(this.getFont(), fontSize));
+    }
+
+    @Override
+    public void setFontFamily(String fontFamily) {
+        this.setFont(FontUtil.newFontByFamily(this.getFont(), fontFamily));
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        this.setFont(FontUtil.newFontByWeight(this.getFont(), fontWeight));
+    }
+
+    @Override
+    public void changeFont(Font font) {
+        FontAdapter.super.changeFont(font);
     }
 }

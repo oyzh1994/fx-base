@@ -2,11 +2,16 @@ package cn.oyzh.fx.plus.rich;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
+import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextFlow;
 
 import java.util.ArrayList;
@@ -17,7 +22,7 @@ import java.util.List;
  * @author oyzh
  * @since 2025/01/22
  */
-public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, ThemeAdapter {
+public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, ThemeAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -54,7 +59,7 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
     protected void initTextFlow(String text) {
         String highlight = this.getHighlight();
         if (StringUtil.isNotBlank(highlight)) {
-            List<Text> texts = new ArrayList<>();
+            List<FXText> texts = new ArrayList<>();
             if (StringUtil.containsIgnoreCase(text, highlight)) {
                 String[] arr;
                 if (this.isHighlightMatchCase()) {
@@ -64,28 +69,28 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
                 }
                 Color highlightColor = this.getHighlightColor();
                 for (String s : arr) {
-                    Text text1 = new Text(s);
+                    FXText text1 = new FXText(s);
                     texts.add(text1);
                     if ((this.isHighlightMatchCase() && s.equals(highlight)) || s.equalsIgnoreCase(highlight)) {
                         text1.setFill(highlightColor);
                     }
                 }
             } else {
-                texts.add(new Text(text));
+                texts.add(new FXText(text));
             }
             this.initTextFlow(texts);
         } else if (StringUtil.isNotBlank(text)) {
-            this.initTextFlow(new Text(text));
+            this.initTextFlow(new FXText(text));
         } else {
             this.initTextFlow(Collections.emptyList());
         }
     }
 
-    protected void initTextFlow(Text... texts) {
+    protected void initTextFlow(FXText... texts) {
         this.getChildren().setAll(texts);
     }
 
-    protected void initTextFlow(List<Text> texts) {
+    protected void initTextFlow(List<FXText> texts) {
         this.getChildren().setAll(texts);
     }
 
@@ -132,7 +137,8 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
 //
 //        double x = 0;
 //        double y = 0;
-////        TextFlow textFlow = (TextFlow) getChildren().getFirst();
+
+    /// /        TextFlow textFlow = (TextFlow) getChildren().getFirst();
 //        // 遍历 TextFlow 中的所有 Text 节点
 //        for (Node child : this.getChildren()) {
 //            if (child instanceof Text text) {
@@ -145,4 +151,41 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
 //        }
 //        super.layoutChildren();
 //    }
+
+    /**
+     * 当前字体
+     */
+    private Font font;
+
+    @Override
+    public void setFont(Font font) {
+        this.font = font;
+        List<Node> managed = this.getManagedChildren();
+        for (Node node : managed) {
+            // if (node instanceof FXText text) {
+            //     text.setFont(font);
+            // }
+            FontUtil.setFont(node, font);
+        }
+    }
+
+    @Override
+    public Font getFont() {
+        return this.font;
+    }
+
+    @Override
+    public void setFontSize(double fontSize) {
+        this.setFont(FontUtil.newFontBySize(this.getFont(), fontSize));
+    }
+
+    @Override
+    public void setFontFamily(String fontFamily) {
+        this.setFont(FontUtil.newFontByFamily(this.getFont(), fontFamily));
+    }
+
+    @Override
+    public void setFontWeight(FontWeight fontWeight) {
+        this.setFont(FontUtil.newFontByWeight(this.getFont(), fontWeight));
+    }
 }

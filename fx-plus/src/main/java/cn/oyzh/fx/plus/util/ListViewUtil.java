@@ -103,7 +103,7 @@ public class ListViewUtil {
      */
     public static void selectRowOnMouseClicked(Node node, Node itemNode) {
         if (node != null) {
-            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            node.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                 ListView listView = findListView(node);
                 if (listView != null) {
                     listView.getSelectionModel().select(itemNode == null ? node : itemNode);

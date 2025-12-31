@@ -1,9 +1,12 @@
 package cn.oyzh.fx.plus.test.table;
 
+import cn.oyzh.common.object.ObjectWatcher;
 import cn.oyzh.fx.plus.controller.StageController;
+import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.controls.table.FXTableColumn;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageAttribute;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +29,9 @@ public class TableTestController extends StageController {
      */
     @FXML
     private FXTableColumn<String, String> value;
+
+    @FXML
+    private FXTab tab1;
 
     /**
      * 分数列
@@ -97,7 +103,17 @@ public class TableTestController extends StageController {
     }
 
 
-    public void test(){
+    public void test() {
         Pagination pagination;
+    }
+
+    @Override
+    public void onStageInitialize(StageAdapter stage) {
+        super.onStageInitialize(stage);
+        ObjectWatcher.watch(tab1);
+
+        tab1.setOnClosed(event -> {
+            this.tab1 = null;
+        });
     }
 }

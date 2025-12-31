@@ -5,8 +5,7 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.appImage.AppImageHandler;
 import cn.oyzh.fx.pkg.comporess.CompressHandler;
-import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
-import cn.oyzh.fx.pkg.config.AppConfigHandler;
+// import cn.oyzh.fx.pkg.comporess.CompressNameHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.config.PackConfigHandler;
 import cn.oyzh.fx.pkg.config.PackConfigParser;
@@ -18,9 +17,9 @@ import cn.oyzh.fx.pkg.jlink.JLinkHandler;
 import cn.oyzh.fx.pkg.jpackage.JPackageHandler;
 import cn.oyzh.fx.pkg.jre.JreHandler;
 import cn.oyzh.fx.pkg.mvn.MvnHandler;
+import cn.oyzh.fx.pkg.pack.DestHandler;
 import cn.oyzh.fx.pkg.pack.EndHandler;
 import cn.oyzh.fx.pkg.pack.StartHandler;
-import cn.oyzh.fx.pkg.packr.PackrHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +45,18 @@ public class Packer {
         this.registerEndHandler();
         this.registerJarHandler();
         this.registerJreHandler();
+        this.registerDestHandler();
         this.registerJLinkHandler();
         this.registerStartHandler();
         this.registerJdepsHandler();
         this.registerCompressHandler();
-        this.registerAppConfigHandler();
+        // this.registerAppConfigHandler();
         this.registerPackConfigHandler();
-        this.registerCompressNameHandler();
+        // this.registerCompressNameHandler();
+    }
+
+    public void registerDestHandler() {
+        this.registerHandler(new DestHandler());
     }
 
     public void registerEndHandler() {
@@ -63,17 +67,17 @@ public class Packer {
         this.registerHandler(new StartHandler());
     }
 
-    public void registerPackrHandler() {
-        this.registerHandler(new PackrHandler());
-    }
+    // public void registerPackrHandler() {
+    //     this.registerHandler(new PackrHandler());
+    // }
 
     public void registerJPackageHandler() {
         this.registerHandler(new JPackageHandler());
     }
 
-    public void registerAppConfigHandler() {
-        this.registerHandler(new AppConfigHandler());
-    }
+    // public void registerAppConfigHandler() {
+    //     this.registerHandler(new AppConfigHandler());
+    // }
 
     public void registerJreHandler() {
         this.registerHandler(new JreHandler());
@@ -119,9 +123,9 @@ public class Packer {
         this.registerHandler(new CompressHandler());
     }
 
-    public void registerCompressNameHandler() {
-        this.registerHandler(new CompressNameHandler());
-    }
+    // public void registerCompressNameHandler() {
+    //     this.registerHandler(new CompressNameHandler());
+    // }
 
     /**
      * 注册处理器
@@ -225,11 +229,11 @@ public class Packer {
                 packConfig.putProperty(entry.getKey(), entry.getValue());
             }
         }
-        if (packConfig.isParkByPackr()) {
-            this.registerPackrHandler();
-        } else {
+        // if (packConfig.isParkByPackr()) {
+        //     this.registerPackrHandler();
+        // } else {
             this.registerJPackageHandler();
-        }
+        // }
         // AppImage
         if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
             this.registerAppImageHandler();

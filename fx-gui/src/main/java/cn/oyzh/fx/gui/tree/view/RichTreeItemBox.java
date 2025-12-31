@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.rich.RichTextFlow;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -19,11 +18,11 @@ import javafx.scene.text.Text;
 public class RichTreeItemBox extends FXPane {
 
     {
-        this.disableFont();
+//        this.disableFont();
         this.setMaxHeight(15);
-        this.setMinHeight(15);
-        this.setPrefWidth(15);
+//        this.setMinHeight(15);
 //        this.setPrefWidth(1000);
+        this.setPrefWidth(15);
         this.setPadding(Insets.EMPTY);
     }
 //
@@ -73,7 +72,7 @@ public class RichTreeItemBox extends FXPane {
 
             // 额外信息
             if (StringUtil.isNotBlank(extra)) {
-                Label extraNode = new Label(extra);
+                FXLabel extraNode = new FXLabel(extra);
                 extraNode.setId("extra");
                 if (extraColor != null) {
                     extraNode.setTextFill(extraColor);
@@ -116,7 +115,7 @@ public class RichTreeItemBox extends FXPane {
 
             // 更新额外信息
             if (StringUtil.isNotBlank(extra)) {
-                Label extraNode = this.getExtra();
+                FXLabel extraNode = this.getExtra();
                 // 新增
                 if (extraNode == null) {
                     extraNode = new FXLabel(extra);
@@ -183,14 +182,14 @@ public class RichTreeItemBox extends FXPane {
         }
     }
 
-    public Label getExtra() {
+    public FXLabel getExtra() {
         Node node = this.getChild(2);
-        if (node instanceof Label) {
-            return (Label) node;
+        if (node instanceof FXLabel) {
+            return (FXLabel) node;
         }
         node = this.lookup("#extra");
-        if (node instanceof Label) {
-            return (Label) node;
+        if (node instanceof FXLabel) {
+            return (FXLabel) node;
         }
         return null;
     }

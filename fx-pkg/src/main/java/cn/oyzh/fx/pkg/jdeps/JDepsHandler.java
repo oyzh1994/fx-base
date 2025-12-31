@@ -4,8 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.RuntimeUtil;
-import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -16,7 +14,6 @@ import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,10 +28,12 @@ public class JDepsHandler implements PreHandler {
 
     private int order = PackOrder.ORDER_P6;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }
@@ -144,7 +143,8 @@ public class JDepsHandler implements PreHandler {
             }
             // 如果是系统模块，则添加到模块列表
             if (modules.contains(module) && !deps.contains(module)) {
-                System.out.println("module added:" + module);
+                // System.out.println("module added:" + module);
+                JulLog.info("module added:{}", module);
                 deps.add(module);
             }
         });

@@ -5,7 +5,9 @@ import cn.oyzh.fx.gui.svg.glyph.EnlargeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -99,9 +101,19 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
     }
 
     public EnlargeTextFiledSkin(TextField textField) {
-        super(textField, new EnlargeSVGGlyph("13"));
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.enlarge());
+        super(textField);
+        // super(textField, new EnlargeSVGGlyph("13"));
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.enlarge());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (this.button == null) {
+            this.button = new EnlargeSVGGlyph("13");
+            super.initButton(this.button);
+        }
+        return this.button;
     }
 
     @Override
@@ -111,5 +123,12 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         boolean hasFocus = this.getSkinnable().isFocused();
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
+    }
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroyObject(this.popup);
+        this.popup = null;
+        super.dispose();
     }
 }

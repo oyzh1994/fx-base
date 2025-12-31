@@ -9,12 +9,18 @@ import javafx.scene.text.FontWeight;
 public class InfoLabel extends AccentLabel {
 
     public InfoLabel() {
-        this("");
+        super();
     }
 
     public InfoLabel(String text) {
         super(text);
+    }
+
+    @Override
+    public void initNode() {
         this.setRealHeight(30);
+        super.disableFontWeight();
         this.setFontWeight(FontWeight.BOLD);
+        super.initNode();
     }
 }

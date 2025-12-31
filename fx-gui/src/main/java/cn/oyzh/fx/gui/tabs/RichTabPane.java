@@ -65,8 +65,20 @@ public class RichTabPane extends FXTabPane {
      * @param tabClass tab类
      */
     public void closeTab(Class<? extends Tab> tabClass) {
-        Tab tab = this.getTab(tabClass);
-        if (tab != null) {
+        // Tab tab = this.getTab(tabClass);
+        // if (tab != null) {
+        //     FXUtil.runLater(() -> this.getTabs().remove(tab));
+        // }
+        this.closeTab(this.getTab(tabClass));
+    }
+
+    /**
+     * 关闭tab
+     *
+     * @param tab tab类
+     */
+    public void closeTab(Tab tab) {
+        if (tab != null && tab.isClosable()) {
             FXUtil.runLater(() -> this.getTabs().remove(tab));
         }
     }

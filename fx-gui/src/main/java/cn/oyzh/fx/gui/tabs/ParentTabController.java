@@ -55,12 +55,12 @@ public class ParentTabController extends RichTabController {
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         super.initialize(location, resourceBundle);
-        for (RichTabController controller : this.getSubControllers()) {
-            if (controller == null) {
-                continue;
-            }
-            controller.initialize(location, resourceBundle);
-        }
+        // for (RichTabController controller : this.getSubControllers()) {
+        //     if (controller == null) {
+        //         continue;
+        //     }
+        //     controller.initialize(location, resourceBundle);
+        // }
     }
     //
     // @Override

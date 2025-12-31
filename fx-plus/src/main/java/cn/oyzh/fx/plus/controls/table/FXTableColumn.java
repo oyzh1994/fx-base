@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.flex.FlexAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -10,12 +9,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+
 
 /**
  * @author oyzh
  * @since 2022/1/18
  */
-public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapter, FlexAdapter, ThemeAdapter {
+public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter {
 
     {
         NodeManager.init(this);
@@ -27,7 +28,8 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapte
      * @param cell 列处理器
      */
     public void setCell(TableCell<S, T> cell) {
-        this.setCellFactory((c) -> cell);
+        Callback<TableColumn<S,T>, TableCell<S,T>> cellFactory = param -> new FXTableCell<>();
+        this.setCellFactory(cellFactory);
         PropertiesUtil.set(this.getTableView(), "cell", cell);
     }
 
@@ -100,4 +102,11 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements NodeAdapte
             FlexAdapter.super.setRealWidth(width);
         }
     }
+
+    // @Override
+    // public void initNode() {
+    //     // 设置默认cell
+    //     this.setCell(new FXTableCell<>());
+    //     FlexAdapter.super.initNode();
+    // }
 }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
@@ -34,11 +35,26 @@ public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public MatchCaseTextFieldSkin(TextField textField) {
-        super(textField, new MatchCaseSVGGlyph("13"));
+        super(textField);
+        // super(textField, new MatchCaseSVGGlyph("13"));
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new MatchCaseSVGGlyph("13");
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override
     protected void updateButtonVisibility() {
         this.button.display();
+    }
+
+    @Override
+    protected void setButtonSize(double size) {
+        super.button.setSize(size, size * 0.8);
     }
 }

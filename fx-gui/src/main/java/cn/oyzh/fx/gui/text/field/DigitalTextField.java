@@ -42,7 +42,9 @@ public abstract class DigitalTextField extends LimitTextField {
 
     /**
      * 无符号模式
+     * TODO: 废弃，以mavVal和minVal来限制
      */
+    @Deprecated
     private boolean unsigned;
 
     public Number getMaxVal() {
@@ -69,10 +71,12 @@ public abstract class DigitalTextField extends LimitTextField {
         this.step = step;
     }
 
+    @Deprecated
     public boolean isUnsigned() {
         return unsigned;
     }
 
+    @Deprecated
     public void setUnsigned(boolean unsigned) {
         this.unsigned = unsigned;
     }
@@ -264,13 +268,13 @@ public abstract class DigitalTextField extends LimitTextField {
         return new DigitalTextFieldSkin(this, this::incrValue, this::decrValue);
     }
 
-    public void setBtnMarginRight(float btnMarginRight) {
-        this.skin().setBtnMarginRight(btnMarginRight);
-    }
-
-    public float getBtnMarginRight() {
-        return this.skin().getBtnMarginRight();
-    }
+    // public void setBtnMarginRight(float btnMarginRight) {
+    //     this.skin().setBtnMarginRight(btnMarginRight);
+    // }
+    //
+    // public float getBtnMarginRight() {
+    //     return this.skin().getBtnMarginRight();
+    // }
 
     @Override
     protected void onBlur() {

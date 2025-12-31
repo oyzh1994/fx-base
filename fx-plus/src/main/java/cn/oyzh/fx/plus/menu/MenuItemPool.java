@@ -25,17 +25,25 @@ public class MenuItemPool extends Pool<MenuItem> {
         }
         // 尽可能清除属性
         item.setId(null);
+        item.idProperty().unbind();
         item.setText(null);
+        item.textProperty().unbind();
         item.setStyle(null);
+        item.styleProperty().unbind();
         item.setGraphic(null);
+        item.graphicProperty().unbind();
         item.setOnAction(null);
+        item.onActionProperty().unbind();
         item.setVisible(true);
+        item.visibleProperty().unbind();
         item.setDisable(false);
-        item.setUserData(null);
-        item.setAccelerator(null);
-        item.getProperties().clear();
         item.disableProperty().unbind();
+        item.setUserData(null);
+        item.getProperties().clear();
         item.setOnMenuValidation(null);
+        item.setAccelerator(null);
+        item.acceleratorProperty().unbind();
+        item.mnemonicParsingProperty().unbind();
         super.returnObject(item);
     }
 }

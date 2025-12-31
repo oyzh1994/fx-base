@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
@@ -149,7 +150,7 @@ public class TableViewUtil {
      */
     public static void selectRowOnMouseClicked(Node node) {
         if (node != null) {
-            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            node.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
                 TableRow<?> tableRow = findTableRow(node);
                 if (tableRow != null && tableRow.getTableView() != null) {
                     tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
@@ -229,6 +230,21 @@ public class TableViewUtil {
             return (NestedTableColumnHeader) header.lookup(".nested-column-header");
         }
         return null;
+    }
+
+    /**
+     * 获取表头组件
+     *
+     * @param tableView 组件
+     * @return 表头列组件
+     */
+    public static Set<Label> getHeaderLabel(TableView<?> tableView) {
+        NestedTableColumnHeader header = getHeaderColumn(tableView);
+        if (header != null) {
+            Set set = header.lookupAll(".label");
+            return (Set<Label>) set;
+        }
+        return Collections.emptySet();
     }
 
     /**

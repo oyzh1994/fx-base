@@ -14,7 +14,6 @@ import javafx.scene.control.TreeItem;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 /**
@@ -32,6 +31,16 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
 //            }
 //        });
 //    }
+
+    /**
+     * 空节点
+     */
+    public static final RichTreeItem<?> EMPTY = new RichTreeItem<>(null) {
+        @Override
+        protected BitSet bitValue() {
+            return super.bitValue();
+        }
+    };
 
     /**
      * bit值设置，减少内存占用
@@ -433,8 +442,8 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      */
     public synchronized void doFilter(RichTreeItemFilter itemFilter) {
         List<RichTreeItem<?>> items = this.richChildren();
-        List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
-        BackgroundService.submit(() -> this.doFilter(itemFilter, list));
+        // List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
+        BackgroundService.submitFX(() -> this.doFilter(itemFilter, items));
     }
 
     /**
@@ -454,7 +463,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                 } else {
                     items.forEach(child -> child.doFilter(itemFilter));
                 }
-                this.doSort();
+                // this.doSort();
+                items.add(EMPTY);
+                items.remove(EMPTY);
                 this.refresh();
             } catch (Exception ex) {
                 ex.printStackTrace();

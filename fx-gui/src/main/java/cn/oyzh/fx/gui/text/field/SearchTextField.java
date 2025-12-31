@@ -40,7 +40,7 @@ public class SearchTextField extends LimitTextField {
      * @param historyPopup 搜索历史弹窗
      */
     public void setHistoryPopup(SearchHistoryPopup historyPopup) {
-        this.skin().setHistoryPopup(historyPopup);
+        this.skin().setPopup(historyPopup);
     }
 
     /**
@@ -49,7 +49,7 @@ public class SearchTextField extends LimitTextField {
      * @return 搜索历史弹窗
      */
     public SearchHistoryPopup getHistoryPopup() {
-        return this.skin().getHistoryPopup();
+        return this.skin().getPopup();
     }
 
     public EventHandler<SearchEvent> getOnSearch() {

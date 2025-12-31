@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.tab;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
@@ -20,7 +20,7 @@ import javafx.scene.control.TabPane;
  * @author oyzh
  * @since 2022/1/21
  */
-public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter {
+public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter, DestroyAdapter {
 
     {
         NodeManager.init(this);
@@ -61,7 +61,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         if (this.isClosable()) {
             TabPane tabPane = this.getTabPane();
             if (tabPane != null) {
-                FXUtil.runLater(() -> tabPane.getTabs().remove(this));
+                FXUtil.runWait(() -> tabPane.getTabs().remove(this));
                 // 手动触发关闭事件
                 Event.fireEvent(this, new Event(Tab.CLOSED_EVENT));
             }
@@ -108,10 +108,10 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void initNode() {
-        NodeAdapter.super.initNode();
         this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
+        NodeAdapter.super.initNode();
 //        this.addEventFilter(Tab.CLOSED_EVENT, this::onTabClosed);
 //        this.addEventFilter(Tab.TAB_CLOSE_REQUEST_EVENT, this::onTabCloseRequest);
     }

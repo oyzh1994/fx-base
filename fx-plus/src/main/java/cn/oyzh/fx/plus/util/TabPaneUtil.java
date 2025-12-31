@@ -47,16 +47,16 @@ public class TabPaneUtil {
         if (getWindow(tab) != null) {
             callback.accept(getWindow(tab));
         } else {
-            tab.tabPaneProperty().addListener((observable, oldValue, newValue) -> {
+            tab.tabPaneProperty().subscribe(newValue -> {
                 if (newValue != null) {
                     if (getWindow(tab) != null) {
                         callback.accept(getWindow(tab));
                     } else {
-                        newValue.sceneProperty().addListener((observable1, oldValue1, newValue1) -> {
+                        newValue.sceneProperty().subscribe(newValue1 -> {
                             if (getWindow(tab) != null) {
                                 callback.accept(getWindow(tab));
                             } else {
-                                newValue1.windowProperty().addListener((observable2, oldValue2, newValue2) -> {
+                                newValue1.windowProperty().subscribe(newValue2 -> {
                                     if (newValue2 != null) {
                                         callback.accept(newValue2);
                                     }

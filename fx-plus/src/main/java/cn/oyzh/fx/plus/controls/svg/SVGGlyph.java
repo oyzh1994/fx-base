@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.controls.svg;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
-import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
@@ -368,15 +367,16 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 
     @Override
     public void initNode() {
-        NodeAdapter.super.initNode();
+        this.setCache(false);
         this.setSize(DEFAULT_SIZE);
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
         this.setFocusTraversable(false);
-        this.cursorProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
-        this.disableProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
-        this.disabledProperty().addListener((observable, oldValue, newValue) -> this.updateContent());
+        this.cursorProperty().addListener((observable) -> this.updateContent());
+        this.disableProperty().addListener((observable) -> this.updateContent());
+        this.disabledProperty().addListener((observable) -> this.updateContent());
+        NodeAdapter.super.initNode();
     }
 
     @Override
@@ -500,7 +500,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public BooleanProperty activeProperty() {
         if (this.activeProperty == null) {
             this.activeProperty = new SimpleBooleanProperty(false);
-            this.activeProperty.addListener((observable, oldValue, newValue) -> {
+            this.activeProperty.addListener((observable) -> {
                 // this.setActive(newValue);
                 this.updateContent();
             });

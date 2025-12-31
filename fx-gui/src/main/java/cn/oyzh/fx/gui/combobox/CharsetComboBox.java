@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.i18n.I18nHelper;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * 字符集选择框
@@ -18,12 +17,15 @@ public class CharsetComboBox extends FXComboBox<String> {
 
     {
         this.addItem("");
-        this.addItem(StandardCharsets.UTF_8.displayName().toLowerCase());
-        this.addItem("gbk");
-        this.addItem("gb18030");
-        this.addItem("gb2312");
-        this.addItem(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
-        this.addItem(StandardCharsets.US_ASCII.displayName().toLowerCase());
+        // this.addItem(StandardCharsets.UTF_8.displayName().toLowerCase());
+        // this.addItem("gbk");
+        // this.addItem("gb18030");
+        // this.addItem("gb2312");
+        // this.addItem(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
+        // this.addItem(StandardCharsets.US_ASCII.displayName().toLowerCase());
+        for (Charset charset : Charset.availableCharsets().values()) {
+            this.addItem(charset.displayName().toLowerCase());
+        }
     }
 
     public void setInitDefault(boolean initDefault) {

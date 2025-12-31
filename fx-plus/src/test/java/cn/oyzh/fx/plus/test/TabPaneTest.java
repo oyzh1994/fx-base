@@ -1,7 +1,12 @@
 package cn.oyzh.fx.plus.test;
 
+import cn.oyzh.common.object.ObjectWatcher;
+import cn.oyzh.common.system.SystemUtil;
+import cn.oyzh.common.thread.ThreadUtil;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.tab.FXTab;
+import cn.oyzh.fx.plus.controls.tab.FXTabPane;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -14,7 +19,10 @@ public class TabPaneTest extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+       test2(primaryStage);
+    }
 
+    private void test1(Stage primaryStage) {
         VBox root = new VBox();
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -23,6 +31,7 @@ public class TabPaneTest extends Application {
 
         TabPane tabPane1 = new TabPane();
         Tab tab11 = new Tab("测试11");
+        ObjectWatcher.watch(tab11);
         Tab tab12 = new Tab("测试12");
         Tab tab13 = new Tab("测试13");
         tabPane1.getTabs().add(tab11);
@@ -32,17 +41,27 @@ public class TabPaneTest extends Application {
 
         Tab tab2 = new Tab("测试2");
         TabPane tabPane2 = new TabPane();
-        Tab tab21 = new Tab("测试11");
-        Tab tab22 = new Tab("测试12");
-        Tab tab23 = new Tab("测试13");
+        Tab tab21 = new Tab("测试21");
+        Tab tab22 = new Tab("测试22");
+        Tab tab23 = new Tab("测试23");
         tabPane2.getTabs().add(tab21);
         tabPane2.getTabs().add(tab22);
         tabPane2.getTabs().add(tab23);
         tab2.setContent(tabPane2);
 
+        Tab tab3 = new Tab("测试3");
+        TabPane tabPane3 = new TabPane();
+        Tab tab31 = new Tab("测试31");
+        Tab tab32 = new Tab("测试32");
+        Tab tab33 = new Tab("测试33");
+        tabPane3.getTabs().add(tab31);
+        tabPane3.getTabs().add(tab32);
+        tabPane3.getTabs().add(tab33);
+        tab3.setContent(tabPane3);
+
         tabPane.getTabs().add(tab1);
         tabPane.getTabs().add(tab2);
-        tabPane.getTabs().add(new Tab("测试3"));
+        tabPane.getTabs().add(tab3);
         root.getChildren().add(tabPane);
 
         // 创建场景并显示
@@ -50,25 +69,48 @@ public class TabPaneTest extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        ThreadUtil.start(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    ThreadUtil.sleep(1000);
+                    SystemUtil.gc();
+                    System.runFinalization();
+                    System.out.println("----gc");
+                }
+            }
+        });
     }
 
-    // 定义数据模型
-    public static class Person {
-        private final SimpleStringProperty firstName;
-        private final SimpleStringProperty lastName;
+    private void test2(Stage primaryStage) {
+        FXVBox root = new FXVBox();
+        FXTabPane tabPane = new FXTabPane();
 
-        public Person(String firstName, String lastName) {
-            this.firstName = new SimpleStringProperty(firstName);
-            this.lastName = new SimpleStringProperty(lastName);
-        }
+        FXTab tab11 = new FXTab("测试11");
+        tab11.setClosable(true);
+        ObjectWatcher.watch(tab11);
+        Tab tab12 = new Tab("测试12");
+        tabPane.getTabs().add(tab11);
+        tabPane.getTabs().add(tab12);
 
-        public SimpleStringProperty firstNameProperty() {
-            return firstName;
-        }
+        root.getChildren().add(tabPane);
 
-        public SimpleStringProperty lastNameProperty() {
-            return lastName;
-        }
+        // 创建场景并显示
+        Scene scene = new Scene(root, 400, 300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        ThreadUtil.start(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    ThreadUtil.sleep(3000);
+                    SystemUtil.gc();
+                    System.runFinalization();
+                    System.out.println("----gc");
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {

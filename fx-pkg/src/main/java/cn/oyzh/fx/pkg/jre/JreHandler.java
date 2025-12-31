@@ -3,8 +3,6 @@ package cn.oyzh.fx.pkg.jre;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.system.RuntimeUtil;
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -13,7 +11,6 @@ import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.filter.RegFilter;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,10 +23,12 @@ public class JreHandler implements PreHandler, SingleHandler {
 
     private int order = PackOrder.ORDER_P4;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }

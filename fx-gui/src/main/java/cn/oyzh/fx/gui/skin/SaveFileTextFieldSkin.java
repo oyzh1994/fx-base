@@ -4,6 +4,7 @@ import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
 import cn.oyzh.fx.plus.chooser.FXChooser;
 import cn.oyzh.fx.plus.chooser.FileChooserHelper;
 import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -66,9 +67,19 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public SaveFileTextFieldSkin(TextField textField) {
-        super(textField, new ChooseSVGGlyph());
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.save());
+        super(textField);
+        // super(textField, new ChooseSVGGlyph());
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.save());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new ChooseSVGGlyph();
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override
@@ -78,5 +89,13 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
         boolean hasFocus = this.getSkinnable().isFocused();
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
+    }
+
+    @Override
+    public void dispose() {
+        this.extension = null;
+        this.initFileName = null;
+        this.onFileSelected = null;
+        super.dispose();
     }
 }

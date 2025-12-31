@@ -21,7 +21,7 @@
 <?import java.lang.String?>
 <FXTabPane realHeight="500" realWidth="800" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="cn.oyzh.fx.plus.test.table.TableTestController">
-    <FXTab text="测试1">
+    <FXTab fx:id="tab1" text="测试1" closable="true">
         <FXVBox>
             <FXHBox realHeight="50">
                 <Button text="测试1" onAction="#test1"></Button>
@@ -35,8 +35,6 @@
                 <Button text="主题7" onAction="#theme7"></Button>
             </FXHBox>
             <FXHBox realHeight="50">
-                <ClearableTextField promptText="测试内容"></ClearableTextField>
-                <NumberTextField promptText="测试内容"></NumberTextField>
                 <FXCheckBox text="测试内容checkbox" fontSize="15" maxWidth="119"></FXCheckBox>
                 <SVGGlyph url="/fx-svg/clear.svg" enableTheme="false"></SVGGlyph>
                 <FXText text="测试内容"></FXText>
@@ -64,24 +62,14 @@
                 <!-- </FlexDatePicker> -->
             </FXHBox>
             <FXHBox realHeight="50">
-                <DateTimePicker prefHeight="25" maxHeight="25">
-                </DateTimePicker>
-                <DatePicker prefHeight="25" maxHeight="25">
-                </DatePicker>
-                <TimePicker prefHeight="25" maxHeight="25">
-                </TimePicker>
-                <YearPicker prefHeight="25" maxHeight="25">
-                </YearPicker>
             </FXHBox>
             <FXHBox realHeight="50">
-                <FloatTextField promptText="测试内容"></FloatTextField>
-                <IntTextField promptText="测试内容"></IntTextField>
             </FXHBox>
             <FXHBox realHeight="50">
                 <FXRadioButton text="测试内容checkbox" fontSize="15"></FXRadioButton>
                 <ToggleSwitch text="测试内容"></ToggleSwitch>
                 <FXTextArea text="测试内容"></FXTextArea>
-                <FXichTextArea text="测试内容" promptText="测试内容提示"></FXichTextArea>
+                <FXTextArea text="测试内容" promptText="测试内容提示"></FXTextArea>
             </FXHBox>
             <FXTableView focusTraversable="true" flexWidth="100%" realHeight="200" fx:id="listTable"
                            fixedCellSize="30">
@@ -108,8 +96,6 @@
                                 <SVGGlyph url="/fx-svg/clear.svg"/>
                             </graphic>
                         </IconButton>
-                        <SearchTextField>
-                        </SearchTextField>
                     </HBox>
                 </FXTab>
             </FXTabPane>
@@ -122,12 +108,6 @@
                 <Pagination pageCount="5" prefWidth="300" prefHeight="100">
 
                 </Pagination>
-                <PagePane prefWidth="300" prefHeight="100">
-
-                </PagePane>
-                <PageBox prefWidth="400" realHeight="25" showFirst="true" showLast="true">
-
-                </PageBox>
             </FXHBox>
         </FXVBox>
     </FXTab>

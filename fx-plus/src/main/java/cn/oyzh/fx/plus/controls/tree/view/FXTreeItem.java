@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
-import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
@@ -8,12 +7,9 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.thread.BackgroundService;
-import cn.oyzh.fx.plus.thread.QueueService;
-import javafx.collections.ListChangeListener;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -427,11 +423,11 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     @Override
     public synchronized void destroy() {
-        super.getChildren().forEach(NodeDestroyUtil::destroy);
+        // super.getChildren().forEach(NodeDestroyUtil::destroy);
         this.clearChild();
-        NodeDestroyUtil.destroy(this.getValue());
+        NodeDestroyUtil.destroyObject(this.getValue());
         this.setValue(null);
-        NodeDestroyUtil.destroy(this.getGraphic());
+        NodeDestroyUtil.destroyObject(this.getGraphic());
         this.setGraphic(null);
         this.treeView = null;
     }
@@ -456,5 +452,12 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     public boolean isSelected() {
         return this.getTreeView().isSelected(this);
+    }
+
+    /**
+     * 清除选中
+     */
+    protected void clearSelection() {
+        this.getTreeView().clearSelection();
     }
 }

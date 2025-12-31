@@ -41,18 +41,33 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
 
     @Override
     protected void updateItem(T item, boolean empty) {
+        if (item == getItem()) {
+            return;
+        }
         super.updateItem(item, empty);
-        if (empty || item == null) {
-            this.setText(null);
-            this.setGraphic(null);
+        if (item == null) {
+            super.setText(null);
+            super.setGraphic(null);
         } else {
-            if (item instanceof Node node) {
-                this.setText(null);
-                this.setGraphic(node);
+            if (item instanceof Node) {
+                super.setText(null);
+                super.setGraphic((Node) item);
             } else {
-                this.setText(item.toString());
-                this.setGraphic(null);
+                super.setText(item.toString());
+                super.setGraphic(null);
             }
+            // // 设置字体
+            // Font font = this.getTableViewFont();
+            // Font font2 = this.getFont();
+            // if (!FontUtil.isSameFont(font, font2)) {
+            //     super.setFont(font);
+            //     Set<Label> labels = TableViewUtil.getHeaderLabel(this.getTableView());
+            //     for (Label label : labels) {
+            //         label.getParent().setStyle("-fx-font: inherit;");
+            //         FontUtil.setFont(label, font);
+            //     }
+            // }
+            // 设置行高
             if (this.lineHeight > 0) {
                 this.getTableRow().setMinHeight(this.lineHeight);
                 this.getTableRow().setMaxHeight(this.lineHeight);
@@ -60,4 +75,17 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
             }
         }
     }
+
+    // /**
+    //  * 获取tableview的字体
+    //  *
+    //  * @return 结果
+    //  */
+    // protected Font getTableViewFont() {
+    //     TableView<?> tableView = getTableView();
+    //     if (tableView instanceof FontAdapter adapter) {
+    //         return adapter.getFont();
+    //     }
+    //     return null;
+    // }
 }

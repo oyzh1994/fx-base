@@ -24,10 +24,12 @@ public class JarHandler implements PreHandler {
 
     private int order = PackOrder.ORDER_P7;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }

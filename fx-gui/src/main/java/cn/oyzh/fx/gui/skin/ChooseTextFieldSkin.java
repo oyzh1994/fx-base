@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.ChooseSVGGlyph;
-import cn.oyzh.i18n.I18nHelper;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import javafx.scene.control.TextField;
 
 /**
@@ -12,12 +12,22 @@ import javafx.scene.control.TextField;
  */
 public class ChooseTextFieldSkin extends ActionTextFieldSkin {
 
-    public ChooseTextFieldSkin(TextField textField) {
-        super(textField,new ChooseSVGGlyph());
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.choose());
+    @Override
+    protected SVGGlyph getButton() {
+        if (this.button == null) {
+            this.button = new ChooseSVGGlyph();
+            super.initButton(this.button);
+        }
+        return this.button;
     }
 
+    public ChooseTextFieldSkin(TextField textField) {
+        super(textField);
+        // super(textField, new ChooseSVGGlyph());
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.choose());
+    }
+    //
     @Override
     protected void updateButtonVisibility() {
         boolean visible = this.getSkinnable().isVisible();
@@ -25,5 +35,10 @@ public class ChooseTextFieldSkin extends ActionTextFieldSkin {
         boolean hasFocus = this.getSkinnable().isFocused();
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
+    }
+
+    @Override
+    protected double getButtonSizeMax() {
+        return 12;
     }
 }

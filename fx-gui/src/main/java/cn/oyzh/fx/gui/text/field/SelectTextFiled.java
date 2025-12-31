@@ -35,11 +35,9 @@ public class SelectTextFiled<T> extends LimitTextField {
         return new SelectTextFiledSkin<>(this);
     }
 
-    public void clearItem() {
-        if (this.getItemList() != null) {
-            this.getItemList().clear();
-        }
-    }
+//    public void clearItem() {
+//        this.clearItemList();
+//    }
 
     public void addItem(T item) {
         if (this.getItemList() == null) {
@@ -54,6 +52,10 @@ public class SelectTextFiled<T> extends LimitTextField {
 
     public List<T> getItemList() {
         return this.skin().getItemList();
+    }
+
+    public void clearItemList() {
+        this.skin().clearItemList();
     }
 
     public int getItemSize() {
@@ -115,12 +117,27 @@ public class SelectTextFiled<T> extends LimitTextField {
     public void initNode() {
         super.initNode();
         this.addTextChangeListener((observableValue, s, t1) -> {
-            TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
+            TaskManager.startDelay(() -> this.onTextChanged(t1), 10);
+//            TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
         });
         this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
                 this.skin().selectFirst();
             }
         });
+    }
+
+    /**
+     * 清除选区
+     */
+    public void clearSelection() {
+        this.skin().clearSelection();
+    }
+
+    /**
+     * 选中首个
+     */
+    public void selectFirstItem() {
+        this.skin().selectFirst();
     }
 }

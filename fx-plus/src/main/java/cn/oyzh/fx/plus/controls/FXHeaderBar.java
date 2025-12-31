@@ -128,7 +128,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      */
     public void setTitle(String title) {
         FXLabel label = this.initTitleLabel();
-        label.setText(title);
+        label.text(title);
     }
 
     // /**

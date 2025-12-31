@@ -1,19 +1,20 @@
 package cn.oyzh.fx.gui.skin;
 
-import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.gui.svg.glyph.DownSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UpSVGGlyph;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
+import javafx.beans.property.ObjectProperty;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 
 /**
  * @author oyzh
@@ -31,34 +32,34 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
      */
     protected SVGGlyph decrButton;
 
-    /**
-     * 按钮右边距
-     */
-    private float btnMarginRight = 0.0f;
+    // /**
+    //  * 按钮右边距
+    //  */
+    // private float btnMarginRight = 0.0f;
 
-    public SVGGlyph getIncrButton() {
-        return incrButton;
-    }
+    // public SVGGlyph getIncrButton() {
+    //     return incrButton;
+    // }
+    //
+    // public void setIncrButton(SVGGlyph incrButton) {
+    //     this.incrButton = incrButton;
+    // }
+    //
+    // public SVGGlyph getDecrButton() {
+    //     return decrButton;
+    // }
+    //
+    // public void setDecrButton(SVGGlyph decrButton) {
+    //     this.decrButton = decrButton;
+    // }
 
-    public void setIncrButton(SVGGlyph incrButton) {
-        this.incrButton = incrButton;
-    }
+    // public float getBtnMarginRight() {
+    //     return btnMarginRight;
+    // }
 
-    public SVGGlyph getDecrButton() {
-        return decrButton;
-    }
-
-    public void setDecrButton(SVGGlyph decrButton) {
-        this.decrButton = decrButton;
-    }
-
-    public float getBtnMarginRight() {
-        return btnMarginRight;
-    }
-
-    public void setBtnMarginRight(float btnMarginRight) {
-        this.btnMarginRight = btnMarginRight;
-    }
+    // public void setBtnMarginRight(float btnMarginRight) {
+    //     this.btnMarginRight = btnMarginRight;
+    // }
 
     @Override
     protected void updateButtonVisibility() {
@@ -74,30 +75,30 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
 
     public DigitalTextFieldSkin(TextField textField, Runnable onIncr, Runnable onDecr) {
         super(textField);
-        double h = textField.getHeight() / 2.d - 1;
-        if (h <= 0) {
-            h = 10;
-        }
-        // 初始化增加、减少按钮
-        this.incrButton = new UpSVGGlyph();
-        this.incrButton.setSize(h);
-        this.incrButton.setVisible(false);
-        this.incrButton.managedBindVisible();
-        this.incrButton.setEnableWaiting(false);
-        this.incrButton.setFocusTraversable(false);
-        this.incrButton.setColor(this.getButtonColor());
-        this.incrButton.setTipText(I18nHelper.addValue());
-        this.incrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
-
-        this.decrButton = new DownSVGGlyph();
-        this.decrButton.setSize(h);
-        this.decrButton.setVisible(false);
-        this.decrButton.managedBindVisible();
-        this.decrButton.setEnableWaiting(false);
-        this.decrButton.setFocusTraversable(false);
-        this.decrButton.setColor(this.getButtonColor());
-        this.decrButton.setTipText(I18nHelper.reduceValue());
-        this.decrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
+        // double h = textField.getHeight() / 2.d - 1;
+        // if (h <= 0) {
+        //     h = 10;
+        // }
+        // // 初始化增加、减少按钮
+        // this.incrButton = new UpSVGGlyph();
+        // this.incrButton.setSize(h);
+        // this.incrButton.setVisible(false);
+        // this.incrButton.managedBindVisible();
+        // this.incrButton.setEnableWaiting(false);
+        // this.incrButton.setFocusTraversable(false);
+        // this.incrButton.setColor(this.getButtonColor());
+        // this.incrButton.setTipText(I18nHelper.addValue());
+        // this.incrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
+        //
+        // this.decrButton = new DownSVGGlyph();
+        // this.decrButton.setSize(h);
+        // this.decrButton.setVisible(false);
+        // this.decrButton.managedBindVisible();
+        // this.decrButton.setEnableWaiting(false);
+        // this.decrButton.setFocusTraversable(false);
+        // this.decrButton.setColor(this.getButtonColor());
+        // this.decrButton.setTipText(I18nHelper.reduceValue());
+        // this.decrButton.setBackground(ControlUtil.background(ThemeManager.currentBackgroundColor()));
         // 绑定事件到按钮
         if (onIncr != null) {
             this.incrButton.setOnMousePrimaryClicked(event -> onIncr.run());
@@ -121,35 +122,75 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
                 }
             });
         }
-        // 添加到组件
-        this.getChildren().addAll(this.incrButton, this.decrButton);
+        // // 添加到组件
+        // this.getChildren().addAll(this.incrButton, this.decrButton);
     }
 
     @Override
-    protected void layoutChildren(double x, double y, double w, double h) {
-        super.layoutChildren(x, y, w, h);
-        // 文本域高度
-        double height = NodeUtil.getHeight(this.getSkinnable());
-        // 按钮大小，规则 组件高 * 0.4 - 4
-        double size = Math.floor(height * 0.4) - 4;
-        // 限制按钮大小
-        size = NumberUtil.limit(size, 5, 13);
-        this.incrButton.setSize(size * 1.5, size);
-        this.decrButton.setSize(size * 1.5, size);
-        // 计算按钮实际大小
-        double btnSize = this.snapSizeX(size);
-        // 位移的areaX值，规则 组件宽 + x - 按钮实际大小
-        double areaX = w + x - btnSize - this.btnMarginRight;
-        // 位移的areaY1值
-        double areaY1 = btnSize + height * 0.1;
-        // 位移的areaY2值
-        double areaY2 = areaY1 + size + height * 0.1;
-        // 设置按钮位置
-        // super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
-        // super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
-        super.positionInArea(this.incrButton, areaX, areaY1, 0, 0, 0, HPos.CENTER, VPos.CENTER);
-        super.positionInArea(this.decrButton, areaX, areaY2, 0, 0, 0, HPos.CENTER, VPos.CENTER);
+    public ObjectProperty<Node> rightProperty() {
+        if (super.rightProperty == null) {
+            TextField textField = this.getSkinnable();
+            // double h = NodeUtil.getHeight(textField);
+            // double size = h * 0.325 - 1;
+            // if (size <= 0) {
+            //     size = 10;
+            // }
+            // 初始化增加、减少按钮
+            this.incrButton = new UpSVGGlyph();
+            // this.incrButton.setSize(size);
+            this.incrButton.setVisible(false);
+            this.incrButton.managedBindVisible();
+            this.incrButton.setEnableWaiting(false);
+            this.incrButton.setFocusTraversable(false);
+            this.incrButton.setColor(this.getButtonColor());
+            this.incrButton.setTipText(I18nHelper.addValue());
+
+            this.decrButton = new DownSVGGlyph();
+            // this.decrButton.setSize(size);
+            this.decrButton.setVisible(false);
+            this.decrButton.managedBindVisible();
+            this.decrButton.setEnableWaiting(false);
+            this.decrButton.setFocusTraversable(false);
+            this.decrButton.setColor(this.getButtonColor());
+            this.decrButton.setTipText(I18nHelper.reduceValue());
+            // 组件
+            FXVBox vBox = new FXVBox(this.incrButton, this.decrButton);
+            // // 计算边距
+            // double top = (h - size * 2 - 1) / 2;
+            // VBox.setMargin(this.incrButton, new Insets(top, 0, 1, 0));
+            // 绑定属性
+            vBox.prefHeightProperty().bind(textField.prefHeightProperty());
+            // 绑定组件到按钮
+            super.rightProperty().set(vBox);
+        }
+        return super.rightProperty();
     }
+
+    // @Override
+    // protected void layoutChildren(double x, double y, double w, double h) {
+    //     super.layoutChildren(x, y, w, h);
+    //     // 文本域高度
+    //     double height = NodeUtil.getHeight(this.getSkinnable());
+    //     // 按钮大小，规则 组件高 * 0.4 - 4
+    //     double size = Math.floor(height * 0.4) - 4;
+    //     // 限制按钮大小
+    //     size = NumberUtil.limit(size, 5, 13);
+    //     this.incrButton.setSize(size * 1.5, size);
+    //     this.decrButton.setSize(size * 1.5, size);
+    //     // 计算按钮实际大小
+    //     double btnSize = this.snapSizeX(size);
+    //     // 位移的areaX值，规则 组件宽 + x - 按钮实际大小
+    //     double areaX = w + x - btnSize - this.btnMarginRight;
+    //     // 位移的areaY1值
+    //     double areaY1 = btnSize + height * 0.1;
+    //     // 位移的areaY2值
+    //     double areaY2 = areaY1 + size + height * 0.1;
+    //     // 设置按钮位置
+    //     // super.positionInArea(this.incrButton, areaX, areaY1, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
+    //     // super.positionInArea(this.decrButton, areaX, areaY2, btnSize, btnSize, 0, HPos.CENTER, VPos.CENTER);
+    //     super.positionInArea(this.incrButton, areaX, areaY1, 0, 0, 0, HPos.CENTER, VPos.CENTER);
+    //     super.positionInArea(this.decrButton, areaX, areaY2, 0, 0, 0, HPos.CENTER, VPos.CENTER);
+    // }
 
     /**
      * 禁用减少值按钮
@@ -177,5 +218,32 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
      */
     public void enableIncrButton() {
         this.incrButton.setDisable(false);
+    }
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroyObject(this.incrButton);
+        this.incrButton = null;
+        NodeDestroyUtil.destroyObject(this.decrButton);
+        this.decrButton = null;
+        super.dispose();
+    }
+
+    @Override
+    protected void onSizeChanged() {
+        super.onSizeChanged();
+        TextField textField = this.getSkinnable();
+        double h = NodeUtil.getHeight(textField);
+        double size = h * 0.325 - 1;
+        if (size <= 0) {
+            size = 10;
+        }
+        // 设置大小
+        this.incrButton.setSize(size * 1.5, size);
+        this.decrButton.setSize(size * 1.5, size);
+        // 计算边距
+        double top = (h - size * 2 - 1) / 2;
+        // 设置边距
+        VBox.setMargin(this.incrButton, new Insets(top, 0, 1, 0));
     }
 }

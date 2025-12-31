@@ -491,4 +491,13 @@ public class PackConfig implements ConfigMargeAble<PackConfig> {
             this.jPackageConfig.marge(config.jPackageConfig);
         }
     }
+
+    /**
+     * 获取打包类型
+     *
+     * @return 结果
+     */
+    public String packageType() {
+        return this.getjPackageConfig() == null ? null : this.getjPackageConfig().getType();
+    }
 }

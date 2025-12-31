@@ -8,6 +8,8 @@ import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.window.PopupExt;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -163,9 +165,19 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
     }
 
     public TimeTextFieldSkin(TextField textField) {
-        super(textField, new DateSVGGlyph("13"));
-        this.button.disappear();
-        this.button.setTipText(I18nHelper.choose());
+        super(textField);
+        // super(textField, new DateSVGGlyph("13"));
+        // this.button.disappear();
+        // this.button.setTipText(I18nHelper.choose());
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new DateSVGGlyph("13");
+            super.initButton(super.button);
+        }
+        return super.button;
     }
 
     @Override
@@ -175,5 +187,13 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
         boolean hasFocus = this.getSkinnable().isFocused();
         boolean shouldBeVisible = !disable && visible && hasFocus;
         this.button.setVisible(shouldBeVisible);
+    }
+
+    @Override
+    public void dispose() {
+        NodeDestroyUtil.destroyObject(this.popup);
+        this.popup = null;
+        this.formatter = null;
+        super.dispose();
     }
 }

@@ -72,7 +72,7 @@ public class SVGLabel extends FXLabel {
     }
 
     /**
-     * 获取尺寸的大小。
+     * 获取尺寸的大小
      *
      * @return 尺寸的大小，如果图形对象为空则返回null。
      */
@@ -82,6 +82,30 @@ public class SVGLabel extends FXLabel {
         }
         return 0.d;
     }
+
+    /**
+     * 设置尺寸
+     *
+     * @param size 尺寸
+     */
+    public void setSizeStr(String size) {
+        if (this.graphic() != null) {
+            this.graphic().setSizeStr(size);
+        }
+    }
+
+    /**
+     * 获取尺寸的大小
+     *
+     * @return 尺寸的大小，如果图形对象为空则返回null。
+     */
+    public String getSizeStr() {
+        if (this.graphic() != null) {
+            return this.graphic().getSizeStr();
+        }
+        return null;
+    }
+
 
     /**
      * 获取颜色
@@ -104,9 +128,5 @@ public class SVGLabel extends FXLabel {
         if (this.graphic() != null) {
             this.graphic().setColor(color);
         }
-    }
-
-    protected void setSizeStr(String size) {
-        this.graphic().setSizeStr(size);
     }
 }
