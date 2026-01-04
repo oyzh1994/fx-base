@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseFileTextField extends LimitTextField {
+public class ChooseFileTextField extends ClearableTextField {
 
     // {
     //     this.setEditable(false);
