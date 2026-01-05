@@ -640,11 +640,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
             String text = this.getText();
-            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
-                content = System.lineSeparator() + content;
+//            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
+//                content = System.lineSeparator() + content;
+            if (!StringUtil.endsWith(text, this.getLineEnding().getText()) && !StringUtil.startWith(content, this.getLineEnding().getText())) {
+                content = this.getLineEnding().getText() + content;
             }
-            if (endLine && !content.endsWith(System.lineSeparator())) {
-                content += System.lineSeparator();
+//            if (endLine && !content.endsWith(System.lineSeparator())) {
+//                content += System.lineSeparator();
+            if (endLine && !content.endsWith(this.getLineEnding().getText())) {
+                content += this.getLineEnding().getText();
             }
             this.appendContent(content);
         }
@@ -1315,7 +1319,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             } else if (i == max.index()) {
                 text = text.substring(0, max.offset());
             }
-            builder.append(System.lineSeparator()).append(text);
+//            builder.append(System.lineSeparator()).append(text);
+            builder.append(this.getLineEnding().getText()).append(text);
         }
         if (builder.isEmpty()) {
             return "";
