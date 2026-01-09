@@ -17,6 +17,7 @@ import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.FXUtil;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
@@ -32,7 +33,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.RichTextArea;
+import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import jfx.incubator.scene.control.richtext.model.StyledTextModel;
@@ -56,9 +59,10 @@ public class EditorTest extends Application {
     public void start(Stage stage) throws Exception {
         ThemeManager.apply(Themes.PRIMER_LIGHT);
         // ThemeManager.apply(Themes.PRIMER_DARK);
-        test1(stage);
+//        test1(stage);
         // test2(stage);
         // test3(stage);
+        test4(stage);
         stage.setTitle("编辑器测试");
     }
 
@@ -371,6 +375,30 @@ public class EditorTest extends Application {
 
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void test4(Stage stage) {
+        CodeArea editor = new CodeArea();
+        FXVBox vBox = new FXVBox();
+        vBox.addChild(editor);
+        Scene scene = new Scene(vBox);
+
+        stage.setWidth(800);
+        stage.setHeight(600);
+
+        stage.setScene(scene);
+        stage.show();
+
+        editor.setText("""
+                Hello, Javafx1
+                Hello, Javafx2
+                """);
+
+        editor.selectAll();
+        SelectionSegment sel = editor.getSelection();
+        StringBuilder sb = new StringBuilder();
+        RichTextAreaHelper.getText(editor, sel.getMin(), sel.getMax(), sb, Integer.MAX_VALUE);
+
     }
 
     public static class EditorTestStarter {
