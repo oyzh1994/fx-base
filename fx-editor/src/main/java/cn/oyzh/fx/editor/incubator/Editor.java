@@ -1301,7 +1301,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public String getSelectedText() {
         SelectionSegment segment = this.getSelection();
-        if (segment == null || segment.isCollapsed() || segment.getMin().equals(segment.getMax())) {
+        if (segment == null || segment.isCollapsed()) {
             return "";
         }
         TextPos min = segment.getMin();
