@@ -102,35 +102,4 @@ public class EditorUtil {
             }
         });
     }
-
-    /**
-     * 安装输入法辅助
-     *
-     * @param editor 编辑器
-     */
-    public static void setupIMEHelper(Editor editor) {
-        // 输入法请求
-        editor.setInputMethodRequests(new InputMethodRequests() {
-            @Override
-            public Point2D getTextLocation(int offset) {
-                Optional<Bounds> bounds = editor.getCaretBounds();
-                // 返回光标位置，以便输入法窗口可以正确显示
-                return bounds.map(value -> new Point2D(value.getMinX(), value.getMinY())).orElseGet(() -> new Point2D(0, 0));
-            }
-
-            @Override
-            public int getLocationOffset(int x, int y) {
-                return 0;
-            }
-
-            @Override
-            public void cancelLatestCommittedText() {
-            }
-
-            @Override
-            public String getSelectedText() {
-                return editor.getSelectedText();
-            }
-        });
-    }
 }

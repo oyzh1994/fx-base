@@ -141,8 +141,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     private void initEditor() {
 //        // 处理输入法不支持中文的问题
 //        EditorUtil.setupIMESupport(this);
-        // 处理输入法定位问题
-        EditorUtil.setupIMEHelper(this);
         // 默认自动换行
         this.setWrapText(true);
         // 默认为内容宽高，避免布局问题
