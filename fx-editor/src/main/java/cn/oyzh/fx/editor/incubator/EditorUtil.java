@@ -24,9 +24,11 @@ public class EditorUtil {
 
     /**
      * 安装输入法支持
+     * TODO: 由于官方已经支持了输入法，此方法废弃
      *
      * @param editor 编辑器
      */
+    @Deprecated
     public static void setupIMESupport(Editor editor) {
         // 上一次未提交位置记录
         AtomicReference<Integer> lastComposedEnd = new AtomicReference<>();
@@ -76,6 +78,37 @@ public class EditorUtil {
             }
             event.consume();
         });
+        // 输入法请求
+        editor.setInputMethodRequests(new InputMethodRequests() {
+            @Override
+            public Point2D getTextLocation(int offset) {
+                Optional<Bounds> bounds = editor.getCaretBounds();
+                // 返回光标位置，以便输入法窗口可以正确显示
+                return bounds.map(value -> new Point2D(value.getMinX(), value.getMinY())).orElseGet(() -> new Point2D(0, 0));
+            }
+
+            @Override
+            public int getLocationOffset(int x, int y) {
+                return 0;
+            }
+
+            @Override
+            public void cancelLatestCommittedText() {
+            }
+
+            @Override
+            public String getSelectedText() {
+                return editor.getSelectedText();
+            }
+        });
+    }
+
+    /**
+     * 安装输入法辅助
+     *
+     * @param editor 编辑器
+     */
+    public static void setupIMEHelper(Editor editor) {
         // 输入法请求
         editor.setInputMethodRequests(new InputMethodRequests() {
             @Override
