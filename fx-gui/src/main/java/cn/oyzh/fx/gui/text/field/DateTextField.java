@@ -38,9 +38,12 @@ public class DateTextField extends LimitTextField {
     }
 
     public static String format(Object value) {
+        if (value == null) {
+            return null;
+        }
         if (value instanceof java.util.Date date) {
             return FORMAT.format(date);
         }
-        return null;
+        return value.toString();
     }
 }

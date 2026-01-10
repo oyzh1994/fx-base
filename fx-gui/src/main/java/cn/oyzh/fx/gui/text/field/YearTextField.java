@@ -32,6 +32,9 @@ public class YearTextField extends NumberTextField {
     }
 
     public static String format(Object value) {
+        if (value == null) {
+            return null;
+        }
         if (value instanceof CharSequence sequence) {
             String str = sequence.toString();
             if (str.contains("-")) {
@@ -39,9 +42,10 @@ public class YearTextField extends NumberTextField {
             } else {
                 return NumberUtil.parseNumber(str).intValue() + "";
             }
-        } else if (value instanceof Date date) {
+        }
+        if (value instanceof Date date) {
             return 1900 + date.getYear() + "";
         }
-        return null;
+        return value.toString();
     }
 }

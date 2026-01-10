@@ -1,11 +1,13 @@
 package cn.oyzh.fx.gui.text.field;
 
+import cn.oyzh.common.date.LocalDateTimeUtil;
 import cn.oyzh.fx.gui.skin.DateTimeTextFieldSkin;
 import javafx.scene.control.Skin;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -65,9 +67,21 @@ public class DateTimeTextField extends LimitTextField {
     }
 
     public static String format(Object value) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof LocalDateTime localDateTime) {
+            if (value.toString().contains("T")) {
+                return LocalDateTimeUtil.format(localDateTime, FORMAT_T.toPattern());
+            }
+            return LocalDateTimeUtil.format(localDateTime, FORMAT.toPattern());
+        }
         if (value instanceof java.util.Date date) {
+            if (value.toString().contains("T")) {
+                return FORMAT_T.format(value);
+            }
             return FORMAT.format(date);
         }
-        return null;
+        return value.toString();
     }
 }
