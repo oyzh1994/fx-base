@@ -63,8 +63,11 @@ public class DateTimeTextField extends LimitTextField {
 
     @Override
     public void setValue(Object val) {
-        if (val instanceof java.util.Date date) {
-            this.setText(FORMAT.format(date));
+        SimpleDateFormat format = getFormat(val);
+        if (val instanceof LocalDateTime localDateTime) {
+            this.setText(LocalDateTimeUtil.format(localDateTime, format.toPattern()));
+        } else if (val instanceof java.util.Date date) {
+            this.setText(format.format(date));
         } else {
             super.setValue(val);
         }
@@ -75,7 +78,7 @@ public class DateTimeTextField extends LimitTextField {
         return new DateTimeTextFieldSkin(this);
     }
 
-    public static String format(Object value) {
+    private static SimpleDateFormat getFormat(Object value) {
         if (value == null) {
             return null;
         }
@@ -86,6 +89,14 @@ public class DateTimeTextField extends LimitTextField {
         } else {
             format = count == 3 ? FORMAT : count == 2 ? FORMAT_1 : FORMAT_2;
         }
+        return format;
+    }
+
+    public static String format(Object value) {
+        if (value == null) {
+            return null;
+        }
+        SimpleDateFormat format = getFormat(value);
         if (value instanceof LocalDateTime localDateTime) {
             return LocalDateTimeUtil.format(localDateTime, format.toPattern());
         }
