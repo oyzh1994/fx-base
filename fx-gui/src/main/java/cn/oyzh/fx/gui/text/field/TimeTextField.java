@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
  */
 public class TimeTextField extends LimitTextField {
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
+    public static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     public Timestamp getValue() throws ParseException {
         if (!this.isEmpty()) {

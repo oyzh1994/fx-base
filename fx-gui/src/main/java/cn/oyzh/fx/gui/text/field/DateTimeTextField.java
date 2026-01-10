@@ -18,7 +18,7 @@ public class DateTimeTextField extends LimitTextField {
 
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public Timestamp getValue() throws ParseException {
         if (!this.isEmpty()) {
