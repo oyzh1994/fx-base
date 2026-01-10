@@ -85,9 +85,9 @@ public class DateTimeTextField extends LimitTextField {
         long count = StringUtil.count(value.toString(), ':');
         SimpleDateFormat format;
         if (value.toString().contains("T")) {
-            format = count == 3 ? FORMAT_T : count == 2 ? FORMAT_T_1 : FORMAT_T_2;
+            format = count == 2 ? FORMAT_T : count == 1 ? FORMAT_T_1 : FORMAT_T_2;
         } else {
-            format = count == 3 ? FORMAT : count == 2 ? FORMAT_1 : FORMAT_2;
+            format = count == 2 ? FORMAT : count == 1 ? FORMAT_1 : FORMAT_2;
         }
         return format;
     }
