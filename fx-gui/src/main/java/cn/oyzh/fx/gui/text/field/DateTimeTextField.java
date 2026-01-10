@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.date.LocalDateTimeUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.skin.DateTimeTextFieldSkin;
 import javafx.scene.control.Skin;
 
@@ -18,7 +19,15 @@ public class DateTimeTextField extends LimitTextField {
 
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    public static final SimpleDateFormat FORMAT_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    public static final SimpleDateFormat FORMAT_2 = new SimpleDateFormat("yyyy-MM-dd HH");
+
     public static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    public static final SimpleDateFormat FORMAT_T_1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+    public static final SimpleDateFormat FORMAT_T_2 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
 
     public Timestamp getValue() throws ParseException {
         if (!this.isEmpty()) {
@@ -70,17 +79,18 @@ public class DateTimeTextField extends LimitTextField {
         if (value == null) {
             return null;
         }
+        long count = StringUtil.count(value.toString(), ':');
+        SimpleDateFormat format;
+        if (value.toString().contains("T")) {
+            format = count == 3 ? FORMAT_T : count == 2 ? FORMAT_T_1 : FORMAT_T_2;
+        } else {
+            format = count == 3 ? FORMAT : count == 2 ? FORMAT_1 : FORMAT_2;
+        }
         if (value instanceof LocalDateTime localDateTime) {
-            if (value.toString().contains("T")) {
-                return LocalDateTimeUtil.format(localDateTime, FORMAT_T.toPattern());
-            }
-            return LocalDateTimeUtil.format(localDateTime, FORMAT.toPattern());
+            return LocalDateTimeUtil.format(localDateTime, format.toPattern());
         }
         if (value instanceof java.util.Date date) {
-            if (value.toString().contains("T")) {
-                return FORMAT_T.format(value);
-            }
-            return FORMAT.format(date);
+            return format.format(date);
         }
         return value.toString();
     }
