@@ -30,6 +30,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.function.UnaryOperator;
 
 /**
@@ -47,7 +48,8 @@ public class AppTestMain extends Application {
         // test1(stage);
         // test2(stage);
         // test3(stage);
-        test4(stage);
+        //test4(stage);
+        test5(stage);
     }
 
     private void test1(Stage stage) {
@@ -191,10 +193,41 @@ public class AppTestMain extends Application {
         toolBar.getItems().addAll(new OpenSVGGlyph());
         vbox.getChildren().addAll(toolBar);
 
+
+        LabeledComboBox comboBox = new LabeledComboBox("test");
+        comboBox.setItems(List.of("a", "b", "c"));
+        comboBox.setKey("test1");
+        vbox.getChildren().add(comboBox);
+
+        LabeledComboBox1 comboBox1 = new LabeledComboBox1("test");
+        vbox.getChildren().add(comboBox1);
+
         Scene scene = new Scene(vbox, 400, 300);
         stage.setTitle("titledPane测试");
         stage.setScene(scene);
         stage.show();
+
+        comboBox.update_view();
+
+    }
+
+    private void test5(Stage stage) {
+        // 创建一个轻量级HBox
+        VBox vbox = new VBox();
+
+        //LabeledComboBox comboBox = new LabeledComboBox("test");
+        //comboBox.setItems(List.of("a", "b", "c"));
+        //comboBox.setKey("test1");
+        //vbox.getChildren().add(comboBox);
+
+        LabeledComboBox1 comboBox1 = new LabeledComboBox1("test");
+        vbox.getChildren().add(comboBox1);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("titledPane测试");
+        stage.setScene(scene);
+        stage.show();
+
     }
 
     public static class AppTestMainApp {
