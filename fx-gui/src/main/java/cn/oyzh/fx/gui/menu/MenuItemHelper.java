@@ -296,7 +296,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem saveImage(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveImage(), new ExportSVGGlyph(iconSize), action);
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveImage(), new ImportSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem saveContainer(String iconSize, Runnable action) {
