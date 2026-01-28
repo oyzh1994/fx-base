@@ -29,7 +29,7 @@ public class FXFileChooser {
     /**
      * 初始文件夹
      */
-    private File initDir = FXChooser.HOME_DIR;
+    private File initDir = new File(FXChooser.getDesktopDirectory());
 
     /**
      * 初始文件名称
@@ -49,7 +49,7 @@ public class FXFileChooser {
         this.filters = filters;
     }
 
-    public FXFileChooser addFilter( FileExtensionFilter filter) {
+    public FXFileChooser addFilter(FileExtensionFilter filter) {
         if (this.filters == null) {
             this.filters = new ArrayList<>();
         }
