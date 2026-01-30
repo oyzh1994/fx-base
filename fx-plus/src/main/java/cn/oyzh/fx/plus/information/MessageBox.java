@@ -10,7 +10,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
-import cn.oyzh.fx.plus.window.TextInputStage;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -316,7 +315,7 @@ public class MessageBox {
         if (FXUtil.isEnablePreview()) {
             TextInputStage stage = new TextInputStage(initText);
             stage.title(title);
-            return stage.getText();
+            return stage.getResult();
         }
         String finalTitle = title;
         String finalInitText = initText;

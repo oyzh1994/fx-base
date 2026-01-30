@@ -111,6 +111,14 @@ public class AppTestMain extends Application {
 //        System.out.println("result1:" + result1);
     }
 
+    private void test5(Stage stage) {
+        String result = MessageBox.prompt("测试", "内容");
+        System.out.println("result:" + result);
+//        FXUtil.disablePreview();
+//        String result1 = MessageBox.prompt("测试", "内容1");
+//        System.out.println("result1:" + result1);
+    }
+
     public static class AppTestMainApp {
 
         public static void main(String[] args) {

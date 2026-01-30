@@ -1,10 +1,13 @@
-package cn.oyzh.fx.plus.window;
+package cn.oyzh.fx.plus.information;
 
+import cn.oyzh.fx.gui.text.field.ClearableTextField;
 import cn.oyzh.fx.plus.controls.FXHeaderBar;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
+import cn.oyzh.fx.plus.window.FXStageStyle;
+import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -38,7 +41,7 @@ public class TextInputStage extends Stage implements StageAdapter {
         FXVBox root = new FXVBox();
         root.addChild(new FXHeaderBar());
 
-        this.textField = new FXTextField();
+        this.textField = new ClearableTextField();
         this.setPromptText(I18nHelper.pleaseInputContent());
         this.textField.setText(initText);
         this.textField.setFlexWidth("100% - 10");
@@ -89,7 +92,7 @@ public class TextInputStage extends Stage implements StageAdapter {
         return this;
     }
 
-    public String getText() {
+    public String getResult() {
         this.showAndWait();
         String text = this.textField.getText();
         this.textField = null;
@@ -97,9 +100,21 @@ public class TextInputStage extends Stage implements StageAdapter {
         return text;
     }
 
+    public void setText(String text) {
+        if (this.textField != null) {
+            this.textField.setText(text);
+        }
+    }
+
+    public String getText() {
+        if (this.textField != null) {
+        return this.textField.getText();
+        }
+        return null;
+    }
+
     public void setPromptText(String promptText) {
         if (this.textField != null) {
-
             this.textField.setPromptText(promptText);
         }
     }

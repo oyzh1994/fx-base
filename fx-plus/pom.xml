@@ -85,6 +85,18 @@
             <artifactId>base-i18n</artifactId>
         </dependency>
 
+        <!-- fx类库，gui -->
+        <dependency>
+            <groupId>io.github.oyzh1994</groupId>
+            <artifactId>fx-gui</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.oyzh1994</groupId>
+                    <artifactId>fx-plus</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- &lt;!&ndash; https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx &ndash;&gt; -->
         <!-- <dependency> -->
         <!--     <groupId>org.fxmisc.richtext</groupId> -->
