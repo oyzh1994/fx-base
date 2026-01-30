@@ -111,9 +111,9 @@ public class AlertStage extends Stage implements StageAdapter {
         btnBox.addChild(this.buttons);
         btnBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         if (this.graphic == null) {
-            btnBox.setPrefWidth(300);
+            btnBox.setPrefWidth(325);
         } else {
-            btnBox.setPrefWidth(220);
+            btnBox.setPrefWidth(235);
         }
         for (Button button : buttons) {
             FXHBox.setMargin(button, new Insets(30, 10, 0, 0));

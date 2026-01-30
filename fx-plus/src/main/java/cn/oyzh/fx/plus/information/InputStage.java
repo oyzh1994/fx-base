@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.window.FXStageStyle;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,9 +27,9 @@ import javafx.stage.Stage;
  */
 public class InputStage extends Stage implements StageAdapter {
 
-    private static final Insets DEFAULT_MARGIN = new Insets(10, 0, 0, 5);
+    private static final Insets DEFAULT_MARGIN = new Insets(15, 0, 0, 5);
 
-    private static final Insets OK_DEFAULT_MARGIN = new Insets(0, 0, 0, 10);
+    private static final Insets OK_DEFAULT_MARGIN = new Insets(0, 10, 0, 10);
 
     private FXTextField textField;
 
@@ -52,10 +53,7 @@ public class InputStage extends Stage implements StageAdapter {
         VBox.setMargin(this.textField, DEFAULT_MARGIN);
 
         FXHBox hbox = new FXHBox();
-
-        FXButton cancel = new FXButton(I18nHelper.cancel());
-        cancel.setOnAction(actionEvent -> this.cancel());
-        hbox.addChild(cancel);
+        hbox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 
         FXButton ok = new FXButton(I18nHelper.ok());
         ok.setOnAction(actionEvent -> this.ok());
@@ -63,11 +61,15 @@ public class InputStage extends Stage implements StageAdapter {
         hbox.addChild(ok);
         HBox.setMargin(ok, OK_DEFAULT_MARGIN);
 
+        FXButton cancel = new FXButton(I18nHelper.cancel());
+        cancel.setOnAction(actionEvent -> this.cancel());
+        hbox.addChild(cancel);
+
         root.addChild(hbox);
         VBox.setMargin(hbox, DEFAULT_MARGIN);
 
         this.setScene(new Scene(root));
-        this.setSize(300, 130);
+        this.setSize(350, 150);
         this.setResizable(false);
         this.centerOnScreen();
 

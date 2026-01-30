@@ -32,7 +32,7 @@ public class AppTestMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // 应用主题
-        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.DRACULA);
         // test1(stage);
         // test2(stage);
 //        test3(stage);
