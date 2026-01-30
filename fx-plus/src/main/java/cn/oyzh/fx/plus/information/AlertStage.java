@@ -9,6 +9,8 @@ import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.util.ScreenUtil;
 import cn.oyzh.fx.plus.window.FXStageStyle;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.i18n.I18nHelper;
@@ -130,8 +132,17 @@ public class AlertStage extends Stage implements StageAdapter {
 
         node.addChild(vbox);
 
+        double fHeight = FontUtil.calcFontHeight(this.content.getFont());
+        long lines = content.lines().count() - 2;
+        double fixedHeight = lines * fHeight;
+        double primaryHeight = ScreenUtil.getPrimaryHeight();
+        if (fixedHeight < 0) {
+            fixedHeight = 0;
+        } else if (fixedHeight > primaryHeight - 150) {
+            fixedHeight = primaryHeight - 150;
+        }
         this.setScene(new Scene(root));
-        this.setSize(350, 150);
+        this.setSize(350, 150 + fixedHeight);
         this.setResizable(false);
         this.centerOnScreen();
     }

@@ -185,7 +185,7 @@ public class MessageBox {
         } else {
             err = ex.getMessage();
         }
-        title = title == null ? I18nHelper.tips() : title;
+        title = title == null ? I18nHelper.exception() : title;
         alert(Alert.AlertType.WARNING, title, null, err);
     }
 
