@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls;
 
 import cn.oyzh.fx.plus.controls.label.FXLabel;
-import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.ScreenUtil;
@@ -48,11 +47,12 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @return 标题组件
      */
     private FXLabel getTitleLabel() {
-        FXPane pane = (FXPane) this.getCenter();
-        if (pane == null || pane.isChildEmpty()) {
-            return null;
-        }
-        return (FXLabel) pane.getFirstChild();
+        return (FXLabel) this.getCenter();
+//        FXPane pane = (FXPane) this.getCenter();
+//        if (pane == null || pane.isChildEmpty()) {
+//            return null;
+//        }
+//        return (FXLabel) pane.getFirstChild();
     }
 
     /**
@@ -73,7 +73,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
         label.setFontWeight(FontWeight.BOLD);
 //        }
 //        pane.setChild(label);
-        this.setRight(label);
+        this.setCenter(label);
     }
 
     /**
