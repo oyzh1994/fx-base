@@ -12,9 +12,14 @@ import cn.oyzh.fx.plus.converter.DigitalConverter;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Pagination;
@@ -49,7 +54,8 @@ public class AppTestMain extends Application {
         // test2(stage);
         // test3(stage);
         //test4(stage);
-        test5(stage);
+//        test5(stage);
+        test6(stage);
     }
 
     private void test1(Stage stage) {
@@ -227,6 +233,56 @@ public class AppTestMain extends Application {
         stage.setTitle("titledPane测试");
         stage.setScene(scene);
         stage.show();
+
+    }
+
+    private void test6(Stage stage) {
+        // 创建一个轻量级HBox
+        VBox vbox = new VBox();
+
+
+        // 原始数据
+        ObservableList<String> originalData = FXCollections.observableArrayList(
+                "Apple", "Banana", "Orange", "Grape", "Mango", "Peach", "Pear"
+        );
+
+        // 创建一个FilteredList，初始时显示所有数据
+        FilteredList<String> filteredData = new FilteredList<>(originalData, p -> true);
+        ComboBox<String> comboBox1 = new ComboBox<>();
+        comboBox1.setItems(filteredData);
+        comboBox1.setEditable(true);
+        comboBox1.show();
+        vbox.getChildren().add(comboBox1);
+
+
+        ChoiceBox<String> choiceBox1 = new ChoiceBox<>();
+        choiceBox1.setItems(FXCollections.observableArrayList(List.of("test3", "test4")));
+        vbox.getChildren().add(choiceBox1);
+
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("titledPane测试");
+        stage.setScene(scene);
+        stage.show();
+        comboBox1.getEditor().textProperty().addListener((observableValue, s, newValue) -> {
+            System.out.println(newValue);
+            // 设置过滤条件：包含新输入的文本（不区分大小写）
+            filteredData.setPredicate(item -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true; // 如果输入为空，显示所有
+                }
+                // 检查项目是否包含输入的字符串（忽略大小写）
+                return item.toLowerCase().contains(newValue.toLowerCase());
+            });
+            comboBox1.show();
+        });
+
+
+        // 当选择项发生变化时，确保编辑器中的文本是选中的项（可选）
+        comboBox1.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+                comboBox1.getEditor().setText(newValue);
+            }
+        });
 
     }
 

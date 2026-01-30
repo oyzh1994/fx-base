@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.ScreenUtil;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.text.FontWeight;
@@ -29,7 +30,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @return 内容组件
      */
     public Node getContent() {
-        return this.getLeading();
+        return this.getLeft();
     }
 
     /**
@@ -38,7 +39,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @param content 内容组件
      */
     public void setContent(Node content) {
-        this.setLeading(content);
+        this.setLeft(content);
     }
 
     /**
@@ -47,7 +48,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @return 标题组件
      */
     private FXLabel getTitleLabel() {
-        FXPane pane = (FXPane) this.getTrailing();
+        FXPane pane = (FXPane) this.getCenter();
         if (pane == null || pane.isChildEmpty()) {
             return null;
         }
@@ -60,15 +61,19 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
      * @param label 标题组件
      */
     private void setTitleLabel(FXLabel label) {
-        label.setLayoutX(20);
-        label.setLayoutY(7);
-        FXPane pane = (FXPane) this.getTrailing();
-        if (pane == null) {
-            pane = new FXPane();
-            pane.setMouseTransparent(true);
-        }
-        pane.setChild(label);
-        this.setTrailing(pane);
+//        label.setLayoutX(20);
+//        label.setLayoutY(7);
+//        FXLabel pane = (FXLabel) this.getCenter();
+//        if (pane == null) {
+//            pane = new FXLabel();
+        label.setPadding(new Insets(0, 0, 0, 20));
+        label.setMouseTransparent(true);
+        double w = ScreenUtil.getAllWidth();
+        label.setPrefWidth(w);
+        label.setFontWeight(FontWeight.BOLD);
+//        }
+//        pane.setChild(label);
+        this.setRight(label);
     }
 
     /**
@@ -80,11 +85,11 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
         FXLabel label = this.getTitleLabel();
         if (label == null) {
             label = new FXLabel();
-            // label.setPadding(new Insets(0, 0, 0, 5));
-            double w = ScreenUtil.getAllWidth();
-            label.setPrefWidth(w);
-            label.setMouseTransparent(true);
-            label.setFontWeight(FontWeight.BOLD);
+//             label.setPadding(new Insets(7, 0, 0, 20));
+//            double w = ScreenUtil.getAllWidth();
+//            label.setPrefWidth(w);
+//            label.setMouseTransparent(true);
+//            label.setFontWeight(FontWeight.BOLD);
             this.setTitleLabel(label);
         }
         return label;

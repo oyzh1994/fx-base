@@ -399,6 +399,7 @@ public class EditorTest extends Application {
         StringBuilder sb = new StringBuilder();
         RichTextAreaHelper.getText(editor, sel.getMin(), sel.getMax(), sb, Integer.MAX_VALUE);
 
+        System.out.println(sb);
     }
 
     public static class EditorTestStarter {

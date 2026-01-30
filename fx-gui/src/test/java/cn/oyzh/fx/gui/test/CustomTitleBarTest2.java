@@ -67,7 +67,7 @@ public class CustomTitleBarTest2 extends Application {
         // hBox.addChild(button7);
         // hBox.addChild(button8);
         // hBox.addChild(button9);
-        headerBar.setLeading(hBox);
+        headerBar.setLeft(hBox);
         // HeaderBar.setDragType(headerBar, HeaderDragType.DRAGGABLE);
         // headerBar.setTitle("测试标题");
         headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
@@ -146,7 +146,7 @@ public class CustomTitleBarTest2 extends Application {
     private void test2(Stage stage) {
         HeaderBar headerBar = new HeaderBar();
         Button button1 = new Button("test1");
-        headerBar.setLeading(button1);
+        headerBar.setLeft(button1);
         headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
 
         System.out.println(headerBar.getStyle());
