@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
+import cn.oyzh.fx.plus.window.TextInputStage;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -28,7 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Window;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -312,6 +313,11 @@ public class MessageBox {
     public static String prompt(String title, String initText) {
         title = title == null ? I18nHelper.tips() : title;
         initText = initText == null ? "" : initText;
+        if (FXUtil.isEnablePreview()) {
+            TextInputStage stage = new TextInputStage(initText);
+            stage.title(title);
+            return stage.getText();
+        }
         String finalTitle = title;
         String finalInitText = initText;
         AtomicReference<String> ref = new AtomicReference<>();
