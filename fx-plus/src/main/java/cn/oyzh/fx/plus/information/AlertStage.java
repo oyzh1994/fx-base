@@ -58,6 +58,10 @@ public class AlertStage extends Stage implements StageAdapter {
      */
     private Alert.AlertType type;
 
+    private static final Insets DEFAULT_MARGIN = new Insets(10, 0, 0, 10);
+
+    private static final Insets BUTTON_DEFAULT_MARGIN = new Insets(30, 10, 0, 0);
+
     public AlertStage(Alert.AlertType type) {
         this(type, "");
     }
@@ -100,12 +104,12 @@ public class AlertStage extends Stage implements StageAdapter {
         if (this.graphic != null) {
             this.graphic.setSize(80);
             node.addChild(this.graphic);
-            FXHBox.setMargin(this.graphic, new Insets(10, 0, 0, 10));
+            FXHBox.setMargin(this.graphic, DEFAULT_MARGIN);
         }
 
         FXVBox vbox = new FXVBox();
         vbox.addChild(this.content);
-        VBox.setMargin(this.content, new Insets(10, 0, 0, 10));
+        VBox.setMargin(this.content, DEFAULT_MARGIN);
 
         FXHBox btnBox = new FXHBox();
         btnBox.addChild(this.buttons);
@@ -116,7 +120,7 @@ public class AlertStage extends Stage implements StageAdapter {
             btnBox.setPrefWidth(235);
         }
         for (Button button : buttons) {
-            FXHBox.setMargin(button, new Insets(30, 10, 0, 0));
+            FXHBox.setMargin(button, BUTTON_DEFAULT_MARGIN);
             button.setOnAction(actionEvent -> {
                 this.result = button;
                 this.hide();
