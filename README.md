@@ -8,10 +8,10 @@
 2. jdk版本要求24
 
 ###### 结构说明 
-fx-editor -> 编辑器模块，语法高亮编辑器实现  
-fx-pkg -> 打包模块，各平台打包实现  
-fx-plus -> javafx的增强和扩展  
-fx-rich -> javafx的富文本实现  
+fx-editor -> javafx的编辑器实现，语法高亮编辑器实现  
+fx-pkg -> javafx的打包实现，各平台打包功能实现  
+fx-plus -> javafx的增强和扩展，以及gui相关组件集合  
+fx-rich -> javafx的富文本实现，目前已废弃，改由fx-editor替代   
 fx-terminal -> javafx的终端实现
 
 # Maven
