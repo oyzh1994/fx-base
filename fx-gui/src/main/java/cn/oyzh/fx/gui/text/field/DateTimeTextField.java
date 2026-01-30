@@ -21,13 +21,13 @@ public class DateTimeTextField extends LimitTextField {
 
     public static final SimpleDateFormat FORMAT_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    public static final SimpleDateFormat FORMAT_2 = new SimpleDateFormat("yyyy-MM-dd HH");
+//    public static final SimpleDateFormat FORMAT_2 = new SimpleDateFormat("yyyy-MM-dd HH");
 
     public static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public static final SimpleDateFormat FORMAT_T_1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
-    public static final SimpleDateFormat FORMAT_T_2 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
+//    public static final SimpleDateFormat FORMAT_T_2 = new SimpleDateFormat("yyyy-MM-dd'T'HH");
 
     public Timestamp getValue() throws ParseException {
         if (!this.isEmpty()) {
@@ -85,9 +85,9 @@ public class DateTimeTextField extends LimitTextField {
         long count = StringUtil.count(value.toString(), ':');
         SimpleDateFormat format;
         if (value.toString().contains("T")) {
-            format = count == 2 ? FORMAT_T : count == 1 ? FORMAT_T_1 : FORMAT_T_2;
+            format = count == 2 || count == 0 ? FORMAT_T : FORMAT_T_1;
         } else {
-            format = count == 2 ? FORMAT : count == 1 ? FORMAT_1 : FORMAT_2;
+            format = count == 2 || count == 0 ? FORMAT : FORMAT_1;
         }
         return format;
     }
