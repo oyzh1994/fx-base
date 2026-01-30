@@ -1,7 +1,5 @@
 package cn.oyzh.fx.gui.test;
 
-import cn.oyzh.fx.gui.tree.view.RichTreeItem;
-import cn.oyzh.fx.gui.tree.view.RichTreeView;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import javafx.scene.control.TreeItem;
 

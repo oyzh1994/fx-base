@@ -8,7 +8,7 @@
 2. jdk版本要求24
 
 ###### 结构说明 
-fx-gui -> gui模块，各种组件相关实现  
+fx-editor -> 编辑器模块，语法高亮编辑器实现  
 fx-pkg -> 打包模块，各平台打包实现  
 fx-plus -> javafx的增强和扩展  
 fx-rich -> javafx的富文本实现  

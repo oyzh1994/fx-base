@@ -3,11 +3,6 @@ package cn.oyzh.fx.gui.test;
 import cn.oyzh.fx.gui.tree.view.RichTreeItem;
 import cn.oyzh.fx.gui.tree.view.RichTreeView;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
-import com.sun.javafx.scene.NodeHelper;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeUtil;
-
-import java.util.Objects;
 
 /**
  * @author oyzh
