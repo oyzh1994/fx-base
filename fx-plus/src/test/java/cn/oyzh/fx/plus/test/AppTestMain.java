@@ -113,6 +113,11 @@ public class AppTestMain extends Application {
         String result1 = MessageBox.prompt("测试1", "内容1");
         System.out.println("result1:" + result1);
         try {
+            throw new UnsupportedOperationException("test\n".repeat(1));
+        } catch (Exception ex) {
+            MessageBox.exception(ex);
+        }
+        try {
             throw new UnsupportedOperationException("test\n".repeat(100));
         } catch (Exception ex) {
             MessageBox.exception(ex);
@@ -126,6 +131,11 @@ public class AppTestMain extends Application {
         System.out.println("b2=" + b2);
         String result2 = MessageBox.prompt("测试2", "内容2");
         System.out.println("result2:" + result2);
+        try {
+            throw new UnsupportedOperationException("test\n".repeat(1));
+        } catch (Exception ex) {
+            MessageBox.exception(ex);
+        }
         try {
             throw new UnsupportedOperationException("test\n".repeat(100));
         } catch (Exception ex) {

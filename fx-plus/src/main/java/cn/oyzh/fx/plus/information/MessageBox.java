@@ -16,7 +16,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
@@ -27,7 +26,6 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import javax.swing.JOptionPane;
@@ -98,22 +96,22 @@ public class MessageBox {
      */
     public static boolean confirm(String title, String content, String headerText, Window owner) {
         String finalContent = content == null ? "" : content;
-        if (FXUtil.isEnablePreview()) {
-            FXButton button1 = new FXButton(I18nHelper.ok());
-            button1.addClass("accent");
-            FXButton button2 = new FXButton(I18nHelper.cancel());
-            AlertStage stage = new AlertStage(Alert.AlertType.CONFIRMATION, finalContent, List.of(button1, button2));
-            stage.title(title);
-            return button1.equals(stage.getResult());
-        }
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            ButtonType button1 = new ButtonType(I18nHelper.ok());
-            ButtonType button2 = new ButtonType(I18nHelper.cancel());
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
-            alert.setTitle(title);
-            alert.initOwner(owner);
-            alert.setHeaderText(headerText);
+            if (FXUtil.isEnablePreview()) {
+                FXButton button1 = new FXButton(I18nHelper.ok());
+                button1.addClass("accent");
+                FXButton button2 = new FXButton(I18nHelper.cancel());
+                AlertStage stage = new AlertStage(Alert.AlertType.CONFIRMATION, finalContent, List.of(button1, button2));
+                stage.title(title);
+                result.set(button1.equals(stage.getResult()));
+            } else {
+                ButtonType button1 = new ButtonType(I18nHelper.ok());
+                ButtonType button2 = new ButtonType(I18nHelper.cancel());
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
+                alert.setTitle(title);
+                alert.initOwner(owner);
+                alert.setHeaderText(headerText);
 //            // 监听回车，触发按钮
 //            Scene scene = alert.getDialogPane().getScene();
 //            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -127,8 +125,9 @@ public class MessageBox {
 //                    }
 //                }
 //            });
-            Optional<ButtonType> optional = alert.showAndWait();
-            result.set(optional.map(b -> b.equals(button1)).orElse(false));
+                Optional<ButtonType> optional = alert.showAndWait();
+                result.set(optional.map(b -> b.equals(button1)).orElse(false));
+            }
         });
         return result.get();
     }
@@ -240,21 +239,21 @@ public class MessageBox {
     public static void alert(Alert.AlertType type, String title, String header, String content, Window owner) {
         // 使用fx消息框
         if (FXUtil.isInitialized()) {
-            if (FXUtil.isEnablePreview()) {
-                AlertStage stage = new AlertStage(type, content);
-                stage.title(title);
-                stage.initOwner(owner == null ? new Stage() : owner);
-                stage.showAndWait();
-            } else {
-                FXUtil.runWait(() -> {
+            FXUtil.runWait(() -> {
+                if (FXUtil.isEnablePreview()) {
+                    AlertStage stage = new AlertStage(type, content);
+                    stage.title(title);
+                    stage.initOwner(owner);
+                    stage.showAndWait();
+                } else {
                     Alert alert = new Alert(type);
                     alert.setTitle(title);
                     alert.setHeaderText(header);
                     alert.setContentText(content);
                     alert.initOwner(owner);
                     alert.showAndWait();
-                });
-            }
+                }
+            });
         } else {// 使用swing消息框
             int msgType = switch (type) {
                 case NONE -> JOptionPane.PLAIN_MESSAGE;
@@ -286,31 +285,31 @@ public class MessageBox {
     //    return optional.orElse(null);
     //}
 
-    /**
-     * 提示窗口
-     *
-     * @param content 文本信息
-     */
-    public static void dialog(String content) {
-        dialog(I18nHelper.tips(), content);
-    }
-
-    /**
-     * 提示窗口
-     *
-     * @param title   标题
-     * @param content 文本信息
-     */
-    public static void dialog(String title, String content) {
-        String finalTitle = title == null ? "" : title;
-        String finalContent = content == null ? "" : content;
-        FXUtil.runWait(() -> {
-            Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle(finalTitle);
-            dialog.setContentText(finalContent);
-            dialog.show();
-        });
-    }
+    ///**
+    // * 提示窗口
+    // *
+    // * @param content 文本信息
+    // */
+    //public static void dialog(String content) {
+    //    dialog(I18nHelper.tips(), content);
+    //}
+    //
+    ///**
+    // * 提示窗口
+    // *
+    // * @param title   标题
+    // * @param content 文本信息
+    // */
+    //public static void dialog(String title, String content) {
+    //    String finalTitle = title == null ? "" : title;
+    //    String finalContent = content == null ? "" : content;
+    //    FXUtil.runWait(() -> {
+    //        Dialog<String> dialog = new Dialog<>();
+    //        dialog.setTitle(finalTitle);
+    //        dialog.setContentText(finalContent);
+    //        dialog.show();
+    //    });
+    //}
 
     /**
      * 输入窗口
@@ -330,21 +329,22 @@ public class MessageBox {
     public static String prompt(String title, String initText) {
         title = title == null ? I18nHelper.tips() : title;
         initText = initText == null ? "" : initText;
-        if (FXUtil.isEnablePreview()) {
-            InputStage stage = new InputStage(initText);
-            stage.title(title);
-            return stage.getResult();
-        }
         String finalTitle = title;
         String finalInitText = initText;
         AtomicReference<String> ref = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            TextInputDialog dialog = new TextInputDialog(finalInitText);
-            dialog.setTitle(finalTitle);
-            dialog.setGraphic(null);
-            dialog.setHeaderText(null);
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(ref::set);
+            if (FXUtil.isEnablePreview()) {
+                InputStage stage = new InputStage(finalInitText);
+                stage.title(finalTitle);
+                ref.set(stage.getResult());
+            } else {
+                TextInputDialog dialog = new TextInputDialog(finalInitText);
+                dialog.setTitle(finalTitle);
+                dialog.setGraphic(null);
+                dialog.setHeaderText(null);
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(ref::set);
+            }
         });
         return ref.get();
     }

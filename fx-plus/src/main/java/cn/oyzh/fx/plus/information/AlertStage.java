@@ -102,6 +102,8 @@ public class AlertStage extends Stage implements StageAdapter {
         root.addChild(node);
 
         this.content = new FXLabel(content);
+        this.content.setWrapText(true);
+        this.content.setMaxWidth(320);
 
         if (this.graphic != null) {
             this.graphic.setSize(80);
@@ -117,9 +119,9 @@ public class AlertStage extends Stage implements StageAdapter {
         btnBox.addChild(this.buttons);
         btnBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         if (this.graphic == null) {
-            btnBox.setPrefWidth(325);
+            btnBox.setPrefWidth(455);
         } else {
-            btnBox.setPrefWidth(235);
+            btnBox.setPrefWidth(365);
         }
         for (Button button : buttons) {
             FXHBox.setMargin(button, BUTTON_DEFAULT_MARGIN);
@@ -132,19 +134,24 @@ public class AlertStage extends Stage implements StageAdapter {
 
         node.addChild(vbox);
 
-        double fHeight = FontUtil.calcFontHeight(this.content.getFont());
-        long lines = content.lines().count() - 2;
-        double fixedHeight = lines * fHeight;
-        double primaryHeight = ScreenUtil.getPrimaryHeight();
-        if (fixedHeight < 0) {
-            fixedHeight = 0;
-        } else if (fixedHeight > primaryHeight - 150) {
-            fixedHeight = primaryHeight - 150;
-        }
         this.setScene(new Scene(root));
-        this.setSize(350, 150 + fixedHeight);
+        this.setSize(480, 150);
         this.setResizable(false);
-        this.centerOnScreen();
+        this.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                double fHeight = FontUtil.calcFontHeight(this.content.getFont());
+                double nHeight = this.content.getRealHeight();
+                double fixedHeight = nHeight - fHeight;
+                double primaryHeight = ScreenUtil.getPrimaryHeight();
+                if (fixedHeight < 0) {
+                    fixedHeight = 0;
+                } else if (fixedHeight > primaryHeight - 150) {
+                    fixedHeight = primaryHeight - 150;
+                }
+                this.setHeight(150 + fixedHeight);
+                this.centerOnScreen();
+            }
+        });
     }
 
     @Override
