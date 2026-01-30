@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.information;
 
 import cn.oyzh.common.thread.ExecutorUtil;
+import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -26,9 +27,11 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -95,6 +98,14 @@ public class MessageBox {
      */
     public static boolean confirm(String title, String content, String headerText, Window owner) {
         String finalContent = content == null ? "" : content;
+        if (FXUtil.isEnablePreview()) {
+            FXButton button1 = new FXButton(I18nHelper.ok());
+            button1.addClass("accent");
+            FXButton button2 = new FXButton(I18nHelper.cancel());
+            AlertStage stage = new AlertStage(Alert.AlertType.CONFIRMATION, finalContent, List.of(button1, button2));
+            stage.title(title);
+            return button1.equals(stage.getResult());
+        }
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
             ButtonType button1 = new ButtonType(I18nHelper.ok());
@@ -229,14 +240,21 @@ public class MessageBox {
     public static void alert(Alert.AlertType type, String title, String header, String content, Window owner) {
         // 使用fx消息框
         if (FXUtil.isInitialized()) {
-            FXUtil.runWait(() -> {
-                Alert alert = new Alert(type);
-                alert.setTitle(title);
-                alert.setHeaderText(header);
-                alert.setContentText(content);
-                alert.initOwner(owner);
-                alert.showAndWait();
-            });
+            if (FXUtil.isEnablePreview()) {
+                AlertStage stage = new AlertStage(type, content);
+                stage.title(title);
+                stage.initOwner(owner == null ? new Stage() : owner);
+                stage.showAndWait();
+            } else {
+                FXUtil.runWait(() -> {
+                    Alert alert = new Alert(type);
+                    alert.setTitle(title);
+                    alert.setHeaderText(header);
+                    alert.setContentText(content);
+                    alert.initOwner(owner);
+                    alert.showAndWait();
+                });
+            }
         } else {// 使用swing消息框
             int msgType = switch (type) {
                 case NONE -> JOptionPane.PLAIN_MESSAGE;
@@ -249,24 +267,24 @@ public class MessageBox {
         }
     }
 
-    /**
-     * 窗口控件
-     *
-     * @param type        类型
-     * @param title       标题
-     * @param header      提示头
-     * @param content     文本信息
-     * @param buttonTypes 按钮
-     * @return 点击的按钮
-     */
-    public static ButtonType alert(Alert.AlertType type, String title, String header, String content, ButtonType... buttonTypes) {
-        Alert alert = new Alert(type, content, buttonTypes);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        Optional<ButtonType> optional = alert.showAndWait();
-        return optional.orElse(null);
-    }
+    ///**
+    // * 窗口控件
+    // *
+    // * @param type        类型
+    // * @param title       标题
+    // * @param header      提示头
+    // * @param content     文本信息
+    // * @param buttonTypes 按钮
+    // * @return 点击的按钮
+    // */
+    //public static ButtonType alert(Alert.AlertType type, String title, String header, String content, ButtonType... buttonTypes) {
+    //    Alert alert = new Alert(type, content, buttonTypes);
+    //    alert.setTitle(title);
+    //    alert.setHeaderText(header);
+    //    alert.setContentText(content);
+    //    Optional<ButtonType> optional = alert.showAndWait();
+    //    return optional.orElse(null);
+    //}
 
     /**
      * 提示窗口
@@ -313,7 +331,7 @@ public class MessageBox {
         title = title == null ? I18nHelper.tips() : title;
         initText = initText == null ? "" : initText;
         if (FXUtil.isEnablePreview()) {
-            TextInputStage stage = new TextInputStage(initText);
+            InputStage stage = new InputStage(initText);
             stage.title(title);
             return stage.getResult();
         }

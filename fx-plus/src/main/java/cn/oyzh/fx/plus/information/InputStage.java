@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
@@ -23,7 +24,7 @@ import javafx.stage.Stage;
  * @author oyzh
  * @since 2026-01-30
  */
-public class TextInputStage extends Stage implements StageAdapter {
+public class InputStage extends Stage implements StageAdapter {
 
     private static final Insets DEFAULT_MARGIN = new Insets(10, 0, 0, 5);
 
@@ -31,11 +32,12 @@ public class TextInputStage extends Stage implements StageAdapter {
 
     private FXTextField textField;
 
-    public TextInputStage() {
+    public InputStage() {
         this("");
     }
 
-    public TextInputStage(String initText) {
+    public InputStage(String initText) {
+        this.initModality(Modality.APPLICATION_MODAL);
         this.initStyle(FXStageStyle.EXTENDED.toStageStyle());
 
         FXVBox root = new FXVBox();
@@ -92,12 +94,22 @@ public class TextInputStage extends Stage implements StageAdapter {
         return this;
     }
 
-    public String getResult() {
-        this.showAndWait();
-        String text = this.textField.getText();
+    /**
+     * 结果
+     */
+    private String result;
+
+    @Override
+    public void showAndWait() {
+        super.showAndWait();
+        this.result = this.textField.getText();
         this.textField = null;
         this.setScene(null);
-        return text;
+    }
+
+    public String getResult() {
+        this.showAndWait();
+        return this.result;
     }
 
     public void setText(String text) {
@@ -108,7 +120,7 @@ public class TextInputStage extends Stage implements StageAdapter {
 
     public String getText() {
         if (this.textField != null) {
-        return this.textField.getText();
+            return this.textField.getText();
         }
         return null;
     }

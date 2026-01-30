@@ -32,7 +32,7 @@ public class AppTestMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // 应用主题
-        ThemeManager.apply(Themes.PRIMER_DARK);
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
         // test1(stage);
         // test2(stage);
 //        test3(stage);
@@ -104,20 +104,26 @@ public class AppTestMain extends Application {
     }
 
     private void test4(Stage stage) {
-        String result = MessageBox.prompt("测试", "内容");
-        System.out.println("result:" + result);
-//        FXUtil.disablePreview();
-//        String result1 = MessageBox.prompt("测试", "内容1");
-//        System.out.println("result1:" + result1);
+        //FXUtil.disablePreview();
+        MessageBox.info("测试1");
+        MessageBox.warn("测试2");
+        MessageBox.error("测试3");
+        boolean b1 = MessageBox.confirm("测试5");
+        System.out.println("b1=" + b1);
+        String result1 = MessageBox.prompt("测试1", "内容1");
+        System.out.println("result1:" + result1);
+        MessageBox.none("测试4");
+        FXUtil.disablePreview();
+        MessageBox.info("测试1");
+        MessageBox.warn("测试2");
+        MessageBox.error("测试3");
+        boolean b2 = MessageBox.confirm("测试5");
+        System.out.println("b2=" + b2);
+        String result2 = MessageBox.prompt("测试2", "内容2");
+        System.out.println("result2:" + result2);
+        MessageBox.none("测试4");
     }
 
-    private void test5(Stage stage) {
-        String result = MessageBox.prompt("测试", "内容");
-        System.out.println("result:" + result);
-//        FXUtil.disablePreview();
-//        String result1 = MessageBox.prompt("测试", "内容1");
-//        System.out.println("result1:" + result1);
-    }
 
     public static class AppTestMainApp {
 
