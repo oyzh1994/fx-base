@@ -31,7 +31,15 @@ public class InputStage extends Stage implements StageAdapter {
 
     private static final Insets OK_DEFAULT_MARGIN = new Insets(0, 10, 0, 10);
 
+    /**
+     * 组件
+     */
     private FXTextField textField;
+
+    /**
+     * 结果
+     */
+    private String result;
 
     public InputStage() {
         this("");
@@ -69,10 +77,10 @@ public class InputStage extends Stage implements StageAdapter {
         VBox.setMargin(hbox, DEFAULT_MARGIN);
 
         this.setScene(new Scene(root));
-        this.setSize(350, 150);
+        this.setSize(400, 150);
         this.setResizable(false);
         this.centerOnScreen();
-
+        StageAdapter.super.applyTheme();
         this.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 this.ok();
@@ -83,11 +91,12 @@ public class InputStage extends Stage implements StageAdapter {
     }
 
     public void cancel() {
-        this.textField.clear();
+        this.result = "";
         this.close();
     }
 
     public void ok() {
+        this.result = this.textField.getText();
         this.close();
     }
 
@@ -96,15 +105,9 @@ public class InputStage extends Stage implements StageAdapter {
         return this;
     }
 
-    /**
-     * 结果
-     */
-    private String result;
-
     @Override
     public void showAndWait() {
         super.showAndWait();
-        this.result = this.textField.getText();
         this.textField = null;
         this.setScene(null);
     }
@@ -138,5 +141,13 @@ public class InputStage extends Stage implements StageAdapter {
             return this.textField.getPromptText();
         }
         return null;
+    }
+
+    @Override
+    public void hide() {
+        if (this.result == null) {
+            this.result = "";
+        }
+        super.hide();
     }
 }

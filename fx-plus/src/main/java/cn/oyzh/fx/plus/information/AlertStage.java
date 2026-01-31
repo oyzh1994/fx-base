@@ -104,6 +104,7 @@ public class AlertStage extends Stage implements StageAdapter {
         this.content = new FXLabel(content);
         this.content.setWrapText(true);
         this.content.setMaxWidth(320);
+        this.content.setMaxHeight(ScreenUtil.getPrimaryHeight() - 125);
 
         if (this.graphic != null) {
             this.graphic.setSize(80);
@@ -119,9 +120,9 @@ public class AlertStage extends Stage implements StageAdapter {
         btnBox.addChild(this.buttons);
         btnBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         if (this.graphic == null) {
-            btnBox.setPrefWidth(455);
+            btnBox.setPrefWidth(375);
         } else {
-            btnBox.setPrefWidth(365);
+            btnBox.setPrefWidth(285);
         }
         for (Button button : buttons) {
             FXHBox.setMargin(button, BUTTON_DEFAULT_MARGIN);
@@ -135,18 +136,16 @@ public class AlertStage extends Stage implements StageAdapter {
         node.addChild(vbox);
 
         this.setScene(new Scene(root));
-        this.setSize(480, 150);
+        this.setSize(400, 150);
         this.setResizable(false);
+        StageAdapter.super.applyTheme();
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 double fHeight = FontUtil.calcFontHeight(this.content.getFont());
                 double nHeight = this.content.getRealHeight();
                 double fixedHeight = nHeight - fHeight;
-                double primaryHeight = ScreenUtil.getPrimaryHeight();
                 if (fixedHeight < 0) {
                     fixedHeight = 0;
-                } else if (fixedHeight > primaryHeight - 150) {
-                    fixedHeight = primaryHeight - 150;
                 }
                 this.setHeight(150 + fixedHeight);
                 this.centerOnScreen();
@@ -165,6 +164,7 @@ public class AlertStage extends Stage implements StageAdapter {
         this.type = null;
         this.graphic = null;
         this.buttons = null;
+        this.content = null;
         this.setScene(null);
     }
 
