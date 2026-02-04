@@ -84,10 +84,10 @@ public class SystemTheme implements Theme, ThemeStyle {
 //        return this.themePath;
     }
 
-    @Override
-    public String getCompressedUserAgentStylesheet() {
-        return this.getUserAgentStylesheet();
-    }
+//    @Override
+//    public String getCompressedUserAgentStylesheet() {
+//        return this.getUserAgentStylesheet();
+//    }
 
     @Override
     public String getUserAgentStylesheetBSS() {

@@ -97,13 +97,13 @@ public interface ThemeStyle {
      * @return 样式文件
      */
     String getUserAgentStylesheet();
-
-    /**
-     * 获取压缩样式文件
-     *
-     * @return 压缩样式文件
-     */
-    String getCompressedUserAgentStylesheet();
+//
+//    /**
+//     * 获取压缩样式文件
+//     *
+//     * @return 压缩样式文件
+//     */
+//    String getCompressedUserAgentStylesheet();
 
     ///**
     // * 重应用css尾缀

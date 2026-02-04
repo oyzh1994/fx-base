@@ -16,6 +16,7 @@ import cn.oyzh.fx.plus.font.FontWeightComboBox;
 import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
@@ -57,11 +58,11 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
 //         ThemeManager.apply(Themes.PRIMER_DARK);
-        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
-        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
-        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
+//        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
+//        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
+//        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
         Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
         test1(stage);
         stage.getScene().getStylesheets().add("/fx-plus/css/fx-base.css");
