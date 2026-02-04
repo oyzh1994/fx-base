@@ -977,6 +977,17 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                 this.changeFont(editorFont);
             }
         });
+
+//        // 监听皮肤初始化，控制滚动条thumb最低大小
+//        this.skinProperty().subscribe(skin -> {
+//            if (skin != null) {
+//                VFlow flow = RichTextAreaSkinHelper.getVFlow(this);
+//                ScrollBar vscroll = ReflectUtil.getFieldValue(flow, "vscroll");
+//                ScrollBar hscroll = ReflectUtil.getFieldValue(flow, "hscroll");
+//                ControlUtil.steupMinVisibleAmount(vscroll,0.05);
+//                ControlUtil.steupMinVisibleAmount(hscroll,0.05);
+//            }
+//        });
     }
 
     /**
