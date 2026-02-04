@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -121,9 +120,9 @@ public interface ThemeStyle {
                     // 更新fx-base样式文件
                     node.getStylesheets().remove(FXStyle.FX_BASE);
                     node.getStylesheets().add(FXStyle.FX_BASE);
-                    // 重新应用样式
-                    ReflectUtil.invoke(node, "reapplyCss");
-                    node.applyCss();
+                    //// 重新应用样式
+                    //ReflectUtil.invoke(node, "reapplyCss");
+                    //node.applyCss();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -163,11 +162,11 @@ public interface ThemeStyle {
             //        ex.printStackTrace();
             //    }
             //}), 50);
-            FXUtil.runWait(() -> {
-                // 重新应用样式
-                ReflectUtil.invoke(node, "reapplyCss");
-                node.applyCss();
-            });
+            //FXUtil.runWait(() -> {
+            //    // 重新应用样式
+            //    ReflectUtil.invoke(node, "reapplyCss");
+            //    node.applyCss();
+            //});
         }
     }
 
