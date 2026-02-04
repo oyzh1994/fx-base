@@ -58,12 +58,12 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.BLACK_ON_WHITE);
 //         ThemeManager.apply(Themes.PRIMER_DARK);
 //        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
-        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+//        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
         test1(stage);
         stage.getScene().getStylesheets().add("/fx-plus/css/fx-base.css");
         // test2(stage);

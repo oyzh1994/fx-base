@@ -111,6 +111,15 @@ public class ThemeManager {
             } else {
                 Themes.SYSTEM.unListener();
             }
+            if (style == Themes.WHITE_ON_BLACK) {
+                System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
+            } else if (style == Themes.BLACK_ON_WHITE) {
+                System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
+            } else if (style == Themes.YELLOW_ON_BLACK) {
+                System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
+            } else {
+                System.setProperty("com.sun.javafx.highContrastTheme", "");
+            }
             // 设置当前主题
             currentThemeProperty.set(style);
             // 设置应用样式
@@ -186,7 +195,7 @@ public class ThemeManager {
     }
 
     public static String currentUserAgentStylesheet() {
-        return currentTheme().getUserAgentStylesheet();
+        return currentTheme().isBuiltIn() ? currentTheme().getBuiltInName() : currentTheme().getUserAgentStylesheet();
     }
 
 //    public static String currentCompressedUserAgentStylesheet() {

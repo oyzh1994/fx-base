@@ -186,4 +186,13 @@ public interface ThemeStyle {
         // 返回相关度
         return d1 * 5.5 + d2 * 2.5 + d3 * 2;
     }
+
+    default boolean isBuiltIn() {
+        return false;
+    }
+
+    default String getBuiltInName() {
+        return null;
+    }
+
 }
