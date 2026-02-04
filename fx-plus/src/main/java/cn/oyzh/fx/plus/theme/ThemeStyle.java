@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
@@ -157,13 +156,18 @@ public interface ThemeStyle {
      */
     default void handleStyle(Node node) {
         if (node != null) {
-            TaskManager.startDelay(() -> FXUtil.runLater(() -> {
-                try {
-                    ReflectUtil.invoke(node, "reapplyCss");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }), 50);
+            //TaskManager.startDelay(() -> FXUtil.runLater(() -> {
+            //    try {
+            //        ReflectUtil.invoke(node, "reapplyCss");
+            //    } catch (Exception ex) {
+            //        ex.printStackTrace();
+            //    }
+            //}), 50);
+            FXUtil.runWait(() -> {
+                // 重新应用样式
+                ReflectUtil.invoke(node, "reapplyCss");
+                node.applyCss();
+            });
         }
     }
 

@@ -29,11 +29,11 @@ public class Themes {
 
     public static final CupertinoLightTheme CUPERTINO_LIGHT = new CupertinoLightTheme();
 
-    public static final BlackOnWhiteTheme BLACK_ON_WHITE = new BlackOnWhiteTheme();
-
-    public static final WthiteOnBlackTheme WHITE_ON_BLACK = new WthiteOnBlackTheme();
-
-    public static final YellowOnBlackTheme YELLOW_ON_BLACK = new YellowOnBlackTheme();
+    //public static final BlackOnWhiteTheme BLACK_ON_WHITE = new BlackOnWhiteTheme();
+    //
+    //public static final WthiteOnBlackTheme WHITE_ON_BLACK = new WthiteOnBlackTheme();
+    //
+    //public static final YellowOnBlackTheme YELLOW_ON_BLACK = new YellowOnBlackTheme();
 
     //public static String[] styles() {
     //    return new String[]{
@@ -64,9 +64,9 @@ public class Themes {
         themes.add(CUPERTINO_LIGHT);
         themes.add(CUPERTINO_DARK);
         themes.add(DRACULA);
-        themes.add(WHITE_ON_BLACK);
-        themes.add(BLACK_ON_WHITE);
-        themes.add(YELLOW_ON_BLACK);
+        //themes.add(WHITE_ON_BLACK);
+        //themes.add(BLACK_ON_WHITE);
+        //themes.add(YELLOW_ON_BLACK);
         return themes;
     }
 
@@ -99,9 +99,9 @@ public class Themes {
             case "CUPERTINO LIGHT", "CUPERTINO_LIGHT" -> CUPERTINO_LIGHT;
             case "CUPERTINO DARK", "CUPERTINO_DARK" -> CUPERTINO_DARK;
             case "DRACULA" -> DRACULA;
-            case "WHITE ON BLACK", "WHITE_ON_BLACK" -> WHITE_ON_BLACK;
-            case "BLACK ON WHITE", "BLACK_ON_WHITE" -> BLACK_ON_WHITE;
-            case "YELLOW ON BLACK", "YELLOW_ON_BLACK" -> YELLOW_ON_BLACK;
+            //case "WHITE ON BLACK", "WHITE_ON_BLACK" -> WHITE_ON_BLACK;
+            //case "BLACK ON WHITE", "BLACK_ON_WHITE" -> BLACK_ON_WHITE;
+            //case "YELLOW ON BLACK", "YELLOW_ON_BLACK" -> YELLOW_ON_BLACK;
             case "SYSTEM" -> SYSTEM;
             default -> PRIMER_LIGHT;
         };

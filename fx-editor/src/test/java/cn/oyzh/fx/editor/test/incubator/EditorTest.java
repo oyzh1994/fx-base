@@ -58,8 +58,8 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.BLACK_ON_WHITE);
-//         ThemeManager.apply(Themes.PRIMER_DARK);
+        //ThemeManager.apply(Themes.BLACK_ON_WHITE);
+         ThemeManager.apply(Themes.PRIMER_DARK);
 //        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
