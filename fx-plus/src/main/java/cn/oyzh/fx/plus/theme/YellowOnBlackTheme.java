@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.Theme;
-import javafx.application.Application;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -59,6 +58,6 @@ public class YellowOnBlackTheme implements Theme, ThemeStyle {
 
     @Override
     public String getBuiltInName() {
-        return Application.STYLESHEET_MODENA;
+        return "YELLOWONBLACK";
     }
 }

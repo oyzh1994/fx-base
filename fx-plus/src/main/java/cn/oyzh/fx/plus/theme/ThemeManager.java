@@ -5,6 +5,7 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
+import com.sun.javafx.css.StyleManager;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -111,19 +112,18 @@ public class ThemeManager {
             } else {
                 Themes.SYSTEM.unListener();
             }
-            if (style == Themes.WHITE_ON_BLACK) {
-                System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
-            } else if (style == Themes.BLACK_ON_WHITE) {
-                System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
-            } else if (style == Themes.YELLOW_ON_BLACK) {
-                System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
-            } else {
-                System.setProperty("com.sun.javafx.highContrastTheme", "");
-            }
             // 设置当前主题
             currentThemeProperty.set(style);
-            // 设置应用样式
-            Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+            if (style.isBuiltIn()) {
+                System.setProperty("com.sun.javafx.highContrastTheme", style.getBuiltInName());
+                // 设置应用样式
+                Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+            } else {
+                System.setProperty("com.sun.javafx.highContrastTheme", "");
+                // 设置应用样式
+                StyleManager.getInstance().setUserAgentStylesheets(List.of());
+                Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+            }
             // 变更样式
             List<Window> windows = StageManager.allWindows();
             for (Window window : windows) {
@@ -195,7 +195,7 @@ public class ThemeManager {
     }
 
     public static String currentUserAgentStylesheet() {
-        return currentTheme().isBuiltIn() ? currentTheme().getBuiltInName() : currentTheme().getUserAgentStylesheet();
+        return currentTheme().getUserAgentStylesheet();
     }
 
 //    public static String currentCompressedUserAgentStylesheet() {

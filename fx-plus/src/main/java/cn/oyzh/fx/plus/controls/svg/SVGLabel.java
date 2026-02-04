@@ -42,7 +42,7 @@ public class SVGLabel extends FXLabel {
      *
      * @param url 图标URL地址
      */
-    public void setUrl( String url) {
+    public void setUrl(String url) {
         if (this.graphic() == null) {
             this.setGraphic(new SVGGlyph(url));
         }

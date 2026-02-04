@@ -35,20 +35,20 @@ public class Themes {
 
     public static final YellowOnBlackTheme YELLOW_ON_BLACK = new YellowOnBlackTheme();
 
-    public static String[] styles() {
-        return new String[]{
-                DRACULA.getUserAgentStylesheet(),
-                NORD_DARK.getUserAgentStylesheet(),
-                NORD_LIGHT.getUserAgentStylesheet(),
-                PRIMER_DARK.getUserAgentStylesheet(),
-                PRIMER_LIGHT.getUserAgentStylesheet(),
-                CUPERTINO_DARK.getUserAgentStylesheet(),
-                CUPERTINO_LIGHT.getUserAgentStylesheet(),
-                BLACK_ON_WHITE.getUserAgentStylesheet(),
-                WHITE_ON_BLACK.getUserAgentStylesheet(),
-                YELLOW_ON_BLACK.getUserAgentStylesheet(),
-        };
-    }
+    //public static String[] styles() {
+    //    return new String[]{
+    //            DRACULA.getUserAgentStylesheet(),
+    //            NORD_DARK.getUserAgentStylesheet(),
+    //            NORD_LIGHT.getUserAgentStylesheet(),
+    //            PRIMER_DARK.getUserAgentStylesheet(),
+    //            PRIMER_LIGHT.getUserAgentStylesheet(),
+    //            CUPERTINO_DARK.getUserAgentStylesheet(),
+    //            CUPERTINO_LIGHT.getUserAgentStylesheet(),
+    //            BLACK_ON_WHITE.getUserAgentStylesheet(),
+    //            WHITE_ON_BLACK.getUserAgentStylesheet(),
+    //            YELLOW_ON_BLACK.getUserAgentStylesheet(),
+    //    };
+    //}
 
     /**
      * 获取主题

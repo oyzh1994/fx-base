@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.controls;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ScreenUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -13,7 +15,7 @@ import javafx.scene.text.FontWeight;
  * @author oyzh
  * @since 2025-08-19
  */
-public class FXHeaderBar extends HeaderBar implements NodeAdapter {
+public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter {
 
     {
         NodeManager.init(this);
@@ -248,4 +250,18 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter {
     //     // 仅判断y是否在区间内
     //     return bounds.contains(0, event.getY());
     // }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        ThemeAdapter.super.changeTheme(style);
+        if (this.getLeft() instanceof ThemeAdapter adapter) {
+            adapter.changeTheme(style);
+        }
+        if (this.getRight() instanceof ThemeAdapter adapter) {
+            adapter.changeTheme(style);
+        }
+        if (this.getCenter() instanceof ThemeAdapter adapter) {
+            adapter.changeTheme(style);
+        }
+    }
 }
