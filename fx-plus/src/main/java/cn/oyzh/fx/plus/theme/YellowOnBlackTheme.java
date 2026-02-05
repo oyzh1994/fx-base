@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.theme;
 import atlantafx.base.theme.Theme;
 import javafx.scene.paint.Color;
 
+import java.util.Locale;
+
 /**
  * @author oyzh
  * @since 2024/4/3
@@ -15,10 +17,10 @@ public class YellowOnBlackTheme implements Theme, ThemeStyle {
         return "Yellow On Black";
     }
 
-//    @Override
-//    public String getDesc(Locale locale) {
-//        return this.getName();
-//    }
+    @Override
+    public String getDesc(Locale locale) {
+        return this.getName();
+    }
 
     @Override
     public String getUserAgentStylesheet() {
