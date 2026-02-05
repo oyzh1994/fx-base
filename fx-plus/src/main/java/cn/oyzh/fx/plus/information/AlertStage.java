@@ -103,7 +103,7 @@ public class AlertStage extends Stage implements StageAdapter {
 
         this.content = new FXLabel(content);
         this.content.setWrapText(true);
-        this.content.setMaxWidth(320);
+        this.content.setMaxWidth(280);
         this.content.setMaxHeight(ScreenUtil.getPrimaryHeight() - 125);
 
         if (this.graphic != null) {
