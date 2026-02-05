@@ -9,6 +9,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
+@Deprecated
 public class BlackOnWhiteTheme implements Theme, ThemeStyle {
 
     @Override
