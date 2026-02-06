@@ -25,6 +25,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import jfx.incubator.scene.control.richtext.LineEnding;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -329,7 +330,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
     @Override
     public void appendByPrompt(String output) {
         this.outputPrompt();
-        this.flushNOP();
+//        this.flushNOP();
         if (output != null) {
             this.appendText(output);
         }
@@ -358,7 +359,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
     public void prompt(String prompt) {
         if (!StringUtil.equals(prompt, this.prompt)) {
             if (prompt != null) {
-                prompt = prompt.replaceAll("\r", "").replaceAll("\n", "");
+                prompt = prompt.replaceAll("\r", "")
+                        .replaceAll("\n", "");
             }
             this.prompt = prompt;
         }
@@ -368,12 +370,12 @@ public abstract class TerminalPane extends Editor implements Terminal {
     public void outputPrompt() {
         String text = this.getText();
         String prompt = this.prompt();
-        if (StringUtil.equals(text, "\n")) {
+        if (StringUtil.equals(text, LineEnding.system().getText())) {
             this.text(prompt);
         } else if (!StringUtil.endWith(text, prompt)) {
             this.appendContent(prompt);
         }
-        FXUtil.runAsync(this::flushNOP);
+        FXUtil.runWait(this::flushNOP);
     }
 
     @Override

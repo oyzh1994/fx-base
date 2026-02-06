@@ -251,6 +251,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     }
 
     /**
+     * 文本长度
+     */
+    private int textLen;
+
+    /**
      * 文本属性
      */
     private StringProperty textProperty;
@@ -260,7 +265,9 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     private StyledTextModel.Listener modelListener = e -> {
         if (e.isEdit()) {
-            this.textProperty.setValue(this.getText());
+            String text = this.getText();
+            this.textLen = text.length();
+            this.textProperty.setValue(text);
         }
     };
 
@@ -470,11 +477,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @return 文本长度
      */
     public int getLength() {
-        String text = super.getText();
-        if (text == null) {
-            return 0;
+//        String text = this.textProperty().get();
+//        if (text == null) {
+//            return 0;
+//        }
+//        return text.length();
+        if (this.textProperty == null) {
+            this.textProperty();
         }
-        return text.length();
+        return this.textLen;
     }
 
     /**
