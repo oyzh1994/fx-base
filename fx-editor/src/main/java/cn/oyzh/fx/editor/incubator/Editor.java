@@ -139,8 +139,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * 初始化编辑器
      */
     private void initEditor() {
-        // 处理输入法不支持中文的问题
-        EditorUtil.setupIMESupport(this);
+//        // 处理输入法不支持中文的问题
+//        EditorUtil.setupIMESupport(this);
         // 默认自动换行
         this.setWrapText(true);
         // 默认为内容宽高，避免布局问题
@@ -640,11 +640,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
             String text = this.getText();
-            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
-                content = System.lineSeparator() + content;
+//            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
+//                content = System.lineSeparator() + content;
+            if (!StringUtil.endsWith(text, this.getLineEnding().getText()) && !StringUtil.startWith(content, this.getLineEnding().getText())) {
+                content = this.getLineEnding().getText() + content;
             }
-            if (endLine && !content.endsWith(System.lineSeparator())) {
-                content += System.lineSeparator();
+//            if (endLine && !content.endsWith(System.lineSeparator())) {
+//                content += System.lineSeparator();
+            if (endLine && !content.endsWith(this.getLineEnding().getText())) {
+                content += this.getLineEnding().getText();
             }
             this.appendContent(content);
         }
@@ -973,6 +977,17 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                 this.changeFont(editorFont);
             }
         });
+
+//        // 监听皮肤初始化，控制滚动条thumb最低大小
+//        this.skinProperty().subscribe(skin -> {
+//            if (skin != null) {
+//                VFlow flow = RichTextAreaSkinHelper.getVFlow(this);
+//                ScrollBar vscroll = ReflectUtil.getFieldValue(flow, "vscroll");
+//                ScrollBar hscroll = ReflectUtil.getFieldValue(flow, "hscroll");
+//                ControlUtil.steupMinVisibleAmount(vscroll,0.05);
+//                ControlUtil.steupMinVisibleAmount(hscroll,0.05);
+//            }
+//        });
     }
 
     /**
@@ -1297,10 +1312,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public String getSelectedText() {
         SelectionSegment segment = this.getSelection();
-        if (segment == null) {
-            return "";
-        }
-        if (segment.getMin().equals(segment.getMax())) {
+        if (segment == null || segment.isCollapsed()) {
             return "";
         }
         TextPos min = segment.getMin();
@@ -1315,7 +1327,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             } else if (i == max.index()) {
                 text = text.substring(0, max.offset());
             }
-            builder.append(System.lineSeparator()).append(text);
+//            builder.append(System.lineSeparator()).append(text);
+            builder.append(this.getLineEnding().getText()).append(text);
         }
         if (builder.isEmpty()) {
             return "";

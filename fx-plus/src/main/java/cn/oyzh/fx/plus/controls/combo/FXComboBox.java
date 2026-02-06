@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -124,4 +123,19 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         super.resize(size[0], size[1]);
         this.resizeNode();
     }
+
+    //@Override
+    //public void changeTheme(ThemeStyle style) {
+    //    ThemeAdapter.super.changeTheme(style);
+    //    ComboBoxListViewSkin<?> skin = (ComboBoxListViewSkin<?>) this.getSkin();
+    //    if (skin != null) {
+    //        ListView<T> listView = (ListView<T>) skin.getPopupContent();
+    //        try {
+    //            ReflectUtil.invoke(listView, "reapplyCss");
+    //            listView.applyCss();
+    //        } catch (Exception ex) {
+    //            ex.printStackTrace();
+    //        }
+    //    }
+    //}
 }

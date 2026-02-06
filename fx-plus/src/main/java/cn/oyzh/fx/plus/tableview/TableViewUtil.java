@@ -17,6 +17,7 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.skin.NestedTableColumnHeader;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -150,12 +151,20 @@ public class TableViewUtil {
      */
     public static void selectRowOnMouseClicked(Node node) {
         if (node != null) {
-            node.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-                TableRow<?> tableRow = findTableRow(node);
-                if (tableRow != null && tableRow.getTableView() != null) {
-                    tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
-                }
-            });
+            //node.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            //    TableRow<?> tableRow = findTableRow(node);
+            //    if (tableRow != null && tableRow.getTableView() != null) {
+            //        tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
+            //    }
+            //});
+            node.addEventFilter(MouseEvent.MOUSE_CLICKED, TableViewUtil::_selectRowOnMouseClicked);
+        }
+    }
+
+    private static void _selectRowOnMouseClicked(MouseEvent event) {
+        TableRow<?> tableRow = findTableRow((Node) event.getSource());
+        if (tableRow != null && tableRow.getTableView() != null) {
+            tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
         }
     }
 
@@ -166,14 +175,24 @@ public class TableViewUtil {
      */
     public static void rowOnCtrlS(Node node) {
         if (node != null) {
-            node.setOnKeyPressed(event -> {
-                if (KeyboardUtil.isCtrlS(event)) {
-                    TableRow<?> tableRow = findTableRow(node);
-                    if (tableRow != null && tableRow.getTableView() instanceof FXTableView<?> tableView) {
-                        tableView.onCtrl_S();
-                    }
-                }
-            });
+            //node.setOnKeyPressed(event -> {
+            //    if (KeyboardUtil.isCtrlS(event)) {
+            //        TableRow<?> tableRow = findTableRow(node);
+            //        if (tableRow != null && tableRow.getTableView() instanceof FXTableView<?> tableView) {
+            //            tableView.onCtrl_S();
+            //        }
+            //    }
+            //});
+            node.addEventFilter(KeyEvent.KEY_PRESSED, TableViewUtil::_rowOnCtrlS);
+        }
+    }
+
+    private static void _rowOnCtrlS(KeyEvent event) {
+        if (KeyboardUtil.isCtrlS(event)) {
+            TableRow<?> tableRow = findTableRow((Node) event.getSource());
+            if (tableRow != null && tableRow.getTableView() instanceof FXTableView<?> tableView) {
+                tableView.onCtrl_S();
+            }
         }
     }
 

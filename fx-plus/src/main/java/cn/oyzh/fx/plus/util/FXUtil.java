@@ -540,4 +540,27 @@ public class FXUtil {
         return false;
     }
 
+    /**
+     * 是否开启预览特性
+     *
+     * @return 结果
+     */
+    public static boolean isEnablePreview() {
+        return "true".equalsIgnoreCase(System.getProperty("javafx.enablePreview"));
+    }
+
+    /**
+     * 开启预览特性
+     */
+    public static void enablePreview() {
+        System.setProperty("javafx.enablePreview", "true");
+        System.setProperty("javafx.suppressPreviewWarning", "true");
+    }
+
+    /**
+     * 禁用预览特性
+     */
+    public static void disablePreview() {
+        System.setProperty("javafx.enablePreview", "false");
+    }
 }

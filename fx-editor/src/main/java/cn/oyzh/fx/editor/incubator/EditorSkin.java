@@ -2,6 +2,7 @@ package cn.oyzh.fx.editor.incubator;
 
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaSkinHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -51,7 +52,7 @@ public class EditorSkin extends CodeAreaSkin {
                 return flow;
             }
         }
-        return null;
+        return RichTextAreaSkinHelper.getVFlow(this.getSkinnable());
     }
 
     /**

@@ -62,6 +62,7 @@ import java.util.regex.Pattern;
  * @author oyzh
  * @since 2023/9/28
  */
+@Deprecated
 public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, AreaAdapter, I18nAdapter, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {

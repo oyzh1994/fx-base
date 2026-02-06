@@ -122,6 +122,9 @@ public class FXChooser {
      */
     public static String getDownloadDirectory() {
         File file = new File(SystemUtil.userHome(), "Downloads");
+        if (!file.exists() || !file.isDirectory()) {
+            file = new File(SystemUtil.userHome(), "下载");
+        }
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }
@@ -135,6 +138,9 @@ public class FXChooser {
      */
     public static String getDesktopDirectory() {
         File file = new File(SystemUtil.userHome(), "Desktop");
+        if (!file.exists() || !file.isDirectory()) {
+            file = new File(SystemUtil.userHome(), "桌面");
+        }
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }
@@ -146,8 +152,11 @@ public class FXChooser {
      *
      * @return 结果
      */
-    public static String getDocumentsDirectory() {
+    public static String getDocumentDirectory() {
         File file = new File(SystemUtil.userHome(), "Documents");
+        if (!file.exists() || !file.isDirectory()) {
+            file = new File(SystemUtil.userHome(), "文档");
+        }
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }

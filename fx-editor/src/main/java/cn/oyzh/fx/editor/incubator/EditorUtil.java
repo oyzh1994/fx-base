@@ -24,9 +24,11 @@ public class EditorUtil {
 
     /**
      * 安装输入法支持
+     * TODO: 由于官方已经支持了输入法，此方法废弃
      *
      * @param editor 编辑器
      */
+    @Deprecated
     public static void setupIMESupport(Editor editor) {
         // 上一次未提交位置记录
         AtomicReference<Integer> lastComposedEnd = new AtomicReference<>();

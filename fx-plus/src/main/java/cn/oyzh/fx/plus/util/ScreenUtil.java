@@ -20,4 +20,14 @@ public class ScreenUtil {
         }
         return width;
     }
+
+    /**
+     * 获取主屏幕的高
+     *
+     * @return 主屏幕的高
+     */
+    public static double getPrimaryHeight() {
+         Screen screen = Screen.getPrimary();
+        return screen.getVisualBounds().getHeight();
+    }
 }

@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ArrayUtil;
-import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
@@ -32,6 +31,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.File;
@@ -287,7 +287,8 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
      * @return 结果
      */
     default boolean isExtendedHeader() {
-        return BooleanUtil.isTrue(this.getProp("extended:header"));
+//        return BooleanUtil.isTrue(this.getProp("extended:header"));
+        return this.stage().getStyle() == StageStyle.EXTENDED;
     }
 
     /**
@@ -304,10 +305,10 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         if (root == null) {
             throw new RuntimeException("load root fail");
         }
-        // 扩展标题头类型
-        if (attribute.stageStyle().isExtended()) {
-            this.setProp("extended:header", true);
-        }
+//        // 扩展标题头类型
+//        if (attribute.stageStyle().isExtended()) {
+//            this.setProp("extended:header", true);
+//        }
         // 舞台
         Stage stage = this.stage();
         // 初始化场景
@@ -781,11 +782,11 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     }
 
     default void close() {
-        FXUtil.runWait(()-> this.stage().close());
+        FXUtil.runWait(() -> this.stage().close());
     }
 
     default void show() {
-        FXUtil.runWait(()-> this.stage().show());
+        FXUtil.runWait(() -> this.stage().show());
     }
 
     default void showAndWait() {

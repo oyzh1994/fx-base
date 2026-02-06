@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Tab;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -65,6 +66,8 @@ public interface ThemeAdapter extends PropAdapter {
                 this.handleStyle(node, style);
             // } else if (NodeUtil.isSwingImport && this instanceof javafx.embed.swing.SwingNode node) {
             //     this.handleStyle(node, style);
+            } else if (this instanceof Labeled node) {
+                this.handleStyle(node, style);
             } else if (this instanceof Parent node) {
                 this.handleStyle(node, style);
             } else if (this instanceof Popup node) {
@@ -112,6 +115,17 @@ public interface ThemeAdapter extends PropAdapter {
      * @param style 主题风格
      */
     private void handleStyle(Node node, ThemeStyle style) {
+        style.handleStyle(node);
+    }
+
+    /**
+     * 处理样式
+     *
+     * @param node  节点
+     * @param style 主题风格
+     */
+    private void handleStyle(Labeled node, ThemeStyle style) {
+        node.setTextFill(style.getForegroundColor());
         style.handleStyle(node);
     }
 

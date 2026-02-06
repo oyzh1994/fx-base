@@ -3,6 +3,7 @@ package cn.oyzh.fx.editor.test.incubator;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
+import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.fx.editor.incubator.EditorFormatTypeComboBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
@@ -17,6 +18,7 @@ import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.FXUtil;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
@@ -32,7 +34,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.RichTextArea;
+import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import jfx.incubator.scene.control.richtext.model.StyledTextModel;
@@ -54,11 +58,17 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ThemeManager.apply(Themes.PRIMER_LIGHT);
-        // ThemeManager.apply(Themes.PRIMER_DARK);
+        //ThemeManager.apply(Themes.BLACK_ON_WHITE);
+         ThemeManager.apply(Themes.PRIMER_DARK);
+//        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
+//        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
+//        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
+//        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
         test1(stage);
+        stage.getScene().getStylesheets().add("/fx-plus/css/fx-base.css");
         // test2(stage);
         // test3(stage);
+//        test4(stage);
         stage.setTitle("编辑器测试");
     }
 
@@ -306,6 +316,9 @@ public class EditorTest extends Application {
 
         stage.setScene(scene);
         stage.show();
+
+        comboBox.setFormat(EditorFormatType.CSS);
+
     }
 
     private void test2(Stage stage) {
@@ -371,6 +384,31 @@ public class EditorTest extends Application {
 
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void test4(Stage stage) {
+        CodeArea editor = new CodeArea();
+        FXVBox vBox = new FXVBox();
+        vBox.addChild(editor);
+        Scene scene = new Scene(vBox);
+
+        stage.setWidth(800);
+        stage.setHeight(600);
+
+        stage.setScene(scene);
+        stage.show();
+
+        editor.setText("""
+                Hello, Javafx1
+                Hello, Javafx2
+                """);
+
+        editor.selectAll();
+        SelectionSegment sel = editor.getSelection();
+        StringBuilder sb = new StringBuilder();
+        RichTextAreaHelper.getText(editor, sel.getMin(), sel.getMax(), sb, Integer.MAX_VALUE);
+
+        System.out.println(sb);
     }
 
     public static class EditorTestStarter {

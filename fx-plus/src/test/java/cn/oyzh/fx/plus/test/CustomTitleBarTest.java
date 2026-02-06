@@ -3,12 +3,9 @@ package cn.oyzh.fx.plus.test;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Border;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.HeaderBar;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -50,12 +47,12 @@ public class CustomTitleBarTest extends Application {
         hBox.setStyle("-fx-background-color:f00f");
         hBox.setMaxWidth(Double.MAX_VALUE);
         hBox.setMouseTransparent(true);
-        headerBar.setLeading(hBox);
+        headerBar.setLeft(hBox);
 
         Label label = new Label("标题");
         label.setMouseTransparent(true);
         label.setPrefWidth(2000);
-        headerBar.setTrailing(label);
+        headerBar.setRight(label);
 
         // headerBar.setMouseTransparent(false);
         // headerBar.setTrailingSystemPadding(true);
