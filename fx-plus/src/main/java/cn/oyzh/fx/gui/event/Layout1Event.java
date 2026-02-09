@@ -6,6 +6,5 @@ import cn.oyzh.event.Event;
  * @author oyzh
  * @since 2024/3/29
  */
-@Deprecated
 public class Layout1Event extends Event<Object> {
 }
