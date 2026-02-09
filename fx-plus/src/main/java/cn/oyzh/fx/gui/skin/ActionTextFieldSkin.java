@@ -183,4 +183,10 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
         // 设置大小
         this.setButtonSize(size);
     }
+
+    /**
+     * 默认左侧组件内边距
+     */
+    public static final Insets DEFAULT_LEFT_PADDING = new Insets(0, 0, 0, 5);
+
 }
