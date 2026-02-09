@@ -4,6 +4,7 @@ import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.css.Styleable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 
 import java.util.ArrayList;
@@ -209,4 +210,28 @@ public class StyleUtil {
         StyleUtil.appendStyle(node, prop, value.toString());
     }
 
+    /**
+     * 移除应用样式表
+     *
+     * @param node       节点
+     * @param stylesheet 样式表
+     */
+    public static void removeStylesheet(Parent node, String stylesheet) {
+        if (node != null && stylesheet != null) {
+            node.getStylesheets().remove(stylesheet);
+        }
+    }
+
+    /**
+     * 重新应用样式表
+     *
+     * @param node       节点
+     * @param stylesheet 样式表
+     */
+    public static void reapplyStylesheet(Parent node, String stylesheet) {
+        if (node != null && stylesheet != null) {
+            node.getStylesheets().remove(stylesheet);
+            node.getStylesheets().add(stylesheet);
+        }
+    }
 }

@@ -13,6 +13,16 @@ public class FXStyle {
      */
     public static final String FX_BASE = "/fx-plus/css/fx-base.css";
 
+//    /**
+//     * fx暗色样式文本
+//     */
+//    public static final String FX_DARK = "/fx-plus/css/fx-dark.css";
+//
+//    /**
+//     * fx亮色样式文本
+//     */
+//    public static final String FX_LIGHT = "/fx-plus/css/fx-light.css";
+
 //    public static final String ATLANTA_FX_CUPERTINO_DARK = "/fx-plus/css/atlantafx/cupertino-dark.min.css";
 //
 //    public static final String ATLANTA_FX_CUPERTINO_LIGHT = "/fx-plus/css/atlantafx/cupertino-light.min.css";

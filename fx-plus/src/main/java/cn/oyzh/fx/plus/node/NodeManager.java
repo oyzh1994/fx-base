@@ -6,8 +6,6 @@ import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import cn.oyzh.fx.plus.opacity.OpacityManager;
-import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.i18n.I18nManager;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -85,10 +83,10 @@ public class NodeManager {
             region.setSnapToPixel(true);
         }
         //// TODO: 延迟执行主题处理，否则可能出现部分组件样式异常
-         if (node instanceof ThemeAdapter adapter) {
-             adapter.changeTheme(ThemeManager.currentTheme());
-//            ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 150);
-        }
+        // if (node instanceof ThemeAdapter adapter) {
+        //    // adapter.changeTheme(ThemeManager.currentTheme());
+        //    ThreadUtil.start(() -> adapter.changeTheme(ThemeManager.currentTheme()), 150);
+        //}
         //
         // // TODO: 解决部分css可能不生效问题
         // if (node instanceof Node node1) {

@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
@@ -265,5 +266,11 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     @Override
     public void changeFont(Font font) {
         FontAdapter.super.changeFont(font);
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        ThemeAdapter.super.changeTheme(style);
+        this.refresh();
     }
 }

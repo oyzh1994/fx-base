@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListView;
@@ -56,5 +57,11 @@ public class FXListView<T> extends ListView<T> implements FlexAdapter, TipAdapte
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        ThemeAdapter.super.changeTheme(style);
+        this.refresh();
     }
 }

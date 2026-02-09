@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.theme;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
@@ -118,8 +119,14 @@ public interface ThemeStyle {
             FXUtil.runWait(() -> {
                 try {
                     // 更新fx-base样式文件
-                    node.getStylesheets().remove(FXStyle.FX_BASE);
-                    node.getStylesheets().add(FXStyle.FX_BASE);
+                    StyleUtil.reapplyStylesheet(node, FXStyle.FX_BASE);
+//                    if (ThemeManager.isDarkMode()) {
+//                        StyleUtil.removeStylesheet(node, FXStyle.FX_LIGHT);
+//                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
+//                    } else {
+//                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
+//                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_LIGHT);
+//                    }
                     //// 重新应用样式
                     //ReflectUtil.invoke(node, "reapplyCss");
                     //node.applyCss();
