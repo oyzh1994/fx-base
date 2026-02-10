@@ -103,7 +103,6 @@ public class AlertStage extends Stage implements StageAdapter {
 
         this.content = new FXLabel(content);
         this.content.setWrapText(true);
-        this.content.setMaxWidth(280);
         this.content.setMaxHeight(ScreenUtil.getPrimaryHeight() - 125);
 
         if (this.graphic != null) {
@@ -120,9 +119,12 @@ public class AlertStage extends Stage implements StageAdapter {
         btnBox.addChild(this.buttons);
         btnBox.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         if (this.graphic == null) {
-            btnBox.setPrefWidth(375);
+            btnBox.setMaxWidth(370);
+            btnBox.setPrefWidth(370);
         } else {
-            btnBox.setPrefWidth(285);
+            btnBox.setMaxWidth(280);
+            btnBox.setPrefWidth(280);
+            this.content.setMaxWidth(280);
         }
         for (Button button : buttons) {
             FXHBox.setMargin(button, BUTTON_DEFAULT_MARGIN);
