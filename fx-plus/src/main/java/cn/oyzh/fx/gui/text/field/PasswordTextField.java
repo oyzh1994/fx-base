@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
 import javafx.scene.control.Skin;
 
@@ -68,7 +69,8 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
     @Override
     public boolean validate() {
         if (this.require && this.isEmpty()) {
-            this.requestFocus();
+//            this.requestFocus();
+            ValidatorUtil.validFail(this);
             return false;
         }
         return Verifiable.super.validate();
