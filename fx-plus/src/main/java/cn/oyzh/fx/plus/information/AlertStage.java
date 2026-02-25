@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.information;
 
+import cn.oyzh.fx.gui.svg.glyph.InfoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.alert.ErrorSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.alert.QuestionSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.alert.WarningSVGGlyph;
@@ -91,7 +92,7 @@ public class AlertStage extends Stage implements StageAdapter {
                 this.graphic = new ErrorSVGGlyph();
                 this.graphic.setColor(Color.ORANGERED);
             } else if (type == Alert.AlertType.INFORMATION) {
-                this.graphic = new ErrorSVGGlyph();
+                this.graphic = new InfoSVGGlyph();
                 this.graphic.setColor(Color.DODGERBLUE);
             }
         }
