@@ -128,4 +128,12 @@ public class StageController extends Controller implements StageListener, EventL
     protected void appendTitle(String title) {
         this.stage.appendTitle(title);
     }
+
+    protected void setTitle(String title) {
+        this.stage.title(title);
+    }
+
+    protected String getTitle() {
+        return this.stage.title();
+    }
 }
