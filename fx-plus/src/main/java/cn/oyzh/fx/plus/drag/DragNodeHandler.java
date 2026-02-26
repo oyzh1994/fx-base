@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.drag;
 
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -14,7 +15,7 @@ import javafx.scene.input.TransferMode;
  * @author oyzh
  * @since 2023/5/14
  */
-public class DragNodeHandler   {
+public class DragNodeHandler {
 
     // /**
     //  * 拖动中标志位
@@ -203,16 +204,18 @@ public class DragNodeHandler   {
     public void initEvent(Node node, String content) {
         // 触发拖动
         node.addEventFilter(MouseEvent.DRAG_DETECTED, event -> {
-            // 获取拖动节点
-            DragNodeItem source = DragUtil.getDragItem(event.getSource());
-            // 判断是否允许触发拖动事件
-            if (source != null && source.allowDrag()) {
-                Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent clipboardContent = new ClipboardContent();
-                clipboardContent.putString(content);
-                db.setContent(clipboardContent);
-                // 设置特效
-                this.initDragEffect(source);
+            if (MouseUtil.isPrimaryButton(event)) {
+                // 获取拖动节点
+                DragNodeItem source = DragUtil.getDragItem(event.getSource());
+                // 判断是否允许触发拖动事件
+                if (source != null && source.allowDrag()) {
+                    Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent clipboardContent = new ClipboardContent();
+                    clipboardContent.putString(content);
+                    db.setContent(clipboardContent);
+                    // 设置特效
+                    this.initDragEffect(source);
+                }
             }
             event.consume();
         });
