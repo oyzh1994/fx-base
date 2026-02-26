@@ -20,6 +20,11 @@
 .tree-table-row-cell > .tree-disclosure-node > .arrow {
     -fx-padding: 0.5em 0.5em 0 0;
 }
+/*.tree-cell:selected {*/
+/*    -fx-border-width: 0.5px;*/
+/*    -fx-border-style: solid;*/
+/*    -fx-border-color: -color-fg-default;*/
+/*}*/
 /* tree-cell，修复atlantafx的样式异常问题 */
 
 /* text-input，修复atlantafx的样式异常问题 */

@@ -15,6 +15,7 @@ public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter,
 
     {
         NodeManager.init(this);
+//        this.setBackground(null);
     }
 
     @Override
