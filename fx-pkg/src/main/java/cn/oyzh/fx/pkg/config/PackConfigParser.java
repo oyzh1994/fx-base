@@ -13,9 +13,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfigParser;
 import cn.oyzh.fx.pkg.jre.JreConfig;
 import cn.oyzh.fx.pkg.jre.JreConfigParser;
-import cn.oyzh.fx.pkg.packr.PackrConfigParser;
 import com.alibaba.fastjson2.JSONObject;
-import com.badlogicgames.packr.PackrConfig;
 
 /**
  * 打包配置解析器

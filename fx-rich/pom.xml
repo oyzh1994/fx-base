@@ -26,13 +26,13 @@
             <artifactId>fx-plus</artifactId>
         </dependency>
 
-        <!-- fx富文本域 -->
-        <dependency>
-            <groupId>com.gluonhq</groupId>
-            <artifactId>rich-text-area</artifactId>
-            <version>1.2.0</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        &lt;!&ndash; fx富文本域 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.gluonhq</groupId>-->
+<!--            <artifactId>rich-text-area</artifactId>-->
+<!--            <version>1.2.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
 
         <!-- fx富文本 -->
         <!-- https://mvnrepository.com/artifact/org.fxmisc.richtext/richtextfx -->
@@ -60,27 +60,27 @@
             </exclusions>
         </dependency>
 
-       <!-- https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext -->
-       <dependency>
-           <groupId>org.openjfx</groupId>
-           <artifactId>jfx-incubator-richtext</artifactId>
-           <version>${javafx.version}</version>
-           <scope>provided</scope>
-       </dependency>
+<!--       &lt;!&ndash; https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext &ndash;&gt;-->
+<!--       <dependency>-->
+<!--           <groupId>org.openjfx</groupId>-->
+<!--           <artifactId>jfx-incubator-richtext</artifactId>-->
+<!--           <version>${javafx.version}</version>-->
+<!--           <scope>provided</scope>-->
+<!--       </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/org.jspecify/jspecify -->
-        <dependency>
-            <groupId>org.jspecify</groupId>
-            <artifactId>jspecify</artifactId>
-            <version>${jspecify.version}</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.jspecify/jspecify &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.jspecify</groupId>-->
+<!--            <artifactId>jspecify</artifactId>-->
+<!--            <version>${jspecify.version}</version>-->
+<!--        </dependency>-->
 
-        <!-- https://mvnrepository.com/artifact/io.github.mkpaz/tm4javafx -->
-        <dependency>
-            <groupId>io.github.mkpaz</groupId>
-            <artifactId>tm4javafx</artifactId>
-            <version>${tm4javafx.version}</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/io.github.mkpaz/tm4javafx &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>io.github.mkpaz</groupId>-->
+<!--            <artifactId>tm4javafx</artifactId>-->
+<!--            <version>${tm4javafx.version}</version>-->
+<!--        </dependency>-->
 
         <!-- &lt;!&ndash; https://mvnrepository.com/artifact/dev.secondsun/org.eclipse.tm4e.core &ndash;&gt; -->
         <!-- <dependency> -->

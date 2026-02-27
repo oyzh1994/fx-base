@@ -31,13 +31,13 @@
         <!--     <scope>provided</scope> -->
         <!-- </dependency> -->
 
-        <!-- https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea -->
-        <dependency>
-            <groupId>com.fifesoft</groupId>
-            <artifactId>rsyntaxtextarea</artifactId>
-            <version>${rsyntaxtextarea.version}</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.fifesoft</groupId>-->
+<!--            <artifactId>rsyntaxtextarea</artifactId>-->
+<!--            <version>${rsyntaxtextarea.version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.jspecify/jspecify -->
         <dependency>

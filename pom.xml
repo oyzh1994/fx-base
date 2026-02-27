@@ -55,7 +55,7 @@
         <atlantafx.version>2.1.0</atlantafx.version>
         <tm4javafx.version>0.1.0</tm4javafx.version>
         <richtextfx.version>0.11.6</richtextfx.version>
-        <rsyntaxtextarea.version>3.6.0</rsyntaxtextarea.version>
+<!--        <rsyntaxtextarea.version>3.6.0</rsyntaxtextarea.version>-->
     </properties>
 
     <!-- 声明仓库 -->
