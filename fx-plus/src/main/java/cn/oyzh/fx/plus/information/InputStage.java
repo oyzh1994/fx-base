@@ -54,8 +54,9 @@ public class InputStage extends Stage implements StageAdapter {
 
         this.textField = new ClearableTextField();
         this.setPromptText(I18nHelper.pleaseInputContent());
+        this.textField.setPrefHeight(25);
         this.textField.setText(initText);
-        this.textField.setFlexWidth("100% - 10");
+        this.textField.setFlexWidth("100% - 15");
 
         root.addChild(this.textField);
         VBox.setMargin(this.textField, DEFAULT_MARGIN);
@@ -91,7 +92,7 @@ public class InputStage extends Stage implements StageAdapter {
     }
 
     public void cancel() {
-        this.result = "";
+        this.result = null;
         this.close();
     }
 
@@ -143,11 +144,11 @@ public class InputStage extends Stage implements StageAdapter {
         return null;
     }
 
-    @Override
-    public void hide() {
-        if (this.result == null) {
-            this.result = "";
-        }
-        super.hide();
-    }
+//    @Override
+//    public void hide() {
+//        if (this.result == null) {
+//            this.result = "";
+//        }
+//        super.hide();
+//    }
 }

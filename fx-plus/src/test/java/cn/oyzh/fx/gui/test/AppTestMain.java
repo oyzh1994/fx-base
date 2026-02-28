@@ -7,8 +7,11 @@ import cn.oyzh.fx.gui.text.field.DecimalTextField;
 import cn.oyzh.fx.gui.text.field.DigitalTextField;
 import cn.oyzh.fx.gui.text.field.LimitTextField;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
+import cn.oyzh.fx.plus.controls.box.FXVBox;
+import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
+import com.sun.javafx.scene.control.skin.FXVK;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -55,7 +58,8 @@ public class AppTestMain extends Application {
         // test3(stage);
         //test4(stage);
 //        test5(stage);
-        test6(stage);
+//         test6(stage);
+        test7(stage);
     }
 
     private void test1(Stage stage) {
@@ -283,6 +287,24 @@ public class AppTestMain extends Application {
                 comboBox1.getEditor().setText(newValue);
             }
         });
+
+    }
+
+    private void test7(Stage stage) {
+
+        FXVBox vbox = new FXVBox();
+        TextField field=new TextField();
+
+        vbox.addChild(field);
+        Scene scene = new Scene(vbox, 400, 300);
+        stage.setTitle("titledPane测试");
+        stage.setScene(scene);
+        stage.show();
+        FXVK.init(vbox);
+        FXVK.attach(field);
+
+        // Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+        Application.setUserAgentStylesheet("com/sun/javafx/scene/control/skin/caspian/fxvk.css");
 
     }
 

@@ -7,7 +7,6 @@ import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -170,11 +169,11 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
 
     @Override
     public ObjectProperty<Node> leftProperty() {
-        if (super.leftProperty() == null) {
+        if (super.leftProperty== null) {
             this.history = new HistorySVGGlyph();
             this.history.setTipText(I18nHelper.his());
             this.history.setFocusTraversable(false);
-            this.history.setPadding(Insets.EMPTY);
+            this.history.setPadding(DEFAULT_LEFT_PADDING);
             this.history.setOnMousePrimaryClicked(e -> this.showPopup());
             this.history.setOnMouseMoved(mouseEvent -> this.history.setColor("#E36413"));
             this.history.setOnMouseExited(mouseEvent -> this.history.setColor(this.getButtonColor()));

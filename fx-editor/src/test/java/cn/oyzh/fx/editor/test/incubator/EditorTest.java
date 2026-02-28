@@ -193,7 +193,14 @@ public class EditorTest extends Application {
         // 追加
         Button btn_33 = new Button("追加行");
         btn_33.setOnAction(event -> {
-            editor.appendLine("test2");
+            editor.appendLine("""
+                    12	13	json1	
+                    14	15	1    	
+                    2 	3 	4    	
+                    5 	6 	7    	
+                    8 	9 	
+                    阿里云-redis@12.0.0.1:6379(已连接)>\s
+                    """);
         });
         hBox3.addChild(btn_33);
         // 清除

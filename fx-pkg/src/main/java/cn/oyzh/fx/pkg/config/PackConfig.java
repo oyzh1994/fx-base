@@ -8,7 +8,6 @@ import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jre.JreConfig;
-import com.badlogicgames.packr.PackrConfig;
 
 import java.io.File;
 import java.util.HashMap;
@@ -134,11 +133,11 @@ public class PackConfig implements ConfigMargeAble<PackConfig> {
      */
     private JLinkConfig jLinkConfig;
 
-    /**
-     * packr配置
-     */
-    @Deprecated
-    private PackrConfig packrConfig;
+//    /**
+//     * packr配置
+//     */
+//    @Deprecated
+//    private PackrConfig packrConfig;
 
     /**
      * jPackage配置
@@ -392,13 +391,13 @@ public class PackConfig implements ConfigMargeAble<PackConfig> {
         this.jLinkConfig = jLinkConfig;
     }
 
-    public PackrConfig getPackrConfig() {
-        return packrConfig;
-    }
-
-    public void setPackrConfig(PackrConfig packrConfig) {
-        this.packrConfig = packrConfig;
-    }
+//    public PackrConfig getPackrConfig() {
+//        return packrConfig;
+//    }
+//
+//    public void setPackrConfig(PackrConfig packrConfig) {
+//        this.packrConfig = packrConfig;
+//    }
 
     public JPackageConfig getjPackageConfig() {
         return jPackageConfig;

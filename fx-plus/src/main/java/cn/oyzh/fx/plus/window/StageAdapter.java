@@ -325,6 +325,25 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         if (!this.hasBeenVisible()) {
             stage.initStyle(attribute.stageStyle().toStageStyle());
         }
+//        if (root instanceof Region region) {
+//            try {
+//                FileInputStream fis = new FileInputStream("/Users/oyzh/Downloads/img.jpg");
+//                BackgroundSize backgroundSize = new BackgroundSize(
+//                        BackgroundSize.AUTO, BackgroundSize.AUTO, true, true,
+//                        true, true);
+//                BackgroundImage image = new BackgroundImage(
+//                        new Image(fis),
+//                        BackgroundRepeat.NO_REPEAT,
+//                        BackgroundRepeat.NO_REPEAT,
+//                        BackgroundPosition.DEFAULT,
+//                        backgroundSize
+//                );
+//                Background background = new Background(image);
+//                region.setBackground(background);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
         // 初始化stage
         stage.setResizable(attribute.resizable());
         // 设置icon

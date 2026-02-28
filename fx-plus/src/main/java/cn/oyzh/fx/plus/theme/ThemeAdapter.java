@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.window.StageAdapter;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.Tab;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -64,10 +63,10 @@ public interface ThemeAdapter extends PropAdapter {
         if (this.isEnableTheme() && style != null) {
             if (this instanceof Canvas node) {
                 this.handleStyle(node, style);
-            // } else if (NodeUtil.isSwingImport && this instanceof javafx.embed.swing.SwingNode node) {
-            //     this.handleStyle(node, style);
-            } else if (this instanceof Labeled node) {
-                this.handleStyle(node, style);
+                // } else if (NodeUtil.isSwingImport && this instanceof javafx.embed.swing.SwingNode node) {
+                //     this.handleStyle(node, style);
+//            } else if (this instanceof Labeled node) {
+//                this.handleStyle(node, style);
             } else if (this instanceof Parent node) {
                 this.handleStyle(node, style);
             } else if (this instanceof Popup node) {
@@ -77,7 +76,9 @@ public interface ThemeAdapter extends PropAdapter {
             } else if (this instanceof StageAdapter node) {
                 this.handleStyle(node.root(), style);
             } else if (this instanceof Stage node) {
-                this.handleStyle(node.getScene().getRoot(), style);
+                if (node.getScene() != null) {
+                    this.handleStyle(node.getScene().getRoot(), style);
+                }
             } else if (this instanceof Node node) {
                 this.handleStyle(node, style);
             }
@@ -118,16 +119,16 @@ public interface ThemeAdapter extends PropAdapter {
         style.handleStyle(node);
     }
 
-    /**
-     * 处理样式
-     *
-     * @param node  节点
-     * @param style 主题风格
-     */
-    private void handleStyle(Labeled node, ThemeStyle style) {
-        node.setTextFill(style.getForegroundColor());
-        style.handleStyle(node);
-    }
+//    /**
+//     * 处理样式
+//     *
+//     * @param node  节点
+//     * @param style 主题风格
+//     */
+//    private void handleStyle(Labeled node, ThemeStyle style) {
+//        node.setTextFill(style.getForegroundColor());
+//        style.handleStyle(node);
+//    }
 
     // /**
     //  * 处理样式
@@ -143,7 +144,7 @@ public interface ThemeAdapter extends PropAdapter {
     /**
      * 应用主题
      */
-    default void applyTheme(){
+    default void applyTheme() {
         this.changeTheme(ThemeManager.currentTheme());
     }
 }
