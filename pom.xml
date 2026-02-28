@@ -72,6 +72,11 @@
         <!--     </snapshots> -->
         <!-- </repository> -->
         <repository>
+            <id>center</id>
+            <name>center</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
             <id>aliyun</id>
             <name>aliyun</name>
             <url>https://maven.aliyun.com/repository/public/</url>
@@ -80,11 +85,6 @@
             <id>tencent</id>
             <name>tencent</name>
             <url>https://mirrors.tencent.com/nexus/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>center</id>
-            <name>center</name>
-            <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <!-- <repository> -->
         <!--     <id>jetbrains</id> -->
