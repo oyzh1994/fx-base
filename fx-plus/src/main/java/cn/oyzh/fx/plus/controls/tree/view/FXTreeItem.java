@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.thread.BackgroundService;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.TreeItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -173,7 +173,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void reExpanded() {
         if (this.isExpanded()) {
-            BackgroundService.submitFX(() -> {
+            FXUtil.runWait(() -> {
+//            BackgroundService.submitFX(() -> {
                 this.setExpanded(false);
                 this.setExpanded(true);
             });
@@ -254,7 +255,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     public void setChild(TreeItem<?>... items) {
         if (ArrayUtil.isNotEmpty(items)) {
             TreeItem[] treeItems = items;
-            BackgroundService.submitFX(() -> this.getChildren().setAll(treeItems));
+//            BackgroundService.submitFX(() -> this.getChildren().setAll(treeItems));
+            FXUtil.runWait(() -> this.getChildren().setAll(treeItems));
         }
     }
 
@@ -265,7 +267,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void setChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            BackgroundService.submitFX(() -> this.getChildren().setAll((List) items));
+//            BackgroundService.submitFX(() -> this.getChildren().setAll((List) items));
+            FXUtil.runWait(() -> this.getChildren().setAll((List) items));
         }
     }
 
@@ -276,7 +279,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void addChild(TreeItem<?> item) {
         if (item != null) {
-            BackgroundService.submitFX(() -> this.getChildren().add((TreeItem) item));
+//            BackgroundService.submitFX(() -> this.getChildren().add((TreeItem) item));
+            FXUtil.runWait(() -> this.getChildren().add((TreeItem) item));
         }
     }
 
@@ -287,7 +291,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void addChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            BackgroundService.submitFX(() -> this.getChildren().addAll((List) items));
+//            BackgroundService.submitFX(() -> this.getChildren().addAll((List) items));
+            FXUtil.runWait(() -> this.getChildren().addAll((List) items));
         }
     }
 
@@ -298,7 +303,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void removeChild(TreeItem<?> item) {
         if (item != null) {
-            BackgroundService.submitFX(() -> this.getChildren().remove(item));
+//            BackgroundService.submitFX(() -> this.getChildren().remove(item));
+            FXUtil.runWait(() -> this.getChildren().remove(item));
         }
     }
 
@@ -309,7 +315,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void removeChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
-            BackgroundService.submitFX(() -> this.getChildren().removeAll(items));
+//            BackgroundService.submitFX(() -> this.getChildren().removeAll(items));
+            FXUtil.runWait(() -> this.getChildren().removeAll(items));
         }
     }
 
@@ -351,7 +358,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void expend() {
         if (!this.isExpanded()) {
-            BackgroundService.submitFX(() -> this.setExpanded(true));
+//            BackgroundService.submitFX(() -> this.setExpanded(true));
+            FXUtil.runWait(() -> this.setExpanded(true));
         }
     }
 
@@ -360,7 +368,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      */
     public void collapse() {
         if (this.isExpanded()) {
-            BackgroundService.submitFX(() -> this.setExpanded(false));
+//            BackgroundService.submitFX(() -> this.setExpanded(false));
+            FXUtil.runWait(() -> this.setExpanded(false));
         }
     }
 
@@ -392,7 +401,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
      * 刷新treeview
      */
     public void refresh() {
-        BackgroundService.submitFXLater(() -> {
+        FXUtil.runWait(() -> {
+//        BackgroundService.submitFXLater(() -> {
             FXTreeView treeView = this.getTreeView();
             if (treeView != null) {
                 treeView.refresh();
