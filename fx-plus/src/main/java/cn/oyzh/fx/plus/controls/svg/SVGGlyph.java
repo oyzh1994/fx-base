@@ -461,6 +461,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
 
     public void setActiveColor(Color activeColor) {
         this.activeColor = activeColor;
+        this.setActive(activeColor != null);
     }
 
     public Boolean getWaiting() {
