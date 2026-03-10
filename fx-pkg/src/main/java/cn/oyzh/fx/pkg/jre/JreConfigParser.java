@@ -4,7 +4,6 @@ import cn.oyzh.fx.pkg.ConfigParser;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -24,6 +23,9 @@ public class JreConfigParser implements ConfigParser<JreConfig> {
             for (Object o : excludes) {
                 config.getExcludes().add(o.toString());
             }
+        }
+        if (object.containsKey("enable")) {
+            config.setEnable(object.getBooleanValue("enable", true));
         }
         return config;
     }
