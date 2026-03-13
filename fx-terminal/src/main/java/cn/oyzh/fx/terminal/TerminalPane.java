@@ -86,15 +86,10 @@ public abstract class TerminalPane extends Editor implements Terminal {
         if (nop > len) {
             this.flushNOP();
             nop = this.getNOP();
-            System.out.println("----z");
         }
         if (JulLog.isDebugEnabled()) {
             JulLog.debug("nop:{}, length:{}", nop, len);
         }
-        System.out.println(nop);
-        System.out.println(len);
-        System.out.println(caretPosition);
-        System.out.println("=======================");
         if (caretPosition < nop) {
             this.disableInput();
         } else {
@@ -207,10 +202,6 @@ public abstract class TerminalPane extends Editor implements Terminal {
                         if (!keyHandler.onEndKeyPressed(this)) {
                             event.consume();
                         }
-                    } else {
-                        System.out.println(this.contentLength());
-                        System.out.println(this.getNOP());
-                        System.out.println(this.checkNop());
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
