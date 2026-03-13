@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.stage.Window;
@@ -176,4 +177,54 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
     //     this.tabReference = null;
     //     DestroyAdapter.super.destroy();
     // }
+
+    /**
+     * 获取tab内容
+     *
+     * @return 结果
+     */
+    public Node getTabContent() {
+        if (this.getTab() != null) {
+            return this.getTab().getContent();
+        }
+        return null;
+    }
+
+    /**
+     * 获取tab图标
+     *
+     * @return 结果
+     */
+    public Node getTabGraphic() {
+        if (this.getTab() != null) {
+            return this.getTab().getGraphic();
+        }
+        return null;
+    }
+
+    ///**
+    // * 开启等待动画
+    // */
+    //public void startWaiting() {
+    //    if (this.getTabGraphic() instanceof SVGGlyph glyph) {
+    //        glyph.startWaiting();
+    //    }
+    //    Node node = this.getTabContent();
+    //    if (node != null) {
+    //        node.setDisable(true);
+    //    }
+    //}
+    //
+    ///**
+    // * 结束等待动画
+    // */
+    //public void stopWaiting() {
+    //    if (this.getTabGraphic() instanceof SVGGlyph glyph) {
+    //        glyph.stopWaiting();
+    //    }
+    //    Node node = this.getTabContent();
+    //    if (node != null) {
+    //        node.setDisable(false);
+    //    }
+    //}
 }

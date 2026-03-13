@@ -729,7 +729,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public static int defaultTerminalFontWeight() {
-        return FontWeight.NORMAL.getWeight();
+        return FontWeight.BOLD.getWeight();
     }
 
     public Byte getQueryFontSize() {
