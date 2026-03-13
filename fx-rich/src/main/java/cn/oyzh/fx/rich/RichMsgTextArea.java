@@ -1,9 +1,11 @@
-package cn.oyzh.fx.gui.text.area;
+package cn.oyzh.fx.rich;
 
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
+import cn.oyzh.fx.editor.incubator.Editor;
+import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.i18n.I18nHelper;
+import jfx.incubator.scene.control.richtext.LineEnding;
 
 import java.util.Collection;
 import java.util.Queue;
@@ -12,12 +14,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 消息文本域
  *
  * @author oyzh
- * @since 2023/04/08
+ * @since 2026-03-13
  */
-public class MsgTextArea extends FXTextArea {
+public class RichMsgTextArea extends Editor {
 
     {
         this.setEditable(false);
@@ -26,7 +27,7 @@ public class MsgTextArea extends FXTextArea {
     /**
      * 单行内容最大长度，避免性能问题
      */
-    public static int LINE_MAX_LENGTH = 20 * 1024;
+    public static int LINE_MAX_LENGTH = 5 * 1024;
 
     /**
      * 最大行数
@@ -70,7 +71,6 @@ public class MsgTextArea extends FXTextArea {
      */
     private final AtomicBoolean appending = new AtomicBoolean(false);
 
-    @Override
     public void appendLines(Collection<String> lines) {
         if (CollectionUtil.isNotEmpty(lines)) {
             StringBuilder builder = new StringBuilder();
@@ -79,10 +79,10 @@ public class MsgTextArea extends FXTextArea {
                     if (line.length() > LINE_MAX_LENGTH) {
                         line = I18nHelper.contentTooLarge();
                     }
-                    builder.append(line).append(System.lineSeparator());
+                    builder.append(line).append(LineEnding.system().getText());
                 }
             }
-            this.appendText(builder.toString());
+            this.appendContent(builder.toString());
         }
     }
 
@@ -92,12 +92,12 @@ public class MsgTextArea extends FXTextArea {
             if (s.length() > LINE_MAX_LENGTH) {
                 s = I18nHelper.contentTooLarge();
             }
-            this.appendText(s + System.lineSeparator());
+            this.appendContent(s + LineEnding.system().getText());
         }
     }
 
     @Override
-    public void appendText(String s) {
+    public void appendContent(String s) {
         if (s != null) {
             try {
                 // 检测最大行
@@ -135,7 +135,6 @@ public class MsgTextArea extends FXTextArea {
                         builder.append(line);
                     }
                 } while (!this.queue.isEmpty());
-                this.appending.compareAndSet(true, false);
                 super.appendText(builder.toString());
             } finally {
                 this.appending.compareAndSet(true, false);
@@ -175,5 +174,11 @@ public class MsgTextArea extends FXTextArea {
         if (endPos.get() > 0) {
             this.deleteText(0, endPos.get());
         }
+    }
+
+    @Override
+    public void initNode() {
+        super.initNode();
+        this.setFormatType(EditorFormatType.LOG);
     }
 }

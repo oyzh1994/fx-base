@@ -1382,6 +1382,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         return lines;
     }
 
+    /**
+     * 获取行数量
+     *
+     * @return 行数量
+     */
+    public long lineCount() {
+        return this.getText().lines().count();
+    }
+
     @Override
     public void destroy() {
         if (this.modelListener != null) {
@@ -1417,4 +1426,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         // NodeDestroyUtil.destroyObject(this);
         DestroyAdapter.super.destroy();
     }
+
+
 }

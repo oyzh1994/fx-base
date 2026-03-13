@@ -20,10 +20,16 @@
     </properties>
 
     <dependencies>
-        <!-- 自定义类库，fx相关 -->
+<!--        &lt;!&ndash; 自定义类库，fx相关 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>io.github.oyzh1994</groupId>-->
+<!--            <artifactId>fx-plus</artifactId>-->
+<!--        </dependency>-->
+
+        <!-- 自定义类库，编辑器相关 -->
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
-            <artifactId>fx-plus</artifactId>
+            <artifactId>fx-editor</artifactId>
         </dependency>
 
 <!--        &lt;!&ndash; fx富文本域 &ndash;&gt;-->
@@ -40,6 +46,7 @@
             <groupId>org.fxmisc.richtext</groupId>
             <artifactId>richtextfx</artifactId>
             <version>${richtextfx.version}</version>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>
