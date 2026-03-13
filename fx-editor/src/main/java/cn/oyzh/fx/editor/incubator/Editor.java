@@ -593,7 +593,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         int length = 0;
         for (int i = 0; i < pos.index(); i++) {
             int len = this.getParagraphLength(i);
-            length += len + 1;
+            length += len + this.lineEndingLength();
         }
         return length + pos.offset();
     }
@@ -1434,5 +1434,14 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public String lineEndingText() {
         return super.getLineEnding().getText();
+    }
+
+    /**
+     * 获取换行文本长度
+     *
+     * @return 结果
+     */
+    public int lineEndingLength() {
+        return this.lineEndingText().length();
     }
 }
