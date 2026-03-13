@@ -653,13 +653,13 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             String text = this.getText();
 //            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
 //                content = System.lineSeparator() + content;
-            if (!StringUtil.endsWith(text, this.getLineEnding().getText()) && !StringUtil.startWith(content, this.getLineEnding().getText())) {
-                content = this.getLineEnding().getText() + content;
+            if (!StringUtil.endsWith(text, this.lineEndingText()) && !StringUtil.startWith(content, this.lineEndingText())) {
+                content = this.lineEndingText() + content;
             }
 //            if (endLine && !content.endsWith(System.lineSeparator())) {
 //                content += System.lineSeparator();
-            if (endLine && !content.endsWith(this.getLineEnding().getText())) {
-                content += this.getLineEnding().getText();
+            if (endLine && !content.endsWith(this.lineEndingText())) {
+                content += this.lineEndingText();
             }
             this.appendContent(content);
         }
@@ -1339,7 +1339,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                 text = text.substring(0, max.offset());
             }
 //            builder.append(System.lineSeparator()).append(text);
-            builder.append(this.getLineEnding().getText()).append(text);
+            builder.append(this.lineEndingText()).append(text);
         }
         if (builder.isEmpty()) {
             return "";
@@ -1427,5 +1427,12 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         DestroyAdapter.super.destroy();
     }
 
-
+    /**
+     * 获取换行文本
+     *
+     * @return 结果
+     */
+    public String lineEndingText() {
+        return super.getLineEnding().getText();
+    }
 }

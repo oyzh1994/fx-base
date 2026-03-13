@@ -79,7 +79,10 @@ public class MsgTextArea extends FXTextArea {
                     if (line.length() > LINE_MAX_LENGTH) {
                         line = I18nHelper.contentTooLarge();
                     }
-                    builder.append(line).append(System.lineSeparator());
+                    builder.append(line);
+                    if (!line.endsWith(System.lineSeparator())) {
+                        builder.append(System.lineSeparator());
+                    }
                 }
             }
             this.appendText(builder.toString());
@@ -92,7 +95,11 @@ public class MsgTextArea extends FXTextArea {
             if (s.length() > LINE_MAX_LENGTH) {
                 s = I18nHelper.contentTooLarge();
             }
-            this.appendText(s + System.lineSeparator());
+            if (s.endsWith(System.lineSeparator())) {
+                this.appendText(s);
+            } else {
+                this.appendText(s + System.lineSeparator());
+            }
         }
     }
 

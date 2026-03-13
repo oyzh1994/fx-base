@@ -79,7 +79,10 @@ public class RichMsgTextArea extends Editor {
                     if (line.length() > LINE_MAX_LENGTH) {
                         line = I18nHelper.contentTooLarge();
                     }
-                    builder.append(line).append(LineEnding.system().getText());
+                    builder.append(line);
+                    if (!line.endsWith(this.lineEndingText())) {
+                        builder.append(LineEnding.system().getText());
+                    }
                 }
             }
             this.appendContent(builder.toString());
@@ -92,7 +95,11 @@ public class RichMsgTextArea extends Editor {
             if (s.length() > LINE_MAX_LENGTH) {
                 s = I18nHelper.contentTooLarge();
             }
-            this.appendContent(s + LineEnding.system().getText());
+            if (s.endsWith(this.lineEndingText())) {
+                this.appendContent(s);
+            } else {
+                this.appendContent(s + this.lineEndingText());
+            }
         }
     }
 
@@ -135,7 +142,7 @@ public class RichMsgTextArea extends Editor {
                         builder.append(line);
                     }
                 } while (!this.queue.isEmpty());
-                super.appendText(builder.toString());
+                super.appendContent(builder.toString());
             } finally {
                 this.appending.compareAndSet(true, false);
             }
