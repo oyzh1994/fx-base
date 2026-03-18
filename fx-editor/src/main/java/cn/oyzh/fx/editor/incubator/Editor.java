@@ -273,7 +273,9 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     public StringProperty textProperty() {
         if (this.textProperty == null) {
-            this.textProperty = new SimpleStringProperty(this.getText());
+            String text = this.getText();
+            this.textLen = text.length();
+            this.textProperty = new SimpleStringProperty(text);
             super.getModel().addListener(this.modelListener);
         }
         return this.textProperty;
@@ -483,7 +485,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 //        }
 //        return text.length();
         if (this.textProperty == null) {
-            this.textProperty();
+           return this.getText().length();
         }
         return this.textLen;
     }
