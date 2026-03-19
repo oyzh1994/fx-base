@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.test;
 
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -25,6 +26,9 @@ public class CustomTitleBarTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        // 应用主题
+        //ThemeManager.apply(Themes.DRACULA);
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
         HeaderBar headerBar = new HeaderBar();
         Button button = new Button("test");
         button.setOnAction(event -> {
@@ -70,7 +74,8 @@ public class CustomTitleBarTest extends Application {
         // scene.getStylesheets().add(Decoration.GENOME_LIGHT.getStylesheet());
         stage.initStyle(StageStyle.EXTENDED);
         stage.setScene(scene);
-        scene.setFill(Color.TRANSPARENT);
+        //scene.setFill(Color.BLACK);
+        scene.setFill(ThemeManager.currentBackgroundColor());
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             System.out.println(event.getTarget());
         });
