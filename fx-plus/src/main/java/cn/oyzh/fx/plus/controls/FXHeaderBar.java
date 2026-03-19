@@ -58,6 +58,11 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
     }
 
     /**
+     * 标题内边距
+     */
+    private static final Insets TITLE_PADDNG = new Insets(-3, 0, 0, 20);
+
+    /**
      * 设置标题组件
      *
      * @param label 标题组件
@@ -68,7 +73,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
 //        FXLabel pane = (FXLabel) this.getCenter();
 //        if (pane == null) {
 //            pane = new FXLabel();
-        label.setPadding(new Insets(0, 0, 0, 20));
+        label.setPadding(TITLE_PADDNG);
         label.setMouseTransparent(true);
         double w = ScreenUtil.getAllWidth();
         label.setPrefWidth(w);
