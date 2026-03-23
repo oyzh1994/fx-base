@@ -237,6 +237,7 @@ public abstract class RichTab extends FXTab {
             controller.onTabClosed(event);
         }
         super.onTabClosed(event);
+        this.destroy();
     }
 
     @Override
