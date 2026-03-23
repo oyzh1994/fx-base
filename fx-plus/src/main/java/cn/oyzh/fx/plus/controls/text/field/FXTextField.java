@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.controls.text.field;
 
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -22,7 +23,7 @@ import javafx.scene.control.TextField;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements DestroyAdapter, FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);

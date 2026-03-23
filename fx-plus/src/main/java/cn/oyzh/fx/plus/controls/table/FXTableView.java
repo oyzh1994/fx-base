@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.table;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -227,15 +228,6 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FXUtil.runWait(() -> super.getColumns().clear());
     }
 
-    @Override
-    public void destroy() {
-        this.ctrlSAction = null;
-        this.clearProps();
-        this.clearItems();
-        this.clearColumns();
-        this.setTooltip(null);
-    }
-
     private Font font;
 
     @Override
@@ -272,5 +264,73 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     public void changeTheme(ThemeStyle style) {
         ThemeAdapter.super.changeTheme(style);
         this.refresh();
+    }
+
+    /**
+     * 销毁节点
+     */
+    protected void destroyItems(){
+        for (S item : this.getItems()) {
+            if(item instanceof Destroyable destroyable){
+                destroyable.destroy();
+            }
+        }
+    }
+
+    /**
+     * 移除时销毁节点
+     */
+    protected void destroyItemsOnRemoved(){
+        // 监听移除
+        this.itemList().addListener((ListChangeListener<S>) change -> {
+            if (change.next()) {
+                List<?> list = change.getRemoved();
+                for (Object object : list) {
+                    if (object instanceof Destroyable destroyable){
+                        destroyable.destroy();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 销毁列
+     */
+    protected void destroyColumns(){
+        for (TableColumn<?,?> column : this.getColumns()) {
+            if(column instanceof Destroyable destroyable){
+                destroyable.destroy();
+            }
+        }
+    }
+
+    /**
+     * 移除时销毁列
+     */
+    protected void destroyColmnsOnRemoved(){
+        // 监听移除
+        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) change -> {
+            if (change.next()) {
+                List<?> list = change.getRemoved();
+                for (Object object : list) {
+                    if (object instanceof Destroyable destroyable){
+                        destroyable.destroy();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void destroy() {
+        this.ctrlSAction = null;
+        this.clearProps();
+        this.destroyItems();
+        this.clearItems();
+        this.destroyColumns();
+        this.clearColumns();
+        this.setTooltip(null);
+        DestroyAdapter.super.destroy();
     }
 }

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.controls.table;
 
+import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -16,7 +18,7 @@ import javafx.util.Callback;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter {
+public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter, DestroyAdapter {
 
     {
         NodeManager.init(this);
@@ -87,7 +89,7 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         return this.getProp("_valueName");
     }
 
-    public void setTextExt(String text) {
+    public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }
 
