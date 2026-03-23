@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.list;
 
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -17,7 +18,7 @@ import javafx.scene.control.ListView;
  * @author oyzh
  * @since 2023/4/24
  */
-public class FXListView<T> extends ListView<T> implements FlexAdapter, TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
+public class FXListView<T> extends ListView<T> implements DestroyAdapter, FlexAdapter, TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
 
     {
         NodeManager.init(this);
