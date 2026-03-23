@@ -385,9 +385,10 @@ public class NodeDestroyUtil {
             try {
                 // 修饰符
                 int modifiers = field.getModifiers();
-                if (Modifier.isFinal(modifiers)) {
-                    continue;
-                }
+                boolean isFinal = Modifier.isFinal(modifiers);
+//                if (Modifier.isFinal(modifiers)) {
+//                    continue;
+//                }
                 if (Modifier.isStatic(modifiers)) {
                     continue;
                 }
@@ -472,7 +473,7 @@ public class NodeDestroyUtil {
                     // } else {
                     // System.out.println(clazz);
                 }
-                if (setNullable) {
+                if (setNullable && !isFinal) {
                     ReflectUtil.setFieldValue(field, null, object);
                 }
             } catch (Throwable ex) {
