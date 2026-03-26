@@ -432,7 +432,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     }
 
     @Override
-    public synchronized void destroy() {
+    public void destroy() {
         // super.getChildren().forEach(NodeDestroyUtil::destroy);
         this.clearChild();
         NodeDestroyUtil.destroyObject(this.getValue());

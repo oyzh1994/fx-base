@@ -116,7 +116,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
      *
      * @param consumer 消费器
      */
-    public void selectItemChanged( Consumer<TreeItem<?>> consumer) {
+    public void selectItemChanged(Consumer<TreeItem<?>> consumer) {
         this.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (!this.isIgnoreChanged()) {
                 consumer.accept((TreeItem<?>) newValue);

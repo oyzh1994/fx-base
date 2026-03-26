@@ -1,10 +1,15 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import javafx.beans.property.Property;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Window;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -345,6 +350,7 @@ public class NodeDestroyUtil {
         //         ex.printStackTrace();
         //     }
         // }
+//        doDestroyObject(object);
         // 异步执行
         ThreadUtil.startVirtual(() -> doDestroyObject(object));
     }
@@ -378,6 +384,25 @@ public class NodeDestroyUtil {
         }
         // 添加到列表
         handles.add(object);
+        if (object instanceof Window window) {
+            Scene scene = window.getScene();
+            if (scene != null) {
+                doDestroyObject(scene.getRoot(), handles);
+                doDestroyObject(scene, handles);
+            }
+        }
+        if (object instanceof Parent parent) {
+            for (Node node : parent.getChildrenUnmodifiable()) {
+                doDestroyObject(node, handles);
+            }
+        }
+        // 执行一次销毁
+        if (object instanceof Destroyable destroyable) {
+            if (!destroyable.isDestroyed()) {
+                destroyable.markDestroyed();
+                destroyable.destroy();
+            }
+        }
         Class<?> cType = object.getClass();
         // 获取所有字段
         Field[] fields = ReflectUtil.getFields(cType, true, true);

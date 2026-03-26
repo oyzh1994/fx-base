@@ -485,7 +485,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 //        }
 //        return text.length();
         if (this.textProperty == null) {
-           return this.getText().length();
+            return this.getText().length();
         }
         return this.textLen;
     }
@@ -1393,42 +1393,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         return this.getText().lines().count();
     }
 
-    @Override
-    public void destroy() {
-        if (this.modelListener != null) {
-            this.getModel().removeListener(this.modelListener);
-            this.modelListener = null;
-        }
-        // if (this.textProperty != null) {
-        //     this.textProperty.unbind();
-        //     this.textProperty = null;
-        // }
-        // if (this.promptsProperty != null) {
-        //     this.promptsProperty.unbind();
-        //     this.promptsProperty = null;
-        // }
-        // if (this.formatTypeProperty != null) {
-        //     this.formatTypeProperty.unbind();
-        //     this.formatTypeProperty = null;
-        // }
-        // if (this.highlightTextProperty != null) {
-        //     this.highlightTextProperty.unbind();
-        //     this.highlightTextProperty = null;
-        // }
-        // if (this.lineNumPolicyProperty != null) {
-        //     this.lineNumPolicyProperty.unbind();
-        //     this.lineNumPolicyProperty = null;
-        // }
-        // this.fontProperty().unbind();
-        this.editorFont = null;
-        this.textFlowModel = null;
-        this.styleProvider = null;
-        this.syntaxDecorator = null;
-        this.richTextAreaModel = null;
-        // NodeDestroyUtil.destroyObject(this);
-        DestroyAdapter.super.destroy();
-    }
-
     /**
      * 获取换行文本
      *
@@ -1445,5 +1409,44 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public int lineEndingLength() {
         return this.lineEndingText().length();
+    }
+
+    @Override
+    public void destroy() {
+        if (this.modelListener != null) {
+            this.getModel().removeListener(this.modelListener);
+            this.modelListener = null;
+        }
+        if (this.textProperty != null) {
+            this.textProperty.unbind();
+            this.textProperty = null;
+        }
+        if (this.promptsProperty != null) {
+            this.promptsProperty.unbind();
+            this.promptsProperty = null;
+        }
+        if (this.formatTypeProperty != null) {
+            this.formatTypeProperty.unbind();
+            this.formatTypeProperty = null;
+        }
+        if (this.highlightTextProperty != null) {
+            this.highlightTextProperty.unbind();
+            this.highlightTextProperty = null;
+        }
+//        if (this.lineNumPolicyProperty != null) {
+//            this.lineNumPolicyProperty.unbind();
+//            this.lineNumPolicyProperty = null;
+//        }
+        this.fontProperty().unbind();
+        this.leftDecoratorProperty().unbind();
+        this.rightDecoratorProperty().unbind();
+        this.highlightCurrentParagraphProperty().unbind();
+        this.editorFont = null;
+        this.textFlowModel = null;
+        this.styleProvider = null;
+        this.syntaxDecorator = null;
+        this.richTextAreaModel = null;
+        // NodeDestroyUtil.destroyObject(this);
+        DestroyAdapter.super.destroy();
     }
 }
