@@ -197,7 +197,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
     public void destroy() {
         if (this.getRoot() instanceof Destroyable destroyable) {
             destroyable.destroy();
-            this.setRoot(null);
+//            this.setRoot(null);
         }
         DestroyAdapter.super.destroy();
     }
