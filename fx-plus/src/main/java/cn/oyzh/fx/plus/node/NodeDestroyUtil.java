@@ -8,8 +8,6 @@ import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Window;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -384,13 +382,13 @@ public class NodeDestroyUtil {
         }
         // 添加到列表
         handles.add(object);
-        if (object instanceof Window window) {
-            Scene scene = window.getScene();
-            if (scene != null) {
-                doDestroyObject(scene.getRoot(), handles);
-                doDestroyObject(scene, handles);
-            }
-        }
+//        if (object instanceof Window window) {
+//            Scene scene = window.getScene();
+//            if (scene != null) {
+//                doDestroyObject(scene.getRoot(), handles);
+//                doDestroyObject(scene, handles);
+//            }
+//        }
         if (object instanceof Parent parent) {
             for (Node node : parent.getChildrenUnmodifiable()) {
                 doDestroyObject(node, handles);
