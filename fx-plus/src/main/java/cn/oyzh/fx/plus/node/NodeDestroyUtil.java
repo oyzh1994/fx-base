@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import javafx.beans.property.Property;
@@ -394,13 +393,13 @@ public class NodeDestroyUtil {
                 doDestroyObject(node, handles);
             }
         }
-        // 执行一次销毁
-        if (object instanceof Destroyable destroyable) {
-            if (!destroyable.isDestroyed()) {
-                destroyable.markDestroyed();
-                destroyable.destroy();
-            }
-        }
+//        // 执行一次销毁
+//        if (object instanceof Destroyable destroyable) {
+//            if (!destroyable.isDestroyed()) {
+//                destroyable.markDestroyed();
+//                destroyable.destroy();
+//            }
+//        }
         Class<?> cType = object.getClass();
         // 获取所有字段
         Field[] fields = ReflectUtil.getFields(cType, true, true);
