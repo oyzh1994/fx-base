@@ -5,7 +5,7 @@
 ###### 依赖说明
 1. base工程  
  https://gitee.com/oyzh1994/base
-2. jdk版本要求24
+2. jdk版本要求25
 
 ###### 结构说明 
 fx-editor -> javafx的编辑器实现，语法高亮编辑器实现  
