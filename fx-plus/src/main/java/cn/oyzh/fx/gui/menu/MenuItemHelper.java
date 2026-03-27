@@ -607,6 +607,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneConnect(), new RepeatSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem copyConnect(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyConnect(), new CopySVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem cloneSession(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneSession(), action);
     }
