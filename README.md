@@ -11,7 +11,7 @@
 fx-editor -> javafx的编辑器实现，语法高亮编辑器实现  
 fx-pkg -> javafx的打包实现，各平台打包功能实现  
 fx-plus -> javafx的增强和扩展，以及gui相关组件集合  
-fx-rich -> javafx的富文本实现，目前已废弃，改由fx-editor替代   
+fx-rich -> javafx的富文本实现
 fx-terminal -> javafx的终端实现
 
 # Maven
@@ -19,4 +19,4 @@ fx-terminal -> javafx的终端实现
 mvn -X clean install -DskipTests
 
 ###### 注意
-检查cmd里面java -version的版本号和项目版本号是否一致，否则可能出现无效的目标版本号24之类的问题
+检查cmd里面java -version的版本号和项目版本号是否一致，否则可能出现无效的目标版本号25之类的问题
