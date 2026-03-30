@@ -158,47 +158,47 @@ public class PkgUtil {
     //     };
     // }
 
-    /**
-     * 获取jlink命令
-     *
-     * @param config jlink配置
-     * @return jlink命令
-     */
-    @Deprecated
-    public static String getJLinkCMD(JLinkConfig config) {
-        String cmdStr = "jlink";
-        if (config.isVerbose()) {
-            cmdStr += " --verbose";
-        }
-        if (config.getVm() != null) {
-            cmdStr += " --vm=" + config.getVm();
-        }
-        if (config.getCompress() != null) {
-            cmdStr += " --compress=" + config.getCompress();
-        }
-        if (config.isNoHeaderFiles()) {
-            cmdStr += " --no-header-files";
-        }
-        if (config.isNoManPages()) {
-            cmdStr += " --no-man-pages";
-        }
-        if (config.isStripDebug()) {
-            cmdStr += " --strip-debug";
-        }
-        if (config.isStripJavaDebugAttributes()) {
-            cmdStr += " --strip-java-debug-attributes";
-        }
-        if (CollectionUtil.isNotEmpty(config.getAddModules())) {
-            cmdStr += " --add-modules " + CollectionUtil.join(config.getAddModules(), ",");
-        }
-        if (CollectionUtil.isNotEmpty(config.getExcludeFiles())) {
-            cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
-        }
-        cmdStr += " --output " + config.getOutput();
-        // cmdStr += " --bind-services";
-        // cmdStr += " --exclude-modules jdk.localedata";
-        return cmdStr;
-    }
+//    /**
+//     * 获取jlink命令
+//     *
+//     * @param config jlink配置
+//     * @return jlink命令
+//     */
+//    @Deprecated
+//    public static String getJLinkCMD(JLinkConfig config) {
+//        String cmdStr = "jlink";
+//        if (config.isVerbose()) {
+//            cmdStr += " --verbose";
+//        }
+//        if (config.getVm() != null) {
+//            cmdStr += " --vm=" + config.getVm();
+//        }
+//        if (config.getCompress() != null) {
+//            cmdStr += " --compress=" + config.getCompress();
+//        }
+//        if (config.isNoHeaderFiles()) {
+//            cmdStr += " --no-header-files";
+//        }
+//        if (config.isNoManPages()) {
+//            cmdStr += " --no-man-pages";
+//        }
+//        if (config.isStripDebug()) {
+//            cmdStr += " --strip-debug";
+//        }
+//        if (config.isStripJavaDebugAttributes()) {
+//            cmdStr += " --strip-java-debug-attributes";
+//        }
+//        if (CollectionUtil.isNotEmpty(config.getAddModules())) {
+//            cmdStr += " --add-modules " + CollectionUtil.join(config.getAddModules(), ",");
+//        }
+//        if (CollectionUtil.isNotEmpty(config.getExcludeFiles())) {
+//            cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
+//        }
+//        cmdStr += " --output " + config.getOutput();
+//        // cmdStr += " --bind-services";
+//        // cmdStr += " --exclude-modules jdk.localedata";
+//        return cmdStr;
+//    }
 
     /**
      * 获取jlink命令
@@ -206,7 +206,7 @@ public class PkgUtil {
      * @param config jlink配置
      * @return jlink命令
      */
-    public static String[] getJLinkCMD1(JLinkConfig config) {
+    public static String[] getJLinkCMD(JLinkConfig config) {
         List<String> cmdList = new ArrayList<>();
         cmdList.add("jlink");
         if (config.isVerbose()) {
@@ -215,11 +215,9 @@ public class PkgUtil {
         if (config.getVm() != null) {
             cmdList.add("--vm=" + config.getVm());
         }
-
-        // 参数已过时
-        // if (config.getCompress() != null) {
-        //     cmdList.add("--compress=" + config.getCompress());
-        // }
+        if (config.getCompress() != null) {
+            cmdList.add("--compress=" + config.getCompress());
+        }
         if (config.isNoHeaderFiles()) {
             cmdList.add("--no-header-files");
         }
@@ -228,6 +226,9 @@ public class PkgUtil {
         }
         if (config.isStripDebug()) {
             cmdList.add("--strip-debug");
+        }
+        if (config.isIgnoreSigningInformation()) {
+            cmdList.add("--ignore-signing-information");
         }
         if (config.isStripJavaDebugAttributes()) {
             cmdList.add("--strip-java-debug-attributes");

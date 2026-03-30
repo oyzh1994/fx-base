@@ -8,7 +8,6 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -36,18 +35,18 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
                 config.getAddModules().add(o.toString());
             }
         }
-        // 临时jre目录
-        String tmpJreDir = new File(FileUtil.getTmpDir(), "_temp_jre_" + UUID.fastUUID().toString(true)).getPath();
         if (object.containsKey("vm")) {
             config.setVm(StringUtil.emptyToDefault(object.getString("vm"), "server"));
         }
+        // 临时jre目录
+        String tmpJreDir = new File(FileUtil.getTmpDir(), "_temp_jre_" + UUID.fastUUID().toString(true)).getPath();
         if (object.containsKey("output")) {
             config.setOutput(StringUtil.emptyToDefault(object.getString("output"), tmpJreDir));
         } else {
             config.setOutput(tmpJreDir);
         }
         if (object.containsKey("compress")) {
-            config.setCompress(object.getIntValue("compress", 2));
+            config.setCompress(object.getString("compress", "zip-9"));
         }
         if (object.containsKey("verbose")) {
             config.setVerbose(object.getBooleanValue("verbose", true));
@@ -60,6 +59,9 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         }
         if (object.containsKey("no-header-files")) {
             config.setNoHeaderFiles(object.getBooleanValue("no-header-files", true));
+        }
+        if (object.containsKey("ignore-signing-information")) {
+            config.setIgnoreSigningInformation(object.getBooleanValue("ignore-signing-information", true));
         }
         if (object.containsKey("strip-java-debug-attributes")) {
             config.setStripJavaDebugAttributes(object.getBooleanValue("strip-java-debug-attributes", true));

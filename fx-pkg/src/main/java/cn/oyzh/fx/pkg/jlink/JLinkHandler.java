@@ -64,7 +64,7 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         if (FileUtil.exist(jLinkConfig.getOutput())) {
             FileUtil.del(jLinkConfig.getOutput());
         }
-        String[] cmd = PkgUtil.getJLinkCMD1(jLinkConfig);
+        String[] cmd = PkgUtil.getJLinkCMD(jLinkConfig);
         cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
         String cmdStr = StringUtil.join(" ", cmd);
         JulLog.info("JLink cmd:{}", "\n" + cmdStr);
