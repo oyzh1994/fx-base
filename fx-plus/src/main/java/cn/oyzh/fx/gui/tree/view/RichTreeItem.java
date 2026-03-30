@@ -6,7 +6,6 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
-import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -401,7 +400,8 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * 子节点排序
      */
     protected void sortChild(boolean sortAsc) {
-        BackgroundService.submitFX(() -> {
+        FXUtil.runWait(() -> {
+//        BackgroundService.submitFX(() -> {
             this.setSorting(true);
             try {
                 // 执行排序
@@ -443,7 +443,8 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public synchronized void doFilter(RichTreeItemFilter itemFilter) {
         List<RichTreeItem<?>> items = this.richChildren();
         // List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
-        BackgroundService.submitFX(() -> this.doFilter(itemFilter, items));
+//        BackgroundService.submitFX(() -> this.doFilter(itemFilter, items));
+        FXUtil.runWait(() -> this.doFilter(itemFilter, items));
     }
 
     /**

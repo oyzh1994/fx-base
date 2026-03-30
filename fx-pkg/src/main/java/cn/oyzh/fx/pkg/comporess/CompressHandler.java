@@ -59,7 +59,7 @@ public class CompressHandler implements PostHandler {
                     }
                 }
                 case "tar" -> PkgUtil.tarDest(compressName, dest);
-                case "tar.gz" -> PkgUtil.gzipDest(compressName, dest);
+                case "tar.gz", "tgz" -> PkgUtil.gzipDest(compressName, dest);
                 default ->
                         throw new IllegalStateException("Unexpected value: " + compressConfig.getType().toLowerCase());
             };

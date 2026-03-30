@@ -107,8 +107,8 @@ public class DestHandler implements PostHandler {
         fileName = fileName + "." + extName;
         File finalFile = new File(file.getParent(), fileName);
         FileUtil.renameFile(file, finalFile, true);
-        // 以防万一
-        FileUtil.del(file);
+        // // 以防万一
+        // FileUtil.del(file);
         JulLog.info("最终产物名称:{} 处理后名称:{}", file.getName(), fileName);
         return finalFile;
     }

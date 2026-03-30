@@ -3,10 +3,15 @@ package cn.oyzh.fx.plus.node;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import javafx.beans.property.Property;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 节点销毁工具类
@@ -342,6 +347,7 @@ public class NodeDestroyUtil {
         //         ex.printStackTrace();
         //     }
         // }
+//        doDestroyObject(object);
         // 异步执行
         ThreadUtil.startVirtual(() -> doDestroyObject(object));
     }
@@ -349,12 +355,51 @@ public class NodeDestroyUtil {
     /**
      * 销毁对象
      *
-     * @param object 节点
+     * @param object 对象
      */
     private static void doDestroyObject(Object object) {
+        if (object != null) {
+            List<Object> handles = new ArrayList<>();
+            doDestroyObject(object, handles);
+            handles.clear();
+        }
+    }
+
+    /**
+     * 销毁对象
+     *
+     * @param object  对象
+     * @param handles 已处理对象列表
+     */
+    private static void doDestroyObject(Object object, List<Object> handles) {
         if (object == null) {
             return;
         }
+        // 已处理跳过
+        if (handles.contains(object)) {
+            return;
+        }
+        // 添加到列表
+        handles.add(object);
+//        if (object instanceof Window window) {
+//            Scene scene = window.getScene();
+//            if (scene != null) {
+//                doDestroyObject(scene.getRoot(), handles);
+//                doDestroyObject(scene, handles);
+//            }
+//        }
+        if (object instanceof Parent parent) {
+            for (Node node : parent.getChildrenUnmodifiable()) {
+                doDestroyObject(node, handles);
+            }
+        }
+//        // 执行一次销毁
+//        if (object instanceof Destroyable destroyable) {
+//            if (!destroyable.isDestroyed()) {
+//                destroyable.markDestroyed();
+//                destroyable.destroy();
+//            }
+//        }
         Class<?> cType = object.getClass();
         // 获取所有字段
         Field[] fields = ReflectUtil.getFields(cType, true, true);
@@ -362,22 +407,32 @@ public class NodeDestroyUtil {
             try {
                 // 修饰符
                 int modifiers = field.getModifiers();
-                if (Modifier.isFinal(modifiers)) {
-                    continue;
-                }
+                boolean isFinal = Modifier.isFinal(modifiers);
+//                if (Modifier.isFinal(modifiers)) {
+//                    continue;
+//                }
                 if (Modifier.isStatic(modifiers)) {
                     continue;
                 }
-                // 过滤属性类型
+                // 获取属性类型
                 Class<?> clazz = field.getType();
                 if (!field.trySetAccessible()) {
                     continue;
                 }
+                // 是否可以设置为null
                 boolean setNullable = false;
+                // 获取对象
                 Object object1 = field.get(object);
-                if (object1 == null || object1 == object) {
-
-                } else if (Property.class.isAssignableFrom(clazz)) { // 属性类型
+                // 对象为null
+                if (object1 == null) {
+                    continue;
+                }
+                // EventTarget对象
+                if (EventTarget.class.isAssignableFrom(clazz)) {
+                    doDestroyObject(object1, handles);
+                }
+                // 属性类型
+                if (Property.class.isAssignableFrom(clazz)) {
                     // 获取属性值
                     Property<?> object2 = (Property<?>) object1;
                     destroy(object2);
@@ -440,7 +495,7 @@ public class NodeDestroyUtil {
                     // } else {
                     // System.out.println(clazz);
                 }
-                if (setNullable) {
+                if (setNullable && !isFinal) {
                     ReflectUtil.setFieldValue(field, null, object);
                 }
             } catch (Throwable ex) {

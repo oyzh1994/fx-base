@@ -4,9 +4,7 @@ import cn.oyzh.fx.pkg.ConfigMargeAble;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,6 +14,11 @@ import java.util.Set;
  * @since 2024/06/18
  */
 public class JreConfig implements ConfigMargeAble<JreConfig> {
+
+    /**
+     * 是否启用
+     */
+    private Boolean enable;
 
     private Set<String> excludes;
 
@@ -37,6 +40,14 @@ public class JreConfig implements ConfigMargeAble<JreConfig> {
         this.excludes = excludes;
     }
 
+    public boolean isEnable() {
+        return enable == null || this.enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     @Override
     public void marge(JreConfig config) {
         if (config == null) {
@@ -46,6 +57,9 @@ public class JreConfig implements ConfigMargeAble<JreConfig> {
             this.excludes = config.excludes;
         } else if (config.excludes != null){
             this.excludes.addAll(config.excludes);
+        }
+        if (config.enable != null) {
+            this.enable = config.enable;
         }
     }
 }

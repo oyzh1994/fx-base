@@ -6,7 +6,6 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -25,7 +24,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import jfx.incubator.scene.control.richtext.LineEnding;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -330,7 +328,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
     @Override
     public void appendByPrompt(String output) {
         this.outputPrompt();
-//        this.flushNOP();
+        //this.flushNOP();
         if (output != null) {
             this.appendText(output);
         }
@@ -370,12 +368,13 @@ public abstract class TerminalPane extends Editor implements Terminal {
     public void outputPrompt() {
         String text = this.getText();
         String prompt = this.prompt();
-        if (StringUtil.equals(text, LineEnding.system().getText())) {
+        if (StringUtil.equals(text, this.lineEndingText())) {
             this.text(prompt);
         } else if (!StringUtil.endWith(text, prompt)) {
             this.appendContent(prompt);
         }
-        FXUtil.runWait(this::flushNOP);
+        //FXUtil.runWait(this::flushNOP);
+        this.flushNOP();
     }
 
     @Override
@@ -601,5 +600,10 @@ public abstract class TerminalPane extends Editor implements Terminal {
             this.mousePressedHandler = null;
         }
         super.destroy();
+    }
+
+    @Override
+    public void initNode() {
+        super.initNode();
     }
 }

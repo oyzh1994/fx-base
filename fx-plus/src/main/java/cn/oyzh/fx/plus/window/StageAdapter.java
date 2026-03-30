@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -815,13 +816,17 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     @Override
     default void changeTheme(ThemeStyle style) {
         //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
-        if (this.isExtendedHeader()) {
+        if (this.isExtendedHeader() && OSUtil.isWindows()) {
             if (style.isDarkMode()) {
                 this.scene().setFill(Color.TRANSPARENT);
             } else {
                 this.scene().setFill(ThemeManager.currentBackgroundColor());
             }
         }
+        ////TODO 针对扩展标题栏，需要设置scene颜色
+        //if (this.isExtendedHeader()) {
+        //    this.scene().setFill(ThemeManager.currentBackgroundColor());
+        //}
         WindowAdapter.super.changeTheme(style);
     }
 }

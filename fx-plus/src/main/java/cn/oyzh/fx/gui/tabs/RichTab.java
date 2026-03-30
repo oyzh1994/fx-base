@@ -151,36 +151,32 @@ public abstract class RichTab extends FXTab {
      * 关闭左侧tab
      */
     public void closeLeftTab() {
-        FXUtil.runLater(() -> {
-            List<Tab> list = new ArrayList<>();
-            for (Tab tab : this.tabs()) {
-                if (tab == this) {
-                    break;
-                }
-                if (tab.isClosable()) {
-                    list.add(tab);
-                }
+        List<Tab> list = new ArrayList<>();
+        for (Tab tab : this.tabs()) {
+            if (tab == this) {
+                break;
             }
-            this.tabs().removeAll(list);
-        });
+            if (tab.isClosable()) {
+                list.add(tab);
+            }
+        }
+        FXUtil.runLater(() -> this.tabs().removeAll(list));
     }
 
     /**
      * 关闭右侧tab
      */
     public void closeRightTab() {
-        FXUtil.runLater(() -> {
-            List<Tab> list = new ArrayList<>();
-            boolean start = false;
-            for (Tab tab : this.tabs()) {
-                if (tab == this) {
-                    start = true;
-                } else if (start && tab.isClosable()) {
-                    list.add(tab);
-                }
+        List<Tab> list = new ArrayList<>();
+        boolean start = false;
+        for (Tab tab : this.tabs()) {
+            if (tab == this) {
+                start = true;
+            } else if (start && tab.isClosable()) {
+                list.add(tab);
             }
-            this.tabs().removeAll(list);
-        });
+        }
+        FXUtil.runLater(() -> this.tabs().removeAll(list));
     }
 
     /**
@@ -241,6 +237,7 @@ public abstract class RichTab extends FXTab {
             controller.onTabClosed(event);
         }
         super.onTabClosed(event);
+        this.destroy();
     }
 
     @Override

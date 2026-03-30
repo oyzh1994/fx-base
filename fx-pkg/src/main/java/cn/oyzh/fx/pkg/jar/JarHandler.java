@@ -67,12 +67,18 @@ public class JarHandler implements PreHandler {
         FileUtil.del(dest);
         // 解压主jar
         JarUtil.unJar(src, jarUnDir);
-        // 裁剪主jar
-        JarUtil.minimize(src, dest, this::jarFilter);
-        // 裁剪类库jar
-        this.handleLibs(jarUnDir);
-        // 合并类库jar
-        this.mergeLibs(jarUnDir, dest, jdkPath);
+        // 裁剪文件
+        if (jarConfig.isEnable()) {
+            // 裁剪主jar
+            JarUtil.minimize(src, dest, this::jarFilter);
+            // 裁剪类库jar
+            this.handleLibs(jarUnDir);
+            // 合并类库jar
+            this.mergeLibs(jarUnDir, dest, jdkPath);
+        } else {// 不裁剪
+            JulLog.warn("jar裁剪未启用，已跳过");
+            FileUtil.copy(src, dest, true);
+        }
         // 设置最小化后的主程序
         packConfig.setMinimizeManJar(dest);
         // 设置jar解压目录

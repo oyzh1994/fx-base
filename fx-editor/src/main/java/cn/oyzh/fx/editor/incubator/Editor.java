@@ -273,7 +273,9 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     public StringProperty textProperty() {
         if (this.textProperty == null) {
-            this.textProperty = new SimpleStringProperty(this.getText());
+            String text = this.getText();
+            this.textLen = text.length();
+            this.textProperty = new SimpleStringProperty(text);
             super.getModel().addListener(this.modelListener);
         }
         return this.textProperty;
@@ -483,7 +485,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 //        }
 //        return text.length();
         if (this.textProperty == null) {
-            this.textProperty();
+            return this.getText().length();
         }
         return this.textLen;
     }
@@ -593,7 +595,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         int length = 0;
         for (int i = 0; i < pos.index(); i++) {
             int len = this.getParagraphLength(i);
-            length += len + 1;
+            length += len + this.lineEndingLength();
         }
         return length + pos.offset();
     }
@@ -653,13 +655,13 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             String text = this.getText();
 //            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
 //                content = System.lineSeparator() + content;
-            if (!StringUtil.endsWith(text, this.getLineEnding().getText()) && !StringUtil.startWith(content, this.getLineEnding().getText())) {
-                content = this.getLineEnding().getText() + content;
+            if (!StringUtil.endsWith(text, this.lineEndingText()) && !StringUtil.startWith(content, this.lineEndingText())) {
+                content = this.lineEndingText() + content;
             }
 //            if (endLine && !content.endsWith(System.lineSeparator())) {
 //                content += System.lineSeparator();
-            if (endLine && !content.endsWith(this.getLineEnding().getText())) {
-                content += this.getLineEnding().getText();
+            if (endLine && !content.endsWith(this.lineEndingText())) {
+                content += this.lineEndingText();
             }
             this.appendContent(content);
         }
@@ -1339,7 +1341,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                 text = text.substring(0, max.offset());
             }
 //            builder.append(System.lineSeparator()).append(text);
-            builder.append(this.getLineEnding().getText()).append(text);
+            builder.append(this.lineEndingText()).append(text);
         }
         if (builder.isEmpty()) {
             return "";
@@ -1382,33 +1384,63 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         return lines;
     }
 
+    /**
+     * 获取行数量
+     *
+     * @return 行数量
+     */
+    public long lineCount() {
+        return this.getText().lines().count();
+    }
+
+    /**
+     * 获取换行文本
+     *
+     * @return 结果
+     */
+    public String lineEndingText() {
+        return super.getLineEnding().getText();
+    }
+
+    /**
+     * 获取换行文本长度
+     *
+     * @return 结果
+     */
+    public int lineEndingLength() {
+        return this.lineEndingText().length();
+    }
+
     @Override
     public void destroy() {
         if (this.modelListener != null) {
             this.getModel().removeListener(this.modelListener);
             this.modelListener = null;
         }
-        // if (this.textProperty != null) {
-        //     this.textProperty.unbind();
-        //     this.textProperty = null;
-        // }
-        // if (this.promptsProperty != null) {
-        //     this.promptsProperty.unbind();
-        //     this.promptsProperty = null;
-        // }
-        // if (this.formatTypeProperty != null) {
-        //     this.formatTypeProperty.unbind();
-        //     this.formatTypeProperty = null;
-        // }
-        // if (this.highlightTextProperty != null) {
-        //     this.highlightTextProperty.unbind();
-        //     this.highlightTextProperty = null;
-        // }
-        // if (this.lineNumPolicyProperty != null) {
-        //     this.lineNumPolicyProperty.unbind();
-        //     this.lineNumPolicyProperty = null;
-        // }
-        // this.fontProperty().unbind();
+        if (this.textProperty != null) {
+            this.textProperty.unbind();
+            this.textProperty = null;
+        }
+        if (this.promptsProperty != null) {
+            this.promptsProperty.unbind();
+            this.promptsProperty = null;
+        }
+        if (this.formatTypeProperty != null) {
+            this.formatTypeProperty.unbind();
+            this.formatTypeProperty = null;
+        }
+        if (this.highlightTextProperty != null) {
+            this.highlightTextProperty.unbind();
+            this.highlightTextProperty = null;
+        }
+//        if (this.lineNumPolicyProperty != null) {
+//            this.lineNumPolicyProperty.unbind();
+//            this.lineNumPolicyProperty = null;
+//        }
+        this.fontProperty().unbind();
+        this.leftDecoratorProperty().unbind();
+        this.rightDecoratorProperty().unbind();
+        this.highlightCurrentParagraphProperty().unbind();
         this.editorFont = null;
         this.textFlowModel = null;
         this.styleProvider = null;

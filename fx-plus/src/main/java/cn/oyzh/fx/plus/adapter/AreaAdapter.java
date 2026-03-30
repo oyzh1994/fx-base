@@ -36,8 +36,13 @@ public interface AreaAdapter extends TextAdapter, FontAdapter {
      *
      * @param text 文本内容
      */
-    default void setTextExt(String text) {
+    void text(String text);
 
-    }
+    /**
+     * 获取内容
+     *
+     * @return 内容
+     */
+    String text();
 
 }

@@ -618,6 +618,8 @@ public interface SelectAdapter<T> extends PropAdapter {
             node.getSelectionModel().selectLast();
         } else if (this instanceof TabPane node) {
             node.getSelectionModel().selectLast();
+        } else if (this instanceof TreeView<?> node) {
+            node.getSelectionModel().selectLast();
         }
     }
 }

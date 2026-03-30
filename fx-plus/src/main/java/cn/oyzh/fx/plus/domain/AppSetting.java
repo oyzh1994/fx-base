@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.domain;
 
 import cn.oyzh.common.object.ObjectCopier;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontConfig;
 import cn.oyzh.fx.plus.opacity.OpacityConfig;
@@ -719,12 +720,12 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public static String defaultTerminalFontFamily() {
-//        if (OSUtil.isWindows()) {
-//            return "Consolas";
-//        }
-//        if (OSUtil.isMacOS()) {
-//            return "Menlo";
-//        }
+        if (OSUtil.isWindows()) {
+            return "Consolas";
+        }
+        if (OSUtil.isMacOS()) {
+            return "Menlo";
+        }
         return "Monospace";
     }
 
