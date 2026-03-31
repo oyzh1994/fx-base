@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.util;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.compress.CompressUtil;
@@ -9,6 +8,7 @@ import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -248,20 +248,37 @@ public class PkgUtil {
      * 获取jdeps命令
      *
      * @param config jdeps配置
+     * @param jar  jar
      * @return jdeps命令
      */
-    public static String getJDepsCMD(JDepsConfig config) {
-        String cmdStr = "jdeps";
+    public static String[] getJDepsCMD(JDepsConfig config, String jar) {
+        return getJDepsCMD(config, List.of(jar));
+    }
+
+    /**
+     * 获取jdeps命令
+     *
+     * @param config jdeps配置
+     * @param jars   jar列表
+     * @return jdeps命令
+     */
+    public static String[] getJDepsCMD(JDepsConfig config, List<String> jars) {
+        List<String> cmdList = new ArrayList<>();
+        cmdList.add("jdeps");
         if (config.isVerbose()) {
-            cmdStr += " -verbose";
+            cmdList.add("-verbose");
         }
         if (config.isSummary()) {
-            cmdStr += " -summary";
+            cmdList.add("-summary");
         }
         if (config.getMultiRelease() != null) {
-            cmdStr += " --multi-release " + config.getMultiRelease();
+            cmdList.add("--multi-release");
+            cmdList.add(config.getMultiRelease() + "");
         }
-        return cmdStr;
+        if (CollectionUtil.isNotEmpty(jars)) {
+            cmdList.addAll(jars);
+        }
+        return ArrayUtil.toArray(cmdList, String.class);
     }
 
     // /**

@@ -15,7 +15,7 @@ import java.util.Set;
 public class JDepsConfig implements ConfigMargeAble<JDepsConfig> {
 
     /**
-     * 显示摘要
+     * 汇总信息
      */
     private Boolean summary;
 

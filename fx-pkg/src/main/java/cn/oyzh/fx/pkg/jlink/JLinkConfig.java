@@ -86,7 +86,7 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
 
     public void margeAddModules(Collection<String> addModules) {
         if (CollectionUtil.isNotEmpty(addModules)) {
-            if (this.addModules == null || this.addModules.isEmpty()) {
+            if (this.addModules == null) {
                 this.addModules = new HashSet<>(addModules);
             } else {
                 this.addModules.addAll(addModules);
