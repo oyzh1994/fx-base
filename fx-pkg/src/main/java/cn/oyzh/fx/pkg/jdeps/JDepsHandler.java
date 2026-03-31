@@ -46,6 +46,11 @@ public class JDepsHandler implements PreHandler {
     }
 
     @Override
+    public boolean unique() {
+        return true;
+    }
+
+    @Override
     public void handle(PackConfig packConfig) throws Exception {
         JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
         if (jLinkConfig == null) {

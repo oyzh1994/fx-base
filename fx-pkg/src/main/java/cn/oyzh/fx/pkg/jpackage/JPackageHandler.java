@@ -40,6 +40,11 @@ public class JPackageHandler implements PackHandler {
     }
 
     @Override
+    public boolean unique() {
+        return true;
+    }
+
+    @Override
     public void handle(PackConfig packConfig) throws Exception {
         JPackageConfig jPackageConfig = packConfig.getjPackageConfig();
         if (jPackageConfig == null) {
