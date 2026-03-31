@@ -23,7 +23,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     /**
      * 打包类型
      */
-    private String type = "app-image";
+    private String type;
 
     /**
      * 目标目录
@@ -54,6 +54,11 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
      * app版本
      */
     private String appVersion;
+
+    /**
+     * 版权信息
+     */
+    private String copyright;
 
     /**
      * 程序描述
@@ -240,6 +245,14 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
         this.enable = enable;
     }
 
+    public String getCopyright() {
+        return copyright;
+    }
+
+    public void setCopyright(String copyright) {
+        this.copyright = copyright;
+    }
+
     // public String fixedType() {
     //     if (StringUtil.equalsIgnoreCase(this.type, "AppImage")) {
     //         return "app-image";
@@ -275,6 +288,9 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
         }
         if (config.appVersion != null) {
             this.appVersion = config.appVersion;
+        }
+        if (config.copyright != null) {
+            this.copyright = config.copyright;
         }
         if (config.description != null) {
             this.description = config.description;
