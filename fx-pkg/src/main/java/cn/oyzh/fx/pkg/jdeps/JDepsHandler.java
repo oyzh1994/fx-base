@@ -50,14 +50,17 @@ public class JDepsHandler implements PreHandler {
             return;
         }
         JDepsConfig jDepsConfig = packConfig.getJDepsConfig();
+        if (jDepsConfig == null) {
+            return;
+        }
+        if (!jDepsConfig.isEnable()) {
+            JulLog.warn("jdeps未启用，已跳过");
+            return;
+        }
         RegFilter fileFilter = new RegFilter();
         RegFilter moduleFilter = new RegFilter();
-        if (jDepsConfig != null) {
-            fileFilter.addExcludes(jDepsConfig.getSkips());
-            moduleFilter.addExcludes(jDepsConfig.getExcludes());
-        } else {
-            jDepsConfig = new JDepsConfig();
-        }
+        fileFilter.addExcludes(jDepsConfig.getSkips());
+        moduleFilter.addExcludes(jDepsConfig.getExcludes());
 
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {

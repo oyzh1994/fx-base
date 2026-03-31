@@ -1,10 +1,10 @@
 package cn.oyzh.fx.pkg.jre;
 
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * jre配置解析器
@@ -17,15 +17,13 @@ public class JreConfigParser implements ConfigParser<JreConfig> {
     @Override
     public JreConfig parse(JSONObject object) {
         JreConfig config = new JreConfig();
-        JSONArray excludes = object.getJSONArray("excludes");
+        List<String> excludes = object.getList("excludes", String.class);
         if (excludes != null) {
-            config.setExcludes(new HashSet<>());
-            for (Object o : excludes) {
-                config.getExcludes().add(o.toString());
-            }
+            config.setExcludes(new HashSet<>(excludes));
         }
-        if (object.containsKey("enable")) {
-            config.setEnable(object.getBooleanValue("enable", true));
+        Boolean enable = object.getBoolean("enable");
+        if (enable != null) {
+            config.setEnable(enable);
         }
         return config;
     }

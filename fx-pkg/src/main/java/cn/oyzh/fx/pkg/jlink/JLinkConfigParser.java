@@ -4,11 +4,11 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * jlink配置解析器
@@ -21,22 +21,17 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
     @Override
     public JLinkConfig parse(JSONObject object) {
         JLinkConfig config = new JLinkConfig();
-        JSONArray excludeFiles = object.getJSONArray("exclude-files");
+        List<String> excludeFiles = object.getList("exclude-files", String.class);
         if (excludeFiles != null) {
-            config.setExcludeFiles(new HashSet<>());
-            for (Object o : excludeFiles) {
-                config.getExcludeFiles().add(o.toString());
-            }
+            config.setExcludeFiles(new HashSet<>(excludeFiles));
         }
-        JSONArray addModules = object.getJSONArray("add-modules");
+        List<String> addModules = object.getList("add-modules", String.class);
         if (addModules != null) {
-            config.setAddModules(new HashSet<>());
-            for (Object o : addModules) {
-                config.getAddModules().add(o.toString());
-            }
+            config.setAddModules(new HashSet<>(addModules));
         }
-        if (object.containsKey("vm")) {
-            config.setVm(StringUtil.emptyToDefault(object.getString("vm"), "server"));
+        String vm = object.getString("vm");
+        if (vm != null) {
+            config.setVm(vm);
         }
         // 临时jre目录
         String tmpJreDir = new File(FileUtil.getTmpDir(), "_temp_jre_" + UUID.fastUUID().toString(true)).getPath();
@@ -45,26 +40,37 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         } else {
             config.setOutput(tmpJreDir);
         }
-        if (object.containsKey("compress")) {
-            config.setCompress(object.getString("compress", "zip-9"));
+        String compress = object.getString("compress");
+        if (compress != null) {
+            config.setCompress(compress);
         }
-        if (object.containsKey("verbose")) {
-            config.setVerbose(object.getBooleanValue("verbose", true));
+        Boolean verbose = object.getBoolean("verbose");
+        if (verbose != null) {
+            config.setVerbose(verbose);
         }
-        if (object.containsKey("no-man-pages")) {
-            config.setNoManPages(object.getBooleanValue("no-man-pages", true));
+        Boolean enable = object.getBoolean("enable");
+        if (enable != null) {
+            config.setEnable(enable);
         }
-        if (object.containsKey("strip-debug")) {
-            config.setStripDebug(object.getBooleanValue("strip-debug", true));
+        Boolean noManPages = object.getBoolean("no-man-pages");
+        if (noManPages != null) {
+            config.setNoManPages(noManPages);
         }
-        if (object.containsKey("no-header-files")) {
-            config.setNoHeaderFiles(object.getBooleanValue("no-header-files", true));
+        Boolean stripDebug = object.getBoolean("strip-debug");
+        if (stripDebug != null) {
+            config.setStripDebug(stripDebug);
         }
-        if (object.containsKey("ignore-signing-information")) {
-            config.setIgnoreSigningInformation(object.getBooleanValue("ignore-signing-information", true));
+        Boolean noHeaderFiles = object.getBoolean("no-header-files");
+        if (noHeaderFiles != null) {
+            config.setNoHeaderFiles(noHeaderFiles);
         }
-        if (object.containsKey("strip-java-debug-attributes")) {
-            config.setStripJavaDebugAttributes(object.getBooleanValue("strip-java-debug-attributes", true));
+        Boolean ignoreSigningInformation = object.getBoolean("ignore-signing-information");
+        if (ignoreSigningInformation != null) {
+            config.setIgnoreSigningInformation(ignoreSigningInformation);
+        }
+        Boolean stripJavaDebugAttributes = object.getBoolean("strip-java-debug-attributes");
+        if (stripJavaDebugAttributes != null) {
+            config.setStripJavaDebugAttributes(stripJavaDebugAttributes);
         }
         return config;
     }

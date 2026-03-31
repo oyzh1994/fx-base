@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * JPackage配置
+ * jpackage配置
  *
  * @author oyzh
  * @since 2023/3/8

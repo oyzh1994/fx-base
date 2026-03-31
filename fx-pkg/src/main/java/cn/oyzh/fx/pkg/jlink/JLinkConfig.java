@@ -71,6 +71,19 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
      */
     private Set<String> excludeFiles;
 
+    /**
+     * 是否启用
+     */
+    private Boolean enable;
+
+    public boolean isEnable() {
+        return BooleanUtil.isTrue(this.enable);
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     public void margeAddModules(Collection<String> addModules) {
         if (CollectionUtil.isNotEmpty(addModules)) {
             if (this.addModules == null || this.addModules.isEmpty()) {
@@ -193,6 +206,9 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
         } else if (config.excludeFiles != null) {
             this.excludeFiles.addAll(config.excludeFiles);
         }
+        if (config.enable != null) {
+            this.enable = config.enable;
+        }
         if (config.verbose != null) {
             this.verbose = config.verbose;
         }
@@ -205,11 +221,11 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
         if (config.noHeaderFiles != null) {
             this.noHeaderFiles = config.noHeaderFiles;
         }
-        if (config.stripJavaDebugAttributes != null) {
-            this.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
-        }
         if (config.ignoreSigningInformation != null) {
             this.ignoreSigningInformation = config.ignoreSigningInformation;
+        }
+        if (config.stripJavaDebugAttributes != null) {
+            this.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
         }
     }
 }

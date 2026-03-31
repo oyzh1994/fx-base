@@ -57,6 +57,10 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         if (jLinkConfig == null) {
             return;
         }
+        if (!jLinkConfig.isEnable()) {
+            JulLog.warn("jlink未启用，已跳过");
+            return;
+        }
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");

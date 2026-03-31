@@ -20,6 +20,9 @@ public class JreConfig implements ConfigMargeAble<JreConfig> {
      */
     private Boolean enable;
 
+    /**
+     * 排除的文件
+     */
     private Set<String> excludes;
 
     public void parseConfig(JSONObject object) {
