@@ -1,9 +1,8 @@
 package cn.oyzh.fx.plus.test;
 
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.information.MessageBox;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -12,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -32,11 +32,13 @@ public class AppTestMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // 应用主题
-        ThemeManager.apply(Themes.DRACULA);
+//        ThemeManager.apply(Themes.DRACULA);
         // test1(stage);
         // test2(stage);
 //        test3(stage);
-        test4(stage);
+//        test4(stage);
+        test5(stage);
+        SystemUtil.gcInterval(3000);
     }
 
     private void test1(Stage stage) {
@@ -142,6 +144,23 @@ public class AppTestMain extends Application {
             MessageBox.exception(ex);
         }
         MessageBox.none("测试4");
+    }
+
+    private void test5(Stage stage) {
+        VBox vBox = new VBox();
+        for (int i = 0; i < 20; i++) {
+            HBox hBox=new HBox();
+            for (int j = 0; j < 10; j++) {
+                hBox.getChildren().add(new Label("Hello World" + (i + 1)+ (j + 1)));
+            }
+            vBox.getChildren().add(hBox);
+        }
+        ScrollPane scrollPane = new ScrollPane(vBox);
+        stage.setScene(new Scene(scrollPane));
+        stage.setWidth(800);
+        stage.setHeight(600);
+        stage.show();
+        stage.setTitle("Hello Javafx");
     }
 
     public static class AppTestMainApp {
