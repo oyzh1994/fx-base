@@ -65,17 +65,17 @@ public class TerminalManager {
      * @param name 终端名称
      */
     private static void doLoadHandler(String name) {
-        if (!LOAD_HANDLES.containsKey(name)) {
-            return;
-        }
+//        if (!LOAD_FLAGS.contains(name)) {
+//            return;
+//        }
+        Runnable loadHandler = LOAD_HANDLES.remove(name);
         try {
-            Runnable loadHandler = LOAD_HANDLES.get(name);
-//                LOAD_FLAGS.put(name, true);
-            loadHandler.run();
-            // 加载完成就移除，一次性的
-            LOAD_HANDLES.remove(name);
+            if (loadHandler != null) {
+                loadHandler.run();
+            }
         } catch (Exception ex) {
-//            LOAD_FLAGS.put(name, false);
+//            LOAD_FLAGS.r(name, false);
+            setLoadHandler(name, loadHandler);
             ex.printStackTrace();
             JulLog.warn("doLoadHandler error", ex);
         }
