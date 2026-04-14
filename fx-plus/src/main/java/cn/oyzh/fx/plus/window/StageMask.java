@@ -130,6 +130,12 @@ public class StageMask extends Stage implements StageAdapter {
         return this;
     }
 
+    /**
+     * 显示遮罩板
+     *
+     * @param window   窗口
+     * @param callback 回调
+     */
     public static void showMask(Window window, Runnable callback) {
         FXUtil.runLater(() -> new StageMask(window, callback).show());
     }
