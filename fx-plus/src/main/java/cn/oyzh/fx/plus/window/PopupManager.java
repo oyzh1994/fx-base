@@ -28,8 +28,8 @@ public class PopupManager {
     public static PopupAdapter getPopup(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             Object reference = PropertiesUtil.get(window, REF_ATTR);
-            if (reference instanceof PopupAdapter wrapper && wrapper.controllerClass() == controllerClass) {
-                return wrapper;
+            if (reference instanceof PopupAdapter adapter && adapter.controllerClass() == controllerClass) {
+                return adapter;
             }
         }
         return null;

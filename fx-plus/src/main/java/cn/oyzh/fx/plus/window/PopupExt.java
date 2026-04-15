@@ -15,6 +15,7 @@ import javafx.util.Duration;
 public class PopupExt extends Popover implements PopupAdapter {
 
     public PopupExt() {
+        // 初始化默认属性
         this.initDefault();
         // 监听显示属性
         this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
@@ -27,10 +28,14 @@ public class PopupExt extends Popover implements PopupAdapter {
 
     public PopupExt(PopupAttribute attribute) {
         this.init(attribute);
+        // 初始化默认属性
         this.initDefault();
         this.setProp(PopupManager.REF_ATTR, this);
     }
 
+    /**
+     * 初始化默认属性
+     */
     protected void initDefault() {
         this.setAutoFix(true);
         this.setAnimated(true);
@@ -54,11 +59,6 @@ public class PopupExt extends Popover implements PopupAdapter {
             int offset = 4;
             super.show(owner, pos.getX() + offset, pos.getY() + offset);
         }
-    }
-
-    @Override
-    public void showPopup(Node owner, double x, double y) {
-        super.show(owner, x, y);
     }
 
     @Override

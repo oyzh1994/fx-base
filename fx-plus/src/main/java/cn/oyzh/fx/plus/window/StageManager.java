@@ -309,6 +309,11 @@ public class StageManager {
     }
 
     /**
+     * mask显示中标志位
+     */
+    public static final String MASK_SHOWING_KEY = "mask:showing";
+
+    /**
      * 显示遮罩面板
      *
      * @param callback 遮罩关闭处理完成后的回调
@@ -329,13 +334,11 @@ public class StageManager {
      */
     public static void showMask(StageAdapter adapter, Runnable callback) {
         if (adapter != null) {
-            StageMask.showMask(adapter.stage(), callback);
+            showMask(adapter.stage(), callback);
         } else {
-            StageMask.showMask(null, callback);
+            showMask((Window) null, callback);
         }
     }
-
-    public static final String MASK_SHOWING_KEY = "mask:showing";
 
     /**
      * 显示遮罩面板
@@ -365,7 +368,7 @@ public class StageManager {
             // 设置状态位
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             // 显示遮罩
-            StageMask.showMask(window, () -> {
+            PopupMask.showMask(window, () -> {
                 try {
                     if (callback != null) {
                         callback.run();
@@ -390,16 +393,27 @@ public class StageManager {
      */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
-            if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {
+            if (window instanceof StageMask || window instanceof PopupMask) {
+                continue;
+            }
+            if (window.isShowing() && window.isFocused()) {
                 return window;
             }
         }
         return null;
     }
 
+    /**
+     * 是否有焦点窗口
+     *
+     * @return 结果
+     */
     public static boolean hasFocusedWindow() {
         for (Window window : Window.getWindows()) {
-            if (window.isShowing() && window.isFocused() && (!(window instanceof StageMask))) {
+            if (window instanceof StageMask || window instanceof PopupMask) {
+                continue;
+            }
+            if (window.isShowing() && window.isFocused()) {
                 return true;
             }
         }

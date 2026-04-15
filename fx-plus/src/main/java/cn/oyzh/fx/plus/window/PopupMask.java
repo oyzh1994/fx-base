@@ -1,24 +1,24 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import javafx.stage.Window;
 
 /**
  * @author oyzh
- * @since 2025-03-12
- * @see PopupMask
+ * @since 2026-04-15
  */
-@Deprecated
-public class StageMask extends Stage implements StageAdapter {
+public class PopupMask extends Popup implements PopupAdapter {
 
     /**
      * 目标窗口
@@ -30,23 +30,20 @@ public class StageMask extends Stage implements StageAdapter {
      */
     private Runnable callback;
 
-//    /**
-//     * 异步回调
-//     */
-//    private final Future<?> future;
-
-    public StageMask(Window target, Runnable callback) {
+    public PopupMask(Window target, Runnable callback) {
+        // 初始化默认属性
+        this.initDefault();
         this.target = target;
         this.callback = callback;
-        // 初始化
-        this.initOwner(target);
-        this.initStyle(StageStyle.TRANSPARENT);
 
         // 遮罩板
         StackPane maskPane = new StackPane();
         // 设置位置
-        this.setLocation(target.getX(), target.getY());
-        this.setSize(target.getWidth(), target.getHeight());
+        this.setX(target.getX());
+        this.setY(target.getY());
+        // 设置大小
+        maskPane.setPrefWidth(target.getWidth());
+        maskPane.setPrefHeight(target.getHeight());
 
         // 设置透明度
         maskPane.setOpacity(0.3);
@@ -56,11 +53,11 @@ public class StageMask extends Stage implements StageAdapter {
         // 绑定大小、位置
         target.xProperty().addListener((observable, oldValue, newValue) -> this.setX(newValue.doubleValue()));
         target.yProperty().addListener((observable, oldValue, newValue) -> this.setY(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue()));
+        target.widthProperty().addListener((observable, oldValue, newValue) -> maskPane.setPrefWidth(newValue.doubleValue()));
+        target.widthProperty().addListener((observable, oldValue, newValue) -> maskPane.setPrefHeight(newValue.doubleValue()));
 
         // 动画
-        ProgressIndicator indicator = new ProgressIndicator();
+        ProgressIndicator  indicator = new ProgressIndicator();
         indicator.setFocusTraversable(false);
         Color color = ThemeManager.currentForegroundColor();
         String colorHex = FXColorUtil.getColorHex(color);
@@ -72,39 +69,24 @@ public class StageMask extends Stage implements StageAdapter {
         StackPane.setAlignment(indicator, Pos.CENTER);
         maskPane.toFront();
         maskPane.setMouseTransparent(false);
-
-        // 创建场景
-        Scene scene = new Scene(maskPane);
-        // 透明度
-        scene.setFill(Color.TRANSPARENT);
-        this.setScene(scene);
-
-//        // 取消操作
-//        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-//            if (event.getCode() == KeyCode.ESCAPE) {
-//                this.cancel();
-//            }
-//        });
-
+        // 设置内容
+        this.content(maskPane);
         // 监听显示属性
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && newValue) {
-                this.doCallback();
+            if (BooleanUtil.isTrue(newValue)) {
+                TaskManager.startAsync(this::doCallback);
             }
         });
-
-//        // 执行业务
-//        this.future = TaskManager.startAsync(this::doCallback);
     }
 
-//    /**
-//     * 取消
-//     */
-//    public void cancel() {
-//        if (this.future != null) {
-//            ExecutorUtil.cancel(this.future);
-//        }
-//    }
+    /**
+     * 初始化默认属性
+     */
+    protected void initDefault() {
+        this.setAutoFix(true);
+        this.setAutoHide(false);
+        this.setHideOnEscape(false);
+    }
 
     /**
      * 执行回调
@@ -116,8 +98,6 @@ public class StageMask extends Stage implements StageAdapter {
         }
         // 执行业务
         FXUtil.runWait(() -> {
-            // 清除属性
-            this.setScene(null);
             // 关闭当前窗口
             this.hide();
             this.onWindowClosed();
@@ -131,8 +111,22 @@ public class StageMask extends Stage implements StageAdapter {
     }
 
     @Override
-    public Stage stage() {
+    public PopupWindow popup() {
         return this;
+    }
+
+    @Override
+    public Node content() {
+        return super.getContent().getFirst();
+    }
+
+    @Override
+    public void content(Node content) {
+        if (content == null) {
+            super.getContent().clear();
+        } else {
+            super.getContent().setAll(content);
+        }
     }
 
     /**
@@ -143,8 +137,8 @@ public class StageMask extends Stage implements StageAdapter {
      */
     public static void showMask(Window window, Runnable callback) {
         FXUtil.runLater(() -> {
-            StageMask mask = new StageMask(window, callback);
-            mask.show();
+            PopupMask mask = new PopupMask(window, callback);
+            mask.showPopup(window, window.getX(), window.getY());
         });
     }
 }
