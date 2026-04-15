@@ -54,7 +54,7 @@ public class PopupMask extends Popup implements PopupAdapter {
         target.xProperty().addListener((observable, oldValue, newValue) -> this.setX(newValue.doubleValue()));
         target.yProperty().addListener((observable, oldValue, newValue) -> this.setY(newValue.doubleValue()));
         target.widthProperty().addListener((observable, oldValue, newValue) -> maskPane.setPrefWidth(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> maskPane.setPrefHeight(newValue.doubleValue()));
+        target.heightProperty().addListener((observable, oldValue, newValue) -> maskPane.setPrefHeight(newValue.doubleValue()));
 
         // 动画
         ProgressIndicator  indicator = new ProgressIndicator();

@@ -57,7 +57,7 @@ public class StageMask extends Stage implements StageAdapter {
         target.xProperty().addListener((observable, oldValue, newValue) -> this.setX(newValue.doubleValue()));
         target.yProperty().addListener((observable, oldValue, newValue) -> this.setY(newValue.doubleValue()));
         target.widthProperty().addListener((observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue()));
+        target.heightProperty().addListener((observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue()));
 
         // 动画
         ProgressIndicator indicator = new ProgressIndicator();
