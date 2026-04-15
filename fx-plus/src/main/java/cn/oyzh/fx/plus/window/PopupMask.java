@@ -5,6 +5,7 @@ import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressIndicator;
@@ -30,6 +31,14 @@ public class PopupMask extends Popup implements PopupAdapter {
      */
     private Runnable callback;
 
+    private ChangeListener<? super Number> xFunc;
+
+    private ChangeListener<? super Number> yFunc;
+
+    private ChangeListener<? super Number> wFunc;
+
+    private ChangeListener<? super Number> hFunc;
+
     public PopupMask(Window target, Runnable callback) {
         // 初始化默认属性
         this.initDefault();
@@ -38,6 +47,10 @@ public class PopupMask extends Popup implements PopupAdapter {
 
         // 遮罩板
         StackPane maskPane = new StackPane();
+        this.xFunc = (observable, oldValue, newValue) -> this.setX(newValue.doubleValue());
+        this.yFunc = (observable, oldValue, newValue) -> this.setY(newValue.doubleValue());
+        this.wFunc = (observable, oldValue, newValue) -> maskPane.setPrefWidth(newValue.doubleValue());
+        this.hFunc = (observable, oldValue, newValue) -> maskPane.setPrefHeight(newValue.doubleValue());
         // 设置位置
         this.setX(target.getX());
         this.setY(target.getY());
@@ -51,13 +64,13 @@ public class PopupMask extends Popup implements PopupAdapter {
         // 半透明黑色背景‌
         maskPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
         // 绑定大小、位置
-        target.xProperty().addListener((observable, oldValue, newValue) -> this.setX(newValue.doubleValue()));
-        target.yProperty().addListener((observable, oldValue, newValue) -> this.setY(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> maskPane.setPrefWidth(newValue.doubleValue()));
-        target.heightProperty().addListener((observable, oldValue, newValue) -> maskPane.setPrefHeight(newValue.doubleValue()));
+        target.xProperty().addListener(this.xFunc);
+        target.yProperty().addListener(this.yFunc);
+        target.widthProperty().addListener(this.wFunc);
+        target.heightProperty().addListener(this.hFunc);
 
         // 动画
-        ProgressIndicator  indicator = new ProgressIndicator();
+        ProgressIndicator indicator = new ProgressIndicator();
         indicator.setFocusTraversable(false);
         Color color = ThemeManager.currentForegroundColor();
         String colorHex = FXColorUtil.getColorHex(color);
@@ -75,6 +88,8 @@ public class PopupMask extends Popup implements PopupAdapter {
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (BooleanUtil.isTrue(newValue)) {
                 TaskManager.startAsync(this::doCallback);
+            } else {
+                this.onWindowClosed();
             }
         });
     }
@@ -96,18 +111,27 @@ public class PopupMask extends Popup implements PopupAdapter {
         if (this.callback != null) {
             this.callback.run();
         }
-        // 执行业务
-        FXUtil.runWait(() -> {
-            // 关闭当前窗口
-            this.hide();
-            this.onWindowClosed();
-            // 聚焦原窗口
-            if (this.target != null) {
-                this.target.requestFocus();
-            }
-        });
+        // 关闭当前窗口
+        FXUtil.runWait(this::hide);
         this.target = null;
         this.callback = null;
+    }
+
+    @Override
+    public void onWindowClosed() {
+        PopupAdapter.super.onWindowClosed();
+        // 处理属性
+        if (this.target != null) {
+            this.target.requestFocus();
+            this.target.xProperty().removeListener(this.xFunc);
+            this.target.yProperty().removeListener(this.yFunc);
+            this.target.widthProperty().removeListener(this.wFunc);
+            this.target.heightProperty().removeListener(this.hFunc);
+            this.xFunc = null;
+            this.yFunc = null;
+            this.wFunc = null;
+            this.hFunc = null;
+        }
     }
 
     @Override

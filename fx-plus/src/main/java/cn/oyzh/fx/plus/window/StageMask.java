@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
@@ -14,8 +16,8 @@ import javafx.stage.Window;
 
 /**
  * @author oyzh
- * @since 2025-03-12
  * @see PopupMask
+ * @since 2025-03-12
  */
 @Deprecated
 public class StageMask extends Stage implements StageAdapter {
@@ -35,6 +37,14 @@ public class StageMask extends Stage implements StageAdapter {
 //     */
 //    private final Future<?> future;
 
+    private ChangeListener<? super Number> xFunc;
+
+    private ChangeListener<? super Number> yFunc;
+
+    private ChangeListener<? super Number> wFunc;
+
+    private ChangeListener<? super Number> hFunc;
+
     public StageMask(Window target, Runnable callback) {
         this.target = target;
         this.callback = callback;
@@ -44,6 +54,10 @@ public class StageMask extends Stage implements StageAdapter {
 
         // 遮罩板
         StackPane maskPane = new StackPane();
+        this.xFunc = (observable, oldValue, newValue) -> this.setX(newValue.doubleValue());
+        this.yFunc = (observable, oldValue, newValue) -> this.setY(newValue.doubleValue());
+        this.wFunc = (observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue());
+        this.hFunc = (observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue());
         // 设置位置
         this.setLocation(target.getX(), target.getY());
         this.setSize(target.getWidth(), target.getHeight());
@@ -54,10 +68,10 @@ public class StageMask extends Stage implements StageAdapter {
         // 半透明黑色背景‌
         maskPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
         // 绑定大小、位置
-        target.xProperty().addListener((observable, oldValue, newValue) -> this.setX(newValue.doubleValue()));
-        target.yProperty().addListener((observable, oldValue, newValue) -> this.setY(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue()));
-        target.heightProperty().addListener((observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue()));
+        target.xProperty().addListener(this.xFunc);
+        target.yProperty().addListener(this.yFunc);
+        target.widthProperty().addListener(this.wFunc);
+        target.heightProperty().addListener(this.hFunc);
 
         // 动画
         ProgressIndicator indicator = new ProgressIndicator();
@@ -89,7 +103,9 @@ public class StageMask extends Stage implements StageAdapter {
         // 监听显示属性
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && newValue) {
-                this.doCallback();
+                TaskManager.startAsync(this::doCallback);
+            } else {
+                this.onWindowClosed();
             }
         });
 
@@ -114,20 +130,29 @@ public class StageMask extends Stage implements StageAdapter {
         if (this.callback != null) {
             this.callback.run();
         }
-        // 执行业务
-        FXUtil.runWait(() -> {
-            // 清除属性
-            this.setScene(null);
-            // 关闭当前窗口
-            this.hide();
-            this.onWindowClosed();
-            // 聚焦原窗口
-            if (this.target != null) {
-                this.target.requestFocus();
-            }
-        });
+        // 关闭当前窗口
+        FXUtil.runWait(this::hide);
         this.target = null;
         this.callback = null;
+    }
+
+    @Override
+    public void onWindowClosed() {
+        StageAdapter.super.onWindowClosed();
+        // 清除属性
+        this.setScene(null);
+        // 处理属性
+        if (this.target != null) {
+            this.target.requestFocus();
+            this.target.xProperty().removeListener(this.xFunc);
+            this.target.yProperty().removeListener(this.yFunc);
+            this.target.widthProperty().removeListener(this.wFunc);
+            this.target.heightProperty().removeListener(this.hFunc);
+            this.xFunc = null;
+            this.yFunc = null;
+            this.wFunc = null;
+            this.hFunc = null;
+        }
     }
 
     @Override
