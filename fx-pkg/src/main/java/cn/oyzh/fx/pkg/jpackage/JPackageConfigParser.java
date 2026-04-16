@@ -1,7 +1,8 @@
 package cn.oyzh.fx.pkg.jpackage;
 
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +58,8 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (vendor != null) {
             config.setVerbose(verbose);
         }
-        List<String> javaOptions = object.getList("java-options", String.class);
+        JSONArray arr1 = object.getJSONArray("java-options");
+        List<String> javaOptions = arr1.toJavaList(String.class);
         if (javaOptions != null) {
             config.setJavaOptions(new HashSet<>(javaOptions));
         }

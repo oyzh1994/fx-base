@@ -13,7 +13,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfigParser;
 import cn.oyzh.fx.pkg.jre.JreConfig;
 import cn.oyzh.fx.pkg.jre.JreConfigParser;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 打包配置解析器

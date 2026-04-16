@@ -1,7 +1,8 @@
 package cn.oyzh.fx.pkg.jdeps;
 
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +18,13 @@ public class JDepsConfigParser implements ConfigParser<JDepsConfig> {
     @Override
     public JDepsConfig parse(JSONObject object) {
         JDepsConfig config = new JDepsConfig();
-        List<String> skips = object.getList("skips", String.class);
+        JSONArray arr1 = object.getJSONArray("skips");
+        List<String> skips = arr1.toJavaList(String.class);
         if (skips != null) {
             config.setSkips(new HashSet<>(skips));
         }
-        List<String> excludes = object.getList("excludes", String.class);
+        JSONArray arr2 = object.getJSONArray("excludes");
+        List<String> excludes = arr2.toJavaList(String.class);
         if (excludes != null) {
             config.setExcludes(new HashSet<>(excludes));
         }

@@ -1,7 +1,7 @@
 //package cn.oyzh.fx.pkg.packr;
 //
 //import cn.oyzh.fx.pkg.ConfigParser;
-//import com.alibaba.fastjson2.JSONObject;
+//import com.alibaba.fastjson.JSONObject;
 //import com.badlogicgames.packr.PackrConfig;
 //
 //import java.io.File;

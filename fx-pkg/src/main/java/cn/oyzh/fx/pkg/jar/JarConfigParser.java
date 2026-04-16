@@ -1,7 +1,8 @@
 package cn.oyzh.fx.pkg.jar;
 
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +18,13 @@ public class JarConfigParser implements ConfigParser<JarConfig> {
     @Override
     public JarConfig parse(JSONObject object) {
         JarConfig config = new JarConfig();
-        List<String> excludes = object.getList("excludes", String.class);
+        JSONArray arr1 = object.getJSONArray("excludes");
+        List<String> excludes = arr1.toJavaList(String.class);
         if (excludes != null) {
             config.setExcludes(new HashSet<>(excludes));
         }
-        List<String> skipsJar = object.getList("skipsJar", String.class);
+        JSONArray arr2 = object.getJSONArray("skipsJar");
+        List<String> skipsJar = arr2.toJavaList(String.class);
         if (skipsJar != null) {
             config.setSkipsJar(new HashSet<>(skipsJar));
         }
