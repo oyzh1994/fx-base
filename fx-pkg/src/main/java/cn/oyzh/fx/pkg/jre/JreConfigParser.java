@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.jre;
 
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
@@ -18,8 +18,7 @@ public class JreConfigParser implements ConfigParser<JreConfig> {
     @Override
     public JreConfig parse(JSONObject object) {
         JreConfig config = new JreConfig();
-        JSONArray array = object.getJSONArray("excludes");
-        List<String> excludes = array.toJavaList(String.class);
+        List<String> excludes = JSONUtil.toList(object, "excludes", String.class);
         if (excludes != null) {
             config.setExcludes(new HashSet<>(excludes));
         }

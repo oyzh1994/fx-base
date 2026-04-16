@@ -2,9 +2,9 @@ package cn.oyzh.fx.pkg.jlink;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.File;
@@ -22,13 +22,11 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
     @Override
     public JLinkConfig parse(JSONObject object) {
         JLinkConfig config = new JLinkConfig();
-        JSONArray arr1 = object.getJSONArray("exclude-files");
-        List<String> excludeFiles = arr1.toJavaList(String.class);
+        List<String> excludeFiles = JSONUtil.toList(object, "exclude-files", String.class);
         if (excludeFiles != null) {
             config.setExcludeFiles(new HashSet<>(excludeFiles));
         }
-        JSONArray arr2 = object.getJSONArray("add-modules");
-        List<String> addModules = arr2.toJavaList(String.class);
+        List<String> addModules = JSONUtil.toList(object, "add-modules", String.class);
         if (addModules != null) {
             config.setAddModules(new HashSet<>(addModules));
         }
