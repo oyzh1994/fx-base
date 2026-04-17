@@ -16,9 +16,12 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Window;
 
 /**
+ * TODO: 在windows和linux上会导致弹窗异常，废弃
+ *
  * @author oyzh
  * @since 2026-04-15
  */
+@Deprecated
 public class PopupMask extends Popup implements PopupAdapter {
 
     /**
