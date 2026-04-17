@@ -368,7 +368,7 @@ public class StageManager {
             // 设置状态位
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             // 显示遮罩
-            PopupMask.showMask(window, () -> {
+            StageMask.showMask(window, () -> {
                 try {
                     if (callback != null) {
                         callback.run();
