@@ -252,11 +252,20 @@ public interface PopupAdapter extends WindowAdapter {
     }
 
     /**
+     * 获取节点
+     *
+     * @return 父节点
+     */
+    default Node getOwnerNode() {
+        return this.popup().getOwnerNode();
+    }
+
+    /**
      * 获取父窗口
      *
      * @return 父窗口
      */
-    default Window getOwner() {
+    default Window getOwnerWindow() {
         return this.popup().getOwnerWindow();
     }
 

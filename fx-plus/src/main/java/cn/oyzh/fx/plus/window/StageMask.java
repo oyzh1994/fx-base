@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -19,7 +20,6 @@ import javafx.stage.Window;
  * @see PopupMask
  * @since 2025-03-12
  */
-@Deprecated
 public class StageMask extends Stage implements StageAdapter {
 
     /**
@@ -102,7 +102,7 @@ public class StageMask extends Stage implements StageAdapter {
 
         // 监听显示属性
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && newValue) {
+            if (BooleanUtil.isTrue(newValue)) {
                 TaskManager.startAsync(this::doCallback);
             } else {
                 this.onWindowClosed();
