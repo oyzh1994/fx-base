@@ -287,6 +287,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSqlFile(), new RunSqlFileSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem run(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.run(), new RunSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem runSelected(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSelected(), action);
     }
