@@ -11,19 +11,19 @@ import java.util.List;
  */
 public class ContextMenuManager {
 
-    /**
-     * 菜单池
-     */
-    private static final ContextMenuPool POOL = new ContextMenuPool();
+//    /**
+//     * 菜单池
+//     */
+//    private static final ContextMenuPool POOL = new ContextMenuPool();
 
-    /**
-     * 获取菜单
-     *
-     * @return 菜单
-     */
-    public static ContextMenu getContextMenu() {
-        return POOL.borrowObject();
-    }
+//    /**
+//     * 获取菜单
+//     *
+//     * @return 菜单
+//     */
+//    public static ContextMenu getContextMenu() {
+//        return POOL.borrowObject();
+//    }
 
     /**
      * 获取菜单
@@ -32,7 +32,8 @@ public class ContextMenuManager {
      * @return 菜单
      */
     public static ContextMenu getContextMenu(List<? extends MenuItem> items) {
-        ContextMenu contextMenu = POOL.borrowObject();
+        ContextMenu contextMenu = new FXContextMenu();
+//        ContextMenu contextMenu = POOL.borrowObject();
         contextMenu.getItems().setAll(items);
         return contextMenu;
     }
@@ -43,6 +44,6 @@ public class ContextMenuManager {
      * @param contextMenu 菜单
      */
     public static void returnContextMenu(ContextMenu contextMenu) {
-        POOL.returnObject(contextMenu);
+//        POOL.returnObject(contextMenu);
     }
 }

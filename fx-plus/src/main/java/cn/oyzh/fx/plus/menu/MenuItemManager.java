@@ -19,15 +19,15 @@ public class MenuItemManager {
     //  */
     // private static final MenuPool MENU_POOL = new MenuPool();
 
-    /**
-     * 菜单项池
-     */
-    private static final MenuItemPool MENU_ITEM_POOL = new MenuItemPool();
+//    /**
+//     * 菜单项池
+//     */
+//    private static final MenuItemPool MENU_ITEM_POOL = new MenuItemPool();
 
-    /**
-     * 分割菜单项池
-     */
-    private static final SeparatorMenuItemPool SEPARATOR_MENU_ITEM_POOL = new SeparatorMenuItemPool();
+//    /**
+//     * 分割菜单项池
+//     */
+//    private static final SeparatorMenuItemPool SEPARATOR_MENU_ITEM_POOL = new SeparatorMenuItemPool();
 
     // /**
     //  * 获取菜单
@@ -74,7 +74,8 @@ public class MenuItemManager {
      * @return 分割菜单项
      */
     public static SeparatorMenuItem getSeparatorMenuItem() {
-        return SEPARATOR_MENU_ITEM_POOL.borrowObject();
+        return new SeparatorMenuItem();
+//        return SEPARATOR_MENU_ITEM_POOL.borrowObject();
     }
 
     // /**
@@ -135,7 +136,8 @@ public class MenuItemManager {
      * @return 菜单
      */
     public static MenuItem getMenuItem(String text, Node graphic, Runnable action) {
-        MenuItem menuItem = MENU_ITEM_POOL.borrowObject();
+        MenuItem menuItem = new FXMenuItem();
+//        MenuItem menuItem = MENU_ITEM_POOL.borrowObject();
         menuItem.setText(text);
         if (graphic != null) {
             menuItem.setGraphic(graphic);
@@ -168,13 +170,13 @@ public class MenuItemManager {
      * @param menuItem 菜单项
      */
     public static void returnMenuItem(MenuItem menuItem) {
-        if (menuItem instanceof SeparatorMenuItem item) {
-            SEPARATOR_MENU_ITEM_POOL.returnObject(item);
-            // } else if (menuItem instanceof Menu menu) {
-            //     MENU_POOL.returnObject(menu);
-        } else if (menuItem instanceof FXMenuItem) {
-            MENU_ITEM_POOL.returnObject(menuItem);
-        }
+//        if (menuItem instanceof SeparatorMenuItem item) {
+//            SEPARATOR_MENU_ITEM_POOL.returnObject(item);
+//            // } else if (menuItem instanceof Menu menu) {
+//            //     MENU_POOL.returnObject(menu);
+//        } else if (menuItem instanceof FXMenuItem) {
+//            MENU_ITEM_POOL.returnObject(menuItem);
+//        }
     }
 
     // /**
