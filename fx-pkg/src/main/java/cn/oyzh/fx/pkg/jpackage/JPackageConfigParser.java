@@ -1,13 +1,14 @@
 package cn.oyzh.fx.pkg.jpackage;
 
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;
 
 /**
- * JPackage配置
+ * jpackage配置
  *
  * @author oyzh
  * @since 2023/3/8
@@ -57,7 +58,7 @@ public class JPackageConfigParser implements ConfigParser<JPackageConfig> {
         if (vendor != null) {
             config.setVerbose(verbose);
         }
-        List<String> javaOptions = object.getList("java-options", String.class);
+        List<String> javaOptions = JSONUtil.toList(object, "java-options", String.class);
         if (javaOptions != null) {
             config.setJavaOptions(new HashSet<>(javaOptions));
         }

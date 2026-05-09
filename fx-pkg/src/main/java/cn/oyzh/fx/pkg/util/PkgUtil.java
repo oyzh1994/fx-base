@@ -1,6 +1,5 @@
 package cn.oyzh.fx.pkg.util;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.hutool.extra.compress.CompressUtil;
@@ -9,6 +8,7 @@ import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.ArrayUtil;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
@@ -158,47 +158,47 @@ public class PkgUtil {
     //     };
     // }
 
-    /**
-     * 获取jlink命令
-     *
-     * @param config jlink配置
-     * @return jlink命令
-     */
-    @Deprecated
-    public static String getJLinkCMD(JLinkConfig config) {
-        String cmdStr = "jlink";
-        if (config.isVerbose()) {
-            cmdStr += " --verbose";
-        }
-        if (config.getVm() != null) {
-            cmdStr += " --vm=" + config.getVm();
-        }
-        if (config.getCompress() != null) {
-            cmdStr += " --compress=" + config.getCompress();
-        }
-        if (config.isNoHeaderFiles()) {
-            cmdStr += " --no-header-files";
-        }
-        if (config.isNoManPages()) {
-            cmdStr += " --no-man-pages";
-        }
-        if (config.isStripDebug()) {
-            cmdStr += " --strip-debug";
-        }
-        if (config.isStripJavaDebugAttributes()) {
-            cmdStr += " --strip-java-debug-attributes";
-        }
-        if (CollectionUtil.isNotEmpty(config.getAddModules())) {
-            cmdStr += " --add-modules " + CollectionUtil.join(config.getAddModules(), ",");
-        }
-        if (CollectionUtil.isNotEmpty(config.getExcludeFiles())) {
-            cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
-        }
-        cmdStr += " --output " + config.getOutput();
-        // cmdStr += " --bind-services";
-        // cmdStr += " --exclude-modules jdk.localedata";
-        return cmdStr;
-    }
+//    /**
+//     * 获取jlink命令
+//     *
+//     * @param config jlink配置
+//     * @return jlink命令
+//     */
+//    @Deprecated
+//    public static String getJLinkCMD(JLinkConfig config) {
+//        String cmdStr = "jlink";
+//        if (config.isVerbose()) {
+//            cmdStr += " --verbose";
+//        }
+//        if (config.getVm() != null) {
+//            cmdStr += " --vm=" + config.getVm();
+//        }
+//        if (config.getCompress() != null) {
+//            cmdStr += " --compress=" + config.getCompress();
+//        }
+//        if (config.isNoHeaderFiles()) {
+//            cmdStr += " --no-header-files";
+//        }
+//        if (config.isNoManPages()) {
+//            cmdStr += " --no-man-pages";
+//        }
+//        if (config.isStripDebug()) {
+//            cmdStr += " --strip-debug";
+//        }
+//        if (config.isStripJavaDebugAttributes()) {
+//            cmdStr += " --strip-java-debug-attributes";
+//        }
+//        if (CollectionUtil.isNotEmpty(config.getAddModules())) {
+//            cmdStr += " --add-modules " + CollectionUtil.join(config.getAddModules(), ",");
+//        }
+//        if (CollectionUtil.isNotEmpty(config.getExcludeFiles())) {
+//            cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
+//        }
+//        cmdStr += " --output " + config.getOutput();
+//        // cmdStr += " --bind-services";
+//        // cmdStr += " --exclude-modules jdk.localedata";
+//        return cmdStr;
+//    }
 
     /**
      * 获取jlink命令
@@ -206,7 +206,7 @@ public class PkgUtil {
      * @param config jlink配置
      * @return jlink命令
      */
-    public static String[] getJLinkCMD1(JLinkConfig config) {
+    public static String[] getJLinkCMD(JLinkConfig config) {
         List<String> cmdList = new ArrayList<>();
         cmdList.add("jlink");
         if (config.isVerbose()) {
@@ -215,11 +215,9 @@ public class PkgUtil {
         if (config.getVm() != null) {
             cmdList.add("--vm=" + config.getVm());
         }
-
-        // 参数已过时
-        // if (config.getCompress() != null) {
-        //     cmdList.add("--compress=" + config.getCompress());
-        // }
+        if (config.getCompress() != null) {
+            cmdList.add("--compress=" + config.getCompress());
+        }
         if (config.isNoHeaderFiles()) {
             cmdList.add("--no-header-files");
         }
@@ -228,6 +226,9 @@ public class PkgUtil {
         }
         if (config.isStripDebug()) {
             cmdList.add("--strip-debug");
+        }
+        if (config.isIgnoreSigningInformation()) {
+            cmdList.add("--ignore-signing-information");
         }
         if (config.isStripJavaDebugAttributes()) {
             cmdList.add("--strip-java-debug-attributes");
@@ -247,20 +248,37 @@ public class PkgUtil {
      * 获取jdeps命令
      *
      * @param config jdeps配置
+     * @param jar  jar
      * @return jdeps命令
      */
-    public static String getJDepsCMD(JDepsConfig config) {
-        String cmdStr = "jdeps";
+    public static String[] getJDepsCMD(JDepsConfig config, String jar) {
+        return getJDepsCMD(config, List.of(jar));
+    }
+
+    /**
+     * 获取jdeps命令
+     *
+     * @param config jdeps配置
+     * @param jars   jar列表
+     * @return jdeps命令
+     */
+    public static String[] getJDepsCMD(JDepsConfig config, List<String> jars) {
+        List<String> cmdList = new ArrayList<>();
+        cmdList.add("jdeps");
         if (config.isVerbose()) {
-            cmdStr += " -verbose";
+            cmdList.add("-verbose");
         }
         if (config.isSummary()) {
-            cmdStr += " -summary";
+            cmdList.add("-summary");
         }
         if (config.getMultiRelease() != null) {
-            cmdStr += " --multi-release " + config.getMultiRelease();
+            cmdList.add("--multi-release");
+            cmdList.add(config.getMultiRelease() + "");
         }
-        return cmdStr;
+        if (CollectionUtil.isNotEmpty(jars)) {
+            cmdList.addAll(jars);
+        }
+        return ArrayUtil.toArray(cmdList, String.class);
     }
 
     // /**
@@ -285,72 +303,72 @@ public class PkgUtil {
     //     return ArrayUtil.toArray(cmdList, String.class);
     // }
 
-    /**
-     * 获取jpackage命令
-     *
-     * @param config jpackage配置
-     * @return jlink命令
-     */
-    @Deprecated
-    public static String getJPackageCMD(JPackageConfig config) {
-        String cmdStr = "jpackage";
-        if (config.isVerbose()) {
-            cmdStr += " --verbose";
-        }
-        if (config.getVendor() != null) {
-            cmdStr += " --vendor " + config.getVendor();
-        }
-        if (CollectionUtil.isNotEmpty(config.getJavaOptions())) {
-            for (String javaOption : config.getJavaOptions()) {
-                String[] options = javaOption.split(" ");
-                for (String option : options) {
-                    cmdStr += " --java-options " + option;
-                }
-            }
-        }
-        if (config.getDescription() != null) {
-            cmdStr += " --description \"" + config.getDescription() + "\"";
-        }
-        if (config.getIcon() != null) {
-            cmdStr += " --icon " + config.getIcon();
-        }
-        if (config.getInput() != null) {
-            cmdStr += " -i " + config.getInput();
-        }
-        if (config.getMainJar() != null) {
-            cmdStr += " --main-jar " + config.getMainJar();
-        }
-        if (config.getName() != null) {
-            cmdStr += " -n " + config.getName();
-        }
-        if (config.getType() != null) {
-            cmdStr += " -t " + config.getType();
-        }
-        if (config.getAppVersion() != null) {
-            cmdStr += " --app-version " + config.getAppVersion();
-        }
-        if (config.getRuntimeImage() != null) {
-            cmdStr += " --runtime-image " + config.getRuntimeImage();
-        }
-        if (OSUtil.isWindows()) {
-            if (config.isWinMenu()) {
-                cmdStr += " --win-menu";
-            }
-            if (config.isWinShortcut()) {
-                cmdStr += " --win-shortcut";
-            }
-            if (config.isWinDirChooser()) {
-                cmdStr += " --win-dir-chooser";
-            }
-        }
-        if (OSUtil.isMacOS()) {
-            if (config.getMacPackageIdentifier() != null) {
-                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
-            }
-        }
-        cmdStr += " -d " + config.getDest();
-        return cmdStr;
-    }
+//    /**
+//     * 获取jpackage命令
+//     *
+//     * @param config jpackage配置
+//     * @return jlink命令
+//     */
+//    @Deprecated
+//    public static String getJPackageCMD(JPackageConfig config) {
+//        String cmdStr = "jpackage";
+//        if (config.isVerbose()) {
+//            cmdStr += " --verbose";
+//        }
+//        if (config.getVendor() != null) {
+//            cmdStr += " --vendor " + config.getVendor();
+//        }
+//        if (CollectionUtil.isNotEmpty(config.getJavaOptions())) {
+//            for (String javaOption : config.getJavaOptions()) {
+//                String[] options = javaOption.split(" ");
+//                for (String option : options) {
+//                    cmdStr += " --java-options " + option;
+//                }
+//            }
+//        }
+//        if (config.getDescription() != null) {
+//            cmdStr += " --description \"" + config.getDescription() + "\"";
+//        }
+//        if (config.getIcon() != null) {
+//            cmdStr += " --icon " + config.getIcon();
+//        }
+//        if (config.getInput() != null) {
+//            cmdStr += " -i " + config.getInput();
+//        }
+//        if (config.getMainJar() != null) {
+//            cmdStr += " --main-jar " + config.getMainJar();
+//        }
+//        if (config.getName() != null) {
+//            cmdStr += " -n " + config.getName();
+//        }
+//        if (config.getType() != null) {
+//            cmdStr += " -t " + config.getType();
+//        }
+//        if (config.getAppVersion() != null) {
+//            cmdStr += " --app-version " + config.getAppVersion();
+//        }
+//        if (config.getRuntimeImage() != null) {
+//            cmdStr += " --runtime-image " + config.getRuntimeImage();
+//        }
+//        if (OSUtil.isWindows()) {
+//            if (config.isWinMenu()) {
+//                cmdStr += " --win-menu";
+//            }
+//            if (config.isWinShortcut()) {
+//                cmdStr += " --win-shortcut";
+//            }
+//            if (config.isWinDirChooser()) {
+//                cmdStr += " --win-dir-chooser";
+//            }
+//        }
+//        if (OSUtil.isMacOS()) {
+//            if (config.getMacPackageIdentifier() != null) {
+//                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
+//            }
+//        }
+//        cmdStr += " -d " + config.getDest();
+//        return cmdStr;
+//    }
 
     /**
      * 获取jpackage命令
@@ -358,7 +376,7 @@ public class PkgUtil {
      * @param config jpackage配置
      * @return jlink命令
      */
-    public static String[] getJPackageCMD1(JPackageConfig config) {
+    public static String[] getJPackageCMD(JPackageConfig config) {
         List<String> cmdList = new ArrayList<>();
         cmdList.add("jpackage");
         if (config.isVerbose()) {
@@ -376,6 +394,10 @@ public class PkgUtil {
                     cmdList.add(option);
                 }
             }
+        }
+        if (config.getCopyright() != null) {
+            cmdList.add("--copyright");
+            cmdList.add(config.getCopyright());
         }
         if (config.getDescription() != null) {
             cmdList.add("--description");

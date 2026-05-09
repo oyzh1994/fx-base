@@ -1,10 +1,11 @@
 package cn.oyzh.fx.pkg.jar;
 
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * jar配置解析器
@@ -17,25 +18,21 @@ public class JarConfigParser implements ConfigParser<JarConfig> {
     @Override
     public JarConfig parse(JSONObject object) {
         JarConfig config = new JarConfig();
-        JSONArray excludes = object.getJSONArray("excludes");
+        List<String> excludes = JSONUtil.toList(object, "excludes", String.class);
         if (excludes != null) {
-            config.setExcludes(new HashSet<>());
-            for (Object o : excludes) {
-                config.getExcludes().add(o.toString());
-            }
+            config.setExcludes(new HashSet<>(excludes));
         }
-        JSONArray skipsJar = object.getJSONArray("skipsJar");
+        List<String> skipsJar = JSONUtil.toList(object, "skipsJar", String.class);
         if (skipsJar != null) {
-            config.setSkipsJar(new HashSet<>());
-            for (Object o : skipsJar) {
-                config.getSkipsJar().add(o.toString());
-            }
+            config.setSkipsJar(new HashSet<>(skipsJar));
         }
-        if (object.containsKey("enable")) {
-            config.setEnable(object.getBooleanValue("enable", true));
+        Boolean enable = object.getBoolean("enable");
+        if (enable != null) {
+            config.setEnable(enable);
         }
-        if (object.containsKey("removeEmpty")) {
-            config.setRemoveEmpty(object.getBooleanValue("removeEmpty", true));
+        Boolean removeEmpty = object.getBoolean("removeEmpty");
+        if (removeEmpty != null) {
+            config.setRemoveEmpty(removeEmpty);
         }
         return config;
     }

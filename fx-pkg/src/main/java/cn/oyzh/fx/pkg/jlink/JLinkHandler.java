@@ -57,6 +57,10 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         if (jLinkConfig == null) {
             return;
         }
+        if (!jLinkConfig.isEnable()) {
+            JulLog.warn("jlink未启用，已跳过");
+            return;
+        }
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
@@ -64,7 +68,7 @@ public class JLinkHandler implements PreHandler, SingleHandler {
         if (FileUtil.exist(jLinkConfig.getOutput())) {
             FileUtil.del(jLinkConfig.getOutput());
         }
-        String[] cmd = PkgUtil.getJLinkCMD1(jLinkConfig);
+        String[] cmd = PkgUtil.getJLinkCMD(jLinkConfig);
         cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
         String cmdStr = StringUtil.join(" ", cmd);
         JulLog.info("JLink cmd:{}", "\n" + cmdStr);

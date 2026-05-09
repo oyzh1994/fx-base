@@ -28,7 +28,7 @@ public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAda
 
     public static final FXContextMenu EMPTY = new FXContextMenu();
 
-    private ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
+    private final ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");

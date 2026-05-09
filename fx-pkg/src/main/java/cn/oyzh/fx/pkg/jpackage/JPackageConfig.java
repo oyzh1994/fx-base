@@ -1,11 +1,10 @@
 package cn.oyzh.fx.pkg.jpackage;
 
 
-import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.fx.pkg.ConfigMargeAble;
 
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,7 +23,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     /**
      * 打包类型
      */
-    private String type = "app-image";
+    private String type;
 
     /**
      * 目标目录
@@ -57,6 +56,11 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     private String appVersion;
 
     /**
+     * 版权信息
+     */
+    private String copyright;
+
+    /**
      * 程序描述
      */
     private String description;
@@ -69,7 +73,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     /**
      * 详细信息
      */
-    private boolean verbose = true;
+    private Boolean verbose;
 
     /**
      * vm参数
@@ -79,17 +83,17 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     /**
      * 是否创建开始菜单、仅windows
      */
-    private boolean winMenu;
+    private Boolean winMenu;
 
     /**
      * 是否创建桌面图标、仅windows
      */
-    private boolean winShortcut;
+    private Boolean winShortcut;
 
     /**
      * 是否可选安装目录、仅windows
      */
-    private boolean winDirChooser;
+    private Boolean winDirChooser;
 
     /**
      * mac程序唯一id、仅macos
@@ -99,7 +103,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     /**
      * 是否启用
      */
-    private boolean enable = true;
+    private Boolean enable;
 
     public String destParent() {
         return new File(dest).getParent();
@@ -186,7 +190,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     }
 
     public boolean isVerbose() {
-        return verbose;
+        return BooleanUtil.isTrue(verbose);
     }
 
     public void setVerbose(boolean verbose) {
@@ -194,7 +198,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     }
 
     public boolean isWinMenu() {
-        return winMenu;
+        return BooleanUtil.isTrue(winMenu);
     }
 
     public void setWinMenu(boolean winMenu) {
@@ -202,7 +206,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     }
 
     public boolean isWinShortcut() {
-        return winShortcut;
+        return BooleanUtil.isTrue(winShortcut);
     }
 
     public void setWinShortcut(boolean winShortcut) {
@@ -210,7 +214,7 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     }
 
     public boolean isWinDirChooser() {
-        return winDirChooser;
+        return BooleanUtil.isTrue(winDirChooser);
     }
 
     public void setWinDirChooser(boolean winDirChooser) {
@@ -234,11 +238,19 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
     }
 
     public boolean isEnable() {
-        return enable;
+        return BooleanUtil.isTrue(this.enable);
     }
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public String getCopyright() {
+        return copyright;
+    }
+
+    public void setCopyright(String copyright) {
+        this.copyright = copyright;
     }
 
     // public String fixedType() {
@@ -277,6 +289,9 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
         if (config.appVersion != null) {
             this.appVersion = config.appVersion;
         }
+        if (config.copyright != null) {
+            this.copyright = config.copyright;
+        }
         if (config.description != null) {
             this.description = config.description;
         }
@@ -291,10 +306,20 @@ public class JPackageConfig implements ConfigMargeAble<JPackageConfig> {
         } else if (config.javaOptions != null) {
             this.javaOptions.addAll(config.javaOptions);
         }
-        this.enable = config.enable;
-        this.verbose = config.verbose;
-        this.winMenu = config.winMenu;
-        this.winShortcut = config.winShortcut;
-        this.winDirChooser = config.winDirChooser;
+        if (config.enable != null) {
+            this.enable = config.enable;
+        }
+        if (config.verbose != null) {
+            this.verbose = config.verbose;
+        }
+        if (config.winMenu != null) {
+            this.winMenu = config.winMenu;
+        }
+        if (config.winShortcut != null) {
+            this.winShortcut = config.winShortcut;
+        }
+        if (config.winDirChooser != null) {
+            this.winDirChooser = config.winDirChooser;
+        }
     }
 }

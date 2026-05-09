@@ -394,6 +394,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             formatType = EditorFormatType.CSS;
         } else if (detectType == 9) {
             formatType = EditorFormatType.YAML;
+        } else if (detectType == 10) {
+            formatType = EditorFormatType.PYTHON;
         } else {
             formatType = EditorFormatType.RAW;
         }

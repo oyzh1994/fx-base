@@ -40,13 +40,18 @@ public class JPackageHandler implements PackHandler {
     }
 
     @Override
+    public boolean unique() {
+        return true;
+    }
+
+    @Override
     public void handle(PackConfig packConfig) throws Exception {
         JPackageConfig jPackageConfig = packConfig.getjPackageConfig();
         if (jPackageConfig == null) {
             return;
         }
         if (!jPackageConfig.isEnable()) {
-            JulLog.warn("jpackage未启用，跳过jpackage");
+            JulLog.warn("jpackage未启用，已跳过");
             return;
         }
         String jdkPath = packConfig.getJdkPath();
@@ -96,7 +101,7 @@ public class JPackageHandler implements PackHandler {
         }
         // String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
         // cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
-        String[] cmd = PkgUtil.getJPackageCMD1(jPackageConfig);
+        String[] cmd = PkgUtil.getJPackageCMD(jPackageConfig);
         cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
         String cmdStr = StringUtil.join(" ", cmd);
         JulLog.info("JPackage cmd:{}", "\n" + cmdStr);

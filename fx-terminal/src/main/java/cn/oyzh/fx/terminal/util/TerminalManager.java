@@ -33,11 +33,11 @@ public class TerminalManager {
      */
     private static final Map<String, Runnable> LOAD_HANDLES = HashMap.newHashMap(2);
 
-    /**
-     * 处理器加载标记列表
-     * key: 终端名称 value: 标记
-     */
-    private static final Map<String, Boolean> LOAD_FLAGS = HashMap.newHashMap(2);
+//    /**
+//     * 处理器加载标记列表
+//     * key: 终端名称 value: 标记
+//     */
+//    private static final Map<String, Boolean> LOAD_FLAGS = HashMap.newHashMap(2);
 
     /**
      * 设置加载操作
@@ -49,15 +49,15 @@ public class TerminalManager {
         LOAD_HANDLES.put(name, loadHandler);
     }
 
-    /**
-     * 获取加载操作
-     *
-     * @param name 终端名称
-     * @return 加载操作
-     */
-    public static Runnable getLoadHandler(String name) {
-        return LOAD_HANDLES.get(name);
-    }
+//    /**
+//     * 获取加载操作
+//     *
+//     * @param name 终端名称
+//     * @return 加载操作
+//     */
+//    public static Runnable getLoadHandler(String name) {
+//        return LOAD_HANDLES.get(name);
+//    }
 
     /**
      * 加载处理器
@@ -65,17 +65,17 @@ public class TerminalManager {
      * @param name 终端名称
      */
     private static void doLoadHandler(String name) {
-        if (LOAD_FLAGS.containsKey(name)) {
-            return;
-        }
+//        if (!LOAD_FLAGS.contains(name)) {
+//            return;
+//        }
+        Runnable loadHandler = LOAD_HANDLES.remove(name);
         try {
-            Runnable loadHandler = getLoadHandler(name);
             if (loadHandler != null) {
-                LOAD_FLAGS.put(name, true);
                 loadHandler.run();
             }
         } catch (Exception ex) {
-            LOAD_FLAGS.put(name, false);
+//            LOAD_FLAGS.r(name, false);
+            setLoadHandler(name, loadHandler);
             ex.printStackTrace();
             JulLog.warn("doLoadHandler error", ex);
         }

@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.RuntimeUtil;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -14,6 +15,7 @@ import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,20 +46,28 @@ public class JDepsHandler implements PreHandler {
     }
 
     @Override
+    public boolean unique() {
+        return true;
+    }
+
+    @Override
     public void handle(PackConfig packConfig) throws Exception {
         JLinkConfig jLinkConfig = packConfig.getJLinkConfig();
         if (jLinkConfig == null) {
             return;
         }
         JDepsConfig jDepsConfig = packConfig.getJDepsConfig();
+        if (jDepsConfig == null) {
+            return;
+        }
+        if (!jDepsConfig.isEnable()) {
+            JulLog.warn("jdeps未启用，已跳过");
+            return;
+        }
         RegFilter fileFilter = new RegFilter();
         RegFilter moduleFilter = new RegFilter();
-        if (jDepsConfig != null) {
-            fileFilter.addExcludes(jDepsConfig.getSkips());
-            moduleFilter.addExcludes(jDepsConfig.getExcludes());
-        } else {
-            jDepsConfig = new JDepsConfig();
-        }
+        fileFilter.addExcludes(jDepsConfig.getSkips());
+        moduleFilter.addExcludes(jDepsConfig.getExcludes());
 
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {
@@ -75,79 +85,70 @@ public class JDepsHandler implements PreHandler {
         } else {
             cmdStr = new StringBuilder("java --list-modules");
         }
-        // ProcessExecBuilder builder = ProcessExecBuilder.newBuilder("java --list-modules");
-        // builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
-        // builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
-        // builder.directory(jdkPath + "/bin");
-        // builder.timeout(30_000);
         String result = RuntimeUtil.execForStr(cmdStr.toString());
-        // String result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
-        // String result = builder.execForInput();
         JulLog.info("list modules:{}", result);
-//        System.out.println(result);
-        result.lines().forEach(r -> {
-            if (StringUtil.isNotBlank(r)) {
-                modules.add(r.split("@")[0]);
+        if (result != null) {
+            result.lines().forEach(r -> {
+                if (StringUtil.isNotBlank(r)) {
+                    modules.add(r.split("@")[0]);
+                }
+            });
+        }
+        // 文件列表
+        List<File> files = FileUtil.loopFiles(jarUnDir);
+        // 文件路径
+        List<String> filePaths = new ArrayList<>();
+        for (File file : files) {
+            // 非jar，跳过
+            if (!JarUtil.isJar(file)) {
+                continue;
             }
-        });
+            // 判断是否被过滤
+            if (!fileFilter.apply(file.getName())) {
+                continue;
+            }
+            // 追加到路径
+            filePaths.add(file.getPath());
+        }
         // 遍历所有文件，然后找出所有依赖模块
         Set<String> deps = new HashSet<>();
-        List<File> files = FileUtil.loopFiles(jarUnDir);
-        cmdStr = new StringBuilder(PkgUtil.getJDepsCMD(jDepsConfig));
-        // StringBuilder finalCmdStr = cmdStr;
-        // List<Runnable> tasks = new ArrayList<>();
-        for (File file : files) {
-            try {
-                // 非jar，跳过
-                if (!JarUtil.isJar(file)) {
-                    continue;
+        // 任务列表
+        List<Runnable> tasks = new ArrayList<>();
+        // 添加任务
+        for (String filePath : filePaths) {
+            Runnable func = () -> {
+                JulLog.info("jdeps jar: {}.", filePath);
+                String[] cmd = PkgUtil.getJDepsCMD(jDepsConfig, filePath);
+                // 列举模块
+                cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
+                String commands = StringUtil.join(" ", cmd);
+                String execResult = RuntimeUtil.execForStr(commands);
+                JulLog.info("jdeps result:{}", execResult);
+                if (execResult != null) {
+                    execResult.lines().forEach(r -> {
+                        // 处理内容
+                        if (!r.contains("-> ") || r.startsWith(" ") || r.endsWith(".jar")) {
+                            return;
+                        }
+                        String module = r.split("-> ")[1];
+                        // 处理内容
+                        module = module.trim();
+                        // 被过滤
+                        if (!moduleFilter.apply(module)) {
+                            return;
+                        }
+                        // 如果是系统模块，则添加到模块列表
+                        if (modules.contains(module) && !deps.contains(module)) {
+                            JulLog.info("module added:{}", module);
+                            deps.add(module);
+                        }
+                    });
                 }
-                // 异步处理
-                // tasks.add(() -> {
-                JulLog.info("jdeps jar: {}.", file.getName());
-                // 判断是否被过滤
-                if (fileFilter.apply(file.getName())) {
-                    // 拼接到命令
-                    cmdStr.append(" ").append(file.getPath());
-                }
-                // });
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            };
+            tasks.add(func);
         }
-        // // 执行业务
-        // ThreadUtil.submit(tasks);
-        // 列举模块
-        cmdStr = new StringBuilder(PkgUtil.getJDKExecCMD(jdkPath, cmdStr.toString()));
-        result = RuntimeUtil.execForStr(cmdStr.toString());
-        // builder = ProcessExecBuilder.newBuilder(cmdStr.toString());
-        // builder.env("MAVEN_OPTS", "-Dfile.encoding=UTF-8");
-        // builder.env("JAVA_OPTS", "-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8");
-        // builder.timeout(30_000);
-        // builder.directory(jdkPath + "/bin");
-        // result = builder.execForInput();
-//        System.out.println(result);
-//        result = ProcessExecBuilder.newBuilder(cmdStr).timeout(30_000).execForInput();
-        JulLog.info("Jdeps result:{}", result);
-        result.lines().forEach(r -> {
-            // 处理内容
-            if (!r.contains("-> ") || r.startsWith(" ") || r.endsWith(".jar")) {
-                return;
-            }
-            String module = r.split("-> ")[1];
-            // 处理内容
-            module = module.trim();
-            // 被过滤
-            if (!moduleFilter.apply(module)) {
-                return;
-            }
-            // 如果是系统模块，则添加到模块列表
-            if (modules.contains(module) && !deps.contains(module)) {
-                // System.out.println("module added:" + module);
-                JulLog.info("module added:{}", module);
-                deps.add(module);
-            }
-        });
+        // 异步执行
+        ThreadUtil.submit(tasks);
         // 合并依赖模块
         jLinkConfig.margeAddModules(deps);
     }

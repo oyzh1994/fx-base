@@ -1,13 +1,14 @@
 package cn.oyzh.fx.pkg.jdeps;
 
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
- * jar配置解析器
+ * jdeps配置解析器
  *
  * @author oyzh
  * @since 2024/6/17
@@ -17,28 +18,29 @@ public class JDepsConfigParser implements ConfigParser<JDepsConfig> {
     @Override
     public JDepsConfig parse(JSONObject object) {
         JDepsConfig config = new JDepsConfig();
-        JSONArray skips = object.getJSONArray("skips");
+        List<String> skips = JSONUtil.toList(object, "skips", String.class);
         if (skips != null) {
-            config.setSkips(new HashSet<>());
-            for (Object o : skips) {
-                config.getSkips().add(o.toString());
-            }
+            config.setSkips(new HashSet<>(skips));
         }
-        JSONArray excludes = object.getJSONArray("excludes");
+        List<String> excludes = JSONUtil.toList(object, "excludes", String.class);
         if (excludes != null) {
-            config.setExcludes(new HashSet<>());
-            for (Object o : excludes) {
-                config.getExcludes().add(o.toString());
-            }
+            config.setExcludes(new HashSet<>(excludes));
         }
-        if (object.containsKey("multi-release")) {
-            config.setMultiRelease(object.getInteger("multi-release"));
+        Integer multiRelease = object.getInteger("multi-release");
+        if (multiRelease != null) {
+            config.setMultiRelease(multiRelease);
         }
-        if (object.containsKey("summary")) {
-            config.setSummary(object.getBooleanValue("summary", true));
+        Boolean enable = object.getBoolean("enable");
+        if (enable != null) {
+            config.setEnable(enable);
         }
-        if (object.containsKey("verbose")) {
-            config.setVerbose(object.getBooleanValue("verbose", false));
+        Boolean summary = object.getBoolean("summary");
+        if (summary != null) {
+            config.setSummary(summary);
+        }
+        Boolean verbose = object.getBoolean("verbose");
+        if (verbose != null) {
+            config.setVerbose(verbose);
         }
         return config;
     }

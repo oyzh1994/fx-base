@@ -50,7 +50,7 @@
         <tm4java.version>1.0.0</tm4java.version>
         <!--        <javafx.version>27-ea+6</javafx.version>-->
         <!--        <javafx.version>26-ea+27</javafx.version>-->
-        <javafx.version>26</javafx.version>
+        <javafx.version>26.0.1</javafx.version>
         <jspecify.version>1.0.0</jspecify.version>
         <snakeyaml.version>2.5</snakeyaml.version>
         <atlantafx.version>2.1.0</atlantafx.version>

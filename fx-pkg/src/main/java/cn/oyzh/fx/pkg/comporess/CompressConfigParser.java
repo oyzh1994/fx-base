@@ -1,7 +1,7 @@
 package cn.oyzh.fx.pkg.comporess;
 
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 压缩配置解析器

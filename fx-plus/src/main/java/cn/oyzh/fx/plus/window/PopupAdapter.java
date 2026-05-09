@@ -6,9 +6,11 @@ import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.PopupWindow;
+import javafx.stage.Window;
 
 import java.util.function.Consumer;
 
@@ -119,14 +121,45 @@ public interface PopupAdapter extends WindowAdapter {
      *
      * @param owner 父组件
      */
-    void showPopup(Node owner);
+    default void showPopup(Node owner) {
+        Point2D pos = owner.localToScreen(0, 0);
+        if (pos == null) {
+            this.popup().show(owner, 0, 0);
+        } else {
+            this.popup().show(owner, pos.getX(), pos.getY());
+        }
+    }
+
+    /**
+     * 显示弹窗
+     *
+     * @param owner 父组件
+     * @param x     x位置
+     * @param y     y位置
+     */
+    default void showPopup(Node owner, double x, double y) {
+        this.popup().show(owner, x, y);
+    }
 
     /**
      * 显示弹窗
      *
      * @param owner 父组件
      */
-    void showPopup(Node owner, double x, double y);
+    default void showPopup(Window owner) {
+        this.popup().show(owner);
+    }
+
+    /**
+     * 显示弹窗
+     *
+     * @param owner 父组件
+     * @param x     x位置
+     * @param y     y位置
+     */
+    default void showPopup(Window owner, double x, double y) {
+        this.popup().show(owner, x, y);
+    }
 
     /**
      * 获取内容
@@ -218,6 +251,29 @@ public interface PopupAdapter extends WindowAdapter {
         }
     }
 
+    /**
+     * 获取节点
+     *
+     * @return 父节点
+     */
+    default Node getOwnerNode() {
+        return this.popup().getOwnerNode();
+    }
+
+    /**
+     * 获取父窗口
+     *
+     * @return 父窗口
+     */
+    default Window getOwnerWindow() {
+        return this.popup().getOwnerWindow();
+    }
+
+    /**
+     * 是否显示中
+     *
+     * @return 结果
+     */
     default boolean isShowing() {
         return this.popup().isShowing();
     }

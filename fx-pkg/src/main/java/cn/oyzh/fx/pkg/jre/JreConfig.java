@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.jre;
 
 import cn.oyzh.fx.pkg.ConfigMargeAble;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +20,9 @@ public class JreConfig implements ConfigMargeAble<JreConfig> {
      */
     private Boolean enable;
 
+    /**
+     * 排除的文件
+     */
     private Set<String> excludes;
 
     public void parseConfig(JSONObject object) {
