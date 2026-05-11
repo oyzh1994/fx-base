@@ -128,10 +128,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     private EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
-    {
-        NodeManager.init(this);
-    }
-
     /**
      * 默认边距
      */
@@ -160,13 +156,17 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         }
     };
 
-    private ChangeListener<? super Font> fontListener= (observable, oldValue, newValue) -> {
+    private ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
         Font editorFont = this.getEditorFont();
         JulLog.info("font:{} editorFont:{}", newValue, editorFont);
         if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
             this.changeFont(editorFont);
         }
     };
+
+    {
+        NodeManager.init(this);
+    }
 
     /**
      * 初始化编辑器
@@ -1100,13 +1100,14 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         String text = this.getText();
         String text1;
         if (this.formated) {
-            this.formated = false;
+//            this.formated = false;
             text1 = EditorFormatter.unformatText(this.getFormatType(), text);
         } else {
-            this.formated = true;
+//            this.formated = true;
             text1 = EditorFormatter.formatText(this.getFormatType(), text);
         }
         if (StringUtil.notEquals(text, text1)) {
+            this.formated = !this.formated;
             this.setText(text1);
         }
     }
@@ -1428,7 +1429,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             this.highlightTextProperty().removeListener(this.highlightTextListener);
             this.highlightTextListener = null;
         }
-        if (this.fontListener != null ) {
+        if (this.fontListener != null) {
             this.fontProperty().removeListener(this.fontListener);
             this.fontListener = null;
         }
