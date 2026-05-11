@@ -601,6 +601,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             lastLen = length;
         }
         if (startIndex == -1) {
+            // 返回最后一个有效位置而非 ZERO
+            int lastPara = super.getParagraphCount() - 1;
+            if (lastPara >= 0) {
+                return TextPos.ofLeading(lastPara, this.getParagraphLength(lastPara));
+            }
             return TextPos.ZERO;
         }
         return TextPos.ofLeading(startIndex, startOffset);
@@ -1091,7 +1096,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 是否已格式化
      */
-    private boolean formated;
+    private boolean formatted;
 
     /**
      * 格式化
@@ -1099,7 +1104,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void formatting() {
         String text = this.getText();
         String text1;
-        if (this.formated) {
+        if (this.formatted) {
 //            this.formated = false;
             text1 = EditorFormatter.unformatText(this.getFormatType(), text);
         } else {
@@ -1107,7 +1112,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             text1 = EditorFormatter.formatText(this.getFormatType(), text);
         }
         if (StringUtil.notEquals(text, text1)) {
-            this.formated = !this.formated;
+            this.formatted = !this.formatted;
             this.setText(text1);
         }
     }
@@ -1236,8 +1241,16 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     @Override
     public void setFontFamily(String fontFamily) {
-        Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
-        this.setFont(font);
+        if (StringUtil.isEmpty(fontFamily)) {
+            return;
+        }
+        Font baseFont = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
+        Font newFont = FontUtil.newFontByFamily(baseFont, fontFamily);
+        if (this.getEditorFont() != null) {
+            this.setEditorFont(newFont);
+        } else {
+            this.setFont(newFont);
+        }
     }
 
     @Override
@@ -1390,7 +1403,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @return 行数量
      */
     public long lineCount() {
-        return this.getText().lines().count();
+        String text = this.getText();
+        return text == null ? 0 : text.lines().count();
     }
 
     /**
