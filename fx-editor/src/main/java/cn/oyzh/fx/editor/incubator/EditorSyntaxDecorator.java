@@ -5,6 +5,7 @@ import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.model.RichParagraph;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import tm4javafx.richtext.StatelessSyntaxDecorator;
 import tm4javafx.richtext.StyleProvider;
@@ -121,50 +122,84 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     }
 
     @Override
-    protected List<RichParagraph> createRichParagraphs(StyleProvider provider, String text) {
-        // 处理提示词
-        if (CollectionUtil.isNotEmpty(this.prompts)) {
-            String[] lines = text.split(LINE_SPLIT_PATTERN);
-            List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
-            for (String line : lines) {
-                RichParagraph.Builder paragraph = RichParagraph.builder();
+    protected @NullMarked List<RichParagraph> createRichParagraphs(StyleProvider provider, String text) {
+//        // 处理提示词
+//        if (CollectionUtil.isNotEmpty(this.prompts)) {
+//            String[] lines = text.split(LINE_SPLIT_PATTERN);
+//            List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
+//            for (String line : lines) {
+//                RichParagraph.Builder paragraph = RichParagraph.builder();
+//                List<EditorMachToken> machTokens = this.machPrompts(line);
+//                List<StyledToken> tokens = this.buildTokens(line, machTokens);
+//                for (StyledToken token : tokens) {
+//                    super.applyStyles(paragraph, token);
+//                }
+//                paragraphs.add(paragraph.build());
+//            }
+//            return paragraphs;
+//        }
+//        // 处理高亮
+//        if (StringUtil.isNotBlank(this.highlight)) {
+//            String[] lines = text.split(LINE_SPLIT_PATTERN);
+//            List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
+//            for (String line : lines) {
+//                RichParagraph.Builder paragraph = RichParagraph.builder();
+//                List<EditorMachToken> machTokens = this.machHighlight(line);
+//                List<StyledToken> tokens = this.buildTokens(line, machTokens);
+//                for (StyledToken token : tokens) {
+//                    super.applyStyles(paragraph, token);
+//                }
+//                paragraphs.add(paragraph.build());
+//            }
+//            return paragraphs;
+//        }
+//        // 处理格式
+//        if (this.formatType == EditorFormatType.RAW || this.formatType == null) {
+//            String[] lines = text.split(LINE_SPLIT_PATTERN);
+//            List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
+//            for (String line : lines) {
+//                RichParagraph.Builder paragraph = RichParagraph.builder();
+//                super.applyStyles(paragraph, new StyledToken(line, null));
+//                paragraphs.add(paragraph.build());
+//            }
+//            return paragraphs;
+//        }
+//
+//        // 默认处理
+//        return super.createRichParagraphs(provider, text);
+
+        // 分割行
+        String[] lines = text.split(LINE_SPLIT_PATTERN);
+        // 段落列表
+        List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
+        // 遍历段落
+        for (String line : lines) {
+            RichParagraph.Builder builder = RichParagraph.builder();
+            // 提示词样式
+            if (CollectionUtil.isNotEmpty(this.prompts)) {
                 List<EditorMachToken> machTokens = this.machPrompts(line);
                 List<StyledToken> tokens = this.buildTokens(line, machTokens);
                 for (StyledToken token : tokens) {
-                    super.applyStyles(paragraph, token);
+                    super.applyStyles(builder, token);
                 }
-                paragraphs.add(paragraph.build());
-            }
-            return paragraphs;
-        }
-        // 处理高亮
-        if (StringUtil.isNotBlank(this.highlight)) {
-            String[] lines = text.split(LINE_SPLIT_PATTERN);
-            List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
-            for (String line : lines) {
-                RichParagraph.Builder paragraph = RichParagraph.builder();
-                List<EditorMachToken> machTokens = this.machHighlight(line);
-                List<StyledToken> tokens = this.buildTokens(line, machTokens);
+            } else if (this.formatType == EditorFormatType.RAW || this.formatType == null) {// 无样式
+                super.applyStyles(builder, new StyledToken(line, null));
+            } else {// 语法样式
+                List<StyledToken> tokens = provider.tokenize(line);
                 for (StyledToken token : tokens) {
-                    super.applyStyles(paragraph, token);
+                    super.applyStyles(builder, token);
                 }
-                paragraphs.add(paragraph.build());
             }
-            return paragraphs;
-        }
-        // 处理格式
-        if (this.formatType == EditorFormatType.RAW || this.formatType == null) {
-            String[] lines = text.split(LINE_SPLIT_PATTERN);
-            List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
-            for (String line : lines) {
-                RichParagraph.Builder paragraph = RichParagraph.builder();
-                super.applyStyles(paragraph, new StyledToken(line, null));
-                paragraphs.add(paragraph.build());
+            // 高亮
+            if (StringUtil.isNotEmpty(this.highlight)) {
+                List<EditorMachToken> machTokens = this.machHighlight(line);
+                for (EditorMachToken token : machTokens) {
+                    builder.addHighlight(token.getStart(), this.highlight.length(), this.highlightColor);
+                }
             }
-            return paragraphs;
+            paragraphs.add(builder.build());
         }
-        // 默认处理
-        return super.createRichParagraphs(provider, text);
+        return paragraphs;
     }
 
     /**

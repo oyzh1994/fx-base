@@ -84,7 +84,9 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 默认高亮颜色
      */
-    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
+    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(216, 222, 231);
+//    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.valueOf("#D8DEE7");
+//    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
 
     /**
      * 默认光标行颜色
@@ -720,7 +722,10 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             return;
         }
         EditorTextPos pos = this.getPosByIndex(start, end);
-        FXUtil.runWait(() -> super.select(pos.getStart(), pos.getEnd()));
+        FXUtil.runWait(() -> {
+            this.requestFocus();
+            super.select(pos.getStart(), pos.getEnd());
+        });
     }
 
     /**
@@ -1361,8 +1366,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         if (segment == null) {
             return null;
         }
-        int start = getOffsetByPos(segment.getMin());
-        int end = getOffsetByPos(segment.getMax());
+        int start = this.getOffsetByPos(segment.getMin());
+        int end = this.getOffsetByPos(segment.getMax());
         return new IndexRange(start, end);
     }
 
