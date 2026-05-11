@@ -137,6 +137,37 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     private static final Insets DEFAULT_PADDING = new Insets(5);
 
+    private ChangeListener<? super EditorFormatType> formatTypeListener = (observableValue, formatType, t1) -> {
+        this.syntaxDecorator.setFormatType(t1);
+        if (!this.ignoreChange) {
+            this.initTextStyle();
+        }
+    };
+
+    private ChangeListener<? super Set<String>> promptsListener = (observableValue, formatType, t1) -> {
+        this.syntaxDecorator.setPrompts(t1);
+        this.initTextStyle();
+    };
+
+    private ChangeListener<? super String> highlightTextListener = (observableValue, formatType, t1) -> {
+        // 获取滚动条值
+        Double scrollValue = this.getScrollValue();
+        this.syntaxDecorator.setHighlight(t1);
+        this.initTextStyle();
+        // 清除高亮的时候滚动到原位置
+        if (StringUtil.isEmpty(t1)) {
+            FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
+        }
+    };
+
+    private ChangeListener<? super Font> fontListener= (observable, oldValue, newValue) -> {
+        Font editorFont = this.getEditorFont();
+        JulLog.info("font:{} editorFont:{}", newValue, editorFont);
+        if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
+            this.changeFont(editorFont);
+        }
+    };
+
     /**
      * 初始化编辑器
      */
@@ -168,29 +199,12 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         this.richTextAreaModel.setStyleProvider(this.styleProvider);
         // 语法装饰
         this.setSyntaxDecorator(this.syntaxDecorator);
-        // 格式变化事件
-        this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
-            this.syntaxDecorator.setFormatType(t1);
-            if (!this.ignoreChange) {
-                this.initTextStyle();
-            }
-        });
         // 提示词变化事件
-        this.promptsProperty().addListener((observableValue, formatType, t1) -> {
-            this.syntaxDecorator.setPrompts(t1);
-            this.initTextStyle();
-        });
+        this.promptsProperty().addListener(this.promptsListener);
+        // 格式变化事件
+        this.formatTypeProperty().addListener(this.formatTypeListener);
         // 高亮变化事件
-        this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
-            // 获取滚动条值
-            Double scrollValue = this.getScrollValue();
-            this.syntaxDecorator.setHighlight(t1);
-            this.initTextStyle();
-            // 清除高亮的时候滚动到原位置
-            if (StringUtil.isEmpty(t1)) {
-                FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
-            }
-        });
+        this.highlightTextProperty().addListener(this.highlightTextListener);
 //        // 行号策略变化事件
 //        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
 //            if (t1 == EditorLineNumPolicy.NONE) {
@@ -969,13 +983,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         // 尝试初始化高亮
         this.setHighlightText(this.getHighlightText());
         // 对预设了编辑器字体的情况下，组织样式字体修改编辑器字体
-        this.fontProperty().addListener((observable, oldValue, newValue) -> {
-            Font editorFont = this.getEditorFont();
-            JulLog.info("font:{} editorFont:{}", newValue, editorFont);
-            if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
-                this.changeFont(editorFont);
-            }
-        });
+        this.fontProperty().addListener(this.fontListener);
 
 //        // 监听皮肤初始化，控制滚动条thumb最低大小
 //        this.skinProperty().subscribe(skin -> {
@@ -1407,6 +1415,22 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         if (this.modelListener != null) {
             this.getModel().removeListener(this.modelListener);
             this.modelListener = null;
+        }
+        if (this.promptsListener != null && this.promptsProperty != null) {
+            this.promptsProperty().removeListener(this.promptsListener);
+            this.promptsListener = null;
+        }
+        if (this.formatTypeListener != null && this.formatTypeProperty != null) {
+            this.formatTypeProperty().removeListener(this.formatTypeListener);
+            this.formatTypeListener = null;
+        }
+        if (this.highlightTextListener != null && this.highlightTextProperty != null) {
+            this.highlightTextProperty().removeListener(this.highlightTextListener);
+            this.highlightTextListener = null;
+        }
+        if (this.fontListener != null ) {
+            this.fontProperty().removeListener(this.fontListener);
+            this.fontListener = null;
         }
         if (this.textProperty != null) {
             this.textProperty.unbind();
