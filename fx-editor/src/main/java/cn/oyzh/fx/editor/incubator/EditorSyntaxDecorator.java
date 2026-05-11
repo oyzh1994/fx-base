@@ -195,6 +195,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 List<EditorMachToken> machTokens = this.machHighlight(line);
                 for (EditorMachToken token : machTokens) {
                     builder.addHighlight(token.getStart(), this.highlight.length(), this.highlightColor);
+//                    builder.addWavyUnderline(token.getStart(), this.highlight.length(), this.highlightColor);
                 }
             }
             paragraphs.add(builder.build());
