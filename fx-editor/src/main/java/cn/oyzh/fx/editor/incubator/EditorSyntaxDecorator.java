@@ -27,17 +27,17 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 高亮
      */
-    private String highlight;
+    private volatile String highlight;
 
     /**
      * 提示词
      */
-    private Set<String> prompts;
+    private volatile Set<String> prompts;
 
     /**
      * 格式类型
      */
-    private EditorFormatType formatType = EditorFormatType.RAW;
+    private volatile EditorFormatType formatType = EditorFormatType.RAW;
 
     public EditorSyntaxDecorator() {
         this(null);
@@ -74,7 +74,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 高亮颜色
      */
-    private Color highlightColor = Editor.DEFAULT_HIGHLIGHT_COLOR;
+    private volatile Color highlightColor = Editor.DEFAULT_HIGHLIGHT_COLOR;
 
     public Color getHighlightColor() {
         return highlightColor;
@@ -84,22 +84,22 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         this.highlightColor = highlightColor;
     }
 
-    /**
-     * 高亮样式
-     */
-    private StyleAttributeMap highlightStyle;
-
-    public StyleAttributeMap highlightStyle() {
-        if (this.highlightStyle == null) {
-            this.highlightStyle = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, highlightColor);
-        }
-        return this.highlightStyle;
-    }
+//    /**
+//     * 高亮样式
+//     */
+//    private StyleAttributeMap highlightStyle;
+//
+//    public StyleAttributeMap highlightStyle() {
+//        if (this.highlightStyle == null) {
+//            this.highlightStyle = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, highlightColor);
+//        }
+//        return this.highlightStyle;
+//    }
 
     /**
      * 提示词颜色
      */
-    private Color promptsColor = Editor.DEFAULT_PROMPTS_COLOR;
+    private volatile Color promptsColor = Editor.DEFAULT_PROMPTS_COLOR;
 
     public void setPromptsColor(Color promptsColor) {
         this.promptsColor = promptsColor;
@@ -210,13 +210,14 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      * @return 编辑器匹配样式列表
      */
     private List<EditorMachToken> machHighlight(String line) {
-        StyleAttributeMap style = this.highlightStyle();
-        StyledToken token = new StyledToken(this.highlight, style);
+//        StyleAttributeMap style = this.highlightStyle();
+//        StyledToken token = new StyledToken(this.highlight, style);
         Pattern pattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(line);
         List<EditorMachToken> machTokens = new ArrayList<>();
         while (matcher.find()) {
-            EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), token);
+//            EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), token);
+            EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), null);
             machTokens.add(machToken);
         }
         return machTokens;

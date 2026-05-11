@@ -246,7 +246,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 初始化文本样式
      */
-    private void initTextStyle() {
+    protected void initTextStyle() {
         // this.applyTheme();
         this.initSyntaxes();
         this.setText(this.getText());
@@ -586,6 +586,9 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             }
             lastLen = length;
         }
+        if (startIndex == -1) {
+            return TextPos.ZERO;
+        }
         return TextPos.ofLeading(startIndex, startOffset);
     }
 
@@ -612,18 +615,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param content 内容
      */
     public void replaceText(int start, int end, String content) {
-        this.replaceText(start, end, content, true);
-    }
-
-    /**
-     * 替换内容
-     *
-     * @param start     开始位置
-     * @param end       结束位置
-     * @param content   内容
-     * @param allowUndo 是否允许撤销
-     */
-    public void replaceText(int start, int end, String content, boolean allowUndo) {
         if (start > end) {
             return;
         }
@@ -633,7 +624,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         try {
             EditorTextPos pos = this.getPosByIndex(start, end);
             super.replaceText(pos.getStart(), pos.getEnd(), content);
-            // super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -793,19 +783,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param end   结束位置
      */
     public void deleteText(int start, int end) {
-        this.deleteText(start, end, true);
-    }
-
-    /**
-     * 删除内容
-     *
-     * @param start     开始位置
-     * @param end       结束位置
-     * @param allowUndo 允许撤销
-     */
-    public void deleteText(int start, int end, boolean allowUndo) {
         try {
-            this.replaceText(start, end, "", allowUndo);
+            this.replaceText(start, end, "");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1338,6 +1317,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         TextPos min = segment.getMin();
         TextPos max = segment.getMax();
         StringBuilder builder = new StringBuilder();
+        boolean first = true;
         for (int i = min.index(); i <= max.index(); i++) {
             String text = this.getPlainText(i);
             if (i == min.index() && i == max.index()) {
@@ -1347,13 +1327,17 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             } else if (i == max.index()) {
                 text = text.substring(0, max.offset());
             }
-//            builder.append(System.lineSeparator()).append(text);
-            builder.append(this.lineEndingText()).append(text);
+            if (first) {
+                first = false;
+                builder.append(text);
+            } else {
+                builder.append(this.lineEndingText()).append(text);
+            }
         }
         if (builder.isEmpty()) {
             return "";
         }
-        return builder.substring(1);
+        return builder.toString();
     }
 
     /**
