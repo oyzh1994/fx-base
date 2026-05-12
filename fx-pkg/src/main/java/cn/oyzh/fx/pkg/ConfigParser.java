@@ -40,6 +40,8 @@ public interface ConfigParser<C> {
             Toml toml = new Toml().read(FileUtil.readUtf8String(configFile));
             Map<String, Object> tomlData = toml.toMap();
             object = JSONObject.parseObject(JSON.toJSONString(tomlData));
+        } else {
+            throw new RuntimeException("unsupport type:" + extName);
         }
         return this.parse(object);
     }

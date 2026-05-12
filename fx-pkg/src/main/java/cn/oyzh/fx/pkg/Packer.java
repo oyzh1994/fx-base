@@ -52,6 +52,7 @@ public class Packer {
         this.registerJdepsHandler();
         this.registerCompressHandler();
         // this.registerAppConfigHandler();
+        this.registerJPackageHandler();
         this.registerPackConfigHandler();
         this.registerCompressNameHandler();
     }
@@ -233,7 +234,7 @@ public class Packer {
         // if (packConfig.isParkByPackr()) {
         //     this.registerPackrHandler();
         // } else {
-            this.registerJPackageHandler();
+//            this.registerJPackageHandler();
         // }
         // AppImage
         if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {

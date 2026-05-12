@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * jdeps处理器
@@ -111,7 +112,7 @@ public class JDepsHandler implements PreHandler {
             filePaths.add(file.getPath());
         }
         // 遍历所有文件，然后找出所有依赖模块
-        Set<String> deps = new HashSet<>();
+        Set<String> deps = new CopyOnWriteArraySet<>();
         // 任务列表
         List<Runnable> tasks = new ArrayList<>();
         // 添加任务
