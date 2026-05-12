@@ -54,11 +54,10 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
 
     @Override
     protected ClearTerminalCommand parseCommand(String line, String[] words) throws RuntimeException {
+        ClearTerminalCommand command = new ClearTerminalCommand();
         if (words.length == 2 && StringUtil.equalsIgnoreCase(words[1], "-his")) {
-            ClearTerminalCommand command = new ClearTerminalCommand();
             command.setClearHis(true);
-            return command;
         }
-        return null;
+        return command;
     }
 }

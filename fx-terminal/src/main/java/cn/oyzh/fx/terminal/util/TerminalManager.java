@@ -7,6 +7,7 @@ import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -69,16 +70,18 @@ public class TerminalManager {
 //            return;
 //        }
         Runnable loadHandler = LOAD_HANDLES.remove(name);
-        try {
-            if (loadHandler != null) {
-                loadHandler.run();
-            }
-        } catch (Exception ex) {
-//            LOAD_FLAGS.r(name, false);
-            setLoadHandler(name, loadHandler);
-            ex.printStackTrace();
-            JulLog.warn("doLoadHandler error", ex);
+        if (loadHandler == null) {
+            return;
         }
+//        try {
+            loadHandler.run();
+//        } catch (Exception ex) {
+//            LOAD_FLAGS.r(name, false);
+//            setLoadHandler(name, loadHandler);
+//            ex.printStackTrace();
+//            JulLog.warn("doLoadHandler error", ex);
+//            throw new RuntimeException("doLoadHandler error", ex);
+//        }
     }
 
     /**
@@ -89,7 +92,9 @@ public class TerminalManager {
      */
     public static Collection<TerminalCommandHandler<?, ?>> listHandler(String name) {
         doLoadHandler(name);
-        return new ArrayList<>(COMMAND_HANDLERS.get(name));
+        List<TerminalCommandHandler<?, ?>> handlers = COMMAND_HANDLERS.get(name);
+        return new ArrayList<>(handlers != null ? handlers : Collections.emptyList());
+
     }
 
     /**
@@ -154,7 +159,7 @@ public class TerminalManager {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            JulLog.warn("registerHandler error commandHandlerClass:{}", commandHandlerClass, ex);
+            JulLog.warn("findHandlers error commandHandlerClass:{}", commandHandlerClass, ex);
         }
         return null;
     }
@@ -181,12 +186,12 @@ public class TerminalManager {
                     commands.add(value);
                 }
             }
-            return commands.parallelStream().sorted(Comparator.comparing(TerminalCommandHandler::commandFullName)).collect(Collectors.toList());
+            return commands.stream().sorted(Comparator.comparing(TerminalCommandHandler::commandFullName)).collect(Collectors.toList());
         } catch (Exception ex) {
             ex.printStackTrace();
-            JulLog.warn("registerHandler error commandText:{} matchType:{}", commandText, matchType, ex);
+            JulLog.warn("findHandlers error commandText:{} matchType:{}", commandText, matchType, ex);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -201,10 +206,10 @@ public class TerminalManager {
             if (input != null) {
                 Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
                 String[] words = TerminalUtil.split(input);
-                List<TerminalCommandHandler<?, ?>> list = handlers.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
+                List<TerminalCommandHandler<?, ?>> list = handlers.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
                 if (!list.isEmpty()) {
                     if (words.length >= 2) {
-                        List<TerminalCommandHandler<?, ?>> list1 = list.parallelStream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
+                        List<TerminalCommandHandler<?, ?>> list1 = list.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
                         if (!list1.isEmpty()) {
                             return list1.getFirst();
                         }

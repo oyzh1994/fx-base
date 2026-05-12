@@ -2,8 +2,8 @@ package cn.oyzh.fx.terminal;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
-import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
@@ -108,6 +108,11 @@ public abstract class TerminalPane extends Editor implements Terminal {
 
     @Override
     public void keyHandler(TerminalKeyHandler keyHandler) {
+        // 先移除旧的事件过滤器，防止累积泄漏
+        if (this.keyPressedHandler != null) {
+            this.removeEventFilter(KeyEvent.KEY_PRESSED, this.keyPressedHandler);
+            this.keyPressedHandler = null;
+        }
         this.keyHandler = keyHandler;
         if (keyHandler != null) {
             KeyCombination keyCombination1 = OSUtil.isMacOS()
@@ -224,6 +229,11 @@ public abstract class TerminalPane extends Editor implements Terminal {
 
     @Override
     public void mouseHandler(TerminalMouseHandler mouseHandler) {
+        // 先移除旧的事件过滤器，防止累积泄漏
+        if (this.mousePressedHandler != null) {
+            this.removeEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressedHandler);
+            this.mousePressedHandler = null;
+        }
         this.mouseHandler = mouseHandler;
         if (mouseHandler != null) {
             this.mousePressedHandler = event -> {
@@ -269,7 +279,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
 
     @Override
     public String getInput() {
-        String text = CollectionUtil.getLast(this.getText().lines().toList());
+        String text = TextUtil.getLastLine(this.getText());
+//        String text = CollectionUtil.getLast(this.getText().lines().toList());
         if (text == null || text.isEmpty() || text.equals(this.prompt())) {
             return "";
         }
