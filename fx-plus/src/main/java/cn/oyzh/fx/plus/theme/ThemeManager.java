@@ -5,7 +5,6 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
-import com.sun.javafx.css.StyleManager;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -122,7 +121,7 @@ public class ThemeManager {
 //                System.setProperty("com.sun.javafx.highContrastTheme", "");
 //                // 设置应用样式
 //                StyleManager.getInstance().setUserAgentStylesheets(List.of());
-//                Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+            Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
 //            }
             // 变更样式
             List<Window> windows = StageManager.allWindows();

@@ -231,12 +231,11 @@ public class NodeDestroyUtil {
     // }
 
     private static void destroy(Property<?> property) {
-        if (property == null) {
-            return;
+        if (property != null) {
+            // 解除单向绑定
+            property.unbind();
         }
         // FXUtil.runWait(() -> property.setValue(null));
-        // 解除单向绑定
-        property.unbind();
     }
 
     // private static void destroy(Destroyable destroyable) {
