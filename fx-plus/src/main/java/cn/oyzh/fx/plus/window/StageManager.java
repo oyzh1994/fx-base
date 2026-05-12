@@ -29,7 +29,25 @@ public class StageManager {
     /**
      * 主舞台
      */
-    private static Stage Primary_Stage;
+    private volatile static Stage primaryStage;
+
+    /**
+     * 获取主舞台
+     *
+     * @return Stage 主舞台
+     */
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    /**
+     * 设置主舞台
+     *
+     * @param primaryStage 主舞台
+     */
+    public static void setPrimaryStage(Stage primaryStage) {
+        StageManager.primaryStage = primaryStage;
+    }
 
     /**
      * 退出系统
@@ -233,7 +251,7 @@ public class StageManager {
             FXUtil.runWait(() -> {
                 // 主舞台
                 if (attribute.usePrimary()) {
-                    StageAdapter stage1 = new PrimaryStage(Primary_Stage, attribute, owner);
+                    StageAdapter stage1 = new PrimaryStage(primaryStage, attribute, owner);
                     ref.set(stage1);
                 } else {// 一般舞台
                     StageAdapter stage1 = new StageExt(attribute, owner);
@@ -243,24 +261,6 @@ public class StageManager {
             stage = ref.get();
         }
         return stage;
-    }
-
-    /**
-     * 获取主舞台
-     *
-     * @return Stage 主舞台
-     */
-    public static Stage getPrimaryStage() {
-        return Primary_Stage;
-    }
-
-    /**
-     * 设置主舞台
-     *
-     * @param primaryStage 主舞台
-     */
-    public static void setPrimaryStage(Stage primaryStage) {
-        Primary_Stage = primaryStage;
     }
 
     /**

@@ -114,16 +114,16 @@ public class ThemeManager {
             }
             // 设置当前主题
             currentThemeProperty.set(style);
-            if (style.isBuiltIn()) {
-                System.setProperty("com.sun.javafx.highContrastTheme", style.getBuiltInName());
-                // 设置应用样式
-                Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
-            } else {
-                System.setProperty("com.sun.javafx.highContrastTheme", "");
-                // 设置应用样式
-                StyleManager.getInstance().setUserAgentStylesheets(List.of());
-                Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
-            }
+//            if (style.isBuiltIn()) {
+//                System.setProperty("com.sun.javafx.highContrastTheme", style.getBuiltInName());
+//                // 设置应用样式
+//                Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+//            } else {
+//                System.setProperty("com.sun.javafx.highContrastTheme", "");
+//                // 设置应用样式
+//                StyleManager.getInstance().setUserAgentStylesheets(List.of());
+//                Application.setUserAgentStylesheet(ThemeManager.currentUserAgentStylesheet());
+//            }
             // 变更样式
             List<Window> windows = StageManager.allWindows();
             for (Window window : windows) {

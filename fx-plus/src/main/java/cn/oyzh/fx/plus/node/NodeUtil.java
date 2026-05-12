@@ -44,21 +44,21 @@ public class NodeUtil {
      */
     public static boolean isMediaImport;
 
-    /**
-     * richtext是个可选模块，避免强依赖
-     */
-    public static boolean isRichtextImport;
+//    /**
+//     * richtext是个可选模块，避免强依赖
+//     */
+//    public static boolean isRichtextImport;
 
     static {
         isWebImport = Platform.isSupported(ConditionalFeature.WEB);
         isMediaImport = Platform.isSupported(ConditionalFeature.MEDIA);
         isSwingImport = Platform.isSupported(ConditionalFeature.SWING);
-        try {
-            Class.forName("org.fxmisc.richtext");
-            isRichtextImport = true;
-        } catch (ClassNotFoundException ignored) {
-
-        }
+//        try {
+//            Class.forName("org.fxmisc.richtext");
+//            isRichtextImport = true;
+//        } catch (ClassNotFoundException ignored) {
+//
+//        }
     }
 
 //     /**
