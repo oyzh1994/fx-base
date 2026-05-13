@@ -548,68 +548,69 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     protected EditorTextPos getPosByIndex(int start, int end) {
         TextPos endPos;
         TextPos startPos;
-        if (end != start) {
-            int length = 0;
-            int lastLen = 0;
-            int endIndex = -1;
-            int startIndex = -1;
-            int endOffset = -1;
-            int startOffset = -1;
-            int pCount = super.getParagraphCount();
-            for (int i = 0; i < pCount; i++) {
-                int len = this.getParagraphLength(i);
-                length += len;
-                if (startIndex == -1 && length >= start) {
-                    startIndex = i;
-                    startOffset = start - lastLen;
-                }
-                if (length >= end) {
-                    endIndex = i;
-                    endOffset = end - lastLen;
-                    break;
-                }
-                length += 1;
-                lastLen = length;
-            }
-            endPos = TextPos.ofLeading(endIndex, endOffset);
-            startPos = TextPos.ofLeading(startIndex, startOffset);
-        } else {
-            endPos = startPos = this.getPosByIndex(start);
-        }
-        return new EditorTextPos(startPos, endPos);
-    }
-
-    /**
-     * 获取位置
-     *
-     * @param index 位置
-     * @return 位置
-     */
-    protected TextPos getPosByIndex(int index) {
+//        if (end != start) {
         int length = 0;
         int lastLen = 0;
+        int endIndex = -1;
         int startIndex = -1;
+        int endOffset = -1;
         int startOffset = -1;
         int pCount = super.getParagraphCount();
         for (int i = 0; i < pCount; i++) {
             int len = this.getParagraphLength(i);
-            length += len + 1;
-            if (startIndex == -1 && length >= index) {
+            length += len;
+            if (startIndex == -1 && length >= start) {
                 startIndex = i;
-                startOffset = index - lastLen;
+                startOffset = start - lastLen;
             }
+            if (length >= end) {
+                endIndex = i;
+                endOffset = end - lastLen;
+                break;
+            }
+            length += 1;
             lastLen = length;
         }
-        if (startIndex == -1) {
-            // 返回最后一个有效位置而非 ZERO
-            int lastPara = super.getParagraphCount() - 1;
-            if (lastPara >= 0) {
-                return TextPos.ofLeading(lastPara, this.getParagraphLength(lastPara));
-            }
-            return TextPos.ZERO;
-        }
-        return TextPos.ofLeading(startIndex, startOffset);
+        endPos = TextPos.ofLeading(endIndex, endOffset);
+        startPos = TextPos.ofLeading(startIndex, startOffset);
+//        } else {
+//            endPos = startPos = this.getPosByIndex(start);
+//        }
+        return new EditorTextPos(startPos, endPos);
     }
+
+//    /**
+//     * 获取位置
+//     *
+//     * @param index 位置
+//     * @return 位置
+//     */
+//    protected TextPos getPosByIndex(int index) {
+//        int length = 0;
+//        int lastLen = 0;
+//        int startIndex = -1;
+//        int startOffset = -1;
+//        int pCount = super.getParagraphCount();
+//        for (int i = 0; i < pCount; i++) {
+//            int len = this.getParagraphLength(i);
+//            length += len + 1;
+//            if (startIndex == -1 && length >= index) {
+//                startIndex = i;
+//                startOffset = index - lastLen;
+//            }
+//            lastLen = length;
+//        }
+//        if (startIndex == -1) {
+////            // 返回最后一个有效位置而非 ZERO
+////            int lastPara = super.getParagraphCount() - 1;
+////            if (lastPara >= 0) {
+////                return TextPos.ofLeading(lastPara, this.getParagraphLength(lastPara));
+////            }
+////            return TextPos.ZERO;
+//            throw new RuntimeException("getPosByIndex fail, index:" + index);
+//        }
+//        return TextPos.ofLeading(startIndex, startOffset);
+//    }
 
     /**
      * 根据文本位置获取位置

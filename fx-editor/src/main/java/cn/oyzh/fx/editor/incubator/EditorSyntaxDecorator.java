@@ -12,6 +12,7 @@ import tm4javafx.richtext.StyleProvider;
 import tm4javafx.richtext.StyledToken;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -47,8 +48,15 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         super(styleProvider);
     }
 
+    private Pattern highlightPattern;
+
     public void setHighlight(String highlight) {
         this.highlight = highlight;
+        try {
+            this.highlightPattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public String getHighlight() {
@@ -59,8 +67,16 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         return prompts;
     }
 
+    private Pattern promptsPattern;
+
     public void setPrompts(Set<String> prompts) {
         this.prompts = prompts;
+        try {
+            String pattern = "\\b(" + String.join("|", this.prompts) + ")\\b";
+            this.promptsPattern = Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public EditorFormatType getFormatType() {
@@ -103,6 +119,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
     public void setPromptsColor(Color promptsColor) {
         this.promptsColor = promptsColor;
+        this.promptsStyle = null;
     }
 
     public Color getPromptsColor() {
@@ -212,15 +229,18 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private List<EditorMachToken> machHighlight(String line) {
 //        StyleAttributeMap style = this.highlightStyle();
 //        StyledToken token = new StyledToken(this.highlight, style);
-        Pattern pattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(line);
-        List<EditorMachToken> machTokens = new ArrayList<>();
-        while (matcher.find()) {
+//        Pattern pattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
+        if (this.highlightPattern != null) {
+            Matcher matcher = this.highlightPattern.matcher(line);
+            List<EditorMachToken> machTokens = new ArrayList<>();
+            while (matcher.find()) {
 //            EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), token);
-            EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), null);
-            machTokens.add(machToken);
+                EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), null);
+                machTokens.add(machToken);
+            }
+            return machTokens;
         }
-        return machTokens;
+        return Collections.emptyList();
     }
 
     /**
@@ -230,16 +250,19 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      * @return 编辑器匹配样式列表
      */
     private List<EditorMachToken> machPrompts(String line) {
-        StyleAttributeMap style = this.promptsStyle();
-        Pattern pattern = Pattern.compile("\\b(" + String.join("|", this.prompts) + ")\\b", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(line);
-        List<EditorMachToken> machTokens = new ArrayList<>();
-        while (matcher.find()) {
-            StyledToken token = new StyledToken(matcher.group(), style);
-            EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), token);
-            machTokens.add(machToken);
+        if (this.promptsPattern != null) {
+            StyleAttributeMap style = this.promptsStyle();
+//            Pattern pattern = Pattern.compile("\\b(" + String.join("|", this.prompts) + ")\\b", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = this.promptsPattern.matcher(line);
+            List<EditorMachToken> machTokens = new ArrayList<>();
+            while (matcher.find()) {
+                StyledToken token = new StyledToken(matcher.group(), style);
+                EditorMachToken machToken = new EditorMachToken(matcher.start(), matcher.end(), token);
+                machTokens.add(machToken);
+            }
+            return machTokens;
         }
-        return machTokens;
+        return Collections.emptyList();
     }
 
     /**

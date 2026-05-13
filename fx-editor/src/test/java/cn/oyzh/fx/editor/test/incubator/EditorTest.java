@@ -60,7 +60,7 @@ public class EditorTest extends Application {
     public void start(Stage stage) throws Exception {
         //ThemeManager.apply(Themes.BLACK_ON_WHITE);
 //         ThemeManager.apply(Themes.PRIMER_DARK);
-         ThemeManager.apply(Themes.PRIMER_LIGHT);
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
 //        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
@@ -195,11 +195,11 @@ public class EditorTest extends Application {
         Button btn_33 = new Button("追加行");
         btn_33.setOnAction(event -> {
             editor.appendLine("""
-                    12	13	json1	
-                    14	15	1    	
-                    2 	3 	4    	
-                    5 	6 	7    	
-                    8 	9 	
+                    12	13	json1
+                    14	15	1
+                    2 	3 	4
+                    5 	6 	7
+                    8 	9
                     阿里云-redis@12.0.0.1:6379(已连接)>\s
                     """);
         });
@@ -309,10 +309,30 @@ public class EditorTest extends Application {
         });
         hBox4.addChild(btn_47);
 
+        FXHBox hBox5 = new FXHBox();
+        Button btn_51 = new Button("获取选区位置");
+        btn_51.setOnAction(event -> {
+            MessageBox.info(editor.getSelectionRange().toString());
+        });
+        hBox5.addChild(btn_51);
+
+        Button btn_52 = new Button("选中位置1");
+        btn_52.setOnAction(event -> {
+            editor.selectRange(2, 2);
+        });
+        hBox5.addChild(btn_52);
+
+        Button btn_53 = new Button("选中位置2");
+        btn_53.setOnAction(event -> {
+            editor.selectRange(0, 2);
+        });
+        hBox5.addChild(btn_53);
+
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
         vBox.addChild(hBox3);
         vBox.addChild(hBox4);
+        vBox.addChild(hBox5);
         vBox.addChild(editor);
         // vBox.addChild(editor1);
 
