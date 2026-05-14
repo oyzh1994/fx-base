@@ -154,18 +154,30 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         this.initTextStyle();
         // 清除高亮的时候滚动到原位置
         if (StringUtil.isEmpty(t1)) {
-            FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
+            FXUtil.runWait(() -> this.setScrollValue(scrollValue));
         }
     };
 
     private ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
+        // 获取滚动条值
+        Double scrollValue = this.getScrollValue();
         this.syntaxDecorator.setHighlightRegex(t1);
         this.initTextStyle();
+        // 清除高亮的时候滚动到原位置
+        if (StringUtil.isEmpty(this.getHighlight())) {
+            FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
+        }
     };
 
     private ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
+        // 获取滚动条值
+        Double scrollValue = this.getScrollValue();
         this.syntaxDecorator.setHighlightMatchCase(t1);
         this.initTextStyle();
+        // 清除高亮的时候滚动到原位置
+        if (StringUtil.isEmpty(this.getHighlight())) {
+            FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
+        }
     };
 
     private ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
@@ -311,6 +323,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         return this.textProperty;
     }
 
+    private List<ChangeListener<? super String>> textChangeListeners;
+
     /**
      * 添加文本监听器
      *
@@ -318,11 +332,16 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public void addTextChangeListener(ChangeListener<String> listener) {
         synchronized (this) {
-            this.textProperty().addListener((observable, oldValue, newValue) -> {
+            ChangeListener<? super String> changeListener = (observable, oldValue, newValue) -> {
                 if (!this.ignoreChange) {
                     listener.changed(observable, oldValue, newValue);
                 }
-            });
+            };
+            this.textProperty().addListener(changeListener);
+            if (this.textChangeListeners == null) {
+                this.textChangeListeners = new ArrayList<>();
+            }
+            this.textChangeListeners.add(changeListener);
         }
     }
 
@@ -1520,6 +1539,13 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         if (this.fontListener != null) {
             this.fontProperty().removeListener(this.fontListener);
             this.fontListener = null;
+        }
+        if (CollectionUtil.isNotEmpty(this.textChangeListeners) && this.textProperty != null) {
+            for (ChangeListener<? super String> changeListener : this.textChangeListeners) {
+                this.textProperty.removeListener(changeListener);
+            }
+            this.textChangeListeners.clear();
+            this.textChangeListeners = null;
         }
         if (this.textProperty != null) {
             this.textProperty.unbind();
