@@ -15,12 +15,10 @@ public class ExampleTextField extends LimitTextField {
      * @return 皮肤
      */
     public ExampleTextFieldSkin skin() {
-        ExampleTextFieldSkin skin = (ExampleTextFieldSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (ExampleTextFieldSkin) this.getSkin();
         }
-        return skin;
+        return (ExampleTextFieldSkin) this.getSkin();
     }
 
     public void setExample(Object o) {

@@ -17,7 +17,7 @@ public class RichTreeView extends FXTreeView {
     /**
      * 高亮文本
      */
-    protected String highlightText;
+    protected String highlight;
 
     /**
      * 高亮需要匹配大小写
@@ -40,12 +40,12 @@ public class RichTreeView extends FXTreeView {
         this.highlightMatchCase = highlightMatchCase;
     }
 
-    public String getHighlightText() {
-        return highlightText;
+    public String getHighlight() {
+        return highlight;
     }
 
-    public void setHighlightText(String highlightText) {
-        this.highlightText = highlightText;
+    public void setHighlight(String highlight) {
+        this.highlight = highlight;
     }
 
     /**

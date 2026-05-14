@@ -107,12 +107,10 @@ public abstract class DigitalTextField extends LimitTextField {
      * @return 皮肤
      */
     public DigitalTextFieldSkin skin() {
-        DigitalTextFieldSkin skin = (DigitalTextFieldSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (DigitalTextFieldSkin) this.getSkin();
         }
-        return skin;
+        return (DigitalTextFieldSkin) this.getSkin();
     }
 
     protected abstract DigitalConverter getConverter();

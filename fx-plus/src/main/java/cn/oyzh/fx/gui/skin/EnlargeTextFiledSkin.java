@@ -55,7 +55,7 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
     protected PopupExt popup;
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         if (this.popup == null) {
             this.popup = new PopupExt();
             this.popup.setWidth(this.enlargeWidth);

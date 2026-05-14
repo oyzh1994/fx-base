@@ -63,7 +63,7 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         // 文本输入框
         TextField textField = this.getSkinnable();
         textField.setDisable(true);

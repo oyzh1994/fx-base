@@ -44,9 +44,9 @@ public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
         // 富文本模式
         if (value.isRichMode()) {
             if (node instanceof RichTreeItemBox box) {
-                box.init(value, treeView.highlightText, treeView.highlightMatchCase);
+                box.init(value, treeView.highlight, treeView.highlightMatchCase);
             } else {
-                FXUtil.runWait(() -> this.setGraphic(new RichTreeItemBox(value, treeView.highlightText, treeView.highlightMatchCase)));
+                FXUtil.runWait(() -> this.setGraphic(new RichTreeItemBox(value, treeView.highlight, treeView.highlightMatchCase)));
             }
             this.setText(null);
             this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);

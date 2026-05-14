@@ -1,9 +1,8 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.MatchCaseTextFieldSkin;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.scene.control.Skin;
-
-import java.util.function.Consumer;
 
 /**
  * 匹配大小写输入框
@@ -19,14 +18,11 @@ public class MatchCaseTextField extends LimitTextField {
      * @return 皮肤
      */
     public MatchCaseTextFieldSkin skin() {
-        MatchCaseTextFieldSkin skin = (MatchCaseTextFieldSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (MatchCaseTextFieldSkin) this.getSkin();
         }
-        return skin;
+        return (MatchCaseTextFieldSkin) this.getSkin();
     }
-
 
     public boolean isMatchCase() {
         return this.skin().isMatchCase();
@@ -36,8 +32,8 @@ public class MatchCaseTextField extends LimitTextField {
         this.skin().setMatchCase(matchCase);
     }
 
-    public void addMatchCaseListener(Consumer<Boolean> listener) {
-        this.skin().addMatchCaseListener(listener);
+    public ReadOnlyBooleanProperty matchCasePropery() {
+        return this.skin().matchCasePropery();
     }
 
     @Override

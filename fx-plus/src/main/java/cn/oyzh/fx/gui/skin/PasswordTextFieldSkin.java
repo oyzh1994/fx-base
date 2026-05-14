@@ -32,7 +32,7 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         PasswordTextField textField = (PasswordTextField) this.getSkinnable();
         if (textField.getRevealPassword()) {
             textField.setRevealPassword(false);

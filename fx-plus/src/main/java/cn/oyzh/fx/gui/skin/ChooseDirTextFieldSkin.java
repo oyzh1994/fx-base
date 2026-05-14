@@ -66,7 +66,7 @@ public class ChooseDirTextFieldSkin extends ChooseTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         File file1 = DirChooserHelper.choose(I18nHelper.chooseFile(), this.initDir, StageManager.getFrontWindow());
         if (file1 != null) {
             this.dir = file1;

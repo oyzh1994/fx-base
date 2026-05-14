@@ -26,12 +26,10 @@ public class ChooseFileTextField extends ClearableTextField {
      * @return 皮肤
      */
     public ChooseFileTextFieldSkin skin() {
-        ChooseFileTextFieldSkin skin = (ChooseFileTextFieldSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (ChooseFileTextFieldSkin) this.getSkin();
         }
-        return skin;
+        return (ChooseFileTextFieldSkin) this.getSkin();
     }
 
     /**

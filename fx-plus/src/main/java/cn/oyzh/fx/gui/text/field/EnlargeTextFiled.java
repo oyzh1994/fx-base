@@ -15,12 +15,10 @@ public class EnlargeTextFiled extends LimitTextField {
      * @return 皮肤
      */
     public EnlargeTextFiledSkin skin() {
-        EnlargeTextFiledSkin skin = (EnlargeTextFiledSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (EnlargeTextFiledSkin) this.getSkin();
         }
-        return skin;
+        return (EnlargeTextFiledSkin) this.getSkin();
     }
 
     public void setEnlargeWidth(double width) {

@@ -21,12 +21,10 @@ public class ChooseTextField extends LimitTextField {
      * @return 皮肤
      */
     public ChooseTextFieldSkin skin() {
-        ChooseTextFieldSkin skin = (ChooseTextFieldSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (ChooseTextFieldSkin) this.getSkin();
         }
-        return skin;
+        return (ChooseTextFieldSkin) this.getSkin();
     }
 
     public void setAction(Runnable action) {

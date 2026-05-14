@@ -20,12 +20,10 @@ public class ChooseDirTextField extends ClearableTextField {
      * @return 皮肤
      */
     public ChooseDirTextFieldSkin skin() {
-        ChooseDirTextFieldSkin skin = (ChooseDirTextFieldSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (ChooseDirTextFieldSkin) this.getSkin();
         }
-        return skin;
+        return (ChooseDirTextFieldSkin) this.getSkin();
     }
 
     public void setInitDir(String initDir) {

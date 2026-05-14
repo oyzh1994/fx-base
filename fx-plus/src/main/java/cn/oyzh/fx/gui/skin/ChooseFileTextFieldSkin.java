@@ -67,7 +67,7 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         if (this.filter == null) {
             this.filter = FXChooser.allExtensionFilter();
         }

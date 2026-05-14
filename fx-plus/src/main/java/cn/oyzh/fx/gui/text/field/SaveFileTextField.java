@@ -25,12 +25,10 @@ public class SaveFileTextField extends LimitTextField {
      * @return 皮肤
      */
     public SaveFileTextFieldSkin skin() {
-        SaveFileTextFieldSkin skin = (SaveFileTextFieldSkin) this.getSkin();
-        if (skin == null) {
+        if (this.getSkin()==null) {
             this.setSkin(this.createDefaultSkin());
-            skin = (SaveFileTextFieldSkin) this.getSkin();
         }
-        return skin;
+        return (SaveFileTextFieldSkin) this.getSkin();
     }
 
     public void setInitFileName(String initFileName) {

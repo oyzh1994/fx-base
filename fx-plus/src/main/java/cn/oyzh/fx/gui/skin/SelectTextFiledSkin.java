@@ -90,7 +90,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     // }
 
     @Override
-    protected void onButtonClicked(MouseEvent event) {
+    protected void onButtonClick(MouseEvent event) {
         if (this.popup == null) {
             this.initPopup();
         }

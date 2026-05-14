@@ -51,7 +51,7 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
     private Consumer<File> onFileSelected;
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         if (this.extension == null) {
             this.extension = FXChooser.allExtensionFilter();
         }
