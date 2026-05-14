@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RegexSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -135,7 +136,8 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
                 val -= insets.getTop();
                 val -= insets.getBottom();
             }
-            val -= (this.regex.getHeight() / 2);
+            double nHeight= NodeUtil.getHeight(this.regex);
+            val -= (nHeight / 2);
             val /= 2;
             Insets insets1 = new Insets(val, 3, 0, 0);
             HBox.setMargin(this.matchCase, insets1);
