@@ -5,6 +5,7 @@ import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.fx.editor.incubator.EditorFormatTypeComboBox;
+import cn.oyzh.fx.gui.text.field.FilterTextField;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
@@ -88,9 +89,11 @@ public class EditorTest extends Application {
         FXHBox hBox = new FXHBox();
 
         // 高亮
-        FXTextField text_31 = new FXTextField();
+        FilterTextField text_31 = new FilterTextField();
         text_31.setPromptText("查找内容");
-        editor.highlightTextProperty().bind(text_31.textProperty());
+        editor.highlightProperty().bind(text_31.textProperty());
+        editor.highlightRegexProperty().bind(text_31.regexPropery());
+        editor.highlightMacthCaseProperty().bind(text_31.matchCasePropery());
         hBox.addChild(text_31);
 
         EditorFormatTypeComboBox comboBox = new EditorFormatTypeComboBox();

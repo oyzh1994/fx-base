@@ -28,7 +28,9 @@ import cn.oyzh.i18n.I18nHelper;
 import com.sun.javafx.scene.NodeHelper;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -145,7 +147,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         this.initTextStyle();
     };
 
-    private ChangeListener<? super String> highlightTextListener = (observableValue, formatType, t1) -> {
+    private ChangeListener<? super String> highlightListener = (observableValue, formatType, t1) -> {
         // 获取滚动条值
         Double scrollValue = this.getScrollValue();
         this.syntaxDecorator.setHighlight(t1);
@@ -154,6 +156,16 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         if (StringUtil.isEmpty(t1)) {
             FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
         }
+    };
+
+    private ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
+        this.syntaxDecorator.setHighlightRegex(t1);
+        this.initTextStyle();
+    };
+
+    private ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
+        this.syntaxDecorator.setHighlightMatchCase(t1);
+        this.initTextStyle();
     };
 
     private ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
@@ -203,8 +215,10 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         this.promptsProperty().addListener(this.promptsListener);
         // 格式变化事件
         this.formatTypeProperty().addListener(this.formatTypeListener);
-        // 高亮变化事件
-        this.highlightTextProperty().addListener(this.highlightTextListener);
+        // 高亮事件
+        this.highlightProperty().addListener(this.highlightListener);
+        this.highlightRegexProperty().addListener(this.highlightRegexListener);
+        this.highlightMacthCaseProperty().addListener(this.highlightMacthCaseListener);
 //        // 行号策略变化事件
 //        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
 //            if (t1 == EditorLineNumPolicy.NONE) {
@@ -467,28 +481,78 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     }
 
     /**
-     * 高亮文本
+     * 高亮
      */
-    private StringProperty highlightTextProperty;
+    private StringProperty highlightProperty;
 
-    public String getHighlightText() {
-        return this.highlightTextProperty == null ? null : this.highlightTextProperty.get();
+    public String getHighlight() {
+        return this.highlightProperty == null ? null : this.highlightProperty.get();
     }
 
     /**
-     * 设置高亮文本
+     * 设置高亮
      *
-     * @param highlightText 高亮文本
+     * @param highlight 高亮
      */
-    public void setHighlightText(String highlightText) {
-        this.highlightTextProperty().set(highlightText);
+    public void setHighlight(String highlight) {
+        this.highlightProperty().set(highlight);
     }
 
-    public StringProperty highlightTextProperty() {
-        if (this.highlightTextProperty == null) {
-            this.highlightTextProperty = new SimpleStringProperty();
+    public StringProperty highlightProperty() {
+        if (this.highlightProperty == null) {
+            this.highlightProperty = new SimpleStringProperty();
         }
-        return this.highlightTextProperty;
+        return this.highlightProperty;
+    }
+
+    /**
+     * 高亮正则
+     */
+    private BooleanProperty highlightRegexProperty;
+
+    public boolean isHighlightRegex() {
+        return this.highlightRegexProperty != null && this.highlightRegexProperty.get();
+    }
+
+    /**
+     * 设置高亮正则
+     *
+     * @param highlightRegex 高亮正则
+     */
+    public void setHighlightRegex(boolean highlightRegex) {
+        this.highlightRegexProperty().set(highlightRegex);
+    }
+
+    public BooleanProperty highlightRegexProperty() {
+        if (this.highlightRegexProperty == null) {
+            this.highlightRegexProperty = new SimpleBooleanProperty();
+        }
+        return this.highlightRegexProperty;
+    }
+
+    /**
+     * 高亮匹配大小写
+     */
+    private BooleanProperty highlightMacthCaseProperty;
+
+    public boolean isHighlightMacthCase() {
+        return this.highlightMacthCaseProperty != null && this.highlightMacthCaseProperty.get();
+    }
+
+    /**
+     * 设置高亮匹配大小写
+     *
+     * @param highlightMacthCase 匹配大小写
+     */
+    public void setHighlightMacthCase(boolean highlightMacthCase) {
+        this.highlightMacthCaseProperty().set(highlightMacthCase);
+    }
+
+    public BooleanProperty highlightMacthCaseProperty() {
+        if (this.highlightMacthCaseProperty == null) {
+            this.highlightMacthCaseProperty = new SimpleBooleanProperty();
+        }
+        return this.highlightMacthCaseProperty;
     }
 
     /**
@@ -988,7 +1052,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         // 尝试初始化提示词
         this.setPrompts(this.getPrompts());
         // 尝试初始化高亮
-        this.setHighlightText(this.getHighlightText());
+        this.setHighlight(this.getHighlight());
         // 对预设了编辑器字体的情况下，组织样式字体修改编辑器字体
         this.fontProperty().addListener(this.fontListener);
 
@@ -1434,16 +1498,24 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             this.modelListener = null;
         }
         if (this.promptsListener != null && this.promptsProperty != null) {
-            this.promptsProperty().removeListener(this.promptsListener);
+            this.promptsProperty.removeListener(this.promptsListener);
             this.promptsListener = null;
         }
         if (this.formatTypeListener != null && this.formatTypeProperty != null) {
-            this.formatTypeProperty().removeListener(this.formatTypeListener);
+            this.formatTypeProperty.removeListener(this.formatTypeListener);
             this.formatTypeListener = null;
         }
-        if (this.highlightTextListener != null && this.highlightTextProperty != null) {
-            this.highlightTextProperty().removeListener(this.highlightTextListener);
-            this.highlightTextListener = null;
+        if (this.highlightListener != null && this.highlightProperty != null) {
+            this.highlightProperty.removeListener(this.highlightListener);
+            this.highlightListener = null;
+        }
+        if (this.highlightRegexListener != null && this.highlightRegexProperty != null) {
+            this.highlightRegexProperty.removeListener(this.highlightRegexListener);
+            this.highlightRegexListener = null;
+        }
+        if (this.highlightMacthCaseListener != null && this.highlightMacthCaseProperty != null) {
+            this.highlightMacthCaseProperty.removeListener(this.highlightMacthCaseListener);
+            this.highlightMacthCaseListener = null;
         }
         if (this.fontListener != null) {
             this.fontProperty().removeListener(this.fontListener);
@@ -1461,9 +1533,17 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             this.formatTypeProperty.unbind();
             this.formatTypeProperty = null;
         }
-        if (this.highlightTextProperty != null) {
-            this.highlightTextProperty.unbind();
-            this.highlightTextProperty = null;
+        if (this.highlightProperty != null) {
+            this.highlightProperty.unbind();
+            this.highlightProperty = null;
+        }
+        if (this.highlightRegexProperty != null) {
+            this.highlightRegexProperty.unbind();
+            this.highlightRegexProperty = null;
+        }
+        if (this.highlightMacthCaseProperty != null) {
+            this.highlightMacthCaseProperty.unbind();
+            this.highlightMacthCaseProperty = null;
         }
 //        if (this.lineNumPolicyProperty != null) {
 //            this.lineNumPolicyProperty.unbind();

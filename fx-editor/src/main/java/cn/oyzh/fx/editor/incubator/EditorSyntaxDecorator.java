@@ -31,6 +31,16 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private volatile String highlight;
 
     /**
+     * 高亮，正则模式
+     */
+    private volatile boolean highlightRegex;
+
+    /**
+     * 高亮，匹配大小写
+     */
+    private volatile boolean highlightMatchCase;
+
+    /**
      * 提示词
      */
     private volatile Set<String> prompts;
@@ -52,9 +62,44 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
     public void setHighlight(String highlight) {
         this.highlight = highlight;
-        if (StringUtil.isNotEmpty(highlight)) {
+        this.initHighlightPattern();
+    }
+
+    public String getHighlight() {
+        return highlight;
+    }
+
+    public void setHighlightRegex(boolean highlightRegex) {
+        this.highlightRegex = highlightRegex;
+        this.initHighlightPattern();
+    }
+
+    public boolean isHighlightRegex() {
+        return highlightRegex;
+    }
+
+    public void setHighlightMatchCase(boolean highlightMatchCase) {
+        this.highlightMatchCase = highlightMatchCase;
+        this.initHighlightPattern();
+    }
+
+    public boolean isHighlightMatchCase() {
+        return highlightMatchCase;
+    }
+
+    private void initHighlightPattern() {
+        if (StringUtil.isNotEmpty(this.highlight)) {
             try {
+                String regex = this.highlight;
                 this.highlightPattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
+                if (!this.highlightRegex) {
+                    regex = Pattern.quote(regex);
+                }
+                if (this.highlightMatchCase) {
+                    this.highlightPattern = Pattern.compile(regex);
+                } else {
+                    this.highlightPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+                }
             } catch (Exception ignore) {
             }
         } else {
@@ -62,9 +107,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         }
     }
 
-    public String getHighlight() {
-        return highlight;
-    }
+
 
     public Set<String> getPrompts() {
         return prompts;
