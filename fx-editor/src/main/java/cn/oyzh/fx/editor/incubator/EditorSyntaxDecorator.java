@@ -55,8 +55,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         if (StringUtil.isNotEmpty(highlight)) {
             try {
                 this.highlightPattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception ignore) {
             }
         } else {
             this.highlightPattern = null;
@@ -79,8 +78,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             try {
                 String pattern = "\\b(" + String.join("|", this.prompts) + ")\\b";
                 this.promptsPattern = Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (Exception ignore) {
             }
         } else {
             this.promptsPattern = null;
@@ -219,7 +217,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             if (StringUtil.isNotEmpty(this.highlight)) {
                 List<EditorMachToken> machTokens = this.machHighlight(line);
                 for (EditorMachToken token : machTokens) {
-                    builder.addHighlight(token.getStart(), this.highlight.length(), this.highlightColor);
+                    builder.addHighlight(token.start(), token.length(), this.highlightColor);
 //                    builder.addWavyUnderline(token.getStart(), this.highlight.length(), this.highlightColor);
                 }
             }
@@ -282,19 +280,19 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private List<StyledToken> buildTokens(String line, List<EditorMachToken> machTokens) {
         // 进行排序
-        machTokens.sort(Comparator.comparingInt(EditorMachToken::getStart));
+        machTokens.sort(Comparator.comparingInt(EditorMachToken::start));
         // 搜索开始索引
         int fIndex = 0;
         List<StyledToken> tokens = new ArrayList<>();
         for (EditorMachToken machToken : machTokens) {
-            int start = machToken.getStart();
+            int start = machToken.start();
             // 未匹配的样式，设置为null
             if (start > fIndex) {
                 tokens.add(new StyledToken(line.substring(fIndex, start), null));
             }
             // 添加已匹配样式
-            tokens.add(machToken.getToken());
-            fIndex = machToken.getEnd();
+            tokens.add(machToken.token());
+            fIndex = machToken.end();
         }
         // 对尾部进行处理
         if (fIndex < line.length()) {
