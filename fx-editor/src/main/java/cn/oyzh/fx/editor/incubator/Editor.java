@@ -965,6 +965,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
             // TODO: 修复主题色可能不生效问题
             NodeHelper.processCSS(this);
+//            this.applyCss();
             // 设置光标行颜色
             this.setCaretLineColor(this.defaultCaretLineColor());
             // 设置选区颜色

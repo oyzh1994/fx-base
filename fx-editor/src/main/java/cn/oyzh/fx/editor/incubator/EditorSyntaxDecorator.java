@@ -52,10 +52,14 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
     public void setHighlight(String highlight) {
         this.highlight = highlight;
-        try {
-            this.highlightPattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (StringUtil.isNotEmpty(highlight)) {
+            try {
+                this.highlightPattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            this.highlightPattern = null;
         }
     }
 
@@ -71,11 +75,15 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
     public void setPrompts(Set<String> prompts) {
         this.prompts = prompts;
-        try {
-            String pattern = "\\b(" + String.join("|", this.prompts) + ")\\b";
-            this.promptsPattern = Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (CollectionUtil.isNotEmpty(prompts)) {
+            try {
+                String pattern = "\\b(" + String.join("|", this.prompts) + ")\\b";
+                this.promptsPattern = Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            this.promptsPattern = null;
         }
     }
 
