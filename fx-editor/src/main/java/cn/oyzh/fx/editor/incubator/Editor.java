@@ -159,25 +159,13 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     };
 
     private ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
-        // 获取滚动条值
-        Double scrollValue = this.getScrollValue();
         this.syntaxDecorator.setHighlightRegex(t1);
         this.initTextStyle();
-        // 清除高亮的时候滚动到原位置
-        if (StringUtil.isEmpty(this.getHighlight())) {
-            FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
-        }
     };
 
     private ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
-        // 获取滚动条值
-        Double scrollValue = this.getScrollValue();
         this.syntaxDecorator.setHighlightMatchCase(t1);
         this.initTextStyle();
-        // 清除高亮的时候滚动到原位置
-        if (StringUtil.isEmpty(this.getHighlight())) {
-            FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
-        }
     };
 
     private ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {

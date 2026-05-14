@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.object.DestroyUtil;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
@@ -195,10 +196,11 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
 
     @Override
     public void destroy() {
-        if (this.getRoot() instanceof Destroyable destroyable) {
-            destroyable.destroy();
-//            this.setRoot(null);
-        }
+//        if (this.getRoot() instanceof Destroyable destroyable) {
+//            destroyable.destroy();
+////            this.setRoot(null);
+//        }
+        DestroyUtil.destroy(this.getRoot());
         DestroyAdapter.super.destroy();
     }
 

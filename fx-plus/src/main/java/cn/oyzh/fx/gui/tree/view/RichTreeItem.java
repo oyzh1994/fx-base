@@ -522,9 +522,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     }
 
     @Override
-    public synchronized void destroy() {
-        super.destroy();
+    public void destroy() {
         this.bitValue = null;
+        super.destroy();
     }
 }
 
