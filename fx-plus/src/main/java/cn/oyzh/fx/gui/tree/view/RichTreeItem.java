@@ -23,14 +23,6 @@ import java.util.function.Consumer;
  */
 public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
 
-//    {
-//        this.addEventFilter(childrenModificationEvent(), e -> {
-//            if (!this.isSorting()) {
-//                this.doFilter();
-//            }
-//        });
-//    }
-
     /**
      * 空节点
      */

@@ -447,6 +447,11 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     default void clearListener() {
         Stage stage = this.stage();
         if (stage != null) {
+            stage.onShownProperty().unbind();
+            stage.onHidingProperty().unbind();
+            stage.onHiddenProperty().unbind();
+            stage.onShowingProperty().unbind();
+            stage.onCloseRequestProperty().unbind();
             stage.setOnShown(null);
             stage.setOnHiding(null);
             stage.setOnHidden(null);

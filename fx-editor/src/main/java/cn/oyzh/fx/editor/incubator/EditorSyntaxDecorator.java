@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor.incubator;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
@@ -106,8 +107,6 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             this.highlightPattern = null;
         }
     }
-
-
 
     public Set<String> getPrompts() {
         return prompts;
@@ -343,9 +342,4 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         }
         return tokens;
     }
-
-//    @Override
-//    public RichParagraph createRichParagraph(CodeTextModel model, int index) {
-//        return super.createRichParagraph(model, index);
-//    }
 }

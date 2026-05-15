@@ -77,11 +77,6 @@ public class StageController extends Controller implements DestroyAdapter, Stage
         }
     }
 
-//    @Override
-//    protected <T> T getWindowProp(String key) {
-//        return this.stage == null ? null : this.stage.getProp(key);
-//    }
-
     @Override
     public void setProp(String key, Object value) {
         if (this.stage != null) {

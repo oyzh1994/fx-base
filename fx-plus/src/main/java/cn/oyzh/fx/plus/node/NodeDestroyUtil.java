@@ -22,13 +22,9 @@ import java.util.List;
 public class NodeDestroyUtil {
 
     private static void destroy(Property<?> property) {
-        try {
-            // 解除单向绑定
-            if (property != null) {
-                property.unbind();
-            }
-        } catch (Exception ignore) {
-
+        // 解除单向绑定
+        if (property != null) {
+            property.unbind();
         }
     }
 

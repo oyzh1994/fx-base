@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.opacity.OpacityAdapter;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -18,6 +19,7 @@ public class StageExt extends Stage implements StageAdapter, OpacityAdapter, The
     public StageExt(StageAttribute attribute, Window owner) {
         this.init(attribute, owner);
         this.setProp(StageManager.REF_ATTR, this);
+        ObjectWatcherManager.watch(this);
     }
 
     public StageExt(Window owner) {
@@ -39,6 +41,7 @@ public class StageExt extends Stage implements StageAdapter, OpacityAdapter, The
         if (height != null) {
             this.setHeight(height);
         }
+        ObjectWatcherManager.watch(this);
     }
 
     @Override

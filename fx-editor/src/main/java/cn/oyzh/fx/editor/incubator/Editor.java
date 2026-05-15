@@ -1559,10 +1559,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             this.highlightMacthCaseProperty.unbind();
             this.highlightMacthCaseProperty = null;
         }
-//        if (this.lineNumPolicyProperty != null) {
-//            this.lineNumPolicyProperty.unbind();
-//            this.lineNumPolicyProperty = null;
-//        }
         this.fontProperty().unbind();
         this.leftDecoratorProperty().unbind();
         this.rightDecoratorProperty().unbind();
@@ -1572,7 +1568,9 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         this.styleProvider = null;
         this.syntaxDecorator = null;
         this.richTextAreaModel = null;
-        // NodeDestroyUtil.destroyObject(this);
+        if (this.getSkin() != null) {
+            this.getSkin().dispose();
+        }
         DestroyAdapter.super.destroy();
     }
 }

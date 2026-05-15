@@ -194,14 +194,14 @@ public class StageManager {
         wrapper.display();
     }
 
-    /**
-     * 创建舞台
-     *
-     * @return StageExt
-     */
-    public static StageExt newStage() {
-        return new StageExt(null);
-    }
+//    /**
+//     * 创建舞台
+//     *
+//     * @return StageExt
+//     */
+//    public static StageExt newStage() {
+//        return new StageExt(null);
+//    }
 
     /**
      * 创建舞台
@@ -393,7 +393,8 @@ public class StageManager {
      */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask || window instanceof PopupMask) {
+            if (window instanceof StageMask) {
+//            if (window instanceof StageMask || window instanceof PopupMask) {
                 continue;
             }
             if (window.isShowing() && window.isFocused()) {
@@ -410,7 +411,8 @@ public class StageManager {
      */
     public static boolean hasFocusedWindow() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask || window instanceof PopupMask) {
+            if (window instanceof StageMask) {
+//            if (window instanceof StageMask || window instanceof PopupMask) {
                 continue;
             }
             if (window.isShowing() && window.isFocused()) {

@@ -194,16 +194,6 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         this.initRoot();
     }
 
-    @Override
-    public void destroy() {
-//        if (this.getRoot() instanceof Destroyable destroyable) {
-//            destroyable.destroy();
-////            this.setRoot(null);
-//        }
-        DestroyUtil.destroy(this.getRoot());
-        DestroyAdapter.super.destroy();
-    }
-
     /**
      * 定位节点
      */
@@ -273,5 +263,11 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    public void destroy() {
+        this.setRoot(null);
+        DestroyAdapter.super.destroy();
     }
 }
