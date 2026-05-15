@@ -384,6 +384,19 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
+     * 移除当前节点
+     */
+    default void removeNode() {
+        if (this instanceof Node node) {
+            if (node.getParent() instanceof Pane pane) {
+                pane.getChildren().remove(this);
+            }
+        } else if (this instanceof Tab tab) {
+            tab.getTabPane().getTabs().remove(this);
+        }
+    }
+
+    /**
      * 移除子节点
      *
      * @param child 子节点

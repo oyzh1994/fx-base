@@ -3,12 +3,14 @@ package cn.oyzh.fx.gui.media;
 import cn.oyzh.fx.gui.svg.glyph.PauseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.StopSVGGlyph;
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.FXProgressBar;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FXSlider;
 import cn.oyzh.fx.plus.information.MessageBox;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.layout.HBox;
@@ -23,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author oyzh
  * @since 2025-07-17
  */
-public class MediaControlBox extends FXVBox {
+public class MediaControlBox extends FXVBox implements DestroyAdapter {
 
     /**
      * 媒体时间
@@ -208,6 +210,21 @@ public class MediaControlBox extends FXVBox {
         }
     }
 
+    private ChangeListener<? super Number> volumeListener = (observableValue, number, t1) -> {
+        if (!this.userVoluming.get()) {
+            this.volume.setValue(t1.doubleValue());
+        }
+    };
+
+    private ChangeListener<? super Duration> currentTimeListener = (observableValue, aBoolean, t1) -> {
+        if (!this.userSeeking.get()) {
+            Duration total = this.player.getTotalDuration();
+            double d1 = t1.toMillis() / total.toMillis();
+            this.progress.setProgress(d1);
+            this.updateTimeLabel(t1, total);
+        }
+    };
+
     /**
      * 安装
      *
@@ -216,14 +233,7 @@ public class MediaControlBox extends FXVBox {
     public void setup(MediaPlayer player) {
         this.player = player;
         player.setCycleCount(1);
-        player.currentTimeProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (!this.userSeeking.get()) {
-                Duration total = this.player.getTotalDuration();
-                double d1 = t1.toMillis() / total.toMillis();
-                this.progress.setProgress(d1);
-                this.updateTimeLabel(t1, total);
-            }
-        });
+        player.currentTimeProperty().addListener(this.currentTimeListener);
         Runnable failed = () -> this.play.disable();
         Runnable readied = () -> this.play.enable();
         Runnable stopped = () -> this.box2.setChild(0, this.play);
@@ -255,11 +265,7 @@ public class MediaControlBox extends FXVBox {
             stopped.run();
         });
         // 音量处理
-        player.volumeProperty().addListener((observableValue, number, t1) -> {
-            if (!this.userVoluming.get()) {
-                this.volume.setValue(t1.doubleValue());
-            }
-        });
+        player.volumeProperty().addListener(this.volumeListener);
         // 初始化音量
         this.volume.setValue(this.player.getVolume());
     }
@@ -305,5 +311,40 @@ public class MediaControlBox extends FXVBox {
             seconds = totalSeconds;
         }
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    @Override
+    public void destroy() {
+        if (this.player != null) {
+            if (this.volumeListener != null) {
+                this.player.volumeProperty().removeListener(this.volumeListener);
+                this.volumeListener = null;
+            }
+            if (this.currentTimeListener != null) {
+                this.player.currentTimeProperty().removeListener(this.currentTimeListener);
+                this.currentTimeListener = null;
+            }
+            this.player.setOnError(null);
+            this.player.setOnReady(null);
+            this.player.setOnPaused(null);
+            this.player.setOnHalted(null);
+            this.player.setOnRepeat(null);
+            this.player.setOnStalled(null);
+            this.player.setOnStopped(null);
+            this.player.setOnPlaying(null);
+            this.player.setOnEndOfMedia(null);
+            this.player.onErrorProperty().unbind();
+            this.player.onReadyProperty().unbind();
+            this.player.onHaltedProperty().unbind();
+            this.player.onPausedProperty().unbind();
+            this.player.onRepeatProperty().unbind();
+            this.player.onPlayingProperty().unbind();
+            this.player.onStalledProperty().unbind();
+            this.player.onEndOfMediaProperty().unbind();
+            this.player.volumeProperty().unbind();
+            this.player = null;
+        }
+        this.volume.valueProperty().unbind();
+        DestroyAdapter.super.destroy();
     }
 }

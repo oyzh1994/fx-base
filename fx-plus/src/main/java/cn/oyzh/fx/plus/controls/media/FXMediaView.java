@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.media;
 
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -14,7 +15,7 @@ import javafx.scene.media.MediaView;
  * @author oyzh
  * @since 2025-07-17
  */
-public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter {
+public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, DestroyAdapter {
 
     {
         NodeManager.init(this);
@@ -90,6 +91,16 @@ public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, 
         if (this.getMediaPlayer() != null) {
             this.getMediaPlayer().dispose();
         }
+    }
+
+    @Override
+    public void destroy() {
+        this.stop();
+        this.dispose();
+        this.mediaPlayerProperty().unbind();
+        this.setMediaPlayer(null);
+        this.removeNode();
+        DestroyAdapter.super.destroy();
     }
 }
 

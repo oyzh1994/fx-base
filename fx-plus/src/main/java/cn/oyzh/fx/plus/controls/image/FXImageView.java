@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.image;
 
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter {
+public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, DestroyAdapter {
 
     {
         NodeManager.init(this);
@@ -94,5 +95,11 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
     @Override
     public boolean isResizable() {
         return true;
+    }
+
+    @Override
+    public void destroy() {
+        this.setImage(null);
+        DestroyAdapter.super.destroy();
     }
 }
