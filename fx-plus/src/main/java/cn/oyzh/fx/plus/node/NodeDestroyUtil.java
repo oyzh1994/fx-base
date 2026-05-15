@@ -31,6 +31,7 @@ public class NodeDestroyUtil {
 
         }
     }
+
     /**
      * 销毁对象
      *
@@ -70,11 +71,11 @@ public class NodeDestroyUtil {
         }
         // 添加到列表
         handles.add(object);
-        if (object instanceof Parent parent) {
-            for (Node node : new ArrayList<>(parent.getChildrenUnmodifiable())) {
-                doDestroyObject(node, handles);
-            }
-        }
+//        if (object instanceof Parent parent) {
+//            for (Node node : new ArrayList<>(parent.getChildrenUnmodifiable())) {
+//                doDestroyObject(node, handles);
+//            }
+//        }
         Class<?> cType = object.getClass();
         // 获取所有字段
         Field[] fields = ReflectUtil.getFields(cType, true, true);
@@ -103,6 +104,14 @@ public class NodeDestroyUtil {
 //                if (EventTarget.class.isAssignableFrom(clazz)) {
 //                    doDestroyObject(object1, handles);
 //                }
+                // fmxl注入对象
+                if (field.getAnnotation(FXML.class) != null) {
+                    // EventTarget对象，递归销毁
+                    if (EventTarget.class.isAssignableFrom(clazz)) {
+                        doDestroyObject(object1, handles);
+                    }
+                    setNullable = true;
+                }
                 // 属性类型
                 if (Property.class.isAssignableFrom(clazz)) {
                     // 获取属性值
@@ -111,8 +120,6 @@ public class NodeDestroyUtil {
                     if (field.getName().equals("parent")) {
                         setNullable = true;
                     }
-                } else if (field.getAnnotation(FXML.class) != null) {
-                    setNullable = true;
                 }
                 if (setNullable && !isFinal) {
                     ReflectUtil.setFieldValue(field, null, object);
