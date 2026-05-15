@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.test.table;
 
 import cn.oyzh.common.object.ObjectWatcher;
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.fx.plus.controller.StageController;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.window.StageAdapter;
@@ -26,7 +27,7 @@ public class TableTest1Controller extends StageController {
     @Override
     public void onStageInitialize(StageAdapter stage) {
         super.onStageInitialize(stage);
-        ObjectWatcher.watch(tab1);
+        ObjectWatcherManager.watch(tab1);
 
         tab1.setOnClosed(event -> {
             this.tab1 = null;
