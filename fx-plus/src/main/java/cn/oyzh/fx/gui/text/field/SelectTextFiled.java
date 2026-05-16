@@ -140,4 +140,11 @@ public class SelectTextFiled<T> extends LimitTextField {
     public void selectFirstItem() {
         this.skin().selectFirst();
     }
+
+    @Override
+    public void destroy() {
+        this.clearItemList();
+        this.setContextMenu(null);
+        super.destroy();
+    }
 }

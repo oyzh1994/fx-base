@@ -18,8 +18,6 @@ public class FontSizeComboBox extends FXComboBox<Integer> implements I18nSelectA
 
     {
         NodeManager.init(this);
-        this.selectSize(null);
-        this.setTipText(I18nHelper.fontSizeTip());
     }
 
     public void selectSize(Byte size) {
@@ -39,5 +37,12 @@ public class FontSizeComboBox extends FXComboBox<Integer> implements I18nSelectA
         List<Integer> list = List.of(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25);
         this.setItem(list);
         return list;
+    }
+
+    @Override
+    public void initNode() {
+        this.selectSize(null);
+        this.setTipText(I18nHelper.fontSizeTip());
+        super.initNode();
     }
 }

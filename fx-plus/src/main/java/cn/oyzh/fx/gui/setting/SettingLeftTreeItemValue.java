@@ -6,7 +6,7 @@ import cn.oyzh.fx.gui.tree.view.RichTreeItemValue;
  * @author oyzh
  * @since 2024/12/29
  */
-public class SettingLeftItem extends RichTreeItemValue {
+public class SettingLeftTreeItemValue extends RichTreeItemValue {
 
     private String id;
 
@@ -14,11 +14,11 @@ public class SettingLeftItem extends RichTreeItemValue {
 
     private String parentId;
 
-    public SettingLeftItem(String name ) {
+    public SettingLeftTreeItemValue(String name ) {
         this.name = name;
     }
 
-    public SettingLeftItem(String name, String id) {
+    public SettingLeftTreeItemValue(String name, String id) {
         this.id = id;
         this.name = name;
     }
@@ -28,8 +28,8 @@ public class SettingLeftItem extends RichTreeItemValue {
         return this.name;
     }
 
-    public static SettingLeftItem of(String name, String id){
-        return new SettingLeftItem(name, id);
+    public static SettingLeftTreeItemValue of(String name, String id){
+        return new SettingLeftTreeItemValue(name, id);
     }
 
     public String getId() {

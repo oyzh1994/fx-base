@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.menu.FXContextMenu;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,25 +17,6 @@ import java.util.stream.Collectors;
  * @since 2025-06-08
  */
 public class FontFamilyTextField extends SelectTextFiled<String> {
-
-    {
-        // 覆盖默认菜单
-        this.setContextMenu(FXContextMenu.EMPTY);
-        this.setTipText(I18nHelper.pleaseSelectFont());
-    }
-
-    // @Override
-    // public FontFamilyTextFieldSkin skin() {
-    //     return (FontFamilyTextFieldSkin) super.skin();
-    // }
-    //
-    // @Override
-    // protected FontFamilyTextFieldSkin createDefaultSkin() {
-    //     if (this.getSkin() != null) {
-    //         return (FontFamilyTextFieldSkin) this.getSkin();
-    //     }
-    //     return new FontFamilyTextFieldSkin(this);
-    // }
 
     @Override
     protected void onTextChanged(String newValue) {
@@ -71,6 +53,9 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
     @Override
     public void initNode() {
         super.initNode();
-        this.setItemList(Font.getFamilies());
+        // 覆盖默认菜单
+        this.setContextMenu(FXContextMenu.EMPTY);
+        this.setTipText(I18nHelper.pleaseSelectFont());
+        this.setItemList(new ArrayList<>(Font.getFamilies()));
     }
 }

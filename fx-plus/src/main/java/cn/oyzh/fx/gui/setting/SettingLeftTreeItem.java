@@ -2,35 +2,39 @@ package cn.oyzh.fx.gui.setting;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.tree.view.RichTreeItem;
-import cn.oyzh.fx.gui.tree.view.RichTreeView;
 import javafx.scene.control.TreeItem;
 
 /**
  * @author oyzh
  * @since 2024/12/29
  */
-public class SettingTreeItem extends RichTreeItem<SettingLeftItem> {
+public class SettingLeftTreeItem extends RichTreeItem<SettingLeftTreeItemValue> {
 
-    public SettingTreeItem( RichTreeView treeView, SettingLeftItem value) {
+    public SettingLeftTreeItem(SettingLeftTreeView treeView, SettingLeftTreeItemValue value) {
         super(treeView);
         this.setValue(value);
     }
 
-    public SettingTreeItem addItem(SettingLeftItem item) {
+    @Override
+    public SettingLeftTreeView getTreeView() {
+        return (SettingLeftTreeView) super.getTreeView();
+    }
+
+    public SettingLeftTreeItem addItem(SettingLeftTreeItemValue item) {
         item.setParentId(this.getItemId());
-        SettingTreeItem treeItem = new SettingTreeItem(this.getTreeView(), item);
+        SettingLeftTreeItem treeItem = new SettingLeftTreeItem(this.getTreeView(), item);
         this.addChild(treeItem);
         return treeItem;
     }
 
-    public SettingLeftItem findItem(String itemId) {
+    public SettingLeftTreeItemValue findItem(String itemId) {
         if (StringUtil.isNotBlank(itemId)) {
             for (TreeItem<?> item : this.unfilteredChildren()) {
-                if (item instanceof SettingTreeItem treeItem) {
+                if (item instanceof SettingLeftTreeItem treeItem) {
                     if (itemId.equals(treeItem.getItemId())) {
                         return treeItem.getValue();
                     }
-                    SettingLeftItem leftItem = treeItem.findItem(itemId);
+                    SettingLeftTreeItemValue leftItem = treeItem.findItem(itemId);
                     if (leftItem != null) {
                         return leftItem;
                     }
@@ -41,7 +45,7 @@ public class SettingTreeItem extends RichTreeItem<SettingLeftItem> {
     }
 
     public String getItemId() {
-        SettingLeftItem value = this.getValue();
+        SettingLeftTreeItemValue value = this.getValue();
         return value == null ? null : value.getId();
     }
 }

@@ -41,20 +41,10 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         NodeManager.init(this);
     }
 
-//    protected void initTableView() {
-//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-//        this.initEvenListener();
-//    }
-
     /**
      * 初始化事件监听器
      */
     protected void initEvenListener() {
-//        this.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-//            if(!t1){
-//                this.clearSelection();
-//            }
-//        });
     }
 
     /**
@@ -83,12 +73,6 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
                 c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
             }
         });
-        // // 监听数据
-        // this.itemList().addListener((ListChangeListener<S>) c -> {
-        //     if (c.next()) {
-        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
-        //     }
-        // });
         FlexAdapter.super.initNode();
     }
 
