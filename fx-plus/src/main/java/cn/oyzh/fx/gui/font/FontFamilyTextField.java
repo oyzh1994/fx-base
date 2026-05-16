@@ -2,11 +2,9 @@ package cn.oyzh.fx.gui.font;
 
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.text.field.SelectTextFiled;
-import cn.oyzh.fx.plus.menu.FXContextMenu;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.scene.text.Font;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +25,7 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
             this.skin().clearTexting();
             return;
         }
-        List<String> fonts = Font.getFamilies();
+        List<String> fonts = FontUtil.getFamilies();
         // 移除选区
         this.skin().clearSelection();
         // 隐藏弹窗
@@ -52,10 +50,10 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
 
     @Override
     public void initNode() {
-        super.initNode();
         // 覆盖默认菜单
-        this.setContextMenu(FXContextMenu.EMPTY);
+        //this.setContextMenu(FXContextMenu.EMPTY);
         this.setTipText(I18nHelper.pleaseSelectFont());
-        this.setItemList(new ArrayList<>(Font.getFamilies()));
+        this.setItemList(FontUtil.getFamilies());
+        super.initNode();
     }
 }

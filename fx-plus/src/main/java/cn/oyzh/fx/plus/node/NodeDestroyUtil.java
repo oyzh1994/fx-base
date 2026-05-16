@@ -3,10 +3,7 @@ package cn.oyzh.fx.plus.node;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import javafx.beans.property.Property;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -21,12 +18,43 @@ import java.util.List;
  */
 public class NodeDestroyUtil {
 
-    private static void destroy(Property<?> property) {
-        // 解除单向绑定
-        if (property != null) {
-            property.unbind();
-        }
-    }
+    ///**
+    // * 销毁属性
+    // *
+    // * @param property 属性
+    // */
+    //private static void destroy(Property<?> property) {
+    //    // 解除单向绑定
+    //    if (property != null) {
+    //        property.unbind();
+    //    }
+    //}
+
+    ///**
+    // * 销毁节点
+    // *
+    // * @param node 节点
+    // */
+    //private static void destroy(Node node) {
+    //    if (node instanceof MediaView mediaView) {
+    //        if (mediaView.getMediaPlayer() != null) {
+    //            mediaView.getMediaPlayer().stop();
+    //            mediaView.getMediaPlayer().dispose();
+    //            mediaView.setMediaPlayer(null);
+    //        }
+    //    }
+    //    if (node instanceof ImageView imageView) {
+    //        if (imageView.getImage() != null) {
+    //            imageView.getImage().cancel();
+    //            imageView.setImage(null);
+    //        }
+    //    }
+    //    if (node instanceof Control control) {
+    //        if (control.getSkin() != null) {
+    //            FXUtil.runWait(()-> control.getSkin().dispose());
+    //        }
+    //    }
+    //}
 
     /**
      * 销毁对象
@@ -96,27 +124,25 @@ public class NodeDestroyUtil {
                 if (object1 == null) {
                     continue;
                 }
-//                // EventTarget对象
-//                if (EventTarget.class.isAssignableFrom(clazz)) {
-//                    doDestroyObject(object1, handles);
-//                }
-                // fmxl注入对象
+                // fxml注入对象
                 if (field.getAnnotation(FXML.class) != null) {
-                    // EventTarget对象，递归销毁
-                    if (EventTarget.class.isAssignableFrom(clazz)) {
-                        doDestroyObject(object1, handles);
-                    }
+                    // 递归销毁
+                    doDestroyObject(object1, handles);
                     setNullable = true;
                 }
                 // 属性类型
                 if (Property.class.isAssignableFrom(clazz)) {
-                    // 获取属性值
-                    Property<?> object2 = (Property<?>) object1;
-                    destroy(object2);
+                    //Property<?> object2 = (Property<?>) object1;
+                    //destroy(object2);
                     if (field.getName().equals("parent")) {
                         setNullable = true;
                     }
                 }
+                //// 节点类型
+                //if (Node.class.isAssignableFrom(clazz)) {
+                //    Node object2 = (Node) object1;
+                //    destroy(object2);
+                //}
                 if (setNullable && !isFinal) {
                     ReflectUtil.setFieldValue(field, null, object);
                 }

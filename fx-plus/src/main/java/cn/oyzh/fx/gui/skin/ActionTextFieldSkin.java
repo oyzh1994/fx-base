@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import javafx.beans.property.ObjectProperty;

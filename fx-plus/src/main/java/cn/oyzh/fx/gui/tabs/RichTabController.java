@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.stage.Window;
 
-import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Locale;

@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
-import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.i18n.I18nHelper;
 
 import java.util.List;
@@ -15,10 +14,6 @@ import java.util.Locale;
  * @since 2024/04/05
  */
 public class FontSizeComboBox extends FXComboBox<Integer> implements I18nSelectAdapter<Integer> {
-
-    {
-        NodeManager.init(this);
-    }
 
     public void selectSize(Byte size) {
         if (size == null) {

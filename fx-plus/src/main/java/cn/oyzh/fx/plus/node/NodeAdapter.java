@@ -53,6 +53,8 @@ public interface NodeAdapter extends EventTarget {
             return node.getParent();
         } else if (this instanceof TableColumn<?, ?> column) {
             return column.getTableView();
+        } else if (this instanceof Tab tab) {
+            return tab.getTabPane();
         }
         return null;
     }

@@ -28,6 +28,15 @@ import java.util.List;
 public class FontUtil {
 
     /**
+     * 获取font字体列表
+     *
+     * @return 结果
+     */
+    public static ArrayList<String> getFamilies() {
+        return new ArrayList<>(javafx.scene.text.Font.getFamilies());
+    }
+
+    /**
      * 创建一个新字体
      *
      * @param font 原字体
@@ -564,11 +573,11 @@ public class FontUtil {
     /**
      * 计算字符宽度
      *
-     * @param str  字符串
+     * @param str 字符串
      * @return 字符宽度
      */
     public static double textWidth(String str) {
-        return textWidth(str,javafx.scene.text.Font.getDefault());
+        return textWidth(str, javafx.scene.text.Font.getDefault());
     }
 
     /**

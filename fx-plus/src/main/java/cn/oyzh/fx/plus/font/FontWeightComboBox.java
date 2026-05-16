@@ -13,18 +13,6 @@ import javafx.scene.text.FontWeight;
  */
 public class FontWeightComboBox extends FXComboBox<FontWeight> {
 
-    {
-        this.addItems(FontWeight.values());
-        this.setTipText(I18nHelper.fontWeightTip());
-        this.setConverter(new SimpleStringConverter<>() {
-            @Override
-            public String toString(FontWeight o) {
-                return o.getWeight() + "";
-            }
-        });
-        this.select(null);
-    }
-
     public FontWeight getDefault() {
         return FontUtil.getWeight(FontManager.defaultFont.getStyle());
     }
@@ -48,5 +36,28 @@ public class FontWeightComboBox extends FXComboBox<FontWeight> {
 
     public short getWeight() {
         return (short) this.getSelectedItem().getWeight();
+    }
+
+    @Override
+    public void initNode() {
+        super.initNode();
+        this.addItems(FontWeight.values());
+        this.setTipText(I18nHelper.fontWeightTip());
+        this.setConverter(new SimpleStringConverter<>() {
+            @Override
+            public String toString(FontWeight o) {
+                if (o != null) {
+                    return o.getWeight() + "";
+                }
+                return "";
+            }
+        });
+        this.select(null);
+    }
+
+    @Override
+    public void destroy() {
+        this.setConverter(null);
+        super.destroy();
     }
 }

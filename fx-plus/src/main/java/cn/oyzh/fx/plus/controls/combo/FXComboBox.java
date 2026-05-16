@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.combo;
 
+import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -23,7 +24,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, DestroyAdapter {
 
     {
         NodeManager.init(this);
@@ -42,20 +43,9 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         this.require = require;
     }
 
-    //
-//    @Getter
-//    @Setter
-//    private BaseValidator validator = new BaseValidator(this);
-//
-//    public void setRequire(Boolean require) {
-//        this.require = require;
-//        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
-//    }
-
     @Override
     public boolean validate() {
         if (this.require && this.getSelectedItem() == null) {
-//            this.requestFocus();
             ValidatorUtil.validFail(this);
             return false;
         }
@@ -114,7 +104,6 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         FlexAdapter.super.initNode();
-//        this.setFocusTraversable(false);
     }
 
     @Override
@@ -124,18 +113,13 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         this.resizeNode();
     }
 
-    //@Override
-    //public void changeTheme(ThemeStyle style) {
-    //    ThemeAdapter.super.changeTheme(style);
-    //    ComboBoxListViewSkin<?> skin = (ComboBoxListViewSkin<?>) this.getSkin();
-    //    if (skin != null) {
-    //        ListView<T> listView = (ListView<T>) skin.getPopupContent();
-    //        try {
-    //            ReflectUtil.invoke(listView, "reapplyCss");
-    //            listView.applyCss();
-    //        } catch (Exception ex) {
-    //            ex.printStackTrace();
-    //        }
-    //    }
-    //}
+    @Override
+    public void destroy() {
+        this.clearItems();
+        this.setContextMenu(null);
+        if (this.getSkin() != null) {
+            this.getSkin().dispose();
+        }
+        DestroyAdapter.super.destroy();
+    }
 }

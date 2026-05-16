@@ -409,7 +409,6 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     @Override
     public void dispose() {
         if (this.popup != null) {
-            this.popup.content(null);
             this.popup.setOnHidden(null);
             this.popup.setOnShowing(null);
             this.listView().prefWidthProperty().unbind();

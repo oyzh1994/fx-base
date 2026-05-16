@@ -140,4 +140,14 @@ public class FXTextField extends TextField implements DestroyAdapter, FlexAdapte
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }
+
+    @Override
+    public void destroy() {
+        this.setTipText(null);
+        this.setContextMenu(null);
+        if (this.getSkin() != null) {
+            this.getSkin().dispose();
+        }
+        DestroyAdapter.super.destroy();
+    }
 }

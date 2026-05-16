@@ -151,4 +151,11 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
     public String getAppendText() {
         return this.getProp("appendText");
     }
+
+    @Override
+    public void destroy() {
+        this.setContent(null);
+        this.setContextMenu(null);
+        DestroyAdapter.super.destroy();
+    }
 }
