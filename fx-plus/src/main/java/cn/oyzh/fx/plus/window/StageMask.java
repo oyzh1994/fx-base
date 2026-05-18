@@ -135,15 +135,12 @@ public class StageMask extends Stage implements StageAdapter {
         }
         // 关闭当前窗口
         FXUtil.runWait(this::hide);
-//        this.target = null;
-//        this.callback = null;
+        this.target = null;
+        this.callback = null;
     }
 
     @Override
     public void onWindowClosed() {
-        StageAdapter.super.onWindowClosed();
-        // 清除属性
-        this.setScene(null);
         // 处理属性
         if (this.target != null) {
             this.target.xProperty().removeListener(this.xFunc);
@@ -151,12 +148,12 @@ public class StageMask extends Stage implements StageAdapter {
             this.target.widthProperty().removeListener(this.wFunc);
             this.target.heightProperty().removeListener(this.hFunc);
             this.target.requestFocus();
-//            this.xFunc = null;
-//            this.yFunc = null;
-//            this.wFunc = null;
-//            this.hFunc = null;
+            this.xFunc = null;
+            this.yFunc = null;
+            this.wFunc = null;
+            this.hFunc = null;
         }
-        NodeDestroyUtil.destroyObject(this);
+        StageAdapter.super.onWindowClosed();
     }
 
     @Override

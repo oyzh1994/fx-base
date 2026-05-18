@@ -150,18 +150,18 @@ public class NodeDestroyUtil {
                 }
                 // fxml注入对象
                 if (field.getAnnotation(FXML.class) != null) {
-                    // 递归销毁
-                    doDestroyObject(object1, handles);
+//                    // 递归销毁
+//                    doDestroyObject(object1, handles);
                     setNullable = true;
                 }
-                // 属性类型
-                if (Property.class.isAssignableFrom(clazz)) {
-                    //Property<?> object2 = (Property<?>) object1;
-                    //destroy(object2);
-                    if (field.getName().equals("parent")) {
-                        setNullable = true;
-                    }
-                }
+//                // 属性类型
+//                if (Property.class.isAssignableFrom(clazz)) {
+////                    Property<?> object2 = (Property<?>) object1;
+////                    destroy(object2);
+//                    if (field.getName().equals("parent")) {
+//                        setNullable = true;
+//                    }
+//                }
                 //// 节点类型
                 //if (Node.class.isAssignableFrom(clazz)) {
                 //    Node object2 = (Node) object1;
