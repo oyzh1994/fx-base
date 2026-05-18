@@ -27,7 +27,7 @@ public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAda
         NodeManager.init(this);
     }
 
-    public static final FXContextMenu EMPTY = new FXContextMenu();
+//    public static final FXContextMenu EMPTY = new FXContextMenu();
 
     private ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
 

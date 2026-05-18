@@ -313,8 +313,12 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         if (this.popup != null) {
             this.listView().clearItems();
         }
-        if (this.itemList != null) {
-            this.itemList.clear();
+        try {
+            if (this.itemList != null) {
+                this.itemList.clear();
+            }
+        } catch (UnsupportedOperationException ignore) {
+
         }
     }
 
