@@ -1,6 +1,7 @@
 package cn.oyzh.fx.editor.test.incubator;
 
 import cn.oyzh.common.object.ObjectWatcherManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
@@ -47,6 +48,7 @@ public class RichTextAreaTest extends Application {
                 textArea.getSkin().dispose();
 //                textArea.skinProperty().unbind();
 //                textArea.setSkin(null);
+                NodeUtil.removeNode(textArea);
                 System.out.println("close----");
             });
             ObjectWatcherManager.watch(stage1);

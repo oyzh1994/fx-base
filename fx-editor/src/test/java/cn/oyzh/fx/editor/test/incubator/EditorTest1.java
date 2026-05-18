@@ -2,6 +2,7 @@ package cn.oyzh.fx.editor.test.incubator;
 
 import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.fx.editor.incubator.Editor;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
@@ -44,7 +45,10 @@ public class EditorTest1 extends Application {
 
             stage1.setOnHidden(event1 -> {
 //                editor.getSkin().dispose();
-                editor.destroy();
+                scene1.rootProperty().unbind();
+//                editor.destroy();
+                stage.setScene(null);
+//                NodeUtil.removeNode(editor);
                 System.out.println("close----");
             });
             ObjectWatcherManager.watch(stage1);

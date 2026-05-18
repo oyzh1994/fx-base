@@ -432,7 +432,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     @Override
     public void destroy() {
         this.clearChild();
-        NodeDestroyUtil.destroyNode(this);
+//        NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
     }
 }

@@ -185,6 +185,12 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * 初始化编辑器
      */
     private void initEditor() {
+        // 监听父节点
+        this.parentProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                this.destroy();
+            }
+        });
 //        // 处理输入法不支持中文的问题
 //        EditorUtil.setupIMESupport(this);
         // 默认自动换行
@@ -1058,22 +1064,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         // 初始化编辑器
         this.initEditor();
         // 尝试初始化提示词
-        this.setPrompts(this.getPrompts());
+        if (CollectionUtil.isNotEmpty(this.getPrompts())) {
+            this.setPrompts(this.getPrompts());
+        }
         // 尝试初始化高亮
-        this.setHighlight(this.getHighlight());
+        if (this.getHighlight() != null) {
+            this.setHighlight(this.getHighlight());
+        }
         // 对预设了编辑器字体的情况下，组织样式字体修改编辑器字体
         this.fontProperty().addListener(this.fontListener);
-
-//        // 监听皮肤初始化，控制滚动条thumb最低大小
-//        this.skinProperty().subscribe(skin -> {
-//            if (skin != null) {
-//                VFlow flow = RichTextAreaSkinHelper.getVFlow(this);
-//                ScrollBar vscroll = ReflectUtil.getFieldValue(flow, "vscroll");
-//                ScrollBar hscroll = ReflectUtil.getFieldValue(flow, "hscroll");
-//                ControlUtil.steupMinVisibleAmount(vscroll,0.05);
-//                ControlUtil.steupMinVisibleAmount(hscroll,0.05);
-//            }
-//        });
     }
 
     /**
@@ -1501,74 +1500,74 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     @Override
     public void destroy() {
-        if (this.modelListener != null) {
-            this.getModel().removeListener(this.modelListener);
-            this.modelListener = null;
-        }
-        if (this.promptsListener != null && this.promptsProperty != null) {
-            this.promptsProperty.removeListener(this.promptsListener);
-            this.promptsListener = null;
-        }
-        if (this.formatTypeListener != null && this.formatTypeProperty != null) {
-            this.formatTypeProperty.removeListener(this.formatTypeListener);
-            this.formatTypeListener = null;
-        }
-        if (this.highlightListener != null && this.highlightProperty != null) {
-            this.highlightProperty.removeListener(this.highlightListener);
-            this.highlightListener = null;
-        }
-        if (this.highlightRegexListener != null && this.highlightRegexProperty != null) {
-            this.highlightRegexProperty.removeListener(this.highlightRegexListener);
-            this.highlightRegexListener = null;
-        }
-        if (this.highlightMacthCaseListener != null && this.highlightMacthCaseProperty != null) {
-            this.highlightMacthCaseProperty.removeListener(this.highlightMacthCaseListener);
-            this.highlightMacthCaseListener = null;
-        }
-        if (this.fontListener != null) {
-            this.fontProperty().removeListener(this.fontListener);
-            this.fontListener = null;
-        }
-        if (CollectionUtil.isNotEmpty(this.textChangeListeners) && this.textProperty != null) {
-            for (ChangeListener<? super String> changeListener : this.textChangeListeners) {
-                this.textProperty.removeListener(changeListener);
-            }
-            this.textChangeListeners.clear();
-            this.textChangeListeners = null;
-        }
-        if (this.textProperty != null) {
-            this.textProperty.unbind();
-            this.textProperty = null;
-        }
-        if (this.promptsProperty != null) {
-            this.promptsProperty.unbind();
-            this.promptsProperty = null;
-        }
-        if (this.formatTypeProperty != null) {
-            this.formatTypeProperty.unbind();
-            this.formatTypeProperty = null;
-        }
-        if (this.highlightProperty != null) {
-            this.highlightProperty.unbind();
-            this.highlightProperty = null;
-        }
-        if (this.highlightRegexProperty != null) {
-            this.highlightRegexProperty.unbind();
-            this.highlightRegexProperty = null;
-        }
-        if (this.highlightMacthCaseProperty != null) {
-            this.highlightMacthCaseProperty.unbind();
-            this.highlightMacthCaseProperty = null;
-        }
-        this.fontProperty().unbind();
-        this.leftDecoratorProperty().unbind();
-        this.rightDecoratorProperty().unbind();
-        this.highlightCurrentParagraphProperty().unbind();
-        this.editorFont = null;
-        this.textFlowModel = null;
-        this.styleProvider = null;
-        this.syntaxDecorator = null;
-        this.richTextAreaModel = null;
+//        if (this.modelListener != null) {
+//        this.getModel().removeListener(this.modelListener);
+//            this.modelListener = null;
+//        }
+//        if (this.promptsListener != null && this.promptsProperty != null) {
+//            this.promptsProperty.removeListener(this.promptsListener);
+//            this.promptsListener = null;
+//        }
+//        if (this.formatTypeListener != null && this.formatTypeProperty != null) {
+//            this.formatTypeProperty.removeListener(this.formatTypeListener);
+//            this.formatTypeListener = null;
+//        }
+//        if (this.highlightListener != null && this.highlightProperty != null) {
+//            this.highlightProperty.removeListener(this.highlightListener);
+//            this.highlightListener = null;
+//        }
+//        if (this.highlightRegexListener != null && this.highlightRegexProperty != null) {
+//            this.highlightRegexProperty.removeListener(this.highlightRegexListener);
+//            this.highlightRegexListener = null;
+//        }
+//        if (this.highlightMacthCaseListener != null && this.highlightMacthCaseProperty != null) {
+//            this.highlightMacthCaseProperty.removeListener(this.highlightMacthCaseListener);
+//            this.highlightMacthCaseListener = null;
+//        }
+//        if (this.fontListener != null) {
+//            this.fontProperty().removeListener(this.fontListener);
+//            this.fontListener = null;
+//        }
+//        if (CollectionUtil.isNotEmpty(this.textChangeListeners) && this.textProperty != null) {
+//            for (ChangeListener<? super String> changeListener : this.textChangeListeners) {
+//                this.textProperty.removeListener(changeListener);
+//            }
+//            this.textChangeListeners.clear();
+//            this.textChangeListeners = null;
+//        }
+//        if (this.textProperty != null) {
+//            this.textProperty.unbind();
+//            this.textProperty = null;
+//        }
+//        if (this.promptsProperty != null) {
+//            this.promptsProperty.unbind();
+//            this.promptsProperty = null;
+//        }
+//        if (this.formatTypeProperty != null) {
+//            this.formatTypeProperty.unbind();
+//            this.formatTypeProperty = null;
+//        }
+//        if (this.highlightProperty != null) {
+//            this.highlightProperty.unbind();
+//            this.highlightProperty = null;
+//        }
+//        if (this.highlightRegexProperty != null) {
+//            this.highlightRegexProperty.unbind();
+//            this.highlightRegexProperty = null;
+//        }
+//        if (this.highlightMacthCaseProperty != null) {
+//            this.highlightMacthCaseProperty.unbind();
+//            this.highlightMacthCaseProperty = null;
+//        }
+//        this.fontProperty().unbind();
+//        this.leftDecoratorProperty().unbind();
+//        this.rightDecoratorProperty().unbind();
+//        this.highlightCurrentParagraphProperty().unbind();
+//        this.editorFont = null;
+//        this.textFlowModel = null;
+//        this.styleProvider = null;
+//        this.syntaxDecorator = null;
+//        this.richTextAreaModel = null;
         NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
     }

@@ -15,7 +15,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
+import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
@@ -857,5 +859,28 @@ public class NodeUtil {
      */
     public static boolean isOrientationRightToLeft(Node node) {
         return node.getNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT || node.getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT;
+    }
+
+    /**
+     * 移除节点
+     *
+     * @param node 节点
+     */
+    public static void removeNode(Object node) {
+        FXUtil.runWait(() -> {
+            if (node instanceof Node node1) {
+                if (node1.getParent() instanceof Pane pane) {
+                    pane.getChildren().remove(node);
+                }
+            } else if (node instanceof Tab tab) {
+                if (tab.getTabPane() != null) {
+                    tab.getTabPane().getTabs().remove(node);
+                }
+            } else if (node instanceof TreeItem<?> item) {
+                if (item.getParent() != null) {
+                    item.getParent().getChildren().remove(node);
+                }
+            }
+        });
     }
 }

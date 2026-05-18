@@ -601,15 +601,15 @@ public abstract class TerminalPane extends Editor implements Terminal {
     @Override
     public void destroy() {
         this.caretPositionProperty().removeListener(this.caretPositionListener);
-        this.caretPositionListener = null;
-        if (this.keyPressedHandler != null) {
+//        this.caretPositionListener = null;
+//        if (this.keyPressedHandler != null) {
             this.removeEventFilter(KeyEvent.KEY_PRESSED, this.keyPressedHandler);
-            this.keyPressedHandler = null;
-        }
-        if (this.mousePressedHandler != null) {
+//            this.keyPressedHandler = null;
+//        }
+//        if (this.mousePressedHandler != null) {
             this.removeEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressedHandler);
-            this.mousePressedHandler = null;
-        }
+//            this.mousePressedHandler = null;
+//        }
         super.destroy();
     }
 
