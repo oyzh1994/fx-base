@@ -52,10 +52,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     @Override
     default void onWindowClosed() {
         try {
-            // // 主页面不处理
-            // if (this instanceof PrimaryStage) {
-            //     return;
-            // }
             Stage stage = this.stage();
             WindowAdapter.super.onWindowClosed();
             DragUtil.clearDragFile(this.scene());
@@ -65,6 +61,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
             this.clearTitle();
             this.clearScene();
             this.clearListener();
+            NodeDestroyUtil.destroyObject(this);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -579,34 +576,8 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     }
 
     @Override
-    default void unHideOnEscape() {
-        EscHideHandler escHideHandler = this.removeProp("escHideHandler");
-        if (escHideHandler != null) {
-            escHideHandler.destroy();
-        }
-    }
-
-    @Override
-    default boolean isHideOnEscape() {
-        return this.hasProp("escHideHandler");
-    }
-
-    @Override
     default void switchOnTab() {
         this.setProp("tabSwitchHandler", new TabSwitchHandler(this.stage()));
-    }
-
-    @Override
-    default void unSwitchOnTab() {
-        TabSwitchHandler tabSwitchHandler = this.removeProp("tabSwitchHandler");
-        if (tabSwitchHandler != null) {
-            tabSwitchHandler.destroy();
-        }
-    }
-
-    @Override
-    default boolean isSwitchOnTab() {
-        return this.hasProp("tabSwitchHandler");
     }
 
     /**

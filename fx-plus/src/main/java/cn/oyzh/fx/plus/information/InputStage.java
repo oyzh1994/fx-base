@@ -1,11 +1,13 @@
 package cn.oyzh.fx.plus.information;
 
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.fx.gui.text.field.ClearableTextField;
 import cn.oyzh.fx.plus.controls.FXHeaderBar;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.window.FXStageStyle;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.i18n.I18nHelper;
@@ -89,6 +91,12 @@ public class InputStage extends Stage implements StageAdapter {
                 this.cancel();
             }
         });
+        this.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                this.onWindowClosed();
+            }
+        });
+        ObjectWatcherManager.watch(this);
     }
 
     public void cancel() {

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 import atlantafx.base.controls.Popover;
+import cn.oyzh.common.object.ObjectWatcherManager;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.stage.PopupWindow;
@@ -24,6 +25,7 @@ public class PopupExt extends Popover implements PopupAdapter {
             }
         });
         this.setProp(PopupManager.REF_ATTR, this);
+        ObjectWatcherManager.watch(this);
     }
 
     public PopupExt(PopupAttribute attribute) {
@@ -31,6 +33,7 @@ public class PopupExt extends Popover implements PopupAdapter {
         // 初始化默认属性
         this.initDefault();
         this.setProp(PopupManager.REF_ATTR, this);
+        ObjectWatcherManager.watch(this);
     }
 
     /**

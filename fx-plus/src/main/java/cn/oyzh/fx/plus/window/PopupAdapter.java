@@ -4,6 +4,7 @@ import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.geometry.Point2D;
@@ -27,6 +28,7 @@ public interface PopupAdapter extends WindowAdapter {
         try {
             WindowAdapter.super.onWindowClosed();
             this.content(null);
+            NodeDestroyUtil.destroyObject(this);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -72,48 +74,12 @@ public interface PopupAdapter extends WindowAdapter {
 
     @Override
     default void hideOnEscape() {
-//        if (!EscHideHandler.exists(this.popup())) {
-//            EscHideHandler.init(this.popup());
-//        }
         this.setProp("escHideHandler", new EscHideHandler(this.popup()));
     }
 
     @Override
-    default void unHideOnEscape() {
-//        EscHideHandler.destroy(this.popup());
-        EscHideHandler escHideHandler = this.removeProp("escHideHandler");
-        if (escHideHandler != null) {
-            escHideHandler.destroy();
-        }
-    }
-
-    @Override
-    default boolean isHideOnEscape() {
-//        return EscHideHandler.exists(this.popup());
-        return this.hasProp("escHideHandler");
-    }
-
-    @Override
     default void switchOnTab() {
-//        if (!TabSwitchHandler.exists(this.popup())) {
-//            TabSwitchHandler.init(this.popup());
-//        }
         this.setProp("tabSwitchHandler", new TabSwitchHandler(this.popup()));
-    }
-
-    @Override
-    default void unSwitchOnTab() {
-//        TabSwitchHandler.destroy(this.popup());
-        TabSwitchHandler tabSwitchHandler = this.removeProp("tabSwitchHandler");
-        if (tabSwitchHandler != null) {
-            tabSwitchHandler.destroy();
-        }
-    }
-
-    @Override
-    default boolean isSwitchOnTab() {
-//        return TabSwitchHandler.exists(this.popup());
-        return this.hasProp("tabSwitchHandler");
     }
 
     /**

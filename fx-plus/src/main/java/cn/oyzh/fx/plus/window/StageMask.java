@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.BooleanUtil;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -110,6 +112,8 @@ public class StageMask extends Stage implements StageAdapter {
 
 //        // 执行业务
 //        this.future = TaskManager.startAsync(this::doCallback);
+
+        ObjectWatcherManager.watch(this);
     }
 
 //    /**
@@ -131,8 +135,8 @@ public class StageMask extends Stage implements StageAdapter {
         }
         // 关闭当前窗口
         FXUtil.runWait(this::hide);
-        this.target = null;
-        this.callback = null;
+//        this.target = null;
+//        this.callback = null;
     }
 
     @Override
@@ -147,11 +151,12 @@ public class StageMask extends Stage implements StageAdapter {
             this.target.widthProperty().removeListener(this.wFunc);
             this.target.heightProperty().removeListener(this.hFunc);
             this.target.requestFocus();
-            this.xFunc = null;
-            this.yFunc = null;
-            this.wFunc = null;
-            this.hFunc = null;
+//            this.xFunc = null;
+//            this.yFunc = null;
+//            this.wFunc = null;
+//            this.hFunc = null;
         }
+        NodeDestroyUtil.destroyObject(this);
     }
 
     @Override
