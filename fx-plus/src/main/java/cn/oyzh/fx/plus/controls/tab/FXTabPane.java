@@ -1,14 +1,15 @@
 package cn.oyzh.fx.plus.controls.tab;
 
 import atlantafx.base.theme.Styles;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -26,7 +27,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, DestroyAdapter {
+public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, Destroyable {
 
     {
         NodeManager.init(this);
@@ -423,20 +424,15 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      * 刷新tab，解决部分情况下组件冻结的问题
      */
     public void refresh() {
-        // this.setIgnoreChanged(true);
-        // Tab tab = this.getSelectedItem();
-        // this.clearSelection();
-        // if (tab != null) {
-        //     // this.select(tab);
-        //     FXUtil.runAsync(() -> {
-        //         this.select(tab);
-        //         this.setIgnoreChanged(false);
-        //     });
-        // } else {
-        //     this.setIgnoreChanged(false);
-        // }
         this.applyCss();
         this.autosize();
         this.requestLayout();
+    }
+
+    @Override
+    public void destroy() {
+        this.clearChild();
+        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

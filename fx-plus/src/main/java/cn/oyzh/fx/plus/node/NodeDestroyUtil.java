@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
+import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
@@ -42,6 +43,7 @@ public class NodeDestroyUtil {
     public static void destroyNode(Node node) {
         if (NodeUtil.isMediaImport && node instanceof javafx.scene.media.MediaView mediaView) {
             if (mediaView.getMediaPlayer() != null) {
+                mediaView.mediaPlayerProperty().unbind();
                 mediaView.getMediaPlayer().stop();
                 mediaView.getMediaPlayer().dispose();
                 mediaView.setMediaPlayer(null);
@@ -49,13 +51,24 @@ public class NodeDestroyUtil {
         }
         if (node instanceof ImageView imageView) {
             if (imageView.getImage() != null) {
+                imageView.imageProperty().unbind();
                 imageView.getImage().cancel();
                 imageView.setImage(null);
             }
         }
         if (node instanceof Control control) {
             if (control.getSkin() != null) {
+                control.skinProperty().unbind();
                 FXUtil.runWait(() -> control.getSkin().dispose());
+//                control.setSkin(null);
+            }
+            if (control.getContextMenu() != null) {
+                control.contextMenuProperty().unbind();
+                control.setContextMenu(null);
+            }
+            if (control.getTooltip()!=null) {
+                control.tooltipProperty().unbind();
+                control.setTooltip(null);
             }
         }
     }

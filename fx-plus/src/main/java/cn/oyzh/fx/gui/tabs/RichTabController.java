@@ -1,12 +1,11 @@
 package cn.oyzh.fx.gui.tabs;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.event.EventListener;
 import cn.oyzh.event.EventUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
-import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -25,9 +24,9 @@ import java.util.ResourceBundle;
  * @author oyzh
  * @since 2023/11/3
  */
-public abstract class RichTabController implements EventListener, I18nAdapter, Initializable, DestroyAdapter {
+public abstract class RichTabController implements EventListener, I18nAdapter, Initializable, Destroyable {
 
-    private WeakReference<FXTab> reference;
+    private WeakReference<FXTab> tabRef;
 
     /**
      * 设置tab
@@ -35,7 +34,7 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
      * @param tab tab
      */
     protected void setTab(FXTab tab) {
-        this.reference = new WeakReference<>(tab);
+        this.tabRef = new WeakReference<>(tab);
 //        // 初始化一次样式
 //        tab.changeTheme(ThemeManager.currentTheme());
     }
@@ -46,7 +45,7 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
      * @return RichTab
      */
     public FXTab getTab() {
-        return this.reference != null ? this.reference.get() : null;
+        return this.tabRef != null ? this.tabRef.get() : null;
     }
 
     /**
@@ -168,17 +167,6 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
 
     }
 
-    @Override
-    public void destroy() {
-        if (this.getTab() != null) {
-            NodeDestroyUtil.destroyObject(this.getTab());
-        }
-        this.reference.clear();
-        this.reference = null;
-        NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
-    }
-
     /**
      * 获取tab内容
      *
@@ -203,29 +191,10 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         return null;
     }
 
-    ///**
-    // * 开启等待动画
-    // */
-    //public void startWaiting() {
-    //    if (this.getTabGraphic() instanceof SVGGlyph glyph) {
-    //        glyph.startWaiting();
-    //    }
-    //    Node node = this.getTabContent();
-    //    if (node != null) {
-    //        node.setDisable(true);
-    //    }
-    //}
-    //
-    ///**
-    // * 结束等待动画
-    // */
-    //public void stopWaiting() {
-    //    if (this.getTabGraphic() instanceof SVGGlyph glyph) {
-    //        glyph.stopWaiting();
-    //    }
-    //    Node node = this.getTabContent();
-    //    if (node != null) {
-    //        node.setDisable(false);
-    //    }
-    //}
+    @Override
+    public void destroy() {
+        this.tabRef.clear();
+        NodeDestroyUtil.destroyObject(this.getTab());
+        NodeDestroyUtil.destroyObject(this);
+    }
 }

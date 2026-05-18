@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
@@ -21,7 +21,7 @@ import javafx.scene.control.TabPane;
  * @author oyzh
  * @since 2022/1/21
  */
-public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter, DestroyAdapter {
+public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -158,6 +158,5 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         this.setContent(null);
         this.setContextMenu(null);
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }

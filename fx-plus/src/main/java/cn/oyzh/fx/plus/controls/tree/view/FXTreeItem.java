@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/11/10
  */
-public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 
     {
         NodeManager.init(this);
@@ -440,9 +440,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
         this.getValue().destroy();
         this.valueProperty().unbind();
         this.graphicProperty().unbind();
-        this.treeView = null;
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 
 }

@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controls.text.field;
 
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -24,7 +24,7 @@ import javafx.scene.control.TextField;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements DestroyAdapter, FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements Destroyable, FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -144,12 +144,9 @@ public class FXTextField extends TextField implements DestroyAdapter, FlexAdapte
 
     @Override
     public void destroy() {
-        this.setTipText(null);
-        this.setContextMenu(null);
-        if (this.getSkin() != null) {
-            this.getSkin().dispose();
-        }
+//        this.setTipText(null);
+//        this.setContextMenu(null);
+        NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }

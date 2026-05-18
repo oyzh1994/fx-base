@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.combo;
 
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -25,7 +25,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, DestroyAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -122,6 +122,5 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
             this.getSkin().dispose();
         }
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }

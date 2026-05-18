@@ -1,10 +1,11 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.common.object.DestroyUtil;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.collections.ListChangeListener;
@@ -20,7 +21,7 @@ import java.util.List;
  * @author oyzh
  * @since 2023/3/7
  */
-public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAdapter, ThemeAdapter, DestroyAdapter {
+public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAdapter, ThemeAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -28,12 +29,12 @@ public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAda
 
     public static final FXContextMenu EMPTY = new FXContextMenu();
 
-    private final ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
+    private ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
-//        this.getItems().addListener(this.itemsListener);
-        this.getItems().addListener(new WeakListChangeListener<>(this.itemsListener));
+        this.getItems().addListener(this.itemsListener);
+//        this.getItems().addListener(new WeakListChangeListener<>(this.itemsListener));
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 this.calcWidth();
@@ -143,5 +144,12 @@ public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAda
         // this.setMinWidth(160);
         this.sizeToScene();
         NodeAdapter.super.initNode();
+    }
+
+    @Override
+    public void destroy() {
+        this.getItems().removeListener(this.itemsListener);
+        this.getItems().clear();
+        NodeDestroyUtil.destroyObject(this);
     }
 }

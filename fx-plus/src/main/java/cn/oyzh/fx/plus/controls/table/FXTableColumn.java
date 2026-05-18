@@ -1,8 +1,8 @@
 package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.common.object.Destroyable;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -18,7 +18,7 @@ import javafx.util.Callback;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter, DestroyAdapter {
+public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -105,10 +105,8 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         }
     }
 
-    // @Override
-    // public void initNode() {
-    //     // 设置默认cell
-    //     this.setCell(new FXTableCell<>());
-    //     FlexAdapter.super.initNode();
-    // }
+    @Override
+    public void destroy() {
+        NodeDestroyUtil.destroyObject(this);
+    }
 }

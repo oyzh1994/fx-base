@@ -1,8 +1,8 @@
 package cn.oyzh.fx.gui.tree.view;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/11/10
  */
-public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 
     /**
      * 空节点

@@ -1,11 +1,11 @@
 package cn.oyzh.fx.editor.incubator;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.ScrollBarAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -77,7 +77,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, DestroyAdapter {
+public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, Destroyable {
 
     /**
      * 默认提示词颜色
@@ -1569,10 +1569,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         this.styleProvider = null;
         this.syntaxDecorator = null;
         this.richTextAreaModel = null;
-        if (this.getSkin() != null) {
-            this.getSkin().dispose();
-        }
+        NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }

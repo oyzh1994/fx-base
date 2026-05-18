@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.setting;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroupUtil;
@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
  * @author oyzh
  * @since 2024/12/29
  */
-public class SettingMainPane extends FXHBox implements DestroyAdapter {
+public class SettingMainPane extends FXHBox implements Destroyable {
 
     public void setLeft(Node left) {
         SettingLeftContent content = (SettingLeftContent) this.getChild(0);
@@ -117,7 +117,6 @@ public class SettingMainPane extends FXHBox implements DestroyAdapter {
     public void destroy() {
         this.clearChild();
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }
 

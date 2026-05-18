@@ -1,9 +1,9 @@
 package cn.oyzh.fx.gui.media;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.gui.svg.glyph.PauseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.StopSVGGlyph;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.FXProgressBar;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author oyzh
  * @since 2025-07-17
  */
-public class MediaControlBox extends FXVBox implements DestroyAdapter {
+public class MediaControlBox extends FXVBox implements Destroyable {
 
     /**
      * 媒体时间
@@ -319,11 +319,9 @@ public class MediaControlBox extends FXVBox implements DestroyAdapter {
         if (this.player != null) {
             if (this.volumeListener != null) {
                 this.player.volumeProperty().removeListener(this.volumeListener);
-                this.volumeListener = null;
             }
             if (this.currentTimeListener != null) {
                 this.player.currentTimeProperty().removeListener(this.currentTimeListener);
-                this.currentTimeListener = null;
             }
             this.player.setOnError(null);
             this.player.setOnReady(null);
@@ -343,10 +341,8 @@ public class MediaControlBox extends FXVBox implements DestroyAdapter {
             this.player.onStalledProperty().unbind();
             this.player.onEndOfMediaProperty().unbind();
             this.player.volumeProperty().unbind();
-            this.player = null;
         }
         this.volume.valueProperty().unbind();
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }

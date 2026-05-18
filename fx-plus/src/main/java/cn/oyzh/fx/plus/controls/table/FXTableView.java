@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.common.object.Destroyable;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
@@ -36,7 +35,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S>, DestroyAdapter, FontAdapter {
+public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S>, Destroyable, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -309,14 +308,12 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void destroy() {
-        this.ctrlSAction = null;
         this.clearProps();
         this.destroyItems();
         this.clearItems();
         this.destroyColumns();
         this.clearColumns();
-        this.setTooltip(null);
+        NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }

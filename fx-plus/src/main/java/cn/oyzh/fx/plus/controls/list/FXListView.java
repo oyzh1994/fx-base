@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.controls.list;
 
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -20,7 +21,7 @@ import javafx.scene.control.ListView;
  * @author oyzh
  * @since 2023/4/24
  */
-public class FXListView<T> extends ListView<T> implements MenuItemAdapter, ContextMenuAdapter, DestroyAdapter, FlexAdapter, TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
+public class FXListView<T> extends ListView<T> implements MenuItemAdapter, ContextMenuAdapter, Destroyable, FlexAdapter, TipAdapter, StateAdapter, ThemeAdapter, LayoutAdapter, FontAdapter, SelectAdapter<T> {
 
     {
         NodeManager.init(this);
@@ -66,5 +67,10 @@ public class FXListView<T> extends ListView<T> implements MenuItemAdapter, Conte
     public void changeTheme(ThemeStyle style) {
         ThemeAdapter.super.changeTheme(style);
         this.refresh();
+    }
+
+    @Override
+    public void destroy() {
+        NodeDestroyUtil.destroyObject(this);
     }
 }

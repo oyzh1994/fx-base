@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.object.DestroyUtil;
 import cn.oyzh.common.object.Destroyable;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -29,7 +27,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/1/19
  */
-public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FXTreeView extends TreeView implements FlexAdapter, Destroyable, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -269,7 +267,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
     @Override
     public void destroy() {
         this.setRoot(null);
+        NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
-//        DestroyAdapter.super.destroy();
     }
 }
