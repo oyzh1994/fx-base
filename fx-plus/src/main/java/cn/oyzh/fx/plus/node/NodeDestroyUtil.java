@@ -1,10 +1,8 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.Property;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
@@ -83,9 +81,9 @@ public class NodeDestroyUtil {
         }
         // 异步执行
 //        ThreadUtil.startVirtual(() -> {
-            List<Object> handles = new ArrayList<>();
-            doDestroyObject(object, handles);
-            handles.clear();
+        List<Object> handles = new ArrayList<>();
+        doDestroyObject(object, handles);
+        handles.clear();
 //        });
     }
 
@@ -152,9 +150,7 @@ public class NodeDestroyUtil {
 //                    // 递归销毁
 //                    doDestroyObject(object1, handles);
                     // 从父节点移除
-                    if (object1 instanceof EventTarget target) {
-                        NodeUtil.removeNode(target);
-                    }
+                    NodeUtil.removeNode(object1);
                     setNullable = true;
                 }
 //                // 属性类型

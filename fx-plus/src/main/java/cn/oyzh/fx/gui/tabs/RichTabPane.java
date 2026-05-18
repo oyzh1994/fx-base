@@ -26,21 +26,21 @@ public class RichTabPane extends FXTabPane {
         super.initNode();
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
-            double pos = 0;
-            if (this.getSide() == Side.TOP) {
-                pos = this.getTabMaxHeight() - e.getY();
-            } else if (this.getSide() == Side.BOTTOM) {
-                pos = e.getY() - this.getHeight() + this.getTabMaxHeight();
-            }
+//            double pos = 0;
+//            if (this.getSide() == Side.TOP) {
+//                pos = this.getTabMaxHeight() - e.getY();
+//            } else if (this.getSide() == Side.BOTTOM) {
+//                pos = e.getY() - this.getHeight() + this.getTabMaxHeight();
+//            }
             // 判断是否在tab标签栏范围内
-            if (pos >= 0) {
+//            if (pos >= 0) {
                 Tab tab = this.getSelectedItem();
                 if (tab instanceof MenuItemAdapter adapter) {
                     this.showContextMenu(adapter.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
                 }
-            } else {
-                this.clearContextMenu();
-            }
+//            } else {
+//                this.clearContextMenu();
+//            }
         });
     }
 

@@ -12,10 +12,12 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+
+import java.util.List;
 
 /**
  * @author oyzh
@@ -56,17 +58,36 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
     }
 
     /**
+     * 获取tab列表
+     *
+     * @return tab列表
+     */
+    public ObservableList<Tab> tabs() {
+        return this.getTabPane().getTabs();
+    }
+
+    /**
      * 关闭当前tab
      */
     public void closeTab() {
-        if (this.isClosable()) {
-            TabPane tabPane = this.getTabPane();
-            if (tabPane != null) {
-                FXUtil.runWait(() -> tabPane.getTabs().remove(this));
-                // 手动触发关闭事件
-                Event.fireEvent(this, new Event(Tab.CLOSED_EVENT));
+        this.closeTabs(List.of(this));
+    }
+
+    /**
+     * 关闭多个tab
+     *
+     * @param tabs tab列表
+     */
+    public void closeTabs(List<Tab> tabs) {
+        FXUtil.runWait(() -> {
+            for (Tab tab : tabs) {
+                if (tab.isClosable()) {
+                    this.tabs().remove(tab);
+                    // 手动触发关闭事件
+                    Event.fireEvent(tab, new Event(Tab.CLOSED_EVENT));
+                }
             }
-        }
+        });
     }
 
     /**

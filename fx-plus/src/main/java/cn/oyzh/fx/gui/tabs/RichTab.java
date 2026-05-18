@@ -160,7 +160,7 @@ public abstract class RichTab extends FXTab {
                 list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(list));
+        this.closeTabs(list);
     }
 
     /**
@@ -176,45 +176,36 @@ public abstract class RichTab extends FXTab {
                 list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(list));
+        this.closeTabs(list);
     }
 
     /**
      * 关闭全部tab
      */
     public void closeAllTab() {
-        List<Tab> list = this.tabs();
-        List<Tab> tabs = new ArrayList<>();
-        for (Tab tab : list) {
+        List<Tab> list = new ArrayList<>();
+        for (Tab tab : this.tabs()) {
             if (tab.isClosable()) {
-                tabs.add(tab);
+                list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(tabs));
+        this.closeTabs(list);
     }
 
     /**
      * 关闭其他tab
      */
     public void closeOtherTab() {
-        List<Tab> list = this.tabs();
-        List<Tab> tabs = new ArrayList<>();
-        for (Tab tab : list) {
+        List<Tab> list = new ArrayList<>();
+        for (Tab tab : this.tabs()) {
             if (tab != this && tab.isClosable()) {
-                tabs.add(tab);
+                list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(tabs));
+        this.closeTabs(list);
     }
 
-    /**
-     * 获取tab列表
-     *
-     * @return tab列表
-     */
-    protected ObservableList<Tab> tabs() {
-        return this.getTabPane().getTabs();
-    }
+
 
     @Override
     public void flushTitle() {
