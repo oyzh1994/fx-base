@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -148,6 +149,7 @@ public class FXTextField extends TextField implements DestroyAdapter, FlexAdapte
         if (this.getSkin() != null) {
             this.getSkin().dispose();
         }
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }

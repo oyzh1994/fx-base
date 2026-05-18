@@ -12,6 +12,7 @@ import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -268,6 +269,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
     @Override
     public void destroy() {
         this.setRoot(null);
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }

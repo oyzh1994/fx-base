@@ -50,6 +50,6 @@ public interface DestroyAdapter extends Destroyable {
 
     @Override
     default void destroy() {
-        NodeDestroyUtil.destroyObject(this);
+//        NodeDestroyUtil.destroyObject(this);
     }
 }

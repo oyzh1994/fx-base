@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.setting;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroupUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -115,7 +116,8 @@ public class SettingMainPane extends FXHBox implements DestroyAdapter {
     @Override
     public void destroy() {
         this.clearChild();
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }
 

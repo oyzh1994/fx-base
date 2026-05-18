@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -315,6 +316,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         this.destroyColumns();
         this.clearColumns();
         this.setTooltip(null);
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }

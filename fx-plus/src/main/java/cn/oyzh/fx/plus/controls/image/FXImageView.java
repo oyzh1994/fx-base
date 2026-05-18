@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.SnapshotParameters;
@@ -100,6 +101,7 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
     @Override
     public void destroy() {
         this.setImage(null);
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }

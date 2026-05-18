@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.media.Media;
@@ -100,7 +101,8 @@ public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, 
         this.mediaPlayerProperty().unbind();
         this.setMediaPlayer(null);
         this.removeNode();
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }
 

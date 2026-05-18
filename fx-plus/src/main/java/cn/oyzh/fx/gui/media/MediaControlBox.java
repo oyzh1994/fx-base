@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.text.FXSlider;
 import cn.oyzh.fx.plus.information.MessageBox;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -345,6 +346,7 @@ public class MediaControlBox extends FXVBox implements DestroyAdapter {
             this.player = null;
         }
         this.volume.valueProperty().unbind();
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }

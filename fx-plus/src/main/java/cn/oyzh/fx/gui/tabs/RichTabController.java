@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -174,7 +175,8 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         }
         this.reference.clear();
         this.reference = null;
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 
     /**

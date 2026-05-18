@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -1571,6 +1572,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         if (this.getSkin() != null) {
             this.getSkin().dispose();
         }
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }

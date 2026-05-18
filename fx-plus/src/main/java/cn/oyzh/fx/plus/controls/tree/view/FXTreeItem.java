@@ -441,7 +441,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
         this.valueProperty().unbind();
         this.graphicProperty().unbind();
         this.treeView = null;
-        DestroyAdapter.super.destroy();
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 
 }

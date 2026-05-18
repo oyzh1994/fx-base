@@ -2,8 +2,12 @@ package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Control;
+import javafx.scene.image.ImageView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -18,43 +22,43 @@ import java.util.List;
  */
 public class NodeDestroyUtil {
 
-    ///**
-    // * 销毁属性
-    // *
-    // * @param property 属性
-    // */
-    //private static void destroy(Property<?> property) {
-    //    // 解除单向绑定
-    //    if (property != null) {
-    //        property.unbind();
-    //    }
-    //}
+    /**
+     * 销毁属性
+     *
+     * @param property 属性
+     */
+    public static void destroyProperty(Property<?> property) {
+        // 解除单向绑定
+        if (property != null) {
+            property.unbind();
+        }
+    }
 
-    ///**
-    // * 销毁节点
-    // *
-    // * @param node 节点
-    // */
-    //private static void destroy(Node node) {
-    //    if (node instanceof MediaView mediaView) {
-    //        if (mediaView.getMediaPlayer() != null) {
-    //            mediaView.getMediaPlayer().stop();
-    //            mediaView.getMediaPlayer().dispose();
-    //            mediaView.setMediaPlayer(null);
-    //        }
-    //    }
-    //    if (node instanceof ImageView imageView) {
-    //        if (imageView.getImage() != null) {
-    //            imageView.getImage().cancel();
-    //            imageView.setImage(null);
-    //        }
-    //    }
-    //    if (node instanceof Control control) {
-    //        if (control.getSkin() != null) {
-    //            FXUtil.runWait(()-> control.getSkin().dispose());
-    //        }
-    //    }
-    //}
+    /**
+     * 销毁节点
+     *
+     * @param node 节点
+     */
+    public static void destroyNode(Node node) {
+        if (NodeUtil.isMediaImport && node instanceof javafx.scene.media.MediaView mediaView) {
+            if (mediaView.getMediaPlayer() != null) {
+                mediaView.getMediaPlayer().stop();
+                mediaView.getMediaPlayer().dispose();
+                mediaView.setMediaPlayer(null);
+            }
+        }
+        if (node instanceof ImageView imageView) {
+            if (imageView.getImage() != null) {
+                imageView.getImage().cancel();
+                imageView.setImage(null);
+            }
+        }
+        if (node instanceof Control control) {
+            if (control.getSkin() != null) {
+                FXUtil.runWait(() -> control.getSkin().dispose());
+            }
+        }
+    }
 
     /**
      * 销毁对象
@@ -62,22 +66,29 @@ public class NodeDestroyUtil {
      * @param object 节点
      */
     public static void destroyObject(Object object) {
+        if (object == null) {
+            return;
+        }
         // 异步执行
-        ThreadUtil.startVirtual(() -> doDestroyObject(object));
-    }
-
-    /**
-     * 销毁对象
-     *
-     * @param object 对象
-     */
-    private static void doDestroyObject(Object object) {
-        if (object != null) {
+        ThreadUtil.startVirtual(() -> {
             List<Object> handles = new ArrayList<>();
             doDestroyObject(object, handles);
             handles.clear();
-        }
+        });
     }
+
+//    /**
+//     * 销毁对象
+//     *
+//     * @param object 对象
+//     */
+//    private static void doDestroyObject(Object object) {
+//        if (object != null) {
+//            List<Object> handles = new ArrayList<>();
+//            doDestroyObject(object, handles);
+//            handles.clear();
+//        }
+//    }
 
     /**
      * 销毁对象
