@@ -166,6 +166,10 @@ public class PageBox<T> extends FXHBox {
 
     private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
 
+    private static final Insets DEFAULT_MARGIN1 = new Insets(4, 0, 0, 5);
+
+    private static final Insets DEFAULT_MARGIN2 = new Insets(-1.5, 0, 0, 5);
+
     public boolean isShowText() {
         return showText;
     }
@@ -371,7 +375,7 @@ public class PageBox<T> extends FXHBox {
         HBox.setMargin(this.nextBtn, DEFAULT_MARGIN);
         HBox.setMargin(this.lastBtn, DEFAULT_MARGIN);
         HBox.setMargin(this.firstBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.settingBtn, DEFAULT_MARGIN);
+        HBox.setMargin(this.settingBtn, DEFAULT_MARGIN1);
 //        HBox.setMargin(this.jump, new Insets(0, 0, 0, 5));
 //        HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
 //        HBox.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
@@ -449,8 +453,7 @@ public class PageBox<T> extends FXHBox {
                 this.text = new FXLabel();
                 this.text.setFlexHeight("90%");
                 this.text.setPadding(Insets.EMPTY);
-                HBox.setMargin(this.text, new Insets(1, 0, 0, 5));
-//                HBox.setMargin(this.text, new Insets(0, 0, 0, 5));
+                HBox.setMargin(this.text, DEFAULT_MARGIN2);
                 this.addChild(this.text);
             }
         } else {
