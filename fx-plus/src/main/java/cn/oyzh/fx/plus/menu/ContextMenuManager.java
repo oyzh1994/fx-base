@@ -38,25 +38,29 @@ public class ContextMenuManager {
      * @param items 列表项
      * @return 菜单
      */
-    public static ContextMenu createContextMenu(Object object, List<? extends MenuItem> items) {
+    public static FXContextMenu createContextMenu(Object object, List<? extends MenuItem> items) {
+//        if (contextMenu != null) {
+//            contextMenu.clear();
+//        }
         if (contextMenu == null) {
             contextMenu = new FXContextMenu(object);
         } else {
+            contextMenu.destroy();
             contextMenu.setTarget(object);
         }
 //        ContextMenu contextMenu = POOL.borrowObject();
-        contextMenu.getItems().setAll(items);
+        contextMenu.setItem(items);
         return contextMenu;
     }
 
-    /**
-     * 归还菜单
-     *
-     * @param contextMenu 菜单
-     */
-    public static void returnContextMenu(ContextMenu contextMenu) {
-//        POOL.returnObject(contextMenu);
-    }
+//    /**
+//     * 归还菜单
+//     *
+//     * @param contextMenu 菜单
+//     */
+//    public static void returnContextMenu(ContextMenu contextMenu) {
+////        POOL.returnObject(contextMenu);
+//    }
 
     /**
      * 获取操作面板

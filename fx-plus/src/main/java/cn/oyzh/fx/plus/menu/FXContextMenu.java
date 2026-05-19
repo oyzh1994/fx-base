@@ -1,6 +1,6 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.common.object.DestroyUtil;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
@@ -19,7 +19,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/3/7
  */
-public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAdapter, ThemeAdapter {
+public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapter, LayoutAdapter, ThemeAdapter {
 
     private final ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
 
@@ -76,18 +76,17 @@ public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAda
 
     public void setItem(MenuItem... items) {
         if (items != null) {
-            DestroyUtil.destroy(this.getItems());
+//            DestroyUtil.destroy(this.getItems());
             this.getItems().setAll(items);
         }
     }
 
     public void setItem(Collection<? extends MenuItem> items) {
-        if (items != null && !this.getItems().equals(items)) {
-            DestroyUtil.destroy(this.getItems());
+        if (items != null) {
+//            DestroyUtil.destroy(this.getItems());
             this.getItems().setAll(items);
         }
     }
-
 
     @Override
     public void initNode() {
@@ -98,7 +97,7 @@ public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAda
             if (newValue) {
                 this.calcWidth();
             } else {
-                this.clear();
+                this.destroy();
             }
         });
         this.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
@@ -110,9 +109,16 @@ public class FXContextMenu extends ContextMenu implements NodeAdapter, LayoutAda
         NodeAdapter.super.initNode();
     }
 
-    public void clear() {
+    @Override
+    public void destroy() {
         for (MenuItem item : this.getItems()) {
-            item.setOnAction(null);
+            if (item instanceof FXMenuItem menuItem) {
+                menuItem.destroy();
+            } else {
+                item.setText(null);
+                item.setGraphic(null);
+                item.setOnAction(null);
+            }
         }
         this.getItems().clear();
         ContextMenuManager.clearContextMenu(this.targetRef.get());

@@ -34,7 +34,12 @@ public interface ContextMenuAdapter {
      * @return ContextMenu
      */
     default ContextMenu initContextMenu(List<? extends MenuItem> menuItems) {
-//        ContextMenu contextMenu = this.contextMenu();
+//        ContextMenu contextMenu = ContextMenuManager.getContextMenu(this);
+//        if (contextMenu != null) {
+//            contextMenu.getItems().clear();
+//            contextMenu.hide();
+//            this.clearContextMenu();
+//        }
         if (CollectionUtil.isNotEmpty(menuItems)) {
 //            if (contextMenu == null) {
             ContextMenu contextMenu = ContextMenuManager.createContextMenu(this, menuItems);
@@ -52,9 +57,10 @@ public interface ContextMenuAdapter {
 
     /**
      * 设置操作面板
+     *
      * @param contextMenu 操作面板
      */
-   default void setContextMenu(ContextMenu contextMenu) {
+    default void setContextMenu(ContextMenu contextMenu) {
         ContextMenuManager.setContextMenu(this, contextMenu);
     }
 

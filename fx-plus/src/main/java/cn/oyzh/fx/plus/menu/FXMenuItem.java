@@ -152,6 +152,9 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
 
     @Override
     public void destroy() {
+        this.setText(null);
+        this.setGraphic(null);
+        this.setOnAction(null);
         this.disableProperty().removeListener(this.disableListener);
         NodeDestroyUtil.destroyObject(this);
     }
