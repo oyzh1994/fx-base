@@ -1,27 +1,27 @@
 package cn.oyzh.fx.gui.text.field;
 
-import cn.oyzh.fx.gui.skin.FilterTextFieldSkin;
+import cn.oyzh.fx.gui.skin.HighlightTextFieldSkin;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.scene.control.Skin;
 
 /**
- * 搜索文本域
+ * 高亮文本输入框
  *
  * @author oyzh
  * @since 2026/05/14
  */
-public class FilterTextField extends LimitTextField {
+public class HighlightTextField extends LimitTextField {
 
     /**
      * 当前皮肤
      *
      * @return 皮肤
      */
-    public FilterTextFieldSkin skin() {
+    public HighlightTextFieldSkin skin() {
         if (this.getSkin() == null) {
             this.setSkin(this.createDefaultSkin());
         }
-        return (FilterTextFieldSkin) this.getSkin();
+        return (HighlightTextFieldSkin) this.getSkin();
     }
 
     public boolean isRegex() {
@@ -48,9 +48,21 @@ public class FilterTextField extends LimitTextField {
         return this.skin().matchCasePropery();
     }
 
+    public boolean isWholeWord() {
+        return this.skin().isWholeWord();
+    }
+
+    public void setWholeWord(boolean wholeWord) {
+        this.skin().setWholeWord(wholeWord);
+    }
+
+    public ReadOnlyBooleanProperty wholeWordPropery() {
+        return this.skin().wholeWordPropery();
+    }
+
     @Override
     protected Skin<?> createDefaultSkin() {
-        return new FilterTextFieldSkin(this);
+        return new HighlightTextFieldSkin(this);
     }
 
 }

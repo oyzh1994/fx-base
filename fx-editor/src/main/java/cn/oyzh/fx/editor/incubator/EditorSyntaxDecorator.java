@@ -1,7 +1,7 @@
 package cn.oyzh.fx.editor.incubator;
 
-import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.model.RichParagraph;
@@ -35,6 +35,11 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      * 高亮，正则模式
      */
     private volatile boolean highlightRegex;
+
+    /**
+     * 高亮，全字匹配
+     */
+    private volatile boolean highlightWholeWord;
 
     /**
      * 高亮，匹配大小写
@@ -79,6 +84,15 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         return highlightRegex;
     }
 
+    public void setHighlightWholeWord(boolean highlightWholeWord) {
+        this.highlightWholeWord = highlightWholeWord;
+        this.initHighlightPattern();
+    }
+
+    public boolean isHighlightWholeWord() {
+        return highlightWholeWord;
+    }
+
     public void setHighlightMatchCase(boolean highlightMatchCase) {
         this.highlightMatchCase = highlightMatchCase;
         this.initHighlightPattern();
@@ -91,16 +105,10 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private void initHighlightPattern() {
         if (StringUtil.isNotEmpty(this.highlight)) {
             try {
-                String regex = this.highlight;
-                this.highlightPattern = Pattern.compile(this.highlight, Pattern.CASE_INSENSITIVE);
-                if (!this.highlightRegex) {
-                    regex = Pattern.quote(regex);
-                }
-                if (this.highlightMatchCase) {
-                    this.highlightPattern = Pattern.compile(regex);
-                } else {
-                    this.highlightPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-                }
+                this.highlightPattern = RegexUtil.createSearchPattern(this.highlight,
+                        this.highlightMatchCase,
+                        this.highlightWholeWord,
+                        this.highlightRegex);
             } catch (Exception ignore) {
             }
         } else {

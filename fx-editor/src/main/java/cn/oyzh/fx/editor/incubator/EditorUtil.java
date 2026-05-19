@@ -1,19 +1,8 @@
 package cn.oyzh.fx.editor.incubator;
 
-import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import javafx.collections.ObservableList;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.InputMethodRequests;
-import javafx.scene.input.InputMethodTextRun;
-import jfx.incubator.scene.control.richtext.SelectionSegment;
-import jfx.incubator.scene.control.richtext.TextPos;
-import jfx.incubator.scene.control.richtext.model.StyledInput;
-
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
+import cn.oyzh.common.util.TextUtil;
+import cn.oyzh.fx.gui.text.field.HighlightTextField;
 
 /**
  *
@@ -102,4 +91,68 @@ public class EditorUtil {
 //            }
 //        });
 //    }
+
+    /**
+     * 绑定高亮组件
+     *
+     * @param editor 编辑器
+     * @param field  高亮文本组件
+     */
+    public static void bindHighlight(Editor editor, HighlightTextField field) {
+        editor.highlightProperty().bind(field.textProperty());
+        editor.highlightRegexProperty().bind(field.regexPropery());
+        editor.highlightWholeWordProperty().bind(field.wholeWordPropery());
+        editor.highlightMacthCaseProperty().bind(field.matchCasePropery());
+    }
+
+    /**
+     * 高亮搜索索引名称
+     */
+    private final static String HIGHLIGHT_SEARCH_INDEX = "_highlight_search_index";
+
+    /**
+     * 清除高亮搜索索引
+     *
+     * @param editor 编辑器
+     */
+    public static void clearHighlightSearchIndex(Editor editor) {
+        editor.setProp(HIGHLIGHT_SEARCH_INDEX, 0);
+    }
+
+    /**
+     * 搜索下一个高亮
+     *
+     * @param editor 编辑器
+     * @param field  高亮文本组件
+     */
+    public static void searchNextHighlight(Editor editor, HighlightTextField field) {
+        int searchIndex = 0;
+        try {
+            searchIndex = editor.hasProp(HIGHLIGHT_SEARCH_INDEX) ? editor.getProp(HIGHLIGHT_SEARCH_INDEX) : 0;
+            String filterText = field.getText();
+            if (StringUtil.isBlank(filterText)) {
+                return;
+            }
+            String text = editor.getText();
+            if (searchIndex >= text.length()) {
+                searchIndex = 0;
+            }
+            TextUtil.MatchText matchText = TextUtil.findText(text,
+                    filterText,
+                    searchIndex,
+                    field.isMatchCase(),
+                    field.isWholeWord(),
+                    field.isRegex());
+            if (matchText == TextUtil.MatchText.NOT_FOUND) {
+                searchIndex = 0;
+                return;
+            }
+            searchIndex = matchText.index() + matchText.text().length();
+            editor.selectRange(matchText.index(), matchText.index() + matchText.text().length());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            editor.setProp(HIGHLIGHT_SEARCH_INDEX, searchIndex);
+        }
+    }
 }

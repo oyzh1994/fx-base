@@ -165,6 +165,11 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         this.initTextStyle();
     };
 
+    private ChangeListener<? super Boolean> highlightWholeWordListener = (observableValue, formatType, t1) -> {
+        this.syntaxDecorator.setHighlightWholeWord(t1);
+        this.initTextStyle();
+    };
+
     private ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setHighlightMatchCase(t1);
         this.initTextStyle();
@@ -226,6 +231,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         // 高亮事件
         this.highlightProperty().addListener(this.highlightListener);
         this.highlightRegexProperty().addListener(this.highlightRegexListener);
+        this.highlightWholeWordProperty().addListener(this.highlightWholeWordListener);
         this.highlightMacthCaseProperty().addListener(this.highlightMacthCaseListener);
 //        // 行号策略变化事件
 //        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
@@ -568,6 +574,26 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
             this.highlightMacthCaseProperty = new SimpleBooleanProperty();
         }
         return this.highlightMacthCaseProperty;
+    }
+
+    /**
+     * 高亮全字匹配
+     */
+    private BooleanProperty highlightWholeWordProperty;
+
+    public boolean isHighlightWholeWord() {
+        return this.highlightWholeWordProperty != null && this.highlightWholeWordProperty.get();
+    }
+
+    public void setHighlightWholeWord(boolean highlightWholeWord) {
+        this.highlightWholeWordProperty().set(highlightWholeWord);
+    }
+
+    public BooleanProperty highlightWholeWordProperty() {
+        if (this.highlightWholeWordProperty == null) {
+            this.highlightWholeWordProperty = new SimpleBooleanProperty();
+        }
+        return this.highlightWholeWordProperty;
     }
 
     /**

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.skin;
 
+import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RegexSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
@@ -28,17 +29,19 @@ import javafx.scene.paint.Color;
  * @author oyzh
  * @since 2026/05/14
  */
-public class FilterTextFieldSkin extends FXTextFieldSkin {
+public class HighlightTextFieldSkin extends FXTextFieldSkin {
 
-    public FilterTextFieldSkin(TextField textField) {
+    public HighlightTextFieldSkin(TextField textField) {
         super(textField);
     }
 
     private RegexSVGGlyph regex;
 
+    private WholeWordSVGGlyph wholeWord;
+
     private MatchCaseSVGGlyph matchCase;
 
-    private BooleanProperty regexProperty = new SimpleBooleanProperty();
+    private final BooleanProperty regexProperty = new SimpleBooleanProperty();
 
     public boolean isRegex() {
         return this.regexProperty.get();
@@ -58,7 +61,27 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
         return regexPropertyWrapper;
     }
 
-    private BooleanProperty matchCaseProperty = new SimpleBooleanProperty();
+    private final BooleanProperty wholeWordProperty = new SimpleBooleanProperty();
+
+    public boolean isWholeWord() {
+        return this.wholeWordProperty.get();
+    }
+
+    public void setWholeWord(boolean wholeWord) {
+        this.wholeWordProperty.set(wholeWord);
+    }
+
+    private ReadOnlyBooleanWrapper wholeWordPropertyWrapper;
+
+    public ReadOnlyBooleanProperty wholeWordPropery() {
+        if (this.wholeWordPropertyWrapper == null) {
+            this.wholeWordPropertyWrapper = new ReadOnlyBooleanWrapper();
+            this.wholeWordPropertyWrapper.bind(this.wholeWordProperty);
+        }
+        return this.wholeWordPropertyWrapper;
+    }
+
+    private final BooleanProperty matchCaseProperty = new SimpleBooleanProperty();
 
     public boolean isMatchCase() {
         return this.matchCaseProperty.get();
@@ -83,6 +106,12 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
     private EventHandler<? super MouseEvent> regexMouseEnterHandler;
 
     private EventHandler<? super MouseEvent> regexMouseClickHandler;
+
+    private EventHandler<? super MouseEvent> wholeWordMouseExitHandler;
+
+    private EventHandler<? super MouseEvent> wholeWordMouseEnterHandler;
+
+    private EventHandler<? super MouseEvent> wholeWordMouseClickHandler;
 
     private EventHandler<? super MouseEvent> matchCaseMouseExitHandler;
 
@@ -109,6 +138,24 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
                 this.regex.setBackground(this.activeBackground());
             } else {
                 this.regex.setBackground(this.focusBackground());
+            }
+        };
+        this.wholeWordMouseExitHandler = event -> {
+            if (!this.isWholeWord()) {
+                this.wholeWord.setBackground(null);
+            }
+        };
+        this.wholeWordMouseEnterHandler = event -> {
+            if (!this.isWholeWord()) {
+                this.wholeWord.setBackground(this.focusBackground());
+            }
+        };
+        this.wholeWordMouseClickHandler = event -> {
+            this.setWholeWord(!this.isWholeWord());
+            if (this.isWholeWord()) {
+                this.wholeWord.setBackground(this.activeBackground());
+            } else {
+                this.wholeWord.setBackground(this.focusBackground());
             }
         };
         this.matchCaseMouseExitHandler = event -> {
@@ -139,10 +186,11 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
             double nHeight= NodeUtil.getHeight(this.regex);
             val -= (nHeight / 2);
             val /= 2;
-            Insets insets1 = new Insets(val, 3, 0, 0);
+            Insets insets1 = new Insets(val, 0, 0, 0);
             HBox.setMargin(this.matchCase, insets1);
             Insets insets2 = new Insets(val, 0, 0, 5);
             HBox.setMargin(this.regex, insets2);
+            HBox.setMargin(this.wholeWord, insets2);
         };
     }
 
@@ -154,6 +202,10 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
             this.regex.addEventFilter(MouseEvent.MOUSE_EXITED, this.regexMouseExitHandler);
             this.regex.addEventFilter(MouseEvent.MOUSE_ENTERED, this.regexMouseEnterHandler);
             this.regex.addEventFilter(MouseEvent.MOUSE_CLICKED, this.regexMouseClickHandler);
+            this.wholeWord = new WholeWordSVGGlyph("15.6,13");
+            this.wholeWord.addEventFilter(MouseEvent.MOUSE_EXITED, this.wholeWordMouseExitHandler);
+            this.wholeWord.addEventFilter(MouseEvent.MOUSE_ENTERED, this.wholeWordMouseEnterHandler);
+            this.wholeWord.addEventFilter(MouseEvent.MOUSE_CLICKED, this.wholeWordMouseClickHandler);
             this.matchCase = new MatchCaseSVGGlyph("15.6,13");
             this.matchCase.addEventFilter(MouseEvent.MOUSE_EXITED, this.matchCaseMouseExitHandler);
             this.matchCase.addEventFilter(MouseEvent.MOUSE_ENTERED, this.matchCaseMouseEnterHandler);
@@ -161,6 +213,7 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
 
             FXHBox hBox = new FXHBox();
             hBox.addChild(this.matchCase);
+            hBox.addChild(this.wholeWord);
             hBox.addChild(this.regex);
             hBox.setPadding(Insets.EMPTY);
 
@@ -199,15 +252,19 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
         this.regex.removeEventFilter(MouseEvent.MOUSE_EXITED, this.regexMouseExitHandler);
         this.regex.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.regexMouseClickHandler);
         this.regex.removeEventFilter(MouseEvent.MOUSE_ENTERED, this.regexMouseEnterHandler);
+        this.wholeWord.removeEventFilter(MouseEvent.MOUSE_EXITED, this.wholeWordMouseExitHandler);
+        this.wholeWord.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.wholeWordMouseClickHandler);
+        this.wholeWord.removeEventFilter(MouseEvent.MOUSE_ENTERED, this.wholeWordMouseEnterHandler);
         this.matchCase.removeEventFilter(MouseEvent.MOUSE_EXITED, this.matchCaseMouseExitHandler);
         this.matchCase.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.matchCaseMouseClickHandler);
         this.matchCase.removeEventFilter(MouseEvent.MOUSE_ENTERED, this.matchCaseMouseEnterHandler);
         this.regexProperty.unbind();
+        this.wholeWordProperty.unbind();
         this.matchCaseProperty.unbind();
-        this.regex = null;
-        this.matchCase = null;
-        this.regexProperty = null;
-        this.matchCaseProperty = null;
+//        this.regex = null;
+//        this.matchCase = null;
+//        this.regexProperty = null;
+//        this.matchCaseProperty = null;
         super.dispose();
     }
 }

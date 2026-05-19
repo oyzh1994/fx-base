@@ -5,7 +5,9 @@ import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.fx.editor.incubator.EditorFormatTypeComboBox;
-import cn.oyzh.fx.gui.text.field.FilterTextField;
+import cn.oyzh.fx.editor.incubator.EditorUtil;
+import cn.oyzh.fx.gui.svg.glyph.NextSVGGlyph;
+import cn.oyzh.fx.gui.text.field.HighlightTextField;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
@@ -22,6 +24,8 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -89,12 +93,20 @@ public class EditorTest extends Application {
         FXHBox hBox = new FXHBox();
 
         // 高亮
-        FilterTextField text_31 = new FilterTextField();
+        HighlightTextField text_31 = new HighlightTextField();
         text_31.setPromptText("查找内容");
-        editor.highlightProperty().bind(text_31.textProperty());
-        editor.highlightRegexProperty().bind(text_31.regexPropery());
-        editor.highlightMacthCaseProperty().bind(text_31.matchCasePropery());
+        text_31.textProperty().addListener((observable, oldValue, newValue) -> {
+            EditorUtil.clearHighlightSearchIndex(editor);
+        });
+        EditorUtil.bindHighlight(editor, text_31);
         hBox.addChild(text_31);
+
+        NextSVGGlyph next = new NextSVGGlyph();
+        next.setOnMousePrimaryClicked(event -> {
+            EditorUtil.searchNextHighlight(editor, text_31);
+        });
+
+        hBox.addChild(next);
 
         EditorFormatTypeComboBox comboBox = new EditorFormatTypeComboBox();
 

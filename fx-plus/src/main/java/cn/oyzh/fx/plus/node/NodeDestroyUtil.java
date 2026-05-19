@@ -82,11 +82,11 @@ public class NodeDestroyUtil {
             return;
         }
         // 异步执行
-//        ThreadUtil.startVirtual(() -> {
+        ThreadUtil.startVirtual(() -> {
             List<Object> handles = new ArrayList<>();
             doDestroyObject(object, handles);
             handles.clear();
-//        });
+        });
     }
 
 //    /**
