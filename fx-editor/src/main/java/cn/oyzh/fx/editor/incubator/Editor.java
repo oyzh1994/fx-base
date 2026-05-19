@@ -6,6 +6,7 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
+import cn.oyzh.fx.plus.AutoRemoveNodeable;
 import cn.oyzh.fx.plus.adapter.ScrollBarAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -77,7 +78,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, Destroyable {
+public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, Destroyable {
 
     /**
      * 默认提示词颜色

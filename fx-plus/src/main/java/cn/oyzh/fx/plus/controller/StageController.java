@@ -15,7 +15,7 @@ import javafx.stage.WindowEvent;
  * @author oyzh
  * @since 2023/10/12
  */
-public class StageController extends Controller implements Destroyable, StageListener, EventListener {
+public class StageController extends Controller implements StageListener, EventListener {
 
     /**
      * 舞台
@@ -135,8 +135,4 @@ public class StageController extends Controller implements Destroyable, StageLis
         return this.stage.title();
     }
 
-    @Override
-    public void destroy() {
-        NodeDestroyUtil.destroyObject(this);
-    }
 }

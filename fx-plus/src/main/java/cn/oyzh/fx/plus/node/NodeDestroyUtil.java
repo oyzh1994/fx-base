@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
+import cn.oyzh.fx.plus.AutoRemoveNodeable;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
@@ -81,9 +83,9 @@ public class NodeDestroyUtil {
         }
         // 异步执行
 //        ThreadUtil.startVirtual(() -> {
-        List<Object> handles = new ArrayList<>();
-        doDestroyObject(object, handles);
-        handles.clear();
+            List<Object> handles = new ArrayList<>();
+            doDestroyObject(object, handles);
+            handles.clear();
 //        });
     }
 
@@ -133,7 +135,7 @@ public class NodeDestroyUtil {
                     continue;
                 }
                 // 获取属性类型
-                Class<?> clazz = field.getType();
+//                Class<?> clazz = field.getType();
                 if (!field.trySetAccessible()) {
                     continue;
                 }
@@ -150,7 +152,9 @@ public class NodeDestroyUtil {
 //                    // 递归销毁
 //                    doDestroyObject(object1, handles);
                     // 从父节点移除
-                    NodeUtil.removeNode(object1);
+                    if (object1 instanceof AutoRemoveNodeable) {
+                        NodeUtil.removeNode(object1);
+                    }
                     setNullable = true;
                 }
 //                // 属性类型
