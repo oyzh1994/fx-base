@@ -115,41 +115,41 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
     /**
      * 样式提供者
      */
-    private StyleProvider styleProvider = new StyleProvider();
+    private final StyleProvider styleProvider = new StyleProvider();
 
     /**
      * 流式文本model
      */
-    private TextFlowModel textFlowModel = new TextFlowModel();
+    private final TextFlowModel textFlowModel = new TextFlowModel();
 
     /**
      * 富文本域model
      */
-    private RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
+    private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
     /**
      * 编辑器语法装饰器
      */
-    private EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
+    private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     /**
      * 默认边距
      */
     private static final Insets DEFAULT_PADDING = new Insets(5);
 
-    private ChangeListener<? super EditorFormatType> formatTypeListener = (observableValue, formatType, t1) -> {
+    private final ChangeListener<? super EditorFormatType> formatTypeListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setFormatType(t1);
         if (!this.ignoreChange) {
             this.initTextStyle();
         }
     };
 
-    private ChangeListener<? super Set<String>> promptsListener = (observableValue, formatType, t1) -> {
+    private final ChangeListener<? super Set<String>> promptsListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setPrompts(t1);
         this.initTextStyle();
     };
 
-    private ChangeListener<? super String> highlightListener = (observableValue, formatType, t1) -> {
+    private final ChangeListener<? super String> highlightListener = (observableValue, formatType, t1) -> {
         // 获取滚动条值
         Double scrollValue = this.getScrollValue();
         this.syntaxDecorator.setHighlight(t1);
@@ -160,28 +160,33 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         }
     };
 
-    private ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
+    private final ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setHighlightRegex(t1);
         this.initTextStyle();
     };
 
-    private ChangeListener<? super Boolean> highlightWholeWordListener = (observableValue, formatType, t1) -> {
+    private final ChangeListener<? super Boolean> highlightWholeWordListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setHighlightWholeWord(t1);
         this.initTextStyle();
     };
 
-    private ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
+    private final ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setHighlightMatchCase(t1);
         this.initTextStyle();
     };
 
-    private ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
+    private final ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
         Font editorFont = this.getEditorFont();
         JulLog.info("font:{} editorFont:{}", newValue, editorFont);
         if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
             this.changeFont(editorFont);
         }
     };
+
+//    /**
+//     * 初始化样式标志位
+//     */
+//    private final AtomicBoolean initTextStyleFlag = new AtomicBoolean();
 
     {
         NodeManager.init(this);
@@ -285,13 +290,30 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         }
     }
 
+//    /**
+//     * 初始化文本样式，异步
+//     */
+//    protected void initTextStyleLater() {
+//        ThreadUtil.startVirtual(() -> {
+//            while (initTextStyleFlag.get()) {
+//                ThreadUtil.sleep(5);
+//            }
+//            FXUtil.runLater(this::initTextStyle);
+//        });
+//    }
+
     /**
      * 初始化文本样式
      */
     protected void initTextStyle() {
         // this.applyTheme();
-        this.initSyntaxes();
-        this.setText(this.getText());
+//        this.initTextStyleFlag.set(true);
+//        try {
+            this.initSyntaxes();
+            this.setText(this.getText());
+//        } finally {
+//            this.initTextStyleFlag.set(false);
+//        }
     }
 
     /**
@@ -307,7 +329,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
     /**
      * 模式监听器
      */
-    private StyledTextModel.Listener modelListener = e -> {
+    private final StyledTextModel.Listener modelListener = e -> {
         if (e.isEdit()) {
             String text = this.getText();
             this.textLen = text.length();
@@ -325,7 +347,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         return this.textProperty;
     }
 
-    private List<ChangeListener<? super String>> textChangeListeners;
+//    private List<ChangeListener<? super String>> textChangeListeners;
 
     /**
      * 添加文本监听器
@@ -340,10 +362,10 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
                 }
             };
             this.textProperty().addListener(changeListener);
-            if (this.textChangeListeners == null) {
-                this.textChangeListeners = new ArrayList<>();
-            }
-            this.textChangeListeners.add(changeListener);
+//            if (this.textChangeListeners == null) {
+//                this.textChangeListeners = new ArrayList<>();
+//            }
+//            this.textChangeListeners.add(changeListener);
         }
     }
 

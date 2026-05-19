@@ -188,7 +188,7 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
             val /= 2;
             Insets insets1 = new Insets(val, 0, 0, 0);
             HBox.setMargin(this.matchCase, insets1);
-            Insets insets2 = new Insets(val, 0, 0, 5);
+            Insets insets2 = new Insets(val, 0, 0, 8);
             HBox.setMargin(this.regex, insets2);
             HBox.setMargin(this.wholeWord, insets2);
         };

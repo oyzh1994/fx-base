@@ -17,14 +17,14 @@ import javafx.scene.text.Text;
  */
 public class RichTreeItemBox extends FXPane {
 
-    {
-//        this.disableFont();
-        this.setMaxHeight(15);
-//        this.setMinHeight(15);
-//        this.setPrefWidth(1000);
-        this.setPrefWidth(15);
-        this.setPadding(Insets.EMPTY);
-    }
+//    {
+////        this.disableFont();
+//        this.setMaxHeight(15);
+////        this.setMinHeight(15);
+////        this.setPrefWidth(1000);
+//        this.setPrefWidth(15);
+//        this.setPadding(Insets.EMPTY);
+//    }
 //
 //    /**
 //     * 默认图标边距
@@ -235,4 +235,10 @@ public class RichTreeItemBox extends FXPane {
 //        super.requestLayout();
 //        this.layoutChildren();
 //    }
+
+    @Override
+    public void initNode() {
+        this.setPadding(Insets.EMPTY);
+        super.initNode();
+    }
 }
