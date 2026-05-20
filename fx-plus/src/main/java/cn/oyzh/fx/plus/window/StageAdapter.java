@@ -665,7 +665,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     @Override
     default void changeTheme(ThemeStyle style) {
         //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
-        if (this.isExtendedHeader() && OSUtil.isWindows()) {
+        if (this.isExtendedHeader()) {
             if (style.isDarkMode()) {
                 this.scene().setFill(Color.TRANSPARENT);
             } else {
