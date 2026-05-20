@@ -88,11 +88,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         return false;
     }
 
-    /**
-     * 获取场景
-     *
-     * @return 场景
-     */
+    @Override
     default Scene scene() {
         if (this.stage() != null) {
             return this.stage().getScene();
@@ -119,18 +115,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         if (scene != null) {
             this.stage().setScene(scene);
         }
-    }
-
-    /**
-     * 获取根节点
-     *
-     * @return 根节点
-     */
-    default Parent root() {
-        if (this.scene() != null) {
-            return this.scene().getRoot();
-        }
-        return null;
     }
 
     /**

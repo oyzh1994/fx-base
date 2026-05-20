@@ -1,10 +1,11 @@
 package cn.oyzh.fx.plus.window;
 
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 /**
  * 窗口适配器
@@ -110,13 +111,23 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
         return this.hasProp("tabSwitchHandler");
     }
 
-    // @Override
-    // default void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // default StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
+    /**
+     * 获取场景
+     *
+     * @return 场景
+     */
+     Scene scene() ;
+
+    /**
+     * 获取根节点
+     *
+     * @return 根节点
+     */
+    default Parent root() {
+        if (this.scene() != null) {
+            return this.scene().getRoot();
+        }
+        return null;
+    }
+
 }

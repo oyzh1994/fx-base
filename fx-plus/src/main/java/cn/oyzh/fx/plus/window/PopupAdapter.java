@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.PopupWindow;
 import javafx.stage.Window;
 
@@ -28,7 +29,7 @@ public interface PopupAdapter extends WindowAdapter {
         try {
             WindowAdapter.super.onWindowClosed();
             this.content(null);
-            NodeDestroyUtil.destroyObject(this);
+//            NodeDestroyUtil.destroyObject(this);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -163,25 +164,18 @@ public interface PopupAdapter extends WindowAdapter {
         if (root == null) {
             throw new RuntimeException("load root fail");
         }
+        // 设置内容
         this.content(root);
         // 设置controller
         this.setProp("_controller", loader.getController());
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
-            root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
+            root.getStylesheets().setAll(StyleUtil.split(attribute.cssUrls()));
         }
         // 设置事件
         if (this.controller() instanceof PopupListener listener) {
             this.initListener(listener);
         }
-        // 监听显示属性
-        this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onWindowClosed();
-            } else if (this.controller() instanceof PopupListener listener) {
-                listener.onWindowShown(null);
-            }
-        });
     }
 
     /**
@@ -250,5 +244,13 @@ public interface PopupAdapter extends WindowAdapter {
 
     default void hide() {
         this.popup().hide();
+    }
+
+    @Override
+    default Scene scene() {
+        if (this.popup() != null) {
+            return this.popup().getScene();
+        }
+        return null;
     }
 }
