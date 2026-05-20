@@ -1227,14 +1227,14 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         String text = this.getText();
         String text1;
         if (this.formatted) {
-//            this.formated = false;
+            this.formatted = false;
             text1 = EditorFormatter.unformatText(this.getFormatType(), text);
         } else {
-//            this.formated = true;
+            this.formatted = true;
             text1 = EditorFormatter.formatText(this.getFormatType(), text);
         }
         if (StringUtil.notEquals(text, text1)) {
-            this.formatted = !this.formatted;
+//            this.formatted = !this.formatted;
             this.setText(text1);
         }
     }
