@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 import java.util.BitSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -403,12 +404,13 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                     if (sortAsc) {
                         children.sort(RichTreeItem::compareTo);
                     } else {// desc
-                        children.sort((o1, o2) -> {
-                            if (!o2.isSortable()) {
-                                return -1;
-                            }
-                            return o2.compareTo(o1);
-                        });
+//                        children.sort((o1, o2) -> {
+//                            if (!o2.isSortable()) {
+//                                return -1;
+//                            }
+//                            return o2.compareTo(o1);
+//                        });
+                        children.sort(Comparator.reverseOrder());
                     }
                 }
             } finally {
