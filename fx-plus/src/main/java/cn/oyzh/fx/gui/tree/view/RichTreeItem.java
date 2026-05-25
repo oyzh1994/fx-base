@@ -178,6 +178,15 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return this.bitValue().get(6);
     }
 
+    /**
+     * 是否desc排序
+     *
+     * @return 结果
+     */
+    public boolean isSortDesc() {
+        return !this.isSortAsc();
+    }
+
     public RichTreeItem(RichTreeView treeView) {
         super(treeView);
     }
@@ -193,13 +202,13 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return (RichTreeView) super.getTreeView();
     }
 
-//    @Override
-//    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
-//        super.updateChildren(c);
-//        if (!this.isSorting()) {
-//            this.doFilter();
-//        }
-//    }
+    //    @Override
+    //    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
+    //        super.updateChildren(c);
+    //        if (!this.isSorting()) {
+    //            this.doFilter();
+    //        }
+    //    }
 
     @Override
     public ObservableList getChildren() {
@@ -394,7 +403,6 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      */
     protected void sortChild(boolean sortAsc) {
         FXUtil.runWait(() -> {
-            //        BackgroundService.submitFX(() -> {
             this.setSorting(true);
             try {
                 // 执行排序
