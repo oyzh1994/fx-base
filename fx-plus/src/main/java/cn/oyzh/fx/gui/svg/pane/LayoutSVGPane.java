@@ -12,7 +12,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGPane;
 public class LayoutSVGPane extends SVGPane {
 
     public LayoutSVGPane() {
-        this.layout1();
+        this.layout2();
     }
 
     public void layout1() {
