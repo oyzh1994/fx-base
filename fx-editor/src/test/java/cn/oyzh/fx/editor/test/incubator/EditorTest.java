@@ -95,9 +95,9 @@ public class EditorTest extends Application {
         // 高亮
         HighlightTextField text_31 = new HighlightTextField();
         text_31.setPromptText("查找内容");
-        text_31.textProperty().addListener((observable, oldValue, newValue) -> {
-            EditorUtil.clearHighlightSearchIndex(editor);
-        });
+//        text_31.textProperty().addListener((observable, oldValue, newValue) -> {
+//            EditorUtil.clearHighlightSearchIndex(editor);
+//        });
         EditorUtil.bindHighlight(editor, text_31);
         hBox.addChild(text_31);
 

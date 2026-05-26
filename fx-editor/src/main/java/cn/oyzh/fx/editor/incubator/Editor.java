@@ -89,8 +89,8 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
      * 默认高亮颜色
      */
     public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(216, 222, 231);
-//    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.valueOf("#D8DEE7");
-//    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
+    //    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.valueOf("#D8DEE7");
+    //    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
 
     /**
      * 默认光标行颜色
@@ -183,10 +183,10 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         }
     };
 
-//    /**
-//     * 初始化样式标志位
-//     */
-//    private final AtomicBoolean initTextStyleFlag = new AtomicBoolean();
+    //    /**
+    //     * 初始化样式标志位
+    //     */
+    //    private final AtomicBoolean initTextStyleFlag = new AtomicBoolean();
 
     {
         NodeManager.init(this);
@@ -202,8 +202,8 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
                 this.destroy();
             }
         });
-//        // 处理输入法不支持中文的问题
-//        EditorUtil.setupIMESupport(this);
+        //        // 处理输入法不支持中文的问题
+        //        EditorUtil.setupIMESupport(this);
         // 默认自动换行
         this.setWrapText(true);
         // 默认为内容宽高，避免布局问题
@@ -238,14 +238,14 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         this.highlightRegexProperty().addListener(this.highlightRegexListener);
         this.highlightWholeWordProperty().addListener(this.highlightWholeWordListener);
         this.highlightMacthCaseProperty().addListener(this.highlightMacthCaseListener);
-//        // 行号策略变化事件
-//        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
-//            if (t1 == EditorLineNumPolicy.NONE) {
-//                this.hideLineNum();
-//            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
-//                this.showLineNum();
-//            }
-//        });
+        //        // 行号策略变化事件
+        //        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
+        //            if (t1 == EditorLineNumPolicy.NONE) {
+        //                this.hideLineNum();
+        //            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
+        //                this.showLineNum();
+        //            }
+        //        });
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
@@ -290,30 +290,30 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         }
     }
 
-//    /**
-//     * 初始化文本样式，异步
-//     */
-//    protected void initTextStyleLater() {
-//        ThreadUtil.startVirtual(() -> {
-//            while (initTextStyleFlag.get()) {
-//                ThreadUtil.sleep(5);
-//            }
-//            FXUtil.runLater(this::initTextStyle);
-//        });
-//    }
+    //    /**
+    //     * 初始化文本样式，异步
+    //     */
+    //    protected void initTextStyleLater() {
+    //        ThreadUtil.startVirtual(() -> {
+    //            while (initTextStyleFlag.get()) {
+    //                ThreadUtil.sleep(5);
+    //            }
+    //            FXUtil.runLater(this::initTextStyle);
+    //        });
+    //    }
 
     /**
      * 初始化文本样式
      */
     protected void initTextStyle() {
         // this.applyTheme();
-//        this.initTextStyleFlag.set(true);
-//        try {
-            this.initSyntaxes();
-            this.setText(this.getText());
-//        } finally {
-//            this.initTextStyleFlag.set(false);
-//        }
+        //        this.initTextStyleFlag.set(true);
+        //        try {
+        this.initSyntaxes();
+        this.setText(this.getText());
+        //        } finally {
+        //            this.initTextStyleFlag.set(false);
+        //        }
     }
 
     /**
@@ -347,7 +347,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         return this.textProperty;
     }
 
-//    private List<ChangeListener<? super String>> textChangeListeners;
+    //    private List<ChangeListener<? super String>> textChangeListeners;
 
     /**
      * 添加文本监听器
@@ -362,10 +362,10 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
                 }
             };
             this.textProperty().addListener(changeListener);
-//            if (this.textChangeListeners == null) {
-//                this.textChangeListeners = new ArrayList<>();
-//            }
-//            this.textChangeListeners.add(changeListener);
+            //            if (this.textChangeListeners == null) {
+            //                this.textChangeListeners = new ArrayList<>();
+            //            }
+            //            this.textChangeListeners.add(changeListener);
         }
     }
 
@@ -624,11 +624,11 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
      * @return 文本长度
      */
     public int getLength() {
-//        String text = this.textProperty().get();
-//        if (text == null) {
-//            return 0;
-//        }
-//        return text.length();
+        //        String text = this.textProperty().get();
+        //        if (text == null) {
+        //            return 0;
+        //        }
+        //        return text.length();
         if (this.textProperty == null) {
             return this.getText().length();
         }
@@ -675,7 +675,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
     protected EditorTextPos getPosByIndex(int start, int end) {
         TextPos endPos;
         TextPos startPos;
-//        if (end != start) {
+        //        if (end != start) {
         int length = 0;
         int lastLen = 0;
         int endIndex = -1;
@@ -700,44 +700,44 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         }
         endPos = TextPos.ofLeading(endIndex, endOffset);
         startPos = TextPos.ofLeading(startIndex, startOffset);
-//        } else {
-//            endPos = startPos = this.getPosByIndex(start);
-//        }
+        //        } else {
+        //            endPos = startPos = this.getPosByIndex(start);
+        //        }
         return new EditorTextPos(startPos, endPos);
     }
 
-//    /**
-//     * 获取位置
-//     *
-//     * @param index 位置
-//     * @return 位置
-//     */
-//    protected TextPos getPosByIndex(int index) {
-//        int length = 0;
-//        int lastLen = 0;
-//        int startIndex = -1;
-//        int startOffset = -1;
-//        int pCount = super.getParagraphCount();
-//        for (int i = 0; i < pCount; i++) {
-//            int len = this.getParagraphLength(i);
-//            length += len + 1;
-//            if (startIndex == -1 && length >= index) {
-//                startIndex = i;
-//                startOffset = index - lastLen;
-//            }
-//            lastLen = length;
-//        }
-//        if (startIndex == -1) {
-////            // 返回最后一个有效位置而非 ZERO
-////            int lastPara = super.getParagraphCount() - 1;
-////            if (lastPara >= 0) {
-////                return TextPos.ofLeading(lastPara, this.getParagraphLength(lastPara));
-////            }
-////            return TextPos.ZERO;
-//            throw new RuntimeException("getPosByIndex fail, index:" + index);
-//        }
-//        return TextPos.ofLeading(startIndex, startOffset);
-//    }
+    //    /**
+    //     * 获取位置
+    //     *
+    //     * @param index 位置
+    //     * @return 位置
+    //     */
+    //    protected TextPos getPosByIndex(int index) {
+    //        int length = 0;
+    //        int lastLen = 0;
+    //        int startIndex = -1;
+    //        int startOffset = -1;
+    //        int pCount = super.getParagraphCount();
+    //        for (int i = 0; i < pCount; i++) {
+    //            int len = this.getParagraphLength(i);
+    //            length += len + 1;
+    //            if (startIndex == -1 && length >= index) {
+    //                startIndex = i;
+    //                startOffset = index - lastLen;
+    //            }
+    //            lastLen = length;
+    //        }
+    //        if (startIndex == -1) {
+    ////            // 返回最后一个有效位置而非 ZERO
+    ////            int lastPara = super.getParagraphCount() - 1;
+    ////            if (lastPara >= 0) {
+    ////                return TextPos.ofLeading(lastPara, this.getParagraphLength(lastPara));
+    ////            }
+    ////            return TextPos.ZERO;
+    //            throw new RuntimeException("getPosByIndex fail, index:" + index);
+    //        }
+    //        return TextPos.ofLeading(startIndex, startOffset);
+    //    }
 
     /**
      * 根据文本位置获取位置
@@ -794,13 +794,13 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
             String text = this.getText();
-//            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
-//                content = System.lineSeparator() + content;
+            //            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
+            //                content = System.lineSeparator() + content;
             if (!StringUtil.endsWith(text, this.lineEndingText()) && !StringUtil.startWith(content, this.lineEndingText())) {
                 content = this.lineEndingText() + content;
             }
-//            if (endLine && !content.endsWith(System.lineSeparator())) {
-//                content += System.lineSeparator();
+            //            if (endLine && !content.endsWith(System.lineSeparator())) {
+            //                content += System.lineSeparator();
             if (endLine && !content.endsWith(this.lineEndingText())) {
                 content += this.lineEndingText();
             }
@@ -937,25 +937,25 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         }
     }
 
-//    /**
-//     * 行号策略
-//     */
-//    private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
-//
-//    public EditorLineNumPolicy getLineNumPolicy() {
-//        return this.lineNumPolicyProperty == null ? EditorLineNumPolicy.ALWAYS : this.lineNumPolicyProperty.get();
-//    }
-//
-//    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
-//        this.lineNumPolicyProperty().set(lineNumPolicy);
-//    }
-//
-//    public ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty() {
-//        if (this.lineNumPolicyProperty == null) {
-//            this.lineNumPolicyProperty = new SimpleObjectProperty<>(EditorLineNumPolicy.ALWAYS);
-//        }
-//        return this.lineNumPolicyProperty;
-//    }
+    //    /**
+    //     * 行号策略
+    //     */
+    //    private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
+    //
+    //    public EditorLineNumPolicy getLineNumPolicy() {
+    //        return this.lineNumPolicyProperty == null ? EditorLineNumPolicy.ALWAYS : this.lineNumPolicyProperty.get();
+    //    }
+    //
+    //    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
+    //        this.lineNumPolicyProperty().set(lineNumPolicy);
+    //    }
+    //
+    //    public ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty() {
+    //        if (this.lineNumPolicyProperty == null) {
+    //            this.lineNumPolicyProperty = new SimpleObjectProperty<>(EditorLineNumPolicy.ALWAYS);
+    //        }
+    //        return this.lineNumPolicyProperty;
+    //    }
 
     @Override
     public void resize(double width, double height) {
@@ -1092,7 +1092,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
             StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
             // TODO: 修复主题色可能不生效问题
             NodeHelper.processCSS(this);
-//            this.applyCss();
+            //            this.applyCss();
             // 设置光标行颜色
             this.setCaretLineColor(this.defaultCaretLineColor());
             // 设置选区颜色
@@ -1167,7 +1167,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
     public int caretPosition() {
         TextPos pos = super.getCaretPosition();
         if (pos == null) {
-            return -1;
+            return 0;
         }
         return this.getOffsetByPos(pos);
     }
@@ -1234,7 +1234,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
             text1 = EditorFormatter.formatText(this.getFormatType(), text);
         }
         if (StringUtil.notEquals(text, text1)) {
-//            this.formatted = !this.formatted;
+            //            this.formatted = !this.formatted;
             this.setText(text1);
         }
     }
@@ -1549,74 +1549,74 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
 
     @Override
     public void destroy() {
-//        if (this.modelListener != null) {
-//        this.getModel().removeListener(this.modelListener);
-//            this.modelListener = null;
-//        }
-//        if (this.promptsListener != null && this.promptsProperty != null) {
-//            this.promptsProperty.removeListener(this.promptsListener);
-//            this.promptsListener = null;
-//        }
-//        if (this.formatTypeListener != null && this.formatTypeProperty != null) {
-//            this.formatTypeProperty.removeListener(this.formatTypeListener);
-//            this.formatTypeListener = null;
-//        }
-//        if (this.highlightListener != null && this.highlightProperty != null) {
-//            this.highlightProperty.removeListener(this.highlightListener);
-//            this.highlightListener = null;
-//        }
-//        if (this.highlightRegexListener != null && this.highlightRegexProperty != null) {
-//            this.highlightRegexProperty.removeListener(this.highlightRegexListener);
-//            this.highlightRegexListener = null;
-//        }
-//        if (this.highlightMacthCaseListener != null && this.highlightMacthCaseProperty != null) {
-//            this.highlightMacthCaseProperty.removeListener(this.highlightMacthCaseListener);
-//            this.highlightMacthCaseListener = null;
-//        }
-//        if (this.fontListener != null) {
-//            this.fontProperty().removeListener(this.fontListener);
-//            this.fontListener = null;
-//        }
-//        if (CollectionUtil.isNotEmpty(this.textChangeListeners) && this.textProperty != null) {
-//            for (ChangeListener<? super String> changeListener : this.textChangeListeners) {
-//                this.textProperty.removeListener(changeListener);
-//            }
-//            this.textChangeListeners.clear();
-//            this.textChangeListeners = null;
-//        }
-//        if (this.textProperty != null) {
-//            this.textProperty.unbind();
-//            this.textProperty = null;
-//        }
-//        if (this.promptsProperty != null) {
-//            this.promptsProperty.unbind();
-//            this.promptsProperty = null;
-//        }
-//        if (this.formatTypeProperty != null) {
-//            this.formatTypeProperty.unbind();
-//            this.formatTypeProperty = null;
-//        }
-//        if (this.highlightProperty != null) {
-//            this.highlightProperty.unbind();
-//            this.highlightProperty = null;
-//        }
-//        if (this.highlightRegexProperty != null) {
-//            this.highlightRegexProperty.unbind();
-//            this.highlightRegexProperty = null;
-//        }
-//        if (this.highlightMacthCaseProperty != null) {
-//            this.highlightMacthCaseProperty.unbind();
-//            this.highlightMacthCaseProperty = null;
-//        }
-//        this.fontProperty().unbind();
-//        this.leftDecoratorProperty().unbind();
-//        this.rightDecoratorProperty().unbind();
-//        this.highlightCurrentParagraphProperty().unbind();
-//        this.editorFont = null;
-//        this.textFlowModel = null;
-//        this.styleProvider = null;
-//        this.syntaxDecorator = null;
-//        this.richTextAreaModel = null;
+        //        if (this.modelListener != null) {
+        //        this.getModel().removeListener(this.modelListener);
+        //            this.modelListener = null;
+        //        }
+        //        if (this.promptsListener != null && this.promptsProperty != null) {
+        //            this.promptsProperty.removeListener(this.promptsListener);
+        //            this.promptsListener = null;
+        //        }
+        //        if (this.formatTypeListener != null && this.formatTypeProperty != null) {
+        //            this.formatTypeProperty.removeListener(this.formatTypeListener);
+        //            this.formatTypeListener = null;
+        //        }
+        //        if (this.highlightListener != null && this.highlightProperty != null) {
+        //            this.highlightProperty.removeListener(this.highlightListener);
+        //            this.highlightListener = null;
+        //        }
+        //        if (this.highlightRegexListener != null && this.highlightRegexProperty != null) {
+        //            this.highlightRegexProperty.removeListener(this.highlightRegexListener);
+        //            this.highlightRegexListener = null;
+        //        }
+        //        if (this.highlightMacthCaseListener != null && this.highlightMacthCaseProperty != null) {
+        //            this.highlightMacthCaseProperty.removeListener(this.highlightMacthCaseListener);
+        //            this.highlightMacthCaseListener = null;
+        //        }
+        //        if (this.fontListener != null) {
+        //            this.fontProperty().removeListener(this.fontListener);
+        //            this.fontListener = null;
+        //        }
+        //        if (CollectionUtil.isNotEmpty(this.textChangeListeners) && this.textProperty != null) {
+        //            for (ChangeListener<? super String> changeListener : this.textChangeListeners) {
+        //                this.textProperty.removeListener(changeListener);
+        //            }
+        //            this.textChangeListeners.clear();
+        //            this.textChangeListeners = null;
+        //        }
+        //        if (this.textProperty != null) {
+        //            this.textProperty.unbind();
+        //            this.textProperty = null;
+        //        }
+        //        if (this.promptsProperty != null) {
+        //            this.promptsProperty.unbind();
+        //            this.promptsProperty = null;
+        //        }
+        //        if (this.formatTypeProperty != null) {
+        //            this.formatTypeProperty.unbind();
+        //            this.formatTypeProperty = null;
+        //        }
+        //        if (this.highlightProperty != null) {
+        //            this.highlightProperty.unbind();
+        //            this.highlightProperty = null;
+        //        }
+        //        if (this.highlightRegexProperty != null) {
+        //            this.highlightRegexProperty.unbind();
+        //            this.highlightRegexProperty = null;
+        //        }
+        //        if (this.highlightMacthCaseProperty != null) {
+        //            this.highlightMacthCaseProperty.unbind();
+        //            this.highlightMacthCaseProperty = null;
+        //        }
+        //        this.fontProperty().unbind();
+        //        this.leftDecoratorProperty().unbind();
+        //        this.rightDecoratorProperty().unbind();
+        //        this.highlightCurrentParagraphProperty().unbind();
+        //        this.editorFont = null;
+        //        this.textFlowModel = null;
+        //        this.styleProvider = null;
+        //        this.syntaxDecorator = null;
+        //        this.richTextAreaModel = null;
         NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
     }

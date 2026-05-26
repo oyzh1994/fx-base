@@ -105,19 +105,19 @@ public class EditorUtil {
         editor.highlightMacthCaseProperty().bind(field.matchCasePropery());
     }
 
-    /**
-     * 高亮搜索索引名称
-     */
-    private final static String HIGHLIGHT_SEARCH_INDEX = "_highlight_search_index";
+//    /**
+//     * 高亮搜索索引名称
+//     */
+//    private final static String HIGHLIGHT_SEARCH_INDEX = "_highlight_search_index";
 
-    /**
-     * 清除高亮搜索索引
-     *
-     * @param editor 编辑器
-     */
-    public static void clearHighlightSearchIndex(Editor editor) {
-        editor.setProp(HIGHLIGHT_SEARCH_INDEX, 0);
-    }
+//    /**
+//     * 清除高亮搜索索引
+//     *
+//     * @param editor 编辑器
+//     */
+//    public static void clearHighlightSearchIndex(Editor editor) {
+//        editor.setProp(HIGHLIGHT_SEARCH_INDEX, 0);
+//    }
 
     /**
      * 搜索下一个高亮
@@ -126,13 +126,13 @@ public class EditorUtil {
      * @param field  高亮文本组件
      */
     public static void searchNextHighlight(Editor editor, HighlightTextField field) {
-        int searchIndex = 0;
         try {
-            searchIndex = editor.hasProp(HIGHLIGHT_SEARCH_INDEX) ? editor.getProp(HIGHLIGHT_SEARCH_INDEX) : 0;
+//            searchIndex = editor.hasProp(HIGHLIGHT_SEARCH_INDEX) ? editor.getProp(HIGHLIGHT_SEARCH_INDEX) : 0;
             String filterText = field.getText();
             if (StringUtil.isBlank(filterText)) {
                 return;
             }
+            int searchIndex = editor.caretPosition();
             String text = editor.getText();
             if (searchIndex >= text.length()) {
                 searchIndex = 0;
@@ -144,15 +144,15 @@ public class EditorUtil {
                     field.isWholeWord(),
                     field.isRegex());
             if (matchText == TextUtil.MatchText.NOT_FOUND) {
-                searchIndex = 0;
+//                searchIndex = 0;
                 return;
             }
-            searchIndex = matchText.index() + matchText.text().length();
+//            searchIndex = matchText.index() + matchText.text().length();
             editor.selectRange(matchText.index(), matchText.index() + matchText.text().length());
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            editor.setProp(HIGHLIGHT_SEARCH_INDEX, searchIndex);
+//        } finally {
+//            editor.setProp(HIGHLIGHT_SEARCH_INDEX, searchIndex);
         }
     }
 }
