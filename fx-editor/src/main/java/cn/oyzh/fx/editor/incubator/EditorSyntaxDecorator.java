@@ -18,10 +18,10 @@ import tm4javafx.richtext.StyledToken;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -75,7 +75,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 维护自身的段落缓存，用于异步更新
      */
-    private volatile List<RichParagraph> paragraphs = List.of();
+    private volatile List<RichParagraph> myParagraphs = List.of();
 
     /**
      * 样式版本号，用于丢弃过期的后台任务结果
@@ -221,22 +221,126 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         return this.promptsStyle;
     }
 
+    /**
+     * 着色策略
+     */
+    private EditorSyntaxStrategy syntaxStrategy = EditorSyntaxStrategy.AUTO;
+
+    public EditorSyntaxStrategy getSyntaxStrategy() {
+        return syntaxStrategy;
+    }
+
+    public void setSyntaxStrategy(EditorSyntaxStrategy syntaxStrategy) {
+        this.syntaxStrategy = syntaxStrategy;
+    }
+
+    /**
+     * 异步着色策略
+     */
+    private EditorSyntaxAsyncStrategy syntaxAsyncStrategy = EditorSyntaxAsyncStrategy.AUTO;
+
+    public EditorSyntaxAsyncStrategy getSyntaxAsyncStrategy() {
+        return syntaxAsyncStrategy;
+    }
+
+    public void setSyntaxAsyncStrategy(EditorSyntaxAsyncStrategy syntaxAsyncStrategy) {
+        this.syntaxAsyncStrategy = syntaxAsyncStrategy;
+    }
+
+    /**
+     * 异步着色，最小行数阈值
+     */
+    private int syntaxAsyncMinThreshold = 1000;
+
+    public int getSyntaxAsyncMinThreshold() {
+        return syntaxAsyncMinThreshold;
+    }
+
+    public void setSyntaxAsyncMinThreshold(int syntaxAsyncMinThreshold) {
+        this.syntaxAsyncMinThreshold = syntaxAsyncMinThreshold;
+    }
+
+    /**
+     * 异步着色，自动行数阈值
+     */
+    private int syntaxAsyncAutoThreshold = 100_000;
+
+    public int getSyntaxAsyncAutoThreshold() {
+        return syntaxAsyncAutoThreshold;
+    }
+
+    public void setSyntaxAsyncAutoThreshold(int syntaxAsyncAutoThreshold) {
+        this.syntaxAsyncAutoThreshold = syntaxAsyncAutoThreshold;
+    }
+
+    /**
+     * 首次变更标志位
+     */
+    private boolean firstChange = true;
+
     @Override
     public void handleChange(@NonNull CodeTextModel model, @NonNull TextPos start, @NonNull TextPos end, int charsTop, int linesAdded, int charsBottom) {
         StyleProvider provider = this.getStyleProvider();
         if (provider == null) {
-            this.paragraphs = List.of();
+            this.myParagraphs = List.of();
             return;
         }
 
         String text = this.getPlainText(model);
         if (text.isEmpty()) {
-            this.paragraphs = List.of();
+            this.myParagraphs = List.of();
+            return;
+        }
+
+        // 行号总数
+        long lineCount = -1;
+        // 异步着色标志位
+        boolean asyncSyntax = false;
+        // 异步着色判断
+        if (this.syntaxStrategy == EditorSyntaxStrategy.AUTO) {
+            lineCount = text.lines().count();
+            // 大于最小阈值，则异步
+            if (lineCount > this.syntaxAsyncMinThreshold) {
+                asyncSyntax = true;
+            }
+        } else if (this.syntaxStrategy == EditorSyntaxStrategy.ASYNC) {
+            asyncSyntax = true;
+        }
+
+        // 异步着色修正
+        if (asyncSyntax) {
+            // 首次异步
+            if (this.syntaxAsyncStrategy == EditorSyntaxAsyncStrategy.FIRST) {
+                if (!this.firstChange) {
+                    asyncSyntax = false;
+                }
+            } else if (this.syntaxAsyncStrategy == EditorSyntaxAsyncStrategy.AUTO) {// 自动异步
+                if (!this.firstChange) {
+                    if (lineCount == -1) {
+                        lineCount = text.lines().count();
+                    }
+                    // 小于自动阈值，则还是同步
+                    if (lineCount <= this.syntaxAsyncAutoThreshold) {
+                        asyncSyntax = false;
+                    }
+                }
+            }
+        }
+
+        // 变更首次flag
+        if (this.firstChange) {
+            this.firstChange = false;
+        }
+
+        // 正常路径：构建语法着色的段落
+        if (!asyncSyntax) {
+            this.myParagraphs = this.buildRichParagraphs(text);
+            this.refresh(model);
             return;
         }
 
         // 快速路径：构建无语法着色的段落
-        this.paragraphs = this.buildFastParagraphs(text);
+        this.myParagraphs = this.buildFastParagraphs(text);
         this.refresh(model);
 
         // 只有需要语法着色时才提交后台任务
@@ -267,7 +371,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 if (styleVersion.get() != currentVersion) {
                     return;
                 }
-                this.paragraphs = styled;
+                this.myParagraphs = styled;
                 this.refresh(model);
             });
         });
@@ -275,10 +379,10 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
     @Override
     public RichParagraph createRichParagraph(@NonNull CodeTextModel model, int index) {
-        if (this.paragraphs.isEmpty() || index >= this.paragraphs.size()) {
+        if (this.myParagraphs.isEmpty() || index >= this.myParagraphs.size()) {
             return RichParagraph.builder().build();
         }
-        return this.paragraphs.get(index);
+        return this.myParagraphs.get(index);
     }
 
     /**
@@ -312,6 +416,13 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     }
 
     /**
+     * token缓存
+     * key: 行内容hashCode
+     * value: 行样式token列表
+     */
+    private final Map<Integer, List<StyledToken>> tokenCache = new ConcurrentHashMap<>();
+
+    /**
      * 完整构建段落，包含语法着色、提示词和高亮。
      * <p>
      * 此方法在后台线程中调用，可能耗时较长。
@@ -321,7 +432,6 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private List<RichParagraph> buildRichParagraphs(String text) {
         StyleProvider provider = this.getStyleProvider();
         String[] lines = text.split(LINE_SPLIT_PATTERN);
-        Map<Integer, List<StyledToken>> cache = new HashMap<>();
         List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
         for (String line : lines) {
             if (Thread.interrupted()) {
@@ -337,14 +447,16 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             } else if (this.formatType == EditorFormatType.RAW || this.formatType == null) {
                 super.applyStyles(builder, new StyledToken(line, null));
             } else {
-                int hashCode = line.hashCode();
                 List<StyledToken> tokens;
-                if (cache.containsKey(hashCode)) {
-                    tokens = cache.get(hashCode);
-                } else {
+                int hashCode = line.hashCode();
+                // 从缓存获取
+                if (this.tokenCache.containsKey(hashCode)) {
+                    tokens = this.tokenCache.get(hashCode);
+                } else {// 执行生成
                     tokens = provider.tokenize(line);
-                    cache.put(hashCode, tokens);
+                    this.tokenCache.put(hashCode, tokens);
                 }
+                // 应用样式
                 for (StyledToken token : tokens) {
                     super.applyStyles(builder, token);
                 }
