@@ -25,13 +25,21 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
     }
 
     /**
+     * 获取cell工厂
+     *
+     * @return 结果
+     */
+    protected Callback<TableColumn<S, T>, TableCell<S, T>> cellFactory() {
+        return param -> new FXTableCell<>();
+    }
+
+    /**
      * 设置列处理器
      *
      * @param cell 列处理器
      */
     public void setCell(TableCell<S, T> cell) {
-        Callback<TableColumn<S,T>, TableCell<S,T>> cellFactory = param -> new FXTableCell<>();
-        this.setCellFactory(cellFactory);
+        this.setCellFactory(this.cellFactory());
         PropertiesUtil.set(this.getTableView(), "cell", cell);
     }
 
@@ -76,17 +84,19 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         return null;
     }
 
+    public static final String VALUE_NAME_PROP = "value_name";
+
     public void setValueName(String valueName) {
         try {
             this.setCellValueFactory(new PropertyValueFactory<>(valueName));
-            this.setProp("_valueName", valueName);
+            this.setProp(VALUE_NAME_PROP, valueName);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     public String getValueName() {
-        return this.getProp("_valueName");
+        return this.getProp(VALUE_NAME_PROP);
     }
 
     public void text(String text) {

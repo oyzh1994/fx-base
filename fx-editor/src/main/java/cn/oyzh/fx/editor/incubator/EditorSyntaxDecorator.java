@@ -250,7 +250,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 异步着色，最小行数阈值
      */
-    private int syntaxAsyncMinThreshold = 1000;
+    private int syntaxAsyncMinThreshold = 500;
 
     public int getSyntaxAsyncMinThreshold() {
         return syntaxAsyncMinThreshold;
@@ -263,7 +263,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 异步着色，自动行数阈值
      */
-    private int syntaxAsyncAutoThreshold = 100_000;
+    private int syntaxAsyncAutoThreshold = 50_000;
 
     public int getSyntaxAsyncAutoThreshold() {
         return syntaxAsyncAutoThreshold;
@@ -274,31 +274,44 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     }
 
     /**
+     * 着色，最大行数阈值
+     */
+    private int syntaxMaxThreshold = 500_000;
+
+    public int getSyntaxMaxThreshold() {
+        return syntaxMaxThreshold;
+    }
+
+    public void setSyntaxMaxThreshold(int syntaxMaxThreshold) {
+        this.syntaxMaxThreshold = syntaxMaxThreshold;
+    }
+
+    /**
      * 首次变更标志位
      */
     private boolean firstChange = true;
 
-    @Override
-    public void handleChange(@NonNull CodeTextModel model, @NonNull TextPos start, @NonNull TextPos end, int charsTop, int linesAdded, int charsBottom) {
-        StyleProvider provider = this.getStyleProvider();
-        if (provider == null) {
-            this.myParagraphs = List.of();
-            return;
-        }
+    /**
+     * 是否开启语法着色
+     *
+     * @param lineCount 行总数
+     * @return 结果
+     */
+    private boolean isSyntax(long lineCount) {
+        return lineCount <= this.syntaxMaxThreshold;
+    }
 
-        String text = this.getPlainText(model);
-        if (text.isEmpty()) {
-            this.myParagraphs = List.of();
-            return;
-        }
-
-        // 行号总数
-        long lineCount = -1;
+    /**
+     * 是否异步语法着色
+     *
+     * @param lineCount 行总数
+     * @return 结果
+     */
+    private boolean isAsyncSyntax(long lineCount) {
         // 异步着色标志位
         boolean asyncSyntax = false;
         // 异步着色判断
         if (this.syntaxStrategy == EditorSyntaxStrategy.AUTO) {
-            lineCount = text.lines().count();
             // 大于最小阈值，则异步
             if (lineCount > this.syntaxAsyncMinThreshold) {
                 asyncSyntax = true;
@@ -316,9 +329,6 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 }
             } else if (this.syntaxAsyncStrategy == EditorSyntaxAsyncStrategy.AUTO) {// 自动异步
                 if (!this.firstChange) {
-                    if (lineCount == -1) {
-                        lineCount = text.lines().count();
-                    }
                     // 小于自动阈值，则还是同步
                     if (lineCount <= this.syntaxAsyncAutoThreshold) {
                         asyncSyntax = false;
@@ -326,19 +336,52 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 }
             }
         }
-
         // 变更首次flag
         if (this.firstChange) {
             this.firstChange = false;
         }
+        return asyncSyntax;
+    }
 
-        // 正常路径：构建语法着色的段落
+    @Override
+    public void handleChange(@NonNull CodeTextModel model, @NonNull TextPos start, @NonNull TextPos end, int charsTop, int linesAdded, int charsBottom) {
+        StyleProvider provider = this.getStyleProvider();
+        if (provider == null) {
+            this.myParagraphs = List.of();
+            return;
+        }
+
+        String text = this.getPlainText(model);
+        if (text.isEmpty()) {
+            this.myParagraphs = List.of();
+            return;
+        }
+
+        // 行号总数
+        long lineCount = text.lines().count();
+        // 是否语法着色
+        boolean syntax = this.isSyntax(lineCount);
+        // 是否异步语法着色
+        boolean asyncSyntax = false;
+        if (syntax) {
+            asyncSyntax = this.isAsyncSyntax(lineCount);
+        }
+
+        // 非语法着色
+        if (!syntax) {
+            this.myParagraphs = this.buildBaseParagraphs(text);
+            this.refresh(model);
+            return;
+        }
+
+        // 同步构建，则构建完整段落
         if (!asyncSyntax) {
             this.myParagraphs = this.buildRichParagraphs(text);
             this.refresh(model);
             return;
         }
 
+        // 异步构建
         // 快速路径：构建无语法着色的段落
         this.myParagraphs = this.buildFastParagraphs(text);
         this.refresh(model);
@@ -383,6 +426,28 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             return RichParagraph.builder().build();
         }
         return this.myParagraphs.get(index);
+    }
+
+    /**
+     * 基础构建段落，跳过语法着色和应用提示词，仅高亮。
+     *
+     * @param text 文本
+     */
+    private List<RichParagraph> buildBaseParagraphs(String text) {
+        String[] lines = text.split(LINE_SPLIT_PATTERN);
+        List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
+        for (String line : lines) {
+            RichParagraph.Builder builder = RichParagraph.builder();
+            super.applyStyles(builder, new StyledToken(line, null));
+            if (StringUtil.isNotEmpty(this.highlight)) {
+                List<EditorMachToken> machTokens = this.machHighlight(line);
+                for (EditorMachToken token : machTokens) {
+                    builder.addHighlight(token.start(), token.length(), this.highlightColor);
+                }
+            }
+            paragraphs.add(builder.build());
+        }
+        return paragraphs;
     }
 
     /**
