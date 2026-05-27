@@ -153,7 +153,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         // 获取滚动条值
         Double scrollValue = this.getScrollValue();
         this.syntaxDecorator.setHighlight(t1);
-        this.initTextStyle();
+        this.refreshText();
         // 清除高亮的时候滚动到原位置
         if (StringUtil.isEmpty(t1)) {
             FXUtil.runWait(() -> this.setScrollValue(scrollValue));
@@ -162,17 +162,17 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
 
     private final ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setHighlightRegex(t1);
-        this.initTextStyle();
+        this.refreshText();
     };
 
     private final ChangeListener<? super Boolean> highlightWholeWordListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setHighlightWholeWord(t1);
-        this.initTextStyle();
+        this.refreshText();
     };
 
     private final ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setHighlightMatchCase(t1);
-        this.initTextStyle();
+        this.refreshText();
     };
 
     private final ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
@@ -182,11 +182,6 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
             this.changeFont(editorFont);
         }
     };
-
-    //    /**
-    //     * 初始化样式标志位
-    //     */
-    //    private final AtomicBoolean initTextStyleFlag = new AtomicBoolean();
 
     {
         NodeManager.init(this);
@@ -238,14 +233,6 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         this.highlightRegexProperty().addListener(this.highlightRegexListener);
         this.highlightWholeWordProperty().addListener(this.highlightWholeWordListener);
         this.highlightMacthCaseProperty().addListener(this.highlightMacthCaseListener);
-        //        // 行号策略变化事件
-        //        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
-        //            if (t1 == EditorLineNumPolicy.NONE) {
-        //                this.hideLineNum();
-        //            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
-        //                this.showLineNum();
-        //            }
-        //        });
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
@@ -257,7 +244,6 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         });
         // 初始化样式
         this.applyTheme();
-        // this.initTextStyle();
     }
 
     /**
@@ -284,36 +270,24 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
             if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
                 d.refresh(this.getModel());
             }
-            // this.setText(this.getText());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    //    /**
-    //     * 初始化文本样式，异步
-    //     */
-    //    protected void initTextStyleLater() {
-    //        ThreadUtil.startVirtual(() -> {
-    //            while (initTextStyleFlag.get()) {
-    //                ThreadUtil.sleep(5);
-    //            }
-    //            FXUtil.runLater(this::initTextStyle);
-    //        });
-    //    }
+    /**
+     * 刷新文本
+     */
+    protected void refreshText() {
+        this.setText(this.getText());
+    }
 
     /**
      * 初始化文本样式
      */
     protected void initTextStyle() {
-        // this.applyTheme();
-        //        this.initTextStyleFlag.set(true);
-        //        try {
         this.initSyntaxes();
-        this.setText(this.getText());
-        //        } finally {
-        //            this.initTextStyleFlag.set(false);
-        //        }
+        this.refreshText();
     }
 
     /**
