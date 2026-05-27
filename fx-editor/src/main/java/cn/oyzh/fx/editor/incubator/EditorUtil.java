@@ -99,10 +99,18 @@ public class EditorUtil {
      * @param field  高亮文本组件
      */
     public static void bindHighlight(Editor editor, HighlightTextField field) {
-        editor.highlightProperty().bind(field.textProperty());
-        editor.highlightRegexProperty().bind(field.regexPropery());
-        editor.highlightWholeWordProperty().bind(field.wholeWordPropery());
-        editor.highlightMacthCaseProperty().bind(field.matchCasePropery());
+        field.textProperty().addListener((observable, oldValue, newValue) -> {
+            editor.setHighlight(newValue);
+        });
+        field.regexPropery().addListener((observable, oldValue, newValue) -> {
+            editor.setHighlightRegex(newValue);
+        });
+        field.wholeWordPropery().addListener((observable, oldValue, newValue) -> {
+            editor.setHighlightWholeWord(newValue);
+        });
+        field.matchCasePropery().addListener((observable, oldValue, newValue) -> {
+            editor.setHighlightMacthCase(newValue);
+        });
     }
 
     //    /**
