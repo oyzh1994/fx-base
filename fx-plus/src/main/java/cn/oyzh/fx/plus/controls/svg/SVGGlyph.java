@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
@@ -31,7 +32,7 @@ import javafx.scene.paint.Paint;
  * @author oyzh
  * @since 2022/5/31
  */
-public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
+public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -78,11 +79,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      */
     private FXSVGPath original;
 
-//    /**
-//     * 等待动画
-//     */
-//    private RotateTransition waitingAnimation;
-
     /**
      * 是否激活状态
      *
@@ -113,10 +109,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.getStyleClass().remove("svg-glyph");
     }
 
-//    public FXSVGPath getSVGPath() {
-//        return (FXSVGPath) this.getFirstChild();
-//    }
-
     /**
      * 更新内容
      */
@@ -129,7 +121,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
         // loading图标
         if (child instanceof ProgressIndicator) {
-//            svgPath.setFill(ThemeManager.currentForegroundColor());
             return;
         }
         FXSVGPath svgPath = (FXSVGPath) child;
@@ -162,18 +153,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
         try {
             this.setWaiting(true);
-//            // 获取loading
-//            FXSVGPath loading = SVGManager.getLoading();
-//            // 动态绑定缩放比例
-//            loading.scaleXProperty().bind(this.widthProperty().divide(loading.getBoundsInLocal().getWidth()));
-//            loading.scaleYProperty().bind(this.heightProperty().divide(loading.getBoundsInLocal().getHeight()));
-//            // 设置loading图标
-//            this.setChild(loading);
-//            // 初始化动画
-//            this.waitingAnimation = AnimationUtil.rotate(loading);
-//            // 播放动画
-//            this.waitingAnimation.play();
-
             // 动画
             ProgressIndicator progress = new ProgressIndicator();
             progress.setFocusTraversable(false);
@@ -192,11 +171,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * 结束动画
      */
     public void stopWaiting() {
-//        // 结束动画
-//        if (this.waitingAnimation != null) {
-//            FXUtil.runWait(this.waitingAnimation::stop);
-//            this.waitingAnimation = null;
-//        }
         this.setWaiting(false);
         // 恢复原始图标，并更新内容
         this.setChild(this.original);
@@ -386,24 +360,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         }
     }
 
-//    @Override
-//    public void setCursor(Cursor value) {
-//        super.setCursor(value);
-//        this.updateContent();
-//    }
-//
-//    @Override
-//    public void setDisable(boolean value) {
-//        super.setDisable(value);
-//        this.updateContent();
-//    }
-//
-//    @Override
-//    public void setDisabled(boolean value) {
-//        super.setDisabled(value);
-//        this.updateContent();
-//    }
-
     /**
      * 激活
      */
@@ -417,9 +373,7 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
      * @param active 激活态
      */
     public void setActive(boolean active) {
-        // this.active = active;
         this.activeProperty().set(active);
-        // this.updateContent();
     }
 
     @Override
@@ -446,14 +400,6 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
     public Paint getColor() {
         return color;
     }
-
-    // public Boolean getActive() {
-    //     return active;
-    // }
-    //
-    // public void setActive(Boolean active) {
-    //     this.active = active;
-    // }
 
     public Color getActiveColor() {
         return activeColor;
@@ -488,21 +434,12 @@ public class SVGGlyph extends StackPane implements NodeGroup, NodeAdapter, Theme
         this.original = original;
     }
 
-//    public RotateTransition getWaitingAnimation() {
-//        return waitingAnimation;
-//    }
-//
-//    public void setWaitingAnimation(RotateTransition waitingAnimation) {
-//        this.waitingAnimation = waitingAnimation;
-//    }
-
     private BooleanProperty activeProperty;
 
     public BooleanProperty activeProperty() {
         if (this.activeProperty == null) {
             this.activeProperty = new SimpleBooleanProperty(false);
             this.activeProperty.addListener((observable) -> {
-                // this.setActive(newValue);
                 this.updateContent();
             });
         }

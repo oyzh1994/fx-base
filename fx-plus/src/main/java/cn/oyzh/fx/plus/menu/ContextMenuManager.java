@@ -1,9 +1,12 @@
 package cn.oyzh.fx.plus.menu;
 
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.util.List;
 
@@ -12,20 +15,6 @@ import java.util.List;
  * @since 2025-06-25
  */
 public class ContextMenuManager {
-
-//    /**
-//     * 菜单池
-//     */
-//    private static final ContextMenuPool POOL = new ContextMenuPool();
-
-//    /**
-//     * 获取菜单
-//     *
-//     * @return 菜单
-//     */
-//    public static ContextMenu getContextMenu() {
-//        return POOL.borrowObject();
-//    }
 
     /**
      * 当前操作面板，全局一个
@@ -39,28 +28,15 @@ public class ContextMenuManager {
      * @return 菜单
      */
     public static FXContextMenu createContextMenu(Object object, List<? extends MenuItem> items) {
-//        if (contextMenu != null) {
-//            contextMenu.clear();
-//        }
         if (contextMenu == null) {
             contextMenu = new FXContextMenu(object);
         } else {
             contextMenu.destroy();
             contextMenu.setTarget(object);
         }
-//        ContextMenu contextMenu = POOL.borrowObject();
         contextMenu.setItem(items);
         return contextMenu;
     }
-
-//    /**
-//     * 归还菜单
-//     *
-//     * @param contextMenu 菜单
-//     */
-//    public static void returnContextMenu(ContextMenu contextMenu) {
-////        POOL.returnObject(contextMenu);
-//    }
 
     /**
      * 获取操作面板
@@ -104,4 +80,27 @@ public class ContextMenuManager {
             tab.setContextMenu(null);
         }
     }
+
+    /**
+     * 显示操作面板
+     *
+     * @param contextMenu 上下文
+     * @param node        节点
+     * @param event       事件
+     */
+    public static void showContextMenu(ContextMenu contextMenu, Node node, MouseEvent event) {
+        contextMenu.show(node, event.getScreenX() - 10, event.getScreenY() - 10);
+    }
+
+    /**
+     * 显示操作面板
+     *
+     * @param contextMenu 上下文
+     * @param node        节点
+     * @param event       事件
+     */
+    public static void showContextMenu(ContextMenu contextMenu, Node node, ContextMenuEvent event) {
+        contextMenu.show(node, event.getScreenX() - 10, event.getScreenY() - 10);
+    }
+
 }

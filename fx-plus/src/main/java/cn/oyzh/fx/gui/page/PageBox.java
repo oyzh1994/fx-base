@@ -8,9 +8,8 @@ import cn.oyzh.fx.gui.svg.glyph.page.PagePrevSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageSettingSVGGlyph;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
-import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.controls.text.FXText;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nManager;
 import javafx.event.EventHandler;
@@ -38,7 +37,7 @@ public class PageBox<T> extends FXHBox {
     /**
      * 文本组件
      */
-    private FXLabel text;
+    private FXText text;
 
     /**
      * 是否显示跳转组件
@@ -174,14 +173,6 @@ public class PageBox<T> extends FXHBox {
         return showText;
     }
 
-    public FXLabel getText() {
-        return text;
-    }
-
-    public void setText(FXLabel text) {
-        this.text = text;
-    }
-
     public boolean isShowJump() {
         return showJump;
     }
@@ -315,6 +306,7 @@ public class PageBox<T> extends FXHBox {
                 this.onFirstClicked.handle(e);
             }
         });
+        this.firstBtn.setPadding(Insets.EMPTY);
 
         // 上一页
         this.prevBtn = new PagePrevSVGGlyph(this.bthSize);
@@ -324,6 +316,7 @@ public class PageBox<T> extends FXHBox {
                 this.onPrevClicked.handle(e);
             }
         });
+        this.prevBtn.setPadding(Insets.EMPTY);
 
         // 下一页
         this.nextBtn = new PageNextSVGGlyph(this.bthSize);
@@ -333,6 +326,7 @@ public class PageBox<T> extends FXHBox {
                 this.onNextClicked.handle(e);
             }
         });
+        this.nextBtn.setPadding(Insets.EMPTY);
 
         // 尾页
         this.lastBtn = new PageLastSVGGlyph(this.bthSize);
@@ -343,6 +337,7 @@ public class PageBox<T> extends FXHBox {
                 this.onLastClicked.handle(e);
             }
         });
+        this.lastBtn.setPadding(Insets.EMPTY);
 
         // 设置
         this.settingBtn = new PageSettingSVGGlyph(this.bthSize);
@@ -353,12 +348,12 @@ public class PageBox<T> extends FXHBox {
                 this.onSettingClicked.handle(e);
             }
         });
+        this.settingBtn.setPadding(Insets.EMPTY);
 
         // 跳页
         this.jump = new NumberTextField(true);
         this.jump.setMinVal(1);
         this.jump.setMaxWidth(50);
-        // this.jump.setBtnMarginRight(0);
         this.jump.setFlexHeight("80%");
         this.jump.managedBindVisible();
         this.jump.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -368,20 +363,6 @@ public class PageBox<T> extends FXHBox {
             }
         });
         this.jump.setPadding(Insets.EMPTY);
-
-        // 设置边距
-        HBox.setMargin(this.jump, new Insets(1, 0, 0, 5));
-        HBox.setMargin(this.prevBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.nextBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.lastBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.firstBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.settingBtn, DEFAULT_MARGIN1);
-//        HBox.setMargin(this.jump, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.settingBtn, new Insets(0, 0, 0, 5));
 
         // 添加子节点
         this.setChild(this.firstBtn, this.prevBtn, this.jump, this.nextBtn, this.lastBtn, this.settingBtn);
@@ -393,7 +374,28 @@ public class PageBox<T> extends FXHBox {
         this.setShowFirst(this.showFirst);
         this.setShowSetting(this.showSetting);
         this.managedBindVisible();
-        NodeManager.init(this);
+
+        this.heightProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                double h1 = (newValue.doubleValue() - this.jump.getRealHeight()) / 2;
+                Insets insets1 = new Insets(h1, 0, 0, 5);
+                HBox.setMargin(this.jump, insets1);
+                double h2 = (newValue.doubleValue() - this.prevBtn.getRealHeight()) / 4;
+                Insets insets2 = new Insets(h2, 0, 0, 5);
+                HBox.setMargin(this.prevBtn, insets2);
+                HBox.setMargin(this.nextBtn, insets2);
+                HBox.setMargin(this.lastBtn, insets2);
+                HBox.setMargin(this.firstBtn, insets2);
+                HBox.setMargin(this.settingBtn, insets2);
+                if (this.text != null) {
+                    double h3 = (newValue.doubleValue() - this.text.getRealHeight()) / 4;
+                    Insets insets3 = new Insets(h3, 0, 0, 5);
+                    HBox.setMargin(this.text, insets3);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -450,10 +452,8 @@ public class PageBox<T> extends FXHBox {
         this.showText = showText;
         if (showText) {
             if (this.text == null) {
-                this.text = new FXLabel();
-                this.text.setFlexHeight("90%");
-                this.text.setPadding(Insets.EMPTY);
-                HBox.setMargin(this.text, DEFAULT_MARGIN2);
+                this.text = new FXText();
+                this.text.setFlexHeight("70%");
                 this.addChild(this.text);
             }
         } else {
