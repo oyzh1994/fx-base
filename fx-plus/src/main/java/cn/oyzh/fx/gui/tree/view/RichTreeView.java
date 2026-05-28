@@ -110,11 +110,6 @@ public class RichTreeView extends FXTreeView {
         return (RichTreeItem<?>) super.getRoot();
     }
 
-//    @Override
-//    public RichTreeItem<?> getRoot() {
-//        return (RichTreeItem<?>) super.getRoot();
-//    }
-
     public void root(TreeItem<?> root) {
         if (root instanceof RichTreeItem<?> item) {
             FXUtil.runWait(() -> super.setRoot(root));
@@ -123,15 +118,6 @@ public class RichTreeView extends FXTreeView {
             throw new IllegalArgumentException("Root is not a RichTreeItem");
         }
     }
-//    @Override
-//    public void setRoot(TreeItem root) {
-//        if (root instanceof RichTreeItem<?> item) {
-//            FXUtil.runWait(() -> super.setRoot(root));
-//            item.doFilter();
-//        } else if (root != null) {
-//            throw new IllegalArgumentException("Root is not a RichTreeItem");
-//        }
-//    }
 
     /**
      * 过滤节点

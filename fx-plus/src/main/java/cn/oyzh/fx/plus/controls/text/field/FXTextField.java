@@ -38,6 +38,13 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
     }
 
     /**
+     * 焦点事件
+     */
+    protected void onFocus() {
+
+    }
+
+    /**
      * 是否必须
      */
     private boolean require;

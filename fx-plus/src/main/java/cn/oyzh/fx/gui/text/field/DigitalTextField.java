@@ -17,14 +17,6 @@ import java.util.function.UnaryOperator;
  */
 public abstract class DigitalTextField extends LimitTextField {
 
-    {
-        this.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onBlur();
-            }
-        });
-    }
-
     /**
      * 最大值
      */
@@ -286,5 +278,17 @@ public abstract class DigitalTextField extends LimitTextField {
         } else if (this.maxVal != null && val > this.maxVal.doubleValue()) {
             this.setValue(this.maxVal);
         }
+    }
+
+    @Override
+    public void initNode() {
+        this.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                this.onFocus();
+            } else {
+                this.onBlur();
+            }
+        });
+        super.initNode();
     }
 }

@@ -1,8 +1,8 @@
 package cn.oyzh.fx.gui.skin;
 
-import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RegexSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
@@ -24,42 +24,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
 /**
- * 高亮文本输入框皮肤
+ * 过滤文本输入框皮肤
  *
  * @author oyzh
  * @since 2026/05/14
  */
-public class HighlightTextFieldSkin extends FXTextFieldSkin {
+public class FilterTextFieldSkin extends FXTextFieldSkin {
 
-    public HighlightTextFieldSkin(TextField textField) {
+    public FilterTextFieldSkin(TextField textField) {
         super(textField);
     }
-
-    private RegexSVGGlyph regex;
 
     private WholeWordSVGGlyph wholeWord;
 
     private MatchCaseSVGGlyph matchCase;
-
-    private final BooleanProperty regexProperty = new SimpleBooleanProperty();
-
-    public boolean isRegex() {
-        return this.regexProperty.get();
-    }
-
-    public void setRegex(boolean regex) {
-        this.regexProperty.set(regex);
-    }
-
-    private ReadOnlyBooleanWrapper regexPropertyWrapper;
-
-    public ReadOnlyBooleanProperty regexPropery() {
-        if (this.regexPropertyWrapper == null) {
-            this.regexPropertyWrapper = new ReadOnlyBooleanWrapper();
-            this.regexPropertyWrapper.bind(this.regexProperty);
-        }
-        return regexPropertyWrapper;
-    }
 
     private final BooleanProperty wholeWordProperty = new SimpleBooleanProperty();
 
@@ -101,12 +79,6 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
         return this.matchCasePropertyWrapper;
     }
 
-    private EventHandler<? super MouseEvent> regexMouseExitHandler;
-
-    private EventHandler<? super MouseEvent> regexMouseEnterHandler;
-
-    private EventHandler<? super MouseEvent> regexMouseClickHandler;
-
     private EventHandler<? super MouseEvent> wholeWordMouseExitHandler;
 
     private EventHandler<? super MouseEvent> wholeWordMouseEnterHandler;
@@ -122,24 +94,6 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
     private ChangeListener<? super Number> heightListener;
 
     private void doInit() {
-        this.regexMouseExitHandler = event -> {
-            if (!this.isRegex()) {
-                this.regex.setBackground(null);
-            }
-        };
-        this.regexMouseEnterHandler = event -> {
-            if (!this.isRegex()) {
-                this.regex.setBackground(this.focusBackground());
-            }
-        };
-        this.regexMouseClickHandler = event -> {
-            this.setRegex(!this.isRegex());
-            if (this.isRegex()) {
-                this.regex.setBackground(this.activeBackground());
-            } else {
-                this.regex.setBackground(this.focusBackground());
-            }
-        };
         this.wholeWordMouseExitHandler = event -> {
             if (!this.isWholeWord()) {
                 this.wholeWord.setBackground(null);
@@ -183,13 +137,12 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
                 val -= insets.getTop();
                 val -= insets.getBottom();
             }
-            double nHeight= NodeUtil.getHeight(this.regex);
+            double nHeight= NodeUtil.getHeight(this.wholeWord);
             val -= (nHeight / 2);
             val /= 2;
             Insets insets1 = new Insets(val, 0, 0, 0);
             HBox.setMargin(this.matchCase, insets1);
             Insets insets2 = new Insets(val, 0, 0, 8);
-            HBox.setMargin(this.regex, insets2);
             HBox.setMargin(this.wholeWord, insets2);
         };
     }
@@ -198,10 +151,6 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
     public ObjectProperty<Node> rightProperty() {
         if (super.rightProperty == null) {
             this.doInit();
-            this.regex = new RegexSVGGlyph("13");
-            this.regex.addEventFilter(MouseEvent.MOUSE_EXITED, this.regexMouseExitHandler);
-            this.regex.addEventFilter(MouseEvent.MOUSE_ENTERED, this.regexMouseEnterHandler);
-            this.regex.addEventFilter(MouseEvent.MOUSE_CLICKED, this.regexMouseClickHandler);
             this.wholeWord = new WholeWordSVGGlyph("15.6,13");
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_EXITED, this.wholeWordMouseExitHandler);
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_ENTERED, this.wholeWordMouseEnterHandler);
@@ -214,7 +163,6 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
             FXHBox hBox = new FXHBox();
             hBox.addChild(this.matchCase);
             hBox.addChild(this.wholeWord);
-            hBox.addChild(this.regex);
             hBox.setPadding(Insets.EMPTY);
 
             this.getSkinnable().heightProperty().addListener(this.heightListener);
@@ -249,16 +197,12 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
 
     @Override
     public void dispose() {
-        this.regex.removeEventFilter(MouseEvent.MOUSE_EXITED, this.regexMouseExitHandler);
-        this.regex.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.regexMouseClickHandler);
-        this.regex.removeEventFilter(MouseEvent.MOUSE_ENTERED, this.regexMouseEnterHandler);
         this.wholeWord.removeEventFilter(MouseEvent.MOUSE_EXITED, this.wholeWordMouseExitHandler);
         this.wholeWord.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.wholeWordMouseClickHandler);
         this.wholeWord.removeEventFilter(MouseEvent.MOUSE_ENTERED, this.wholeWordMouseEnterHandler);
         this.matchCase.removeEventFilter(MouseEvent.MOUSE_EXITED, this.matchCaseMouseExitHandler);
         this.matchCase.removeEventFilter(MouseEvent.MOUSE_CLICKED, this.matchCaseMouseClickHandler);
         this.matchCase.removeEventFilter(MouseEvent.MOUSE_ENTERED, this.matchCaseMouseEnterHandler);
-        this.regexProperty.unbind();
         this.wholeWordProperty.unbind();
         this.matchCaseProperty.unbind();
         super.dispose();
