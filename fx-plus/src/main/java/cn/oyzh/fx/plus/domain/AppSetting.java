@@ -668,7 +668,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public static byte defaultFontSize() {
-        return 11;
+        return 13;
     }
 
     public static String defaultFontFamily() {
