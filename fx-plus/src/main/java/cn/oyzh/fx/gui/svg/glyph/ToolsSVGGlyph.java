@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ToolsSVGGlyph extends SVGGlyph {
 
     public ToolsSVGGlyph() {
-        this.setUrl("/fx-svg/tools.svg");
+        super("/fx-svg/tools.svg");
     }
 
     public ToolsSVGGlyph(String size) {

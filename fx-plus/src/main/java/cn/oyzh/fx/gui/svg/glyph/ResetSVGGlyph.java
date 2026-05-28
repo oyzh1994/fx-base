@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ResetSVGGlyph extends SVGGlyph {
 
     public ResetSVGGlyph() {
-        this.setUrl("/fx-svg/reset.svg");
+        super("/fx-svg/reset.svg");
     }
 
     public ResetSVGGlyph(String size) {

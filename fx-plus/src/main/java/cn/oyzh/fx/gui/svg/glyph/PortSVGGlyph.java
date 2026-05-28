@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PortSVGGlyph extends SVGGlyph {
 
     public PortSVGGlyph() {
-        this.setUrl("/fx-svg/port.svg");
+        super("/fx-svg/port.svg");
     }
 
     public PortSVGGlyph(String size) {

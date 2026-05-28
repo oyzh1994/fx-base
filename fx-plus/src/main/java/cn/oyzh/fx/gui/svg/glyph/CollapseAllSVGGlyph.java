@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class CollapseAllSVGGlyph extends SVGGlyph {
 
     public CollapseAllSVGGlyph() {
-        this.setUrl("/fx-svg/vertical-align-middl.svg");
+        super("/fx-svg/vertical-align-middl.svg");
     }
 
     public CollapseAllSVGGlyph(String size) {

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class WholeWordSVGGlyph extends SVGGlyph {
 
     public WholeWordSVGGlyph() {
-        this.setUrl("/fx-svg/whole-word.svg");
+        super("/fx-svg/whole-word.svg");
     }
 
     public WholeWordSVGGlyph(String size) {

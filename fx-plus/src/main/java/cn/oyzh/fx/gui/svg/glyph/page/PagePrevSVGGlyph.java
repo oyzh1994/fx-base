@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PagePrevSVGGlyph extends SVGGlyph {
 
     public PagePrevSVGGlyph() {
-        this.setUrl("/fx-svg/page/page-prev.svg");
+        super("/fx-svg/page/page-prev.svg");
     }
 
     public PagePrevSVGGlyph(String size) {

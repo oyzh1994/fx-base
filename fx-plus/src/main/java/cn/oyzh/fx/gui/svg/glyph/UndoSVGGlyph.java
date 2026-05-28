@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class UndoSVGGlyph extends SVGGlyph {
 
     public UndoSVGGlyph() {
-        this.setUrl("/fx-svg/data_revoke.svg");
+        super("/fx-svg/data_revoke.svg");
     }
 
     public UndoSVGGlyph(String size) {

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class CompressSVGGlyph extends SVGGlyph {
 
     public CompressSVGGlyph() {
-        this.setUrl("/fx-svg/compress.svg");
+        super("/fx-svg/compress.svg");
     }
 
     public CompressSVGGlyph(String size) {

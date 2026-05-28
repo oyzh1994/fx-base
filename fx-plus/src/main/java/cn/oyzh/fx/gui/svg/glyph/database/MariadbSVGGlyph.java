@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class MariadbSVGGlyph extends SVGGlyph {
 
     public MariadbSVGGlyph() {
-        this.setUrl("/fx-svg/database/mariadb.svg");
+        super("/fx-svg/database/mariadb.svg");
     }
 
     public MariadbSVGGlyph(String size) {

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class MatchCaseSVGGlyph extends SVGGlyph {
 
     public MatchCaseSVGGlyph() {
-        this.setUrl("/fx-svg/match_case.svg");
+        super("/fx-svg/match_case.svg");
     }
 
     public MatchCaseSVGGlyph(String size) {

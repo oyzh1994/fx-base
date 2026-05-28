@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class MusicSVGGlyph extends SVGGlyph {
 
     public MusicSVGGlyph() {
-        this.setUrl("/fx-svg/music.svg");
+        super("/fx-svg/music.svg");
     }
 
     public MusicSVGGlyph(String size) {

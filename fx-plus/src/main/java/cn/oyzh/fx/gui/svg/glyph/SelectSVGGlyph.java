@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class SelectSVGGlyph extends SVGGlyph {
 
     public SelectSVGGlyph() {
-        this.setUrl("/fx-svg/select.svg");
+        super("/fx-svg/select.svg");
     }
 
     public SelectSVGGlyph(String size) {

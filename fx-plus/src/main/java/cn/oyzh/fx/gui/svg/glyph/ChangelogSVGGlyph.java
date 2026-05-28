@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ChangelogSVGGlyph extends SVGGlyph {
 
     public ChangelogSVGGlyph() {
-        this.setUrl("/fx-svg/changelog.svg");
+        super("/fx-svg/changelog.svg");
     }
 
     public ChangelogSVGGlyph(String size) {

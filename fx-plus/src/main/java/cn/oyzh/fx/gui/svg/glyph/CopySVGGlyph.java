@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class CopySVGGlyph extends SVGGlyph {
 
     public CopySVGGlyph() {
-        this.setUrl("/fx-svg/copy.svg");
+        super("/fx-svg/copy.svg");
     }
 
     public CopySVGGlyph(String size) {

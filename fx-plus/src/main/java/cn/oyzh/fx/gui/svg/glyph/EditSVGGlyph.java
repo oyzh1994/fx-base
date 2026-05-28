@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class EditSVGGlyph extends SVGGlyph {
 
     public EditSVGGlyph() {
-        this.setUrl("/fx-svg/edit.svg");
+        super("/fx-svg/edit.svg");
     }
 
     public EditSVGGlyph(String size) {

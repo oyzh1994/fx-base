@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.svg.glyph.database;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.font.FontManager;
 
 /**
  * @author oyzh
@@ -9,7 +10,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class EventSVGGlyph extends SVGGlyph {
 
     public EventSVGGlyph() {
-        this.setUrl("/fx-svg/database/event.svg");
+        super("/fx-svg/database/event.svg");
     }
 
     public EventSVGGlyph(String size) {

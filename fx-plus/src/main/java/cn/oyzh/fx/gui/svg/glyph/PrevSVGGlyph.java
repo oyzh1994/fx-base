@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PrevSVGGlyph extends SVGGlyph {
 
     public PrevSVGGlyph() {
-        this.setUrl("/fx-svg/direction-up.svg");
+        super("/fx-svg/direction-up.svg");
     }
 
     public PrevSVGGlyph(String size) {

@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
 public class SearchSVGLabel extends SVGLabel {
 
     public SearchSVGLabel() {
-        this.setUrl("/fx-svg/search.svg");
+        super("/fx-svg/search.svg");
     }
 
     public SearchSVGLabel(String size) {

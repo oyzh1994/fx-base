@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ExpendSVGGlyph extends SVGGlyph {
 
     public ExpendSVGGlyph() {
-        this.setUrl("/fx-svg/arrow-to-right.svg");
+        super("/fx-svg/arrow-to-right.svg");
     }
 
     public ExpendSVGGlyph(String size) {

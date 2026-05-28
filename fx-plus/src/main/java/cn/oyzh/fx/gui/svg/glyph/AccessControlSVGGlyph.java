@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class AccessControlSVGGlyph extends SVGGlyph {
 
     public AccessControlSVGGlyph() {
-        this.setUrl("/fx-svg/access-control.svg");
+        super("/fx-svg/access-control.svg");
     }
 
     public AccessControlSVGGlyph(String size) {

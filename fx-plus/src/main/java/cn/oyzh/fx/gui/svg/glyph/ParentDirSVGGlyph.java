@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ParentDirSVGGlyph extends SVGGlyph {
 
     public ParentDirSVGGlyph() {
-        this.setUrl("/fx-svg/parent-dir.svg");
+        super("/fx-svg/parent-dir.svg");
     }
 
     public ParentDirSVGGlyph(String size) {

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RegexSVGGlyph extends SVGGlyph {
 
     public RegexSVGGlyph() {
-        this.setUrl("/fx-svg/regex.svg");
+        super("/fx-svg/regex.svg");
     }
 
     public RegexSVGGlyph(String size) {

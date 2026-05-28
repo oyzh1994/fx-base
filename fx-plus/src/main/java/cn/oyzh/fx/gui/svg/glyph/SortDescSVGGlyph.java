@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class SortDescSVGGlyph extends SVGGlyph {
 
     public SortDescSVGGlyph() {
-        this.setUrl("/fx-svg/sort-descending.svg");
+        super("/fx-svg/sort-descending.svg");
     }
 
     public SortDescSVGGlyph(String size) {

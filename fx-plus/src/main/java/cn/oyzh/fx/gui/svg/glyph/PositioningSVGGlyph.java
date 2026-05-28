@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PositioningSVGGlyph  extends SVGGlyph {
 
     public PositioningSVGGlyph() {
-        this.setUrl("/fx-svg/positioning.svg");
+        super("/fx-svg/positioning.svg");
     }
 
     public PositioningSVGGlyph(String size) {

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.font.FontManager;
 
 /**
  * @author oyzh
@@ -9,17 +10,11 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class GroupSVGGlyph extends SVGGlyph {
 
     public GroupSVGGlyph() {
-        this.setUrl("/fx-svg/group.svg");
+        super("/fx-svg/group.svg");
     }
 
     public GroupSVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }
-
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.group());
-//        super.initNode();
-//    }
 }

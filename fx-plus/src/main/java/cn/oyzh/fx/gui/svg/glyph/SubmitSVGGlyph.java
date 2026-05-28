@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class SubmitSVGGlyph extends SVGGlyph {
 
     public SubmitSVGGlyph() {
-        this.setUrl("/fx-svg/check.svg");
+        super("/fx-svg/check.svg");
     }
 
     public SubmitSVGGlyph(String size) {

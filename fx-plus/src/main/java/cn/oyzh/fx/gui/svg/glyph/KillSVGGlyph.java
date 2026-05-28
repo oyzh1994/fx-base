@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class KillSVGGlyph extends SVGGlyph {
 
     public KillSVGGlyph() {
-        this.setUrl("/fx-svg/kill.svg");
+        super("/fx-svg/kill.svg");
     }
 
     public KillSVGGlyph(String size) {

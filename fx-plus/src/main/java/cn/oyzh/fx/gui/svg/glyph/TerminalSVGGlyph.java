@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class TerminalSVGGlyph extends SVGGlyph {
 
     public TerminalSVGGlyph() {
-        this.setUrl("/fx-svg/code library.svg");
+        super("/fx-svg/code library.svg");
     }
 
     public TerminalSVGGlyph(String size) {

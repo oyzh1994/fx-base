@@ -10,7 +10,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ConfigurationSVGGlyph extends SVGGlyph {
 
     public ConfigurationSVGGlyph() {
-        this.setUrl("/fx-svg/configuration.svg");
+        super("/fx-svg/configuration.svg");
     }
 
     public ConfigurationSVGGlyph(String size) {

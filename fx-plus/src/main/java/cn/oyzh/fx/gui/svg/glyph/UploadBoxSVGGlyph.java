@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class UploadBoxSVGGlyph extends SVGGlyph {
 
     public UploadBoxSVGGlyph() {
-        this.setUrl("/fx-svg/upload-box.svg");
+        super("/fx-svg/upload-box.svg");
     }
 
     public UploadBoxSVGGlyph(String size) {

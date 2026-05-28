@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DumpSVGGlyph extends SVGGlyph {
 
     public DumpSVGGlyph() {
-        this.setUrl("/fx-svg/database/dump.svg");
+        super("/fx-svg/database/dump.svg");
     }
 
     public DumpSVGGlyph(String size) {

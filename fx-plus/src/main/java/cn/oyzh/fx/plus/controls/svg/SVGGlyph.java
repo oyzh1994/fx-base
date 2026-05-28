@@ -4,6 +4,7 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
+import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
@@ -200,13 +201,11 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
     }
 
     public SVGGlyph(String url) {
-        this();
-        this.setUrl(url);
+        this(url, FontManager.currentFontSize());
     }
 
     public SVGGlyph(String url, Paint color) {
-        this();
-        this.setUrl(url);
+        this(url, FontManager.currentFontSize());
         this.setColor(color);
     }
 

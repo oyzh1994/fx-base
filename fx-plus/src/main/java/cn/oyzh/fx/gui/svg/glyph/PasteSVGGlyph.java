@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PasteSVGGlyph extends SVGGlyph {
 
     public PasteSVGGlyph() {
-        this.setUrl("/fx-svg/file-paste.svg");
+        super("/fx-svg/file-paste.svg");
     }
 
     public PasteSVGGlyph(String size) {

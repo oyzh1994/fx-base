@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class HistorySVGGlyph extends SVGGlyph {
 
     public HistorySVGGlyph() {
-        this.setUrl("/fx-svg/history.svg");
+        super("/fx-svg/history.svg");
     }
 
     public HistorySVGGlyph(String size) {

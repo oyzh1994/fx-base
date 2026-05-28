@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class QuerySVGGlyph extends SVGGlyph {
 
     public QuerySVGGlyph() {
-        this.setUrl("/fx-svg/query.svg");
+        super("/fx-svg/query.svg");
     }
 
     public QuerySVGGlyph(String size) {

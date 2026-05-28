@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ProcessSVGGlyph extends SVGGlyph {
 
     public ProcessSVGGlyph() {
-        this.setUrl("/fx-svg/process.svg");
+        super("/fx-svg/process.svg");
     }
 
     public ProcessSVGGlyph(String size) {
