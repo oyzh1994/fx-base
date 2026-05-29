@@ -17,8 +17,8 @@ public class AddFolderButton extends IconButton {
     public void initNode() {
         this.setRealHeight(30);
         this.addClass("accent");
-        this.setText(I18nHelper.addFolder());
-        this.setTipText(I18nHelper.addFolder());
+        this.setText(I18nHelper.addFolder1());
+        this.setTipText(I18nHelper.addFolder1());
         this.init(new AddGroupSVGGlyph(), 0.7);
         super.initNode();
     }
