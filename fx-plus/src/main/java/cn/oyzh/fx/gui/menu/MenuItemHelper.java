@@ -339,6 +339,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameGroup(), new RenameSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem renameFolder(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFolder(), new RenameSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem renameNode(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameNode(), new RenameSVGGlyph(iconSize), action);
     }
@@ -507,6 +511,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteGroup(), new DeleteSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem deleteFolder(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFolder(), new DeleteSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem deleteNode(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteNode(), new DeleteSVGGlyph(iconSize), action);
     }
@@ -541,6 +549,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem addGroup(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addGroup(), new AddGroupSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem addFolder(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addFolder(), new AddGroupSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem addConnect(String iconSize, Runnable action) {
