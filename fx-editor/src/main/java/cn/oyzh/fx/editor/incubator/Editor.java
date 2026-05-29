@@ -2,6 +2,7 @@ package cn.oyzh.fx.editor.incubator;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -150,29 +151,38 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
     };
 
     private final ChangeListener<? super String> highlightListener = (observableValue, formatType, t1) -> {
-        // 获取滚动条值
-        Double scrollValue = this.getScrollValue();
-        this.syntaxDecorator.setHighlight(t1);
-        this.refreshText();
-        // 清除高亮的时候滚动到原位置
-        if (StringUtil.isEmpty(t1)) {
-            FXUtil.runWait(() -> this.setScrollValue(scrollValue));
-        }
+        ThreadUtil.start(() -> {
+            // 获取滚动条值
+            Double scrollValue = this.getScrollValue();
+            this.syntaxDecorator.setHighlight(t1);
+            this.refreshText();
+            // 清除高亮的时候滚动到原位置
+            if (StringUtil.isEmpty(t1)) {
+                this.setScrollValue(scrollValue);
+            }
+        });
+
     };
 
     private final ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
-        this.syntaxDecorator.setHighlightRegex(t1);
-        this.refreshText();
+        ThreadUtil.start(() -> {
+            this.syntaxDecorator.setHighlightRegex(t1);
+            this.refreshText();
+        });
     };
 
     private final ChangeListener<? super Boolean> highlightWholeWordListener = (observableValue, formatType, t1) -> {
-        this.syntaxDecorator.setHighlightWholeWord(t1);
-        this.refreshText();
+        ThreadUtil.start(() -> {
+            this.syntaxDecorator.setHighlightWholeWord(t1);
+            this.refreshText();
+        });
     };
 
     private final ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
-        this.syntaxDecorator.setHighlightMatchCase(t1);
-        this.refreshText();
+        ThreadUtil.start(() -> {
+            this.syntaxDecorator.setHighlightMatchCase(t1);
+            this.refreshText();
+        });
     };
 
     private final ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
@@ -279,7 +289,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
      * 刷新文本
      */
     protected void refreshText() {
-        this.setText(this.getText());
+        this.text(this.getText());
     }
 
     /**
@@ -663,13 +673,16 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
             if (startIndex == -1 && length >= start) {
                 startIndex = i;
                 startOffset = start - lastLen;
+                if (startOffset < 0) {
+                    startOffset = 0;
+                }
             }
             if (length >= end) {
                 endIndex = i;
                 endOffset = end - lastLen;
                 break;
             }
-            length += 1;
+            length += this.lineEndingLength();
             lastLen = length;
         }
         endPos = TextPos.ofLeading(endIndex, endOffset);
@@ -1072,7 +1085,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
             // 设置选区颜色
             this.setSelectionColor(this.defaultSelectionColor());
             // 设置光标颜色
-            this.setCaretColor(ThemeManager.currentAccentColor());
+            this.setCaretColor(ThemeManager.currentForegroundColor());
             // 初始化文字样式
             this.initTextStyle();
         } catch (Exception ex) {

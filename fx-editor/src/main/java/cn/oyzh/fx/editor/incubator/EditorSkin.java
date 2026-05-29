@@ -46,27 +46,40 @@ public class EditorSkin extends CodeAreaSkin {
 
     public EditorSkin(Editor control) {
         super(control);
-        this.setCaretColor(ThemeManager.currentAccentColor());
+        this.setCaretColor(ThemeManager.currentForegroundColor());
         this.setCaretLineColor(control.defaultCaretLineColor());
         this.setSelectionColor(control.defaultSelectionColor());
-        this.path1 = this.getCaretPath();
         // 监听光标，防止颜色被修改
+        this.path1 = this.getCaretPath();
         this.path1.fillProperty().addListener(this.path1Listener);
-        this.path2 = this.getCaretLineHighlight();
         // 监听高亮行，防止颜色被修改
+        this.path2 = this.getCaretLineHighlight();
         this.path2.fillProperty().addListener(this.path2Listener);
-        this.path3 = this.getSelectionHighlight();
         // 监听选区，防止颜色被修改
+        this.path3 = this.getSelectionHighlight();
         this.path3.fillProperty().addListener(this.path3Listener);
     }
 
+    private VFlow vFlow;
+
+    /**
+     * 获取VFlow对象
+     *
+     * @return 结果
+     */
     public VFlow getVFlow() {
-        for (Node child : this.getChildren()) {
-            if (child instanceof VFlow flow) {
-                return flow;
+        if (this.vFlow == null) {
+            for (Node child : this.getChildren()) {
+                if (child instanceof VFlow flow) {
+                    this.vFlow = flow;
+                    break;
+                }
+            }
+            if (this.vFlow == null) {
+                this.vFlow = RichTextAreaSkinHelper.getVFlow(this.getSkinnable());
             }
         }
-        return RichTextAreaSkinHelper.getVFlow(this.getSkinnable());
+        return this.vFlow;
     }
 
     /**
@@ -87,11 +100,6 @@ public class EditorSkin extends CodeAreaSkin {
     public Path getCaretPath() {
         VFlow vFlow = this.getVFlow();
         return (Path) vFlow.lookup("Path.caret");
-        // Node node = vFlow.lookup("Path.caret");
-        // if (node instanceof Path path) {
-        //     return path;
-        // }
-        // return ReflectUtil.getFieldValue(vFlow, "caretPath");
     }
 
     /**
@@ -102,11 +110,6 @@ public class EditorSkin extends CodeAreaSkin {
     public Path getSelectionHighlight() {
         VFlow vFlow = this.getVFlow();
         return (Path) vFlow.lookup("Path.selection-highlight");
-        // Node node = vFlow.lookup("Path.selection-highlight");
-        // if (node instanceof Path path) {
-        //     return path;
-        // }
-        // return ReflectUtil.getFieldValue(vFlow, "selectionHighlight");
     }
 
     /**
@@ -117,11 +120,6 @@ public class EditorSkin extends CodeAreaSkin {
     public Path getCaretLineHighlight() {
         VFlow vFlow = this.getVFlow();
         return (Path) vFlow.lookup("Path.caret-line");
-        // Node node = vFlow.lookup("Path.caret-line");
-        // if (node instanceof Path path) {
-        //     return path;
-        // }
-        // return ReflectUtil.getFieldValue(vFlow, "caretLineHighlight");
     }
 
     /**

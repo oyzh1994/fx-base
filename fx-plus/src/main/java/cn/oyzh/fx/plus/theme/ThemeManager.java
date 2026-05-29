@@ -197,7 +197,4 @@ public class ThemeManager {
         return currentTheme().getUserAgentStylesheet();
     }
 
-//    public static String currentCompressedUserAgentStylesheet() {
-//        return currentTheme().getCompressedUserAgentStylesheet();
-//    }
 }

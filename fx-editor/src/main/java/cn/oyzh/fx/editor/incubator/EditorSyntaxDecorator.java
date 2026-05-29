@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -480,12 +478,12 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         return paragraphs;
     }
 
-    /**
-     * token缓存
-     * key: 行内容hashCode
-     * value: 行样式token列表
-     */
-    private final Map<Integer, List<StyledToken>> tokenCache = new ConcurrentHashMap<>();
+    ///**
+    // * token缓存
+    // * key: 行内容hash
+    // * value: 行样式token列表
+    // */
+    //private final Map<String, List<StyledToken>> tokenCache = new ConcurrentHashMap<>();
 
     /**
      * 完整构建段落，包含语法着色、提示词和高亮。
@@ -513,14 +511,17 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 super.applyStyles(builder, new StyledToken(line, null));
             } else {
                 List<StyledToken> tokens;
-                int hashCode = line.hashCode();
-                // 从缓存获取
-                if (this.tokenCache.containsKey(hashCode)) {
-                    tokens = this.tokenCache.get(hashCode);
-                } else {// 执行生成
+                //String hash = MD5Util.md5Hex(line);
+                //// 从缓存获取
+                //if (this.tokenCache.containsKey(hash)) {
+                //    if (line.contains("image2")) {
+                //        System.out.println(hash + " " + line);
+                //    }
+                //    tokens = this.tokenCache.get(hash);
+                //} else {// 执行生成
                     tokens = provider.tokenize(line);
-                    this.tokenCache.put(hashCode, tokens);
-                }
+                    //this.tokenCache.put(hash, tokens);
+                //}
                 // 应用样式
                 for (StyledToken token : tokens) {
                     super.applyStyles(builder, token);

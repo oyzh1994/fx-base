@@ -24,8 +24,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -342,6 +340,12 @@ public class EditorTest extends Application {
             editor.selectRange(0, 2);
         });
         hBox5.addChild(btn_53);
+
+        Button btn_54 = new Button("选中位置3");
+        btn_54.setOnAction(event -> {
+            editor.selectRange(10, 15);
+        });
+        hBox5.addChild(btn_54);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
