@@ -260,6 +260,10 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         }
     }
 
+    public Paint getColor() {
+        return color;
+    }
+
     /**
      * 设置颜色
      *
@@ -408,10 +412,6 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
 
     public String getUrl() {
         return url;
-    }
-
-    public Paint getColor() {
-        return color;
     }
 
     public Color getActiveColor() {
