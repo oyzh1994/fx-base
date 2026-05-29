@@ -24,6 +24,14 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         NodeManager.init(this);
     }
 
+    public FXTableColumn( ) {
+        super();
+    }
+
+    public FXTableColumn(String text) {
+        super(text);
+    }
+
     /**
      * 获取cell工厂
      *

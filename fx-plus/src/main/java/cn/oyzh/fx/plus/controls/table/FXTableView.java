@@ -59,13 +59,16 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     @Override
     public void initNode() {
         this.setCache(false);
-        this.setHeaderHeight(30);
-        this.setFixedCellSize(30);
-        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+//        this.setHeaderHeight(30);
+//        this.setFixedCellSize(30);
+//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_LAST_COLUMN);
+//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_NEXT_COLUMN);
+//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_SUBSEQUENT_COLUMNS);
         this.initEvenListener();
         this.setReorderable(false);
-//        this.setFocusTraversable(false);
-//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         // 监听列
         this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
@@ -134,22 +137,22 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         this.resizeNode();
     }
 
-    @Override
-    public void resizeNode(Double width, Double height) {
-        FlexAdapter.super.resizeNode(width, height);
-        ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
-        for (TableColumn<?, ?> column : columns) {
-            if (column instanceof FlexAdapter flexNode) {
-                if (column.isVisible()) {
-                    if (column.isResizable()) {
-                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-                    }
-                } else {
-                    NodeUtil.setWidth(column, 0D);
-                }
-            }
-        }
-    }
+//    @Override
+//    public void resizeNode(Double width, Double height) {
+//        FlexAdapter.super.resizeNode(width, height);
+//        ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
+//        for (TableColumn<?, ?> column : columns) {
+//            if (column instanceof FlexAdapter flexNode) {
+//                if (column.isVisible()) {
+//                    if (column.isResizable()) {
+//                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+//                    }
+//                } else {
+//                    NodeUtil.setWidth(column, 0D);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * 获取表头组件
@@ -200,15 +203,15 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FXUtil.runWait(() -> super.getColumns().add(column));
     }
 
-    public void addColumnsAll(List<? extends TableColumn<S, ?>> columns) {
+    public void addColumn(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().addAll(columns));
     }
 
-    public void setColumnsAll(List<? extends TableColumn<S, ?>> columns) {
+    public void setColumn(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().setAll(columns));
     }
 
-    public void clearColumns() {
+    public void clearColumn() {
         FXUtil.runWait(() -> super.getColumns().clear());
     }
 
@@ -281,7 +284,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     /**
      * 销毁列
      */
-    protected void destroyColumns(){
+    protected void destroyColumn(){
         for (TableColumn<?,?> column : this.getColumns()) {
             if(column instanceof Destroyable destroyable){
                 destroyable.destroy();
@@ -289,30 +292,30 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         }
     }
 
-    /**
-     * 移除时销毁列
-     */
-    protected void destroyColmnsOnRemoved(){
-        // 监听移除
-        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) change -> {
-            if (change.next()) {
-                List<?> list = change.getRemoved();
-                for (Object object : list) {
-                    if (object instanceof Destroyable destroyable){
-                        destroyable.destroy();
-                    }
-                }
-            }
-        });
-    }
+//    /**
+//     * 移除时销毁列
+//     */
+//    protected void destroyColmnOnRemoved(){
+//        // 监听移除
+//        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) change -> {
+//            if (change.next()) {
+//                List<?> list = change.getRemoved();
+//                for (Object object : list) {
+//                    if (object instanceof Destroyable destroyable){
+//                        destroyable.destroy();
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     @Override
     public void destroy() {
         this.clearProps();
         this.destroyItems();
         this.clearItems();
-        this.destroyColumns();
-        this.clearColumns();
+        this.destroyColumn();
+        this.clearColumn();
         NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
     }

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import atlantafx.base.controls.Tab;
+import atlantafx.base.controls.TabLine;
 import atlantafx.base.theme.Styles;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
@@ -14,8 +16,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +25,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, Destroyable {
+public class FXTabLine extends TabLine implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, Destroyable {
 
     {
         NodeManager.init(this);
@@ -259,39 +259,12 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         }
     }
 
-    /**
-     * 禁用其他tab
-     *
-     * @param current 当前tab
-     */
-    public void disableOtherTab(Tab current) {
-        if (current != null) {
-            FXUtil.runLater(() -> this.getTabs().forEach(t -> {
-                if (t != current) {
-                    t.setDisable(true);
-                }
-            }));
-        }
-    }
-
-    /**
-     * 启用所有tab
-     */
-    public void enableTabs() {
-        FXUtil.runLater(() -> this.getTabs().forEach(t -> t.setDisable(false)));
-    }
-
     public boolean isSelectedTab(String tabId) {
         if (tabId == null) {
             return false;
         }
         Tab tab = this.getSelectedItem();
         return tab != null && StringUtil.equals(tabId, tab.getId());
-    }
-
-    public void setTabHeight(double height) {
-        this.setTabMaxHeight(height);
-        this.setTabMinHeight(height);
     }
 
     public int tabSize() {
@@ -310,120 +283,16 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         this.resizeNode();
     }
 
-    //    @Override
-    //    public void resizeNode(Double width, Double height) {
-    //        FlexAdapter.super.resizeNode(width, height);
-    //        for (Tab tab : this.getTabs()) {
-    //            if (tab.getContent() instanceof FlexAdapter flexNode) {
-    //                flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-    //                flexNode.setRealHeight(FlexUtil.compute(flexNode.getFlexHeight(), height));
-    //            } else {
-    //                NodeUtil.setWidth(tab.getContent(), width);
-    //                NodeUtil.setHeight(tab.getContent(), height);
-    //            }
-    //        }
-    //    }
-
     @Override
     public void initNode() {
         this.setCache(false);
-        //        this.setTabRealHeight(24);
         this.getStyleClass().add(Styles.TABS_CLASSIC);
-        // this.selectedItemChanged(this::setupSelectCountListener);
-        // // 监听tab移除，防止内存泄露
-        // this.getTabs().addListener((ListChangeListener<Tab>) c -> {
-        //     if (c.next()) {
-        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
-        //     }
-        // });
         FlexAdapter.super.initNode();
-    }
-
-    /**
-     * 安装刷新监听器
-     */
-    public void setupRefreshListener() {
-        this.selectedItemChanged((observableValue, tab, t1) -> {
-            this.refresh();
-        });
-    }
-
-    // /**
-    //  * 安装选中计数器
-    //  *
-    //  */
-    // protected void setupSelectCountListener() {
-    //     this.applyCss();
-    //     this.requestLayout();
-    //     this.selectedItemChanged(this::selectCountListener);
-    // }
-    //
-    // /**
-    //  * 选中计数
-    //  */
-    // private AtomicInteger selectCount;
-    //
-    // /**
-    //  * 选中计数器
-    //  *
-    //  * @param observable 监听对象
-    //  * @param oldValue   旧值
-    //  * @param newValue   新值
-    //  */
-    // public void selectCountListener(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
-    //     this.applyCss();
-    //     this.requestLayout();
-    //     if (this.selectCount == null) {
-    //         this.selectCount = new AtomicInteger(0);
-    //         JulLog.info("select count listener setup.");
-    //     }
-    //     if (this.selectCount.incrementAndGet() <= 2) {
-    //         if (newValue != null) {
-    //             // this.setIgnoreChanged(true);
-    //             // this.clearSelection();
-    //             // FXUtil.runPulse(() -> {
-    //             //     this.select(newValue);
-    //             //     this.setIgnoreChanged(false);
-    //             // });
-    //             this.refresh();
-    //         }
-    //         if (this.selectCount.get() == 2) {
-    //             this.removeSelectCountListener();
-    //         }
-    //     }
-    // }
-    //
-    // /**
-    //  * 移除选中计数监听器
-    //  */
-    // protected void removeSelectCountListener() {
-    //     JulLog.info("select count listener removed.");
-    //     this.selectCount = null;
-    //     this.getSelectionModel().selectedItemProperty().removeListener(this::selectCountListener);
-    // }
-
-    public void setTabRealHeight(double tabHeight) {
-        super.setTabMaxHeight(tabHeight);
-        super.setTabMinHeight(tabHeight);
-    }
-
-    public double getTabRealHeight() {
-        return Math.max(this.getTabMaxHeight(), this.getTabMinHeight());
-    }
-
-    /**
-     * 刷新tab，解决部分情况下组件冻结的问题
-     */
-    public void refresh() {
-        this.applyCss();
-        this.autosize();
-        this.requestLayout();
     }
 
     @Override
     public void destroy() {
         this.clearChild();
-        //        NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
     }
 }

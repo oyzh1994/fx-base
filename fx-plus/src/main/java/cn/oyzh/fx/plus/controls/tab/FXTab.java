@@ -134,8 +134,6 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
         NodeAdapter.super.initNode();
-//        this.addEventFilter(Tab.CLOSED_EVENT, this::onTabClosed);
-//        this.addEventFilter(Tab.TAB_CLOSE_REQUEST_EVENT, this::onTabCloseRequest);
     }
 
     /**
@@ -144,7 +142,6 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      * @param event 事件
      */
     protected void onTabClosed(Event event) {
-        // NodeDestroyUtil.dispose(this);
     }
 
     protected void onTabCloseRequest(Event event) {

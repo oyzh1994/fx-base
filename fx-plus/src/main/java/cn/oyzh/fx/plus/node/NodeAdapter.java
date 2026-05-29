@@ -33,14 +33,6 @@ public interface NodeAdapter extends EventTarget {
      * 初始化节点
      */
     default void initNode() {
-        // // parent组件处理
-        // if (this instanceof Parent parent) {
-        //     parent.getChildrenUnmodifiable().addListener((ListChangeListener<Node>) c -> {
-        //         if (c.next()) {
-        //             c.getRemoved().forEach(NodeDestroyUtil::destroy);
-        //         }
-        //     });
-        // }
     }
 
     /**
