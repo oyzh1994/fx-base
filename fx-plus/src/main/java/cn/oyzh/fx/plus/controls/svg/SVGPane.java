@@ -14,10 +14,6 @@ import javafx.scene.Node;
  */
 public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
 
-    {
-        this.setPadding(Insets.EMPTY);
-    }
-
     protected String size;
 
     public String getSize() {
@@ -53,5 +49,11 @@ public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
             return Double.parseDouble(this.size.split(",")[1].trim());
         }
         return Double.parseDouble(this.size);
+    }
+
+    @Override
+    public void initNode() {
+        this.setPadding(Insets.EMPTY);
+        super.initNode();
     }
 }

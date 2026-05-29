@@ -16,10 +16,4 @@ public class SortAscSVGGlyph extends SVGGlyph {
         this();
         this.setSizeStr(size);
     }
-
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.sortAsc());
-//        super.initNode();
-//    }
 }

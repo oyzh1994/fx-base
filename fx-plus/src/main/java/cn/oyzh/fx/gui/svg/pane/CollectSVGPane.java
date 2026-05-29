@@ -4,6 +4,7 @@ import cn.oyzh.fx.gui.svg.glyph.CollectSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGPane;
+import javafx.scene.text.Font;
 
 /**
  * @author oyzh
@@ -16,11 +17,11 @@ public class CollectSVGPane extends SVGPane {
     }
 
     public void collect() {
-        this.setChild(new UnCollectSVGGlyph(this.size));
+        this.setChild(new UnCollectSVGGlyph(this.getSize()));
     }
 
     public void unCollect() {
-        this.setChild(new CollectSVGGlyph(this.size));
+        this.setChild(new CollectSVGGlyph(this.getSize()));
     }
 
     public boolean isCollect() {
@@ -34,5 +35,17 @@ public class CollectSVGPane extends SVGPane {
         } else {
             this.unCollect();
         }
+    }
+
+    @Override
+    public void changeFont(Font font) {
+        if (!this.isChildEmpty() && this.isEnableFont()) {
+            if (this.isCollect()) {
+                this.collect();
+            } else {
+                this.unCollect();
+            }
+        }
+        super.changeFont(font);
     }
 }

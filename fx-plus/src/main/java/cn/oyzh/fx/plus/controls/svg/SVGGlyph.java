@@ -140,8 +140,8 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
             svgPath.setFill(this.activeColor);
         } else if (this.color != null) {// 指定颜色
             svgPath.setFill(this.color);
-        } else if (this.isEnableTheme()) {// 强调色
-            svgPath.setFill(ThemeManager.currentAccentColor());
+        } else if (this.isEnableTheme()) {// 前景色
+            svgPath.setFill(ThemeManager.currentForegroundColor());
         }
     }
 
