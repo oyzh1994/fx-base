@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
@@ -328,7 +329,9 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     public void initNode() {
         this.setCache(false);
         //        this.setTabRealHeight(24);
-        this.getStyleClass().add(Styles.TABS_CLASSIC);
+//        this.getStyleClass().add(Styles.TABS_BORDER_TOP);
+//        this.getStyleClass().add(Styles.TABS_FLOATING);
+//        this.getStyleClass().add(Styles.TABS_CLASSIC);
         // this.selectedItemChanged(this::setupSelectCountListener);
         // // 监听tab移除，防止内存泄露
         // this.getTabs().addListener((ListChangeListener<Tab>) c -> {
@@ -336,6 +339,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
         //     }
         // });
+        this.setPadding(Insets.EMPTY);
         FlexAdapter.super.initNode();
     }
 
