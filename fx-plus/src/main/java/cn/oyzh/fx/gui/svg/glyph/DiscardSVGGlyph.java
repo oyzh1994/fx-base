@@ -1,12 +1,12 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.ScalingSVGGlyph;
 
 /**
  * @author oyzh
  * @since 2024/4/11
  */
-public class DiscardSVGGlyph extends SVGGlyph {
+public class DiscardSVGGlyph extends ScalingSVGGlyph {
 
     public DiscardSVGGlyph() {
         super("/fx-svg/close.svg");
@@ -19,6 +19,6 @@ public class DiscardSVGGlyph extends SVGGlyph {
 
     @Override
     public double sizeScaling() {
-        return 0.6875;
+        return 0.8;
     }
 }

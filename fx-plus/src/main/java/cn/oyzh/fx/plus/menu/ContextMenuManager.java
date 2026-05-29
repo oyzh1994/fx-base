@@ -1,5 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.common.object.ObjectWatcher;
+import cn.oyzh.common.object.ObjectWatcherManager;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
@@ -22,7 +24,7 @@ public class ContextMenuManager {
     private static FXContextMenu contextMenu;
 
     /**
-     * 获取菜单
+     * 创建上下文菜单，全局唯一
      *
      * @param items 列表项
      * @return 菜单
@@ -35,6 +37,19 @@ public class ContextMenuManager {
             contextMenu.setTarget(object);
         }
         contextMenu.setItem(items);
+        return contextMenu;
+    }
+
+    /**
+     * 创建新上下文菜单
+     *
+     * @param items 列表项
+     * @return 菜单
+     */
+    public static ContextMenu createNewContextMenu(List<? extends MenuItem> items) {
+        ContextMenu contextMenu = new ContextMenu();
+        contextMenu.getItems().setAll(items);
+        ObjectWatcherManager.watch(contextMenu);
         return contextMenu;
     }
 

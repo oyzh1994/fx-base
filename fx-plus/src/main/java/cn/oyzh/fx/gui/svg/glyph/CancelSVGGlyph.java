@@ -14,9 +14,4 @@ public class CancelSVGGlyph extends CloseSVGGlyph {
         super();
         this.setSizeStr(size);
     }
-
-    @Override
-    public double sizeScaling() {
-        return 0.6875;
-    }
 }

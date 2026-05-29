@@ -133,6 +133,11 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
+//        List<? extends MenuItem> items = this.getMenuItems();
+//        if (CollectionUtil.isNotEmpty(items)) {
+//            ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
+//            ContextMenuManager.setContextMenu(this, contextMenu);
+//        }
         NodeAdapter.super.initNode();
     }
 

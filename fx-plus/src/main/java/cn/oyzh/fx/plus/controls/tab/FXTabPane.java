@@ -8,6 +8,8 @@ import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
+import cn.oyzh.fx.plus.menu.ContextMenuManager;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -15,7 +17,10 @@ import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
@@ -329,6 +334,7 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     @Override
     public void initNode() {
         this.setCache(false);
+        this.setTabMaxHeight(30);
         //        this.setTabRealHeight(24);
         //        this.getStyleClass().add(Styles.TABS_BORDER_TOP);
         //        this.getStyleClass().add(Styles.TABS_FLOATING);
@@ -341,6 +347,22 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         //     }
         // });
         this.setPadding(Insets.EMPTY);
+        // 创建右键菜单
+        this.getTabs().addListener((ListChangeListener<Tab>) c -> {
+            if (c.next() && !c.getAddedSubList().isEmpty()) {
+                for (Tab tab : c.getAddedSubList()) {
+                    if (tab instanceof MenuItemAdapter adapter) {
+                        List<? extends MenuItem> items = adapter.getMenuItems();
+                        if (CollectionUtil.isNotEmpty(items)) {
+                            ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
+                            ContextMenuManager.setContextMenu(tab, contextMenu);
+                        } else {
+                            ContextMenuManager.clearContextMenu(tab);
+                        }
+                    }
+                }
+            }
+        });
         FlexAdapter.super.initNode();
     }
 

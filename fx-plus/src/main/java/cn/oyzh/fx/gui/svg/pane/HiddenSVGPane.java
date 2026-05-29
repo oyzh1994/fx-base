@@ -20,15 +20,7 @@ public class HiddenSVGPane extends SVGPane {
     }
 
     public void show() {
-        double size;
-        if (StringUtil.isEmpty(this.getSize())) {
-            size = FontManager.currentFontSize();
-        } else {
-            size = this.getSizeHeight();
-        }
-        EyeOpenSVGGlyph svgGlyph = new EyeOpenSVGGlyph(this.getSize());
-        this.setChild(svgGlyph);
-        svgGlyph.setPadding(new Insets(size * .3, 0, 0, 0));
+        this.setChild(new EyeOpenSVGGlyph(this.getSize()));
     }
 
     public void hidden() {

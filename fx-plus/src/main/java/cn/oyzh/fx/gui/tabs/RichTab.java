@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -135,6 +134,9 @@ public abstract class RichTab extends FXTab {
         if (!this.isClosable()) {
             closeTab.setDisable(true);
         }
+        this.closableProperty().addListener((observable, oldValue, newValue) -> {
+            closeTab.setDisable(!newValue);
+        });
         items.add(closeTab);
         FXMenuItem closeLeftTab = MenuItemHelper.closeLeftTab(this::closeLeftTab);
         items.add(closeLeftTab);

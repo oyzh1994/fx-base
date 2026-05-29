@@ -76,14 +76,14 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
 
     public void setItem(MenuItem... items) {
         if (items != null) {
-//            DestroyUtil.destroy(this.getItems());
+            //            DestroyUtil.destroy(this.getItems());
             this.getItems().setAll(items);
         }
     }
 
     public void setItem(Collection<? extends MenuItem> items) {
         if (items != null) {
-//            DestroyUtil.destroy(this.getItems());
+            //            DestroyUtil.destroy(this.getItems());
             this.getItems().setAll(items);
         }
     }
@@ -121,6 +121,8 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
             }
         }
         this.getItems().clear();
-        ContextMenuManager.clearContextMenu(this.targetRef.get());
+        if (this.targetRef != null) {
+            ContextMenuManager.clearContextMenu(this.targetRef.get());
+        }
     }
 }

@@ -327,27 +327,29 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
                     w = Double.parseDouble(strArr[0].trim());
                     h = Double.parseDouble(strArr[1].trim());
                 } else {
-                    double size1 = Double.parseDouble(size);
-                    // 针对部分图标的处理
-                    if (this.sizeScaling() != 1.0) {
-                        w = h = size1 * this.sizeScaling();
-                    } else {
-                        w = h = size1;
-                    }
-                    if (this.widthScaling() != 1.0) {
-                        w *= this.widthScaling();
-                    }
-                    if (this.heightScaling() != 1.0) {
-                        h *= this.heightScaling();
-                    }
+                    double[] arr = this.calculateSize(Double.parseDouble(size));
+                    w = arr[0];
+                    h = arr[1];
                 }
                 this.setMaxSize(w, h);
                 this.setMinSize(w, h);
-                // this.setPrefSize(w, h);
+                this.setPrefSize(w, h);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 计算大小
+     *
+     * @param size 当前大小
+     * @return 宽高值
+     */
+    protected double[] calculateSize(double size) {
+        double w, h;
+        w = h = size;
+        return new double[]{w, h};
     }
 
     @Override
@@ -456,32 +458,4 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         }
         return activeProperty;
     }
-
-    /**
-     * 当设置标准大小时，缩放此组件大小
-     *
-     * @return 结果
-     */
-    public double sizeScaling() {
-        return 1.0;
-    }
-
-    /**
-     * 当设置标准大小时，缩放此组件宽大小
-     *
-     * @return 结果
-     */
-    public double widthScaling() {
-        return 1.0;
-    }
-
-    /**
-     * 当设置标准大小时，缩放此组件高大小
-     *
-     * @return 结果
-     */
-    public double heightScaling() {
-        return 1.0;
-    }
-
 }

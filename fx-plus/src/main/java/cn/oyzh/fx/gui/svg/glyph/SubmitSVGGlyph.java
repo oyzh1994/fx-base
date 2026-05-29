@@ -1,12 +1,13 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.ScalingSVGGlyph;
 
 /**
  * @author oyzh
  * @since 2024/4/11
  */
-public class SubmitSVGGlyph extends SVGGlyph {
+public class SubmitSVGGlyph extends ScalingSVGGlyph {
 
     public SubmitSVGGlyph() {
         super("/fx-svg/check.svg");
