@@ -78,6 +78,9 @@ public class IconUtil {
                 JulLog.info("load icon form cache.");
             }
         }
-        return stream == null ? null : new Image(stream);
+        if (stream == null) {
+            return null;
+        }
+        return new Image(stream, 0, 0, true, true);
     }
 }
