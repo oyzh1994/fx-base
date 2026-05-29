@@ -376,7 +376,7 @@ public class PageBox<T> extends FXHBox {
         this.managedBindVisible();
 
         Insets insets0 = new Insets(0, 0, 0, 3);
-        Insets insets1 = new Insets(1, 0, 0, 3);
+//        Insets insets1 = new Insets(1, 0, 0, 3);
         this.heightProperty().addListener((observable, oldValue, newValue) -> {
             try {
 //                double h1 = (newValue.doubleValue() - this.jump.getRealHeight()) / 2 - 1;
@@ -399,7 +399,7 @@ public class PageBox<T> extends FXHBox {
 //                    double h3 = (newValue.doubleValue() - this.text.getRealHeight()) / 2 - 1;
 //                    Insets insets3 = new Insets(h3, 0, 0, 0);
 //                    this.text.setPadding(insets3);
-                    HBox.setMargin(this.text, insets1);
+                    HBox.setMargin(this.text, insets0);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
