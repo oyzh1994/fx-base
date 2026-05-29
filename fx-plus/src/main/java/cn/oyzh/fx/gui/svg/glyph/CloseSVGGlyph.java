@@ -17,9 +17,8 @@ public class CloseSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.close());
-//        super.initNode();
-//    }
+    @Override
+    public double sizeScaling() {
+        return 0.6875;
+    }
 }

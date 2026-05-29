@@ -1,16 +1,17 @@
 package cn.oyzh.fx.plus.controls.tab;
 
-import atlantafx.base.theme.Styles;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
+import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
@@ -311,27 +312,27 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         this.resizeNode();
     }
 
-    //    @Override
-    //    public void resizeNode(Double width, Double height) {
-    //        FlexAdapter.super.resizeNode(width, height);
-    //        for (Tab tab : this.getTabs()) {
-    //            if (tab.getContent() instanceof FlexAdapter flexNode) {
-    //                flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-    //                flexNode.setRealHeight(FlexUtil.compute(flexNode.getFlexHeight(), height));
-    //            } else {
-    //                NodeUtil.setWidth(tab.getContent(), width);
-    //                NodeUtil.setHeight(tab.getContent(), height);
-    //            }
-    //        }
-    //    }
+    @Override
+    public void resizeNode(Double width, Double height) {
+        FlexAdapter.super.resizeNode(width, height);
+        for (Tab tab : this.getTabs()) {
+            if (tab.getContent() instanceof FlexAdapter flexNode) {
+                flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                flexNode.setRealHeight(FlexUtil.compute(flexNode.getFlexHeight(), height));
+            } else {
+                NodeUtil.setWidth(tab.getContent(), width);
+                NodeUtil.setHeight(tab.getContent(), height);
+            }
+        }
+    }
 
     @Override
     public void initNode() {
         this.setCache(false);
         //        this.setTabRealHeight(24);
-//        this.getStyleClass().add(Styles.TABS_BORDER_TOP);
-//        this.getStyleClass().add(Styles.TABS_FLOATING);
-//        this.getStyleClass().add(Styles.TABS_CLASSIC);
+        //        this.getStyleClass().add(Styles.TABS_BORDER_TOP);
+        //        this.getStyleClass().add(Styles.TABS_FLOATING);
+        //        this.getStyleClass().add(Styles.TABS_CLASSIC);
         // this.selectedItemChanged(this::setupSelectCountListener);
         // // 监听tab移除，防止内存泄露
         // this.getTabs().addListener((ListChangeListener<Tab>) c -> {

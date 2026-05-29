@@ -16,4 +16,20 @@ public class Apply1SVGGlyph extends SVGGlyph {
         this();
         this.setSizeStr(size);
     }
+
+    @Override
+    public double sizeScaling() {
+        return 0.9;
+    }
+
+    @Override
+    public double widthScaling() {
+        return 1.1;
+    }
+
+    @Override
+    public double heightScaling() {
+        return 0.9;
+    }
+
 }

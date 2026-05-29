@@ -320,14 +320,26 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
     public void setSizeStr(String size) {
         if (StringUtil.isNotBlank(size)) {
             try {
-                // size = size.trim();
+                size = size.trim();
                 double w, h;
                 if (size.contains(",")) {
                     String[] strArr = size.split(",");
                     w = Double.parseDouble(strArr[0].trim());
                     h = Double.parseDouble(strArr[1].trim());
                 } else {
-                    w = h = Double.parseDouble(size);
+                    double size1 = Double.parseDouble(size);
+                    // 针对部分图标的处理
+                    if (this.sizeScaling() != 1.0) {
+                        w = h = size1 * this.sizeScaling();
+                    } else {
+                        w = h = size1;
+                    }
+                    if (this.widthScaling() != 1.0) {
+                        w *= this.widthScaling();
+                    }
+                    if (this.heightScaling() != 1.0) {
+                        h *= this.heightScaling();
+                    }
                 }
                 this.setMaxSize(w, h);
                 this.setMinSize(w, h);
@@ -444,4 +456,32 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         }
         return activeProperty;
     }
+
+    /**
+     * 当设置标准大小时，缩放此组件大小
+     *
+     * @return 结果
+     */
+    public double sizeScaling() {
+        return 1.0;
+    }
+
+    /**
+     * 当设置标准大小时，缩放此组件宽大小
+     *
+     * @return 结果
+     */
+    public double widthScaling() {
+        return 1.0;
+    }
+
+    /**
+     * 当设置标准大小时，缩放此组件高大小
+     *
+     * @return 结果
+     */
+    public double heightScaling() {
+        return 1.0;
+    }
+
 }

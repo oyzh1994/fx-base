@@ -17,9 +17,18 @@ public class SubmitSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.submit());
-//        super.initNode();
-//    }
+    @Override
+    public double sizeScaling() {
+        return 0.9;
+    }
+
+    @Override
+    public double widthScaling() {
+        return 1.1;
+    }
+
+    @Override
+    public double heightScaling() {
+        return 0.9;
+    }
 }

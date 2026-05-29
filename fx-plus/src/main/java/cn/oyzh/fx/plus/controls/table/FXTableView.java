@@ -137,22 +137,22 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         this.resizeNode();
     }
 
-//    @Override
-//    public void resizeNode(Double width, Double height) {
-//        FlexAdapter.super.resizeNode(width, height);
-//        ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
-//        for (TableColumn<?, ?> column : columns) {
-//            if (column instanceof FlexAdapter flexNode) {
-//                if (column.isVisible()) {
-//                    if (column.isResizable()) {
-//                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-//                    }
-//                } else {
-//                    NodeUtil.setWidth(column, 0D);
-//                }
-//            }
-//        }
-//    }
+    @Override
+    public void resizeNode(Double width, Double height) {
+        FlexAdapter.super.resizeNode(width, height);
+        ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
+        for (TableColumn<?, ?> column : columns) {
+            if (column instanceof FlexAdapter flexNode) {
+                if (column.isVisible()) {
+                    if (column.isResizable()) {
+                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
+                    }
+                } else {
+                    NodeUtil.setWidth(column, 0D);
+                }
+            }
+        }
+    }
 
     /**
      * 获取表头组件

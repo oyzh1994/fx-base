@@ -26,8 +26,7 @@ public class HiddenSVGPane extends SVGPane {
         } else {
             size = this.getSizeHeight();
         }
-        double h = size * .7;
-        EyeOpenSVGGlyph svgGlyph = new EyeOpenSVGGlyph(size + "," + h);
+        EyeOpenSVGGlyph svgGlyph = new EyeOpenSVGGlyph(this.getSize());
         this.setChild(svgGlyph);
         svgGlyph.setPadding(new Insets(size * .3, 0, 0, 0));
     }

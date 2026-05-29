@@ -8,7 +8,7 @@ import cn.oyzh.fx.gui.svg.glyph.page.PagePrevSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.page.PageSettingSVGGlyph;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
-import cn.oyzh.fx.plus.controls.text.FXText;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nManager;
@@ -37,7 +37,7 @@ public class PageBox<T> extends FXHBox {
     /**
      * 文本组件
      */
-    private FXText text;
+    private FXLabel text;
 
     /**
      * 是否显示跳转组件
@@ -155,7 +155,7 @@ public class PageBox<T> extends FXHBox {
     }
 
     public PageBox() {
-        this("13");
+        this(null);
     }
 
     public PageBox(String bthSize) {
@@ -353,8 +353,8 @@ public class PageBox<T> extends FXHBox {
         // 跳页
         this.jump = new NumberTextField(true);
         this.jump.setMinVal(1);
-        this.jump.setMaxWidth(50);
-        this.jump.setFlexHeight("80%");
+        this.jump.setMaxWidth(60);
+        this.jump.setFlexHeight("75%");
         this.jump.managedBindVisible();
         this.jump.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (KeyboardUtil.isEnter(event) && this.onJumpFired != null) {
@@ -377,20 +377,28 @@ public class PageBox<T> extends FXHBox {
 
         this.heightProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                double h1 = (newValue.doubleValue() - this.jump.getRealHeight()) / 2;
-                Insets insets1 = new Insets(h1, 0, 0, 5);
-                HBox.setMargin(this.jump, insets1);
+                double h1 = (newValue.doubleValue() - this.jump.getRealHeight()) / 3;
+                Insets insets0 = new Insets(0, 0, 0, 3);
+                Insets insets1 = new Insets(h1, 0, 0, 0);
+                this.jump.setPadding(insets1);
+                HBox.setMargin(this.jump, insets0);
                 double h2 = (newValue.doubleValue() - this.prevBtn.getRealHeight()) / 4;
-                Insets insets2 = new Insets(h2, 0, 0, 5);
-                HBox.setMargin(this.prevBtn, insets2);
-                HBox.setMargin(this.nextBtn, insets2);
-                HBox.setMargin(this.lastBtn, insets2);
-                HBox.setMargin(this.firstBtn, insets2);
-                HBox.setMargin(this.settingBtn, insets2);
+                Insets insets2 = new Insets(h2, 0, 0, 0);
+                this.prevBtn.setPadding(insets2);
+                this.nextBtn.setPadding(insets2);
+                this.lastBtn.setPadding(insets2);
+                this.firstBtn.setPadding(insets2);
+                this.settingBtn.setPadding(insets2);
+                HBox.setMargin(this.prevBtn, insets0);
+                HBox.setMargin(this.nextBtn, insets0);
+                HBox.setMargin(this.lastBtn, insets0);
+                HBox.setMargin(this.firstBtn, insets0);
+                HBox.setMargin(this.settingBtn, insets0);
                 if (this.text != null) {
                     double h3 = (newValue.doubleValue() - this.text.getRealHeight()) / 4;
-                    Insets insets3 = new Insets(h3, 0, 0, 5);
-                    HBox.setMargin(this.text, insets3);
+                    Insets insets3 = new Insets(h3, 0, 0, 0);
+                    this.text.setPadding(insets3);
+                    HBox.setMargin(this.text, insets0);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -452,7 +460,7 @@ public class PageBox<T> extends FXHBox {
         this.showText = showText;
         if (showText) {
             if (this.text == null) {
-                this.text = new FXText();
+                this.text = new FXLabel();
                 this.text.setFlexHeight("70%");
                 this.addChild(this.text);
             }

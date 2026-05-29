@@ -16,4 +16,9 @@ public class UploadDownloadSVGGlyph extends SVGGlyph {
         this();
         this.setSizeStr(size);
     }
+
+    @Override
+    public double heightScaling() {
+        return 0.875;
+    }
 }

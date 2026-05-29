@@ -17,9 +17,8 @@ public class PasteSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.paste());
-//        super.initNode();
-//    }
+    @Override
+    public double widthScaling() {
+        return 0.875;
+    }
 }
