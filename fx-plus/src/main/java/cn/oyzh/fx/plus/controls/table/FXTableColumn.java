@@ -4,14 +4,24 @@ import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
+import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.NestedTableColumnHeader;
+import javafx.scene.control.skin.TableColumnHeader;
 import javafx.util.Callback;
+
+import java.util.function.Consumer;
 
 
 /**
@@ -24,7 +34,7 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         NodeManager.init(this);
     }
 
-    public FXTableColumn( ) {
+    public FXTableColumn() {
         super();
     }
 
@@ -120,6 +130,49 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
             }
         } else {
             FlexAdapter.super.setRealWidth(width);
+        }
+    }
+
+    /**
+     * 仅显示图标
+     */
+    public void showGraphicOnly() {
+        // 处理图标
+        Consumer<TableColumnHeader> func1 = columnHeader -> {
+            Label label = (Label) columnHeader.lookup(".label");
+            if (label != null) {
+                label.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            }
+        };
+        // 处理头
+        Consumer<TableView<?>> func2 = tableView -> {
+            if (tableView == null) {
+                return;
+            }
+            NestedTableColumnHeader header = TableViewUtil.getHeaderColumn(tableView);
+            if (header == null) {
+                return;
+            }
+            for (TableColumnHeader columnHeader : header.getColumnHeaders()) {
+                func1.accept(columnHeader);
+            }
+            header.getColumnHeaders().addListener((ListChangeListener<TableColumnHeader>) c -> {
+                if (c.next()) {
+                    for (TableColumnHeader columnHeader : c.getAddedSubList()) {
+                        func1.accept(columnHeader);
+                    }
+                }
+            });
+        };
+        if (this.getTableView() != null) {
+            func2.accept(this.getTableView());
+        } else {
+            ChangeListener<? super TableView<?>> listener = (observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    func2.accept(newValue);
+                }
+            };
+            this.tableViewProperty().addListener(listener);
         }
     }
 

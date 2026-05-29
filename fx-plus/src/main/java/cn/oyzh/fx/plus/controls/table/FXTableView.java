@@ -59,14 +59,14 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     @Override
     public void initNode() {
         this.setCache(false);
-//        this.setHeaderHeight(30);
-//        this.setFixedCellSize(30);
-//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_LAST_COLUMN);
-//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_NEXT_COLUMN);
-//        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_SUBSEQUENT_COLUMNS);
+        //        this.setHeaderHeight(30);
+        //        this.setFixedCellSize(30);
+        //        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_LAST_COLUMN);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_NEXT_COLUMN);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_SUBSEQUENT_COLUMNS);
         this.initEvenListener();
         this.setReorderable(false);
 
@@ -127,7 +127,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     public void selectedItemChanged(ChangeListener<S> listener) {
         this.getSelectionModel().selectedItemProperty().addListener(listener);
-//        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
+        //        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
     }
 
     @Override
@@ -256,9 +256,9 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     /**
      * 销毁节点
      */
-    protected void destroyItems(){
+    protected void destroyItems() {
         for (S item : this.getItems()) {
-            if(item instanceof Destroyable destroyable){
+            if (item instanceof Destroyable destroyable) {
                 destroyable.destroy();
             }
         }
@@ -267,13 +267,13 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     /**
      * 移除时销毁节点
      */
-    protected void destroyItemsOnRemoved(){
+    protected void destroyItemsOnRemoved() {
         // 监听移除
         this.itemList().addListener((ListChangeListener<S>) change -> {
             if (change.next()) {
                 List<?> list = change.getRemoved();
                 for (Object object : list) {
-                    if (object instanceof Destroyable destroyable){
+                    if (object instanceof Destroyable destroyable) {
                         destroyable.destroy();
                     }
                 }
@@ -284,30 +284,41 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     /**
      * 销毁列
      */
-    protected void destroyColumn(){
-        for (TableColumn<?,?> column : this.getColumns()) {
-            if(column instanceof Destroyable destroyable){
+    protected void destroyColumn() {
+        for (TableColumn<?, ?> column : this.getColumns()) {
+            if (column instanceof Destroyable destroyable) {
                 destroyable.destroy();
             }
         }
     }
 
-//    /**
-//     * 移除时销毁列
-//     */
-//    protected void destroyColmnOnRemoved(){
-//        // 监听移除
-//        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) change -> {
-//            if (change.next()) {
-//                List<?> list = change.getRemoved();
-//                for (Object object : list) {
-//                    if (object instanceof Destroyable destroyable){
-//                        destroyable.destroy();
-//                    }
-//                }
-//            }
-//        });
-//    }
+    //    /**
+    //     * 移除时销毁列
+    //     */
+    //    protected void destroyColmnOnRemoved(){
+    //        // 监听移除
+    //        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) change -> {
+    //            if (change.next()) {
+    //                List<?> list = change.getRemoved();
+    //                for (Object object : list) {
+    //                    if (object instanceof Destroyable destroyable){
+    //                        destroyable.destroy();
+    //                    }
+    //                }
+    //            }
+    //        });
+    //    }
+
+    /**
+     * 仅显示图标
+     */
+    public void showGraphicOnly() {
+        for (TableColumn<S, ?> column : this.getColumns()) {
+            if (column instanceof FXTableColumn<S, ?> tableColumn) {
+                tableColumn.showGraphicOnly();
+            }
+        }
+    }
 
     @Override
     public void destroy() {
