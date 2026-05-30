@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.RegexSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -151,11 +150,11 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
     public ObjectProperty<Node> rightProperty() {
         if (super.rightProperty == null) {
             this.doInit();
-            this.wholeWord = new WholeWordSVGGlyph("15.6,13");
+            this.wholeWord = new WholeWordSVGGlyph();
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_EXITED, this.wholeWordMouseExitHandler);
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_ENTERED, this.wholeWordMouseEnterHandler);
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_CLICKED, this.wholeWordMouseClickHandler);
-            this.matchCase = new MatchCaseSVGGlyph("15.6,13");
+            this.matchCase = new MatchCaseSVGGlyph();
             this.matchCase.addEventFilter(MouseEvent.MOUSE_EXITED, this.matchCaseMouseExitHandler);
             this.matchCase.addEventFilter(MouseEvent.MOUSE_ENTERED, this.matchCaseMouseEnterHandler);
             this.matchCase.addEventFilter(MouseEvent.MOUSE_CLICKED, this.matchCaseMouseClickHandler);
@@ -175,7 +174,7 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
 
     private Background activeBackground() {
         if (this.activeBackground == null) {
-            Insets insets = new Insets(-3, -3, -3, -3);
+            Insets insets = new Insets(-3, -3, -4.5, -3);
             CornerRadii radii = new CornerRadii(3);
             BackgroundFill fill = new BackgroundFill(Color.valueOf("#E1EAF8"), radii, insets);
             this.activeBackground = new Background(fill);
@@ -187,9 +186,9 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
 
     private Background focusBackground() {
         if (this.focusBackground == null) {
-            Insets insets = new Insets(-3, -3, -3, -3);
+            Insets insets = new Insets(-3, -3, -4.5, -3);
             CornerRadii radii = new CornerRadii(3);
-            BackgroundFill fill = new BackgroundFill(Color.valueOf("#EDF3FB"), radii, insets);
+            BackgroundFill fill = new BackgroundFill(Color.valueOf("#EDFCCC"), radii, insets);
             this.focusBackground = new Background(fill);
         }
         return this.focusBackground;

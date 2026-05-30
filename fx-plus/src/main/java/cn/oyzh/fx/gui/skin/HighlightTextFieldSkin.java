@@ -4,6 +4,7 @@ import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RegexSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import javafx.beans.property.BooleanProperty;
@@ -129,15 +130,15 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
         };
         this.regexMouseEnterHandler = event -> {
             if (!this.isRegex()) {
-                this.regex.setBackground(this.focusBackground());
+                this.regex.setBackground(this.focusBackground(this.regex));
             }
         };
         this.regexMouseClickHandler = event -> {
             this.setRegex(!this.isRegex());
             if (this.isRegex()) {
-                this.regex.setBackground(this.activeBackground());
+                this.regex.setBackground(this.activeBackground(this.regex));
             } else {
-                this.regex.setBackground(this.focusBackground());
+                this.regex.setBackground(this.focusBackground(this.regex));
             }
         };
         this.wholeWordMouseExitHandler = event -> {
@@ -147,15 +148,15 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
         };
         this.wholeWordMouseEnterHandler = event -> {
             if (!this.isWholeWord()) {
-                this.wholeWord.setBackground(this.focusBackground());
+                this.wholeWord.setBackground(this.focusBackground(this.regex));
             }
         };
         this.wholeWordMouseClickHandler = event -> {
             this.setWholeWord(!this.isWholeWord());
             if (this.isWholeWord()) {
-                this.wholeWord.setBackground(this.activeBackground());
+                this.wholeWord.setBackground(this.activeBackground(this.wholeWord));
             } else {
-                this.wholeWord.setBackground(this.focusBackground());
+                this.wholeWord.setBackground(this.focusBackground(this.regex));
             }
         };
         this.matchCaseMouseExitHandler = event -> {
@@ -165,15 +166,15 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
         };
         this.matchCaseMouseEnterHandler = event -> {
             if (!this.isMatchCase()) {
-                this.matchCase.setBackground(this.focusBackground());
+                this.matchCase.setBackground(this.focusBackground(this.regex));
             }
         };
         this.matchCaseMouseClickHandler = event -> {
             this.setMatchCase(!this.isMatchCase());
             if (this.isMatchCase()) {
-                this.matchCase.setBackground(this.activeBackground());
+                this.matchCase.setBackground(this.activeBackground(this.matchCase));
             } else {
-                this.matchCase.setBackground(this.focusBackground());
+                this.matchCase.setBackground(this.focusBackground(this.regex));
             }
         };
         this.heightListener = (observable, oldValue, newValue) -> {
@@ -183,7 +184,7 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
                 val -= insets.getTop();
                 val -= insets.getBottom();
             }
-            double nHeight= NodeUtil.getHeight(this.regex);
+            double nHeight = NodeUtil.getHeight(this.regex);
             val -= (nHeight / 2);
             val /= 2;
             Insets insets1 = new Insets(val, 0, 0, 0);
@@ -198,15 +199,15 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
     public ObjectProperty<Node> rightProperty() {
         if (super.rightProperty == null) {
             this.doInit();
-            this.regex = new RegexSVGGlyph("13");
+            this.regex = new RegexSVGGlyph();
             this.regex.addEventFilter(MouseEvent.MOUSE_EXITED, this.regexMouseExitHandler);
             this.regex.addEventFilter(MouseEvent.MOUSE_ENTERED, this.regexMouseEnterHandler);
             this.regex.addEventFilter(MouseEvent.MOUSE_CLICKED, this.regexMouseClickHandler);
-            this.wholeWord = new WholeWordSVGGlyph("15.6,13");
+            this.wholeWord = new WholeWordSVGGlyph();
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_EXITED, this.wholeWordMouseExitHandler);
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_ENTERED, this.wholeWordMouseEnterHandler);
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_CLICKED, this.wholeWordMouseClickHandler);
-            this.matchCase = new MatchCaseSVGGlyph("15.6,13");
+            this.matchCase = new MatchCaseSVGGlyph();
             this.matchCase.addEventFilter(MouseEvent.MOUSE_EXITED, this.matchCaseMouseExitHandler);
             this.matchCase.addEventFilter(MouseEvent.MOUSE_ENTERED, this.matchCaseMouseEnterHandler);
             this.matchCase.addEventFilter(MouseEvent.MOUSE_CLICKED, this.matchCaseMouseClickHandler);
@@ -223,28 +224,23 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
         return super.rightProperty();
     }
 
-    private Background activeBackground;
 
-    private Background activeBackground() {
-        if (this.activeBackground == null) {
-            Insets insets = new Insets(-3, -3, -3, -3);
-            CornerRadii radii = new CornerRadii(3);
-            BackgroundFill fill = new BackgroundFill(Color.valueOf("#E1EAF8"), radii, insets);
-            this.activeBackground = new Background(fill);
-        }
-        return this.activeBackground;
+    private Background activeBackground(SVGGlyph glyph) {
+        // 控制背景色高度
+        double b = this.regex.getRealHeight() - glyph.getRealHeight();
+        Insets insets = new Insets(-3, -3, -3 - b, -3);
+        CornerRadii radii = new CornerRadii(3);
+        BackgroundFill fill = new BackgroundFill(Color.valueOf("#E1EAF8"), radii, insets);
+        return new Background(fill);
     }
 
-    private Background focusBackground;
-
-    private Background focusBackground() {
-        if (this.focusBackground == null) {
-            Insets insets = new Insets(-3, -3, -3, -3);
-            CornerRadii radii = new CornerRadii(3);
-            BackgroundFill fill = new BackgroundFill(Color.valueOf("#EDF3FB"), radii, insets);
-            this.focusBackground = new Background(fill);
-        }
-        return this.focusBackground;
+    private Background focusBackground(SVGGlyph glyph) {
+        // 控制背景色高度
+        double b = this.regex.getRealHeight() - glyph.getRealHeight();
+        Insets insets = new Insets(-3, -3, -3 - b, -3);
+        CornerRadii radii = new CornerRadii(3);
+        BackgroundFill fill = new BackgroundFill(Color.valueOf("#EDFCCC"), radii, insets);
+        return new Background(fill);
     }
 
     @Override
