@@ -2,13 +2,10 @@ package cn.oyzh.fx.plus.tableview;
 
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.lang.ref.WeakReference;
@@ -32,10 +29,10 @@ public class TableViewMouseSelectHelper {
     /**
      * tableview
      */
-    private final WeakReference<TableView<?>> reference;
+    private final WeakReference<TableView<?>> tableViewRef;
 
     public TableViewMouseSelectHelper(TableView<?> tableView) {
-        this.reference = new WeakReference<>(tableView);
+        this.tableViewRef = new WeakReference<>(tableView);
         this.initEvent();
     }
 
@@ -45,21 +42,26 @@ public class TableViewMouseSelectHelper {
      * @return tableview
      */
     protected TableView<?> getTableView() {
-        return this.reference.get();
+        return this.tableViewRef.get();
     }
 
+    ///**
+    // * 获取根节点
+    // *
+    // * @return 根节点
+    // */
+    //protected Pane getRoot() {
+    //    TableView<?> tableView = this.getTableView();
+    //    if (tableView != null && tableView.getScene() != null && tableView.getScene().getRoot() instanceof Pane pane) {
+    //        return pane;
+    //    }
+    //    return null;
+    //}
+
     /**
-     * 获取根节点
-     *
-     * @return 根节点
+     * 矩形，只记录位置
      */
-    protected Pane getRoot() {
-        TableView<?> tableView = this.getTableView();
-        if (tableView != null && tableView.getScene() != null && tableView.getScene().getRoot() instanceof Pane pane) {
-            return pane;
-        }
-        return null;
-    }
+    private Rectangle rectangle;
 
     /**
      * 初始化矩形
@@ -67,35 +69,36 @@ public class TableViewMouseSelectHelper {
      * @return 矩形
      */
     protected Rectangle initRectangle() {
-        Pane pane = this.getRoot();
-        if (pane == null) {
-            return null;
+        //Pane pane = this.getRoot();
+        //if (pane == null) {
+        //    return null;
+        //}
+        //Rectangle selectionRect = (Rectangle) pane.lookup("#" + SELECTION_ID);
+        if (this.rectangle == null) {
+            this.rectangle = new Rectangle(0, 0, 0, 0);
+            //rectangle.setFill(Color.LIGHTBLUE.deriveColor(0, 1, 1, 0.3));
+            //rectangle.managedProperty().bind(selectionRect.visibleProperty());
+            //selectionRect.setId(SELECTION_ID);
+            //pane.getChildren().add(selectionRect);
+            //selectionRect.setVisible(true);
         }
-        Rectangle selectionRect = (Rectangle) pane.lookup("#" + SELECTION_ID);
-        if (selectionRect == null) {
-            selectionRect = new Rectangle(0, 0, 0, 0);
-            selectionRect.setFill(Color.LIGHTBLUE.deriveColor(0, 1, 1, 0.3));
-            selectionRect.managedProperty().bind(selectionRect.visibleProperty());
-            selectionRect.setId(SELECTION_ID);
-            pane.getChildren().add(selectionRect);
-            selectionRect.setVisible(true);
-        }
-        return selectionRect;
+        return this.rectangle;
     }
 
     /**
      * 清除矩形
      */
     public void clearRectangle() {
-        Pane pane = this.getRoot();
-        if (pane == null) {
-            return;
-        }
-        Node selectionRect = pane.lookup("#" + SELECTION_ID);
-        if (selectionRect == null) {
-            return;
-        }
-        pane.getChildren().remove(selectionRect);
+        //Pane pane = this.getRoot();
+        //if (pane == null) {
+        //    return;
+        //}
+        //Node selectionRect = pane.lookup("#" + SELECTION_ID);
+        //if (selectionRect == null) {
+        //    return;
+        //}
+        //pane.getChildren().remove(selectionRect);
+        this.rectangle = null;
     }
 
     /**
@@ -104,11 +107,12 @@ public class TableViewMouseSelectHelper {
      * @return 矩形
      */
     protected Rectangle findRectangle() {
-        Pane pane = this.getRoot();
-        if (pane == null) {
-            return null;
-        }
-        return (Rectangle) pane.lookup("#" + SELECTION_ID);
+        //Pane pane = this.getRoot();
+        //if (pane == null) {
+        //    return null;
+        //}
+        //return (Rectangle) pane.lookup("#" + SELECTION_ID);
+        return this.rectangle;
     }
 
     /**
@@ -214,7 +218,7 @@ public class TableViewMouseSelectHelper {
             double rowEnd = point.getY() + row.getLayoutBounds().getMaxY();
             double rowStart = point.getY() + row.getLayoutBounds().getMinY();
             // 判断是否在选区内
-            if (rowStart + rowHeight >= selectionStart && rowEnd + 5 <= selectionEnd) {
+            if (rowStart + rowHeight >= selectionStart && rowEnd - rowHeight <= selectionEnd) {
                 selected.add(row.getIndex());
             }
         }
