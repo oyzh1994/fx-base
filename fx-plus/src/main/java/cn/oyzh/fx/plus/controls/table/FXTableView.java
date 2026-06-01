@@ -21,9 +21,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.skin.NestedTableColumnHeader;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -326,6 +329,23 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     public void showGraphicOnlyLater() {
         FXUtil.runPulse(this::showGraphicOnly);
     }
+
+//    /**
+//     * 模拟的复选实现，解决部分情况下的需求
+//     */
+//    protected void fakerMultipleSelection() {
+//        SelectionMode selectionMode = this.getSelectionModel().getSelectionMode();
+//        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+//            if (event.getCode() == KeyCode.SHIFT) {
+//                this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+//            }
+//        });
+//        this.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+//            if (event.getCode() == KeyCode.SHIFT) {
+//                this.getSelectionModel().setSelectionMode(selectionMode);
+//            }
+//        });
+//    }
 
     @Override
     public void destroy() {
