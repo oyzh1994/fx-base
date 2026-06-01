@@ -116,14 +116,14 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
 
         // 按钮组件
         SubmitSVGGlyph submit = new SubmitSVGGlyph();
-        submit.setSizeStr("13,11");
+//        submit.setSizeStr("13,11");
         submit.setOnMousePrimaryClicked(mouseEvent -> {
             LocalTime time = LocalTime.now().withHour(hour.getSelectedIndex()).withMinute(minute.getSelectedIndex()).withSecond(second.getSelectedIndex());
             this.setText(this.formatter().format(time));
             this.handleHide();
         });
         CancelSVGGlyph cancel = new CancelSVGGlyph();
-        cancel.setSizeStr("11");
+//        cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
         FXHBox hBox = new FXHBox(submit, cancel);

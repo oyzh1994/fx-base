@@ -70,9 +70,9 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         textArea.setPromptText(I18nHelper.pleaseInputContent());
         textArea.setText(this.getText());
         // 按钮
-        SubmitSVGGlyph ok = new SubmitSVGGlyph("13");
+        SubmitSVGGlyph ok = new SubmitSVGGlyph();
         ok.setOnMousePrimaryClicked(event -> this.onSubmit(textArea.getTextTrim()));
-        CancelSVGGlyph cancel = new CancelSVGGlyph("12");
+        CancelSVGGlyph cancel = new CancelSVGGlyph();
         cancel.setOnMousePrimaryClicked(event -> this.handleHide());
         HBox.setMargin(ok, new Insets(5, 0, 0, 5));
         HBox.setMargin(cancel, new Insets(5, 0, 0, 15));

@@ -89,9 +89,9 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
             }
             this.handleHide();
         });
-        submit.setSizeStr("13,11");
+//        submit.setSizeStr("13,11");
         CancelSVGGlyph cancel = new CancelSVGGlyph();
-        cancel.setSizeStr("11");
+//        cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
         FXHBox hBox = new FXHBox(submit, cancel);

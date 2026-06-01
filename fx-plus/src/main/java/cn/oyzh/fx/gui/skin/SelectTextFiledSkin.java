@@ -205,10 +205,10 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         return super.button;
     }
 
-    @Override
-    protected void setButtonSize(double size) {
-        super.button.setSize(size * 0.6 * 1.5, size * .6);
-    }
+//    @Override
+//    protected void setButtonSize(double size) {
+//        super.button.setSize(size * 0.6 * 1.5, size * .6);
+//    }
 
     @Override
     protected void updateButtonVisibility() {

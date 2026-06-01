@@ -42,7 +42,7 @@ public class ExampleTextFieldSkin extends ActionTextFieldSkin {
     @Override
     protected SVGGlyph getButton() {
         if (super.button == null) {
-            super.button = new ExampleSVGGlyph("13");
+            super.button = new ExampleSVGGlyph();
             super.initButton(super.button);
         }
         return super.button;

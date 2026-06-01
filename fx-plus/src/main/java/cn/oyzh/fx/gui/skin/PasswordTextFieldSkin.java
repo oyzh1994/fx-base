@@ -52,8 +52,8 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
-    @Override
-    protected void setButtonSize(double size) {
-        this.button.setSize(size * 1.2, size);
-    }
+//    @Override
+//    protected void setButtonSize(double size) {
+//        this.button.setSize(size * 1.2, size);
+//    }
 }

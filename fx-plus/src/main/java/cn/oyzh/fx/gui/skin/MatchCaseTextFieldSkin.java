@@ -111,10 +111,10 @@ public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
         this.button.display();
     }
 
-    @Override
-    protected void setButtonSize(double size) {
-        super.button.setSize(size, size * 0.8);
-    }
+//    @Override
+//    protected void setButtonSize(double size) {
+//        super.button.setSize(size, size * 0.8);
+//    }
 
     @Override
     public void dispose() {
