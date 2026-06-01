@@ -8,7 +8,6 @@ import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
@@ -154,12 +153,18 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
                 return;
             }
             for (TableColumnHeader columnHeader : header.getColumnHeaders()) {
-                func1.accept(columnHeader);
+                if (columnHeader.getTableColumn() == this) {
+                    func1.accept(columnHeader);
+                    break;
+                }
             }
             header.getColumnHeaders().addListener((ListChangeListener<TableColumnHeader>) c -> {
                 if (c.next()) {
                     for (TableColumnHeader columnHeader : c.getAddedSubList()) {
-                        func1.accept(columnHeader);
+                        if (columnHeader.getTableColumn() == this) {
+                            func1.accept(columnHeader);
+                            break;
+                        }
                     }
                 }
             });
@@ -167,13 +172,19 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         if (this.getTableView() != null) {
             func2.accept(this.getTableView());
         } else {
-            ChangeListener<? super TableView<?>> listener = (observable, oldValue, newValue) -> {
-                if (newValue != null) {
-                    func2.accept(newValue);
+            this.tableViewProperty().subscribe(tableView -> {
+                if (tableView != null) {
+                    func2.accept(tableView);
                 }
-            };
-            this.tableViewProperty().addListener(listener);
+            });
         }
+    }
+
+    /**
+     * 仅显示图标，延迟处理
+     */
+    public void showGraphicOnlyLater() {
+        FXUtil.runLater(this::showGraphicOnly, 200);
     }
 
     @Override

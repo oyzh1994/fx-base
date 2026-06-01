@@ -320,6 +320,13 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         }
     }
 
+    /**
+     * 仅显示图标，延迟处理
+     */
+    public void showGraphicOnlyLater() {
+        FXUtil.runPulse(this::showGraphicOnly);
+    }
+
     @Override
     public void destroy() {
         this.clearProps();
