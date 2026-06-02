@@ -19,9 +19,9 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * 选择组件适配器
  *
+ * @param <T> 数据类型
  * @author oyzh
  * @since 2023/4/11
- * @param <T> 数据类型
  */
 public interface SelectAdapter<T> extends PropAdapter {
 
@@ -565,6 +565,24 @@ public interface SelectAdapter<T> extends PropAdapter {
                 FXUtil.runWait(() -> node.getItems().remove(item));
             }
         }
+    }
+
+    /**
+     * 获取首个节点
+     *
+     * @return 节点
+     */
+    default Object firstItem() {
+        return this.getItem(0);
+    }
+
+    /**
+     * 获取最后一个节点
+     *
+     * @return 节点
+     */
+    default Object lastItem() {
+        return this.getItem(this.getItemSize() - 1);
     }
 
     /**
