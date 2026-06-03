@@ -399,6 +399,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.edit(), new EditSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem edit(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.edit(), action);
+    }
+
     public static FXMenuItem editSnippet(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editSnippet(), new EditSVGGlyph(iconSize), action);
     }
