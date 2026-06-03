@@ -195,6 +195,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addTable(), new AddSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem addCollection(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addCollection(), new AddSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem openTerminal(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openTerminal(), new TerminalSVGGlyph(iconSize), action);
     }
@@ -731,6 +735,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openTable(), new OpenSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem openCollection(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openCollection(), new OpenSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem editTable(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editTable(), new EditSVGGlyph(iconSize), action);
     }
@@ -771,12 +779,24 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearTableData(), new ClearSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem clearCollectionData(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearCollectionData(), new ClearSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem clearCollection(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearCollection(), new ClearSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem truncateTable(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.truncateTable(), new TruncateSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem deleteTable(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteTable(), new DeleteSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem deleteCollection(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteCollection(), new DeleteSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem deleteQuery(String iconSize, Runnable action) {
