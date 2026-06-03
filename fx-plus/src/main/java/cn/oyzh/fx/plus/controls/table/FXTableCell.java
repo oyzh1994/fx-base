@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.controls.table;
 
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 
@@ -11,7 +13,7 @@ import javafx.scene.control.TableCell;
  * @author oyzh
  * @since 2022/12/21
  */
-public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
+public class FXTableCell<S, T> extends TableCell<S, T> implements NodeAdapter, ThemeAdapter {
 
     {
         NodeManager.init(this);
@@ -88,4 +90,10 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
     //     }
     //     return null;
     // }
+
+    @Override
+    public void initNode() {
+        this.setPadding(Insets.EMPTY);
+        NodeAdapter.super.initNode();
+    }
 }

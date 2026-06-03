@@ -72,7 +72,6 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_SUBSEQUENT_COLUMNS);
         this.initEvenListener();
         this.setReorderable(false);
-
         // 监听列
         this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
             if (c.next()) {
