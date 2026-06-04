@@ -115,6 +115,10 @@ public class FXChooser {
         return new FileExtensionFilter(I18nHelper.gifType(), "*.gif");
     }
 
+    public static FileExtensionFilter newExtensionFilter(String type) {
+        return new FileExtensionFilter(type, "*." + type);
+    }
+
     /**
      * 获取下载路径
      *

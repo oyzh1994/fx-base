@@ -743,6 +743,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openCollection(), new OpenSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem openBucket(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openBucket(), new OpenSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem editTable(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editTable(), new EditSVGGlyph(iconSize), action);
     }
@@ -789,6 +793,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem clearCollection(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearCollection(), new ClearSVGGlyph(iconSize), action);
+    }
+
+    public static FXMenuItem clearBucket(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearBucket(), new ClearSVGGlyph(iconSize), action);
     }
 
     public static FXMenuItem truncateTable(String iconSize, Runnable action) {

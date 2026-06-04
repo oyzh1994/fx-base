@@ -184,6 +184,8 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
      * 仅显示图标，延迟处理
      */
     public void showGraphicOnlyLater() {
+        this.showGraphicOnly();
+        FXUtil.runPulse(this::showGraphicOnly);
         FXUtil.runLater(this::showGraphicOnly, 200);
     }
 
