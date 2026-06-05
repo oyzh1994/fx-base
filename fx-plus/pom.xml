@@ -96,14 +96,6 @@
             </exclusions>
         </dependency>
 
-        <!-- json类库 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- 测试类库 -->
         <dependency>
             <groupId>junit</groupId>

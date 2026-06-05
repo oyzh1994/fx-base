@@ -3,8 +3,8 @@ package cn.oyzh.fx.editor.incubator.control;
 
 import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.fx.gui.text.field.LimitTextField;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import javafx.scene.control.Skin;
 
 /**

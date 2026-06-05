@@ -3,8 +3,8 @@ package cn.oyzh.fx.pkg;
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.IOUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.moandjiezana.toml.Toml;
 import org.yaml.snakeyaml.Yaml;
 

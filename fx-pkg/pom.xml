@@ -88,14 +88,6 @@
             <artifactId>base-common</artifactId>
         </dependency>
 
-        <!-- json类库 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- yaml库 -->
         <dependency>
             <groupId>org.yaml</groupId>
