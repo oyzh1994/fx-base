@@ -101,11 +101,7 @@ public class NumberTextField extends DigitalTextField {
         };
     }
 
-    /**
-     * 获取值
-     *
-     * @return 值
-     */
+    @Override
     public Long getValue() {
         Number val = this.value();
         // 否则，将文本转为Double类型并返回
@@ -121,17 +117,6 @@ public class NumberTextField extends DigitalTextField {
         return super.value();
     }
 
-    /**
-     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
-     *
-     * @param value 值
-     */
-    public void setValue(Long value) {
-        if (value != null) {
-            super.value(value);
-        }
-    }
-
     public static String format(Object val) {
         if (val instanceof CharSequence sequence) {
             return sequence.toString();
@@ -142,14 +127,14 @@ public class NumberTextField extends DigitalTextField {
         return null;
     }
 
-    /**
-     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
-     *
-     * @param value 值
-     */
-    public void setValue(long value) {
-        super.value(value);
-    }
+//    /**
+//     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
+//     *
+//     * @param value 值
+//     */
+//    public void setValue(long value) {
+//        super.value(value);
+//    }
 
     public void setMin(Long minVal) {
         this.minVal = minVal;

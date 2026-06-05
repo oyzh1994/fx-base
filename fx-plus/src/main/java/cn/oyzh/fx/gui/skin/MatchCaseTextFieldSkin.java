@@ -94,13 +94,12 @@ public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
 
     public MatchCaseTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField, new MatchCaseSVGGlyph("13"));
     }
 
     @Override
     protected SVGGlyph getButton() {
         if (super.button == null) {
-            super.button = new MatchCaseSVGGlyph("13,10.4");
+            super.button = new MatchCaseSVGGlyph();
             super.initButton(super.button);
         }
         return super.button;

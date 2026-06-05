@@ -98,7 +98,7 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
     @Override
     public boolean validate() {
         if (this.require && this.isEmpty()) {
-//            this.requestFocus();
+            //            this.requestFocus();
             ValidatorUtil.validFail(this);
             return false;
         }
@@ -113,16 +113,31 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
     public void initNode() {
         FlexAdapter.super.initNode();
         this.setPickOnBounds(true);
-//        this.setFocusTraversable(false);
+        //        this.setFocusTraversable(false);
+    }
+
+    /**
+     * 当前值
+     */
+    private Object value;
+
+    /**
+     * 获取值
+     *
+     * @return 结果
+     */
+    public Object getValue() {
+        return this.value;
     }
 
     /**
      * 设置值
      *
-     * @param val 值
+     * @param value 值
      */
-    public void setValue(Object val) {
-        this.setText(format(val));
+    public void setValue(Object value) {
+        this.value = value;
+        this.setText(format(value));
     }
 
     public static String format(Object val) {
@@ -151,8 +166,8 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
 
     @Override
     public void destroy() {
-//        this.setTipText(null);
-//        this.setContextMenu(null);
+        //        this.setTipText(null);
+        //        this.setContextMenu(null);
         NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
     }

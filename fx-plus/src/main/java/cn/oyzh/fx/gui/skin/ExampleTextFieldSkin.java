@@ -34,9 +34,6 @@ public class ExampleTextFieldSkin extends ActionTextFieldSkin {
 
     public ExampleTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField, new ExampleSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.example());
     }
 
     @Override

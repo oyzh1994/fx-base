@@ -1,32 +1,120 @@
-package cn.oyzh.fx.gui.skin;
+package cn.oyzh.fx.editor.incubator.control;
 
+import cn.oyzh.fx.editor.incubator.Editor;
+import cn.oyzh.fx.editor.incubator.EditorFormatType;
+import cn.oyzh.fx.gui.skin.ActionTextFieldSkin;
 import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EnlargeSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.window.PopupExt;
-import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 /**
- * 展开文本输入框皮肤
+ * json文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/09
+ * @since 2024/07/21
  */
-public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
+public class JsonTextFiledSkin extends ActionTextFieldSkin {
 
     /**
      * 展开宽
      */
     protected double enlargeWidth = 350;
+
+    /**
+     * 展开高
+     */
+    protected double enlargeHeight = 280;
+
+    /**
+     * 弹窗组件
+     */
+    protected PopupExt popup;
+
+    /**
+     * 编辑器
+     */
+    protected Editor editor;
+
+    @Override
+    protected void onButtonClick(MouseEvent e) {
+        if (this.popup == null) {
+            this.popup = new PopupExt();
+            this.popup.setWidth(this.enlargeWidth);
+            this.popup.setHeight(this.enlargeHeight);
+            this.popup.setOnHiding(windowEvent -> this.handleHide());
+        }
+        // 输入框
+        TextField textField = this.getSkinnable();
+        textField.setDisable(true);
+        // 文本节点
+        this.editor = new Editor();
+        this.editor.setFormatType(EditorFormatType.JSON);
+        this.editor.setRealWidth(this.enlargeWidth);
+        this.editor.realHeight(this.enlargeHeight - 30);
+        this.editor.showData(this.getText());
+        // 按钮
+        SubmitSVGGlyph ok = new SubmitSVGGlyph();
+        ok.setOnMousePrimaryClicked(event -> this.onSubmit(this.editor.getTextTrim()));
+        CancelSVGGlyph cancel = new CancelSVGGlyph();
+        cancel.setOnMousePrimaryClicked(event -> this.handleHide());
+        HBox.setMargin(ok, new Insets(5, 0, 0, 5));
+        HBox.setMargin(cancel, new Insets(5, 0, 0, 15));
+        FXHBox hBox = new FXHBox(ok, cancel);
+        // 组装阶段
+        FXVBox vBox = new FXVBox(this.editor, hBox);
+        this.popup.content(vBox);
+        this.popup.setOnHiding(event -> this.onSubmit(this.editor.getTextTrim()));
+        this.popup.showPopup(textField);
+    }
+
+    protected void handleHide() {
+        this.popup.hide();
+        this.getSkinnable().setDisable(false);
+        this.resetButtonColor();
+    }
+
+    /**
+     * 内容提交事件
+     *
+     * @param text 内容
+     */
+    protected void onSubmit(String text) {
+        if (text != null) {
+            this.setText(text);
+        }
+        this.handleHide();
+    }
+
+    public JsonTextFiledSkin(TextField textField) {
+        super(textField);
+    }
+
+    @Override
+    protected SVGGlyph getButton() {
+        if (super.button == null) {
+            super.button = new EnlargeSVGGlyph();
+            super.initButton(super.button);
+        }
+        return super.button;
+    }
+
+    @Override
+    protected void updateButtonVisibility() {
+        boolean visible = this.getSkinnable().isVisible();
+        boolean disable = this.getSkinnable().isDisable();
+        boolean hasFocus = this.getSkinnable().isFocused();
+        boolean shouldBeVisible = !disable && visible && hasFocus;
+        this.button.setVisible(shouldBeVisible);
+    }
 
     public double getEnlargeWidth() {
         return enlargeWidth;
@@ -44,88 +132,20 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         this.enlargeHeight = enlargeHeight;
     }
 
-    /**
-     * 展开高
-     */
-    protected double enlargeHeight = 280;
-
-    /**
-     * 弹窗组件
-     */
-    protected PopupExt popup;
-
-    @Override
-    protected void onButtonClick(MouseEvent e) {
-        if (this.popup == null) {
-            this.popup = new PopupExt();
-            this.popup.setWidth(this.enlargeWidth);
-            this.popup.setHeight(this.enlargeHeight);
-            this.popup.setOnHiding(windowEvent -> this.handleHide());
-        }
-        // 输入框
-        TextField textField = this.getSkinnable();
-        textField.setDisable(true);
-        // 文本节点
-        FXTextArea textArea = new FXTextArea();
-        textArea.setPromptText(I18nHelper.pleaseInputContent());
-        textArea.setText(this.getText());
-        // 按钮
-        SubmitSVGGlyph ok = new SubmitSVGGlyph();
-        ok.setOnMousePrimaryClicked(event -> this.onSubmit(textArea.getTextTrim()));
-        CancelSVGGlyph cancel = new CancelSVGGlyph();
-        cancel.setOnMousePrimaryClicked(event -> this.handleHide());
-        HBox.setMargin(ok, new Insets(5, 0, 0, 5));
-        HBox.setMargin(cancel, new Insets(5, 0, 0, 15));
-        FXHBox hBox = new FXHBox(ok, cancel);
-        // 组装阶段
-        FXVBox vBox = new FXVBox(textArea, hBox);
-        this.popup.content(vBox);
-        this.popup.setOnHiding(event -> this.onSubmit(textArea.getTextTrim()));
-        this.popup.showPopup(textField);
+    public PopupExt getPopup() {
+        return popup;
     }
 
-    protected void handleHide() {
-        this.popup.hide();
-        this.getSkinnable().setDisable(false);
-        this.resetButtonColor();
-    }
-
-    /**
-     * 内容提交事件
-     *
-     * @param text 内容
-     */
-    protected void onSubmit(String text) {
-        this.setText(text);
-        this.handleHide();
-    }
-
-    public EnlargeTextFiledSkin(TextField textField) {
-        super(textField);
-    }
-
-    @Override
-    protected SVGGlyph getButton() {
-        if (this.button == null) {
-            this.button = new EnlargeSVGGlyph();
-            super.initButton(this.button);
-        }
-        return this.button;
-    }
-
-    @Override
-    protected void updateButtonVisibility() {
-        boolean visible = this.getSkinnable().isVisible();
-        boolean disable = this.getSkinnable().isDisable();
-        boolean hasFocus = this.getSkinnable().isFocused();
-        boolean shouldBeVisible = !disable && visible && hasFocus;
-        this.button.setVisible(shouldBeVisible);
+    public void setPopup(PopupExt popup) {
+        this.popup = popup;
     }
 
     @Override
     public void dispose() {
+        if (this.editor != null) {
+            this.editor.destroy();
+        }
         NodeDestroyUtil.destroyObject(this.popup);
-        this.popup = null;
         super.dispose();
     }
 }

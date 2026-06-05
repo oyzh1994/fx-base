@@ -16,10 +16,6 @@ import java.util.function.Consumer;
  */
 public class ChooseFileTextField extends ClearableTextField {
 
-    // {
-    //     this.setEditable(false);
-    // }
-
     /**
      * 当前皮肤
      *
@@ -32,29 +28,25 @@ public class ChooseFileTextField extends ClearableTextField {
         return (ChooseFileTextFieldSkin) this.getSkin();
     }
 
-    /**
-     * 数据
-     */
-    private byte[] data;
-
-    public byte[] getData() {
+    @Override
+    public byte[] getValue() {
         File file = this.skin().getFile();
         if (file == null) {
-            data = new byte[]{};
-        } else {
-            data = FileUtil.readBytes(file);
+            return (byte[]) super.getValue();
         }
-        return data;
+        return FileUtil.readBytes(file);
     }
 
-    public void setData(Object val) {
+    @Override
+    public void setValue(Object val) {
         if (val instanceof byte[] bytes) {
-            this.data = bytes;
+            super.setValue(bytes);
         } else if (val instanceof Byte[] bytes) {
-            this.data = new byte[bytes.length];
+            byte[] data = new byte[bytes.length];
             for (int i = 0; i < bytes.length; i++) {
-                this.data[i] = bytes[i];
+                data[i] = bytes[i];
             }
+            super.setValue(data);
         }
     }
 

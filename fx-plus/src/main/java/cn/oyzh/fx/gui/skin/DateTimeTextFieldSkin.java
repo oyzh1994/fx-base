@@ -190,9 +190,6 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
 
     public DateTimeTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField, new DateSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.choose());
     }
 
     @Override

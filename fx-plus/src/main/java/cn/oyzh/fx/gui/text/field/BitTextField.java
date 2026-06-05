@@ -54,11 +54,7 @@ public class BitTextField extends ClearableTextField {
         };
     }
 
-    /**
-     * 获取值
-     *
-     * @return 值
-     */
+    @Override
     public byte[] getValue() {
         String val = this.getText();
         if (val == null || val.isEmpty()) {
@@ -67,27 +63,20 @@ public class BitTextField extends ClearableTextField {
         return TextUtil.bitStrToByte(val);
     }
 
-    /**
-     * 设置值
-     *
-     * @param val 值
-     */
-    public void setValue(byte[] val) {
+    @Override
+    public void setValue(Object val) {
+        super.setValue(val);
         this.setText(format(val));
     }
 
-    @Override
-    public void setValue(Object val) {
-        if (val instanceof CharSequence sequence) {
-            this.setText(sequence.toString());
-        } else if (val instanceof byte[] bytes) {
-            this.setValue(bytes);
-        } else if (val instanceof Byte b) {
-            this.setValue(new byte[]{b});
+    public static String format(Object val) {
+        if (val instanceof byte[] bytes) {
+            return TextUtil.byteToBitStr(bytes);
         }
-    }
+        if (val instanceof Byte b) {
+            return TextUtil.byteToBitStr(new byte[]{b});
+        }
+        return val.toString();
 
-    public static String format(byte[] bytes) {
-        return TextUtil.byteToBitStr(bytes);
     }
 }

@@ -166,15 +166,12 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
 
     public TimeTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField, new DateSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.choose());
     }
 
     @Override
     protected SVGGlyph getButton() {
         if (super.button == null) {
-            super.button = new DateSVGGlyph("13");
+            super.button = new DateSVGGlyph();
             super.initButton(super.button);
         }
         return super.button;

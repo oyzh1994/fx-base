@@ -35,10 +35,6 @@ public class SelectTextFiled<T> extends LimitTextField {
         return new SelectTextFiledSkin<>(this);
     }
 
-//    public void clearItem() {
-//        this.clearItemList();
-//    }
-
     public void addItem(T item) {
         if (this.getItemList() == null) {
             this.setItemList(new ArrayList<>());
@@ -69,10 +65,6 @@ public class SelectTextFiled<T> extends LimitTextField {
     public double getLineHeight() {
         return this.skin().getLineHeight();
     }
-
-    // public void selectIndexChanged(ChangeListener<Number> listener) {
-    //     this.skin().selectIndexChanged(listener);
-    // }
 
     public void selectItem(T item) {
         this.skin().selectItem(item);
@@ -118,7 +110,6 @@ public class SelectTextFiled<T> extends LimitTextField {
         super.initNode();
         this.addTextChangeListener((observableValue, s, t1) -> {
             TaskManager.startDelay(() -> this.onTextChanged(t1), 10);
-//            TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
         });
         this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {

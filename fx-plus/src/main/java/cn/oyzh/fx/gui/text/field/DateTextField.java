@@ -15,10 +15,26 @@ public class DateTextField extends LimitTextField {
 
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public Date getValue() throws ParseException {
+    private SimpleDateFormat dateFormat;
+
+    public SimpleDateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(SimpleDateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    @Override
+    public Date getValue() {
         if (!this.isEmpty()) {
-            java.util.Date utilDate = FORMAT.parse(this.getText());
-            return new Date(utilDate.getTime());
+            try {
+                SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
+                java.util.Date utilDate = format.parse(this.getText());
+                return new Date(utilDate.getTime());
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
         }
         return null;
     }
@@ -26,7 +42,8 @@ public class DateTextField extends LimitTextField {
     @Override
     public void setValue(Object val) {
         if (val instanceof java.util.Date date) {
-            this.setText(FORMAT.format(date));
+            SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
+            this.setText(format.format(date));
         } else {
             super.setValue(val);
         }

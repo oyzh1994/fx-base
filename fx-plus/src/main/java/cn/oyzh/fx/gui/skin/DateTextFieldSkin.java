@@ -56,7 +56,7 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
     @Override
     protected SVGGlyph getButton() {
         if (this.button == null) {
-            this.button = new DateSVGGlyph("13");
+            this.button = new DateSVGGlyph();
             super.initButton(this.button);
         }
         return this.button;
@@ -129,9 +129,6 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
 
     public DateTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField,new DateSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.choose());
     }
 
     @Override
