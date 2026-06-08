@@ -55,6 +55,10 @@ public class FXChooser {
         return allExtensionFilter();
     }
 
+    public static FileExtensionFilter jsExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.jsType(), "*.js");
+    }
+
     public static FileExtensionFilter sqlExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.sqlType(), "*.sql");
     }
