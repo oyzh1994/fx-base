@@ -279,8 +279,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
 
     @Override
     public String getInput() {
-        String text = TextUtil.getLastLine(this.getText());
-        //        String text = CollectionUtil.getLast(this.getText().lines().toList());
+        String text = TextUtil.getLastLine(this.getText(), this.lineEndingText());
+        //String text = CollectionUtil.getLast(this.getText().lines().toList());
         if (text == null || text.isEmpty() || text.equals(this.prompt())) {
             return "";
         }
