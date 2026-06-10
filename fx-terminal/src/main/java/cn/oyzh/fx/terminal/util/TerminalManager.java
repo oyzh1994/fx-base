@@ -165,36 +165,6 @@ public class TerminalManager {
     }
 
     /**
-     * 寻找命令处理器
-     *
-     * @param name        终端名称
-     * @param commandText 命令内容
-     * @param matchType   匹配类型 1: 命令开头匹配内容 2: 命令匹配内容 3: 命令开头匹配内容或者内容开庭匹配命令
-     * @return 命令处理器列表
-     */
-    public static List<TerminalCommandHandler<?, ?>> findHandlers(String name, String commandText, int matchType) {
-        try {
-            Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
-            List<TerminalCommandHandler<?, ?>> commands = new ArrayList<>(handlers.size());
-            for (TerminalCommandHandler<?, ?> value : handlers) {
-                String command = value.commandFullName();
-                if (matchType == 1 && StringUtil.startWithIgnoreCase(command, commandText)) {
-                    commands.add(value);
-                } else if (matchType == 2 && StringUtil.equalsIgnoreCase(command, commandText)) {
-                    commands.add(value);
-                } else if (matchType == 3 && (StringUtil.startWithIgnoreCase(command, commandText) || StringUtil.startWithIgnoreCase(commandText, command))) {
-                    commands.add(value);
-                }
-            }
-            return commands.stream().sorted(Comparator.comparing(TerminalCommandHandler::commandFullName)).collect(Collectors.toList());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JulLog.warn("findHandlers error commandText:{} matchType:{}", commandText, matchType, ex);
-        }
-        return Collections.emptyList();
-    }
-
-    /**
      * 获取命令处理器
      *
      * @param name  终端名称
@@ -222,5 +192,35 @@ public class TerminalManager {
             JulLog.warn("findHandler error input:{}", input, ex);
         }
         return null;
+    }
+
+    /**
+     * 寻找命令处理器
+     *
+     * @param name        终端名称
+     * @param commandText 命令内容
+     * @param matchType   匹配类型 1: 命令开头匹配内容 2: 命令匹配内容 3: 命令开头匹配内容或者内容开始匹配命令
+     * @return 命令处理器列表
+     */
+    public static List<TerminalCommandHandler<?, ?>> findHandlers(String name, String commandText, int matchType) {
+        try {
+            Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
+            List<TerminalCommandHandler<?, ?>> commands = new ArrayList<>(handlers.size());
+            for (TerminalCommandHandler<?, ?> value : handlers) {
+                String command = value.commandFullName();
+                if (matchType == 1 && StringUtil.startWithIgnoreCase(command, commandText)) {
+                    commands.add(value);
+                } else if (matchType == 2 && StringUtil.equalsIgnoreCase(command, commandText)) {
+                    commands.add(value);
+                } else if (matchType == 3 && (StringUtil.startWithIgnoreCase(command, commandText) || StringUtil.startWithIgnoreCase(commandText, command))) {
+                    commands.add(value);
+                }
+            }
+            return commands.stream().sorted(Comparator.comparing(TerminalCommandHandler::commandFullName)).collect(Collectors.toList());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.warn("findHandlers error commandText:{} matchType:{}", commandText, matchType, ex);
+        }
+        return Collections.emptyList();
     }
 }
