@@ -65,9 +65,9 @@ public class FarkerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
         handle.setMinWidth(3);
         handle.setMaxWidth(3);
         handle.setPrefWidth(3);
+        handle.setPadding(Insets.EMPTY);
         handle.setCursor(Cursor.H_RESIZE);
         handle.setBackground(ControlUtil.background(Color.TRANSPARENT));
-        handle.setPadding(Insets.EMPTY);
 
         // 把手悬停时改变背景色以便视觉提示（可选）
         handle.setOnMouseEntered(e -> {
@@ -119,8 +119,12 @@ public class FarkerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
         // 宽度函数
         Consumer<Double> widthFunc = w -> {
             if (w != null) {
-                NodeUtil.setWidth(content, w);
-                double translateX = FontUtil.textWidth("a") + 1.5;
+                double w1 = NodeUtil.getWidth(content);
+                double w2 = FontUtil.textWidth("a");
+                double translateX = w - w1 - w2 - 1.5;
+                if (Double.isNaN(translateX)) {
+                    translateX = w2 + 1.5;
+                }
                 handle.setTranslateX(translateX);
             }
         };
