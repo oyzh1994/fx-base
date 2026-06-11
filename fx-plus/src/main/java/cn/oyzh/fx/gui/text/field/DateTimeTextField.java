@@ -71,7 +71,8 @@ public class DateTimeTextField extends LimitTextField {
     public Object getValue() {
         try {
             return this.getDateValue();
-        } catch (ParseException ignored) {
+        } catch (ParseException ex) {
+            ex.printStackTrace();
         }
         return this.getText();
     }
