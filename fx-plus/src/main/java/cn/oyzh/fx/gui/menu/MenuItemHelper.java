@@ -759,6 +759,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameTable(), new RenameSVGGlyph(iconSize), action);
     }
 
+    public static FXMenuItem renameCollection(String iconSize, Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameCollection(), new RenameSVGGlyph(iconSize), action);
+    }
+
     public static FXMenuItem renameView(String iconSize, Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameView(), new RenameSVGGlyph(iconSize), action);
     }
