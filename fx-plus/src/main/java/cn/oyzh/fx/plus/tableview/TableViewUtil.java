@@ -161,9 +161,15 @@ public class TableViewUtil {
         }
     }
 
+    /**
+     * 选中行，在鼠标点击的时候
+     *
+     * @param event 事件
+     */
     private static void _selectRowOnMouseClicked(MouseEvent event) {
         TableRow<?> tableRow = findTableRow((Node) event.getSource());
         if (tableRow != null && tableRow.getTableView() != null) {
+            tableRow.getTableView().getSelectionModel().clearSelection();
             tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
         }
     }
