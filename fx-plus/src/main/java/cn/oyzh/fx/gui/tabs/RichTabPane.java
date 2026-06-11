@@ -88,4 +88,10 @@ public class RichTabPane extends FXTabPane {
         }
     }
 
+    @Override
+    public void initNode() {
+        super.initNode();
+        this.setupRefreshListener();
+    }
+
 }
