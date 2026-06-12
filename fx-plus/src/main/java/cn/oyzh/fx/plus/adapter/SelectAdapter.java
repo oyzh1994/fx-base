@@ -628,16 +628,21 @@ public interface SelectAdapter<T> extends PropAdapter {
     default void selectLast() {
         FXUtil.runWait(() -> {
             if (this instanceof ListView<?> node) {
+                node.getSelectionModel().clearSelection();
                 node.getSelectionModel().selectLast();
                 node.scrollTo(this.getItemSize());
             } else if (this instanceof TableView<?> node) {
+                node.getSelectionModel().clearSelection();
                 node.getSelectionModel().selectLast();
                 node.scrollTo(this.getItemSize());
             } else if (this instanceof ComboBox<?> node) {
+                node.getSelectionModel().clearSelection();
                 node.getSelectionModel().selectLast();
             } else if (this instanceof TabPane node) {
+                node.getSelectionModel().clearSelection();
                 node.getSelectionModel().selectLast();
             } else if (this instanceof TreeView<?> node) {
+                node.getSelectionModel().clearSelection();
                 node.getSelectionModel().selectLast();
             }
         });
