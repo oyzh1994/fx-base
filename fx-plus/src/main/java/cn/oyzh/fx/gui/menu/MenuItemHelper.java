@@ -1060,7 +1060,7 @@ public class MenuItemHelper {
     }
 
     public static FXMenuItem moreInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.moreInfo(), new More1SVGGlyph(iconSize), action);
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.moreInfo(), new MoreSVGGlyph(iconSize), action);
     }
 }
 

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class SplitViewSVGGlyph extends SVGGlyph {
 
     public SplitViewSVGGlyph() {
-        super("/fx-svg/splitView.svg");
+        super("/fx-svg/split-view.svg");
     }
 
     public SplitViewSVGGlyph(String size) {
