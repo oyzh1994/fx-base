@@ -1,12 +1,12 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.ScalingSVGGlyph;
 
 /**
  * @author oyzh
  * @since 2024/4/10
  */
-public class PositioningSVGGlyph  extends SVGGlyph {
+public class PositioningSVGGlyph  extends ScalingSVGGlyph {
 
     public PositioningSVGGlyph() {
         super("/fx-svg/positioning.svg");
@@ -17,9 +17,8 @@ public class PositioningSVGGlyph  extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.positioning());
-//        super.initNode();
-//    }
+    @Override
+    public double sizeScaling() {
+        return 1.05;
+    }
 }
