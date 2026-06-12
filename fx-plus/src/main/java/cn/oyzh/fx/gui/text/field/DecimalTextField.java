@@ -34,26 +34,26 @@ public class DecimalTextField extends DigitalTextField {
     }
 
     public DecimalTextField() {
-        super(false, null);
+        super(null);
     }
 
-    public DecimalTextField(boolean unsigned) {
-        super(unsigned, null);
+    //    public DecimalTextField(boolean unsigned) {
+    //        super(unsigned, null);
+    //    }
+
+    public DecimalTextField(Long maxLen) {
+        super(maxLen);
     }
 
-    public DecimalTextField(boolean unsigned, Long maxLen) {
-        super(unsigned, maxLen);
-    }
-
-    public DecimalTextField(boolean unsigned, Long maxLen, Long minVal, Long maxVal, Integer scaleLen) {
-        super(unsigned, maxLen);
+    public DecimalTextField(Long maxLen, Long minVal, Long maxVal, Integer scaleLen) {
+        super(maxLen);
         super.setMinVal(minVal);
         super.setMaxVal(maxVal);
         this.setScaleLen(scaleLen);
     }
 
-    public DecimalTextField(boolean unsigned, Long maxLen, Integer scaleLen) {
-        super(unsigned, maxLen);
+    public DecimalTextField(Long maxLen, Integer scaleLen) {
+        super(maxLen);
         this.setScaleLen(scaleLen);
     }
 

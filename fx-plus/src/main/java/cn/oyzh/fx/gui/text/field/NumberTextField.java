@@ -16,19 +16,19 @@ import java.util.function.UnaryOperator;
 public class NumberTextField extends DigitalTextField {
 
     public NumberTextField() {
-        super(false, null);
+        super(null);
     }
 
-    public NumberTextField(boolean unsigned) {
-        super(unsigned, null);
+    //    public NumberTextField(boolean unsigned) {
+    //        super(unsigned, null);
+    //    }
+
+    public NumberTextField(Long maxLen) {
+        super(maxLen);
     }
 
-    public NumberTextField(boolean unsigned, Long maxLen) {
-        super(unsigned, maxLen);
-    }
-
-    public NumberTextField(boolean unsigned, Long maxLen, Long minVal, Long maxVal) {
-        super(unsigned, maxLen);
+    public NumberTextField(Long maxLen, Long minVal, Long maxVal) {
+        super(maxLen);
         super.setMinVal(minVal);
         super.setMaxVal(maxVal);
     }
@@ -127,14 +127,14 @@ public class NumberTextField extends DigitalTextField {
         return null;
     }
 
-//    /**
-//     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
-//     *
-//     * @param value 值
-//     */
-//    public void setValue(long value) {
-//        super.value(value);
-//    }
+    //    /**
+    //     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
+    //     *
+    //     * @param value 值
+    //     */
+    //    public void setValue(long value) {
+    //        super.value(value);
+    //    }
 
     public void setMin(Long minVal) {
         this.minVal = minVal;

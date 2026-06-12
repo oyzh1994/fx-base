@@ -14,7 +14,7 @@ import java.util.Date;
 public class YearTextField extends NumberTextField {
 
     public YearTextField() {
-        super(true, null);
+        super(null);
     }
 
     @Override

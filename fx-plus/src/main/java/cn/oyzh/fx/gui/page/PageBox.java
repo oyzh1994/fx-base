@@ -163,11 +163,11 @@ public class PageBox<T> extends FXHBox {
         this.init();
     }
 
-//    private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
-//
-//    private static final Insets DEFAULT_MARGIN1 = new Insets(4, 0, 0, 5);
-//
-//    private static final Insets DEFAULT_MARGIN2 = new Insets(-1.5, 0, 0, 5);
+    //    private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
+    //
+    //    private static final Insets DEFAULT_MARGIN1 = new Insets(4, 0, 0, 5);
+    //
+    //    private static final Insets DEFAULT_MARGIN2 = new Insets(-1.5, 0, 0, 5);
 
     public boolean isShowText() {
         return showText;
@@ -351,7 +351,7 @@ public class PageBox<T> extends FXHBox {
         this.settingBtn.setPadding(Insets.EMPTY);
 
         // 跳页
-        this.jump = new NumberTextField(true);
+        this.jump = new NumberTextField();
         this.jump.setMinVal(1);
         this.jump.setMaxWidth(60);
         this.jump.setFlexHeight("75%");
@@ -376,12 +376,12 @@ public class PageBox<T> extends FXHBox {
         this.managedBindVisible();
 
         Insets insets0 = new Insets(0, 0, 0, 3);
-//        Insets insets1 = new Insets(1, 0, 0, 3);
+        //        Insets insets1 = new Insets(1, 0, 0, 3);
         this.heightProperty().addListener((observable, oldValue, newValue) -> {
             try {
-//                double h1 = (newValue.doubleValue() - this.jump.getRealHeight()) / 2 - 1;
-//                Insets insets1 = new Insets(h1, 0, 0, 0);
-//                this.jump.setPadding(insets1);
+                //                double h1 = (newValue.doubleValue() - this.jump.getRealHeight()) / 2 - 1;
+                //                Insets insets1 = new Insets(h1, 0, 0, 0);
+                //                this.jump.setPadding(insets1);
                 HBox.setMargin(this.jump, insets0);
                 double h2 = (newValue.doubleValue() - this.prevBtn.getRealHeight()) / 2;
                 Insets insets2 = new Insets(h2, 0, 0, 0);
@@ -396,9 +396,9 @@ public class PageBox<T> extends FXHBox {
                 HBox.setMargin(this.firstBtn, insets0);
                 HBox.setMargin(this.settingBtn, insets0);
                 if (this.text != null) {
-//                    double h3 = (newValue.doubleValue() - this.text.getRealHeight()) / 2 - 1;
-//                    Insets insets3 = new Insets(h3, 0, 0, 0);
-//                    this.text.setPadding(insets3);
+                    //                    double h3 = (newValue.doubleValue() - this.text.getRealHeight()) / 2 - 1;
+                    //                    Insets insets3 = new Insets(h3, 0, 0, 0);
+                    //                    this.text.setPadding(insets3);
                     HBox.setMargin(this.text, insets0);
                 }
             } catch (Exception ex) {

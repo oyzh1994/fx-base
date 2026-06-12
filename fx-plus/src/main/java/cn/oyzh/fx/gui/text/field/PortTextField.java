@@ -7,7 +7,7 @@ package cn.oyzh.fx.gui.text.field;
 public class PortTextField extends NumberTextField {
 
     public PortTextField() {
-        super(false);
+        super();
         this.setMin(1L);
         this.setMax(65_535L);
         this.setTipText("1-65535");
