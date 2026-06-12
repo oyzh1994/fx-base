@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.popup;
 
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -12,16 +13,10 @@ import javafx.stage.Popup;
  * @author oyzh
  * @since 2023/12/22
  */
-public class FXPopup extends Popup implements ThemeAdapter {
+public class FXPopup extends Popup implements NodeAdapter, ThemeAdapter {
 
     {
-        this.setAutoFix(true);
-        this.setAutoHide(true);
-        this.showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                NodeManager.init(this);
-            }
-        });
+        NodeManager.init(this);
     }
 
     public void content(Node content) {
@@ -68,5 +63,17 @@ public class FXPopup extends Popup implements ThemeAdapter {
     @Override
     public void hide() {
         FXUtil.runWait(super::hide);
+    }
+
+    @Override
+    public void initNode() {
+        this.setAutoFix(true);
+        this.setAutoHide(true);
+        this.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                NodeManager.init(this);
+            }
+        });
+        NodeAdapter.super.initNode();
     }
 }
