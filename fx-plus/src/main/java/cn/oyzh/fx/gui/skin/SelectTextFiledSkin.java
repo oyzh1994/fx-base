@@ -14,6 +14,8 @@ import javafx.geometry.NodeOrientation;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
@@ -130,26 +132,39 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         FXListView<T> listView = new FXListView<>();
         // 设置数据
         listView.setItem(this.getItemList());
-        // 数据函数
-        Runnable dataFunc = () -> {
+        // 选中函数
+        Runnable selectedFunc = () -> {
             T item = listView.getSelectedItem();
-            // 设置数据中标志位
-            this.setTexting();
-            if (item == null) {
-                textField.clear();
-            } else if (this.converter != null) {
-                textField.setText(this.converter.toString(item));
-            } else {
-                textField.setText(item.toString());
-            }
-            if (this.selectItemChanged != null) {
+            if (item != null && this.selectItemChanged != null) {
                 this.selectItemChanged.accept(item);
             }
             this.hidePopup();
         };
+        // 选中内容变化时仅预览（更新文本），不关闭弹窗、不触发selectItemChanged
         listView.selectedItemChanged((observableValue, t, t1) -> {
             if (!listView.isIgnoreChanged()) {
-                dataFunc.run();
+                T item = listView.getSelectedItem();
+                // 设置数据中标志位
+                this.setTexting();
+                if (item == null) {
+                    textField.clear();
+                } else if (this.converter != null) {
+                    textField.setText(this.converter.toString(item));
+                } else {
+                    textField.setText(item.toString());
+                }
+            }
+        });
+        // 鼠标点击时确认选择并关闭弹窗
+        listView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+            if (popup != null && popup.isShowing()) {
+                selectedFunc.run();
+            }
+        });
+        // 键盘回车时确认选择并关闭弹窗
+        listView.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                selectedFunc.run();
             }
         });
         listView.setCellFactory(new Callback<>() {
@@ -341,8 +356,15 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     /**
-     * 弹窗隐藏事件
+     * 弹窗是否显示中
      *
+     * @return 结果
+     */
+    public boolean isPopupShowing() {
+        return this.popup != null && this.popup.isShowing();
+    }
+
+    /*
      * @param event 事件
      */
     protected void onPopupHide(WindowEvent event) {

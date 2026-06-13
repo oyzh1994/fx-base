@@ -114,6 +114,7 @@ public class SelectTextFiled<T> extends LimitTextField {
         this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
                 this.skin().selectFirst();
+                event.consume();
             }
         });
     }
