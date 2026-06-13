@@ -2,8 +2,6 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.gui.skin.SelectTextFiledSkin;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,16 +105,16 @@ public class SelectTextFiled<T> extends LimitTextField {
 
     @Override
     public void initNode() {
-        super.initNode();
         this.addTextChangeListener((observableValue, s, t1) -> {
             TaskManager.startDelay(() -> this.onTextChanged(t1), 10);
         });
-        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
-                this.skin().selectFirst();
-                event.consume();
-            }
-        });
+        //this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        //    if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
+        //        this.skin().selectFirst();
+        //        event.consume();
+        //    }
+        //});
+        super.initNode();
     }
 
     /**

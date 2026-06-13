@@ -114,6 +114,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             FXListView<T> listView = this.listView();
             listView.setIgnoreChanged(true);
             listView.setItem(this.getItemList());
+            listView.clearSelection();
             listView.setIgnoreChanged(false);
         }
     }
@@ -132,32 +133,42 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         FXListView<T> listView = new FXListView<>();
         // 设置数据
         listView.setItem(this.getItemList());
+        // 预览函数
+        Runnable previewFunc = () -> {
+            // 选中数据
+            T item = listView.getSelectedItem();
+            // 设置数据中标志位
+            this.setTexting();
+            if (item == null) {
+                textField.clear();
+            } else if (this.converter != null) {
+                textField.setText(this.converter.toString(item));
+            } else {
+                textField.setText(item.toString());
+            }
+        };
         // 选中函数
         Runnable selectedFunc = () -> {
+            // 执行预览
+            previewFunc.run();
+            // 选中数据
             T item = listView.getSelectedItem();
+            // 设置数据中标志位
             if (item != null && this.selectItemChanged != null) {
                 this.selectItemChanged.accept(item);
             }
             this.hidePopup();
         };
-        // 选中内容变化时仅预览（更新文本），不关闭弹窗、不触发selectItemChanged
-        listView.selectedItemChanged((observableValue, t, t1) -> {
-            if (!listView.isIgnoreChanged()) {
-                T item = listView.getSelectedItem();
-                // 设置数据中标志位
-                this.setTexting();
-                if (item == null) {
-                    textField.clear();
-                } else if (this.converter != null) {
-                    textField.setText(this.converter.toString(item));
-                } else {
-                    textField.setText(item.toString());
-                }
-            }
-        });
+        //// 选中内容变化时仅预览（更新文本），不关闭弹窗、不触发selectItemChanged
+        //listView.selectedItemChanged((observableValue, t, t1) -> {
+        //    if (!listView.isIgnoreChanged()) {
+        //        previewFunc.run();
+        //        FXUtil.runPulse(this.popup::requestFocus);
+        //    }
+        //});
         // 鼠标点击时确认选择并关闭弹窗
         listView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-            if (popup != null && popup.isShowing()) {
+            if ( this.popup != null &&  this.popup.isShowing()) {
                 selectedFunc.run();
             }
         });
