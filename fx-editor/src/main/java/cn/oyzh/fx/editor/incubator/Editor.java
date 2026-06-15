@@ -498,7 +498,8 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
     public boolean isEmpty() {
         try {
             String str = this.getText();
-            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
+            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r\n")) {
+//            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
                 return true;
             }
         } catch (Exception ex) {
