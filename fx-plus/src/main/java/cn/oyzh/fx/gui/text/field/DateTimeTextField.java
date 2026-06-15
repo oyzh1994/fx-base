@@ -2,6 +2,7 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.date.LocalDateTimeUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.gui.skin.DateTextFieldSkin;
 import cn.oyzh.fx.gui.skin.DateTimeTextFieldSkin;
 import javafx.scene.control.Skin;
 
@@ -9,6 +10,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -33,6 +35,11 @@ public class DateTimeTextField extends LimitTextField {
 
     public void setDateFormat(SimpleDateFormat dateFormat) {
         this.dateFormat = dateFormat;
+        if (dateFormat != null) {
+            this.skin().setFormatter(DateTimeFormatter.ofPattern(dateFormat.toPattern()));
+        } else {
+            this.skin().setFormatter(null);
+        }
     }
 
     public Timestamp getTimestamp() throws ParseException {
@@ -95,7 +102,12 @@ public class DateTimeTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public DateTextFieldSkin skin() {
+        return (DateTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected DateTimeTextFieldSkin createDefaultSkin() {
         return new DateTimeTextFieldSkin(this);
     }
 

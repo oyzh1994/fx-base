@@ -1,11 +1,11 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.TimeTextFieldSkin;
-import javafx.scene.control.Skin;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author oyzh
@@ -23,6 +23,11 @@ public class TimeTextField extends LimitTextField {
 
     public void setDateFormat(SimpleDateFormat dateFormat) {
         this.dateFormat = dateFormat;
+        if (dateFormat != null) {
+            this.skin().setFormatter(DateTimeFormatter.ofPattern(dateFormat.toPattern()));
+        } else {
+            this.skin().setFormatter(null);
+        }
     }
 
     @Override
@@ -50,7 +55,12 @@ public class TimeTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public TimeTextFieldSkin skin() {
+        return (TimeTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected TimeTextFieldSkin createDefaultSkin() {
         return new TimeTextFieldSkin(this);
     }
 

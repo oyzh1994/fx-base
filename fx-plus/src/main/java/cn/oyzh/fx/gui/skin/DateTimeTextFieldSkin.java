@@ -124,7 +124,6 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
 
         // 按钮组件
         SubmitSVGGlyph submit = new SubmitSVGGlyph();
-//        submit.setSizeStr("13,11");
         submit.setOnMousePrimaryClicked(mouseEvent -> {
             LocalDate date = calendar.getValue();
             if (date == null) {
@@ -137,7 +136,7 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
             this.handleHide();
         });
         CancelSVGGlyph cancel = new CancelSVGGlyph();
-//        cancel.setSizeStr("11");
+        //        cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
         FXHBox hBox = new FXHBox(submit, cancel);
