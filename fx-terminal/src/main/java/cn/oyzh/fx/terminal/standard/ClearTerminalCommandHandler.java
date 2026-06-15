@@ -36,7 +36,7 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
     public TerminalExecuteResult execute(ClearTerminalCommand command, Terminal terminal) {
         TerminalExecuteResult result = new TerminalExecuteResult();
         try {
-            terminal.clear();
+            terminal.clearAll();
             if (command != null && command.isClearHis()) {
                 terminal.clearHistory();
             }

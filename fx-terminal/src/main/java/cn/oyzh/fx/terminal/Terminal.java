@@ -16,9 +16,9 @@ import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 public interface Terminal {
 
     /**
-     * 清除内容
+     * 清除全部内容
      */
-    void clear();
+    void clearAll();
 
     /**
      * 获取输入内容
