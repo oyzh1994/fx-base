@@ -26,13 +26,13 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2026/05/30
  */
-public class FarkerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
+public class FakerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
 
-    public FarkerResizeTableColumn() {
+    public FakerResizeTableColumn() {
         super();
     }
 
-    public FarkerResizeTableColumn(String text) {
+    public FakerResizeTableColumn(String text) {
         super(text);
     }
 
