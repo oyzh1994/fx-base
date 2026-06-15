@@ -138,6 +138,13 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
      */
     public void setValue(Object value) {
         this.value = value;
+        this.formatValue();
+    }
+
+    /**
+     * 格式化值
+     */
+    public void formatValue() {
         this.setText(format(value));
     }
 

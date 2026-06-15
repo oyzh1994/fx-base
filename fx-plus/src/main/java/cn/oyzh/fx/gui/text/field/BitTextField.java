@@ -64,9 +64,8 @@ public class BitTextField extends LimitTextField {
     }
 
     @Override
-    public void setValue(Object val) {
-        super.setValue(val);
-        this.setText(format(val));
+    public void formatValue() {
+        this.setText(format(super.getValue()));
     }
 
     public static String format(Object val) {

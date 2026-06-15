@@ -1,10 +1,9 @@
 package cn.oyzh.fx.gui.text.field;
 
+import cn.oyzh.common.date.DateUtil;
 import cn.oyzh.common.date.LocalDateTimeUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.gui.skin.DateTextFieldSkin;
 import cn.oyzh.fx.gui.skin.DateTimeTextFieldSkin;
-import javafx.scene.control.Skin;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -58,46 +57,46 @@ public class DateTimeTextField extends LimitTextField {
         return null;
     }
 
-    public Date getDateValue() throws ParseException {
+
+    @Override
+    public Date getValue() {
         if (!this.isEmpty()) {
-            String text = this.getText();
-            SimpleDateFormat format;
-            if (this.getDateFormat() != null) {
-                format = this.getDateFormat();
-            } else if (text.contains("T")) {
-                format = FORMAT_T;
-            } else {
-                format = FORMAT;
+            try {
+                String text = this.getText();
+                SimpleDateFormat format;
+                if (this.getDateFormat() != null) {
+                    format = this.getDateFormat();
+                } else if (text.contains("T")) {
+                    format = FORMAT_T;
+                } else {
+                    format = FORMAT;
+                }
+                return format.parse(text);
+            } catch (ParseException ex) {
+                ex.printStackTrace();
             }
-            return format.parse(text);
+        }
+        if (super.getValue() instanceof Date date) {
+            return date;
+        }
+        if (super.getValue() instanceof LocalDateTime time) {
+            return DateUtil.of(time);
         }
         return null;
     }
 
     @Override
-    public Object getValue() {
-        try {
-            return this.getDateValue();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-        return this.getText();
-    }
-
-    @Override
-    public void setValue(Object val) {
+    public void formatValue() {
         SimpleDateFormat format;
         if (this.getDateFormat() == null) {
-            format = getFormat(val);
+            format = getFormat(super.getValue());
         } else {
             format = this.getDateFormat();
         }
-        if (val instanceof LocalDateTime localDateTime) {
+        if (super.getValue() instanceof LocalDateTime localDateTime) {
             this.setText(LocalDateTimeUtil.format(localDateTime, format.toPattern()));
-        } else if (val instanceof java.util.Date date) {
+        } else if (super.getValue() instanceof java.util.Date date) {
             this.setText(format.format(date));
-        } else {
-            super.setValue(val);
         }
     }
 

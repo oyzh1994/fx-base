@@ -2,6 +2,7 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.TimeTextFieldSkin;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,16 +42,20 @@ public class TimeTextField extends LimitTextField {
                 throw new RuntimeException(ex);
             }
         }
+        if (super.getValue() instanceof Date utilDate) {
+            return new Timestamp(utilDate.getTime());
+        }
+        if (super.getValue() instanceof Timestamp timestamp) {
+            return timestamp;
+        }
         return null;
     }
 
     @Override
-    public void setValue(Object val) {
-        if (val instanceof java.util.Date date) {
+    public void formatValue() {
+        if (super.getValue() instanceof java.util.Date date) {
             SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
             this.setText(format.format(date));
-        } else {
-            super.setValue(val);
         }
     }
 

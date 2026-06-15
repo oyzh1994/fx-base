@@ -19,9 +19,8 @@ public class BinaryTextFiled extends ChooseFileTextField {
     }
 
     @Override
-    public void setValue(Object val) {
-        super.setValue(val);
-        this.setText(format(val, this.scale));
+    public void formatValue() {
+        this.setText(format(super.getValue(), this.scale));
     }
 
     public static String format(Object o, Integer scale) {

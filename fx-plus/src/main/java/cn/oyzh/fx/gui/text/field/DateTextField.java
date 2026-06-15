@@ -1,8 +1,6 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.DateTextFieldSkin;
-import cn.oyzh.fx.gui.skin.TimeTextFieldSkin;
-import javafx.scene.control.Skin;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -43,16 +41,20 @@ public class DateTextField extends LimitTextField {
                 throw new RuntimeException(ex);
             }
         }
+        if (super.getValue() instanceof Date date) {
+            return date;
+        }
+        if (super.getValue() instanceof java.util.Date date) {
+            return new Date(date.getTime());
+        }
         return null;
     }
 
     @Override
-    public void setValue(Object val) {
-        if (val instanceof java.util.Date date) {
+    public void formatValue() {
+        if (super.getValue() instanceof java.util.Date date) {
             SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
             this.setText(format.format(date));
-        } else {
-            super.setValue(val);
         }
     }
 

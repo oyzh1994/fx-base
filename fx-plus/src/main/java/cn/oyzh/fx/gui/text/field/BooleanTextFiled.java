@@ -15,9 +15,8 @@ public class BooleanTextFiled extends SelectTextFiled<String> {
     }
 
     @Override
-    public void setValue(Object val) {
-        super.setValue(val);
-        String item = format(val);
+    public void formatValue() {
+        String item = format(super.getValue());
         super.selectItem(item);
     }
 
