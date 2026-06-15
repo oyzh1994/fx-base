@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -119,12 +120,15 @@ public class FakerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
         // 宽度函数
         Consumer<Double> widthFunc = w -> {
             if (w != null) {
-                double w1 = NodeUtil.getWidth(content);
-                double w2 = FontUtil.textWidth("a");
-                double translateX = w - w1 - w2 - 1.5;
-                if (Double.isNaN(translateX)) {
-                    translateX = w2 + 1.5;
-                }
+                // 组件宽
+                double w1 = NodeUtil.getWidth(handle);
+                // 设置宽度
+                NodeUtil.setWidth(content, w - w1);
+                // 字符宽
+                double w2 = FontUtil.textWidth("a", FontManager.currentFont());
+                // 偏移量
+                double translateX = w2 + w1 / 2;
+                // 设置偏移量
                 handle.setTranslateX(translateX);
             }
         };
