@@ -12,18 +12,6 @@ import javafx.scene.control.Skin;
  */
 public class HighlightTextField extends LimitTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public HighlightTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (HighlightTextFieldSkin) this.getSkin();
-    }
-
     public boolean isRegex() {
         return this.skin().isRegex();
     }
@@ -61,7 +49,12 @@ public class HighlightTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public HighlightTextFieldSkin skin() {
+        return (HighlightTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected HighlightTextFieldSkin createDefaultSkin() {
         return new HighlightTextFieldSkin(this);
     }
 

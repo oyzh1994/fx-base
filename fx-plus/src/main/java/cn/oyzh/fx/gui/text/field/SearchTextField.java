@@ -26,18 +26,6 @@ public class SearchTextField extends LimitTextField {
     private EventHandler<SearchEvent> onHistorySelected;
 
     /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public SearchTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (SearchTextFieldSkin) this.getSkin();
-    }
-
-    /**
      * 设置搜索历史弹窗
      *
      * @param historyPopup 搜索历史弹窗
@@ -72,7 +60,12 @@ public class SearchTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public SearchTextFieldSkin skin() {
+        return (SearchTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected SearchTextFieldSkin createDefaultSkin() {
         return new SearchTextFieldSkin(this) {
             @Override
             protected void onSearch(String text) {

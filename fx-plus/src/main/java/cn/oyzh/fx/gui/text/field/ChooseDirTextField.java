@@ -14,18 +14,6 @@ import java.util.function.Consumer;
  */
 public class ChooseDirTextField extends ClearableTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public ChooseDirTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (ChooseDirTextFieldSkin) this.getSkin();
-    }
-
     public void setInitDir(String initDir) {
         this.skin().setInitDir(initDir);
     }
@@ -43,7 +31,12 @@ public class ChooseDirTextField extends ClearableTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public ChooseDirTextFieldSkin skin() {
+        return (ChooseDirTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected ChooseDirTextFieldSkin createDefaultSkin() {
         return new ChooseDirTextFieldSkin(this);
     }
 

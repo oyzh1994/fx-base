@@ -9,18 +9,6 @@ import javafx.scene.control.Skin;
  */
 public class EnlargeTextFiled extends LimitTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public EnlargeTextFiledSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (EnlargeTextFiledSkin) this.getSkin();
-    }
-
     public void setEnlargeWidth(double width) {
         this.skin().setEnlargeWidth(width);
     }
@@ -38,7 +26,12 @@ public class EnlargeTextFiled extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public EnlargeTextFiledSkin skin() {
+        return (EnlargeTextFiledSkin) super.skin();
+    }
+
+    @Override
+    protected EnlargeTextFiledSkin createDefaultSkin() {
         return new EnlargeTextFiledSkin(this);
     }
 }

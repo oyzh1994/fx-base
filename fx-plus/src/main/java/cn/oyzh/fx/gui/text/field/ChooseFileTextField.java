@@ -16,18 +16,6 @@ import java.util.function.Consumer;
  */
 public class ChooseFileTextField extends ClearableTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public ChooseFileTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (ChooseFileTextFieldSkin) this.getSkin();
-    }
-
     @Override
     public byte[] getValue() {
         File file = this.skin().getFile();
@@ -67,7 +55,12 @@ public class ChooseFileTextField extends ClearableTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public ChooseFileTextFieldSkin skin() {
+        return (ChooseFileTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected ChooseFileTextFieldSkin createDefaultSkin() {
         return new ChooseFileTextFieldSkin(this);
     }
 

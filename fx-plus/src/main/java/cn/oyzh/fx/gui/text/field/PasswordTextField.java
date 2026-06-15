@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.text.field;
 
 
+import cn.oyzh.fx.gui.skin.MatchCaseTextFieldSkin;
 import cn.oyzh.fx.gui.skin.PasswordTextFieldSkin;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
@@ -116,7 +117,7 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    protected PasswordTextFieldSkin createDefaultSkin() {
         return new PasswordTextFieldSkin(this);
     }
 }

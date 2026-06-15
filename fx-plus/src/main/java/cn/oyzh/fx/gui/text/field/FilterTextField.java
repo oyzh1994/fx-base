@@ -13,18 +13,6 @@ import javafx.scene.control.Skin;
  */
 public class FilterTextField extends LimitTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public FilterTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (FilterTextFieldSkin) this.getSkin();
-    }
-
     public boolean isMatchCase() {
         return this.skin().isMatchCase();
     }
@@ -50,7 +38,12 @@ public class FilterTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public FilterTextFieldSkin skin() {
+        return (FilterTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected FilterTextFieldSkin createDefaultSkin() {
         return new FilterTextFieldSkin(this);
     }
 

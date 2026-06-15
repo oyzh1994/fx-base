@@ -17,9 +17,6 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
 
     public PasswordTextFieldSkin(PasswordTextField textField) {
         super(textField);
-        // super(textField, new EyeSVGGlyph());
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.showPassword());
     }
 
     @Override

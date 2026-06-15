@@ -16,6 +16,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TextField;
 
 /**
@@ -162,6 +163,18 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
 
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
+    }
+
+    /**
+     * 当前皮肤
+     *
+     * @return 皮肤
+     */
+    public Skin<?> skin() {
+        if (this.getSkin() == null) {
+            this.setSkin(this.createDefaultSkin());
+        }
+        return this.getSkin();
     }
 
     @Override

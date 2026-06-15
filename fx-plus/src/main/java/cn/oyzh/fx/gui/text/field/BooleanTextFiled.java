@@ -8,10 +8,6 @@ import cn.oyzh.common.util.BooleanUtil;
  */
 public class BooleanTextFiled extends SelectTextFiled<String> {
 
-    {
-        this.setEditable(false);
-    }
-
     @Override
     public Boolean getValue() {
         String text = this.getSelectedItem();
@@ -29,6 +25,7 @@ public class BooleanTextFiled extends SelectTextFiled<String> {
     public void initNode() {
         super.addItem("true");
         super.addItem("false");
+        this.setEditable(false);
         super.initNode();
     }
 
@@ -53,5 +50,4 @@ public class BooleanTextFiled extends SelectTextFiled<String> {
         }
         return "false";
     }
-
 }

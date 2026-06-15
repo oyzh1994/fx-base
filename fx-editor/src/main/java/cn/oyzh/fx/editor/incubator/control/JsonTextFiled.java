@@ -13,24 +13,13 @@ import javafx.scene.control.Skin;
  */
 public class JsonTextFiled extends LimitTextField {
 
-//    public JsonTextFiled() {
-//        this.setSkin(new JsonTextFiledSkin(this));
-//    }
-
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
+    @Override
     public JsonTextFiledSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (JsonTextFiledSkin) this.getSkin();
+        return (JsonTextFiledSkin) super.skin();
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    protected JsonTextFiledSkin createDefaultSkin() {
         return new JsonTextFiledSkin(this);
     }
 

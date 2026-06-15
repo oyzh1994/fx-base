@@ -13,23 +13,13 @@ import java.util.function.Consumer;
  */
 public class SelectTextFiled<T> extends LimitTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
+    @Override
     public SelectTextFiledSkin<T> skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (SelectTextFiledSkin<T>) this.getSkin();
+        return (SelectTextFiledSkin<T>) super.skin();
     }
 
     @Override
     protected SelectTextFiledSkin<T> createDefaultSkin() {
-        if (this.getSkin() != null) {
-            return (SelectTextFiledSkin<T>) this.getSkin();
-        }
         return new SelectTextFiledSkin<>(this);
     }
 

@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.ChooseTextFieldSkin;
-import javafx.scene.control.Skin;
 
 /**
  * 选择输入框
@@ -11,28 +10,23 @@ import javafx.scene.control.Skin;
  */
 public class ChooseTextField extends LimitTextField {
 
-    {
-        this.setEditable(false);
-    }
-
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public ChooseTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (ChooseTextFieldSkin) this.getSkin();
-    }
-
     public void setAction(Runnable action) {
         this.skin().setAction(action);
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public ChooseTextFieldSkin skin() {
+        return (ChooseTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected ChooseTextFieldSkin createDefaultSkin() {
         return new ChooseTextFieldSkin(this);
+    }
+
+    @Override
+    public void initNode() {
+        this.setEditable(false);
+        super.initNode();
     }
 }

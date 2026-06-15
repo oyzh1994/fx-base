@@ -12,18 +12,6 @@ import javafx.scene.control.Skin;
  */
 public class MatchCaseTextField extends LimitTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public MatchCaseTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (MatchCaseTextFieldSkin) this.getSkin();
-    }
-
     public boolean isMatchCase() {
         return this.skin().isMatchCase();
     }
@@ -37,7 +25,12 @@ public class MatchCaseTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public MatchCaseTextFieldSkin skin() {
+        return (MatchCaseTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected MatchCaseTextFieldSkin createDefaultSkin() {
         return new MatchCaseTextFieldSkin(this);
     }
 }

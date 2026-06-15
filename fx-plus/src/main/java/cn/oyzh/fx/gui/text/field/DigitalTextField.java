@@ -93,18 +93,6 @@ public abstract class DigitalTextField extends LimitTextField {
         //        this.setUnsigned(unsigned);
     }
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public DigitalTextFieldSkin skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (DigitalTextFieldSkin) this.getSkin();
-    }
-
     protected abstract DigitalConverter getConverter();
 
     /**
@@ -258,7 +246,12 @@ public abstract class DigitalTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public DigitalTextFieldSkin skin() {
+        return (DigitalTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected DigitalTextFieldSkin createDefaultSkin() {
         return new DigitalTextFieldSkin(this, this::incrValue, this::decrValue);
     }
 

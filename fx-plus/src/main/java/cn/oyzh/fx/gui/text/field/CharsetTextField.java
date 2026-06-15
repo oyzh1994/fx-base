@@ -17,19 +17,6 @@ import java.util.stream.Collectors;
  */
 public class CharsetTextField extends SelectTextFiled<String> {
 
-    {
-        this.addItem("");
-        // this.addItem(StandardCharsets.UTF_8.displayName().toLowerCase());
-        // this.addItem("gbk");
-        // this.addItem("gb18030");
-        // this.addItem("gb2312");
-        // this.addItem(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
-        // this.addItem(StandardCharsets.US_ASCII.displayName().toLowerCase());
-        for (String charset : this.charsets()) {
-            this.addItem(charset);
-        }
-    }
-
     private List<String> charsets(){
         List<String> list = new ArrayList<>();
         for (Charset value : Charset.availableCharsets().values()) {
@@ -117,5 +104,14 @@ public class CharsetTextField extends SelectTextFiled<String> {
         } else {
             this.skin().showPopup();
         }
+    }
+
+    @Override
+    public void initNode() {
+        this.addItem("");
+        for (String charset : this.charsets()) {
+            this.addItem(charset);
+        }
+        super.initNode();
     }
 }
