@@ -151,26 +151,20 @@ public class TableViewUtil {
      */
     public static void selectRowOnMouseClicked(Node node) {
         if (node != null) {
-            //node.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            //    TableRow<?> tableRow = findTableRow(node);
-            //    if (tableRow != null && tableRow.getTableView() != null) {
-            //        tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
-            //    }
-            //});
-            node.addEventFilter(MouseEvent.MOUSE_CLICKED, TableViewUtil::_selectRowOnMouseClicked);
-        }
-    }
-
-    /**
-     * 选中行，在鼠标点击的时候
-     *
-     * @param event 事件
-     */
-    private static void _selectRowOnMouseClicked(MouseEvent event) {
-        TableRow<?> tableRow = findTableRow((Node) event.getSource());
-        if (tableRow != null && tableRow.getTableView() != null) {
-            tableRow.getTableView().getSelectionModel().clearSelection();
-            tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
+            node.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                TableRow<?> tableRow = findTableRow((Node) event.getSource());
+                if (tableRow != null && tableRow.getTableView() != null) {
+                    TableView<?> tableView = tableRow.getTableView();
+                    TableView.TableViewSelectionModel<?> selectionModel = tableView.getSelectionModel();
+                    // TODO: 选中索引一样，忽略
+                    if (selectionModel.getSelectedIndex() == tableRow.getIndex()) {
+                        return;
+                    }
+                    selectionModel.clearSelection();
+                    selectionModel.select(tableRow.getIndex());
+                }
+                event.consume();
+            });
         }
     }
 
