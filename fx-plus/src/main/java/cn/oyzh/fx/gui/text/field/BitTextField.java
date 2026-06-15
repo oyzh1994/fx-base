@@ -11,7 +11,7 @@ import java.util.function.UnaryOperator;
  * @author oyzh
  * @since 2023/12/22
  */
-public class BitTextField extends ClearableTextField {
+public class BitTextField extends LimitTextField {
 
     /**
      * 文本格式器

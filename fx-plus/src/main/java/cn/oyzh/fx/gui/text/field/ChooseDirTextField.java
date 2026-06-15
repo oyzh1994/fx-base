@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.ChooseDirTextFieldSkin;
-import javafx.scene.control.Skin;
+import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2026/01/04
  */
-public class ChooseDirTextField extends ClearableTextField {
+public class ChooseDirTextField extends FXTextField {
 
     public void setInitDir(String initDir) {
         this.skin().setInitDir(initDir);

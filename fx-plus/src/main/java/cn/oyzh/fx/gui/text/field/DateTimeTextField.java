@@ -102,8 +102,8 @@ public class DateTimeTextField extends LimitTextField {
     }
 
     @Override
-    public DateTextFieldSkin skin() {
-        return (DateTextFieldSkin) super.skin();
+    public DateTimeTextFieldSkin skin() {
+        return (DateTimeTextFieldSkin) super.skin();
     }
 
     @Override

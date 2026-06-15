@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.text.field;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.gui.skin.ChooseFileTextFieldSkin;
 import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
-import javafx.scene.control.Skin;
+import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseFileTextField extends ClearableTextField {
+public class ChooseFileTextField extends FXTextField {
 
     @Override
     public byte[] getValue() {
