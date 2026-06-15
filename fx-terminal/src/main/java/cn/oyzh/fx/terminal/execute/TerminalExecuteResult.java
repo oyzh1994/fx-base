@@ -92,23 +92,23 @@ public class TerminalExecuteResult {
         }
         this.result += result;
     }
-
-    /**
-     * 追加结果，附带换行
-     *
-     * @param result 结果
-     */
-    public void appendResultLine(String result) {
-        if (result == null) {
-            return;
-        }
-        if (this.result == null) {
-            this.result = "";
-        } else if (!this.result.toString().endsWith("\n")) {
-            this.result += "\n";
-        }
-        this.result += result;
-    }
+//
+//    /**
+//     * 追加结果，附带换行
+//     *
+//     * @param result 结果
+//     */
+//    public void appendResultLine(String result) {
+//        if (result == null) {
+//            return;
+//        }
+//        if (this.result == null) {
+//            this.result = "";
+//        } else if (!this.result.toString().endsWith("\n")) {
+//            this.result += "\n";
+//        }
+//        this.result += result;
+//    }
 
     /**
      * 执行ok

@@ -29,7 +29,7 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
 
     @Override
     public String commandHelp(Terminal terminal) {
-        return super.commandHelp(terminal) + "\n-his " + I18nHelper.history();
+        return super.commandHelp(terminal) + terminal.lineEndingText() + "-his " + I18nHelper.history();
     }
 
     @Override

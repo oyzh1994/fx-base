@@ -368,8 +368,11 @@ public abstract class TerminalPane extends Editor implements Terminal {
     public void prompt(String prompt) {
         if (!StringUtil.equals(prompt, this.prompt)) {
             if (prompt != null) {
-                prompt = prompt.replaceAll("\r", "")
-                        .replaceAll("\n", "");
+                prompt = prompt.replace("\r\n", "")
+                        .replace("\r", "")
+                        .replace("\n", "")
+                        .replace(this.lineEndingText(), "")
+                ;
             }
             this.prompt = prompt;
         }
