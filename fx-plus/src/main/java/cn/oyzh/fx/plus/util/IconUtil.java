@@ -281,7 +281,7 @@ public class IconUtil {
     /**
      * 系统图标缓存
      */
-    private static final Map<String, Image> SYSTEM_ICON_CACHE = new ConcurrentHashMap<>();
+    private static Map<String, Image> SYSTEM_ICON_CACHE;
 
     /**
      * 根据扩展名，获取系统图标
@@ -293,6 +293,9 @@ public class IconUtil {
         // 无扩展名时的通用图标
         if (extName.isEmpty()) {
             extName = "file";
+        }
+        if (SYSTEM_ICON_CACHE == null) {
+            SYSTEM_ICON_CACHE = new ConcurrentHashMap<>();
         }
         // 从缓存获取
         return SYSTEM_ICON_CACHE.computeIfAbsent(extName, key -> {
