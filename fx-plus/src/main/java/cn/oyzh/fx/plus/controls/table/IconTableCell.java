@@ -18,10 +18,11 @@ import java.util.function.BiFunction;
 public class IconTableCell<S, T> extends FXTableCell<S, T> {
 
     public IconTableCell() {
-
+        super();
     }
 
     public IconTableCell(BiFunction<S, T, Object> iconFunc) {
+        super();
         this.iconFunc = iconFunc;
     }
 

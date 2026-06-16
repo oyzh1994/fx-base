@@ -499,12 +499,12 @@ public class NodeUtil {
             if (!columnBase.prefWidthProperty().isBound()) {
                 columnBase.setPrefWidth(width);
             }
-            // if (!columnBase.minWidthProperty().isBound()) {
-            //     columnBase.setMinWidth(width);
-            // }
-            if (!columnBase.maxWidthProperty().isBound()) {
-                columnBase.setMaxWidth(width);
-            }
+//             if (!columnBase.minWidthProperty().isBound()) {
+//                 columnBase.setMinWidth(width);
+//             }
+//            if (!columnBase.maxWidthProperty().isBound()) {
+//                columnBase.setMaxWidth(width);
+//            }
         }
         if (target instanceof PopupControl control) {
             if (!control.prefWidthProperty().isBound()) {

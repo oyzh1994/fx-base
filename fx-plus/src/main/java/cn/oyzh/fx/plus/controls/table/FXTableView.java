@@ -147,8 +147,8 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
                     if (column.isResizable()) {
                         flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
                     }
-                } else {
-                    NodeUtil.setWidth(column, 0D);
+//                } else {
+//                    NodeUtil.setWidth(column, 0D);
                 }
             }
         }
@@ -292,23 +292,6 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         }
     }
 
-    //    /**
-    //     * 移除时销毁列
-    //     */
-    //    protected void destroyColmnOnRemoved(){
-    //        // 监听移除
-    //        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) change -> {
-    //            if (change.next()) {
-    //                List<?> list = change.getRemoved();
-    //                for (Object object : list) {
-    //                    if (object instanceof Destroyable destroyable){
-    //                        destroyable.destroy();
-    //                    }
-    //                }
-    //            }
-    //        });
-    //    }
-
     /**
      * 仅显示图标
      */
@@ -327,22 +310,14 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FXUtil.runPulse(this::showGraphicOnly);
     }
 
-    //    /**
-    //     * 模拟的复选实现，解决部分情况下的需求
-    //     */
-    //    protected void fakerMultipleSelection() {
-    //        SelectionMode selectionMode = this.getSelectionModel().getSelectionMode();
-    //        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-    //            if (event.getCode() == KeyCode.SHIFT) {
-    //                this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    //            }
-    //        });
-    //        this.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-    //            if (event.getCode() == KeyCode.SHIFT) {
-    //                this.getSelectionModel().setSelectionMode(selectionMode);
-    //            }
-    //        });
-    //    }
+    /**
+     * 设置选区模式
+     *
+     * @param selectionMode 选区模式
+     */
+    public void setSelectionMode(SelectionMode selectionMode) {
+        this.getSelectionModel().setSelectionMode(selectionMode);
+    }
 
     @Override
     public void destroy() {
@@ -353,14 +328,5 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         this.clearColumn();
         NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
-    }
-
-    /**
-     * 设置选区模式
-     *
-     * @param selectionMode 选区模式
-     */
-    public void setSelectionMode(SelectionMode selectionMode) {
-        this.getSelectionModel().setSelectionMode(selectionMode);
     }
 }
