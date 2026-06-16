@@ -491,9 +491,9 @@ public class NodeUtil {
             // if (!labeled.minWidthProperty().isBound()) {
             //     labeled.setMinWidth(width);
             // }
-            if (!labeled.maxWidthProperty().isBound()) {
-                labeled.setMaxWidth(width);
-            }
+//            if (!labeled.maxWidthProperty().isBound()) {
+//                labeled.setMaxWidth(width);
+//            }
         }
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             if (!columnBase.prefWidthProperty().isBound()) {
@@ -513,9 +513,9 @@ public class NodeUtil {
             // if (!control.minWidthProperty().isBound()) {
             //     control.setMinWidth(width);
             // }
-            if (!control.maxWidthProperty().isBound()) {
-                control.setMaxWidth(width);
-            }
+//            if (!control.maxWidthProperty().isBound()) {
+//                control.setMaxWidth(width);
+//            }
         }
         if (target instanceof Region region) {
             if (!region.prefWidthProperty().isBound()) {
@@ -524,9 +524,9 @@ public class NodeUtil {
             // if (!region.minWidthProperty().isBound()) {
             //     region.setMinWidth(width);
             // }
-            if (!region.maxWidthProperty().isBound()) {
-                region.setMaxWidth(width);
-            }
+//            if (!region.maxWidthProperty().isBound()) {
+//                region.setMaxWidth(width);
+//            }
         }
         if (target instanceof Shape shape) {
             if (!shape.strokeWidthProperty().isBound()) {

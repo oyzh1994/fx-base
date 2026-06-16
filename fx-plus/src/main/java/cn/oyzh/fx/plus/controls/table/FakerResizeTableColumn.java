@@ -8,6 +8,7 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -113,8 +114,8 @@ public class FakerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
         // 标签占用剩余空间，把手始终在右侧
         HBox.setHgrow(content, Priority.ALWAYS);
         hBox.setAlignment(Pos.CENTER_LEFT);
-        // 关键：禁用原生列宽调整，避免冲突
-        this.setResizable(false);
+//        // 关键：禁用原生列宽调整，避免冲突
+//        this.setResizable(false);
         // 绑定宽度
         hBox.prefWidthProperty().bind(this.widthProperty());
         // 宽度函数
@@ -140,6 +141,12 @@ public class FakerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
                 widthFunc.accept(newWidth.doubleValue());
             }
         });
+        // 在列附加到TableView后，延迟禁用原生列宽调整，避免与自定义把手冲突
+        this.tableViewProperty().addListener((obs, oldTable, newTable) -> {
+            if (newTable != null) {
+                FXUtil.runLater(() -> this.setResizable(false));
+            }
+        });
         return hBox;
     }
 
@@ -147,7 +154,7 @@ public class FakerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
     public void initNode() {
         if (this.autoInitGraphic()) {
             this.textProperty().subscribe(text -> {
-                if (text != null) {
+                if (text != null && this.isFakerMode()) {
                     FXHBox graphic = this.initGraphic(text);
                     this.setGraphic(graphic);
                     super.setText(null);
@@ -159,5 +166,25 @@ public class FakerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
 
     protected boolean autoInitGraphic() {
         return true;
+    }
+
+    /**
+     * 欺骗模式
+     */
+    private boolean fakerMode = true;
+
+    public boolean isFakerMode() {
+        return fakerMode;
+    }
+
+    public void setFakerMode(boolean fakerMode) {
+        this.fakerMode = fakerMode;
+    }
+
+    @Override
+    public void setRealWidth(double width) {
+        if (!Double.isNaN(width) && width > 0) {
+            this.setPrefWidth(width);
+        }
     }
 }

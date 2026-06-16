@@ -125,10 +125,7 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         if (this.isResizable()) {
             if (!Double.isNaN(width) && width > 0) {
                 this.setPrefWidth(width);
-//                this.setMinWidth(width);
             }
-        } else {
-            FlexAdapter.super.setRealWidth(width);
         }
     }
 

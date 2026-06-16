@@ -12,7 +12,6 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -144,11 +143,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         for (TableColumn<?, ?> column : columns) {
             if (column instanceof FlexAdapter flexNode) {
                 if (column.isVisible()) {
-                    if (column.isResizable()) {
-                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-                    }
-//                } else {
-//                    NodeUtil.setWidth(column, 0D);
+                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
                 }
             }
         }

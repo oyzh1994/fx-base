@@ -118,7 +118,7 @@ import cn.oyzh.fx.gui.svg.glyph.file.r.FileRssSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.r.FileRtfSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.r.FileRubySVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.r.FileRustSVGGlyph;
-import cn.oyzh.fx.gui.svg.glyph.file.s.FileSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.file.FileSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.s.FileSasSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.s.FileScalaSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.s.FileScssSVGGlyph;
