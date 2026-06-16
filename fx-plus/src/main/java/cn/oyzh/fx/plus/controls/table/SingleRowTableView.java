@@ -40,7 +40,7 @@ public class SingleRowTableView<S> extends FXTableView<S>  {
 
     @Override
     public void initNode() {
-        super.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        super.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         super.initNode();
     }
 }
