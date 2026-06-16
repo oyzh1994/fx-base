@@ -1,4 +1,4 @@
-package cn.oyzh.fx.gui.svg.glyph.file.a;
+package cn.oyzh.fx.gui.svg.glyph.file;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 
@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class FileAddSVGGlyph extends SVGGlyph {
 
     public FileAddSVGGlyph() {
-        super("/fx-svg/file/a/file-add.svg");
+        super("/fx-svg/file/file-add.svg");
     }
 
     public FileAddSVGGlyph(String size) {

@@ -1,4 +1,4 @@
-package cn.oyzh.fx.gui.svg.glyph.file.s;
+package cn.oyzh.fx.gui.svg.glyph.file;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 
