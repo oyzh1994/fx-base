@@ -187,8 +187,8 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
 
     private final ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
         Font editorFont = this.getEditorFont();
-        JulLog.info("font:{} editorFont:{}", newValue, editorFont);
         if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
+            JulLog.info("font:{} editorFont:{}", newValue, editorFont);
             this.changeFont(editorFont);
         }
     };
@@ -499,7 +499,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
         try {
             String str = this.getText();
             if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r\n")) {
-//            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
+                //            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
                 return true;
             }
         } catch (Exception ex) {
@@ -1164,7 +1164,7 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
      * 滚动到顶部
      */
     public void scrollToTop() {
-        this.moveCaretStart();
+        FXUtil.runPulse(this::moveCaretStart);
     }
 
     /**
