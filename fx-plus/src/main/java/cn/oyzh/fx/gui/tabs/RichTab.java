@@ -27,11 +27,11 @@ import java.util.List;
  */
 public abstract class RichTab extends FXTab {
 
-    public RichTab() {
-        // 加载内容
-        this.loadContent();
-        this.setClosable(true);
-    }
+//    public RichTab() {
+//        // 加载内容
+//        this.loadContent();
+//        this.setClosable(true);
+//    }
 
     /**
      * 加载内容
@@ -207,8 +207,6 @@ public abstract class RichTab extends FXTab {
         this.closeTabs(list);
     }
 
-
-
     @Override
     public void flushTitle() {
         String title1 = this.getTitle();
@@ -239,6 +237,14 @@ public abstract class RichTab extends FXTab {
         if (controller != null) {
             controller.onTabCloseRequest(event);
         }
+    }
+
+    @Override
+    public void initNode() {
+        // 加载内容
+        this.loadContent();
+        this.setClosable(true);
+        super.initNode();
     }
 
     @Override
