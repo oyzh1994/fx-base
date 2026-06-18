@@ -243,7 +243,7 @@ public abstract class RichTab extends FXTab {
     public void initNode() {
         // 加载内容
         this.loadContent();
-        this.setClosable(true);
+//        this.setClosable(true);
         super.initNode();
     }
 

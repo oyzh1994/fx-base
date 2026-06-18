@@ -130,7 +130,7 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void initNode() {
-        this.setClosable(false);
+//        this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
 //        List<? extends MenuItem> items = this.getMenuItems();
