@@ -20,11 +20,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * @since 2025-03-06
  */
 public class TableViewMouseSelectHelper {
-
-    /**
-     * 选区id
-     */
-    private static final String SELECTION_ID = "table_view_selection_rect";
+    //
+    ///**
+    // * 选区id
+    // */
+    //private static final String SELECTION_ID = "table_view_selection_rect";
 
     /**
      * tableview
