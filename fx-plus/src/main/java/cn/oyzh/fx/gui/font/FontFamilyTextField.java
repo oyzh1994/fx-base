@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
 public class FontFamilyTextField extends SelectTextFiled<String> {
 
     @Override
+    protected FontFamilyTextFieldSkin createDefaultSkin() {
+        return new FontFamilyTextFieldSkin(this);
+    }
+
+    @Override
     protected void onTextChanged(String newValue) {
         if (this.skin().isTexting()) {
             this.skin().clearTexting();
