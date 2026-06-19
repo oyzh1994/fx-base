@@ -18,11 +18,11 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
 
     @Override
     protected void onTextChanged(String newValue) {
-        if (!this.isFocused()) {
-            return;
-        }
         if (this.skin().isTexting()) {
             this.skin().clearTexting();
+            return;
+        }
+        if (!this.isFocused()) {
             return;
         }
         List<String> fonts = FontUtil.getFamilies();
