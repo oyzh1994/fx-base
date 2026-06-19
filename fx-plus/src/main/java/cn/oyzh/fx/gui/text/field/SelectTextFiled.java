@@ -82,15 +82,25 @@ public class SelectTextFiled<T> extends LimitTextField {
      * 文本变更事件
      *
      * @param newValue 新文本
+     * @return 结果
      */
-    protected void onTextChanged(String newValue) {
+    protected boolean onTextChanged(String newValue) {
         if (this.skin().isTexting()) {
             this.skin().clearTexting();
-            return;
+            this.skin().hidePopup();
+            return false;
         }
         if (!this.isFocused()) {
-            return;
+            this.skin().hidePopup();
+            return false;
         }
+        if (this.isDisable()) {
+            this.skin().hidePopup();
+            return false;
+        }
+        // 移除选区
+        this.clearSelection();
+        return true;
     }
 
     @Override

@@ -168,7 +168,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         //});
         // 鼠标点击时确认选择并关闭弹窗
         listView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-            if ( this.popup != null &&  this.popup.isShowing()) {
+            if (this.popup != null && this.popup.isShowing()) {
                 selectedFunc.run();
             }
         });

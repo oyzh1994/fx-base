@@ -76,21 +76,15 @@ public class CharsetTextField extends SelectTextFiled<String> {
     }
 
     @Override
-    protected void onTextChanged(String newValue) {
-        if (!this.isFocused()) {
-            return;
+    protected boolean onTextChanged(String newValue) {
+        if (!super.onTextChanged(newValue)) {
+            return false;
         }
-        if (this.skin().isTexting()) {
-            this.skin().clearTexting();
-            return;
-        }
-        // 移除选区
-        this.clearSelection();
         // 隐藏弹窗
         if (StringUtil.isBlank(newValue)) {
             this.setItemList(this.charsets());
             this.skin().hidePopup();
-            return;
+            return false;
         }
         // 过滤内容
         List<String> newList = this.charsets().stream()
@@ -104,6 +98,7 @@ public class CharsetTextField extends SelectTextFiled<String> {
         } else {
             this.skin().showPopup();
         }
+        return true;
     }
 
     @Override
