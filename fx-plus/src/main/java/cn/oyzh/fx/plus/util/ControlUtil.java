@@ -15,7 +15,6 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
@@ -484,7 +483,7 @@ public class ControlUtil {
      * @param scrollBar        滚动条
      * @param minVisibleAmount 最小值
      */
-    public static void steupMinVisibleAmount(ScrollBar scrollBar, double minVisibleAmount) {
+    public static void setupMinVisibleAmount(ScrollBar scrollBar, double minVisibleAmount) {
         scrollBar.setVisibleAmount(minVisibleAmount);
         scrollBar.visibleAmountProperty().addListener((observableValue, number, t1) -> {
             if (t1 != null && t1.doubleValue() < minVisibleAmount) {
