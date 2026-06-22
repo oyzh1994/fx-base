@@ -19,7 +19,7 @@ public class SaveButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.save());
         this.setTipText(I18nHelper.save());
-        this.init(new SaveSVGGlyph(), 0.85);
+        this.init(new SaveSVGGlyph());
         super.initNode();
     }
 }

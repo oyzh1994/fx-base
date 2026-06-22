@@ -17,7 +17,7 @@ public class SubmitButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.submit());
         this.setTipText(I18nHelper.submit());
-        this.init(new SubmitSVGGlyph(), 0.7);
+        this.init(new SubmitSVGGlyph());
         super.initNode();
     }
 }

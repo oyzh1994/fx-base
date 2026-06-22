@@ -18,7 +18,7 @@ public class ResetButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.reset());
         this.setTipText(I18nHelper.reset());
-        this.init(new ResetSVGGlyph(), 0.7);
+        this.init(new ResetSVGGlyph());
         super.initNode();
     }
 }

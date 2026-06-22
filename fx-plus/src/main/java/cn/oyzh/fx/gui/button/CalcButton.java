@@ -19,7 +19,7 @@ public class CalcButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.calc());
         this.setTipText(I18nHelper.calc());
-        this.init(new CalcSVGGlyph(), 0.7);
+        this.init(new CalcSVGGlyph());
         super.initNode();
     }
 }

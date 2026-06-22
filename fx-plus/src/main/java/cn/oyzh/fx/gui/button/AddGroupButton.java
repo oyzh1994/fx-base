@@ -19,7 +19,7 @@ public class AddGroupButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.addGroup());
         this.setTipText(I18nHelper.addGroup());
-        this.init(new AddGroupSVGGlyph(), 0.7);
+        this.init(new AddGroupSVGGlyph());
         super.initNode();
     }
 }

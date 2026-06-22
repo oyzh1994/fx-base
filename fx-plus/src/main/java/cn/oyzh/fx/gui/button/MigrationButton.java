@@ -15,7 +15,7 @@ public class MigrationButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.migration());
         this.setTipText(I18nHelper.migration());
-        this.init(new MigrationSVGGlyph(), 0.7);
+        this.init(new MigrationSVGGlyph());
         super.initNode();
     }
 }

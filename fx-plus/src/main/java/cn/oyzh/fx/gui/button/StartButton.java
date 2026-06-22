@@ -17,7 +17,7 @@ public class StartButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.start());
         this.setTipText(I18nHelper.start());
-        this.init(new SubmitSVGGlyph(), 0.7);
+        this.init(new SubmitSVGGlyph());
         super.initNode();
     }
 }

@@ -19,7 +19,7 @@ public class AddFolderButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.addFolder1());
         this.setTipText(I18nHelper.addFolder1());
-        this.init(new AddGroupSVGGlyph(), 0.7);
+        this.init(new AddGroupSVGGlyph());
         super.initNode();
     }
 }

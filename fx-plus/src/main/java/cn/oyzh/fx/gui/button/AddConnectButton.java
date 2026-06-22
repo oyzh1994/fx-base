@@ -17,7 +17,7 @@ public class AddConnectButton extends IconButton {
         this.addClass("success");
         this.setText(I18nHelper.addConnect());
         this.setTipText(I18nHelper.addConnect());
-        this.init(new AddSVGGlyph(), 0.7);
+        this.init(new AddSVGGlyph());
         super.initNode();
     }
 

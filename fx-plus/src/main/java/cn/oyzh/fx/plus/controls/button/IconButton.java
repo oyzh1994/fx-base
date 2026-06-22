@@ -10,14 +10,16 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  */
 public class IconButton extends FXButton {
 
-    /**
-     * 图标对比字符的百分比
-     */
-    private Double iconSizePercent = 1.0;
-
-    public Double getIconSizePercent() {
-        return iconSizePercent;
-    }
+    //    /**
+    //     * 图标对比字符的百分比
+    //     */
+    //    @Deprecated
+    //    private Double iconSizePercent = 1.0;
+    //
+    //    @Deprecated
+    //    public Double getIconSizePercent() {
+    //        return iconSizePercent;
+    //    }
 
     @Override
     public void initNode() {
@@ -25,47 +27,46 @@ public class IconButton extends FXButton {
         super.initNode();
     }
 
-    /**
-     * 设置图标对比字符的百分比
-     *
-     * @param iconSizePercent 图标对比字符的百分比
-     */
-    public void setIconSizePercent(Double iconSizePercent) {
-        this.iconSizePercent = iconSizePercent;
-        if (iconSizePercent != null && this.getFont() != null && this.getGraphic() instanceof SVGGlyph glyph) {
-            glyph.setSize(this.getFont().getSize() * iconSizePercent);
-        }
-    }
+    //    /**
+    //     * 设置图标对比字符的百分比
+    //     *
+    //     * @param iconSizePercent 图标对比字符的百分比
+    //     */
+    //    @Deprecated
+    //    public void setIconSizePercent(Double iconSizePercent) {
+    ////        this.iconSizePercent = iconSizePercent;
+    ////        if (iconSizePercent != null && this.getFont() != null && this.getGraphic() instanceof SVGGlyph glyph) {
+    ////            glyph.setSize(this.getFont().getSize() * iconSizePercent);
+    ////        }
+    //    }
 
     /**
      * 初始化图标
      *
-     * @param iconUrl         图标地址
-     * @param iconSizePercent 图标对比字符的百分比
+     * @param iconUrl 图标地址
      */
-    protected void init(String iconUrl, double iconSizePercent) {
+    protected void init(String iconUrl) {
         if (iconUrl != null) {
             SVGGlyph glyph = new SVGGlyph(iconUrl);
             this.setGraphic(glyph);
         }
-        this.setIconSizePercent(iconSizePercent);
+        //        this.setIconSizePercent(iconSizePercent);
         this.initGlyph();
     }
 
     /**
      * 初始化图标
      *
-     * @param glyph           图标
-     * @param iconSizePercent 图标对比字符的百分比
+     * @param glyph 图标
      */
-    protected void init(SVGGlyph glyph, double iconSizePercent) {
+    protected void init(SVGGlyph glyph) {
         this.setGraphic(glyph);
-        this.setIconSizePercent(iconSizePercent);
+        //        this.setIconSizePercent(iconSizePercent);
         this.initGlyph();
     }
 
     public void setIconUrl(String url) {
-        this.init(url, this.iconSizePercent);
+        this.init(url);
     }
 
     public String getIconUrl() {
@@ -91,20 +92,20 @@ public class IconButton extends FXButton {
     private void initGlyph() {
         if (this.getGraphic() instanceof SVGGlyph glyph) {
             glyph.disableTheme();
-            if (this.iconSizePercent != null && this.getFont() != null) {
-                glyph.setSize(this.getFontSize() * this.iconSizePercent);
-            }
+            //            if (this.iconSizePercent != null && this.getFont() != null) {
+            //                glyph.setSize(this.getFontSize() * this.iconSizePercent);
+            //            }
             if (this.getTextFill() != null) {
                 glyph.setColor(this.getTextFill());
             }
         }
     }
 
-//    @Override
-//    public void changeTheme(ThemeStyle style) {
-//        super.changeTheme(style);
-//        if (this.getGraphic() instanceof ThemeAdapter adapter) {
-//            adapter.changeTheme(style);
-//        }
-//    }
+    //    @Override
+    //    public void changeTheme(ThemeStyle style) {
+    //        super.changeTheme(style);
+    //        if (this.getGraphic() instanceof ThemeAdapter adapter) {
+    //            adapter.changeTheme(style);
+    //        }
+    //    }
 }

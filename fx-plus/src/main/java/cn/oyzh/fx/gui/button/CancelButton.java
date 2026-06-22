@@ -17,7 +17,7 @@ public class CancelButton extends IconButton {
         this.addClass("danger");
         this.setText(I18nHelper.cancel());
         this.setTipText(I18nHelper.cancel());
-        this.init(new CloseSVGGlyph(), 0.6);
+        this.init(new CloseSVGGlyph());
         this.setOnAction(actionEvent -> this.getScene().getWindow().hide());
         super.initNode();
     }

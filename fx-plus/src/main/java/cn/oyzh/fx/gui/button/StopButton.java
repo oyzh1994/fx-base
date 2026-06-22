@@ -19,7 +19,7 @@ public class StopButton extends IconButton {
         this.addClass("default");
         this.setText(I18nHelper.stop());
         this.setTipText(I18nHelper.stop());
-        this.init(new StopSVGGlyph(), 0.7);
+        this.init(new StopSVGGlyph());
         super.initNode();
     }
 }

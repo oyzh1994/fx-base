@@ -20,7 +20,7 @@ public class GenerateKeyButton extends IconButton {
         this.addClass("success");
         this.setText(I18nHelper.generate());
         this.setTipText(I18nHelper.generate());
-        this.init(new GenerateKeySVGGlyph(), 0.7);
+        this.init(new GenerateKeySVGGlyph());
         super.initNode();
     }
 }

@@ -16,7 +16,7 @@ public class GenerateButton extends IconButton {
     public void initNode() {
         this.setRealHeight(30);
         this.addClass("success");
-        this.init(new GenerateSVGGlyph(), 0.7);
+        this.init(new GenerateSVGGlyph());
         super.initNode();
     }
 }

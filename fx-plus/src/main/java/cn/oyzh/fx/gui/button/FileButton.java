@@ -17,7 +17,7 @@ public class FileButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.file());
         this.setTipText(I18nHelper.file());
-        this.init(new FileSVGGlyph(), 0.7);
+        this.init(new FileSVGGlyph());
         super.initNode();
     }
 }

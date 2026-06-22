@@ -15,7 +15,7 @@ public class DumpButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.dump());
         this.setTipText(I18nHelper.dump());
-        this.init(new DumpSVGGlyph(), 0.7);
+        this.init(new DumpSVGGlyph());
         super.initNode();
     }
 }
