@@ -80,9 +80,10 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      */
     public void closeTabs(List<Tab> tabs) {
         FXUtil.runWait(() -> {
+            List<Tab> tabList = this.tabs();
             for (Tab tab : tabs) {
                 if (tab.isClosable()) {
-                    this.tabs().remove(tab);
+                    tabList.remove(tab);
                     // 手动触发关闭事件
                     Event.fireEvent(tab, new Event(Tab.CLOSED_EVENT));
                 }
@@ -130,14 +131,14 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void initNode() {
-//        this.setClosable(false);
+        //        this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
-//        List<? extends MenuItem> items = this.getMenuItems();
-//        if (CollectionUtil.isNotEmpty(items)) {
-//            ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
-//            ContextMenuManager.setContextMenu(this, contextMenu);
-//        }
+        //        List<? extends MenuItem> items = this.getMenuItems();
+        //        if (CollectionUtil.isNotEmpty(items)) {
+        //            ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
+        //            ContextMenuManager.setContextMenu(this, contextMenu);
+        //        }
         NodeAdapter.super.initNode();
     }
 
