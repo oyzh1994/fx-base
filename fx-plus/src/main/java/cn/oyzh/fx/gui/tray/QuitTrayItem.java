@@ -12,7 +12,7 @@ import cn.oyzh.i18n.I18nHelper;
  */
 public class QuitTrayItem extends TrayItem {
 
-    public QuitTrayItem(String iconSize, Runnable action) {
-        super(I18nHelper.quit(), new QuitSVGGlyph(iconSize), action);
+    public QuitTrayItem(Runnable action) {
+        super(I18nHelper.quit(), new QuitSVGGlyph(), action);
     }
 }

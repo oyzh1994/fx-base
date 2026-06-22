@@ -1,9 +1,62 @@
 package cn.oyzh.fx.gui.menu;
 
-import cn.oyzh.fx.gui.svg.glyph.*;
+import cn.oyzh.fx.gui.svg.glyph.AddGroupSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.AddSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.BatchOptSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ClearSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CollapseAllSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CollectSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CopySVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.CutSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.DownloadSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ErrorInfoSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ExportSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.FilterSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ForceKillSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.HistorySVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ImportSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.InfoSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.KillSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.LoadAllSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.LogSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.MoreSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.MoveSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.OpenSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.PasteSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.PauseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.PermissionSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.PlaySVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.PortSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.RefreshSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.RenameSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.RepeatSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ResourceSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.RestartSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.RunSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SFTPSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SortAscSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SortDescSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.StopSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.TerminalSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.TimeSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.TransportSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.TruncateSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UnCompressSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UnPauseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UndoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.DumpSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.FunctionSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.ProcedureSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.database.RunFileSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.ViewSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.FileSVGGlyph;
@@ -112,544 +165,548 @@ public class MenuItemHelper {
         return MenuItemManager.getSeparatorMenuItem();
     }
 
-    public static FXMenuItem openView(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openView(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openView(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openView(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem openEvent(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openEvent(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openEvent(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openEvent(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem openQuery(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openQuery(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openQuery(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openQuery(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem viewInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.viewInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem viewInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.viewInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteView(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteView(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteView(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteView(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem cloneView(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneView(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem cloneView(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneView(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem cloneFunction(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneFunction(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem cloneFunction(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneFunction(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem cloneProcedure(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneProcedure(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem cloneProcedure(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneProcedure(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem cloneEvent(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneEvent(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem cloneEvent(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneEvent(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem addView(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addView(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addView(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addView(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem addQuery(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addQuery(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addQuery(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addQuery(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem designView(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designView(), new DesignSVGGlyph(iconSize), action);
+    public static FXMenuItem designView(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designView(), new DesignSVGGlyph(), action);
     }
 
-    public static FXMenuItem refreshData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshData(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem refreshData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshData(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem restoreHistory(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.restoreHistory(), new UndoSVGGlyph(iconSize), action);
+    public static FXMenuItem restoreHistory(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.restoreHistory(), new UndoSVGGlyph(), action);
     }
 
-    public static FXMenuItem view1History(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1History(), new ViewSVGGlyph(iconSize), action);
+    public static FXMenuItem view1History(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1History(), new ViewSVGGlyph(), action);
     }
 
-    public static FXMenuItem refreshHistory(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshHistory(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem refreshHistory(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshHistory(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem refreshBucket(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshBucket(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem refreshBucket(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshBucket(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem refresh(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refresh(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem refresh(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refresh(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem refreshFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshFile(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem refreshFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshFile(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem reloadData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadData(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem reloadData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadData(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem addTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addTable(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addTable(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem addCollection(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addCollection(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addCollection(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addCollection(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem openTerminal(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openTerminal(), new TerminalSVGGlyph(iconSize), action);
+    public static FXMenuItem openTerminal(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openTerminal(), new TerminalSVGGlyph(), action);
     }
 
-    public static FXMenuItem openProcedure(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openProcedure(), new ProcedureSVGGlyph(iconSize), action);
+    public static FXMenuItem openProcedure(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openProcedure(), new ProcedureSVGGlyph(), action);
     }
 
-    public static FXMenuItem designProcedure(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designProcedure(), new DesignSVGGlyph(iconSize), action);
+    public static FXMenuItem designProcedure(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designProcedure(), new DesignSVGGlyph(), action);
     }
 
-    public static FXMenuItem designEvent(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designEvent(), new DesignSVGGlyph(iconSize), action);
+    public static FXMenuItem designEvent(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designEvent(), new DesignSVGGlyph(), action);
     }
 
-    public static FXMenuItem addProcedure(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addProcedure(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addProcedure(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addProcedure(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem addEvent(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addEvent(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addEvent(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addEvent(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem procedureInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.procedureInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem procedureInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.procedureInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem eventInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.eventInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem eventInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.eventInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem addFunction(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addFunction(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addFunction(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addFunction(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem openFunction(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openFunction(), new FunctionSVGGlyph(iconSize), action);
+    public static FXMenuItem openFunction(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openFunction(), new FunctionSVGGlyph(), action);
     }
 
-    public static FXMenuItem designFunction(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designFunction(), new DesignSVGGlyph(iconSize), action);
+    public static FXMenuItem designFunction(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designFunction(), new DesignSVGGlyph(), action);
     }
 
-    public static FXMenuItem functionInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.functionInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem functionInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.functionInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem moveKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.moveKey(), new MoveSVGGlyph(iconSize), action);
+    public static FXMenuItem moveKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.moveKey(), new MoveSVGGlyph(), action);
     }
 
-    public static FXMenuItem keyFilter(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.keyFilter(), new FilterSVGGlyph(iconSize), action);
+    public static FXMenuItem keyFilter(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.keyFilter(), new FilterSVGGlyph(), action);
     }
 
-    public static FXMenuItem filterKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.filterKey(), new FilterSVGGlyph(iconSize), action);
+    public static FXMenuItem filterKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.filterKey(), new FilterSVGGlyph(), action);
     }
 
-    public static FXMenuItem exportNode(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportNode(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem exportNode(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportNode(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem exportKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportKey(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem exportKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportKey(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem exportKey1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportKey1(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem exportKey1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportKey1(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem exportData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportData(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem exportData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportData(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem sortAsc(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.sortAsc(), new SortAscSVGGlyph(iconSize), action);
+    public static FXMenuItem sortAsc(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.sortAsc(), new SortAscSVGGlyph(), action);
     }
 
-    public static FXMenuItem sortDesc(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.sortDesc(), new SortDescSVGGlyph(iconSize), action);
+    public static FXMenuItem sortDesc(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.sortDesc(), new SortDescSVGGlyph(), action);
     }
 
-    public static FXMenuItem dumpData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.dumpData(), new DumpSVGGlyph(iconSize), action);
+    public static FXMenuItem dumpData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.dumpData(), new DumpSVGGlyph(), action);
     }
 
-    public static FXMenuItem runSqlFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSqlFile(), new RunSqlFileSVGGlyph(iconSize), action);
+    public static FXMenuItem runSqlFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSqlFile(), new RunSqlFileSVGGlyph(), action);
     }
 
-    public static FXMenuItem run(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.run(), new RunSVGGlyph(iconSize), action);
+    public static FXMenuItem runScriptFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runScriptFile(), new RunFileSVGGlyph(), action);
+    }
+
+    public static FXMenuItem run(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.run(), new RunSVGGlyph(), action);
     }
 
     public static FXMenuItem runSelected(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runSelected(), action);
     }
 
-    public static FXMenuItem runImage(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runImage(), new RunSVGGlyph(iconSize), action);
+    public static FXMenuItem runImage(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.runImage(), new RunSVGGlyph(), action);
     }
 
-    public static FXMenuItem saveImage(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveImage(), new ImportSVGGlyph(iconSize), action);
+    public static FXMenuItem saveImage(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveImage(), new ImportSVGGlyph(), action);
     }
 
-    public static FXMenuItem updateTag(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateTag(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem updateTag(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateTag(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem saveContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveContainer(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem saveContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.saveContainer(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem exportConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportConnect(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem exportConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.exportConnect(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem importConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.importConnect(), new ImportSVGGlyph(iconSize), action);
+    public static FXMenuItem importConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.importConnect(), new ImportSVGGlyph(), action);
     }
 
-    public static FXMenuItem importData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.importData(), new ImportSVGGlyph(iconSize), action);
+    public static FXMenuItem importData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.importData(), new ImportSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameConnect(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameConnect(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem rename(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.rename(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem rename(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.rename(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameSnippet(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameSnippet(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameSnippet(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameSnippet(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameGroup(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameGroup(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameGroup(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameGroup(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameFolder(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFolder(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameFolder(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFolder(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameFolder1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFolder1(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameFolder1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFolder1(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameNode(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameNode(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameNode(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameNode(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFile(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFile(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameDir(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameDir(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameDir(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameDir(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem filePermission(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.filePermission(), new PermissionSVGGlyph(iconSize), action);
+    public static FXMenuItem filePermission(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.filePermission(), new PermissionSVGGlyph(), action);
     }
 
-    public static FXMenuItem cloneNode(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneNode(), new RepeatSVGGlyph(iconSize), action);
+    public static FXMenuItem cloneNode(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneNode(), new RepeatSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameKey(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameKey(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameKey1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameKey1(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameKey1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameKey1(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem updateKey1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateKey1(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem updateKey1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateKey1(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem updateBucket(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateBucket(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem updateBucket(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateBucket(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem editKey1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateKey1(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editKey1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateKey1(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem editConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editConnect(), new EditSVGGlyph(iconSize), action);
-    }
-
-    public static FXMenuItem edit(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.edit(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editConnect(), new EditSVGGlyph(), action);
     }
 
     public static FXMenuItem edit(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.edit(), new EditSVGGlyph(), action);
+    }
+
+    public static FXMenuItem edit_no_graphic(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.edit(), action);
     }
 
-    public static FXMenuItem editSnippet(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editSnippet(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editSnippet(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editSnippet(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem editQuery(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editQuery(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editQuery(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editQuery(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem editFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editFile(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editFile(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem view1File(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1File(), new ViewSVGGlyph(iconSize), action);
+    public static FXMenuItem view1File(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1File(), new ViewSVGGlyph(), action);
     }
 
-    public static FXMenuItem editCollections(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editCollections(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editCollections(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editCollections(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem editGroup(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editGroup(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editGroup(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editGroup(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem editRow(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editRow(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editRow(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editRow(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteKey(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteKey(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteKey1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteKey1(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteKey1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteKey1(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem copyKeys1ToHost(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyKeys1ToHost(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyKeys1ToHost(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyKeys1ToHost(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem copyToHost(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyToHost(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyToHost(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyToHost(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteData(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteData(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteAuth(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteAuth(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteAuth(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteAuth(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFile(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFile(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteDir(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteDir(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteDir(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteDir(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteContainer(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteContainer(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem containerLogs(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerLogs(), new LogSVGGlyph(iconSize), action);
+    public static FXMenuItem containerLogs(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerLogs(), new LogSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameContainer(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem renameContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameContainer(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteImage(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteImage(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteImage(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteImage(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem start1Container(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.start1Container(), new RunSVGGlyph(iconSize), action);
+    public static FXMenuItem start1Container(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.start1Container(), new RunSVGGlyph(), action);
     }
 
-    public static FXMenuItem stop1Container(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.stop1Container(), new StopSVGGlyph(iconSize), action);
+    public static FXMenuItem stop1Container(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.stop1Container(), new StopSVGGlyph(), action);
     }
 
-    public static FXMenuItem killContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.killContainer(), new KillSVGGlyph(iconSize), action);
+    public static FXMenuItem killContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.killContainer(), new KillSVGGlyph(), action);
     }
 
-    public static FXMenuItem killProcess(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.killProcess(), new KillSVGGlyph(iconSize), action);
+    public static FXMenuItem killProcess(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.killProcess(), new KillSVGGlyph(), action);
     }
 
-    public static FXMenuItem forceKillProcess(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceKillProcess(), new ForceKillSVGGlyph(iconSize), action);
+    public static FXMenuItem forceKillProcess(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceKillProcess(), new ForceKillSVGGlyph(), action);
     }
 
-    public static FXMenuItem restartContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.restartContainer(), new RestartSVGGlyph(iconSize), action);
+    public static FXMenuItem restartContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.restartContainer(), new RestartSVGGlyph(), action);
     }
 
-    public static FXMenuItem pauseContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.pauseContainer(), new PauseSVGGlyph(iconSize), action);
+    public static FXMenuItem pauseContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.pauseContainer(), new PauseSVGGlyph(), action);
     }
 
-    public static FXMenuItem unpauseContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unpauseContainer(), new UnPauseSVGGlyph(iconSize), action);
+    public static FXMenuItem unpauseContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unpauseContainer(), new UnPauseSVGGlyph(), action);
     }
 
-    public static FXMenuItem forceDeleteContainer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceDeleteContainer(), new DeleteForceSVGGlyph(iconSize), action);
+    public static FXMenuItem forceDeleteContainer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceDeleteContainer(), new DeleteForceSVGGlyph(), action);
     }
 
-    public static FXMenuItem forceDeleteImage(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceDeleteImage(), new DeleteForceSVGGlyph(iconSize), action);
+    public static FXMenuItem forceDeleteImage(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceDeleteImage(), new DeleteForceSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteGroup(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteGroup(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteGroup(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteGroup(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteFolder(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFolder(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteFolder(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFolder(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteFolder1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFolder1(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteFolder1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFolder1(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteNode(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteNode(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteNode(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteNode(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteConnect(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteConnect(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem delete(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.delete(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem delete(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.delete(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteHistory(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteHistory(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteHistory(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteHistory(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteSnippet(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSnippet(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteSnippet(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSnippet(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteBucket(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteBucket(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteBucket(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteBucket(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem forceDeleteBucket(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceDeleteBucket(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem forceDeleteBucket(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.forceDeleteBucket(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem closeConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.closeConnect(), new CloseSVGGlyph(iconSize), action);
+    public static FXMenuItem closeConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.closeConnect(), new CloseSVGGlyph(), action);
     }
 
-    public static FXMenuItem addGroup(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addGroup(), new AddGroupSVGGlyph(iconSize), action);
+    public static FXMenuItem addGroup(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addGroup(), new AddGroupSVGGlyph(), action);
     }
 
-    public static FXMenuItem addFolder(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addFolder(), new AddGroupSVGGlyph(iconSize), action);
+    public static FXMenuItem addFolder(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addFolder(), new AddGroupSVGGlyph(), action);
     }
 
-    public static FXMenuItem addFolder1(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addFolder1(), new AddGroupSVGGlyph(iconSize), action);
+    public static FXMenuItem addFolder1(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addFolder1(), new AddGroupSVGGlyph(), action);
     }
 
-    public static FXMenuItem addConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addConnect(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addConnect(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem add(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.add(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem add(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.add(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem addSnippet(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addSnippet(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addSnippet(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addSnippet(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem addBucket(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addBucket(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addBucket(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addBucket(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem addCollections(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addCollections(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addCollections(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addCollections(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem collectFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collectFile(), new CollectSVGGlyph(iconSize), action);
+    public static FXMenuItem collectFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collectFile(), new CollectSVGGlyph(), action);
     }
 
-    public static FXMenuItem collectKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collectKey(), new CollectSVGGlyph(iconSize), action);
+    public static FXMenuItem collectKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collectKey(), new CollectSVGGlyph(), action);
     }
 
-    public static FXMenuItem unCollect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCollect(), new UnCollectSVGGlyph(iconSize), action);
+    public static FXMenuItem unCollect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCollect(), new UnCollectSVGGlyph(), action);
     }
 
-    public static FXMenuItem unCollectKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCollectKey(), new UnCollectSVGGlyph(iconSize), action);
+    public static FXMenuItem unCollectKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCollectKey(), new UnCollectSVGGlyph(), action);
     }
 
-    public static FXMenuItem addKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addKey(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addKey(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem addNode(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addNode(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addNode(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addNode(), new AddSVGGlyph(), action);
     }
 
-    public static FXMenuItem transportData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportData(), new TransportSVGGlyph(iconSize), action);
+    public static FXMenuItem transportData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportData(), new TransportSVGGlyph(), action);
     }
 
-    public static FXMenuItem transportFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportFile(), new TransportSVGGlyph(iconSize), action);
+    public static FXMenuItem transportFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportFile(), new TransportSVGGlyph(), action);
     }
 
-    public static FXMenuItem transportKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportKey(), new TransportSVGGlyph(iconSize), action);
+    public static FXMenuItem transportKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportKey(), new TransportSVGGlyph(), action);
     }
 
-    public static FXMenuItem transportNode(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportNode(), new TransportSVGGlyph(iconSize), action);
+    public static FXMenuItem transportNode(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.transportNode(), new TransportSVGGlyph(), action);
     }
 
-    public static FXMenuItem repeatConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.repeatConnect(), new RepeatSVGGlyph(iconSize), action);
+    public static FXMenuItem repeatConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.repeatConnect(), new RepeatSVGGlyph(), action);
     }
 
-    public static FXMenuItem cloneConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneConnect(), new RepeatSVGGlyph(iconSize), action);
+    public static FXMenuItem cloneConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneConnect(), new RepeatSVGGlyph(), action);
     }
 
-    public static FXMenuItem copyConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyConnect(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyConnect(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem copyInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyInfo(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyInfo(), new CopySVGGlyph(), action);
     }
 
     public static FXMenuItem cloneSession(Runnable action) {
@@ -660,256 +717,264 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyThisSession(), action);
     }
 
-    public static FXMenuItem reload(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reload(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem reload(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reload(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem reloadDatabase(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadDatabase(), new RefreshSVGGlyph(iconSize), action);
+    public static FXMenuItem reloadDatabase(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadDatabase(), new RefreshSVGGlyph(), action);
     }
 
-    public static FXMenuItem serverInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.serverInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem serverInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.serverInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem startConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.startConnect(), new PlaySVGGlyph(iconSize), action);
+    public static FXMenuItem startConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.startConnect(), new PlaySVGGlyph(), action);
     }
 
-    public static FXMenuItem openConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openConnect(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openConnect(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem openSFTP(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openSFTP(), new SFTPSVGGlyph(iconSize), action);
+    public static FXMenuItem openSFTP(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openSFTP(), new SFTPSVGGlyph(), action);
     }
 
-    public static FXMenuItem clearData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearData(), new ClearSVGGlyph(iconSize), action);
+    public static FXMenuItem clearData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearData(), new ClearSVGGlyph(), action);
     }
 
-    public static FXMenuItem copyKey(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyKey(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyKey(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyKey(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem copyFilePath(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyFilePath(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyFilePath(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyFilePath(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem copyNodePath(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyNodePath(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyNodePath(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyNodePath(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem copyAuth(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAuth(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyAuth(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAuth(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem authNode(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.authNode(), new UnLockSVGGlyph(iconSize), action);
+    public static FXMenuItem authNode(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.authNode(), new UnLockSVGGlyph(), action);
     }
 
-    public static FXMenuItem unload(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unload(), new StopSVGGlyph(iconSize), action);
+    public static FXMenuItem unload(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unload(), new StopSVGGlyph(), action);
     }
 
-    public static FXMenuItem loadAll(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.loadAll(), new LoadAllSVGGlyph(iconSize), action);
+    public static FXMenuItem loadAll(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.loadAll(), new LoadAllSVGGlyph(), action);
     }
 
-    public static FXMenuItem expandAll(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.expandAll(), new ExpandAllSVGGlyph(iconSize), action);
+    public static FXMenuItem expandAll(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.expandAll(), new ExpandAllSVGGlyph(), action);
     }
 
-    public static FXMenuItem collapseAll(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collapseAll(), new CollapseAllSVGGlyph(iconSize), action);
+    public static FXMenuItem collapseAll(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.collapseAll(), new CollapseAllSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteFunction(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFunction(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteFunction(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFunction(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteProcedure(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteProcedure(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteProcedure(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteProcedure(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteEvent(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteEvent(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteEvent(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteEvent(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem openTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openTable(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openTable(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem openCollection(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openCollection(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openCollection(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openCollection(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem openBucket(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openBucket(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openBucket(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openBucket(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem editTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editTable(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editTable(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem designTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designTable(), new DesignSVGGlyph(iconSize), action);
+    public static FXMenuItem designTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designTable(), new DesignSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameTable(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameTable(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameCollection(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameCollection(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameCollection(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameCollection(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameView(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameView(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameView(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameView(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameEvent(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameEvent(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameEvent(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameEvent(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameFunction(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFunction(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameFunction(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameFunction(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameProcedure(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameProcedure(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameProcedure(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameProcedure(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem renameQuery(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameQuery(), new RenameSVGGlyph(iconSize), action);
+    public static FXMenuItem renameQuery(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameQuery(), new RenameSVGGlyph(), action);
     }
 
-    public static FXMenuItem clearTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearTable(), new ClearSVGGlyph(iconSize), action);
+    public static FXMenuItem clearTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearTable(), new ClearSVGGlyph(), action);
     }
 
-    public static FXMenuItem clearTableData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearTableData(), new ClearSVGGlyph(iconSize), action);
+    public static FXMenuItem clearTableData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearTableData(), new ClearSVGGlyph(), action);
     }
 
-    public static FXMenuItem clearCollectionData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearCollectionData(), new ClearSVGGlyph(iconSize), action);
+    public static FXMenuItem clearCollectionData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearCollectionData(), new ClearSVGGlyph(), action);
     }
 
-    public static FXMenuItem clearCollection(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearCollection(), new ClearSVGGlyph(iconSize), action);
+    public static FXMenuItem clearCollection(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearCollection(), new ClearSVGGlyph(), action);
     }
 
-    public static FXMenuItem clearBucket(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearBucket(), new ClearSVGGlyph(iconSize), action);
+    public static FXMenuItem clearBucket(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.clearBucket(), new ClearSVGGlyph(), action);
     }
 
-    public static FXMenuItem truncateTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.truncateTable(), new TruncateSVGGlyph(iconSize), action);
+    public static FXMenuItem truncateTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.truncateTable(), new TruncateSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteTable(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteTable(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteTable(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteTable(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteCollection(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteCollection(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteCollection(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteCollection(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteQuery(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteQuery(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteQuery(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteQuery(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem tableInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.tableInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem tableInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.tableInfo(), new InfoSVGGlyph(), action);
     }
 
     public static FXMenuItem copy(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copy(), new CopySVGGlyph(), action);
+    }
+
+    public static FXMenuItem copy_no_graphic(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copy(), action);
     }
 
-    public static FXMenuItem copyAsInsertStatement(Runnable action) {
+    public static FXMenuItem copyAsInsertStatement_no_graphic(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAsInsertStatement(), action);
     }
 
-    public static FXMenuItem copyAsUpdateStatement(Runnable action) {
+    public static FXMenuItem copyAsInsertScript_no_graphic(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAsInsertScript(), action);
+    }
+
+    public static FXMenuItem copyAsUpdateStatement_no_graphic(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAsUpdateStatement(), action);
     }
 
-    public static FXMenuItem copy(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copy(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyAsUpdateScript_no_graphic(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyAsUpdateScript(), action);
     }
 
-    public static FXMenuItem copyFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyFile(), new CopySVGGlyph(iconSize), action);
+    public static FXMenuItem copyFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyFile(), new CopySVGGlyph(), action);
     }
 
-    public static FXMenuItem cutFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cutFile(), new CutSVGGlyph(iconSize), action);
+    public static FXMenuItem cutFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cutFile(), new CutSVGGlyph(), action);
     }
 
-    public static FXMenuItem paste(Runnable action) {
+    public static FXMenuItem paste_no_graphic(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.paste(), action);
     }
 
-    public static FXMenuItem pasteFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.pasteFile(), new PasteSVGGlyph(iconSize), action);
+    public static FXMenuItem pasteFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.pasteFile(), new PasteSVGGlyph(), action);
     }
 
-    public static FXMenuItem unCompress(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCompress(), new UnCompressSVGGlyph(iconSize), action);
+    public static FXMenuItem unCompress(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCompress(), new UnCompressSVGGlyph(), action);
     }
 
-    public static FXMenuItem compress(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCompress(), new UnCompressSVGGlyph(iconSize), action);
+    public static FXMenuItem compress(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.unCompress(), new UnCompressSVGGlyph(), action);
     }
 
     public static FXMenuItem deleteRecord(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteRecord(), action);
     }
 
-    public static FXMenuItem setToNull(Runnable action) {
+    public static FXMenuItem setToNull_no_graphic(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.setToNull(), action);
     }
 
-    public static FXMenuItem setToEmptyString(Runnable action) {
+    public static FXMenuItem setToEmptyString_no_graphic(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.setToEmptyString(), action);
     }
 
-    public static FXMenuItem fileInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.fileInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem fileInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.fileInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem imageInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.imageInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem imageInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.imageInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem imageInspect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.imageInspect(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem imageInspect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.imageInspect(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem imageHistory(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.imageHistory(), new HistorySVGGlyph(iconSize), action);
+    public static FXMenuItem imageHistory(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.imageHistory(), new HistorySVGGlyph(), action);
     }
 
-    public static FXMenuItem dataHistory(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.dataHistory(), new HistorySVGGlyph(iconSize), action);
+    public static FXMenuItem dataHistory(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.dataHistory(), new HistorySVGGlyph(), action);
     }
 
-    public static FXMenuItem containerInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem containerInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem containerInspect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerInspect(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem containerInspect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerInspect(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem containerResource(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerResource(), new ResourceSVGGlyph(iconSize), action);
+    public static FXMenuItem containerResource(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerResource(), new ResourceSVGGlyph(), action);
     }
 
-    public static FXMenuItem containerPorts(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerPorts(), new PortSVGGlyph(iconSize), action);
+    public static FXMenuItem containerPorts(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.containerPorts(), new PortSVGGlyph(), action);
     }
 
     public static FXMenuItem fieldInfo(Runnable action) {
@@ -924,36 +989,36 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.copyColumnName(), action);
     }
 
-    public static FXMenuItem closeDatabase(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.closeDatabase(), new CloseSVGGlyph(iconSize), action);
+    public static FXMenuItem closeDatabase(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.closeDatabase(), new CloseSVGGlyph(), action);
     }
 
-    public static FXMenuItem closeSchema(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.closeSchema(), new CloseSVGGlyph(iconSize), action);
+    public static FXMenuItem closeSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.closeSchema(), new CloseSVGGlyph(), action);
     }
 
-    public static FXMenuItem editDatabase(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editDatabase(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editDatabase(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editDatabase(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem editSchema(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editSchema(), new EditSVGGlyph(iconSize), action);
+    public static FXMenuItem editSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editSchema(), new EditSVGGlyph(), action);
     }
 
-    public static FXMenuItem deleteDatabase(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteDatabase(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem deleteDatabase(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteDatabase(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem dropSchema(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.dropSchema(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem dropSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.dropSchema(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem databaseInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.databaseInfo(), new InfoSVGGlyph(iconSize), action);
+    public static FXMenuItem databaseInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.databaseInfo(), new InfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem addDatabase(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addDatabase(), new AddSVGGlyph(iconSize), action);
+    public static FXMenuItem addDatabase(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addDatabase(), new AddSVGGlyph(), action);
     }
 
     public static FXMenuItem closeAllTab(Runnable action) {
@@ -980,88 +1045,88 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nResourceBundle.i18nString("base.closeOtherConnectTab"), action);
     }
 
-    public static FXMenuItem cancelConnect(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelConnect(), new CancelSVGGlyph(iconSize), action);
+    public static FXMenuItem cancelConnect(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelConnect(), new CancelSVGGlyph(), action);
     }
 
-    public static FXMenuItem cancelDownload(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelDownload(), new CancelSVGGlyph(iconSize), action);
+    public static FXMenuItem cancelDownload(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelDownload(), new CancelSVGGlyph(), action);
     }
 
-    public static FXMenuItem cancelUpload(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelUpload(), new CancelSVGGlyph(iconSize), action);
+    public static FXMenuItem cancelUpload(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelUpload(), new CancelSVGGlyph(), action);
     }
 
-    public static FXMenuItem cancelTransport(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelTransport(), new CancelSVGGlyph(iconSize), action);
+    public static FXMenuItem cancelTransport(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelTransport(), new CancelSVGGlyph(), action);
     }
 
-    public static FXMenuItem retry(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.retry(), new RestartSVGGlyph(iconSize), action);
+    public static FXMenuItem retry(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.retry(), new RestartSVGGlyph(), action);
     }
 
-    public static FXMenuItem removeTransport(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.removeTransport(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem removeTransport(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.removeTransport(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem removeDownload(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.removeDownload(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem removeDownload(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.removeDownload(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem removeUpload(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.removeUpload(), new DeleteSVGGlyph(iconSize), action);
+    public static FXMenuItem removeUpload(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.removeUpload(), new DeleteSVGGlyph(), action);
     }
 
-    public static FXMenuItem cancelOperation(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelOperation(), new CancelSVGGlyph(iconSize), action);
+    public static FXMenuItem cancelOperation(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelOperation(), new CancelSVGGlyph(), action);
     }
 
-    public static FXMenuItem batchOpt(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.batchOpt(), new BatchOptSVGGlyph(iconSize), action);
+    public static FXMenuItem batchOpt(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.batchOpt(), new BatchOptSVGGlyph(), action);
     }
 
-    public static FXMenuItem updateTtl(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateTtl(), new TimeSVGGlyph(iconSize), action);
+    public static FXMenuItem updateTtl(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.updateTtl(), new TimeSVGGlyph(), action);
     }
 
-    public static FXMenuItem openData(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openData(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openData(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openData(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem openServer(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openServer(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openServer(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openServer(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem openInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openInfo(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem openInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openInfo(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem downloadFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.downloadFile(), new DownloadSVGGlyph(iconSize), action);
+    public static FXMenuItem downloadFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.downloadFile(), new DownloadSVGGlyph(), action);
     }
 
-    public static FXMenuItem shareFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.shareFile(), new OpenSVGGlyph(iconSize), action);
+    public static FXMenuItem shareFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.shareFile(), new OpenSVGGlyph(), action);
     }
 
-    public static FXMenuItem uploadFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.uploadFile(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem uploadFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.uploadFile(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem uploadFolder(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.uploadFolder(), new ExportSVGGlyph(iconSize), action);
+    public static FXMenuItem uploadFolder(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.uploadFolder(), new ExportSVGGlyph(), action);
     }
 
-    public static FXMenuItem touchFile(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.touchFile(), new FileSVGGlyph(iconSize), action);
+    public static FXMenuItem touchFile(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.touchFile(), new FileSVGGlyph(), action);
     }
 
-    public static FXMenuItem errorInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.errorInfo(), new ErrorInfoSVGGlyph(iconSize), action);
+    public static FXMenuItem errorInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.errorInfo(), new ErrorInfoSVGGlyph(), action);
     }
 
-    public static FXMenuItem moreInfo(String iconSize, Runnable action) {
-        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.moreInfo(), new MoreSVGGlyph(iconSize), action);
+    public static FXMenuItem moreInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.moreInfo(), new MoreSVGGlyph(), action);
     }
 }
 
