@@ -23,6 +23,7 @@ public class CodeAreaTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        ObjectWatcherManager.enable();
         ThemeManager.apply(Themes.PRIMER_LIGHT);
         test1(stage);
         stage.getScene().getStylesheets().add("/fx-plus/css/fx-base.css");

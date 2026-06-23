@@ -305,6 +305,9 @@ public abstract class BehaviorBase<C extends Control> {
         traverse(TraversalDirection.PREVIOUS);
     }
 
+    /**
+     * TODO: 解决Richtext组件内存泄露的问题
+     */
     public void dispose() {
         this.control = null;
     }

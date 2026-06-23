@@ -27,14 +27,8 @@
 
 package jfx.incubator.scene.control.richtext.skin;
 
-import com.sun.jfx.incubator.scene.control.input.InputMapHelper;
-import com.sun.jfx.incubator.scene.control.richtext.Params;
-import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaBehavior;
-import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
-import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaSkinHelper;
-import com.sun.jfx.incubator.scene.control.richtext.VFlow;
-import com.sun.jfx.incubator.scene.control.richtext.util.ListenerHelper;
-import com.sun.jfx.incubator.scene.control.richtext.util.RichUtils;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -61,6 +55,14 @@ import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.VLineTo;
 import javafx.scene.text.Font;
+import com.sun.jfx.incubator.scene.control.input.InputMapHelper;
+import com.sun.jfx.incubator.scene.control.richtext.Params;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaBehavior;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaSkinHelper;
+import com.sun.jfx.incubator.scene.control.richtext.VFlow;
+import com.sun.jfx.incubator.scene.control.richtext.util.ListenerHelper;
+import com.sun.jfx.incubator.scene.control.richtext.util.RichUtils;
 import jfx.incubator.scene.control.richtext.RichTextArea;
 import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.StyleHandlerRegistry;
@@ -69,9 +71,6 @@ import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.StyleAttribute;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import jfx.incubator.scene.control.richtext.model.StyledTextModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Provides visual representation for RichTextArea.
@@ -107,14 +106,13 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
 
             @Override
             public ListenerHelper getListenerHelper(Skin<?> skin) {
-                return ((RichTextAreaSkin) skin).listenerHelper;
+                return ((RichTextAreaSkin)skin).listenerHelper;
             }
         });
     }
 
     /**
      * Constructs the skin.
-     *
      * @param control the owner
      */
     public RichTextAreaSkin(RichTextArea control) {
@@ -140,8 +138,8 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
         listenerHelper.addInvalidationListener(vflow::updateCaretAndSelection, control.highlightCurrentParagraphProperty());
         listenerHelper.addInvalidationListener(vflow::handleContentPadding, true, control.contentPaddingProperty());
         listenerHelper.addInvalidationListener(vflow::handleDecoratorChange,
-                control.leftDecoratorProperty(),
-                control.rightDecoratorProperty()
+            control.leftDecoratorProperty(),
+            control.rightDecoratorProperty()
         );
         listenerHelper.addInvalidationListener(vflow::handleUseContentHeight, true, control.useContentHeightProperty());
         listenerHelper.addInvalidationListener(vflow::handleUseContentWidth, true, control.useContentWidthProperty());
@@ -157,7 +155,7 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
         RichTextArea rta = getSkinnable();
         // TODO fix once SkinInputMap is public
         InputMapHelper.setSkinInputMap(rta.getInputMap(), behavior.getSkinInputMap());
-//        rta.getInputMap().setSkinInputMap(behavior.getSkinInputMap());
+        //rta.getInputMap().setSkinInputMap(behavior.getSkinInputMap());
 
         // IMPORTANT: both setOnInputMethodTextChanged() and setInputMethodRequests() are required for IME to work
         if (rta.getOnInputMethodTextChanged() == null) {
@@ -219,6 +217,7 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
 
     @Override
     public void dispose() {
+        // TODO: 解决Richtext组件内存泄露的问题
         this.behavior.dispose();
         RichTextArea rta = getSkinnable();
         if (rta != null) {
@@ -320,40 +319,41 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
             }
             // don't assume that shapes are ended with ClosePath
             if (
-                    pe instanceof ClosePath ||
-                            i == sz - 1 ||
-                            (i < sz - 1 && elements.get(i + 1) instanceof MoveTo)
-            ) {
+                pe instanceof ClosePath ||
+                i == sz - 1 ||
+                (i < sz - 1 && elements.get(i + 1) instanceof MoveTo)
+            )
+            {
                 // create the shape
                 Shape sh = null;
-                switch (highlight) {
-                    case SELECTED_RAW:
-                        // blue background
-                        sh = new Path(vflow.getRangeShape(start, end));
-                        sh.setFill(imeSelectColor());
-                        sh.setOpacity(0.3);
-                        break;
-                    case UNSELECTED_RAW:
-                        // dash underline
-                        sh = new Line(minX + 2, maxY + 1, maxX - 2, maxY + 1);
-                        sh.setStroke(imeColor());
-                        sh.setStrokeWidth(maxY - minY);
-                        ObservableList<Double> dashArray = sh.getStrokeDashArray();
-                        dashArray.add(2.0);
-                        dashArray.add(2.0);
-                        break;
-                    case SELECTED_CONVERTED:
-                        // thick underline
-                        sh = new Line(minX + 2, maxY + 1, maxX - 2, maxY + 1);
-                        sh.setStroke(imeColor());
-                        sh.setStrokeWidth((maxY - minY) * 3);
-                        break;
-                    case UNSELECTED_CONVERTED:
-                        // single underline
-                        sh = new Line(minX + 2, maxY + 1, maxX - 2, maxY + 1);
-                        sh.setStroke(imeColor());
-                        sh.setStrokeWidth(maxY - minY);
-                        break;
+                switch(highlight) {
+                case SELECTED_RAW:
+                    // blue background
+                    sh = new Path(vflow.getRangeShape(start, end));
+                    sh.setFill(imeSelectColor());
+                    sh.setOpacity(0.3);
+                    break;
+                case UNSELECTED_RAW:
+                    // dash underline
+                    sh = new Line(minX + 2, maxY + 1, maxX - 2, maxY + 1);
+                    sh.setStroke(imeColor());
+                    sh.setStrokeWidth(maxY - minY);
+                    ObservableList<Double> dashArray = sh.getStrokeDashArray();
+                    dashArray.add(2.0);
+                    dashArray.add(2.0);
+                    break;
+                case SELECTED_CONVERTED:
+                    // thick underline
+                    sh = new Line(minX + 2, maxY + 1, maxX - 2, maxY + 1);
+                    sh.setStroke(imeColor());
+                    sh.setStrokeWidth((maxY - minY) * 3);
+                    break;
+                case UNSELECTED_CONVERTED:
+                    // single underline
+                    sh = new Line(minX + 2, maxY + 1, maxX - 2, maxY + 1);
+                    sh.setStroke(imeColor());
+                    sh.setStrokeWidth(maxY - minY);
+                    break;
                 }
 
                 if (sh != null) {
@@ -411,7 +411,6 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
 
     /**
      * Returns the skin's {@link StyleResolver}.
-     *
      * @return style resolver instance
      */
     public StyleResolver getStyleResolver() {
@@ -444,8 +443,8 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
      * This method can be overriden by other skin implementations to provide additional styling.
      * The overriding method must call super implementation.
      *
-     * @param context      the cell context
-     * @param attrs        the attributes
+     * @param context the cell context
+     * @param attrs the attributes
      * @param forParagraph determines whether the styles are applied to the paragraph (true), or text segment (false)
      */
     public void applyStyles(CellContext context, StyleAttributeMap attrs, boolean forParagraph) {
@@ -499,10 +498,11 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
 
     @Override
     public void executeAccessibleAction(AccessibleAction action, Object... parameters) {
-        switch (action) {
-            case SHOW_TEXT_RANGE: {
-                Integer start = (Integer) parameters[0];
-                Integer end = (Integer) parameters[1];
+        switch(action) {
+        case SHOW_TEXT_RANGE:
+            {
+                Integer start = (Integer)parameters[0];
+                Integer end = (Integer)parameters[1];
                 if (start != null && end != null) {
                     // TODO
 //                    scrollCharacterToVisible(end);
@@ -511,8 +511,8 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
                 }
                 break;
             }
-            default:
-                super.executeAccessibleAction(action, parameters);
+        default:
+            super.executeAccessibleAction(action, parameters);
         }
     }
 
@@ -576,25 +576,26 @@ public class RichTextAreaSkin extends SkinBase<RichTextArea> {
                 return p == null ? null : p.charIndex();
             }
         */
-            case FONT: {
-                StyleAttributeMap a = getSkinnable().getActiveStyleAttributeMap();
-                if (a != null) {
-                    String family = a.getFontFamily();
-                    if (family != null) {
-                        Double size = a.getFontSize();
-                        if (size != null) {
-                            return Font.font(family, size);
-                        }
+        case FONT:
+        {
+            StyleAttributeMap a = getSkinnable().getActiveStyleAttributeMap();
+            if (a != null) {
+                String family = a.getFontFamily();
+                if (family != null) {
+                    Double size = a.getFontSize();
+                    if (size != null) {
+                        return Font.font(family, size);
                     }
                 }
-                return null;
             }
-            case HORIZONTAL_SCROLLBAR:
-                return hscroll;
-            case VERTICAL_SCROLLBAR:
-                return vscroll;
-            default:
-                return super.queryAccessibleAttribute(attribute, parameters);
+            return null;
+        }
+        case HORIZONTAL_SCROLLBAR:
+            return hscroll;
+        case VERTICAL_SCROLLBAR:
+            return vscroll;
+        default:
+            return super.queryAccessibleAttribute(attribute, parameters);
         }
     }
 
