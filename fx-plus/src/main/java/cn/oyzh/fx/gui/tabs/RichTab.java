@@ -27,12 +27,6 @@ import java.util.List;
  */
 public abstract class RichTab extends FXTab {
 
-//    public RichTab() {
-//        // 加载内容
-//        this.loadContent();
-//        this.setClosable(true);
-//    }
-
     /**
      * 加载内容
      */
@@ -50,8 +44,6 @@ public abstract class RichTab extends FXTab {
             RichTabController controller = loaderExt.getController();
             this.setProp("_controller", controller);
             controller.onTabInit(this);
-//            this.setOnClosed(e -> controller.onTabClose(this, e));
-//            this.setOnCloseRequest(e -> controller.onCloseRequest(this, e));
         }
     }
 
@@ -243,7 +235,6 @@ public abstract class RichTab extends FXTab {
     public void initNode() {
         // 加载内容
         this.loadContent();
-//        this.setClosable(true);
         super.initNode();
     }
 
