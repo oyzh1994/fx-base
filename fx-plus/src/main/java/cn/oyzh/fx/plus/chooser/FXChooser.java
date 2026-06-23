@@ -52,6 +52,9 @@ public class FXChooser {
         if (StringUtil.equalsAnyIgnoreCase("excel", type)) {
             return excelExtensionFilter();
         }
+        if (StringUtil.equalsAnyIgnoreCase("js", type)) {
+            return jsExtensionFilter();
+        }
         return allExtensionFilter();
     }
 
