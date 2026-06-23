@@ -73,7 +73,7 @@ public class DateTimeTextField extends LimitTextField {
                 }
                 return format.parse(text);
             } catch (ParseException ex) {
-                ex.printStackTrace();
+                throw new RuntimeException(ex);
             }
         }
         if (super.getValue() instanceof Date date) {
