@@ -163,7 +163,7 @@ public class TableViewUtil {
                     selectionModel.clearSelection();
                     selectionModel.select(tableRow.getIndex());
                 }
-                event.consume();
+//                event.consume();
             });
         }
     }

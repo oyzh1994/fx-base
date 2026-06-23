@@ -109,7 +109,7 @@ public class ListViewUtil {
                 if (listView != null) {
                     listView.getSelectionModel().select(itemNode == null ? node : itemNode);
                 }
-                event.consume();
+//                event.consume();
             });
         }
     }
