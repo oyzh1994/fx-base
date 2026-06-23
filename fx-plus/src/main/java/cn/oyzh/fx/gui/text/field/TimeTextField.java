@@ -2,11 +2,11 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.TimeTextFieldSkin;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @author oyzh
@@ -32,14 +32,15 @@ public class TimeTextField extends LimitTextField {
     }
 
     @Override
-    public Timestamp getValue() {
-        if (!this.isEmpty()) {
+    public Object getValue() {
+        String text = this.getText();
+        if (!this.isEmpty() && !"CURRENT_TIMESTAMP".equalsIgnoreCase(text)) {
             try {
                 SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
-                java.util.Date utilDate = format.parse(this.getText());
+                Date utilDate = format.parse(text);
                 return new Timestamp(utilDate.getTime());
             } catch (ParseException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         }
         if (super.getValue() instanceof Date utilDate) {
@@ -48,7 +49,7 @@ public class TimeTextField extends LimitTextField {
         if (super.getValue() instanceof Timestamp timestamp) {
             return timestamp;
         }
-        return null;
+        return text;
     }
 
     @Override

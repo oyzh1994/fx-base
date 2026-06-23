@@ -2,10 +2,10 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.DateTextFieldSkin;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @author oyzh
@@ -31,14 +31,14 @@ public class DateTextField extends LimitTextField {
     }
 
     @Override
-    public Date getValue() {
-        if (!this.isEmpty()) {
+    public Object getValue() {
+        String text = this.getText();
+        if (!this.isEmpty() && !"CURRENT_TIMESTAMP".equalsIgnoreCase(text)) {
             try {
                 SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
-                java.util.Date utilDate = format.parse(this.getText());
-                return new Date(utilDate.getTime());
+                return format.parse(text);
             } catch (ParseException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         }
         if (super.getValue() instanceof Date date) {
@@ -47,7 +47,7 @@ public class DateTextField extends LimitTextField {
         if (super.getValue() instanceof java.util.Date date) {
             return new Date(date.getTime());
         }
-        return null;
+        return text;
     }
 
     @Override

@@ -57,12 +57,11 @@ public class DateTimeTextField extends LimitTextField {
         return null;
     }
 
-
     @Override
-    public Date getValue() {
-        if (!this.isEmpty()) {
+    public Object getValue() {
+        String text = this.getText();
+        if (!this.isEmpty() && !"CURRENT_TIMESTAMP".equalsIgnoreCase(text)) {
             try {
-                String text = this.getText();
                 SimpleDateFormat format;
                 if (this.getDateFormat() != null) {
                     format = this.getDateFormat();
@@ -73,7 +72,7 @@ public class DateTimeTextField extends LimitTextField {
                 }
                 return format.parse(text);
             } catch (ParseException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
         }
         if (super.getValue() instanceof Date date) {
@@ -82,7 +81,7 @@ public class DateTimeTextField extends LimitTextField {
         if (super.getValue() instanceof LocalDateTime time) {
             return DateUtil.of(time);
         }
-        return null;
+        return text;
     }
 
     @Override
