@@ -1060,6 +1060,14 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
                     path = "/tm4javafx/themes/min-dark.json";
                 } else if (style == Themes.CUPERTINO_DARK) {
                     path = "/tm4javafx/themes/dark-plus.json";
+                } else if (style == Themes.CYBERPUNK_DARK) {
+                    path = "/tm4javafx/themes/one-dark-pro.json";
+                } else if (style == Themes.INTELLIJ_DARK) {
+                    path = "/tm4javafx/themes/slack-dark.json";
+                } else if (style == Themes.ANIME_WARM_DARK) {
+                    path = "/tm4javafx/themes/everforest-dark.json";
+                } else if (style == Themes.VSCODE_DARK) {
+                    path = "/tm4javafx/themes/github-dark-default.json";
                 } else {
                     path = "/tm4javafx/themes/vitesse-dark.json";
                 }
@@ -1070,6 +1078,14 @@ public class Editor extends CodeArea implements AutoRemoveNodeable, ScrollBarAda
                     path = "/tm4javafx/themes/min-light.json";
                 } else if (style == Themes.CUPERTINO_LIGHT) {
                     path = "/tm4javafx/themes/light-plus.json";
+                } else if (style == Themes.CYBERPUNK_LIGHT) {
+                    path = "/tm4javafx/themes/one-light.json";
+                } else if (style == Themes.INTELLIJ_LIGHT) {
+                    path = "/tm4javafx/themes/slack-ochin.json";
+                } else if (style == Themes.ANIME_WARM_LIGHT) {
+                    path = "/tm4javafx/themes/everforest-light.json";
+                } else if (style == Themes.VSCODE_LIGHT) {
+                    path = "/tm4javafx/themes/github-light-default.json";
                 } else {
                     path = "/tm4javafx/themes/vitesse-light.json";
                 }
