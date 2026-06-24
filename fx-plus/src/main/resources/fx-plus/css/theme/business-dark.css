@@ -4966,206 +4966,251 @@ Text {
 
 /* ============================================
    BUSINESS DARK - Deep Component Overrides
-   Professional, understated, precise
+   Precision professional, understated authority
    ============================================ */
 
-/* --- Buttons: sharp, professional --- */
+/* --- Buttons: sharp, authoritative --- */
 .button {
-    -fx-background-radius: 3px, 2px;
+    -color-button-fg: #dce2e8;
+    -color-button-fg-hover: #ffffff;
+    -color-button-fg-focused: #ffffff;
+    -color-button-fg-pressed: #ffffff;
+
+    -fx-background-radius: 3px;
     -fx-border-radius: 3px;
     -fx-border-width: 1px;
-    -fx-border-color: -color-border-default;
+    -fx-border-color: rgba(50, 58, 68, 0.6);
+    -fx-background-color: rgba(35, 42, 52, 0.7), rgba(44, 52, 64, 0.6);
+    -fx-text-fill: #dce2e8;
 }
 .button:hover {
-    -fx-background-color: -color-base-6, -color-base-5;
-    -fx-border-color: -color-accent-muted;
+    -fx-background-color: rgba(44, 52, 64, 0.8), rgba(55, 65, 78, 0.7);
+    -fx-border-color: rgba(72, 144, 216, 0.3);
 }
 .button:focused {
-    -fx-border-color: -color-accent-fg;
-    -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 2px, 0.3, 0, 0);
+    -fx-border-color: rgba(72, 144, 216, 0.5);
+    -fx-effect: dropshadow(three-pass-box, rgba(72, 144, 216, 0.1), 3px, 0.2, 0, 0);
 }
 .button:default, .button.accent {
-    -fx-background-color: -color-accent-emphasis, -color-accent-5;
-    -fx-border-color: -color-accent-emphasis;
+    -color-button-fg: #ffffff;
+    -color-button-fg-hover: #ffffff;
+    -fx-background-color: rgba(32, 96, 160, 0.7), rgba(24, 72, 128, 0.8);
+    -fx-border-color: rgba(72, 144, 216, 0.4);
 }
 .button:default:hover, .button.accent:hover {
-    -fx-background-color: -color-accent-5, -color-accent-4;
+    -fx-background-color: rgba(40, 112, 180, 0.8), rgba(32, 96, 160, 0.9);
 }
 .button.success {
-    -fx-background-color: -color-success-emphasis, -color-success-5;
-    -fx-border-color: -color-success-emphasis;
+    -color-button-fg: #ffffff;
+    -color-button-fg-hover: #ffffff;
+    -fx-background-color: rgba(40, 104, 56, 0.5), rgba(32, 88, 48, 0.6);
+    -fx-border-color: rgba(72, 152, 96, 0.3);
 }
 .button.danger {
-    -fx-background-color: -color-danger-emphasis, -color-danger-5;
-    -fx-border-color: -color-danger-emphasis;
+    -color-button-fg: #ffffff;
+    -color-button-fg-hover: #ffffff;
+    -fx-background-color: rgba(168, 56, 56, 0.4), rgba(144, 40, 40, 0.5);
+    -fx-border-color: rgba(192, 80, 80, 0.3);
 }
 
-/* --- Text Input: clean professional --- */
+/* --- Text Input --- */
 .text-input {
-    -fx-background-radius: 3px, 2px;
+    -fx-background-radius: 3px;
     -fx-border-radius: 3px;
     -fx-border-width: 1px;
-    -fx-background-color: -color-bg-inset, -color-bg-subtle;
+    -fx-border-color: rgba(50, 58, 68, 0.5);
+    -fx-background-color: rgba(12, 18, 24, 0.5), rgba(28, 36, 48, 0.4);
+    -fx-text-fill: #dce2e8;
+    -fx-prompt-text-fill: #607080;
 }
 .text-input:focused {
-    -fx-border-color: -color-accent-fg;
-    -fx-background-color: -color-bg-inset, -color-bg-default;
+    -fx-border-color: rgba(72, 144, 216, 0.45);
+    -fx-background-color: rgba(12, 18, 24, 0.6), rgba(28, 36, 48, 0.5);
 }
 
-/* --- Cards: subtle professional panel --- */
+/* --- Cards --- */
 .card > .container {
     -fx-background-radius: 4px;
     -fx-border-radius: 4px;
-    -fx-border-color: -color-border-default;
+    -fx-border-color: rgba(50, 58, 68, 0.4);
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 4px, 0.15, 0, 1);
+    -fx-background-color: rgba(28, 36, 48, 0.5);
+    -fx-effect: dropshadow(three-pass-box, rgba(12, 18, 24, 0.2), 6px, 0.15, 0, 1);
 }
 
-/* --- Progress Bar: solid professional fill --- */
+/* --- Progress Bar --- */
 .progress-bar > .bar {
-    -fx-background-color: linear-gradient(to right, -color-accent-6, -color-accent-5);
+    -fx-background-color: linear-gradient(to right, #184880, #2060a0);
     -fx-background-radius: 2px;
 }
 
 /* --- Slider --- */
 .slider > .track {
-    -fx-background-color: -color-base-6;
+    -fx-background-color: rgba(50, 58, 68, 0.5);
     -fx-background-radius: 3px;
 }
 .slider > .track > .colored-track {
-    -fx-background-color: -color-accent-5;
+    -fx-background-color: linear-gradient(to right, #184880, #2060a0);
     -fx-background-radius: 3px;
 }
 .slider > .thumb {
-    -fx-background-color: -color-accent-fg;
+    -fx-background-color: #4890d8;
     -fx-background-radius: 50%;
 }
 
 /* --- Scroll Bar --- */
+.scroll-bar {
+    -fx-background-color: rgba(18, 26, 36, 0.3);
+}
 .scroll-bar > .thumb {
-    -fx-background-color: -color-base-5;
+    -fx-background-color: rgba(84, 94, 104, 0.2);
     -fx-background-radius: 4px;
 }
 .scroll-bar > .thumb:hover {
-    -fx-background-color: -color-accent-muted;
+    -fx-background-color: rgba(72, 144, 216, 0.25);
+}
+.scroll-bar > .increment-button, .scroll-bar > .decrement-button {
+    -fx-background-color: transparent;
 }
 
-/* --- Tabs: clean underline --- */
+/* --- Tabs --- */
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-background-radius: 3px 3px 0 0;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
-    -fx-background-color: -color-bg-subtle;
-    -fx-border-color: transparent transparent -color-accent-fg transparent;
+    -fx-background-color: rgba(28, 36, 48, 0.5);
+    -fx-border-color: transparent transparent #4890d8 transparent;
     -fx-border-width: 0 0 2px 0;
 }
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+    -fx-background-color: rgba(72, 144, 216, 0.04);
+}
 
-/* --- Table/Tree: professional selection --- */
+/* --- Table/Tree/List --- */
+.table-view, .tree-view, .list-view {
+    -fx-border-color: rgba(50, 58, 68, 0.4);
+}
 .table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
-    -fx-background-color: -color-accent-subtle, -color-accent-muted;
+    -fx-background-color: rgba(72, 144, 216, 0.06), rgba(72, 144, 216, 0.1);
 }
 .table-view:focused > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
-    -fx-background-color: -color-accent-muted, -color-accent-emphasis;
+    -fx-background-color: rgba(72, 144, 216, 0.1), rgba(72, 144, 216, 0.16);
+}
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:hover {
+    -fx-background-color: rgba(72, 144, 216, 0.03);
 }
 .tree-view > .virtual-flow > .clipped-container > .sheet > .tree-cell:filled:selected {
-    -fx-background-color: -color-accent-subtle, -color-accent-muted;
+    -fx-background-color: rgba(72, 144, 216, 0.06), rgba(72, 144, 216, 0.1);
 }
 .tree-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-cell:filled:selected {
-    -fx-background-color: -color-accent-muted, -color-accent-emphasis;
+    -fx-background-color: rgba(72, 144, 216, 0.1), rgba(72, 144, 216, 0.16);
 }
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
-    -fx-background-color: -color-accent-subtle, -color-accent-muted;
+    -fx-background-color: rgba(72, 144, 216, 0.06), rgba(72, 144, 216, 0.1);
 }
 .list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
-    -fx-background-color: -color-accent-muted, -color-accent-emphasis;
+    -fx-background-color: rgba(72, 144, 216, 0.1), rgba(72, 144, 216, 0.16);
 }
 
 /* --- Table header --- */
 .table-view > .column-header-background {
-    -fx-background-color: -color-border-muted, -color-bg-subtle;
+    -fx-background-color: rgba(50, 58, 68, 0.3), rgba(28, 36, 48, 0.5);
 }
 
 /* --- Tooltip --- */
 .tooltip {
-    -fx-background-color: -color-border-default, -color-bg-overlay;
+    -fx-background-color: rgba(50, 58, 68, 0.6), rgba(28, 36, 48, 0.85);
     -fx-background-radius: 3px;
-    -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 4px, 0.2, 0, 1);
+    -fx-border-color: rgba(50, 58, 68, 0.4);
+    -fx-border-radius: 3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(12, 18, 24, 0.2), 6px, 0.15, 0, 1);
 }
 
 /* --- Check Box / Radio --- */
+.check-box > .box {
+    -fx-background-color: rgba(12, 18, 24, 0.4), rgba(28, 36, 48, 0.3);
+    -fx-border-color: rgba(50, 58, 68, 0.5);
+    -fx-background-radius: 3px;
+}
 .check-box:selected > .box {
-    -fx-background-color: -color-accent-emphasis, -color-accent-5;
+    -fx-background-color: rgba(72, 144, 216, 0.3), rgba(32, 96, 160, 0.6);
+    -fx-border-color: rgba(72, 144, 216, 0.4);
 }
 .radio-button:selected > .radio {
-    -fx-background-color: -color-accent-emphasis, -color-accent-5;
+    -fx-background-color: rgba(72, 144, 216, 0.3), rgba(32, 96, 160, 0.6);
+    -fx-border-color: rgba(72, 144, 216, 0.4);
 }
 
 /* --- Toggle Button --- */
 .toggle-button:selected {
-    -fx-background-color: -color-accent-5, -color-accent-fg;
-    -fx-border-color: -color-accent-emphasis;
+    -fx-background-color: rgba(32, 96, 160, 0.5), rgba(72, 144, 216, 0.35);
+    -fx-border-color: rgba(72, 144, 216, 0.3);
 }
 
 /* --- Context Menu --- */
 .context-menu {
-    -fx-background-color: -color-border-default, -color-bg-overlay;
-    -fx-border-color: -color-border-default;
+    -fx-background-color: rgba(50, 58, 68, 0.6), rgba(28, 36, 48, 0.9);
+    -fx-border-color: rgba(50, 58, 68, 0.4);
     -fx-background-radius: 4px;
     -fx-border-radius: 4px;
-    -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 8px, 0.2, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, rgba(12, 18, 24, 0.25), 10px, 0.2, 0, 3);
 }
 .context-menu > .menu-item:focused {
-    -fx-background-color: -color-accent-subtle;
+    -fx-background-color: rgba(72, 144, 216, 0.08);
 }
 
 /* --- Hyperlinks --- */
 .hyperlink {
-    -fx-text-fill: -color-accent-fg;
+    -fx-text-fill: #4890d8;
 }
 
 /* --- Dialog --- */
 .dialog-pane {
-    -fx-background-color: -color-bg-default;
-    -fx-border-color: -color-border-default;
+    -fx-background-color: rgba(18, 26, 36, 0.97);
+    -fx-border-color: rgba(50, 58, 68, 0.4);
     -fx-border-radius: 6px;
     -fx-background-radius: 6px;
 }
 .dialog-pane:header > .header-panel {
-    -fx-background-color: -color-accent-emphasis, -color-bg-subtle;
+    -fx-background-color: rgba(32, 96, 160, 0.25), rgba(28, 36, 48, 0.4);
 }
 
 /* --- Titled Pane --- */
 .titled-pane > .title {
-    -fx-background-color: -color-bg-subtle;
-    -fx-border-color: -color-border-default;
+    -fx-background-color: rgba(28, 36, 48, 0.4);
+    -fx-border-color: rgba(50, 58, 68, 0.3);
     -fx-border-width: 0 0 1px 0;
+}
+.titled-pane > .title:hover {
+    -fx-background-color: rgba(72, 144, 216, 0.04);
 }
 
 /* --- Separator --- */
 .separator > .line {
-    -fx-border-color: -color-border-default;
+    -fx-border-color: rgba(50, 58, 68, 0.4);
 }
 
 /* --- Choice Box / Combo Box --- */
 .choice-box, .combo-box-base {
-    -fx-background-radius: 3px, 2px;
-    -fx-border-width: 1px;
+    -fx-background-radius: 3px;
+    -fx-border-color: rgba(50, 58, 68, 0.5);
 }
 .choice-box:focused, .combo-box-base:focused {
-    -fx-border-color: -color-accent-fg;
+    -fx-border-color: rgba(72, 144, 216, 0.45);
 }
 
 /* --- Date Picker --- */
 .date-picker-popup {
-    -fx-border-color: -color-border-default;
+    -fx-background-color: rgba(18, 26, 36, 0.95);
+    -fx-border-color: rgba(50, 58, 68, 0.4);
     -fx-background-radius: 4px;
     -fx-border-radius: 4px;
-    -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 8px, 0.2, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, rgba(12, 18, 24, 0.2), 8px, 0.15, 0, 2);
 }
 .date-picker-popup > .calendar-grid > .today {
-    -fx-background-color: -color-accent-subtle;
-    -fx-text-fill: -color-accent-fg;
+    -fx-background-color: rgba(72, 144, 216, 0.1);
+    -fx-text-fill: #4890d8;
 }
 .date-picker-popup > .calendar-grid > .selected {
-    -fx-background-color: -color-accent-emphasis;
+    -fx-background-color: rgba(32, 96, 160, 0.6);
 }
