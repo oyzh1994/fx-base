@@ -41,6 +41,18 @@ public class Themes {
 
     public static final CyberpunkLightTheme CYBERPUNK_LIGHT = new CyberpunkLightTheme();
 
+    public static final LiquidGlassDarkTheme LIQUID_GLASS_DARK = new LiquidGlassDarkTheme();
+
+    public static final LiquidGlassLightTheme LIQUID_GLASS_LIGHT = new LiquidGlassLightTheme();
+
+    public static final AnimeWarmDarkTheme ANIME_WARM_DARK = new AnimeWarmDarkTheme();
+
+    public static final AnimeWarmLightTheme ANIME_WARM_LIGHT = new AnimeWarmLightTheme();
+
+    public static final BusinessDarkTheme BUSINESS_DARK = new BusinessDarkTheme();
+
+    public static final BusinessLightTheme BUSINESS_LIGHT = new BusinessLightTheme();
+
     //public static final BlackOnWhiteTheme BLACK_ON_WHITE = new BlackOnWhiteTheme();
     //
     //public static final WthiteOnBlackTheme WHITE_ON_BLACK = new WthiteOnBlackTheme();
@@ -82,6 +94,12 @@ public class Themes {
         themes.add(VSCODE_DARK);
         themes.add(CYBERPUNK_LIGHT);
         themes.add(CYBERPUNK_DARK);
+        themes.add(LIQUID_GLASS_LIGHT);
+        themes.add(LIQUID_GLASS_DARK);
+        themes.add(ANIME_WARM_LIGHT);
+        themes.add(ANIME_WARM_DARK);
+        themes.add(BUSINESS_LIGHT);
+        themes.add(BUSINESS_DARK);
         //themes.add(WHITE_ON_BLACK);
         //themes.add(BLACK_ON_WHITE);
         //themes.add(YELLOW_ON_BLACK);
@@ -123,6 +141,12 @@ public class Themes {
             case "VS CODE DARK", "VSCODE_DARK", "VS_CODE_DARK" -> VSCODE_DARK;
             case "CYBERPUNK LIGHT", "CYBERPUNK_LIGHT" -> CYBERPUNK_LIGHT;
             case "CYBERPUNK DARK", "CYBERPUNK_DARK" -> CYBERPUNK_DARK;
+            case "LIQUID GLASS LIGHT", "LIQUID_GLASS_LIGHT" -> LIQUID_GLASS_LIGHT;
+            case "LIQUID GLASS DARK", "LIQUID_GLASS_DARK" -> LIQUID_GLASS_DARK;
+            case "ANIME WARM LIGHT", "ANIME_WARM_LIGHT" -> ANIME_WARM_LIGHT;
+            case "ANIME WARM DARK", "ANIME_WARM_DARK" -> ANIME_WARM_DARK;
+            case "BUSINESS LIGHT", "BUSINESS_LIGHT" -> BUSINESS_LIGHT;
+            case "BUSINESS DARK", "BUSINESS_DARK" -> BUSINESS_DARK;
             //case "WHITE ON BLACK", "WHITE_ON_BLACK" -> WHITE_ON_BLACK;
             //case "BLACK ON WHITE", "BLACK_ON_WHITE" -> BLACK_ON_WHITE;
             //case "YELLOW ON BLACK", "YELLOW_ON_BLACK" -> YELLOW_ON_BLACK;
