@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.theme;
 import atlantafx.base.theme.Theme;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.application.ColorScheme;
@@ -42,6 +41,15 @@ public class SystemTheme implements Theme, ThemeStyle {
     private String themePath;
 
     /**
+     * 生成系统主题的基本主题
+     */
+    private ThemeStyle baseTheme;
+
+    public ThemeStyle getBaseTheme() {
+        return baseTheme;
+    }
+
+    /**
      * 更新主题样式文件
      */
     public void updateThemeCss() {
@@ -52,8 +60,9 @@ public class SystemTheme implements Theme, ThemeStyle {
             FileUtil.del(this.themePath.replace("file:/", ""));
         }
         // 设置主题文件
-//        this.themePath = "file:/" + ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
+        //        this.themePath = "file:/" + ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
         this.themePath = ThemeUtil.updateThemeCss(nearTheme, this.getForegroundColorHex(), this.getBackgroundColorHex(), this.getAccentColorHex());
+        this.baseTheme = nearTheme;
     }
 
     @Override
@@ -81,17 +90,17 @@ public class SystemTheme implements Theme, ThemeStyle {
             }
         }
         return new File(this.themePath).toURI().toString();
-//        return this.themePath;
+        //        return this.themePath;
     }
 
-//    @Override
-//    public String getCompressedUserAgentStylesheet() {
-//        return this.getUserAgentStylesheet();
-//    }
+    //    @Override
+    //    public String getCompressedUserAgentStylesheet() {
+    //        return this.getUserAgentStylesheet();
+    //    }
 
     @Override
     public String getUserAgentStylesheetBSS() {
-        return null;
+        return this.baseTheme == null ? null : this.baseTheme.getUserAgentStylesheet();
     }
 
     @Override
@@ -120,11 +129,11 @@ public class SystemTheme implements Theme, ThemeStyle {
     public synchronized void listener() {
         if (!this.following) {
             this.following = true;
-//            WeakChangeListener<Color> colorWeakChangeListener = new WeakChangeListener<>(this.colorListener);
-//            Platform.getPreferences().accentColorProperty().addListener(colorWeakChangeListener);
-//            Platform.getPreferences().foregroundColorProperty().addListener(colorWeakChangeListener);
-//            Platform.getPreferences().backgroundColorProperty().addListener(colorWeakChangeListener);
-//            Platform.getPreferences().colorSchemeProperty().addListener(new WeakChangeListener<>(this.colorSchemeChangeListener));
+            //            WeakChangeListener<Color> colorWeakChangeListener = new WeakChangeListener<>(this.colorListener);
+            //            Platform.getPreferences().accentColorProperty().addListener(colorWeakChangeListener);
+            //            Platform.getPreferences().foregroundColorProperty().addListener(colorWeakChangeListener);
+            //            Platform.getPreferences().backgroundColorProperty().addListener(colorWeakChangeListener);
+            //            Platform.getPreferences().colorSchemeProperty().addListener(new WeakChangeListener<>(this.colorSchemeChangeListener));
             FXUtil.getPreferences().accentColorProperty().addListener(this.colorListener);
             FXUtil.getPreferences().foregroundColorProperty().addListener(this.colorListener);
             FXUtil.getPreferences().backgroundColorProperty().addListener(this.colorListener);
@@ -150,9 +159,9 @@ public class SystemTheme implements Theme, ThemeStyle {
         if (JulLog.isInfoEnabled()) {
             JulLog.info("accentColor:{} bgColor:{} fgColor:{}", this.getAccentColorHex(), this.getBackgroundColorHex(), this.getForegroundColorHex());
         }
-        TaskManager.startDelay(() -> FXUtil.runLater(() -> {
+        FXUtil.runLater(() -> {
             this.updateThemeCss();
             ThemeManager.apply(this);
-        }), 1000);
+        }, 1000);
     }
 }

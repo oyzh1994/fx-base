@@ -21,38 +21,36 @@ import java.util.List;
 public class ThemeUtil {
 
     /**
-     * 计算两个RGB颜色之间的欧几里得距离
-     *
-     * @param rgb1 颜色1
-     * @param rgb2 颜色2
-     * @return 结果
-     */
-    public static double distance(double[] rgb1, double[] rgb2) {
-        if (rgb1.length != rgb2.length) {
-            throw new IllegalArgumentException("RGB arrays must have the same length");
-        }
-        double sum = 0;
-        for (int i = 0; i < rgb1.length; i++) {
-            double diff = rgb1[i] - rgb2[i];
-            sum += diff * diff;
-        }
-        return Math.sqrt(sum);
-    }
-
-    /**
      * 计算相关度
      *
      * @param color1 颜色1
      * @param color2 颜色2
-     * @return 相关度
+     * @return 相关度（欧几里得距离，越小越相似）
      */
     public static double calcCorr(Color color1, Color color2) {
         if (color1 == null || color2 == null) {
             return -1L;
         }
-        double[] rgb1 = new double[]{color1.getRed(), color1.getGreen(), color1.getBlue()};
-        double[] rgb2 = new double[]{color2.getRed(), color2.getGreen(), color2.getBlue()};
-        return distance(rgb1, rgb2);
+        // 1. 将 0-1 的 double 值转换为 0-255 的 int 值
+        int r1 = (int) Math.round(color1.getRed() * 255);
+        int g1 = (int) Math.round(color1.getGreen() * 255);
+        int b1 = (int) Math.round(color1.getBlue() * 255);
+
+        int r2 = (int) Math.round(color2.getRed() * 255);
+        int g2 = (int) Math.round(color2.getGreen() * 255);
+        int b2 = (int) Math.round(color2.getBlue() * 255);
+
+        // 2. 计算各通道差值
+        int redDiff = r1 - r2;
+        int greenDiff = g1 - g2;
+        int blueDiff = b1 - b2;
+
+        // 3. 计算欧几里得距离
+        double distance = Math.sqrt(redDiff * redDiff + greenDiff * greenDiff + blueDiff * blueDiff);
+
+        // 4. 将距离映射为相似度 (距离最大为 sqrt(3 * 255^2) ≈ 441.67)
+        double maxDistance = Math.sqrt(3 * 255 * 255);
+        return 1 - (distance / maxDistance);
     }
 
     /**
@@ -62,7 +60,7 @@ public class ThemeUtil {
      */
     public static ThemeStyle getSystemNear() {
         ThemeStyle style = null;
-        double corr = 0;
+        double corr = -1;
         for (ThemeStyle theme : Themes.themes()) {
             double corr1 = theme.corr(Themes.SYSTEM);
             if (corr1 > corr) {
@@ -112,5 +110,64 @@ public class ThemeUtil {
             path = path.replace("\\", "/");
         }
         return path;
+    }
+
+    /**
+     * 获取相反的主题
+     *
+     * @param current 当前主题
+     * @return 结果
+     */
+    public static ThemeStyle getInverseTheme(ThemeStyle current) {
+        if (current instanceof SystemTheme theme) {
+            return getInverseTheme(theme.getBaseTheme());
+        }
+        ThemeStyle target;
+        if (current.isDarkMode()) {
+            if (current == Themes.PRIMER_DARK) {
+                target = Themes.PRIMER_LIGHT;
+            } else if (current == Themes.NORD_DARK) {
+                target = Themes.NORD_LIGHT;
+            } else if (current == Themes.CUPERTINO_DARK) {
+                target = Themes.CUPERTINO_LIGHT;
+            } else if (current == Themes.INTELLIJ_DARK) {
+                target = Themes.INTELLIJ_LIGHT;
+            } else if (current == Themes.VSCODE_DARK) {
+                target = Themes.VSCODE_LIGHT;
+            } else if (current == Themes.CYBERPUNK_DARK) {
+                target = Themes.CYBERPUNK_LIGHT;
+            } else if (current == Themes.LIQUID_GLASS_DARK) {
+                target = Themes.LIQUID_GLASS_LIGHT;
+            } else if (current == Themes.ANIME_WARM_DARK) {
+                target = Themes.ANIME_WARM_LIGHT;
+            } else if (current == Themes.BUSINESS_DARK) {
+                target = Themes.BUSINESS_LIGHT;
+            } else {
+                target = Themes.PRIMER_LIGHT;
+            }
+        } else {
+            if (current == Themes.PRIMER_LIGHT) {
+                target = Themes.PRIMER_DARK;
+            } else if (current == Themes.NORD_LIGHT) {
+                target = Themes.NORD_DARK;
+            } else if (current == Themes.CUPERTINO_LIGHT) {
+                target = Themes.CUPERTINO_DARK;
+            } else if (current == Themes.INTELLIJ_LIGHT) {
+                target = Themes.INTELLIJ_DARK;
+            } else if (current == Themes.VSCODE_LIGHT) {
+                target = Themes.VSCODE_DARK;
+            } else if (current == Themes.CYBERPUNK_LIGHT) {
+                target = Themes.CYBERPUNK_DARK;
+            } else if (current == Themes.LIQUID_GLASS_LIGHT) {
+                target = Themes.LIQUID_GLASS_DARK;
+            } else if (current == Themes.ANIME_WARM_LIGHT) {
+                target = Themes.ANIME_WARM_DARK;
+            } else if (current == Themes.BUSINESS_LIGHT) {
+                target = Themes.BUSINESS_DARK;
+            } else {
+                target = Themes.PRIMER_DARK;
+            }
+        }
+        return target;
     }
 }
