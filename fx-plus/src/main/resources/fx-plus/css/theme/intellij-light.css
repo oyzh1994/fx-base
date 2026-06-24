@@ -503,7 +503,6 @@ Text {
 .button:hover {
     -fx-background-color: -color-button-border-hover, -color-button-bg-hover;
     -fx-text-fill: -color-button-fg-hover;
-    -fx-opacity: 0.9;
 }
 .button:hover:focused {
     -fx-background-color: -color-button-border-focused, -color-button-bg-hover;
@@ -1191,8 +1190,15 @@ Text {
 .check-box:disabled > .box {
     -fx-opacity: 0.4;
 }
+.check-box:focused > .box {
+    -fx-background-color: -color-accent-emphasis, -color-bg-default;
+    -fx-background-insets: 0, 1.5px;
+}
 .check-box:selected > .box {
     -fx-background-color: -color-accent-emphasis, -color-accent-emphasis;
+}
+.check-box:selected > .box:hover {
+    -fx-background-color: -color-accent-emphasis, -color-accent-subtle;
 }
 .check-box:selected > .box > .mark {
     -fx-background-color: -color-fg-emphasis;
@@ -1687,6 +1693,9 @@ Text {
 .list-view.edge-to-edge {
     -fx-border-width: 0;
 }
+.list-view .list-cell:hover {
+    -fx-background-color: -color-neutral-subtle;
+}
 .list-view .list-cell {
     -fx-background-color: -color-cell-bg;
     -fx-text-fill: -color-cell-fg;
@@ -1833,6 +1842,9 @@ Text {
     -fx-pref-height: 0;
     -fx-min-height: 0;
 }
+.table-view .table-row-cell:hover {
+    -fx-background-color: -color-cell-border, -color-neutral-subtle;
+}
 .table-view .table-row-cell {
     -fx-background-color: -color-cell-border, -color-cell-bg;
     -fx-background-insets: 0, 0 0 1 0;
@@ -1913,6 +1925,9 @@ Text {
     -fx-padding: 0.333333em;
 }
 
+.tree-cell:hover {
+    -fx-background-color: -color-neutral-subtle;
+}
 .tree-cell {
     -fx-background-color: -color-cell-bg;
     -fx-text-fill: -color-cell-fg;
@@ -2544,6 +2559,10 @@ Text {
 .hyperlink:disabled {
     -fx-opacity: 0.4;
 }
+.hyperlink:hover {
+    -fx-text-fill: -color-accent-fg;
+    -fx-underline: true;
+}
 .hyperlink:show-mnemonics > .mnemonic-underline {
     -fx-stroke: -fx-text-fill;
 }
@@ -2720,6 +2739,9 @@ Text {
 }
 .menu-item > .right-container {
     -fx-padding: 0 0 0 0.5em;
+}
+.menu-item:hover {
+    -fx-background-color: -color-neutral-subtle;
 }
 .menu-item:focused {
     -fx-background-color: -color-base-1, -color-base-1;
@@ -3644,6 +3666,12 @@ Text {
 .radio-button > .radio:hover {
     -fx-background-color: -color-fg-muted, -color-bg-subtle;
 }
+.radio-button:selected:hover > .radio {
+    -fx-background-color: -color-accent-emphasis, -color-accent-subtle;
+}
+.radio-button:selected:hover > .radio > .dot {
+    -fx-background-color: -color-accent-emphasis, -color-fg-emphasis;
+}
 .radio-button:disabled {
     -fx-opacity: 0.4;
 }
@@ -3697,6 +3725,15 @@ Text {
 }
 .scroll-bar:hover, .scroll-bar:pressed, .scroll-bar:focused {
     -fx-opacity: 1;
+}
+.scroll-bar:hover > .thumb {
+    -fx-background-color: -color-fg-default;
+}
+.scroll-bar:pressed > .thumb {
+    -fx-background-color: -color-accent-emphasis;
+}
+.scroll-bar:hover > .track {
+    -fx-background-color: -color-neutral-subtle;
 }
 
 .scroll-pane {
@@ -3826,6 +3863,12 @@ Text {
 .slider.large {
     -color-slider-thumb: -color-fg-emphasis;
     -color-slider-thumb-border: -color-accent-emphasis;
+}
+.slider:hover > .thumb {
+    -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 4px, 0.4, 0, 0);
+}
+.slider:pressed > .thumb {
+    -fx-effect: dropshadow(three-pass-box, -color-accent-emphasis, 6px, 0.5, 0, 0);
 }
 .slider > .thumb {
     -fx-background-color: -color-slider-thumb-border, -color-slider-thumb;
@@ -4489,6 +4532,9 @@ Text {
     -fx-padding: 8px 12px 8px 12px;
     -fx-cursor: text;
 }
+.text-input:hover {
+    -fx-background-color: -color-accent-muted, -color-input-bg;
+}
 .text-input:focused {
     -fx-background-color: -color-input-border-focused, -color-input-bg-focused;
     -fx-prompt-text-fill: transparent;
@@ -4837,6 +4883,12 @@ Text {
     -fx-background-insets: 0, 1px;
     -fx-padding: 0.85em 1.4em 0.85em 1.4em;
 }
+.toggle-switch:hover > .thumb {
+    -fx-opacity: 1;
+}
+.toggle-switch:hover > .thumb-area {
+    -fx-background-color: -color-border-default, -color-bg-default;
+}
 .toggle-switch:selected > .thumb {
     -fx-background-color: -color-accent-emphasis, -color-fg-emphasis;
     -fx-opacity: 1;
@@ -4960,6 +5012,6 @@ Text {
     -fx-font-size: 14px;
     -fx-font-weight: normal;
     -fx-padding: 8px 12px 8px 12px;
-    -fx-opacity: 0.85;
+    -fx-opacity: 0.93;
     -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 6px, 0.3, 0, 2);
 }
