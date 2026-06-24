@@ -5024,15 +5024,11 @@ Text {
 /* --- Buttons: crisp edges, neon accent on hover --- */
 .button {
     -fx-background-radius: 2px, 1px;
-    -fx-border-radius: 2px;
-    -fx-border-width: 1px;
 }
 .button:hover {
     -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 4px, 0.4, 0, 1);
-    -fx-border-color: -color-accent-emphasis;
 }
 .button:focused {
-    -fx-background-color: -color-accent-fg, -color-bg-subtle;
     -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 6px, 0.5, 0, 1);
 }
 .button:default, .button.accent {
@@ -5058,8 +5054,7 @@ Text {
 /* --- Text Input: clean with accent focus --- */
 .text-input {
     -fx-background-radius: 2px;
-    -fx-border-radius: 2px;
-    -fx-background-color: -color-bg-default, -color-bg-default;
+    -fx-background-color: -color-border-default, -color-bg-default;
 }
 .text-input:focused {
     -fx-background-color: -color-accent-fg, -color-bg-default;
