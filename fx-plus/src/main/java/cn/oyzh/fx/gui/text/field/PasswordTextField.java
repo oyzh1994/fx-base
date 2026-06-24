@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.text.field;
 
 
-import cn.oyzh.fx.gui.skin.MatchCaseTextFieldSkin;
 import cn.oyzh.fx.gui.skin.PasswordTextFieldSkin;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
@@ -15,7 +14,6 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
-import javafx.scene.control.Skin;
 
 /**
  * 密码文本域
