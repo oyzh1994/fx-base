@@ -4966,303 +4966,211 @@ Text {
 
 /* ============================================
    CYBERPUNK DARK - Deep Component Overrides
-   Neon-drenched, razor-sharp, glitch aesthetic
+   Neon glow, sharp edges, high contrast
    ============================================ */
 
-/* --- Neon glow mixin vars --- */
-.root {
-    -color-neon-cyan: #00e5ff;
-    -color-neon-magenta: #ff2a62;
-    -color-neon-green: #3dff50;
-    -color-neon-yellow: #ffd666;
-    -color-neon-purple: #b388ff;
-}
-
-/* --- Buttons: razor-sharp neon --- */
+/* --- Buttons: neon glow on hover/focus --- */
 .button {
-    -color-button-fg: #e0e8f0;
-    -color-button-fg-hover: #ffffff;
-    -color-button-fg-focused: #ffffff;
-    -color-button-fg-pressed: #ffffff;
-
-    -fx-background-radius: 2px;
+    -fx-background-radius: 2px, 1px;
     -fx-border-radius: 2px;
-    -fx-border-width: 1px;
-    -fx-border-color: rgba(0, 229, 255, 0.3);
-    -fx-background-color: rgba(20, 28, 40, 0.9), rgba(30, 39, 54, 0.8);
-    -fx-text-fill: #e0e8f0;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.15), 3px, 0.4, 0, 1);
 }
 .button:hover {
-    -fx-border-color: rgba(0, 229, 255, 0.6);
-    -fx-background-color: rgba(0, 229, 255, 0.08), rgba(30, 39, 54, 0.9);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.3), 8px, 0.6, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 6px, 0.7, 0, 0);
 }
 .button:focused {
-    -fx-border-color: #00e5ff;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.5), 12px, 0.7, 0, 0);
-}
-.button:armed {
-    -fx-background-color: rgba(0, 229, 255, 0.15), rgba(0, 173, 181, 0.3);
-    -fx-border-color: #00e5ff;
+    -fx-background-color: -color-accent-fg, -color-bg-subtle;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 8px, 0.6, 0, 0);
 }
 .button:default, .button.accent {
-    -color-button-fg: #ffffff;
-    -color-button-fg-hover: #ffffff;
-    -fx-background-color: rgba(0, 173, 181, 0.6), rgba(0, 147, 156, 0.7);
-    -fx-border-color: #00e5ff;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.25), 8px, 0.5, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-accent-emphasis, 6px, 0.5, 0, 0);
 }
 .button:default:hover, .button.accent:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.5), rgba(0, 173, 181, 0.6);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.5), 14px, 0.8, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 10px, 0.8, 0, 0);
 }
 .button.success {
-    -color-button-fg: #ffffff;
-    -color-button-fg-hover: #ffffff;
-    -fx-background-color: rgba(0, 194, 20, 0.4), rgba(0, 163, 17, 0.5);
-    -fx-border-color: rgba(61, 255, 80, 0.5);
-    -fx-effect: dropshadow(three-pass-box, rgba(61, 255, 80, 0.2), 6px, 0.4, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-success-emphasis, 6px, 0.5, 0, 0);
 }
 .button.success:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(61, 255, 80, 0.4), 12px, 0.7, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-success-fg, 10px, 0.8, 0, 0);
 }
 .button.danger {
-    -color-button-fg: #ffffff;
-    -color-button-fg-hover: #ffffff;
-    -fx-background-color: rgba(199, 0, 64, 0.4), rgba(168, 0, 53, 0.5);
-    -fx-border-color: rgba(255, 93, 136, 0.5);
-    -fx-effect: dropshadow(three-pass-box, rgba(255, 42, 98, 0.2), 6px, 0.4, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-danger-emphasis, 6px, 0.5, 0, 0);
 }
 .button.danger:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(255, 42, 98, 0.4), 12px, 0.7, 0, 0);
-}
-.button.warning {
-    -fx-background-color: rgba(224, 163, 0, 0.3), rgba(194, 138, 0, 0.4);
-    -fx-border-color: rgba(255, 214, 102, 0.5);
-    -fx-effect: dropshadow(three-pass-box, rgba(255, 214, 102, 0.15), 6px, 0.4, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-danger-fg, 10px, 0.8, 0, 0);
 }
 
-/* --- Text Input: neon-edged --- */
+/* --- Text Input: neon border on focus --- */
 .text-input {
     -fx-background-radius: 2px;
     -fx-border-radius: 2px;
-    -fx-background-color: rgba(5, 8, 16, 0.8), rgba(20, 28, 40, 0.6);
-    -fx-border-color: rgba(0, 229, 255, 0.15);
-    -fx-border-width: 1px;
-    -fx-text-fill: #e0e8f0;
-    -fx-prompt-text-fill: #607080;
+    -fx-background-color: -color-bg-inset, -color-bg-subtle;
 }
 .text-input:focused {
-    -fx-border-color: #00e5ff;
-    -fx-background-color: rgba(0, 229, 255, 0.04), rgba(20, 28, 40, 0.7);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.2), 6px, 0.5, 0, 0);
+    -fx-background-color: -color-accent-fg, -color-bg-subtle;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 4px, 0.5, 0, 0);
 }
 .text-area {
     -fx-background-radius: 2px;
 }
 .text-area:focused {
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.15), 6px, 0.4, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 4px, 0.5, 0, 0);
 }
 
-/* --- Cards: neon-bordered panels --- */
+/* --- Cards: neon border glow --- */
 .card > .container {
-    -fx-background-radius: 3px;
-    -fx-border-radius: 3px;
-    -fx-border-color: rgba(0, 229, 255, 0.2);
-    -fx-border-width: 1px;
-    -fx-background-color: rgba(14, 20, 28, 0.7);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.08), 8px, 0.3, 0, 2);
-}
-
-/* --- Progress Bar: neon pulse --- */
-.progress-bar > .bar {
-    -fx-background-color: linear-gradient(to right, #00939c, #00e5ff, #00adb5);
-    -fx-background-radius: 1px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.4), 6px, 0.6, 0, 0);
-}
-
-/* --- Slider: neon track --- */
-.slider > .track {
-    -fx-background-color: rgba(30, 39, 54, 0.8);
     -fx-background-radius: 2px;
+    -fx-border-radius: 2px;
+    -fx-border-color: -color-accent-muted;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-subtle, 4px, 0.3, 0, 0);
+}
+
+/* --- Progress Bar: neon gradient --- */
+.progress-bar > .bar {
+    -fx-background-color: linear-gradient(to right, -color-accent-emphasis, -color-accent-fg);
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 4px, 0.6, 0, 0);
+}
+
+/* --- Slider: neon track and thumb --- */
+.slider > .track {
+    -fx-background-color: -color-base-7;
 }
 .slider > .track > .colored-track {
-    -fx-background-color: linear-gradient(to right, #00adb5, #00e5ff);
-    -fx-background-radius: 2px;
+    -fx-background-color: linear-gradient(to right, -color-accent-emphasis, -color-accent-fg);
 }
 .slider > .thumb {
-    -fx-background-color: #00e5ff;
-    -fx-background-radius: 50%;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.5), 6px, 0.6, 0, 0);
+    -fx-background-color: -color-accent-fg;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 4px, 0.6, 0, 0);
 }
 
-/* --- Scroll Bar: neon thumb --- */
-.scroll-bar {
-    -fx-background-color: rgba(10, 14, 23, 0.5);
-}
+/* --- Scroll Bar: neon accent thumb --- */
 .scroll-bar > .thumb {
-    -fx-background-color: rgba(0, 229, 255, 0.2);
+    -fx-background-color: -color-accent-muted;
     -fx-background-radius: 3px;
 }
 .scroll-bar > .thumb:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.45);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.2), 4px, 0.4, 0, 0);
-}
-.scroll-bar > .increment-button, .scroll-bar > .decrement-button {
-    -fx-background-color: transparent;
-}
-.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-background-color: rgba(0, 229, 255, 0.3);
+    -fx-background-color: -color-accent-fg;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 3px, 0.5, 0, 0);
 }
 
-/* --- Tabs: neon underline --- */
+/* --- Tabs: neon underline indicator --- */
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-background-radius: 2px 2px 0 0;
-    -fx-background-color: transparent;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
-    -fx-background-color: rgba(20, 28, 40, 0.6);
-    -fx-border-color: transparent transparent #00e5ff transparent;
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: transparent transparent -color-accent-fg transparent;
     -fx-border-width: 0 0 2px 0;
 }
-.tab-pane > .tab-header-area > .headers-region > .tab:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.05);
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected {
+    -fx-border-color: transparent transparent -color-accent-fg transparent;
 }
 
-/* --- Table/Tree/List: neon selection --- */
-.table-view, .tree-view, .list-view {
-    -fx-border-color: rgba(0, 229, 255, 0.1);
-}
+/* --- Table/Tree View: neon selection glow --- */
 .table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
-    -fx-background-color: rgba(0, 229, 255, 0.08), rgba(0, 229, 255, 0.15);
+    -fx-background-color: -color-accent-subtle, -color-accent-muted;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 3px, 0.3, 0, 0);
 }
 .table-view:focused > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:selected {
-    -fx-background-color: rgba(0, 229, 255, 0.12), rgba(0, 229, 255, 0.22);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.1), 4px, 0.3, 0, 0);
-}
-.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.04);
+    -fx-background-color: -color-accent-muted, -color-accent-emphasis;
 }
 .tree-view > .virtual-flow > .clipped-container > .sheet > .tree-cell:filled:selected {
-    -fx-background-color: rgba(0, 229, 255, 0.08), rgba(0, 229, 255, 0.15);
+    -fx-background-color: -color-accent-subtle, -color-accent-muted;
 }
 .tree-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-cell:filled:selected {
-    -fx-background-color: rgba(0, 229, 255, 0.12), rgba(0, 229, 255, 0.22);
-}
-.tree-view > .virtual-flow > .clipped-container > .sheet > .tree-cell:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.04);
+    -fx-background-color: -color-accent-muted, -color-accent-emphasis;
 }
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
-    -fx-background-color: rgba(0, 229, 255, 0.08), rgba(0, 229, 255, 0.15);
+    -fx-background-color: -color-accent-subtle, -color-accent-muted;
 }
 .list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
-    -fx-background-color: rgba(0, 229, 255, 0.12), rgba(0, 229, 255, 0.22);
+    -fx-background-color: -color-accent-muted, -color-accent-emphasis;
 }
 
-/* --- Table header: neon header --- */
+/* --- Table column header: subtle glow --- */
 .table-view > .column-header-background {
-    -fx-background-color: rgba(0, 229, 255, 0.06), rgba(20, 28, 40, 0.8);
+    -fx-background-color: -color-accent-subtle, -color-bg-subtle;
 }
 .table-view > .column-header-background .column-header {
-    -fx-border-color: rgba(0, 229, 255, 0.15);
+    -fx-border-color: -color-accent-muted;
 }
 
-/* --- Tooltip: neon popup --- */
+/* --- Tooltip: neon border --- */
 .tooltip {
-    -fx-background-color: rgba(0, 229, 255, 0.12), rgba(20, 28, 40, 0.95);
+    -fx-background-color: -color-accent-muted, -color-bg-overlay;
     -fx-background-radius: 2px;
-    -fx-border-color: rgba(0, 229, 255, 0.3);
-    -fx-border-radius: 2px;
-    -fx-text-fill: #e0e8f0;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.2), 8px, 0.5, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 6px, 0.5, 0, 0);
 }
 
-/* --- Check Box / Radio: neon when selected --- */
+/* --- Check Box: neon when selected --- */
 .check-box:selected > .box {
-    -fx-background-color: rgba(0, 229, 255, 0.25), rgba(0, 173, 181, 0.5);
-    -fx-border-color: #00e5ff;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.3), 4px, 0.5, 0, 0);
+    -fx-background-color: -color-accent-fg, -color-accent-emphasis;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 3px, 0.5, 0, 0);
 }
-.check-box > .box {
-    -fx-border-color: rgba(0, 229, 255, 0.2);
-    -fx-background-color: rgba(5, 8, 16, 0.6), rgba(20, 28, 40, 0.5);
-}
+
+/* --- Radio Button: neon when selected --- */
 .radio-button:selected > .radio {
-    -fx-background-color: rgba(0, 229, 255, 0.25), rgba(0, 173, 181, 0.5);
-    -fx-border-color: #00e5ff;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.3), 4px, 0.5, 0, 0);
+    -fx-background-color: -color-accent-fg, -color-accent-emphasis;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 3px, 0.5, 0, 0);
 }
 
 /* --- Toggle Button: neon glow when selected --- */
 .toggle-button:selected {
-    -fx-background-color: rgba(0, 173, 181, 0.5), rgba(0, 229, 255, 0.3);
-    -fx-border-color: rgba(0, 229, 255, 0.5);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.25), 6px, 0.5, 0, 0);
+    -fx-background-color: -color-accent-emphasis, -color-accent-fg;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 4px, 0.6, 0, 0);
 }
 
-/* --- Context Menu: neon popup --- */
+/* --- Context Menu: neon border --- */
 .context-menu {
-    -fx-background-color: rgba(0, 229, 255, 0.08), rgba(20, 28, 40, 0.95);
-    -fx-border-color: rgba(0, 229, 255, 0.25);
-    -fx-background-radius: 2px;
-    -fx-border-radius: 2px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.15), 12px, 0.4, 0, 3);
+    -fx-background-color: -color-accent-muted, -color-bg-overlay;
+    -fx-border-color: -color-accent-muted;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 8px, 0.4, 0, 2);
 }
 .context-menu > .menu-item:focused {
-    -fx-background-color: rgba(0, 229, 255, 0.12);
-}
-.context-menu > .menu-item:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.1);
+    -fx-background-color: -color-accent-subtle;
 }
 
 /* --- Hyperlinks: neon cyan --- */
 .hyperlink {
-    -fx-text-fill: #00e5ff;
+    -fx-text-fill: -color-accent-fg;
 }
 .hyperlink:visited {
-    -fx-text-fill: #1adede;
-}
-.hyperlink:hover {
-    -fx-text-fill: #80edf5;
+    -fx-text-fill: -color-accent-3;
 }
 
 /* --- Menu Bar --- */
 .menu-bar {
-    -fx-background-color: rgba(20, 28, 40, 0.8);
+    -fx-background-color: -color-bg-subtle;
 }
 .menu-bar > .container > .menu-button:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.08);
+    -fx-background-color: -color-accent-subtle;
 }
 
-/* --- Dialog: neon accent header --- */
-.dialog-pane {
-    -fx-background-color: rgba(10, 14, 23, 0.97);
-    -fx-border-color: rgba(0, 229, 255, 0.2);
-    -fx-border-radius: 3px;
-    -fx-background-radius: 3px;
-}
+/* --- Dialog Pane: neon accent header --- */
 .dialog-pane:header > .header-panel {
-    -fx-background-color: rgba(0, 173, 181, 0.3), rgba(20, 28, 40, 0.6);
+    -fx-background-color: -color-accent-emphasis, -color-bg-subtle;
 }
 
-/* --- Titled Pane --- */
+/* --- Titled Pane: neon border --- */
 .titled-pane > .title {
-    -fx-background-color: rgba(20, 28, 40, 0.6);
-    -fx-border-color: rgba(0, 229, 255, 0.12);
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: -color-accent-muted;
     -fx-border-width: 0 0 1px 0;
 }
 .titled-pane > .title:hover {
-    -fx-background-color: rgba(0, 229, 255, 0.06);
+    -fx-background-color: -color-accent-subtle;
 }
 
 /* --- Separator: neon line --- */
 .separator > .line {
-    -fx-border-color: rgba(0, 229, 255, 0.15);
+    -fx-border-color: -color-accent-muted;
 }
 
 /* --- Spinner --- */
 .spinner > .text-field {
+    -fx-background-radius: 2px;
+}
+.spinner > .increment-arrow-button, .spinner > .decrement-arrow-button {
     -fx-background-radius: 2px;
 }
 
@@ -5271,28 +5179,26 @@ Text {
     -fx-background-radius: 2px;
 }
 .pagination > .page-button:selected {
-    -fx-background-color: rgba(0, 173, 181, 0.5);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.3), 4px, 0.5, 0, 0);
+    -fx-background-color: -color-accent-emphasis;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 3px, 0.5, 0, 0);
 }
 
-/* --- Choice Box / Combo Box --- */
+/* --- Choice Box / Combo Box: neon focus --- */
 .choice-box:focused, .combo-box-base:focused {
-    -fx-border-color: #00e5ff;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.2), 6px, 0.4, 0, 0);
+    -fx-background-color: -color-accent-fg, -color-bg-subtle;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 4px, 0.5, 0, 0);
 }
 
-/* --- Date Picker --- */
+/* --- Date Picker popup --- */
 .date-picker-popup {
-    -fx-border-color: rgba(0, 229, 255, 0.2);
-    -fx-background-radius: 3px;
-    -fx-border-radius: 3px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.15), 10px, 0.4, 0, 3);
+    -fx-border-color: -color-accent-muted;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 8px, 0.4, 0, 2);
 }
 .date-picker-popup > .calendar-grid > .today {
-    -fx-background-color: rgba(0, 229, 255, 0.15);
-    -fx-text-fill: #00e5ff;
+    -fx-background-color: -color-accent-subtle;
+    -fx-text-fill: -color-accent-fg;
 }
 .date-picker-popup > .calendar-grid > .selected {
-    -fx-background-color: rgba(0, 173, 181, 0.6);
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 229, 255, 0.3), 4px, 0.5, 0, 0);
+    -fx-background-color: -color-accent-emphasis;
+    -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 3px, 0.5, 0, 0);
 }
