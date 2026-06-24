@@ -5023,13 +5023,14 @@ Text {
 
 /* --- Buttons: sharp, professional --- */
 .button {
-    -fx-background-radius: 3px, 2px;
+    -fx-background-radius: 3px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 3px;
     -fx-border-width: 1px;
     -fx-border-color: -color-border-default;
 }
 .button:hover {
-    -fx-background-color: -color-base-6, -color-base-5;
+    -fx-background-insets: 0, 1px;
     -fx-border-color: -color-accent-muted;
 }
 .button:focused {
@@ -5055,6 +5056,7 @@ Text {
 /* --- Text Input: clean professional --- */
 .text-input {
     -fx-background-radius: 3px, 2px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 3px;
     -fx-border-width: 1px;
     -fx-background-color: -color-bg-inset, -color-bg-subtle;
@@ -5067,6 +5069,7 @@ Text {
 /* --- Cards: subtle professional panel --- */
 .card > .container {
     -fx-background-radius: 4px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 4px;
     -fx-border-color: -color-border-default;
     -fx-border-width: 1px;
@@ -5077,26 +5080,31 @@ Text {
 .progress-bar > .bar {
     -fx-background-color: linear-gradient(to right, -color-accent-6, -color-accent-5);
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
 }
 
 /* --- Slider --- */
 .slider > .track {
     -fx-background-color: -color-base-6;
     -fx-background-radius: 3px;
+    -fx-background-insets: 0, 1px;
 }
 .slider > .track > .colored-track {
     -fx-background-color: -color-accent-5;
     -fx-background-radius: 3px;
+    -fx-background-insets: 0, 1px;
 }
 .slider > .thumb {
     -fx-background-color: -color-accent-fg;
     -fx-background-radius: 50%;
+    -fx-background-insets: 0, 1px;
 }
 
 /* --- Scroll Bar --- */
 .scroll-bar > .thumb {
     -fx-background-color: -color-base-5;
     -fx-background-radius: 4px;
+    -fx-background-insets: 0, 1px;
 }
 .scroll-bar > .thumb:hover {
     -fx-background-color: -color-accent-muted;
@@ -5105,6 +5113,7 @@ Text {
 /* --- Tabs: clean underline --- */
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-background-radius: 3px 3px 0 0;
+    -fx-background-insets: 0, 1px;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
     -fx-background-color: -color-bg-subtle;
@@ -5141,6 +5150,7 @@ Text {
 .tooltip {
     -fx-background-color: -color-border-default, -color-bg-overlay;
     -fx-background-radius: 3px;
+    -fx-background-insets: 0, 1px;
     -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 4px, 0.2, 0, 1);
 }
 
@@ -5163,6 +5173,7 @@ Text {
     -fx-background-color: -color-border-default, -color-bg-overlay;
     -fx-border-color: -color-border-default;
     -fx-background-radius: 4px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 4px;
     -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 8px, 0.2, 0, 2);
 }
@@ -5181,6 +5192,7 @@ Text {
     -fx-border-color: -color-border-default;
     -fx-border-radius: 6px;
     -fx-background-radius: 6px;
+    -fx-background-insets: 0, 1px;
 }
 .dialog-pane:header > .header-panel {
     -fx-background-color: -color-accent-emphasis, -color-bg-subtle;
@@ -5201,6 +5213,7 @@ Text {
 /* --- Choice Box / Combo Box --- */
 .choice-box, .combo-box-base {
     -fx-background-radius: 3px, 2px;
+    -fx-background-insets: 0, 1px;
     -fx-border-width: 1px;
 }
 .choice-box:focused, .combo-box-base:focused {
@@ -5211,6 +5224,7 @@ Text {
 .date-picker-popup {
     -fx-border-color: -color-border-default;
     -fx-background-radius: 4px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 4px;
     -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 8px, 0.2, 0, 2);
 }

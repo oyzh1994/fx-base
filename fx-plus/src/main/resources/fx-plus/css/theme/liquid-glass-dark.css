@@ -5033,6 +5033,7 @@ Text {
 .button {
     -fx-background-color: rgba(26, 36, 48, 0.5), rgba(42, 60, 88, 0.4);
     -fx-background-radius: 8px, 7px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 8px;
     -fx-border-color: rgba(80, 120, 180, 0.2);
     -fx-border-width: 1px;
@@ -5040,6 +5041,7 @@ Text {
 }
 .button:hover {
     -fx-background-color: rgba(42, 60, 88, 0.6), rgba(58, 80, 112, 0.5);
+    -fx-background-insets: 0, 1px;
     -fx-border-color: rgba(88, 156, 255, 0.35);
     -fx-effect: dropshadow(three-pass-box, rgba(88, 156, 255, 0.12), 8px, 0.4, 0, 2);
 }
@@ -5049,32 +5051,37 @@ Text {
 }
 .button:default, .button.accent {
     -fx-background-color: rgba(48, 112, 216, 0.6), rgba(40, 88, 176, 0.7);
+    -fx-background-insets: 0, 1px;
     -fx-border-color: rgba(88, 156, 255, 0.4);
     -fx-effect: dropshadow(three-pass-box, rgba(88, 156, 255, 0.2), 8px, 0.4, 0, 2);
 }
 .button:default:hover, .button.accent:hover {
     -fx-background-color: rgba(56, 128, 240, 0.7), rgba(48, 112, 216, 0.8);
+    -fx-background-insets: 0, 1px;
     -fx-effect: dropshadow(three-pass-box, rgba(88, 156, 255, 0.3), 12px, 0.5, 0, 2);
 }
 .button.success {
     -fx-background-color: rgba(48, 168, 80, 0.5), rgba(40, 144, 64, 0.6);
+    -fx-background-insets: 0, 1px;
     -fx-border-color: rgba(96, 208, 120, 0.3);
 }
 .button.danger {
     -fx-background-color: rgba(240, 64, 96, 0.4), rgba(216, 48, 80, 0.5);
+    -fx-background-insets: 0, 1px;
     -fx-border-color: rgba(255, 96, 128, 0.3);
 }
 
 /* --- Text Input: glass input field --- */
 .text-input {
-    -fx-background-color: rgba(15, 24, 32, 0.6), rgba(26, 36, 48, 0.5);
-    -fx-background-radius: 8px, 7px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+    -fx-background-insets: 0;
     -fx-border-radius: 8px;
     -fx-border-color: rgba(80, 120, 180, 0.18);
     -fx-border-width: 1px;
 }
 .text-input:focused {
-    -fx-background-color: rgba(15, 24, 32, 0.7), rgba(26, 36, 48, 0.6);
+    -fx-background-color: transparent;
     -fx-border-color: rgba(88, 156, 255, 0.45);
     -fx-effect: dropshadow(three-pass-box, rgba(88, 156, 255, 0.12), 6px, 0.3, 0, 0);
 }
@@ -5083,6 +5090,7 @@ Text {
 .card > .container {
     -fx-background-color: rgba(26, 36, 48, 0.45);
     -fx-background-radius: 12px;
+    -fx-background-insets: 0;
     -fx-border-radius: 12px;
     -fx-border-color: rgba(80, 120, 180, 0.15);
     -fx-border-width: 1px;
@@ -5093,6 +5101,7 @@ Text {
 .progress-bar > .bar {
     -fx-background-color: linear-gradient(to right, rgba(48, 112, 216, 0.7), rgba(88, 156, 255, 0.8));
     -fx-background-radius: 6px;
+    -fx-background-insets: 0;
     -fx-effect: dropshadow(three-pass-box, rgba(88, 156, 255, 0.3), 6px, 0.4, 0, 0);
 }
 
@@ -5100,14 +5109,17 @@ Text {
 .slider > .track {
     -fx-background-color: rgba(42, 60, 88, 0.5);
     -fx-background-radius: 4px;
+    -fx-background-insets: 0;
 }
 .slider > .track > .colored-track {
     -fx-background-color: linear-gradient(to right, rgba(48, 112, 216, 0.7), rgba(88, 156, 255, 0.8));
     -fx-background-radius: 4px;
+    -fx-background-insets: 0;
 }
 .slider > .thumb {
     -fx-background-color: rgba(88, 156, 255, 0.8);
     -fx-background-radius: 50%;
+    -fx-background-insets: 0;
     -fx-effect: dropshadow(three-pass-box, rgba(88, 156, 255, 0.3), 6px, 0.5, 0, 0);
 }
 
@@ -5115,6 +5127,7 @@ Text {
 .scroll-bar > .thumb {
     -fx-background-color: rgba(80, 120, 180, 0.25);
     -fx-background-radius: 6px;
+    -fx-background-insets: 0;
 }
 .scroll-bar > .thumb:hover {
     -fx-background-color: rgba(88, 156, 255, 0.4);
@@ -5123,6 +5136,7 @@ Text {
 /* --- Tabs: glass tab with bottom glow --- */
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-background-radius: 8px 8px 0 0;
+    -fx-background-insets: 0;
     -fx-background-color: transparent;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
@@ -5160,6 +5174,7 @@ Text {
 .tooltip {
     -fx-background-color: rgba(26, 36, 48, 0.7);
     -fx-background-radius: 8px;
+    -fx-background-insets: 0;
     -fx-border-color: rgba(80, 120, 180, 0.25);
     -fx-border-radius: 8px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10px, 0.3, 0, 4);
@@ -5169,6 +5184,7 @@ Text {
 .check-box:selected > .box {
     -fx-background-color: rgba(88, 156, 255, 0.3), rgba(48, 112, 216, 0.5);
     -fx-background-radius: 4px, 3px;
+    -fx-background-insets: 0, 1px;
 }
 .radio-button:selected > .radio {
     -fx-background-color: rgba(88, 156, 255, 0.3), rgba(48, 112, 216, 0.5);
@@ -5185,12 +5201,14 @@ Text {
     -fx-background-color: rgba(26, 36, 48, 0.75);
     -fx-border-color: rgba(80, 120, 180, 0.2);
     -fx-background-radius: 8px;
+    -fx-background-insets: 0;
     -fx-border-radius: 8px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 16px, 0.3, 0, 4);
 }
 .context-menu > .menu-item:focused {
     -fx-background-color: rgba(88, 156, 255, 0.15);
     -fx-background-radius: 6px;
+    -fx-background-insets: 0;
 }
 
 /* --- Hyperlinks --- */
@@ -5204,6 +5222,7 @@ Text {
     -fx-border-color: rgba(80, 120, 180, 0.2);
     -fx-border-radius: 12px;
     -fx-background-radius: 12px;
+    -fx-background-insets: 0;
 }
 .dialog-pane:header > .header-panel {
     -fx-background-color: rgba(48, 112, 216, 0.3), rgba(26, 36, 48, 0.5);
@@ -5213,6 +5232,7 @@ Text {
 .titled-pane > .title {
     -fx-background-color: rgba(26, 36, 48, 0.4);
     -fx-background-radius: 8px;
+    -fx-background-insets: 0;
     -fx-border-color: rgba(80, 120, 180, 0.12);
     -fx-border-width: 0 0 1px 0;
 }
@@ -5224,6 +5244,7 @@ Text {
 .choice-box, .combo-box-base {
     -fx-background-color: rgba(26, 36, 48, 0.5), rgba(42, 60, 88, 0.4);
     -fx-background-radius: 8px, 7px;
+    -fx-background-insets: 0, 1px;
     -fx-border-color: rgba(80, 120, 180, 0.18);
 }
 .choice-box:focused, .combo-box-base:focused {
@@ -5236,6 +5257,7 @@ Text {
     -fx-background-color: rgba(26, 36, 48, 0.85);
     -fx-border-color: rgba(80, 120, 180, 0.2);
     -fx-background-radius: 12px;
+    -fx-background-insets: 0;
     -fx-border-radius: 12px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 16px, 0.3, 0, 4);
 }

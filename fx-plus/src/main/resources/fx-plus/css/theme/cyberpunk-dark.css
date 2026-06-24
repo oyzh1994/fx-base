@@ -5023,14 +5023,15 @@ Text {
 
 /* --- Buttons: neon glow on hover/focus --- */
 .button {
-    -fx-background-radius: 2px, 1px;
+    -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 2px;
 }
 .button:hover {
     -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 6px, 0.7, 0, 0);
 }
 .button:focused {
-    -fx-background-color: -color-accent-fg, -color-bg-subtle;
+    -fx-background-insets: 0, 1px;
     -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 8px, 0.6, 0, 0);
 }
 .button:default, .button.accent {
@@ -5055,6 +5056,7 @@ Text {
 /* --- Text Input: neon border on focus --- */
 .text-input {
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 2px;
     -fx-background-color: -color-bg-inset, -color-bg-subtle;
 }
@@ -5064,6 +5066,7 @@ Text {
 }
 .text-area {
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
 }
 .text-area:focused {
     -fx-effect: dropshadow(three-pass-box, -color-accent-muted, 4px, 0.5, 0, 0);
@@ -5072,6 +5075,7 @@ Text {
 /* --- Cards: neon border glow --- */
 .card > .container {
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
     -fx-border-radius: 2px;
     -fx-border-color: -color-accent-muted;
     -fx-effect: dropshadow(three-pass-box, -color-accent-subtle, 4px, 0.3, 0, 0);
@@ -5099,6 +5103,7 @@ Text {
 .scroll-bar > .thumb {
     -fx-background-color: -color-accent-muted;
     -fx-background-radius: 3px;
+    -fx-background-insets: 0, 1px;
 }
 .scroll-bar > .thumb:hover {
     -fx-background-color: -color-accent-fg;
@@ -5108,6 +5113,7 @@ Text {
 /* --- Tabs: neon underline indicator --- */
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-background-radius: 2px 2px 0 0;
+    -fx-background-insets: 0, 1px;
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
     -fx-background-color: -color-bg-subtle;
@@ -5151,6 +5157,7 @@ Text {
 .tooltip {
     -fx-background-color: -color-accent-muted, -color-bg-overlay;
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
     -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 6px, 0.5, 0, 0);
 }
 
@@ -5221,14 +5228,17 @@ Text {
 /* --- Spinner --- */
 .spinner > .text-field {
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
 }
 .spinner > .increment-arrow-button, .spinner > .decrement-arrow-button {
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
 }
 
 /* --- Pagination --- */
 .pagination > .page-button {
     -fx-background-radius: 2px;
+    -fx-background-insets: 0, 1px;
 }
 .pagination > .page-button:selected {
     -fx-background-color: -color-accent-emphasis;
