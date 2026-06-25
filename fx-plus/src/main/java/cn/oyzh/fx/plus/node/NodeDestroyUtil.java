@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
-import cn.oyzh.fx.plus.AutoRemoveNodeable;
+import cn.oyzh.fx.plus.RemoveNodeable;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.property.Property;
 import javafx.fxml.FXML;
@@ -152,7 +152,7 @@ public class NodeDestroyUtil {
 //                    // 递归销毁
 //                    doDestroyObject(object1, handles);
                     // 从父节点移除
-                    if (object1 instanceof AutoRemoveNodeable) {
+                    if (object1 instanceof RemoveNodeable) {
                         NodeUtil.removeNode(object1);
                     }
                     setNullable = true;

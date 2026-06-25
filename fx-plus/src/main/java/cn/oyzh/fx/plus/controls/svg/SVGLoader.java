@@ -51,10 +51,14 @@ public class SVGLoader {
         String svgStroke = null;
         String svgOpacity = null;
         String svgStrokeWidth = null;
+//        String svgWidth = null;
+//        String svgHeight = null;
         try (XMLReader reader = new XMLReader()) {
             // 解析内容
             XMLDocument document = reader.read(u.openStream());
             XMLElement root = document.getRootElement();
+//            svgWidth = root.attributeValue("width");
+//            svgHeight = root.attributeValue("height");
             Iterator<XMLElement> iterator = root.elementIterator("path");
             if (iterator == null || !iterator.hasNext()) {
                 XMLElement element = root.element("g");
@@ -136,6 +140,10 @@ public class SVGLoader {
         if (svgStrokeWidth != null) {
             path.setStrokeWidth(Double.parseDouble(svgStrokeWidth));
         }
+//        if (svgWidth != null && svgHeight != null) {
+//            path.setProp("width", Double.parseDouble(svgWidth));
+//            path.setProp("height", Double.parseDouble(svgHeight));
+//        }
         return path;
     }
 
