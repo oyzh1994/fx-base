@@ -41,7 +41,7 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         this.setText("");
     }
 

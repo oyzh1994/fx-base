@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class FilterSVGGlyph extends SVGGlyph {
 
     public FilterSVGGlyph() {
-        this.setUrl("/fx-svg/filter.svg");
+        super("/fx-svg/filter.svg");
     }
 
     public FilterSVGGlyph(String size) {

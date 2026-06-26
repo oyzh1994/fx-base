@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ClearSVGGlyph extends SVGGlyph {
 
     public ClearSVGGlyph() {
-        this.setUrl("/fx-svg/clear2.svg");
+        super("/fx-svg/clear.svg");
     }
 
     public ClearSVGGlyph(String size) {

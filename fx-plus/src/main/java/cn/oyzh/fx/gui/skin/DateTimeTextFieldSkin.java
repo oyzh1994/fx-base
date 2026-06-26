@@ -59,7 +59,7 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         // 文本输入框
         TextField textField = this.getSkinnable();
         textField.setDisable(true);
@@ -124,7 +124,6 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
 
         // 按钮组件
         SubmitSVGGlyph submit = new SubmitSVGGlyph();
-        submit.setSizeStr("13,11");
         submit.setOnMousePrimaryClicked(mouseEvent -> {
             LocalDate date = calendar.getValue();
             if (date == null) {
@@ -137,7 +136,7 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
             this.handleHide();
         });
         CancelSVGGlyph cancel = new CancelSVGGlyph();
-        cancel.setSizeStr("11");
+        //        cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
         FXHBox hBox = new FXHBox(submit, cancel);
@@ -190,9 +189,6 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
 
     public DateTimeTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField, new DateSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.choose());
     }
 
     @Override

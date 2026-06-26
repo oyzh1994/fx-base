@@ -9,17 +9,11 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DatabaseSVGGlyph extends SVGGlyph {
 
     public DatabaseSVGGlyph() {
-        this.setUrl("/fx-svg/database/database.svg");
+        super("/fx-svg/database/database.svg");
     }
 
     public DatabaseSVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }
-
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.dump());
-//        super.initNode();
-//    }
 }

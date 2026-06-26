@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.test;
 
 import cn.oyzh.common.object.ObjectWatcher;
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.fx.gui.tabs.RichTabPane;
@@ -26,7 +27,7 @@ public class TabPaneTest extends Application {
 
         FXTab tab11 = new FXTab("测试11");
         tab11.setClosable(true);
-        ObjectWatcher.watch(tab11);
+        ObjectWatcherManager.watch(tab11);
         Tab tab12 = new Tab("测试12");
         tabPane.getTabs().add(tab11);
         tabPane.getTabs().add(tab12);

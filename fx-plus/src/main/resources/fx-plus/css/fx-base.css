@@ -4,11 +4,11 @@
 /*}*/
 /*!* 根节点默认字体，覆盖atlantafx的默认字体 *!*/
 
-/* tab，修复atlantafx的样式异常问题 */
-.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
-    -fx-padding: 0.1em 0.1em 0.1em 0.1em;
-}
-/* tab，修复atlantafx的显样式异常问题 */
+/*!* tab，修复atlantafx的样式异常问题 *!*/
+/*.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {*/
+/*    -fx-padding: 0.1em 0.1em 0.1em 0.1em;*/
+/*}*/
+/*!* tab，修复atlantafx的显样式异常问题 *!*/
 
 /* tree-cell，修复atlantafx的样式异常问题 */
 .tree-cell:expanded > .tree-disclosure-node > .arrow,
@@ -34,9 +34,9 @@
 /* text-input，修复atlantafx的样式异常问题 */
 
 /* button，修复atlantafx的样式异常问题 */
-.button {
-    -fx-padding: 6px 12px 6px 12px;
-}
+/*.button {*/
+/*    -fx-padding: 6px 12px 6px 12px;*/
+/*}*/
 /* button，修复atlantafx的样式异常问题 */
 
 /* check-box，修复atlantafx的样式异常问题 */

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DeleteForceSVGGlyph extends SVGGlyph {
 
     public DeleteForceSVGGlyph() {
-        this.setUrl("/fx-svg/delete-force.svg");
+        super("/fx-svg/delete-force.svg");
     }
 
     public DeleteForceSVGGlyph(String size) {

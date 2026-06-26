@@ -17,7 +17,7 @@ public class ExecuteButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.execute());
         this.setTipText(I18nHelper.execute());
-        this.init(new ExecuteSVGGlyph(), 0.7);
+        this.init(new ExecuteSVGGlyph());
         this.setOnAction(actionEvent -> this.getScene().getWindow().hide());
         super.initNode();
     }

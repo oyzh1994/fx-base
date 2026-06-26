@@ -19,7 +19,7 @@ public class LocalTerminalButton extends IconButton {
         this.addClass("default");
         this.setText(I18nHelper.localTerminal());
         this.setTipText(I18nHelper.localTerminal());
-        this.init(new TerminalSVGGlyph(), 0.7);
+        this.init(new TerminalSVGGlyph());
         super.initNode();
     }
 }

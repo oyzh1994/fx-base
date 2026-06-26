@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.util.Collections;
 
@@ -63,7 +64,7 @@ public class ListViewUtil {
     public static void highlightCell(ListCell<?> cell) {
         if (cell != null) {
             cell.setOnMouseExited(event -> cell.setBackground(null));
-            cell.setOnMouseEntered(event -> cell.setBackground(ControlUtil.hilightBackground()));
+            cell.setOnMouseEntered(event -> cell.setBackground(ControlUtil.background(Color.LIGHTBLUE)));
         }
     }
 
@@ -108,6 +109,7 @@ public class ListViewUtil {
                 if (listView != null) {
                     listView.getSelectionModel().select(itemNode == null ? node : itemNode);
                 }
+//                event.consume();
             });
         }
     }

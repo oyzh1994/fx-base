@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class QRCodeSVGGlyph extends SVGGlyph {
 
     public QRCodeSVGGlyph() {
-        this.setUrl("/fx-svg/qrcode.svg");
+        super("/fx-svg/qrcode.svg");
     }
 
     public QRCodeSVGGlyph(String size) {

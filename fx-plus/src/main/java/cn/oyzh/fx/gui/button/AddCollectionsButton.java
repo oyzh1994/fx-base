@@ -17,7 +17,7 @@ public class AddCollectionsButton extends IconButton {
         this.addClass("success");
         this.setText(I18nHelper.addCollections());
         this.setTipText(I18nHelper.addCollections());
-        this.init(new AddSVGGlyph(), 0.7);
+        this.init(new AddSVGGlyph());
         super.initNode();
     }
 }

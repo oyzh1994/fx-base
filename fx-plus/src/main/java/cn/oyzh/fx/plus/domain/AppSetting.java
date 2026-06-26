@@ -363,9 +363,6 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 字体配置
      */
     public FontConfig editorFontConfig() {
-//        if (this.editorFontWeight == null && this.editorFontFamily == null && this.editorFontSize == null) {
-//            return null;
-//        }
         FontConfig config = new FontConfig();
         if (StringUtil.isNotBlank(this.editorFontFamily)) {
             config.setFamily(this.editorFontFamily);
@@ -391,9 +388,6 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 字体配置
      */
     public FontConfig terminalFontConfig() {
-//        if (this.terminalFontWeight == null && this.terminalFontFamily == null && this.terminalFontSize == null) {
-//            return null;
-//        }
         FontConfig config = new FontConfig();
         if (StringUtil.isNotBlank(this.terminalFontFamily)) {
             config.setFamily(this.terminalFontFamily);
@@ -668,7 +662,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     }
 
     public static byte defaultFontSize() {
-        return 11;
+        return 12;
     }
 
     public static String defaultFontFamily() {

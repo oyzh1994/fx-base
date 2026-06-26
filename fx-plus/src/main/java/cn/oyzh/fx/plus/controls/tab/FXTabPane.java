@@ -1,20 +1,26 @@
 package cn.oyzh.fx.plus.controls.tab;
 
-import atlantafx.base.theme.Styles;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
+import cn.oyzh.fx.plus.menu.ContextMenuManager;
+import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
@@ -26,7 +32,7 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, DestroyAdapter {
+public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, Destroyable {
 
     {
         NodeManager.init(this);
@@ -294,13 +300,6 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         this.setTabMaxHeight(height);
         this.setTabMinHeight(height);
     }
-    //
-    // public <T extends Tab> T getTab(int index) {
-    //     if (index < this.getTabs().size()) {
-    //         return (T) this.getTabs().get(index);
-    //     }
-    //     return null;
-    // }
 
     public int tabSize() {
         return this.getTabs().size();
@@ -335,8 +334,11 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     @Override
     public void initNode() {
         this.setCache(false);
-        this.setTabRealHeight(24);
-        this.getStyleClass().add(Styles.TABS_CLASSIC);
+        this.setTabMaxHeight(30);
+        //        this.setTabRealHeight(24);
+        //        this.getStyleClass().add(Styles.TABS_BORDER_TOP);
+        //        this.getStyleClass().add(Styles.TABS_FLOATING);
+        //        this.getStyleClass().add(Styles.TABS_CLASSIC);
         // this.selectedItemChanged(this::setupSelectCountListener);
         // // 监听tab移除，防止内存泄露
         // this.getTabs().addListener((ListChangeListener<Tab>) c -> {
@@ -344,13 +346,30 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
         //     }
         // });
+        this.setPadding(Insets.EMPTY);
+        // 创建右键菜单
+        this.getTabs().addListener((ListChangeListener<Tab>) c -> {
+            if (c.next() && !c.getAddedSubList().isEmpty()) {
+                for (Tab tab : c.getAddedSubList()) {
+                    if (tab instanceof MenuItemAdapter adapter) {
+                        List<? extends MenuItem> items = adapter.getMenuItems();
+                        if (CollectionUtil.isNotEmpty(items)) {
+                            ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
+                            ContextMenuManager.setContextMenu(tab, contextMenu);
+                        } else {
+                            ContextMenuManager.clearContextMenu(tab);
+                        }
+                    }
+                }
+            }
+        });
         FlexAdapter.super.initNode();
     }
 
     /**
      * 安装刷新监听器
      */
-    protected void setupRefreshListener() {
+    public void setupRefreshListener() {
         this.selectedItemChanged((observableValue, tab, t1) -> {
             this.refresh();
         });
@@ -423,20 +442,15 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
      * 刷新tab，解决部分情况下组件冻结的问题
      */
     public void refresh() {
-        // this.setIgnoreChanged(true);
-        // Tab tab = this.getSelectedItem();
-        // this.clearSelection();
-        // if (tab != null) {
-        //     // this.select(tab);
-        //     FXUtil.runAsync(() -> {
-        //         this.select(tab);
-        //         this.setIgnoreChanged(false);
-        //     });
-        // } else {
-        //     this.setIgnoreChanged(false);
-        // }
         this.applyCss();
         this.autosize();
         this.requestLayout();
+    }
+
+    @Override
+    public void destroy() {
+        this.clearChild();
+        //        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

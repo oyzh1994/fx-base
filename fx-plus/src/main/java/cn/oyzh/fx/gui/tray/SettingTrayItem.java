@@ -12,7 +12,7 @@ import cn.oyzh.i18n.I18nHelper;
  */
 public class SettingTrayItem extends TrayItem {
 
-    public SettingTrayItem(String iconSize, Runnable action) {
-        super(I18nHelper.setting(), new SettingSVGGlyph(iconSize), action);
+    public SettingTrayItem(Runnable action) {
+        super(I18nHelper.setting(), new SettingSVGGlyph(), action);
     }
 }

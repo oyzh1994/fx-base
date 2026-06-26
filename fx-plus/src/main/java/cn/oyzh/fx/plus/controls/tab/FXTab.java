@@ -1,26 +1,29 @@
 package cn.oyzh.fx.plus.controls.tab;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+
+import java.util.List;
 
 /**
  * @author oyzh
  * @since 2022/1/21
  */
-public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter, DestroyAdapter {
+public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -55,17 +58,37 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
     }
 
     /**
+     * 获取tab列表
+     *
+     * @return tab列表
+     */
+    public ObservableList<Tab> tabs() {
+        return this.getTabPane().getTabs();
+    }
+
+    /**
      * 关闭当前tab
      */
     public void closeTab() {
-        if (this.isClosable()) {
-            TabPane tabPane = this.getTabPane();
-            if (tabPane != null) {
-                FXUtil.runWait(() -> tabPane.getTabs().remove(this));
-                // 手动触发关闭事件
-                Event.fireEvent(this, new Event(Tab.CLOSED_EVENT));
+        this.closeTabs(List.of(this));
+    }
+
+    /**
+     * 关闭多个tab
+     *
+     * @param tabs tab列表
+     */
+    public void closeTabs(List<Tab> tabs) {
+        FXUtil.runWait(() -> {
+            List<Tab> tabList = this.tabs();
+            for (Tab tab : tabs) {
+                if (tab.isClosable()) {
+                    tabList.remove(tab);
+                    // 手动触发关闭事件
+                    Event.fireEvent(tab, new Event(Tab.CLOSED_EVENT));
+                }
             }
-        }
+        });
     }
 
     /**
@@ -108,12 +131,15 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void initNode() {
-        this.setClosable(false);
+        //        this.setClosable(false);
         this.setOnClosed(this::onTabClosed);
         this.setOnCloseRequest(this::onTabCloseRequest);
+        //        List<? extends MenuItem> items = this.getMenuItems();
+        //        if (CollectionUtil.isNotEmpty(items)) {
+        //            ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
+        //            ContextMenuManager.setContextMenu(this, contextMenu);
+        //        }
         NodeAdapter.super.initNode();
-//        this.addEventFilter(Tab.CLOSED_EVENT, this::onTabClosed);
-//        this.addEventFilter(Tab.TAB_CLOSE_REQUEST_EVENT, this::onTabCloseRequest);
     }
 
     /**
@@ -122,7 +148,6 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      * @param event 事件
      */
     protected void onTabClosed(Event event) {
-        // NodeDestroyUtil.dispose(this);
     }
 
     protected void onTabCloseRequest(Event event) {
@@ -150,5 +175,12 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     public String getAppendText() {
         return this.getProp("appendText");
+    }
+
+    @Override
+    public void destroy() {
+        this.setContent(null);
+        this.setContextMenu(null);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

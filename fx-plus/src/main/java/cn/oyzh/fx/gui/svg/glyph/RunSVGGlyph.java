@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RunSVGGlyph extends SVGGlyph {
 
     public RunSVGGlyph() {
-        this.setUrl("/fx-svg/run-solid.svg");
+        super("/fx-svg/run-solid.svg");
     }
 
     public RunSVGGlyph(String size) {

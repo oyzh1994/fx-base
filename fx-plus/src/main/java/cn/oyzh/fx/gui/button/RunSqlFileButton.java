@@ -15,7 +15,7 @@ public class RunSqlFileButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.runSqlFile());
         this.setTipText(I18nHelper.runSqlFile());
-        this.init(new RunSqlFileSVGGlyph(), 0.9);
+        this.init(new RunSqlFileSVGGlyph());
         super.initNode();
     }
 }

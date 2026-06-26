@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.keyboard;
 
+import cn.oyzh.common.system.OSUtil;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.input.KeyCode;
@@ -108,5 +109,13 @@ public class KeyHandler {
 
     public void setHandler(EventHandler<? super KeyEvent> handler) {
         this.handler = handler;
+    }
+
+    public void setMainModifierDown(boolean mainModifierDown) {
+        if (OSUtil.isMacOS()) {
+            this.setMetaDown(mainModifierDown);
+        } else {
+            this.setControlDown(mainModifierDown);
+        }
     }
 }

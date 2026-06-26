@@ -34,26 +34,26 @@ public class DecimalTextField extends DigitalTextField {
     }
 
     public DecimalTextField() {
-        super(false, null);
+        super(null);
     }
 
-    public DecimalTextField(boolean unsigned) {
-        super(unsigned, null);
+    //    public DecimalTextField(boolean unsigned) {
+    //        super(unsigned, null);
+    //    }
+
+    public DecimalTextField(Long maxLen) {
+        super(maxLen);
     }
 
-    public DecimalTextField(boolean unsigned, Long maxLen) {
-        super(unsigned, maxLen);
-    }
-
-    public DecimalTextField(boolean unsigned, Long maxLen, Long minVal, Long maxVal, Integer scaleLen) {
-        super(unsigned, maxLen);
+    public DecimalTextField(Long maxLen, Long minVal, Long maxVal, Integer scaleLen) {
+        super(maxLen);
         super.setMinVal(minVal);
         super.setMaxVal(maxVal);
         this.setScaleLen(scaleLen);
     }
 
-    public DecimalTextField(boolean unsigned, Long maxLen, Integer scaleLen) {
-        super(unsigned, maxLen);
+    public DecimalTextField(Long maxLen, Integer scaleLen) {
+        super(maxLen);
         this.setScaleLen(scaleLen);
     }
 
@@ -129,11 +129,7 @@ public class DecimalTextField extends DigitalTextField {
         };
     }
 
-    /**
-     * 获取值
-     *
-     * @return 值
-     */
+    @Override
     public Double getValue() {
         Number val = this.value();
         // 否则，将文本转为Double类型并返回
@@ -150,31 +146,6 @@ public class DecimalTextField extends DigitalTextField {
         }
         return super.value();
     }
-
-    /**
-     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
-     *
-     * @param value 值
-     */
-    public void setValue(Double value) {
-        this.value(value);
-    }
-
-    // @Override
-    // protected void value(Number value) {
-    //     if (value != null && this.scaleLen != null) {
-    //         // BigDecimal decimal = NumberUtil.toBigDecimal(value);
-    //         // if (decimal.scale() > this.scaleLen) {
-    //         //     value = decimal.setScale(this.scaleLen, RoundingMode.HALF_UP);
-    //         //     this.textFormatter.setValue(value);
-    //         // } else {
-    //         //     super.value(value);
-    //         // }
-    //         super.value(this.format().format(value));
-    //     } else {
-    //         super.value(value);
-    //     }
-    // }
 
     private DigitalFormat format;
 

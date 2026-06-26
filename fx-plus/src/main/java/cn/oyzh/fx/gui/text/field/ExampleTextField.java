@@ -9,20 +9,6 @@ import javafx.scene.control.Skin;
  */
 public class ExampleTextField extends LimitTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public ExampleTextFieldSkin skin() {
-        ExampleTextFieldSkin skin = (ExampleTextFieldSkin) this.getSkin();
-        if (skin == null) {
-            this.setSkin(this.createDefaultSkin());
-            skin = (ExampleTextFieldSkin) this.getSkin();
-        }
-        return skin;
-    }
-
     public void setExample(Object o) {
         if (o != null) {
             this.setExampleText(o.toString());
@@ -38,7 +24,12 @@ public class ExampleTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public ExampleTextFieldSkin skin() {
+        return (ExampleTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected ExampleTextFieldSkin createDefaultSkin() {
         return new ExampleTextFieldSkin(this);
     }
 }

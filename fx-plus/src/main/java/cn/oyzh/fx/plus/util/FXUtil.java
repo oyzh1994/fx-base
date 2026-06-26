@@ -6,6 +6,8 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.FXConst;
+import com.sun.javafx.tk.TKPulseListener;
+import com.sun.javafx.tk.Toolkit;
 import com.sun.javafx.tk.quantum.QuantumToolkit;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
@@ -262,26 +264,35 @@ public class FXUtil {
     }
 
     /**
-     * 在脉冲周期后执行
+     * 当前脉冲完成后执行
      *
      * @param task 任务
      */
     public static void runPulse(Runnable task) {
-        runPulse(task, 10);
+        Toolkit.getToolkit().addPostSceneTkPulseListener(new TKPulseListener() {
+            @Override
+            public synchronized void pulse() {
+                try {
+                    task.run();
+                } finally {
+                    Toolkit.getToolkit().removePostSceneTkPulseListener(this);
+                }
+            }
+        });
     }
 
     /**
-     * 在脉冲周期后执行
+     * 在指定脉冲周期后执行
      *
-     * @param task 任务
-     * @param sign 停止信号
+     * @param task       任务
+     * @param tickCounts 脉冲次数
      */
-    public static void runPulse(Runnable task, int sign) {
-        AtomicInteger tick = new AtomicInteger();
+    public static void runTimer(Runnable task, int tickCounts) {
+        AtomicInteger counter = new AtomicInteger();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (sign <= 0 || tick.incrementAndGet() >= sign) {
+                if (counter.incrementAndGet() >= tickCounts) {
                     try {
                         task.run();
                     } finally {

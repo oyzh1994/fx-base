@@ -1,9 +1,9 @@
 package cn.oyzh.fx.plus.controls.tree.view;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
@@ -24,24 +24,11 @@ import java.util.List;
  * @author oyzh
  * @since 2023/11/10
  */
-public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
+public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 
     {
         NodeManager.init(this);
-        // this.autoDestroy();
     }
-
-    // /**
-    //  * 自动销毁
-    //  */
-    // protected void autoDestroy() {
-    //     // 监听节点
-    //     super.getChildren().addListener((ListChangeListener<TreeItem<V>>) c -> {
-    //         if (c.next()) {
-    //             c.getRemoved().forEach(NodeDestroyUtil::destroy);
-    //         }
-    //     });
-    // }
 
     private FXTreeView treeView;
 
@@ -56,18 +43,6 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     public FXTreeView getTreeView() {
         return treeView;
     }
-
-    // /**
-    //  * 获取渲染服务
-    //  *
-    //  * @return 渲染服务
-    //  */
-    // protected QueueService service() {
-    //     if (this.treeView == null) {
-    //         return null;
-    //     }
-    //     return this.treeView.service();
-    // }
 
     /**
      * 获取子节点大小
@@ -431,17 +406,6 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
 
     }
 
-    @Override
-    public void destroy() {
-        // super.getChildren().forEach(NodeDestroyUtil::destroy);
-        this.clearChild();
-        NodeDestroyUtil.destroyObject(this.getValue());
-        this.setValue(null);
-        NodeDestroyUtil.destroyObject(this.getGraphic());
-        this.setGraphic(null);
-        this.treeView = null;
-    }
-
     /**
      * 当前节点的父节点
      *
@@ -470,4 +434,13 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     protected void clearSelection() {
         this.getTreeView().clearSelection();
     }
+
+    @Override
+    public void destroy() {
+        this.getValue().destroy();
+        this.valueProperty().unbind();
+        this.graphicProperty().unbind();
+        NodeDestroyUtil.destroyObject(this);
+    }
+
 }

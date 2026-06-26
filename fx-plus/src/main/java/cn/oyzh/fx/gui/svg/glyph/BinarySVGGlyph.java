@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class BinarySVGGlyph extends SVGGlyph {
 
     public BinarySVGGlyph() {
-        this.setUrl("/fx-svg/binary.svg");
+        super("/fx-svg/binary.svg");
     }
 
     public BinarySVGGlyph(String size) {

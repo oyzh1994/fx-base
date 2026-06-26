@@ -4,6 +4,7 @@ import cn.oyzh.fx.gui.svg.glyph.SortAscSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SortDescSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGPane;
+import javafx.scene.text.Font;
 
 /**
  * @author oyzh
@@ -16,11 +17,11 @@ public class SortSVGPane extends SVGPane {
     }
 
     public void desc() {
-        this.setChild(new SortAscSVGGlyph(this.size));
+        this.setChild(new SortAscSVGGlyph(this.getSize()));
     }
 
     public void asc() {
-        this.setChild(new SortDescSVGGlyph(this.size));
+        this.setChild(new SortDescSVGGlyph(this.getSize()));
     }
 
     public boolean isAsc() {
@@ -34,5 +35,17 @@ public class SortSVGPane extends SVGPane {
         } else {
             this.desc();
         }
+    }
+
+    @Override
+    public void changeFont(Font font) {
+        if (!this.isChildEmpty() && this.isEnableFont()) {
+            if (this.isAsc()) {
+                this.asc();
+            } else {
+                this.desc();
+            }
+        }
+        super.changeFont(font);
     }
 }

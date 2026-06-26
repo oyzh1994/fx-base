@@ -15,7 +15,7 @@ public class TransportButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.transport());
         this.setTipText(I18nHelper.transport());
-        this.init(new TransportSVGGlyph(), 0.7);
+        this.init(new TransportSVGGlyph());
         super.initNode();
     }
 }

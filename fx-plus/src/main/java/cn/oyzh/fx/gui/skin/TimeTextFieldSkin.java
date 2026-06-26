@@ -55,7 +55,7 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         // 文本输入框
         TextField textField = getSkinnable();
         textField.setDisable(true);
@@ -116,14 +116,14 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
 
         // 按钮组件
         SubmitSVGGlyph submit = new SubmitSVGGlyph();
-        submit.setSizeStr("13,11");
+//        submit.setSizeStr("13,11");
         submit.setOnMousePrimaryClicked(mouseEvent -> {
             LocalTime time = LocalTime.now().withHour(hour.getSelectedIndex()).withMinute(minute.getSelectedIndex()).withSecond(second.getSelectedIndex());
             this.setText(this.formatter().format(time));
             this.handleHide();
         });
         CancelSVGGlyph cancel = new CancelSVGGlyph();
-        cancel.setSizeStr("11");
+//        cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
         FXHBox hBox = new FXHBox(submit, cancel);
@@ -166,15 +166,12 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
 
     public TimeTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField, new DateSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.choose());
     }
 
     @Override
     protected SVGGlyph getButton() {
         if (super.button == null) {
-            super.button = new DateSVGGlyph("13");
+            super.button = new DateSVGGlyph();
             super.initButton(super.button);
         }
         return super.button;

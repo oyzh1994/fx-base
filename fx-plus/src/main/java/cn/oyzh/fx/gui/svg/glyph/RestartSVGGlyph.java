@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RestartSVGGlyph extends SVGGlyph {
 
     public RestartSVGGlyph() {
-        this.setUrl("/fx-svg/restart.svg");
+        super("/fx-svg/restart.svg");
     }
 
     public RestartSVGGlyph(String size) {

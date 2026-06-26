@@ -33,14 +33,6 @@ public interface NodeAdapter extends EventTarget {
      * 初始化节点
      */
     default void initNode() {
-        // // parent组件处理
-        // if (this instanceof Parent parent) {
-        //     parent.getChildrenUnmodifiable().addListener((ListChangeListener<Node>) c -> {
-        //         if (c.next()) {
-        //             c.getRemoved().forEach(NodeDestroyUtil::destroy);
-        //         }
-        //     });
-        // }
     }
 
     /**
@@ -53,6 +45,8 @@ public interface NodeAdapter extends EventTarget {
             return node.getParent();
         } else if (this instanceof TableColumn<?, ?> column) {
             return column.getTableView();
+        } else if (this instanceof Tab tab) {
+            return tab.getTabPane();
         }
         return null;
     }
@@ -381,6 +375,13 @@ public interface NodeAdapter extends EventTarget {
                 }
             }
         }
+    }
+
+    /**
+     * 移除当前节点
+     */
+    default void removeNode() {
+        NodeUtil.removeNode(this);
     }
 
     /**

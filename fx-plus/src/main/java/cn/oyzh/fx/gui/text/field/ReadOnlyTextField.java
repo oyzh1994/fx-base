@@ -10,9 +10,11 @@ import cn.oyzh.fx.plus.controls.text.field.FXTextField;
  */
 public class ReadOnlyTextField extends FXTextField {
 
-    {
+    @Override
+    public void initNode() {
         this.setEditable(false);
         this.setPickOnBounds(true);
         this.setFocusTraversable(false);
+        super.initNode();
     }
 }

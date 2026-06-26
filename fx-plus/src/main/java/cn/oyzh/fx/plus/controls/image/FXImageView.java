@@ -1,9 +1,11 @@
 package cn.oyzh.fx.plus.controls.image;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.SnapshotParameters;
@@ -17,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author oyzh
  * @since 2020/10/29
  */
-public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter {
+public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -94,5 +96,12 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
     @Override
     public boolean isResizable() {
         return true;
+    }
+
+    @Override
+    public void destroy() {
+        this.setImage(null);
+        NodeDestroyUtil.destroyObject(this);
+//        DestroyAdapter.super.destroy();
     }
 }

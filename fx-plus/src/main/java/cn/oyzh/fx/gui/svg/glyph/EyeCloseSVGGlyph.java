@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class EyeCloseSVGGlyph extends SVGGlyph {
 
     public EyeCloseSVGGlyph() {
-        this.setUrl("/fx-svg/eye-close.svg");
+        super("/fx-svg/eye-close.svg");
     }
 
     public EyeCloseSVGGlyph(String size) {

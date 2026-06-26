@@ -17,9 +17,6 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
 
     public PasswordTextFieldSkin(PasswordTextField textField) {
         super(textField);
-        // super(textField, new EyeSVGGlyph());
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.showPassword());
     }
 
     @Override
@@ -32,7 +29,7 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         PasswordTextField textField = (PasswordTextField) this.getSkinnable();
         if (textField.getRevealPassword()) {
             textField.setRevealPassword(false);
@@ -52,8 +49,8 @@ public class PasswordTextFieldSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
-    @Override
-    protected void setButtonSize(double size) {
-        this.button.setSize(size * 1.2, size);
-    }
+//    @Override
+//    protected void setButtonSize(double size) {
+//        this.button.setSize(size * 1.2, size);
+//    }
 }

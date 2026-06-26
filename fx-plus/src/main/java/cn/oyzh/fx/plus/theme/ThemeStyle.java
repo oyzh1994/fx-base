@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * 主题风格
@@ -96,13 +97,13 @@ public interface ThemeStyle {
      * @return 样式文件
      */
     String getUserAgentStylesheet();
-//
-//    /**
-//     * 获取压缩样式文件
-//     *
-//     * @return 压缩样式文件
-//     */
-//    String getCompressedUserAgentStylesheet();
+    //
+    //    /**
+    //     * 获取压缩样式文件
+    //     *
+    //     * @return 压缩样式文件
+    //     */
+    //    String getCompressedUserAgentStylesheet();
 
     ///**
     // * 重应用css尾缀
@@ -120,13 +121,13 @@ public interface ThemeStyle {
                 try {
                     // 更新fx-base样式文件
                     StyleUtil.reapplyStylesheet(node, FXStyle.FX_BASE);
-//                    if (ThemeManager.isDarkMode()) {
-//                        StyleUtil.removeStylesheet(node, FXStyle.FX_LIGHT);
-//                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
-//                    } else {
-//                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
-//                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_LIGHT);
-//                    }
+                    //                    if (ThemeManager.isDarkMode()) {
+                    //                        StyleUtil.removeStylesheet(node, FXStyle.FX_LIGHT);
+                    //                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
+                    //                    } else {
+                    //                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
+                    //                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_LIGHT);
+                    //                    }
                     //// 重新应用样式
                     //ReflectUtil.invoke(node, "reapplyCss");
                     //node.applyCss();
@@ -184,7 +185,7 @@ public interface ThemeStyle {
      * @return 相关度
      */
     default double corr(ThemeStyle style) {
-        if ((this.isDarkMode() && !style.isDarkMode()) || (!this.isDarkMode() && style.isDarkMode())) {
+        if (!Objects.equals(style.isDarkMode(), this.isDarkMode())) {
             return -1;
         }
         // 前景色
@@ -194,15 +195,15 @@ public interface ThemeStyle {
         // 强调色
         double d3 = ThemeUtil.calcCorr(this.getAccentColor(), style.getAccentColor());
         // 返回相关度
-        return d1 * 5.5 + d2 * 2.5 + d3 * 2;
+        return d1 * 5 + d2 * 3 + d3 * 2;
     }
 
-    default boolean isBuiltIn() {
-        return false;
-    }
-
-    default String getBuiltInName() {
-        return null;
-    }
+    //    default boolean isBuiltIn() {
+    //        return false;
+    //    }
+    //
+    //    default String getBuiltInName() {
+    //        return null;
+    //    }
 
 }

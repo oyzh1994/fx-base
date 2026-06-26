@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.window;
 
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.BooleanUtil;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -17,7 +19,6 @@ import javafx.stage.Window;
 
 /**
  * @author oyzh
- * @see PopupMask
  * @since 2025-03-12
  */
 public class StageMask extends Stage implements StageAdapter {
@@ -111,6 +112,8 @@ public class StageMask extends Stage implements StageAdapter {
 
 //        // 执行业务
 //        this.future = TaskManager.startAsync(this::doCallback);
+
+        ObjectWatcherManager.watch(this);
     }
 
 //    /**
@@ -138,21 +141,19 @@ public class StageMask extends Stage implements StageAdapter {
 
     @Override
     public void onWindowClosed() {
-        StageAdapter.super.onWindowClosed();
-        // 清除属性
-        this.setScene(null);
         // 处理属性
         if (this.target != null) {
-            this.target.requestFocus();
             this.target.xProperty().removeListener(this.xFunc);
             this.target.yProperty().removeListener(this.yFunc);
             this.target.widthProperty().removeListener(this.wFunc);
             this.target.heightProperty().removeListener(this.hFunc);
+            this.target.requestFocus();
             this.xFunc = null;
             this.yFunc = null;
             this.wFunc = null;
             this.hFunc = null;
         }
+        StageAdapter.super.onWindowClosed();
     }
 
     @Override

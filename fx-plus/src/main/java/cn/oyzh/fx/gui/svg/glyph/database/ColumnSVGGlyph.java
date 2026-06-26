@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ColumnSVGGlyph extends SVGGlyph {
 
     public ColumnSVGGlyph() {
-        this.setUrl("/fx-svg/database/column.svg");
+        super("/fx-svg/database/column.svg");
     }
 
     public ColumnSVGGlyph(String size) {

@@ -10,7 +10,6 @@ import cn.oyzh.fx.gui.text.field.NumberTextField;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nManager;
 import javafx.event.EventHandler;
@@ -156,7 +155,7 @@ public class PageBox<T> extends FXHBox {
     }
 
     public PageBox() {
-        this("13");
+        this(null);
     }
 
     public PageBox(String bthSize) {
@@ -164,18 +163,14 @@ public class PageBox<T> extends FXHBox {
         this.init();
     }
 
-    private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
+    //    private static final Insets DEFAULT_MARGIN = new Insets(3, 0, 0, 5);
+    //
+    //    private static final Insets DEFAULT_MARGIN1 = new Insets(4, 0, 0, 5);
+    //
+    //    private static final Insets DEFAULT_MARGIN2 = new Insets(-1.5, 0, 0, 5);
 
     public boolean isShowText() {
         return showText;
-    }
-
-    public FXLabel getText() {
-        return text;
-    }
-
-    public void setText(FXLabel text) {
-        this.text = text;
     }
 
     public boolean isShowJump() {
@@ -311,6 +306,7 @@ public class PageBox<T> extends FXHBox {
                 this.onFirstClicked.handle(e);
             }
         });
+        this.firstBtn.setPadding(Insets.EMPTY);
 
         // 上一页
         this.prevBtn = new PagePrevSVGGlyph(this.bthSize);
@@ -320,6 +316,7 @@ public class PageBox<T> extends FXHBox {
                 this.onPrevClicked.handle(e);
             }
         });
+        this.prevBtn.setPadding(Insets.EMPTY);
 
         // 下一页
         this.nextBtn = new PageNextSVGGlyph(this.bthSize);
@@ -329,6 +326,7 @@ public class PageBox<T> extends FXHBox {
                 this.onNextClicked.handle(e);
             }
         });
+        this.nextBtn.setPadding(Insets.EMPTY);
 
         // 尾页
         this.lastBtn = new PageLastSVGGlyph(this.bthSize);
@@ -339,6 +337,7 @@ public class PageBox<T> extends FXHBox {
                 this.onLastClicked.handle(e);
             }
         });
+        this.lastBtn.setPadding(Insets.EMPTY);
 
         // 设置
         this.settingBtn = new PageSettingSVGGlyph(this.bthSize);
@@ -349,13 +348,13 @@ public class PageBox<T> extends FXHBox {
                 this.onSettingClicked.handle(e);
             }
         });
+        this.settingBtn.setPadding(Insets.EMPTY);
 
         // 跳页
-        this.jump = new NumberTextField(true);
+        this.jump = new NumberTextField();
         this.jump.setMinVal(1);
-        this.jump.setMaxWidth(50);
-        // this.jump.setBtnMarginRight(0);
-        this.jump.setFlexHeight("80%");
+        this.jump.setMaxWidth(60);
+        this.jump.setFlexHeight("75%");
         this.jump.managedBindVisible();
         this.jump.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (KeyboardUtil.isEnter(event) && this.onJumpFired != null) {
@@ -364,20 +363,6 @@ public class PageBox<T> extends FXHBox {
             }
         });
         this.jump.setPadding(Insets.EMPTY);
-
-        // 设置边距
-        HBox.setMargin(this.jump, new Insets(1, 0, 0, 5));
-        HBox.setMargin(this.prevBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.nextBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.lastBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.firstBtn, DEFAULT_MARGIN);
-        HBox.setMargin(this.settingBtn, DEFAULT_MARGIN);
-//        HBox.setMargin(this.jump, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.prevBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.nextBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.lastBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.firstBtn, new Insets(0, 0, 0, 5));
-//        HBox.setMargin(this.settingBtn, new Insets(0, 0, 0, 5));
 
         // 添加子节点
         this.setChild(this.firstBtn, this.prevBtn, this.jump, this.nextBtn, this.lastBtn, this.settingBtn);
@@ -389,7 +374,37 @@ public class PageBox<T> extends FXHBox {
         this.setShowFirst(this.showFirst);
         this.setShowSetting(this.showSetting);
         this.managedBindVisible();
-        NodeManager.init(this);
+
+        Insets insets0 = new Insets(0, 0, 0, 3);
+        //        Insets insets1 = new Insets(1, 0, 0, 3);
+        this.heightProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                //                double h1 = (newValue.doubleValue() - this.jump.getRealHeight()) / 2 - 1;
+                //                Insets insets1 = new Insets(h1, 0, 0, 0);
+                //                this.jump.setPadding(insets1);
+                HBox.setMargin(this.jump, insets0);
+                double h2 = (newValue.doubleValue() - this.prevBtn.getRealHeight()) / 2;
+                Insets insets2 = new Insets(h2, 0, 0, 0);
+                this.prevBtn.setPadding(insets2);
+                this.nextBtn.setPadding(insets2);
+                this.lastBtn.setPadding(insets2);
+                this.firstBtn.setPadding(insets2);
+                this.settingBtn.setPadding(insets2);
+                HBox.setMargin(this.prevBtn, insets0);
+                HBox.setMargin(this.nextBtn, insets0);
+                HBox.setMargin(this.lastBtn, insets0);
+                HBox.setMargin(this.firstBtn, insets0);
+                HBox.setMargin(this.settingBtn, insets0);
+                if (this.text != null) {
+                    //                    double h3 = (newValue.doubleValue() - this.text.getRealHeight()) / 2 - 1;
+                    //                    Insets insets3 = new Insets(h3, 0, 0, 0);
+                    //                    this.text.setPadding(insets3);
+                    HBox.setMargin(this.text, insets0);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -447,10 +462,7 @@ public class PageBox<T> extends FXHBox {
         if (showText) {
             if (this.text == null) {
                 this.text = new FXLabel();
-                this.text.setFlexHeight("90%");
-                this.text.setPadding(Insets.EMPTY);
-                HBox.setMargin(this.text, new Insets(1, 0, 0, 5));
-//                HBox.setMargin(this.text, new Insets(0, 0, 0, 5));
+                this.text.setFlexHeight("70%");
                 this.addChild(this.text);
             }
         } else {

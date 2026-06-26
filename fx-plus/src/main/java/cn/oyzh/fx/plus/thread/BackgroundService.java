@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.thread;
 
+import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 
 import java.util.concurrent.ExecutorService;
@@ -18,6 +19,10 @@ public class BackgroundService {
      */
     private static final ExecutorService BACKGROUND_SERVICE = Executors.newCachedThreadPool();
     // private static final ExecutorService BACKGROUND_SERVICE = Executors.newFixedThreadPool(RuntimeUtil.getProcessorCount() * 2);
+
+    static {
+        RuntimeUtil.addShutdownHook(new Thread(BACKGROUND_SERVICE::shutdown));
+    }
 
     /**
      * 提交任务

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.controls.text.area;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.CollectionUtil;
@@ -10,6 +11,7 @@ import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.operator.LimitOperator;
@@ -27,7 +29,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2022/1/20
  */
-public class FXTextArea extends TextArea implements FlexAdapter, LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
+public class FXTextArea extends TextArea implements Destroyable, FlexAdapter, LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -224,6 +226,11 @@ public class FXTextArea extends TextArea implements FlexAdapter, LimitLineContro
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    public void destroy() {
+        NodeDestroyUtil.destroyObject(this);
     }
 
 //    public void text(String text) {

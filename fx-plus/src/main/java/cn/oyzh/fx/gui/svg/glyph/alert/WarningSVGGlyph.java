@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class WarningSVGGlyph extends SVGGlyph {
 
     public WarningSVGGlyph() {
-        this.setUrl("/fx-svg/alert/warning-fill.svg");
+        super("/fx-svg/alert/warning-fill.svg");
     }
 
     public WarningSVGGlyph(String size) {

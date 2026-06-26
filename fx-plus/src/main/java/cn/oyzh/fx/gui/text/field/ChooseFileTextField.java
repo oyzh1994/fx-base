@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.text.field;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.fx.gui.skin.ChooseFileTextFieldSkin;
 import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
-import javafx.scene.control.Skin;
+import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -14,49 +14,27 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2024/07/04
  */
-public class ChooseFileTextField extends ClearableTextField {
+public class ChooseFileTextField extends FXTextField {
 
-    // {
-    //     this.setEditable(false);
-    // }
-
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public ChooseFileTextFieldSkin skin() {
-        ChooseFileTextFieldSkin skin = (ChooseFileTextFieldSkin) this.getSkin();
-        if (skin == null) {
-            this.setSkin(this.createDefaultSkin());
-            skin = (ChooseFileTextFieldSkin) this.getSkin();
-        }
-        return skin;
-    }
-
-    /**
-     * 数据
-     */
-    private byte[] data;
-
-    public byte[] getData() {
+    @Override
+    public byte[] getValue() {
         File file = this.skin().getFile();
         if (file == null) {
-            data = new byte[]{};
-        } else {
-            data = FileUtil.readBytes(file);
+            return (byte[]) super.getValue();
         }
-        return data;
+        return FileUtil.readBytes(file);
     }
 
-    public void setData(Object val) {
+    @Override
+    public void setValue(Object val) {
         if (val instanceof byte[] bytes) {
-            this.data = bytes;
+            super.setValue(bytes);
         } else if (val instanceof Byte[] bytes) {
-            this.data = new byte[bytes.length];
+            byte[] data = new byte[bytes.length];
             for (int i = 0; i < bytes.length; i++) {
-                this.data[i] = bytes[i];
+                data[i] = bytes[i];
             }
+            super.setValue(data);
         }
     }
 
@@ -77,7 +55,12 @@ public class ChooseFileTextField extends ClearableTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public ChooseFileTextFieldSkin skin() {
+        return (ChooseFileTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected ChooseFileTextFieldSkin createDefaultSkin() {
         return new ChooseFileTextFieldSkin(this);
     }
 

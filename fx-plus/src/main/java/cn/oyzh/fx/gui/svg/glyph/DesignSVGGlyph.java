@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DesignSVGGlyph extends SVGGlyph {
 
     public DesignSVGGlyph() {
-        this.setUrl("/fx-svg/design.svg");
+        super("/fx-svg/design.svg");
     }
 
     public DesignSVGGlyph(String size) {

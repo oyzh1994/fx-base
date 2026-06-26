@@ -1,9 +1,7 @@
 package cn.oyzh.fx.gui.tabs;
 
 import cn.oyzh.fx.plus.controls.tab.FXTabPane;
-import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 
 /**
@@ -14,35 +12,33 @@ import javafx.scene.control.Tab;
  */
 public class RichTabPane extends FXTabPane {
 
-//    {
-//        super.setTabHeight(25);
-//        this.setCache(false);
-//        this.setCacheHint(CacheHint.QUALITY);
-//        this.initTabPane();
+//    @Override
+//    public void initNode() {
+//        // 右键菜单事件
+//        this.setOnContextMenuRequested(e -> {
+//            double pos = 0;
+//            if (this.getSide() == Side.TOP) {
+//                pos = e.getY();
+//                //                pos = this.getTabMaxHeight() - e.getY();
+//            } else if (this.getSide() == Side.BOTTOM) {
+//                //                pos = e.getY() - this.getHeight() + this.getTabMaxHeight();
+//                pos = e.getY() - this.getHeight();
+//            }
+//            // 判断是否在tab标签栏范围内
+//            double h = this.getTabMaxHeight() - this.getTabMinHeight();
+//            if (pos >= -h & pos <= h) {
+//                Tab tab = this.getSelectedItem();
+////                if (tab instanceof MenuItemAdapter adapter) {
+////                    this.showContextMenu(adapter.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+////                }
+//
+//                e.consume();
+//                //            } else {
+//                //                this.clearContextMenu();
+//            }
+//        });
+//        super.initNode();
 //    }
-
-    @Override
-    public void initNode() {
-        super.initNode();
-        // 右键菜单事件
-        this.setOnContextMenuRequested(e -> {
-            double pos = 0;
-            if (this.getSide() == Side.TOP) {
-                pos = this.getTabMaxHeight() - e.getY();
-            } else if (this.getSide() == Side.BOTTOM) {
-                pos = e.getY() - this.getHeight() + this.getTabMaxHeight();
-            }
-            // 判断是否在tab标签栏范围内
-            if (pos >= 0) {
-                Tab tab = this.getSelectedItem();
-                if (tab instanceof MenuItemAdapter adapter) {
-                    this.showContextMenu(adapter.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
-                }
-            } else {
-                this.clearContextMenu();
-            }
-        });
-    }
 
     /**
      * 获取tab
@@ -91,4 +87,11 @@ public class RichTabPane extends FXTabPane {
             tab.reload();
         }
     }
+
+    @Override
+    public void initNode() {
+        super.initNode();
+        this.setupRefreshListener();
+    }
+
 }

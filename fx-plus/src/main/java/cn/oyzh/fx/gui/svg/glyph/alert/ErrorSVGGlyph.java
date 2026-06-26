@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ErrorSVGGlyph extends SVGGlyph {
 
     public ErrorSVGGlyph() {
-        this.setUrl("/fx-svg/alert/error-fill.svg");
+        super("/fx-svg/alert/error-fill.svg");
     }
 
     public ErrorSVGGlyph(String size) {

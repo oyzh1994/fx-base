@@ -29,7 +29,7 @@ public class ClearableTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    protected ClearableTextFieldSkin createDefaultSkin() {
         return new ClearableTextFieldSkin(this);
     }
 

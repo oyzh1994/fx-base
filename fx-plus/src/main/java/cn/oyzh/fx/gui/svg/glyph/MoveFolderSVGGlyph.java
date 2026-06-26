@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class MoveFolderSVGGlyph extends SVGGlyph {
 
     public MoveFolderSVGGlyph() {
-        this.setUrl("/fx-svg/move-folder.svg");
+        super("/fx-svg/move-folder.svg");
     }
 
     public MoveFolderSVGGlyph(String size) {

@@ -17,7 +17,7 @@ public class NextStepButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.nextStep());
         this.setTipText(I18nHelper.nextStep());
-        this.init(new NextStepSVGGlyph(), 0.7);
+        this.init(new NextStepSVGGlyph());
         super.initNode();
     }
 }

@@ -16,9 +16,9 @@ import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 public interface Terminal {
 
     /**
-     * 清除内容
+     * 清除全部内容
      */
-    void clear();
+    void clearAll();
 
     /**
      * 获取输入内容
@@ -76,8 +76,8 @@ public interface Terminal {
      * 输出换行符
      */
     default void outputLineBreak() {
-        if (!this.content().endsWith("\n")) {
-            this.output("\n");
+        if (!this.content().endsWith(this.lineEndingText())) {
+            this.output(this.lineEndingText());
         }
     }
 
@@ -372,4 +372,11 @@ public interface Terminal {
      * @return 名称
      */
     String terminalName();
+
+    /**
+     * 获取换行文本
+     *
+     * @return 结果
+     */
+    String lineEndingText();
 }

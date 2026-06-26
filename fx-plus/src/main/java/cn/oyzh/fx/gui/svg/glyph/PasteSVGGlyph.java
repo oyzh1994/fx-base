@@ -1,15 +1,16 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.ScalingSVGGlyph;
 
 /**
  * @author oyzh
  * @since 2024/4/10
  */
-public class PasteSVGGlyph extends SVGGlyph {
+public class PasteSVGGlyph extends ScalingSVGGlyph {
 
     public PasteSVGGlyph() {
-        this.setUrl("/fx-svg/file-paste.svg");
+        super("/fx-svg/file-paste.svg");
     }
 
     public PasteSVGGlyph(String size) {
@@ -17,9 +18,8 @@ public class PasteSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.paste());
-//        super.initNode();
-//    }
+    @Override
+    public double widthScaling() {
+        return 0.875;
+    }
 }

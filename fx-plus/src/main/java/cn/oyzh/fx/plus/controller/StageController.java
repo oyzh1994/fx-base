@@ -1,8 +1,9 @@
 package cn.oyzh.fx.plus.controller;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.event.EventListener;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageListener;
@@ -14,7 +15,7 @@ import javafx.stage.WindowEvent;
  * @author oyzh
  * @since 2023/10/12
  */
-public class StageController extends Controller implements DestroyAdapter, StageListener, EventListener {
+public class StageController extends Controller implements StageListener, EventListener {
 
     /**
      * 舞台
@@ -77,11 +78,6 @@ public class StageController extends Controller implements DestroyAdapter, Stage
         }
     }
 
-//    @Override
-//    protected <T> T getWindowProp(String key) {
-//        return this.stage == null ? null : this.stage.getProp(key);
-//    }
-
     @Override
     public void setProp(String key, Object value) {
         if (this.stage != null) {
@@ -138,4 +134,5 @@ public class StageController extends Controller implements DestroyAdapter, Stage
     protected String getTitle() {
         return this.stage.title();
     }
+
 }

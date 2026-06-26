@@ -5,7 +5,6 @@ import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.InvalidationListener;
-import javafx.beans.WeakInvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
@@ -130,11 +129,7 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
      * @return 按钮颜色
      */
     protected Color getButtonColor() {
-        // if (ThemeManager.isDarkMode()) {
-        //     return Color.WHITE;
-        // }
-        // return Color.BLACK;
-        return ThemeManager.currentAccentColor();
+        return ThemeManager.currentForegroundColor();
     }
 
     /**

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DownloadBoxSVGGlyph extends SVGGlyph {
 
     public DownloadBoxSVGGlyph() {
-        this.setUrl("/fx-svg/download-box.svg");
+        super("/fx-svg/download-box.svg");
     }
 
     public DownloadBoxSVGGlyph(String size) {

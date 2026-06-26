@@ -52,7 +52,14 @@ public class FXChooser {
         if (StringUtil.equalsAnyIgnoreCase("excel", type)) {
             return excelExtensionFilter();
         }
+        if (StringUtil.equalsAnyIgnoreCase("js", type)) {
+            return jsExtensionFilter();
+        }
         return allExtensionFilter();
+    }
+
+    public static FileExtensionFilter jsExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.jsType(), "*.js");
     }
 
     public static FileExtensionFilter sqlExtensionFilter() {
@@ -113,6 +120,10 @@ public class FXChooser {
 
     public static FileExtensionFilter gifExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.gifType(), "*.gif");
+    }
+
+    public static FileExtensionFilter newExtensionFilter(String type) {
+        return new FileExtensionFilter(type, "*." + type);
     }
 
     /**

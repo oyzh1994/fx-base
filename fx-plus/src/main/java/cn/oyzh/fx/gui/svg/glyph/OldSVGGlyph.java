@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class OldSVGGlyph extends SVGGlyph {
 
     public OldSVGGlyph() {
-        this.setUrl("/fx-svg/old.svg");
+        super("/fx-svg/old.svg");
     }
 
     public OldSVGGlyph(String size) {

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.object.Destroyable;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -15,17 +16,17 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/05/15
  */
-public abstract class NodeResizer {
+public abstract class NodeResizer implements Destroyable {
 
     /**
      * 事件节点
      */
-    protected final Node eventNode;
+    protected Node eventNode;
 
     /**
      * 原始鼠标样式
      */
-    protected final Cursor originalCursor;
+    protected Cursor originalCursor;
 
     /**
      * 大小改变中标志位
@@ -70,7 +71,7 @@ public abstract class NodeResizer {
     /**
      * 鼠标拖动事件
      */
-    protected final Consumer<Float> resizeTriggered;
+    protected Consumer<Float> resizeTriggered;
 
     /**
      * 最小值
@@ -144,14 +145,14 @@ public abstract class NodeResizer {
      *
      * @return 鼠标按下事件
      */
-    public abstract EventHandler<MouseEvent> defaultMousePressed() ;
+    public abstract EventHandler<MouseEvent> defaultMousePressed();
 
     /**
      * 获取默认鼠标移动事件
      *
      * @return 鼠标移动事件
      */
-    public abstract EventHandler<MouseEvent> defaultMouseMoved() ;
+    public abstract EventHandler<MouseEvent> defaultMouseMoved();
 
     /**
      * 获取鼠标离开事件
@@ -201,7 +202,7 @@ public abstract class NodeResizer {
      *
      * @return 鼠标拖动事件
      */
-    public abstract EventHandler<MouseEvent> defaultMouseDragged() ;
+    public abstract EventHandler<MouseEvent> defaultMouseDragged();
 
     /**
      * 获取鼠标释放事件
@@ -325,6 +326,36 @@ public abstract class NodeResizer {
      * @param event 鼠标事件
      * @return 结果
      */
-    protected abstract boolean resizeAble(MouseEvent event) ;
+    protected abstract boolean resizeAble(MouseEvent event);
 
+    @Override
+    public void destroy() {
+        if (this.mouseMoved != null) {
+            this.eventNode.removeEventFilter(MouseEvent.MOUSE_MOVED, this.mouseMoved);
+            this.mouseMoved = null;
+        }
+        if (this.mouseExited != null) {
+            this.eventNode.removeEventFilter(MouseEvent.MOUSE_EXITED, this.mouseExited);
+            this.mouseExited = null;
+        }
+        if (this.mousePressed != null) {
+            this.eventNode.removeEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressed);
+            this.mousePressed = null;
+        }
+        if (this.mouseDragged != null) {
+            this.eventNode.removeEventFilter(MouseEvent.MOUSE_DRAGGED, this.mouseDragged);
+            this.mouseDragged = null;
+        }
+        if (this.mouseReleased != null) {
+            this.eventNode.removeEventFilter(MouseEvent.MOUSE_RELEASED, this.mouseReleased);
+            this.mouseReleased = null;
+        }
+        this.maxValue = null;
+        this.minValue = null;
+        this.eventNode = null;
+        this.resizeIng = null;
+        this.originalCursor = null;
+        this.resizeTriggered = null;
+        this.triggerThreshold = null;
+    }
 }

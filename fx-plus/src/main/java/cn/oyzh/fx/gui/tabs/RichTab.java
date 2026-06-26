@@ -9,7 +9,6 @@ import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -28,12 +27,6 @@ import java.util.List;
  */
 public abstract class RichTab extends FXTab {
 
-    public RichTab() {
-        // 加载内容
-        this.loadContent();
-        this.setClosable(true);
-    }
-
     /**
      * 加载内容
      */
@@ -51,8 +44,6 @@ public abstract class RichTab extends FXTab {
             RichTabController controller = loaderExt.getController();
             this.setProp("_controller", controller);
             controller.onTabInit(this);
-//            this.setOnClosed(e -> controller.onTabClose(this, e));
-//            this.setOnCloseRequest(e -> controller.onCloseRequest(this, e));
         }
     }
 
@@ -135,6 +126,9 @@ public abstract class RichTab extends FXTab {
         if (!this.isClosable()) {
             closeTab.setDisable(true);
         }
+        this.closableProperty().addListener((observable, oldValue, newValue) -> {
+            closeTab.setDisable(!newValue);
+        });
         items.add(closeTab);
         FXMenuItem closeLeftTab = MenuItemHelper.closeLeftTab(this::closeLeftTab);
         items.add(closeLeftTab);
@@ -160,7 +154,7 @@ public abstract class RichTab extends FXTab {
                 list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(list));
+        this.closeTabs(list);
     }
 
     /**
@@ -176,44 +170,33 @@ public abstract class RichTab extends FXTab {
                 list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(list));
+        this.closeTabs(list);
     }
 
     /**
      * 关闭全部tab
      */
     public void closeAllTab() {
-        List<Tab> list = this.tabs();
-        List<Tab> tabs = new ArrayList<>();
-        for (Tab tab : list) {
+        List<Tab> list = new ArrayList<>();
+        for (Tab tab : this.tabs()) {
             if (tab.isClosable()) {
-                tabs.add(tab);
+                list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(tabs));
+        this.closeTabs(list);
     }
 
     /**
      * 关闭其他tab
      */
     public void closeOtherTab() {
-        List<Tab> list = this.tabs();
-        List<Tab> tabs = new ArrayList<>();
-        for (Tab tab : list) {
+        List<Tab> list = new ArrayList<>();
+        for (Tab tab : this.tabs()) {
             if (tab != this && tab.isClosable()) {
-                tabs.add(tab);
+                list.add(tab);
             }
         }
-        FXUtil.runLater(() -> this.tabs().removeAll(tabs));
-    }
-
-    /**
-     * 获取tab列表
-     *
-     * @return tab列表
-     */
-    protected ObservableList<Tab> tabs() {
-        return this.getTabPane().getTabs();
+        this.closeTabs(list);
     }
 
     @Override
@@ -246,6 +229,13 @@ public abstract class RichTab extends FXTab {
         if (controller != null) {
             controller.onTabCloseRequest(event);
         }
+    }
+
+    @Override
+    public void initNode() {
+        // 加载内容
+        this.loadContent();
+        super.initNode();
     }
 
     @Override

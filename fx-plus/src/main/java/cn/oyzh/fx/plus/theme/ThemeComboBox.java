@@ -14,19 +14,6 @@ import javafx.scene.paint.Color;
  */
 public class ThemeComboBox extends FXComboBox<ThemeStyle> {
 
-    {
-        this.addItems(Themes.allThemes());
-        this.setConverter(new SimpleStringConverter<>() {
-            @Override
-            public String toString(ThemeStyle o) {
-                if (o == null) {
-                    return "";
-                }
-                return o.getDesc(I18nManager.currentLocale());
-            }
-        });
-    }
-
     /**
      * 选择主题
      *
@@ -87,4 +74,18 @@ public class ThemeComboBox extends FXComboBox<ThemeStyle> {
         return this.getValue().getAccentColorHex();
     }
 
+    @Override
+    public void initNode() {
+        this.addItems(Themes.allThemes());
+        this.setConverter(new SimpleStringConverter<>() {
+            @Override
+            public String toString(ThemeStyle o) {
+                if (o == null) {
+                    return "";
+                }
+                return o.getDesc(I18nManager.currentLocale());
+            }
+        });
+        super.initNode();
+    }
 }

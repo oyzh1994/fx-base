@@ -55,7 +55,7 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
     protected PopupExt popup;
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         if (this.popup == null) {
             this.popup = new PopupExt();
             this.popup.setWidth(this.enlargeWidth);
@@ -70,9 +70,9 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         textArea.setPromptText(I18nHelper.pleaseInputContent());
         textArea.setText(this.getText());
         // 按钮
-        SubmitSVGGlyph ok = new SubmitSVGGlyph("13");
+        SubmitSVGGlyph ok = new SubmitSVGGlyph();
         ok.setOnMousePrimaryClicked(event -> this.onSubmit(textArea.getTextTrim()));
-        CancelSVGGlyph cancel = new CancelSVGGlyph("12");
+        CancelSVGGlyph cancel = new CancelSVGGlyph();
         cancel.setOnMousePrimaryClicked(event -> this.handleHide());
         HBox.setMargin(ok, new Insets(5, 0, 0, 5));
         HBox.setMargin(cancel, new Insets(5, 0, 0, 15));
@@ -102,15 +102,12 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
 
     public EnlargeTextFiledSkin(TextField textField) {
         super(textField);
-        // super(textField, new EnlargeSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.enlarge());
     }
 
     @Override
     protected SVGGlyph getButton() {
         if (this.button == null) {
-            this.button = new EnlargeSVGGlyph("13");
+            this.button = new EnlargeSVGGlyph();
             super.initButton(this.button);
         }
         return this.button;

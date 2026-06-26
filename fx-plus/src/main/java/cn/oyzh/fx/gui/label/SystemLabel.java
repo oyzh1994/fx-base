@@ -25,6 +25,6 @@ public class SystemLabel extends FXLabel {
     @Override
     public void initNode() {
         super.initNode();
-        this.setTextFill(ThemeManager.currentAccentColor());
+        this.setTextFill(ThemeManager.currentForegroundColor());
     }
 }

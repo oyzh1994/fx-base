@@ -19,7 +19,7 @@ public class ClearButton extends IconButton {
         this.addClass("danger");
         this.setText(I18nHelper.clear());
         this.setTipText(I18nHelper.clear());
-        this.init(new ClearSVGGlyph(), 0.7);
+        this.init(new ClearSVGGlyph());
         super.initNode();
     }
 }

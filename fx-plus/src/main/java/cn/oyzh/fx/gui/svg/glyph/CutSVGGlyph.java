@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class CutSVGGlyph extends SVGGlyph {
 
     public CutSVGGlyph() {
-        this.setUrl("/fx-svg/cut.svg");
+        super("/fx-svg/cut.svg");
     }
 
     public CutSVGGlyph(String size) {

@@ -2,7 +2,7 @@ package cn.oyzh.fx.pkg.jdeps;
 
 import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.fx.pkg.ConfigParser;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;

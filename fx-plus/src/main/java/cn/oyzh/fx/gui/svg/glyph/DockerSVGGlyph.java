@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class DockerSVGGlyph extends SVGGlyph {
 
     public DockerSVGGlyph() {
-        this.setUrl("/fx-svg/docker.svg");
+        super("/fx-svg/docker.svg");
     }
 
     public DockerSVGGlyph(String size) {

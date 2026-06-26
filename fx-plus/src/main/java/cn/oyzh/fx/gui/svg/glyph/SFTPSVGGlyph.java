@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class SFTPSVGGlyph extends SVGGlyph {
 
     public SFTPSVGGlyph() {
-        this.setUrl("/fx-svg/sftp.svg");
+        super("/fx-svg/sftp.svg");
     }
 
     public SFTPSVGGlyph(String size) {

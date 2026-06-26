@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class TunnelingSVGGlyph extends SVGGlyph {
 
     public TunnelingSVGGlyph() {
-        this.setUrl("/fx-svg/tunneling.svg");
+        super("/fx-svg/tunneling.svg");
     }
 
     public TunnelingSVGGlyph(String size) {

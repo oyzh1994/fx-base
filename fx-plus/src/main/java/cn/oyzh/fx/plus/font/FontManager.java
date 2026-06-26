@@ -54,6 +54,15 @@ public class FontManager {
     }
 
     /**
+     * 获取当前字体大小
+     *
+     * @return 当前字体大小
+     */
+    public static double currentFontSize() {
+        return currentFont().getSize();
+    }
+
+    /**
      * 应用字体
      *
      * @param config 字体配置

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PrettySVGGlyph extends SVGGlyph {
 
     public PrettySVGGlyph() {
-        this.setUrl("/fx-svg/pretty.svg");
+        super("/fx-svg/pretty.svg");
     }
 
     public PrettySVGGlyph(String size) {

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class TruncateSVGGlyph extends SVGGlyph {
 
     public TruncateSVGGlyph() {
-        this.setUrl("/fx-svg/truncate.svg");
+        super("/fx-svg/truncate.svg");
     }
 
     public TruncateSVGGlyph(String size) {

@@ -2,9 +2,10 @@ package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import javafx.scene.paint.Color;
+
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -15,23 +16,27 @@ import javafx.scene.paint.Color;
  */
 public class FXTreeItemValue implements Destroyable {
 
-    protected SVGGlyph graphic;
+    private WeakReference<SVGGlyph> graphic;
 
     public SVGGlyph graphic() {
-        return graphic;
+        return graphic == null ? null : graphic.get();
     }
 
-    protected FXTreeItem<?> item;
+    public void graphic(SVGGlyph graphic) {
+        this.graphic = new WeakReference<>(graphic);
+    }
+
+    private WeakReference<FXTreeItem<?>> item;
+
+    public FXTreeItem<?> item() {
+        return this.item == null ? null : this.item.get();
+    }
 
     public FXTreeItemValue() {
     }
 
     public FXTreeItemValue(FXTreeItem<?> item) {
-        this.item = item;
-    }
-
-    protected FXTreeItem<?> item() {
-        return this.item;
+        this.item = new WeakReference<>(item);
     }
 
     /**
@@ -83,17 +88,17 @@ public class FXTreeItemValue implements Destroyable {
      * @return 图标颜色
      */
     public Color graphicColor() {
-//        if (ThemeManager.isDarkMode()) {
-//            return Color.WHITE;
-//        }
-//        return Color.BLACK;
         return ThemeManager.currentForegroundColor();
     }
 
     @Override
     public void destroy() {
-        // NodeDestroyUtil.destroy(this.item);
-        NodeDestroyUtil.destroyObject(this.graphic);
+        if (this.item != null) {
+            this.item.clear();
+        }
+        if (this.graphic != null) {
+            this.graphic.clear();
+        }
         this.item = null;
         this.graphic = null;
     }

@@ -6,7 +6,7 @@ package cn.oyzh.fx.gui.svg.glyph;
  */
 public class CancelSVGGlyph extends CloseSVGGlyph {
 
-    public CancelSVGGlyph( ) {
+    public CancelSVGGlyph() {
         super();
     }
 
@@ -14,10 +14,4 @@ public class CancelSVGGlyph extends CloseSVGGlyph {
         super();
         this.setSizeStr(size);
     }
-
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.cancel());
-//        super.initNode();
-//    }
 }

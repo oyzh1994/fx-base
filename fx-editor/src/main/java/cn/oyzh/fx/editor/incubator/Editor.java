@@ -1,11 +1,13 @@
 package cn.oyzh.fx.editor.incubator;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.ObjectUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
+import cn.oyzh.fx.plus.RemoveNodeable;
 import cn.oyzh.fx.plus.adapter.ScrollBarAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -14,6 +16,7 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -28,7 +31,9 @@ import cn.oyzh.i18n.I18nHelper;
 import com.sun.javafx.scene.NodeHelper;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -74,7 +79,7 @@ import java.util.Set;
  * @author oyzh
  * @since 2025/07/30
  */
-public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, DestroyAdapter {
+public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, Destroyable {
 
     /**
      * 默认提示词颜色
@@ -84,7 +89,9 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 默认高亮颜色
      */
-    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
+    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(216, 222, 231);
+    //    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.valueOf("#D8DEE7");
+    //    public static final Color DEFAULT_HIGHLIGHT_COLOR = Color.rgb(255, 102, 0);
 
     /**
      * 默认光标行颜色
@@ -109,38 +116,99 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 样式提供者
      */
-    private StyleProvider styleProvider = new StyleProvider();
+    private final StyleProvider styleProvider = new StyleProvider();
 
     /**
      * 流式文本model
      */
-    private TextFlowModel textFlowModel = new TextFlowModel();
+    private final TextFlowModel textFlowModel = new TextFlowModel();
 
     /**
      * 富文本域model
      */
-    private RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
+    private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
     /**
      * 编辑器语法装饰器
      */
-    private EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
-
-    {
-        NodeManager.init(this);
-    }
+    private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     /**
      * 默认边距
      */
     private static final Insets DEFAULT_PADDING = new Insets(5);
 
+    private final ChangeListener<? super EditorFormatType> formatTypeListener = (observableValue, formatType, t1) -> {
+        this.syntaxDecorator.setFormatType(t1);
+        if (!this.ignoreChange) {
+            this.initTextStyle();
+        }
+    };
+
+    private final ChangeListener<? super Set<String>> promptsListener = (observableValue, formatType, t1) -> {
+        this.syntaxDecorator.setPrompts(t1);
+        this.initTextStyle();
+    };
+
+    private final ChangeListener<? super String> highlightListener = (observableValue, formatType, t1) -> {
+        ThreadUtil.start(() -> {
+            // 获取滚动条值
+            Double scrollValue = this.getScrollValue();
+            this.syntaxDecorator.setHighlight(t1);
+            this.refreshText();
+            // 清除高亮的时候滚动到原位置
+            if (StringUtil.isEmpty(t1)) {
+                this.setScrollValue(scrollValue);
+            }
+        });
+
+    };
+
+    private final ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
+        ThreadUtil.start(() -> {
+            this.syntaxDecorator.setHighlightRegex(t1);
+            this.refreshText();
+        });
+    };
+
+    private final ChangeListener<? super Boolean> highlightWholeWordListener = (observableValue, formatType, t1) -> {
+        ThreadUtil.start(() -> {
+            this.syntaxDecorator.setHighlightWholeWord(t1);
+            this.refreshText();
+        });
+    };
+
+    private final ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
+        ThreadUtil.start(() -> {
+            this.syntaxDecorator.setHighlightMatchCase(t1);
+            this.refreshText();
+        });
+    };
+
+    private final ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
+        Font editorFont = this.getEditorFont();
+        if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
+            JulLog.info("font:{} editorFont:{}", newValue, editorFont);
+            this.changeFont(editorFont);
+        }
+    };
+
+    {
+        NodeManager.init(this);
+    }
+
     /**
      * 初始化编辑器
      */
     private void initEditor() {
-//        // 处理输入法不支持中文的问题
-//        EditorUtil.setupIMESupport(this);
+        // 监听父节点
+        this.parentProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                this.destroy();
+            }
+        });
+        //        // 处理输入法不支持中文的问题
+        //        EditorUtil.setupIMESupport(this);
         // 默认自动换行
         this.setWrapText(true);
         // 默认为内容宽高，避免布局问题
@@ -166,37 +234,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         this.richTextAreaModel.setStyleProvider(this.styleProvider);
         // 语法装饰
         this.setSyntaxDecorator(this.syntaxDecorator);
-        // 格式变化事件
-        this.formatTypeProperty().addListener((observableValue, formatType, t1) -> {
-            this.syntaxDecorator.setFormatType(t1);
-            if (!this.ignoreChange) {
-                this.initTextStyle();
-            }
-        });
         // 提示词变化事件
-        this.promptsProperty().addListener((observableValue, formatType, t1) -> {
-            this.syntaxDecorator.setPrompts(t1);
-            this.initTextStyle();
-        });
-        // 高亮变化事件
-        this.highlightTextProperty().addListener((observableValue, formatType, t1) -> {
-            // 获取滚动条值
-            Double scrollValue = this.getScrollValue();
-            this.syntaxDecorator.setHighlight(t1);
-            this.initTextStyle();
-            // 清除高亮的时候滚动到原位置
-            if (StringUtil.isEmpty(t1)) {
-                FXUtil.runPulse(() -> this.setScrollValue(scrollValue));
-            }
-        });
-//        // 行号策略变化事件
-//        this.lineNumPolicyProperty().addListener((observableValue, editorLineNumPolicy, t1) -> {
-//            if (t1 == EditorLineNumPolicy.NONE) {
-//                this.hideLineNum();
-//            } else if (t1 == EditorLineNumPolicy.ALWAYS) {
-//                this.showLineNum();
-//            }
-//        });
+        this.promptsProperty().addListener(this.promptsListener);
+        // 格式变化事件
+        this.formatTypeProperty().addListener(this.formatTypeListener);
+        // 高亮事件
+        this.highlightProperty().addListener(this.highlightListener);
+        this.highlightRegexProperty().addListener(this.highlightRegexListener);
+        this.highlightWholeWordProperty().addListener(this.highlightWholeWordListener);
+        this.highlightMacthCaseProperty().addListener(this.highlightMacthCaseListener);
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
@@ -208,7 +254,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         });
         // 初始化样式
         this.applyTheme();
-        // this.initTextStyle();
     }
 
     /**
@@ -235,19 +280,24 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
                 d.refresh(this.getModel());
             }
-            // this.setText(this.getText());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     /**
+     * 刷新文本
+     */
+    protected void refreshText() {
+        this.text(this.getText());
+    }
+
+    /**
      * 初始化文本样式
      */
-    private void initTextStyle() {
-        // this.applyTheme();
+    protected void initTextStyle() {
         this.initSyntaxes();
-        this.setText(this.getText());
+        this.refreshText();
     }
 
     /**
@@ -263,7 +313,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 模式监听器
      */
-    private StyledTextModel.Listener modelListener = e -> {
+    private final StyledTextModel.Listener modelListener = e -> {
         if (e.isEdit()) {
             String text = this.getText();
             this.textLen = text.length();
@@ -281,6 +331,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         return this.textProperty;
     }
 
+    //    private List<ChangeListener<? super String>> textChangeListeners;
+
     /**
      * 添加文本监听器
      *
@@ -288,11 +340,16 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      */
     public void addTextChangeListener(ChangeListener<String> listener) {
         synchronized (this) {
-            this.textProperty().addListener((observable, oldValue, newValue) -> {
+            ChangeListener<? super String> changeListener = (observable, oldValue, newValue) -> {
                 if (!this.ignoreChange) {
                     listener.changed(observable, oldValue, newValue);
                 }
-            });
+            };
+            this.textProperty().addListener(changeListener);
+            //            if (this.textChangeListeners == null) {
+            //                this.textChangeListeners = new ArrayList<>();
+            //            }
+            //            this.textChangeListeners.add(changeListener);
         }
     }
 
@@ -441,7 +498,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public boolean isEmpty() {
         try {
             String str = this.getText();
-            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
+            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r\n")) {
+                //            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
                 return true;
             }
         } catch (Exception ex) {
@@ -451,28 +509,98 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     }
 
     /**
-     * 高亮文本
+     * 高亮
      */
-    private StringProperty highlightTextProperty;
+    private StringProperty highlightProperty;
 
-    public String getHighlightText() {
-        return this.highlightTextProperty == null ? null : this.highlightTextProperty.get();
+    public String getHighlight() {
+        return this.highlightProperty == null ? null : this.highlightProperty.get();
     }
 
     /**
-     * 设置高亮文本
+     * 设置高亮
      *
-     * @param highlightText 高亮文本
+     * @param highlight 高亮
      */
-    public void setHighlightText(String highlightText) {
-        this.highlightTextProperty().set(highlightText);
+    public void setHighlight(String highlight) {
+        this.highlightProperty().set(highlight);
     }
 
-    public StringProperty highlightTextProperty() {
-        if (this.highlightTextProperty == null) {
-            this.highlightTextProperty = new SimpleStringProperty();
+    public StringProperty highlightProperty() {
+        if (this.highlightProperty == null) {
+            this.highlightProperty = new SimpleStringProperty();
         }
-        return this.highlightTextProperty;
+        return this.highlightProperty;
+    }
+
+    /**
+     * 高亮正则
+     */
+    private BooleanProperty highlightRegexProperty;
+
+    public boolean isHighlightRegex() {
+        return this.highlightRegexProperty != null && this.highlightRegexProperty.get();
+    }
+
+    /**
+     * 设置高亮正则
+     *
+     * @param highlightRegex 高亮正则
+     */
+    public void setHighlightRegex(boolean highlightRegex) {
+        this.highlightRegexProperty().set(highlightRegex);
+    }
+
+    public BooleanProperty highlightRegexProperty() {
+        if (this.highlightRegexProperty == null) {
+            this.highlightRegexProperty = new SimpleBooleanProperty();
+        }
+        return this.highlightRegexProperty;
+    }
+
+    /**
+     * 高亮匹配大小写
+     */
+    private BooleanProperty highlightMacthCaseProperty;
+
+    public boolean isHighlightMacthCase() {
+        return this.highlightMacthCaseProperty != null && this.highlightMacthCaseProperty.get();
+    }
+
+    /**
+     * 设置高亮匹配大小写
+     *
+     * @param highlightMacthCase 匹配大小写
+     */
+    public void setHighlightMacthCase(boolean highlightMacthCase) {
+        this.highlightMacthCaseProperty().set(highlightMacthCase);
+    }
+
+    public BooleanProperty highlightMacthCaseProperty() {
+        if (this.highlightMacthCaseProperty == null) {
+            this.highlightMacthCaseProperty = new SimpleBooleanProperty();
+        }
+        return this.highlightMacthCaseProperty;
+    }
+
+    /**
+     * 高亮全字匹配
+     */
+    private BooleanProperty highlightWholeWordProperty;
+
+    public boolean isHighlightWholeWord() {
+        return this.highlightWholeWordProperty != null && this.highlightWholeWordProperty.get();
+    }
+
+    public void setHighlightWholeWord(boolean highlightWholeWord) {
+        this.highlightWholeWordProperty().set(highlightWholeWord);
+    }
+
+    public BooleanProperty highlightWholeWordProperty() {
+        if (this.highlightWholeWordProperty == null) {
+            this.highlightWholeWordProperty = new SimpleBooleanProperty();
+        }
+        return this.highlightWholeWordProperty;
     }
 
     /**
@@ -481,11 +609,11 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @return 文本长度
      */
     public int getLength() {
-//        String text = this.textProperty().get();
-//        if (text == null) {
-//            return 0;
-//        }
-//        return text.length();
+        //        String text = this.textProperty().get();
+        //        if (text == null) {
+        //            return 0;
+        //        }
+        //        return text.length();
         if (this.textProperty == null) {
             return this.getText().length();
         }
@@ -532,60 +660,72 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     protected EditorTextPos getPosByIndex(int start, int end) {
         TextPos endPos;
         TextPos startPos;
-        if (end != start) {
-            int length = 0;
-            int lastLen = 0;
-            int endIndex = -1;
-            int startIndex = -1;
-            int endOffset = -1;
-            int startOffset = -1;
-            int pCount = super.getParagraphCount();
-            for (int i = 0; i < pCount; i++) {
-                int len = this.getParagraphLength(i);
-                length += len;
-                if (startIndex == -1 && length >= start) {
-                    startIndex = i;
-                    startOffset = start - lastLen;
-                }
-                if (length >= end) {
-                    endIndex = i;
-                    endOffset = end - lastLen;
-                    break;
-                }
-                length += 1;
-                lastLen = length;
-            }
-            endPos = TextPos.ofLeading(endIndex, endOffset);
-            startPos = TextPos.ofLeading(startIndex, startOffset);
-        } else {
-            endPos = startPos = this.getPosByIndex(start);
-        }
-        return new EditorTextPos(startPos, endPos);
-    }
-
-    /**
-     * 获取位置
-     *
-     * @param index 位置
-     * @return 位置
-     */
-    protected TextPos getPosByIndex(int index) {
+        //        if (end != start) {
         int length = 0;
         int lastLen = 0;
+        int endIndex = -1;
         int startIndex = -1;
+        int endOffset = -1;
         int startOffset = -1;
         int pCount = super.getParagraphCount();
         for (int i = 0; i < pCount; i++) {
             int len = this.getParagraphLength(i);
-            length += len + 1;
-            if (startIndex == -1 && length >= index) {
+            length += len;
+            if (startIndex == -1 && length >= start) {
                 startIndex = i;
-                startOffset = index - lastLen;
+                startOffset = start - lastLen;
+                if (startOffset < 0) {
+                    startOffset = 0;
+                }
             }
+            if (length >= end) {
+                endIndex = i;
+                endOffset = end - lastLen;
+                break;
+            }
+            length += this.lineEndingLength();
             lastLen = length;
         }
-        return TextPos.ofLeading(startIndex, startOffset);
+        endPos = TextPos.ofLeading(endIndex, endOffset);
+        startPos = TextPos.ofLeading(startIndex, startOffset);
+        //        } else {
+        //            endPos = startPos = this.getPosByIndex(start);
+        //        }
+        return new EditorTextPos(startPos, endPos);
     }
+
+    //    /**
+    //     * 获取位置
+    //     *
+    //     * @param index 位置
+    //     * @return 位置
+    //     */
+    //    protected TextPos getPosByIndex(int index) {
+    //        int length = 0;
+    //        int lastLen = 0;
+    //        int startIndex = -1;
+    //        int startOffset = -1;
+    //        int pCount = super.getParagraphCount();
+    //        for (int i = 0; i < pCount; i++) {
+    //            int len = this.getParagraphLength(i);
+    //            length += len + 1;
+    //            if (startIndex == -1 && length >= index) {
+    //                startIndex = i;
+    //                startOffset = index - lastLen;
+    //            }
+    //            lastLen = length;
+    //        }
+    //        if (startIndex == -1) {
+    ////            // 返回最后一个有效位置而非 ZERO
+    ////            int lastPara = super.getParagraphCount() - 1;
+    ////            if (lastPara >= 0) {
+    ////                return TextPos.ofLeading(lastPara, this.getParagraphLength(lastPara));
+    ////            }
+    ////            return TextPos.ZERO;
+    //            throw new RuntimeException("getPosByIndex fail, index:" + index);
+    //        }
+    //        return TextPos.ofLeading(startIndex, startOffset);
+    //    }
 
     /**
      * 根据文本位置获取位置
@@ -610,18 +750,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param content 内容
      */
     public void replaceText(int start, int end, String content) {
-        this.replaceText(start, end, content, true);
-    }
-
-    /**
-     * 替换内容
-     *
-     * @param start     开始位置
-     * @param end       结束位置
-     * @param content   内容
-     * @param allowUndo 是否允许撤销
-     */
-    public void replaceText(int start, int end, String content, boolean allowUndo) {
         if (start > end) {
             return;
         }
@@ -631,7 +759,6 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         try {
             EditorTextPos pos = this.getPosByIndex(start, end);
             super.replaceText(pos.getStart(), pos.getEnd(), content);
-            // super.replaceText(pos.getStart(), pos.getEnd(), content, allowUndo);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -655,13 +782,13 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
             String text = this.getText();
-//            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
-//                content = System.lineSeparator() + content;
+            //            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
+            //                content = System.lineSeparator() + content;
             if (!StringUtil.endsWith(text, this.lineEndingText()) && !StringUtil.startWith(content, this.lineEndingText())) {
                 content = this.lineEndingText() + content;
             }
-//            if (endLine && !content.endsWith(System.lineSeparator())) {
-//                content += System.lineSeparator();
+            //            if (endLine && !content.endsWith(System.lineSeparator())) {
+            //                content += System.lineSeparator();
             if (endLine && !content.endsWith(this.lineEndingText())) {
                 content += this.lineEndingText();
             }
@@ -720,7 +847,10 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             return;
         }
         EditorTextPos pos = this.getPosByIndex(start, end);
-        FXUtil.runWait(() -> super.select(pos.getStart(), pos.getEnd()));
+        FXUtil.runWait(() -> {
+            this.requestFocus();
+            super.select(pos.getStart(), pos.getEnd());
+        });
     }
 
     /**
@@ -788,43 +918,32 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @param end   结束位置
      */
     public void deleteText(int start, int end) {
-        this.deleteText(start, end, true);
-    }
-
-    /**
-     * 删除内容
-     *
-     * @param start     开始位置
-     * @param end       结束位置
-     * @param allowUndo 允许撤销
-     */
-    public void deleteText(int start, int end, boolean allowUndo) {
         try {
-            this.replaceText(start, end, "", allowUndo);
+            this.replaceText(start, end, "");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-//    /**
-//     * 行号策略
-//     */
-//    private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
-//
-//    public EditorLineNumPolicy getLineNumPolicy() {
-//        return this.lineNumPolicyProperty == null ? EditorLineNumPolicy.ALWAYS : this.lineNumPolicyProperty.get();
-//    }
-//
-//    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
-//        this.lineNumPolicyProperty().set(lineNumPolicy);
-//    }
-//
-//    public ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty() {
-//        if (this.lineNumPolicyProperty == null) {
-//            this.lineNumPolicyProperty = new SimpleObjectProperty<>(EditorLineNumPolicy.ALWAYS);
-//        }
-//        return this.lineNumPolicyProperty;
-//    }
+    //    /**
+    //     * 行号策略
+    //     */
+    //    private ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty;
+    //
+    //    public EditorLineNumPolicy getLineNumPolicy() {
+    //        return this.lineNumPolicyProperty == null ? EditorLineNumPolicy.ALWAYS : this.lineNumPolicyProperty.get();
+    //    }
+    //
+    //    public void setLineNumPolicy(EditorLineNumPolicy lineNumPolicy) {
+    //        this.lineNumPolicyProperty().set(lineNumPolicy);
+    //    }
+    //
+    //    public ObjectProperty<EditorLineNumPolicy> lineNumPolicyProperty() {
+    //        if (this.lineNumPolicyProperty == null) {
+    //            this.lineNumPolicyProperty = new SimpleObjectProperty<>(EditorLineNumPolicy.ALWAYS);
+    //        }
+    //        return this.lineNumPolicyProperty;
+    //    }
 
     @Override
     public void resize(double width, double height) {
@@ -941,6 +1060,14 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                     path = "/tm4javafx/themes/min-dark.json";
                 } else if (style == Themes.CUPERTINO_DARK) {
                     path = "/tm4javafx/themes/dark-plus.json";
+                } else if (style == Themes.CYBERPUNK_DARK) {
+                    path = "/tm4javafx/themes/one-dark-pro.json";
+                } else if (style == Themes.INTELLIJ_DARK) {
+                    path = "/tm4javafx/themes/slack-dark.json";
+                } else if (style == Themes.ANIME_WARM_DARK) {
+                    path = "/tm4javafx/themes/everforest-dark.json";
+                } else if (style == Themes.VSCODE_DARK) {
+                    path = "/tm4javafx/themes/github-dark-default.json";
                 } else {
                     path = "/tm4javafx/themes/vitesse-dark.json";
                 }
@@ -951,6 +1078,14 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
                     path = "/tm4javafx/themes/min-light.json";
                 } else if (style == Themes.CUPERTINO_LIGHT) {
                     path = "/tm4javafx/themes/light-plus.json";
+                } else if (style == Themes.CYBERPUNK_LIGHT) {
+                    path = "/tm4javafx/themes/one-light.json";
+                } else if (style == Themes.INTELLIJ_LIGHT) {
+                    path = "/tm4javafx/themes/slack-ochin.json";
+                } else if (style == Themes.ANIME_WARM_LIGHT) {
+                    path = "/tm4javafx/themes/everforest-light.json";
+                } else if (style == Themes.VSCODE_LIGHT) {
+                    path = "/tm4javafx/themes/github-light-default.json";
                 } else {
                     path = "/tm4javafx/themes/vitesse-light.json";
                 }
@@ -961,12 +1096,13 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
             // TODO: 修复主题色可能不生效问题
             NodeHelper.processCSS(this);
+            //            this.applyCss();
             // 设置光标行颜色
             this.setCaretLineColor(this.defaultCaretLineColor());
             // 设置选区颜色
             this.setSelectionColor(this.defaultSelectionColor());
             // 设置光标颜色
-            this.setCaretColor(ThemeManager.currentAccentColor());
+            this.setCaretColor(ThemeManager.currentForegroundColor());
             // 初始化文字样式
             this.initTextStyle();
         } catch (Exception ex) {
@@ -981,28 +1117,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         // 初始化编辑器
         this.initEditor();
         // 尝试初始化提示词
-        this.setPrompts(this.getPrompts());
+        if (CollectionUtil.isNotEmpty(this.getPrompts())) {
+            this.setPrompts(this.getPrompts());
+        }
         // 尝试初始化高亮
-        this.setHighlightText(this.getHighlightText());
+        if (this.getHighlight() != null) {
+            this.setHighlight(this.getHighlight());
+        }
         // 对预设了编辑器字体的情况下，组织样式字体修改编辑器字体
-        this.fontProperty().addListener((observable, oldValue, newValue) -> {
-            Font editorFont = this.getEditorFont();
-            JulLog.info("font:{} editorFont:{}", newValue, editorFont);
-            if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
-                this.changeFont(editorFont);
-            }
-        });
-
-//        // 监听皮肤初始化，控制滚动条thumb最低大小
-//        this.skinProperty().subscribe(skin -> {
-//            if (skin != null) {
-//                VFlow flow = RichTextAreaSkinHelper.getVFlow(this);
-//                ScrollBar vscroll = ReflectUtil.getFieldValue(flow, "vscroll");
-//                ScrollBar hscroll = ReflectUtil.getFieldValue(flow, "hscroll");
-//                ControlUtil.steupMinVisibleAmount(vscroll,0.05);
-//                ControlUtil.steupMinVisibleAmount(hscroll,0.05);
-//            }
-//        });
+        this.fontProperty().addListener(this.fontListener);
     }
 
     /**
@@ -1048,7 +1171,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public int caretPosition() {
         TextPos pos = super.getCaretPosition();
         if (pos == null) {
-            return -1;
+            return 0;
         }
         return this.getOffsetByPos(pos);
     }
@@ -1057,7 +1180,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * 滚动到顶部
      */
     public void scrollToTop() {
-        this.moveCaretStart();
+        FXUtil.runPulse(this::moveCaretStart);
     }
 
     /**
@@ -1099,7 +1222,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     /**
      * 是否已格式化
      */
-    private boolean formated;
+    private boolean formatted;
 
     /**
      * 格式化
@@ -1107,14 +1230,15 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
     public void formatting() {
         String text = this.getText();
         String text1;
-        if (this.formated) {
-            this.formated = false;
+        if (this.formatted) {
+            this.formatted = false;
             text1 = EditorFormatter.unformatText(this.getFormatType(), text);
         } else {
-            this.formated = true;
+            this.formatted = true;
             text1 = EditorFormatter.formatText(this.getFormatType(), text);
         }
         if (StringUtil.notEquals(text, text1)) {
+            //            this.formatted = !this.formatted;
             this.setText(text1);
         }
     }
@@ -1243,8 +1367,16 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     @Override
     public void setFontFamily(String fontFamily) {
-        Font font = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
-        this.setFont(font);
+        if (StringUtil.isEmpty(fontFamily)) {
+            return;
+        }
+        Font baseFont = ObjectUtil.nullOrElse(this.getEditorFont(), super.getFont());
+        Font newFont = FontUtil.newFontByFamily(baseFont, fontFamily);
+        if (this.getEditorFont() != null) {
+            this.setEditorFont(newFont);
+        } else {
+            this.setFont(newFont);
+        }
     }
 
     @Override
@@ -1333,6 +1465,7 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         TextPos min = segment.getMin();
         TextPos max = segment.getMax();
         StringBuilder builder = new StringBuilder();
+        boolean first = true;
         for (int i = min.index(); i <= max.index(); i++) {
             String text = this.getPlainText(i);
             if (i == min.index() && i == max.index()) {
@@ -1342,13 +1475,17 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
             } else if (i == max.index()) {
                 text = text.substring(0, max.offset());
             }
-//            builder.append(System.lineSeparator()).append(text);
-            builder.append(this.lineEndingText()).append(text);
+            if (first) {
+                first = false;
+                builder.append(text);
+            } else {
+                builder.append(this.lineEndingText()).append(text);
+            }
         }
         if (builder.isEmpty()) {
             return "";
         }
-        return builder.substring(1);
+        return builder.toString();
     }
 
     /**
@@ -1361,8 +1498,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
         if (segment == null) {
             return null;
         }
-        int start = getOffsetByPos(segment.getMin());
-        int end = getOffsetByPos(segment.getMax());
+        int start = this.getOffsetByPos(segment.getMin());
+        int end = this.getOffsetByPos(segment.getMax());
         return new IndexRange(start, end);
     }
 
@@ -1392,7 +1529,8 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
      * @return 行数量
      */
     public long lineCount() {
-        return this.getText().lines().count();
+        String text = this.getText();
+        return text == null ? 0 : text.lines().count();
     }
 
     /**
@@ -1415,40 +1553,75 @@ public class Editor extends CodeArea implements ScrollBarAdapter, ContextMenuAda
 
     @Override
     public void destroy() {
-        if (this.modelListener != null) {
-            this.getModel().removeListener(this.modelListener);
-            this.modelListener = null;
-        }
-        if (this.textProperty != null) {
-            this.textProperty.unbind();
-            this.textProperty = null;
-        }
-        if (this.promptsProperty != null) {
-            this.promptsProperty.unbind();
-            this.promptsProperty = null;
-        }
-        if (this.formatTypeProperty != null) {
-            this.formatTypeProperty.unbind();
-            this.formatTypeProperty = null;
-        }
-        if (this.highlightTextProperty != null) {
-            this.highlightTextProperty.unbind();
-            this.highlightTextProperty = null;
-        }
-//        if (this.lineNumPolicyProperty != null) {
-//            this.lineNumPolicyProperty.unbind();
-//            this.lineNumPolicyProperty = null;
-//        }
-        this.fontProperty().unbind();
-        this.leftDecoratorProperty().unbind();
-        this.rightDecoratorProperty().unbind();
-        this.highlightCurrentParagraphProperty().unbind();
-        this.editorFont = null;
-        this.textFlowModel = null;
-        this.styleProvider = null;
-        this.syntaxDecorator = null;
-        this.richTextAreaModel = null;
-        // NodeDestroyUtil.destroyObject(this);
-        DestroyAdapter.super.destroy();
+        //        if (this.modelListener != null) {
+        //        this.getModel().removeListener(this.modelListener);
+        //            this.modelListener = null;
+        //        }
+        //        if (this.promptsListener != null && this.promptsProperty != null) {
+        //            this.promptsProperty.removeListener(this.promptsListener);
+        //            this.promptsListener = null;
+        //        }
+        //        if (this.formatTypeListener != null && this.formatTypeProperty != null) {
+        //            this.formatTypeProperty.removeListener(this.formatTypeListener);
+        //            this.formatTypeListener = null;
+        //        }
+        //        if (this.highlightListener != null && this.highlightProperty != null) {
+        //            this.highlightProperty.removeListener(this.highlightListener);
+        //            this.highlightListener = null;
+        //        }
+        //        if (this.highlightRegexListener != null && this.highlightRegexProperty != null) {
+        //            this.highlightRegexProperty.removeListener(this.highlightRegexListener);
+        //            this.highlightRegexListener = null;
+        //        }
+        //        if (this.highlightMacthCaseListener != null && this.highlightMacthCaseProperty != null) {
+        //            this.highlightMacthCaseProperty.removeListener(this.highlightMacthCaseListener);
+        //            this.highlightMacthCaseListener = null;
+        //        }
+        //        if (this.fontListener != null) {
+        //            this.fontProperty().removeListener(this.fontListener);
+        //            this.fontListener = null;
+        //        }
+        //        if (CollectionUtil.isNotEmpty(this.textChangeListeners) && this.textProperty != null) {
+        //            for (ChangeListener<? super String> changeListener : this.textChangeListeners) {
+        //                this.textProperty.removeListener(changeListener);
+        //            }
+        //            this.textChangeListeners.clear();
+        //            this.textChangeListeners = null;
+        //        }
+        //        if (this.textProperty != null) {
+        //            this.textProperty.unbind();
+        //            this.textProperty = null;
+        //        }
+        //        if (this.promptsProperty != null) {
+        //            this.promptsProperty.unbind();
+        //            this.promptsProperty = null;
+        //        }
+        //        if (this.formatTypeProperty != null) {
+        //            this.formatTypeProperty.unbind();
+        //            this.formatTypeProperty = null;
+        //        }
+        //        if (this.highlightProperty != null) {
+        //            this.highlightProperty.unbind();
+        //            this.highlightProperty = null;
+        //        }
+        //        if (this.highlightRegexProperty != null) {
+        //            this.highlightRegexProperty.unbind();
+        //            this.highlightRegexProperty = null;
+        //        }
+        //        if (this.highlightMacthCaseProperty != null) {
+        //            this.highlightMacthCaseProperty.unbind();
+        //            this.highlightMacthCaseProperty = null;
+        //        }
+        //        this.fontProperty().unbind();
+        //        this.leftDecoratorProperty().unbind();
+        //        this.rightDecoratorProperty().unbind();
+        //        this.highlightCurrentParagraphProperty().unbind();
+        //        this.editorFont = null;
+        //        this.textFlowModel = null;
+        //        this.styleProvider = null;
+        //        this.syntaxDecorator = null;
+        //        this.richTextAreaModel = null;
+        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

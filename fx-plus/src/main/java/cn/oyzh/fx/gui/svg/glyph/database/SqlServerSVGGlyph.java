@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class SqlServerSVGGlyph extends SVGGlyph {
 
     public SqlServerSVGGlyph() {
-        this.setUrl("/fx-svg/database/sqlserver.svg");
+        super("/fx-svg/database/sqlserver.svg");
     }
 
     public SqlServerSVGGlyph(String size) {

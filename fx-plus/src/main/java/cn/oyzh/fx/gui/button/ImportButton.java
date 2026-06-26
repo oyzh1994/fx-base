@@ -15,7 +15,7 @@ public class ImportButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper._import());
         this.setTipText(I18nHelper._import());
-        this.init(new ImportSVGGlyph(), 0.7);
+        this.init(new ImportSVGGlyph());
         super.initNode();
     }
 }

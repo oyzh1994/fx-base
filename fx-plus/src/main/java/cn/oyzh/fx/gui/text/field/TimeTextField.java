@@ -1,11 +1,12 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.TimeTextFieldSkin;
-import javafx.scene.control.Skin;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @author oyzh
@@ -15,25 +16,57 @@ public class TimeTextField extends LimitTextField {
 
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
 
-    public Timestamp getValue() throws ParseException {
-        if (!this.isEmpty()) {
-            java.util.Date utilDate = FORMAT.parse(this.getText());
+    private SimpleDateFormat dateFormat;
+
+    public SimpleDateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(SimpleDateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+        if (dateFormat != null) {
+            this.skin().setFormatter(DateTimeFormatter.ofPattern(dateFormat.toPattern()));
+        } else {
+            this.skin().setFormatter(null);
+        }
+    }
+
+    @Override
+    public Object getValue() {
+        String text = this.getText();
+        if (!this.isEmpty() && !"CURRENT_TIMESTAMP".equalsIgnoreCase(text)) {
+            try {
+                SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
+                Date utilDate = format.parse(text);
+                return new Timestamp(utilDate.getTime());
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        }
+        if (super.getValue() instanceof Date utilDate) {
             return new Timestamp(utilDate.getTime());
         }
-        return null;
+        if (super.getValue() instanceof Timestamp timestamp) {
+            return timestamp;
+        }
+        return text;
     }
 
     @Override
-    public void setValue(Object val) {
-        if (val instanceof java.util.Date date) {
-            this.setText(FORMAT.format(date));
-        } else {
-            super.setValue(val);
+    public void formatValue() {
+        if (super.getValue() instanceof java.util.Date date) {
+            SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
+            this.setText(format.format(date));
         }
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public TimeTextFieldSkin skin() {
+        return (TimeTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected TimeTextFieldSkin createDefaultSkin() {
         return new TimeTextFieldSkin(this);
     }
 

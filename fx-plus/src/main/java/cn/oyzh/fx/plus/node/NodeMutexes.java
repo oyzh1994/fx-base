@@ -74,7 +74,7 @@ public class NodeMutexes implements Destroyable {
      *
      * @param nodes 多个节点
      */
-    public void addNodes( Collection<Node> nodes) {
+    public void addNodes(Collection<Node> nodes) {
         for (Node node : nodes) {
             this.addNode(node);
         }
@@ -85,7 +85,7 @@ public class NodeMutexes implements Destroyable {
      *
      * @param nodes 节点集合
      */
-    public void addNodes( Node... nodes) {
+    public void addNodes(Node... nodes) {
         if (nodes != null) {
             for (Node node : nodes) {
                 this.addNode(node);
@@ -110,8 +110,9 @@ public class NodeMutexes implements Destroyable {
     }
 
     @Override
-    public synchronized void destroy() {
-        this.nodes = null;
-        this.manageBindVisible = null;
+    public void destroy() {
+        if (this.nodes != null) {
+            this.nodes.clear();
+        }
     }
 }

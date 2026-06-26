@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RefreshSVGGlyph extends SVGGlyph {
 
     public RefreshSVGGlyph() {
-        this.setUrl("/fx-svg/reload.svg");
+        super("/fx-svg/reload.svg");
     }
 
     public RefreshSVGGlyph(String size) {

@@ -17,7 +17,7 @@ public class PrevStepButton extends IconButton {
         this.addClass("accent");
         this.setText(I18nHelper.prevStep());
         this.setTipText(I18nHelper.prevStep());
-        this.init(new PrevStepSVGGlyph(), 0.7);
+        this.init(new PrevStepSVGGlyph());
         super.initNode();
     }
 }

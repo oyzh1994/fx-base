@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.information;
 
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.fx.gui.svg.glyph.InfoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.alert.ErrorSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.alert.QuestionSVGGlyph;
@@ -152,8 +153,11 @@ public class AlertStage extends Stage implements StageAdapter {
                 }
                 this.setHeight(150 + fixedHeight);
                 this.centerOnScreen();
+            } else {
+                this.onWindowClosed();
             }
         });
+        ObjectWatcherManager.watch(this);
     }
 
     @Override

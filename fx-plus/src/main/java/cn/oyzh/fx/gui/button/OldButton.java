@@ -14,7 +14,7 @@ public class OldButton extends IconButton {
     public void initNode() {
         this.setRealHeight(30);
         this.addClass("danger");
-        this.init(new OldSVGGlyph(), 0.7);
+        this.init(new OldSVGGlyph());
         super.initNode();
     }
 }

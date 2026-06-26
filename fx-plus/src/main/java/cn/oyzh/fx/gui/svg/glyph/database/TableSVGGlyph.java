@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class TableSVGGlyph extends SVGGlyph {
 
     public TableSVGGlyph() {
-        this.setUrl("/fx-svg/database/table.svg");
+        super("/fx-svg/database/table.svg");
     }
 
     public TableSVGGlyph(String size) {

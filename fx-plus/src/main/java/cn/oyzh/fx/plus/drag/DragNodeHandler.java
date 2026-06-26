@@ -83,11 +83,21 @@ public class DragNodeHandler {
 
     /**
      * 执行投放
+     *
+     * @param event 事件
      */
-    public void dropNode() {
+    public void dropNode(DragEvent event) {
         try {
-            if (this.source != null && this.target != null) {
-                this.target.onDropNode(this.source);
+            //if (this.source != null && this.target != null) {
+            //    this.target.onDropNode(this.source);
+            //}
+            // Resolve source and target from the event at drop time,
+            // not from cached DRAG_ENTERED values which may be stale
+            // if the event target was a child node inside a TreeCell.
+            DragNodeItem source = DragUtil.getDragItem(event.getGestureSource());
+            DragNodeItem target = DragUtil.getDragItem(event.getTarget());
+            if (source != null && target != null && target.allowDropNode(source)) {
+                target.onDropNode(source);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -253,7 +263,7 @@ public class DragNodeHandler {
         });
         // 拖动释放
         node.addEventFilter(DragEvent.DRAG_DROPPED, event -> {
-            this.dropNode();
+            this.dropNode(event);
             event.setDropCompleted(true);
             // 清除数据
             event.getDragboard().clear();

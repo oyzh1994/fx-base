@@ -13,7 +13,7 @@ public class SplitViewButton extends IconButton {
     @Override
     public void initNode() {
         this.setRealHeight(30);
-        this.init(new SplitViewSVGGlyph(), 0.7);
+        this.init(new SplitViewSVGGlyph());
         super.initNode();
     }
 }

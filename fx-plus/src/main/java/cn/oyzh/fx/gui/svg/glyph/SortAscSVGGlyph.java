@@ -9,17 +9,11 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class SortAscSVGGlyph extends SVGGlyph {
 
     public SortAscSVGGlyph() {
-        this.setUrl("/fx-svg/sort-ascending.svg");
+        super("/fx-svg/sort-ascending.svg");
     }
 
     public SortAscSVGGlyph(String size) {
         this();
         this.setSizeStr(size);
     }
-
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.sortAsc());
-//        super.initNode();
-//    }
 }

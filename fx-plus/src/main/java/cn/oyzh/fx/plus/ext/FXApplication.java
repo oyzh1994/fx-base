@@ -106,7 +106,9 @@ public abstract class FXApplication extends Application {
      * 初始化系统托盘
      */
     @Deprecated
-    protected abstract void initSystemTray();
+    protected void initSystemTray() {
+
+    }
 
     /**
      * 启动
@@ -136,7 +138,7 @@ public abstract class FXApplication extends Application {
             }
             // 移除可选属性
             // TODO: 暂时注释
-//            SystemUtil.removeOptionalProperties();
+            //            SystemUtil.removeOptionalProperties();
             Properties properties = System.getProperties();
             if (!properties.isEmpty()) {
                 if (JulLog.isInfoEnabled()) {

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.button;
 
 
-import cn.oyzh.fx.gui.svg.glyph.FileSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.file.FileSVGGlyph;
 import cn.oyzh.fx.plus.controls.button.IconButton;
 import cn.oyzh.i18n.I18nHelper;
 
@@ -17,7 +17,7 @@ public class FileButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.file());
         this.setTipText(I18nHelper.file());
-        this.init(new FileSVGGlyph(), 0.7);
+        this.init(new FileSVGGlyph());
         super.initNode();
     }
 }

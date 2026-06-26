@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class QuitSVGGlyph extends SVGGlyph {
 
     public QuitSVGGlyph() {
-        this.setUrl("/fx-svg/poweroff.svg");
+        super("/fx-svg/poweroff.svg");
     }
 
     public QuitSVGGlyph(String size) {

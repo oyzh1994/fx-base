@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RightSideSVGGlyph extends SVGGlyph {
 
     public RightSideSVGGlyph() {
-        this.setUrl("/fx-svg/rightside.svg");
+        super("/fx-svg/rightside.svg");
     }
 
     public RightSideSVGGlyph(String size) {

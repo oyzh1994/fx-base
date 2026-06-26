@@ -3,6 +3,9 @@ package cn.oyzh.fx.plus.controls.table;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeManager;
+import javafx.geometry.Insets;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableRow;
 
@@ -12,9 +15,14 @@ import java.util.List;
  * @author oyzh
  * @since 2024/07/25
  */
-public class FXTableRow<T> extends TableRow<T> implements ContextMenuAdapter, MenuItemAdapter {
+public class FXTableRow<T> extends TableRow<T> implements NodeAdapter, ContextMenuAdapter, MenuItemAdapter {
 
     {
+        NodeManager.init(this);
+    }
+
+    @Override
+    public  void initNode(){
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
@@ -24,5 +32,7 @@ public class FXTableRow<T> extends TableRow<T> implements ContextMenuAdapter, Me
                 this.clearContextMenu();
             }
         });
+        this.setPadding(Insets.EMPTY);
+        NodeAdapter.super.initNode();
     }
 }

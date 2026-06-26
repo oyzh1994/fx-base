@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RedoSVGGlyph extends SVGGlyph {
 
     public RedoSVGGlyph() {
-        this.setUrl("/fx-svg/data_redo.svg");
+        super("/fx-svg/data_redo.svg");
     }
 
     public RedoSVGGlyph(String size) {

@@ -153,7 +153,7 @@ public enum EditorFormatType {
     }
 
     public String getTextMateType() {
-        return this.extension;
+        return this.textMateType;
     }
 
     /**
@@ -215,7 +215,7 @@ public enum EditorFormatType {
                     if (StringUtil.equalsAnyIgnoreCase(extName, extension.split(","))) {
                         return formatType;
                     }
-                } else if (StringUtil.equals(extName, extension)) {
+                } else if (StringUtil.equalsIgnoreCase(extName, extension)) {
                     return formatType;
                 }
             }

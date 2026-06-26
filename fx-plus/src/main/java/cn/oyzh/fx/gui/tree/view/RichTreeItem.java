@@ -1,8 +1,8 @@
 package cn.oyzh.fx.gui.tree.view;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 import java.util.BitSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -21,15 +22,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/11/10
  */
-public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, DestroyAdapter {
-
-//    {
-//        this.addEventFilter(childrenModificationEvent(), e -> {
-//            if (!this.isSorting()) {
-//                this.doFilter();
-//            }
-//        });
-//    }
+public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 
     /**
      * 空节点
@@ -185,6 +178,15 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return this.bitValue().get(6);
     }
 
+    /**
+     * 是否desc排序
+     *
+     * @return 结果
+     */
+    public boolean isSortDesc() {
+        return !this.isSortAsc();
+    }
+
     public RichTreeItem(RichTreeView treeView) {
         super(treeView);
     }
@@ -200,13 +202,13 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return (RichTreeView) super.getTreeView();
     }
 
-//    @Override
-//    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
-//        super.updateChildren(c);
-//        if (!this.isSorting()) {
-//            this.doFilter();
-//        }
-//    }
+    //    @Override
+    //    protected void updateChildren(ListChangeListener.Change<? extends TreeItem<V>> c) {
+    //        super.updateChildren(c);
+    //        if (!this.isSorting()) {
+    //            this.doFilter();
+    //        }
+    //    }
 
     @Override
     public ObservableList getChildren() {
@@ -306,7 +308,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void setChild(TreeItem<?> item) {
         if (item != null) {
             FXUtil.runWait(() -> this.unfilteredChildren().setAll(item));
-//            this.service().submitFX(() -> this.unfilteredChildren().setAll(item));
+            //            this.service().submitFX(() -> this.unfilteredChildren().setAll(item));
         }
     }
 
@@ -314,7 +316,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void setChild(TreeItem<?>... items) {
         if (ArrayUtil.isEmpty(items)) {
             FXUtil.runWait(() -> this.unfilteredChildren().setAll(items));
-//            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
+            //            this.service().submitFX(() -> this.unfilteredChildren().setAll(items));
         }
     }
 
@@ -338,7 +340,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void addChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
             FXUtil.runWait(() -> this.unfilteredChildren().addAll(items));
-//            this.service().submitFX(() -> this.unfilteredChildren().addAll(items));
+            //            this.service().submitFX(() -> this.unfilteredChildren().addAll(items));
         }
     }
 
@@ -346,7 +348,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void removeChild(TreeItem<?> item) {
         if (item != null) {
             FXUtil.runWait(() -> this.unfilteredChildren().remove(item));
-//            this.service().submitFX(() -> this.unfilteredChildren().remove(item));
+            //            this.service().submitFX(() -> this.unfilteredChildren().remove(item));
         }
     }
 
@@ -354,7 +356,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     public void removeChild(List<TreeItem<?>> items) {
         if (CollectionUtil.isNotEmpty(items)) {
             FXUtil.runWait(() -> this.unfilteredChildren().removeAll(items));
-//            this.service().submitFX(() -> this.unfilteredChildren().removeAll(items));
+            //            this.service().submitFX(() -> this.unfilteredChildren().removeAll(items));
         }
     }
 
@@ -401,7 +403,6 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      */
     protected void sortChild(boolean sortAsc) {
         FXUtil.runWait(() -> {
-//        BackgroundService.submitFX(() -> {
             this.setSorting(true);
             try {
                 // 执行排序
@@ -411,12 +412,13 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                     if (sortAsc) {
                         children.sort(RichTreeItem::compareTo);
                     } else {// desc
-                        children.sort((o1, o2) -> {
-                            if (!o2.isSortable()) {
-                                return -1;
-                            }
-                            return o2.compareTo(o1);
-                        });
+//                        children.sort((o1, o2) -> {
+//                            if (!o2.isSortable()) {
+//                                return -1;
+//                            }
+//                            return o2.compareTo(o1);
+//                        });
+                        children.sort(Comparator.reverseOrder());
                     }
                 }
             } finally {
@@ -441,10 +443,15 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      * @param itemFilter 节点过滤器
      */
     public synchronized void doFilter(RichTreeItemFilter itemFilter) {
-        List<RichTreeItem<?>> items = this.richChildren();
-        // List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
-//        BackgroundService.submitFX(() -> this.doFilter(itemFilter, items));
-        FXUtil.runWait(() -> this.doFilter(itemFilter, items));
+        this.getTreeView().setIgnoreChanged(true);
+        try {
+            List<RichTreeItem<?>> items = this.richChildren();
+            // List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
+            //        BackgroundService.submitFX(() -> this.doFilter(itemFilter, items));
+            FXUtil.runWait(() -> this.doFilter(itemFilter, items));
+        } finally {
+            this.getTreeView().setIgnoreChanged(false);
+        }
     }
 
     /**
@@ -522,9 +529,9 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     }
 
     @Override
-    public synchronized void destroy() {
-        super.destroy();
+    public void destroy() {
         this.bitValue = null;
+        super.destroy();
     }
 }
 

@@ -236,7 +236,10 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         double h = NodeUtil.getHeight(textField);
         double size = h * 0.325 - 1;
         if (size <= 0) {
-            size = 10;
+            size = 8;
+        }
+        if (size > 8) {
+            size = 8;
         }
         // 设置大小
         this.incrButton.setSize(size * 1.5, size);

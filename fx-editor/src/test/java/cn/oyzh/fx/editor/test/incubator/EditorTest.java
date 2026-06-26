@@ -5,6 +5,9 @@ import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.fx.editor.incubator.EditorFormatTypeComboBox;
+import cn.oyzh.fx.editor.incubator.EditorUtil;
+import cn.oyzh.fx.gui.svg.glyph.NextSVGGlyph;
+import cn.oyzh.fx.gui.text.field.HighlightTextField;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
@@ -59,7 +62,8 @@ public class EditorTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //ThemeManager.apply(Themes.BLACK_ON_WHITE);
-         ThemeManager.apply(Themes.PRIMER_DARK);
+//         ThemeManager.apply(Themes.PRIMER_DARK);
+        ThemeManager.apply(Themes.PRIMER_LIGHT);
 //        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
 //        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
@@ -87,10 +91,20 @@ public class EditorTest extends Application {
         FXHBox hBox = new FXHBox();
 
         // 高亮
-        FXTextField text_31 = new FXTextField();
+        HighlightTextField text_31 = new HighlightTextField();
         text_31.setPromptText("查找内容");
-        editor.highlightTextProperty().bind(text_31.textProperty());
+//        text_31.textProperty().addListener((observable, oldValue, newValue) -> {
+//            EditorUtil.clearHighlightSearchIndex(editor);
+//        });
+        EditorUtil.bindHighlight(editor, text_31);
         hBox.addChild(text_31);
+
+        NextSVGGlyph next = new NextSVGGlyph();
+        next.setOnMousePrimaryClicked(event -> {
+            EditorUtil.searchNextHighlight(editor, text_31);
+        });
+
+        hBox.addChild(next);
 
         EditorFormatTypeComboBox comboBox = new EditorFormatTypeComboBox();
 
@@ -194,11 +208,11 @@ public class EditorTest extends Application {
         Button btn_33 = new Button("追加行");
         btn_33.setOnAction(event -> {
             editor.appendLine("""
-                    12	13	json1	
-                    14	15	1    	
-                    2 	3 	4    	
-                    5 	6 	7    	
-                    8 	9 	
+                    12	13	json1
+                    14	15	1
+                    2 	3 	4
+                    5 	6 	7
+                    8 	9
                     阿里云-redis@12.0.0.1:6379(已连接)>\s
                     """);
         });
@@ -308,10 +322,36 @@ public class EditorTest extends Application {
         });
         hBox4.addChild(btn_47);
 
+        FXHBox hBox5 = new FXHBox();
+        Button btn_51 = new Button("获取选区位置");
+        btn_51.setOnAction(event -> {
+            MessageBox.info(editor.getSelectionRange().toString());
+        });
+        hBox5.addChild(btn_51);
+
+        Button btn_52 = new Button("选中位置1");
+        btn_52.setOnAction(event -> {
+            editor.selectRange(2, 2);
+        });
+        hBox5.addChild(btn_52);
+
+        Button btn_53 = new Button("选中位置2");
+        btn_53.setOnAction(event -> {
+            editor.selectRange(0, 2);
+        });
+        hBox5.addChild(btn_53);
+
+        Button btn_54 = new Button("选中位置3");
+        btn_54.setOnAction(event -> {
+            editor.selectRange(10, 15);
+        });
+        hBox5.addChild(btn_54);
+
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
         vBox.addChild(hBox3);
         vBox.addChild(hBox4);
+        vBox.addChild(hBox5);
         vBox.addChild(editor);
         // vBox.addChild(editor1);
 

@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.fx.gui.skin.ChooseDirTextFieldSkin;
-import javafx.scene.control.Skin;
+import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -12,21 +12,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2026/01/04
  */
-public class ChooseDirTextField extends ClearableTextField {
-
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public ChooseDirTextFieldSkin skin() {
-        ChooseDirTextFieldSkin skin = (ChooseDirTextFieldSkin) this.getSkin();
-        if (skin == null) {
-            this.setSkin(this.createDefaultSkin());
-            skin = (ChooseDirTextFieldSkin) this.getSkin();
-        }
-        return skin;
-    }
+public class ChooseDirTextField extends FXTextField {
 
     public void setInitDir(String initDir) {
         this.skin().setInitDir(initDir);
@@ -45,7 +31,12 @@ public class ChooseDirTextField extends ClearableTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public ChooseDirTextFieldSkin skin() {
+        return (ChooseDirTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected ChooseDirTextFieldSkin createDefaultSkin() {
         return new ChooseDirTextFieldSkin(this);
     }
 

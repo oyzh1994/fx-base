@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class BucketSVGGlyph extends SVGGlyph {
 
     public BucketSVGGlyph() {
-        this.setUrl("/fx-svg/bucket.svg");
+        super("/fx-svg/bucket.svg");
     }
 
     public BucketSVGGlyph(String size) {

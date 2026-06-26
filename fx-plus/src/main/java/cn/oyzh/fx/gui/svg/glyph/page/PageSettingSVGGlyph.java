@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PageSettingSVGGlyph extends SVGGlyph {
 
     public PageSettingSVGGlyph() {
-        this.setUrl("/fx-svg/page/page-setting3.svg");
+        super("/fx-svg/page/page-setting3.svg");
     }
 
     public PageSettingSVGGlyph(String size) {

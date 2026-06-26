@@ -17,16 +17,17 @@ import java.util.List;
  */
 public class SettingLeftTreeView extends RichTreeView {
 
-    public SettingTreeItem root() {
-        return (SettingTreeItem) super.getRoot();
+    @Override
+    public SettingLeftTreeItem root() {
+        return (SettingLeftTreeItem) super.getRoot();
     }
 
 //    @Override
-//    public SettingTreeItem getRoot() {
-//        return (SettingTreeItem) super.getRoot();
+//    public SettingLeftTreeItem getRoot() {
+//        return (SettingLeftTreeItem) super.getRoot();
 //    }
 
-    public SettingTreeItem addItem(SettingLeftItem item) {
+    public SettingLeftTreeItem addItem(SettingLeftTreeItemValue item) {
         return this.root().addItem(item);
     }
 
@@ -34,22 +35,22 @@ public class SettingLeftTreeView extends RichTreeView {
     protected void initTreeView() {
         super.initTreeView();
         this.setCellFactory((Callback<TreeView<?>, TreeCell<?>>) param -> new RichTreeCell<>());
-        this.setRoot(new SettingTreeItem(this, null));
+        this.setRoot(new SettingLeftTreeItem(this, null));
         this.setShowRoot(false);
         this.selectedItemChanged((observable, oldValue, newValue) -> {
-            if (newValue instanceof SettingTreeItem item) {
+            if (newValue instanceof SettingLeftTreeItem item) {
                 this.doSelect(item.getItemId());
             }
         });
         this.setId("left-tree-view");
     }
 
-    protected SettingLeftItem findItem(String itemId) {
+    protected SettingLeftTreeItemValue findItem(String itemId) {
         return this.root().findItem(itemId);
     }
 
     public void selectItem(String itemId) {
-        SettingLeftItem item = this.findItem(itemId);
+        SettingLeftTreeItemValue item = this.findItem(itemId);
         if (item != null) {
             this.doSelect(itemId);
         } else {
@@ -60,8 +61,8 @@ public class SettingLeftTreeView extends RichTreeView {
     protected void doSelect(String itemId) {
         SettingMainPane mainPane = this.getSettingMainPane();
         if (mainPane != null && itemId != null) {
-            SettingLeftItem leftItem;
-            List<SettingLeftItem> items = new ArrayList<>();
+            SettingLeftTreeItemValue leftItem;
+            List<SettingLeftTreeItemValue> items = new ArrayList<>();
             String fxId = itemId;
             do {
                 leftItem = this.findItem(fxId);
@@ -74,7 +75,7 @@ public class SettingLeftTreeView extends RichTreeView {
             } while (true);
             items = items.reversed();
             StringBuilder label = new StringBuilder();
-            for (SettingLeftItem item : items) {
+            for (SettingLeftTreeItemValue item : items) {
                 label.append(" > ").append(item.getName());
             }
             mainPane.updateRightContent(itemId, label.substring(3));

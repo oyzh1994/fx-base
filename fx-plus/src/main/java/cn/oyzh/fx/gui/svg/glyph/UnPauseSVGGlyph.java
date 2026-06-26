@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class UnPauseSVGGlyph extends SVGGlyph {
 
     public UnPauseSVGGlyph() {
-        this.setUrl("/fx-svg/un-pause.svg");
+        super("/fx-svg/un-pause.svg");
     }
 
     public UnPauseSVGGlyph(String size) {

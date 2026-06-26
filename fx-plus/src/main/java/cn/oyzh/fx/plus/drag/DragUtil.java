@@ -31,6 +31,21 @@ public class DragUtil {
         if (o instanceof DragNodeItem dragItem) {
             return dragItem;
         }
+        // Walk up the ancestor chain to find a TreeCell or DragNodeItem.
+        // event.getTarget() may return a child node (Text, SVGGlyph, etc.)
+        // inside a TreeCell rather than the TreeCell itself.
+        if (o instanceof Node node) {
+            Node parent = node.getParent();
+            while (parent != null) {
+                if (parent instanceof TreeCell<?> cell && cell.getTreeItem() instanceof DragNodeItem dragItem) {
+                    return dragItem;
+                }
+                if (parent instanceof DragNodeItem dragItem) {
+                    return dragItem;
+                }
+                parent = parent.getParent();
+            }
+        }
         return null;
     }
 

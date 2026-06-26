@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class OracleSVGGlyph extends SVGGlyph {
 
     public OracleSVGGlyph() {
-        this.setUrl("/fx-svg/database/oracle.svg");
+        super("/fx-svg/database/oracle.svg");
     }
 
     public OracleSVGGlyph(String size) {

@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.font;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.scene.text.Font;
 
 /**
  * 字体名称下拉框
@@ -14,7 +13,7 @@ import javafx.scene.text.Font;
 public class FontFamilyComboBox extends FXComboBox<String> {
 
     {
-        this.addItems(Font.getFamilies());
+        this.addItems(FontUtil.getFamilies());
         this.select(null);
         this.setTipText(I18nHelper.fontNameTip());
     }

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class RunSqlFileSVGGlyph extends SVGGlyph {
 
     public RunSqlFileSVGGlyph() {
-        this.setUrl("/fx-svg/database/runSqlFile.svg");
+        super("/fx-svg/database/runSqlFile.svg");
     }
 
     public RunSqlFileSVGGlyph(String size) {

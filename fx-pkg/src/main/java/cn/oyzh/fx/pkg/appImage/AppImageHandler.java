@@ -67,8 +67,8 @@ public class AppImageHandler implements PostHandler {
         ProcessExecResult result = RuntimeUtil.execForResult(cmdArr);
         JulLog.info("AppImage result:{}", result);
         if (!result.isSuccess()) {
-            JulLog.error("AppImage error:{}", result.getError());
-            throw new Exception("AppImage error:" + result.getError());
+            JulLog.error("AppImage error:{} exitCode:{}", result.getError(), result.getExitCode());
+            throw new RuntimeException("AppImage error:" + result.getError() + " exitCode:" + result.getExitCode());
         }
         // 设置为压缩包
         packConfig.setCompressFile(new File(file));
@@ -124,7 +124,9 @@ public class AppImageHandler implements PostHandler {
         lines.add("Categories=Development;");
         lines.add("Name=" + packConfig.getAppName());
         lines.add("Icon=" + packConfig.getAppName());
-        lines.add("Comment=" + packConfig.getjPackageConfig().getDescription());
+        if (packConfig.getjPackageConfig() != null && packConfig.getjPackageConfig().getDescription() != null) {
+            lines.add("Comment=" + packConfig.getjPackageConfig().getDescription());
+        }
         FileUtil.writeUtf8Lines(lines, desktop);
     }
 

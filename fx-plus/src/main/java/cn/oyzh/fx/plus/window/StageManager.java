@@ -29,7 +29,25 @@ public class StageManager {
     /**
      * 主舞台
      */
-    private static Stage Primary_Stage;
+    private volatile static Stage primaryStage;
+
+    /**
+     * 获取主舞台
+     *
+     * @return Stage 主舞台
+     */
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    /**
+     * 设置主舞台
+     *
+     * @param primaryStage 主舞台
+     */
+    public static void setPrimaryStage(Stage primaryStage) {
+        StageManager.primaryStage = primaryStage;
+    }
 
     /**
      * 退出系统
@@ -176,14 +194,14 @@ public class StageManager {
         wrapper.display();
     }
 
-    /**
-     * 创建舞台
-     *
-     * @return StageExt
-     */
-    public static StageExt newStage() {
-        return new StageExt(null);
-    }
+    //    /**
+    //     * 创建舞台
+    //     *
+    //     * @return StageExt
+    //     */
+    //    public static StageExt newStage() {
+    //        return new StageExt(null);
+    //    }
 
     /**
      * 创建舞台
@@ -202,10 +220,10 @@ public class StageManager {
      * @return StageAdapter
      */
     public static StageAdapter parseStage(Class<?> clazz) {
-//        Window frontWindow = getFrontWindow();
-//        if (Primary_Stage != null && Primary_Stage.isShowing()) {
-//            return parseStage(clazz, Primary_Stage);
-//        }
+        //        Window frontWindow = getFrontWindow();
+        //        if (Primary_Stage != null && Primary_Stage.isShowing()) {
+        //            return parseStage(clazz, Primary_Stage);
+        //        }
         return parseStage(clazz, null);
     }
 
@@ -226,41 +244,26 @@ public class StageManager {
         // 如果不是多实例，则获取当前实例
         if (!attribute.multipliable()) {
             stage = getStage(clazz);
+        } else {// 多实例不应该有父窗口
+            owner = null;
         }
         // 创建舞台
         if (stage == null) {
+            Window finalOwner = owner;
             AtomicReference<StageAdapter> ref = new AtomicReference<>();
             FXUtil.runWait(() -> {
                 // 主舞台
                 if (attribute.usePrimary()) {
-                    StageAdapter stage1 = new PrimaryStage(Primary_Stage, attribute, owner);
+                    StageAdapter stage1 = new PrimaryStage(primaryStage, attribute, finalOwner);
                     ref.set(stage1);
                 } else {// 一般舞台
-                    StageAdapter stage1 = new StageExt(attribute, owner);
+                    StageAdapter stage1 = new StageExt(attribute, finalOwner);
                     ref.set(stage1);
                 }
             });
             stage = ref.get();
         }
         return stage;
-    }
-
-    /**
-     * 获取主舞台
-     *
-     * @return Stage 主舞台
-     */
-    public static Stage getPrimaryStage() {
-        return Primary_Stage;
-    }
-
-    /**
-     * 设置主舞台
-     *
-     * @param primaryStage 主舞台
-     */
-    public static void setPrimaryStage(Stage primaryStage) {
-        Primary_Stage = primaryStage;
     }
 
     /**
@@ -347,22 +350,6 @@ public class StageManager {
      * @param callback 遮罩关闭处理完成后的回调
      */
     public static void showMask(Window window, Runnable callback) {
-        // // TODO: 关闭可能存在的mask面板
-        // try {
-        //     List<Window> windows = new ArrayList<>(Window.getWindows());
-        //     for (Window w : windows) {
-        //         if (w instanceof StageMask mask && mask.isShowing()) {
-        //             mask.close();
-        //         }
-        //     }
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-        // }
-        // if (window != null && window.isShowing()) {
-        //     StageMask.showMask(window, callback);
-        // } else {
-        //     callback.run();
-        // }
         // 判断是否处于mask状态
         if (!PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
             // 设置状态位
@@ -393,7 +380,8 @@ public class StageManager {
      */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask || window instanceof PopupMask) {
+            if (window instanceof StageMask) {
+                //            if (window instanceof StageMask || window instanceof PopupMask) {
                 continue;
             }
             if (window.isShowing() && window.isFocused()) {
@@ -410,7 +398,8 @@ public class StageManager {
      */
     public static boolean hasFocusedWindow() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask || window instanceof PopupMask) {
+            if (window instanceof StageMask) {
+                //            if (window instanceof StageMask || window instanceof PopupMask) {
                 continue;
             }
             if (window.isShowing() && window.isFocused()) {

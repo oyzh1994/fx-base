@@ -67,7 +67,7 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
     }
 
     @Override
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         if (this.filter == null) {
             this.filter = FXChooser.allExtensionFilter();
         }
@@ -85,19 +85,7 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
 
     public ChooseFileTextFieldSkin(TextField textField) {
         super(textField);
-        // super(textField, new ChooseSVGGlyph("13"));
-        // this.button.disappear();
-        // this.button.setTipText(I18nHelper.choose());
     }
-
-    // @Override
-    // protected SVGGlyph getButton() {
-    //     if (super.button == null) {
-    //         super.button = new ChooseSVGGlyph("13");
-    //         super.initButton(super.button);
-    //     }
-    //     return super.button;
-    // }
 
     @Override
     protected void updateButtonVisibility() {

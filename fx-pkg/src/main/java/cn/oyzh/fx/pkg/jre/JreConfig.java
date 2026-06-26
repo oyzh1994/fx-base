@@ -1,8 +1,8 @@
 package cn.oyzh.fx.pkg.jre;
 
 import cn.oyzh.fx.pkg.ConfigMargeAble;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;

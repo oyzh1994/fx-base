@@ -1,15 +1,15 @@
 package cn.oyzh.fx.gui.svg.glyph;
 
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.ScalingSVGGlyph;
 
 /**
  * @author oyzh
  * @since 2024/4/11
  */
-public class DiscardSVGGlyph extends SVGGlyph {
+public class DiscardSVGGlyph extends ScalingSVGGlyph {
 
     public DiscardSVGGlyph() {
-        this.setUrl("/fx-svg/close.svg");
+        super("/fx-svg/close.svg");
     }
 
     public DiscardSVGGlyph(String size) {
@@ -17,9 +17,8 @@ public class DiscardSVGGlyph extends SVGGlyph {
         this.setSizeStr(size);
     }
 
-//    @Override
-//    public void initNode() {
-//        this.setTipText(I18nHelper.discard());
-//        super.initNode();
-//    }
+    @Override
+    public double sizeScaling() {
+        return 0.8;
+    }
 }

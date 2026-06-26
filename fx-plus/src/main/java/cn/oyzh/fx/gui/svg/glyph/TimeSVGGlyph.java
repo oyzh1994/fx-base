@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class TimeSVGGlyph extends SVGGlyph {
 
     public TimeSVGGlyph() {
-        this.setUrl("/fx-svg/time.svg");
+        super("/fx-svg/time.svg");
     }
 
     public TimeSVGGlyph(String size) {

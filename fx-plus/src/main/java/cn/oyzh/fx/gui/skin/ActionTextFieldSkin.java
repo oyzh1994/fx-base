@@ -1,7 +1,6 @@
 package cn.oyzh.fx.gui.skin;
 
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.skin.FXTextFieldSkin;
 import javafx.beans.property.ObjectProperty;
@@ -58,9 +57,9 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
     protected void initButton(SVGGlyph button) {
         button.setPadding(Insets.EMPTY);
         button.setFocusTraversable(false);
-        button.setOnMousePrimaryClicked(this::onButtonClicked);
-        button.setOnMouseExited(e -> this.resetButtonColor());
-        button.setOnMouseEntered(e -> button.setColor("#DC143C"));
+        button.addEventFilter(MouseEvent.MOUSE_EXITED, this::onButtonExit);
+        button.addEventFilter(MouseEvent.MOUSE_ENTERED, this::onButtonEnter);
+        button.addEventFilter(MouseEvent.MOUSE_CLICKED, this::onButtonClick);
     }
 
     /**
@@ -71,14 +70,32 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
     protected abstract SVGGlyph getButton();
 
     /**
-     * 按钮点击事件
+     * 按钮鼠标点击事件
      *
      * @param e 事件
      */
-    protected void onButtonClicked(MouseEvent e) {
+    protected void onButtonClick(MouseEvent e) {
         if (this.action != null) {
             this.action.run();
         }
+    }
+
+    /**
+     * 按钮鼠标离开事件
+     *
+     * @param e 事件
+     */
+    protected void onButtonExit(MouseEvent e) {
+        this.resetButtonColor();
+    }
+
+    /**
+     * 按钮鼠标进入事件
+     *
+     * @param e 事件
+     */
+    protected void onButtonEnter(MouseEvent e) {
+        this.button.setColor("#DC143C");
     }
 
     // @Override
@@ -139,15 +156,6 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
         return 14;
     }
 
-    // /**
-    //  * 获取按钮边距
-    //  *
-    //  * @return 按钮边距
-    //  */
-    // protected double getButtonMargin() {
-    //     return 5;
-    // }
-
     @Override
     public ObjectProperty<Node> rightProperty() {
         if (super.rightProperty == null) {
@@ -158,13 +166,10 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
 
     @Override
     public void dispose() {
-        if (this.button != null) {
-            this.button.setOnMouseExited(null);
-            this.button.setOnMouseEntered(null);
-            this.button.setOnMousePrimaryClicked(null);
-            NodeDestroyUtil.destroyObject(this.action);
-            this.button = null;
-        }
+        this.button.removeEventFilter(MouseEvent.MOUSE_EXITED, this::onButtonExit);
+        this.button.removeEventFilter(MouseEvent.MOUSE_ENTERED, this::onButtonEnter);
+        this.button.removeEventFilter(MouseEvent.MOUSE_CLICKED, this::onButtonClick);
+        this.button = null;
         this.action = null;
         super.dispose();
     }

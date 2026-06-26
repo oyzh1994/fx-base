@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class MonitorSVGGlyph extends SVGGlyph {
 
     public MonitorSVGGlyph() {
-        this.setUrl("/fx-svg/monitor.svg");
+        super("/fx-svg/monitor.svg");
     }
 
     public MonitorSVGGlyph(String size) {

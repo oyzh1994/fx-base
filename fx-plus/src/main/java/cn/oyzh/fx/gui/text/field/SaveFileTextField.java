@@ -15,24 +15,6 @@ import java.util.function.Consumer;
  */
 public class SaveFileTextField extends LimitTextField {
 
-    {
-        this.setEditable(false);
-    }
-
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public SaveFileTextFieldSkin skin() {
-        SaveFileTextFieldSkin skin = (SaveFileTextFieldSkin) this.getSkin();
-        if (skin == null) {
-            this.setSkin(this.createDefaultSkin());
-            skin = (SaveFileTextFieldSkin) this.getSkin();
-        }
-        return skin;
-    }
-
     public void setInitFileName(String initFileName) {
         this.skin().setInitFileName(initFileName);
     }
@@ -46,7 +28,18 @@ public class SaveFileTextField extends LimitTextField {
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    public SaveFileTextFieldSkin skin() {
+        return (SaveFileTextFieldSkin) super.skin();
+    }
+
+    @Override
+    protected SaveFileTextFieldSkin createDefaultSkin() {
         return new SaveFileTextFieldSkin(this);
+    }
+
+    @Override
+    public void initNode() {
+        this.setEditable(false);
+        super.initNode();
     }
 }

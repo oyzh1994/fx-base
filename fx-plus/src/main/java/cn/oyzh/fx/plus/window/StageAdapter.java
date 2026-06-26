@@ -52,10 +52,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     @Override
     default void onWindowClosed() {
         try {
-            // // 主页面不处理
-            // if (this instanceof PrimaryStage) {
-            //     return;
-            // }
             Stage stage = this.stage();
             WindowAdapter.super.onWindowClosed();
             DragUtil.clearDragFile(this.scene());
@@ -65,6 +61,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
             this.clearTitle();
             this.clearScene();
             this.clearListener();
+            NodeDestroyUtil.destroyObject(this);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -91,11 +88,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         return false;
     }
 
-    /**
-     * 获取场景
-     *
-     * @return 场景
-     */
+    @Override
     default Scene scene() {
         if (this.stage() != null) {
             return this.stage().getScene();
@@ -122,18 +115,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         if (scene != null) {
             this.stage().setScene(scene);
         }
-    }
-
-    /**
-     * 获取根节点
-     *
-     * @return 根节点
-     */
-    default Parent root() {
-        if (this.scene() != null) {
-            return this.scene().getRoot();
-        }
-        return null;
     }
 
     /**
@@ -326,40 +307,9 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         if (!this.hasBeenVisible()) {
             stage.initStyle(attribute.stageStyle().toStageStyle());
         }
-//        if (root instanceof Region region) {
-//            try {
-//                FileInputStream fis = new FileInputStream("/Users/oyzh/Downloads/img.jpg");
-//                BackgroundSize backgroundSize = new BackgroundSize(
-//                        BackgroundSize.AUTO, BackgroundSize.AUTO, true, true,
-//                        true, true);
-//                BackgroundImage image = new BackgroundImage(
-//                        new Image(fis),
-//                        BackgroundRepeat.NO_REPEAT,
-//                        BackgroundRepeat.NO_REPEAT,
-//                        BackgroundPosition.DEFAULT,
-//                        backgroundSize
-//                );
-//                Background background = new Background(image);
-//                region.setBackground(background);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
         // 初始化stage
         stage.setResizable(attribute.resizable());
         // 设置icon
-        //if (this.isExtendedHeader()) {
-        //     FXHeaderBar headerBar = HeaderBarUtil.getHeaderBar(root);
-        //     if (headerBar != null) {
-        //         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
-        //             headerBar.setIcon(HeaderBarUtil.getIcon(attribute.iconUrl()));
-        //         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
-        //             headerBar.setIcon(HeaderBarUtil.getIcon(FXConst.appIcon()));
-        //         }
-        //     } else {
-        //         JulLog.warn("headerBar is null");
-        //     }
-        //}
         if (StringUtil.isNotEmpty(attribute.iconUrl())) {
             stage.getIcons().setAll(IconUtil.getIcon(attribute.iconUrl()));
         } else if (StringUtil.isNotEmpty(FXConst.appIcon())) {
@@ -401,44 +351,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
                     this.updateContent();
                 }
             });
-            // // 处理扩展标题栏事件
-            // if (this.isExtendedHeader()) {
-            //     FXHeaderBar headerBar = this.getHeaderBar();
-            //     // 标题为null
-            //     if (headerBar == null) {
-            //         return;
-            //     }
-            //     // 鼠标按下事件
-            //     stage.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
-            //             // 全屏则忽略
-            //             if (stage.isFullScreen()) {
-            //                 return;
-            //             }
-            //             // 记录位置
-            //             if (event.getClickCount() == 1) {
-            //                 headerBar.doRecordLocation();
-            //             } else if (event.getClickCount() == 2) {  // 最大化
-            //
-            //                 stage.setMaximized(!stage.isMaximized());
-            //             }
-            //         }
-            //     });
-            //     // 鼠标拖动事件
-            //     stage.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
-            //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
-            //             // 更新位置
-            //             headerBar.doUpdateLocation();
-            //         }
-            //     });
-            //     // 鼠标释放事件
-            //     stage.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            //         if (MouseUtil.isPrimaryButton(event) && headerBar.checkBounds(event) && event.getTarget() == root) {
-            //             // 清除位置
-            //             headerBar.doClearLocation();
-            //         }
-            //     });
-            // }
             // 初始化
             NodeManager.init(this);
         }
@@ -461,7 +373,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     default void updateContentLater() {
         // 更新内容
         FXUtil.runPulse(this::updateContent);
-        // this.updateContent();
     }
 
     /**
@@ -476,17 +387,11 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
                 // 先减再加，因为全屏和最大化这个宽高已经最大了
                 this.resizeRoot(width - 1, height - 1);
                 this.resizeRoot(width + 1, height + 1);
-                // this.resizeStage(width - 1, height - 1);
-                // this.resizeStage(width + 1, height + 1);
             } else {
                 // 先加再减，避免边框异常
                 this.resizeRoot(width + 1, height + 1);
                 this.resizeRoot(width - 1, height - 1);
-                // this.resizeStage(width + 1, height + 1);
-                // this.resizeStage(width - 1, height - 1);
             }
-//            // 递归布局
-//            NodeUtil.layoutRecursive(root);
         }
     }
 
@@ -523,6 +428,11 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     default void clearListener() {
         Stage stage = this.stage();
         if (stage != null) {
+            stage.onShownProperty().unbind();
+            stage.onHidingProperty().unbind();
+            stage.onHiddenProperty().unbind();
+            stage.onShowingProperty().unbind();
+            stage.onCloseRequestProperty().unbind();
             stage.setOnShown(null);
             stage.setOnHiding(null);
             stage.setOnHidden(null);
@@ -612,30 +522,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         //this.appendTitle(append, -1);
     }
 
-    ///**
-    // * 追加标题
-    // *
-    // * @param append   追加内容
-    // * @param liveTime 追加内容存活时间
-    // */
-    //default void appendTitle(String append, int liveTime) {
-    //    if (append != null && !append.isEmpty()) {
-    //        String title = this.getProp("_title");
-    //        if (title == null) {
-    //            title = this.title();
-    //            this.setProp("_title", title);
-    //        }
-    //        if (title == null) {
-    //            title = "";
-    //        }
-    //        String newTitle = title + append;
-    //        this.title(newTitle);
-    //        if (liveTime > 0) {
-    //            ExecutorUtil.start(this::restoreTitle, liveTime);
-    //        }
-    //    }
-    //}
-
     /**
      * 恢复标题
      */
@@ -674,34 +560,8 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     }
 
     @Override
-    default void unHideOnEscape() {
-        EscHideHandler escHideHandler = this.removeProp("escHideHandler");
-        if (escHideHandler != null) {
-            escHideHandler.destroy();
-        }
-    }
-
-    @Override
-    default boolean isHideOnEscape() {
-        return this.hasProp("escHideHandler");
-    }
-
-    @Override
     default void switchOnTab() {
         this.setProp("tabSwitchHandler", new TabSwitchHandler(this.stage()));
-    }
-
-    @Override
-    default void unSwitchOnTab() {
-        TabSwitchHandler tabSwitchHandler = this.removeProp("tabSwitchHandler");
-        if (tabSwitchHandler != null) {
-            tabSwitchHandler.destroy();
-        }
-    }
-
-    @Override
-    default boolean isSwitchOnTab() {
-        return this.hasProp("tabSwitchHandler");
     }
 
     /**
@@ -740,33 +600,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         };
         // 初始化事件
         dragFileHandler.initEvent(this.scene());
-        // // 文件拖拽初始化
-        // DragUtil.initDragFile(new DragFileHandler() {
-        //
-        //     @Override
-        //     public boolean checkDragboard(Dragboard dragboard) {
-        //         return dragboard == null || !Objects.equals(dragboard.getString(), dragBoardContent);
-        //     }
-        //
-        //     @Override
-        //     protected void dragOver(DragEvent event) {
-        //         disable();
-        //         appendTitle("===松开鼠标以释放文件===");
-        //     }
-        //
-        //     @Override
-        //     public void dragExited(DragEvent event) {
-        //         enable();
-        //         restoreTitle();
-        //     }
-        //
-        //     @Override
-        //     public void dragDropped(DragEvent event) {
-        //         if (event.getDragboard() != null && event.getDragboard().getFiles() != null) {
-        //             onDragFile.accept(event.getDragboard().getFiles());
-        //         }
-        //     }
-        // }, this.scene());
     }
 
     default boolean isShowing() {
@@ -816,7 +649,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     @Override
     default void changeTheme(ThemeStyle style) {
         //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
-        if (this.isExtendedHeader() && OSUtil.isWindows()) {
+        if (this.isExtendedHeader()) {
             if (style.isDarkMode()) {
                 this.scene().setFill(Color.TRANSPARENT);
             } else {

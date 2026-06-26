@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ForceKillSVGGlyph extends SVGGlyph {
 
     public ForceKillSVGGlyph() {
-        this.setUrl("/fx-svg/force-kill.svg");
+        super("/fx-svg/force-kill.svg");
     }
 
     public ForceKillSVGGlyph(String size) {

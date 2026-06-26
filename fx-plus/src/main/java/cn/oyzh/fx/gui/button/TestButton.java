@@ -19,7 +19,7 @@ public class TestButton extends IconButton {
         this.addClass("success");
         this.setText(I18nHelper.test());
         this.setTipText(I18nHelper.test());
-        this.init(new TestSVGGlyph(), 0.7);
+        this.init(new TestSVGGlyph());
         super.initNode();
     }
 }

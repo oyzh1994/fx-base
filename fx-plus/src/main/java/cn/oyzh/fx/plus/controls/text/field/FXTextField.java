@@ -1,20 +1,22 @@
 package cn.oyzh.fx.plus.controls.text.field;
 
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TextAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
+import javafx.scene.control.Skin;
 import javafx.scene.control.TextField;
 
 /**
@@ -23,7 +25,7 @@ import javafx.scene.control.TextField;
  * @author oyzh
  * @since 2023/08/15
  */
-public class FXTextField extends TextField implements DestroyAdapter, FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
+public class FXTextField extends TextField implements Destroyable, FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -33,6 +35,13 @@ public class FXTextField extends TextField implements DestroyAdapter, FlexAdapte
      * 失焦事件
      */
     protected void onBlur() {
+
+    }
+
+    /**
+     * 焦点事件
+     */
+    protected void onFocus() {
 
     }
 
@@ -90,7 +99,7 @@ public class FXTextField extends TextField implements DestroyAdapter, FlexAdapte
     @Override
     public boolean validate() {
         if (this.require && this.isEmpty()) {
-//            this.requestFocus();
+            //            this.requestFocus();
             ValidatorUtil.validFail(this);
             return false;
         }
@@ -105,16 +114,38 @@ public class FXTextField extends TextField implements DestroyAdapter, FlexAdapte
     public void initNode() {
         FlexAdapter.super.initNode();
         this.setPickOnBounds(true);
-//        this.setFocusTraversable(false);
+        //        this.setFocusTraversable(false);
+    }
+
+    /**
+     * 当前值
+     */
+    private Object value;
+
+    /**
+     * 获取值
+     *
+     * @return 结果
+     */
+    public Object getValue() {
+        return this.value;
     }
 
     /**
      * 设置值
      *
-     * @param val 值
+     * @param value 值
      */
-    public void setValue(Object val) {
-        this.setText(format(val));
+    public void setValue(Object value) {
+        this.value = value;
+        this.formatValue();
+    }
+
+    /**
+     * 格式化值
+     */
+    public void formatValue() {
+        this.setText(format(value));
     }
 
     public static String format(Object val) {
@@ -139,5 +170,25 @@ public class FXTextField extends TextField implements DestroyAdapter, FlexAdapte
 
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
+    }
+
+    /**
+     * 当前皮肤
+     *
+     * @return 皮肤
+     */
+    public Skin<?> skin() {
+        if (this.getSkin() == null) {
+            this.setSkin(this.createDefaultSkin());
+        }
+        return this.getSkin();
+    }
+
+    @Override
+    public void destroy() {
+        //        this.setTipText(null);
+        //        this.setContextMenu(null);
+        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

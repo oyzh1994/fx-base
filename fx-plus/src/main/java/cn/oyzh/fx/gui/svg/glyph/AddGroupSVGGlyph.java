@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class AddGroupSVGGlyph extends SVGGlyph {
 
     public AddGroupSVGGlyph() {
-        this.setUrl("/fx-svg/addGroup.svg");
+        super("/fx-svg/addGroup.svg");
     }
 
     public AddGroupSVGGlyph(String size) {

@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PrevStepSVGGlyph extends SVGGlyph {
 
     public PrevStepSVGGlyph() {
-        this.setUrl("/fx-svg/prev-step.svg");
+        super("/fx-svg/prev-step.svg");
     }
 
     public PrevStepSVGGlyph(String size) {

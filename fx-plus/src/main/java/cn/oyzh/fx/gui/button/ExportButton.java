@@ -15,7 +15,7 @@ public class ExportButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.export());
         this.setTipText(I18nHelper.export());
-        this.init(new ExportSVGGlyph(), 0.7);
+        this.init(new ExportSVGGlyph());
         super.initNode();
     }
 }

@@ -15,7 +15,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
+import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
@@ -44,21 +46,21 @@ public class NodeUtil {
      */
     public static boolean isMediaImport;
 
-    /**
-     * richtext是个可选模块，避免强依赖
-     */
-    public static boolean isRichtextImport;
+//    /**
+//     * richtext是个可选模块，避免强依赖
+//     */
+//    public static boolean isRichtextImport;
 
     static {
         isWebImport = Platform.isSupported(ConditionalFeature.WEB);
         isMediaImport = Platform.isSupported(ConditionalFeature.MEDIA);
         isSwingImport = Platform.isSupported(ConditionalFeature.SWING);
-        try {
-            Class.forName("org.fxmisc.richtext");
-            isRichtextImport = true;
-        } catch (ClassNotFoundException ignored) {
-
-        }
+//        try {
+//            Class.forName("org.fxmisc.richtext");
+//            isRichtextImport = true;
+//        } catch (ClassNotFoundException ignored) {
+//
+//        }
     }
 
 //     /**
@@ -489,20 +491,20 @@ public class NodeUtil {
             // if (!labeled.minWidthProperty().isBound()) {
             //     labeled.setMinWidth(width);
             // }
-            if (!labeled.maxWidthProperty().isBound()) {
-                labeled.setMaxWidth(width);
-            }
+//            if (!labeled.maxWidthProperty().isBound()) {
+//                labeled.setMaxWidth(width);
+//            }
         }
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             if (!columnBase.prefWidthProperty().isBound()) {
                 columnBase.setPrefWidth(width);
             }
-            // if (!columnBase.minWidthProperty().isBound()) {
-            //     columnBase.setMinWidth(width);
-            // }
-            if (!columnBase.maxWidthProperty().isBound()) {
-                columnBase.setMaxWidth(width);
-            }
+//             if (!columnBase.minWidthProperty().isBound()) {
+//                 columnBase.setMinWidth(width);
+//             }
+//            if (!columnBase.maxWidthProperty().isBound()) {
+//                columnBase.setMaxWidth(width);
+//            }
         }
         if (target instanceof PopupControl control) {
             if (!control.prefWidthProperty().isBound()) {
@@ -511,9 +513,9 @@ public class NodeUtil {
             // if (!control.minWidthProperty().isBound()) {
             //     control.setMinWidth(width);
             // }
-            if (!control.maxWidthProperty().isBound()) {
-                control.setMaxWidth(width);
-            }
+//            if (!control.maxWidthProperty().isBound()) {
+//                control.setMaxWidth(width);
+//            }
         }
         if (target instanceof Region region) {
             if (!region.prefWidthProperty().isBound()) {
@@ -522,9 +524,9 @@ public class NodeUtil {
             // if (!region.minWidthProperty().isBound()) {
             //     region.setMinWidth(width);
             // }
-            if (!region.maxWidthProperty().isBound()) {
-                region.setMaxWidth(width);
-            }
+//            if (!region.maxWidthProperty().isBound()) {
+//                region.setMaxWidth(width);
+//            }
         }
         if (target instanceof Shape shape) {
             if (!shape.strokeWidthProperty().isBound()) {
@@ -857,5 +859,28 @@ public class NodeUtil {
      */
     public static boolean isOrientationRightToLeft(Node node) {
         return node.getNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT || node.getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT;
+    }
+
+    /**
+     * 移除节点
+     *
+     * @param node 节点
+     */
+    public static void removeNode(Object node) {
+        FXUtil.runWait(() -> {
+            if (node instanceof Node node1) {
+                if (node1.getParent() instanceof Pane pane) {
+                    pane.getChildren().remove(node);
+                }
+            } else if (node instanceof Tab tab) {
+                if (tab.getTabPane() != null) {
+                    tab.getTabPane().getTabs().remove(node);
+                }
+            } else if (node instanceof TreeItem<?> item) {
+                if (item.getParent() != null) {
+                    item.getParent().getChildren().remove(node);
+                }
+            }
+        });
     }
 }

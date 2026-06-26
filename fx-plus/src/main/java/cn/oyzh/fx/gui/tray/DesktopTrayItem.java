@@ -12,7 +12,7 @@ import cn.oyzh.i18n.I18nHelper;
  */
 public class DesktopTrayItem extends TrayItem {
 
-    public DesktopTrayItem(String iconSize, Runnable action) {
-        super(I18nHelper.open(), new DesktopSVGGlyph(iconSize), action);
+    public DesktopTrayItem(Runnable action) {
+        super(I18nHelper.open(), new DesktopSVGGlyph(), action);
     }
 }

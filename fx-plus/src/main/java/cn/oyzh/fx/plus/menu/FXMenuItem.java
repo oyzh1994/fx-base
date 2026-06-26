@@ -1,16 +1,15 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
-import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
-import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.geometry.Insets;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
@@ -22,26 +21,26 @@ import javafx.scene.text.Font;
  * @author oyzh
  * @since 2023/3/3
  */
-public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, StateAdapter, ThemeAdapter, DestroyAdapter {
+public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, StateAdapter, ThemeAdapter, Destroyable {
 
     {
         NodeManager.init(this);
     }
 
-//    private ChangeListener<Boolean> disableListener = (observable, oldValue, newValue) -> {
-//        if (this.getGraphic() != null) {
-//            this.getGraphic().setDisable(newValue);
-//        }
-//    };
+    private final ChangeListener<Boolean> disableListener = (observable, oldValue, newValue) -> {
+        if (this.getGraphic() != null) {
+            this.getGraphic().setDisable(newValue);
+        }
+    };
 
     {
         this.setStyle("-fx-padding: 0 0 0 0;");
-//        this.disableProperty().addListener(this.disableListener);
-        this.disableProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.getGraphic() != null) {
-                this.getGraphic().setDisable(newValue);
-            }
-        });
+        this.disableProperty().addListener(this.disableListener);
+        //        this.disableProperty().addListener((observable, oldValue, newValue) -> {
+        //            if (this.getGraphic() != null) {
+        //                this.getGraphic().setDisable(newValue);
+        //            }
+        //        });
     }
 
     public FXMenuItem() {
@@ -82,65 +81,44 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
         return getWidth(this);
     }
 
-    // public void fixed() {
-    //
-    // }
+    //    /**
+    //     * 使用svg和文字来生成菜单项
+    //     *
+    //     * @param text   文字
+    //     * @param glyph  svg内容
+    //     * @param action 执行业务
+    //     * @return 菜单项
+    //     */
+    //    @Deprecated
+    //    public static FXMenuItem newItem(String text, SVGGlyph glyph, Runnable action) {
+    //        // 生成标签
+    //        SVGLabel label = new SVGLabel(text, glyph);
+    //        // 设置边距
+    //        label.setPadding(Insets.EMPTY);
+    //        // 计算宽度
+    //        double w = FontUtil.textWidth(text);
+    //        if (glyph != null) {
+    //            w += glyph.getWidth() + 25;
+    //        }
+    //        // 设置宽度
+    //        label.setMaxWidth(w);
+    //        label.setMinWidth(w);
+    //        label.setPrefWidth(w);
+    //        // 生成菜单项
+    //        return new FXMenuItem(label, null, action);
+    //    }
 
-    /**
-     * 使用svg和文字来生成菜单项
-     *
-     * @param text   文字
-     * @param glyph  svg内容
-     * @param action 执行业务
-     * @return 菜单项
-     */
-    @Deprecated
-    public static FXMenuItem newItem(String text, SVGGlyph glyph, Runnable action) {
-        // 生成标签
-        SVGLabel label = new SVGLabel(text, glyph);
-        // 设置边距
-        label.setPadding(Insets.EMPTY);
-        // 计算宽度
-        double w = FontUtil.textWidth(text);
-        if (glyph != null) {
-            w += glyph.getWidth() + 25;
-        }
-        // 设置宽度
-        label.setMaxWidth(w);
-        label.setMinWidth(w);
-        label.setPrefWidth(w);
-        // 生成菜单项
-        return new FXMenuItem(label, null, action);
-    }
-
-    /**
-     * 使用文字来生成菜单项
-     *
-     * @param text   文字
-     * @param action 执行业务
-     * @return 菜单项
-     */
-    @Deprecated
-    public static FXMenuItem newItem(String text, Runnable action) {
-        return new FXMenuItem(null, text, action);
-    }
-
-//     @Override
-//     public void destroy() {
-//         if (this.getParentMenu() != null) {
-//             return;
-//         }
-// //        if (this.disableListener != null) {
-// //            this.disableProperty().removeListener(this.disableListener);
-//         this.disableProperty().unbind();
-// //            this.disableListener = null;
-// //        }
-//         this.setText(null);
-//         this.setStyle(null);
-//         this.setGraphic(null);
-//         this.setOnAction(null);
-//         this.clearProps();
-//     }
+    //    /**
+    //     * 使用文字来生成菜单项
+    //     *
+    //     * @param text   文字
+    //     * @param action 执行业务
+    //     * @return 菜单项
+    //     */
+    //    @Deprecated
+    //    public static FXMenuItem newItem(String text, Runnable action) {
+    //        return new FXMenuItem(null, text, action);
+    //    }
 
     @Override
     public void initNode() {
@@ -167,5 +145,14 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
         }
         w += 80;
         return w;
+    }
+
+    @Override
+    public void destroy() {
+        this.setText(null);
+        this.setGraphic(null);
+        this.setOnAction(null);
+        this.disableProperty().removeListener(this.disableListener);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

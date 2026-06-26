@@ -17,14 +17,6 @@ import java.util.function.UnaryOperator;
  */
 public abstract class DigitalTextField extends LimitTextField {
 
-    {
-        this.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onBlur();
-            }
-        });
-    }
-
     /**
      * 最大值
      */
@@ -40,12 +32,12 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected Number step = 1L;
 
-    /**
-     * 无符号模式
-     * TODO: 废弃，以mavVal和minVal来限制
-     */
-    @Deprecated
-    private boolean unsigned;
+//    /**
+//     * 无符号模式
+//     * TODO: 废弃，以mavVal和minVal来限制
+//     */
+//    @Deprecated
+//    private boolean unsigned;
 
     public Number getMaxVal() {
         return maxVal;
@@ -71,15 +63,15 @@ public abstract class DigitalTextField extends LimitTextField {
         this.step = step;
     }
 
-    @Deprecated
-    public boolean isUnsigned() {
-        return unsigned;
-    }
-
-    @Deprecated
-    public void setUnsigned(boolean unsigned) {
-        this.unsigned = unsigned;
-    }
+    //    @Deprecated
+    //    public boolean isUnsigned() {
+    //        return unsigned;
+    //    }
+    //
+    //    @Deprecated
+    //    public void setUnsigned(boolean unsigned) {
+    //        this.unsigned = unsigned;
+    //    }
 
     public TextFormatter<String> textFormatter() {
         return textFormatter;
@@ -90,7 +82,7 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected final TextFormatter<String> textFormatter;
 
-    public DigitalTextField(boolean unsigned, Long maxLen) {
+    public DigitalTextField(Long maxLen) {
         // 创建文本格式化器
         this.textFormatter = new TextFormatter<>(this.getConverter(), null, this.createFilter());
         // 将TextFormatter对象设置到文本字段中
@@ -98,21 +90,7 @@ public abstract class DigitalTextField extends LimitTextField {
         // 监听值变化
         this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
         this.setMaxLen(maxLen);
-        this.setUnsigned(unsigned);
-    }
-
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
-    public DigitalTextFieldSkin skin() {
-        DigitalTextFieldSkin skin = (DigitalTextFieldSkin) this.getSkin();
-        if (skin == null) {
-            this.setSkin(this.createDefaultSkin());
-            skin = (DigitalTextFieldSkin) this.getSkin();
-        }
-        return skin;
+        //        this.setUnsigned(unsigned);
     }
 
     protected abstract DigitalConverter getConverter();
@@ -256,25 +234,26 @@ public abstract class DigitalTextField extends LimitTextField {
 
     @Override
     public void setValue(Object value) {
-        if (value instanceof Number number) {
-            this.value(number);
-        } else if (value instanceof CharSequence sequence) {
-            this.value(NumberUtil.parseNumber(sequence.toString()));
+        try {
+            if (value instanceof Number number) {
+                this.value(number);
+            } else if (value instanceof CharSequence sequence) {
+                this.value(NumberUtil.parseNumber(sequence.toString()));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
-        return new DigitalTextFieldSkin(this, this::incrValue, this::decrValue);
+    public DigitalTextFieldSkin skin() {
+        return (DigitalTextFieldSkin) super.skin();
     }
 
-    // public void setBtnMarginRight(float btnMarginRight) {
-    //     this.skin().setBtnMarginRight(btnMarginRight);
-    // }
-    //
-    // public float getBtnMarginRight() {
-    //     return this.skin().getBtnMarginRight();
-    // }
+    @Override
+    protected DigitalTextFieldSkin createDefaultSkin() {
+        return new DigitalTextFieldSkin(this, this::incrValue, this::decrValue);
+    }
 
     @Override
     protected void onBlur() {
@@ -288,5 +267,17 @@ public abstract class DigitalTextField extends LimitTextField {
         } else if (this.maxVal != null && val > this.maxVal.doubleValue()) {
             this.setValue(this.maxVal);
         }
+    }
+
+    @Override
+    public void initNode() {
+        this.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                this.onFocus();
+            } else {
+                this.onBlur();
+            }
+        });
+        super.initNode();
     }
 }

@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.jar;
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.RuntimeUtil;
+import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -141,6 +142,7 @@ public class JarHandler implements PreHandler {
                 JarUtil.minimize(file.getPath(), file.getPath(), this::jarFilter);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                throw new RuntimeException(ex);
             }
         }
         JulLog.info("handleLibs finish.");
@@ -168,7 +170,11 @@ public class JarHandler implements PreHandler {
             cmdArr = PkgUtil.getJDKExecCMD(jdkPath, cmdArr);
             String cmdStr = StringUtil.join(" ", cmdArr);
             JulLog.info(cmdStr);
-            RuntimeUtil.execForResult(cmdArr, null, dir);
+            ProcessExecResult result = RuntimeUtil.execForResult(cmdArr, null, dir);
+            if (!result.isSuccess()) {
+                JulLog.error("Jar error:{} exitCode:{}", result.getError(), result.getExitCode());
+                throw new RuntimeException("Jar error:" + result.getError() + " exitCode:" + result.getExitCode());
+            }
         } else {// 单个jar逐个合并
             List<File> files = FileUtil.loopFiles(dir);
             files = files.parallelStream().filter(f -> f.isFile() && f.getName().endsWith(".jar")).toList();
@@ -178,7 +184,11 @@ public class JarHandler implements PreHandler {
                 cmdArr = PkgUtil.getJDKExecCMD(jdkPath, cmdArr);
                 String cmdStr = StringUtil.join(" ", cmdArr);
                 JulLog.info(cmdStr);
-                RuntimeUtil.execForResult(cmdArr, null, dir);
+                ProcessExecResult result = RuntimeUtil.execForResult(cmdArr, null, dir);
+                if (!result.isSuccess()) {
+                    JulLog.error("Jar error:{} exitCode:{}", result.getError(), result.getExitCode());
+                    throw new RuntimeException("Jar error:" + result.getError() + " exitCode:" + result.getExitCode());
+                }
             }
         }
         // 移动主jar文件到原始目录

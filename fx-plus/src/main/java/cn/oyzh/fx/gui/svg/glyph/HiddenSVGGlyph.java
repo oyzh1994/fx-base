@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class HiddenSVGGlyph extends SVGGlyph {
 
     public HiddenSVGGlyph() {
-        this.setUrl("/fx-svg/hidden.svg");
+        super("/fx-svg/hidden.svg");
     }
 
     public HiddenSVGGlyph(String size) {

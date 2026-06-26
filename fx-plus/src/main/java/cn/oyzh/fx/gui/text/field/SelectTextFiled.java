@@ -2,8 +2,6 @@ package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.gui.skin.SelectTextFiledSkin;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,29 +13,15 @@ import java.util.function.Consumer;
  */
 public class SelectTextFiled<T> extends LimitTextField {
 
-    /**
-     * 当前皮肤
-     *
-     * @return 皮肤
-     */
+    @Override
     public SelectTextFiledSkin<T> skin() {
-        if (this.getSkin() == null) {
-            this.setSkin(this.createDefaultSkin());
-        }
-        return (SelectTextFiledSkin<T>) this.getSkin();
+        return (SelectTextFiledSkin<T>) super.skin();
     }
 
     @Override
     protected SelectTextFiledSkin<T> createDefaultSkin() {
-        if (this.getSkin() != null) {
-            return (SelectTextFiledSkin<T>) this.getSkin();
-        }
         return new SelectTextFiledSkin<>(this);
     }
-
-//    public void clearItem() {
-//        this.clearItemList();
-//    }
 
     public void addItem(T item) {
         if (this.getItemList() == null) {
@@ -70,10 +54,6 @@ public class SelectTextFiled<T> extends LimitTextField {
         return this.skin().getLineHeight();
     }
 
-    // public void selectIndexChanged(ChangeListener<Number> listener) {
-    //     this.skin().selectIndexChanged(listener);
-    // }
-
     public void selectItem(T item) {
         this.skin().selectItem(item);
         this.skin().setTexting();
@@ -102,29 +82,39 @@ public class SelectTextFiled<T> extends LimitTextField {
      * 文本变更事件
      *
      * @param newValue 新文本
+     * @return 结果
      */
-    protected void onTextChanged(String newValue) {
+    protected boolean onTextChanged(String newValue) {
         if (this.skin().isTexting()) {
             this.skin().clearTexting();
-            return;
+            this.skin().hidePopup();
+            return false;
         }
         if (!this.isFocused()) {
-            return;
+            this.skin().hidePopup();
+            return false;
         }
+        if (this.isDisable()) {
+            this.skin().hidePopup();
+            return false;
+        }
+        // 移除选区
+        this.clearSelection();
+        return true;
     }
 
     @Override
     public void initNode() {
-        super.initNode();
         this.addTextChangeListener((observableValue, s, t1) -> {
-            TaskManager.startDelay(() -> this.onTextChanged(t1), 10);
-//            TaskManager.startDelay(this.hashCode() + ":text:changed", () -> this.onTextChanged(t1), 10);
+            TaskManager.startDelay(() -> this.onTextChanged(t1), 50);
         });
-        this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
-                this.skin().selectFirst();
-            }
-        });
+        //this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        //    if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
+        //        this.skin().selectFirst();
+        //        event.consume();
+        //    }
+        //});
+        super.initNode();
     }
 
     /**
@@ -139,5 +129,11 @@ public class SelectTextFiled<T> extends LimitTextField {
      */
     public void selectFirstItem() {
         this.skin().selectFirst();
+    }
+
+    @Override
+    public void destroy() {
+        this.clearItemList();
+        super.destroy();
     }
 }

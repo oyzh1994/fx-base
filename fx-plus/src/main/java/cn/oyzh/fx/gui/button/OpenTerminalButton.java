@@ -19,7 +19,7 @@ public class OpenTerminalButton extends IconButton {
         this.addClass("default");
         this.setText(I18nHelper.openTerminal());
         this.setTipText(I18nHelper.openTerminal());
-        this.init(new TerminalSVGGlyph(), 0.7);
+        this.init(new TerminalSVGGlyph());
         super.initNode();
     }
 }

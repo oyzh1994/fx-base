@@ -8,7 +8,6 @@ import cn.oyzh.fx.gui.text.field.DigitalTextField;
 import cn.oyzh.fx.gui.text.field.LimitTextField;
 import cn.oyzh.fx.gui.text.field.NumberTextField;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
-import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
 import com.sun.javafx.scene.control.skin.FXVK;
@@ -57,8 +56,8 @@ public class AppTestMain extends Application {
         // test2(stage);
         // test3(stage);
         //test4(stage);
-//        test5(stage);
-//         test6(stage);
+        //        test5(stage);
+        //         test6(stage);
         test7(stage);
     }
 
@@ -92,7 +91,7 @@ public class AppTestMain extends Application {
         textField2.setMaxWidth(200);
         vbox.getChildren().addAll(textField2);
 
-        DigitalTextField textField3 = new DigitalTextField(false, 10L) {
+        DigitalTextField textField3 = new DigitalTextField(10L) {
             @Override
             protected DigitalConverter getConverter() {
                 return null;
@@ -293,7 +292,7 @@ public class AppTestMain extends Application {
     private void test7(Stage stage) {
 
         FXVBox vbox = new FXVBox();
-        TextField field=new TextField();
+        TextField field = new TextField();
 
         vbox.addChild(field);
         Scene scene = new Scene(vbox, 400, 300);

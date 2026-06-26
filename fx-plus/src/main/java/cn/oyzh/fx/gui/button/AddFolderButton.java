@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.button;
+
+
+import cn.oyzh.fx.gui.svg.glyph.AddGroupSVGGlyph;
+import cn.oyzh.fx.plus.controls.button.IconButton;
+import cn.oyzh.i18n.I18nHelper;
+
+/**
+ * 分组按钮
+ *
+ * @author oyzh
+ * @since 2024/04/08
+ */
+public class AddFolderButton extends IconButton {
+
+    @Override
+    public void initNode() {
+        this.setRealHeight(30);
+        this.addClass("accent");
+        this.setText(I18nHelper.addFolder1());
+        this.setTipText(I18nHelper.addFolder1());
+        this.init(new AddGroupSVGGlyph());
+        super.initNode();
+    }
+}

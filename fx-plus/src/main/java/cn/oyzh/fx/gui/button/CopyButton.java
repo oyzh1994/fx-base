@@ -18,7 +18,7 @@ public class CopyButton extends IconButton {
         this.setRealHeight(30);
         this.setText(I18nHelper.copy());
         this.setTipText(I18nHelper.copy());
-        this.init(new CopySVGGlyph(), 0.7);
+        this.init(new CopySVGGlyph());
         super.initNode();
     }
 }

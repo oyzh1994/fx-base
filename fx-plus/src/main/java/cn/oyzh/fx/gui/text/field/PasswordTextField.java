@@ -14,7 +14,6 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.validator.ValidatorUtil;
 import cn.oyzh.fx.plus.validator.Verifiable;
-import javafx.scene.control.Skin;
 
 /**
  * 密码文本域
@@ -116,7 +115,7 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
+    protected PasswordTextFieldSkin createDefaultSkin() {
         return new PasswordTextFieldSkin(this);
     }
 }

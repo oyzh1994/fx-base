@@ -16,7 +16,7 @@ public class UnLockButton extends IconButton {
     public void initNode() {
         this.setRealHeight(30);
         this.addClass("accent");
-        this.init(new UnLockSVGGlyph(), 0.7);
+        this.init(new UnLockSVGGlyph());
         super.initNode();
     }
 }

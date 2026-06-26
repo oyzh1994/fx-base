@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class ExpandAllSVGGlyph extends SVGGlyph {
 
     public ExpandAllSVGGlyph() {
-        this.setUrl("/fx-svg/colum-height.svg");
+        super("/fx-svg/colum-height.svg");
     }
 
     public ExpandAllSVGGlyph(String size) {

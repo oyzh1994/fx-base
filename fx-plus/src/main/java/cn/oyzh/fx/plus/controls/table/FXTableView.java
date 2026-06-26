@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.common.object.Destroyable;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.flex.FlexUtil;
@@ -10,9 +9,9 @@ import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
-import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -21,6 +20,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.skin.NestedTableColumnHeader;
@@ -35,26 +35,16 @@ import java.util.List;
  * @author oyzh
  * @since 2022/1/18
  */
-public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S>, DestroyAdapter, FontAdapter {
+public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S>, Destroyable, FontAdapter {
 
     {
         NodeManager.init(this);
     }
 
-//    protected void initTableView() {
-//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-//        this.initEvenListener();
-//    }
-
     /**
      * 初始化事件监听器
      */
     protected void initEvenListener() {
-//        this.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-//            if(!t1){
-//                this.clearSelection();
-//            }
-//        });
     }
 
     /**
@@ -69,26 +59,22 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     @Override
     public void initNode() {
         this.setCache(false);
-        this.setHeaderHeight(30);
-        this.setFixedCellSize(30);
-        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        //        this.setHeaderHeight(30);
+        //        this.setFixedCellSize(30);
+        //        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_LAST_COLUMN);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_NEXT_COLUMN);
+        //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_SUBSEQUENT_COLUMNS);
         this.initEvenListener();
         this.setReorderable(false);
-//        this.setFocusTraversable(false);
-//        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
         // 监听列
         this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
             if (c.next()) {
                 c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
             }
         });
-        // // 监听数据
-        // this.itemList().addListener((ListChangeListener<S>) c -> {
-        //     if (c.next()) {
-        //         c.getRemoved().forEach(NodeDestroyUtil::destroy);
-        //     }
-        // });
         FlexAdapter.super.initNode();
     }
 
@@ -140,7 +126,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     public void selectedItemChanged(ChangeListener<S> listener) {
         this.getSelectionModel().selectedItemProperty().addListener(listener);
-//        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
+        //        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
     }
 
     @Override
@@ -157,11 +143,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         for (TableColumn<?, ?> column : columns) {
             if (column instanceof FlexAdapter flexNode) {
                 if (column.isVisible()) {
-                    if (column.isResizable()) {
-                        flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-                    }
-                } else {
-                    NodeUtil.setWidth(column, 0D);
+                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
                 }
             }
         }
@@ -216,15 +198,15 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FXUtil.runWait(() -> super.getColumns().add(column));
     }
 
-    public void addColumnsAll(List<? extends TableColumn<S, ?>> columns) {
+    public void addColumn(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().addAll(columns));
     }
 
-    public void setColumnsAll(List<? extends TableColumn<S, ?>> columns) {
+    public void setColumn(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().setAll(columns));
     }
 
-    public void clearColumns() {
+    public void clearColumn() {
         FXUtil.runWait(() -> super.getColumns().clear());
     }
 
@@ -269,9 +251,9 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     /**
      * 销毁节点
      */
-    protected void destroyItems(){
+    protected void destroyItems() {
         for (S item : this.getItems()) {
-            if(item instanceof Destroyable destroyable){
+            if (item instanceof Destroyable destroyable) {
                 destroyable.destroy();
             }
         }
@@ -280,13 +262,13 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     /**
      * 移除时销毁节点
      */
-    protected void destroyItemsOnRemoved(){
+    protected void destroyItemsOnRemoved() {
         // 监听移除
         this.itemList().addListener((ListChangeListener<S>) change -> {
             if (change.next()) {
                 List<?> list = change.getRemoved();
                 for (Object object : list) {
-                    if (object instanceof Destroyable destroyable){
+                    if (object instanceof Destroyable destroyable) {
                         destroyable.destroy();
                     }
                 }
@@ -297,40 +279,49 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
     /**
      * 销毁列
      */
-    protected void destroyColumns(){
-        for (TableColumn<?,?> column : this.getColumns()) {
-            if(column instanceof Destroyable destroyable){
+    protected void destroyColumn() {
+        for (TableColumn<?, ?> column : this.getColumns()) {
+            if (column instanceof Destroyable destroyable) {
                 destroyable.destroy();
             }
         }
     }
 
     /**
-     * 移除时销毁列
+     * 仅显示图标
      */
-    protected void destroyColmnsOnRemoved(){
-        // 监听移除
-        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) change -> {
-            if (change.next()) {
-                List<?> list = change.getRemoved();
-                for (Object object : list) {
-                    if (object instanceof Destroyable destroyable){
-                        destroyable.destroy();
-                    }
-                }
+    public void showGraphicOnly() {
+        for (TableColumn<S, ?> column : this.getColumns()) {
+            if (column instanceof FXTableColumn<S, ?> tableColumn) {
+                tableColumn.showGraphicOnly();
             }
-        });
+        }
+    }
+
+    /**
+     * 仅显示图标，延迟处理
+     */
+    public void showGraphicOnlyLater() {
+        FXUtil.runPulse(this::showGraphicOnly);
+    }
+
+    /**
+     * 设置选区模式
+     *
+     * @param selectionMode 选区模式
+     */
+    public void setSelectionMode(SelectionMode selectionMode) {
+        this.getSelectionModel().setSelectionMode(selectionMode);
     }
 
     @Override
     public void destroy() {
-        this.ctrlSAction = null;
         this.clearProps();
         this.destroyItems();
         this.clearItems();
-        this.destroyColumns();
-        this.clearColumns();
-        this.setTooltip(null);
-        DestroyAdapter.super.destroy();
+        this.destroyColumn();
+        this.clearColumn();
+        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

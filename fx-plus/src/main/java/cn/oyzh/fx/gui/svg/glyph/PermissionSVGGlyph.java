@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 public class PermissionSVGGlyph extends SVGGlyph {
 
     public PermissionSVGGlyph() {
-        this.setUrl("/fx-svg/permissions.svg");
+        super("/fx-svg/permissions.svg");
     }
 
     public PermissionSVGGlyph(String size) {

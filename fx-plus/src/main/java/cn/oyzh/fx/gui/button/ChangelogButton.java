@@ -19,7 +19,7 @@ public class ChangelogButton extends IconButton {
         this.addClass("danger");
         this.setText(I18nHelper.changelog());
         this.setTipText(I18nHelper.changelog());
-        this.init(new ChangelogSVGGlyph(), 0.7);
+        this.init(new ChangelogSVGGlyph());
         super.initNode();
     }
 }
