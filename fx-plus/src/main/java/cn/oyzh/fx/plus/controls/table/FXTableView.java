@@ -141,10 +141,8 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FlexAdapter.super.resizeNode(width, height);
         ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
         for (TableColumn<?, ?> column : columns) {
-            if (column instanceof FlexAdapter flexNode) {
-                if (column.isVisible()) {
-                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-                }
+            if (column instanceof FlexAdapter flexNode && column.isVisible()) {
+                flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
             }
         }
     }

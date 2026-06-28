@@ -637,19 +637,39 @@ public class NodeUtil {
     }
 
     /**
+     * 设置x坐标
+     *
+     * @param target  对象
+     * @param layoutX x坐标
+     */
+    public static void setLayoutX(EventTarget target, Double layoutX) {
+        if (layoutX == null || Double.isNaN(layoutX) || layoutX < 0) {
+            return;
+        }
+        if (target instanceof Node node) {
+            //if (!node.isManaged()) {
+            //    return;
+            //}
+            if (!node.layoutXProperty().isBound() && node.getLayoutX() != layoutX) {
+                node.setLayoutX(layoutX);
+            }
+        }
+    }
+
+    /**
      * 设置y坐标
      *
      * @param target  对象
      * @param layoutY y坐标
      */
     public static void setLayoutY(EventTarget target, Double layoutY) {
-        if (layoutY == null || Double.isNaN(layoutY) || layoutY <= 0) {
+        if (layoutY == null || Double.isNaN(layoutY) || layoutY < 0) {
             return;
         }
         if (target instanceof Node node) {
-            if (!node.isManaged()) {
-                return;
-            }
+            //if (!node.isManaged()) {
+            //    return;
+            //}
             if (!node.layoutYProperty().isBound() && node.getLayoutY() != layoutY) {
                 node.setLayoutY(layoutY);
             }

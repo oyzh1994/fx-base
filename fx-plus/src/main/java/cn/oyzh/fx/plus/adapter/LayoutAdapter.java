@@ -87,6 +87,15 @@ public interface LayoutAdapter extends EventTarget {
     }
 
     /**
+     * 设置layoutX，全部属性
+     *
+     * @param layoutX layoutX
+     */
+    default void setLayoutX(double layoutX) {
+        NodeUtil.setLayoutX(this, layoutX);
+    }
+
+    /**
      * 设置layoutY，全部属性
      *
      * @param layoutY layoutY
