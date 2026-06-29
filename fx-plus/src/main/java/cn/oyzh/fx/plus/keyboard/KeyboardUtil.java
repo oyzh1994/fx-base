@@ -134,14 +134,14 @@ public class KeyboardUtil {
             save_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
             selectAll_keyCombination = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
             undo_keyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-            redo_keyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+            redo_keyCombination = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
             cut_keyCombination = new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN);
             paste_keyCombination = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
             copy_keyCombination = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
             search_keyCombination = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
             run_keyCombination = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
             stop_keyCombination = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-            apply_keyCombination = new KeyCodeCombination(KeyCode.T, KeyCombination.META_DOWN);
+            apply_keyCombination = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
         }
     }
 

@@ -473,7 +473,7 @@ public class NodeUtil {
      * @param width  宽度
      */
     public static void setWidth(Object target, Double width) {
-        if (target == null || width == null || Double.isNaN(width) || width <= 0) {
+        if (target == null || width == null || Double.isNaN(width) || width < 0) {
             return;
         }
         if (target instanceof Node node && !node.isManaged()) {
@@ -787,10 +787,10 @@ public class NodeUtil {
                 if (!item.visibleProperty().isBound()) {
                     item.setVisible(false);
                 }
-            } else if (obj instanceof Tab tab) {
-                if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
-                    tab.getContent().setVisible(false);
-                }
+//            } else if (obj instanceof Tab tab) {
+//                if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
+//                    tab.getContent().setVisible(false);
+//                }
             } else if (obj instanceof Stage stage) {
                 if (stage.isShowing()) {
                     FXUtil.runWait(stage::close);
