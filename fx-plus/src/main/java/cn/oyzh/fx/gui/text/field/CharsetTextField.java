@@ -83,7 +83,7 @@ public class CharsetTextField extends SelectTextFiled<String> {
         // 隐藏弹窗
         if (StringUtil.isBlank(newValue)) {
             this.setItemList(this.charsets());
-            this.skin().hidePopup();
+            this.skin().showPopup();
             return false;
         }
         // 过滤内容

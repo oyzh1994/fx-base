@@ -29,7 +29,7 @@ public class FontFamilyTextField extends SelectTextFiled<String> {
         // 隐藏弹窗
         if (StringUtil.isBlank(newValue)) {
             this.setItemList(fonts);
-            this.skin().hidePopup();
+            this.skin().showPopup();
             return false;
         }
         // 过滤内容

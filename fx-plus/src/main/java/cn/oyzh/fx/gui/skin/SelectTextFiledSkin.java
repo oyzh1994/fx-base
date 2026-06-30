@@ -120,6 +120,47 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     }
 
     /**
+     * 执行预览
+     */
+    protected void doPreview(){
+        // 选中数据
+        T item = this.listView().getSelectedItem();
+        // 设置数据中标志位
+        this.setTexting();
+        if (item == null) {
+            this.getSkinnable().clear();
+        } else if (this.converter != null) {
+            this.getSkinnable().setText(this.converter.toString(item));
+        } else {
+            this.getSkinnable().setText(item.toString());
+        }
+    }
+
+    /**
+     * 执行选中
+     */
+    protected void doSelected(){
+        // 选中数据
+        T item = this.listView().getSelectedItem();
+        // 执行选中
+        this.doSelected(item);
+    }
+
+    /**
+     * 执行选中
+     * @param item 选中的节点
+     */
+    protected void doSelected(T item){
+        // 执行预览
+        this.doPreview();
+        // 设置数据中标志位
+        if (item != null && this.selectItemChanged != null) {
+            this.selectItemChanged.accept(item);
+        }
+        this.hidePopup();
+    }
+
+    /**
      * 初始化弹窗
      */
     protected void initPopup() {
@@ -133,32 +174,6 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         FXListView<T> listView = new FXListView<>();
         // 设置数据
         listView.setItem(this.getItemList());
-        // 预览函数
-        Runnable previewFunc = () -> {
-            // 选中数据
-            T item = listView.getSelectedItem();
-            // 设置数据中标志位
-            this.setTexting();
-            if (item == null) {
-                textField.clear();
-            } else if (this.converter != null) {
-                textField.setText(this.converter.toString(item));
-            } else {
-                textField.setText(item.toString());
-            }
-        };
-        // 选中函数
-        Runnable selectedFunc = () -> {
-            // 执行预览
-            previewFunc.run();
-            // 选中数据
-            T item = listView.getSelectedItem();
-            // 设置数据中标志位
-            if (item != null && this.selectItemChanged != null) {
-                this.selectItemChanged.accept(item);
-            }
-            this.hidePopup();
-        };
         //// 选中内容变化时仅预览（更新文本），不关闭弹窗、不触发selectItemChanged
         //listView.selectedItemChanged((observableValue, t, t1) -> {
         //    if (!listView.isIgnoreChanged()) {
@@ -169,13 +184,13 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         // 鼠标点击时确认选择并关闭弹窗
         listView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
             if (this.popup != null && this.popup.isShowing()) {
-                selectedFunc.run();
+                this.doSelected();
             }
         });
         // 键盘回车时确认选择并关闭弹窗
         listView.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                selectedFunc.run();
+                this.doSelected();
             }
         });
         listView.setCellFactory(new Callback<>() {
@@ -231,11 +246,6 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         return super.button;
     }
 
-//    @Override
-//    protected void setButtonSize(double size) {
-//        super.button.setSize(size * 0.6 * 1.5, size * .6);
-//    }
-
     @Override
     protected void updateButtonVisibility() {
         boolean visible = this.getSkinnable().isVisible();
@@ -286,10 +296,12 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      */
     public void selectItem(T item) {
         if (item != null) {
-            if (this.popup == null) {
-                this.initPopup();
-            }
-            this.listView().select(item);
+//            if (this.popup == null) {
+//                this.initPopup();
+//            }
+//            this.listView().select(item);
+            // 执行选中
+            this.doSelected(item);
         }
     }
 
