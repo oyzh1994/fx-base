@@ -11,6 +11,7 @@ import cn.oyzh.fx.plus.util.ListViewUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -18,11 +19,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -116,13 +119,19 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
             listView.setItem(this.getItemList());
             listView.clearSelection();
             listView.setIgnoreChanged(false);
+            // 同步布局
+            if (NodeUtil.isOrientationRightToLeft(textField)) {
+                listView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+            } else {
+                listView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+            }
         }
     }
 
     /**
      * 执行预览
      */
-    protected void doPreview(){
+    protected void doPreview() {
         // 选中数据
         T item = this.listView().getSelectedItem();
         // 设置数据中标志位
@@ -139,7 +148,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     /**
      * 执行选中
      */
-    protected void doSelected(){
+    protected void doSelected() {
         // 选中数据
         T item = this.listView().getSelectedItem();
         // 执行选中
@@ -148,9 +157,10 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
 
     /**
      * 执行选中
+     *
      * @param item 选中的节点
      */
-    protected void doSelected(T item){
+    protected void doSelected(T item) {
         // 执行预览
         this.doPreview();
         // 设置数据中标志位
@@ -226,10 +236,6 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         scrollPane.prefWidthProperty().bind(textField.widthProperty());
         listView.prefWidthProperty().bind(textField.widthProperty());
         listView.prefHeightProperty().bind(scrollPane.heightProperty());
-        // 同步布局
-        if (NodeUtil.isOrientationRightToLeft(textField)) {
-            scrollPane.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        }
         this.popup.content(scrollPane);
     }
 
@@ -296,10 +302,10 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      */
     public void selectItem(T item) {
         if (item != null) {
-//            if (this.popup == null) {
-//                this.initPopup();
-//            }
-//            this.listView().select(item);
+            //            if (this.popup == null) {
+            //                this.initPopup();
+            //            }
+            //            this.listView().select(item);
             // 执行选中
             this.doSelected(item);
         }
@@ -453,6 +459,20 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
     @Override
     protected double getButtonSizeMax() {
         return 12;
+    }
+
+    @Override
+    protected void layoutChildren(double x, double y, double w, double h) {
+        super.layoutChildren(x, y, w, h);
+        // 通过 CSS 查找文本节点，并强制设为 LTR
+        Set<Node> textNode = getSkinnable().lookupAll(".text");
+        if (textNode != null) {
+            for (Node node : textNode) {
+                if (node instanceof Text text) {
+                    text.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+                }
+            }
+        }
     }
 
     @Override
