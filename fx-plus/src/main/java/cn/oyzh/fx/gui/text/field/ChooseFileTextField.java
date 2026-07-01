@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public class ChooseFileTextField extends FXTextField {
 
     @Override
-    public Object getValue() {
+    public byte[] getValue() {
         File file = this.skin().getFile();
         if (file != null) {
             return FileUtil.readBytes(file);
@@ -25,7 +25,7 @@ public class ChooseFileTextField extends FXTextField {
         if (super.getValue() instanceof byte[] bytes) {
             return bytes;
         }
-        return super.getValue().toString();
+        return null;
     }
 
     @Override
