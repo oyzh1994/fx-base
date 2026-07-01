@@ -17,12 +17,15 @@ import java.util.function.Consumer;
 public class ChooseFileTextField extends FXTextField {
 
     @Override
-    public byte[] getValue() {
+    public Object getValue() {
         File file = this.skin().getFile();
-        if (file == null) {
-            return (byte[]) super.getValue();
+        if (file != null) {
+            return FileUtil.readBytes(file);
         }
-        return FileUtil.readBytes(file);
+        if (super.getValue() instanceof byte[] bytes) {
+            return bytes;
+        }
+        return super.getValue().toString();
     }
 
     @Override
@@ -35,6 +38,9 @@ public class ChooseFileTextField extends FXTextField {
                 data[i] = bytes[i];
             }
             super.setValue(data);
+        } else if (val instanceof String string) {
+            super.setValue(string);
+            this.setText(string);
         }
     }
 
