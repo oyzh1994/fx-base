@@ -477,8 +477,16 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editFile(), new EditSVGGlyph(), action);
     }
 
+    public static FXMenuItem editDocument(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editDocument(), new EditSVGGlyph(), action);
+    }
+
     public static FXMenuItem view1File(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1File(), new ViewSVGGlyph(), action);
+    }
+
+    public static FXMenuItem view1Document(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1Document(), new ViewSVGGlyph(), action);
     }
 
     public static FXMenuItem view1User(Runnable action) {
@@ -523,6 +531,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem deleteFile(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFile(), new DeleteSVGGlyph(), action);
+    }
+
+    public static FXMenuItem deleteDocument(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteDocument(), new DeleteSVGGlyph(), action);
     }
 
     public static FXMenuItem deleteDir(Runnable action) {
