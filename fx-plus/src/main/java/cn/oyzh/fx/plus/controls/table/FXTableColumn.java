@@ -122,10 +122,8 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
 
     @Override
     public void setRealWidth(double width) {
-        if (this.isResizable()) {
-            if (!Double.isNaN(width) && width > 0) {
-                this.setPrefWidth(width);
-            }
+        if (this.isResizable() && !Double.isNaN(width) && width >= 0) {
+            this.setPrefWidth(width);
         }
     }
 
