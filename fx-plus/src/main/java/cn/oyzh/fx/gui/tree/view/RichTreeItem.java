@@ -1,12 +1,12 @@
 package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.common.object.Destroyable;
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -435,6 +435,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         RichTreeView treeView = this.getTreeView();
         if (treeView != null) {
             this.doFilter(treeView.getItemFilter());
+            this.refresh();
         }
     }
 
@@ -448,13 +449,15 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         if (items.isEmpty()) {
             return;
         }
-        this.getTreeView().setIgnoreChanged(true);
-        try {
-            this.doFilter(itemFilter, items);
-            items.set(0, items.getFirst());
-        } finally {
-            this.getTreeView().setIgnoreChanged(false);
-        }
+        BackgroundService.submitFX(() -> {
+            this.getTreeView().setIgnoreChanged(true);
+            try {
+                this.doFilter(itemFilter, items);
+                items.set(0, items.getFirst());
+            } finally {
+                this.getTreeView().setIgnoreChanged(false);
+            }
+        });
     }
 
     /**
@@ -467,16 +470,21 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         if (itemFilter != null) {
             try {
                 if (this.isFilterable()) {
-                    items.parallelStream().forEach(child -> {
+                    items.forEach(child -> {
                         child.setVisible(itemFilter.test(child));
-//                        child.doFilter(itemFilter);
-                        ThreadUtil.start(() -> child.doFilter(itemFilter));
+                        child.doFilter(itemFilter);
                     });
+                    //items.parallelStream().forEach(child -> {
+                    //    child.setVisible(itemFilter.test(child));
+                    //    ThreadUtil.start(() -> child.doFilter(itemFilter));
+                    //});
                 } else {
-                    items.parallelStream().forEach(child -> {
-//                        child.doFilter(itemFilter);
-                        ThreadUtil.start(() -> child.doFilter(itemFilter));
+                    items.forEach(child -> {
+                        child.doFilter(itemFilter);
                     });
+                    //items.parallelStream().forEach(child -> {
+                    //    ThreadUtil.start(() -> child.doFilter(itemFilter));
+                    //});
                 }
                 // this.doSort();
                 //                items.add(EMPTY);
