@@ -1,8 +1,10 @@
 package cn.oyzh.fx.gui.skin;
 
-import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.RegexSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -35,6 +37,8 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
     public HighlightTextFieldSkin(TextField textField) {
         super(textField);
     }
+
+    private CloseSVGGlyph clear;
 
     private RegexSVGGlyph regex;
 
@@ -122,7 +126,21 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
 
     private ChangeListener<? super Number> heightListener;
 
+    private void updateClearStatus() {
+        if (this.getSkinnable().isFocused() && StringUtil.isNotEmpty(this.getText())) {
+            this.clear.display();
+        } else {
+            this.clear.disappear();
+        }
+    }
+
     private void doInit() {
+        this.getSkinnable().textProperty().addListener((observable, oldValue, newValue) -> {
+            this.updateClearStatus();
+        });
+        this.getSkinnable().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            this.updateClearStatus();
+        });
         this.regexMouseExitHandler = event -> {
             if (!this.isRegex()) {
                 this.regex.setBackground(null);
@@ -188,8 +206,9 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
             val -= (nHeight / 2);
             val /= 2;
             Insets insets1 = new Insets(val, 0, 0, 0);
-            HBox.setMargin(this.matchCase, insets1);
+            HBox.setMargin(this.clear, insets1);
             Insets insets2 = new Insets(val, 0, 0, 8);
+            HBox.setMargin(this.matchCase, insets2);
             HBox.setMargin(this.regex, insets2);
             HBox.setMargin(this.wholeWord, insets2);
         };
@@ -199,6 +218,11 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
     public ObjectProperty<Node> rightProperty() {
         if (super.rightProperty == null) {
             this.doInit();
+            this.clear = new CloseSVGGlyph();
+            this.clear.setOnMousePrimaryClicked(event -> {
+                this.getSkinnable().clear();
+            });
+            this.clear.disappear();
             this.regex = new RegexSVGGlyph();
             this.regex.addEventFilter(MouseEvent.MOUSE_EXITED, this.regexMouseExitHandler);
             this.regex.addEventFilter(MouseEvent.MOUSE_ENTERED, this.regexMouseEnterHandler);
@@ -213,6 +237,7 @@ public class HighlightTextFieldSkin extends FXTextFieldSkin {
             this.matchCase.addEventFilter(MouseEvent.MOUSE_CLICKED, this.matchCaseMouseClickHandler);
 
             FXHBox hBox = new FXHBox();
+            hBox.addChild(this.clear);
             hBox.addChild(this.matchCase);
             hBox.addChild(this.wholeWord);
             hBox.addChild(this.regex);

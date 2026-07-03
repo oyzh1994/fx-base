@@ -1,5 +1,7 @@
 package cn.oyzh.fx.gui.skin;
 
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.MatchCaseSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.WholeWordSVGGlyph;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
@@ -33,6 +35,8 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
     public FilterTextFieldSkin(TextField textField) {
         super(textField);
     }
+
+    private CloseSVGGlyph clear;
 
     private WholeWordSVGGlyph wholeWord;
 
@@ -92,7 +96,21 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
 
     private ChangeListener<? super Number> heightListener;
 
+    private void updateClearStatus() {
+        if (this.getSkinnable().isFocused() && StringUtil.isNotEmpty(this.getText())) {
+            this.clear.display();
+        } else {
+            this.clear.disappear();
+        }
+    }
+
     private void doInit() {
+        this.getSkinnable().textProperty().addListener((observable, oldValue, newValue) -> {
+            this.updateClearStatus();
+        });
+        this.getSkinnable().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            this.updateClearStatus();
+        });
         this.wholeWordMouseExitHandler = event -> {
             if (!this.isWholeWord()) {
                 this.wholeWord.setBackground(null);
@@ -136,12 +154,13 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
                 val -= insets.getTop();
                 val -= insets.getBottom();
             }
-            double nHeight= NodeUtil.getHeight(this.wholeWord);
+            double nHeight = NodeUtil.getHeight(this.wholeWord);
             val -= (nHeight / 2);
             val /= 2;
             Insets insets1 = new Insets(val, 0, 0, 0);
-            HBox.setMargin(this.matchCase, insets1);
+            HBox.setMargin(this.clear, insets1);
             Insets insets2 = new Insets(val, 0, 0, 8);
+            HBox.setMargin(this.matchCase, insets2);
             HBox.setMargin(this.wholeWord, insets2);
         };
     }
@@ -150,6 +169,11 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
     public ObjectProperty<Node> rightProperty() {
         if (super.rightProperty == null) {
             this.doInit();
+            this.clear = new CloseSVGGlyph();
+            this.clear.setOnMousePrimaryClicked(event -> {
+                this.getSkinnable().clear();
+            });
+            this.clear.disappear();
             this.wholeWord = new WholeWordSVGGlyph();
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_EXITED, this.wholeWordMouseExitHandler);
             this.wholeWord.addEventFilter(MouseEvent.MOUSE_ENTERED, this.wholeWordMouseEnterHandler);
@@ -160,6 +184,7 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
             this.matchCase.addEventFilter(MouseEvent.MOUSE_CLICKED, this.matchCaseMouseClickHandler);
 
             FXHBox hBox = new FXHBox();
+            hBox.addChild(this.clear);
             hBox.addChild(this.matchCase);
             hBox.addChild(this.wholeWord);
             hBox.setPadding(Insets.EMPTY);
