@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.oyzh1994</groupId>
+        <artifactId>fx-base</artifactId>
+        <version>1.3.7</version>
+    </parent>
+
+    <name>fx-tty</name>
+    <artifactId>fx-tty</artifactId>
+
+    <description>
+        javafx for emulation terminal
+    </description>
+
+    <dependencies>
+
+        <!-- 自定义类库，fx相关 -->
+        <dependency>
+            <groupId>io.github.oyzh1994</groupId>
+            <artifactId>fx-plus</artifactId>
+        </dependency>
+
+        <!-- 自定义类库，ssh相关 -->
+        <dependency>
+            <groupId>io.github.oyzh1994</groupId>
+            <artifactId>base-ssh</artifactId>
+        </dependency>
+
+        <!--### JNA ###-->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>${jna.version}</version>
+        </dependency>
+
+        <!-- pty4j -->
+        <dependency>
+            <groupId>org.jetbrains.pty4j</groupId>
+            <artifactId>pty4j</artifactId>
+            <version>${pty4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jetbrains.jediterm/jediterm-core -->
+        <dependency>
+            <groupId>org.jetbrains.jediterm</groupId>
+            <artifactId>jediterm-core</artifactId>
+            <version>${jediterm.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jetbrains.jediterm/jediterm-ui -->
+        <dependency>
+            <groupId>org.jetbrains.jediterm</groupId>
+            <artifactId>jediterm-ui</artifactId>
+            <version>${jediterm.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${commons-net.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

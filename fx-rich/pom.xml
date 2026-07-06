@@ -12,7 +12,7 @@
     <name>fx-rich</name>
     <artifactId>fx-rich</artifactId>
     <description>
-        javafx基础模块，富文本的实现
+        javafx for richtext
     </description>
 
     <properties>

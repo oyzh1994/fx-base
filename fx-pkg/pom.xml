@@ -12,7 +12,7 @@
     <name>fx-pkg</name>
     <artifactId>fx-pkg</artifactId>
     <description>
-        javafx基础模块，打包功能的实现
+        javafx for package
     </description>
 
     <dependencies>

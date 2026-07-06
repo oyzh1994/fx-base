@@ -12,7 +12,7 @@
     <name>fx-plus</name>
     <artifactId>fx-plus</artifactId>
     <description>
-        javafx基础模块，fx功能增强
+        javafx enhance and extra
     </description>
 
     <dependencies>

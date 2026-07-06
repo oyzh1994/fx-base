@@ -12,7 +12,7 @@
     <name>fx-terminal</name>
     <artifactId>fx-terminal</artifactId>
     <description>
-        javafx基础模块，仿真终端的实现
+        javafx for simulation terminal
     </description>
 
     <dependencies>
