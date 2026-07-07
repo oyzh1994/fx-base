@@ -229,7 +229,7 @@ public abstract class NodeResizer implements Destroyable {
                 if (JulLog.isDebugEnabled()) {
                     JulLog.debug("MouseReleased");
                 }
-                event.consume();
+//                event.consume();
             }
         };
     }
