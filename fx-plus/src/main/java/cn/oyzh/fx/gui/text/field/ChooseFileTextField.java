@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 
 import java.io.File;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -45,7 +46,11 @@ public class ChooseFileTextField extends FXTextField {
     }
 
     public void setFilter(FileExtensionFilter filter) {
-        this.skin().setFilter(filter);
+        this.setFilters(List.of(filter));
+    }
+
+    public void setFilters(List<FileExtensionFilter> filter) {
+        this.skin().setFilters(filter);
     }
 
     public boolean isAlwaysShowGraphic() {
