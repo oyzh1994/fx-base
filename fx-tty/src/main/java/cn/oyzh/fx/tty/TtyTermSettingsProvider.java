@@ -68,13 +68,4 @@ public interface TtyTermSettingsProvider {
     default void setAltSendsEscape(boolean altSendsEscape) {
 
     }
-
-    /**
-     * 获取按键编码
-     *
-     * @param key       按键
-     * @param modifiers 修饰
-     * @return 结果
-     */
-    byte[] getCodeForKey(int key, int modifiers);
 }
