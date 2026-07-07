@@ -18,9 +18,9 @@ import java.util.List;
  * @author oyzh
  * @since 2025-03-04
  */
-public class TtyDefaultTtyConnector extends ProcessTtyConnector {
+public class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTerminalSizeable {
 
-    public TtyDefaultTtyConnector(PtyProcess process, Charset charset, List<String> commandLines) {
+    public TtyProcessTtyConnector(PtyProcess process, Charset charset, List<String> commandLines) {
         super(process, charset, commandLines);
     }
 
@@ -61,15 +61,6 @@ public class TtyDefaultTtyConnector extends ProcessTtyConnector {
         super.write(bytes);
     }
 
-    private SimpleObjectProperty<TermSize> terminalSizeProperty;
-
-    public SimpleObjectProperty<TermSize> terminalSizeProperty() {
-        if (this.terminalSizeProperty == null) {
-            this.terminalSizeProperty = new SimpleObjectProperty<>(this.getTermSize());
-        }
-        return this.terminalSizeProperty;
-    }
-
     @Override
     public void resize(@NotNull TermSize termSize) {
         try {
@@ -82,12 +73,23 @@ public class TtyDefaultTtyConnector extends ProcessTtyConnector {
         }
     }
 
+    @Override
     public TermSize getTermSize() {
         WinSize winSize = this.getWinSize();
         if (winSize != null) {
             return new TermSize(winSize.getColumns(), winSize.getRows());
         }
-        return null;
+        return this.terminalSizeProperty != null ? this.terminalSizeProperty.get() : null;
+    }
+
+    private SimpleObjectProperty<TermSize> terminalSizeProperty;
+
+    @Override
+    public SimpleObjectProperty<TermSize> terminalSizeProperty() {
+        if (this.terminalSizeProperty == null) {
+            this.terminalSizeProperty = new SimpleObjectProperty<>(this.getTermSize());
+        }
+        return this.terminalSizeProperty;
     }
 
     public WinSize getWinSize() {

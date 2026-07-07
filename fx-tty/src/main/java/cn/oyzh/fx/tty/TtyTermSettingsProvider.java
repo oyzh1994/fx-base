@@ -1,5 +1,6 @@
-package com.jediterm.terminal.ui;
+package cn.oyzh.fx.tty;
 
+import com.jediterm.terminal.ui.TerminalActionPresentation;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -8,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * @author oyzh
  * @since 2025-06-28
  */
-public interface FXTermSettingsProvider {
+public interface TtyTermSettingsProvider {
 
     /**
      * 获取增加终端字体大小操作
@@ -67,4 +68,13 @@ public interface FXTermSettingsProvider {
     default void setAltSendsEscape(boolean altSendsEscape) {
 
     }
+
+    /**
+     * 获取按键编码
+     *
+     * @param key       按键
+     * @param modifiers 修饰
+     * @return 结果
+     */
+    byte[] getCodeForKey(int key, int modifiers);
 }

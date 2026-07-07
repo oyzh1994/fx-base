@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.tty.TtyTermSettingsProvider;
 import cn.oyzh.fx.tty.TtyTerminalCopyPasteHandler;
 import com.jediterm.core.TerminalCoordinates;
 import com.jediterm.core.typeahead.TerminalTypeAheadManager;
@@ -1961,7 +1962,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                     return true;
                 }));
         // 扩展功能
-        if (mySettingsProvider instanceof FXTermSettingsProvider provider) {
+        if (mySettingsProvider instanceof TtyTermSettingsProvider provider) {
             list = new ArrayList<>(list);
             list.add(new FXTerminalAction((FXTerminalActionPresentation) provider.getIncrTermSizePresentation(), input -> {
                 this.incrTermSize();
@@ -2119,7 +2120,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
             // 退格处理
             if (keycode == KeyCode.BACK_SPACE) {
-                if (this.mySettingsProvider instanceof FXTermSettingsProvider provider && provider.getBackspaceCode() != null) {
+                if (this.mySettingsProvider instanceof TtyTermSettingsProvider provider && provider.getBackspaceCode() != null) {
                     Object code = provider.getBackspaceCode();
                     if (code instanceof String s) {
                         this.myTerminalStarter.sendString(s, true);
@@ -2850,12 +2851,6 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             return true;
         }
 
-        // CTRL + Space is not handled in KeyEvent; handle it manually
-        if (keychar == ' ') {
-            myTerminalStarter.sendBytes(new byte[]{FXAscii.ASCII_NUL}, true);
-            return true;
-        }
-
         return false;
     }
 
@@ -2905,7 +2900,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     protected void setTermFontSize(Float termSize) {
-        if (termSize != null && this.mySettingsProvider instanceof FXTermSettingsProvider provider) {
+        if (termSize != null && this.mySettingsProvider instanceof TtyTermSettingsProvider provider) {
             provider.setTerminalFontSize(termSize);
             this.reinitFontAndResize();
         }
