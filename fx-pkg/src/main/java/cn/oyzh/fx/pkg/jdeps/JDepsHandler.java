@@ -113,11 +113,11 @@ public class JDepsHandler implements PreHandler {
         }
         // 遍历所有文件，然后找出所有依赖模块
         Set<String> deps = new CopyOnWriteArraySet<>();
-        // 任务列表
-        List<Runnable> tasks = new ArrayList<>();
+//        // 任务列表
+//        List<Runnable> tasks = new ArrayList<>();
         // 添加任务
         for (String filePath : filePaths) {
-            Runnable func = () -> {
+//            Runnable func = () -> {
                 JulLog.info("jdeps jar: {}.", filePath);
                 String[] cmd = PkgUtil.getJDepsCMD(jDepsConfig, filePath);
                 // 列举模块
@@ -145,11 +145,11 @@ public class JDepsHandler implements PreHandler {
                         }
                     });
                 }
-            };
-            tasks.add(func);
+//            };
+//            tasks.add(func);
         }
-        // 异步执行
-        ThreadUtil.submit(tasks);
+//        // 异步执行
+//        ThreadUtil.submit(tasks);
         // 合并依赖模块
         jLinkConfig.margeAddModules(deps);
     }
