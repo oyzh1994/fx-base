@@ -42,26 +42,26 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
         // });
     }
 
-    /**
-     * 开启鼠标事件选中功能
-     * TODO: 临时解决方案，解决部分情况下，点击选中可能异常问题
-     */
-    public void setEnableSelectOnClick(boolean enableSelectOnClick) {
-        if (enableSelectOnClick) {
-            this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-                if (MouseUtil.isPrimaryButton(event) && MouseUtil.isSingleClick(event)) {
-                    this.setSelected(!this.isSelected());
-                    event.consume();
-                }
-            });
-        }
-        this.setProp("enableSelectOnClick", enableSelectOnClick);
-    }
-
-    public boolean isEnableSelectOnClick() {
-        Boolean enableSelectOnClick = this.getProp("enableSelectOnClick");
-        return enableSelectOnClick != null && enableSelectOnClick;
-    }
+//    /**
+//     * 开启鼠标事件选中功能
+//     * TODO: 临时解决方案，解决部分情况下，点击选中可能异常问题
+//     */
+//    public void setEnableSelectOnClick(boolean enableSelectOnClick) {
+//        if (enableSelectOnClick) {
+//            this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+//                if (MouseUtil.isPrimaryButton(event) && MouseUtil.isSingleClick(event)) {
+//                    this.setSelected(!this.isSelected());
+//                    event.consume();
+//                }
+//            });
+//        }
+//        this.setProp("enableSelectOnClick", enableSelectOnClick);
+//    }
+//
+//    public boolean isEnableSelectOnClick() {
+//        Boolean enableSelectOnClick = this.getProp("enableSelectOnClick");
+//        return enableSelectOnClick != null && enableSelectOnClick;
+//    }
 
     /**
      * 选中时显示的文字
@@ -81,24 +81,24 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
         return unselectedText;
     }
 
-    {
-//        this.setCache(false);
-        this.setCursor(Cursor.HAND);
-        // 设置文字靠右
-        this.setLabelPosition(HorizontalDirection.RIGHT);
-        // 选中变化事件
-        this.selectedChanged((observable, oldValue, t1) -> {
-            if (t1) {
-                if (StringUtil.isNotBlank(this.selectedText)) {
-                    this.setText(this.selectedText);
-                }
-            } else {
-                if (StringUtil.isNotBlank(this.unselectedText)) {
-                    this.setText(this.unselectedText);
-                }
-            }
-        });
-    }
+//    {
+////        this.setCache(false);
+//        this.setCursor(Cursor.HAND);
+//        // 设置文字靠右
+//        this.setLabelPosition(HorizontalDirection.RIGHT);
+//        // 选中变化事件
+//        this.selectedChanged((observable, oldValue, t1) -> {
+//            if (t1) {
+//                if (StringUtil.isNotBlank(this.selectedText)) {
+//                    this.setText(this.selectedText);
+//                }
+//            } else {
+//                if (StringUtil.isNotBlank(this.unselectedText)) {
+//                    this.setText(this.unselectedText);
+//                }
+//            }
+//        });
+//    }
 
     /**
      * 设置选中文字
@@ -136,9 +136,24 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
 
     @Override
     public void initNode() {
-        NodeAdapter.super.initNode();
-        this.setPadding(Insets.EMPTY);
         this.setPickOnBounds(true);
+        this.setCursor(Cursor.HAND);
+        this.setPadding(Insets.EMPTY);
+        // 设置文字靠右
+        this.setLabelPosition(HorizontalDirection.RIGHT);
+        // 选中变化事件
+        this.selectedChanged((observable, oldValue, t1) -> {
+            if (t1) {
+                if (StringUtil.isNotBlank(this.selectedText)) {
+                    this.setText(this.selectedText);
+                }
+            } else {
+                if (StringUtil.isNotBlank(this.unselectedText)) {
+                    this.setText(this.unselectedText);
+                }
+            }
+        });
+        NodeAdapter.super.initNode();
     }
 
     @Override
