@@ -7,6 +7,7 @@ import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
+import cn.oyzh.fx.plus.menu.ContextMenuManager;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
@@ -106,6 +107,7 @@ import java.text.BreakIterator;
 import java.text.CharacterIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1865,7 +1867,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             this.popup.getItems().clear();
             menu = this.popup;
         } else {
-            menu = new ContextMenu();
+            menu = ContextMenuManager.createContextMenu(this, Collections.emptyList());
             this.popup = menu;
         }
         FXTerminalAction.fillMenu(menu, actionProvider);
@@ -2035,7 +2037,21 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     public void clearBuffer() {
-        clearBuffer(true);
+        // TODO: 解决提示符后面有内容，清屏无法输入的问题
+        // 将清屏委托给 shell 处理（发送 ^L），而非本地清屏。
+        // clearBuffer 是 UI 触发的本地操作，本地清屏会导致终端与 shell 光标状态不一致，
+        // 特别是当提示符后有用户输入时，会造成无法正常输入。
+        // shell 收到 ^L 后会清屏并重绘提示符+用户输入，终端自动同步。
+        if (!myTerminalTextBuffer.isUsingAlternateBuffer()) {
+            myTerminalTextBuffer.clearHistory();
+            if (myTerminalStarter != null) {
+                try {
+                    myTerminalStarter.sendBytes(new byte[]{0x0C}, true);
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        //        clearBuffer(true);
     }
 
     /**
