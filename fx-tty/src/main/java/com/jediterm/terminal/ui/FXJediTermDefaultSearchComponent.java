@@ -123,20 +123,20 @@ public final class FXJediTermDefaultSearchComponent extends FXHBox implements FX
     // }
 
     private SVGGlyph createNextButton() {
-        return new Down1SVGGlyph("14");
+        return new Down1SVGGlyph();
     }
 
     private SVGGlyph createPrevButton() {
-        return new Up1SVGGlyph("14");
+        return new Up1SVGGlyph();
     }
 
     private SVGGlyph createCloseButton() {
-        return new CloseSVGGlyph("13");
+        return new CloseSVGGlyph();
     }
 
     private void updateLabel(@Nullable SubstringFinder.FindResult result) {
         if (result == null || result.getItems().isEmpty()) {
-            label.text("");
+            label.clear();
         } else {
             SubstringFinder.FindResult.FindItem selectedItem = result.selectedItem();
             label.text(selectedItem.getIndex() + " of " + result.getItems().size());
