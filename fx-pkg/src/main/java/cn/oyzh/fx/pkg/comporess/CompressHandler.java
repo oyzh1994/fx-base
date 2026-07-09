@@ -51,7 +51,7 @@ public class CompressHandler implements PostHandler {
                 //                }
                 case "zip" -> {
                     if (OSUtil.isMacOS() || OSUtil.isLinux()) {
-                        yield PkgUtil.zipDestWithUnixMode(compressName, dest);
+                        yield PkgUtil.zipDest(compressName, dest);
                         //                    } else if (packConfig.isPlatformMacos()) {
                         //                        yield PkgUtil.zipDestByMacos(compressName, dest);
                     } else {
@@ -59,7 +59,7 @@ public class CompressHandler implements PostHandler {
                     }
                 }
                 case "tar" -> PkgUtil.tarDest(compressName, dest);
-                case "tar.gz", "tgz" -> PkgUtil.gzipDest(compressName, dest);
+                case "tar.gz", "tgz" -> PkgUtil.tgzDest(compressName, dest);
                 default ->
                         throw new IllegalStateException("Unexpected value: " + compressConfig.getType().toLowerCase());
             };
