@@ -15,6 +15,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,24 @@ public class PkgUtil {
         // 进行zip压缩，如果是macos则保留目录名称，否则不保留
         ZipUtil.zip(dest.getPath(), compressFile.getPath(), false);
         JulLog.info("zipDest finish appDest:{}", compressFile.getPath());
+        return compressFile;
+    }
+
+    /**
+     * 压缩打包目录，zip格式
+     *
+     * @param name    文件名称
+     * @param appDest app目录
+     * @return 压缩后的文件
+     */
+    public static File zipDestWithUnixMode(String name, String appDest) throws IOException {
+        String compressName = name + ".zip";
+        JulLog.info("zipDestWithUnixMode start, config.compressType is:{} compressName:{}.", "zip", compressName);
+        File dest = new File(appDest);
+        File compressFile = new File(dest.getParentFile(), compressName);
+        // 进行zip压缩，如果是macos则保留目录名称，否则不保留
+        ZipHelper.zipWithUnixMode(dest, compressFile);
+        JulLog.info("zipDestWithUnixMode finish appDest:{}", compressFile.getPath());
         return compressFile;
     }
 
