@@ -167,6 +167,10 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         if (item != null && this.selectItemChanged != null) {
             this.selectItemChanged.accept(item);
         }
+        if (this.popup == null) {
+            this.initPopup();
+        }
+        this.listView().select(item);
         this.hidePopup();
     }
 
@@ -302,10 +306,10 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      */
     public void selectItem(T item) {
         if (item != null) {
-            //            if (this.popup == null) {
-            //                this.initPopup();
-            //            }
-            //            this.listView().select(item);
+//            if (this.popup == null) {
+//                this.initPopup();
+//            }
+//            this.listView().select(item);
             // 执行选中
             this.doSelected(item);
         }

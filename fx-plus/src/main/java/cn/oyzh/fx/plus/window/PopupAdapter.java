@@ -57,7 +57,6 @@ public interface PopupAdapter extends WindowAdapter {
         this.popup().setOnCloseRequest(listener::onWindowCloseRequest);
     }
 
-
     @Override
     default void handCursor() {
         CursorUtil.handCursor(this.popup());
