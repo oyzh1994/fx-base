@@ -14,7 +14,6 @@ import java.util.List;
 public final class FXLinkInfoEx extends LinkInfo {
 
     private final PopupMenuGroupProvider myPopupMenuGroupProvider;
-
     private final HoverConsumer myHoverConsumer;
 
     public FXLinkInfoEx(@NotNull Runnable navigateCallback) {
@@ -55,12 +54,10 @@ public final class FXLinkInfoEx extends LinkInfo {
          */
         void onMouseExited();
     }
+
     public static final class Builder {
-
         private Runnable myNavigateCallback;
-
         private PopupMenuGroupProvider myPopupMenuGroupProvider;
-
         private HoverConsumer myHoverConsumer;
 
         public @NotNull Builder setNavigateCallback(@NotNull Runnable navigateCallback) {

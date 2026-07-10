@@ -1,4 +1,4 @@
-package com.jediterm.terminal.ui;
+package cn.oyzh.fx.tty;
 
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
@@ -13,9 +13,9 @@ import javafx.scene.canvas.GraphicsContext;
  * @author oyzh
  * @since 2025/04/24
  */
-public class FXTerminalCanvas extends FXPane implements Destroyable {
+public class TtyTerminalCanvas extends FXPane implements Destroyable {
 
-    public FXTerminalCanvas() {
+    public TtyTerminalCanvas() {
         Canvas canvas = new Canvas();
         canvas.widthProperty().bind(this.widthProperty());
         canvas.heightProperty().bind(this.heightProperty());

@@ -1,21 +1,25 @@
 package com.jediterm.terminal.ui;
 
-import com.jediterm.terminal.SubstringFinder;
-import javafx.event.EventType;
-import javafx.scene.input.KeyEvent;
+import cn.oyzh.fx.tty.TtyKeyListener;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiConsumer;
+import javax.swing.*;
+import java.awt.event.KeyListener;
 
 
-public interface FXJediTermSearchComponent {
-    @NotNull Pane getComponent();
+public interface FXJediTermSearchComponent extends JediTermSearchComponent {
 
-    void addListener(@NotNull JediTermSearchComponentListener listener);
+    @Override
+    default JComponent getComponent() {
+        return null;
+    }
 
-    void addKeyListener(@NotNull BiConsumer<EventType<KeyEvent>, KeyEvent> listener);
+    @NotNull Pane getComponentFX();
 
-    void onResultUpdated(@Nullable SubstringFinder.FindResult results);
+    default void addKeyListener(@NotNull KeyListener listener) {
+
+    }
+
+    void addKeyListener(@NotNull TtyKeyListener listener);
 }

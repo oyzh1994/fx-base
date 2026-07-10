@@ -5,26 +5,29 @@ import com.jediterm.terminal.TtyConnector;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * @author traff
  */
-public interface FXTerminalWidget {
+public interface FXTerminalWidget extends TerminalWidget {
 
-    FXJediTermWidget createTerminalSession(TtyConnector ttyConnector);
+    @Override
+    default JediTermWidget createTerminalSession(TtyConnector ttyConnector){
+        return null;
+    }
 
-    Pane getComponent();
+    FXJediTermWidget createTerminalSessionFX(TtyConnector ttyConnector);
 
-    Node getPreferredFocusableNode();
+    @Override
+   default JComponent getComponent(){
+        return null;
+    }
 
-    boolean requestFocusInWindow();
+    Pane getComponentFX();
 
-    void requestFocus();
-
-    boolean canOpenSession();
-
-    TerminalDisplay getTerminalDisplay();
-
-    void addListener(FXTerminalWidgetListener listener);
-
-    void removeListener(FXTerminalWidgetListener listener);
+    default Pane getPreferredFocusableComponentFX() {
+        return getComponentFX();
+    }
 }

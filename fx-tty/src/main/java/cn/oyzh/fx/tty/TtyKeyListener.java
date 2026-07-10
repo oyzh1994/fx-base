@@ -1,4 +1,4 @@
-package com.jediterm.terminal.ui;
+package cn.oyzh.fx.tty;
 
 import javafx.scene.input.KeyEvent;
 
@@ -8,7 +8,7 @@ import javafx.scene.input.KeyEvent;
  * @author oyzh
  * @since 2025-07-29
  */
-public interface FXKeyListener {
+public interface TtyKeyListener {
 
     void keyTyped(KeyEvent e);
 

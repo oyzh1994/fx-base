@@ -4,6 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.pane.FXStackPane;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
+import cn.oyzh.fx.tty.TtyKeyListener;
 import com.jediterm.core.typeahead.TerminalTypeAheadManager;
 import com.jediterm.core.typeahead.TypeAheadTerminalModel;
 import com.jediterm.terminal.ProcessTtyConnector;
@@ -30,6 +31,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -37,6 +39,7 @@ import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -53,38 +56,22 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     protected final FXTerminalPanel myTerminalPanel;
 
     private final ScrollBar myScrollBar;
-
     protected final JediTerminal myTerminal;
-
     private final AtomicReference<Session> myRunningSession = new AtomicReference<>();
-
     private final JediTermTypeAheadModel myTypeAheadTerminalModel;
-
     private final TerminalTypeAheadManager myTypeAheadManager;
-
     private FXJediTermSearchComponent myFindComponent;
-
     @SuppressWarnings("removal")
     private final FXPreConnectHandler myPreConnectHandler;
-
     private TtyConnector myTtyConnector;
-
     private TerminalStarter myTerminalStarter;
-
     private final CompletableFuture<TerminalStarter> myTerminalStarterFuture = new CompletableFuture<>();
-
     protected final SettingsProvider mySettingsProvider;
-
     private TerminalActionProvider myNextActionProvider;
-
 //    private final StackPane myInnerPanel;
-
     private final TextProcessing myTextProcessing;
-
-    private final List<FXTerminalWidgetListener> myListeners = new CopyOnWriteArrayList<>();
-
+    private final List<TerminalWidgetListener> myListeners = new CopyOnWriteArrayList<>();
     private final Object myExecutorServiceManagerLock = new Object();
-
     private volatile TerminalExecutorServiceManager myExecutorServiceManager;
 
     public FXJediTermWidget(@NotNull SettingsProvider settingsProvider) {
@@ -124,9 +111,9 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
         myTerminalPanel.addCustomKeyListener(myPreConnectHandler);
         myScrollBar = createScrollBar();
 
-        this.setFocusTraversable(false);
         VBox.setVgrow(myTerminalPanel, Priority.ALWAYS);
         this.addChild(myTerminalPanel);
+        this.setFocusTraversable(false);
 
         myScrollBar.setOrientation(Orientation.VERTICAL);
 
@@ -134,7 +121,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     }
 
     @Override
-    public Node getPreferredFocusableNode() {
+    public Pane getPreferredFocusableComponentFX() {
         return this.myTerminalPanel;
     }
 
@@ -236,7 +223,8 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
                 });
                 Future<?> future = getExecutorServiceManager().getUnboundedExecutorService().submit(task);
                 myRunningSession.set(new Session(task, future));
-            } else {
+            }
+            else {
                 JulLog.error("Should not try to start session again at this point... ");
             }
         }
@@ -266,11 +254,11 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
         return myTerminalPanel.getTerminalTextBuffer();
     }
 
-    @Override
-    public boolean requestFocusInWindow() {
-        myTerminalPanel.requestFocus();
-        return true;
-    }
+//    @Override
+//    public boolean requestFocusInWindow() {
+//        myTerminalPanel.requestFocus();
+//        return true;
+//    }
 
     @Override
     public void requestFocus() {
@@ -282,13 +270,18 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     }
 
     @Override
-    public FXJediTermWidget createTerminalSession(TtyConnector ttyConnector) {
+    public Dimension getPreferredSize() {
+        return new Dimension((int) this.getWidth(), (int) this.getHeight());
+    }
+
+    @Override
+    public FXJediTermWidget createTerminalSessionFX(TtyConnector ttyConnector) {
         setTtyConnector(ttyConnector);
         return this;
     }
 
     @Override
-    public Pane getComponent() {
+    public Pane getComponentFX() {
         return this;
     }
 
@@ -333,7 +326,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
         if (myFindComponent == null) {
             myFindComponent = createSearchComponent();
 
-            final Pane component = myFindComponent.getComponent();
+            final Pane component = myFindComponent.getComponentFX();
             this.addChild(component);
             StackPane.setAlignment(component, Pos.TOP_RIGHT);
             ScrollBar scrollBar = (ScrollBar) myTerminalPanel.getChildren().get(1);
@@ -367,17 +360,32 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
             };
             myFindComponent.addListener(listener);
 
-            myFindComponent.addKeyListener((t, e) -> {
-                if (e.getCode() == KeyCode.ESCAPE) {
-                    listener.hideSearchComponent();
-                } else if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.DOWN) {
-                    listener.selectNextFindResult();
-                } else if (e.getCode() == KeyCode.UP) {
-                    listener.selectPrevFindResult();
+            myFindComponent.addKeyListener(new TtyKeyListener() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getCode() == KeyCode.ESCAPE) {
+                        listener.hideSearchComponent();
+                    }
+                    else if (e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.DOWN) {
+                        listener.selectNextFindResult();
+                    }
+                    else if (e.getCode() == KeyCode.UP) {
+                        listener.selectPrevFindResult();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+
                 }
             });
         } else {
-            myFindComponent.getComponent().requestFocus();
+            myFindComponent.getComponentFX().requestFocus();
         }
     }
 
@@ -402,9 +410,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     }
 
     private static class Session {
-
         private final EmulatorTask myEmulatorTask;
-
         private final Future<?> mySessionFuture;
 
         public Session(@NotNull EmulatorTask emulatorTask, @NotNull Future<?> sessionFuture) {
@@ -419,9 +425,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     }
 
     private class EmulatorTask implements Runnable {
-
         private final TerminalStarter myStarter;
-
         private final Runnable myOnDone;
 
         public EmulatorTask(@NotNull Runnable onDone) {
@@ -438,24 +442,28 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
                     myTerminalPanel.removeCustomKeyListener(myPreConnectHandler);
                     myStarter.start();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            }
+            catch (Exception e) {
                 JulLog.error("Exception running terminal", e);
-            } finally {
+            }
+            finally {
                 try {
                     ttyConnector.close();
-                } catch (Exception ignored) {
+                }
+                catch (Exception ignored) {
                 }
                 try {
-                    for (FXTerminalWidgetListener listener : myListeners) {
+                    for (TerminalWidgetListener listener : myListeners) {
                         listener.allSessionsClosed(FXJediTermWidget.this);
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     JulLog.error("Unhandled exception when closing terminal", e);
                 }
                 try {
                     myOnDone.run();
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     JulLog.error("Unhandled exception when closing terminal", e);
                 }
             }
@@ -487,12 +495,12 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     }
 
     @Override
-    public void addListener(FXTerminalWidgetListener listener) {
+    public void addListener(TerminalWidgetListener listener) {
         myListeners.add(listener);
     }
 
     @Override
-    public void removeListener(FXTerminalWidgetListener listener) {
+    public void removeListener(TerminalWidgetListener listener) {
         myListeners.remove(listener);
     }
 

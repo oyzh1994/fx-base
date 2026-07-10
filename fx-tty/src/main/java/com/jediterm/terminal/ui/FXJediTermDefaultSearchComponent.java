@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
+import cn.oyzh.fx.tty.TtyKeyListener;
 import cn.oyzh.i18n.I18nHelper;
 import com.jediterm.terminal.SubstringFinder;
 import javafx.event.EventType;
@@ -149,7 +150,7 @@ public final class FXJediTermDefaultSearchComponent extends FXHBox implements FX
     }
 
     @Override
-    public @NotNull Pane getComponent() {
+    public @NotNull Pane getComponentFX() {
         return this;
     }
 
@@ -165,8 +166,8 @@ public final class FXJediTermDefaultSearchComponent extends FXHBox implements FX
     }
 
     @Override
-    public void addKeyListener(@NotNull BiConsumer<EventType<KeyEvent>, KeyEvent> listener) {
-        this.myTextField.addEventFilter(KeyEvent.KEY_PRESSED, e -> listener.accept(e.getEventType(), e));
+    public void addKeyListener(@NotNull TtyKeyListener listener) {
+        this.myTextField.addEventFilter(KeyEvent.KEY_PRESSED, listener::keyPressed);
     }
 
     private @NotNull JediTermSearchComponentListener createMulticaster() {

@@ -1,11 +1,11 @@
-package com.jediterm.terminal.ui;
+package cn.oyzh.fx.tty;
 
 /**
  *
  * @author oyzh
  * @since 2026-01-05
  */
-public class FXAscii {
+public class TtyAscii {
 
     public static final byte ASCII_NUL = 0;
 

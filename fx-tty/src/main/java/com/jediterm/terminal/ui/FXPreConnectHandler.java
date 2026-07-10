@@ -1,6 +1,7 @@
 package com.jediterm.terminal.ui;
 
 
+import cn.oyzh.fx.tty.TtyKeyListener;
 import com.jediterm.terminal.Questioner;
 import com.jediterm.terminal.Terminal;
 import javafx.scene.input.KeyCode;
@@ -11,7 +12,7 @@ import javafx.scene.input.KeyEvent;
  */
 @SuppressWarnings("removal")
 @Deprecated(forRemoval = true)
-public final class FXPreConnectHandler implements Questioner, FXKeyListener {
+public final class FXPreConnectHandler implements Questioner, TtyKeyListener {
 
     private final Object mySync = new Object();
 

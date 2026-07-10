@@ -5,9 +5,7 @@ import com.jediterm.terminal.ui.settings.SettingsProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class FXBlinkingTextTracker {
-
     private final BlinkTracker slowBlinkTracker = new BlinkTracker();
-
     private final BlinkTracker rapidBlinkTracker = new BlinkTracker();
 
     public void updateState(@NotNull SettingsProvider settingsProvider, @NotNull FXTerminalPanel panel) {
@@ -27,9 +25,7 @@ public class FXBlinkingTextTracker {
     }
 
     private static class BlinkTracker {
-
         private final long lastBlinkMillis = System.currentTimeMillis();
-
         private boolean inverse = false;
 
         private boolean update(long currentTime, int period) {

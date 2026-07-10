@@ -29,7 +29,7 @@ public abstract class TtyTermWidget extends FXJediTermWidget {
 
     public void openSession(TtyConnector ttyConnector) {
         if (this.canOpenSession()) {
-            FXJediTermWidget session = this.createTerminalSession(ttyConnector);
+            FXJediTermWidget session = this.createTerminalSessionFX(ttyConnector);
             session.start();
         }
     }

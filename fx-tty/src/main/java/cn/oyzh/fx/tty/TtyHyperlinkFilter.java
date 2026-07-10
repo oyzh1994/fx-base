@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jediterm.terminal.ui;
+package cn.oyzh.fx.tty;
 
 import cn.oyzh.fx.plus.FXConst;
 import com.jediterm.terminal.model.hyperlinks.HyperlinkFilter;
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 /**
  * @author yole
  */
-public class FXHyperlinkFilter implements HyperlinkFilter {
+public class TtyHyperlinkFilter implements HyperlinkFilter {
 
     private static final Pattern URL_PATTERN = Pattern.compile("\\b(mailto:|(news|(ht|f)tp(s?))://|((?<![\\p{L}0-9_.])"
             + "(www\\.)))[-A-Za-z0-9+$&@#/%?=~_|!:,.;]*[-A-Za-z0-9+$&@#/%=~_|]");

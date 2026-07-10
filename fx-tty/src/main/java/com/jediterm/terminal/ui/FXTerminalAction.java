@@ -93,10 +93,12 @@ public class FXTerminalAction extends TerminalAction {
     }
 
     public static void fillMenu(@NotNull ContextMenu menu, @NotNull TerminalActionProvider actionProvider) {
-        buildMenu(actionProvider, new FXTerminalActionMenuBuilder() {
+        buildMenu(actionProvider, new TerminalActionMenuBuilder() {
             @Override
-            public void addAction(@NotNull FXTerminalAction action) {
-                menu.getItems().add(action.toMenuItem());
+            public void addAction(@NotNull TerminalAction action) {
+                if (action instanceof FXTerminalAction action1) {
+                    menu.getItems().add(action1.toMenuItem());
+                }
             }
 
             @Override
@@ -106,7 +108,7 @@ public class FXTerminalAction extends TerminalAction {
         });
     }
 
-    public static void buildMenu(@NotNull TerminalActionProvider provider, @NotNull FXTerminalActionMenuBuilder builder) {
+    public static void buildMenu(@NotNull TerminalActionProvider provider, @NotNull TerminalActionMenuBuilder builder) {
         List<TerminalActionProvider> actionProviders = listActionProviders(provider);
         boolean emptyGroup = true;
         for (TerminalActionProvider actionProvider : actionProviders) {
