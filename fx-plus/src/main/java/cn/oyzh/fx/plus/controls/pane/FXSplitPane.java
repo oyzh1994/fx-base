@@ -56,7 +56,7 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         }
     }
 
-    private boolean showDivider;
+    private boolean showDivider = true;
 
     /**
      * 显示分割条
