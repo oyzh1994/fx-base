@@ -198,6 +198,7 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
     }
 
     public SVGGlyph() {
+        this.setSize(FontManager.currentFontSize());
     }
 
     public SVGGlyph(String url) {

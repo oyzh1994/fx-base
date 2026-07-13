@@ -14,8 +14,6 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -167,7 +165,7 @@ public class HexView extends FXVBox implements Destroyable {
     private void recalcLayout() {
         hexX = OFFSET_X + 8 * charW + 12;
         hexGapX = charW * 1.5;
-        double hexBlockW = bytesPerRow * 3 * charW + ((bytesPerRow - 1) / 8) * hexGapX;
+        double hexBlockW = bytesPerRow * 2.5 * charW + ((bytesPerRow - 1) / 8) * hexGapX;
         textX = hexX + hexBlockW + 12;   // hex 尾到 text 首固定 12px
         divX = hexX + hexBlockW + 5;    // 分隔线靠近 hex 侧
     }
@@ -617,7 +615,7 @@ public class HexView extends FXVBox implements Destroyable {
             scrollBar.setValue(scrollPos);
         }
         for (int row = 0; row < rowsPerPage; row++) {
-            long lineOff = (long) ((scrollPos + row) * (long) bytesPerRow);
+            long lineOff = ((scrollPos + row) * (long) bytesPerRow);
             if (lineOff >= fileSize) {
                 break;
             }
