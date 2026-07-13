@@ -16,6 +16,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/05/15
  */
+@Deprecated
 public abstract class NodeResizer implements Destroyable {
 
     /**

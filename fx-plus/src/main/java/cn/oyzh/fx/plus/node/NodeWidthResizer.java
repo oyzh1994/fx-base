@@ -16,6 +16,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/05/15
  */
+@Deprecated
 public class NodeWidthResizer extends NodeResizer {
 
     public NodeWidthResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
