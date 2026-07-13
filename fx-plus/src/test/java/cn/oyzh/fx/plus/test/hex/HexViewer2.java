@@ -67,9 +67,9 @@ public class HexViewer2 extends Application {
         refreshStatusBar();
 
         // ---- 回调绑定 ----
-        hexViewer.setOnGotoRequest(() -> showGotoDialog(primaryStage));
-        hexViewer.setOnSearchRequest(() -> showSearchDialog(primaryStage));
-        hexViewer.setOnCopyRequest(this::copySelection);
+//        hexViewer.setOnGotoRequest(() -> showGotoDialog(primaryStage));
+//        hexViewer.setOnSearchRequest(() -> showSearchDialog(primaryStage));
+//        hexViewer.setOnCopyRequest(this::copySelection);
 
         // 定时更新状态栏
         javafx.animation.AnimationTimer statusTimer = new javafx.animation.AnimationTimer() {

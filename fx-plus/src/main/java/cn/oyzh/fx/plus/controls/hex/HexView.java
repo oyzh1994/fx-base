@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls.hex;
 
-import atlantafx.base.theme.Theme;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
@@ -8,12 +7,15 @@ import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.util.ClipboardUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -107,8 +109,8 @@ public class HexView extends FXVBox implements Destroyable {
 
     private final Canvas canvas;
     private final ScrollBar scrollBar;
-    private int rowsPerPage;
-    private int scrollPos;
+    private long rowsPerPage;
+    private long scrollPos;
 
     public HexView() {
         this.initFont();
@@ -298,17 +300,12 @@ public class HexView extends FXVBox implements Destroyable {
         String[] parts = hex.trim().split("\\s+");
         byte[] pattern = new byte[parts.length];
         for (int i = 0; i < parts.length; i++) {
-            if (parts[i].isEmpty())
+            if (parts[i].isEmpty()){
                 continue;
+            }
             pattern[i] = (byte) Integer.parseInt(parts[i], 16);
         }
         return search(pattern, startOff);
-    }
-
-    // ====== 主题 ======
-    public void setTheme(Theme t) {
-        applyThemeColors();
-        repaint();
     }
 
     public Color getStatusBg() {
@@ -505,18 +502,21 @@ public class HexView extends FXVBox implements Destroyable {
         // 内存数据源
         if (dataBytes != null) {
             int clamped = (int) Math.min(len, fileSize - offset);
-            if (clamped <= 0)
+            if (clamped <= 0){
                 return new byte[len];
+            }
             byte[] data = new byte[len];
             System.arraycopy(dataBytes, (int) offset, data, 0, clamped);
             return data;
         }
         // 文件数据源
-        if (fileChannel == null || len <= 0)
+        if (fileChannel == null || len <= 0){
             return new byte[len];
+        }
         int clamped = (int) Math.min(len, fileSize - offset);
-        if (clamped <= 0)
+        if (clamped <= 0){
             return new byte[len];
+        }
         try {
             if (cacheStart >= 0 && offset >= cacheStart && offset + clamped <= cacheStart + CACHE_SIZE) {
                 int off = (int) (offset - cacheStart);
@@ -568,7 +568,7 @@ public class HexView extends FXVBox implements Destroyable {
      */
     private long resolveByteAt(double mx, double my) {
         int row = (int) ((my - PAD_TOP) / lineH);
-        long lineOff = (long) ((scrollPos + row) * (long) bytesPerRow);
+        long lineOff = (scrollPos + row) * (long) bytesPerRow;
         if (lineOff < 0 || lineOff >= fileSize) {
             return -1;
         }
@@ -851,20 +851,20 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
-    // ====== 回调 ======
-    private Runnable onGotoRequest, onSearchRequest, onCopyRequest;
-
-    public void setOnGotoRequest(Runnable r) {
-        onGotoRequest = r;
-    }
-
-    public void setOnSearchRequest(Runnable r) {
-        onSearchRequest = r;
-    }
-
-    public void setOnCopyRequest(Runnable r) {
-        onCopyRequest = r;
-    }
+//    // ====== 回调 ======
+//    private Runnable onGotoRequest, onSearchRequest, onCopyRequest;
+//
+//    public void setOnGotoRequest(Runnable r) {
+//        onGotoRequest = r;
+//    }
+//
+//    public void setOnSearchRequest(Runnable r) {
+//        onSearchRequest = r;
+//    }
+//
+//    public void setOnCopyRequest(Runnable r) {
+//        onCopyRequest = r;
+//    }
 
     // ====== 键盘 ======
     private void onKeyPressed(KeyEvent e) {
@@ -875,30 +875,29 @@ public class HexView extends FXVBox implements Destroyable {
         // 全局快捷键（即使有数据也要处理）
         if (KeyboardUtil.isMainModifierDown(e)) {
             switch (e.getCode()) {
-                case G -> {
-                    if (onGotoRequest != null) {
-                        onGotoRequest.run();
-                    }
-                    e.consume();
-                    return;
-                }
-                case F -> {
-                    if (onSearchRequest != null) {
-                        onSearchRequest.run();
-                    }
-                    e.consume();
-                    return;
-                }
+//                case G -> {
+//                    if (onGotoRequest != null) {
+//                        onGotoRequest.run();
+//                    }
+//                    e.consume();
+//                    return;
+//                }
+//                case F -> {
+//                    if (onSearchRequest != null) {
+//                        onSearchRequest.run();
+//                    }
+//                    e.consume();
+//                    return;
+//                }
                 case C -> {
-                    if (onCopyRequest != null) {
-                        onCopyRequest.run();
-                    }
+                    String hexText = this.getSelectionHex();
+                    ClipboardUtil.setString(hexText);
                     e.consume();
                     return;
                 }
                 case A -> {
-                    selections.clear();
-                    selections.add(new long[]{0, total - 1});
+                    this.selections.clear();
+                    this.selections.add(new long[]{0, total - 1});
                     e.consume();
                     repaint();
                     return;

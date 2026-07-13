@@ -4,9 +4,9 @@ import cn.oyzh.fx.plus.information.MessageBox;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
+
 
 /**
  * 粘贴板工具类
@@ -69,8 +69,11 @@ public class ClipboardUtil {
      */
     public static boolean setString(String content) {
         try {
-            StringSelection stringSelection = new StringSelection(content);
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
+            //            StringSelection stringSelection = new StringSelection(content);
+            //            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
+            ClipboardContent cc = new ClipboardContent();
+            cc.putString(content);
+            Clipboard.getSystemClipboard().setContent(cc);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -85,16 +88,21 @@ public class ClipboardUtil {
      * @return 结果
      */
     public static boolean setStringAndTip(String content) {
-        try {
-            StringSelection stringSelection = new StringSelection(content);
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
+        if (setString(content)) {
             MessageBox.okToast(I18nHelper.copySuccess());
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageBox.warn(I18nHelper.copyFail());
         }
         return false;
+//        try {
+//            StringSelection stringSelection = new StringSelection(content);
+//            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, stringSelection);
+//            MessageBox.okToast(I18nHelper.copySuccess());
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            MessageBox.warn(I18nHelper.copyFail());
+//        }
+//        return false;
     }
 
     // /**
