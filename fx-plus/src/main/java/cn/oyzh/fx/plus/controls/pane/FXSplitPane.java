@@ -56,18 +56,25 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         }
     }
 
+    private boolean showDivider;
+
     /**
      * 显示分割条
      *
      * @param showDivider 结果
      */
-    public void showDivider(boolean showDivider) {
+    public void setShowDivider(boolean showDivider) {
+        this.showDivider = showDivider;
         for (Node child : this.getChildren()) {
-            if(child.getClass().getName().endsWith("ContentDivider")){
+            if (child.getClass().getName().endsWith("ContentDivider")) {
                 child.setManaged(showDivider);
                 child.setVisible(showDivider);
             }
         }
+    }
+
+    public boolean isShowDivider() {
+        return showDivider;
     }
 
     @Override
@@ -75,8 +82,19 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         this.getItems().addListener((ListChangeListener<Node>) c -> {
             if (c.next()) {
                 List<? extends Node> subs = c.getAddedSubList();
-                for (Node sub : subs) {
-                    SplitPane.setResizableWithParent(sub, false);
+                for (Node node : subs) {
+                    SplitPane.setResizableWithParent(node, false);
+                }
+            }
+        });
+        this.getChildren().addListener((ListChangeListener<Node>) c -> {
+            if (c.next()) {
+                List<? extends Node> subs = c.getAddedSubList();
+                for (Node node : subs) {
+                    if (node.getClass().getName().endsWith("ContentDivider")) {
+                        node.setManaged(this.showDivider);
+                        node.setVisible(this.showDivider);
+                    }
                 }
             }
         });
