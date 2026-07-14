@@ -152,7 +152,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         if (CollectionUtil.isNotEmpty(prompts)) {
             try {
                 String pattern = "\\b(" + String.join("|", this.prompts) + ")\\b";
-                this.promptsPattern = Pattern.compile(Pattern.quote(pattern), Pattern.CASE_INSENSITIVE);
+                this.promptsPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
             } catch (Exception ignore) {
             }
         } else {
