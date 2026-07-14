@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ClipboardUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -34,6 +35,9 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Hex 查看器核心组件 — 三列布局（偏移 | 十六进制 | 原始文本）
@@ -69,7 +73,7 @@ public class HexView extends FXVBox implements Destroyable {
     private static final Color L_DIV = Color.web("#cccccc");
     private static final Color L_FOCUS = Color.web("#0066cc");
 
-    private int bytesPerRow = 16; // 可切换: 8 / 16 / 32
+    private int bytesPerRow = 32; // 可切换: 8 / 16 / 32
     private static final int[] bytesPerRow_OPTIONS = {8, 16, 32};
     private static final int PAD_LEFT = 10, PAD_TOP = 4;
     private static final int CACHE_SIZE = 65536;
@@ -80,7 +84,7 @@ public class HexView extends FXVBox implements Destroyable {
     private static final double OFFSET_X = PAD_LEFT;
 
     // ====== 多区域选择 ======
-    private final java.util.List<long[]> selections = new java.util.ArrayList<>(); // 每个区域 {lo, hi}
+    private final List<long[]> selections = new ArrayList<>(); // 每个区域 {lo, hi}
     // 拖动起始字节
     private long dragAnchor = -1;
     // 拖动当前字节（-1=无拖拽）
@@ -115,18 +119,18 @@ public class HexView extends FXVBox implements Destroyable {
 
         canvas = new Canvas();
         canvas.setFocusTraversable(true);
-        canvas.setOnMouseMoved(this::onMouseMoved);
-        canvas.setOnMousePressed(this::onMousePressed);
-        canvas.setOnMouseDragged(this::onMouseDragged);
-        canvas.setOnMouseReleased(this::onMouseReleased);
-        canvas.setOnMouseClicked(this::onMouseClicked);
+        canvas.addEventFilter(MouseEvent.MOUSE_MOVED, this::onMouseMoved);
+        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, this::onMousePressed);
+        canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
+        canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, this::onMouseReleased);
+        canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, this::onMouseClicked);
         canvas.setOnMouseExited(e -> {
             hoverByte = -1;
             hoverRegion = -1;
             repaint();
         });
         canvas.setOnScroll(this::onScrollWheel);
-        canvas.setOnKeyPressed(this::onKeyPressed);
+        canvas.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
 
         scrollBar = new ScrollBar();
         scrollBar.setOrientation(Orientation.VERTICAL);
@@ -199,10 +203,12 @@ public class HexView extends FXVBox implements Destroyable {
 
     public long getSelectionSize() {
         long total = 0;
-        for (long[] s : selections)
+        for (long[] s : selections) {
             total += (s[1] - s[0] + 1);
-        if (dragAnchor >= 0 && dragCurrent >= 0 && dragAnchor != dragCurrent)
+        }
+        if (dragAnchor >= 0 && dragCurrent >= 0 && dragAnchor != dragCurrent) {
             total += Math.abs(dragCurrent - dragAnchor) + 1;
+        }
         return total;
     }
 
@@ -238,8 +244,9 @@ public class HexView extends FXVBox implements Destroyable {
      * 跳转到指定偏移
      */
     public void gotoOffset(long off) {
-        if (fileSize == 0)
+        if (fileSize == 0) {
             return;
+        }
         off = Math.max(0, Math.min(off, fileSize - 1));
         focusByte = off;
         long line = off / bytesPerRow;
@@ -254,7 +261,7 @@ public class HexView extends FXVBox implements Destroyable {
      * 切换每行字节数
      */
     public void toggleBytesPerRow() {
-        int idx = java.util.Arrays.binarySearch(bytesPerRow_OPTIONS, bytesPerRow);
+        int idx = Arrays.binarySearch(bytesPerRow_OPTIONS, bytesPerRow);
         idx = (idx + 1) % bytesPerRow_OPTIONS.length;
         bytesPerRow = bytesPerRow_OPTIONS[idx];
         recalcLayout();
@@ -266,8 +273,9 @@ public class HexView extends FXVBox implements Destroyable {
      * 搜索字节序列，返回第一个匹配的偏移，-1 表示未找到
      */
     public long search(byte[] pattern, long startOff) {
-        if (fileSize == 0 || pattern.length == 0)
+        if (fileSize == 0 || pattern.length == 0) {
             return -1;
+        }
         for (long i = startOff; i <= fileSize - pattern.length; i++) {
             boolean match = true;
             for (int j = 0; j < pattern.length; j++) {
@@ -276,8 +284,9 @@ public class HexView extends FXVBox implements Destroyable {
                     break;
                 }
             }
-            if (match)
+            if (match) {
                 return i;
+            }
         }
         return -1;
     }
@@ -363,9 +372,9 @@ public class HexView extends FXVBox implements Destroyable {
         return ThemeManager.isDarkMode() ? D_FOCUS : L_FOCUS;
     }
 
-    private static String toWeb(Color c) {
-        return String.format("#%02X%02X%02X", (int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
-    }
+    //    private static String toWeb(Color c) {
+    //        return String.format("#%02X%02X%02X", (int) (c.getRed() * 255), (int) (c.getGreen() * 255), (int) (c.getBlue() * 255));
+    //    }
 
     /**
      * 判断 offset 是否在任意选中区域内（包括当前拖动中的区域）
@@ -392,27 +401,28 @@ public class HexView extends FXVBox implements Destroyable {
     private int findSelection(long off) {
         for (int i = 0; i < selections.size(); i++) {
             long[] s = selections.get(i);
-            if (off >= s[0] && off <= s[1])
+            if (off >= s[0] && off <= s[1]) {
                 return i;
+            }
         }
         return -1;
     }
 
-    /**
-     * 添加一个选区并合并重叠
-     */
-    private void addSelection(long lo, long hi) {
-        if (lo > hi) {
-            long t = lo;
-            lo = hi;
-            hi = t;
-        }
-        // 先移除与新区间重叠的区域
-        long finalLo = lo;
-        long finalHi = hi;
-        selections.removeIf(s -> s[1] >= finalLo && s[0] <= finalHi);
-        selections.add(new long[]{lo, hi});
-    }
+    //    /**
+    //     * 添加一个选区并合并重叠
+    //     */
+    //    private void addSelection(long lo, long hi) {
+    //        if (lo > hi) {
+    //            long t = lo;
+    //            lo = hi;
+    //            hi = t;
+    //        }
+    //        // 先移除与新区间重叠的区域
+    //        long finalLo = lo;
+    //        long finalHi = hi;
+    //        selections.removeIf(s -> s[1] >= finalLo && s[0] <= finalHi);
+    //        selections.add(new long[]{lo, hi});
+    //    }
 
     // ====== 数据源 API ======
 
@@ -758,7 +768,10 @@ public class HexView extends FXVBox implements Destroyable {
     }
 
     private void onMousePressed(MouseEvent e) {
-        canvas.requestFocus();
+        this.requestFocus();
+        // TabPane 等父容器可能在事件冒泡阶段把焦点抢走，
+        // 用 runLater 在当前事件完全处理完后重新请求焦点
+//        FXUtil.runLater(() -> canvas.requestFocus());
         if (e.getButton() != MouseButton.PRIMARY) {
             return;
         }
@@ -971,6 +984,12 @@ public class HexView extends FXVBox implements Destroyable {
     public void changeTheme(ThemeStyle style) {
         super.changeTheme(style);
         this.applyThemeColors();
+    }
+
+    @Override
+    public void requestFocus() {
+        super.requestFocus();
+        FXUtil.runLater(this.canvas::requestFocus);
     }
 
     @Override
