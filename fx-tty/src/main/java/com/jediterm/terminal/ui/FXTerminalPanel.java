@@ -807,9 +807,10 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             }
             text = text.replace('\n', '\r');
 
-            if (myBracketedPasteMode) {
-                text = "\u001b[200~" + text + "\u001b[201~";
-            }
+            // TODO: 禁用此处特性
+            //if (myBracketedPasteMode) {
+            //    text = "\u001b[200~" + text + "\u001b[201~";
+            //}
             myTerminalStarter.sendString(text, true);
         } catch (RuntimeException e) {
             JulLog.info("", e);
