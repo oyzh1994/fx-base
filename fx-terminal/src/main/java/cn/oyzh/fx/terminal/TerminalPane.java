@@ -627,8 +627,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
         this.output("");
     }
 
-    @Override
-    public void initNode() {
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        super.initNode();
+//    }
 }
