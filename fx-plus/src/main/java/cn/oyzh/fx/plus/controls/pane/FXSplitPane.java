@@ -47,6 +47,11 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         return this.getProp("position_0");
     }
 
+    public double getPosition0(double defaultVal) {
+        Double v1 = this.getPosition0();
+        return v1 == null ? defaultVal : v1;
+    }
+
     public void recordPosition0() {
         double[] positions = this.getDividerPositions();
         if (positions != null && positions.length >= 1) {

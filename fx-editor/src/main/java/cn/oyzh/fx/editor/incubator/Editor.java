@@ -46,6 +46,7 @@ import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -263,6 +264,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         });
         // 自动补全成对符号
         this.addEventFilter(KeyEvent.KEY_TYPED, this::onAutoPair);
+        this.addEventFilter(KeyEvent.KEY_PRESSED, this::onAutoPairBackspace);
         // 初始化样式
         this.applyTheme();
     }
@@ -1622,6 +1624,36 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
                 this.replaceText(caretPos, caretPos, ch + closeChar);
                 this.positionCaret(caretPos + 1);
             }
+        }
+    }
+
+    /**
+     * 处理退格键删除空配对 — 光标位于 {}、()、[]、""、''、`` 之间时同时删除两个字符
+     */
+    private void onAutoPairBackspace(KeyEvent e) {
+        if (!this.isAutoPairEnabled() || !this.isEditable() || this.isDisable()) {
+            return;
+        }
+        if (e.getCode() != KeyCode.BACK_SPACE) {
+            return;
+        }
+        SelectionSegment segment = this.getSelection();
+        if (segment != null && !segment.isCollapsed()) {
+            return;
+        }
+
+        int caretPos = this.caretPosition();
+        String text = this.getText();
+        if (caretPos <= 0 || caretPos >= text.length()) {
+            return;
+        }
+
+        String prevChar = String.valueOf(text.charAt(caretPos - 1));
+        String nextChar = String.valueOf(text.charAt(caretPos));
+        String expectedClosing = PAIR_MAP.get(prevChar);
+        if (expectedClosing != null && expectedClosing.equals(nextChar)) {
+            e.consume();
+            this.deleteText(caretPos - 1, caretPos + 1);
         }
     }
 
