@@ -30,9 +30,15 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
 
     private WeakReference<Object> targetRef;
 
+    public FXContextMenu() {
+        this(null);
+    }
+
     public FXContextMenu(Object target) {
         super();
-        this.targetRef = new WeakReference<>(target);
+        if (target != null) {
+            this.targetRef = new WeakReference<>(target);
+        }
     }
 
     public void setTarget(Object target) {
@@ -123,6 +129,8 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
         this.getItems().clear();
         if (this.targetRef != null) {
             ContextMenuManager.clearContextMenu(this.targetRef.get());
+            this.targetRef.clear();
+            this.targetRef = null;
         }
     }
 }
