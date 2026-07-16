@@ -817,7 +817,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             String text = this.getText();
             //            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
             //                content = System.lineSeparator() + content;
-            if (!StringUtil.endsWith(text, this.lineEndingText()) && !StringUtil.startWith(content, this.lineEndingText())) {
+            if (!text.isEmpty()
+                    && !StringUtil.endsWith(text, this.lineEndingText())
+                    && !StringUtil.startWith(content, this.lineEndingText())) {
                 content = this.lineEndingText() + content;
             }
             //            if (endLine && !content.endsWith(System.lineSeparator())) {
