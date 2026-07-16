@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.node;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.RemoveNodeable;
@@ -89,18 +90,18 @@ public class NodeDestroyUtil {
         });
     }
 
-//    /**
-//     * 销毁对象
-//     *
-//     * @param object 对象
-//     */
-//    private static void doDestroyObject(Object object) {
-//        if (object != null) {
-//            List<Object> handles = new ArrayList<>();
-//            doDestroyObject(object, handles);
-//            handles.clear();
-//        }
-//    }
+    //    /**
+    //     * 销毁对象
+    //     *
+    //     * @param object 对象
+    //     */
+    //    private static void doDestroyObject(Object object) {
+    //        if (object != null) {
+    //            List<Object> handles = new ArrayList<>();
+    //            doDestroyObject(object, handles);
+    //            handles.clear();
+    //        }
+    //    }
 
     /**
      * 销毁对象
@@ -118,11 +119,11 @@ public class NodeDestroyUtil {
         }
         // 添加到列表
         handles.add(object);
-//        if (object instanceof Parent parent) {
-//            for (Node node : new ArrayList<>(parent.getChildrenUnmodifiable())) {
-//                doDestroyObject(node, handles);
-//            }
-//        }
+        //        if (object instanceof Parent parent) {
+        //            for (Node node : new ArrayList<>(parent.getChildrenUnmodifiable())) {
+        //                doDestroyObject(node, handles);
+        //            }
+        //        }
         Class<?> cType = object.getClass();
         // 获取所有字段
         Field[] fields = ReflectUtil.getFields(cType, true, true);
@@ -135,7 +136,7 @@ public class NodeDestroyUtil {
                     continue;
                 }
                 // 获取属性类型
-//                Class<?> clazz = field.getType();
+                //                Class<?> clazz = field.getType();
                 if (!field.trySetAccessible()) {
                     continue;
                 }
@@ -149,22 +150,29 @@ public class NodeDestroyUtil {
                 }
                 // fxml注入对象
                 if (field.getAnnotation(FXML.class) != null) {
-//                    // 递归销毁
-//                    doDestroyObject(object1, handles);
+                    //                    // 递归销毁
+                    //                    doDestroyObject(object1, handles);
                     // 从父节点移除
                     if (object1 instanceof RemoveNodeable) {
                         NodeUtil.removeNode(object1);
                     }
+                    try {
+                        if (object1 instanceof Destroyable destroyable) {
+                            destroyable.destroy();
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                     setNullable = true;
                 }
-//                // 属性类型
-//                if (Property.class.isAssignableFrom(clazz)) {
-////                    Property<?> object2 = (Property<?>) object1;
-////                    destroy(object2);
-//                    if (field.getName().equals("parent")) {
-//                        setNullable = true;
-//                    }
-//                }
+                //                // 属性类型
+                //                if (Property.class.isAssignableFrom(clazz)) {
+                ////                    Property<?> object2 = (Property<?>) object1;
+                ////                    destroy(object2);
+                //                    if (field.getName().equals("parent")) {
+                //                        setNullable = true;
+                //                    }
+                //                }
                 //// 节点类型
                 //if (Node.class.isAssignableFrom(clazz)) {
                 //    Node object2 = (Node) object1;

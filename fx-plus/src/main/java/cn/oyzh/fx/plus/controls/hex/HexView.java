@@ -602,6 +602,9 @@ public class HexView extends FXVBox implements Destroyable {
 
     // ====== 绘制 ======
     private void repaint() {
+        if (canvas == null) {
+            return;
+        }
         if (canvas.getWidth() <= 0 || canvas.getHeight() <= 0) {
             return;
         }
@@ -771,7 +774,7 @@ public class HexView extends FXVBox implements Destroyable {
         this.requestFocus();
         // TabPane 等父容器可能在事件冒泡阶段把焦点抢走，
         // 用 runLater 在当前事件完全处理完后重新请求焦点
-//        FXUtil.runLater(() -> canvas.requestFocus());
+        //        FXUtil.runLater(() -> canvas.requestFocus());
         if (e.getButton() != MouseButton.PRIMARY) {
             return;
         }
