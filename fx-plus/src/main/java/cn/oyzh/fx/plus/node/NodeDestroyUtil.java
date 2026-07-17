@@ -4,8 +4,8 @@ import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.RemoveNodeable;
+import cn.oyzh.fx.plus.menu.ContextMenuManager;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.beans.property.Property;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
@@ -24,17 +24,17 @@ import java.util.List;
  */
 public class NodeDestroyUtil {
 
-    /**
-     * 销毁属性
-     *
-     * @param property 属性
-     */
-    public static void destroyProperty(Property<?> property) {
-        // 解除单向绑定
-        if (property != null) {
-            property.unbind();
-        }
-    }
+    //    /**
+    //     * 销毁属性
+    //     *
+    //     * @param property 属性
+    //     */
+    //    public static void destroyProperty(Property<?> property) {
+    //        // 解除单向绑定
+    //        if (property != null) {
+    //            property.unbind();
+    //        }
+    //    }
 
     /**
      * 销毁节点
@@ -153,13 +153,24 @@ public class NodeDestroyUtil {
                     //                    // 递归销毁
                     //                    doDestroyObject(object1, handles);
                     // 从父节点移除
-                    if (object1 instanceof RemoveNodeable) {
-                        NodeUtil.removeNode(object1);
+                    try {
+                        if (object1 instanceof RemoveNodeable) {
+                            NodeUtil.removeNode(object1);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
+                    // 执行销毁
                     try {
                         if (object1 instanceof Destroyable destroyable) {
                             destroyable.destroy();
                         }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    // 清理上下文菜单
+                    try {
+                        ContextMenuManager.clearContextMenu(object);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

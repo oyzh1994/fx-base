@@ -115,22 +115,22 @@ public class ContextMenuManager {
                 }
             }
             menu.getItems().clear();
-            // 清理 ContextMenu 自身的事件处理器，断开与 TabSkin 的引用链
-            menu.setOnShowing(null);
-            menu.setOnShown(null);
-            menu.setOnHiding(null);
-            menu.setOnHidden(null);
-            menu.setOnAction(null);
-            menu.setOnCloseRequest(null);
-            menu.setId(null);
-            menu.setStyle(null);
-            menu.setUserData(null);
-            // 销毁皮肤，彻底断开与 Scene graph 的关联
-            final javafx.scene.control.Skin<?> skin = menu.getSkin();
-            if (skin != null) {
-                menu.setSkin(null);
-                skin.dispose();
-            }
+//            // 清理 ContextMenu 自身的事件处理器，断开与 TabSkin 的引用链
+//            menu.setOnShowing(null);
+//            menu.setOnShown(null);
+//            menu.setOnHiding(null);
+//            menu.setOnHidden(null);
+//            menu.setOnAction(null);
+//            menu.setOnCloseRequest(null);
+//            menu.setId(null);
+//            menu.setStyle(null);
+//            menu.setUserData(null);
+//            // 销毁皮肤，彻底断开与 Scene graph 的关联
+//            final javafx.scene.control.Skin<?> skin = menu.getSkin();
+//            if (skin != null) {
+//                menu.setSkin(null);
+//                skin.dispose();
+//            }
         }
     }
 
