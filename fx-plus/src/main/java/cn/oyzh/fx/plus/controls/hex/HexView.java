@@ -585,9 +585,12 @@ public class HexView extends FXVBox implements Destroyable {
         } else if (mx >= hexX && mx < divX) {
             double cw = charW * 2.5;
             double hx = mx - hexX;
-            int gi = (int) (hx / cw);
-            int gaps = gi / 8;
-            gi = (int) ((hx - gaps * hexGapX) / cw);
+            double groupWidth = 8 * cw + hexGapX;
+            int group = (int) (hx / groupWidth);
+            double groupRemainder = hx - group * groupWidth;
+            int col = (int) (groupRemainder / cw);
+            col = Math.min(col, 7);
+            int gi = group * 8 + col;
             gi = Math.max(0, Math.min(gi, n - 1));
             off = lineOff + gi;
         } else if (mx >= textX) {
