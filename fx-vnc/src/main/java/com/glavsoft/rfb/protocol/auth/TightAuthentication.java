@@ -23,6 +23,7 @@
 //
 package com.glavsoft.rfb.protocol.auth;
 
+import cn.oyzh.common.log.JulLog;
 import com.glavsoft.exceptions.FatalException;
 import com.glavsoft.exceptions.TransportException;
 import com.glavsoft.exceptions.UnsupportedSecurityTypeException;
@@ -113,7 +114,7 @@ public class TightAuthentication extends AuthHandler {
 		int nEncodingTypes = transport.readUInt16();
         transport.readUInt16(); //padding
 
-        logger().fine("nServerMessageTypes: " + nServerMessageTypes + ", nClientMessageTypes: " + nClientMessageTypes +
+        JulLog.debug("nServerMessageTypes: " + nServerMessageTypes + ", nClientMessageTypes: " + nClientMessageTypes +
             ", nEncodingTypes: " + nEncodingTypes);
 
         registerServerMessagesTypes(transport, protocol, nServerMessageTypes);
@@ -125,14 +126,14 @@ public class TightAuthentication extends AuthHandler {
     private void registerServerMessagesTypes(Transport transport, Protocol protocol, int count) throws TransportException {
         while (count-- > 0) {
             RfbCapabilityInfo capInfoReceived = new RfbCapabilityInfo().readFrom(transport);
-            logger().fine("Server message type: " + capInfoReceived.toString());
+            JulLog.debug("Server message type: " + capInfoReceived.toString());
         }
     }
 
     private void registerClientMessagesTypes(Transport transport, Protocol protocol, int count) throws TransportException {
         while (count-- > 0) {
             RfbCapabilityInfo capInfoReceived = new RfbCapabilityInfo().readFrom(transport);
-            logger().fine("Client message type: " + capInfoReceived.toString());
+            JulLog.debug("Client message type: " + capInfoReceived.toString());
             protocol.registerClientMessageType(capInfoReceived);
         }
     }
@@ -140,7 +141,7 @@ public class TightAuthentication extends AuthHandler {
     private void registerEncodings(Transport transport, Protocol protocol, int count) throws TransportException {
 		while (count-- > 0) {
 			RfbCapabilityInfo capInfoReceived = new RfbCapabilityInfo().readFrom(transport);
-			logger().fine("Encoding: " + capInfoReceived.toString());
+			JulLog.debug("Encoding: " + capInfoReceived.toString());
             protocol.registerEncoding(capInfoReceived);
 		}
 	}
@@ -179,13 +180,13 @@ public class TightAuthentication extends AuthHandler {
         Transport newTransport = transport;
 		int tunnelsCount;
 		tunnelsCount = (int) transport.readUInt32();
-        logger().fine("Tunneling capabilities: " + tunnelsCount);
+        JulLog.debug("Tunneling capabilities: " + tunnelsCount);
         int [] tunnelCodes = new int[tunnelsCount];
 		if (tunnelsCount > 0) {
 			for (int i = 0; i < tunnelsCount; ++i) {
 				RfbCapabilityInfo rfbCapabilityInfo = new RfbCapabilityInfo().readFrom(transport);
                 tunnelCodes[i] = rfbCapabilityInfo.getCode();
-                logger().fine(rfbCapabilityInfo.toString());
+                JulLog.debug(rfbCapabilityInfo.toString());
             }
             int selectedTunnelCode;
             if (tunnelsCount > 0) {
@@ -194,9 +195,9 @@ public class TightAuthentication extends AuthHandler {
                     if (tunnelHandler != null) {
                         selectedTunnelCode = tunnelCodes[i];
                         transport.writeInt32(selectedTunnelCode).flush();
-                        logger().fine("Accepted tunneling type: " + selectedTunnelCode);
+                        JulLog.debug("Accepted tunneling type: " + selectedTunnelCode);
                         newTransport = tunnelHandler.createTunnel(transport);
-                        logger().fine("Tunnel created: " + TunnelType.byCode(selectedTunnelCode));
+                        JulLog.debug("Tunnel created: " + TunnelType.byCode(selectedTunnelCode));
                         protocol.setTunnelType(TunnelType.byCode(selectedTunnelCode));
                         break;
                     }
@@ -208,7 +209,7 @@ public class TightAuthentication extends AuthHandler {
             if (tunnelsCount > 0) {
                 transport.writeInt32(TunnelType.NOTUNNEL.code).flush();
             }
-            logger().fine("Accepted tunneling type: " + TunnelType.NOTUNNEL);
+            JulLog.debug("Accepted tunneling type: " + TunnelType.NOTUNNEL);
         }
         return newTransport;
 	}
@@ -237,12 +238,12 @@ public class TightAuthentication extends AuthHandler {
 	throws UnsupportedSecurityTypeException, TransportException, FatalException {
 		int authCount;
 		authCount = transport.readInt32();
-        logger().fine("Auth capabilities: " + authCount);
+        JulLog.debug("Auth capabilities: " + authCount);
 		byte[] cap = new byte[authCount];
 		for (int i = 0; i < authCount; ++i) {
 			RfbCapabilityInfo rfbCapabilityInfo = new RfbCapabilityInfo().readFrom(transport);
 			cap[i] = (byte) rfbCapabilityInfo.getCode();
-			logger().fine(rfbCapabilityInfo.toString());
+			JulLog.debug(rfbCapabilityInfo.toString());
 		}
 		AuthHandler authHandler = null;
 		if (authCount > 0) {
@@ -261,7 +262,7 @@ public class TightAuthentication extends AuthHandler {
             throw new UnsupportedSecurityTypeException("Server auth types: " + Strings.toString(cap) +
                     ", supported auth types: " + registeredAuthHandlers.values());
         }
-		logger().fine("Auth capability accepted: " + authHandler.getName());
+		JulLog.debug("Auth capability accepted: " + authHandler.getName());
 		authHandler.authenticate(transport, protocol);
 	}
 

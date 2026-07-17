@@ -23,12 +23,12 @@
 //
 package com.glavsoft.rfb.protocol;
 
+import cn.oyzh.common.log.JulLog;
 import com.glavsoft.rfb.client.ClientToServerMessage;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * @author dime at tightvnc.com
@@ -42,7 +42,7 @@ public class MessageQueue {
 
 	public void put(ClientToServerMessage message) {
 		if ( ! queue.offer(message)) {
-            Logger.getLogger(getClass().getName()).severe("Cannot put message into message queue. Skip: " + message);
+            JulLog.error("Cannot put message into message queue. Skip: " + message);
         }
 	}
 

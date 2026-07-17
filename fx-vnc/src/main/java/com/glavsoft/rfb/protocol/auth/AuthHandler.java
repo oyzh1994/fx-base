@@ -23,6 +23,7 @@
 //
 package com.glavsoft.rfb.protocol.auth;
 
+import cn.oyzh.common.log.JulLog;
 import com.glavsoft.exceptions.AuthenticationFailedException;
 import com.glavsoft.exceptions.ClosedConnectionException;
 import com.glavsoft.exceptions.FatalException;
@@ -32,22 +33,20 @@ import com.glavsoft.rfb.encoding.ServerInitMessage;
 import com.glavsoft.rfb.protocol.Protocol;
 import com.glavsoft.transport.Transport;
 
-import java.util.logging.Logger;
-
 public abstract class AuthHandler {
     private static final int AUTH_RESULT_OK = 0;
 //	private static final int AUTH_RESULT_FAILED = 1;
-    private Logger logger;
-
-    /**
-     * Not thread safe, no need to be thread safe
-     */
-    protected Logger logger() {
-        if (null == logger) {
-            logger = Logger.getLogger(getClass().getName());
-        }
-        return logger;
-    }
+//    private Logger logger;
+//
+//    /**
+//     * Not thread safe, no need to be thread safe
+//     */
+//    protected Logger logger() {
+//        if (null == logger) {
+//            logger = Logger.getLogger(getClass().getName());
+//        }
+//        return logger;
+//    }
     /**
 	 * Authenticate using appropriate auth scheme
      *
@@ -76,11 +75,11 @@ public abstract class AuthHandler {
     public void checkSecurityResult(Transport transport) throws TransportException,
             AuthenticationFailedException {
         final int securityResult = transport.readInt32();
-        logger().fine("Security result: " + securityResult + (AUTH_RESULT_OK == securityResult ? " (OK)" : " (Failed)"));
+        JulLog.debug("Security result: " + securityResult + (AUTH_RESULT_OK == securityResult ? " (OK)" : " (Failed)"));
         if (securityResult != AUTH_RESULT_OK) {
             try {
                 String reason = transport.readString();
-                logger().fine("Security result reason: " + reason);
+                JulLog.debug("Security result reason: " + reason);
                 throw new AuthenticationFailedException(reason);
             } catch (ClosedConnectionException e) {
                 // protocol version 3.3 and 3.7 does not send reason string,
@@ -99,12 +98,12 @@ public abstract class AuthHandler {
 
     protected ServerInitMessage readServerInitMessage(Transport transport) throws TransportException {
         final ServerInitMessage serverInitMessage = new ServerInitMessage().readFrom(transport);
-        logger().fine("Read: " + serverInitMessage);
+        JulLog.debug("Read: " + serverInitMessage);
         return serverInitMessage;
 	}
 
     protected void sendClientInitMessage(Transport transport, byte sharedFlag) throws TransportException {
-        logger().fine("Sent client-init-message: " + sharedFlag);
+        JulLog.debug("Sent client-init-message: " + sharedFlag);
         transport.writeByte(sharedFlag).flush();
     }
 

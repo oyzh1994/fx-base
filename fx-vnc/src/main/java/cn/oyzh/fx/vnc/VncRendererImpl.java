@@ -27,6 +27,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import com.glavsoft.drawing.Renderer;
 import com.glavsoft.rfb.encoding.PixelFormat;
 import com.glavsoft.rfb.encoding.decoder.FramebufferUpdateRectangle;
+import com.glavsoft.transport.Transport;
 import javafx.scene.image.PixelBuffer;
 import javafx.scene.image.WritableImage;
 
@@ -46,7 +47,7 @@ public class VncRendererImpl extends Renderer {
     private final WritableImage offscreenImage;
     private final PixelBuffer<IntBuffer> pixelBuffer;
 
-    public VncRendererImpl(int width, int height, PixelFormat pixelFormat) {
+    public VncRendererImpl(Transport transport, int width, int height, PixelFormat pixelFormat) {
         if (0 == width) width = 1;
         if (0 == height) height = 1;
         init(width, height, pixelFormat);

@@ -23,6 +23,7 @@
 //
 package com.glavsoft.rfb.protocol;
 
+import cn.oyzh.common.log.JulLog;
 import com.glavsoft.core.SettingsChangedEvent;
 import com.glavsoft.exceptions.AuthenticationFailedException;
 import com.glavsoft.exceptions.FatalException;
@@ -64,11 +65,10 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class Protocol implements IChangeSettingsListener {
     private final ProtocolContext context;
-	private final Logger logger;
+	//private final Logger logger;
 	private final IRequestString passwordRetriever;
 	private MessageQueue messageQueue;
 	private SenderTask senderTask;
@@ -90,7 +90,7 @@ public class Protocol implements IChangeSettingsListener {
         context = new ProtocolContext();
         context.transport = transport;
         this.passwordRetriever = passwordRetriever;
-        logger = Logger.getLogger(getClass().getName());
+        //logger = Logger.getLogger(getClass().getName());
         context.settings = settings;
         decoders.put(EncodingType.RAW_ENCODING, RawDecoder.getInstance());
     }
@@ -127,7 +127,7 @@ public class Protocol implements IChangeSettingsListener {
         correctServerPixelFormat();
 		context.setPixelFormat(createPixelFormat(context.settings));
 		sendMessage(new SetPixelFormatMessage(context.pixelFormat));
-		logger.fine("sent: " + context.pixelFormat);
+		JulLog.debug("sent: " + context.pixelFormat);
 
 		sendSupportedEncodingsMessage(context.settings);
 		context.settings.addListener(Protocol.this); // to support pixel format (color depth), and encodings changes
@@ -224,7 +224,7 @@ public class Protocol implements IChangeSettingsListener {
         }
 		SetEncodingsMessage encodingsMessage = new SetEncodingsMessage(encodings);
 		sendMessage(encodingsMessage);
-		logger.fine("sent: " + encodingsMessage.toString());
+		JulLog.debug("sent: " + encodingsMessage.toString());
 	}
 
 	/**
@@ -271,7 +271,7 @@ public class Protocol implements IChangeSettingsListener {
 
 	public void sendRefreshMessage() {
 		sendMessage(new FramebufferUpdateRequestMessage(0, 0, context.fbWidth, context.fbHeight, false));
-		logger.fine("sent: full FB Refresh");
+		JulLog.debug("sent: full FB Refresh");
 	}
 
     public void sendFbUpdateMessage() {
@@ -407,15 +407,15 @@ public class Protocol implements IChangeSettingsListener {
                 final Decoder decoder = encodingType.klass.newInstance();
                 if (decoder != null) {
                     decoders.put(encodingType, decoder);
-                    logger.finer("Register encoding: " + encodingType);
+                    JulLog.debug("Register encoding: " + encodingType);
                 }
             }
         } catch (IllegalArgumentException e) {
-            logger.finer(e.getMessage());
+            JulLog.debug(e.getMessage());
         } catch (InstantiationException e) {
-            logger.warning(e.getMessage());
+            JulLog.warn(e.getMessage());
         } catch (IllegalAccessException e) {
-            logger.warning(e.getMessage());
+            JulLog.warn(e.getMessage());
         }
     }
 
@@ -423,9 +423,9 @@ public class Protocol implements IChangeSettingsListener {
         try {
             final ClientMessageType clientMessageType = ClientMessageType.byId(capInfo.getCode());
             clientMessageTypes.add(clientMessageType);
-            logger.finer("Register client message type: " + clientMessageType);
+            JulLog.debug("Register client message type: " + clientMessageType);
         } catch (IllegalArgumentException e) {
-            logger.finer(e.getMessage());
+            JulLog.debug(e.getMessage());
         }
     }
 

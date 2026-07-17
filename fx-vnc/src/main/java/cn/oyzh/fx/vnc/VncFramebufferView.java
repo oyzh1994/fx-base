@@ -141,7 +141,7 @@ public class VncFramebufferView extends Pane implements IRepaintController {
 
     @Override
     public Renderer createRenderer(Transport transport, int width, int height, PixelFormat pixelFormat) {
-        renderer = new VncRendererImpl(width, height, pixelFormat);
+        renderer = new VncRendererImpl(transport, width, height, pixelFormat);
         cursor = renderer.getCursor();
         FXUtil.runLater(() -> {
             this.fbWidth = width;

@@ -23,13 +23,13 @@
 //
 package com.glavsoft.rfb.protocol;
 
+import cn.oyzh.common.log.JulLog;
 import com.glavsoft.exceptions.TransportException;
 import com.glavsoft.rfb.client.ClientToServerMessage;
 import com.glavsoft.transport.Transport;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.logging.Logger;
 
 public class SenderTask implements Runnable {
 
@@ -65,7 +65,7 @@ public class SenderTask implements Runnable {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} catch (TransportException e) {
-			Logger.getLogger(getClass().getName()).severe("Close session: " + e.getMessage());
+			JulLog.error("Close session: " + e.getMessage());
 			protocol.cleanUpSession("Connection closed");
 		} catch (Throwable te) {
 			StringWriter sw = new StringWriter();
@@ -73,7 +73,7 @@ public class SenderTask implements Runnable {
 			te.printStackTrace(pw);
 			protocol.cleanUpSession(te.getMessage() + "\n" + sw.toString());
 		}
-		Logger.getLogger(getClass().getName()).finer("Sender task stopped");
+		JulLog.debug("Sender task stopped");
 	}
 
 }
