@@ -169,13 +169,13 @@ public class HexViewer2 extends Application {
             if (s.isEmpty()) return null;
             return hexBtn.isSelected() ? parseHex(s) : s.getBytes(java.nio.charset.StandardCharsets.UTF_8);
         });
-        dlg.showAndWait().ifPresent(pattern -> {
-            long start = hexViewer.getFocusByte();
-            long found = hexViewer.search(pattern, start);
-            if (found < 0 && start > 0) found = hexViewer.search(pattern, 0); // 从头重试
-            if (found >= 0) hexViewer.gotoOffset(found);
-            else new Alert(Alert.AlertType.INFORMATION, "未找到匹配内容").showAndWait();
-        });
+//        dlg.showAndWait().ifPresent(pattern -> {
+//            long start = hexViewer.getFocusByte();
+//            long found = hexViewer.search(pattern, start);
+//            if (found < 0 && start > 0) found = hexViewer.search(pattern, 0); // 从头重试
+//            if (found >= 0) hexViewer.gotoOffset(found);
+//            else new Alert(Alert.AlertType.INFORMATION, "未找到匹配内容").showAndWait();
+//        });
     }
 
     private byte[] parseHex(String s) {

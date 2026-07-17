@@ -6,9 +6,10 @@ import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.RemoveNodeable;
 import cn.oyzh.fx.plus.menu.ContextMenuManager;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Control;
+import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
 
 import java.lang.reflect.Field;
@@ -41,7 +42,8 @@ public class NodeDestroyUtil {
      *
      * @param node 节点
      */
-    public static void destroyNode(Node node) {
+    public static void destroyNode(EventTarget node) {
+        ContextMenuManager.clearContextMenu(node);
         if (NodeUtil.isMediaImport && node instanceof javafx.scene.media.MediaView mediaView) {
             if (mediaView.getMediaPlayer() != null) {
                 mediaView.mediaPlayerProperty().unbind();
@@ -62,10 +64,12 @@ public class NodeDestroyUtil {
                 control.skinProperty().unbind();
                 FXUtil.runWait(() -> control.getSkin().dispose());
             }
-            if (control.getContextMenu() != null) {
-                control.contextMenuProperty().unbind();
-                control.setContextMenu(null);
+            if (control.getTooltip() != null) {
+                control.tooltipProperty().unbind();
+                control.setTooltip(null);
             }
+        }
+        if (node instanceof Tab control) {
             if (control.getTooltip() != null) {
                 control.tooltipProperty().unbind();
                 control.setTooltip(null);

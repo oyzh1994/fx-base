@@ -314,7 +314,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void destroy() {
-        this.clearProps();
+//        this.clearProps();
         this.destroyItems();
         this.clearItems();
         this.destroyColumn();

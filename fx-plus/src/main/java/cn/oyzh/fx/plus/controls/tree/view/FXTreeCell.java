@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controls.tree.view;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.TreeCell;
 
 /**
@@ -15,15 +16,17 @@ public abstract class FXTreeCell<T> extends TreeCell<T> implements StateAdapter,
 
     {
         NodeManager.init(this);
-//        this.setBackground(null);
+        //        this.setBackground(null);
     }
 
     @Override
     protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);
         if (empty || item == null) {
-            this.setText(null);
-            this.setGraphic(null);
+            FXUtil.runWait(() -> {
+                this.setText(null);
+                this.setGraphic(null);
+            });
         }
     }
 }

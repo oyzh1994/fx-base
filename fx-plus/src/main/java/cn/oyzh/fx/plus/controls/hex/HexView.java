@@ -222,16 +222,16 @@ public class HexView extends FXVBox implements Destroyable {
         return sb.toString().trim();
     }
 
-    public String getSelectionText() {
-        StringBuilder sb = new StringBuilder();
-        for (long[] s : selections) {
-            for (long i = s[0]; i <= s[1]; i++) {
-                int b = readByte(i) & 0xFF;
-                sb.append((b >= 32 && b < 127) ? (char) b : '.');
-            }
-        }
-        return sb.toString();
-    }
+//    public String getSelectionText() {
+//        StringBuilder sb = new StringBuilder();
+//        for (long[] s : selections) {
+//            for (long i = s[0]; i <= s[1]; i++) {
+//                int b = readByte(i) & 0xFF;
+//                sb.append((b >= 32 && b < 127) ? (char) b : '.');
+//            }
+//        }
+//        return sb.toString();
+//    }
 
     private byte readByte(long off) {
         byte[] d = readBytes(off, 1);
@@ -269,49 +269,49 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
-    /**
-     * 搜索字节序列，返回第一个匹配的偏移，-1 表示未找到
-     */
-    public long search(byte[] pattern, long startOff) {
-        if (fileSize == 0 || pattern.length == 0) {
-            return -1;
-        }
-        for (long i = startOff; i <= fileSize - pattern.length; i++) {
-            boolean match = true;
-            for (int j = 0; j < pattern.length; j++) {
-                if (readByte(i + j) != pattern[j]) {
-                    match = false;
-                    break;
-                }
-            }
-            if (match) {
-                return i;
-            }
-        }
-        return -1;
-    }
+//    /**
+//     * 搜索字节序列，返回第一个匹配的偏移，-1 表示未找到
+//     */
+//    public long search(byte[] pattern, long startOff) {
+//        if (fileSize == 0 || pattern.length == 0) {
+//            return -1;
+//        }
+//        for (long i = startOff; i <= fileSize - pattern.length; i++) {
+//            boolean match = true;
+//            for (int j = 0; j < pattern.length; j++) {
+//                if (readByte(i + j) != pattern[j]) {
+//                    match = false;
+//                    break;
+//                }
+//            }
+//            if (match) {
+//                return i;
+//            }
+//        }
+//        return -1;
+//    }
 
-    /**
-     * 搜索文本，返回第一个匹配的偏移
-     */
-    public long search(String text, long startOff) {
-        return search(text.getBytes(java.nio.charset.StandardCharsets.UTF_8), startOff);
-    }
+//    /**
+//     * 搜索文本，返回第一个匹配的偏移
+//     */
+//    public long search(String text, long startOff) {
+//        return search(text.getBytes(java.nio.charset.StandardCharsets.UTF_8), startOff);
+//    }
 
-    /**
-     * 搜索十六进制字符串 (如 "FF 00 AB")
-     */
-    public long searchHex(String hex, long startOff) {
-        String[] parts = hex.trim().split("\\s+");
-        byte[] pattern = new byte[parts.length];
-        for (int i = 0; i < parts.length; i++) {
-            if (parts[i].isEmpty()) {
-                continue;
-            }
-            pattern[i] = (byte) Integer.parseInt(parts[i], 16);
-        }
-        return search(pattern, startOff);
-    }
+//    /**
+//     * 搜索十六进制字符串 (如 "FF 00 AB")
+//     */
+//    public long searchHex(String hex, long startOff) {
+//        String[] parts = hex.trim().split("\\s+");
+//        byte[] pattern = new byte[parts.length];
+//        for (int i = 0; i < parts.length; i++) {
+//            if (parts[i].isEmpty()) {
+//                continue;
+//            }
+//            pattern[i] = (byte) Integer.parseInt(parts[i], 16);
+//        }
+//        return search(pattern, startOff);
+//    }
 
     public Color getStatusBg() {
         return ThemeManager.isDarkMode() ? Color.web("#252525") : Color.web("#e0e0e0");

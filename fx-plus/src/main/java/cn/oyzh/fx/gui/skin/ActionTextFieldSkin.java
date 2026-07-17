@@ -169,8 +169,8 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
         this.button.removeEventFilter(MouseEvent.MOUSE_EXITED, this::onButtonExit);
         this.button.removeEventFilter(MouseEvent.MOUSE_ENTERED, this::onButtonEnter);
         this.button.removeEventFilter(MouseEvent.MOUSE_CLICKED, this::onButtonClick);
-        this.button = null;
-        this.action = null;
+//        this.button = null;
+//        this.action = null;
         super.dispose();
     }
 
