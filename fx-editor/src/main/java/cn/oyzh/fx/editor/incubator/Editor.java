@@ -281,7 +281,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         try {
             EditorFormatType formatType = this.getFormatType();
             if (formatType != EditorFormatType.RAW) {
-                String syntaxesName = formatType.getFullSyntaxesName();
+                String syntaxesName = formatType == null ? null : formatType.getFullSyntaxesName();
                 // 如果未发生变化，则跳过
                 if (StringUtil.equals(this.syntaxesName, syntaxesName)) {
                     return;
