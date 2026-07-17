@@ -47,6 +47,7 @@
         <module>fx-editor</module>
         <module>fx-terminal</module>
         <module>fx-tty</module>
+        <module>fx-vnc</module>
     </modules>
 
     <properties>
@@ -146,6 +147,12 @@
             <dependency>
                 <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-editor</artifactId>
+                <version>${fx-base.version}</version>
+            </dependency>
+            <!-- 自定义类库，vnc相关 -->
+            <dependency>
+                <groupId>io.github.oyzh1994</groupId>
+                <artifactId>fx-vnc</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
             <!-- 自定义类库，仿真终端相关 -->
