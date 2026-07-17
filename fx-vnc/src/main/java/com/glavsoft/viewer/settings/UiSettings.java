@@ -157,7 +157,7 @@ public class UiSettings {
     public void copyDataFrom(UiSettingsData other) {
         copyDataFrom(other, 0);
     }
-	
+
     public void copyDataFrom(UiSettingsData other, int mask) {
         if (null == other) return;
         if ((mask & CHANGED_SCALE_FACTOR) == 0) uiSettingsData.setScalePercent(other.getScalePercent());
