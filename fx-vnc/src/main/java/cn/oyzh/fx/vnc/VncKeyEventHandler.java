@@ -241,7 +241,9 @@ public class VncKeyEventHandler {
      * so we must compute it from the physical key and modifier state.
      */
     private static int keyCodeToChar(KeyCode code, boolean shiftDown) {
-        if (code == null) return 0;
+        if (code == null) {
+            return 0;
+        }
 
         // Letters: A-Z → a-z (unshifted) or A-Z (shifted)
         if (code.isLetterKey()) {
@@ -358,7 +360,9 @@ public class VncKeyEventHandler {
         KeyCode keyCode = event.getCode();
 
         Integer keysym = KEYCODE_TO_KEYSYM.get(keyCode);
-        if (keysym == null) return false;
+        if (keysym == null) {
+            return false;
+        }
 
         // Skip modifiers (handled by processModifierKeys)
         switch (keyCode) {

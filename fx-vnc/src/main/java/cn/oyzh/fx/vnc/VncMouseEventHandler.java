@@ -56,7 +56,7 @@ public class VncMouseEventHandler {
     }
 
     public void handleMousePressed(MouseEvent event) {
-        event.getTarget();
+        //event.getTarget();
         processMouseEvent(event, false);
     }
 

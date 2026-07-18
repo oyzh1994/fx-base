@@ -33,47 +33,48 @@ import java.io.StringWriter;
 
 public class SenderTask implements Runnable {
 
-	private final MessageQueue queue;
-	private final Transport transport;
-	private final Protocol protocol;
+    private final MessageQueue queue;
+    private final Transport transport;
+    private final Protocol protocol;
 
-	/**
-	 * Create sender task
-	 * Task runs as thread, receive messages from queue and sends them to transport.
-	 * When no messages appears in queue longer than timeout period, sends FramebufferUpdate
-	 * request
+    /**
+     * Create sender task
+     * Task runs as thread, receive messages from queue and sends them to transport.
+     * When no messages appears in queue longer than timeout period, sends FramebufferUpdate
+     * request
+     *
      * @param messageQueue queue to poll messages
-     * @param transport transport to send messages out
-     * @param protocol session lifecircle support
+     * @param transport    transport to send messages out
+     * @param protocol     session lifecircle support
      */
-	public SenderTask(MessageQueue messageQueue, Transport transport, Protocol protocol) {
-		this.queue = messageQueue;
-		this.transport = transport;
-		this.protocol = protocol;
-	}
+    public SenderTask(MessageQueue messageQueue, Transport transport, Protocol protocol) {
+        this.queue = messageQueue;
+        this.transport = transport;
+        this.protocol = protocol;
+    }
 
-	@Override
-	public void run() {
-		ClientToServerMessage message;
-		try {
-			while ( ! Thread.currentThread().isInterrupted()) {
-				message = queue.get();
-				if (message != null) {
-					message.send(transport);
-				}
-			}
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		} catch (TransportException e) {
-			JulLog.error("Close session: " + e.getMessage());
-			protocol.cleanUpSession("Connection closed");
-		} catch (Throwable te) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			te.printStackTrace(pw);
-			protocol.cleanUpSession(te.getMessage() + "\n" + sw.toString());
-		}
-		JulLog.debug("Sender task stopped");
-	}
+    @Override
+    public void run() {
+        ClientToServerMessage message;
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                message = queue.get();
+                if (message != null) {
+                    message.send(transport);
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (TransportException e) {
+            JulLog.error("Close session: " + e.getMessage());
+            protocol.cleanUpSession("Connection closed");
+        } catch (Throwable te) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            te.printStackTrace(pw);
+            protocol.cleanUpSession(te.getMessage() + "\n" + sw.toString());
+        }
+        JulLog.debug("Sender task stopped");
+    }
 
 }

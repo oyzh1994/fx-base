@@ -23,6 +23,8 @@
 //
 package cn.oyzh.fx.vnc;
 
+import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.util.ClipboardUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.glavsoft.core.SettingsChangedEvent;
 import com.glavsoft.rfb.ClipboardController;
@@ -41,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  * JavaFX replacement for ClipboardControllerImpl.java.
  * Uses javafx.scene.input.Clipboard instead of java.awt.datatransfer.Clipboard.
  */
-public class VncClipboardHandler implements ClipboardController {
+public class VncClipboardHandler implements ClipboardController, Destroyable {
 
     private static final String STANDARD_CHARSET = "ISO-8859-1";
     private static final long CLIPBOARD_UPDATE_CHECK_INTERVAL_MILLIS = 1000L;
@@ -75,9 +77,8 @@ public class VncClipboardHandler implements ClipboardController {
     @Override
     public void updateSystemClipboard(byte[] bytes) {
         if (isEnabled) {
-            FXUtil.runLater(() -> {
-                StringSelectionHelper.setClipboardText(new String(bytes, charset));
-            });
+            ClipboardUtil.setString(new String(bytes, charset));
+            //FXUtil.runLater(() -> StringSelectionHelper.setClipboardText(new String(bytes, charset)));
         }
     }
 
@@ -121,7 +122,7 @@ public class VncClipboardHandler implements ClipboardController {
     private void startPolling() {
         if (scheduler == null || scheduler.isShutdown()) {
             scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
-                Thread t = new Thread(r, "JfxClipboardPoller");
+                Thread t = new Thread(r, "VncClipboardHandler");
                 t.setDaemon(true);
                 return t;
             });
@@ -129,7 +130,9 @@ public class VncClipboardHandler implements ClipboardController {
 
         isRunning = true;
         pollingTask = scheduler.scheduleWithFixedDelay(() -> {
-            if (!isRunning) return;
+            if (!isRunning) {
+                return;
+            }
             FXUtil.runLater(() -> {
                 try {
                     javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
@@ -164,15 +167,20 @@ public class VncClipboardHandler implements ClipboardController {
         setEnabled(settings.isAllowClipboardTransfer());
     }
 
-    /**
-     * Helper to set clipboard text. Uses Platform.runLater since clipboard access requires FX thread.
-     */
-    private static class StringSelectionHelper {
-        static void setClipboardText(String text) {
-            javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
-            javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
-            content.putString(text);
-            clipboard.setContent(content);
-        }
+    @Override
+    public void destroy() {
+        this.stopPolling();
     }
+
+    ///**
+    // * Helper to set clipboard text. Uses Platform.runLater since clipboard access requires FX thread.
+    // */
+    //private static class StringSelectionHelper {
+    //    static void setClipboardText(String text) {
+    //        javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
+    //        javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+    //        content.putString(text);
+    //        clipboard.setContent(content);
+    //    }
+    //}
 }

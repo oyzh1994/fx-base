@@ -23,6 +23,8 @@
 //
 package cn.oyzh.fx.vnc;
 
+import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import com.glavsoft.drawing.SoftCursor;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
@@ -32,7 +34,7 @@ import javafx.scene.image.WritableImage;
  * JavaFX implementation of SoftCursor.
  * Creates a WritableImage from cursor pixel data for overlay rendering.
  */
-public class VncSoftCursorImpl extends SoftCursor {
+public class VncSoftCursorImpl extends SoftCursor implements Destroyable {
 
     private WritableImage cursorImage;
 
@@ -53,5 +55,11 @@ public class VncSoftCursorImpl extends SoftCursor {
         cursorImage = new WritableImage(width, height);
         PixelWriter pw = cursorImage.getPixelWriter();
         pw.setPixels(0, 0, width, height, PixelFormat.getIntArgbPreInstance(), cursorPixels, 0, width);
+    }
+
+    @Override
+    public void destroy() {
+        NodeDestroyUtil.destroyNode(this.cursorImage);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

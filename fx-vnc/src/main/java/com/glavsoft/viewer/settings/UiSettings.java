@@ -77,6 +77,10 @@ public class UiSettings {
 		listeners.add(listener);
 	}
 
+	public void clearListener( ) {
+		this.listeners.clear();
+	}
+
 	void fireListeners() {
         if (null == listeners){
 			return;

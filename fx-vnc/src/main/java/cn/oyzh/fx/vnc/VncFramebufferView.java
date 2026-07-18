@@ -23,6 +23,8 @@
 //
 package cn.oyzh.fx.vnc;
 
+import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.glavsoft.core.SettingsChangedEvent;
 import com.glavsoft.drawing.Renderer;
@@ -47,7 +49,7 @@ import javafx.scene.layout.Pane;
  * with a cursor overlay and input event handling.
  * Uses Pane (not StackPane) to avoid auto-centering/sizing behavior.
  */
-public class VncFramebufferView extends Pane implements IRepaintController {
+public class VncFramebufferView extends Pane implements IRepaintController, Destroyable {
 
     private int fbWidth;
     private int fbHeight;
@@ -104,7 +106,9 @@ public class VncFramebufferView extends Pane implements IRepaintController {
     }
 
     public void setUserInputEnabled(boolean enable, boolean convertToAscii) {
-        if (enable == isUserInputEnabled) return;
+        if (enable == isUserInputEnabled) {
+            return;
+        }
         isUserInputEnabled = enable;
         if (enable) {
             if (mouseEventHandler == null) {
@@ -131,7 +135,6 @@ public class VncFramebufferView extends Pane implements IRepaintController {
                 this.removeEventFilter(ScrollEvent.ANY, mouseEventHandler::handleScroll);
             }
             if (keyEventHandler != null) {
-                keyEventHandler = new VncKeyEventHandler(protocol);
                 this.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler::handleKeyPressed);
                 this.removeEventFilter(KeyEvent.KEY_RELEASED, keyEventHandler::handleKeyReleased);
                 this.removeEventFilter(KeyEvent.KEY_TYPED, keyEventHandler::handleKeyTyped);
@@ -262,5 +265,14 @@ public class VncFramebufferView extends Pane implements IRepaintController {
 
     public Protocol getProtocol() {
         return protocol;
+    }
+
+    @Override
+    public void destroy() {
+        this.cursor.destroy();
+        this.renderer.destroy();
+        NodeDestroyUtil.destroyNode(this.cursorImageView);
+        NodeDestroyUtil.destroyNode(this.framebufferImageView);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

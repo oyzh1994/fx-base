@@ -23,6 +23,8 @@
 //
 package cn.oyzh.fx.vnc;
 
+import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.glavsoft.drawing.Renderer;
 import com.glavsoft.rfb.encoding.PixelFormat;
@@ -42,7 +44,7 @@ import java.nio.IntBuffer;
  * Uses PixelBuffer&lt;IntBuffer&gt; wrapping the same int[] pixels array for
  * zero-copy rendering to a JavaFX WritableImage.
  */
-public class VncRendererImpl extends Renderer {
+public class VncRendererImpl extends Renderer implements Destroyable {
 
     private final WritableImage offscreenImage;
     private final PixelBuffer<IntBuffer> pixelBuffer;
@@ -124,5 +126,12 @@ public class VncRendererImpl extends Renderer {
 
     public VncSoftCursorImpl getCursor() {
         return (VncSoftCursorImpl) cursor;
+    }
+
+    @Override
+    public void destroy() {
+        this.pixelBuffer.getBuffer().clear();
+        NodeDestroyUtil.destroyNode(this.offscreenImage);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

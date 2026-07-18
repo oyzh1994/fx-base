@@ -24,6 +24,7 @@
 package com.glavsoft.rfb.protocol;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.object.Destroyable;
 import com.glavsoft.core.SettingsChangedEvent;
 import com.glavsoft.exceptions.AuthenticationFailedException;
 import com.glavsoft.exceptions.FatalException;
@@ -66,17 +67,17 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Protocol implements IChangeSettingsListener {
+public class Protocol implements IChangeSettingsListener, Destroyable {
     private final ProtocolContext context;
-	//private final Logger logger;
-	private final IRequestString passwordRetriever;
-	private MessageQueue messageQueue;
-	private SenderTask senderTask;
-	private ReceiverTask receiverTask;
-	private IRfbSessionListener rfbSessionListener;
-	private IRepaintController repaintController;
-	private Thread senderThread;
-	private Thread receiverThread;
+    //private final Logger logger;
+    private final IRequestString passwordRetriever;
+    private MessageQueue messageQueue;
+    private SenderTask senderTask;
+    private ReceiverTask receiverTask;
+    private IRfbSessionListener rfbSessionListener;
+    private IRepaintController repaintController;
+    private Thread senderThread;
+    private Thread receiverThread;
     private PixelFormat serverPixelFormat;
 
     private final Map<EncodingType, Decoder> decoders = new LinkedHashMap<EncodingType, Decoder>();
@@ -95,56 +96,56 @@ public class Protocol implements IChangeSettingsListener {
         decoders.put(EncodingType.RAW_ENCODING, RawDecoder.getInstance());
     }
 
-	public void handshake() throws UnsupportedProtocolVersionException, UnsupportedSecurityTypeException,
-			AuthenticationFailedException, TransportException, FatalException {
+    public void handshake() throws UnsupportedProtocolVersionException, UnsupportedSecurityTypeException,
+            AuthenticationFailedException, TransportException, FatalException {
         context.transport = new Handshaker(this).handshake(getTransport());
-		messageQueue = new MessageQueue(); // TODO Why here?
-	}
+        messageQueue = new MessageQueue(); // TODO Why here?
+    }
 
     public IRequestString getPasswordRetriever() {
-		return passwordRetriever;
-	}
+        return passwordRetriever;
+    }
 
     /**
-	 * Following the server initialisation message it's up to the client to send
-	 * whichever protocol messages it wants.  Typically it will send a
-	 * SetPixelFormat message and a SetEncodings message, followed by a
-	 * FramebufferUpdateRequest.  From then on the server will send
-	 * FramebufferUpdate messages in response to the client's
-	 * FramebufferUpdateRequest messages.  The client should send
-	 * FramebufferUpdateRequest messages with incremental set to true when it has
-	 * finished processing one FramebufferUpdate and is ready to process another.
-	 * With a fast client, the rate at which FramebufferUpdateRequests are sent
-	 * should be regulated to avoid hogging the network.
-	 */
-	public void startNormalHandling(IRfbSessionListener rfbSessionListener,
-			IRepaintController repaintController, ClipboardController clipboardController) {
-		this.rfbSessionListener = rfbSessionListener;
-		this.repaintController = repaintController;
+     * Following the server initialisation message it's up to the client to send
+     * whichever protocol messages it wants.  Typically it will send a
+     * SetPixelFormat message and a SetEncodings message, followed by a
+     * FramebufferUpdateRequest.  From then on the server will send
+     * FramebufferUpdate messages in response to the client's
+     * FramebufferUpdateRequest messages.  The client should send
+     * FramebufferUpdateRequest messages with incremental set to true when it has
+     * finished processing one FramebufferUpdate and is ready to process another.
+     * With a fast client, the rate at which FramebufferUpdateRequests are sent
+     * should be regulated to avoid hogging the network.
+     */
+    public void startNormalHandling(IRfbSessionListener rfbSessionListener,
+                                    IRepaintController repaintController, ClipboardController clipboardController) {
+        this.rfbSessionListener = rfbSessionListener;
+        this.repaintController = repaintController;
 //		if (settings.getColorDepth() == 0) {
 //			settings.setColorDepth(pixelFormat.depth); // the same the server sent when not initialized yet
 //		}
         correctServerPixelFormat();
-		context.setPixelFormat(createPixelFormat(context.settings));
-		sendMessage(new SetPixelFormatMessage(context.pixelFormat));
-		JulLog.debug("sent: " + context.pixelFormat);
+        context.setPixelFormat(createPixelFormat(context.settings));
+        sendMessage(new SetPixelFormatMessage(context.pixelFormat));
+        JulLog.debug("sent: " + context.pixelFormat);
 
-		sendSupportedEncodingsMessage(context.settings);
-		context.settings.addListener(Protocol.this); // to support pixel format (color depth), and encodings changes
-		context.settings.addListener(repaintController);
+        sendSupportedEncodingsMessage(context.settings);
+        context.settings.addListener(Protocol.this); // to support pixel format (color depth), and encodings changes
+        context.settings.addListener(repaintController);
 
-		sendRefreshMessage();
+        sendRefreshMessage();
         senderTask = new SenderTask(messageQueue, context.transport, Protocol.this);
         senderThread = new Thread(senderTask, "RfbSenderTask");
         senderThread.start();
-		resetDecoders();
-		receiverTask = new ReceiverTask(
+        resetDecoders();
+        receiverTask = new ReceiverTask(
                 context.transport, repaintController,
-				clipboardController,
+                clipboardController,
                 Protocol.this, baudrateMeter);
         receiverThread = new Thread(receiverTask, "RfbReceiverTask");
-		receiverThread.start();
-	}
+        receiverThread.start();
+    }
 
     private void correctServerPixelFormat() {
         // correct true color flag
@@ -152,13 +153,23 @@ public class Protocol implements IChangeSettingsListener {
             //we don't support color maps, so always set true color flag up
             //and select closest convenient value for bpp/depth
             int depth = serverPixelFormat.depth;
-            if (0 == depth) depth = serverPixelFormat.bitsPerPixel;
-            if (0 == depth) depth = 24;
-            if (depth <= 3) serverPixelFormat = PixelFormat.create3bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
-            else if (depth <= 6) serverPixelFormat = PixelFormat.create6bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
-            else if (depth <= 8) serverPixelFormat = PixelFormat.create8bitColorDepthBGRPixelFormat(serverPixelFormat.bigEndianFlag);
-            else if (depth <= 16) serverPixelFormat = PixelFormat.create16bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
-            else serverPixelFormat = PixelFormat.create24bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
+            if (0 == depth) {
+                depth = serverPixelFormat.bitsPerPixel;
+            }
+            if (0 == depth) {
+                depth = 24;
+            }
+            if (depth <= 3) {
+                serverPixelFormat = PixelFormat.create3bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
+            } else if (depth <= 6) {
+                serverPixelFormat = PixelFormat.create6bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
+            } else if (depth <= 8) {
+                serverPixelFormat = PixelFormat.create8bitColorDepthBGRPixelFormat(serverPixelFormat.bigEndianFlag);
+            } else if (depth <= 16) {
+                serverPixelFormat = PixelFormat.create16bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
+            } else {
+                serverPixelFormat = PixelFormat.create24bitColorDepthPixelFormat(serverPixelFormat.bigEndianFlag);
+            }
         }
         // correct .depth to use actual depth 24 instead of incorrect 32, used by ex. UltraVNC server, that cause
         // protocol incompatibility in ZRLE encoding
@@ -173,8 +184,8 @@ public class Protocol implements IChangeSettingsListener {
     }
 
     public void sendMessage(ClientToServerMessage message) {
-		messageQueue.put(message);
-	}
+        messageQueue.put(message);
+    }
 
     public void sendSupportedEncodingsMessage(ProtocolSettings settings) {
         final LinkedHashSet<EncodingType> encodings = new LinkedHashSet<EncodingType>();
@@ -183,22 +194,25 @@ public class Protocol implements IChangeSettingsListener {
             encodings.add(preferredEncoding); // preferred first
         }
         for (final EncodingType e : decoders.keySet()) {
-            if (e == preferredEncoding) continue;
+            if (e == preferredEncoding) {
+                continue;
+            }
             switch (e) {
-                case RAW_ENCODING: break;
-                case COMPRESS_LEVEL_0 :
+                case RAW_ENCODING:
+                    break;
+                case COMPRESS_LEVEL_0:
                     final int compressionLevel = settings.getCompressionLevel();
                     if (compressionLevel > 0 && compressionLevel < 10) {
                         encodings.add(EncodingType.byId(EncodingType.COMPRESS_LEVEL_0.getId() + compressionLevel));
                     }
                     break;
-                case JPEG_QUALITY_LEVEL_0 :
+                case JPEG_QUALITY_LEVEL_0:
                     final int jpegQuality = settings.getJpegQuality();
                     final int colorDepth = settings.getColorDepth();
                     if (jpegQuality > 0 && jpegQuality < 10 &&
-                        (colorDepth == ProtocolSettings.COLOR_DEPTH_24 ||
-                        colorDepth == ProtocolSettings.COLOR_DEPTH_SERVER_SETTINGS)) {
-                            encodings.add(EncodingType.byId(EncodingType.JPEG_QUALITY_LEVEL_0.getId() + jpegQuality));
+                            (colorDepth == ProtocolSettings.COLOR_DEPTH_24 ||
+                                    colorDepth == ProtocolSettings.COLOR_DEPTH_SERVER_SETTINGS)) {
+                        encodings.add(EncodingType.byId(EncodingType.JPEG_QUALITY_LEVEL_0.getId() + jpegQuality));
                     }
                     break;
                 case COPY_RECT:
@@ -222,34 +236,34 @@ public class Protocol implements IChangeSettingsListener {
                     encodings.add(e);
             }
         }
-		SetEncodingsMessage encodingsMessage = new SetEncodingsMessage(encodings);
-		sendMessage(encodingsMessage);
-		JulLog.debug("sent: " + encodingsMessage.toString());
-	}
+        SetEncodingsMessage encodingsMessage = new SetEncodingsMessage(encodings);
+        sendMessage(encodingsMessage);
+        JulLog.debug("sent: " + encodingsMessage.toString());
+    }
 
-	/**
-	 * create pixel format by bpp
-	 */
-	private PixelFormat createPixelFormat(ProtocolSettings settings) {
-		int serverBigEndianFlag = serverPixelFormat.bigEndianFlag;
-		switch (settings.getColorDepth()) {
-		case ProtocolSettings.COLOR_DEPTH_24:
-			return PixelFormat.create24bitColorDepthPixelFormat(serverBigEndianFlag);
-		case ProtocolSettings.COLOR_DEPTH_16:
-			return PixelFormat.create16bitColorDepthPixelFormat(serverBigEndianFlag);
-		case ProtocolSettings.COLOR_DEPTH_8:
-            return hackForMacOsXScreenSharingServer(PixelFormat.create8bitColorDepthBGRPixelFormat(serverBigEndianFlag));
-		case ProtocolSettings.COLOR_DEPTH_6:
-			return hackForMacOsXScreenSharingServer(PixelFormat.create6bitColorDepthPixelFormat(serverBigEndianFlag));
-		case ProtocolSettings.COLOR_DEPTH_3:
-			return hackForMacOsXScreenSharingServer(PixelFormat.create3bitColorDepthPixelFormat(serverBigEndianFlag));
-		case ProtocolSettings.COLOR_DEPTH_SERVER_SETTINGS:
-			return serverPixelFormat;
-		default:
-			// unsupported bpp, use default
-			return PixelFormat.create24bitColorDepthPixelFormat(serverBigEndianFlag);
-		}
-	}
+    /**
+     * create pixel format by bpp
+     */
+    private PixelFormat createPixelFormat(ProtocolSettings settings) {
+        int serverBigEndianFlag = serverPixelFormat.bigEndianFlag;
+        switch (settings.getColorDepth()) {
+            case ProtocolSettings.COLOR_DEPTH_24:
+                return PixelFormat.create24bitColorDepthPixelFormat(serverBigEndianFlag);
+            case ProtocolSettings.COLOR_DEPTH_16:
+                return PixelFormat.create16bitColorDepthPixelFormat(serverBigEndianFlag);
+            case ProtocolSettings.COLOR_DEPTH_8:
+                return hackForMacOsXScreenSharingServer(PixelFormat.create8bitColorDepthBGRPixelFormat(serverBigEndianFlag));
+            case ProtocolSettings.COLOR_DEPTH_6:
+                return hackForMacOsXScreenSharingServer(PixelFormat.create6bitColorDepthPixelFormat(serverBigEndianFlag));
+            case ProtocolSettings.COLOR_DEPTH_3:
+                return hackForMacOsXScreenSharingServer(PixelFormat.create3bitColorDepthPixelFormat(serverBigEndianFlag));
+            case ProtocolSettings.COLOR_DEPTH_SERVER_SETTINGS:
+                return serverPixelFormat;
+            default:
+                // unsupported bpp, use default
+                return PixelFormat.create24bitColorDepthPixelFormat(serverBigEndianFlag);
+        }
+    }
 
     private PixelFormat hackForMacOsXScreenSharingServer(PixelFormat pixelFormat) {
         if (isMac) {
@@ -259,58 +273,64 @@ public class Protocol implements IChangeSettingsListener {
     }
 
     @Override
-	public void settingsChanged(SettingsChangedEvent e) {
-		ProtocolSettings settings = (ProtocolSettings) e.getSource();
-		if (settings.isChangedEncodings()) {
-			sendSupportedEncodingsMessage(settings);
-		}
-		if (settings.isChangedColorDepth() && receiverTask != null) {
-			receiverTask.queueUpdatePixelFormat(createPixelFormat(settings));
-		}
-	}
+    public void settingsChanged(SettingsChangedEvent e) {
+        ProtocolSettings settings = (ProtocolSettings) e.getSource();
+        if (settings.isChangedEncodings()) {
+            sendSupportedEncodingsMessage(settings);
+        }
+        if (settings.isChangedColorDepth() && receiverTask != null) {
+            receiverTask.queueUpdatePixelFormat(createPixelFormat(settings));
+        }
+    }
 
-	public void sendRefreshMessage() {
-		sendMessage(new FramebufferUpdateRequestMessage(0, 0, context.fbWidth, context.fbHeight, false));
-		JulLog.debug("sent: full FB Refresh");
-	}
+    public void sendRefreshMessage() {
+        sendMessage(new FramebufferUpdateRequestMessage(0, 0, context.fbWidth, context.fbHeight, false));
+        JulLog.debug("sent: full FB Refresh");
+    }
 
     public void sendFbUpdateMessage() {
         sendMessage(receiverTask.fullscreenFbUpdateIncrementalRequest);
     }
 
     public void cleanUpSession(String message) {
-		cleanUpSession();
-		rfbSessionListener.rfbSessionStopped(message);
-	}
+        cleanUpSession();
+        rfbSessionListener.rfbSessionStopped(message);
+    }
 
-	public void cleanUpSession() {
+    public void cleanUpSession() {
         synchronized (this) {
-            if (inCleanUp) return;
+            if (inCleanUp) {
+                return;
+            }
             inCleanUp = true;
         }
-		if (senderTask != null && senderThread.isAlive()) { senderThread.interrupt(); }
-		if (receiverTask != null && receiverThread.isAlive()) { receiverThread.interrupt(); }
-		if (senderTask != null) {
-			try {
-				senderThread.join(1000);
-			} catch (InterruptedException e) {
-				// nop
-			}
-			senderTask = null;
-		}
-		if (receiverTask != null) {
-			try {
-				receiverThread.join(1000);
-			} catch (InterruptedException e) {
-				// nop
-			}
-			receiverTask = null;
-		}
+        if (senderTask != null && senderThread.isAlive()) {
+            senderThread.interrupt();
+        }
+        if (receiverTask != null && receiverThread.isAlive()) {
+            receiverThread.interrupt();
+        }
+        if (senderTask != null) {
+            try {
+                senderThread.join(1000);
+            } catch (InterruptedException e) {
+                // nop
+            }
+            senderTask = null;
+        }
+        if (receiverTask != null) {
+            try {
+                receiverThread.join(1000);
+            } catch (InterruptedException e) {
+                // nop
+            }
+            receiverTask = null;
+        }
         synchronized (this) {
             inCleanUp = false;
         }
         ByteBuffer.removeInstance();
-	}
+    }
 
     public void setServerPixelFormat(PixelFormat serverPixelFormat) {
         this.serverPixelFormat = serverPixelFormat;
@@ -403,7 +423,7 @@ public class Protocol implements IChangeSettingsListener {
     public void registerEncoding(RfbCapabilityInfo capInfo) {
         try {
             final EncodingType encodingType = EncodingType.byId(capInfo.getCode());
-            if ( ! decoders.containsKey(encodingType)) {
+            if (!decoders.containsKey(encodingType)) {
                 final Decoder decoder = encodingType.klass.newInstance();
                 if (decoder != null) {
                     decoders.put(encodingType, decoder);
@@ -436,7 +456,7 @@ public class Protocol implements IChangeSettingsListener {
      * @return true when supported
      */
     public boolean isSupported(ClientMessageType type) {
-        return clientMessageTypes.contains(type) || ClientMessageType.isStandardType(type   );
+        return clientMessageTypes.contains(type) || ClientMessageType.isStandardType(type);
     }
 
     public void setTunnelType(TunnelType tunnelType) {
@@ -456,11 +476,11 @@ public class Protocol implements IChangeSettingsListener {
     }
 
     public int kBPS() {
-    return baudrateMeter == null ? -1 : baudrateMeter.kBPS();
-  }
+        return baudrateMeter == null ? -1 : baudrateMeter.kBPS();
+    }
 
     public boolean isMac() {
-      return isMac;
+        return isMac;
     }
 
     public void setConnectionIdRetriever(IRequestString connectionIdRetriever) {
@@ -469,5 +489,10 @@ public class Protocol implements IChangeSettingsListener {
 
     public IRequestString getConnectionIdRetriever() {
         return connectionIdRetriever;
+    }
+
+    @Override
+    public void destroy() {
+        this.cleanUpSession();
     }
 }
