@@ -123,4 +123,12 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         }
         NodeDestroyUtil.destroyObject(this);
     }
+
+    @Override
+    public void setTipText(String tipText) {
+        TipAdapter.super.setTipText(tipText);
+        if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
+            this.setPromptText(tipText);
+        }
+    }
 }
