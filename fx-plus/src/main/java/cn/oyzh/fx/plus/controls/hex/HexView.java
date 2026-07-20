@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controls.hex;
 
 import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.controls.FXCanvas;
+import cn.oyzh.fx.plus.controls.FXScrollBar;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.font.FontManager;
@@ -12,7 +14,6 @@ import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.input.KeyCode;
@@ -109,30 +110,30 @@ public class HexView extends FXVBox implements Destroyable {
     private ByteBuffer cacheBuf;
     private long cacheStart = -1;
 
-    private Canvas canvas;
-    private ScrollBar scrollBar;
+    private FXCanvas canvas;
+    private FXScrollBar scrollBar;
     private long rowsPerPage;
     private long scrollPos;
 
     public HexView() {
         this.initFont();
 
-        canvas = new Canvas();
+        canvas = new FXCanvas();
         canvas.setFocusTraversable(true);
         canvas.addEventFilter(MouseEvent.MOUSE_MOVED, this::onMouseMoved);
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, this::onMousePressed);
         canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
-        canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, this::onMouseReleased);
         canvas.addEventFilter(MouseEvent.MOUSE_CLICKED, this::onMouseClicked);
-        canvas.setOnMouseExited(e -> {
+        canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, this::onMouseReleased);
+        canvas.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
             hoverByte = -1;
             hoverRegion = -1;
             repaint();
         });
-        canvas.setOnScroll(this::onScrollWheel);
+        canvas.addEventFilter(ScrollEvent.ANY, this::onScrollWheel);
         canvas.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
 
-        scrollBar = new ScrollBar();
+        scrollBar = new FXScrollBar();
         scrollBar.setOrientation(Orientation.VERTICAL);
         scrollBar.setMin(0);
         scrollBar.setMax(0);
@@ -149,14 +150,15 @@ public class HexView extends FXVBox implements Destroyable {
         VBox.setVgrow(row, Priority.ALWAYS);
         getChildren().add(row);
 
-        row.prefWidthProperty().bind(this.widthProperty());
-        row.prefHeightProperty().bind(this.heightProperty());
+        row.setFlexWidth("100%");
+        row.setFlexHeight("100%");
+
         canvas.widthProperty().bind(row.widthProperty().subtract(scrollBar.widthProperty()));
-        canvas.heightProperty().bind(row.heightProperty());
         canvas.widthProperty().addListener((o, ov, nv) -> {
             computeRows();
             repaint();
         });
+        canvas.heightProperty().bind(row.heightProperty());
         canvas.heightProperty().addListener((o, ov, nv) -> {
             computeRows();
             repaint();
@@ -222,16 +224,16 @@ public class HexView extends FXVBox implements Destroyable {
         return sb.toString().trim();
     }
 
-//    public String getSelectionText() {
-//        StringBuilder sb = new StringBuilder();
-//        for (long[] s : selections) {
-//            for (long i = s[0]; i <= s[1]; i++) {
-//                int b = readByte(i) & 0xFF;
-//                sb.append((b >= 32 && b < 127) ? (char) b : '.');
-//            }
-//        }
-//        return sb.toString();
-//    }
+    //    public String getSelectionText() {
+    //        StringBuilder sb = new StringBuilder();
+    //        for (long[] s : selections) {
+    //            for (long i = s[0]; i <= s[1]; i++) {
+    //                int b = readByte(i) & 0xFF;
+    //                sb.append((b >= 32 && b < 127) ? (char) b : '.');
+    //            }
+    //        }
+    //        return sb.toString();
+    //    }
 
     private byte readByte(long off) {
         byte[] d = readBytes(off, 1);
@@ -269,49 +271,49 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
-//    /**
-//     * 搜索字节序列，返回第一个匹配的偏移，-1 表示未找到
-//     */
-//    public long search(byte[] pattern, long startOff) {
-//        if (fileSize == 0 || pattern.length == 0) {
-//            return -1;
-//        }
-//        for (long i = startOff; i <= fileSize - pattern.length; i++) {
-//            boolean match = true;
-//            for (int j = 0; j < pattern.length; j++) {
-//                if (readByte(i + j) != pattern[j]) {
-//                    match = false;
-//                    break;
-//                }
-//            }
-//            if (match) {
-//                return i;
-//            }
-//        }
-//        return -1;
-//    }
+    //    /**
+    //     * 搜索字节序列，返回第一个匹配的偏移，-1 表示未找到
+    //     */
+    //    public long search(byte[] pattern, long startOff) {
+    //        if (fileSize == 0 || pattern.length == 0) {
+    //            return -1;
+    //        }
+    //        for (long i = startOff; i <= fileSize - pattern.length; i++) {
+    //            boolean match = true;
+    //            for (int j = 0; j < pattern.length; j++) {
+    //                if (readByte(i + j) != pattern[j]) {
+    //                    match = false;
+    //                    break;
+    //                }
+    //            }
+    //            if (match) {
+    //                return i;
+    //            }
+    //        }
+    //        return -1;
+    //    }
 
-//    /**
-//     * 搜索文本，返回第一个匹配的偏移
-//     */
-//    public long search(String text, long startOff) {
-//        return search(text.getBytes(java.nio.charset.StandardCharsets.UTF_8), startOff);
-//    }
+    //    /**
+    //     * 搜索文本，返回第一个匹配的偏移
+    //     */
+    //    public long search(String text, long startOff) {
+    //        return search(text.getBytes(java.nio.charset.StandardCharsets.UTF_8), startOff);
+    //    }
 
-//    /**
-//     * 搜索十六进制字符串 (如 "FF 00 AB")
-//     */
-//    public long searchHex(String hex, long startOff) {
-//        String[] parts = hex.trim().split("\\s+");
-//        byte[] pattern = new byte[parts.length];
-//        for (int i = 0; i < parts.length; i++) {
-//            if (parts[i].isEmpty()) {
-//                continue;
-//            }
-//            pattern[i] = (byte) Integer.parseInt(parts[i], 16);
-//        }
-//        return search(pattern, startOff);
-//    }
+    //    /**
+    //     * 搜索十六进制字符串 (如 "FF 00 AB")
+    //     */
+    //    public long searchHex(String hex, long startOff) {
+    //        String[] parts = hex.trim().split("\\s+");
+    //        byte[] pattern = new byte[parts.length];
+    //        for (int i = 0; i < parts.length; i++) {
+    //            if (parts[i].isEmpty()) {
+    //                continue;
+    //            }
+    //            pattern[i] = (byte) Integer.parseInt(parts[i], 16);
+    //        }
+    //        return search(pattern, startOff);
+    //    }
 
     public Color getStatusBg() {
         return ThemeManager.isDarkMode() ? Color.web("#252525") : Color.web("#e0e0e0");
@@ -563,7 +565,9 @@ public class HexView extends FXVBox implements Destroyable {
         if (needScroll) {
             double max = Math.max(0, totalRows - rowsPerPage);
             scrollBar.setMax(max);
-            scrollBar.setVisibleAmount(rowsPerPage);
+            // 保证 thumb 至少占滚动条的 5%，大文件时不会缩成一条细线
+            double minVisibleAmount = max /20;
+            scrollBar.setVisibleAmount(Math.max(rowsPerPage, minVisibleAmount));
             scrollBar.setValue(Math.min(scrollPos, max));
             scrollPos = (int) scrollBar.getValue();
         }
