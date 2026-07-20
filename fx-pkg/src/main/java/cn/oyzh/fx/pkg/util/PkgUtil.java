@@ -1,22 +1,18 @@
 package cn.oyzh.fx.pkg.util;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.ZipUtil;
-import cn.hutool.extra.compress.CompressUtil;
-import cn.hutool.extra.compress.archiver.Archiver;
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,23 +56,23 @@ public class PkgUtil {
         return inputDir;
     }
 
-//    /**
-//     * 压缩打包目录，zip格式
-//     *
-//     * @param name    文件名称
-//     * @param appDest app目录
-//     * @return 压缩后的文件
-//     */
-//    public static File zipDest(String name, String appDest) {
-//        String compressName = name + ".zip";
-//        JulLog.info("zipDest start, config.compressType is:{} compressName:{}.", "zip", compressName);
-//        File dest = new File(appDest);
-//        File compressFile = new File(dest.getParentFile(), compressName);
-//        // 进行zip压缩，如果是macos则保留目录名称，否则不保留
-//        ZipUtil.zip(dest.getPath(), compressFile.getPath(), false);
-//        JulLog.info("zipDest finish appDest:{}", compressFile.getPath());
-//        return compressFile;
-//    }
+    //    /**
+    //     * 压缩打包目录，zip格式
+    //     *
+    //     * @param name    文件名称
+    //     * @param appDest app目录
+    //     * @return 压缩后的文件
+    //     */
+    //    public static File zipDest(String name, String appDest) {
+    //        String compressName = name + ".zip";
+    //        JulLog.info("zipDest start, config.compressType is:{} compressName:{}.", "zip", compressName);
+    //        File dest = new File(appDest);
+    //        File compressFile = new File(dest.getParentFile(), compressName);
+    //        // 进行zip压缩，如果是macos则保留目录名称，否则不保留
+    //        ZipUtil.zip(dest.getPath(), compressFile.getPath(), false);
+    //        JulLog.info("zipDest finish appDest:{}", compressFile.getPath());
+    //        return compressFile;
+    //    }
 
     /**
      * 压缩打包目录，zip格式
@@ -130,71 +126,71 @@ public class PkgUtil {
         return compressFile;
     }
 
-//    /**
-//     * 压缩打包目录，zip格式，macos专用
-//     *
-//     * @param name    文件名称
-//     * @param appDest app目录
-//     * @return 压缩后的文件
-//     */
-//    public static File zipDestByMacos(String name, String appDest) {
-//        String compressName = name + ".zip";
-//        JulLog.info("zipDestByMacos start, config.compressType is:{} compressName:{}.", "zip", compressName);
-//        File dest = new File(appDest);
-//        File compressFile = new File(dest.getParentFile(), compressName);
-//        // 进行zip压缩，如果是macos则保留目录名称，否则不保留
-//        ZipUtil.zip(dest.getPath(), compressFile.getPath(), true);
-//        JulLog.info("zipDestByMacos finish appDest:{}", compressFile.getPath());
-//        return compressFile;
-//    }
+    //    /**
+    //     * 压缩打包目录，zip格式，macos专用
+    //     *
+    //     * @param name    文件名称
+    //     * @param appDest app目录
+    //     * @return 压缩后的文件
+    //     */
+    //    public static File zipDestByMacos(String name, String appDest) {
+    //        String compressName = name + ".zip";
+    //        JulLog.info("zipDestByMacos start, config.compressType is:{} compressName:{}.", "zip", compressName);
+    //        File dest = new File(appDest);
+    //        File compressFile = new File(dest.getParentFile(), compressName);
+    //        // 进行zip压缩，如果是macos则保留目录名称，否则不保留
+    //        ZipUtil.zip(dest.getPath(), compressFile.getPath(), true);
+    //        JulLog.info("zipDestByMacos finish appDest:{}", compressFile.getPath());
+    //        return compressFile;
+    //    }
 
-//    /**
-//     * 压缩打包目录，tar格式
-//     *
-//     * @param name    文件名称
-//     * @param appDest app目录
-//     * @return 压缩后的文件
-//     */
-//    public static File tarDest(String name, String appDest) {
-//        String compressName = name + ".tar";
-//        JulLog.info("tarDest start, config.compressType is:{} compressName:{}.", "tar", compressName);
-//        File dest = new File(appDest);
-//        File compressFile = new File(dest.getParentFile(), compressName);
-//        // 进行tar压缩
-//        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, ArchiveStreamFactory.TAR, compressFile)
-//                .add(dest);
-//        archiver.finish().close();
-//        JulLog.info("tarDest finish appDest:{}", compressFile.getPath());
-//        return compressFile;
-//    }
+    //    /**
+    //     * 压缩打包目录，tar格式
+    //     *
+    //     * @param name    文件名称
+    //     * @param appDest app目录
+    //     * @return 压缩后的文件
+    //     */
+    //    public static File tarDest(String name, String appDest) {
+    //        String compressName = name + ".tar";
+    //        JulLog.info("tarDest start, config.compressType is:{} compressName:{}.", "tar", compressName);
+    //        File dest = new File(appDest);
+    //        File compressFile = new File(dest.getParentFile(), compressName);
+    //        // 进行tar压缩
+    //        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, ArchiveStreamFactory.TAR, compressFile)
+    //                .add(dest);
+    //        archiver.finish().close();
+    //        JulLog.info("tarDest finish appDest:{}", compressFile.getPath());
+    //        return compressFile;
+    //    }
 
-//    /**
-//     * 压缩打包文件，tar.gz格式
-//     *
-//     * @return 压缩后的文件
-//     */
-//    public static File gzipDest(String name, String appDest) {
-//        String compressName = name + ".tar.gz";
-//        JulLog.info("gzipDest start, config.compressType is:{} compressName:{}.", "tar.gz", compressName);
-//        File dest = new File(appDest);
-//        File compressFile = new File(dest.getParentFile(), compressName);
-//        // // 进行tar.gz压缩
-//        // Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile);
-//        // // 把目录的一级文件或者目录添加进去，以免生成解压后还存在一个子目录
-//        // File[] files = dest.listFiles();
-//        // if (files != null) {
-//        //     for (File file : files) {
-//        //         archiver.add(file);
-//        //     }
-//        // }
-//        // archiver.finish().close();
-//        // 进行tar.gz压缩
-//        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile)
-//                .add(dest);
-//        archiver.finish().close();
-//        JulLog.info("gzipDest finish appDest:{}", compressFile.getPath());
-//        return compressFile;
-//    }
+    //    /**
+    //     * 压缩打包文件，tar.gz格式
+    //     *
+    //     * @return 压缩后的文件
+    //     */
+    //    public static File gzipDest(String name, String appDest) {
+    //        String compressName = name + ".tar.gz";
+    //        JulLog.info("gzipDest start, config.compressType is:{} compressName:{}.", "tar.gz", compressName);
+    //        File dest = new File(appDest);
+    //        File compressFile = new File(dest.getParentFile(), compressName);
+    //        // // 进行tar.gz压缩
+    //        // Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile);
+    //        // // 把目录的一级文件或者目录添加进去，以免生成解压后还存在一个子目录
+    //        // File[] files = dest.listFiles();
+    //        // if (files != null) {
+    //        //     for (File file : files) {
+    //        //         archiver.add(file);
+    //        //     }
+    //        // }
+    //        // archiver.finish().close();
+    //        // 进行tar.gz压缩
+    //        Archiver archiver = CompressUtil.createArchiver(StandardCharsets.UTF_8, "tar.gz", compressFile)
+    //                .add(dest);
+    //        archiver.finish().close();
+    //        JulLog.info("gzipDest finish appDest:{}", compressFile.getPath());
+    //        return compressFile;
+    //    }
 
     // /**
     //  * 获取打包器
@@ -211,47 +207,47 @@ public class PkgUtil {
     //     };
     // }
 
-//    /**
-//     * 获取jlink命令
-//     *
-//     * @param config jlink配置
-//     * @return jlink命令
-//     */
-//    @Deprecated
-//    public static String getJLinkCMD(JLinkConfig config) {
-//        String cmdStr = "jlink";
-//        if (config.isVerbose()) {
-//            cmdStr += " --verbose";
-//        }
-//        if (config.getVm() != null) {
-//            cmdStr += " --vm=" + config.getVm();
-//        }
-//        if (config.getCompress() != null) {
-//            cmdStr += " --compress=" + config.getCompress();
-//        }
-//        if (config.isNoHeaderFiles()) {
-//            cmdStr += " --no-header-files";
-//        }
-//        if (config.isNoManPages()) {
-//            cmdStr += " --no-man-pages";
-//        }
-//        if (config.isStripDebug()) {
-//            cmdStr += " --strip-debug";
-//        }
-//        if (config.isStripJavaDebugAttributes()) {
-//            cmdStr += " --strip-java-debug-attributes";
-//        }
-//        if (CollectionUtil.isNotEmpty(config.getAddModules())) {
-//            cmdStr += " --add-modules " + CollectionUtil.join(config.getAddModules(), ",");
-//        }
-//        if (CollectionUtil.isNotEmpty(config.getExcludeFiles())) {
-//            cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
-//        }
-//        cmdStr += " --output " + config.getOutput();
-//        // cmdStr += " --bind-services";
-//        // cmdStr += " --exclude-modules jdk.localedata";
-//        return cmdStr;
-//    }
+    //    /**
+    //     * 获取jlink命令
+    //     *
+    //     * @param config jlink配置
+    //     * @return jlink命令
+    //     */
+    //    @Deprecated
+    //    public static String getJLinkCMD(JLinkConfig config) {
+    //        String cmdStr = "jlink";
+    //        if (config.isVerbose()) {
+    //            cmdStr += " --verbose";
+    //        }
+    //        if (config.getVm() != null) {
+    //            cmdStr += " --vm=" + config.getVm();
+    //        }
+    //        if (config.getCompress() != null) {
+    //            cmdStr += " --compress=" + config.getCompress();
+    //        }
+    //        if (config.isNoHeaderFiles()) {
+    //            cmdStr += " --no-header-files";
+    //        }
+    //        if (config.isNoManPages()) {
+    //            cmdStr += " --no-man-pages";
+    //        }
+    //        if (config.isStripDebug()) {
+    //            cmdStr += " --strip-debug";
+    //        }
+    //        if (config.isStripJavaDebugAttributes()) {
+    //            cmdStr += " --strip-java-debug-attributes";
+    //        }
+    //        if (CollectionUtil.isNotEmpty(config.getAddModules())) {
+    //            cmdStr += " --add-modules " + CollectionUtil.join(config.getAddModules(), ",");
+    //        }
+    //        if (CollectionUtil.isNotEmpty(config.getExcludeFiles())) {
+    //            cmdStr += " --exclude-files=" + CollectionUtil.join(config.getExcludeFiles(), ",");
+    //        }
+    //        cmdStr += " --output " + config.getOutput();
+    //        // cmdStr += " --bind-services";
+    //        // cmdStr += " --exclude-modules jdk.localedata";
+    //        return cmdStr;
+    //    }
 
     /**
      * 获取jlink命令
@@ -286,6 +282,13 @@ public class PkgUtil {
         if (config.isStripJavaDebugAttributes()) {
             cmdList.add("--strip-java-debug-attributes");
         }
+        if (config.getStripNativeDebugSymbols() != null) {
+            if (StringUtil.isBlank(config.getStripNativeDebugSymbols())) {
+                cmdList.add("--strip-native-debug-symbols");
+            } else {
+                cmdList.add("--strip-native-debug-symbols=" + config.getStripNativeDebugSymbols());
+            }
+        }
         if (CollectionUtil.isNotEmpty(config.getAddModules())) {
             cmdList.add("--add-modules");
             cmdList.add(CollectionUtil.join(config.getAddModules(), ","));
@@ -301,7 +304,7 @@ public class PkgUtil {
      * 获取jdeps命令
      *
      * @param config jdeps配置
-     * @param jar  jar
+     * @param jar    jar
      * @return jdeps命令
      */
     public static String[] getJDepsCMD(JDepsConfig config, String jar) {
@@ -356,72 +359,72 @@ public class PkgUtil {
     //     return ArrayUtil.toArray(cmdList, String.class);
     // }
 
-//    /**
-//     * 获取jpackage命令
-//     *
-//     * @param config jpackage配置
-//     * @return jlink命令
-//     */
-//    @Deprecated
-//    public static String getJPackageCMD(JPackageConfig config) {
-//        String cmdStr = "jpackage";
-//        if (config.isVerbose()) {
-//            cmdStr += " --verbose";
-//        }
-//        if (config.getVendor() != null) {
-//            cmdStr += " --vendor " + config.getVendor();
-//        }
-//        if (CollectionUtil.isNotEmpty(config.getJavaOptions())) {
-//            for (String javaOption : config.getJavaOptions()) {
-//                String[] options = javaOption.split(" ");
-//                for (String option : options) {
-//                    cmdStr += " --java-options " + option;
-//                }
-//            }
-//        }
-//        if (config.getDescription() != null) {
-//            cmdStr += " --description \"" + config.getDescription() + "\"";
-//        }
-//        if (config.getIcon() != null) {
-//            cmdStr += " --icon " + config.getIcon();
-//        }
-//        if (config.getInput() != null) {
-//            cmdStr += " -i " + config.getInput();
-//        }
-//        if (config.getMainJar() != null) {
-//            cmdStr += " --main-jar " + config.getMainJar();
-//        }
-//        if (config.getName() != null) {
-//            cmdStr += " -n " + config.getName();
-//        }
-//        if (config.getType() != null) {
-//            cmdStr += " -t " + config.getType();
-//        }
-//        if (config.getAppVersion() != null) {
-//            cmdStr += " --app-version " + config.getAppVersion();
-//        }
-//        if (config.getRuntimeImage() != null) {
-//            cmdStr += " --runtime-image " + config.getRuntimeImage();
-//        }
-//        if (OSUtil.isWindows()) {
-//            if (config.isWinMenu()) {
-//                cmdStr += " --win-menu";
-//            }
-//            if (config.isWinShortcut()) {
-//                cmdStr += " --win-shortcut";
-//            }
-//            if (config.isWinDirChooser()) {
-//                cmdStr += " --win-dir-chooser";
-//            }
-//        }
-//        if (OSUtil.isMacOS()) {
-//            if (config.getMacPackageIdentifier() != null) {
-//                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
-//            }
-//        }
-//        cmdStr += " -d " + config.getDest();
-//        return cmdStr;
-//    }
+    //    /**
+    //     * 获取jpackage命令
+    //     *
+    //     * @param config jpackage配置
+    //     * @return jlink命令
+    //     */
+    //    @Deprecated
+    //    public static String getJPackageCMD(JPackageConfig config) {
+    //        String cmdStr = "jpackage";
+    //        if (config.isVerbose()) {
+    //            cmdStr += " --verbose";
+    //        }
+    //        if (config.getVendor() != null) {
+    //            cmdStr += " --vendor " + config.getVendor();
+    //        }
+    //        if (CollectionUtil.isNotEmpty(config.getJavaOptions())) {
+    //            for (String javaOption : config.getJavaOptions()) {
+    //                String[] options = javaOption.split(" ");
+    //                for (String option : options) {
+    //                    cmdStr += " --java-options " + option;
+    //                }
+    //            }
+    //        }
+    //        if (config.getDescription() != null) {
+    //            cmdStr += " --description \"" + config.getDescription() + "\"";
+    //        }
+    //        if (config.getIcon() != null) {
+    //            cmdStr += " --icon " + config.getIcon();
+    //        }
+    //        if (config.getInput() != null) {
+    //            cmdStr += " -i " + config.getInput();
+    //        }
+    //        if (config.getMainJar() != null) {
+    //            cmdStr += " --main-jar " + config.getMainJar();
+    //        }
+    //        if (config.getName() != null) {
+    //            cmdStr += " -n " + config.getName();
+    //        }
+    //        if (config.getType() != null) {
+    //            cmdStr += " -t " + config.getType();
+    //        }
+    //        if (config.getAppVersion() != null) {
+    //            cmdStr += " --app-version " + config.getAppVersion();
+    //        }
+    //        if (config.getRuntimeImage() != null) {
+    //            cmdStr += " --runtime-image " + config.getRuntimeImage();
+    //        }
+    //        if (OSUtil.isWindows()) {
+    //            if (config.isWinMenu()) {
+    //                cmdStr += " --win-menu";
+    //            }
+    //            if (config.isWinShortcut()) {
+    //                cmdStr += " --win-shortcut";
+    //            }
+    //            if (config.isWinDirChooser()) {
+    //                cmdStr += " --win-dir-chooser";
+    //            }
+    //        }
+    //        if (OSUtil.isMacOS()) {
+    //            if (config.getMacPackageIdentifier() != null) {
+    //                cmdStr += " --mac-package-identifier " + config.getMacPackageIdentifier();
+    //            }
+    //        }
+    //        cmdStr += " -d " + config.getDest();
+    //        return cmdStr;
+    //    }
 
     /**
      * 获取jpackage命令

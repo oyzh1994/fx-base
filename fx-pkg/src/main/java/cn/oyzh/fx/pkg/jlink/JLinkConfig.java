@@ -57,6 +57,11 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
     private Boolean stripJavaDebugAttributes;
 
     /**
+     * 去除debug调试符
+     */
+    private String stripNativeDebugSymbols;
+
+    /**
      * 忽略签名信息
      */
     private Boolean ignoreSigningInformation;
@@ -158,6 +163,14 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
         this.stripJavaDebugAttributes = stripJavaDebugAttributes;
     }
 
+    public String getStripNativeDebugSymbols() {
+        return stripNativeDebugSymbols;
+    }
+
+    public void setStripNativeDebugSymbols(String stripNativeDebugSymbols) {
+        this.stripNativeDebugSymbols = stripNativeDebugSymbols;
+    }
+
     public Set<String> getAddModules() {
         return addModules;
     }
@@ -226,6 +239,9 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
         }
         if (config.stripJavaDebugAttributes != null) {
             this.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
+        }
+        if (config.stripNativeDebugSymbols != null) {
+            this.stripNativeDebugSymbols = config.stripNativeDebugSymbols;
         }
     }
 }
