@@ -25,6 +25,10 @@
 
 package com.sun.prism.impl;
 
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import com.sun.glass.ui.Screen;
 import com.sun.javafx.font.FontResource;
 import com.sun.javafx.font.FontStrike;
@@ -44,11 +48,6 @@ import com.sun.prism.impl.paint.PaintUtil;
 import com.sun.prism.impl.shape.MaskData;
 import com.sun.prism.paint.Gradient;
 
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 public abstract class BaseContext {
 
     private final Screen screen;
@@ -57,6 +56,7 @@ public abstract class BaseContext {
 
     private boolean disposed = false;
 
+    // TODO: 解决默认缓存过大的问题
     private static final int MIN_MASK_DIM = 32;
     private Texture maskTex;
     private ByteBuffer maskBuffer;

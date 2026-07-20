@@ -30,13 +30,12 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A package protected util class used by TreeView and TreeTableView to reduce
  * the level of code duplication.
  */
-public class TreeUtil {
+class TreeUtil {
 
     static <T> int getExpandedDescendantCount(TreeItem<T> node, boolean treeItemCountDirty) {
         if (node == null) return 0;
@@ -56,46 +55,6 @@ public class TreeUtil {
 
             return count;
         }
-    }
-
-    static <T> TreeItem<T> getItem(TreeItem<T> parent, int itemIndex, boolean treeItemCountDirty) {
-        if (parent == null) return null;
-
-        // if itemIndex is 0 then our parent is what we were looking for
-        if (itemIndex == 0) return parent;
-
-        // if itemIndex is > the total item count, then it is out of range
-        if (itemIndex >= getExpandedDescendantCount(parent, treeItemCountDirty)) return null;
-
-        // if we got here, then one of our descendants is the item we're after
-        List<TreeItem<T>> children = new CopyOnWriteArrayList<>(parent.getChildren());
-        if (children == null) return null;
-
-        int idx = itemIndex - 1;
-
-        TreeItem<T> child;
-        for (int i = 0, max = children.size(); i < max; i++) {
-            child = children.get(i);
-            if (idx == 0) return child;
-
-            if (child.isLeaf() || ! child.isExpanded()) {
-                idx--;
-                continue;
-            }
-
-            int expandedChildCount = getExpandedDescendantCount(child, treeItemCountDirty);
-            if (idx >= expandedChildCount) {
-                idx -= expandedChildCount;
-                continue;
-            }
-
-            TreeItem<T> result = getItem(child, idx, treeItemCountDirty);
-            if (result != null) return result;
-            idx--;
-        }
-
-        // We might get here if getItem(0) is called on an empty tree
-        return null;
     }
 
     static <T> int getRow(TreeItem<T> item, TreeItem<T> root, boolean treeItemCountDirty, boolean isShowRoot) {

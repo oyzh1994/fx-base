@@ -27,6 +27,10 @@ package javafx.scene.control;
 
 import com.sun.javafx.scene.control.Properties;
 import com.sun.javafx.util.Utils;
+import javafx.css.converter.EnumConverter;
+import javafx.css.converter.SizeConverter;
+import javafx.scene.control.skin.ScrollBarSkin;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -37,13 +41,10 @@ import javafx.css.Styleable;
 import javafx.css.StyleableDoubleProperty;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
-import javafx.css.converter.EnumConverter;
-import javafx.css.converter.SizeConverter;
 import javafx.geometry.Orientation;
 import javafx.scene.AccessibleAction;
 import javafx.scene.AccessibleAttribute;
 import javafx.scene.AccessibleRole;
-import javafx.scene.control.skin.ScrollBarSkin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,7 +90,7 @@ public class ScrollBar extends Control {
         // makes it look to css like the user set the value and css will not
         // override. Initializing focusTraversable by calling applyStyle with null
         // for StyleOrigin ensures that css will be able to override the value.
-        ((StyleableProperty<Boolean>) focusTraversableProperty()).applyStyle(null, Boolean.FALSE);
+        ((StyleableProperty<Boolean>)focusTraversableProperty()).applyStyle(null,Boolean.FALSE);
 
         // set pseudo-class state to horizontal
         pseudoClassStateChanged(HORIZONTAL_PSEUDOCLASS_STATE, true);
@@ -105,7 +106,6 @@ public class ScrollBar extends Control {
      * value less than or equal to {@link #maxProperty max}. Default value is 0.
      */
     private DoubleProperty min;
-
     public final void setMin(double value) {
         minProperty().set(value);
     }
@@ -120,13 +120,11 @@ public class ScrollBar extends Control {
         }
         return min;
     }
-
     /**
      * The maximum value represented by this {@code ScrollBar}. This should be a
      * value greater than or equal to {@link #minProperty min}. Default value is 100.
      */
     private DoubleProperty max;
-
     public final void setMax(double value) {
         maxProperty().set(value);
     }
@@ -141,13 +139,11 @@ public class ScrollBar extends Control {
         }
         return max;
     }
-
     /**
      * The current value represented by this {@code ScrollBar}. This value should
      * be between {@link #minProperty min} and {@link #maxProperty max}, inclusive.
      */
     private DoubleProperty value;
-
     public final void setValue(double value) {
         valueProperty().set(value);
     }
@@ -162,13 +158,11 @@ public class ScrollBar extends Control {
         }
         return value;
     }
-
     /**
      * The orientation of the {@code ScrollBar} can either be {@link javafx.geometry.Orientation#HORIZONTAL HORIZONTAL}
      * or {@link javafx.geometry.Orientation#VERTICAL VERTICAL}.
      */
     private ObjectProperty<Orientation> orientation;
-
     public final void setOrientation(Orientation value) {
         orientationProperty().set(value);
     }
@@ -180,15 +174,14 @@ public class ScrollBar extends Control {
     public final ObjectProperty<Orientation> orientationProperty() {
         if (orientation == null) {
             orientation = new StyleableObjectProperty<Orientation>(Orientation.HORIZONTAL) {
-                @Override
-                protected void invalidated() {
+                @Override protected void invalidated() {
                     final boolean vertical = (get() == Orientation.VERTICAL);
-                    pseudoClassStateChanged(VERTICAL_PSEUDOCLASS_STATE, vertical);
+                    pseudoClassStateChanged(VERTICAL_PSEUDOCLASS_STATE,    vertical);
                     pseudoClassStateChanged(HORIZONTAL_PSEUDOCLASS_STATE, !vertical);
                 }
 
                 @Override
-                public CssMetaData<ScrollBar, Orientation> getCssMetaData() {
+                public CssMetaData<ScrollBar,Orientation> getCssMetaData() {
                     return StyleableProperties.ORIENTATION;
                 }
 
@@ -211,7 +204,6 @@ public class ScrollBar extends Control {
      * {@link #decrement() decrement} methods are called.
      */
     private DoubleProperty unitIncrement;
-
     public final void setUnitIncrement(double value) {
         unitIncrementProperty().set(value);
     }
@@ -225,7 +217,7 @@ public class ScrollBar extends Control {
             unitIncrement = new StyleableDoubleProperty(1) {
 
                 @Override
-                public CssMetaData<ScrollBar, Number> getCssMetaData() {
+                public CssMetaData<ScrollBar,Number> getCssMetaData() {
                     return StyleableProperties.UNIT_INCREMENT;
                 }
 
@@ -242,13 +234,11 @@ public class ScrollBar extends Control {
         }
         return unitIncrement;
     }
-
     /**
      * The amount by which to adjust the scrollbar if the track of the bar is
      * clicked.
      */
     private DoubleProperty blockIncrement;
-
     public final void setBlockIncrement(double value) {
         blockIncrementProperty().set(value);
     }
@@ -262,7 +252,7 @@ public class ScrollBar extends Control {
             blockIncrement = new StyleableDoubleProperty(10) {
 
                 @Override
-                public CssMetaData<ScrollBar, Number> getCssMetaData() {
+                public CssMetaData<ScrollBar,Number> getCssMetaData() {
                     return StyleableProperties.BLOCK_INCREMENT;
                 }
 
@@ -281,6 +271,7 @@ public class ScrollBar extends Control {
     }
 
     /**
+     * TODO: 解决滚动条太小的问题
      * thumb最小值限制
      */
     private static final DoubleProperty minVisibleAmount = new SimpleDoubleProperty(0.05);
@@ -304,6 +295,7 @@ public class ScrollBar extends Control {
     }
 
     public final double getVisibleAmount() {
+        //  TODO: 解决滚动条太小的问题
         double val = visibleAmount == null ? 15 : visibleAmount.get();
         return Math.max(val, getMinVisibleAmount());
     }
@@ -331,21 +323,21 @@ public class ScrollBar extends Control {
      * {@code blockIncrement}. If {@link #valueProperty() value} were 75, then a
      * position of .5 would indicate that we
      * should decrement {@link #valueProperty() value} by {@link #blockIncrementProperty blockIncrement}.
-     * <p>
-     * Note: This function is intended to be used by experts, primarily
-     * by those implementing new Skins or Behaviors. It is not common
-     * for developers or designers to access this function directly.
      *
+     * Note: This function is intended to be used by experts, primarily
+     *       by those implementing new Skins or Behaviors. It is not common
+     *       for developers or designers to access this function directly.
      * @param position the position
      */
     public void adjustValue(double position) {
         // figure out the "value" associated with the specified position
-        double posValue = ((getMax() - getMin()) * Utils.clamp(0, position, 1)) + getMin();
+        double posValue = ((getMax() - getMin()) * Utils.clamp(0, position, 1))+getMin();
         double newValue;
         if (Double.compare(posValue, getValue()) != 0) {
             if (posValue > getValue()) {
                 newValue = getValue() + getBlockIncrement();
-            } else {
+            }
+            else {
                 newValue = getValue() - getBlockIncrement();
             }
 
@@ -377,11 +369,8 @@ public class ScrollBar extends Control {
         adjustValue(getValue() - getBlockIncrement());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Skin<?> createDefaultSkin() {
+    /** {@inheritDoc} */
+    @Override protected Skin<?> createDefaultSkin() {
         return new ScrollBarSkin(this);
     }
 
@@ -393,72 +382,71 @@ public class ScrollBar extends Control {
 
     /**
      * Initialize the style class to 'scroll-bar'.
-     * <p>
+     *
      * This is the selector class from which CSS can be used to style
      * this control.
      */
     private static final String DEFAULT_STYLE_CLASS = "scroll-bar";
 
     private static class StyleableProperties {
-        private static final CssMetaData<ScrollBar, Orientation> ORIENTATION =
-                new CssMetaData<>("-fx-orientation",
-                        new EnumConverter<>(Orientation.class),
-                        Orientation.HORIZONTAL) {
+        private static final CssMetaData<ScrollBar,Orientation> ORIENTATION =
+            new CssMetaData<>("-fx-orientation",
+                new EnumConverter<>(Orientation.class),
+                Orientation.HORIZONTAL) {
 
-                    @Override
-                    public Orientation getInitialValue(ScrollBar node) {
-                        // A vertical ScrollBar should remain vertical
-                        return node.getOrientation();
-                    }
+            @Override
+            public Orientation getInitialValue(ScrollBar node) {
+                // A vertical ScrollBar should remain vertical
+                return node.getOrientation();
+            }
 
-                    @Override
-                    public boolean isSettable(ScrollBar n) {
-                        return n.orientation == null || !n.orientation.isBound();
-                    }
+            @Override
+            public boolean isSettable(ScrollBar n) {
+                return n.orientation == null || !n.orientation.isBound();
+            }
 
-                    @Override
-                    public StyleableProperty<Orientation> getStyleableProperty(ScrollBar n) {
-                        return (StyleableProperty<Orientation>) (WritableValue<Orientation>) n.orientationProperty();
-                    }
-                };
+            @Override
+            public StyleableProperty<Orientation> getStyleableProperty(ScrollBar n) {
+                return (StyleableProperty<Orientation>)(WritableValue<Orientation>)n.orientationProperty();
+            }
+        };
 
-        private static final CssMetaData<ScrollBar, Number> UNIT_INCREMENT =
-                new CssMetaData<>("-fx-unit-increment",
-                        SizeConverter.getInstance(), 1.0) {
+        private static final CssMetaData<ScrollBar,Number> UNIT_INCREMENT =
+            new CssMetaData<>("-fx-unit-increment",
+                SizeConverter.getInstance(), 1.0) {
 
-                    @Override
-                    public boolean isSettable(ScrollBar n) {
-                        return n.unitIncrement == null || !n.unitIncrement.isBound();
-                    }
+            @Override
+            public boolean isSettable(ScrollBar n) {
+                return n.unitIncrement == null || !n.unitIncrement.isBound();
+            }
 
-                    @Override
-                    public StyleableProperty<Number> getStyleableProperty(ScrollBar n) {
-                        return (StyleableProperty<Number>) n.unitIncrementProperty();
-                    }
+            @Override
+            public StyleableProperty<Number> getStyleableProperty(ScrollBar n) {
+                return (StyleableProperty<Number>)n.unitIncrementProperty();
+            }
 
-                };
+        };
 
-        private static final CssMetaData<ScrollBar, Number> BLOCK_INCREMENT =
-                new CssMetaData<>("-fx-block-increment",
-                        SizeConverter.getInstance(), 10.0) {
+        private static final CssMetaData<ScrollBar,Number> BLOCK_INCREMENT =
+            new CssMetaData<>("-fx-block-increment",
+                SizeConverter.getInstance(), 10.0) {
 
-                    @Override
-                    public boolean isSettable(ScrollBar n) {
-                        return n.blockIncrement == null || !n.blockIncrement.isBound();
-                    }
+            @Override
+            public boolean isSettable(ScrollBar n) {
+                return n.blockIncrement == null || !n.blockIncrement.isBound();
+            }
 
-                    @Override
-                    public StyleableProperty<Number> getStyleableProperty(ScrollBar n) {
-                        return (StyleableProperty<Number>) n.blockIncrementProperty();
-                    }
+            @Override
+            public StyleableProperty<Number> getStyleableProperty(ScrollBar n) {
+                return (StyleableProperty<Number>)n.blockIncrementProperty();
+            }
 
-                };
+        };
 
         private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
-
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables =
-                    new ArrayList<>(Control.getClassCssMetaData());
+                new ArrayList<>(Control.getClassCssMetaData());
             styleables.add(ORIENTATION);
             styleables.add(UNIT_INCREMENT);
             styleables.add(BLOCK_INCREMENT);
@@ -469,7 +457,6 @@ public class ScrollBar extends Control {
     /**
      * Gets the {@code CssMetaData} associated with this class, which may include the
      * {@code CssMetaData} of its superclasses.
-     *
      * @return the {@code CssMetaData}
      * @since JavaFX 8.0
      */
@@ -479,7 +466,6 @@ public class ScrollBar extends Control {
 
     /**
      * {@inheritDoc}
-     *
      * @since JavaFX 8.0
      */
     @Override
@@ -507,8 +493,7 @@ public class ScrollBar extends Control {
      *
      * @since 9
      */
-    @Override
-    protected Boolean getInitialFocusTraversable() {
+    @Override protected Boolean getInitialFocusTraversable() {
         return Boolean.FALSE;
     }
 
@@ -520,50 +505,32 @@ public class ScrollBar extends Control {
      *                                                                         *
      **************************************************************************/
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Object queryAccessibleAttribute(AccessibleAttribute attribute, Object... parameters) {
         switch (attribute) {
-            case VALUE:
-                return getValue();
-            case MAX_VALUE:
-                return getMax();
-            case MIN_VALUE:
-                return getMin();
-            case ORIENTATION:
-                return getOrientation();
-            default:
-                return super.queryAccessibleAttribute(attribute, parameters);
+            case VALUE: return getValue();
+            case MAX_VALUE: return getMax();
+            case MIN_VALUE: return getMin();
+            case ORIENTATION: return getOrientation();
+            default: return super.queryAccessibleAttribute(attribute, parameters);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void executeAccessibleAction(AccessibleAction action, Object... parameters) {
         switch (action) {
-            case INCREMENT:
-                increment();
-                break;
-            case DECREMENT:
-                decrement();
-                break;
-            case BLOCK_INCREMENT:
-                blockIncrement();
-                break;
-            case BLOCK_DECREMENT:
-                blockDecrement();
-                break;
+            case INCREMENT: increment(); break;
+            case DECREMENT: decrement(); break;
+            case BLOCK_INCREMENT: blockIncrement(); break;
+            case BLOCK_DECREMENT: blockDecrement(); break;
             case SET_VALUE: {
                 Double value = (Double) parameters[0];
                 if (value != null) setValue(value);
                 break;
             }
-            default:
-                super.executeAccessibleAction(action, parameters);
+            default: super.executeAccessibleAction(action, parameters);
         }
     }
 }
