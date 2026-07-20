@@ -180,9 +180,11 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void destroy() {
-        this.setContent(null);
-        this.setOnClosed(null);
-        this.setOnCloseRequest(null);
+        FXUtil.runWait(() -> {
+            this.setContent(null);
+            this.setOnClosed(null);
+            this.setOnCloseRequest(null);
+        });
         ContextMenuManager.clearContextMenu(this);
         NodeDestroyUtil.destroyObject(this);
     }
