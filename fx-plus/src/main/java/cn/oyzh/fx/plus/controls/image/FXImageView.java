@@ -100,8 +100,8 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
 
     @Override
     public void destroy() {
-        this.setImage(null);
-        NodeDestroyUtil.destroyObject(this);
+//        this.setImage(null);
+        NodeDestroyUtil.destroyNode(this);
 //        DestroyAdapter.super.destroy();
     }
 }

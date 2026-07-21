@@ -24,6 +24,7 @@
 package cn.oyzh.fx.vnc;
 
 import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.fx.plus.controls.image.FXImageView;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.glavsoft.core.SettingsChangedEvent;
@@ -61,8 +62,8 @@ public class VncFramebufferView extends Pane implements IRepaintController, Dest
     private boolean isUserInputEnabled;
     private Protocol protocol;
     private double scaleFactor;
-    private ImageView framebufferImageView;
-    private ImageView cursorImageView;
+    private FXImageView framebufferImageView;
+    private FXImageView cursorImageView;
 
     public VncFramebufferView() {
     }
@@ -78,14 +79,14 @@ public class VncFramebufferView extends Pane implements IRepaintController, Dest
         this.fbHeight = protocol.getFbHeight();
         this.isUserInputEnabled = false;
 
-        setStyle("-fx-background-color: black;");
+//        setStyle("-fx-background-color: black;");
 
-        framebufferImageView = new ImageView();
+        framebufferImageView = new FXImageView();
         framebufferImageView.setPreserveRatio(false);
         framebufferImageView.setSmooth(false);
         framebufferImageView.setCache(false);
 
-        cursorImageView = new ImageView();
+        cursorImageView = new FXImageView();
         cursorImageView.setMouseTransparent(true);
         cursorImageView.setManaged(false);
         cursorImageView.setVisible(false);
@@ -271,8 +272,8 @@ public class VncFramebufferView extends Pane implements IRepaintController, Dest
     public void destroy() {
         this.cursor.destroy();
         this.renderer.destroy();
-        NodeDestroyUtil.destroyNode(this.cursorImageView);
-        NodeDestroyUtil.destroyNode(this.framebufferImageView);
+        this.cursorImageView.destroy();
+        this.framebufferImageView.destroy();
         NodeDestroyUtil.destroyObject(this);
     }
 }

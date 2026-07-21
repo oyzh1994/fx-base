@@ -157,6 +157,16 @@ public class ReceiverTask implements Runnable {
                 try {
                     if (baudrateMeter != null) baudrateMeter.startMeasuringCycle();
                     decoder.decode(transport, renderer, rect);
+                } catch (TransportException e) {
+                    // Zlib/ZRLE 解压偶尔失败，重置解码器状态并发送全量刷新请求，
+                    // 不要断开整个连接
+                    if (e.getMessage() != null && e.getMessage().contains("inflate")) {
+                        JulLog.warn("Zlib inflate error, resetting decoder: " + e.getMessage());
+                        decoder.reset();
+                        protocol.sendRefreshMessage();
+                        continue;
+                    }
+                    throw e;
                 } finally {
                     if (baudrateMeter != null) baudrateMeter.stopMeasuringCycle();
                 }
