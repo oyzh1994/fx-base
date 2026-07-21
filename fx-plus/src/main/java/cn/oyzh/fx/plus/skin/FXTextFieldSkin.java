@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.skin;
 import atlantafx.base.controls.CustomTextFieldSkin;
 import cn.oyzh.fx.plus.information.TooltipExt;
 import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -101,17 +100,24 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
 
     @Override
     public void dispose() {
+        TextField control = this.getSkinnable();
         // 清除监听器
-        this.getSkinnable().widthProperty().removeListener(this.sizeChanged);
-        this.getSkinnable().heightProperty().removeListener(this.sizeChanged);
-        this.sizeChanged = null;
-        this.getSkinnable().textProperty().removeListener(this.visibilityChanged);
-        this.getSkinnable().focusedProperty().removeListener(this.visibilityChanged);
-        this.getSkinnable().visibleProperty().removeListener(this.visibilityChanged);
-        this.getSkinnable().disableProperty().removeListener(this.visibilityChanged);
-        this.visibilityChanged = null;
-        this.getSkinnable().setOnMouseExited(null);
-        this.getSkinnable().setOnMouseEntered(null);
+        if (control != null) {
+            if (this.sizeChanged != null) {
+                control.widthProperty().removeListener(this.sizeChanged);
+                control.heightProperty().removeListener(this.sizeChanged);
+                this.sizeChanged = null;
+            }
+            if (this.visibilityChanged != null) {
+                control.textProperty().removeListener(this.visibilityChanged);
+                control.focusedProperty().removeListener(this.visibilityChanged);
+                control.visibleProperty().removeListener(this.visibilityChanged);
+                control.disableProperty().removeListener(this.visibilityChanged);
+                this.visibilityChanged = null;
+            }
+            control.setOnMouseExited(null);
+            control.setOnMouseEntered(null);
+        }
         if (this.leftProperty != null) {
             this.leftProperty.unbind();
             this.leftProperty = null;
@@ -120,7 +126,8 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
             this.rightProperty.unbind();
             this.rightProperty = null;
         }
-        FXUtil.runLater(super::dispose);
+        //        FXUtil.runLater(super::dispose);
+        super.dispose();
     }
 
     /**

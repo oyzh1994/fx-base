@@ -9,12 +9,6 @@ import cn.oyzh.i18n.I18nHelper;
  */
 public class SSHAuthTypeCombobox extends FXComboBox<String> {
 
-    {
-        this.addItem(I18nHelper.password());
-        this.addItem(I18nHelper.certificate());
-        this.addItem("SSH Agent");
-    }
-
     public boolean isPasswordAuth() {
         return this.getSelectedIndex() == 0;
     }
@@ -35,5 +29,13 @@ public class SSHAuthTypeCombobox extends FXComboBox<String> {
             return "certificate";
         }
         return "password";
+    }
+
+    @Override
+    public void initNode() {
+        super.initNode();
+        this.addItem(I18nHelper.password());
+        this.addItem(I18nHelper.publicKey());
+        this.addItem("SSH Agent");
     }
 }

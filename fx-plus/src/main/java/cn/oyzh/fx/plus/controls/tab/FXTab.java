@@ -5,6 +5,7 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
+import cn.oyzh.fx.plus.menu.ContextMenuManager;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
@@ -179,8 +180,12 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
 
     @Override
     public void destroy() {
-        this.setContent(null);
-        this.setContextMenu(null);
+        FXUtil.runWait(() -> {
+            this.setContent(null);
+            this.setOnClosed(null);
+            this.setOnCloseRequest(null);
+        });
+        ContextMenuManager.clearContextMenu(this);
         NodeDestroyUtil.destroyObject(this);
     }
 }

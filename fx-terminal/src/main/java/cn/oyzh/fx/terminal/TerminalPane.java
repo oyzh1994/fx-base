@@ -384,7 +384,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
         String prompt = this.prompt();
         if (StringUtil.equals(text, this.lineEndingText())) {
             this.text(prompt);
-        } else if (!StringUtil.endWith(text, prompt)) {
+        } else if (!StringUtil.endsWith(text, prompt)) {
             this.appendContent(prompt);
         }
         //FXUtil.runWait(this::flushNOP);
@@ -627,8 +627,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
         this.output("");
     }
 
-    @Override
-    public void initNode() {
-        super.initNode();
-    }
+//    @Override
+//    public void initNode() {
+//        super.initNode();
+//    }
 }

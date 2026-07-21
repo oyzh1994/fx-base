@@ -46,6 +46,8 @@ import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -112,6 +114,14 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 默认选区颜色-暗色模式
      */
     public static final Color DEFAULT_SELECTION_DARK_COLOR = Color.rgb(33, 66, 131);
+
+    /**
+     * 成对符号映射 (开始 → 结束)
+     */
+    private static final Map<String, String> PAIR_MAP = Map.of(
+            "{", "}", "(", ")", "[", "]",
+            "\"", "\"", "'", "'", "`", "`"
+    );
 
     /**
      * 样式提供者
@@ -252,6 +262,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
                 this.clearContextMenu();
             }
         });
+        // 自动补全成对符号
+        this.addEventFilter(KeyEvent.KEY_TYPED, this::onAutoPair);
+        this.addEventFilter(KeyEvent.KEY_PRESSED, this::onAutoPairBackspace);
         // 初始化样式
         this.applyTheme();
     }
@@ -268,7 +281,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         try {
             EditorFormatType formatType = this.getFormatType();
             if (formatType != EditorFormatType.RAW) {
-                String syntaxesName = formatType.getFullSyntaxesName();
+                String syntaxesName = formatType == null ? null : formatType.getFullSyntaxesName();
                 // 如果未发生变化，则跳过
                 if (StringUtil.equals(this.syntaxesName, syntaxesName)) {
                     return;
@@ -604,6 +617,26 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     }
 
     /**
+     * 自动补全成对符号开关
+     */
+    private BooleanProperty autoPairEnabledProperty;
+
+    public boolean isAutoPairEnabled() {
+        return this.autoPairEnabledProperty == null || this.autoPairEnabledProperty.get();
+    }
+
+    public void setAutoPairEnabled(boolean enabled) {
+        this.autoPairEnabledProperty().set(enabled);
+    }
+
+    public BooleanProperty autoPairEnabledProperty() {
+        if (this.autoPairEnabledProperty == null) {
+            this.autoPairEnabledProperty = new SimpleBooleanProperty(true);
+        }
+        return this.autoPairEnabledProperty;
+    }
+
+    /**
      * 获取文本长度
      *
      * @return 文本长度
@@ -784,7 +817,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             String text = this.getText();
             //            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
             //                content = System.lineSeparator() + content;
-            if (!StringUtil.endsWith(text, this.lineEndingText()) && !StringUtil.startWith(content, this.lineEndingText())) {
+            if (!text.isEmpty()
+                    && !StringUtil.endsWith(text, this.lineEndingText())
+                    && !StringUtil.startWith(content, this.lineEndingText())) {
                 content = this.lineEndingText() + content;
             }
             //            if (endLine && !content.endsWith(System.lineSeparator())) {
@@ -1549,6 +1584,79 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     public int lineEndingLength() {
         return this.lineEndingText().length();
+    }
+
+    // ====== 自动补全成对符号 ======
+
+    /**
+     * 处理自动补全成对符号
+     */
+    private void onAutoPair(KeyEvent e) {
+        if (!this.isAutoPairEnabled() || !this.isEditable() || this.isDisable()) {
+            return;
+        }
+        String ch = e.getCharacter();
+        if (StringUtil.isEmpty(ch)) {
+            return;
+        }
+        String closeChar = PAIR_MAP.get(ch);
+        if (closeChar == null) {
+            return;
+        }
+        e.consume();
+
+        SelectionSegment segment = this.getSelection();
+        if (segment != null && !segment.isCollapsed()) {
+            // 有选区 — 包裹选区
+            IndexRange range = this.getSelectionRange();
+            if (range != null) {
+                String selText = this.getSelectedText();
+                this.replaceText(range.getStart(), range.getEnd(), ch + selText + closeChar);
+                this.selectRange(range.getStart() + 1, range.getStart() + 1 + selText.length());
+            }
+        } else {
+            // 无选区 — 智能跳过或插入成对符号
+            int caretPos = this.caretPosition();
+            String text = this.getText();
+            if (caretPos < text.length() && String.valueOf(text.charAt(caretPos)).equals(closeChar)) {
+                // 光标右边已是结束符，直接跳过
+                this.positionCaret(caretPos + 1);
+            } else {
+                // 插入成对符号，光标居中
+                this.replaceText(caretPos, caretPos, ch + closeChar);
+                this.positionCaret(caretPos + 1);
+            }
+        }
+    }
+
+    /**
+     * 处理退格键删除空配对 — 光标位于 {}、()、[]、""、''、`` 之间时同时删除两个字符
+     */
+    private void onAutoPairBackspace(KeyEvent e) {
+        if (!this.isAutoPairEnabled() || !this.isEditable() || this.isDisable()) {
+            return;
+        }
+        if (e.getCode() != KeyCode.BACK_SPACE) {
+            return;
+        }
+        SelectionSegment segment = this.getSelection();
+        if (segment != null && !segment.isCollapsed()) {
+            return;
+        }
+
+        int caretPos = this.caretPosition();
+        String text = this.getText();
+        if (caretPos <= 0 || caretPos >= text.length()) {
+            return;
+        }
+
+        String prevChar = String.valueOf(text.charAt(caretPos - 1));
+        String nextChar = String.valueOf(text.charAt(caretPos));
+        String expectedClosing = PAIR_MAP.get(prevChar);
+        if (expectedClosing != null && expectedClosing.equals(nextChar)) {
+            e.consume();
+            this.deleteText(caretPos - 1, caretPos + 1);
+        }
     }
 
     @Override

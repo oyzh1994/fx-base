@@ -96,9 +96,11 @@ public abstract class FXApplication extends Application {
                 JulLog.info("{} stop.", SysConst.projectName());
             }
             // System.exit(0);
-            StageManager.exit();
+            //            StageManager.exit();
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            System.exit(0);
         }
     }
 

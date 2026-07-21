@@ -11,6 +11,7 @@ import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -50,9 +51,18 @@ public class StageManager {
     }
 
     /**
+     * 程序已退出标志位
+     */
+    private final static AtomicBoolean EXITED = new AtomicBoolean();
+
+    /**
      * 退出系统
      */
     public static void exit() {
+        if (EXITED.get()) {
+            return;
+        }
+        EXITED.set(true);
         for (StageAdapter adapter : allStages()) {
             if (adapter.controller() instanceof StageListener listener) {
                 try {
@@ -72,7 +82,7 @@ public class StageManager {
             JulLog.info("system exit...");
         }
         Platform.exit();
-        System.exit(0);
+        //        System.exit(0);
     }
 
     /**

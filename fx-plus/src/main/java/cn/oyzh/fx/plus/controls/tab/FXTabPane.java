@@ -349,16 +349,23 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         this.setPadding(Insets.EMPTY);
         // 创建右键菜单
         this.getTabs().addListener((ListChangeListener<Tab>) c -> {
-            if (c.next() && !c.getAddedSubList().isEmpty()) {
-                for (Tab tab : c.getAddedSubList()) {
-                    if (tab instanceof MenuItemAdapter adapter) {
-                        List<? extends MenuItem> items = adapter.getMenuItems();
-                        if (CollectionUtil.isNotEmpty(items)) {
-                            ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
-                            ContextMenuManager.setContextMenu(tab, contextMenu);
-                        } else {
-                            ContextMenuManager.clearContextMenu(tab);
+            while (c.next()) {
+                if (!c.getAddedSubList().isEmpty()) {
+                    for (Tab tab : c.getAddedSubList()) {
+                        if (tab instanceof MenuItemAdapter adapter) {
+                            List<? extends MenuItem> items = adapter.getMenuItems();
+                            if (CollectionUtil.isNotEmpty(items)) {
+                                ContextMenu contextMenu = ContextMenuManager.createNewContextMenu(items);
+                                ContextMenuManager.setContextMenu(tab, contextMenu);
+                            } else {
+                                ContextMenuManager.clearContextMenu(tab);
+                            }
                         }
+                    }
+                }
+                if (!c.getRemoved().isEmpty()) {
+                    for (Tab tab : c.getRemoved()) {
+                        ContextMenuManager.clearContextMenu(tab);
                     }
                 }
             }

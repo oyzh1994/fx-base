@@ -85,8 +85,8 @@ public class DestHandler implements PostHandler {
      *
      * @param packConfig 打包配置
      * @param file       文件
-     * @throws Exception 异常
      * @return 重命名后的文件
+     * @throws Exception 异常
      */
     private File handler(PackConfig packConfig, File file) throws Exception {
         String fileName = "";
@@ -103,7 +103,12 @@ public class DestHandler implements PostHandler {
         if (packConfig.getBuildType() != null) {
             fileName = fileName + "_" + packConfig.getBuildType();
         }
-        String extName = FileNameUtil.extName(file.getName());
+        String extName;
+        if (StringUtil.endWithIgnoreCase(file.getName(), "tar.gz")) {
+            extName = "tar.gz";
+        } else {
+            extName = FileNameUtil.extName(file.getName());
+        }
         fileName = fileName + "." + extName;
         File finalFile = new File(file.getParent(), fileName);
         FileUtil.renameFile(file, finalFile, true);

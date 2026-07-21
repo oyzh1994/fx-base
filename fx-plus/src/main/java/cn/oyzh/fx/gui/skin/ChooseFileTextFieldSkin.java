@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -31,7 +33,7 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
     /**
      * 过滤器
      */
-    protected FileExtensionFilter filter;
+    protected List<FileExtensionFilter> filters;
 
     /**
      * 文件选中事件
@@ -46,12 +48,12 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
         this.onSelectedFile = onSelectedFile;
     }
 
-    public FileExtensionFilter getFilter() {
-        return filter;
+    public List<FileExtensionFilter> getFilters() {
+        return filters;
     }
 
-    public void setFilter(FileExtensionFilter filter) {
-        this.filter = filter;
+    public void setFilters(List<FileExtensionFilter> filters) {
+        this.filters = filters;
     }
 
     public boolean isAlwaysShowGraphic() {
@@ -68,10 +70,11 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
 
     @Override
     protected void onButtonClick(MouseEvent e) {
-        if (this.filter == null) {
-            this.filter = FXChooser.allExtensionFilter();
+        if (this.filters == null||this.filters.isEmpty()) {
+            this.filters = new ArrayList<>();
+            this.filters.add(FXChooser.allExtensionFilter());
         }
-        File file1 = FileChooserHelper.choose(I18nHelper.chooseFile(), this.filter);
+        File file1 = FileChooserHelper.choose(I18nHelper.chooseFile(), this.filters);
         if (file1 != null) {
             this.file = file1;
             if (this.onSelectedFile == null) {
@@ -109,7 +112,7 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
     @Override
     public void dispose() {
         this.file = null;
-        this.filter = null;
+        this.filters = null;
         this.onSelectedFile = null;
         super.dispose();
     }

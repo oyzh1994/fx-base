@@ -94,7 +94,6 @@ public class TerminalManager {
         doLoadHandler(name);
         List<TerminalCommandHandler<?, ?>> handlers = COMMAND_HANDLERS.get(name);
         return new ArrayList<>(handlers != null ? handlers : Collections.emptyList());
-
     }
 
     /**

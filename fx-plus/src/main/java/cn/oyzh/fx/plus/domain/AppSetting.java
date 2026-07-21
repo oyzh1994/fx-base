@@ -248,6 +248,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      *
      * @return 结果
      */
+    @Deprecated
     public boolean isRememberPageResize() {
         return this.rememberPageResize == null || this.rememberPageResize == 1;
     }

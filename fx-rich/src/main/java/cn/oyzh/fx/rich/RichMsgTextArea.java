@@ -115,7 +115,7 @@ public class RichMsgTextArea extends Editor {
                         this.deleteLimitLine(lineCount);
                     }
                 }
-//                super.appendText(s);
+                //                super.appendText(s);
                 this.doAppend(s);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -151,7 +151,9 @@ public class RichMsgTextArea extends Editor {
 
     @Override
     public void text(String text) {
-        this.queue.clear();
+        if (this.queue != null) {
+            this.queue.clear();
+        }
         super.text(text);
     }
 

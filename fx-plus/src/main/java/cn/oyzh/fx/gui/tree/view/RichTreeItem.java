@@ -6,6 +6,7 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItem;
 import cn.oyzh.fx.plus.drag.DragNodeItem;
 import cn.oyzh.fx.plus.menu.MenuItemAdapter;
+import cn.oyzh.fx.plus.thread.BackgroundService;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -24,15 +25,15 @@ import java.util.function.Consumer;
  */
 public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 
-    /**
-     * 空节点
-     */
-    public static final RichTreeItem<?> EMPTY = new RichTreeItem<>(null) {
-        @Override
-        protected BitSet bitValue() {
-            return super.bitValue();
-        }
-    };
+    //    /**
+    //     * 空节点
+    //     */
+    //    public static final RichTreeItem<?> EMPTY = new RichTreeItem<>(null) {
+    //        @Override
+    //        protected BitSet bitValue() {
+    //            return super.bitValue();
+    //        }
+    //    };
 
     /**
      * bit值设置，减少内存占用
@@ -412,12 +413,12 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                     if (sortAsc) {
                         children.sort(RichTreeItem::compareTo);
                     } else {// desc
-//                        children.sort((o1, o2) -> {
-//                            if (!o2.isSortable()) {
-//                                return -1;
-//                            }
-//                            return o2.compareTo(o1);
-//                        });
+                        //                        children.sort((o1, o2) -> {
+                        //                            if (!o2.isSortable()) {
+                        //                                return -1;
+                        //                            }
+                        //                            return o2.compareTo(o1);
+                        //                        });
                         children.sort(Comparator.reverseOrder());
                     }
                 }
@@ -434,6 +435,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         RichTreeView treeView = this.getTreeView();
         if (treeView != null) {
             this.doFilter(treeView.getItemFilter());
+            this.refresh();
         }
     }
 
@@ -442,16 +444,20 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
      *
      * @param itemFilter 节点过滤器
      */
-    public synchronized void doFilter(RichTreeItemFilter itemFilter) {
-        this.getTreeView().setIgnoreChanged(true);
-        try {
-            List<RichTreeItem<?>> items = this.richChildren();
-            // List<RichTreeItem<?>> list = new CopyOnWriteArrayList<>(items);
-            //        BackgroundService.submitFX(() -> this.doFilter(itemFilter, items));
-            FXUtil.runWait(() -> this.doFilter(itemFilter, items));
-        } finally {
-            this.getTreeView().setIgnoreChanged(false);
+    public void doFilter(RichTreeItemFilter itemFilter) {
+        List<RichTreeItem<?>> items = this.richChildren();
+        if (items.isEmpty()) {
+            return;
         }
+        BackgroundService.submitFX(() -> {
+            this.getTreeView().setIgnoreChanged(true);
+            try {
+                this.doFilter(itemFilter, items);
+                items.set(0, items.getFirst());
+            } finally {
+                this.getTreeView().setIgnoreChanged(false);
+            }
+        });
     }
 
     /**
@@ -468,13 +474,22 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
                         child.setVisible(itemFilter.test(child));
                         child.doFilter(itemFilter);
                     });
+                    //items.parallelStream().forEach(child -> {
+                    //    child.setVisible(itemFilter.test(child));
+                    //    ThreadUtil.start(() -> child.doFilter(itemFilter));
+                    //});
                 } else {
-                    items.forEach(child -> child.doFilter(itemFilter));
+                    items.forEach(child -> {
+                        child.doFilter(itemFilter);
+                    });
+                    //items.parallelStream().forEach(child -> {
+                    //    ThreadUtil.start(() -> child.doFilter(itemFilter));
+                    //});
                 }
                 // this.doSort();
-                items.add(EMPTY);
-                items.remove(EMPTY);
-                this.refresh();
+                //                items.add(EMPTY);
+                //                items.remove(EMPTY);
+                //                this.refresh();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

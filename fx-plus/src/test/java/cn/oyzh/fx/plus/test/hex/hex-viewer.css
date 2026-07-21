@@ -1,0 +1,15 @@
+/* Hex Viewer 样式 */
+.scroll-bar {
+    -fx-background-color: #1e1e1e;
+}
+.scroll-bar .thumb {
+    -fx-background-color: #424242;
+    -fx-background-radius: 3;
+}
+.scroll-bar .track {
+    -fx-background-color: #252525;
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}

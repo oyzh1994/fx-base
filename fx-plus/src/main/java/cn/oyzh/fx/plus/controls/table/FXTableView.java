@@ -58,7 +58,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void initNode() {
-        this.setCache(false);
+//        this.setCache(false);
         //        this.setHeaderHeight(30);
         //        this.setFixedCellSize(30);
         //        this.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -68,13 +68,13 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_NEXT_COLUMN);
         //        this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_SUBSEQUENT_COLUMNS);
         this.initEvenListener();
-        this.setReorderable(false);
+//        this.setReorderable(false);
         // 监听列
-        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
-            if (c.next()) {
-                c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
-            }
-        });
+//        this.getColumns().addListener((ListChangeListener<TableColumn<S, ?>>) c -> {
+//            if (c.next()) {
+//                c.getAddedSubList().forEach(c1 -> c1.setReorderable(this.isReorderable()));
+//            }
+//        });
         FlexAdapter.super.initNode();
     }
 
@@ -141,10 +141,8 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FlexAdapter.super.resizeNode(width, height);
         ObservableList<? extends TableColumn<?, ?>> columns = this.getColumns();
         for (TableColumn<?, ?> column : columns) {
-            if (column instanceof FlexAdapter flexNode) {
-                if (column.isVisible()) {
-                    flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
-                }
+            if (column instanceof FlexAdapter flexNode && column.isVisible()) {
+                flexNode.setRealWidth(FlexUtil.compute(flexNode.getFlexWidth(), width));
             }
         }
     }
@@ -316,7 +314,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
 
     @Override
     public void destroy() {
-        this.clearProps();
+//        this.clearProps();
         this.destroyItems();
         this.clearItems();
         this.destroyColumn();

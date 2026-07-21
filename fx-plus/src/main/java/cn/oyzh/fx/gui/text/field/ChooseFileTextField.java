@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 
 import java.io.File;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -19,10 +20,13 @@ public class ChooseFileTextField extends FXTextField {
     @Override
     public byte[] getValue() {
         File file = this.skin().getFile();
-        if (file == null) {
-            return (byte[]) super.getValue();
+        if (file != null) {
+            return FileUtil.readBytes(file);
         }
-        return FileUtil.readBytes(file);
+        if (super.getValue() instanceof byte[] bytes) {
+            return bytes;
+        }
+        return null;
     }
 
     @Override
@@ -35,11 +39,18 @@ public class ChooseFileTextField extends FXTextField {
                 data[i] = bytes[i];
             }
             super.setValue(data);
+        } else if (val instanceof String string) {
+            super.setValue(string);
+            this.setText(string);
         }
     }
 
     public void setFilter(FileExtensionFilter filter) {
-        this.skin().setFilter(filter);
+        this.setFilters(List.of(filter));
+    }
+
+    public void setFilters(List<FileExtensionFilter> filter) {
+        this.skin().setFilters(filter);
     }
 
     public boolean isAlwaysShowGraphic() {

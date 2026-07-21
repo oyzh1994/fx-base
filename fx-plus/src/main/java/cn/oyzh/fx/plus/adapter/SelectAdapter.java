@@ -531,23 +531,35 @@ public interface SelectAdapter<T> extends PropAdapter {
      * 移除子节点
      *
      * @param index 下标
+     * @return 节点
      */
-    default void removeItem(int index) {
+    default Object removeItem(int index) {
+        AtomicReference<Object> item = new AtomicReference<>();
         if (index >= 0) {
             if (this instanceof TableView<?> node) {
                 if (node.getItems().size() >= index) {
-                    FXUtil.runWait(() -> node.getItems().remove(index));
+                    FXUtil.runWait(() -> {
+                        Object t1 = node.getItems().remove(index);
+                        item.set(t1);
+                    });
                 }
             } else if (this instanceof ComboBox<?> node) {
                 if (node.getItems().size() >= index) {
-                    FXUtil.runWait(() -> node.getItems().remove(index));
+                    FXUtil.runWait(() -> {
+                        Object t1 = node.getItems().remove(index);
+                        item.set(t1);
+                    });
                 }
             } else if (this instanceof ListView<?> node) {
                 if (node.getItems().size() >= index) {
-                    FXUtil.runWait(() -> node.getItems().remove(index));
+                    FXUtil.runWait(() -> {
+                        Object t1 = node.getItems().remove(index);
+                        item.set(t1);
+                    });
                 }
             }
         }
+        return item.get();
     }
 
     /**

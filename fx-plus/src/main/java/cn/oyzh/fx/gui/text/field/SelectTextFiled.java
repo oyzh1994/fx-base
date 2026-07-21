@@ -63,7 +63,7 @@ public class SelectTextFiled<T> extends LimitTextField {
         } else {
             this.text(item.toString());
         }
-        this.skin().clearTexting();
+//        this.skin().clearTexting();
     }
 
     public void selectIndex(int index) {

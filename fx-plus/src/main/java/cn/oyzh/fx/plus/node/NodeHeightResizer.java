@@ -16,6 +16,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2025/03/22
  */
+@Deprecated
 public class NodeHeightResizer extends NodeResizer {
 
     public NodeHeightResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
@@ -26,7 +27,7 @@ public class NodeHeightResizer extends NodeResizer {
     public EventHandler<MouseEvent> defaultMouseMoved() {
         return event -> {
             if (this.isResizeIng()) {
-                event.consume();
+//                event.consume();
                 return;
             }
             // 计算偏移
@@ -53,7 +54,7 @@ public class NodeHeightResizer extends NodeResizer {
                 if (this.triggerAble(yOffset)) {
                     this.resizeIng = true;
                     this.mousePressedTime = System.currentTimeMillis();
-                    event.consume();
+//                    event.consume();
                 } else {// 重置拉伸参数
                     this.resizeIng = false;
                     this.mousePressedTime = -1;
@@ -74,7 +75,7 @@ public class NodeHeightResizer extends NodeResizer {
         return event -> {
             if (event.getButton() == MouseButton.PRIMARY && this.isResizeIng() && this.resizeTriggered != null && this.resizeAble(event)) {
                 this.resizeTriggered.accept(this.calcNodeHeight(event));
-                event.consume();
+//                event.consume();
             }
         };
     }

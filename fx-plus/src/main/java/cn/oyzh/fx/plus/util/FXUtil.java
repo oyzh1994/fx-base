@@ -221,11 +221,11 @@ public class FXUtil {
      * @param task 任务
      */
     public static void runLater(Runnable task) {
-        if (Platform.isFxApplicationThread()) {
-            task.run();
-        } else {
+//        if (Platform.isFxApplicationThread()) {
+//            task.run();
+//        } else {
             Platform.runLater(task);
-        }
+//        }
     }
 
     /**

@@ -14,6 +14,7 @@ import cn.oyzh.fx.gui.svg.glyph.DeleteForceSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DeleteSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DesignSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DownloadSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.EditDocumentSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.EditSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ErrorInfoSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.ExpandAllSVGGlyph;
@@ -253,6 +254,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addCollection(), new AddSVGGlyph(), action);
     }
 
+    public static FXMenuItem createUser(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.createUser(), new AddSVGGlyph(), action);
+    }
+
     public static FXMenuItem openTerminal(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.openTerminal(), new TerminalSVGGlyph(), action);
     }
@@ -473,8 +478,20 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editFile(), new EditSVGGlyph(), action);
     }
 
+    public static FXMenuItem editDocument(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.editDocument(), new EditDocumentSVGGlyph(), action);
+    }
+
     public static FXMenuItem view1File(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1File(), new ViewSVGGlyph(), action);
+    }
+
+    public static FXMenuItem view1Document(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1Document(), new ViewSVGGlyph(), action);
+    }
+
+    public static FXMenuItem view1User(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.view1User(), new ViewSVGGlyph(), action);
     }
 
     public static FXMenuItem editCollections(Runnable action) {
@@ -515,6 +532,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem deleteFile(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteFile(), new DeleteSVGGlyph(), action);
+    }
+
+    public static FXMenuItem deleteDocument(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteDocument(), new DeleteSVGGlyph(), action);
     }
 
     public static FXMenuItem deleteDir(Runnable action) {
@@ -871,6 +892,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem deleteCollection(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteCollection(), new DeleteSVGGlyph(), action);
+    }
+
+    public static FXMenuItem deleteUser(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteUser(), new DeleteSVGGlyph(), action);
     }
 
     public static FXMenuItem deleteQuery(Runnable action) {

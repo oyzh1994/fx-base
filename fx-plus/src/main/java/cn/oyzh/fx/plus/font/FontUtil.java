@@ -597,5 +597,22 @@ public class FontUtil {
         return text.getLayoutBounds().getWidth();
     }
 
+    /**
+     * 计算字符高度
+     *
+     * @param str  字符串
+     * @param font 字体
+     * @return 字符高度
+     */
+    public static double textHeight(String str, javafx.scene.text.Font font) {
+        // 创建一个临时的Text对象来测量
+        Text text = new Text(str);
+        if (font != null) {
+            // 应用可能的字体（这里使用默认系统字体，更精确的话需获取实际字体）
+            text.setFont(font);
+        }
+        return text.getLayoutBounds().getHeight();
+    }
+
 
 }

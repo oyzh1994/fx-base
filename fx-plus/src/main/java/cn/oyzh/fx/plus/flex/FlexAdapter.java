@@ -300,10 +300,10 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
         }
 
         // 处理布局
-        if (changeHeight || changeWidth) {
+        if (changeWidth || changeHeight) {
             // 处理x轴
             if (StringUtil.isNotBlank(this.getFlexX())) {
-                this.setLayoutY(this.computeX());
+                this.setLayoutX(this.computeX());
             }
             // 处理y轴
             if (StringUtil.isNotBlank(this.getFlexY())) {

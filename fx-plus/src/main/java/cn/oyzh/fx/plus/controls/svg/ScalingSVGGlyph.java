@@ -44,7 +44,13 @@ public class ScalingSVGGlyph extends SVGGlyph {
             h *= this.heightScaling();
         }
         if (h != size) {
-            Insets insets = new Insets((size - h) / 2, 0, 0, 0);
+            Insets padding = this.getPadding();
+            Insets insets;
+            if (padding == null) {
+                insets = new Insets(size - h, 0, 0, 0);
+            } else {
+                insets = new Insets(size - h, padding.getRight(), padding.getBottom(), padding.getLeft());
+            }
             this.setPadding(insets);
         }
         return new double[]{w, h};

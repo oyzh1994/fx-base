@@ -73,6 +73,10 @@ public class JLinkConfigParser implements ConfigParser<JLinkConfig> {
         if (stripJavaDebugAttributes != null) {
             config.setStripJavaDebugAttributes(stripJavaDebugAttributes);
         }
+        String stripNativeDebugSymbols = object.getString("strip-native-debug-symbols");
+        if (stripJavaDebugAttributes != null) {
+            config.setStripNativeDebugSymbols(stripNativeDebugSymbols);
+        }
         return config;
     }
 

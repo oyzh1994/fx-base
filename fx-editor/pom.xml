@@ -9,7 +9,12 @@
         <version>1.3.7</version>
     </parent>
 
+    <name>fx-editor</name>
     <artifactId>fx-editor</artifactId>
+
+    <description>
+        javafx for editor
+    </description>
 
     <dependencies>
 

@@ -16,6 +16,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2023/05/15
  */
+@Deprecated
 public abstract class NodeResizer implements Destroyable {
 
     /**
@@ -229,7 +230,7 @@ public abstract class NodeResizer implements Destroyable {
                 if (JulLog.isDebugEnabled()) {
                     JulLog.debug("MouseReleased");
                 }
-                event.consume();
+//                event.consume();
             }
         };
     }
