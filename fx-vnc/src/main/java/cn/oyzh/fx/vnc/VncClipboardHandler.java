@@ -169,7 +169,7 @@ public class VncClipboardHandler implements ClipboardController, Destroyable {
 
     @Override
     public void destroy() {
-        this.stopPolling();
+        this.setEnabled(false);
     }
 
     ///**

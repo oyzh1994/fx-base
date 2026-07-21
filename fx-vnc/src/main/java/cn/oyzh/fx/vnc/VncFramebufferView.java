@@ -25,6 +25,7 @@ package cn.oyzh.fx.vnc;
 
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.image.FXImageView;
+import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.glavsoft.core.SettingsChangedEvent;
@@ -38,11 +39,9 @@ import com.glavsoft.transport.Transport;
 import com.glavsoft.viewer.settings.LocalMouseCursorShape;
 import com.glavsoft.viewer.settings.UiSettings;
 import javafx.scene.Cursor;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Pane;
 
 /**
  * JavaFX replacement for Surface.java.
@@ -50,7 +49,7 @@ import javafx.scene.layout.Pane;
  * with a cursor overlay and input event handling.
  * Uses Pane (not StackPane) to avoid auto-centering/sizing behavior.
  */
-public class VncFramebufferView extends Pane implements IRepaintController, Destroyable {
+public class VncFramebufferView extends FXPane implements IRepaintController, Destroyable {
 
     private int fbWidth;
     private int fbHeight;
@@ -79,7 +78,7 @@ public class VncFramebufferView extends Pane implements IRepaintController, Dest
         this.fbHeight = protocol.getFbHeight();
         this.isUserInputEnabled = false;
 
-//        setStyle("-fx-background-color: black;");
+        //        setStyle("-fx-background-color: black;");
 
         framebufferImageView = new FXImageView();
         framebufferImageView.setPreserveRatio(false);
@@ -217,7 +216,9 @@ public class VncFramebufferView extends Pane implements IRepaintController, Dest
                 if (uiSettings.isChangedMouseCursorShape()) {
                     setLocalCursorShape(uiSettings.getMouseCursorShape());
                 }
-                mouseEventHandler.setScaleFactor(scaleFactor);
+                if (mouseEventHandler != null) {
+                    mouseEventHandler.setScaleFactor(scaleFactor);
+                }
                 updateImageViewSize();
             });
         }
