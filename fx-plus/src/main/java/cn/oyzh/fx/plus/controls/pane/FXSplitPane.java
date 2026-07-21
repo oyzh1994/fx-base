@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Region;
@@ -38,7 +39,11 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         super.layoutChildren();
         for (Node child : this.getChildren()) {
             if (child.getClass().getName().endsWith("Content") && child instanceof Region region) {
-                region.resize(region.getWidth(), this.getHeight());
+                if (this.getOrientation() == Orientation.VERTICAL) {
+                    region.resize(this.getWidth(), region.getHeight());
+                } else {
+                    region.resize(region.getWidth(), this.getHeight());
+                }
             }
         }
     }
