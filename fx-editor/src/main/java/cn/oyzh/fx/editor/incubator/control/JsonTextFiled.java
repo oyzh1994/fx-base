@@ -52,7 +52,7 @@ public class JsonTextFiled extends LimitTextField {
     @Override
     public Object getValue() {
         String text = this.getText();
-        return this.isArray() ? JSONArray.parseArray(text) : JSONObject.parseObject(text);
+        return this.isArray() ? JSONUtil.parseArray(text) : JSONUtil.parseObject(text);
     }
 
     @Override
