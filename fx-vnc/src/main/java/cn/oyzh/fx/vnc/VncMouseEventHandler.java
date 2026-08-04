@@ -111,7 +111,9 @@ public class VncMouseEventHandler {
         // 将 delta 换算为滚轮 notch 数（传统鼠标滚轮一个 notch ≈ 40）
         int notches = (int) Math.ceil(Math.abs(deltaY) / 40.0);
         // 限制最大 notch 数，防止触控板快速滚动时发送过多消息
-        if (notches > 5) notches = 5;
+        if (notches > 5){
+            notches = 5;
+        }
         for (int i = 1; i < notches; ++i) {
             protocol.sendMessage(new PointerEventMessage((byte) (buttonMask | wheelMask), x, y));
             protocol.sendMessage(new PointerEventMessage(buttonMask, x, y));
