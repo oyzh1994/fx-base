@@ -75,7 +75,9 @@ public class BitTextField extends LimitTextField {
         if (val instanceof Byte b) {
             return TextUtil.byteToBitStr(new byte[]{b});
         }
+        if (val == null) {
+            return null;
+        }
         return val.toString();
-
     }
 }
