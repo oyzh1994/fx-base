@@ -216,12 +216,12 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 初始化编辑器
      */
     private void initEditor() {
-//        // 监听父节点
-//        this.parentProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue == null) {
-//                this.destroy();
-//            }
-//        });
+        //        // 监听父节点
+        //        this.parentProperty().addListener((observable, oldValue, newValue) -> {
+        //            if (newValue == null) {
+        //                this.destroy();
+        //            }
+        //        });
         //        // 处理输入法不支持中文的问题
         //        EditorUtil.setupIMESupport(this);
         // 默认自动换行
@@ -1467,11 +1467,17 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         Font editorFont = this.getEditorFont();
         if (editorFont != null) {
             font1 = editorFont;
-        } else {
+        } else if (font != null) {
             font1 = font;
+        } else {
+            font1 = super.getFont();
         }
         // 我也不知道为啥这样写才能生效
-        FXUtil.runPulse(() -> this.setFont(font1));
+        //        FXUtil.runPulse(() -> this.setFont(font1));
+        FXUtil.runLater(() -> {
+            this.setFont(font1);
+            super.requestLayout();
+        });
     }
 
     @Override
