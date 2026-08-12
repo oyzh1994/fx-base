@@ -119,8 +119,13 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 成对符号映射 (开始 → 结束)
      */
     private static final Map<String, String> PAIR_MAP = Map.of(
-            "{", "}", "(", ")", "[", "]",
-            "\"", "\"", "'", "'", "`", "`"
+            "{", "}",
+            "(", ")",
+            "[", "]",
+            "\"", "\"",
+            "'", "'",
+            "`", "`",
+            "<", ">"
     );
 
     /**

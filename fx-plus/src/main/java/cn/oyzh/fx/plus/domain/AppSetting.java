@@ -112,23 +112,23 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     @Column
     protected Short terminalFontWeight;
 
-    /**
-     * 查询字体大小
-     */
-    @Column
-    protected Byte queryFontSize;
-
-    /**
-     * 查询字体名称
-     */
-    @Column
-    protected String queryFontFamily;
-
-    /**
-     * 查询字体粗细
-     */
-    @Column
-    protected Short queryFontWeight;
+//    /**
+//     * 查询字体大小
+//     */
+//    @Column
+//    protected Byte queryFontSize;
+//
+//    /**
+//     * 查询字体名称
+//     */
+//    @Column
+//    protected String queryFontFamily;
+//
+//    /**
+//     * 查询字体粗细
+//     */
+//    @Column
+//    protected Short queryFontWeight;
 
     /**
      * 区域
@@ -494,45 +494,45 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         this.terminalFontWeight = terminalFontWeight;
     }
 
-    public void setQueryFontSize(Byte queryFontSize) {
-        this.queryFontSize = queryFontSize;
-    }
-
-    public void setQueryFontFamily(String queryFontFamily) {
-        this.queryFontFamily = queryFontFamily;
-    }
-
-    public void setQueryFontWeight(Short queryFontWeight) {
-        this.queryFontWeight = queryFontWeight;
-    }
-
-    /**
-     * 获取查询字体配置
-     *
-     * @return 字体配置
-     */
-    public FontConfig queryFontConfig() {
-        if (this.queryFontWeight == null && this.queryFontFamily == null && this.queryFontSize == null) {
-            return null;
-        }
-        FontConfig config = new FontConfig();
-        if (StringUtil.isNotBlank(this.queryFontFamily)) {
-            config.setFamily(this.queryFontFamily);
-        } else {
-            config.setFamily(defaultQueryFontFamily());
-        }
-        if (this.queryFontWeight != null) {
-            config.setWeight(Integer.valueOf(this.queryFontWeight));
-        } else {
-            config.setWeight(defaultQueryFontWeight());
-        }
-        if (this.queryFontSize != null) {
-            config.setSize(Integer.valueOf(this.queryFontSize));
-        } else {
-            config.setSize((int) defaultQueryFontSize());
-        }
-        return config;
-    }
+//    public void setQueryFontSize(Byte queryFontSize) {
+//        this.queryFontSize = queryFontSize;
+//    }
+//
+//    public void setQueryFontFamily(String queryFontFamily) {
+//        this.queryFontFamily = queryFontFamily;
+//    }
+//
+//    public void setQueryFontWeight(Short queryFontWeight) {
+//        this.queryFontWeight = queryFontWeight;
+//    }
+//
+//    /**
+//     * 获取查询字体配置
+//     *
+//     * @return 字体配置
+//     */
+//    public FontConfig queryFontConfig() {
+//        if (this.queryFontWeight == null && this.queryFontFamily == null && this.queryFontSize == null) {
+//            return null;
+//        }
+//        FontConfig config = new FontConfig();
+//        if (StringUtil.isNotBlank(this.queryFontFamily)) {
+//            config.setFamily(this.queryFontFamily);
+//        } else {
+//            config.setFamily(defaultQueryFontFamily());
+//        }
+//        if (this.queryFontWeight != null) {
+//            config.setWeight(Integer.valueOf(this.queryFontWeight));
+//        } else {
+//            config.setWeight(defaultQueryFontWeight());
+//        }
+//        if (this.queryFontSize != null) {
+//            config.setSize(Integer.valueOf(this.queryFontSize));
+//        } else {
+//            config.setSize((int) defaultQueryFontSize());
+//        }
+//        return config;
+//    }
 
     public String getLocale() {
         return locale;
@@ -600,9 +600,9 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         this.pageScreenY = pageScreenY;
     }
 
-    public Boolean getPageMaximized() {
-        return pageMaximized;
-    }
+//    public Boolean getPageMaximized() {
+//        return pageMaximized;
+//    }
 
     public void setPageMaximized(Boolean pageMaximized) {
         this.pageMaximized = pageMaximized;
@@ -633,6 +633,9 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
             this.editorFontSize = t1.editorFontSize;
             this.editorFontFamily = t1.editorFontFamily;
             this.editorFontWeight = t1.editorFontWeight;
+//            this.queryFontSize = t1.queryFontSize;
+//            this.queryFontFamily = t1.queryFontFamily;
+//            this.queryFontWeight = t1.queryFontWeight;
             this.terminalFontSize = t1.terminalFontSize;
             this.terminalFontFamily = t1.terminalFontFamily;
             this.terminalFontWeight = t1.terminalFontWeight;
@@ -728,27 +731,27 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         return FontWeight.NORMAL.getWeight();
     }
 
-    public Byte getQueryFontSize() {
-        return this.queryFontSize == null ? defaultQueryFontSize() : this.queryFontSize;
-    }
-
-    public int getQueryFontWeight() {
-        return this.queryFontWeight == null ? defaultQueryFontWeight() : this.queryFontWeight;
-    }
-
-    public String getQueryFontFamily() {
-        return StringUtil.isBlank(this.queryFontFamily) ? defaultQueryFontFamily() : this.queryFontFamily;
-    }
-
-    public static byte defaultQueryFontSize() {
-        return 15;
-    }
-
-    public static String defaultQueryFontFamily() {
-        return "System";
-    }
-
-    public static int defaultQueryFontWeight() {
-        return FontWeight.NORMAL.getWeight();
-    }
+//    public Byte getQueryFontSize() {
+//        return this.queryFontSize == null ? defaultQueryFontSize() : this.queryFontSize;
+//    }
+//
+//    public int getQueryFontWeight() {
+//        return this.queryFontWeight == null ? defaultQueryFontWeight() : this.queryFontWeight;
+//    }
+//
+//    public String getQueryFontFamily() {
+//        return StringUtil.isBlank(this.queryFontFamily) ? defaultQueryFontFamily() : this.queryFontFamily;
+//    }
+//
+//    public static byte defaultQueryFontSize() {
+//        return 15;
+//    }
+//
+//    public static String defaultQueryFontFamily() {
+//        return "System";
+//    }
+//
+//    public static int defaultQueryFontWeight() {
+//        return FontWeight.NORMAL.getWeight();
+//    }
 }
