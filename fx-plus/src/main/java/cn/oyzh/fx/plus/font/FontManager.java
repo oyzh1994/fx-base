@@ -141,9 +141,6 @@ public class FontManager {
                 CACHE.add(font);
             } else {
                 font = CACHE.get(font);
-                //if (JulLog.isInfoEnabled()) {
-                //    JulLog.info("get font from cache, font:{}", font);
-                //}
                 if (JulLog.isDebugEnabled()) {
                     JulLog.debug("get font from cache, font:{}", font);
                 }
