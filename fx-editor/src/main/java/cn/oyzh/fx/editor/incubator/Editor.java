@@ -445,7 +445,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * @param text 内容
      */
     public void text(String text) {
-        FXUtil.runWait(() -> super.setText(text));
+        if (StringUtil.notEquals(this.getText(), text)) {
+            FXUtil.runWait(() -> super.setText(text));
+        }
     }
 
     /**
@@ -1473,11 +1475,12 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             font1 = super.getFont();
         }
         // 我也不知道为啥这样写才能生效
-        //        FXUtil.runPulse(() -> this.setFont(font1));
-        FXUtil.runLater(() -> {
+        Runnable func = () -> {
             this.setFont(font1);
-            super.requestLayout();
-        });
+            this.applyCss();
+            this.layout();
+        };
+        FXUtil.runWait(func);
     }
 
     @Override
