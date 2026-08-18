@@ -1070,6 +1070,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nResourceBundle.i18nString("base.closeOtherConnectTab"), action);
     }
 
+    public static FXMenuItem cancel(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancel(), new CancelSVGGlyph(), action);
+    }
+
     public static FXMenuItem cancelConnect(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancelConnect(), new CancelSVGGlyph(), action);
     }
