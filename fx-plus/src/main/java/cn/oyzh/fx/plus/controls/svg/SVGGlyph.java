@@ -139,12 +139,23 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         }
         // 更新颜色
         if (this.isActive()) {// 激活
-            svgPath.setColor(this.activeColor);
+            this.updateColor(svgPath, this.activeColor);
         } else if (this.color != null) {// 指定颜色
-            svgPath.setColor(this.color);
+            this.updateColor(svgPath, this.color);
         } else if (this.isEnableTheme()) {// 前景色
-            svgPath.setColor(ThemeManager.currentForegroundColor());
+            this.updateColor(svgPath, ThemeManager.currentForegroundColor());
         }
+    }
+
+    /**
+     * 更新颜色
+     *
+     * @param svgPath 组件
+     * @param color   颜色
+     */
+    protected void updateColor(FXSVGPath svgPath, Paint color) {
+        svgPath.setFill(color);
+        svgPath.setStroke(color);
     }
 
     /**
