@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.chooser;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;
@@ -148,12 +149,15 @@ public class FXChooser {
      * @return 结果
      */
     public static String getDesktopDirectory() {
-        File file = new File(SystemUtil.userHome(), "Desktop");
-        if (!file.exists() || !file.isDirectory()) {
-            file = new File(SystemUtil.userHome(), "桌面");
-        }
-        if (file.exists() && file.isDirectory()) {
-            return file.getPath();
+        if (!OSUtil.isWindows()) {
+            String userHome = SystemUtil.userHome();
+            File file = new File(userHome, "Desktop");
+            if (!file.exists() || !file.isDirectory()) {
+                file = new File(userHome, "桌面");
+            }
+            if (file.exists() && file.isDirectory()) {
+                return file.getPath();
+            }
         }
         return HOME_DIR.getPath();
     }
