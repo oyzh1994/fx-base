@@ -39,7 +39,7 @@ public class TreeViewUtil {
      * @param filter   过滤器
      * @return 全部节点列表
      */
-    public static List<TreeItem<?>> getAllItem( TreeView<?> treeView, Function<TreeItem<?>, Boolean> filter) {
+    public static List<TreeItem<?>> getAllItem(TreeView<?> treeView, Function<TreeItem<?>, Boolean> filter) {
         TreeItem<?> root = treeView.getRoot();
         List<TreeItem<?>> items = new ArrayList<>(128);
         getAllItem(root, items, filter);
@@ -73,7 +73,7 @@ public class TreeViewUtil {
      * @param treeView 树组件
      * @param filter   过滤器
      */
-    public static void filterItem( TreeView<?> treeView, Consumer<TreeItem<?>> filter) {
+    public static void filterItem(TreeView<?> treeView, Consumer<TreeItem<?>> filter) {
         TreeItem<?> root = treeView.getRoot();
         filterItem(root, filter);
     }
@@ -104,7 +104,7 @@ public class TreeViewUtil {
      * @param treeView 树组件
      * @return 可见树节点
      */
-    public static List<TreeItem<?>> getVisibleItems( TreeView<?> treeView) {
+    public static List<TreeItem<?>> getVisibleItems(TreeView<?> treeView) {
         List<TreeItem<?>> result = new ArrayList<>(treeView.getExpandedItemCount());
         int startIndex = -1;
         for (int i = 0; i < treeView.getExpandedItemCount(); i++) {

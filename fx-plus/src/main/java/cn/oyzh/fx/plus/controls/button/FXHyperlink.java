@@ -1,8 +1,6 @@
 package cn.oyzh.fx.plus.controls.button;
 
-import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
@@ -12,7 +10,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
-import javafx.application.HostServices;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Hyperlink;
@@ -46,12 +44,7 @@ public class FXHyperlink extends Hyperlink implements LayoutAdapter, MouseAdapte
         this.setOnMousePrimaryClicked(event -> {
             String url = this.getText();
             if (StringUtil.isNotBlank(url)) {
-                HostServices services = FXConst.getHostServices();
-                if (services != null) {
-                    services.showDocument(url);
-                } else {
-                    JulLog.warn("HostServices is null");
-                }
+                FXUtil.showDocument(url);
             }
         });
     }

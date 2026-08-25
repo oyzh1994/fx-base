@@ -2,8 +2,6 @@ package cn.oyzh.fx.plus.controls.tree.view;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.object.Destroyable;
-import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
@@ -12,15 +10,17 @@ import cn.oyzh.fx.plus.menu.ContextMenuAdapter;
 import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.plus.thread.QueueService;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.TreeViewUtil;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -29,7 +29,7 @@ import java.util.function.Consumer;
  * @author oyzh
  * @since 2022/1/19
  */
-public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
+public class FXTreeView extends TreeView implements FlexAdapter, Destroyable, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 
     {
         NodeManager.init(this);
@@ -118,7 +118,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
      *
      * @param consumer 消费器
      */
-    public void selectItemChanged( Consumer<TreeItem<?>> consumer) {
+    public void selectItemChanged(Consumer<TreeItem<?>> consumer) {
         this.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (!this.isIgnoreChanged()) {
                 consumer.accept((TreeItem<?>) newValue);
@@ -171,17 +171,6 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         return item != null && this.getSelectedItem() == item;
     }
 
-    // /**
-    //  * 刷新坐标，防止出现白屏
-    //  */
-    // public void flushLocal() {
-    //     TaskManager.startDelay(() -> FXUtil.runLater(() -> {
-    //         this.layoutChildren();
-    //         this.localToScreen(this.getBoundsInLocal());
-    //         this.refresh();
-    //     }), 100);
-    // }
-
     @Override
     public void changeTheme(ThemeStyle style) {
         ThemeAdapter.super.changeTheme(style);
@@ -195,37 +184,12 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         this.initRoot();
     }
 
-    @Override
-    public synchronized void destroy() {
-        if (this.getRoot() instanceof Destroyable destroyable) {
-            destroyable.destroy();
-            this.setRoot(null);
-        }
-    }
-
     /**
      * 定位节点
      */
     public void positionItem() {
         this.scrollTo(this.getSelectedItem());
     }
-
-    // /**
-    //  * 渲染服务
-    //  */
-    // protected QueueService service;
-    //
-    // /**
-    //  * 获取渲染服务
-    //  *
-    //  * @return 渲染服务
-    //  */
-    // public QueueService service() {
-    //     if (this.service == null) {
-    //         this.service = new QueueService();
-    //     }
-    //     return this.service;
-    // }
 
     @Override
     public FXTreeItem<?> getSelectedItem() {
@@ -240,7 +204,6 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         if (item != null) {
             item.expend();
             this.select(item);
-            // this.flushLocal();
         }
     }
 
@@ -252,7 +215,6 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         if (item != null) {
             item.collapse();
             this.select(item);
-            // this.flushLocal();
         }
     }
 
@@ -272,5 +234,21 @@ public class FXTreeView extends TreeView implements FlexAdapter, DestroyAdapter,
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    /**
+     * 获取全部节点
+     *
+     * @return 结果
+     */
+    public List<TreeItem<?>> getAllItem() {
+        return TreeViewUtil.getAllItem(this, null);
+    }
+
+    @Override
+    public void destroy() {
+        this.setRoot(null);
+        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

@@ -14,6 +14,11 @@ import java.util.List;
 public class TerminalCommand {
 
     /**
+     * 完整内容
+     */
+    private String content;
+
+    /**
      * 命令
      */
     private String command;
@@ -51,5 +56,13 @@ public class TerminalCommand {
 
     public void setArgs(String[] args) {
         this.args = args;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

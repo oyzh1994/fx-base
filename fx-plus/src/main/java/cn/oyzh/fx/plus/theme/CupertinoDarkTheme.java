@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.CupertinoDark;
 import atlantafx.base.theme.Theme;
-import cn.oyzh.fx.plus.FXStyle;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -31,11 +30,11 @@ public class CupertinoDarkTheme implements Theme, ThemeStyle {
         return THEME.getUserAgentStylesheet();
     }
 
-    @Override
-    public String getCompressedUserAgentStylesheet() {
-        return FXStyle.ATLANTA_FX_CUPERTINO_DARK;
-        // return FXStyle.ATLANTA_FX_CUPERTINO_DARK;
-    }
+//    @Override
+//    public String getCompressedUserAgentStylesheet() {
+//        return FXStyle.ATLANTA_FX_CUPERTINO_DARK;
+//        // return FXStyle.ATLANTA_FX_CUPERTINO_DARK;
+//    }
 
     @Override
     public String getUserAgentStylesheetBSS() {

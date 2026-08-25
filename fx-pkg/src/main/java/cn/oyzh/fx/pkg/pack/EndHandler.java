@@ -14,10 +14,12 @@ public class EndHandler implements PostHandler {
 
     private int order = PackOrder.ORDER_MIN;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }
@@ -30,13 +32,8 @@ public class EndHandler implements PostHandler {
     @Override
     public void handle(PackConfig packConfig) throws Exception {
         // 删除打包目录
-        try {
-            if (packConfig.getCompressFile() != null) {
-                FileUtil.del(packConfig.getDest());
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JulLog.error("delete dest error!", ex);
+        if (packConfig.getCompressFile() != null) {
+            FileUtil.del(packConfig.getDest());
         }
         // 删除jlink的jre目录
         if (packConfig.getJlinkJre() != null) {

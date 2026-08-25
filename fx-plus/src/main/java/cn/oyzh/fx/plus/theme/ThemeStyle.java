@@ -1,15 +1,15 @@
 package cn.oyzh.fx.plus.theme;
 
-import cn.oyzh.common.thread.TaskManager;
-import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.plus.util.StyleUtil;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * 主题风格
@@ -97,13 +97,13 @@ public interface ThemeStyle {
      * @return 样式文件
      */
     String getUserAgentStylesheet();
-
-    /**
-     * 获取压缩样式文件
-     *
-     * @return 压缩样式文件
-     */
-    String getCompressedUserAgentStylesheet();
+    //
+    //    /**
+    //     * 获取压缩样式文件
+    //     *
+    //     * @return 压缩样式文件
+    //     */
+    //    String getCompressedUserAgentStylesheet();
 
     ///**
     // * 重应用css尾缀
@@ -120,11 +120,17 @@ public interface ThemeStyle {
             FXUtil.runWait(() -> {
                 try {
                     // 更新fx-base样式文件
-                    node.getStylesheets().remove(FXStyle.FX_BASE);
-                    node.getStylesheets().add(FXStyle.FX_BASE);
-                    // 重新应用样式
-                    ReflectUtil.invoke(node, "reapplyCss");
-                    node.applyCss();
+                    StyleUtil.reapplyStylesheet(node, FXStyle.FX_BASE);
+                    //                    if (ThemeManager.isDarkMode()) {
+                    //                        StyleUtil.removeStylesheet(node, FXStyle.FX_LIGHT);
+                    //                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
+                    //                    } else {
+                    //                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_DARK);
+                    //                        StyleUtil.reapplyStylesheet(node, FXStyle.FX_LIGHT);
+                    //                    }
+                    //// 重新应用样式
+                    //ReflectUtil.invoke(node, "reapplyCss");
+                    //node.applyCss();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -157,13 +163,18 @@ public interface ThemeStyle {
      */
     default void handleStyle(Node node) {
         if (node != null) {
-            TaskManager.startDelay(() -> FXUtil.runLater(() -> {
-                try {
-                    ReflectUtil.invoke(node, "reapplyCss");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }), 50);
+            //TaskManager.startDelay(() -> FXUtil.runLater(() -> {
+            //    try {
+            //        ReflectUtil.invoke(node, "reapplyCss");
+            //    } catch (Exception ex) {
+            //        ex.printStackTrace();
+            //    }
+            //}), 50);
+            //FXUtil.runWait(() -> {
+            //    // 重新应用样式
+            //    ReflectUtil.invoke(node, "reapplyCss");
+            //    node.applyCss();
+            //});
         }
     }
 
@@ -174,7 +185,7 @@ public interface ThemeStyle {
      * @return 相关度
      */
     default double corr(ThemeStyle style) {
-        if ((this.isDarkMode() && !style.isDarkMode()) || (!this.isDarkMode() && style.isDarkMode())) {
+        if (!Objects.equals(style.isDarkMode(), this.isDarkMode())) {
             return -1;
         }
         // 前景色
@@ -184,6 +195,15 @@ public interface ThemeStyle {
         // 强调色
         double d3 = ThemeUtil.calcCorr(this.getAccentColor(), style.getAccentColor());
         // 返回相关度
-        return d1 * 5.5 + d2 * 2.5 + d3 * 2;
+        return d1 * 5 + d2 * 3 + d3 * 2;
     }
+
+    //    default boolean isBuiltIn() {
+    //        return false;
+    //    }
+    //
+    //    default String getBuiltInName() {
+    //        return null;
+    //    }
+
 }

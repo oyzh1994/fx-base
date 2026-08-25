@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.svg.glyph;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/4/11
+ */
+public class SaveSVGGlyph extends SVGGlyph {
+
+    public SaveSVGGlyph() {
+        super("/fx-svg/save.svg");
+    }
+
+    public SaveSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.save());
+//        super.initNode();
+//    }
+}

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import cn.oyzh.fx.gui.label.TipsLabel?>
+<?import cn.oyzh.fx.gui.svg.glyph.RunSVGGlyph?>
+<?import cn.oyzh.fx.gui.svg.glyph.SaveSVGGlyph?>
+<?import cn.oyzh.fx.plus.controls.box.FXHBox?>
+<?import cn.oyzh.fx.plus.controls.box.FXVBox?>
+<?import cn.oyzh.fx.plus.controls.button.FXCheckBox?>
+<?import cn.oyzh.fx.plus.controls.FXHeaderBar?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import cn.oyzh.fx.plus.controls.table.FXTableView?>
+<?import javafx.scene.control.TextArea?>
+<FXVBox xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="cn.oyzh.fx.plus.test.memory.Test1Controler" realWidth="600"
+        realHeight="260">
+    <FXHeaderBar/>
+    <FXHBox flexWidth="100%" flexHeight="100% - 30">
+        <FXTableView fx:id="snippetTreeView" realWidth="140" flexHeight="100%">
+
+        </FXTableView>
+        <FXVBox fx:id="rightBox" flexWidth="100% - 240" flexHeight="100%">
+            <TextArea fx:id="content" >
+
+            </TextArea>
+            <FXHBox realHeight="40">
+                <RunSVGGlyph tipText="发送" appendTipText="(Ctrl+R/Meta+R)" onMousePrimaryClicked="#run">
+                    <FXHBox.margin>
+                        <Insets left="10" top="10"/>
+                    </FXHBox.margin>
+                </RunSVGGlyph>
+                <SaveSVGGlyph onMousePrimaryClicked="#save" tipText="Ctrl+S/Meta+S">
+                    <FXHBox.margin>
+                        <Insets left="10" top="10"/>
+                    </FXHBox.margin>
+                </SaveSVGGlyph>
+                <FXCheckBox enableFont="false" fx:id="sendAll" text="全部标签" fontSize="11">
+                    <FXHBox.margin>
+                        <Insets left="10" top="10"/>
+                    </FXHBox.margin>
+                </FXCheckBox>
+                <FXCheckBox enableFont="false" fx:id="sendClear" text="发送后清除" fontSize="11">
+                    <FXHBox.margin>
+                        <Insets left="10" top="10"/>
+                    </FXHBox.margin>
+                </FXCheckBox>
+                <FXCheckBox enableFont="false" fx:id="sendLine" text="发送时追加换行符" selected="true"
+                            fontSize="11">
+                    <FXHBox.margin>
+                        <Insets left="10" top="10"/>
+                    </FXHBox.margin>
+                </FXCheckBox>
+            </FXHBox>
+        </FXVBox>
+        <FXVBox realWidth="100" flexHeight="100%">
+            <TipsLabel text="\\r = CR">
+                <FXVBox.margin>
+                    <Insets left="5" top="10"/>
+                </FXVBox.margin>
+            </TipsLabel>
+            <TipsLabel text="\\n = LF">
+                <FXVBox.margin>
+                    <Insets left="5" top="10"/>
+                </FXVBox.margin>
+            </TipsLabel>
+            <TipsLabel text="\\t = TAB">
+                <FXVBox.margin>
+                    <Insets left="5" top="10"/>
+                </FXVBox.margin>
+            </TipsLabel>
+            <TipsLabel text="\\a = Bell">
+                <FXVBox.margin>
+                    <Insets left="5" top="10"/>
+                </FXVBox.margin>
+            </TipsLabel>
+            <TipsLabel text="\\e = Escape">
+                <FXVBox.margin>
+                    <Insets left="5" top="10"/>
+                </FXVBox.margin>
+            </TipsLabel>
+            <TipsLabel text="\\b = Backspace">
+                <FXVBox.margin>
+                    <Insets left="5" top="10"/>
+                </FXVBox.margin>
+            </TipsLabel>
+        </FXVBox>
+    </FXHBox>
+</FXVBox>

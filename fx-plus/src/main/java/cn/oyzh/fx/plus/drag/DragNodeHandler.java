@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.drag;
 
+import cn.oyzh.fx.plus.mouse.MouseUtil;
 import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -14,7 +15,7 @@ import javafx.scene.input.TransferMode;
  * @author oyzh
  * @since 2023/5/14
  */
-public class DragNodeHandler   {
+public class DragNodeHandler {
 
     // /**
     //  * 拖动中标志位
@@ -82,11 +83,21 @@ public class DragNodeHandler   {
 
     /**
      * 执行投放
+     *
+     * @param event 事件
      */
-    public void dropNode() {
+    public void dropNode(DragEvent event) {
         try {
-            if (this.source != null && this.target != null) {
-                this.target.onDropNode(this.source);
+            //if (this.source != null && this.target != null) {
+            //    this.target.onDropNode(this.source);
+            //}
+            // Resolve source and target from the event at drop time,
+            // not from cached DRAG_ENTERED values which may be stale
+            // if the event target was a child node inside a TreeCell.
+            DragNodeItem source = DragUtil.getDragItem(event.getGestureSource());
+            DragNodeItem target = DragUtil.getDragItem(event.getTarget());
+            if (source != null && target != null && target.allowDropNode(source)) {
+                target.onDropNode(source);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -203,16 +214,18 @@ public class DragNodeHandler   {
     public void initEvent(Node node, String content) {
         // 触发拖动
         node.addEventFilter(MouseEvent.DRAG_DETECTED, event -> {
-            // 获取拖动节点
-            DragNodeItem source = DragUtil.getDragItem(event.getSource());
-            // 判断是否允许触发拖动事件
-            if (source != null && source.allowDrag()) {
-                Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent clipboardContent = new ClipboardContent();
-                clipboardContent.putString(content);
-                db.setContent(clipboardContent);
-                // 设置特效
-                this.initDragEffect(source);
+            if (MouseUtil.isPrimaryButton(event)) {
+                // 获取拖动节点
+                DragNodeItem source = DragUtil.getDragItem(event.getSource());
+                // 判断是否允许触发拖动事件
+                if (source != null && source.allowDrag()) {
+                    Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent clipboardContent = new ClipboardContent();
+                    clipboardContent.putString(content);
+                    db.setContent(clipboardContent);
+                    // 设置特效
+                    this.initDragEffect(source);
+                }
             }
             event.consume();
         });
@@ -250,7 +263,7 @@ public class DragNodeHandler   {
         });
         // 拖动释放
         node.addEventFilter(DragEvent.DRAG_DROPPED, event -> {
-            this.dropNode();
+            this.dropNode(event);
             event.setDropCompleted(true);
             // 清除数据
             event.getDragboard().clear();

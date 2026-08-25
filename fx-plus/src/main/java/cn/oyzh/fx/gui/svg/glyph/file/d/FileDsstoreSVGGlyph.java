@@ -1,0 +1,19 @@
+package cn.oyzh.fx.gui.svg.glyph.file.d;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2025-03-05
+ */
+public class FileDsstoreSVGGlyph extends SVGGlyph {
+
+    public FileDsstoreSVGGlyph() {
+        super("/fx-svg/file/d/file-ds_store.svg");
+    }
+
+    public FileDsstoreSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+}

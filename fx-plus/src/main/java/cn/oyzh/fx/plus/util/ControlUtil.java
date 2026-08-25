@@ -15,7 +15,6 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
@@ -351,14 +350,14 @@ public class ControlUtil {
         return new Background(new BackgroundFill(paint, null, null));
     }
 
-    /**
-     * 生成高亮背景
-     *
-     * @return 高亮背景
-     */
-    public static Background hilightBackground() {
-        return background(Color.LIGHTBLUE);
-    }
+//    /**
+//     * 生成高亮背景
+//     *
+//     * @return 高亮背景
+//     */
+//    public static Background hilightBackground() {
+//        return background(Color.LIGHTBLUE);
+//    }
 
     /**
      * 取消选中
@@ -440,14 +439,14 @@ public class ControlUtil {
      * @param scrollPane 滚动面板
      */
     public static double getVBarWidth(ScrollPane scrollPane) {
-        Skin<?> skin =  scrollPane.getSkin();
-        if(skin == null) {
+        Skin<?> skin = scrollPane.getSkin();
+        if (skin == null) {
             return 0;
         }
         // 通过反射获取垂直滚动条
         ScrollBar scrollBar = ReflectUtil.getFieldValue(skin, "vsb");
         // 确保滚动条可见并已布局
-        if (scrollBar == null ) {
+        if (scrollBar == null) {
             return 0;
         }
         // // 强制布局并获取宽度
@@ -462,20 +461,35 @@ public class ControlUtil {
      * @param scrollPane 滚动面板
      */
     public static double getHBarHeight(ScrollPane scrollPane) {
-        Skin<?> skin =  scrollPane.getSkin();
-        if(skin == null) {
+        Skin<?> skin = scrollPane.getSkin();
+        if (skin == null) {
             return 0;
         }
         // 通过反射获取垂直滚动条
         ScrollBar scrollBar = ReflectUtil.getFieldValue(skin, "hsb");
         // 确保滚动条可见并已布局
-        if (scrollBar == null ) {
+        if (scrollBar == null) {
             return 0;
         }
         // 强制布局并获取宽度
         scrollBar.applyCss();
         scrollBar.layout();
         return NodeUtil.getHeight(scrollBar);
+    }
+
+    /**
+     * 设置最小的滚动条thumb值
+     *
+     * @param scrollBar        滚动条
+     * @param minVisibleAmount 最小值
+     */
+    public static void setupMinVisibleAmount(ScrollBar scrollBar, double minVisibleAmount) {
+        scrollBar.setVisibleAmount(minVisibleAmount);
+        scrollBar.visibleAmountProperty().addListener((observableValue, number, t1) -> {
+            if (t1 != null && t1.doubleValue() < minVisibleAmount) {
+                scrollBar.setVisibleAmount(minVisibleAmount);
+            }
+        });
     }
 
 }

@@ -4,11 +4,15 @@ import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.fx.plus.ext.FXMLLoaderExt;
 import cn.oyzh.fx.plus.handler.EscHideHandler;
 import cn.oyzh.fx.plus.handler.TabSwitchHandler;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.CursorUtil;
 import cn.oyzh.fx.plus.util.StyleUtil;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.PopupWindow;
+import javafx.stage.Window;
 
 import java.util.function.Consumer;
 
@@ -25,6 +29,7 @@ public interface PopupAdapter extends WindowAdapter {
         try {
             WindowAdapter.super.onWindowClosed();
             this.content(null);
+//            NodeDestroyUtil.destroyObject(this);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -52,7 +57,6 @@ public interface PopupAdapter extends WindowAdapter {
         this.popup().setOnCloseRequest(listener::onWindowCloseRequest);
     }
 
-
     @Override
     default void handCursor() {
         CursorUtil.handCursor(this.popup());
@@ -70,48 +74,37 @@ public interface PopupAdapter extends WindowAdapter {
 
     @Override
     default void hideOnEscape() {
-//        if (!EscHideHandler.exists(this.popup())) {
-//            EscHideHandler.init(this.popup());
-//        }
         this.setProp("escHideHandler", new EscHideHandler(this.popup()));
     }
 
     @Override
-    default void unHideOnEscape() {
-//        EscHideHandler.destroy(this.popup());
-        EscHideHandler escHideHandler = this.removeProp("escHideHandler");
-        if (escHideHandler != null) {
-            escHideHandler.destroy();
-        }
-    }
-
-    @Override
-    default boolean isHideOnEscape() {
-//        return EscHideHandler.exists(this.popup());
-        return this.hasProp("escHideHandler");
-    }
-
-    @Override
     default void switchOnTab() {
-//        if (!TabSwitchHandler.exists(this.popup())) {
-//            TabSwitchHandler.init(this.popup());
-//        }
         this.setProp("tabSwitchHandler", new TabSwitchHandler(this.popup()));
     }
 
-    @Override
-    default void unSwitchOnTab() {
-//        TabSwitchHandler.destroy(this.popup());
-        TabSwitchHandler tabSwitchHandler = this.removeProp("tabSwitchHandler");
-        if (tabSwitchHandler != null) {
-            tabSwitchHandler.destroy();
+    /**
+     * 显示弹窗
+     *
+     * @param owner 父组件
+     */
+    default void showPopup(Node owner) {
+        Point2D pos = owner.localToScreen(0, 0);
+        if (pos == null) {
+            this.popup().show(owner, 0, 0);
+        } else {
+            this.popup().show(owner, pos.getX(), pos.getY());
         }
     }
 
-    @Override
-    default boolean isSwitchOnTab() {
-//        return TabSwitchHandler.exists(this.popup());
-        return this.hasProp("tabSwitchHandler");
+    /**
+     * 显示弹窗
+     *
+     * @param owner 父组件
+     * @param x     x位置
+     * @param y     y位置
+     */
+    default void showPopup(Node owner, double x, double y) {
+        this.popup().show(owner, x, y);
     }
 
     /**
@@ -119,14 +112,20 @@ public interface PopupAdapter extends WindowAdapter {
      *
      * @param owner 父组件
      */
-    void showPopup(Node owner);
+    default void showPopup(Window owner) {
+        this.popup().show(owner);
+    }
 
     /**
      * 显示弹窗
      *
      * @param owner 父组件
+     * @param x     x位置
+     * @param y     y位置
      */
-    void showPopup(Node owner, double x, double y);
+    default void showPopup(Window owner, double x, double y) {
+        this.popup().show(owner, x, y);
+    }
 
     /**
      * 获取内容
@@ -164,25 +163,18 @@ public interface PopupAdapter extends WindowAdapter {
         if (root == null) {
             throw new RuntimeException("load root fail");
         }
+        // 设置内容
         this.content(root);
         // 设置controller
         this.setProp("_controller", loader.getController());
         // 加载自定义css文件
         if (ArrayUtil.isNotEmpty(attribute.cssUrls())) {
-            root.getStylesheets().addAll(StyleUtil.split(attribute.cssUrls()));
+            root.getStylesheets().setAll(StyleUtil.split(attribute.cssUrls()));
         }
         // 设置事件
         if (this.controller() instanceof PopupListener listener) {
             this.initListener(listener);
         }
-        // 监听显示属性
-        this.popup().showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                this.onWindowClosed();
-            } else if (this.controller() instanceof PopupListener listener) {
-                listener.onWindowShown(null);
-            }
-        });
     }
 
     /**
@@ -218,6 +210,29 @@ public interface PopupAdapter extends WindowAdapter {
         }
     }
 
+    /**
+     * 获取节点
+     *
+     * @return 父节点
+     */
+    default Node getOwnerNode() {
+        return this.popup().getOwnerNode();
+    }
+
+    /**
+     * 获取父窗口
+     *
+     * @return 父窗口
+     */
+    default Window getOwnerWindow() {
+        return this.popup().getOwnerWindow();
+    }
+
+    /**
+     * 是否显示中
+     *
+     * @return 结果
+     */
     default boolean isShowing() {
         return this.popup().isShowing();
     }
@@ -228,5 +243,13 @@ public interface PopupAdapter extends WindowAdapter {
 
     default void hide() {
         this.popup().hide();
+    }
+
+    @Override
+    default Scene scene() {
+        if (this.popup() != null) {
+            return this.popup().getScene();
+        }
+        return null;
     }
 }

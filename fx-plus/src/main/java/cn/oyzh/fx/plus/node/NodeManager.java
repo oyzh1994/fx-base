@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.node;
 
-import cn.oyzh.fx.plus.adapter.DestroyAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
@@ -30,9 +29,9 @@ public class NodeManager {
         if (node instanceof NodeAdapter adapter) {
             adapter.initNode();
         }
-        if (node instanceof DestroyAdapter adapter) {
-            adapter.initDestroyListener();
-        }
+        // if (node instanceof DestroyAdapter adapter) {
+        //     adapter.initDestroyListener();
+        // }
         if (node instanceof OpacityAdapter adapter) {
             adapter.changeOpacity(OpacityManager.currentOpacity());
         }
@@ -47,14 +46,14 @@ public class NodeManager {
         }
         if (node instanceof NodeLifeCycle lifeCycle) {
             if (node instanceof Node node1) {
-                node1.parentProperty().addListener((observable, oldValue, newValue) -> {
+                node1.parentProperty().subscribe((oldValue, newValue) -> {
                     if (newValue == null) {
                         lifeCycle.onNodeDestroy();
                     } else {
                         lifeCycle.onNodeInitialize();
                     }
                 });
-                node1.sceneProperty().addListener((observable, oldValue, newValue) -> {
+                node1.sceneProperty().subscribe((oldValue, newValue) -> {
                     if (newValue == null) {
                         lifeCycle.onNodeDestroy();
                     } else {
@@ -62,7 +61,7 @@ public class NodeManager {
                     }
                 });
             } else if (node instanceof Tab node1) {
-                node1.tabPaneProperty().addListener((observable, oldValue, newValue) -> {
+                node1.tabPaneProperty().subscribe((oldValue, newValue) -> {
                     if (newValue == null) {
                         lifeCycle.onNodeDestroy();
                     } else {
@@ -70,7 +69,7 @@ public class NodeManager {
                     }
                 });
             } else if (node instanceof TreeItem<?> node1) {
-                node1.parentProperty().addListener((observable, oldValue, newValue) -> {
+                node1.parentProperty().subscribe((oldValue, newValue) -> {
                     if (newValue == null) {
                         lifeCycle.onNodeDestroy();
                     } else {

@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.svg.glyph;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/08/12
+ */
+public class RunSVGGlyph extends SVGGlyph {
+
+    public RunSVGGlyph() {
+        super("/fx-svg/run-solid.svg");
+    }
+
+    public RunSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.add());
+//        super.initNode();
+//    }
+}

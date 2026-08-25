@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.test;
 
-import cn.oyzh.fx.plus.LimitLenControl;
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
+import cn.oyzh.fx.plus.information.MessageBox;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -23,14 +25,20 @@ import javafx.stage.Stage;
 public class AppTestMain extends Application {
 
     public static void main(String[] args) {
+        FXUtil.enablePreview();
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        // 应用主题
+//        ThemeManager.apply(Themes.DRACULA);
         // test1(stage);
         // test2(stage);
-        test3(stage);
+//        test3(stage);
+//        test4(stage);
+        test5(stage);
+        SystemUtil.gcInterval(3000);
     }
 
     private void test1(Stage stage) {
@@ -95,6 +103,64 @@ public class AppTestMain extends Application {
         stage.setTitle("轻量级布局容器示例");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void test4(Stage stage) {
+        //FXUtil.disablePreview();
+        MessageBox.info("测试1");
+        MessageBox.warn("测试2");
+        MessageBox.error("测试3");
+        boolean b1 = MessageBox.confirm("测试5");
+        System.out.println("b1=" + b1);
+        String result1 = MessageBox.prompt("测试1", "内容1");
+        System.out.println("result1:" + result1);
+        try {
+            throw new UnsupportedOperationException("test\n".repeat(1));
+        } catch (Exception ex) {
+            MessageBox.exception(ex);
+        }
+        try {
+            throw new UnsupportedOperationException("test\n".repeat(100));
+        } catch (Exception ex) {
+            MessageBox.exception(ex);
+        }
+        MessageBox.none("测试4");
+        FXUtil.disablePreview();
+        MessageBox.info("测试1");
+        MessageBox.warn("测试2");
+        MessageBox.error("测试3");
+        boolean b2 = MessageBox.confirm("测试5");
+        System.out.println("b2=" + b2);
+        String result2 = MessageBox.prompt("测试2", "内容2");
+        System.out.println("result2:" + result2);
+        try {
+            throw new UnsupportedOperationException("test\n".repeat(1));
+        } catch (Exception ex) {
+            MessageBox.exception(ex);
+        }
+        try {
+            throw new UnsupportedOperationException("test\n".repeat(100));
+        } catch (Exception ex) {
+            MessageBox.exception(ex);
+        }
+        MessageBox.none("测试4");
+    }
+
+    private void test5(Stage stage) {
+        VBox vBox = new VBox();
+        for (int i = 0; i < 20; i++) {
+            HBox hBox=new HBox();
+            for (int j = 0; j < 10; j++) {
+                hBox.getChildren().add(new Label("Hello World" + (i + 1)+ (j + 1)));
+            }
+            vBox.getChildren().add(hBox);
+        }
+        ScrollPane scrollPane = new ScrollPane(vBox);
+        stage.setScene(new Scene(scrollPane));
+        stage.setWidth(800);
+        stage.setHeight(600);
+        stage.show();
+        stage.setTitle("Hello Javafx");
     }
 
     public static class AppTestMainApp {

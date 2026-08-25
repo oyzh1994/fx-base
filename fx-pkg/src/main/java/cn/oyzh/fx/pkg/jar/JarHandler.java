@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.jar;
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.RuntimeUtil;
+import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -24,10 +25,12 @@ public class JarHandler implements PreHandler {
 
     private int order = PackOrder.ORDER_P7;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }
@@ -65,12 +68,18 @@ public class JarHandler implements PreHandler {
         FileUtil.del(dest);
         // 解压主jar
         JarUtil.unJar(src, jarUnDir);
-        // 裁剪主jar
-        JarUtil.minimize(src, dest, this::jarFilter);
-        // 裁剪类库jar
-        this.handleLibs(jarUnDir);
-        // 合并类库jar
-        this.mergeLibs(jarUnDir, dest, jdkPath);
+        // 裁剪文件
+        if (jarConfig.isEnable()) {
+            // 裁剪主jar
+            JarUtil.minimize(src, dest, this::jarFilter);
+            // 裁剪类库jar
+            this.handleLibs(jarUnDir);
+            // 合并类库jar
+            this.mergeLibs(jarUnDir, dest, jdkPath);
+        } else {// 不裁剪
+            JulLog.warn("jar裁剪未启用，已跳过");
+            FileUtil.copy(src, dest, true);
+        }
         // 设置最小化后的主程序
         packConfig.setMinimizeManJar(dest);
         // 设置jar解压目录
@@ -133,6 +142,7 @@ public class JarHandler implements PreHandler {
                 JarUtil.minimize(file.getPath(), file.getPath(), this::jarFilter);
             } catch (Exception ex) {
                 ex.printStackTrace();
+                throw new RuntimeException(ex);
             }
         }
         JulLog.info("handleLibs finish.");
@@ -160,7 +170,11 @@ public class JarHandler implements PreHandler {
             cmdArr = PkgUtil.getJDKExecCMD(jdkPath, cmdArr);
             String cmdStr = StringUtil.join(" ", cmdArr);
             JulLog.info(cmdStr);
-            RuntimeUtil.execForResult(cmdArr, null, dir);
+            ProcessExecResult result = RuntimeUtil.execForResult(cmdArr, null, dir);
+            if (!result.isSuccess()) {
+                JulLog.error("Jar error:{} exitCode:{}", result.getError(), result.getExitCode());
+                throw new RuntimeException("Jar error:" + result.getError() + " exitCode:" + result.getExitCode());
+            }
         } else {// 单个jar逐个合并
             List<File> files = FileUtil.loopFiles(dir);
             files = files.parallelStream().filter(f -> f.isFile() && f.getName().endsWith(".jar")).toList();
@@ -170,7 +184,11 @@ public class JarHandler implements PreHandler {
                 cmdArr = PkgUtil.getJDKExecCMD(jdkPath, cmdArr);
                 String cmdStr = StringUtil.join(" ", cmdArr);
                 JulLog.info(cmdStr);
-                RuntimeUtil.execForResult(cmdArr, null, dir);
+                ProcessExecResult result = RuntimeUtil.execForResult(cmdArr, null, dir);
+                if (!result.isSuccess()) {
+                    JulLog.error("Jar error:{} exitCode:{}", result.getError(), result.getExitCode());
+                    throw new RuntimeException("Jar error:" + result.getError() + " exitCode:" + result.getExitCode());
+                }
             }
         }
         // 移动主jar文件到原始目录

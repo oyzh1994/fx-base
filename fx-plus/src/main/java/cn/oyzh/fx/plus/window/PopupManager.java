@@ -28,8 +28,8 @@ public class PopupManager {
     public static PopupAdapter getPopup(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
             Object reference = PropertiesUtil.get(window, REF_ATTR);
-            if (reference instanceof PopupAdapter wrapper && wrapper.controllerClass() == controllerClass) {
-                return wrapper;
+            if (reference instanceof PopupAdapter adapter && adapter.controllerClass() == controllerClass) {
+                return adapter;
             }
         }
         return null;
@@ -57,6 +57,11 @@ public class PopupManager {
     }
 
     /**
+     * 弹窗对象，由于弹窗只能存在一个，故而仅保留一个实例
+     */
+    private static PopupExt popup;
+
+    /**
      * 解析弹窗
      *
      * @param clazz          弹窗类
@@ -75,7 +80,11 @@ public class PopupManager {
             adapter.disappear();
         }
         // 创建弹窗
-        PopupExt popup = new PopupExt(attribute);
+        if (popup == null) {
+            popup = new PopupExt(attribute);
+        } else {// 初始化弹窗
+            popup.init(attribute);
+        }
         if (arrowLocation != null) {
             popup.setArrowLocation(arrowLocation);
         } else {

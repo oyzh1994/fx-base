@@ -13,9 +13,7 @@ import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfigParser;
 import cn.oyzh.fx.pkg.jre.JreConfig;
 import cn.oyzh.fx.pkg.jre.JreConfigParser;
-import cn.oyzh.fx.pkg.packr.PackrConfigParser;
 import com.alibaba.fastjson2.JSONObject;
-import com.badlogicgames.packr.PackrConfig;
 
 /**
  * 打包配置解析器
@@ -48,8 +46,8 @@ public class PackConfigParser implements ConfigParser<PackConfig> {
         if (object.containsKey("jrePath")) {
             config.setJrePath(object.getString("jrePath"));
         }
-        if (object.containsKey("jrePath")) {
-            config.setPlatform(object.getString("jrePath"));
+        if (object.containsKey("platform")) {
+            config.setPlatform(object.getString("platform"));
         }
         if (object.containsKey("packMode")) {
             config.setPackMode(object.getString("packMode"));

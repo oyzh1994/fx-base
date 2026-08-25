@@ -1,0 +1,17 @@
+package cn.oyzh.fx.gui.svg.glyph;
+
+/**
+ * @author oyzh
+ * @since 2024/4/11
+ */
+public class CancelSVGGlyph extends CloseSVGGlyph {
+
+    public CancelSVGGlyph() {
+        super();
+    }
+
+    public CancelSVGGlyph(String size) {
+        super();
+        this.setSizeStr(size);
+    }
+}

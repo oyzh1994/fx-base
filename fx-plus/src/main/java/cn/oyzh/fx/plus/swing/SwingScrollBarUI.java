@@ -12,6 +12,7 @@ import java.awt.Dimension;
  * @author oyzh
  * @since 2025-08-05
  */
+@Deprecated
 public class SwingScrollBarUI extends BasicScrollBarUI {
 
     public static final Color TRACK_COLOR_DARK = new Color(80, 80, 80);

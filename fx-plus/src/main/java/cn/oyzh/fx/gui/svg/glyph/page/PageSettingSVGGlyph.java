@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.svg.glyph.page;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/08/06
+ */
+public class PageSettingSVGGlyph extends SVGGlyph {
+
+    public PageSettingSVGGlyph() {
+        super("/fx-svg/page/page-setting3.svg");
+    }
+
+    public PageSettingSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.setting());
+//        super.initNode();
+//    }
+}

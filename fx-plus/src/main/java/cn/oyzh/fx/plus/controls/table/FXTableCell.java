@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.controls.table;
 
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 
@@ -11,7 +13,7 @@ import javafx.scene.control.TableCell;
  * @author oyzh
  * @since 2022/12/21
  */
-public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
+public class FXTableCell<S, T> extends TableCell<S, T> implements NodeAdapter, ThemeAdapter {
 
     {
         NodeManager.init(this);
@@ -41,23 +43,40 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements ThemeAdapter {
 
     @Override
     protected void updateItem(T item, boolean empty) {
+        if (item == getItem()) {
+            return;
+        }
         super.updateItem(item, empty);
-        if (empty || item == null) {
-            this.setText(null);
-            this.setGraphic(null);
+        if (item == null) {
+            super.setText(null);
+            super.setGraphic(null);
         } else {
-            if (item instanceof Node node) {
-                this.setText(null);
-                this.setGraphic(node);
+            if (item instanceof Node) {
+                super.setText(null);
+                super.setGraphic((Node) item);
             } else {
-                this.setText(item.toString());
-                this.setGraphic(null);
+                super.setText(item.toString());
+                super.setGraphic(null);
             }
-            if (this.lineHeight > 0) {
-                this.getTableRow().setMinHeight(this.lineHeight);
-                this.getTableRow().setMaxHeight(this.lineHeight);
-                this.getTableRow().setPrefHeight(this.lineHeight);
-            }
+            // 设置行高
+            this.initLineHeight();
         }
     }
+
+    /**
+     * 初始化行高
+     */
+    protected void initLineHeight() {
+        if (this.lineHeight > 0) {
+            this.getTableRow().setMinHeight(this.lineHeight);
+            this.getTableRow().setMaxHeight(this.lineHeight);
+            this.getTableRow().setPrefHeight(this.lineHeight);
+        }
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setPadding(Insets.EMPTY);
+//        NodeAdapter.super.initNode();
+//    }
 }

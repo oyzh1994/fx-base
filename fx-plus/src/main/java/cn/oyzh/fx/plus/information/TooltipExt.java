@@ -26,7 +26,7 @@ public class TooltipExt extends Tooltip implements PropAdapter {
      *
      * @param node 节点
      */
-    public void show( Node node) {
+    public void show(Node node) {
         // 获取组件坐标
         Point2D point2D = node.localToScreen(node.getScaleX(), node.getScaleY());
         // 获取组件宽度

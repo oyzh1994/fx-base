@@ -2,9 +2,12 @@ package cn.oyzh.fx.editor.test.incubator;
 
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
-import cn.oyzh.fx.editor.EditorLineNumPolicy;
 import cn.oyzh.fx.editor.incubator.Editor;
+import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.fx.editor.incubator.EditorFormatTypeComboBox;
+import cn.oyzh.fx.editor.incubator.EditorUtil;
+import cn.oyzh.fx.gui.svg.glyph.NextSVGGlyph;
+import cn.oyzh.fx.gui.text.field.HighlightTextField;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.box.FXVBox;
 import cn.oyzh.fx.plus.controls.button.FXButton;
@@ -18,6 +21,7 @@ import cn.oyzh.fx.plus.theme.ThemeComboBox;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.FXUtil;
+import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
 import javafx.application.Application;
 import javafx.geometry.Bounds;
@@ -33,7 +37,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.RichTextArea;
+import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import jfx.incubator.scene.control.richtext.model.StyledTextModel;
@@ -55,11 +61,18 @@ public class EditorTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        //ThemeManager.apply(Themes.BLACK_ON_WHITE);
+//         ThemeManager.apply(Themes.PRIMER_DARK);
         ThemeManager.apply(Themes.PRIMER_LIGHT);
-        // ThemeManager.apply(Themes.PRIMER_DARK);
+//        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
+//        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
+//        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
+//        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
         test1(stage);
+        stage.getScene().getStylesheets().add("/fx-plus/css/fx-base.css");
         // test2(stage);
         // test3(stage);
+//        test4(stage);
         stage.setTitle("编辑器测试");
     }
 
@@ -72,15 +85,26 @@ public class EditorTest extends Application {
 
         editor.setFlexWidth("100%");
         editor.setFlexHeight("100% - 120");
-        editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
+        editor.showLineNum();
+//        editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
 
         FXHBox hBox = new FXHBox();
 
         // 高亮
-        FXTextField text_31 = new FXTextField();
+        HighlightTextField text_31 = new HighlightTextField();
         text_31.setPromptText("查找内容");
-        editor.highlightTextProperty().bind(text_31.textProperty());
+//        text_31.textProperty().addListener((observable, oldValue, newValue) -> {
+//            EditorUtil.clearHighlightSearchIndex(editor);
+//        });
+        EditorUtil.bindHighlight(editor, text_31);
         hBox.addChild(text_31);
+
+        NextSVGGlyph next = new NextSVGGlyph();
+        next.setOnMousePrimaryClicked(event -> {
+            EditorUtil.searchNextHighlight(editor, text_31);
+        });
+
+        hBox.addChild(next);
 
         EditorFormatTypeComboBox comboBox = new EditorFormatTypeComboBox();
 
@@ -113,15 +137,15 @@ public class EditorTest extends Application {
             // }
 
 
-            Set<Node> nodes= editor.lookupAll("*");
+            Set<Node> nodes = editor.lookupAll("*");
 
 
             for (Node node : nodes) {
-                if(node instanceof Text text){
+                if (node instanceof Text text) {
                     System.out.println(text.getText());
-                }else if(node instanceof VFlow vFlow){
+                } else if (node instanceof VFlow vFlow) {
 
-                }else if(node instanceof TextFlow textFlow){
+                } else if (node instanceof TextFlow textFlow) {
 
                 }
             }
@@ -183,7 +207,14 @@ public class EditorTest extends Application {
         // 追加
         Button btn_33 = new Button("追加行");
         btn_33.setOnAction(event -> {
-            editor.appendLine("test2");
+            editor.appendLine("""
+                    12	13	json1
+                    14	15	1
+                    2 	3 	4
+                    5 	6 	7
+                    8 	9
+                    阿里云-redis@12.0.0.1:6379(已连接)>\s
+                    """);
         });
         hBox3.addChild(btn_33);
         // 清除
@@ -227,11 +258,11 @@ public class EditorTest extends Application {
             editor.positionCaret(editor.getLength() / 2);
         });
         hBox3.addChild(btn_311);
-        // Button btn_312 = new Button("设置颜色");
-        // btn_312.setOnAction(event -> {
-        //     editor.setStyle(0, 10, Color.RED);
-        // });
-        // hBox3.addChild(btn_312);
+//         Button btn_312 = new Button("设置颜色");
+//         btn_312.setOnAction(event -> {
+//             editor.setStyle(0, 10, Color.RED);
+//         });
+//         hBox3.addChild(btn_312);
 
         FXHBox hBox4 = new FXHBox();
         Button btn_41 = new Button("获取光标位置");
@@ -281,17 +312,46 @@ public class EditorTest extends Application {
         btn_47.setOnAction(event -> {
             TextPos start = TextPos.ofLeading(0, 0);
             TextPos end = TextPos.ofLeading(0, 10);
-            // StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
-            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
-            StyledTextModel model = editor.getModel();
-            model.applyStyle(start, end, attributeMap, true);
+//             StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
+            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BACKGROUND, Color.ORANGE);
+//            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
+//            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.ITALIC,true);
+//            StyledTextModel model = editor.getModel();
+//            model.applyStyle(start, end, attributeMap, false);
+            editor.setStyle(start, end, attributeMap);
         });
         hBox4.addChild(btn_47);
+
+        FXHBox hBox5 = new FXHBox();
+        Button btn_51 = new Button("获取选区位置");
+        btn_51.setOnAction(event -> {
+            MessageBox.info(editor.getSelectionRange().toString());
+        });
+        hBox5.addChild(btn_51);
+
+        Button btn_52 = new Button("选中位置1");
+        btn_52.setOnAction(event -> {
+            editor.selectRange(2, 2);
+        });
+        hBox5.addChild(btn_52);
+
+        Button btn_53 = new Button("选中位置2");
+        btn_53.setOnAction(event -> {
+            editor.selectRange(0, 2);
+        });
+        hBox5.addChild(btn_53);
+
+        Button btn_54 = new Button("选中位置3");
+        btn_54.setOnAction(event -> {
+            editor.selectRange(10, 15);
+        });
+        hBox5.addChild(btn_54);
 
         vBox.addChild(hBox);
         vBox.addChild(hBox2);
         vBox.addChild(hBox3);
         vBox.addChild(hBox4);
+        vBox.addChild(hBox5);
         vBox.addChild(editor);
         // vBox.addChild(editor1);
 
@@ -303,6 +363,9 @@ public class EditorTest extends Application {
 
         stage.setScene(scene);
         stage.show();
+
+        comboBox.setFormat(EditorFormatType.CSS);
+
     }
 
     private void test2(Stage stage) {
@@ -370,7 +433,30 @@ public class EditorTest extends Application {
         stage.show();
     }
 
+    private void test4(Stage stage) {
+        CodeArea editor = new CodeArea();
+        FXVBox vBox = new FXVBox();
+        vBox.addChild(editor);
+        Scene scene = new Scene(vBox);
 
+        stage.setWidth(800);
+        stage.setHeight(600);
+
+        stage.setScene(scene);
+        stage.show();
+
+        editor.setText("""
+                Hello, Javafx1
+                Hello, Javafx2
+                """);
+
+        editor.selectAll();
+        SelectionSegment sel = editor.getSelection();
+        StringBuilder sb = new StringBuilder();
+        RichTextAreaHelper.getText(editor, sel.getMin(), sel.getMax(), sb, Integer.MAX_VALUE);
+
+        System.out.println(sb);
+    }
 
     public static class EditorTestStarter {
 

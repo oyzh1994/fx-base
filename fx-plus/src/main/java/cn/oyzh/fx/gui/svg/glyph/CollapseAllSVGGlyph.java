@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.svg.glyph;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/4/12
+ */
+public class CollapseAllSVGGlyph extends SVGGlyph {
+
+    public CollapseAllSVGGlyph() {
+        super("/fx-svg/vertical-align-middl.svg");
+    }
+
+    public CollapseAllSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.collapseAll());
+//        super.initNode();
+//    }
+}

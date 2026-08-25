@@ -32,8 +32,8 @@ public abstract class FXApplication extends Application {
 
     @Override
     public void init() throws Exception {
-        // 设置stage全部关闭后不自动销毁进程
-        Platform.setImplicitExit(false);
+        // // 设置stage全部关闭后不自动销毁进程
+        // Platform.setImplicitExit(false);
         // 禁用css日志
         FXUtil.disableCSSLogger();
         // 调用父类
@@ -95,16 +95,22 @@ public abstract class FXApplication extends Application {
             if (JulLog.isInfoEnabled()) {
                 JulLog.info("{} stop.", SysConst.projectName());
             }
-            System.exit(0);
+            // System.exit(0);
+            //            StageManager.exit();
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            System.exit(0);
         }
     }
 
     /**
      * 初始化系统托盘
      */
-    protected abstract void initSystemTray();
+    @Deprecated
+    protected void initSystemTray() {
+
+    }
 
     /**
      * 启动
@@ -134,7 +140,7 @@ public abstract class FXApplication extends Application {
             }
             // 移除可选属性
             // TODO: 暂时注释
-//            SystemUtil.removeOptionalProperties();
+            //            SystemUtil.removeOptionalProperties();
             Properties properties = System.getProperties();
             if (!properties.isEmpty()) {
                 if (JulLog.isInfoEnabled()) {

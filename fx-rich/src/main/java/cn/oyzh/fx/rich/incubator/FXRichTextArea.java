@@ -51,6 +51,7 @@
 // import javafx.scene.Node;
 // import javafx.scene.control.Labeled;
 // import javafx.scene.text.Font;
+// import jfx.incubator.scene.control.richtext.LineEnding;
 // import jfx.incubator.scene.control.richtext.LineNumberDecorator;
 // import jfx.incubator.scene.control.richtext.RichTextArea;
 // import jfx.incubator.scene.control.richtext.TextPos;
@@ -420,8 +421,7 @@
 //            return "";
 //        }
 //        TextPos end = m.getDocumentEnd();
-//        try (StringBuilderStyledOutput out = new StringBuilderStyledOutput()) {
-//            out.setLineSeparator("\n");
+//        try (StringBuilderStyledOutput out = new StringBuilderStyledOutput(LineEnding.system())) {
 //            m.export(TextPos.ZERO, end, out);
 //            return out.toString();
 //        } catch (IOException e) {
@@ -438,7 +438,7 @@
 //     */
 //    public final void setText(String text) {
 //        TextPos end = getDocumentEnd();
-//        getModel().replace(null, TextPos.ZERO, end, text, true);
-//        // getModel().replace(null, TextPos.ZERO, end, text);
+////        getModel().replace(null, TextPos.ZERO, end, text, true);
+//         getModel().replace(null, TextPos.ZERO, end, text);
 //    }
 // }

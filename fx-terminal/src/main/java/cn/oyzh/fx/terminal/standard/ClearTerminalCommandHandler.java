@@ -29,14 +29,14 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
 
     @Override
     public String commandHelp(Terminal terminal) {
-        return super.commandHelp(terminal) + "\n-his " + I18nHelper.history();
+        return super.commandHelp(terminal) + terminal.lineEndingText() + "-his " + I18nHelper.history();
     }
 
     @Override
     public TerminalExecuteResult execute(ClearTerminalCommand command, Terminal terminal) {
         TerminalExecuteResult result = new TerminalExecuteResult();
         try {
-            terminal.clear();
+            terminal.clearAll();
             if (command != null && command.isClearHis()) {
                 terminal.clearHistory();
             }
@@ -54,11 +54,10 @@ public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<Clea
 
     @Override
     protected ClearTerminalCommand parseCommand(String line, String[] words) throws RuntimeException {
+        ClearTerminalCommand command = new ClearTerminalCommand();
         if (words.length == 2 && StringUtil.equalsIgnoreCase(words[1], "-his")) {
-            ClearTerminalCommand command = new ClearTerminalCommand();
             command.setClearHis(true);
-            return command;
         }
-        return null;
+        return command;
     }
 }

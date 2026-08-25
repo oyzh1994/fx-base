@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.information;
 
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -21,7 +23,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
-import java.awt.FontMetrics;
+import java.awt.*;
 
 
 /**
@@ -143,7 +145,7 @@ public class Toast {
         scene.setFill(Color.TRANSPARENT);
         this.window.setScene(scene);
         this.window.initOwner(owner);
-         this.window.setAlwaysOnTop(true);
+        this.window.setAlwaysOnTop(true);
         this.window.initModality(Modality.NONE);
         // } else {// Popup
         //     Popup popup = new FXPopup();
@@ -187,6 +189,7 @@ public class Toast {
         if (owner != null) {
             owner.requestFocus();
         }
+        ObjectWatcherManager.watch(this);
     }
 
     /**
@@ -211,6 +214,7 @@ public class Toast {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        NodeDestroyUtil.destroyObject(this);
     }
 
     /**

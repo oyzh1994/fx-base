@@ -2,8 +2,8 @@ package cn.oyzh.fx.pkg;
 
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.common.util.IOUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.moandjiezana.toml.Toml;
 import org.yaml.snakeyaml.Yaml;
@@ -29,17 +29,19 @@ public interface ConfigParser<C> {
         String extName = FileNameUtil.extName(configFile);
         JSONObject object = null;
         if (FileNameUtil.isJsonType(extName)) {
-            object = JSONObject.parse(FileUtil.readUtf8String(configFile));
+            object = JSONUtil.parseObject(FileUtil.readUtf8String(configFile));
         } else if (FileNameUtil.isYamlType(extName)) {
             Yaml yaml = new Yaml();
             InputStream in = FileUtil.getInputStream(configFile);
             Map<String, Object> yamlData = yaml.load(in);
             IOUtil.close(in);
-            object = JSONObject.parseObject(JSON.toJSONString(yamlData));
+            object = JSONUtil.parseObject(yamlData);
         } else if (FileNameUtil.isTomlType(extName)) {
             Toml toml = new Toml().read(FileUtil.readUtf8String(configFile));
             Map<String, Object> tomlData = toml.toMap();
-            object = JSONObject.parseObject(JSON.toJSONString(tomlData));
+            object = JSONUtil.parseObject(tomlData);
+        } else {
+            throw new RuntimeException("unsupport type:" + extName);
         }
         return this.parse(object);
     }

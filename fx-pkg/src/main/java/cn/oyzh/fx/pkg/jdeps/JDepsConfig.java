@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.jdeps;
 
 
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.fx.pkg.ConfigMargeAble;
 
 import java.util.Set;
@@ -14,14 +15,14 @@ import java.util.Set;
 public class JDepsConfig implements ConfigMargeAble<JDepsConfig> {
 
     /**
-     * 简要模式
+     * 汇总信息
      */
-    private boolean summary = true;
+    private Boolean summary;
 
     /**
      * 详细模式
      */
-    private boolean verbose;
+    private Boolean verbose;
 
     /**
      * 跳过的文件
@@ -38,8 +39,21 @@ public class JDepsConfig implements ConfigMargeAble<JDepsConfig> {
      */
     private Integer multiRelease;
 
+    /**
+     * 是否启用
+     */
+    private Boolean enable;
+
+    public boolean isEnable() {
+        return BooleanUtil.isTrue(this.enable);
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     public boolean isSummary() {
-        return summary;
+        return BooleanUtil.isTrue(this.summary);
     }
 
     public void setSummary(boolean summary) {
@@ -47,7 +61,7 @@ public class JDepsConfig implements ConfigMargeAble<JDepsConfig> {
     }
 
     public boolean isVerbose() {
-        return verbose;
+        return BooleanUtil.isTrue(this.verbose);
     }
 
     public void setVerbose(boolean verbose) {
@@ -96,7 +110,14 @@ public class JDepsConfig implements ConfigMargeAble<JDepsConfig> {
         } else if (config.excludes != null) {
             this.excludes.addAll(config.excludes);
         }
-        this.summary = config.summary;
-        this.verbose = config.verbose;
+        if (config.enable != null) {
+            this.enable = config.enable;
+        }
+        if (config.summary != null) {
+            this.summary = config.summary;
+        }
+        if (config.verbose != null) {
+            this.verbose = config.verbose;
+        }
     }
 }

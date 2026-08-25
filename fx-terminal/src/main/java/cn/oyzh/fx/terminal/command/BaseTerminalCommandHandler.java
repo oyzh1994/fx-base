@@ -30,8 +30,17 @@ public abstract class BaseTerminalCommandHandler<C extends TerminalCommand, T ex
         return words != null && words.length >= 1;
     }
 
+    /**
+     * 解析命令
+     *
+     * @param line  行
+     * @param words 词组
+     * @return 结果
+     * @throws Exception 异常
+     */
     protected C parseCommand(String line, String[] words) throws Exception {
         TerminalCommand command = new TerminalCommand();
+        command.setContent(line);
         command.parseArgs(words);
         return (C) command;
     }

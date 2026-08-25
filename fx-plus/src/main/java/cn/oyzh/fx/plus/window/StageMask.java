@@ -1,22 +1,21 @@
 package cn.oyzh.fx.plus.window;
 
-import cn.oyzh.common.thread.ExecutorUtil;
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.common.util.BooleanUtil;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
-
-import java.util.concurrent.Future;
 
 /**
  * @author oyzh
@@ -34,10 +33,18 @@ public class StageMask extends Stage implements StageAdapter {
      */
     private Runnable callback;
 
-    /**
-     * 异步回调
-     */
-    private final Future<?> future;
+//    /**
+//     * 异步回调
+//     */
+//    private final Future<?> future;
+
+    private ChangeListener<? super Number> xFunc;
+
+    private ChangeListener<? super Number> yFunc;
+
+    private ChangeListener<? super Number> wFunc;
+
+    private ChangeListener<? super Number> hFunc;
 
     public StageMask(Window target, Runnable callback) {
         this.target = target;
@@ -45,33 +52,39 @@ public class StageMask extends Stage implements StageAdapter {
         // 初始化
         this.initOwner(target);
         this.initStyle(StageStyle.TRANSPARENT);
-        this.setLocation(target.getX(), target.getY());
-        this.setSize(target.getWidth(), target.getHeight());
 
         // 遮罩板
         StackPane maskPane = new StackPane();
+        this.xFunc = (observable, oldValue, newValue) -> this.setX(newValue.doubleValue());
+        this.yFunc = (observable, oldValue, newValue) -> this.setY(newValue.doubleValue());
+        this.wFunc = (observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue());
+        this.hFunc = (observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue());
+        // 设置位置
+        this.setLocation(target.getX(), target.getY());
+        this.setSize(target.getWidth(), target.getHeight());
+
         // 设置透明度
         maskPane.setOpacity(0.3);
         maskPane.setFocusTraversable(false);
         // 半透明黑色背景‌
         maskPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
         // 绑定大小、位置
-        target.xProperty().addListener((observable, oldValue, newValue) -> this.setX(newValue.doubleValue()));
-        target.yProperty().addListener((observable, oldValue, newValue) -> this.setY(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue()));
-        target.widthProperty().addListener((observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue()));
+        target.xProperty().addListener(this.xFunc);
+        target.yProperty().addListener(this.yFunc);
+        target.widthProperty().addListener(this.wFunc);
+        target.heightProperty().addListener(this.hFunc);
 
         // 动画
-        ProgressIndicator progress = new ProgressIndicator();
-        progress.setFocusTraversable(false);
+        ProgressIndicator indicator = new ProgressIndicator();
+        indicator.setFocusTraversable(false);
         Color color = ThemeManager.currentForegroundColor();
         String colorHex = FXColorUtil.getColorHex(color);
-        progress.setStyle("-fx-progress-color: " + colorHex);
+        indicator.setStyle("-fx-progress-color: " + colorHex);
 
         // 添加到遮罩板
-        maskPane.getChildren().add(progress);
+        maskPane.getChildren().add(indicator);
         // 居中显示‌
-        StackPane.setAlignment(progress, Pos.CENTER);
+        StackPane.setAlignment(indicator, Pos.CENTER);
         maskPane.toFront();
         maskPane.setMouseTransparent(false);
 
@@ -81,26 +94,36 @@ public class StageMask extends Stage implements StageAdapter {
         scene.setFill(Color.TRANSPARENT);
         this.setScene(scene);
 
-        // 取消操作
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                this.cancel();
+//        // 取消操作
+//        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+//            if (event.getCode() == KeyCode.ESCAPE) {
+//                this.cancel();
+//            }
+//        });
+
+        // 监听显示属性
+        this.showingProperty().addListener((observable, oldValue, newValue) -> {
+            if (BooleanUtil.isTrue(newValue)) {
+                TaskManager.startAsync(this::doCallback);
+            } else {
+                this.onWindowClosed();
             }
         });
 
-        // 执行业务
-        this.future = TaskManager.startAsync(this::doCallback);
+//        // 执行业务
+//        this.future = TaskManager.startAsync(this::doCallback);
+
+        ObjectWatcherManager.watch(this);
     }
 
-
-    /**
-     * 取消
-     */
-    public void cancel() {
-        if (this.future != null) {
-            ExecutorUtil.cancel(this.future);
-        }
-    }
+//    /**
+//     * 取消
+//     */
+//    public void cancel() {
+//        if (this.future != null) {
+//            ExecutorUtil.cancel(this.future);
+//        }
+//    }
 
     /**
      * 执行回调
@@ -110,19 +133,27 @@ public class StageMask extends Stage implements StageAdapter {
         if (this.callback != null) {
             this.callback.run();
         }
-        // 执行业务
-        FXUtil.runWait(() -> {
-            // 清除属性
-            this.setScene(null);
-            // 关闭当前窗口
-            super.hide();
-            // 聚焦原窗口
-            if (this.target != null) {
-                this.target.requestFocus();
-            }
-        });
+        // 关闭当前窗口
+        FXUtil.runWait(this::hide);
         this.target = null;
         this.callback = null;
+    }
+
+    @Override
+    public void onWindowClosed() {
+        // 处理属性
+        if (this.target != null) {
+            this.target.xProperty().removeListener(this.xFunc);
+            this.target.yProperty().removeListener(this.yFunc);
+            this.target.widthProperty().removeListener(this.wFunc);
+            this.target.heightProperty().removeListener(this.hFunc);
+            this.target.requestFocus();
+            this.xFunc = null;
+            this.yFunc = null;
+            this.wFunc = null;
+            this.hFunc = null;
+        }
+        StageAdapter.super.onWindowClosed();
     }
 
     @Override
@@ -130,7 +161,16 @@ public class StageMask extends Stage implements StageAdapter {
         return this;
     }
 
+    /**
+     * 显示遮罩板
+     *
+     * @param window   窗口
+     * @param callback 回调
+     */
     public static void showMask(Window window, Runnable callback) {
-        FXUtil.runLater(() -> new StageMask(window, callback).show());
+        FXUtil.runLater(() -> {
+            StageMask mask = new StageMask(window, callback);
+            mask.show();
+        });
     }
 }

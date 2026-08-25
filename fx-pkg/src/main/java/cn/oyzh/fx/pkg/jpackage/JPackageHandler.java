@@ -1,11 +1,11 @@
 package cn.oyzh.fx.pkg.jpackage;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.UUID;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
@@ -24,10 +24,12 @@ public class JPackageHandler implements PackHandler {
 
     private int order = PackOrder.ORDER_0;
 
+    @Override
     public int order() {
         return order;
     }
 
+    @Override
     public void order(int order) {
         this.order = order;
     }
@@ -38,13 +40,18 @@ public class JPackageHandler implements PackHandler {
     }
 
     @Override
+    public boolean unique() {
+        return true;
+    }
+
+    @Override
     public void handle(PackConfig packConfig) throws Exception {
         JPackageConfig jPackageConfig = packConfig.getjPackageConfig();
         if (jPackageConfig == null) {
             return;
         }
         if (!jPackageConfig.isEnable()) {
-            JulLog.warn("jpackage未启用，跳过jpackage");
+            JulLog.warn("jpackage未启用，已跳过");
             return;
         }
         String jdkPath = packConfig.getJdkPath();
@@ -52,7 +59,7 @@ public class JPackageHandler implements PackHandler {
             throw new Exception("jdkPath为空！");
         }
         if (jPackageConfig.getInput() == null) {
-            File dir = new File(FileUtil.getTmpDir(), "_temp_jpackage_input_" + UUID.fastUUID().toString(true));
+            File dir = new File(FileUtil.tmpdir(), "_temp_jpackage_input_" + UUIDUtil.uuidSimple());
             FileUtil.mkdir(dir);
             File target = new File(dir, packConfig.mainJarName());
             FileUtil.copyFile(packConfig.mainJar(), target.getPath());
@@ -94,7 +101,7 @@ public class JPackageHandler implements PackHandler {
         }
         // String cmdStr = PkgUtil.getJPackageCMD(jPackageConfig);
         // cmdStr = PkgUtil.getJDKExecCMD(jdkPath, cmdStr);
-        String[] cmd = PkgUtil.getJPackageCMD1(jPackageConfig);
+        String[] cmd = PkgUtil.getJPackageCMD(jPackageConfig);
         cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
         String cmdStr = StringUtil.join(" ", cmd);
         JulLog.info("JPackage cmd:{}", "\n" + cmdStr);

@@ -11,11 +11,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.skin.NestedTableColumnHeader;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -149,11 +151,19 @@ public class TableViewUtil {
      */
     public static void selectRowOnMouseClicked(Node node) {
         if (node != null) {
-            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                TableRow<?> tableRow = findTableRow(node);
+            node.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                TableRow<?> tableRow = findTableRow((Node) event.getSource());
                 if (tableRow != null && tableRow.getTableView() != null) {
-                    tableRow.getTableView().getSelectionModel().select(tableRow.getIndex());
+                    TableView<?> tableView = tableRow.getTableView();
+                    TableView.TableViewSelectionModel<?> selectionModel = tableView.getSelectionModel();
+                    // TODO: 选中索引一样，忽略
+                    if (selectionModel.getSelectedIndex() == tableRow.getIndex()) {
+                        return;
+                    }
+                    selectionModel.clearSelection();
+                    selectionModel.select(tableRow.getIndex());
                 }
+//                event.consume();
             });
         }
     }
@@ -165,14 +175,24 @@ public class TableViewUtil {
      */
     public static void rowOnCtrlS(Node node) {
         if (node != null) {
-            node.setOnKeyPressed(event -> {
-                if (KeyboardUtil.isCtrlS(event)) {
-                    TableRow<?> tableRow = findTableRow(node);
-                    if (tableRow != null && tableRow.getTableView() instanceof FXTableView<?> tableView) {
-                        tableView.onCtrl_S();
-                    }
-                }
-            });
+            //node.setOnKeyPressed(event -> {
+            //    if (KeyboardUtil.isCtrlS(event)) {
+            //        TableRow<?> tableRow = findTableRow(node);
+            //        if (tableRow != null && tableRow.getTableView() instanceof FXTableView<?> tableView) {
+            //            tableView.onCtrl_S();
+            //        }
+            //    }
+            //});
+            node.addEventFilter(KeyEvent.KEY_PRESSED, TableViewUtil::_rowOnCtrlS);
+        }
+    }
+
+    private static void _rowOnCtrlS(KeyEvent event) {
+        if (KeyboardUtil.isCtrlS(event)) {
+            TableRow<?> tableRow = findTableRow((Node) event.getSource());
+            if (tableRow != null && tableRow.getTableView() instanceof FXTableView<?> tableView) {
+                tableView.onCtrl_S();
+            }
         }
     }
 
@@ -229,6 +249,21 @@ public class TableViewUtil {
             return (NestedTableColumnHeader) header.lookup(".nested-column-header");
         }
         return null;
+    }
+
+    /**
+     * 获取表头组件
+     *
+     * @param tableView 组件
+     * @return 表头列组件
+     */
+    public static Set<Label> getHeaderLabel(TableView<?> tableView) {
+        NestedTableColumnHeader header = getHeaderColumn(tableView);
+        if (header != null) {
+            Set set = header.lookupAll(".label");
+            return (Set<Label>) set;
+        }
+        return Collections.emptySet();
     }
 
     /**

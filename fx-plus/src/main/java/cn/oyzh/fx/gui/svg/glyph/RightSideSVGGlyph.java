@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.svg.glyph;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/09/05
+ */
+public class RightSideSVGGlyph extends SVGGlyph {
+
+    public RightSideSVGGlyph() {
+        super("/fx-svg/rightside.svg");
+    }
+
+    public RightSideSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.add());
+//        super.initNode();
+//    }
+}

@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.test;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.util.StringUtil;
 import org.junit.Test;
 
@@ -84,5 +85,11 @@ public class Test1 {
         LocalDateTime d2 = cn.oyzh.common.date.DateUtil.parseLocalDateTime(date, "yyyy-MM-dd HH:mm:ss");
         System.out.println(d1);
         System.out.println(d2);
+    }
+
+    @Test
+    public void test8() {
+        String dest = "/C:/Package/EasyShell";
+        System.out.println(FileUtil.del(dest, true));
     }
 }

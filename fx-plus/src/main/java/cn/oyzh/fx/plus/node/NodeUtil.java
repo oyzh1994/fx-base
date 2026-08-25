@@ -15,7 +15,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumnBase;
+import javafx.scene.control.TreeItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
@@ -44,57 +47,57 @@ public class NodeUtil {
      */
     public static boolean isMediaImport;
 
-    /**
-     * richtext是个可选模块，避免强依赖
-     */
-    public static boolean isRichtextImport;
+    //    /**
+    //     * richtext是个可选模块，避免强依赖
+    //     */
+    //    public static boolean isRichtextImport;
 
     static {
         isWebImport = Platform.isSupported(ConditionalFeature.WEB);
         isMediaImport = Platform.isSupported(ConditionalFeature.MEDIA);
         isSwingImport = Platform.isSupported(ConditionalFeature.SWING);
-        try {
-            Class.forName("org.fxmisc.richtext");
-            isRichtextImport = true;
-        } catch (ClassNotFoundException ignored) {
-
-        }
+        //        try {
+        //            Class.forName("org.fxmisc.richtext");
+        //            isRichtextImport = true;
+        //        } catch (ClassNotFoundException ignored) {
+        //
+        //        }
     }
 
-//     /**
-//      * 递归布局
-//      *
-//      * @param node 节点
-//      */
-//     public static void layoutRecursive(EventTarget node) {
-//         if (node instanceof TabPane tabPane) {
-//             tabPane.requestLayout();
-// //            tabPane.layout();
-//             for (Tab tab : tabPane.getTabs()) {
-//                 layoutRecursive(tab.getContent());
-//             }
-//         } else if (node instanceof Pane pane) {
-//             pane.requestLayout();
-// //            pane.layout();
-//             for (Node node1 : pane.getChildren()) {
-//                 layoutRecursive(node1);
-//             }
-//         } else if (node instanceof Region region) {
-//             region.requestLayout();
-// //            region.layout();
-//             for (Node node1 : region.getChildrenUnmodifiable()) {
-//                 layoutRecursive(node1);
-//             }
-//         } else if (node instanceof Parent parent) {
-//             parent.requestLayout();
-// //            parent.layout();
-//             for (Node node1 : parent.getChildrenUnmodifiable()) {
-//                 layoutRecursive(node1);
-//             }
-//         } else if (node instanceof Node parent) {
-//             parent.autosize();
-//         }
-//     }
+    //     /**
+    //      * 递归布局
+    //      *
+    //      * @param node 节点
+    //      */
+    //     public static void layoutRecursive(EventTarget node) {
+    //         if (node instanceof TabPane tabPane) {
+    //             tabPane.requestLayout();
+    // //            tabPane.layout();
+    //             for (Tab tab : tabPane.getTabs()) {
+    //                 layoutRecursive(tab.getContent());
+    //             }
+    //         } else if (node instanceof Pane pane) {
+    //             pane.requestLayout();
+    // //            pane.layout();
+    //             for (Node node1 : pane.getChildren()) {
+    //                 layoutRecursive(node1);
+    //             }
+    //         } else if (node instanceof Region region) {
+    //             region.requestLayout();
+    // //            region.layout();
+    //             for (Node node1 : region.getChildrenUnmodifiable()) {
+    //                 layoutRecursive(node1);
+    //             }
+    //         } else if (node instanceof Parent parent) {
+    //             parent.requestLayout();
+    // //            parent.layout();
+    //             for (Node node1 : parent.getChildrenUnmodifiable()) {
+    //                 layoutRecursive(node1);
+    //             }
+    //         } else if (node instanceof Node parent) {
+    //             parent.autosize();
+    //         }
+    //     }
 
     // /**
     //  * 获取样式值
@@ -138,15 +141,15 @@ public class NodeUtil {
      * @return 宽度
      */
     public static double getWidth(EventTarget target) {
-//        if (target instanceof Node node) {
-//            Bounds bounds = node.getLayoutBounds();
-//            if (bounds != null) {
-//                double w = bounds.getWidth();
-//                if (w != 0) {
-//                    return Math.abs(w);
-//                }
-//            }
-//        }
+        //        if (target instanceof Node node) {
+        //            Bounds bounds = node.getLayoutBounds();
+        //            if (bounds != null) {
+        //                double w = bounds.getWidth();
+        //                if (w != 0) {
+        //                    return Math.abs(w);
+        //                }
+        //            }
+        //        }
         if (target instanceof ImageView node) {
             double w4 = node.getFitWidth();
             if (w4 > 0) {
@@ -309,15 +312,15 @@ public class NodeUtil {
      * @return 高度
      */
     public static double getHeight(EventTarget target) {
-//        if (target instanceof Node node) {
-//            Bounds bounds = node.getLayoutBounds();
-//            if (bounds != null) {
-//                double h = bounds.getHeight();
-//                if (h != 0) {
-//                    return Math.abs(h);
-//                }
-//            }
-//        }
+        //        if (target instanceof Node node) {
+        //            Bounds bounds = node.getLayoutBounds();
+        //            if (bounds != null) {
+        //                double h = bounds.getHeight();
+        //                if (h != 0) {
+        //                    return Math.abs(h);
+        //                }
+        //            }
+        //        }
         if (target instanceof ImageView node) {
             double w4 = node.getFitHeight();
             if (w4 > 0) {
@@ -471,7 +474,7 @@ public class NodeUtil {
      * @param width  宽度
      */
     public static void setWidth(Object target, Double width) {
-        if (target == null || width == null || Double.isNaN(width) || width <= 0) {
+        if (target == null || width == null || Double.isNaN(width) || width < 0) {
             return;
         }
         if (target instanceof Node node && !node.isManaged()) {
@@ -486,45 +489,45 @@ public class NodeUtil {
             if (!labeled.prefWidthProperty().isBound()) {
                 labeled.setPrefWidth(width);
             }
-            if (!labeled.minWidthProperty().isBound()) {
-                labeled.setMinWidth(width);
-            }
-            if (!labeled.maxWidthProperty().isBound()) {
-                labeled.setMaxWidth(width);
-            }
+            // if (!labeled.minWidthProperty().isBound()) {
+            //     labeled.setMinWidth(width);
+            // }
+            //            if (!labeled.maxWidthProperty().isBound()) {
+            //                labeled.setMaxWidth(width);
+            //            }
         }
         if (target instanceof TableColumnBase<?, ?> columnBase) {
             if (!columnBase.prefWidthProperty().isBound()) {
                 columnBase.setPrefWidth(width);
             }
-            if (!columnBase.minWidthProperty().isBound()) {
-                columnBase.setMinWidth(width);
-            }
-            if (!columnBase.maxWidthProperty().isBound()) {
-                columnBase.setMaxWidth(width);
-            }
+            //             if (!columnBase.minWidthProperty().isBound()) {
+            //                 columnBase.setMinWidth(width);
+            //             }
+            //            if (!columnBase.maxWidthProperty().isBound()) {
+            //                columnBase.setMaxWidth(width);
+            //            }
         }
         if (target instanceof PopupControl control) {
             if (!control.prefWidthProperty().isBound()) {
                 control.setPrefWidth(width);
             }
-            if (!control.minWidthProperty().isBound()) {
-                control.setMinWidth(width);
-            }
-            if (!control.maxWidthProperty().isBound()) {
-                control.setMaxWidth(width);
-            }
+            // if (!control.minWidthProperty().isBound()) {
+            //     control.setMinWidth(width);
+            // }
+            //            if (!control.maxWidthProperty().isBound()) {
+            //                control.setMaxWidth(width);
+            //            }
         }
         if (target instanceof Region region) {
             if (!region.prefWidthProperty().isBound()) {
                 region.setPrefWidth(width);
             }
-            if (!region.minWidthProperty().isBound()) {
-                region.setMinWidth(width);
-            }
-            if (!region.maxWidthProperty().isBound()) {
-                region.setMaxWidth(width);
-            }
+            // if (!region.minWidthProperty().isBound()) {
+            //     region.setMinWidth(width);
+            // }
+            //            if (!region.maxWidthProperty().isBound()) {
+            //                region.setMaxWidth(width);
+            //            }
         }
         if (target instanceof Shape shape) {
             if (!shape.strokeWidthProperty().isBound()) {
@@ -579,9 +582,9 @@ public class NodeUtil {
             if (!labeled.prefHeightProperty().isBound()) {
                 labeled.setPrefHeight(height);
             }
-            if (!labeled.minHeightProperty().isBound()) {
-                labeled.setMinHeight(height);
-            }
+            // if (!labeled.minHeightProperty().isBound()) {
+            //     labeled.setMinHeight(height);
+            // }
             if (!labeled.maxHeightProperty().isBound()) {
                 labeled.setMaxHeight(height);
             }
@@ -590,9 +593,9 @@ public class NodeUtil {
             if (!control.prefHeightProperty().isBound()) {
                 control.setPrefHeight(height);
             }
-            if (!control.minHeightProperty().isBound()) {
-                control.setMinHeight(height);
-            }
+            // if (!control.minHeightProperty().isBound()) {
+            //     control.setMinHeight(height);
+            // }
             if (!control.maxHeightProperty().isBound()) {
                 control.setMaxHeight(height);
             }
@@ -601,9 +604,9 @@ public class NodeUtil {
             if (!region.prefHeightProperty().isBound()) {
                 region.setPrefHeight(height);
             }
-            if (!region.minHeightProperty().isBound()) {
-                region.setMinHeight(height);
-            }
+            // if (!region.minHeightProperty().isBound()) {
+            //     region.setMinHeight(height);
+            // }
             if (!region.maxHeightProperty().isBound()) {
                 region.setMaxHeight(height);
             }
@@ -635,19 +638,39 @@ public class NodeUtil {
     }
 
     /**
+     * 设置x坐标
+     *
+     * @param target  对象
+     * @param layoutX x坐标
+     */
+    public static void setLayoutX(EventTarget target, Double layoutX) {
+        if (layoutX == null || Double.isNaN(layoutX) || layoutX < 0) {
+            return;
+        }
+        if (target instanceof Node node) {
+            //if (!node.isManaged()) {
+            //    return;
+            //}
+            if (!node.layoutXProperty().isBound() && node.getLayoutX() != layoutX) {
+                node.setLayoutX(layoutX);
+            }
+        }
+    }
+
+    /**
      * 设置y坐标
      *
      * @param target  对象
      * @param layoutY y坐标
      */
     public static void setLayoutY(EventTarget target, Double layoutY) {
-        if (layoutY == null || Double.isNaN(layoutY) || layoutY <= 0) {
+        if (layoutY == null || Double.isNaN(layoutY) || layoutY < 0) {
             return;
         }
         if (target instanceof Node node) {
-            if (!node.isManaged()) {
-                return;
-            }
+            //if (!node.isManaged()) {
+            //    return;
+            //}
             if (!node.layoutYProperty().isBound() && node.getLayoutY() != layoutY) {
                 node.setLayoutY(layoutY);
             }
@@ -765,10 +788,10 @@ public class NodeUtil {
                 if (!item.visibleProperty().isBound()) {
                     item.setVisible(false);
                 }
-            } else if (obj instanceof Tab tab) {
-                if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
-                    tab.getContent().setVisible(false);
-                }
+                //            } else if (obj instanceof Tab tab) {
+                //                if (tab.getContent() != null && !tab.getContent().visibleProperty().isBound()) {
+                //                    tab.getContent().setVisible(false);
+                //                }
             } else if (obj instanceof Stage stage) {
                 if (stage.isShowing()) {
                     FXUtil.runWait(stage::close);
@@ -799,14 +822,16 @@ public class NodeUtil {
     public static void nodeOnCtrlS(Object target, Runnable action) {
         if (target != null) {
             switch (target) {
-                case Node node -> node.setOnKeyPressed(event -> {
+                case Node node -> node.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                     if (KeyboardUtil.isCtrlS(event)) {
                         action.run();
+                        event.consume();
                     }
                 });
-                case Scene node -> node.setOnKeyPressed(event -> {
+                case Scene node -> node.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                     if (KeyboardUtil.isCtrlS(event)) {
                         action.run();
+                        event.consume();
                     }
                 });
                 case Stage stage -> nodeOnCtrlS(stage.getScene(), action);
@@ -857,5 +882,28 @@ public class NodeUtil {
      */
     public static boolean isOrientationRightToLeft(Node node) {
         return node.getNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT || node.getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT;
+    }
+
+    /**
+     * 移除节点
+     *
+     * @param node 节点
+     */
+    public static void removeNode(Object node) {
+        FXUtil.runWait(() -> {
+            if (node instanceof Node node1) {
+                if (node1.getParent() instanceof Pane pane) {
+                    pane.getChildren().remove(node);
+                }
+            } else if (node instanceof Tab tab) {
+                if (tab.getTabPane() != null) {
+                    tab.getTabPane().getTabs().remove(node);
+                }
+            } else if (node instanceof TreeItem<?> item) {
+                if (item.getParent() != null) {
+                    item.getParent().getChildren().remove(node);
+                }
+            }
+        });
     }
 }

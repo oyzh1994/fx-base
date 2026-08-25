@@ -1,12 +1,9 @@
 package cn.oyzh.fx.plus.menu;
 
-import cn.oyzh.common.object.DestroyUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Control;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
 
@@ -19,34 +16,6 @@ import java.util.List;
  * @since 2023/5/15
  */
 public interface ContextMenuAdapter {
-
-    /**
-     * 获取操作面板
-     *
-     * @return ContextMenu
-     */
-    private ContextMenu contextMenu() {
-        if (this instanceof Control control) {
-            return control.getContextMenu();
-        }
-        if (this instanceof Tab tab) {
-            return tab.getContextMenu();
-        }
-        return null;
-    }
-
-    /**
-     * 设置操作面板
-     *
-     * @param contextMenu 操作面板
-     */
-    private void contextMenu(ContextMenu contextMenu) {
-        if (this instanceof Control control) {
-            control.setContextMenu(contextMenu);
-        } else if (this instanceof Tab tab) {
-            tab.setContextMenu(contextMenu);
-        }
-    }
 
     /**
      * 显示操作面板
@@ -65,20 +34,34 @@ public interface ContextMenuAdapter {
      * @return ContextMenu
      */
     default ContextMenu initContextMenu(List<? extends MenuItem> menuItems) {
-        ContextMenu contextMenu = this.contextMenu();
+//        ContextMenu contextMenu = ContextMenuManager.getContextMenu(this);
+//        if (contextMenu != null) {
+//            contextMenu.getItems().clear();
+//            contextMenu.hide();
+//            this.clearContextMenu();
+//        }
         if (CollectionUtil.isNotEmpty(menuItems)) {
-            if (contextMenu == null) {
-                contextMenu = ContextMenuManager.getContextMenu(menuItems);
-                this.contextMenu(contextMenu);
-            } else if (!contextMenu.getItems().equals(menuItems)) {
-                MenuItemManager.returnMenuItem(contextMenu.getItems());
-                // DestroyUtil.destroy(contextMenu.getItems());
-                contextMenu.getItems().setAll(menuItems);
-            }
+//            if (contextMenu == null) {
+            ContextMenu contextMenu = ContextMenuManager.createContextMenu(this, menuItems);
+            this.setContextMenu(contextMenu);
+//            } else if (!contextMenu.getItems().equals(menuItems)) {
+//                MenuItemManager.returnMenuItem(contextMenu.getItems());
+//                // DestroyUtil.destroy(contextMenu.getItems());
+//                contextMenu.getItems().setAll(menuItems);
+//            }
             return contextMenu;
         }
-        this.clearContextMenu();
+//        this.clearContextMenu();
         return null;
+    }
+
+    /**
+     * 设置操作面板
+     *
+     * @param contextMenu 操作面板
+     */
+    default void setContextMenu(ContextMenu contextMenu) {
+        ContextMenuManager.setContextMenu(this, contextMenu);
     }
 
     /**
@@ -103,7 +86,7 @@ public interface ContextMenuAdapter {
      * 隐藏操作面板
      */
     default void hideContextMenu() {
-        ContextMenu menu = this.contextMenu();
+        ContextMenu menu = ContextMenuManager.getContextMenu(this);
         if (menu != null) {
             menu.hide();
         }
@@ -113,12 +96,6 @@ public interface ContextMenuAdapter {
      * 清除操作面板
      */
     default void clearContextMenu() {
-        ContextMenu menu = this.contextMenu();
-        if (menu != null) {
-            MenuItemManager.returnMenuItem(menu.getItems());
-            ContextMenuManager.returnContextMenu(menu);
-            // DestroyUtil.destroy(menu.getItems());
-            this.contextMenu(null);
-        }
+        ContextMenuManager.clearContextMenu(this);
     }
 }

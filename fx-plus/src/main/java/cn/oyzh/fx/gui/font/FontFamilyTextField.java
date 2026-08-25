@@ -1,0 +1,58 @@
+package cn.oyzh.fx.gui.font;
+
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.gui.text.field.SelectTextFiled;
+import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.i18n.I18nHelper;
+
+import java.util.List;
+
+/**
+ * 字体类型输入框，可搜索
+ *
+ * @author oyzh
+ * @since 2025-06-08
+ */
+public class FontFamilyTextField extends SelectTextFiled<String> {
+
+    @Override
+    protected FontFamilyTextFieldSkin createDefaultSkin() {
+        return new FontFamilyTextFieldSkin(this);
+    }
+
+    @Override
+    protected boolean onTextChanged(String newValue) {
+        if (!super.onTextChanged(newValue)) {
+            return false;
+        }
+        List<String> fonts = FontUtil.getFamilies();
+        // 隐藏弹窗
+        if (StringUtil.isBlank(newValue)) {
+            this.setItemList(fonts);
+            this.skin().showPopup();
+            return false;
+        }
+        // 过滤内容
+        List<String> newList = fonts.stream()
+                .filter(t -> StringUtil.containsIgnoreCase(t, newValue))
+                .toList();
+        // 设置内容
+        this.setItemList(newList);
+        // 内容为空，隐藏弹窗
+        if (newList.isEmpty()) {
+            this.skin().hidePopup();
+        } else {
+            this.skin().showPopup();
+        }
+        return true;
+    }
+
+    @Override
+    public void initNode() {
+        // 覆盖默认菜单
+        //this.setContextMenu(FXContextMenu.EMPTY);
+        this.setTipText(I18nHelper.pleaseSelectFont());
+        this.setItemList(FontUtil.getFamilies());
+        super.initNode();
+    }
+}

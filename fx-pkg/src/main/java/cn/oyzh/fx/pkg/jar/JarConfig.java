@@ -14,9 +14,14 @@ import java.util.Set;
 public class JarConfig implements ConfigMargeAble<JarConfig> {
 
     /**
+     * 是否启用
+     */
+    private Boolean enable;
+
+    /**
      * 是否移除空jar
      */
-    private boolean removeEmpty = true;
+    private Boolean removeEmpty;
 
     /**
      * 跳过的jar
@@ -29,7 +34,7 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
     private Set<String> excludes;
 
     public boolean isRemoveEmpty() {
-        return removeEmpty;
+        return removeEmpty == null || this.removeEmpty;
     }
 
     public void setRemoveEmpty(boolean removeEmpty) {
@@ -52,6 +57,14 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
         this.skipsJar = skipsJar;
     }
 
+    public boolean isEnable() {
+        return enable == null || this.enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     @Override
     public void marge(JarConfig config) {
         if (config == null) {
@@ -64,9 +77,14 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
         }
         if (this.excludes == null) {
             this.excludes = config.excludes;
-        } else  if (config.excludes != null){
+        } else if (config.excludes != null) {
             this.excludes.addAll(config.excludes);
         }
-        this.removeEmpty = config.removeEmpty;
+        if (config.enable != null) {
+            this.enable = config.enable;
+        }
+        if (config.removeEmpty != null) {
+            this.removeEmpty = config.removeEmpty;
+        }
     }
 }

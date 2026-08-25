@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.adapter;
 
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
 
@@ -44,7 +45,7 @@ public interface ScrollBarAdapter {
     default void setScrollValue(Double value) {
         ScrollBar scrollBar = this.getScrollBar();
         if (scrollBar != null && value != null) {
-            scrollBar.setValue(value);
+            FXUtil.runWait(() -> scrollBar.setValue(value));
         }
     }
 }

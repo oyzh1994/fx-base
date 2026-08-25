@@ -1,0 +1,80 @@
+package cn.oyzh.fx.gui.combobox;
+
+import cn.oyzh.common.util.CharsetUtil;
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.controls.combo.FXComboBox;
+import cn.oyzh.i18n.I18nHelper;
+
+import java.nio.charset.Charset;
+
+/**
+ * 字符集选择框
+ *
+ * @author oyzh
+ * @since 2022/12/2
+ */
+public class CharsetComboBox extends FXComboBox<String> {
+
+    {
+        this.addItem("");
+        // this.addItem(StandardCharsets.UTF_8.displayName().toLowerCase());
+        // this.addItem("gbk");
+        // this.addItem("gb18030");
+        // this.addItem("gb2312");
+        // this.addItem(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
+        // this.addItem(StandardCharsets.US_ASCII.displayName().toLowerCase());
+        for (Charset charset : Charset.availableCharsets().values()) {
+            this.addItem(charset.displayName().toLowerCase());
+        }
+    }
+
+    public void setInitDefault(boolean initDefault) {
+        if (initDefault) {
+            this.select(Charset.defaultCharset());
+            this.setTipText(I18nHelper.charset());
+        } else {
+            this.clearSelection();
+            this.setTipText(null);
+        }
+    }
+
+    public boolean isInitDefault() {
+        return false;
+    }
+
+    /**
+     * 获取字符集
+     *
+     * @return 当前选中的字符集
+     */
+    public Charset getCharset() {
+        String value = this.getValue();
+        return StringUtil.isBlank(value) ? CharsetUtil.defaultCharset() : Charset.forName(value);
+    }
+
+    /**
+     * 获取字符集名称
+     *
+     * @return 当前选中的字符集名称
+     */
+    public String getCharsetName() {
+        String value = this.getValue();
+        return StringUtil.isBlank(value) ? CharsetUtil.defaultCharsetName() : value;
+    }
+
+    @Override
+    public void select(String charset) {
+        this.setIgnoreChanged(true);
+        if (StringUtil.isBlank(charset)) {
+            this.selectFirst();
+        } else {
+            charset = charset.toLowerCase().replace("_", "-");
+            super.select(charset.toLowerCase());
+        }
+        this.setIgnoreChanged(false);
+    }
+
+    public void select(Charset charset) {
+        this.select(charset.displayName());
+    }
+}

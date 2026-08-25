@@ -64,7 +64,7 @@ public class Splitter extends FXText {
         // 处理标题文字宽度
         if (StringUtil.isNotBlank(this.titleText)) {
             // 计算标题的宽度
-            double titleWidth = FontUtil.stringWidth(this.titleText);
+            double titleWidth = FontUtil.textWidth(this.titleText, this.getFont());
             // 可用宽度减去标题宽度
             availableWidth = availableWidth - titleWidth;
         }
@@ -72,7 +72,7 @@ public class Splitter extends FXText {
         // 处理切割文字
         if (StringUtil.isNotBlank(this.splitText)) {
             // 计算分割字符的宽度
-            double splitWidth = FontUtil.stringWidth(this.splitText);
+            double splitWidth = FontUtil.textWidth(this.splitText, this.getFont());
             // 分割的字符数量=(可用宽度-分割字符的宽度) / 2
             double splitNum = availableWidth / splitWidth;
             if (splitNum > 0) {

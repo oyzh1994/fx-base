@@ -19,6 +19,7 @@ import java.awt.Font;
  * @author oyzh
  * @since 2025-08-04
  */
+@Deprecated
 public class SwingUtil {
 
     /**

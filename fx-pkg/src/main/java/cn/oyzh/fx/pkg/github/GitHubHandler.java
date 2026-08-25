@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class GitHubHandler implements PostHandler {
 
-    private int order = PackOrder.ORDER_M7;
+    private int order = PackOrder.ORDER_M8;
 
     @Override
     public int order() {
@@ -69,7 +69,6 @@ public class GitHubHandler implements PostHandler {
                     }
                 }
             }
-
         } else {
             JulLog.warn("githubDist 未找到参数设置");
         }

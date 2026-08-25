@@ -1,12 +1,11 @@
 package cn.oyzh.fx.pkg.jlink;
 
+import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.pkg.ConfigMargeAble;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +19,7 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
     /**
      * vm类型
      */
-    private String vm = "server";
+    private String vm;
 
     /**
      * 输出目录
@@ -30,32 +29,42 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
     /**
      * 压缩等级
      */
-    private Integer compress = 2;
+    private String compress;
 
     /**
      * 打印过程日志
      */
-    private boolean verbose = true;
+    private Boolean verbose;
 
     /**
      * 无需man手册
      */
-    private boolean noManPages = true;
+    private Boolean noManPages;
 
     /**
      * 无需头文件
      */
-    private boolean noHeaderFiles = true;
+    private Boolean noHeaderFiles;
 
     /**
      * 去除debug文件
      */
-    private boolean stripDebug = true;
+    private Boolean stripDebug;
 
     /**
      * 去除debug属性
      */
-    private boolean stripJavaDebugAttributes = true;
+    private Boolean stripJavaDebugAttributes;
+
+    /**
+     * 去除debug调试符
+     */
+    private String stripNativeDebugSymbols;
+
+    /**
+     * 忽略签名信息
+     */
+    private Boolean ignoreSigningInformation;
 
     /**
      * 添加的模块
@@ -67,9 +76,22 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
      */
     private Set<String> excludeFiles;
 
+    /**
+     * 是否启用
+     */
+    private Boolean enable;
+
+    public boolean isEnable() {
+        return BooleanUtil.isTrue(this.enable);
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     public void margeAddModules(Collection<String> addModules) {
         if (CollectionUtil.isNotEmpty(addModules)) {
-            if (this.addModules == null || this.addModules.isEmpty()) {
+            if (this.addModules == null) {
                 this.addModules = new HashSet<>(addModules);
             } else {
                 this.addModules.addAll(addModules);
@@ -93,16 +115,16 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
         this.output = output;
     }
 
-    public Integer getCompress() {
+    public String getCompress() {
         return compress;
     }
 
-    public void setCompress(Integer compress) {
+    public void setCompress(String compress) {
         this.compress = compress;
     }
 
     public boolean isVerbose() {
-        return verbose;
+        return BooleanUtil.isTrue(this.verbose);
     }
 
     public void setVerbose(boolean verbose) {
@@ -110,7 +132,7 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
     }
 
     public boolean isNoManPages() {
-        return noManPages;
+        return BooleanUtil.isTrue(this.noManPages);
     }
 
     public void setNoManPages(boolean noManPages) {
@@ -118,7 +140,7 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
     }
 
     public boolean isNoHeaderFiles() {
-        return noHeaderFiles;
+        return BooleanUtil.isTrue(this.noHeaderFiles);
     }
 
     public void setNoHeaderFiles(boolean noHeaderFiles) {
@@ -126,7 +148,7 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
     }
 
     public boolean isStripDebug() {
-        return stripDebug;
+        return BooleanUtil.isTrue(this.stripDebug);
     }
 
     public void setStripDebug(boolean stripDebug) {
@@ -134,11 +156,19 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
     }
 
     public boolean isStripJavaDebugAttributes() {
-        return stripJavaDebugAttributes;
+        return BooleanUtil.isTrue(this.stripJavaDebugAttributes);
     }
 
     public void setStripJavaDebugAttributes(boolean stripJavaDebugAttributes) {
         this.stripJavaDebugAttributes = stripJavaDebugAttributes;
+    }
+
+    public String getStripNativeDebugSymbols() {
+        return stripNativeDebugSymbols;
+    }
+
+    public void setStripNativeDebugSymbols(String stripNativeDebugSymbols) {
+        this.stripNativeDebugSymbols = stripNativeDebugSymbols;
     }
 
     public Set<String> getAddModules() {
@@ -155,6 +185,14 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
 
     public void setExcludeFiles(Set<String> excludeFiles) {
         this.excludeFiles = excludeFiles;
+    }
+
+    public boolean isIgnoreSigningInformation() {
+        return BooleanUtil.isTrue(this.ignoreSigningInformation);
+    }
+
+    public void setIgnoreSigningInformation(boolean ignoreSigningInformation) {
+        this.ignoreSigningInformation = ignoreSigningInformation;
     }
 
     @Override
@@ -181,10 +219,29 @@ public class JLinkConfig implements ConfigMargeAble<JLinkConfig> {
         } else if (config.excludeFiles != null) {
             this.excludeFiles.addAll(config.excludeFiles);
         }
-        this.verbose = config.verbose;
-        this.stripDebug = config.stripDebug;
-        this.noManPages = config.noManPages;
-        this.noHeaderFiles = config.noHeaderFiles;
-        this.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
+        if (config.enable != null) {
+            this.enable = config.enable;
+        }
+        if (config.verbose != null) {
+            this.verbose = config.verbose;
+        }
+        if (config.stripDebug != null) {
+            this.stripDebug = config.stripDebug;
+        }
+        if (config.noManPages != null) {
+            this.noManPages = config.noManPages;
+        }
+        if (config.noHeaderFiles != null) {
+            this.noHeaderFiles = config.noHeaderFiles;
+        }
+        if (config.ignoreSigningInformation != null) {
+            this.ignoreSigningInformation = config.ignoreSigningInformation;
+        }
+        if (config.stripJavaDebugAttributes != null) {
+            this.stripJavaDebugAttributes = config.stripJavaDebugAttributes;
+        }
+        if (config.stripNativeDebugSymbols != null) {
+            this.stripNativeDebugSymbols = config.stripNativeDebugSymbols;
+        }
     }
 }

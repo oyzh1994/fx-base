@@ -23,10 +23,10 @@ public class TooltipUtil {
     //  */
     // private final static TimedCache<String, Tooltip> CACHE = CacheUtil.newTimedCache(60 * 1000L);
 
-    /**
-     * 池
-     */
-    private final static TooltipPool POOL = new TooltipPool();
+//    /**
+//     * 池
+//     */
+//    private final static TooltipPool POOL = new TooltipPool();
 
     /**
      * 属性键
@@ -95,7 +95,8 @@ public class TooltipUtil {
                     if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
                         Tooltip tooltip = getTooltip(node);
                         if (tooltip == null) {
-                            tooltip = POOL.borrowObject();
+                            tooltip = new Tooltip();
+//                            tooltip = POOL.borrowObject();
                             tooltip.setText(text);
                             Tooltip.install(node, tooltip);
                         }
@@ -103,7 +104,7 @@ public class TooltipUtil {
                         Tooltip tooltip = getTooltip(node);
                         if (tooltip != null) {
                             Tooltip.uninstall(node, tooltip);
-                            POOL.returnObject(tooltip);
+//                            POOL.returnObject(tooltip);
                         }
                     }
                 };
@@ -116,11 +117,12 @@ public class TooltipUtil {
                 }
                 ChangeListener<Boolean> listener = (observable, oldValue, newValue) -> {
                     if (newValue) {
-                        Tooltip tooltip = POOL.borrowObject();
+                        Tooltip tooltip = new Tooltip();
+//                        Tooltip tooltip = POOL.borrowObject();
                         tooltip.setText(text);
                         tab.setTooltip(tooltip);
                     } else {
-                        POOL.returnObject(tab.getTooltip());
+//                        POOL.returnObject(tab.getTooltip());
                         tab.setTooltip(null);
                     }
                 };

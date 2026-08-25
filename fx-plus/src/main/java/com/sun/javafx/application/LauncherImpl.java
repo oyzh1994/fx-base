@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2024, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2025, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,7 +26,10 @@
 package com.sun.javafx.application;
 
 import com.sun.javafx.PlatformUtil;
+import com.sun.javafx.PreviewFeature;
+import com.sun.javafx.SecurityUtil;
 import com.sun.javafx.stage.StageHelper;
+import com.sun.javafx.util.Utils;
 import javafx.application.Application;
 import javafx.application.Preloader;
 import javafx.application.Preloader.ErrorNotification;
@@ -53,14 +56,20 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.Base64;
+import java.util.Optional;
+import com.sun.javafx.stage.StageHelper;
 
 
 public class LauncherImpl {
 
-//    static {
-//        // Check for security manager (throws exception if enabled)
-//        SecurityUtil.checkSecurityManager();
-//    }
+    static {
+        // Check for security manager (throws exception if enabled)
+        SecurityUtil.checkSecurityManager();
+
+        // Initialize the PreviewFeature class to ensure that the corresponding system property is read early.
+        Utils.forceInit(PreviewFeature.class);
+    }
 
     /**
      * When passed as launchMode to launchApplication, tells the method that

@@ -1,0 +1,19 @@
+package cn.oyzh.fx.gui.svg.glyph;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/4/10
+ */
+public class SortAscSVGGlyph extends SVGGlyph {
+
+    public SortAscSVGGlyph() {
+        super("/fx-svg/sort-ascending.svg");
+    }
+
+    public SortAscSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+}

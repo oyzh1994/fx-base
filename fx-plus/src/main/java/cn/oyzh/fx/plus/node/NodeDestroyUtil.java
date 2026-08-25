@@ -1,26 +1,21 @@
 package cn.oyzh.fx.plus.node;
 
 import cn.oyzh.common.object.Destroyable;
+import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.ReflectUtil;
-import javafx.beans.property.Property;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
+import cn.oyzh.fx.plus.RemoveNodeable;
+import cn.oyzh.fx.plus.menu.ContextMenuManager;
+import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.fxml.FXML;
+import javafx.scene.control.Control;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumnBase;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
-import javafx.stage.Window;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 节点销毁工具类
@@ -30,157 +25,181 @@ import java.lang.reflect.Modifier;
  */
 public class NodeDestroyUtil {
 
+    //    /**
+    //     * 销毁属性
+    //     *
+    //     * @param property 属性
+    //     */
+    //    public static void destroyProperty(Property<?> property) {
+    //        // 解除单向绑定
+    //        if (property != null) {
+    //            property.unbind();
+    //        }
+    //    }
+
     /**
-     * 销毁
+     * 销毁节点
      *
      * @param node 节点
      */
-    public static void destroy(Object node) {
-        if (node != null) {
-            // System.out.println("destroy:" + node);
-            // // 异步执行
-            // ThreadUtil.startVirtual(() -> doDestroy(node));
-            doDestroy(node);
+    public static void destroyNode(Object node) {
+        ContextMenuManager.clearContextMenu(node);
+        if (NodeUtil.isMediaImport && node instanceof javafx.scene.media.MediaView mediaView) {
+            if (mediaView.getMediaPlayer() != null) {
+                mediaView.mediaPlayerProperty().unbind();
+                mediaView.getMediaPlayer().stop();
+                mediaView.getMediaPlayer().dispose();
+                mediaView.setMediaPlayer(null);
+            }
+        }
+        if (node instanceof ImageView imageView) {
+            if (imageView.getImage() != null) {
+                imageView.imageProperty().unbind();
+                imageView.getImage().cancel();
+                imageView.setImage(null);
+            }
+        }
+        if (node instanceof Image image) {
+            image.cancel();
+        }
+        if (node instanceof Control control) {
+            if (control.getSkin() != null) {
+                control.skinProperty().unbind();
+                FXUtil.runWait(() -> control.getSkin().dispose());
+            }
+            if (control.getTooltip() != null) {
+                control.tooltipProperty().unbind();
+                control.setTooltip(null);
+            }
+        }
+        if (node instanceof Tab control) {
+            if (control.getTooltip() != null) {
+                control.tooltipProperty().unbind();
+                control.setTooltip(null);
+            }
         }
     }
 
     /**
-     * 执行销毁
-     *
-     * @param node 节点
-     */
-    private static void doDestroy(Object node) {
-        if (node instanceof Destroyable destroyable) {
-            destroyable.destroy();
-        }
-        if (node instanceof Window window) {
-            doDestroy(window.getScene());
-        } else if (node instanceof Scene scene) {
-            doDestroy(scene.getRoot());
-        } else if (node instanceof TabPane pane) {
-            for (Tab tab : pane.getTabs()) {
-                doDestroy(tab);
-            }
-        } else if (node instanceof Pane pane) {
-            for (Node item : pane.getChildren()) {
-                doDestroy(item);
-            }
-        } else if (node instanceof ListView<?> view) {
-            for (Object item : view.getItems()) {
-                doDestroy(item);
-            }
-        } else if (node instanceof TableView<?> view) {
-            for (Object item : view.getItems()) {
-                doDestroy(item);
-            }
-        } else if (node instanceof ComboBox<?> comboBox) {
-            for (Object item : comboBox.getItems()) {
-                doDestroy(item);
-            }
-        } else if (node instanceof ChoiceBox<?> choiceBox) {
-            for (Object item : choiceBox.getItems()) {
-                doDestroy(item);
-            }
-        } else if (node instanceof TableColumnBase<?, ?> columnBase) {
-            for (TableColumnBase<?, ?> item : columnBase.getColumns()) {
-                destroyField(item);
-            }
-        } else if (node instanceof TreeView<?> view) {
-            doDestroy(view.getRoot());
-        } else if (node instanceof TreeItem<?> treeItem) {
-            for (TreeItem<?> item : treeItem.getChildren()) {
-                destroyField(item);
-            }
-        } else if (node instanceof Parent parent) {
-            for (Node item : parent.getChildrenUnmodifiable()) {
-                doDestroy(item);
-            }
-        } else if (node instanceof Tab tab) {
-            doDestroy(tab.getContent());
-        } else if (node instanceof Shape shape) {
-            destroyField(shape);
-        } else if (node instanceof Node node1) {
-            destroyField(node1);
-        } else {
-            destroyField(node);
-        }
-    }
-
-    /**
-     * 销毁字段
+     * 销毁对象
      *
      * @param object 节点
      */
-    private static void destroyField(Object object) {
+    public static void destroyObject(Object object) {
         if (object == null) {
             return;
         }
+        // 异步执行
+        ThreadUtil.startVirtual(() -> {
+            List<Object> handles = new ArrayList<>();
+            doDestroyObject(object, handles);
+            handles.clear();
+        });
+    }
+
+    //    /**
+    //     * 销毁对象
+    //     *
+    //     * @param object 对象
+    //     */
+    //    private static void doDestroyObject(Object object) {
+    //        if (object != null) {
+    //            List<Object> handles = new ArrayList<>();
+    //            doDestroyObject(object, handles);
+    //            handles.clear();
+    //        }
+    //    }
+
+    /**
+     * 销毁对象
+     *
+     * @param object  对象
+     * @param handles 已处理对象列表
+     */
+    private static void doDestroyObject(Object object, List<Object> handles) {
+        if (object == null) {
+            return;
+        }
+        // 已处理跳过
+        if (handles.contains(object)) {
+            return;
+        }
+        // 添加到列表
+        handles.add(object);
+        //        if (object instanceof Parent parent) {
+        //            for (Node node : new ArrayList<>(parent.getChildrenUnmodifiable())) {
+        //                doDestroyObject(node, handles);
+        //            }
+        //        }
+        Class<?> cType = object.getClass();
         // 获取所有字段
-        Field[] fields = ReflectUtil.getFields(object.getClass(), true, true);
+        Field[] fields = ReflectUtil.getFields(cType, true, true);
         for (Field field : fields) {
             try {
                 // 修饰符
                 int modifiers = field.getModifiers();
-                if (Modifier.isFinal(modifiers) ||
-                        Modifier.isStatic(modifiers) ||
-                        field.getType() == int.class ||
-                        field.getType() == byte.class ||
-                        field.getType() == char.class ||
-                        field.getType() == long.class ||
-                        field.getType() == float.class ||
-                        field.getType() == double.class ||
-                        field.getType() == boolean.class
-                ) {
+                boolean isFinal = Modifier.isFinal(modifiers);
+                if (Modifier.isStatic(modifiers)) {
                     continue;
                 }
-                // 过滤属性类型
-                Class<?> clazz = field.getType();
-                // 设置可访问
-                field.setAccessible(true);
-                // 获取属性值
-                Object value = field.get(object);
-                if(value == null){
+                // 获取属性类型
+                //                Class<?> clazz = field.getType();
+                if (!field.trySetAccessible()) {
                     continue;
                 }
-                // // 可设置为null
-                // boolean setNullable = false;
-                // 属性类型
-                if (Property.class.isAssignableFrom(clazz)) {
-                    Property<?> property = (Property<?>) value;
-                    // 解绑属性
-                    if (property != null) {
-                        property.unbind();
+                // 是否可以设置为null
+                boolean setNullable = false;
+                // 获取对象
+                Object object1 = field.get(object);
+                // 对象为null
+                if (object1 == null) {
+                    continue;
+                }
+                // fxml注入对象
+                if (field.getAnnotation(FXML.class) != null) {
+                    //                    // 递归销毁
+                    //                    doDestroyObject(object1, handles);
+                    // 从父节点移除
+                    try {
+                        if (object1 instanceof RemoveNodeable) {
+                            NodeUtil.removeNode(object1);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-                    // } else if (Destroyable.class.isAssignableFrom(clazz)) {
-                    //     Destroyable destroyable = (Destroyable) value;
-                    //     // 销毁组件
-                    //     if (destroyable != null) {
-                    //         destroyable.destroy();
-                    //     }
-                    // } else if (Collection.class.isAssignableFrom(clazz)) {// 集合类型
-                    //     Collection<?> collection = (Collection<?>) value;
-                    //     // 清除结果
-                    //     if (collection != null) {
-                    //         for (Object o : collection) {
-                    //             if (o != value && o != object) {
-                    //                 destroyField(o);
-                    //             }
-                    //         }
-                    //     }
-                    // } else if (EventTarget.class.isAssignableFrom(clazz)) {// javafx
-                    //     if (value != object) {
-                    //         destroyField(value);
-                    //     }
-                    // } else if (String.class.isAssignableFrom(clazz)) {// 对象
-                    //     if (value != null) {
-                    //         setNullable = true;
-                    //     }
+                    // 执行销毁
+                    try {
+                        if (object1 instanceof Destroyable destroyable) {
+                            destroyable.destroy();
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    // 清理上下文菜单
+                    try {
+                        ContextMenuManager.clearContextMenu(object);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    setNullable = true;
                 }
-                // 设置为null
-                // if (setNullable) {
-                // field.set(object, null);
-                // }
-            } catch (Exception ex) {
+                //                // 属性类型
+                //                if (Property.class.isAssignableFrom(clazz)) {
+                ////                    Property<?> object2 = (Property<?>) object1;
+                ////                    destroy(object2);
+                //                    if (field.getName().equals("parent")) {
+                //                        setNullable = true;
+                //                    }
+                //                }
+                //// 节点类型
+                //if (Node.class.isAssignableFrom(clazz)) {
+                //    Node object2 = (Node) object1;
+                //    destroy(object2);
+                //}
+                if (setNullable && !isFinal) {
+                    ReflectUtil.setFieldValue(field, null, object);
+                }
+            } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }

@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controller;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.i18n.I18nAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.window.WindowListener;
 import javafx.stage.WindowEvent;
 
@@ -12,7 +14,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/07/12
  */
-public abstract class Controller implements I18nAdapter, WindowListener {
+public abstract class Controller implements Destroyable, I18nAdapter, WindowListener {
 
     /**
      * 绑定监听器相关业务
@@ -54,5 +56,10 @@ public abstract class Controller implements I18nAdapter, WindowListener {
 
     @Override
     public void onWindowHidden(WindowEvent event) {
+    }
+
+    @Override
+    public void destroy() {
+        NodeDestroyUtil.destroyObject(this);
     }
 }

@@ -6,6 +6,9 @@ import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.FXConst;
+import com.sun.javafx.tk.TKPulseListener;
+import com.sun.javafx.tk.Toolkit;
+import com.sun.javafx.tk.quantum.QuantumToolkit;
 import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.HostServices;
@@ -23,9 +26,7 @@ import javafx.stage.Screen;
 import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
-import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -220,11 +221,11 @@ public class FXUtil {
      * @param task 任务
      */
     public static void runLater(Runnable task) {
-        if (Platform.isFxApplicationThread()) {
-            task.run();
-        } else {
+//        if (Platform.isFxApplicationThread()) {
+//            task.run();
+//        } else {
             Platform.runLater(task);
-        }
+//        }
     }
 
     /**
@@ -263,26 +264,35 @@ public class FXUtil {
     }
 
     /**
-     * 在脉冲周期后执行
+     * 当前脉冲完成后执行
      *
      * @param task 任务
      */
     public static void runPulse(Runnable task) {
-        runPulse(task, 10);
+        Toolkit.getToolkit().addPostSceneTkPulseListener(new TKPulseListener() {
+            @Override
+            public synchronized void pulse() {
+                try {
+                    task.run();
+                } finally {
+                    Toolkit.getToolkit().removePostSceneTkPulseListener(this);
+                }
+            }
+        });
     }
 
     /**
-     * 在脉冲周期后执行
+     * 在指定脉冲周期后执行
      *
-     * @param task 任务
-     * @param sign 停止信号
+     * @param task       任务
+     * @param tickCounts 脉冲次数
      */
-    public static void runPulse(Runnable task, int sign) {
-        AtomicInteger tick = new AtomicInteger();
+    public static void runTimer(Runnable task, int tickCounts) {
+        AtomicInteger counter = new AtomicInteger();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (sign <= 0 || tick.incrementAndGet() >= sign) {
+                if (counter.incrementAndGet() >= tickCounts) {
                     try {
                         task.run();
                     } finally {
@@ -525,4 +535,43 @@ public class FXUtil {
         return node.contains(localX, localY);
     }
 
+    /**
+     * 判断是否周期脉冲动画
+     *
+     * @return 结果
+     */
+    public static boolean isPulseFromQueue() {
+        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+        for (StackTraceElement element : elements) {
+            if (element.getClassName().equals(QuantumToolkit.class.getName())
+                    && element.getMethodName().equals("pulseFromQueue")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 是否开启预览特性
+     *
+     * @return 结果
+     */
+    public static boolean isEnablePreview() {
+        return "true".equalsIgnoreCase(System.getProperty("javafx.enablePreview"));
+    }
+
+    /**
+     * 开启预览特性
+     */
+    public static void enablePreview() {
+        System.setProperty("javafx.enablePreview", "true");
+        System.setProperty("javafx.suppressPreviewWarning", "true");
+    }
+
+    /**
+     * 禁用预览特性
+     */
+    public static void disablePreview() {
+        System.setProperty("javafx.enablePreview", "false");
+    }
 }

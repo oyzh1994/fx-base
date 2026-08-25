@@ -1,8 +1,11 @@
 package cn.oyzh.fx.plus.window;
 
-import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.handler.EscHideHandler;
+import cn.oyzh.fx.plus.handler.TabSwitchHandler;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 /**
  * 窗口适配器
@@ -19,8 +22,8 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
         try {
             this.unSwitchOnTab();
             this.unHideOnEscape();
-            // 延迟清理
-            TaskManager.startDelay(this::clearProps, 100);
+//            // 延迟清理
+//            TaskManager.startDelay(this::clearProps, 100);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -68,14 +71,21 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
     /**
      * 取消按下eac时隐藏窗口
      */
-    void unHideOnEscape();
+    default void unHideOnEscape(){
+        EscHideHandler escHideHandler = this.removeProp("escHideHandler");
+        if (escHideHandler != null) {
+            escHideHandler.destroy();
+        }
+    }
 
     /**
      * 是否按下esc时隐藏窗口
      *
      * @return 结果
      */
-    boolean isHideOnEscape();
+    default boolean isHideOnEscape(){
+        return this.hasProp("escHideHandler");
+    }
 
     /**
      * 设置按下tab时切换组件
@@ -85,22 +95,39 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
     /**
      * 取消按下tab时切换组件
      */
-    void unSwitchOnTab();
+    default void unSwitchOnTab(){
+        TabSwitchHandler tabSwitchHandler = this.removeProp("tabSwitchHandler");
+        if (tabSwitchHandler != null) {
+            tabSwitchHandler.destroy();
+        }
+    }
 
     /**
      * 是否按下tab时切换组件
      *
      * @return 结果
      */
-    boolean isSwitchOnTab();
+    default boolean isSwitchOnTab(){
+        return this.hasProp("tabSwitchHandler");
+    }
 
-    // @Override
-    // default void setStateManager(StateManager manager) {
-    //     StateAdapter.super.stateManager(manager);
-    // }
-    //
-    // @Override
-    // default StateManager getStateManager() {
-    //     return StateAdapter.super.stateManager();
-    // }
+    /**
+     * 获取场景
+     *
+     * @return 场景
+     */
+     Scene scene() ;
+
+    /**
+     * 获取根节点
+     *
+     * @return 根节点
+     */
+    default Parent root() {
+        if (this.scene() != null) {
+            return this.scene().getRoot();
+        }
+        return null;
+    }
+
 }

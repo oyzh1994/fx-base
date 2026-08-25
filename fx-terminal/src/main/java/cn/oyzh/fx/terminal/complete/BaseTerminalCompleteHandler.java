@@ -97,9 +97,10 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
         try {
             List<String> commands = handlers.parallelStream().map(TerminalCommandHandler::commandFullName).toList();
             String formatText = TextUtil.beautifyFormat(commands, 4, 0);
+            String _input = StringUtil.commonPrefix(commands);
             terminal.outputByPrompt(formatText);
             terminal.outputPrompt();
-            terminal.output(input);
+            terminal.coverInput(_input);
             terminal.moveCaretEnd();
         } catch (Exception ex) {
             ex.printStackTrace();

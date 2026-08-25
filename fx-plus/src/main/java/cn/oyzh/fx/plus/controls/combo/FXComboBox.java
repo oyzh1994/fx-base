@@ -1,12 +1,13 @@
 package cn.oyzh.fx.plus.controls.combo;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.LayoutAdapter;
 import cn.oyzh.fx.plus.adapter.SelectAdapter;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.adapter.TipAdapter;
 import cn.oyzh.fx.plus.flex.FlexAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
-import cn.oyzh.fx.plus.node.NodeAdapter;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -24,7 +25,7 @@ import java.util.Collection;
  * @author oyzh
  * @since 2023/12/25
  */
-public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter {
+public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -43,20 +44,9 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         this.require = require;
     }
 
-    //
-//    @Getter
-//    @Setter
-//    private BaseValidator validator = new BaseValidator(this);
-//
-//    public void setRequire(Boolean require) {
-//        this.require = require;
-//        this.validator.addRequiredVerifier(require, Integer.MIN_VALUE);
-//    }
-
     @Override
     public boolean validate() {
         if (this.require && this.getSelectedItem() == null) {
-//            this.requestFocus();
             ValidatorUtil.validFail(this);
             return false;
         }
@@ -115,7 +105,6 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         FlexAdapter.super.initNode();
-//        this.setFocusTraversable(false);
     }
 
     @Override
@@ -123,5 +112,24 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         double[] size = this.computeSize(width, height);
         super.resize(size[0], size[1]);
         this.resizeNode();
+    }
+
+    @Override
+    public void setTipText(String tipText) {
+        TipAdapter.super.setTipText(tipText);
+        if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
+            this.setPromptText(tipText);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        //        this.clearItems();
+        //        this.setContextMenu(null);
+        //        if (this.getSkin() != null) {
+        //            this.getSkin().dispose();
+        //        }
+        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

@@ -1,0 +1,25 @@
+package cn.oyzh.fx.gui.svg.glyph;
+
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * @author oyzh
+ * @since 2024/07/15
+ */
+public class ReduceSVGGlyph extends SVGGlyph {
+
+    public ReduceSVGGlyph() {
+        super("/fx-svg/reduce.svg");
+    }
+
+    public ReduceSVGGlyph(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+//    @Override
+//    public void initNode() {
+//        this.setTipText(I18nHelper.reduce());
+//        super.initNode();
+//    }
+}

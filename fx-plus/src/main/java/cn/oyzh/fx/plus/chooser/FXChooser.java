@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.chooser;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.i18n.I18nHelper;
@@ -52,7 +53,14 @@ public class FXChooser {
         if (StringUtil.equalsAnyIgnoreCase("excel", type)) {
             return excelExtensionFilter();
         }
+        if (StringUtil.equalsAnyIgnoreCase("js", type)) {
+            return jsExtensionFilter();
+        }
         return allExtensionFilter();
+    }
+
+    public static FileExtensionFilter jsExtensionFilter() {
+        return new FileExtensionFilter(I18nHelper.jsType(), "*.js");
     }
 
     public static FileExtensionFilter sqlExtensionFilter() {
@@ -115,6 +123,10 @@ public class FXChooser {
         return new FileExtensionFilter(I18nHelper.gifType(), "*.gif");
     }
 
+    public static FileExtensionFilter newExtensionFilter(String type) {
+        return new FileExtensionFilter(type, "*." + type);
+    }
+
     /**
      * 获取下载路径
      *
@@ -122,6 +134,9 @@ public class FXChooser {
      */
     public static String getDownloadDirectory() {
         File file = new File(SystemUtil.userHome(), "Downloads");
+        if (!file.exists() || !file.isDirectory()) {
+            file = new File(SystemUtil.userHome(), "下载");
+        }
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }
@@ -134,9 +149,15 @@ public class FXChooser {
      * @return 结果
      */
     public static String getDesktopDirectory() {
-        File file = new File(SystemUtil.userHome(), "Desktop");
-        if (file.exists() && file.isDirectory()) {
-            return file.getPath();
+        if (!OSUtil.isWindows()) {
+            String userHome = SystemUtil.userHome();
+            File file = new File(userHome, "Desktop");
+            if (!file.exists() || !file.isDirectory()) {
+                file = new File(userHome, "桌面");
+            }
+            if (file.exists() && file.isDirectory()) {
+                return file.getPath();
+            }
         }
         return HOME_DIR.getPath();
     }
@@ -146,8 +167,11 @@ public class FXChooser {
      *
      * @return 结果
      */
-    public static String getDocumentsDirectory() {
+    public static String getDocumentDirectory() {
         File file = new File(SystemUtil.userHome(), "Documents");
+        if (!file.exists() || !file.isDirectory()) {
+            file = new File(SystemUtil.userHome(), "文档");
+        }
         if (file.exists() && file.isDirectory()) {
             return file.getPath();
         }

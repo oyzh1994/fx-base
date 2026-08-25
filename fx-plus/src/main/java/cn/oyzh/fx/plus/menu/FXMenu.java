@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.menu;
 
 import cn.oyzh.fx.plus.adapter.StateAdapter;
+import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -14,7 +15,7 @@ import javafx.scene.control.Menu;
  * @author oyzh
  * @since 2025/07/24
  */
-public class FXMenu extends Menu implements StateAdapter, ThemeAdapter {
+public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdapter {
 
     {
         NodeManager.init(this);
@@ -53,7 +54,7 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter {
     public double getWidth() {
         String str = this.getText();
         Node graphic = this.getGraphic();
-        double w = FontUtil.stringWidth(str);
+        double w = FontUtil.textWidth(str, this.getFont());
         if (graphic != null) {
             w += NodeUtil.getWidth(graphic);
         }

@@ -1,7 +1,9 @@
 package cn.oyzh.fx.plus.controller;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.event.EventListener;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageListener;
@@ -62,6 +64,7 @@ public class StageController extends Controller implements StageListener, EventL
     @Override
     public void onWindowHidden(WindowEvent event) {
         EventListener.super.unregister();
+        this.destroy();
     }
 
     @Override
@@ -74,11 +77,6 @@ public class StageController extends Controller implements StageListener, EventL
             this.stage.disappear();
         }
     }
-
-//    @Override
-//    protected <T> T getWindowProp(String key) {
-//        return this.stage == null ? null : this.stage.getProp(key);
-//    }
 
     @Override
     public void setProp(String key, Object value) {
@@ -128,4 +126,13 @@ public class StageController extends Controller implements StageListener, EventL
     protected void appendTitle(String title) {
         this.stage.appendTitle(title);
     }
+
+    protected void setTitle(String title) {
+        this.stage.title(title);
+    }
+
+    protected String getTitle() {
+        return this.stage.title();
+    }
+
 }

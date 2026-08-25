@@ -2,11 +2,10 @@ package cn.oyzh.fx.terminal;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
-import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
-import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -16,6 +15,8 @@ import cn.oyzh.fx.terminal.histroy.TerminalHistoryHandler;
 import cn.oyzh.fx.terminal.key.TerminalKeyHandler;
 import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
+import javafx.beans.InvalidationListener;
+import javafx.event.EventHandler;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -74,29 +75,44 @@ public abstract class TerminalPane extends Editor implements Terminal {
      */
     private TerminalCompleteHandler completeHandler;
 
+    /**
+     * 光标位置事件
+     */
+    private InvalidationListener caretPositionListener = observable -> {
+        int nop = this.getNOP();
+        int len = this.contentLength();
+        int caretPosition = this.caretPosition();
+        // 对边界做检查
+        if (nop > len) {
+            this.flushNOP();
+            nop = this.getNOP();
+        }
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("nop:{}, length:{}", nop, len);
+        }
+        if (caretPosition < nop) {
+            this.disableInput();
+        } else {
+            this.enableInput();
+        }
+    };
+
     {
-        this.caretPositionProperty().addListener((observableValue, number, t1) -> {
-            int nop = this.getNOP();
-            int len = this.contentLength();
-            int caretPosition = this.caretPosition();
-            // 对边界做检查
-            if (nop > len) {
-                this.flushNOP();
-                nop = this.getNOP();
-            }
-            if (JulLog.isDebugEnabled()) {
-                JulLog.debug("nop:{}, length:{}", nop, len);
-            }
-            if (caretPosition < nop) {
-                this.disableInput();
-            } else {
-                this.enableInput();
-            }
-        });
+        this.caretPositionProperty().addListener(this.caretPositionListener);
     }
+
+    /**
+     * 键盘按下事件
+     */
+    private EventHandler<? super KeyEvent> keyPressedHandler;
 
     @Override
     public void keyHandler(TerminalKeyHandler keyHandler) {
+        // 先移除旧的事件过滤器，防止累积泄漏
+        if (this.keyPressedHandler != null) {
+            this.removeEventFilter(KeyEvent.KEY_PRESSED, this.keyPressedHandler);
+            this.keyPressedHandler = null;
+        }
         this.keyHandler = keyHandler;
         if (keyHandler != null) {
             KeyCombination keyCombination1 = OSUtil.isMacOS()
@@ -113,7 +129,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
                     : new KeyCodeCombination(KeyCode.MINUS, KeyCombination.CONTROL_DOWN);
             List<KeyCombination> incrFontCombinations = List.of(keyCombination1, keyCombination2);
             List<KeyCombination> decrFontCombinations = List.of(keyCombination3, keyCombination4);
-            this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            this.keyPressedHandler = event -> {
                 try {
                     if (KeyboardUtil.match(decrFontCombinations, event)) {
                         this.fontSizeDecr();
@@ -196,7 +212,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
                     ex.printStackTrace();
                     this.onError(ex);
                 }
-            });
+            };
+            this.addEventFilter(KeyEvent.KEY_PRESSED, this.keyPressedHandler);
         }
     }
 
@@ -205,11 +222,21 @@ public abstract class TerminalPane extends Editor implements Terminal {
         return this.mouseHandler;
     }
 
+    /**
+     * 鼠标按下事件
+     */
+    private EventHandler<? super MouseEvent> mousePressedHandler;
+
     @Override
     public void mouseHandler(TerminalMouseHandler mouseHandler) {
+        // 先移除旧的事件过滤器，防止累积泄漏
+        if (this.mousePressedHandler != null) {
+            this.removeEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressedHandler);
+            this.mousePressedHandler = null;
+        }
         this.mouseHandler = mouseHandler;
         if (mouseHandler != null) {
-            this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            this.mousePressedHandler = event -> {
                 try {
                     if (event.getButton() == MouseButton.PRIMARY) {
                         if (!mouseHandler.onPrimaryMousePressed(this)) {
@@ -223,7 +250,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
                 } catch (Exception ex) {
                     this.onError(ex);
                 }
-            });
+            };
+            this.addEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressedHandler);
         }
     }
 
@@ -251,7 +279,8 @@ public abstract class TerminalPane extends Editor implements Terminal {
 
     @Override
     public String getInput() {
-        String text = CollectionUtil.getLast(this.getText().lines().toList());
+        String text = TextUtil.getLastLine(this.getText(), this.lineEndingText());
+        //String text = CollectionUtil.getLast(this.getText().lines().toList());
         if (text == null || text.isEmpty() || text.equals(this.prompt())) {
             return "";
         }
@@ -310,7 +339,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
     @Override
     public void appendByPrompt(String output) {
         this.outputPrompt();
-        this.flushNOP();
+        //this.flushNOP();
         if (output != null) {
             this.appendText(output);
         }
@@ -339,7 +368,11 @@ public abstract class TerminalPane extends Editor implements Terminal {
     public void prompt(String prompt) {
         if (!StringUtil.equals(prompt, this.prompt)) {
             if (prompt != null) {
-                prompt = prompt.replaceAll("\r", "").replaceAll("\n", "");
+                prompt = prompt.replace("\r\n", "")
+//                        .replace("\r", "")
+                        .replace("\n", "")
+                        .replace(this.lineEndingText(), "")
+                ;
             }
             this.prompt = prompt;
         }
@@ -349,12 +382,13 @@ public abstract class TerminalPane extends Editor implements Terminal {
     public void outputPrompt() {
         String text = this.getText();
         String prompt = this.prompt();
-        if (StringUtil.equals(text, "\n")) {
+        if (StringUtil.equals(text, this.lineEndingText())) {
             this.text(prompt);
-        } else if (!StringUtil.endWith(text, prompt)) {
+        } else if (!StringUtil.endsWith(text, prompt)) {
             this.appendContent(prompt);
         }
-        FXUtil.runAsync(this::flushNOP);
+        //FXUtil.runWait(this::flushNOP);
+        this.flushNOP();
     }
 
     @Override
@@ -462,6 +496,11 @@ public abstract class TerminalPane extends Editor implements Terminal {
         return this.keyHandler;
     }
 
+    /**
+     * 寻找处理器
+     *
+     * @param input 输入
+     */
     protected TerminalCommandHandler findHandler(String input) {
         return TerminalManager.findHandler(this.terminalName(), input);
     }
@@ -566,4 +605,30 @@ public abstract class TerminalPane extends Editor implements Terminal {
     // public FontWeight getFontWeight() {
     //    return FontUtil.getWeight(this.font);
     //}
+
+    @Override
+    public void destroy() {
+        this.caretPositionProperty().removeListener(this.caretPositionListener);
+        //        this.caretPositionListener = null;
+        //        if (this.keyPressedHandler != null) {
+        this.removeEventFilter(KeyEvent.KEY_PRESSED, this.keyPressedHandler);
+        //            this.keyPressedHandler = null;
+        //        }
+        //        if (this.mousePressedHandler != null) {
+        this.removeEventFilter(MouseEvent.MOUSE_PRESSED, this.mousePressedHandler);
+        //            this.mousePressedHandler = null;
+        //        }
+        super.destroy();
+    }
+
+    @Override
+    public void clearAll() {
+        this.clear();
+        this.output("");
+    }
+
+//    @Override
+//    public void initNode() {
+//        super.initNode();
+//    }
 }

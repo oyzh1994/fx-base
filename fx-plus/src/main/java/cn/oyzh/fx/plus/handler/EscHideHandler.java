@@ -15,57 +15,12 @@ import java.lang.ref.WeakReference;
  */
 public class EscHideHandler {
 
-//    /**
-//     * 缓存列表
-//     */
-//    private static final WeakCache<EventTarget, EscHideHandler> CACHE = CacheUtil.newWeakCache();
-//
-//    /**
-//     * 执行初始化
-//     *
-//     * @param stage 舞台
-//     * @return 处理器
-//     */
-//    public static EscHideHandler init( Window stage) {
-//        EscHideHandler handler = new EscHideHandler(stage);
-//        CACHE.put(stage, handler);
-//        return handler;
-//    }
-//
-//    /**
-//     * 是否存在处理器
-//     *
-//     * @param stage 舞台
-//     * @return 结果
-//     */
-//    public static boolean exists(Window stage) {
-//        if (stage != null) {
-//            return CACHE.containsKey(stage);
-//        }
-//        return false;
-//    }
-//
-//    /**
-//     * 执行销毁
-//     *
-//     * @param stage 舞台
-//     */
-//    public static void destroy(Window stage) {
-//        if (stage != null) {
-//            EscHideHandler handler = CACHE.get(stage);
-//            if (handler != null) {
-//                CACHE.remove(stage);
-//                handler.destroy();
-//            }
-//        }
-//    }
-
     /**
      * 根节点
      */
     private WeakReference<Window> windowRef;
 
-    public EscHideHandler( Window window) {
+    public EscHideHandler(Window window) {
         this.windowRef = new WeakReference<>(window);
         this.init();
     }

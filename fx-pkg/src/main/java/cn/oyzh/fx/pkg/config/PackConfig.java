@@ -8,7 +8,6 @@ import cn.oyzh.fx.pkg.jdeps.JDepsConfig;
 import cn.oyzh.fx.pkg.jlink.JLinkConfig;
 import cn.oyzh.fx.pkg.jpackage.JPackageConfig;
 import cn.oyzh.fx.pkg.jre.JreConfig;
-import com.badlogicgames.packr.PackrConfig;
 
 import java.io.File;
 import java.util.HashMap;
@@ -134,11 +133,11 @@ public class PackConfig implements ConfigMargeAble<PackConfig> {
      */
     private JLinkConfig jLinkConfig;
 
-    /**
-     * packr配置
-     */
-    @Deprecated
-    private PackrConfig packrConfig;
+//    /**
+//     * packr配置
+//     */
+//    @Deprecated
+//    private PackrConfig packrConfig;
 
     /**
      * jPackage配置
@@ -172,11 +171,13 @@ public class PackConfig implements ConfigMargeAble<PackConfig> {
 
     public String mainJarName() {
         String mainJar = this.mainJar();
-        if (mainJar.contains("\\")) {
-            return mainJar.substring(mainJar.lastIndexOf("\\") + 1);
-        }
-        if (mainJar.contains("/")) {
-            return mainJar.substring(mainJar.lastIndexOf("/") + 1);
+        if (mainJar != null) {
+            if (mainJar.contains("\\")) {
+                return mainJar.substring(mainJar.lastIndexOf("\\") + 1);
+            }
+            if (mainJar.contains("/")) {
+                return mainJar.substring(mainJar.lastIndexOf("/") + 1);
+            }
         }
         return mainJar;
     }
@@ -392,13 +393,13 @@ public class PackConfig implements ConfigMargeAble<PackConfig> {
         this.jLinkConfig = jLinkConfig;
     }
 
-    public PackrConfig getPackrConfig() {
-        return packrConfig;
-    }
-
-    public void setPackrConfig(PackrConfig packrConfig) {
-        this.packrConfig = packrConfig;
-    }
+//    public PackrConfig getPackrConfig() {
+//        return packrConfig;
+//    }
+//
+//    public void setPackrConfig(PackrConfig packrConfig) {
+//        this.packrConfig = packrConfig;
+//    }
 
     public JPackageConfig getjPackageConfig() {
         return jPackageConfig;
@@ -490,5 +491,14 @@ public class PackConfig implements ConfigMargeAble<PackConfig> {
         } else {
             this.jPackageConfig.marge(config.jPackageConfig);
         }
+    }
+
+    /**
+     * 获取打包类型
+     *
+     * @return 结果
+     */
+    public String packageType() {
+        return this.getjPackageConfig() == null ? null : this.getjPackageConfig().getType();
     }
 }

@@ -41,11 +41,15 @@ public interface TipAdapter extends EventTarget, PropAdapter {
      */
     default void setTipText(String tipText) {
         this.setProp("_tipText", tipText);
-        KeyCombination combination = this.getTipKeyCombination();
-        if (combination != null) {
-            this.tipText(tipText + "(" + combination + ")");
+        if (tipText == null) {
+            this.tipText(null);
         } else {
-            this.tipText(tipText);
+            KeyCombination combination = this.getTipKeyCombination();
+            if (combination != null) {
+                this.tipText(tipText + "(" + combination + ")");
+            } else {
+                this.tipText(tipText);
+            }
         }
     }
 

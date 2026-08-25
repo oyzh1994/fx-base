@@ -1,0 +1,139 @@
+package cn.oyzh.fx.gui.text.field;
+
+import cn.oyzh.common.thread.TaskManager;
+import cn.oyzh.fx.gui.skin.SelectTextFiledSkin;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+/**
+ * @author oyzh
+ * @since 2024/07/12
+ */
+public class SelectTextFiled<T> extends LimitTextField {
+
+    @Override
+    public SelectTextFiledSkin<T> skin() {
+        return (SelectTextFiledSkin<T>) super.skin();
+    }
+
+    @Override
+    protected SelectTextFiledSkin<T> createDefaultSkin() {
+        return new SelectTextFiledSkin<>(this);
+    }
+
+    public void addItem(T item) {
+        if (this.getItemList() == null) {
+            this.setItemList(new ArrayList<>());
+        }
+        this.getItemList().add(item);
+    }
+
+    public void setItemList(List<T> itemList) {
+        this.skin().setItemList(itemList);
+    }
+
+    public List<T> getItemList() {
+        return this.skin().getItemList();
+    }
+
+    public void clearItemList() {
+        this.skin().clearItemList();
+    }
+
+    public int getItemSize() {
+        return this.skin().getItemSize();
+    }
+
+    public void setLineHeight(double lineHeight) {
+        this.skin().setLineHeight(lineHeight);
+    }
+
+    public double getLineHeight() {
+        return this.skin().getLineHeight();
+    }
+
+    public void selectItem(T item) {
+        this.skin().selectItem(item);
+        this.skin().setTexting();
+        SelectTextFiledSkin<T> skin = this.skin();
+        if (skin != null && skin.getConverter() != null) {
+            this.text(skin.getConverter().toString(item));
+        } else {
+            this.text(item.toString());
+        }
+//        this.skin().clearTexting();
+    }
+
+    public void selectIndex(int index) {
+        this.skin().selectIndex(index);
+    }
+
+    public T getSelectedItem() {
+        return this.skin().getSelectedItem();
+    }
+
+    public void selectedItemChanged(Consumer<T> listener) {
+        this.skin().selectItemChanged(listener);
+    }
+
+    /**
+     * 文本变更事件
+     *
+     * @param newValue 新文本
+     * @return 结果
+     */
+    protected boolean onTextChanged(String newValue) {
+        if (this.skin().isTexting()) {
+            this.skin().clearTexting();
+            this.skin().hidePopup();
+            return false;
+        }
+        if (!this.isFocused()) {
+            this.skin().hidePopup();
+            return false;
+        }
+        if (this.isDisable()) {
+            this.skin().hidePopup();
+            return false;
+        }
+        // 移除选区
+        this.clearSelection();
+        return true;
+    }
+
+    @Override
+    public void initNode() {
+        this.addTextChangeListener((observableValue, s, t1) -> {
+            TaskManager.startDelay(() -> this.onTextChanged(t1), 50);
+        });
+        //this.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        //    if (event.getCode() == KeyCode.DOWN && !this.skin().isItemEmpty()) {
+        //        this.skin().selectFirst();
+        //        event.consume();
+        //    }
+        //});
+        super.initNode();
+    }
+
+    /**
+     * 清除选区
+     */
+    public void clearSelection() {
+        this.skin().clearSelection();
+    }
+
+    /**
+     * 选中首个
+     */
+    public void selectFirstItem() {
+        this.skin().selectFirst();
+    }
+
+    @Override
+    public void destroy() {
+        this.clearItemList();
+        super.destroy();
+    }
+}

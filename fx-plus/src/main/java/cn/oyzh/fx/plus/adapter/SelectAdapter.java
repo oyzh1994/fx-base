@@ -19,9 +19,9 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * 选择组件适配器
  *
+ * @param <T> 数据类型
  * @author oyzh
  * @since 2023/4/11
- * @param <T> 数据类型
  */
 public interface SelectAdapter<T> extends PropAdapter {
 
@@ -531,23 +531,35 @@ public interface SelectAdapter<T> extends PropAdapter {
      * 移除子节点
      *
      * @param index 下标
+     * @return 节点
      */
-    default void removeItem(int index) {
+    default Object removeItem(int index) {
+        AtomicReference<Object> item = new AtomicReference<>();
         if (index >= 0) {
             if (this instanceof TableView<?> node) {
                 if (node.getItems().size() >= index) {
-                    FXUtil.runWait(() -> node.getItems().remove(index));
+                    FXUtil.runWait(() -> {
+                        Object t1 = node.getItems().remove(index);
+                        item.set(t1);
+                    });
                 }
             } else if (this instanceof ComboBox<?> node) {
                 if (node.getItems().size() >= index) {
-                    FXUtil.runWait(() -> node.getItems().remove(index));
+                    FXUtil.runWait(() -> {
+                        Object t1 = node.getItems().remove(index);
+                        item.set(t1);
+                    });
                 }
             } else if (this instanceof ListView<?> node) {
                 if (node.getItems().size() >= index) {
-                    FXUtil.runWait(() -> node.getItems().remove(index));
+                    FXUtil.runWait(() -> {
+                        Object t1 = node.getItems().remove(index);
+                        item.set(t1);
+                    });
                 }
             }
         }
+        return item.get();
     }
 
     /**
@@ -565,6 +577,24 @@ public interface SelectAdapter<T> extends PropAdapter {
                 FXUtil.runWait(() -> node.getItems().remove(item));
             }
         }
+    }
+
+    /**
+     * 获取首个节点
+     *
+     * @return 节点
+     */
+    default Object firstItem() {
+        return this.getItem(0);
+    }
+
+    /**
+     * 获取最后一个节点
+     *
+     * @return 节点
+     */
+    default Object lastItem() {
+        return this.getItem(this.getItemSize() - 1);
     }
 
     /**
@@ -608,17 +638,26 @@ public interface SelectAdapter<T> extends PropAdapter {
      * 选中末尾节点
      */
     default void selectLast() {
-        if (this instanceof ListView<?> node) {
-            node.getSelectionModel().selectLast();
-            node.scrollTo(this.getItemSize());
-        } else if (this instanceof TableView<?> node) {
-            node.getSelectionModel().selectLast();
-            node.scrollTo(this.getItemSize());
-        } else if (this instanceof ComboBox<?> node) {
-            node.getSelectionModel().selectLast();
-        } else if (this instanceof TabPane node) {
-            node.getSelectionModel().selectLast();
-        }
+        FXUtil.runWait(() -> {
+            if (this instanceof ListView<?> node) {
+                node.getSelectionModel().clearSelection();
+                node.getSelectionModel().selectLast();
+                node.scrollTo(this.getItemSize());
+            } else if (this instanceof TableView<?> node) {
+                node.getSelectionModel().clearSelection();
+                node.getSelectionModel().selectLast();
+                node.scrollTo(this.getItemSize());
+            } else if (this instanceof ComboBox<?> node) {
+                node.getSelectionModel().clearSelection();
+                node.getSelectionModel().selectLast();
+            } else if (this instanceof TabPane node) {
+                node.getSelectionModel().clearSelection();
+                node.getSelectionModel().selectLast();
+            } else if (this instanceof TreeView<?> node) {
+                node.getSelectionModel().clearSelection();
+                node.getSelectionModel().selectLast();
+            }
+        });
     }
 }
 

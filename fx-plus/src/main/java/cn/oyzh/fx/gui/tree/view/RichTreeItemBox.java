@@ -1,0 +1,198 @@
+package cn.oyzh.fx.gui.tree.view;
+
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.controls.pane.FXPane;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.node.NodeUtil;
+import cn.oyzh.fx.plus.rich.RichTextFlow;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+
+/**
+ * @author oyzh
+ * @since 2025-01-22
+ */
+public class RichTreeItemBox extends FXPane {
+
+    public RichTreeItemBox() {
+        super();
+    }
+
+    public RichTreeItemBox(RichTreeItemValue value, String highlight, boolean highlightMatchCase) {
+        super();
+        this.init(value, highlight, highlightMatchCase);
+    }
+
+    public void init(RichTreeItemValue value, String highlight, boolean highlightMatchCase) {
+        String name = value.name();
+        String extra = value.extra();
+        SVGGlyph glyph = value.graphic();
+        Color color = value.graphicColor();
+        Color extraColor = value.extraColor();
+        if (this.isChildEmpty()) {
+            // 图标
+            glyph.setColor(color);
+            glyph.setId("graphic");
+            this.addChild(glyph);
+
+            // 名称
+            RichTextFlow nameNode = new RichTextFlow(name, highlight, highlightMatchCase);
+            nameNode.initTextFlow();
+            nameNode.setId("name");
+            this.addChild(nameNode);
+
+            // 额外信息
+            if (StringUtil.isNotBlank(extra)) {
+                FXLabel extraNode = new FXLabel(extra);
+                extraNode.setId("extra");
+                if (extraColor != null) {
+                    extraNode.setTextFill(extraColor);
+                }
+                this.addChild(extraNode);
+            }
+        } else {
+            // 更新图标
+            SVGGlyph graphicNode = this.getGraphic();
+            if (graphicNode != glyph) {
+                glyph.setColor(color);
+                this.setGraphic(glyph);
+            } else if (graphicNode.getColor() != color) {
+                graphicNode.setColor(color);
+            }
+
+            // 更新名称
+            RichTextFlow nameNode = this.getName();
+            boolean changed = false;
+            if (StringUtil.notEquals(name, nameNode.getText())) {
+                nameNode.setText(name);
+                changed = true;
+            }
+            // 更新高亮
+            if (StringUtil.notEquals(highlight, nameNode.getHighlight())) {
+                nameNode.setHighlight(highlight);
+                changed = true;
+            }
+            // 更新高亮
+            if (highlightMatchCase != nameNode.isHighlightMatchCase()) {
+                nameNode.setHighlightMatchCase(highlightMatchCase);
+                changed = true;
+            }
+            // 执行初始化
+            if (changed) {
+                nameNode.initTextFlow();
+            }
+
+            // 更新额外信息
+            if (StringUtil.isNotBlank(extra)) {
+                FXLabel extraNode = this.getExtra();
+                // 新增
+                if (extraNode == null) {
+                    extraNode = new FXLabel(extra);
+                    if (extraColor != null) {
+                        extraNode.setTextFill(extraColor);
+                    }
+                    this.addChild(extraNode);
+                } else {
+                    // 更新文本
+                    if (StringUtil.notEquals(extra, extraNode.getText())) {
+                        extraNode.setText(extra);
+                    }
+                    // 更新颜色
+                    if (extraNode.getTextFill() != extraColor) {
+                        extraNode.setTextFill(extraColor);
+                    }
+                }
+            } else {
+                this.removeChild(2);
+            }
+        }
+    }
+
+    public SVGGlyph getGraphic() {
+        Node node = this.getFirstChild();
+        if (node instanceof SVGGlyph) {
+            return (SVGGlyph) node;
+        }
+        node = this.lookup("#graphic");
+        if (node instanceof SVGGlyph) {
+            return (SVGGlyph) node;
+        }
+        return null;
+    }
+
+    public void setGraphic(SVGGlyph glyph) {
+        glyph.setId("graphic");
+        if (this.getFirstChild() instanceof SVGGlyph) {
+            this.setChild(0, glyph);
+        } else {
+            this.addChild(0, glyph);
+        }
+    }
+
+    public RichTextFlow getName() {
+        Node node = this.getChild(1);
+        if (node instanceof RichTextFlow) {
+            return (RichTextFlow) node;
+        }
+        node = this.lookup("#name");
+        if (node instanceof RichTextFlow) {
+            return (RichTextFlow) node;
+        }
+        return null;
+    }
+
+    public void setName(RichTextFlow name) {
+        name.setId("name");
+        if (this.getChild(1) instanceof RichTextFlow) {
+            this.setChild(1, name);
+        } else {
+            this.addChild(1, name);
+        }
+    }
+
+    public FXLabel getExtra() {
+        Node node = this.getChild(2);
+        if (node instanceof FXLabel) {
+            return (FXLabel) node;
+        }
+        node = this.lookup("#extra");
+        if (node instanceof FXLabel) {
+            return (FXLabel) node;
+        }
+        return null;
+    }
+
+    public void setExtra(Text extra) {
+        extra.setId("extra");
+        if (this.getChild(2) instanceof Text) {
+            this.setChild(2, extra);
+        } else {
+            this.addChild(2, extra);
+        }
+    }
+
+    @Override
+    protected void layoutChildren() {
+        double x = 0;
+        for (Node child : this.getChildren()) {
+            child.autosize();
+            child.setLayoutX(x);
+            if ("graphic".equals(child.getId())) {
+                x += NodeUtil.getWidth(child) + 3;
+                child.setLayoutY(2);
+            } else if ("name".equals(child.getId())) {
+                x += NodeUtil.getWidth(child) + 3;
+            }
+        }
+        this.setPrefWidth(x + 30);
+    }
+
+    @Override
+    public void initNode() {
+        this.setPadding(Insets.EMPTY);
+        super.initNode();
+    }
+}

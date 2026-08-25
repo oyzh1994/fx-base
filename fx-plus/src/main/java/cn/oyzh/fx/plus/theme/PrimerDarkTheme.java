@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.theme;
 
 import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.Theme;
-import cn.oyzh.fx.plus.FXStyle;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -31,10 +30,10 @@ public class PrimerDarkTheme implements Theme, ThemeStyle {
         return THEME.getUserAgentStylesheet();
     }
 
-    @Override
-    public String getCompressedUserAgentStylesheet() {
-        return FXStyle.ATLANTA_FX_PRIMER_DARK;
-    }
+//    @Override
+//    public String getCompressedUserAgentStylesheet() {
+//        return FXStyle.ATLANTA_FX_PRIMER_DARK;
+//    }
 
     @Override
     public String getUserAgentStylesheetBSS() {
