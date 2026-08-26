@@ -22,7 +22,7 @@ import javafx.scene.layout.HBox;
  * @author oyzh
  * @since 2024/07/21
  */
-public class JsonTextFiledSkin extends ActionTextFieldSkin {
+public class LongTextFiledSkin extends ActionTextFieldSkin {
 
     /**
      * 展开宽
@@ -57,7 +57,7 @@ public class JsonTextFiledSkin extends ActionTextFieldSkin {
         textField.setDisable(true);
         // 文本节点
         this.editor = new Editor();
-        this.editor.setFormatType(EditorFormatType.JSON);
+        this.editor.setFormatType(this.getFormatType());
         this.editor.setRealWidth(this.enlargeWidth);
         this.editor.realHeight(this.enlargeHeight - 30);
         this.editor.showData(this.getText());
@@ -94,7 +94,7 @@ public class JsonTextFiledSkin extends ActionTextFieldSkin {
         this.handleHide();
     }
 
-    public JsonTextFiledSkin(TextField textField) {
+    public LongTextFiledSkin(TextField textField) {
         super(textField);
     }
 
@@ -138,6 +138,10 @@ public class JsonTextFiledSkin extends ActionTextFieldSkin {
 
     public void setPopup(PopupExt popup) {
         this.popup = popup;
+    }
+
+    protected EditorFormatType getFormatType() {
+        return EditorFormatType.JSON;
     }
 
     @Override

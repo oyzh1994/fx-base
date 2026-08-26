@@ -24,6 +24,9 @@ public class BinaryTextFiled extends ChooseFileTextField {
     }
 
     public static String format(Object o, Integer scale) {
+        if (o == null) {
+            return null;
+        }
         if (o instanceof byte[] bytes) {
             return "(BLOB)" + " " + NumberUtil.formatSize(bytes.length, scale);
         }

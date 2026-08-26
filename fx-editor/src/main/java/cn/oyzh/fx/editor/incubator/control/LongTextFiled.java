@@ -1,14 +1,14 @@
 package cn.oyzh.fx.editor.incubator.control;
 
 
-import cn.oyzh.common.json.JSONUtil;
+import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.fx.gui.text.field.LimitTextField;
 
 /**
  * @author oyzh
  * @since 2024/7/21
  */
-public class JsonTextFiled extends LimitTextField {
+public class LongTextFiled extends LimitTextField {
 
     @Override
     public LongTextFiledSkin skin() {
@@ -17,7 +17,12 @@ public class JsonTextFiled extends LimitTextField {
 
     @Override
     protected LongTextFiledSkin createDefaultSkin() {
-        return new LongTextFiledSkin(this);
+        return new LongTextFiledSkin(this) {
+            @Override
+            protected EditorFormatType getFormatType() {
+                return EditorFormatType.LOG;
+            }
+        };
     }
 
     public void setEnlargeWidth(double width) {
@@ -36,32 +41,8 @@ public class JsonTextFiled extends LimitTextField {
         return this.skin().getEnlargeHeight();
     }
 
-    private boolean array;
-
-    public boolean isArray() {
-        return array;
-    }
-
-    public void setArray(boolean array) {
-        this.array = array;
-    }
-
     @Override
     public Object getValue() {
-        String text = this.getText();
-        return this.isArray() ? JSONUtil.parseArray(text) : JSONUtil.parseObject(text);
+        return this.getText();
     }
-
-    @Override
-    public void formatValue() {
-        this.setText(format(super.getValue()));
-    }
-
-    public static String format(Object val) {
-        if (val instanceof CharSequence sequence) {
-            return JSONUtil.toPretty(sequence.toString());
-        }
-        return JSONUtil.toPretty(val);
-    }
-
 }
