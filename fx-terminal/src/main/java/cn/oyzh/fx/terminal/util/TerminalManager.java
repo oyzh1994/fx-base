@@ -3,6 +3,7 @@ package cn.oyzh.fx.terminal.util;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ClassUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class TerminalManager {
             return;
         }
 //        try {
-            loadHandler.run();
+        loadHandler.run();
 //        } catch (Exception ex) {
 //            LOAD_FLAGS.r(name, false);
 //            setLoadHandler(name, loadHandler);
@@ -178,9 +179,24 @@ public class TerminalManager {
                 List<TerminalCommandHandler<?, ?>> list = handlers.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
                 if (!list.isEmpty()) {
                     if (words.length >= 2) {
+                        // 寻找完全匹配的命令
                         List<TerminalCommandHandler<?, ?>> list1 = list.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
                         if (!list1.isEmpty()) {
                             return list1.getFirst();
+                        }
+
+                        // 寻找最接近的命令
+                        double corr = 1.0;
+                        TerminalCommandHandler<?, ?> terminalCommandHandler = null;
+                        for (TerminalCommandHandler<?, ?> handler : list) {
+                            double corr1 = TextUtil.clacCorr(handler.commandSubName(), words[1]);
+                            if (corr1 > corr) {
+                                corr = corr1;
+                                terminalCommandHandler = handler;
+                            }
+                        }
+                        if (terminalCommandHandler != null) {
+                            return terminalCommandHandler;
                         }
                     }
                     return list.getFirst();
