@@ -4,6 +4,7 @@ import cn.oyzh.common.util.CharsetUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.i18n.I18nHelper;
+import javafx.geometry.Insets;
 
 import java.nio.charset.Charset;
 
@@ -14,19 +15,6 @@ import java.nio.charset.Charset;
  * @since 2022/12/2
  */
 public class CharsetComboBox extends FXComboBox<String> {
-
-    {
-        this.addItem("");
-        // this.addItem(StandardCharsets.UTF_8.displayName().toLowerCase());
-        // this.addItem("gbk");
-        // this.addItem("gb18030");
-        // this.addItem("gb2312");
-        // this.addItem(StandardCharsets.ISO_8859_1.displayName().toLowerCase());
-        // this.addItem(StandardCharsets.US_ASCII.displayName().toLowerCase());
-        for (Charset charset : Charset.availableCharsets().values()) {
-            this.addItem(charset.displayName().toLowerCase());
-        }
-    }
 
     public void setInitDefault(boolean initDefault) {
         if (initDefault) {
@@ -76,5 +64,15 @@ public class CharsetComboBox extends FXComboBox<String> {
 
     public void select(Charset charset) {
         this.select(charset.displayName());
+    }
+
+    @Override
+    public void initNode() {
+        this.setPadding(Insets.EMPTY);
+        this.addItem("");
+        for (Charset charset : Charset.availableCharsets().values()) {
+            this.addItem(charset.displayName().toLowerCase());
+        }
+        super.initNode();
     }
 }
