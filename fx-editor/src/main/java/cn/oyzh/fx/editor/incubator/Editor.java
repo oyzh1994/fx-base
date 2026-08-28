@@ -1617,13 +1617,14 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         if (closeChar == null) {
             return;
         }
-        e.consume();
+//        e.consume();
 
         SelectionSegment segment = this.getSelection();
         if (segment != null && !segment.isCollapsed()) {
             // 有选区 — 包裹选区
             IndexRange range = this.getSelectionRange();
             if (range != null) {
+                e.consume();
                 String selText = this.getSelectedText();
                 this.replaceText(range.getStart(), range.getEnd(), ch + selText + closeChar);
                 this.selectRange(range.getStart() + 1, range.getStart() + 1 + selText.length());
@@ -1633,9 +1634,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             int caretPos = this.caretPosition();
             String text = this.getText();
             if (caretPos < text.length() && String.valueOf(text.charAt(caretPos)).equals(closeChar)) {
+                e.consume();
                 // 光标右边已是结束符，直接跳过
                 this.positionCaret(caretPos + 1);
             } else {
+                e.consume();
                 // 插入成对符号，光标居中
                 this.replaceText(caretPos, caretPos, ch + closeChar);
                 this.positionCaret(caretPos + 1);

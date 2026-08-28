@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor.incubator;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -494,10 +495,15 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private List<RichParagraph> buildRichParagraphs(String text) {
         StyleProvider provider = this.getStyleProvider();
+        if (provider == null) {
+            JulLog.warn("StyleProvider is null");
+            return Collections.emptyList();
+        }
         String[] lines = text.split(LINE_SPLIT_PATTERN);
         List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
         for (String line : lines) {
             if (Thread.interrupted()) {
+                JulLog.warn("Thread is interrupted");
                 return paragraphs;
             }
             RichParagraph.Builder builder = RichParagraph.builder();
