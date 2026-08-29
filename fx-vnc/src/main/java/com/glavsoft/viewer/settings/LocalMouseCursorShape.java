@@ -23,6 +23,8 @@
 //
 package com.glavsoft.viewer.settings;
 
+import cn.oyzh.common.util.StringUtil;
+
 /**
  * @author dime at tightvnc.com
  */
@@ -32,13 +34,22 @@ public enum LocalMouseCursorShape {
     SYSTEM_DEFAULT("default"),
     NO_CURSOR("nocursor");
 
-    private String cursorName;
+    private final String cursorName;
 
     LocalMouseCursorShape(String name) {
         this.cursorName = name;
     }
 
     public String getCursorName() {
-        return  cursorName;
+        return cursorName;
+    }
+
+    public static LocalMouseCursorShape ofCursorName(String cursorName) {
+        for (LocalMouseCursorShape value : values()) {
+            if (StringUtil.endsWithIgnoreCase(value.getCursorName(), cursorName)) {
+                return value;
+            }
+        }
+        return NO_CURSOR;
     }
 }

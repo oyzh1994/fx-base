@@ -58,7 +58,7 @@ public class FramebufferUpdateRectangle {
         width = transport.readUInt16();
         height = transport.readUInt16();
         int encoding = transport.readInt32();
-		encodingType = EncodingType.byId(encoding);
+		encodingType = EncodingType.ofId(encoding);
     }
 
 	public EncodingType getEncodingType() {
