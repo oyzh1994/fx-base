@@ -17,7 +17,9 @@ public class BooleanTextFiled extends SelectTextFiled<String> {
     @Override
     public void formatValue() {
         String item = format(super.getValue());
-        super.selectItem(item);
+        if (item != null) {
+            super.selectItem(item);
+        }
     }
 
     @Override
@@ -47,6 +49,9 @@ public class BooleanTextFiled extends SelectTextFiled<String> {
             }
             return "false";
         }
-        return "false";
+        if (o != null) {
+            return "false";
+        }
+        return null;
     }
 }
