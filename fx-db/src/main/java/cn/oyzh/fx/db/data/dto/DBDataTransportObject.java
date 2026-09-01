@@ -1,10 +1,10 @@
-package cn.oyzh.fx.db.dto;
+package cn.oyzh.fx.db.data.dto;
 
 /**
  * @author oyzh
  * @since 2024-09-06
  */
-public class DBTransportObject {
+public class DBDataTransportObject {
 
     /**
      * 函数名称

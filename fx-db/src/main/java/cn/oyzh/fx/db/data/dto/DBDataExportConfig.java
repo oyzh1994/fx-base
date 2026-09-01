@@ -1,4 +1,4 @@
-package cn.oyzh.fx.db.dto;
+package cn.oyzh.fx.db.data.dto;
 
 
 import java.nio.charset.StandardCharsets;
@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
  * @author oyzh
  * @since 2024/09/02
  */
-public class DBExportConfig {
+public class DBDataExportConfig {
 
     /**
      * 日期格式

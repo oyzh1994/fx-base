@@ -1,7 +1,7 @@
 package cn.oyzh.fx.db.data.ui;
 
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.fx.db.dto.DBTransportObject;
+import cn.oyzh.fx.db.data.dto.DBDataTransportObject;
 import cn.oyzh.fx.plus.controls.button.FXCheckBox;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.util.ListViewUtil;
@@ -17,10 +17,10 @@ public class DBDataTransportObjectListView extends FXListView<FXCheckBox> {
 
     protected Runnable selectedChanged;
 
-    public void init(List<DBTransportObject> events) {
+    public void init(List<DBDataTransportObject> events) {
         this.clearItems();
         if (CollectionUtil.isNotEmpty(events)) {
-            for (DBTransportObject event : events) {
+            for (DBDataTransportObject event : events) {
                 FXCheckBox checkBox = new FXCheckBox();
                 checkBox.setText(event.getName());
                 checkBox.setSelected(event.isSelected());
@@ -40,8 +40,8 @@ public class DBDataTransportObjectListView extends FXListView<FXCheckBox> {
         }
     }
 
-    public List<DBTransportObject> getSelectedObjects() {
-        List<DBTransportObject> list = new ArrayList<>();
+    public List<DBDataTransportObject> getSelectedObjects() {
+        List<DBDataTransportObject> list = new ArrayList<>();
         for (FXCheckBox item : this.getItems()) {
             if (item.isSelected()) {
                 list.add(item.getProp("data"));
