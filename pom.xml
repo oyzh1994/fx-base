@@ -48,6 +48,7 @@
         <module>fx-terminal</module>
         <module>fx-tty</module>
         <module>fx-vnc</module>
+        <module>fx-db</module>
     </modules>
 
     <properties>
@@ -153,6 +154,12 @@
             <dependency>
                 <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-vnc</artifactId>
+                <version>${fx-base.version}</version>
+            </dependency>
+            <!-- 自定义类库，数据库相关 -->
+            <dependency>
+                <groupId>io.github.oyzh1994</groupId>
+                <artifactId>fx-db</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
             <!-- 自定义类库，仿真终端相关 -->
