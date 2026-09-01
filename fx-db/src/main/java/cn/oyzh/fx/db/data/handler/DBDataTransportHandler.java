@@ -1,6 +1,7 @@
-package cn.oyzh.fx.db.data;
+package cn.oyzh.fx.db.data.handler;
 
 import cn.oyzh.fx.db.DBDialect;
+import cn.oyzh.fx.db.data.DataBatchInsertable;
 
 import java.util.ArrayList;
 import java.util.List;

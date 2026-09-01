@@ -1,4 +1,4 @@
-package cn.oyzh.fx.db.ui;
+package cn.oyzh.fx.db.data.ui;
 
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.i18n.I18nHelper;

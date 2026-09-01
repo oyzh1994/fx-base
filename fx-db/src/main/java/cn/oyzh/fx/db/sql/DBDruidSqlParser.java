@@ -20,11 +20,11 @@ import java.util.Map;
  * @author oyzh
  * @since 2024/2/26
  */
-public class DruidSqlParser extends DBSqlParser {
+public class DBDruidSqlParser extends DBSqlParser {
 
     private final DbType dbType;
 
-    public DruidSqlParser(String sqlContent, DBDialect dialect) {
+    public DBDruidSqlParser(String sqlContent, DBDialect dialect) {
         super(sqlContent, dialect);
         this.dbType = dialect.dbType();
     }

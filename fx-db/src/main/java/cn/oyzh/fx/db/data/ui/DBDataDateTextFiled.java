@@ -1,4 +1,4 @@
-package cn.oyzh.fx.db.ui;
+package cn.oyzh.fx.db.data.ui;
 
 
 import cn.oyzh.fx.gui.text.field.SelectTextFiled;

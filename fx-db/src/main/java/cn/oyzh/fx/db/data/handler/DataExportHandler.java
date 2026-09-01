@@ -1,4 +1,4 @@
-package cn.oyzh.fx.db.data;
+package cn.oyzh.fx.db.data.handler;
 
 /**
  * @author oyzh

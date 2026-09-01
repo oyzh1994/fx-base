@@ -1,4 +1,4 @@
-package cn.oyzh.fx.db.ui;
+package cn.oyzh.fx.db.data.ui;
 
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.db.dto.DBTransportObject;

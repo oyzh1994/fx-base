@@ -1,4 +1,4 @@
-package cn.oyzh.fx.db.data;
+package cn.oyzh.fx.db.data.handler;
 
 import cn.oyzh.common.file.FastFileWriter;
 import cn.oyzh.fx.db.DBDialect;

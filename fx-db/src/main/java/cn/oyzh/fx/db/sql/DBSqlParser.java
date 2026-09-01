@@ -47,6 +47,6 @@ public abstract class DBSqlParser {
     }
 
     public static DBSqlParser getParser(String sql, DBDialect dialect) throws Exception {
-        return new DruidSqlParser(sql, dialect);
+        return new DBDruidSqlParser(sql, dialect);
     }
 }
