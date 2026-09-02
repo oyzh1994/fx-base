@@ -16,8 +16,9 @@ import java.util.stream.Collectors;
  */
 public class DBColumnFieldManager {
 
-    private static final Map<DBDialect, List<DBColumnField>> COLUMN_FIELD = new ConcurrentHashMap<>();
     private static final Map<DBDialect, Runnable> INITIALIZERS = new ConcurrentHashMap<>();
+
+    private static final Map<DBDialect, List<DBColumnField>> COLUMN_FIELD = new ConcurrentHashMap<>();
 
     public static void registerInitializer(DBDialect dialect, Runnable func) {
         INITIALIZERS.put(dialect, func);
