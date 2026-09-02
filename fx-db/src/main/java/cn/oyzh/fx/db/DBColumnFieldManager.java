@@ -241,6 +241,15 @@ public class DBColumnFieldManager {
         return false;
     }
 
+    public static Object defaultValue(DBDialect dialect, String type) {
+        for (DBColumnField value : fields(dialect)) {
+            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+                return value.defaultValue;
+            }
+        }
+        return false;
+    }
+
     public static Long minValue(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
             if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {

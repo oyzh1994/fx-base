@@ -44,6 +44,11 @@ public class DBColumnField {
     public String exampleValue;
 
     /**
+     * 默认值
+     */
+    public Object defaultValue;
+
+    /**
      * 是否支持大小
      */
     public boolean supportSize;
