@@ -1,13 +1,13 @@
 package cn.oyzh.fx.db;
 
+
 import cn.oyzh.common.util.StringUtil;
 
 /**
- *
  * @author oyzh
- * @since 2026-08-21
+ * @since 2024/1/30
  */
-public interface DBTable {
+public interface DBForeignKey {
 
     /**
      * 获取名称
@@ -24,29 +24,6 @@ public interface DBTable {
     void setName(String name);
 
     /**
-     * 设置注释
-     *
-     * @param comment 注释
-     */
-    void setComment(String comment);
-
-    /**
-     * 获取注释
-     *
-     * @return 结果
-     */
-    String getComment();
-
-    /**
-     * 是否有注释
-     *
-     * @return 结果
-     */
-    default boolean hasComment() {
-        return this.getComment() != null;
-    }
-
-    /**
      * 是否无效
      *
      * @return 结果
@@ -54,5 +31,4 @@ public interface DBTable {
     default boolean isInvalid() {
         return StringUtil.isBlank(this.getName());
     }
-
 }

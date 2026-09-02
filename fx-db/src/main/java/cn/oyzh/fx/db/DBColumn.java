@@ -1,5 +1,7 @@
 package cn.oyzh.fx.db;
 
+import cn.oyzh.common.util.StringUtil;
+
 /**
  *
  * @author oyzh
@@ -263,5 +265,14 @@ public interface DBColumn {
      */
     default Object exampleValue() {
         return null;
+    }
+
+    /**
+     * 是否无效
+     *
+     * @return 结果
+     */
+    default boolean isInvalid() {
+        return StringUtil.isBlank(this.getName()) || StringUtil.isBlank(this.getType());
     }
 }
