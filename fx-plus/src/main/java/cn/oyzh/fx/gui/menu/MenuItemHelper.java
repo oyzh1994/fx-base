@@ -746,6 +746,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadDatabase(), new RefreshSVGGlyph(), action);
     }
 
+    public static FXMenuItem reloadSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadSchema(), new RefreshSVGGlyph(), action);
+    }
+
     public static FXMenuItem serverInfo(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.serverInfo(), new InfoSVGGlyph(), action);
     }
@@ -1044,6 +1048,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem addDatabase(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addDatabase(), new AddSVGGlyph(), action);
+    }
+
+    public static FXMenuItem addSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addSchema(), new AddSVGGlyph(), action);
     }
 
     public static FXMenuItem closeAllTab(Runnable action) {
