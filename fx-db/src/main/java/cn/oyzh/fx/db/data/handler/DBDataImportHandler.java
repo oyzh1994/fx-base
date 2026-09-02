@@ -13,9 +13,9 @@ import java.util.List;
 public abstract class DBDataImportHandler<D> extends DataImportHandler implements DataBatchInsertable<D> {
 
     /**
-     * 库名称
+     * 名称
      */
-    protected String dbName;
+    protected String name;
 
     /**
      * 文件类型
@@ -41,8 +41,8 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
      */
     protected int batchLimit = 50;
 
-    public DBDataImportHandler(String dbName) {
-        this.dbName = dbName;
+    public DBDataImportHandler(String name) {
+        this.name = name;
     }
 
     /**
@@ -112,12 +112,12 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
         return this.insertList;
     }
 
-    public String getDbName() {
-        return dbName;
+    public String getName() {
+        return name;
     }
 
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFileType() {
