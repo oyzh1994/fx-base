@@ -12,7 +12,6 @@
     <name>fx-db</name>
     <artifactId>fx-db</artifactId>
 
-
     <properties>
         <druid.version>1.2.28</druid.version>
     </properties>
@@ -22,6 +21,12 @@
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
             <artifactId>fx-plus</artifactId>
+        </dependency>
+
+        <!-- 自定义类库，编辑器 -->
+        <dependency>
+            <groupId>io.github.oyzh1994</groupId>
+            <artifactId>fx-editor</artifactId>
         </dependency>
 
         <!-- 自定义类库，fx相关 -->
