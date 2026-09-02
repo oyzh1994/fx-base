@@ -159,16 +159,16 @@ public abstract class DBConnManager implements AutoCloseable {
     /**
      * 执行连接
      *
-     * @param dbName 数据库
+     * @param name 名称
      * @return 结果
      * @throws SQLException           异常
      * @throws ClassNotFoundException 异常
      */
-    public Connection connection(String dbName) throws Exception {
-        Connection connection = this.getConnection(dbName);
+    public Connection connection(String name) throws Exception {
+        Connection connection = this.getConnection(name);
         if (!this.isValid(connection)) {
-            connection = this.initConnection(dbName, this.config.getUser(), this.config.getPassword());
-            this.addConnection(dbName, connection);
+            connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
+            this.addConnection(name, connection);
         }
         connection.setAutoCommit(true);
         return connection;
@@ -195,16 +195,16 @@ public abstract class DBConnManager implements AutoCloseable {
     /**
      * 执行过程连接
      *
-     * @param dbName 数据库
+     * @param name 名称
      * @return 结果
      * @throws SQLException           异常
      * @throws ClassNotFoundException 异常
      */
-    public Connection procedureConnection(String dbName) throws Exception {
-        Connection connection = this.getProcedureConnection(dbName);
+    public Connection procedureConnection(String name) throws Exception {
+        Connection connection = this.getProcedureConnection(name);
         if (!this.isValid(connection)) {
-            connection = this.initConnection(dbName, this.config.getUser(), this.config.getPassword());
-            this.addProcedureConnection(dbName, connection);
+            connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
+            this.addProcedureConnection(name, connection);
         }
         connection.setAutoCommit(true);
         return connection;
@@ -213,13 +213,13 @@ public abstract class DBConnManager implements AutoCloseable {
     /**
      * 执行新连接
      *
-     * @param dbName 数据库
+     * @param name 名称
      * @return 结果
      * @throws SQLException           异常
      * @throws ClassNotFoundException 异常
      */
-    public Connection newConnection(String dbName) throws Exception {
-        Connection connection = this.initConnection(dbName, this.config.getUser(), this.config.getPassword());
+    public Connection newConnection(String name) throws Exception {
+        Connection connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
         connection.setAutoCommit(true);
         return connection;
     }
@@ -227,14 +227,14 @@ public abstract class DBConnManager implements AutoCloseable {
     /**
      * 初始化连接
      *
-     * @param dbName   数据库
+     * @param name     名称
      * @param user     用户名
      * @param password 密码
      * @return 结果
      * @throws SQLException           异常
      * @throws ClassNotFoundException 异常
      */
-    public abstract Connection initConnection(String dbName, String user, String password) throws Exception;
+    public abstract Connection initConnection(String name, String user, String password) throws Exception;
 
     /**
      * 获取连接字符串
