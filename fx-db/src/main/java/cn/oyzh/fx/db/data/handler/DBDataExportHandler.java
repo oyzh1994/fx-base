@@ -8,9 +8,9 @@ package cn.oyzh.fx.db.data.handler;
 public abstract class DBDataExportHandler extends DataExportHandler {
 
     /**
-     * 库名称
+     * 名称
      */
-    protected String dbName;
+    protected String name;
 
     /**
      * 文件类型
@@ -24,8 +24,8 @@ public abstract class DBDataExportHandler extends DataExportHandler {
      */
     protected int queryLimit = 1000;
 
-    public DBDataExportHandler( String dbName) {
-        this.dbName = dbName;
+    public DBDataExportHandler( String name) {
+        this.name = name;
     }
 
     /**
@@ -118,12 +118,12 @@ public abstract class DBDataExportHandler extends DataExportHandler {
         return "js".equalsIgnoreCase(this.fileType);
     }
 
-    public String getDbName() {
-        return dbName;
+    public String getName() {
+        return name;
     }
 
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFileType() {
