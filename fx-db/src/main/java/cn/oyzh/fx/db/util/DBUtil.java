@@ -170,23 +170,23 @@ public class DBUtil {
         return result;
     }
 
-//    /**
-//     * 关闭
-//     *
-//     * @param o 对象
-//     * @throws SQLException 异常
-//     */
-//    public static void close(AutoCloseable o) throws Exception {
-//        if (o instanceof ResultSet resultSet) {
-//            resultSet.close();
-//        } else if (o instanceof Statement statement) {
-//            statement.close();
-//        } else if (o instanceof Connection connection) {
-//            connection.close();
-//        } else if (o != null) {
-//            o.close();
-//        }
-//    }
+    //    /**
+    //     * 关闭
+    //     *
+    //     * @param o 对象
+    //     * @throws SQLException 异常
+    //     */
+    //    public static void close(AutoCloseable o) throws Exception {
+    //        if (o instanceof ResultSet resultSet) {
+    //            resultSet.close();
+    //        } else if (o instanceof Statement statement) {
+    //            statement.close();
+    //        } else if (o instanceof Connection connection) {
+    //            connection.close();
+    //        } else if (o != null) {
+    //            o.close();
+    //        }
+    //    }
 
     /**
      * 包装
@@ -205,6 +205,14 @@ public class DBUtil {
             if (!name.endsWith("`")) {
                 builder.append("`");
             }
+        } else if (dialect == DBDialect.DAMENG) {
+            if (!name.startsWith("\"")) {
+                builder.append("\"");
+            }
+            builder.append(name);
+            if (!name.endsWith("\"")) {
+                builder.append("\"");
+            }
         }
         return builder.toString();
     }
@@ -218,10 +226,7 @@ public class DBUtil {
      * @return 结果
      */
     public static String wrap(String dbName, String tableName, DBDialect dialect) {
-        if (dialect == DBDialect.MYSQL) {
-            return wrap(dbName, dialect) + "." + wrap(tableName, dialect);
-        }
-        return null;
+        return wrap(dbName, dialect) + "." + wrap(tableName, dialect);
     }
 
     /**
@@ -238,7 +243,7 @@ public class DBUtil {
         if (val instanceof Number) {
             return val;
         }
-        if (dialect == DBDialect.MYSQL) {
+        if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
             if (val instanceof CharSequence v) {
                 String v1 = v.toString();
                 if (v1.isEmpty()) {
@@ -256,7 +261,6 @@ public class DBUtil {
                 return "'" + val + "'";
             }
         }
-
         return val;
     }
 
@@ -271,7 +275,7 @@ public class DBUtil {
         if (val == null) {
             return null;
         }
-        if (dialect == DBDialect.MYSQL) {
+        if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
             if (val instanceof CharSequence v) {
                 String v1 = v.toString();
                 if (v1.isEmpty()) {
