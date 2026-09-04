@@ -16,7 +16,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
 
     public void setDialect(DBDialect dialect) {
         this.dialect = dialect;
-        this.setItem(DBColumnFieldManager.fields(dialect));
+        this.setItem(DBColumnFieldManager.fieldNames(dialect));
     }
 
     public DBDialect getDialect() {
