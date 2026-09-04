@@ -108,6 +108,8 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
     public void select(String type) {
         if (type != null) {
             super.select(type.toUpperCase());
+        } else {
+            super.clearSelection();
         }
     }
 }
