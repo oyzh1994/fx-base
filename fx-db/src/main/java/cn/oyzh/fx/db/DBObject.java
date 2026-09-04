@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author oyzh
  * @since 2024/07/13
  */
-public class DBObjectStatus implements Destroyable {
+public class DBObject implements Destroyable {
 
     /**
      * 对象是否变更

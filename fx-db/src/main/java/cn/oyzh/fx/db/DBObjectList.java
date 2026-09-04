@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * @author oyzh
  * @since 2024/07/13
  */
-public abstract class DBObjectList<S extends DBObjectStatus> extends ArrayList<S> {
+public abstract class DBObjectList<S extends DBObject> extends ArrayList<S> {
 
     public static final byte TYPE_NORMAL = 0;
 
@@ -154,19 +154,19 @@ public abstract class DBObjectList<S extends DBObjectStatus> extends ArrayList<S
         return false;
     }
 
-    public static boolean isDeleted(DBObjectStatus status) {
+    public static boolean isDeleted(DBObject status) {
         return status != null && status.isDeleted();
     }
 
-    public static boolean isCreated(DBObjectStatus status) {
+    public static boolean isCreated(DBObject status) {
         return status != null && !status.isDeleted() && status.isCreated();
     }
 
-    public static boolean isChanged(DBObjectStatus status) {
+    public static boolean isChanged(DBObject status) {
         return status != null && !status.isCreated() && !status.isDeleted() && status.isChanged();
     }
 
-    public static boolean isNormal(DBObjectStatus status) {
+    public static boolean isNormal(DBObject status) {
         if (status == null) {
             return false;
         }

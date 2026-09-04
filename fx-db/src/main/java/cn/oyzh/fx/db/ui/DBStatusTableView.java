@@ -1,6 +1,6 @@
 package cn.oyzh.fx.db.ui;
 
-import cn.oyzh.fx.db.DBObjectStatus;
+import cn.oyzh.fx.db.DBObject;
 import cn.oyzh.fx.db.listener.DBStatusListener;
 import cn.oyzh.fx.plus.controls.table.FXTableView;
 import javafx.collections.ListChangeListener;
@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author oyzh
  * @since 2024/07/22
  */
-public class DBStatusTableView<S extends DBObjectStatus> extends FXTableView<S> {
+public class DBStatusTableView<S extends DBObject> extends FXTableView<S> {
 
     private List<S> deleteItems;
 
@@ -22,7 +22,7 @@ public class DBStatusTableView<S extends DBObjectStatus> extends FXTableView<S> 
     }
 
     public void clearStatus() throws Exception {
-        for (DBObjectStatus object : this.getItems()) {
+        for (DBObject object : this.getItems()) {
             object.clearStatus();
         }
     }
@@ -47,7 +47,7 @@ public class DBStatusTableView<S extends DBObjectStatus> extends FXTableView<S> 
             } else if (c.wasAdded()) {
                 List<? extends S> list = c.getAddedSubList();
                 if (list != null) {
-                    for (DBObjectStatus status : list) {
+                    for (DBObject status : list) {
                         status.statusProperty().addListener(this.statusListener);
                     }
                 }
