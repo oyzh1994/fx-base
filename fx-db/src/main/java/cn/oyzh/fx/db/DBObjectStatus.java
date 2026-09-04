@@ -192,11 +192,6 @@ public class DBObjectStatus implements Destroyable {
         return statusProperty;
     }
 
-    // @Override
-    // public boolean equals(Object o) {
-    //     return o == this;
-    // }
-
     public String getStatus() {
         return this.statusProperty().get();
     }
