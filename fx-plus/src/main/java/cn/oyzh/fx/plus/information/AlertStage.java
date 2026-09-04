@@ -167,12 +167,16 @@ public class AlertStage extends Stage implements StageAdapter {
 
     @Override
     public void showAndWait() {
-        super.showAndWait();
-        this.type = null;
-        this.graphic = null;
-        this.buttons = null;
-        this.content = null;
-        this.setScene(null);
+        try {
+            super.showAndWait();
+            this.type = null;
+            this.graphic = null;
+            this.buttons = null;
+            this.content = null;
+            this.setScene(null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public Button getResult() {
