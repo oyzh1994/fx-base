@@ -49,6 +49,11 @@ public class DBDataExportConfig {
      */
     private boolean earlyVersion;
 
+    /**
+     * 错误时继续
+     */
+    private boolean continueWithError;
+
     public String getDateFormat() {
         return dateFormat;
     }
@@ -111,5 +116,13 @@ public class DBDataExportConfig {
 
     public void setEarlyVersion(boolean earlyVersion) {
         this.earlyVersion = earlyVersion;
+    }
+
+    public boolean isContinueWithError() {
+        return continueWithError;
+    }
+
+    public void setContinueWithError(boolean continueWithError) {
+        this.continueWithError = continueWithError;
     }
 }
