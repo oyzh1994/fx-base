@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
@@ -32,12 +34,13 @@ public class AppTestMain extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // 应用主题
-//        ThemeManager.apply(Themes.DRACULA);
+        //        ThemeManager.apply(Themes.DRACULA);
         // test1(stage);
         // test2(stage);
-//        test3(stage);
-//        test4(stage);
-        test5(stage);
+        //        test3(stage);
+        //        test4(stage);
+        //        test5(stage);
+        test6(stage);
         SystemUtil.gcInterval(3000);
     }
 
@@ -149,14 +152,30 @@ public class AppTestMain extends Application {
     private void test5(Stage stage) {
         VBox vBox = new VBox();
         for (int i = 0; i < 20; i++) {
-            HBox hBox=new HBox();
+            HBox hBox = new HBox();
             for (int j = 0; j < 10; j++) {
-                hBox.getChildren().add(new Label("Hello World" + (i + 1)+ (j + 1)));
+                hBox.getChildren().add(new Label("Hello World" + (i + 1) + (j + 1)));
             }
             vBox.getChildren().add(hBox);
         }
         ScrollPane scrollPane = new ScrollPane(vBox);
         stage.setScene(new Scene(scrollPane));
+        stage.setWidth(800);
+        stage.setHeight(600);
+        stage.show();
+        stage.setTitle("Hello Javafx");
+    }
+
+    private void test6(Stage stage) {
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().add(new Menu("test1"));
+        menuBar.getMenus().add(new Menu("test2"));
+        menuBar.setUseSystemMenuBar(true);
+
+        VBox vBox = new VBox(menuBar);
+        vBox.getChildren().add(new Button("aa"));
+        vBox.getChildren().add(new Button("aa1"));
+        stage.setScene(new Scene(vBox));
         stage.setWidth(800);
         stage.setHeight(600);
         stage.show();
