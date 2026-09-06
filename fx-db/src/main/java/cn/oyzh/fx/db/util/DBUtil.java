@@ -55,7 +55,7 @@ public class DBUtil {
     /**
      * 是否开启打印元数据功能
      */
-    public static boolean ENABLE_PRINT_METADATA = false;
+    public static boolean ENABLE_PRINT_METADATA = true;
 
     /**
      * 打印元数据

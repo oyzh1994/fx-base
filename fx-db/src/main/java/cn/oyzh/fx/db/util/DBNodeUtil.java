@@ -235,7 +235,7 @@ public class DBNodeUtil {
     public static Node generateNode(DBColumn column) {
         Node node;
         if (column == null) {
-            node = new FXTextField();
+            node = new ClearableTextField();
         } else if (column.supportJson()) {
             node = new JsonTextFiled();
         } else if (column.supportJsonArray()) {
@@ -273,7 +273,7 @@ public class DBNodeUtil {
         } else if (column.supportBinary()) {
             node = new ChooseFileTextField();
         } else {
-            node = new FXTextField();
+            node = new ClearableTextField();
         }
         return node;
     }

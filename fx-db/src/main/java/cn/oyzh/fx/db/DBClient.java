@@ -1,5 +1,6 @@
 package cn.oyzh.fx.db;
 
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -123,7 +124,7 @@ public interface DBClient {
     /**
      * 批量插入SQL
      *
-     * @param dbName 库名称
+     * @param dbName  库名称
      * @param sqlList SQL列表
      * @return 插入行数
      */
@@ -154,4 +155,13 @@ public interface DBClient {
     default boolean isSupportEventFeature() {
         return this.isSupportFeature(DBFeature.EVENT);
     }
+
+    /**
+     * 获取自增列
+     *
+     * @param statement 语句块
+     * @return 结果
+     * @throws Exception 异常
+     */
+    Object getGeneratedKeys(Statement statement) throws Exception;
 }
