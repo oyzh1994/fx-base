@@ -267,6 +267,52 @@ public interface DBColumn {
         return null;
     }
 
+
+    /**
+     * 是否年类型
+     *
+     * @return 结果
+     */
+    default boolean isYearType() {
+        return false;
+    }
+
+    /**
+     * 是否时间类型
+     *
+     * @return 结果
+     */
+    default boolean isTimeType() {
+        return false;
+    }
+
+    /**
+     * 是否日期类型
+     *
+     * @return 结果
+     */
+    default boolean isDateType() {
+        return false;
+    }
+
+    /**
+     * 是否日期时间类型
+     *
+     * @return 结果
+     */
+    default boolean isDateTimeType() {
+        return false;
+    }
+
+    /**
+     * 获取浮点位
+     *
+     * @return 结果
+     */
+    default Integer getDigits() {
+        return null;
+    }
+
     /**
      * 是否无效
      *
