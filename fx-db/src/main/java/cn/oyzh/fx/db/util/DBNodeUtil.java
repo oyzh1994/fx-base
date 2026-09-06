@@ -1,7 +1,6 @@
 package cn.oyzh.fx.db.util;
 
 import cn.oyzh.fx.db.DBColumn;
-import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.editor.incubator.control.JsonTextFiled;
 import cn.oyzh.fx.editor.incubator.control.LongTextFiled;
 import cn.oyzh.fx.gui.text.field.BinaryTextFiled;
@@ -26,7 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.CodeArea;
-import jfx.incubator.scene.control.richtext.RichTextArea;
 
 /**
  *
@@ -45,6 +43,9 @@ public class DBNodeUtil {
         Object val = null;
         if (node instanceof FXTextField textField) {
             val = textField.getValue();
+            if (val == null) {
+                val = textField.getText();
+            }
         } else if (node instanceof TextField textField) {
             val = textField.getText();
         } else if (node instanceof TextArea textField) {
@@ -185,14 +186,16 @@ public class DBNodeUtil {
             ExampleTextField textField = new ExampleTextField();
             textField.setExample(column.exampleValue());
             textField.setValue(object);
-            textField.setBackground(ControlUtil.background(Color.valueOf("#D4E8D0")));
             node = textField;
         } else if (column.supportString()) {
+            LimitTextField textField;
             if (column.supportSize() && column.getSize() != null) {
-                node = new LimitTextField((long) column.getSize());
+                textField = new LimitTextField((long) column.getSize());
             } else {
-                node = new LimitTextField();
+                textField = new LimitTextField();
             }
+            textField.setValue(object);
+            node = textField;
         } else if (column.isDateType()) {
             DateTextField textField = new DateTextField();
             textField.setValue(object);
