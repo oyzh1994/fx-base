@@ -1,9 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
-import atlantafx.base.controls.Popover;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.scene.Node;
-import javafx.stage.PopupWindow;
 import javafx.stage.Window;
 
 /**
@@ -47,16 +45,6 @@ public class PopupManager {
     }
 
     /**
-     * 解析弹窗
-     *
-     * @param clazz 弹窗类
-     * @return PopupWrapper
-     */
-    public static PopupAdapter parsePopup(Class<?> clazz) {
-        return parsePopup(clazz, null, null);
-    }
-
-    /**
      * 弹窗对象，由于弹窗只能存在一个，故而仅保留一个实例
      */
     private static PopupExt popup;
@@ -64,12 +52,10 @@ public class PopupManager {
     /**
      * 解析弹窗
      *
-     * @param clazz          弹窗类
-     * @param arrowLocation  提示组件位置
-     * @param anchorLocation 弹窗位置
-     * @return PopupWrapper
+     * @param clazz 弹窗类
+     * @return PopupAdapter
      */
-    public static PopupAdapter parsePopup(Class<?> clazz, Popover.ArrowLocation arrowLocation, PopupWindow.AnchorLocation anchorLocation) {
+    public static PopupAdapter parsePopup(Class<?> clazz) {
         PopupAttribute attribute = clazz.getAnnotation(PopupAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + PopupAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
@@ -85,16 +71,47 @@ public class PopupManager {
         } else {// 初始化弹窗
             popup.init(attribute);
         }
-        if (arrowLocation != null) {
-            popup.setArrowLocation(arrowLocation);
-        } else {
-            popup.setArrowLocation(attribute.arrowLocation());
-        }
-        if (anchorLocation != null) {
-            popup.setAnchorLocation(anchorLocation);
-        } else {
-            popup.setAnchorLocation(attribute.anchorLocation());
-        }
+        popup.setArrowLocation(attribute.arrowLocation());
+        popup.setAnchorLocation(attribute.anchorLocation());
         return popup;
     }
+
+
+    ///**
+    // * 解析弹窗
+    // *
+    // * @param clazz          弹窗类
+    // * @param arrowLocation  提示组件位置
+    // * @param anchorLocation 弹窗位置
+    // * @return PopupWrapper
+    // */
+    //public static PopupAdapter parsePopup(Class<?> clazz, Popover.ArrowLocation arrowLocation, PopupWindow.AnchorLocation anchorLocation) {
+    //    PopupAttribute attribute = clazz.getAnnotation(PopupAttribute.class);
+    //    if (attribute == null) {
+    //        throw new RuntimeException("can not find annotation[" + PopupAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
+    //    }
+    //    // 获取弹窗
+    //    PopupAdapter adapter = getPopup(clazz);
+    //    if (adapter != null) {
+    //        adapter.disappear();
+    //    }
+    //    // 创建弹窗
+    //    if (popup == null) {
+    //        popup = new PopupExt(attribute);
+    //    } else {// 初始化弹窗
+    //        popup.init(attribute);
+    //    }
+    //    if (arrowLocation != null) {
+    //        popup.setArrowLocation(arrowLocation);
+    //    } else {
+    //        popup.setArrowLocation(attribute.arrowLocation());
+    //    }
+    //    if (anchorLocation != null) {
+    //        popup.setAnchorLocation(anchorLocation);
+    //    } else {
+    //        popup.setAnchorLocation(attribute.anchorLocation());
+    //    }
+    //    return popup;
+    //}
+
 }

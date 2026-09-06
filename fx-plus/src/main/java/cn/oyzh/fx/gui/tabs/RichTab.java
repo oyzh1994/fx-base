@@ -236,6 +236,7 @@ public abstract class RichTab extends FXTab {
     public void initNode() {
         // 加载内容
         this.loadContent();
+        // 监听tab
         ObjectWatcherManager.watch(this);
         super.initNode();
     }
