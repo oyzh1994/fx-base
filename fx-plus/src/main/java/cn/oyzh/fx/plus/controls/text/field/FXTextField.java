@@ -128,7 +128,10 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
      * @return 结果
      */
     public Object getValue() {
-        return this.value;
+        if (this.getText() == null) {
+            return this.value;
+        }
+        return this.getText();
     }
 
     /**

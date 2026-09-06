@@ -4,7 +4,6 @@ import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.skin.DigitalTextFieldSkin;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
-import javafx.scene.control.Skin;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
@@ -32,12 +31,12 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected Number step = 1L;
 
-//    /**
-//     * 无符号模式
-//     * TODO: 废弃，以mavVal和minVal来限制
-//     */
-//    @Deprecated
-//    private boolean unsigned;
+    //    /**
+    //     * 无符号模式
+    //     * TODO: 废弃，以mavVal和minVal来限制
+    //     */
+    //    @Deprecated
+    //    private boolean unsigned;
 
     public Number getMaxVal() {
         return maxVal;
@@ -240,6 +239,7 @@ public abstract class DigitalTextField extends LimitTextField {
             } else if (value instanceof CharSequence sequence) {
                 this.value(NumberUtil.parseNumber(sequence.toString()));
             }
+        } catch (NumberFormatException ignore) {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
