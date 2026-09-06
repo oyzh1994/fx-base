@@ -43,14 +43,6 @@ public abstract class DBCondition {
         return this.wrapCondition(null, null);
     }
 
-    public Object wrapCondition(Object condition) {
-        return this.wrapCondition(null, condition);
-    }
-
-    public Object wrapCondition(String columnName) {
-        return this.wrapCondition(columnName, null);
-    }
-
     public Object wrapCondition(String columnName, Object condition) {
         return null;
     }
