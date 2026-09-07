@@ -20,7 +20,7 @@ public class BinaryTextFiled extends ChooseFileTextField {
 
     @Override
     public void formatValue() {
-        this.setText(format(super.getValue(), this.scale));
+        this.setText(format(super.value(), this.scale));
     }
 
     public static String format(Object o, Integer scale) {

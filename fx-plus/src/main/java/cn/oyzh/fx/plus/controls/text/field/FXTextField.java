@@ -123,6 +123,15 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
     private Object value;
 
     /**
+     * 获取实际值
+     *
+     * @return 实际值
+     */
+    protected Object value() {
+        return this.value;
+    }
+
+    /**
      * 获取值
      *
      * @return 结果

@@ -41,10 +41,10 @@ public class DateTextField extends LimitTextField {
                 ex.printStackTrace();
             }
         }
-        if (super.getValue() instanceof Date date) {
+        if (super.value() instanceof Date date) {
             return date;
         }
-        if (super.getValue() instanceof java.util.Date date) {
+        if (super.value() instanceof java.util.Date date) {
             return new Date(date.getTime());
         }
         return text;
@@ -52,7 +52,7 @@ public class DateTextField extends LimitTextField {
 
     @Override
     public void formatValue() {
-        if (super.getValue() instanceof java.util.Date date) {
+        if (super.value() instanceof java.util.Date date) {
             SimpleDateFormat format = this.getDateFormat() == null ? FORMAT : this.getDateFormat();
             this.setText(format.format(date));
         }

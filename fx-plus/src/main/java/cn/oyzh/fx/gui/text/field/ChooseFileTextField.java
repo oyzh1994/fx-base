@@ -23,7 +23,7 @@ public class ChooseFileTextField extends FXTextField {
         if (file != null) {
             return FileUtil.readBytes(file);
         }
-        if (super.getValue() instanceof byte[] bytes) {
+        if (super.value() instanceof byte[] bytes) {
             return bytes;
         }
         return null;

@@ -75,10 +75,10 @@ public class DateTimeTextField extends LimitTextField {
                 ex.printStackTrace();
             }
         }
-        if (super.getValue() instanceof Date date) {
+        if (super.value() instanceof Date date) {
             return date;
         }
-        if (super.getValue() instanceof LocalDateTime time) {
+        if (super.value() instanceof LocalDateTime time) {
             return DateUtil.of(time);
         }
         return text;
@@ -88,13 +88,13 @@ public class DateTimeTextField extends LimitTextField {
     public void formatValue() {
         SimpleDateFormat format;
         if (this.getDateFormat() == null) {
-            format = getFormat(super.getValue());
+            format = getFormat(super.value());
         } else {
             format = this.getDateFormat();
         }
-        if (super.getValue() instanceof LocalDateTime localDateTime) {
+        if (super.value() instanceof LocalDateTime localDateTime) {
             this.setText(LocalDateTimeUtil.format(localDateTime, format.toPattern()));
-        } else if (super.getValue() instanceof java.util.Date date) {
+        } else if (super.value() instanceof java.util.Date date) {
             this.setText(format.format(date));
         }
     }

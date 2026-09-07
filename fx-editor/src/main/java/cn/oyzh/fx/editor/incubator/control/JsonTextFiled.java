@@ -54,7 +54,7 @@ public class JsonTextFiled extends LimitTextField {
 
     @Override
     public void formatValue() {
-        this.setText(format(super.getValue()));
+        this.setText(format(super.value()));
     }
 
     public static String format(Object val) {
