@@ -163,5 +163,5 @@ public interface DBClient {
      * @return 结果
      * @throws Exception 异常
      */
-    Object getGeneratedKeys(Statement statement) throws Exception;
+    Long getGeneratedKeys(Statement statement) throws Exception;
 }

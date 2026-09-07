@@ -6,6 +6,7 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.db.DBColumn;
 import cn.oyzh.fx.db.DBDialect;
+import cn.oyzh.fx.db.DBRecordData;
 import cn.oyzh.fx.editor.incubator.control.JsonTextFiled;
 import cn.oyzh.fx.editor.incubator.control.LongTextFiled;
 import cn.oyzh.fx.gui.text.field.BinaryTextFiled;
@@ -41,6 +42,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -86,6 +88,31 @@ public class DBUtil {
      */
     public static void printSql(String sql) {
         JulLog.info("\n" + sql);
+    }
+
+    /**
+     * 打印信息
+     *
+     * @param sql  sql
+     * @param data 数据
+     */
+    public static void printInfo(String sql, DBRecordData data) {
+        DBUtil.printSql(sql);
+        printData(data);
+    }
+
+    /**
+     * 打印数据
+     *
+     * @param data 数据
+     */
+    public static void printData(DBRecordData data) {
+        if (data != null) {
+            for (Map.Entry<DBColumn, Object> entry : data.entries()) {
+                JulLog.info(entry.getKey().getName() + "=" + entry.getValue());
+            }
+            JulLog.info("printData======================>");
+        }
     }
 
     /**

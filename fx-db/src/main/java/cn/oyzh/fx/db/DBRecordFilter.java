@@ -4,6 +4,8 @@ import cn.oyzh.fx.db.ui.DBJoinSymbolComboBox;
 import cn.oyzh.fx.plus.controls.button.FXCheckBox;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
 
+import java.util.List;
+
 /**
  * 记录过滤条件
  *
@@ -26,6 +28,16 @@ public class DBRecordFilter {
      * 连接符号
      */
     protected String joinSymbol;
+
+    /**
+     * 字段
+     */
+    protected DBColumn column;
+
+    /**
+     * 字段列表
+     */
+    protected List<? extends DBColumn> columns;
 
     /**
      * 获取启用组件
@@ -76,5 +88,21 @@ public class DBRecordFilter {
 
     public void setJoinSymbol(String joinSymbol) {
         this.joinSymbol = joinSymbol;
+    }
+
+    public DBColumn getColumn() {
+        return column;
+    }
+
+    public void setColumn(DBColumn column) {
+        this.column = column;
+    }
+
+    public List<? extends DBColumn> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<? extends DBColumn> columns) {
+        this.columns = columns;
     }
 }
