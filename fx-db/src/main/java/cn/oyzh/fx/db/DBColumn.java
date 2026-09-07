@@ -7,21 +7,7 @@ import cn.oyzh.common.util.StringUtil;
  * @author oyzh
  * @since 2026-08-21
  */
-public interface DBColumn {
-
-    /**
-     * 获取名称
-     *
-     * @return 结果
-     */
-    String getName();
-
-    /**
-     * 设置名称
-     *
-     * @param name 名称
-     */
-    void setName(String name);
+public interface DBColumn extends DBName{
 
     /**
      * 获取类型

@@ -7,21 +7,7 @@ import cn.oyzh.common.util.StringUtil;
  * @author oyzh
  * @since 2026-08-21
  */
-public interface DBTable {
-
-    /**
-     * 获取名称
-     *
-     * @return 结果
-     */
-    String getName();
-
-    /**
-     * 设置名称
-     *
-     * @param name 名称
-     */
-    void setName(String name);
+public interface DBTable extends DBName{
 
     /**
      * 设置注释
