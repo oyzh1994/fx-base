@@ -43,9 +43,6 @@ public class DBNodeUtil {
         Object val = null;
         if (node instanceof FXTextField textField) {
             val = textField.getValue();
-            if (val == null) {
-                val = textField.getText();
-            }
         } else if (node instanceof TextField textField) {
             val = textField.getText();
         } else if (node instanceof TextArea textField) {
@@ -178,7 +175,7 @@ public class DBNodeUtil {
             BooleanTextFiled textField = new BooleanTextFiled();
             textField.setValue(object);
             node = textField;
-        } else if (column.supportTimestamp()) {
+        } else if (column.supportTimestamp()||column.isDateTimeType()) {
             DateTimeTextField textField = new DateTimeTextField();
             textField.setValue(object);
             node = textField;
@@ -206,10 +203,6 @@ public class DBNodeUtil {
             node = textField;
         } else if (column.isYearType()) {
             YearTextField textField = new YearTextField();
-            textField.setValue(object);
-            node = textField;
-        } else if (column.isDateTimeType()) {
-            DateTimeTextField textField = new DateTimeTextField();
             textField.setValue(object);
             node = textField;
         } else {

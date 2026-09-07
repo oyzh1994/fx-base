@@ -60,7 +60,7 @@ public class DateTimeTextField extends LimitTextField {
     @Override
     public Object getValue() {
         String text = this.getText();
-        if (!this.isEmpty() && !"CURRENT_TIMESTAMP".equalsIgnoreCase(text)) {
+        if (!this.isEmpty() && !("CURRENT_TIMESTAMP".equalsIgnoreCase(text) || "CURRENT_TIMESTAMP()".equalsIgnoreCase(text))) {
             try {
                 SimpleDateFormat format = null;
                 if (this.getDateFormat() != null) {
