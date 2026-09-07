@@ -62,15 +62,17 @@ public class DateTimeTextField extends LimitTextField {
         String text = this.getText();
         if (!this.isEmpty() && !"CURRENT_TIMESTAMP".equalsIgnoreCase(text)) {
             try {
-                SimpleDateFormat format;
+                SimpleDateFormat format = null;
                 if (this.getDateFormat() != null) {
                     format = this.getDateFormat();
                 } else if (text.contains("T")) {
                     format = FORMAT_T;
-                } else {
+                } else if (text.contains(":")) {
                     format = FORMAT;
                 }
-                return format.parse(text);
+                if (format != null) {
+                    return format.parse(text);
+                }
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
@@ -96,6 +98,8 @@ public class DateTimeTextField extends LimitTextField {
             this.setText(LocalDateTimeUtil.format(localDateTime, format.toPattern()));
         } else if (super.value() instanceof java.util.Date date) {
             this.setText(format.format(date));
+        } else if (super.value() instanceof CharSequence s) {
+            this.setText(s.toString());
         }
     }
 
