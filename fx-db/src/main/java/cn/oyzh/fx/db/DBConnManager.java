@@ -1,6 +1,8 @@
 package cn.oyzh.fx.db;
 
 
+import cn.oyzh.common.log.JulLog;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
@@ -169,6 +171,7 @@ public abstract class DBConnManager implements AutoCloseable {
         if (!this.isValid(connection)) {
             connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
             this.addConnection(name, connection);
+            JulLog.info("initConnection for {}", name);
         }
         connection.setAutoCommit(true);
         return connection;

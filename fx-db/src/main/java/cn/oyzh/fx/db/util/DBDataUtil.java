@@ -1,12 +1,12 @@
 package cn.oyzh.fx.db.util;
 
-import cn.oyzh.common.date.DateHelper;
 import cn.oyzh.common.util.HexUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.db.DBColumn;
 import cn.oyzh.fx.db.DBDialect;
 
-import java.util.Date;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -14,6 +14,31 @@ import java.util.Date;
  * @since 2026-09-06
  */
 public class DBDataUtil {
+
+    /**
+     * 转义符号
+     *
+     * @param str     内容
+     * @param dialect 方言
+     * @return 转义后的内容
+     */
+    public static String escapeQuotes(String str, DBDialect dialect) {
+        AtomicReference<Character> ref = new AtomicReference<>();
+        return TextUtil.escape(str, c -> {
+            try {
+                if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
+                    // 如果是'字符，并且上一个字符不是'字符，则返回''字符
+                    if (Objects.equals(c, '\'') && !Objects.equals(ref.get(), '\'')) {
+                        return "''";
+                    }
+                }
+                return null;
+            } finally {
+                ref.set(c);
+            }
+        });
+    }
+
 
     //    /**
     //     * 参数化，json
@@ -245,10 +270,10 @@ public class DBDataUtil {
         if (column.supportGeometry()) {
             return "ST_GeomFromText('" + value + "')";
         }
-        if (column.isDateType()) {
-            Date date = (Date) value;
-            value = DateHelper.formatDate(date);
-        }
+        //        if (column.supportTimestamp() || column.isDateTimeType() || column.isDateType() || column.isTimeType()) {
+        //            Date date = (Date) value;
+        //            value = DateHelper.formatDate(date);
+        //        }
         if (column.supportBinary()) {
             byte[] bytes = (byte[]) value;
             if (bytes.length == 0) {
@@ -268,9 +293,9 @@ public class DBDataUtil {
             }
             return "b'" + TextUtil.byteToBitStr(bytes) + "'";
         }
-        if (column.supportString()) {
-            value = TextUtil.escape((String) value);
-        }
+//        if (column.supportString()) {
+//            value = DBDataUtil.escapeQuotes((String) value, dialect);
+//        }
         return DBUtil.wrapData(value, dialect);
     }
 

@@ -253,7 +253,6 @@ public interface DBColumn extends DBName{
         return null;
     }
 
-
     /**
      * 是否年类型
      *

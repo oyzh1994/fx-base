@@ -55,8 +55,9 @@ public abstract class DBDataDumpHandler extends DataDumpHandler {
      */
     protected DBDialect dialect;
 
-    public DBDataDumpHandler(String dbName) {
+    public DBDataDumpHandler(String dbName,DBDialect dialect) {
         this.dbName = dbName;
+        this.dialect = dialect;
     }
 
     /**

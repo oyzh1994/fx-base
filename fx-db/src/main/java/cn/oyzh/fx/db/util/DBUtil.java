@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -283,24 +284,22 @@ public class DBUtil {
         if (val == null) {
             return null;
         }
-        if (val instanceof Number) {
-            return val;
-        }
         if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
             if (val instanceof CharSequence v) {
-                String v1 = v.toString();
+                String v1 = DBDataUtil.escapeQuotes(v.toString(), dialect);
                 if (v1.isEmpty()) {
                     return "''";
                 }
-                if (!v1.startsWith("'") && !v1.startsWith("\"")) {
-                    v1 = "'" + v1;
-                }
-                if (!v1.endsWith("'") && !v1.endsWith("\"")) {
-                    v1 = v1 + "'";
-                }
-                return v1;
+//                if (!v1.startsWith("'") && !v1.startsWith("\"")) {
+//                    v1 = "'" + v1;
+//                }
+//                if (!v1.endsWith("'") && !v1.endsWith("\"")) {
+//                    v1 = v1 + "'";
+//                }
+//                return v1;
+                return "'" + v1 + "'";
             }
-            if (val instanceof LocalDateTime) {
+            if (val instanceof java.util.Date || val instanceof Temporal) {
                 return "'" + val + "'";
             }
         }
