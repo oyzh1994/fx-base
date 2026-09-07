@@ -55,6 +55,10 @@ public abstract class DBDataTransportHandler<D> extends DataTransportHandler imp
         return this.insertList;
     }
 
+    public DBDataTransportHandler(DBDialect dialect) {
+        this.dialect = dialect;
+    }
+
     public String getSourceDatabase() {
         return sourceDatabase;
     }

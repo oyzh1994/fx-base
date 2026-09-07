@@ -630,6 +630,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSnippet(), new DeleteSVGGlyph(), action);
     }
 
+    public static FXMenuItem deleteSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSchema(), new DeleteSVGGlyph(), action);
+    }
+
     public static FXMenuItem deleteBucket(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteBucket(), new DeleteSVGGlyph(), action);
     }

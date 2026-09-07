@@ -6,7 +6,6 @@ import cn.oyzh.fx.db.DBColumn;
 import cn.oyzh.fx.db.DBDialect;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -23,19 +22,14 @@ public class DBDataUtil {
      * @return 转义后的内容
      */
     public static String escapeQuotes(String str, DBDialect dialect) {
-        AtomicReference<Character> ref = new AtomicReference<>();
         return TextUtil.escape(str, c -> {
-            try {
-                if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
-                    // 如果是'字符，并且上一个字符不是'字符，则返回''字符
-                    if (Objects.equals(c, '\'') && !Objects.equals(ref.get(), '\'')) {
-                        return "''";
-                    }
+            if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
+                // 如果是'字符，则返回''字符
+                if (Objects.equals(c, '\'')) {
+                    return "''";
                 }
-                return null;
-            } finally {
-                ref.set(c);
             }
+            return null;
         });
     }
 
@@ -293,9 +287,9 @@ public class DBDataUtil {
             }
             return "b'" + TextUtil.byteToBitStr(bytes) + "'";
         }
-//        if (column.supportString()) {
-//            value = DBDataUtil.escapeQuotes((String) value, dialect);
-//        }
+        //        if (column.supportString()) {
+        //            value = DBDataUtil.escapeQuotes((String) value, dialect);
+        //        }
         return DBUtil.wrapData(value, dialect);
     }
 
