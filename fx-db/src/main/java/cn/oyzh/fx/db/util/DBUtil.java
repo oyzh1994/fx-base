@@ -7,28 +7,14 @@ import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.db.DBColumn;
 import cn.oyzh.fx.db.DBDialect;
 import cn.oyzh.fx.db.DBRecordData;
-import cn.oyzh.fx.editor.incubator.control.JsonTextFiled;
-import cn.oyzh.fx.editor.incubator.control.LongTextFiled;
-import cn.oyzh.fx.gui.text.field.BinaryTextFiled;
-import cn.oyzh.fx.gui.text.field.BitTextField;
-import cn.oyzh.fx.gui.text.field.BooleanTextFiled;
-import cn.oyzh.fx.gui.text.field.DateTimeTextField;
-import cn.oyzh.fx.gui.text.field.DecimalTextField;
-import cn.oyzh.fx.gui.text.field.ExampleTextField;
-import cn.oyzh.fx.gui.text.field.NumberTextField;
-import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.font.FontUtil;
-import cn.oyzh.fx.plus.util.ControlUtil;
 import com.alibaba.druid.DbType;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
 import com.alibaba.druid.sql.parser.SQLParserFeature;
 import com.alibaba.druid.sql.visitor.SchemaStatVisitor;
 import com.alibaba.druid.stat.TableStat;
-import javafx.scene.Node;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -58,6 +44,22 @@ public class DBUtil {
      * 是否开启打印元数据功能
      */
     public static boolean ENABLE_PRINT_METADATA = true;
+
+    /**
+     * sql关键字
+     */
+    public static final String[] SQL_KEYWORDS = {
+            "SELECT", "FROM", "WHERE", "INSERT", "INTO", "VALUES", "UPDATE", "SET",
+            "DELETE", "CREATE", "TABLE", "ALTER", "DROP", "INDEX", "VIEW",
+            "DATABASE", "SHOW", "DATABASES", "TABLES", "COLUMNS", "USE",
+            "JOIN", "LEFT", "RIGHT", "INNER", "OUTER", "ON", "AND", "OR", "NOT",
+            "NULL", "IS", "LIKE", "IN", "BETWEEN", "ORDER", "BY", "GROUP",
+            "HAVING", "LIMIT", "OFFSET", "AS", "DISTINCT", "COUNT", "SUM",
+            "AVG", "MAX", "MIN", "DESC", "ASC", "PRIMARY", "KEY", "FOREIGN",
+            "REFERENCES", "CASCADE", "DEFAULT", "UNIQUE", "CHECK", "AUTO_INCREMENT",
+            "VARCHAR", "INT", "BIGINT", "TEXT", "DATE", "DATETIME", "TIMESTAMP",
+            "BOOLEAN", "FLOAT", "DOUBLE", "DECIMAL", "CHAR", "ENUM"
+    };
 
     /**
      * 打印元数据
