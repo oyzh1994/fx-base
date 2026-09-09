@@ -74,21 +74,27 @@ public interface DataBatchInsertable<D> {
                 if (this.getInsertList().size() <= this.getBatchLimit()) {
                     this.doBatchInsert(this.getInsertList(), false);
                 } else {
-                    AtomicReference<Exception> exceptionRef = new AtomicReference<>();
                     List<List<D>> lists = CollectionUtil.split(this.getInsertList(), this.getBatchLimit());
-                    List<Runnable> tasks = new ArrayList<>();
-                    for (List<D> list : lists) {
-                        tasks.add(() -> {
-                            try {
-                                this.doBatchInsert(list, true);
-                            } catch (Exception ex) {
-                                exceptionRef.set(ex);
-                            }
-                        });
-                    }
-                    ThreadUtil.submit(tasks);
-                    if (exceptionRef.get() != null) {
-                        throw exceptionRef.get();
+                    if (this.enableParallel()) {
+                        AtomicReference<Exception> exceptionRef = new AtomicReference<>();
+                        List<Runnable> tasks = new ArrayList<>();
+                        for (List<D> list : lists) {
+                            tasks.add(() -> {
+                                try {
+                                    this.doBatchInsert(list, true);
+                                } catch (Exception ex) {
+                                    exceptionRef.set(ex);
+                                }
+                            });
+                        }
+                        ThreadUtil.submit(tasks);
+                        if (exceptionRef.get() != null) {
+                            throw exceptionRef.get();
+                        }
+                    } else {
+                        for (List<D> list : lists) {
+                            this.doBatchInsert(list, false);
+                        }
                     }
                 }
             } finally {
@@ -96,6 +102,21 @@ public interface DataBatchInsertable<D> {
             }
         }
     }
+
+//    /**
+//     * 执行批量插入，同步
+//     *
+//     * @throws Exception 异常
+//     */
+//    default void doBatchInsertSync() throws Exception {
+//        if (CollectionUtil.isNotEmpty(this.getInsertList())) {
+//            try {
+//                this.doBatchInsert(this.getInsertList(), false);
+//            } finally {
+//                this.getInsertList().clear();
+//            }
+//        }
+//    }
 
     /**
      * 执行批量插入
@@ -105,4 +126,11 @@ public interface DataBatchInsertable<D> {
      * @throws Exception 异常
      */
     void doBatchInsert(List<D> list, boolean parallel) throws Exception;
+
+    /**
+     * 启用异步
+     */
+    default boolean enableParallel() {
+        return true;
+    }
 }
