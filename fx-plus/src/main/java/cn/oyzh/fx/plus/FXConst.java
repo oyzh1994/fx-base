@@ -22,6 +22,11 @@ public class FXConst {
      */
     public final static String FXML_PATH = "/fxml/";
 
+    /**
+     * css地址
+     */
+    public final static String CSS_PATH = "/css/";
+
     // /**
     //  * 页面地址
     //  */

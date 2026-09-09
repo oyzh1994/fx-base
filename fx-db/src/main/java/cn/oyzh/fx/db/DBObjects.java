@@ -16,4 +16,8 @@ public class DBObjects<E extends DBObject> extends DBObjectList<E> {
     public DBObjects(Collection<E> list) {
         super.addAll(list);
     }
+
+    public static <T extends DBObject> DBObjects<T> of(List<T> list) {
+        return new DBObjects<>(list);
+    }
 }

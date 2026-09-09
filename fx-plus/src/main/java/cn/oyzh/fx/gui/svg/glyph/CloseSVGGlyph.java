@@ -20,6 +20,6 @@ public class CloseSVGGlyph extends ScalingSVGGlyph {
 
     @Override
     public double sizeScaling() {
-        return 0.6875;
+        return 0.75;
     }
 }
