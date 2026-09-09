@@ -22,15 +22,26 @@ public class DBDataUtil {
      * @return 转义后的内容
      */
     public static String escapeQuotes(String str, DBDialect dialect) {
-        return TextUtil.escape(str, c -> {
-            if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
+        if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
+            boolean f1 = str.startsWith("'") && str.endsWith("'");
+            if (f1) {
+                str = str.substring(1, str.length() - 1);
+            }
+            str = str.replace("''", "0x_oyzh_x0");
+            str = TextUtil.escape(str, c -> {
                 // 如果是'字符，则返回''字符
                 if (Objects.equals(c, '\'')) {
                     return "''";
                 }
+                return null;
+            });
+            str = str.replace("0x_oyzh_x0", "''");
+            if (f1) {
+                str = "'" + str + "'";
             }
-            return null;
-        });
+            return str;
+        }
+        return TextUtil.escape(str);
     }
 
 

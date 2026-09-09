@@ -242,21 +242,31 @@ public class DBUtil {
     public static String wrap(String name, DBDialect dialect) {
         StringBuilder builder = new StringBuilder();
         if (dialect == DBDialect.MYSQL) {
-            if (!name.startsWith("`")) {
+            if (!name.startsWith("`") && !name.endsWith("`")) {
+                builder.append("`");
+                builder.append(name);
                 builder.append("`");
             }
-            builder.append(name);
-            if (!name.endsWith("`")) {
-                builder.append("`");
-            }
+            //            if (!name.startsWith("`")) {
+            //                builder.append("`");
+            //            }
+            //            builder.append(name);
+            //            if (!name.endsWith("`")) {
+            //                builder.append("`");
+            //            }
         } else if (dialect == DBDialect.DAMENG) {
-            if (!name.startsWith("\"")) {
+            if (!name.startsWith("\"") && !name.endsWith("\"")) {
+                builder.append("\"");
+                builder.append(name);
                 builder.append("\"");
             }
-            builder.append(name);
-            if (!name.endsWith("\"")) {
-                builder.append("\"");
-            }
+            //            if (!name.startsWith("\"")) {
+            //                builder.append("\"");
+            //            }
+            //            builder.append(name);
+            //            if (!name.endsWith("\"")) {
+            //                builder.append("\"");
+            //            }
         }
         return builder.toString();
     }
@@ -290,13 +300,16 @@ public class DBUtil {
                 if (v1.isEmpty()) {
                     return "''";
                 }
-//                if (!v1.startsWith("'") && !v1.startsWith("\"")) {
-//                    v1 = "'" + v1;
-//                }
-//                if (!v1.endsWith("'") && !v1.endsWith("\"")) {
-//                    v1 = v1 + "'";
-//                }
-//                return v1;
+                if (v1.startsWith("'") && v1.endsWith("'")) {
+                    return v1;
+                }
+                //                if (!v1.startsWith("'") && !v1.startsWith("\"")) {
+                //                    v1 = "'" + v1;
+                //                }
+                //                if (!v1.endsWith("'") && !v1.endsWith("\"")) {
+                //                    v1 = v1 + "'";
+                //                }
+                //                return v1;
                 return "'" + v1 + "'";
             }
             if (val instanceof java.util.Date || val instanceof Temporal) {
