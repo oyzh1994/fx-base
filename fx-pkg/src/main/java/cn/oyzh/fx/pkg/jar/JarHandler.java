@@ -119,11 +119,11 @@ public class JarHandler implements PreHandler {
                 this.config.getJarConfig().setJavafxPath(javafxPath);
             }
             String subName = null;
-            if (src.contains("/javafx-graphics-")) {
+            if (src.contains("javafx-graphics-")) {
                 subName = "javafx.graphics.jmod";
-            } else if (src.contains("/javafx-media-")) {
+            } else if (src.contains("javafx-media-")) {
                 subName = "javafx.media.jmod";
-            } else if (src.contains("/javafx-web-")) {
+            } else if (src.contains("javafx-web-")) {
                 subName = "javafx.web.jmod";
             }
             // jmods处理
@@ -195,7 +195,7 @@ public class JarHandler implements PreHandler {
         // jfx优化
         if (this.config.getJarConfig().isJavafxOptimize()) {
             if (src.endsWith(".jar")
-                    && StringUtil.containsAny(src, "/javafx-media-", "/javafx-graphics-", "/javafx-web-")
+                    && StringUtil.containsAny(src, "javafx-media-", "javafx-graphics-", "javafx-web-")
                     && StringUtil.endsWithAny(name, ".dylib", ".dll", ".so")) {
                 this.handleJfxLib(src, name);
                 JulLog.info("javafx模块，文件:{}被过滤.", name);
