@@ -76,10 +76,6 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
         return javafxOptimize != null && this.javafxOptimize;
     }
 
-    public Boolean getJavafxOptimize() {
-        return javafxOptimize;
-    }
-
     public void setJavafxOptimize(Boolean javafxOptimize) {
         this.javafxOptimize = javafxOptimize;
     }

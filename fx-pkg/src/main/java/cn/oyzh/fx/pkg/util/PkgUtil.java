@@ -537,4 +537,21 @@ public class PkgUtil {
         }
         return cmd;
     }
+
+    /**
+     * 获取jmod命令
+     *
+     * @param modDir  模块解压目录
+     * @param modPath 模块路径
+     * @return 结果
+     */
+    public static String[] getJModCMD(String modDir, String modPath) {
+        List<String> cmdList = new ArrayList<>();
+        cmdList.add("jmod");
+        cmdList.add("extract");
+        cmdList.add("--dir");
+        cmdList.add(modDir);
+        cmdList.add(modPath);
+        return ArrayUtil.toArray(cmdList, String.class);
+    }
 }

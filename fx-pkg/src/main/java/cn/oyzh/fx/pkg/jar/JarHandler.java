@@ -1,6 +1,7 @@
 package cn.oyzh.fx.pkg.jar;
 
 import cn.hutool.core.io.FileUtil;
+import cn.oyzh.common.function.ExceptionConsumer;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.system.SystemUtil;
@@ -56,7 +57,7 @@ public class JarHandler implements PreHandler {
     /**
      * jar配置
      */
-    private JarConfig config;
+    private PackConfig config;
 
     @Override
     public void handle(PackConfig packConfig) throws Exception {
@@ -64,7 +65,7 @@ public class JarHandler implements PreHandler {
         if (jarConfig == null) {
             return;
         }
-        this.config = jarConfig;
+        this.config = packConfig;
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
@@ -102,6 +103,84 @@ public class JarHandler implements PreHandler {
     }
 
     /**
+     * 处理jfx库
+     *
+     * @param src  路径
+     * @param name 名称
+     */
+    private void handleJfxLib(String src, String name) {
+        String javafxPath = this.config.getJarConfig().getJavafxPath();
+        try {
+            // 初始化jfx路径
+            if (this.config.getJarConfig().getJavafxPath() == null) {
+                Path path = Paths.get(SystemUtil.tmpdir(), "_temp_javafx_" + UUIDUtil.uuidSimple());
+                Files.createDirectory(path);
+                javafxPath = path.toString();
+                this.config.getJarConfig().setJavafxPath(javafxPath);
+            }
+            String subName = null;
+            if (src.contains("/javafx-graphics-")) {
+                subName = "javafx.graphics.jmod";
+            } else if (src.contains("/javafx-media-")) {
+                subName = "javafx.media.jmod";
+            } else if (src.contains("/javafx-web-")) {
+                subName = "javafx.web.jmod";
+            }
+            // jmods处理
+            if (subName != null) {
+                String javaHome = SystemUtil.javaHome();
+                Path path = Paths.get(javaHome, "jmods", subName);
+                String jdkPath = this.config.getJdkPath();
+                // 检查jmods文件是否存在
+                if (Files.exists(path)) {
+                    String modDir = path.toFile().getName();
+                    modDir = modDir.substring(0, modDir.lastIndexOf("."));
+                    Path path1 = Paths.get(javaHome, "jmods", modDir);
+                    String[] cmd = PkgUtil.getJModCMD(path1.toString(), path.toString());
+                    cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
+                    String cmdStr = StringUtil.join(" ", cmd);
+                    JulLog.info("JMod cmd:{}", "\n" + cmdStr);
+                    ProcessExecResult result = RuntimeUtil.execForResult(cmd);
+                    JulLog.info("JMod result:{}", result);
+                    if (!result.isSuccess()) {
+                        JulLog.error("JMod error:{}", result.getError());
+                        throw new Exception("JMod error:" + result.getError());
+                    }
+                    String finalJavafxPath = javafxPath;
+                    cn.oyzh.common.file.FileUtil.getAllFiles(path1.toFile(), (ExceptionConsumer<File>) file -> {
+                        if (!StringUtil.endsWithAny(file.getName(), ".dylib", ".dll", ".so")) {
+                            return;
+                        }
+                        Path path2 = Paths.get(finalJavafxPath, file.getName());
+                        if (Files.exists(path2)) {
+                            return;
+                        }
+                        Files.copy(file.toPath(), path2);
+                    });
+                    return;
+                }
+            }
+
+            // 普通jar处理
+            try (JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)))) {
+                ZipEntry entry;
+                while ((entry = jarIn.getNextJarEntry()) != null) {
+                    if (entry.isDirectory()) {
+                        continue;
+                    }
+                    // 匹配目标条目
+                    if (entry.getName().equals(name)) {
+                        Files.copy(jarIn, Paths.get(javafxPath, name));
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
      * jar过滤
      *
      * @param src  源文件
@@ -111,36 +190,15 @@ public class JarHandler implements PreHandler {
     private boolean jarFilter(String src, String name) {
         // jar包不处理
         if (name.endsWith(".jar")) {
-            return false;
+            return true;
         }
-        if (this.config.isJavafxOptimize()) {
+        // jfx优化
+        if (this.config.getJarConfig().isJavafxOptimize()) {
             if (src.endsWith(".jar")
-                    && StringUtil.containsAny(src, "/javafx-media-", "/javafx-graphics-")
+                    && StringUtil.containsAny(src, "/javafx-media-", "/javafx-graphics-", "/javafx-web-")
                     && StringUtil.endsWithAny(name, ".dylib", ".dll", ".so")) {
-                String javafxPath = this.config.getJavafxPath();
-                try {
-                    if (this.config.getJavafxPath() == null) {
-                        Path path = Paths.get(SystemUtil.tmpdir(), "_temp_javafx_" + UUIDUtil.uuidSimple());
-                        Files.createDirectory(path);
-                        javafxPath = path.toString();
-                        this.config.setJavafxPath(javafxPath);
-                    }
-                    try (JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)))) {
-                        ZipEntry entry;
-                        while ((entry = jarIn.getNextJarEntry()) != null) {
-                            if (entry.isDirectory()) {
-                                continue;
-                            }
-                            // 匹配目标条目
-                            if (entry.getName().equals(name)) {
-                                Files.copy(jarIn, Paths.get(javafxPath, name));
-                                break;
-                            }
-                        }
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+                this.handleJfxLib(src, name);
+                JulLog.info("javafx模块，文件:{}被过滤.", name);
                 return false;
             }
         }
@@ -159,7 +217,7 @@ public class JarHandler implements PreHandler {
      */
     private void handleLibs(String jarUnDir) {
         JulLog.info("handleLibs start, jarUnDir: {}.", jarUnDir);
-        List<File> files = FileUtil.loopFiles(jarUnDir);
+        List<File> files = cn.oyzh.common.file.FileUtil.getAllFiles(jarUnDir);
         for (File file : files) {
             try {
                 // 非jar，跳过
@@ -173,13 +231,13 @@ public class JarHandler implements PreHandler {
                 }
                 // 符合排除jar，删除文件
                 if (!this.filter.apply(file.getName())) {
-                    FileUtil.del(file);
+                    cn.oyzh.common.file.FileUtil.del(file);
                     JulLog.warn("类库:{}被排除, 已删除.", file.getName());
                     continue;
                 }
                 // 内容为空
-                if (!JarUtil.hasClass(file.getPath())) {
-                    FileUtil.del(file);
+                if (this.config.getJarConfig().isRemoveEmpty() && !JarUtil.hasClass(file.getPath())) {
+                    cn.oyzh.common.file.FileUtil.del(file);
                     JulLog.warn("类库:{}内容为空, 已删除.", file.getName());
                     continue;
                 }
