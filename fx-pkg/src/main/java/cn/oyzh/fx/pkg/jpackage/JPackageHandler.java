@@ -4,6 +4,7 @@ import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.RuntimeUtil;
 import cn.oyzh.common.thread.ProcessExecResult;
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.pkg.PackCost;
@@ -73,6 +74,9 @@ public class JPackageHandler implements PackHandler {
                     jPackageConfig.setJavaOptions(options);
                 }
                 options.add("-Djava.library.path=$APPDIR/javafx");
+                if (packConfig.getJLinkConfig() != null && packConfig.getJLinkConfig().getAddModules() != null) {
+                    options.add("--limit-modules=" + CollectionUtil.join(packConfig.getJLinkConfig().getAddModules(), ","));
+                }
             }
             File target = new File(dir, packConfig.mainJarName());
             FileUtil.copyFile(packConfig.mainJar(), target.getPath());
@@ -96,7 +100,7 @@ public class JPackageHandler implements PackHandler {
         String name = jPackageConfig.getName();
         if (name == null) {
             jPackageConfig.setName(packConfig.getAppName());
-//            jPackageConfig.setName(packConfig.getAppName() + "_v" + packConfig.appVersion());
+            //            jPackageConfig.setName(packConfig.getAppName() + "_v" + packConfig.appVersion());
         } else {
             name = name.replace("${appName}", packConfig.getAppName());
             name = name.replace("${os.arch}", System.getProperty("os.arch"));
