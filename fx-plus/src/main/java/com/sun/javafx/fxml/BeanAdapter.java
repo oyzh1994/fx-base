@@ -175,6 +175,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
             throw new UnsupportedOperationException("Cannot determine type for property.");
         }
 
+//        return localCache.getMethod(getMethodName(SET_PREFIX, key), type);
         Method method = localCache.getMethod(getMethodName(SET_PREFIX, key), type);
         // TODO: 用于处理fxml不支持接口默认方法的问题
         if (method == null) {
@@ -182,7 +183,6 @@ public class BeanAdapter extends AbstractMap<String, Object> {
             method = FXBeanUtil.getSetterMethod(beanType, key);
         }
         return method;
-//        return localCache.getMethod(getMethodName(SET_PREFIX, key), type);
     }
 
     private static String getMethodName(String prefix, String key) {

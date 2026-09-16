@@ -29,7 +29,7 @@ public class FXListView<T> extends ListView<T> implements MenuItemAdapter, Conte
 
     @Override
     public void initNode() {
-        this.setCache(false);
+//        this.setCache(false);
         this.setCursor(Cursor.HAND);
         FlexAdapter.super.initNode();
         // this.getItems().addListener((ListChangeListener<T>) c -> {

@@ -41,10 +41,10 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         NodeManager.init(this);
     }
 
-    /**
-     * 默认大小
-     */
-    public static float DEFAULT_SIZE = 16;
+//    /**
+//     * 默认大小
+//     */
+//    public static float DEFAULT_SIZE = 16;
 
     /**
      * 图标地址
@@ -379,9 +379,8 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
 
     @Override
     public void initNode() {
-
-        this.setCache(false);
-        this.setSize(DEFAULT_SIZE);
+//        this.setCache(false);
+//        this.setSize(DEFAULT_SIZE);
         this.setPickOnBounds(true);
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);

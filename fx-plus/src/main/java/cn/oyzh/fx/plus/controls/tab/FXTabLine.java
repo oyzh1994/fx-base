@@ -285,7 +285,7 @@ public class FXTabLine extends TabLine implements FlexAdapter, NodeGroup, ThemeA
 
     @Override
     public void initNode() {
-        this.setCache(false);
+//        this.setCache(false);
         this.getStyleClass().add(Styles.TABS_CLASSIC);
         FlexAdapter.super.initNode();
     }
