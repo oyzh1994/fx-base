@@ -3,6 +3,7 @@ package cn.oyzh.fx.pkg.util;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ZipUtil;
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.StringUtil;
 
@@ -12,7 +13,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.function.Function;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.function.BiFunction;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -129,7 +132,7 @@ public class JarUtil {
      * @param function 过滤函数
      * @throws IOException 异常
      */
-    public static void minimize(String src, String dest, Function<String, Boolean> function) throws IOException {
+    public static void minimize(String src, String dest, BiFunction<String, String, Boolean> function) throws IOException {
         JulLog.info("minimize jar start, src:{}", src);
         File destFile = new File(dest);
         File tempFile = FileUtil.createTempFile(destFile.getName(), true);
@@ -151,14 +154,15 @@ public class JarUtil {
                 }
                 String name = entry.getName();
                 // 执行过滤
-                if (function.apply(name)) {
+                if (function.apply(src, name)) {
                     // 添加到新jar文件
-                    jarOut.putNextEntry(entry);
+                    jarOut.putNextEntry(new ZipEntry(entry));
                     int len = jarIn.read(bytes, 0, bytes.length);
                     while (len != -1) {
                         jarOut.write(bytes, 0, len);
                         len = jarIn.read(bytes, 0, bytes.length);
                     }
+                    jarOut.closeEntry();
                 }
             }
         } finally {

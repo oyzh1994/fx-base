@@ -34,6 +34,10 @@ public class JarConfigParser implements ConfigParser<JarConfig> {
         if (removeEmpty != null) {
             config.setRemoveEmpty(removeEmpty);
         }
+        Boolean javafxOptimize = object.getBoolean("javafxOptimize");
+        if (javafxOptimize != null) {
+            config.setJavafxOptimize(javafxOptimize);
+        }
         return config;
     }
 

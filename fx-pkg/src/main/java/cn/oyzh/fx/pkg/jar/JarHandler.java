@@ -3,8 +3,10 @@ package cn.oyzh.fx.pkg.jar;
 import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.RuntimeUtil;
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.thread.ProcessExecResult;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
 import cn.oyzh.fx.pkg.config.PackConfig;
@@ -12,8 +14,15 @@ import cn.oyzh.fx.pkg.filter.RegFilter;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.jar.JarInputStream;
+import java.util.zip.ZipEntry;
 
 /**
  * jar处理器
@@ -44,12 +53,18 @@ public class JarHandler implements PreHandler {
         return "jar处理器";
     }
 
+    /**
+     * jar配置
+     */
+    private JarConfig config;
+
     @Override
     public void handle(PackConfig packConfig) throws Exception {
         JarConfig jarConfig = packConfig.getJarConfig();
         if (jarConfig == null) {
             return;
         }
+        this.config = jarConfig;
         String jdkPath = packConfig.getJdkPath();
         if (StringUtil.isBlank(jdkPath)) {
             throw new Exception("jdkPath为空！");
@@ -89,13 +104,45 @@ public class JarHandler implements PreHandler {
     /**
      * jar过滤
      *
+     * @param src  源文件
      * @param name 名称
      * @return 结果
      */
-    private boolean jarFilter(String name) {
+    private boolean jarFilter(String src, String name) {
         // jar包不处理
         if (name.endsWith(".jar")) {
             return false;
+        }
+        if (this.config.isJavafxOptimize()) {
+            if (src.endsWith(".jar")
+                    && StringUtil.containsAny(src, "/javafx-media-", "/javafx-graphics-")
+                    && StringUtil.endsWithAny(name, ".dylib", ".dll", ".so")) {
+                String javafxPath = this.config.getJavafxPath();
+                try {
+                    if (this.config.getJavafxPath() == null) {
+                        Path path = Paths.get(SystemUtil.tmpdir(), "_temp_javafx_" + UUIDUtil.uuidSimple());
+                        Files.createDirectory(path);
+                        javafxPath = path.toString();
+                        this.config.setJavafxPath(javafxPath);
+                    }
+                    try (JarInputStream jarIn = new JarInputStream(new BufferedInputStream(new FileInputStream(src)))) {
+                        ZipEntry entry;
+                        while ((entry = jarIn.getNextJarEntry()) != null) {
+                            if (entry.isDirectory()) {
+                                continue;
+                            }
+                            // 匹配目标条目
+                            if (entry.getName().equals(name)) {
+                                Files.copy(jarIn, Paths.get(javafxPath, name));
+                                break;
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                return false;
+            }
         }
         // 其他文件
         boolean accept = this.filter.apply(name);

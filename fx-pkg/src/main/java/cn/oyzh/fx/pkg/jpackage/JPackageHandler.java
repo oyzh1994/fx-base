@@ -10,9 +10,12 @@ import cn.oyzh.fx.pkg.PackCost;
 import cn.oyzh.fx.pkg.PackHandler;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.config.PackConfig;
+import cn.oyzh.fx.pkg.jar.JarConfig;
 import cn.oyzh.fx.pkg.util.PkgUtil;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * jpackage处理
@@ -61,6 +64,16 @@ public class JPackageHandler implements PackHandler {
         if (jPackageConfig.getInput() == null) {
             File dir = new File(FileUtil.tmpdir(), "_temp_jpackage_input_" + UUIDUtil.uuidSimple());
             FileUtil.mkdir(dir);
+            JarConfig jarConfig = packConfig.getJarConfig();
+            if (jarConfig.getJavafxPath() != null) {
+                FileUtil.copyDirectory(jarConfig.getJavafxPath(), new File(dir, "javafx").getPath());
+                Set<String> options = jPackageConfig.getJavaOptions();
+                if (options == null) {
+                    options = new HashSet<>();
+                    jPackageConfig.setJavaOptions(options);
+                }
+                options.add("-Djava.library.path=$APPDIR/javafx");
+            }
             File target = new File(dir, packConfig.mainJarName());
             FileUtil.copyFile(packConfig.mainJar(), target.getPath());
             jPackageConfig.setInput(dir.getPath());

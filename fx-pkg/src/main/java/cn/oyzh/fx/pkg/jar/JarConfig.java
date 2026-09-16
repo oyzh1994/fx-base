@@ -24,6 +24,11 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
     private Boolean removeEmpty;
 
     /**
+     * javafx优化
+     */
+    private Boolean javafxOptimize;
+
+    /**
      * 跳过的jar
      */
     private Set<String> skipsJar;
@@ -32,6 +37,8 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
      * 排除的文件
      */
     private Set<String> excludes;
+
+    private String javafxPath;
 
     public boolean isRemoveEmpty() {
         return removeEmpty == null || this.removeEmpty;
@@ -65,6 +72,26 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
         this.enable = enable;
     }
 
+    public boolean isJavafxOptimize(){
+        return javafxOptimize != null && this.javafxOptimize;
+    }
+
+    public Boolean getJavafxOptimize() {
+        return javafxOptimize;
+    }
+
+    public void setJavafxOptimize(Boolean javafxOptimize) {
+        this.javafxOptimize = javafxOptimize;
+    }
+
+    public String getJavafxPath() {
+        return javafxPath;
+    }
+
+    public void setJavafxPath(String javafxPath) {
+        this.javafxPath = javafxPath;
+    }
+
     @Override
     public void marge(JarConfig config) {
         if (config == null) {
@@ -85,6 +112,12 @@ public class JarConfig implements ConfigMargeAble<JarConfig> {
         }
         if (config.removeEmpty != null) {
             this.removeEmpty = config.removeEmpty;
+        }
+        if (config.javafxOptimize != null) {
+            this.javafxOptimize = config.javafxOptimize;
+        }
+        if (config.javafxPath != null) {
+            this.javafxPath = config.javafxPath;
         }
     }
 }
