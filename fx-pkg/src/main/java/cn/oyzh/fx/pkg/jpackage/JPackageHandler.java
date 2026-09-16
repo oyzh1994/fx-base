@@ -74,9 +74,9 @@ public class JPackageHandler implements PackHandler {
                     jPackageConfig.setJavaOptions(options);
                 }
                 options.add("-Djava.library.path=$APPDIR/javafx");
-                if (packConfig.getJLinkConfig() != null && packConfig.getJLinkConfig().getAddModules() != null) {
-                    options.add("--limit-modules=" + CollectionUtil.join(packConfig.getJLinkConfig().getAddModules(), ","));
-                }
+//                if (packConfig.getJLinkConfig() != null && packConfig.getJLinkConfig().getAddModules() != null) {
+//                    options.add("--limit-modules=" + CollectionUtil.join(packConfig.getJLinkConfig().getAddModules(), ","));
+//                }
             }
             File target = new File(dir, packConfig.mainJarName());
             FileUtil.copyFile(packConfig.mainJar(), target.getPath());

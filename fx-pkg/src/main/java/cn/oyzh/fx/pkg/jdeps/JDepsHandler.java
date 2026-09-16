@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.system.RuntimeUtil;
-import cn.oyzh.common.thread.ThreadUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.pkg.PackOrder;
 import cn.oyzh.fx.pkg.PreHandler;
@@ -113,43 +112,47 @@ public class JDepsHandler implements PreHandler {
         }
         // 遍历所有文件，然后找出所有依赖模块
         Set<String> deps = new CopyOnWriteArraySet<>();
-//        // 任务列表
-//        List<Runnable> tasks = new ArrayList<>();
+        //        // 任务列表
+        //        List<Runnable> tasks = new ArrayList<>();
         // 添加任务
         for (String filePath : filePaths) {
-//            Runnable func = () -> {
-                JulLog.info("jdeps jar: {}.", filePath);
-                String[] cmd = PkgUtil.getJDepsCMD(jDepsConfig, filePath);
-                // 列举模块
-                cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
-                String commands = StringUtil.join(" ", cmd);
-                String execResult = RuntimeUtil.execForStr(commands);
-                JulLog.info("jdeps result:{}", execResult);
-                if (execResult != null) {
-                    execResult.lines().forEach(r -> {
-                        // 处理内容
-                        if (!r.contains("-> ") || r.startsWith(" ") || r.endsWith(".jar")) {
-                            return;
-                        }
-                        String module = r.split("-> ")[1];
-                        // 处理内容
-                        module = module.trim();
-                        // 被过滤
-                        if (!moduleFilter.apply(module)) {
-                            return;
-                        }
-                        // 如果是系统模块，则添加到模块列表
-                        if (modules.contains(module) && !deps.contains(module)) {
-                            JulLog.info("module added:{}", module);
-                            deps.add(module);
-                        }
-                    });
-                }
-//            };
-//            tasks.add(func);
+            //            Runnable func = () -> {
+            JulLog.info("jdeps jar: {}.", filePath);
+            String[] cmd = PkgUtil.getJDepsCMD(jDepsConfig, filePath);
+            // 列举模块
+            cmd = PkgUtil.getJDKExecCMD(jdkPath, cmd);
+            String commands = StringUtil.join(" ", cmd);
+            String execResult = RuntimeUtil.execForStr(commands);
+            JulLog.info("jdeps result:{}", execResult);
+            if (execResult != null) {
+                execResult.lines().forEach(r -> {
+                    // 处理内容
+                    if (!r.contains("-> ") || r.startsWith(" ") || r.endsWith(".jar")) {
+                        return;
+                    }
+                    String module = r.split("-> ")[1];
+                    // 处理内容
+                    module = module.trim();
+                    // 被过滤
+                    if (!moduleFilter.apply(module)) {
+                        return;
+                    }
+                    // 如果是jfx模块，则默认返回，不依赖jdk的jfx模块
+                    if (StringUtil.startWithAny(module, "javafx.", "jfx.")) {
+                        return;
+                    }
+                    // 如果是系统模块，则添加到模块列表
+                    if (modules.contains(module) && !deps.contains(module)) {
+                        JulLog.info("module added:{}", module);
+                        deps.add(module);
+                    }
+                });
+            }
+            //            };
+            //            tasks.add(func);
         }
-//        // 异步执行
-//        ThreadUtil.submit(tasks);
+        //        // 异步执行
+        //        ThreadUtil.submit(tasks);
         // 合并依赖模块
         jLinkConfig.margeAddModules(deps);
     }
