@@ -575,4 +575,14 @@ public class FXUtil {
         System.setProperty("javafx.enablePreview", "false");
         System.setProperty("javafx.suppressPreviewWarning", "false");
     }
+
+//    /**
+//     * 初始化javafx类库
+//     */
+//    public static void initJavafxLib() {
+//        String jarDir = JarUtil.getJarDir();
+//        if (FileUtil.exists(jarDir, "javafx")) {
+//            System.setProperty("java.library.path", Path.of(jarDir, "javafx").toString());
+//        }
+//    }
 }

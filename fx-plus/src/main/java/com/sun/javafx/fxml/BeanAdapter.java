@@ -37,7 +37,7 @@ import java.util.*;
 
 import java.lang.reflect.*;
 
-import cn.oyzh.fx.plus.util.FXBeanUtil;
+import cn.oyzh.common.bean.BeanUtil;
 import javafx.beans.value.ObservableValue;
 import com.sun.javafx.reflect.FieldUtil;
 import com.sun.javafx.reflect.MethodUtil;
@@ -79,8 +79,8 @@ public class BeanAdapter extends AbstractMap<String, Object> {
 
     }
 
-    private static final HashMap<Class<?>, MethodCache> globalMethodCache =
-        new HashMap<>();
+//    private static final HashMap<Class<?>, MethodCache> globalMethodCache =
+//        new HashMap<>();
 
     private final MethodCache localCache;
 
@@ -107,11 +107,11 @@ public class BeanAdapter extends AbstractMap<String, Object> {
         if (type == Object.class) {
             return null;
         }
-        MethodCache classMethodCache;
-        synchronized (globalMethodCache) {
-            if ((classMethodCache = globalMethodCache.get(type)) != null) {
-                return classMethodCache;
-            }
+//        MethodCache classMethodCache;
+//        synchronized (globalMethodCache) {
+//            if ((classMethodCache = globalMethodCache.get(type)) != null) {
+//                return classMethodCache;
+//            }
             Map<String, List<Method>> classMethods = new HashMap<>();
 
             ReflectUtil.checkPackageAccess(type);
@@ -137,9 +137,9 @@ public class BeanAdapter extends AbstractMap<String, Object> {
                 }
             }
             MethodCache cache = new MethodCache(classMethods, getClassMethodCache(type.getSuperclass()));
-            globalMethodCache.put(type, cache);
+//            globalMethodCache.put(type, cache);
             return cache;
-        }
+//        }
     }
 
     /**
@@ -162,7 +162,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
         // TODO: 用于处理fxml不支持接口默认方法的问题
         if (getterMethod == null) {
             Class<?> beanType = this.getBean().getClass();
-            getterMethod = FXBeanUtil.getGetterMethod(beanType, key);
+            getterMethod = BeanUtil.getGetterMethod(beanType, key, true);
         }
 
         return getterMethod;
@@ -180,7 +180,7 @@ public class BeanAdapter extends AbstractMap<String, Object> {
         // TODO: 用于处理fxml不支持接口默认方法的问题
         if (method == null) {
             Class<?> beanType = this.getBean().getClass();
-            method = FXBeanUtil.getSetterMethod(beanType, key);
+            method = BeanUtil.getSetterMethod(beanType, key, null, true);
         }
         return method;
     }
