@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 public class EditorTest2 extends Application {
 
     public static void main(String[] args) {
-        FXUtil.enablePreview();
+//        FXUtil.enablePreview();
         launch(EditorTest2.class, args);
     }
 

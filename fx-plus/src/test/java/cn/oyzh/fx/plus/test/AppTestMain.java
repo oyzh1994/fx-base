@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.test;
 import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.information.MessageBox;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,7 +26,7 @@ import javafx.stage.Stage;
 public class AppTestMain extends Application {
 
     public static void main(String[] args) {
-        FXUtil.enablePreview();
+        //        FXUtil.enablePreview();
         launch(args);
     }
 
@@ -128,7 +127,8 @@ public class AppTestMain extends Application {
             MessageBox.exception(ex);
         }
         MessageBox.none("测试4");
-        FXUtil.disablePreview();
+        //        FXUtil.disablePreview();
+        MessageBox.enableNewStyle = false;
         MessageBox.info("测试1");
         MessageBox.warn("测试2");
         MessageBox.error("测试3");

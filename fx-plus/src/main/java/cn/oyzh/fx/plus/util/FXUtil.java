@@ -573,5 +573,6 @@ public class FXUtil {
      */
     public static void disablePreview() {
         System.setProperty("javafx.enablePreview", "false");
+        System.setProperty("javafx.suppressPreviewWarning", "false");
     }
 }

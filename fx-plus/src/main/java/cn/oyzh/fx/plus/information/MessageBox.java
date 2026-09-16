@@ -28,7 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Window;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -41,6 +41,11 @@ import java.util.function.Function;
  * @since 2023/10/24
  */
 public class MessageBox {
+
+    /**
+     * 启用新式样式
+     */
+    public static boolean enableNewStyle = true;
 
     /**
      * 异常解析器
@@ -98,7 +103,8 @@ public class MessageBox {
         String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            if (FXUtil.isEnablePreview()) {
+//            if (FXUtil.isEnablePreview()) {
+            if (enableNewStyle) {
                 FXButton button1 = new FXButton(I18nHelper.ok());
                 button1.addClass("accent");
                 FXButton button2 = new FXButton(I18nHelper.cancel());
@@ -112,19 +118,19 @@ public class MessageBox {
                 alert.setTitle(title);
                 alert.initOwner(owner);
                 alert.setHeaderText(headerText);
-//            // 监听回车，触发按钮
-//            Scene scene = alert.getDialogPane().getScene();
-//            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-//                if (event.getCode() == KeyCode.ENTER) {
-//                    // 获取当前选中的按钮
-//                    ButtonType selectedButton = alert.getResult();
-//                    if (selectedButton != null) {
-//                        // 模拟点击当前选中的按钮
-//                        alert.setResult(selectedButton);
-//                        alert.hide();
-//                    }
-//                }
-//            });
+                //            // 监听回车，触发按钮
+                //            Scene scene = alert.getDialogPane().getScene();
+                //            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                //                if (event.getCode() == KeyCode.ENTER) {
+                //                    // 获取当前选中的按钮
+                //                    ButtonType selectedButton = alert.getResult();
+                //                    if (selectedButton != null) {
+                //                        // 模拟点击当前选中的按钮
+                //                        alert.setResult(selectedButton);
+                //                        alert.hide();
+                //                    }
+                //                }
+                //            });
                 Optional<ButtonType> optional = alert.showAndWait();
                 result.set(optional.map(b -> b.equals(button1)).orElse(false));
             }
@@ -240,7 +246,8 @@ public class MessageBox {
         // 使用fx消息框
         if (FXUtil.isInitialized()) {
             FXUtil.runWait(() -> {
-                if (FXUtil.isEnablePreview()) {
+                if (enableNewStyle) {
+//                if (FXUtil.isEnablePreview()) {
                     AlertStage stage = new AlertStage(type, content);
                     stage.title(title);
                     stage.initOwner(owner);
@@ -333,7 +340,8 @@ public class MessageBox {
         String finalInitText = initText;
         AtomicReference<String> ref = new AtomicReference<>();
         FXUtil.runWait(() -> {
-            if (FXUtil.isEnablePreview()) {
+            if (enableNewStyle) {
+//            if (FXUtil.isEnablePreview()) {
                 InputStage stage = new InputStage(finalInitText);
                 stage.title(finalTitle);
                 ref.set(stage.getResult());
@@ -417,7 +425,7 @@ public class MessageBox {
      */
     public static void okToast(String msg) {
         okToast(msg, StageManager.getFrontWindow());
-//        okToast(msg, null);
+        //        okToast(msg, null);
     }
 
     /**

@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 public class PopupExt2Test extends Application {
 
     public static void main(String[] args) {
-        FXUtil.enablePreview();
+//        FXUtil.enablePreview();
         launch(PopupExt2Test.class, args);
     }
 
