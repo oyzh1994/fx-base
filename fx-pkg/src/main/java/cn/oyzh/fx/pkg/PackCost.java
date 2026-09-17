@@ -18,7 +18,7 @@ public class PackCost {
     public static final String GITHUB_DIST = "githubDist";
 
     /**
-     * 打包工程，即fx-pkg工程的路径
+     * 打包工程的路径
      */
     public static final String PKG_PATH = "pkgPath";
 

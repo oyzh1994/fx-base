@@ -11,7 +11,7 @@ import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.config.PackConfigHandler;
 import cn.oyzh.fx.pkg.config.PackConfigParser;
 import cn.oyzh.fx.pkg.config.ProjectHandler;
-import cn.oyzh.fx.pkg.github.GitHubHandler;
+import cn.oyzh.fx.pkg.github.GitHubActionsHandler;
 import cn.oyzh.fx.pkg.jar.JarHandler;
 import cn.oyzh.fx.pkg.jdeps.JDepsHandler;
 import cn.oyzh.fx.pkg.jlink.JLinkHandler;
@@ -105,8 +105,8 @@ public class Packer {
         this.registerHandler(new JDepsHandler());
     }
 
-    public void registerGitHubHandler() {
-        this.registerHandler(new GitHubHandler());
+    public void registerGitHubActionsHandler() {
+        this.registerHandler(new GitHubActionsHandler());
     }
 
     public void registerAppImageHandler() {
@@ -234,7 +234,7 @@ public class Packer {
         // if (packConfig.isParkByPackr()) {
         //     this.registerPackrHandler();
         // } else {
-//            this.registerJPackageHandler();
+        //            this.registerJPackageHandler();
         // }
         // AppImage
         if (StringUtil.isNotBlank(packConfig.getAppImageRuntime())) {
@@ -264,5 +264,20 @@ public class Packer {
         handler.handle(packConfig);
         long end = System.currentTimeMillis();
         JulLog.info("任务执行结束-{}, 耗时:{}毫秒", handler.name(), (end - start));
+    }
+
+    /**
+     * 配置github actions
+     * @param properties 属性
+     */
+    public void steupGitHub(Map<String, Object> properties) {
+        // github dest设置
+        String githubPath = properties.get(PackCost.PROJECT_PATH) + "/dist/";
+        properties.put(PackCost.GITHUB_DIST, githubPath);
+        // 覆盖dest设置
+        String targetDestPath = properties.get(PackCost.PROJECT_PATH) + "/target/dist/";
+        properties.put(PackCost.DEST, targetDestPath);
+        // 注册处理器
+        this.registerGitHubActionsHandler();
     }
 }

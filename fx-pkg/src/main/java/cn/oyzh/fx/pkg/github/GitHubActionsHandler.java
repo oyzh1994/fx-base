@@ -11,12 +11,12 @@ import java.io.File;
 import java.util.List;
 
 /**
- * github处理器
+ * github actions处理器
  *
  * @author oyzh
  * @since 2025/09/22
  */
-public class GitHubHandler implements PostHandler {
+public class GitHubActionsHandler implements PostHandler {
 
     private int order = PackOrder.ORDER_M8;
 
