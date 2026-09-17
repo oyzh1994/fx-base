@@ -4,6 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.DownLatch;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
+import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.fx.plus.FXConst;
 import com.sun.javafx.tk.TKPulseListener;
@@ -221,11 +222,11 @@ public class FXUtil {
      * @param task 任务
      */
     public static void runLater(Runnable task) {
-//        if (Platform.isFxApplicationThread()) {
-//            task.run();
-//        } else {
-            Platform.runLater(task);
-//        }
+        //        if (Platform.isFxApplicationThread()) {
+        //            task.run();
+        //        } else {
+        Platform.runLater(task);
+        //        }
     }
 
     /**
@@ -576,13 +577,27 @@ public class FXUtil {
         System.setProperty("javafx.suppressPreviewWarning", "false");
     }
 
-//    /**
-//     * 初始化javafx类库
-//     */
-//    public static void initJavafxLib() {
-//        String jarDir = JarUtil.getJarDir();
-//        if (FileUtil.exists(jarDir, "javafx")) {
-//            System.setProperty("java.library.path", Path.of(jarDir, "javafx").toString());
-//        }
-//    }
+    //    /**
+    //     * 初始化javafx类库
+    //     */
+    //    public static void initJavafxLib() {
+    //        String jarDir = JarUtil.getJarDir();
+    //        if (FileUtil.exists(jarDir, "javafx")) {
+    //            System.setProperty("java.library.path", Path.of(jarDir, "javafx").toString());
+    //        }
+    //    }
+
+    /**
+     * 获取微软库名称
+     *
+     * @return 结果
+     */
+    public static List<String> msLibNames() {
+        String[] arr = ReflectUtil.getFieldValue(Toolkit.getToolkit(), "msLibNames");
+        List<String> list = new ArrayList<>();
+        for (String s : arr) {
+            list.add(s + ".dll");
+        }
+        return list;
+    }
 }

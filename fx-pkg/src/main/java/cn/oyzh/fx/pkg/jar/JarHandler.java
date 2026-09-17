@@ -14,6 +14,7 @@ import cn.oyzh.fx.pkg.config.PackConfig;
 import cn.oyzh.fx.pkg.filter.RegFilter;
 import cn.oyzh.fx.pkg.util.JarUtil;
 import cn.oyzh.fx.pkg.util.PkgUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -147,8 +148,14 @@ public class JarHandler implements PreHandler {
                         throw new Exception("JMod error:" + result.getError());
                     }
                     String finalJavafxPath = javafxPath;
+                    List<String> mslibs = FXUtil.msLibNames();
                     cn.oyzh.common.file.FileUtil.getAllFiles(path1.toFile(), (ExceptionConsumer<File>) file -> {
+                        // 非库文件，跳过
                         if (!StringUtil.endsWithAny(file.getName(), ".dylib", ".dll", ".so")) {
+                            return;
+                        }
+                        // 微软库依赖，跳过
+                        if (mslibs.contains(file.getName())) {
                             return;
                         }
                         Path path2 = Paths.get(finalJavafxPath, file.getName());

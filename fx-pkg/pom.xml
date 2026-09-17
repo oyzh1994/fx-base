@@ -85,7 +85,7 @@
         <!-- 自定义类库，通用 -->
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
-            <artifactId>base-common</artifactId>
+            <artifactId>fx-plus</artifactId>
         </dependency>
 
         <!-- yaml库 -->
