@@ -41,7 +41,6 @@
     <version>1.3.7</version>
     <packaging>pom</packaging>
     <modules>
-        <module>fx-pkg</module>
         <module>fx-plus</module>
         <module>fx-rich</module>
         <module>fx-editor</module>
@@ -173,13 +172,6 @@
                 <groupId>io.github.oyzh1994</groupId>
                 <artifactId>fx-terminal</artifactId>
                 <version>${fx-base.version}</version>
-            </dependency>
-            <!-- 打包工具 -->
-            <dependency>
-                <groupId>io.github.oyzh1994</groupId>
-                <artifactId>fx-pkg</artifactId>
-                <version>${fx-base.version}</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -18,7 +18,6 @@ This is a JavaFX integration library that supports terminal emulation, SVG rende
 |--------|-------------------------------------------------------------------------------|
 | `fx-db`       | JavaFX database implementation, various database base components and wrappers |
 | `fx-editor`   | JavaFX editor implementation, syntax-highlighted editor                       |
-| `fx-pkg`      | JavaFX packaging implementation, cross-platform packaging features            |
 | `fx-plus`     | JavaFX enhancements and extensions, as well as GUI component collections      |
 | `fx-rich`     | JavaFX rich text implementation                                               |
 | `fx-terminal` | JavaFX simulated terminal implementation                                      |
