@@ -92,7 +92,7 @@ public class FXFileChooser {
      * @return 文件选择器
      */
     public FXFileChooser initDir(File initDir) {
-        if (!FileUtil.exist(initDir)) {
+        if (!FileUtil.exists(initDir)) {
             throw new RuntimeException("initDir路径不存在！");
         }
         if (!FileUtil.isDirectory(initDir)) {
