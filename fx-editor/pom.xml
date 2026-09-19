@@ -54,8 +54,17 @@
         <!-- https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext -->
         <dependency>
             <groupId>org.openjfx</groupId>
+            <artifactId>jfx-incubator-input</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.openjfx/jfx-incubator-richtext -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
             <artifactId>jfx-incubator-richtext</artifactId>
             <version>${javafx.version}</version>
+            <classifier>${javafx.platform}</classifier>
         </dependency>
 
         <!-- <dependency> -->
