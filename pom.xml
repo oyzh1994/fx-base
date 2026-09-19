@@ -190,5 +190,17 @@
             </properties>
         </profile>
 
+        <!-- 允许命令行覆盖的自定义 Profile -->
+        <profile>
+            <id>javafx-platform-custom</id>
+            <activation>
+                <property>
+                    <name>javafx.platform</name>
+                </property>
+            </activation>
+            <properties>
+                <!-- 空值，表示使用命令行传入的 javafx.platform -->
+            </properties>
+        </profile>
     </profiles>
 </project>
