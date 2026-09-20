@@ -1,6 +1,7 @@
 package cn.oyzh.fx.rdp;
 
 import cn.oyzh.fx.plus.controls.pane.FXPane;
+import cn.oyzh.fx.plus.util.FXUtil;
 import com.tangluobo.rdp4j.RdpClient;
 import com.tangluobo.rdp4j.frontend.FxRdpDisplay;
 import com.tangluobo.rdp4j.frontend.FxRdpFrontend;
@@ -27,9 +28,9 @@ public class RdpView extends FXPane {
      */
     private void attachDesktopAfterFirstFrame() {
         Node nextView = this.frontend.getView();
-        if (nextView == null) {
+        if (nextView != null) {
             this.addChild(nextView);
-            this.requestFocus();
+            FXUtil.runLater(this::requestFocus);
         }
     }
 
@@ -39,15 +40,21 @@ public class RdpView extends FXPane {
      * @param scaleToFit 按比例缩放
      */
     public void setScaleToFit(boolean scaleToFit) {
-        FxRdpDisplay display = this.frontend.getDisplay();
-        if (display != null) {
-            display.setScaleToFit(scaleToFit);
-        }
-        Node nextView = this.frontend.getView();
-        if (nextView instanceof Pane parent) {
-            parent.prefWidthProperty().bind(this.widthProperty());
-            parent.prefHeightProperty().bind(this.heightProperty());
-        }
+        FXUtil.runLater(() -> {
+            FxRdpDisplay display = this.frontend.getDisplay();
+            if (display != null) {
+                display.setScaleToFit(scaleToFit);
+            }
+            Node nextView = this.frontend.getView();
+            if (nextView instanceof Pane parent) {
+                if (!parent.prefWidthProperty().isBound()) {
+                    parent.prefWidthProperty().bind(this.widthProperty());
+                }
+                if (!parent.prefHeightProperty().isBound()) {
+                    parent.prefHeightProperty().bind(this.heightProperty());
+                }
+            }
+        });
     }
 
     @Override
