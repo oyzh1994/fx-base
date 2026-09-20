@@ -99,8 +99,8 @@ public abstract class FXApplication extends Application {
             //            StageManager.exit();
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            System.exit(0);
+//        } finally {
+//            System.exit(0);
         }
     }
 
