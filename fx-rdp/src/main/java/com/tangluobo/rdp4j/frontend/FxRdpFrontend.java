@@ -43,7 +43,7 @@ public final class FxRdpFrontend implements com.tangluobo.rdp4j.frontend.RdpFron
     private RdesktopCanvas createOnFxThread(IContext context, State state) {
         FxRdpDisplay nextDisplay = new FxRdpDisplay(state.getWidth(), state.getHeight(),
                 this::notifyServerPointerMoved);
-        RdesktopCanvas canvas = new RdesktopCanvas(context, state, nextDisplay, false);
+        RdesktopCanvas canvas = new RdesktopCanvas(context, state, nextDisplay);
         FxRdpInput nextInput = new FxRdpInput(state, nextDisplay,
                 this::notifyPointerMoved, this::notifyFocusGained);
         canvas.setInput(nextInput);

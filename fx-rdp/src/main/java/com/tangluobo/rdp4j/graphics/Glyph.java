@@ -12,9 +12,6 @@
  */
 package com.tangluobo.rdp4j.graphics;
 
-//import java.awt.*;
-//import java.awt.image.*;
-
 public class Glyph {
 
 	private int baseline = 0;

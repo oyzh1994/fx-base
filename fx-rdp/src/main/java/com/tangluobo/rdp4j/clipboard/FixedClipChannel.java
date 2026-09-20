@@ -7,11 +7,6 @@ import com.tangluobo.rdp4j.rdp5.cliprdr.ClipChannel;
 import com.tangluobo.rdp4j.rdp5.cliprdr.TextHandler;
 import com.tangluobo.rdp4j.rdp5.cliprdr.TypeHandler;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.FocusEvent;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -34,10 +29,8 @@ import java.util.concurrent.TimeoutException;
  * 修复+增强版剪贴板虚拟通道（cliprdr），基于MS-RDPECLIP规范。
  * <p>
  * 修复javardp库的问题：
- * 1. clipboard字段未初始化：库的标准入口（RdesktopFrame）才会调用
- * setClipboard(系统剪贴板)，嵌入式使用时clipboard为null，
- * focusGained→send_format_announce抛NPE，导致本地剪贴板格式
- * 永远无法通告给远程端（远程Ctrl+V无数据可贴）。构造时立即绑定。
+ * 1. 本地剪贴板访问通过{@link SystemClipboardAdapter}注入，文本走JavaFX剪贴板，
+ * 不再依赖调用方先调用setClipboard，因此本地剪贴板格式始终能通告给远程端。
  * 2. UnicodeHandler编码bug（中文乱码）：见{@link com.tangluobo.rdp4j.clipboard.FixedUnicodeHandler}。
  * 3. 远程→本地格式选择：优先CF_UNICODETEXT，避免TextHandler的Latin-1乱码。
  * <p>
@@ -213,9 +206,13 @@ public class FixedClipChannel extends ClipChannel {
      */
     private List<File> downloadedFiles;
     /**
+     * 本地系统剪贴板访问适配器：文本走JavaFX，文件列表保留AWT的延迟渲染。
+     */
+    private final SystemClipboardAdapter clipboard = new FxSystemClipboardAdapter();
+    /**
      * 已发布到系统剪贴板、等待远程文件下载完成的延迟文件列表。
      */
-    private volatile com.tangluobo.rdp4j.clipboard.DeferredFileListTransferable remoteClipboardTransfer;
+    private volatile SystemClipboardAdapter.DeferredFileHandle remoteClipboardTransfer;
     /**
      * Windows Shell当前持有的原生虚拟文件数据对象。
      */
@@ -231,10 +228,24 @@ public class FixedClipChannel extends ClipChannel {
 
     public FixedClipChannel() {
         super();
-        // 修复1：立即绑定系统剪贴板（原库在嵌入式场景下为null导致通告NPE）
-        setClipboard(Toolkit.getDefaultToolkit().getSystemClipboard());
-        // 修复2：替换库内bug版UnicodeHandler
+        // 替换库内bug版UnicodeHandler
         replaceUnicodeHandler();
+    }
+
+    /**
+     * 本地→远程：把远程剪贴板文本写入本地系统剪贴板。
+     */
+    @Override
+    public void copyTextToClipboard(String text) {
+        clipboard.writeText(text);
+    }
+
+    /**
+     * 本地→远程：读取本地系统剪贴板文本。
+     */
+    @Override
+    public String getLocalText() {
+        return clipboard.read().text();
     }
 
     /**
@@ -386,13 +397,10 @@ public class FixedClipChannel extends ClipChannel {
         return serverGeneralFlags >= 0 && (serverGeneralFlags & GF_LONG_FORMAT_NAMES) != 0;
     }
 
-    @Override
-    public void focusGained(FocusEvent e) {
-        synchronizeLocalClipboard();
-    }
-
     /**
-     * Re-announces the current local clipboard after either AWT or JavaFX focus returns.
+     * Re-announces the current local clipboard when the RDP view regains focus.
+     * Driven by {@code RdpFrontend.setFocusGainedListener}, not by an AWT
+     * FocusListener.
      */
     public void synchronizeLocalClipboard() {
         try {
@@ -465,22 +473,19 @@ public class FixedClipChannel extends ClipChannel {
                 }
                 windowsVirtualClipboard = null;
             }
-            Clipboard clip = getClipboard();
-            Transferable t = clip == null ? null : clip.getContents(this);
-            if (t != null && t == remoteClipboardTransfer) {
+            SystemClipboardAdapter.LocalContents local = clipboard.read();
+            if (local.ownedByUs()) {
                 // This clipboard originated from this RDP channel. Advertising
                 // it back to the same server creates an ownership loop and can
                 // restart a large remote-file transfer.
                 return;
             }
-            boolean hasText = t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor);
+            boolean hasText = local.hasText();
 
             announcedFiles = null;
-            if (t != null && t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+            if (local.hasFiles()) {
                 try {
-                    @SuppressWarnings("unchecked")
-                    List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
-                    List<FlatLocalFile> flat = flattenFiles(files);
+                    List<FlatLocalFile> flat = flattenFiles(local.files());
                     if (!flat.isEmpty()) {
                         announcedFiles = flat;
                     }
@@ -947,14 +952,14 @@ public class FixedClipChannel extends ClipChannel {
                 .map(entry -> new com.tangluobo.rdp4j.clipboard.WindowsVirtualFileClipboard.Entry(entry.name, entry.size, entry.dir))
                 .toList();
         long generation = remoteClipboardGeneration;
-        com.tangluobo.rdp4j.clipboard.WindowsVirtualFileClipboard clipboard = com.tangluobo.rdp4j.clipboard.WindowsVirtualFileClipboard.publish(
+        com.tangluobo.rdp4j.clipboard.WindowsVirtualFileClipboard published = com.tangluobo.rdp4j.clipboard.WindowsVirtualFileClipboard.publish(
                 entries, (fileIndex, offset, length) ->
                         readRemoteVirtualFile(generation, fileIndex, offset, length));
-        if (clipboard == null) {
+        if (published == null) {
             JulLog.warn("发布Windows原生虚拟文件剪贴板失败，回退到临时文件模式");
             return false;
         }
-        windowsVirtualClipboard = clipboard;
+        windowsVirtualClipboard = published;
         JulLog.info("远程文件已交给Windows Shell，粘贴时将按需读取RDP文件流");
         return true;
     }
@@ -1059,30 +1064,22 @@ public class FixedClipChannel extends ClipChannel {
     private void startRemoteDownload() throws IOException, RdesktopException {
         downloadRoot = Files.createTempDirectory("tomato-cliprdr-").toFile();
         downloadedFiles = new ArrayList<>();
-        com.tangluobo.rdp4j.clipboard.DeferredFileListTransferable transfer = new com.tangluobo.rdp4j.clipboard.DeferredFileListTransferable();
-        remoteClipboardTransfer = transfer;
-        publishRemoteFileClipboard(transfer);
+        publishRemoteFileClipboard();
         downloadIdx = 0;
         startNextRemoteFile();
     }
 
-    private void publishRemoteFileClipboard(com.tangluobo.rdp4j.clipboard.DeferredFileListTransferable transfer) {
-        Runnable publish = () -> {
-            if (remoteClipboardTransfer != transfer) {
-                return;
-            }
-            try {
-                getClipboard().setContents(transfer, this);
-                JulLog.info("远程文件剪贴板已就绪，粘贴将在下载完成后继续");
-            } catch (Exception error) {
-                transfer.cancel();
-                JulLog.error("发布远程文件剪贴板失败: " + error.getMessage(), error);
-            }
-        };
-        if (EventQueue.isDispatchThread()) {
-            publish.run();
-        } else {
-            EventQueue.invokeLater(publish);
+    /**
+     * Announces the file list before the files exist, so a paste waits for the
+     * download instead of failing. The adapter marshals this onto the UI thread.
+     */
+    private void publishRemoteFileClipboard() {
+        try {
+            SystemClipboardAdapter.DeferredFileHandle transfer = clipboard.writeDeferredFileList();
+            remoteClipboardTransfer = transfer;
+            JulLog.info("远程文件剪贴板已就绪，粘贴将在下载完成后继续");
+        } catch (Exception error) {
+            JulLog.error("发布远程文件剪贴板失败: " + error.getMessage(), error);
         }
     }
 
@@ -1192,11 +1189,11 @@ public class FixedClipChannel extends ClipChannel {
     private void finishRemoteDownload() {
         try {
             if (downloadedFiles != null && !downloadedFiles.isEmpty()) {
-                com.tangluobo.rdp4j.clipboard.DeferredFileListTransferable transfer = remoteClipboardTransfer;
+                SystemClipboardAdapter.DeferredFileHandle transfer = remoteClipboardTransfer;
                 if (transfer != null) {
                     transfer.complete(downloadedFiles);
                 } else {
-                    getClipboard().setContents(new FileListTransferable(downloadedFiles), this);
+                    clipboard.writeFileList(downloadedFiles);
                 }
                 JulLog.info("远程文件已下载到本地剪贴板: " + downloadRoot
                         + " (" + downloadedFiles.size() + "项)");
@@ -1223,7 +1220,7 @@ public class FixedClipChannel extends ClipChannel {
             request.completeExceptionally(cancelled);
         }
         remoteReadRequests.clear();
-        com.tangluobo.rdp4j.clipboard.DeferredFileListTransferable transfer = remoteClipboardTransfer;
+        SystemClipboardAdapter.DeferredFileHandle transfer = remoteClipboardTransfer;
         remoteClipboardTransfer = null;
         if (transfer != null && !transfer.isReady()) {
             transfer.cancel();
@@ -1242,6 +1239,7 @@ public class FixedClipChannel extends ClipChannel {
      */
     public void close() {
         cancelRemoteDownload();
+        clipboard.dispose();
     }
 
     private void closeDownloadOut() {
@@ -1277,32 +1275,6 @@ public class FixedClipChannel extends ClipChannel {
     // =====================================================================
     // 辅助
     // =====================================================================
-
-    /**
-     * 本地剪贴板文件列表Transferable（javaFileListFlavor）。
-     */
-    private static class FileListTransferable implements Transferable {
-        private final List<File> files;
-
-        FileListTransferable(List<File> files) {
-            this.files = files;
-        }
-
-        @Override
-        public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[]{DataFlavor.javaFileListFlavor};
-        }
-
-        @Override
-        public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return DataFlavor.javaFileListFlavor.equals(flavor);
-        }
-
-        @Override
-        public Object getTransferData(DataFlavor flavor) {
-            return files;
-        }
-    }
 
     /**
      * 本地文件的扁平描述（含目录树相对路径）

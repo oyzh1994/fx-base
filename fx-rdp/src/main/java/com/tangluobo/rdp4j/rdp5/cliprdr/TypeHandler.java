@@ -15,8 +15,6 @@ import com.tangluobo.rdp4j.Packet;
 import com.tangluobo.rdp4j.RdesktopException;
 import com.tangluobo.rdp4j.rdp5.cliprdr.ClipInterface;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.io.IOException;
 
 public abstract class TypeHandler {
@@ -54,15 +52,6 @@ public abstract class TypeHandler {
 	public static final int CF_UNICODETEXT = 13;
 	public static final int CF_WAVE = 12;
 
-	public boolean clipboardValid(DataFlavor[] dataTypes) {
-
-		for (int i = 0; i < dataTypes.length; i++) {
-			if (mimeTypeValid(dataTypes[i].getPrimaryType()))
-				return true;
-		}
-		return false;
-	}
-
 	public abstract boolean formatValid(int format);
 
 	public abstract void handleData(Packet data, int length, ClipInterface c);
@@ -73,5 +62,11 @@ public abstract class TypeHandler {
 
 	public abstract int preferredFormat();
 
-	public abstract void send_data(Transferable in, ClipInterface c) throws RdesktopException, IOException;
+	/**
+	 * Encode the local clipboard text for transmission to the server.
+	 *
+	 * @param localText current local clipboard text, never null
+	 * @param c         channel to send through
+	 */
+	public abstract void send_data(String localText, ClipInterface c) throws RdesktopException, IOException;
 }

@@ -4,6 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import com.tangluobo.rdp4j.graphics.Display;
 import com.tangluobo.rdp4j.graphics.RdesktopCanvas;
 import com.tangluobo.rdp4j.graphics.RdpCursor;
+import com.tangluobo.rdp4j.graphics.RdpPalette;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
@@ -19,10 +20,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.robot.Robot;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.awt.image.IndexColorModel;
 import java.nio.IntBuffer;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -58,10 +55,20 @@ public final class FxRdpDisplay implements Display {
             }
         }
     };
-    private volatile BufferedImage bufferedImage;
-    private volatile BufferedImage displayedImage;
+    /**
+     * Immutable snapshot of the backing store. Publishing the buffer, its width
+     * and its height through a single volatile reference makes the swap atomic:
+     * a reader can never observe the width of one frame with the pixels of
+     * another. Callers compare frames by identity, so {@link #resizeDisplay}
+     * must allocate a new {@code Frame} rather than mutate the array.
+     */
+    private record Frame(int[] pixels, int width, int height) {
+    }
+
+    private volatile Frame frame;
+    private volatile Frame displayedFrame;
     private volatile PixelBuffer<IntBuffer> pixelBuffer;
-    private volatile IndexColorModel colorModel;
+    private volatile RdpPalette palette;
     private volatile Runnable firstRemoteUpdateListener;
     private Robot pointerRobot;
     private int lastLocalPointerX = Integer.MIN_VALUE;
@@ -77,7 +84,7 @@ public final class FxRdpDisplay implements Display {
     private int lastProbePointerX = Integer.MIN_VALUE;
     private int lastProbePointerY = Integer.MIN_VALUE;
     private long lastMovementProbeNanos;
-    private BufferedImage dirtyImage;
+    private Frame dirtyFrame;
     private int dirtyLeft = Integer.MAX_VALUE;
     private int dirtyTop = Integer.MAX_VALUE;
     private int dirtyRight = -1;
@@ -91,15 +98,17 @@ public final class FxRdpDisplay implements Display {
                         BiConsumer<Integer, Integer> serverPointerMovedListener) {
         this.serverPointerMovedListener = serverPointerMovedListener == null
                 ? (x, y) -> { } : serverPointerMovedListener;
-        bufferedImage = createImage(width, height);
+        Frame initial = new Frame(new int[Math.max(1, width) * Math.max(1, height)],
+                Math.max(1, width), Math.max(1, height));
+        frame = initial;
         imageView.setFocusTraversable(true);
         imageView.setPreserveRatio(true);
         imageView.setSmooth(false);
         view.setStyle("-fx-background-color: black;");
-        view.setMinSize(bufferedImage.getWidth(), bufferedImage.getHeight());
-        view.setPrefSize(bufferedImage.getWidth(), bufferedImage.getHeight());
+        view.setMinSize(initial.width(), initial.height());
+        view.setPrefSize(initial.width(), initial.height());
         view.getChildren().add(imageView);
-        installImage(bufferedImage);
+        installBuffer(initial);
     }
 
     public StackPane getView() {
@@ -121,74 +130,92 @@ public final class FxRdpDisplay implements Display {
             imageView.fitHeightProperty().unbind();
             imageView.setFitWidth(0);
             imageView.setFitHeight(0);
-            BufferedImage image = bufferedImage;
-            view.setMinSize(image.getWidth(), image.getHeight());
-            view.setPrefSize(image.getWidth(), image.getHeight());
+            Frame current = frame;
+            view.setMinSize(current.width(), current.height());
+            view.setPrefSize(current.width(), current.height());
         }
     }
 
     @Override
     public int checkColor(int color) {
-        IndexColorModel current = colorModel;
-        return current == null ? color : current.getRGB(color);
+        RdpPalette current = palette;
+        return current == null ? color : current.getRGB(color & 0xff);
     }
 
     @Override
-    public RdpCursor createCursor(String name, Point hotspot, Image data) {
-        return new RdpCursor(hotspot, name, data);
+    public RdpCursor createCursor(String name, int hotspotX, int hotspotY,
+                                  int[] pixels, int width, int height) {
+        return new RdpCursor(name, hotspotX, hotspotY, pixels, width, height);
     }
 
-    @Override
-    public Rectangle getBounds() {
-        BufferedImage image = bufferedImage;
-        return new Rectangle(0, 0, image.getWidth(), image.getHeight());
+    /**
+     * Minimal binding for the Windows bell. JNA's {@code User32} interface does
+     * not declare {@code MessageBeep}, and this is the closest equivalent to the
+     * {@code java.awt.Toolkit.beep()} this replaces.
+     */
+    private interface User32Beep extends com.sun.jna.Library {
+        User32Beep INSTANCE = com.sun.jna.Native.load("user32", User32Beep.class);
+
+        /** @param type ignored; 0 selects the default system sound */
+        int MessageBeep(int type);
     }
 
+    /**
+     * Sounds the RDP BELL PDU. JavaFX has no bell primitive, so this uses the
+     * Windows {@code MessageBeep} API through JNA (already a direct dependency of
+     * this module). Other platforms have no equivalent without bundling an audio
+     * asset, so the bell is a no-op there.
+     */
     @Override
-    public BufferedImage getBufferedImage() {
-        return bufferedImage;
-    }
-
-    @Override
-    public Graphics getDisplayGraphics() {
-        return bufferedImage.getGraphics();
+    public void beep() {
+        runOnFxThread(() -> {
+            if (!com.sun.jna.Platform.isWindows()) {
+                return;
+            }
+            try {
+                User32Beep.INSTANCE.MessageBeep(0);
+            } catch (Throwable t) {
+                // Loading user32 can fail in constrained environments; a missing
+                // bell must never disturb the session.
+                JulLog.debug("Bell unavailable: " + t.getMessage());
+            }
+        });
     }
 
     @Override
     public int getDisplayHeight() {
-        return bufferedImage.getHeight();
+        return frame.height();
     }
 
     @Override
     public int getDisplayWidth() {
-        return bufferedImage.getWidth();
-    }
-
-    @Override
-    public Point getLocationOnScreen() {
-        return new Point(0, 0);
+        return frame.width();
     }
 
     @Override
     public int getRGB(int x, int y) {
-        BufferedImage image = bufferedImage;
-        IndexColorModel current = colorModel;
-        if (current == null) {
-            return image.getRGB(x, y);
+        Frame current = frame;
+        int stored = current.pixels()[y * current.width() + x];
+        RdpPalette currentPalette = palette;
+        if (currentPalette == null) {
+            return stored;
         }
-        int pixel = image.getRGB(x, y) & 0x00ffffff;
-        int[] components = { pixel >>> 16, (pixel >>> 8) & 0xff, pixel & 0xff };
-        return current.getDataElement(components, 0);
+        // With a palette installed this returns the INDEX, not RGB: RasterOp
+        // performs its raster operations in index space.
+        return currentPalette.getIndexForRgb(stored & 0x00ffffff);
     }
 
     @Override
-    public int[] getRGB(int x, int y, int width, int height, int[] data, int offset, int scanWidth) {
-        return bufferedImage.getRGB(x, y, width, height, data, offset, scanWidth);
-    }
-
-    @Override
-    public BufferedImage getSubimage(int x, int y, int width, int height) {
-        return bufferedImage.getSubimage(x, y, width, height);
+    public int[] getRGB(int x, int y, int cx, int cy, int[] data, int offset, int scanWidth) {
+        Frame current = frame;
+        if (data == null) {
+            data = new int[cx * cy];
+        }
+        for (int row = 0; row < cy; row++) {
+            System.arraycopy(current.pixels(), (y + row) * current.width() + x,
+                    data, offset + row * scanWidth, cx);
+        }
+        return data;
     }
 
     @Override
@@ -231,16 +258,30 @@ public final class FxRdpDisplay implements Display {
     }
 
     @Override
-    public void resizeDisplay(Dimension dimension) {
-        BufferedImage replacement = createImage(dimension.width, dimension.height);
+    public void resizeDisplay(int width, int height) {
+        int newWidth = Math.max(1, width);
+        int newHeight = Math.max(1, height);
+        Frame source;
         synchronized (imageLock) {
-            Graphics2D graphics = replacement.createGraphics();
-            try {
-                graphics.drawImage(bufferedImage, 0, 0, null);
-            } finally {
-                graphics.dispose();
-            }
-            bufferedImage = replacement;
+            source = frame;
+        }
+        // Copy top-left anchored, without clearing or scaling. Newly exposed rows
+        // and columns stay zero (transparent black), matching the old
+        // BufferedImage + Graphics.drawImage behaviour. A plain row copy is
+        // bit-identical to the SrcOver blit it replaces because every stored
+        // pixel is opaque.
+        int[] replacement = new int[newWidth * newHeight];
+        int copyWidth = Math.min(source.width(), newWidth);
+        int copyHeight = Math.min(source.height(), newHeight);
+        for (int row = 0; row < copyHeight; row++) {
+            System.arraycopy(source.pixels(), row * source.width(),
+                    replacement, row * newWidth, copyWidth);
+        }
+        synchronized (imageLock) {
+            // A fresh Frame, never an in-place edit: flushRefresh decides between
+            // reinstalling the image and updating a dirty region by comparing
+            // frame identity.
+            frame = new Frame(replacement, newWidth, newHeight);
         }
         requestRefresh();
     }
@@ -248,7 +289,7 @@ public final class FxRdpDisplay implements Display {
     @Override
     public void setCursor(RdpCursor cursor) {
         Runnable update = () -> {
-            if (cursor == null || cursor.getData() == null) {
+            if (cursor == null || cursor.getPixels() == null) {
                 serverCursorMode = "default";
                 lastVisibleFxCursor = Cursor.DEFAULT;
                 softwareCursorProbeEligible = false;
@@ -260,7 +301,7 @@ public final class FxRdpDisplay implements Display {
                 return;
             }
             if (HIDDEN_CURSOR_NAME.equals(cursor.getName())
-                    || isFullyTransparentCursor(cursor.getData())) {
+                    || cursor.isFullyTransparent()) {
                 // A transparent ImageCursor is rendered as a black rectangle by
                 // some Windows/Glass cursor paths and can leave the preceding
                 // resize cursor visible. Both the RDP null-system-pointer and a
@@ -276,8 +317,8 @@ public final class FxRdpDisplay implements Display {
                         ? "hidden-system" : "hidden-transparent");
                 return;
             }
-            int sourceWidth = Math.max(1, cursor.getData().getWidth(null));
-            int sourceHeight = Math.max(1, cursor.getData().getHeight(null));
+            int sourceWidth = Math.max(1, cursor.getWidth());
+            int sourceHeight = Math.max(1, cursor.getHeight());
             Dimension2D bestSize = ImageCursor.getBestSize(sourceWidth, sourceHeight);
             int nativeWidth = Math.max(sourceWidth,
                     bestSize.getWidth() > 0 ? (int) Math.round(bestSize.getWidth()) : sourceWidth);
@@ -287,10 +328,10 @@ public final class FxRdpDisplay implements Display {
             // 24x24 or the 1x1 hidden pointer) to the native cursor size. A
             // transparent native-size canvas keeps the remote shape 1:1 and
             // prevents the newly allocated area from appearing as a black box.
-            WritableImage image = createFxCursorImage(cursor.getData(), nativeWidth, nativeHeight);
-            Point hotspot = cursor.getHotspot();
-            double x = hotspot == null ? 0 : Math.max(0, Math.min(hotspot.x, sourceWidth - 1));
-            double y = hotspot == null ? 0 : Math.max(0, Math.min(hotspot.y, sourceHeight - 1));
+            WritableImage image = createFxCursorImage(cursor.getPixels(), sourceWidth, sourceHeight,
+                    nativeWidth, nativeHeight);
+            double x = Math.max(0, Math.min(cursor.getHotspotX(), sourceWidth - 1));
+            double y = Math.max(0, Math.min(cursor.getHotspotY(), sourceHeight - 1));
             Cursor fxCursor = new ImageCursor(image, x, y);
             serverCursorMode = "custom";
             lastVisibleFxCursor = fxCursor;
@@ -316,7 +357,16 @@ public final class FxRdpDisplay implements Display {
                 logCursorMode("custom-" + sourceWidth + "x" + sourceHeight);
             }
         };
-        runOnFxThread(update);
+        // The AWT implementation could throw HeadlessException here; the callers
+        // used to guard against it. Keep cursor presentation non-fatal, since a
+        // missing pointer must never break the session.
+        runOnFxThread(() -> {
+            try {
+                update.run();
+            } catch (RuntimeException e) {
+                JulLog.warn("Cursor presentation failed: " + e.getMessage());
+            }
+        });
     }
 
     /** Re-applies the last server cursor after this window regains mouse/focus. */
@@ -406,9 +456,10 @@ public final class FxRdpDisplay implements Display {
                         lastLocalPointerX, lastLocalPointerY) < 9) {
             return;
         }
+        Frame current = frame;
         MovementProbe probe = new MovementProbe(now,
-                FramePatch.capture(bufferedImage, previousX, previousY, MOVEMENT_PROBE_RADIUS),
-                FramePatch.capture(bufferedImage, lastLocalPointerX, lastLocalPointerY,
+                FramePatch.capture(current, previousX, previousY, MOVEMENT_PROBE_RADIUS),
+                FramePatch.capture(current, lastLocalPointerX, lastLocalPointerY,
                         MOVEMENT_PROBE_RADIUS));
         while (movementProbes.size() >= 8) {
             movementProbes.removeFirst();
@@ -475,10 +526,11 @@ public final class FxRdpDisplay implements Display {
                 || movementProbes.isEmpty()) {
             return;
         }
+        Frame current = frame;
         MovementProbe matched = null;
         for (var iterator = movementProbes.descendingIterator(); iterator.hasNext();) {
             MovementProbe candidate = iterator.next();
-            if (candidate.matches(bufferedImage)) {
+            if (candidate.matches(current)) {
                 matched = candidate;
                 break;
             }
@@ -548,7 +600,7 @@ public final class FxRdpDisplay implements Display {
     }
 
     private record MovementProbe(long createdNanos, FramePatch oldPosition, FramePatch newPosition) {
-        boolean matches(BufferedImage frame) {
+        boolean matches(Frame frame) {
             int oldChanged = oldPosition.changedPixels(frame);
             int newChanged = newPosition.changedPixels(frame);
             return resemblesSoftwareCursorMovement(oldChanged, oldPosition.pixelCount(),
@@ -557,27 +609,37 @@ public final class FxRdpDisplay implements Display {
     }
 
     private record FramePatch(int x, int y, int width, int height, int[] pixels) {
-        static FramePatch capture(BufferedImage frame, int centerX, int centerY, int radius) {
-            int x = clamp(centerX - radius, 0, frame.getWidth() - 1);
-            int y = clamp(centerY - radius, 0, frame.getHeight() - 1);
-            int right = clamp(centerX + radius, 0, frame.getWidth() - 1);
-            int bottom = clamp(centerY + radius, 0, frame.getHeight() - 1);
+        static FramePatch capture(Frame frame, int centerX, int centerY, int radius) {
+            int x = clamp(centerX - radius, 0, frame.width() - 1);
+            int y = clamp(centerY - radius, 0, frame.height() - 1);
+            int right = clamp(centerX + radius, 0, frame.width() - 1);
+            int bottom = clamp(centerY + radius, 0, frame.height() - 1);
             int width = right - x + 1;
             int height = bottom - y + 1;
-            return new FramePatch(x, y, width, height,
-                    frame.getRGB(x, y, width, height, null, 0, width));
+            int stride = frame.width();
+            int[] source = frame.pixels();
+            int[] patch = new int[width * height];
+            for (int row = 0; row < height; row++) {
+                System.arraycopy(source, (y + row) * stride + x, patch, row * width, width);
+            }
+            return new FramePatch(x, y, width, height, patch);
         }
 
         int pixelCount() {
             return pixels.length;
         }
 
-        int changedPixels(BufferedImage frame) {
-            int[] current = frame.getRGB(x, y, width, height, null, 0, width);
+        int changedPixels(Frame frame) {
+            int stride = frame.width();
+            int[] source = frame.pixels();
             int changed = 0;
-            for (int i = 0; i < pixels.length; i++) {
-                if ((pixels[i] & 0x00ffffff) != (current[i] & 0x00ffffff)) {
-                    changed++;
+            int index = 0;
+            for (int row = 0; row < height; row++) {
+                int base = (y + row) * stride + x;
+                for (int column = 0; column < width; column++) {
+                    if ((pixels[index++] & 0x00ffffff) != (source[base + column] & 0x00ffffff)) {
+                        changed++;
+                    }
                 }
             }
             return changed;
@@ -592,54 +654,57 @@ public final class FxRdpDisplay implements Display {
     }
 
     @Override
-    public void setIndexColorModel(IndexColorModel colorModel) {
-        this.colorModel = colorModel;
+    public void setPalette(RdpPalette palette) {
+        this.palette = palette;
     }
 
     @Override
     public void setRGB(int x, int y, int color) {
-        bufferedImage.setRGB(x, y, opaque(checkColor(color)));
+        Frame current = frame;
+        RdpPalette currentPalette = palette;
+        int rgb = currentPalette == null ? color : currentPalette.getRGB(color & 0xff);
+        current.pixels()[y * current.width() + x] = opaque(rgb);
     }
 
     @Override
     public void setRGB(int x, int y, int width, int height, int[] data, int offset, int scanWidth) {
-        IndexColorModel current = colorModel;
-        BufferedImage image = bufferedImage;
-        int[] target = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        if (current == null) {
-            copyOpaquePixels(target, image.getWidth(), x, y,
+        Frame current = frame;
+        int[] target = current.pixels();
+        int stride = current.width();
+        RdpPalette currentPalette = palette;
+        if (currentPalette == null) {
+            copyOpaquePixels(target, stride, x, y,
                     data, offset, scanWidth, width, height);
             return;
         }
         for (int row = 0; row < height; row++) {
             int sourceIndex = offset + row * scanWidth;
-            int targetIndex = (y + row) * image.getWidth() + x;
+            int targetIndex = (y + row) * stride + x;
             for (int column = 0; column < width; column++) {
-                target[targetIndex + column] = opaque(current.getRGB(data[sourceIndex + column]));
+                target[targetIndex + column] = opaque(currentPalette.getRGB(data[sourceIndex + column] & 0xff));
             }
         }
     }
 
     @Override
     public void setRGBNoConversion(int x, int y, int width, int height, int[] data, int offset, int scanWidth) {
-        BufferedImage image = bufferedImage;
-        int[] target = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        copyOpaquePixels(target, image.getWidth(), x, y,
+        Frame current = frame;
+        copyOpaquePixels(current.pixels(), current.width(), x, y,
                 data, offset, scanWidth, width, height);
     }
 
     private void requestRefresh() {
-        BufferedImage image = bufferedImage;
-        requestRefresh(0, 0, image.getWidth(), image.getHeight());
+        Frame current = frame;
+        requestRefresh(0, 0, current.width(), current.height());
     }
 
     private void requestRefresh(int x, int y, int width, int height) {
         if (width <= 0 || height <= 0) {
             return;
         }
-        BufferedImage image = bufferedImage;
-        int imageWidth = image.getWidth();
-        int imageHeight = image.getHeight();
+        Frame current = frame;
+        int imageWidth = current.width();
+        int imageHeight = current.height();
         int left = clamp(x, 0, imageWidth);
         int top = clamp(y, 0, imageHeight);
         int right = (int) Math.max(0, Math.min((long) imageWidth, (long) x + width));
@@ -650,8 +715,8 @@ public final class FxRdpDisplay implements Display {
 
         boolean schedule;
         synchronized (refreshLock) {
-            if (dirtyImage != image) {
-                dirtyImage = image;
+            if (dirtyFrame != current) {
+                dirtyFrame = current;
                 clearDirtyRegion();
             }
             dirtyLeft = Math.min(dirtyLeft, left);
@@ -666,16 +731,16 @@ public final class FxRdpDisplay implements Display {
     }
 
     private void flushRefresh() {
-        BufferedImage current;
+        Frame current;
         Rectangle2D dirtyRegion;
         synchronized (refreshLock) {
-            current = bufferedImage;
-            if (dirtyImage != current) {
-                dirtyImage = current;
+            current = frame;
+            if (dirtyFrame != current) {
+                dirtyFrame = current;
                 dirtyLeft = 0;
                 dirtyTop = 0;
-                dirtyRight = current.getWidth();
-                dirtyBottom = current.getHeight();
+                dirtyRight = current.width();
+                dirtyBottom = current.height();
             }
             dirtyRegion = dirtyRight > dirtyLeft && dirtyBottom > dirtyTop
                     ? new Rectangle2D(dirtyLeft, dirtyTop,
@@ -684,8 +749,8 @@ public final class FxRdpDisplay implements Display {
             clearDirtyRegion();
             refreshPending.set(false);
         }
-        if (displayedImage != current) {
-            installImage(current);
+        if (displayedFrame != current) {
+            installBuffer(current);
         } else if (dirtyRegion != null) {
             PixelBuffer<IntBuffer> currentBuffer = pixelBuffer;
             if (currentBuffer != null) {
@@ -701,21 +766,23 @@ public final class FxRdpDisplay implements Display {
         dirtyBottom = -1;
     }
 
-    private void installImage(BufferedImage image) {
-        int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        PixelBuffer<IntBuffer> replacement = new PixelBuffer<>(image.getWidth(), image.getHeight(),
-                IntBuffer.wrap(pixels), PixelFormat.getIntArgbPreInstance());
+    /**
+     * Wrap a frame's pixel array for display. A fresh {@link PixelBuffer} is
+     * allocated every time: two PixelBuffers must never wrap the same array, and
+     * this must run on the JavaFX thread (it is reached only from the
+     * constructor and from {@code flushRefresh}, which is a
+     * {@code Platform.runLater} body).
+     */
+    private void installBuffer(Frame current) {
+        PixelBuffer<IntBuffer> replacement = new PixelBuffer<>(current.width(), current.height(),
+                IntBuffer.wrap(current.pixels()), PixelFormat.getIntArgbPreInstance());
         pixelBuffer = replacement;
-        displayedImage = image;
+        displayedFrame = current;
         imageView.setImage(new WritableImage(replacement));
         if (!imageView.fitWidthProperty().isBound()) {
-            view.setMinSize(image.getWidth(), image.getHeight());
-            view.setPrefSize(image.getWidth(), image.getHeight());
+            view.setMinSize(current.width(), current.height());
+            view.setPrefSize(current.width(), current.height());
         }
-    }
-
-    private static BufferedImage createImage(int width, int height) {
-        return new BufferedImage(Math.max(1, width), Math.max(1, height), BufferedImage.TYPE_INT_ARGB_PRE);
     }
 
     private static int opaque(int color) {
@@ -738,57 +805,23 @@ public final class FxRdpDisplay implements Display {
         return Math.max(minimum, Math.min(maximum, value));
     }
 
-    public static WritableImage createFxImage(Image source) {
-        return createFxCursorImage(source, Math.max(1, source.getWidth(null)),
-                Math.max(1, source.getHeight(null)));
-    }
-
-    public static boolean isFullyTransparentCursor(Image source) {
-        if (source == null) {
-            return false;
-        }
-        int width = Math.max(1, source.getWidth(null));
-        int height = Math.max(1, source.getHeight(null));
-        BufferedImage image;
-        if (source instanceof BufferedImage buffered) {
-            image = buffered;
-        } else {
-            image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics2D graphics = image.createGraphics();
-            try {
-                graphics.drawImage(source, 0, 0, null);
-            } finally {
-                graphics.dispose();
-            }
-        }
-        int[] pixels = image.getRGB(0, 0, width, height, null, 0, width);
-        for (int pixel : pixels) {
-            if ((pixel >>> 24) != 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static WritableImage createFxCursorImage(Image source, int canvasWidth, int canvasHeight) {
-        int width = Math.max(1, source.getWidth(null));
-        int height = Math.max(1, source.getHeight(null));
+    /**
+     * Premultiply a non-premultiplied {@code 0xAARRGGBB} cursor raster into a
+     * {@link WritableImage} laid out on a possibly larger transparent canvas.
+     *
+     * @param sourcePixels non-premultiplied cursor pixels, {@code width * height}
+     * @param width        cursor width
+     * @param height       cursor height
+     * @param canvasWidth  native canvas width, at least {@code width}
+     * @param canvasHeight native canvas height, at least {@code height}
+     * @return the cursor image
+     */
+    public static WritableImage createFxCursorImage(int[] sourcePixels,
+                                                    int width, int height,
+                                                    int canvasWidth, int canvasHeight) {
         if (canvasWidth < width || canvasHeight < height) {
             throw new IllegalArgumentException("Cursor canvas must contain the source image without scaling");
         }
-        BufferedImage image;
-        if (source instanceof BufferedImage buffered) {
-            image = buffered;
-        } else {
-            image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics2D graphics = image.createGraphics();
-            try {
-                graphics.drawImage(source, 0, 0, null);
-            } finally {
-                graphics.dispose();
-            }
-        }
-        int[] sourcePixels = image.getRGB(0, 0, width, height, null, 0, width);
         int[] nativePixels = new int[canvasWidth * canvasHeight];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

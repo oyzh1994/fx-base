@@ -3,7 +3,6 @@ package com.tangluobo.rdp4j;
 import cn.oyzh.common.log.JulLog;
 import com.tangluobo.rdp4j.clipboard.FixedClipChannel;
 import com.tangluobo.rdp4j.frontend.RdpFrontend;
-import com.tangluobo.rdp4j.frontend.SwingRdpFrontend;
 import com.tangluobo.rdp4j.graphics.RdesktopCanvas;
 import com.tangluobo.rdp4j.io.DefaultIO;
 import com.tangluobo.rdp4j.keymapping.KeyCode_FileBased;
@@ -12,7 +11,6 @@ import com.tangluobo.rdp4j.layers.nla.HResultException;
 import com.tangluobo.rdp4j.rdp5.VChannels;
 
 import javax.net.ssl.X509TrustManager;
-import javax.swing.*;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URL;
@@ -152,9 +150,9 @@ public class RdpClient {
         }
     }
 
-    public RdpClient() {
-        this(new SwingRdpFrontend());
-    }
+//    public RdpClient() {
+//        this(new SwingRdpFrontend());
+//    }
 
     public RdpClient(RdpFrontend frontend) {
         this.frontend = Objects.requireNonNull(frontend, "frontend");
@@ -434,9 +432,8 @@ public class RdpClient {
             FixedClipChannel clipChannel = new FixedClipChannel();
             channels.register(clipChannel);
             clipboardChannel = clipChannel;
-            if (canvas.getDisplay() instanceof java.awt.Component component) {
-                component.addFocusListener(clipChannel);
-            }
+            // Focus-driven clipboard re-announcement is wired through
+            // RdpFrontend.setFocusGainedListener -> synchronizeClipboard().
             JulLog.info("剪贴板同步通道已注册");
         } catch (com.tangluobo.rdp4j.RdesktopException e) {
             JulLog.error("注册剪贴板通道失败: " + e.getMessage());
@@ -1132,45 +1129,6 @@ public class RdpClient {
         if (this.onFirstFrame != null) {
             this.onFirstFrame.run();
         }
-    }
-
-    /**
-     * 获取渲染画布的JComponent（仅在onConnected回调后才有效）
-     */
-    public JComponent getDisplayComponent() {
-        return canvas != null && canvas.getDisplay() instanceof JComponent component ? component : null;
-    }
-
-    /**
-     * Forward a host-toolkit key press/release directly to the RDP input
-     * pipeline. This bypasses SwingNode's character-dependent FX-to-AWT
-     * translation, which can discard physical keys while a local IME is on.
-     *
-     * @return true when the event was accepted for dispatch
-     */
-    public boolean forwardKeyboardEvent(int id, int modifiers, int keyCode, int keyLocation) {
-        if (!connected || (id != java.awt.event.KeyEvent.KEY_PRESSED
-                && id != java.awt.event.KeyEvent.KEY_RELEASED)) {
-            return false;
-        }
-        RdesktopCanvas targetCanvas = canvas;
-        if (targetCanvas == null || !(targetCanvas.getDisplay() instanceof java.awt.Component component)) {
-            return false;
-        }
-
-        Runnable dispatch = () -> {
-            if (!connected || canvas != targetCanvas || targetCanvas.getInput() == null) {
-                return;
-            }
-            java.awt.event.KeyEvent event = new java.awt.event.KeyEvent(
-                    component, id, System.currentTimeMillis(), modifiers, keyCode,
-                    java.awt.event.KeyEvent.CHAR_UNDEFINED, keyLocation);
-            if (targetCanvas.getInput() instanceof Input swingInput) {
-                swingInput.dispatchKeyEvent(event);
-            }
-        };
-        frontend.executeOnUiThread(dispatch);
-        return true;
     }
 
     /**

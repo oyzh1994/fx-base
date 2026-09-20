@@ -17,7 +17,7 @@ public class RasterOp {
 	}
 
 	/**
-	 * Perform an operation on a rectangular area of a WrappedImage, using an
+	 * Perform an operation on a rectangular area of a Display, using an
 	 * integer array of colour values as source if necessary
 	 * 
 	 * @param opcode Code defining operation to perform
@@ -96,7 +96,7 @@ public class RasterOp {
 	}
 
 	/**
-	 * Perform an operation on a single pixel in a WrappedImage
+	 * Perform an operation on a single pixel in a Display
 	 * 
 	 * @param opcode Opcode defining operation to perform
 	 * @param dst Image on which to perform the operation
@@ -202,7 +202,16 @@ public class RasterOp {
 	private void ropCopy(com.tangluobo.rdp4j.graphics.Display biDst, int dstwidth, int x, int y, int cx, int cy, int[] src, int srcwidth, int srcx, int srcy,
                          int Bpp) {
 		if (src == null) { // special case - copy to self
-			biDst.getDisplayGraphics().copyArea(srcx, srcy, cx, cy, x - srcx, y - srcy);
+			if (cx <= 0 || cy <= 0 || (x == srcx && y == srcy)) {
+				return;
+			}
+			// Snapshot the source region before writing anything, so that
+			// overlapping source and destination behave like the Graphics.copyArea
+			// this replaces. This is a raw pixel blit of already-stored values, so
+			// it must use setRGBNoConversion: setRGB would reinterpret the values
+			// as palette indices and re-map them.
+			int[] region = biDst.getRGB(srcx, srcy, cx, cy, null, 0, cx);
+			biDst.setRGBNoConversion(x, y, cx, cy, region, 0, cx);
 		} else {
 			biDst.setRGB(x, y, cx, cy, src, 0, cx);
 		}

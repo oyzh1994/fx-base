@@ -247,20 +247,20 @@ public class RdpPatch extends Rdp {
 
         if (JulLog.isTraceEnabled()) {
             try {
-                java.awt.image.BufferedImage bi = stateRef.getCanvas().getDisplay().getBufferedImage();
-                if (bi != null) {
-                    int w = bi.getWidth(), h = bi.getHeight();
+                com.tangluobo.rdp4j.graphics.Display display = stateRef.getCanvas().getDisplay();
+                if (display != null) {
+                    int w = display.getDisplayWidth(), h = display.getDisplayHeight();
                     int[] xs = {0, w / 2, w - 1};
                     int[] ys = {0, h / 2, h - 1};
                     StringBuilder sb = new StringBuilder("[BITMAP #" + count + "] pixels(" + w + "x" + h + "):");
                     for (int x : xs)
                         for (int y : ys) {
-                            sb.append(String.format(" (%d,%d)=%06x", x, y, bi.getRGB(x, y) & 0xFFFFFF));
+                            sb.append(String.format(" (%d,%d)=%06x", x, y, display.getRGB(x, y) & 0xFFFFFF));
                         }
                     JulLog.trace(sb.toString());
                 }
             } catch (Exception e) {
-                JulLog.error("采样BufferedImage失败: " + e.getMessage());
+                JulLog.error("采样显示缓冲失败: " + e.getMessage());
             }
         }
     }

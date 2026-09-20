@@ -29,13 +29,13 @@ import com.tangluobo.rdp4j.RdstlsCredentials;
 import com.tangluobo.rdp4j.SecurityType;
 import com.tangluobo.rdp4j.State;
 import com.tangluobo.rdp4j.graphics.Bitmap;
+import com.tangluobo.rdp4j.graphics.IntArrayDisplay;
 import com.tangluobo.rdp4j.graphics.RdpCursor;
+import com.tangluobo.rdp4j.graphics.RdpPalette;
 import com.tangluobo.rdp4j.io.IO;
 import com.tangluobo.rdp4j.rdp5.VChannel;
 import com.tangluobo.rdp4j.rdp5.VChannels;
 
-import java.awt.*;
-import java.awt.image.IndexColorModel;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -631,8 +631,6 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 			// sessions. Do not leave the previous resize cursor stuck on screen.
 			JulLog.warn("Missing cached cursor {}; restoring platform default", cache_idx);
 			state.getCanvas().getDisplay().setCursor(null);
-		} catch (HeadlessException e) {
-			JulLog.debug("Cursor display is unavailable in headless mode");
 		}
 	}
 
@@ -662,11 +660,7 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		cursor = state.getCanvas().createCursor(x, y, width, height, mask, pixel, cache_idx, 24);
 		// JulLog.info("Creating and setting cursor " + cache_idx);
 		state.getCache().putCursor(cache_idx, cursor);
-		try {
-			state.getCanvas().getDisplay().setCursor(cursor);
-		} catch (HeadlessException e) {
-			JulLog.debug("Cursor display is unavailable in headless mode");
-		}
+		state.getCanvas().getDisplay().setCursor(cursor);
 	}
 
 	protected void process_colour_pointer_pdu_new(Packet data) throws RdesktopException {
@@ -695,11 +689,7 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		}
 		cursor = state.getCanvas().createCursor(x, y, width, height, mask, pixel, cache_idx, xorBpp);
 		state.getCache().putCursor(cache_idx, cursor);
-		try {
-			state.getCanvas().getDisplay().setCursor(cursor);
-		} catch (HeadlessException e) {
-			JulLog.debug("Cursor display is unavailable in headless mode");
-		}
+		state.getCanvas().getDisplay().setCursor(cursor);
 	}
 
 	/** Decode the 384x384-capable Fast-Path Large Pointer Update. */
@@ -734,11 +724,7 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 					+ width + "x" + height + "@" + xorBpp);
 		}
 		state.getCache().putCursor(cacheIdx, cursor);
-		try {
-			state.getCanvas().getDisplay().setCursor(cursor);
-		} catch (HeadlessException e) {
-			JulLog.debug("Cursor display is unavailable in headless mode");
-		}
+		state.getCanvas().getDisplay().setCursor(cursor);
 	}
 
 	/* Process a null system pointer PDU */
@@ -823,9 +809,11 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 					else
 						JulLog.warn("Could not decompress bitmap");
 				} else if (state.getOptions().getBitmapDecompressionStore() == Options.BUFFEREDIMAGE_BITMAP_DECOMPRESSION) {
-					Image pix = Bitmap.decompressImg(state, width, height, size, data, state.getBytesPerPixel(), null);
+					IntArrayDisplay pix = Bitmap.decompressImg(state, width, height, size, data, state.getBytesPerPixel(), null);
 					if (pix != null)
-						state.getCanvas().displayImage(pix, left, top);
+						state.getCanvas().displayImage(pix.getPixels(),
+								pix.getDisplayWidth(), pix.getDisplayHeight(), left, top,
+								pix.getDisplayWidth(), pix.getDisplayHeight());
 					else
 						JulLog.warn("Could not decompress bitmap");
 				} else {
@@ -877,7 +865,7 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 
 	protected void processPalette(Packet data) {
 		int n_colors = 0;
-		IndexColorModel cm = null;
+		RdpPalette cm = null;
 		byte[] palette = null;
 		byte[] red = null;
 		byte[] green = null;
@@ -898,7 +886,7 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 			blue[i] = palette[j + 2];
 			j += 3;
 		}
-		cm = new IndexColorModel(8, n_colors, red, green, blue);
+		cm = new RdpPalette(n_colors, red, green, blue);
 		state.getCanvas().registerPalette(cm);
 	}
 
@@ -1071,8 +1059,7 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		case (Rdp.RDP_DATA_PDU_BELL):
 			if (JulLog.isDebugEnabled())
 				JulLog.debug("Received bell PDU");
-			Toolkit tx = Toolkit.getDefaultToolkit();
-			tx.beep();
+			state.getCanvas().getDisplay().beep();
 			break;
 		case (Rdp.PDUTYPE2_SAVE_SESSION_INFO):
 			if (JulLog.isDebugEnabled())

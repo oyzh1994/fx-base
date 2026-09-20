@@ -28,7 +28,6 @@ import com.tangluobo.rdp4j.orders.ScreenBltOrder;
 import com.tangluobo.rdp4j.orders.Text2Order;
 import com.tangluobo.rdp4j.orders.TriBltOrder;
 
-import java.awt.image.IndexColorModel;
 import java.io.IOException;
 
 public class Orders {
@@ -589,30 +588,14 @@ public class Orders {
 	 * @throws com.tangluobo.rdp4j.RdesktopException
 	 */
 	private void processColorCache(com.tangluobo.rdp4j.Packet data) throws com.tangluobo.rdp4j.RdesktopException {
-		byte[] palette = null;
-		byte[] red = null;
-		byte[] green = null;
-		byte[] blue = null;
-		int j = 0;
-		int cache_id = data.get8();
-		int n_colors = data.getLittleEndian16(); // Number of Colors in
-		// Palette
-		palette = new byte[n_colors * 4];
-		red = new byte[n_colors];
-		green = new byte[n_colors];
-		blue = new byte[n_colors];
+		data.get8(); // cache_id
+		int n_colors = data.getLittleEndian16(); // Number of Colors in Palette
+		// The colour cache is never read back: indexed bitmaps get their palette
+		// from the RDP_DATA_PDU_POINTER/processPalette path instead. Keep consuming
+		// the payload so the packet position stays correct for later orders.
+		byte[] palette = new byte[n_colors * 4];
 		data.copyToByteArray(palette, 0, data.getPosition(), palette.length);
 		data.incrementPosition(palette.length);
-		for (int i = 0; i < n_colors; i++) {
-			blue[i] = palette[j];
-			green[i] = palette[j + 1];
-			red[i] = palette[j + 2];
-			// palette[j+3] is pad
-			j += 4;
-		}
-		IndexColorModel cm = new IndexColorModel(8, n_colors, red, green, blue);
-		state.getCache().put_colourmap(cache_id, cm);
-		// surface.registerPalette(cm);
 	}
 
 	/**

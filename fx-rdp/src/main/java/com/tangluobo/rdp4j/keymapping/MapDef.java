@@ -11,11 +11,8 @@
  */
 package com.tangluobo.rdp4j.keymapping;
 
-import cn.oyzh.common.system.OSUtil;
 import com.tangluobo.rdp4j.Options;
 
-import java.awt.event.KeyEvent;
-import java.io.PrintStream;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
@@ -194,113 +191,4 @@ public class MapDef {
 		return shiftDown;
 	}
 
-	/**
-	 * Return the number of modifiers that would need to be changed to send the
-	 * specified character/key using this particular mapping.
-	 * 
-	 * @param e Key event which was received by Java
-	 * @param capslock Is the Caps Lock key down?
-	 * @return The number of modifier changes to make
-	 */
-	public int modifierDistance(KeyEvent e, boolean capslock) {
-		// boolean capslock = e.getComponent().getToolkit().getLockingKeyState(
-		// KeyEvent.VK_CAPS_LOCK);
-		if (!characterDef) {
-			// Prefer a physical-location-specific definition (for example the
-			// numeric keypad) over legacy definitions whose location is unknown.
-			return keyLocation == e.getKeyLocation() ? 0 : 1;
-		}
-		int dist = 0;
-		if (ctrlDown != e.isControlDown())
-			dist += 1;
-		if (altDown != e.isAltDown())
-			dist += 1;
-		if (shiftDown != e.isShiftDown())
-			dist += 1;
-		if (capslockDown != capslock)
-			dist += 1;
-		return dist;
-	}
-
-	/**
-	 * Output this mapping definition to a stream, formatted as a single line
-	 * (characterDef character/keycode location scancode modifiers
-	 * [description])
-	 * 
-	 * @param p Stream to write to
-	 */
-	public void writeToStream(PrintStream p) {
-		// create definition string with first character 1 if the
-		// mapping is character-defined, 0 otherwise
-		String definition = "" + (characterDef ? 1 : 0);
-		// add character or keycode
-		definition += "\t";
-		if (characterDef)
-			definition += (int) keyChar;
-		else
-			definition += keyCode;
-		// add key location
-		definition += "\t" + keyLocation;
-		definition += "\t0x" + Integer.toHexString(scancode);
-		// build and add modifiers as a set of flags in an integer value
-		int modifiers = 0;
-		modifiers |= (shiftDown ? FLAG_SHIFT : 0);
-		modifiers |= (ctrlDown ? FLAG_CTRL : 0);
-		modifiers |= (altDown ? FLAG_ALT : 0);
-		modifiers |= (capslockDown ? FLAG_CAPSLOCK : 0);
-		definition += "\t" + modifiers;
-		// add additional information if available (and necessary)
-		if (!characterDef)
-			definition += "\t" + KeyEvent.getKeyText(this.keyCode);
-		// output the definition to the specified stream
-		p.println(definition);
-	}
-
-	/**
-	 * 
-	 * Return true if this map definition applies to the supplied key event
-	 * 
-	 * @param e KeyEvent to check definition against
-	 * @return applies
-	 */
-	protected boolean appliesToPressed(KeyEvent e) {
-		// only match special characters if the modifiers are consistent
-		if (!characterDef) {
-			if (keyLocation != KeyEvent.KEY_LOCATION_UNKNOWN
-					&& keyLocation != e.getKeyLocation())
-				return false;
-			if (!((ctrlDown && e.isControlDown()) || !ctrlDown))
-				return false;
-			if (!((altDown && e.isAltDown()) || !altDown))
-				return false;
-		}
-		return ((!characterDef) && (this.keyCode == e.getKeyCode()));
-	}
-
-	/**
-	 * 
-	 * Return true if this map definition applies to the supplied key event
-	 * 
-	 * @param e KeyEvent to check definition against
-	 * @return applies
-	 */
-	protected boolean appliesToTyped(KeyEvent e) {
-		return ((characterDef) && (this.keyChar == e.getKeyChar()));
-	}
-
-	protected boolean appliesToTyped(KeyEvent e, boolean capslock) {
-		if (OSUtil.isMacOSX() || OSUtil.isMacOS()) {
-			// Remap the hash key to �
-			// TODO not sure what this should actually be
-			// if (options.remap_hash && (e.getKeyChar() == '')) {
-			// return ((characterDef) && (this.keyChar == '#'));
-			// }
-			// Handle unreported shifted capitals (with capslock) on a Mac
-			if (capslock && Character.isLetter(e.getKeyChar()) && Character.isUpperCase(e.getKeyChar()) && e.isShiftDown()) {
-				char c = Character.toLowerCase(e.getKeyChar());
-				return ((characterDef) && (this.keyChar == c));
-			}
-		}
-		return ((characterDef) && (this.keyChar == e.getKeyChar()));
-	}
 }

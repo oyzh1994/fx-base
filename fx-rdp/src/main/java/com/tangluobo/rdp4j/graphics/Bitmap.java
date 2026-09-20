@@ -16,9 +16,6 @@ import com.tangluobo.rdp4j.Packet;
 import com.tangluobo.rdp4j.RdesktopException;
 import com.tangluobo.rdp4j.State;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 
 public class Bitmap {
 	
@@ -528,11 +525,11 @@ public class Bitmap {
 	 * @param size Size of compressed data in bytes
 	 * @param data Packet containing bitmap data
 	 * @param Bpp Bytes per-pixel for bitmap
-	 * @param cm Colour model for bitmap (if using indexed palette)
-	 * @return Decompressed bitmap as Image object
+	 * @param cm Palette for bitmap (if using indexed colour)
+	 * @return Decompressed bitmap as an offscreen display
 	 * @throws RdesktopException on error
 	 */
-	public static Image decompressImg(State state, int width, int height, int size, Packet data, int Bpp, IndexColorModel cm)
+	public static IntArrayDisplay decompressImg(State state, int width, int height, int size, Packet data, int Bpp, RdpPalette cm)
 			throws RdesktopException {
 		com.tangluobo.rdp4j.graphics.Display w = null;
 		byte[] compressed_pixel = new byte[size];
@@ -547,10 +544,10 @@ public class Bitmap {
 		int mask = 0;
 		int mix = 0xffffffff;
 		boolean insertmix = false, bicolor = false, isfillormix = false;
-		if (cm == null)
-			w = new com.tangluobo.rdp4j.graphics.WrappedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		else
-			w = new WrappedImage(width, height, BufferedImage.TYPE_INT_RGB, cm);
+		IntArrayDisplay scratch = new IntArrayDisplay(width, height);
+		if (cm != null)
+			scratch.setPalette(cm);
+		w = scratch;
 		while (input < end) {
 			fom_mask = 0;
 			code = (compressed_pixel[input++] & 0x000000ff);
@@ -901,7 +898,7 @@ public class Bitmap {
 		 * if(Options.server_bpp == 16){ for(int i = 0; i < pixel.length; i++)
 		 * pixel[i] = Bitmap.convert16to24(pixel[i]); }
 		 */
-		return w.getBufferedImage();
+		return scratch;
 	}
 
 	/**
@@ -923,8 +920,7 @@ public class Bitmap {
 	 * @throws RdesktopException on error
 	 */
 	public static com.tangluobo.rdp4j.graphics.Display decompressImgDirect(State state, int width, int height, int size, Packet data, int Bpp,
-                                                                           IndexColorModel cm, int left, int top, Display w) throws RdesktopException {
-		// WrappedImage w = null;
+                                                                           RdpPalette cm, int left, int top, Display w) throws RdesktopException {
 		byte[] compressed_pixel = new byte[size];
 		data.copyToByteArray(compressed_pixel, 0, data.getPosition(), size);
 		data.incrementPosition(size);

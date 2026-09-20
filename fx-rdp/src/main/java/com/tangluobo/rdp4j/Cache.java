@@ -16,12 +16,8 @@ import com.tangluobo.rdp4j.graphics.Bitmap;
 import com.tangluobo.rdp4j.graphics.Glyph;
 import com.tangluobo.rdp4j.graphics.RdpCursor;
 
-import java.awt.image.IndexColorModel;
-
 public class Cache {
-	private static final int RDPCACHE_COLOURMAPSIZE = 0x06; // unified patch
 	private Bitmap[][] bitmapcache = new Bitmap[3][600];
-	private IndexColorModel[] colourcache = new IndexColorModel[RDPCACHE_COLOURMAPSIZE];
 	private RdpCursor[] cursorcache = new RdpCursor[32];
 	private Glyph[][] fontcache = new Glyph[12][256];
 	private int[] highdeskcache = new int[921600];
@@ -33,23 +29,6 @@ public class Cache {
 		this.state = state;
 		if(state.getOptions().getPersistentCacheBackend() != null)
 			state.getOptions().getPersistentCacheBackend().start(state);
-	}
-
-	/**
-	 * Retrieve the indexed colour model from the specified cache
-	 * 
-	 * @param cache_id ID of cache from which to retrieve colour model
-	 * @return Indexed colour model for specified cache
-	 * @throws com.tangluobo.rdp4j.RdesktopException on error
-	 */
-	public IndexColorModel get_colourmap(int cache_id) throws com.tangluobo.rdp4j.RdesktopException {
-		IndexColorModel map = null;
-		if (cache_id < colourcache.length) {
-			map = colourcache[cache_id];
-			if (map != null)
-				return map;
-		}
-		throw new com.tangluobo.rdp4j.RdesktopException("Could not get colourmap with cache_id=" + cache_id);
 	}
 
 	/**
@@ -157,20 +136,6 @@ public class Cache {
 			}
 		}
 		throw new com.tangluobo.rdp4j.RdesktopException("Could not get Text:" + cache_id);
-	}
-
-	/**
-	 * Assign a colour model to a specified cache
-	 * 
-	 * @param cache_id ID of cache to which the colour map should be added
-	 * @param map Indexed colour model to assign to the cache
-	 * @throws com.tangluobo.rdp4j.RdesktopException on error
-	 */
-	public void put_colourmap(int cache_id, IndexColorModel map) throws com.tangluobo.rdp4j.RdesktopException {
-		if (cache_id < colourcache.length)
-			colourcache[cache_id] = map;
-		else
-			throw new com.tangluobo.rdp4j.RdesktopException("Could not put colourmap with cache_id=" + cache_id);
 	}
 
 	/**

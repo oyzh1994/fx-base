@@ -7,8 +7,6 @@ import com.tangluobo.rdp4j.CredentialProvider.CredentialType;
 import com.tangluobo.rdp4j.graphics.RdesktopCanvas;
 import com.tangluobo.rdp4j.layers.Rdp;
 
-import java.awt.image.ColorModel;
-import java.awt.image.DirectColorModel;
 import java.io.File;
 import java.net.InetAddress;
 import java.util.List;
@@ -17,7 +15,6 @@ import java.util.concurrent.Semaphore;
 
 public class State {
     private String workstationName;
-    private ColorModel colorModel = new DirectColorModel(24, 0xFF0000, 0x00FF00, 0x0000FF);
     private boolean colorPointer = true;
     private int colorPointerCacheSize = 20;
     private SecurityType securityType = SecurityType.STANDARD;
@@ -237,10 +234,6 @@ public class State {
         return workstationName;
     }
 
-    public ColorModel getColorModel() {
-        return colorModel;
-    }
-
     public int getColorPointerCacheSize() {
         return colorPointerCacheSize;
     }
@@ -321,7 +314,6 @@ public class State {
 
     public void setServerBpp(int serverBpp) {
         this.serverBpp = serverBpp;
-        colorModel = new DirectColorModel(24, 0xFF0000, 0x00FF00, 0x0000FF);
     }
 
     public void setServerRdpVersion(int serverRdpVersion) {

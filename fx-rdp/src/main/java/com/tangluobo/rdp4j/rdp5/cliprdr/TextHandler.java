@@ -17,43 +17,12 @@ import com.tangluobo.rdp4j.Utilities;
 import com.tangluobo.rdp4j.rdp5.cliprdr.ClipInterface;
 import com.tangluobo.rdp4j.rdp5.cliprdr.TypeHandler;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.io.IOException;
 
 public class TextHandler extends TypeHandler {
 	@Override
 	public boolean formatValid(int format) {
 		return (format == CF_TEXT);
-	}
-
-	public byte[] fromTransferable(Transferable in) {
-		String s;
-		if (in != null) {
-			try {
-				s = (String) (in.getTransferData(DataFlavor.stringFlavor));
-			} catch (Exception e) {
-				s = e.toString();
-			}
-			// TODO: think of a better way of fixing this
-			s = s.replace('\n', (char) 0x0a);
-			// s = s.replaceAll("" + (char) 0x0a, "" + (char) 0x0d + (char)
-			// 0x0a);
-			s = Utilities.strReplaceAll(s, "" + (char) 0x0a, "" + (char) 0x0d + (char) 0x0a);
-			return s.getBytes();
-		}
-		return null;
-	}
-
-	public Transferable handleData(Packet data, int length) {
-		String thingy = "";
-		for (int i = 0; i < length; i++) {
-			int aByte = data.get8();
-			if (aByte != 0)
-				thingy += (char) (aByte & 0xFF);
-		}
-		return (new StringSelection(thingy));
 	}
 
 	/*
@@ -70,7 +39,7 @@ public class TextHandler extends TypeHandler {
 			if (aByte != 0)
 				thingy += (char) (aByte & 0xFF);
 		}
-		c.copyToClipboard(new StringSelection(thingy));
+		c.copyTextToClipboard(thingy);
 	}
 
 	@Override
@@ -89,21 +58,15 @@ public class TextHandler extends TypeHandler {
 	}
 
 	@Override
-	public void send_data(Transferable in, ClipInterface c) throws RdesktopException, IOException {
-		String s;
-		if (in != null) {
-			try {
-				s = (String) (in.getTransferData(DataFlavor.stringFlavor));
-			} catch (Exception e) {
-				s = e.toString();
-			}
-			// TODO: think of a better way of fixing this
-			s = s.replace('\n', (char) 0x0a);
-			// s = s.replaceAll("" + (char) 0x0a, "" + (char) 0x0d + (char)
-			// 0x0a);
-			s = Utilities.strReplaceAll(s, "" + (char) 0x0a, "" + (char) 0x0d + (char) 0x0a);
-			// return s.getBytes();
-			c.send_data(s.getBytes(), s.length());
+	public void send_data(String localText, ClipInterface c) throws RdesktopException, IOException {
+		if (localText == null || localText.isEmpty()) {
+			return;
 		}
+		// CF_TEXT is an ANSI payload.
+		String s = localText.replace('\n', (char) 0x0a);
+		s = Utilities.strReplaceAll(s, "" + (char) 0x0a, "" + (char) 0x0d + (char) 0x0a);
+		byte[] data = s.getBytes(java.nio.charset.StandardCharsets.ISO_8859_1);
+		// Send the encoded byte count, not the character count.
+		c.send_data(data, data.length);
 	}
 }

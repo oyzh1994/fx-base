@@ -13,7 +13,6 @@ package com.tangluobo.rdp4j.rdp5.cliprdr;
 
 import com.tangluobo.rdp4j.Packet;
 
-import java.awt.datatransfer.DataFlavor;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -54,40 +53,7 @@ public class TypeHandlerList {
 		return null;
 	}
 
-	public TypeHandlerList getHandlersForClipboard(DataFlavor[] dataTypes) {
-		TypeHandlerList outList = new TypeHandlerList();
-
-		TypeHandler handler = null;
-		for (Iterator i = handlers.iterator(); i.hasNext();) {
-			handler = (TypeHandler) i.next();
-			if (handler.clipboardValid(dataTypes))
-				outList.add(handler);
-		}
-		return outList;
-	}
-
-	public TypeHandlerList getHandlersForMimeType(String mimeType) {
-		TypeHandlerList outList = new TypeHandlerList();
-
-		TypeHandler handler = null;
-		for (Iterator i = handlers.iterator(); i.hasNext();) {
-			handler = (TypeHandler) i.next();
-			if (handler.mimeTypeValid(mimeType))
-				outList.add(handler);
-		}
-		return outList;
-	}
-
 	public Iterator iterator() {
 		return handlers.iterator();
-	}
-
-	public void writeTypeDefinitions(Packet data) {
-		TypeHandler handler = null;
-		for (Iterator i = handlers.iterator(); i.hasNext();) {
-			handler = (TypeHandler) i.next();
-			data.setLittleEndian32(handler.preferredFormat());
-			data.incrementPosition(32);
-		}
 	}
 }

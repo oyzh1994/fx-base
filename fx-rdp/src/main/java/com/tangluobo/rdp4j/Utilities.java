@@ -13,11 +13,7 @@
 
 package com.tangluobo.rdp4j;
 
-import java.awt.datatransfer.DataFlavor;
-
 public class Utilities {
-
-	public static DataFlavor imageFlavor = DataFlavor.imageFlavor;
 
 	/**
 	 * Split a string into segments separated by a specified substring

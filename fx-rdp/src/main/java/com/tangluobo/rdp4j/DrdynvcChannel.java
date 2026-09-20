@@ -5,7 +5,6 @@ import com.tangluobo.rdp4j.graphics.RdpCursor;
 import com.tangluobo.rdp4j.rdp5.VChannel;
 import com.tangluobo.rdp4j.rdp5.VChannels;
 
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -428,11 +427,7 @@ final class DrdynvcChannel extends VChannel {
     }
 
     private void displayCursor(RdpCursor cursor) {
-        try {
-            state.getCanvas().getDisplay().setCursor(cursor);
-        } catch (HeadlessException e) {
-            logger.fine("rdpemsc: cursor display is unavailable in headless mode");
-        }
+        state.getCanvas().getDisplay().setCursor(cursor);
     }
 
     private void processGfxPdu(int command, byte[] pdu, int offset, int length)

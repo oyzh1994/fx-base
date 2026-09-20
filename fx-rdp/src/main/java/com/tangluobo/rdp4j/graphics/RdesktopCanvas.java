@@ -9,12 +9,10 @@ package com.tangluobo.rdp4j.graphics;
 import cn.oyzh.common.log.JulLog;
 import com.tangluobo.rdp4j.IContext;
 import com.tangluobo.rdp4j.IContext.ReadyType;
-import com.tangluobo.rdp4j.Input;
 import com.tangluobo.rdp4j.Packet;
 import com.tangluobo.rdp4j.RdesktopException;
 import com.tangluobo.rdp4j.RdpInput;
 import com.tangluobo.rdp4j.State;
-import com.tangluobo.rdp4j.keymapping.KeyCode;
 import com.tangluobo.rdp4j.layers.Rdp;
 import com.tangluobo.rdp4j.orders.BoundsOrder;
 import com.tangluobo.rdp4j.orders.Brush;
@@ -27,10 +25,6 @@ import com.tangluobo.rdp4j.orders.RectangleOrder;
 import com.tangluobo.rdp4j.orders.ScreenBltOrder;
 import com.tangluobo.rdp4j.orders.TriBltOrder;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
-
 // import org.apache.log4j.NDC;
 public class RdesktopCanvas {
     public static final int ROP2_COPY = 0xc;
@@ -42,11 +36,15 @@ public class RdesktopCanvas {
     private static final int ROP2_XOR = 0x6;
     private static final int TEXT2_IMPLICIT_X = 0x20;
     private static final int TEXT2_VERTICAL = 0x04;
-    public KeyCode keys = null;
+    /**
+     * 1-bpp pointer decode states: opaque black, opaque white, and the
+     * transparent state the old indexed colour model expressed with its
+     * transparent index.
+     */
+    private static final int[] ONE_BPP_CURSOR_COLORS = {0xff000000, 0xffffffff, 0x00000000};
     public Rdp rdp = null;
-    public String sKeys = null;
     // private int[] colors = null; // needed for integer backstore
-    protected IndexColorModel colormap = null;
+    protected RdpPalette colormap = null;
     com.tangluobo.rdp4j.graphics.Display backstore;
     private int bottom = 0;
     private IContext context;
@@ -58,8 +56,6 @@ public class RdesktopCanvas {
     // unsetBusyCursor
     private RdpInput input = null;
     private int left = 0;
-    // Graphics backstore_graphics;
-    private Cursor previous_cursor = null; // for setBusyCursor and
     private int right = 0;
     private RasterOp rop = null;
     private State state;
@@ -72,26 +68,11 @@ public class RdesktopCanvas {
      * Initialise this canvas to specified width and height, also initialise
      * backstore
      *
-     * @param context context
-     * @param state   state
-     */
-    public RdesktopCanvas(IContext context, State state) {
-        this(context, state, new WrappedImage(state.getWidth(), state.getHeight(), BufferedImage.TYPE_INT_RGB));
-    }
-
-    /**
-     * Initialise this canvas to specified width and height, also initialise
-     * backstore
-     *
      * @param context   context
      * @param state     state
      * @param backstore backing store
      */
     public RdesktopCanvas(IContext context, State state, com.tangluobo.rdp4j.graphics.Display backstore) {
-        this(context, state, backstore, true);
-    }
-
-    public RdesktopCanvas(IContext context, State state, com.tangluobo.rdp4j.graphics.Display backstore, boolean createSwingInput) {
         super();
         this.context = context;
         this.state = state;
@@ -105,18 +86,15 @@ public class RdesktopCanvas {
         // constructor is considered as a wrong praktice.
         // setSize(width, height);
         this.backstore = backstore;
-        // now do input listeners in registerCommLayer() / registerKeyboard()
+        // Input is installed by the frontend via setInput().
         backstore.init(this);
         state.setCanvas(this);
-        if (createSwingInput) {
-            input = new Input(context, state, this);
-        }
     }
 
     public void backingStoreResize(int width, int height, boolean clientInitiated) {
         this.width = width;
         this.height = height;
-        backstore.resizeDisplay(new Dimension(width, height));
+        backstore.resizeDisplay(width, height);
         context.screenResized(width, height, clientInitiated);
     }
 
@@ -138,11 +116,11 @@ public class RdesktopCanvas {
         int xorPixel;
         int andPixel;
         int dstIdx = 0;
-        BufferedImage bim;
         andStep = (nWidth + 7) / 8;
         andStep += (andStep % 2);
         if (xorMask == null || (xorMask.length == 0))
             return null;
+        final int[] pixels = new int[nWidth * nHeight];
         switch (xorBpp) {
             case 1:
                 if (andMask == null || andMask.length == 0)
@@ -153,8 +131,6 @@ public class RdesktopCanvas {
                     return null;
                 if (andStep * nHeight > andMask.length)
                     return null;
-                bim = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_BYTE_INDEXED, new IndexColorModel(2, 3,
-                        new byte[]{0, (byte) (255), 0}, new byte[]{0, (byte) 255, 0}, new byte[]{0, (byte) 255, 0}, 2));
                 for (y = 0; y < nHeight; y++) {
                     byte[] andBits = new byte[andStep];
                     byte[] xorBits = new byte[xorStep];
@@ -185,7 +161,9 @@ public class RdesktopCanvas {
                             color = 2; /* transparent */
                         else if (andPixel != 0 && xorPixel != 0)
                             color = getInvertedColor(x, y) & 0x01; /* inverted */
-                        bim.getRaster().getDataBuffer().setElem(dstIdx++, color);
+                        // The old TYPE_BYTE_INDEXED colour model expressed these
+                        // three states as a palette with transparent index 2.
+                        pixels[dstIdx++] = ONE_BPP_CURSOR_COLORS[color];
                     }
                 }
                 break;
@@ -209,11 +187,6 @@ public class RdesktopCanvas {
                 // the fourth byte as alpha when the pointer actually contains alpha.
                 boolean legacy32BitPointer = xorBpp == 32 && andMask != null
                         && !hasNonZero32BitAlpha(xorMask, xorStep, nWidth, nHeight);
-                if (xorBpp == 8) {
-                    bim = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_BYTE_INDEXED, colormap);
-                } else {
-                    bim = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
-                }
                 for (y = 0; y < nHeight; y++) {
                     int xorBitsIdx = 0;
                     int andBitsIdx = 0;
@@ -225,7 +198,9 @@ public class RdesktopCanvas {
                     System.arraycopy(xorMask, xorStep * (nHeight - y - 1), xorBits, 0, xorBits.length);
                     for (x = 0; x < nWidth; x++) {
                         if (xorBpp == 8) {
-                            xorPixel = colormap.getRGB(xorBits[xorBitsIdx]);
+                            // Mask before indexing: Java bytes are signed, and a
+                            // value >= 0x80 would otherwise index negatively.
+                            xorPixel = colormap.getRGB(xorBits[xorBitsIdx] & 0xff);
                         } else if (xorBpp == 24 || xorBpp == 32) {
                             // RDP color pointer pixels use BGR byte order. Mask every
                             // byte before shifting because Java bytes are signed.
@@ -253,7 +228,10 @@ public class RdesktopCanvas {
                             else if (xorPixel == 0xFFFFFFFF) /* white -> inverted */
                                 xorPixel = getInvertedColor(x, y);
                         }
-                        bim.setRGB(x, y, xorPixel);
+                        // Row y, not the bottom-up source row: the source scan
+                        // lines above are read in reverse, which is what leaves the
+                        // decoded pointer top-down.
+                        pixels[y * nWidth + x] = xorPixel;
                     }
                 }
                 break;
@@ -261,7 +239,7 @@ public class RdesktopCanvas {
                 JulLog.error(String.format("Unknown cursor bpp %d", xorBpp));
                 return null;
         }
-        return createCustomCursor(bim, new Point(nXDst, nYDst), "", cache_idx);
+        return createCustomCursor(pixels, nWidth, nHeight, nXDst, nYDst, cache_idx);
     }
 
     private static boolean hasNonZero32BitAlpha(byte[] xorMask, int xorStep, int width, int height) {
@@ -280,8 +258,7 @@ public class RdesktopCanvas {
      */
     public com.tangluobo.rdp4j.graphics.RdpCursor getHiddenCursor() {
         if (hiddenCursor == null) {
-            BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-            hiddenCursor = backstore.createCursor("hidden", new Point(0, 0), image);
+            hiddenCursor = backstore.createCursor("hidden", 0, 0, new int[1], 1, 1);
         }
         return hiddenCursor;
     }
@@ -302,29 +279,9 @@ public class RdesktopCanvas {
      * @param cm     Colour model currently in use, if any
      * @throws RdesktopException on error
      */
-    public void displayCompressed(int x, int y, int width, int height, int size, Packet data, int Bpp, IndexColorModel cm)
+    public void displayCompressed(int x, int y, int width, int height, int size, Packet data, int Bpp, RdpPalette cm)
             throws RdesktopException {
         backstore = Bitmap.decompressImgDirect(state, width, height, size, data, Bpp, cm, x, y, backstore);
-    }
-
-    /**
-     * Draw an image object to the backstore, does not call repaint. Image is
-     * drawn to canvas on next update.
-     *
-     * @param img Image to draw to backstore
-     * @param x   x coordinate for drawing location
-     * @param y   y coordinate for drawing location
-     * @throws RdesktopException on error
-     */
-    public void displayImage(Image img, int x, int y) throws RdesktopException {
-        Graphics g = backstore.getDisplayGraphics();
-        g.drawImage(img, x, y, null);
-        /*
-         * ********* Useful test for identifying image boundaries ************
-         */
-        // g.setColor(Color.RED);
-        // g.drawRect(x,y,data.getWidth(null),data.getHeight(null));
-        g.dispose();
     }
 
     /**
@@ -683,7 +640,6 @@ public class RdesktopCanvas {
                     + memblt.getOpcode());
         try {
             Bitmap bitmap = state.getCache().getBitmap(memblt.getCacheID(), memblt.getCacheIDX());
-            // IndexColorModel cm = cache.get_colourmap(memblt.getColorTable());
             // should use the colormap, but requires high color backstore...
             if (x + cx > backstore.getDisplayWidth() || y + cy > backstore.getDisplayHeight()) {
                 backingStoreResize(x + cx, y + cy, false);
@@ -1069,18 +1025,15 @@ public class RdesktopCanvas {
      *
      * @param cm Colour model to be used with this canvas
      */
-    public void registerPalette(IndexColorModel cm) {
+    public void registerPalette(RdpPalette cm) {
         this.colormap = cm;
-        backstore.setIndexColorModel(cm);
+        backstore.setPalette(cm);
     }
 
     /**
      * Reset clipping boundaries for canvas
      */
     public void resetClip() {
-        Graphics g = backstore.getDisplayGraphics();
-        Rectangle bounds = backstore.getBounds();
-        g.setClip(bounds.x, bounds.y, bounds.width, bounds.height);
         this.top = 0;
         this.left = 0;
         this.right = this.width - 1; // changed
@@ -1093,8 +1046,6 @@ public class RdesktopCanvas {
      * @param bounds Order defining new boundaries
      */
     public void setClip(BoundsOrder bounds) {
-        Graphics g = backstore.getDisplayGraphics();
-        g.setClip(bounds.getLeft(), bounds.getTop(), bounds.getRight() - bounds.getLeft(), bounds.getBottom() - bounds.getTop());
         this.top = bounds.getTop();
         this.left = bounds.getLeft();
         this.right = bounds.getRight();
@@ -1138,22 +1089,26 @@ public class RdesktopCanvas {
     }
 
     /**
-     * Create an AWT Cursor from an image
+     * Create a cursor from a decoded {@code 0xAARRGGBB} raster.
      *
-     * @param wincursor win cursor
-     * @param p         point
-     * @param s         sometime
-     * @param cache_idx index
+     * @param pixels    {@code 0xAARRGGBB} pixels, {@code width * height} entries
+     * @param width     cursor width
+     * @param height    cursor height
+     * @param hotspotX  hotspot x
+     * @param hotspotY  hotspot y
+     * @param cache_idx index of the pointer cache entry
      * @return Generated Cursor object
      */
-    protected RdpCursor createCustomCursor(Image wincursor, Point p, String s, int cache_idx) {
+    protected RdpCursor createCustomCursor(int[] pixels, int width, int height,
+                                           int hotspotX, int hotspotY, int cache_idx) {
         if (JulLog.isDebugEnabled())
-            JulLog.debug(String.format("Creating custom cursor at %s (cached %d)", p, cache_idx));
-        return backstore.createCursor("", p, wincursor);
+            JulLog.debug(String.format("Creating custom cursor at %d,%d (cached %d)",
+                    hotspotX, hotspotY, cache_idx));
+        return backstore.createCursor("", hotspotX, hotspotY, pixels, width, height);
     }
 
     private int getInvertedColor(int x, int y) {
-        return ((x + y) & 1) != 0 ? Color.white.getRGB() : 0;
+        return ((x + y) & 1) != 0 ? 0xFFFFFF : 0;
     }
 
     /**

@@ -6,9 +6,6 @@ import com.tangluobo.rdp4j.RdesktopException;
 import com.tangluobo.rdp4j.rdp5.cliprdr.ClipInterface;
 import com.tangluobo.rdp4j.rdp5.cliprdr.TypeHandler;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -52,8 +49,8 @@ public class FixedUnicodeHandler extends TypeHandler {
      * 本地→远程：将本地剪贴板文本以UTF-16LE编码发送给远程。
      */
     @Override
-    public void send_data(Transferable t, ClipInterface clip) throws RdesktopException, java.io.IOException {
-        String str = extractString(t);
+    public void send_data(String localText, ClipInterface clip) throws RdesktopException, java.io.IOException {
+        String str = localText;
         if (str == null || str.isEmpty()) {
             return;
         }
@@ -78,24 +75,9 @@ public class FixedUnicodeHandler extends TypeHandler {
             sb.append((char) c);
         }
         try {
-            clip.copyToClipboard(new StringSelection(sb.toString()));
+            clip.copyTextToClipboard(sb.toString());
         } catch (Exception e) {
             JulLog.error("写入本地剪贴板失败: " + e.getMessage(), e);
         }
-    }
-
-    private String extractString(Transferable t) {
-        if (t == null) {
-            return null;
-        }
-        try {
-            Object data = t.getTransferData(DataFlavor.stringFlavor);
-            if (data instanceof String) {
-                return (String) data;
-            }
-        } catch (Exception e) {
-            JulLog.error("读取本地剪贴板文本失败: " + e.getMessage(), e);
-        }
-        return null;
     }
 }

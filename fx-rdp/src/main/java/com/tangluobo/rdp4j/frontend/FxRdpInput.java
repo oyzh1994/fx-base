@@ -2,10 +2,8 @@ package com.tangluobo.rdp4j.frontend;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.tangluobo.rdp4j.Input;
 import com.tangluobo.rdp4j.RdpInput;
 import com.tangluobo.rdp4j.State;
-import com.tangluobo.rdp4j.frontend.FxRdpDisplay;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -47,6 +45,11 @@ public final class FxRdpInput implements RdpInput {
     private static final int MOUSE_FLAG_WHEEL_DOWN = 0x0380;
     private static final int MOUSE_FLAG_DOWN = 0x8000;
     private static final int MOUSE_FLAG_MOVE = 0x0800;
+    /**
+     * Monotonic timestamp source for outgoing input PDUs. Moved here from the
+     * removed AWT input class, which was the only other user.
+     */
+    private static int time = 0;
 
     private final State state;
     private final FxRdpDisplay display;
@@ -252,7 +255,21 @@ public final class FxRdpInput implements RdpInput {
         if (state.getRdp() == null) {
             return;
         }
-        state.getRdp().sendInput(Input.getTime(), RDP_INPUT_MOUSE, flags, x, y);
+        state.getRdp().sendInput(getTime(), RDP_INPUT_MOUSE, flags, x, y);
+    }
+
+    /**
+     * Retrieve the next "timestamp" for an outgoing input PDU, by incrementing
+     * the previous stamp and wrapping back to 1 at the integer maximum.
+     *
+     * @return new timestamp value
+     */
+    static int getTime() {
+        time++;
+        if (time == Integer.MAX_VALUE) {
+            time = 1;
+        }
+        return time;
     }
 
     private void sendScancode(int scancode, boolean release) {
@@ -264,7 +281,7 @@ public final class FxRdpInput implements RdpInput {
             flags |= KBD_FLAG_EXT;
             scancode &= ~SCANCODE_EXTENDED;
         }
-        state.getRdp().sendInput(Input.getTime(), RDP_INPUT_SCANCODE, flags, scancode, 0);
+        state.getRdp().sendInput(getTime(), RDP_INPUT_SCANCODE, flags, scancode, 0);
     }
 
     @Override
@@ -307,7 +324,7 @@ public final class FxRdpInput implements RdpInput {
         }
         refreshLocalLockKeyState();
         int flags = toggleFlags(capsLock, numLock, scrollLock);
-        state.getRdp().sendInput(Input.getTime(), RDP_INPUT_SYNCHRONIZE, 0, flags, 0);
+        state.getRdp().sendInput(getTime(), RDP_INPUT_SYNCHRONIZE, 0, flags, 0);
     }
 
     @Override
