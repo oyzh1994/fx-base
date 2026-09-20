@@ -29,8 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Publishes remote RDP files as a native Windows Shell virtual-file data
@@ -39,8 +37,6 @@ import java.util.logging.Logger;
  * the actual remote transfer instead of a later copy of an eager temp file.
  */
 final class WindowsVirtualFileClipboard implements AutoCloseable {
-
-    private static final Logger logger = Logger.getLogger(WindowsVirtualFileClipboard.class.getName());
 
     private static final int S_OK = 0;
     private static final int S_FALSE = 1;
@@ -124,13 +120,15 @@ final class WindowsVirtualFileClipboard implements AutoCloseable {
                 return clipboard;
             }
         } catch (Exception error) {
-            logger.log(Level.WARNING, "等待Windows虚拟文件剪贴板失败: " + error.getMessage(), error);
+            JulLog.error("等待Windows虚拟文件剪贴板失败: " + error.getMessage(), error);
         }
         clipboard.close();
         return null;
     }
 
-    /** True while this native data object still owns the Windows clipboard. */
+    /**
+     * True while this native data object still owns the Windows clipboard.
+     */
     boolean ownsClipboard() {
         return published.isDone()
                 && Boolean.TRUE.equals(published.getNow(false))
@@ -168,7 +166,7 @@ final class WindowsVirtualFileClipboard implements AutoCloseable {
             }
         } catch (Throwable error) {
             published.complete(false);
-            logger.log(Level.WARNING, "Windows虚拟文件剪贴板线程失败: " + error.getMessage(), error);
+            JulLog.error("Windows虚拟文件剪贴板线程失败: " + error.getMessage(), error);
         } finally {
             try {
                 DataObject current = dataObject;
@@ -177,7 +175,7 @@ final class WindowsVirtualFileClipboard implements AutoCloseable {
                     NativeApis.OLE32_EXTRA.OleSetClipboard(null);
                 }
             } catch (Throwable error) {
-                logger.log(Level.FINE, "清理Windows虚拟文件剪贴板失败", error);
+                JulLog.error("清理Windows虚拟文件剪贴板失败", error);
             }
             for (VirtualStream stream : streams) {
                 stream.invalidate();
@@ -335,7 +333,7 @@ final class WindowsVirtualFileClipboard implements AutoCloseable {
                 medium.write();
                 return hr(S_OK);
             } catch (Throwable error) {
-                logger.log(Level.WARNING, "提供Windows虚拟文件数据失败: " + error.getMessage(), error);
+                JulLog.error("提供Windows虚拟文件数据失败: " + error.getMessage(), error);
                 return hr(E_FAIL);
             }
         }
@@ -469,7 +467,7 @@ final class WindowsVirtualFileClipboard implements AutoCloseable {
                 }
                 return length == count ? hr(S_OK) : hr(S_FALSE);
             } catch (IOException error) {
-                logger.log(Level.WARNING, "读取远程虚拟文件失败: " + entry.name() + ": " + error.getMessage(), error);
+                JulLog.error("读取远程虚拟文件失败: " + entry.name() + ": " + error.getMessage(), error);
                 return hr(E_FAIL);
             }
         }
@@ -501,7 +499,7 @@ final class WindowsVirtualFileClipboard implements AutoCloseable {
         }
 
         private synchronized HRESULT copyTo(Pointer self, Pointer target, long count,
-                                             Pointer bytesRead, Pointer bytesWritten) {
+                                            Pointer bytesRead, Pointer bytesWritten) {
             if (target == null || count < 0 || !valid.get() || closeRequested.get()) {
                 return hr(E_INVALIDARG);
             }
@@ -544,7 +542,7 @@ final class WindowsVirtualFileClipboard implements AutoCloseable {
                 }
                 return totalRead == count ? hr(S_OK) : hr(S_FALSE);
             } catch (Throwable error) {
-                logger.log(Level.WARNING, "复制远程虚拟文件流失败: " + entry.name(), error);
+                JulLog.error("复制远程虚拟文件流失败: " + entry.name(), error);
                 return hr(E_FAIL);
             }
         }

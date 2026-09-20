@@ -28,12 +28,10 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
-import java.util.logging.Logger;
 
 /** Pure JavaFX presentation of the protocol's raster backing store. */
 public final class FxRdpDisplay implements Display {
 
-    private static final Logger logger = Logger.getLogger(FxRdpDisplay.class.getName());
     private static final String HIDDEN_CURSOR_NAME = "hidden";
     private static final int REMOTE_ECHO_TOLERANCE = 2;
     private static final double MIN_SCREEN_WARP_DISTANCE = 4.0;

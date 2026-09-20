@@ -7,31 +7,28 @@ import com.tangluobo.rdp4j.layers.Transport;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 修复javardp库ISO层的fast-path检测bug。
- *
+ * <p>
  * 根本原因：
  * ISO.receiveMessageex()中使用 (version & 3) == 0 来检测fast-path包，
  * 但RDP协议规定fast-path包的首字节bit 0 = 0（而非bit 0和bit 1都为0）。
  * 当fast-path包的加密标志位（bit 1）为1时，首字节 = 0x02，
  * (0x02 & 3) == 2 ≠ 0，fast-path包不被识别，被错误当作slow-path处理。
- *
+ * <p>
  * 修复方案：
  * 通过反射替换ISO实例为RdpIso子类，覆盖receive()方法。
  * RdpIso完全复制原始ISO.receiveMessageex()的逻辑，仅修正fast-path检测条件。
- *
+ * <p>
  * 注意：
  * - 原始ISO.receiveMessageex()是private方法，无法覆盖，因此覆盖public的receive()
  * - 本实现完整复制了原始receiveMessageex() + receive()的逻辑，
- *   仅将fast-path检测从 (version & 3) == 0 修改为 (version & 1) == 0
+ * 仅将fast-path检测从 (version & 3) == 0 修改为 (version & 1) == 0
  * - fast-path包不经过X.224/MCS/Secure层，直接由RDP层处理
  */
 public class RdpIsoFix {
 
-    private static final Logger logger = Logger.getLogger(RdpIsoFix.class.getName());
     // 注意：不能使用静态applied标志，因为retryWithHybridSecurity会创建新的rdpLayer
     // （带新的ISO层），需要每次都注入。之前的applied标志导致重连时ISO修复未生效，
     // 服务器发送的fast-path bitmap更新无法被解析，导致黑屏。
@@ -41,9 +38,17 @@ public class RdpIsoFix {
     private static volatile String injectError = null;
     private static volatile boolean receiveCalled = false;
 
-    public static boolean isInjected() { return injected; }
-    public static String getInjectError() { return injectError; }
-    public static boolean isReceiveCalled() { return receiveCalled; }
+    public static boolean isInjected() {
+        return injected;
+    }
+
+    public static String getInjectError() {
+        return injectError;
+    }
+
+    public static boolean isReceiveCalled() {
+        return receiveCalled;
+    }
 
     // X.224 constants (same as in ISO.java)
     private static final int CONNECTION_CONFIRM = 0xD0;
@@ -52,7 +57,7 @@ public class RdpIsoFix {
 
     /**
      * ISO子类，修复fast-path检测逻辑。
-     *
+     * <p>
      * 完整复制原始ISO.receiveMessageex() + receive()逻辑，
      * 仅修正fast-path检测条件：(version & 3) == 0 → (version & 1) == 0
      */
@@ -67,7 +72,7 @@ public class RdpIsoFix {
 
         /**
          * 覆盖receive()方法，完整复制原始ISO逻辑并修正fast-path检测。
-         *
+         * <p>
          * 原始逻辑链：receive() → receiveMessage(type) → receiveMessageex(type, rdpver)
          * 本方法将三层调用合并为一个方法，仅修改fast-path检测条件。
          */
@@ -90,14 +95,14 @@ public class RdpIsoFix {
             next_packet:
             while (true) {
                 // 读取前4字节（TPKT header 或 fast-path header的开头）
-                logger.finest("[RdpIso] 等待读取4字节header...");
+                JulLog.trace("[RdpIso] 等待读取4字节header...");
                 s = transport.receivePacket(null, 4);
                 if (s == null)
                     return null;
 
                 version = s.get8();
-                if (logger.isLoggable(Level.FINEST)) {
-                    logger.finest("[RdpIso] 收到header: version=0x" + String.format("%02x", version));
+                if (JulLog.isTraceEnabled()) {
+                    JulLog.trace("[RdpIso] 收到header: version=0x" + String.format("%02x", version));
                 }
 
                 if (version == 3) {
@@ -137,8 +142,8 @@ public class RdpIsoFix {
                     // this legacy encryption-header flag from FASTPATH_OUTPUT_ENCRYPTED.
                     boolean shortform = false;
 
-                    if (logger.isLoggable(Level.FINEST)) {
-                        logger.finest("[FAST-PATH] version=0x" + String.format("%02x", version)
+                    if (JulLog.isTraceEnabled()) {
+                        JulLog.trace("[FAST-PATH] version=0x" + String.format("%02x", version)
                                 + ", length=" + length + ", encrypted=" + encrypted + ", shortform=" + shortform);
                     }
 
@@ -146,7 +151,7 @@ public class RdpIsoFix {
                         MCS mcs = getParent();
                         mcs.getParent().getParent().rdp5_process(s, encrypted, shortform);
                     } catch (Exception e) {
-                        logger.log(Level.WARNING, "Fast-path处理失败: " + e.getMessage(), e);
+                        JulLog.error("Fast-path处理失败: " + e.getMessage(), e);
                     }
                     // fast-path包已处理，继续接收下一个包
                     continue next_packet;
@@ -157,8 +162,8 @@ public class RdpIsoFix {
             }
 
             // === 诊断日志：slow-path包 ===
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("[SLOW-PATH] version=" + version + ", length=" + length
+            if (JulLog.isTraceEnabled()) {
+                JulLog.trace("[SLOW-PATH] version=" + version + ", length=" + length
                         + ", pos=" + s.getPosition() + ", end=" + s.getEnd());
             }
 
@@ -195,7 +200,7 @@ public class RdpIsoFix {
 
     /**
      * 通过反射替换RDP层中的ISO对象为RdpIso实例。
-     *
+     * <p>
      * 导航路径: RdpPatch(Rdp) → secureLayer → mcsLayer → isoLayer
      *
      * @param rdpLayer RDP层对象
@@ -246,15 +251,15 @@ public class RdpIsoFix {
             injected = true;
         } catch (NoSuchFieldException e) {
             injectError = "NoSuchField: " + e.getMessage();
-            logger.log(Level.WARNING, "反射替换ISO失败（字段不存在）: " + e.getMessage()
+            JulLog.error("反射替换ISO失败（字段不存在）: " + e.getMessage()
                     + "，fast-path检测修复未生效");
         } catch (IllegalAccessException e) {
             injectError = "IllegalAccess: " + e.getMessage();
-            logger.log(Level.WARNING, "反射替换ISO失败（访问被拒）: " + e.getMessage()
+            JulLog.error("反射替换ISO失败（访问被拒）: " + e.getMessage()
                     + "，fast-path检测修复未生效");
         } catch (Exception e) {
             injectError = e.getClass().getSimpleName() + ": " + e.getMessage();
-            logger.log(Level.WARNING, "反射替换ISO失败: " + e.getMessage()
+            JulLog.error("反射替换ISO失败: " + e.getMessage()
                     + "，fast-path检测修复未生效");
         }
     }

@@ -12,14 +12,12 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 修复版RDP层，覆盖关键方法添加修复和诊断日志。
  */
 public class RdpPatch extends Rdp {
 
-    private static final Logger logger = Logger.getLogger(RdpPatch.class.getName());
     private static final boolean DIAGNOSTICS_ENABLED = Boolean.getBoolean("rdp4j.diagnostics");
 
     private final State stateRef;
@@ -58,7 +56,7 @@ public class RdpPatch extends Rdp {
             npf = Rdp.class.getDeclaredField("next_packet");
             npf.setAccessible(true);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "反射获取Rdp私有方法/字段失败: " + e.getMessage(), e);
+            JulLog.error( "反射获取Rdp私有方法/字段失败: " + e.getMessage(), e);
         }
         receiveMethod = rm;
         processPacketMethod = pm;
@@ -72,13 +70,13 @@ public class RdpPatch extends Rdp {
         int pktNum = rdp5PacketCount.incrementAndGet();
         boolean isSSL = stateRef.getSecurityType().isSSL();
 
-        if (logger.isLoggable(Level.FINEST)) {
-            logger.finest(String.format("[RDP5 #%d] encryption=%b, shortform=%b, securityType=%s, dataSize=%d",
+        if (JulLog.isTraceEnabled()) {
+            JulLog.trace(String.format("[RDP5 #%d] encryption=%b, shortform=%b, securityType=%s, dataSize=%d",
                     pktNum, encryption, shortform, stateRef.getSecurityType(), s.getEnd() - s.getPosition()));
         }
 
         if (encryption && isSSL) {
-            logger.finest("[RDP5] Ignoring legacy encryption flag for TLS security");
+            JulLog.trace("[RDP5] Ignoring legacy encryption flag for TLS security");
             encryption = false;
         }
 
@@ -126,8 +124,8 @@ public class RdpPatch extends Rdp {
                 throw new RdesktopException("FASTPATH update length exceeds packet: " + length);
             }
 
-            if (logger.isLoggable(Level.FINEST)) {
-                logger.finest(String.format("[RDP5 #%d] updateHeader=0x%02x, updateCode=%d, frag=%d, comp=%d(compFlags=0x%02x), length=%d",
+            if (JulLog.isTraceEnabled()) {
+                JulLog.trace(String.format("[RDP5 #%d] updateHeader=0x%02x, updateCode=%d, frag=%d, comp=%d(compFlags=0x%02x), length=%d",
                         pktNum, updateHeader, updateCode, fragmentation, compression, compressionFlags, length));
             }
 
@@ -176,7 +174,7 @@ public class RdpPatch extends Rdp {
 
     private void processFastPathUpdate(int type, Packet data, int next, int updateHeader)
             throws RdesktopException, OrderException {
-            switch (type) {
+        switch (type) {
             case 0: // orders
                 int count = data.getLittleEndian16();
                 orders.processOrders(data, next, count);
@@ -189,8 +187,11 @@ public class RdpPatch extends Rdp {
                 data.incrementPosition(2);
                 processPalette(data);
                 break;
-            case 3: break;
-            case 5: process_null_system_pointer_pdu(data); break;
+            case 3:
+                break;
+            case 5:
+                process_null_system_pointer_pdu(data);
+                break;
             case 6: // default pointer
                 process_default_system_pointer_pdu();
                 break;
@@ -201,14 +202,22 @@ public class RdpPatch extends Rdp {
                     stateRef.getCanvas().movePointer(x, y);
                 }
                 break;
-            case 9: process_colour_pointer_pdu(data); break;
-            case 10: process_cached_pointer_pdu(data); break;
-            case 11: process_colour_pointer_pdu_new(data); break;
-            case 12: process_colour_pointer_pdu_large(data); break;
+            case 9:
+                process_colour_pointer_pdu(data);
+                break;
+            case 10:
+                process_cached_pointer_pdu(data);
+                break;
+            case 11:
+                process_colour_pointer_pdu_new(data);
+                break;
+            case 12:
+                process_colour_pointer_pdu_large(data);
+                break;
             default:
                 JulLog.warn("Unimplemented RDP5 updateCode " + type
                         + " (updateHeader=0x" + String.format("%02x", updateHeader) + ")");
-            }
+        }
     }
 
     @Override
@@ -222,8 +231,8 @@ public class RdpPatch extends Rdp {
         int count = bitmapUpdateCount.incrementAndGet();
         int pos = data.getPosition();
         int n_updates = data.getLittleEndian16();
-        if (logger.isLoggable(Level.FINEST)) {
-            logger.finest(String.format("[BITMAP UPDATE #%d] n_updates=%d", count, n_updates));
+        if (JulLog.isTraceEnabled()) {
+            JulLog.trace(String.format("[BITMAP UPDATE #%d] n_updates=%d", count, n_updates));
         }
         data.setPosition(pos);
         super.processBitmapUpdates(data);
@@ -236,26 +245,29 @@ public class RdpPatch extends Rdp {
             }
         }
 
-        if (logger.isLoggable(Level.FINEST)) try {
-            java.awt.image.BufferedImage bi = stateRef.getCanvas().getDisplay().getBufferedImage();
-            if (bi != null) {
-                int w = bi.getWidth(), h = bi.getHeight();
-                int[] xs = {0, w / 2, w - 1};
-                int[] ys = {0, h / 2, h - 1};
-                StringBuilder sb = new StringBuilder("[BITMAP #" + count + "] pixels(" + w + "x" + h + "):");
-                for (int x : xs) for (int y : ys) {
-                    sb.append(String.format(" (%d,%d)=%06x", x, y, bi.getRGB(x, y) & 0xFFFFFF));
+        if (JulLog.isTraceEnabled()) {
+            try {
+                java.awt.image.BufferedImage bi = stateRef.getCanvas().getDisplay().getBufferedImage();
+                if (bi != null) {
+                    int w = bi.getWidth(), h = bi.getHeight();
+                    int[] xs = {0, w / 2, w - 1};
+                    int[] ys = {0, h / 2, h - 1};
+                    StringBuilder sb = new StringBuilder("[BITMAP #" + count + "] pixels(" + w + "x" + h + "):");
+                    for (int x : xs)
+                        for (int y : ys) {
+                            sb.append(String.format(" (%d,%d)=%06x", x, y, bi.getRGB(x, y) & 0xFFFFFF));
+                        }
+                    JulLog.trace(sb.toString());
                 }
-                logger.finest(sb.toString());
+            } catch (Exception e) {
+                JulLog.error("采样BufferedImage失败: " + e.getMessage());
             }
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "采样BufferedImage失败: " + e.getMessage());
         }
     }
 
     @Override
     public void connect(com.tangluobo.rdp4j.io.IO io, com.tangluobo.rdp4j.CredentialProvider credentialProvider,
-            String command, String directory) throws IOException, RdesktopException {
+                        String command, String directory) throws IOException, RdesktopException {
         JulLog.info("[CONNECT] Starting, securityType=" + stateRef.getSecurityType()
                 + ", rdp5=" + stateRef.isRDP5() + ", bpp=" + stateRef.getServerBpp()
                 + ", size=" + stateRef.getWidth() + "x" + stateRef.getHeight());
@@ -287,16 +299,16 @@ public class RdpPatch extends Rdp {
                         long stuckMs = System.currentTimeMillis() - lastReceiveEnterTime;
                         if (stuckMs > 10000 && lastReceiveEnterTime > 0) {
                             JulLog.warn(String.format(
-                                "[WATCHDOG] receive()等待slow-path PDU %.1f秒, totalPDUs=%d, bitmaps=%d, rdp5=%d, sent=%d, recv=%d, bcInAvailable=%d, active=%b, licenceIssued=%b, lastReason=0x%x, isoInjected=%b, isoRecvCalled=%b, isoError=%s, PDU历史=%s",
-                                stuckMs / 1000.0, totalPduCount.get(), bitmapUpdateCount.get(),
-                                rdp5PacketCount.get(), com.tangluobo.rdp4j.RdpTlsFix.RdpTransport.getSendPktCount(),
-                                com.tangluobo.rdp4j.RdpTlsFix.RdpTransport.getRecvPktCount(),
-                                RdpTlsFix.RdpTransport.getBcInAvailable(),
-                                stateRef.isActive(), stateRef.isLicenceIssued(),
-                                stateRef.getLastReason(),
-                                com.tangluobo.rdp4j.RdpIsoFix.isInjected(), com.tangluobo.rdp4j.RdpIsoFix.isReceiveCalled(),
-                                RdpIsoFix.getInjectError(),
-                                String.join(",", pduHistory)));
+                                    "[WATCHDOG] receive()等待slow-path PDU %.1f秒, totalPDUs=%d, bitmaps=%d, rdp5=%d, sent=%d, recv=%d, bcInAvailable=%d, active=%b, licenceIssued=%b, lastReason=0x%x, isoInjected=%b, isoRecvCalled=%b, isoError=%s, PDU历史=%s",
+                                    stuckMs / 1000.0, totalPduCount.get(), bitmapUpdateCount.get(),
+                                    rdp5PacketCount.get(), com.tangluobo.rdp4j.RdpTlsFix.RdpTransport.getSendPktCount(),
+                                    com.tangluobo.rdp4j.RdpTlsFix.RdpTransport.getRecvPktCount(),
+                                    RdpTlsFix.RdpTransport.getBcInAvailable(),
+                                    stateRef.isActive(), stateRef.isLicenceIssued(),
+                                    stateRef.getLastReason(),
+                                    com.tangluobo.rdp4j.RdpIsoFix.isInjected(), com.tangluobo.rdp4j.RdpIsoFix.isReceiveCalled(),
+                                    RdpIsoFix.getInjectError(),
+                                    String.join(",", pduHistory)));
                         }
                     }
                 } catch (InterruptedException e) { /* 正常退出 */ }
@@ -306,175 +318,222 @@ public class RdpPatch extends Rdp {
         }
 
         try {
-        int[] type = new int[1];
-        Packet data;
-        while (true) {
-            // 调用private receive()
-            data = null;
-            if (DIAGNOSTICS_ENABLED) {
-                lastReceiveEnterTime = System.currentTimeMillis();
-            }
-            try {
-                data = (Packet) receiveMethod.invoke(this, (Object) type);
-                if (data == null) {
-                    JulLog.info("[MAINLOOP] receive() returned null, exiting");
-                    return;
+            int[] type = new int[1];
+            Packet data;
+            while (true) {
+                // 调用private receive()
+                data = null;
+                if (DIAGNOSTICS_ENABLED) {
+                    lastReceiveEnterTime = System.currentTimeMillis();
                 }
-            } catch (java.lang.reflect.InvocationTargetException e) {
-                Throwable cause = e.getCause();
-                if (cause instanceof EOFException) {
-                    JulLog.info("[MAINLOOP] EOF, exiting");
-                    if (stateRef.getLastReason() > 0) {
-                        throw new RdesktopDisconnectException(stateRef.getLastReason());
+                try {
+                    data = (Packet) receiveMethod.invoke(this, (Object) type);
+                    if (data == null) {
+                        JulLog.info("[MAINLOOP] receive() returned null, exiting");
+                        return;
                     }
-                    return;
-                }
-                if (cause instanceof IOException) {
-                    logger.log(Level.SEVERE, "[MAINLOOP] IO error after " + totalPduCount.get() + " PDUs: " + cause.getMessage());
-                    if (stateRef.getLastReason() > 0)
-                        throw new RdesktopDisconnectException(stateRef.getLastReason());
-                    else
-                        throw new RdesktopDisconnectException(0, (IOException) cause);
-                }
-                if (cause instanceof RdesktopException) throw (RdesktopException) cause;
-                if (cause instanceof RuntimeException) throw (RuntimeException) cause;
-                throw new RdesktopException("receive failed: " + cause.getMessage(), cause);
-            } catch (Exception e) {
-                throw new RdesktopException("reflective receive failed: " + e.getMessage(), e);
-            }
-
-            int pduCount = totalPduCount.incrementAndGet();
-            int pduType = type[0];
-
-            // 诊断：输出PDU数据和stream状态
-            String pduName;
-            switch (pduType) {
-            case 1: pduName = "DEMAND_ACTIVE"; break;
-            case 6: pduName = "DEACTIVATE_ALL"; break;
-            case 7: pduName = "DATA"; break;
-            case 10: pduName = "SERVER_REDIRECTION"; break;
-            case 0: pduName = "KEEPALIVE"; break;
-            default: pduName = "UNKNOWN(" + pduType + ")"; break;
-            }
-            if (DIAGNOSTICS_ENABLED) {
-                int dataAvail = data.getEnd() - data.getPosition();
-                // 对DATA PDU(type=7)，解析子类型(shareDataHeader中的dataType)
-                String dataSubType = "";
-                if (pduType == 7 && dataAvail >= 9) {
-                    int savePos = data.getPosition();
-                    data.incrementPosition(6); // skip shareid(4)+pad(1)+streamid(1)
-                    data.getLittleEndian16(); // len
-                    int dataType = data.get8();
-                    data.setPosition(savePos);
-                    dataSubType = " subType=" + dataType;
-                    switch (dataType) {
-                        case 0: dataSubType += "(UPDATE)"; break;
-                        case 2: dataSubType += "(UPDATE_BITMAP)"; break;
-                        case 3: dataSubType += "(PALETTE)"; break;
-                        case 20: dataSubType += "(CONTROL)"; break;
-                        case 27: dataSubType += "(POINTER)"; break;
-                        case 31: dataSubType += "(SYNCHRONISE)"; break;
-                        case 33: dataSubType += "(REFRESH_RECT)"; break;
-                        case 34: dataSubType += "(PLAY_SOUND)"; break;
-                        case 36: dataSubType += "(SUPPRESS_OUTPUT)"; break;
-                        case 37: dataSubType += "(SAVE_SESSION_INFO)"; break;
-                        case 38: dataSubType += "(FONTLIST)"; break;
-                        case 39: dataSubType += "(FONTMAP)"; break;
-                        case 40: dataSubType += "(SET_KEYBOARD_INDICATORS)"; break;
-                        case 47: dataSubType += "(SET_ERROR_INFO)"; break;
-                        default: break;
+                } catch (java.lang.reflect.InvocationTargetException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof EOFException) {
+                        JulLog.info("[MAINLOOP] EOF, exiting");
+                        if (stateRef.getLastReason() > 0) {
+                            throw new RdesktopDisconnectException(stateRef.getLastReason());
+                        }
+                        return;
                     }
-                }
-                if (pduHistory.size() >= 32) {
-                    pduHistory.remove(0);
-                }
-                pduHistory.add(String.format("#%d:%s%s", pduCount, pduName, dataSubType.isEmpty() ? "" : dataSubType.split("=")[1].replace(")", "").replace("(", "")));
-                JulLog.info(String.format("[MAINLOOP] PDU #%d: type=%s(%d)%s, dataSize=%d",
-                        pduCount, pduName, pduType, dataSubType, dataAvail));
-
-                // DEMAND_ACTIVE处理后，记录关键状态
-                if (pduType == 1) {
-                    JulLog.info(String.format("[CAPS] serverBpp=%d, width=%d, height=%d, rdp5=%b, serverChannelId=%d, shareId=%d",
-                            stateRef.getServerBpp(), stateRef.getWidth(), stateRef.getHeight(),
-                            stateRef.isRDP5(), stateRef.getServerChannelId(), stateRef.getShareId()));
-                }
-
-                // 诊断：输出data的前32字节hex
-                if (dataAvail > 0) {
-                    int savePos = data.getPosition();
-                    int dumpLen = Math.min(dataAvail, 32);
-                    StringBuilder hexSb = new StringBuilder("[MAINLOOP] PDU #" + pduCount + " hex:");
-                    for (int i = 0; i < dumpLen; i++) {
-                        hexSb.append(String.format(" %02x", data.get8()));
+                    if (cause instanceof IOException) {
+                        JulLog.error( "[MAINLOOP] IO error after " + totalPduCount.get() + " PDUs: " + cause.getMessage());
+                        if (stateRef.getLastReason() > 0)
+                            throw new RdesktopDisconnectException(stateRef.getLastReason());
+                        else
+                            throw new RdesktopDisconnectException(0, (IOException) cause);
                     }
-                    data.setPosition(savePos);
-                    JulLog.info(hexSb.toString());
+                    if (cause instanceof RdesktopException)
+                        throw (RdesktopException) cause;
+                    if (cause instanceof RuntimeException)
+                        throw (RuntimeException) cause;
+                    throw new RdesktopException("receive failed: " + cause.getMessage(), cause);
+                } catch (Exception e) {
+                    throw new RdesktopException("reflective receive failed: " + e.getMessage(), e);
                 }
-            }
 
-            // 调用private processPacket()
-            // DEMAND_ACTIVE(type=1)会触发processDemandActive，内部接收4个PDU(SYNCHRONIZE/COOPERATE/GRANT_CONTROL/FONT_MAP)
-            // 如果服务器不发送这些PDU，processPacket会阻塞在这里
-            long processStart = System.currentTimeMillis();
-            try {
-                processPacketMethod.invoke(this, (Object) type, data);
-            } catch (java.lang.reflect.InvocationTargetException e) {
-                Throwable cause = e.getCause();
-                if (cause instanceof RdesktopException) {
-                    logger.log(Level.SEVERE, String.format("[MAINLOOP] processPacket error at PDU #%d: %s", pduCount, cause.getMessage()));
-                    throw (RdesktopException) cause;
+                int pduCount = totalPduCount.incrementAndGet();
+                int pduType = type[0];
+
+                // 诊断：输出PDU数据和stream状态
+                String pduName;
+                switch (pduType) {
+                    case 1:
+                        pduName = "DEMAND_ACTIVE";
+                        break;
+                    case 6:
+                        pduName = "DEACTIVATE_ALL";
+                        break;
+                    case 7:
+                        pduName = "DATA";
+                        break;
+                    case 10:
+                        pduName = "SERVER_REDIRECTION";
+                        break;
+                    case 0:
+                        pduName = "KEEPALIVE";
+                        break;
+                    default:
+                        pduName = "UNKNOWN(" + pduType + ")";
+                        break;
                 }
-                if (cause instanceof IOException) throw (IOException) cause;
-                if (cause instanceof OrderException) throw new RdesktopException(cause.getMessage(), cause);
-                if (cause instanceof RuntimeException) throw (RuntimeException) cause;
-                throw new RdesktopException("processPacket failed: " + cause.getMessage(), cause);
-            } catch (Exception e) {
-                throw new RdesktopException("reflective processPacket failed: " + e.getMessage(), e);
-            }
-            long processMs = System.currentTimeMillis() - processStart;
-            if (DIAGNOSTICS_ENABLED && processMs > 100) {
-                JulLog.info(String.format("[MAINLOOP] PDU #%d (%s) processPacket耗时 %dms", pduCount, pduName, processMs));
-            }
+                if (DIAGNOSTICS_ENABLED) {
+                    int dataAvail = data.getEnd() - data.getPosition();
+                    // 对DATA PDU(type=7)，解析子类型(shareDataHeader中的dataType)
+                    String dataSubType = "";
+                    if (pduType == 7 && dataAvail >= 9) {
+                        int savePos = data.getPosition();
+                        data.incrementPosition(6); // skip shareid(4)+pad(1)+streamid(1)
+                        data.getLittleEndian16(); // len
+                        int dataType = data.get8();
+                        data.setPosition(savePos);
+                        dataSubType = " subType=" + dataType;
+                        switch (dataType) {
+                            case 0:
+                                dataSubType += "(UPDATE)";
+                                break;
+                            case 2:
+                                dataSubType += "(UPDATE_BITMAP)";
+                                break;
+                            case 3:
+                                dataSubType += "(PALETTE)";
+                                break;
+                            case 20:
+                                dataSubType += "(CONTROL)";
+                                break;
+                            case 27:
+                                dataSubType += "(POINTER)";
+                                break;
+                            case 31:
+                                dataSubType += "(SYNCHRONISE)";
+                                break;
+                            case 33:
+                                dataSubType += "(REFRESH_RECT)";
+                                break;
+                            case 34:
+                                dataSubType += "(PLAY_SOUND)";
+                                break;
+                            case 36:
+                                dataSubType += "(SUPPRESS_OUTPUT)";
+                                break;
+                            case 37:
+                                dataSubType += "(SAVE_SESSION_INFO)";
+                                break;
+                            case 38:
+                                dataSubType += "(FONTLIST)";
+                                break;
+                            case 39:
+                                dataSubType += "(FONTMAP)";
+                                break;
+                            case 40:
+                                dataSubType += "(SET_KEYBOARD_INDICATORS)";
+                                break;
+                            case 47:
+                                dataSubType += "(SET_ERROR_INFO)";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    if (pduHistory.size() >= 32) {
+                        pduHistory.remove(0);
+                    }
+                    pduHistory.add(String.format("#%d:%s%s", pduCount, pduName, dataSubType.isEmpty() ? "" : dataSubType.split("=")[1].replace(")", "").replace("(", "")));
+                    JulLog.info(String.format("[MAINLOOP] PDU #%d: type=%s(%d)%s, dataSize=%d",
+                            pduCount, pduName, pduType, dataSubType, dataAvail));
 
-            // 检测服务器是否发送了错误PDU (RDP_DATA_PDU_SET_ERROR)
-            int lastReason = stateRef.getLastReason();
-            if (lastReason != 0 && lastReason != lastReasonSeen) {
-                lastReasonSeen = lastReason;
-                JulLog.warn("[MAINLOOP] 服务器发送错误PDU! lastReason=0x" + Integer.toHexString(lastReason)
-                        + " (" + lastReason + ")");
-                // SET_ERROR_INFO is terminal. Some GNOME/xrdp servers leave the
-                // socket open after sending it; waiting for another read leaks a
-                // receive loop and watchdog and delays the real disconnect reason.
-                throw new RdesktopDisconnectException(lastReason);
-            }
-            // 记录服务器状态
-            int serverStatus = stateRef.getServerStatus();
-            if (serverStatus != 0 && serverStatus != lastServerStatusSeen) {
-                lastServerStatusSeen = serverStatus;
-                JulLog.info("[MAINLOOP] 服务器状态变更: serverStatus=0x" + Integer.toHexString(serverStatus));
-            }
+                    // DEMAND_ACTIVE处理后，记录关键状态
+                    if (pduType == 1) {
+                        JulLog.info(String.format("[CAPS] serverBpp=%d, width=%d, height=%d, rdp5=%b, serverChannelId=%d, shareId=%d",
+                                stateRef.getServerBpp(), stateRef.getWidth(), stateRef.getHeight(),
+                                stateRef.isRDP5(), stateRef.getServerChannelId(), stateRef.getShareId()));
+                    }
 
-            // 诊断：processPacket后stream状态
-            if (DIAGNOSTICS_ENABLED) try {
-                if (streamField != null && nextPacketField != null) {
-                    Object stream = streamField.get(this);
-                    int nextPkt = nextPacketField.getInt(this);
-                    if (stream != null) {
-                        Packet p = (Packet) stream;
-                        JulLog.info(String.format("[MAINLOOP] After PDU #%d: stream pos=%d end=%d, next_packet=%d, remaining=%d",
-                                pduCount, p.getPosition(), p.getEnd(), nextPkt, p.getEnd() - nextPkt));
+                    // 诊断：输出data的前32字节hex
+                    if (dataAvail > 0) {
+                        int savePos = data.getPosition();
+                        int dumpLen = Math.min(dataAvail, 32);
+                        StringBuilder hexSb = new StringBuilder("[MAINLOOP] PDU #" + pduCount + " hex:");
+                        for (int i = 0; i < dumpLen; i++) {
+                            hexSb.append(String.format(" %02x", data.get8()));
+                        }
+                        data.setPosition(savePos);
+                        JulLog.info(hexSb.toString());
                     }
                 }
-            } catch (Exception e) {
-                // 忽略诊断错误
-            }
 
-            // DEMAND_ACTIVE处理完毕后，processDemandActive内部已经发送了：
-            // sendConfirmActive（含capabilities + ready(INPUT) → TS_SYNC_EVENT同步键状态）
-            // sendSynchronize、sendControl、sendFonts，并接收了4个响应PDU。
-            // Input.triggerReadyToSend已发送一次slow-path INPUT_EVENT_SYNC（消息类型0），
-            // 其中toggleFlags携带CapsLock/NumLock/ScrollLock的绝对状态；无需重复发送。
-        }
+                // 调用private processPacket()
+                // DEMAND_ACTIVE(type=1)会触发processDemandActive，内部接收4个PDU(SYNCHRONIZE/COOPERATE/GRANT_CONTROL/FONT_MAP)
+                // 如果服务器不发送这些PDU，processPacket会阻塞在这里
+                long processStart = System.currentTimeMillis();
+                try {
+                    processPacketMethod.invoke(this, (Object) type, data);
+                } catch (java.lang.reflect.InvocationTargetException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof RdesktopException) {
+                        JulLog.error( String.format("[MAINLOOP] processPacket error at PDU #%d: %s", pduCount, cause.getMessage()));
+                        throw (RdesktopException) cause;
+                    }
+                    if (cause instanceof IOException)
+                        throw (IOException) cause;
+                    if (cause instanceof OrderException)
+                        throw new RdesktopException(cause.getMessage(), cause);
+                    if (cause instanceof RuntimeException)
+                        throw (RuntimeException) cause;
+                    throw new RdesktopException("processPacket failed: " + cause.getMessage(), cause);
+                } catch (Exception e) {
+                    throw new RdesktopException("reflective processPacket failed: " + e.getMessage(), e);
+                }
+                long processMs = System.currentTimeMillis() - processStart;
+                if (DIAGNOSTICS_ENABLED && processMs > 100) {
+                    JulLog.info(String.format("[MAINLOOP] PDU #%d (%s) processPacket耗时 %dms", pduCount, pduName, processMs));
+                }
+
+                // 检测服务器是否发送了错误PDU (RDP_DATA_PDU_SET_ERROR)
+                int lastReason = stateRef.getLastReason();
+                if (lastReason != 0 && lastReason != lastReasonSeen) {
+                    lastReasonSeen = lastReason;
+                    JulLog.warn("[MAINLOOP] 服务器发送错误PDU! lastReason=0x" + Integer.toHexString(lastReason)
+                            + " (" + lastReason + ")");
+                    // SET_ERROR_INFO is terminal. Some GNOME/xrdp servers leave the
+                    // socket open after sending it; waiting for another read leaks a
+                    // receive loop and watchdog and delays the real disconnect reason.
+                    throw new RdesktopDisconnectException(lastReason);
+                }
+                // 记录服务器状态
+                int serverStatus = stateRef.getServerStatus();
+                if (serverStatus != 0 && serverStatus != lastServerStatusSeen) {
+                    lastServerStatusSeen = serverStatus;
+                    JulLog.info("[MAINLOOP] 服务器状态变更: serverStatus=0x" + Integer.toHexString(serverStatus));
+                }
+
+                // 诊断：processPacket后stream状态
+                if (DIAGNOSTICS_ENABLED)
+                    try {
+                        if (streamField != null && nextPacketField != null) {
+                            Object stream = streamField.get(this);
+                            int nextPkt = nextPacketField.getInt(this);
+                            if (stream != null) {
+                                Packet p = (Packet) stream;
+                                JulLog.info(String.format("[MAINLOOP] After PDU #%d: stream pos=%d end=%d, next_packet=%d, remaining=%d",
+                                        pduCount, p.getPosition(), p.getEnd(), nextPkt, p.getEnd() - nextPkt));
+                            }
+                        }
+                    } catch (Exception e) {
+                        // 忽略诊断错误
+                    }
+
+                // DEMAND_ACTIVE处理完毕后，processDemandActive内部已经发送了：
+                // sendConfirmActive（含capabilities + ready(INPUT) → TS_SYNC_EVENT同步键状态）
+                // sendSynchronize、sendControl、sendFonts，并接收了4个响应PDU。
+                // Input.triggerReadyToSend已发送一次slow-path INPUT_EVENT_SYNC（消息类型0），
+                // 其中toggleFlags携带CapsLock/NumLock/ScrollLock的绝对状态；无需重复发送。
+            }
         } finally {
             // A redirected/closed protocol instance must become read-only before
             // its old Swing canvas can dispatch another queued input event.
@@ -490,11 +549,21 @@ public class RdpPatch extends Rdp {
         return DIAGNOSTICS_ENABLED;
     }
 
-    public int getBitmapUpdateCount() { return bitmapUpdateCount.get(); }
-    public int getRdp5PacketCount() { return rdp5PacketCount.get(); }
-    public int getTotalPduCount() { return totalPduCount.get(); }
+    public int getBitmapUpdateCount() {
+        return bitmapUpdateCount.get();
+    }
 
-    /** Invoked after the first bitmap update has been decoded into the canvas. */
+    public int getRdp5PacketCount() {
+        return rdp5PacketCount.get();
+    }
+
+    public int getTotalPduCount() {
+        return totalPduCount.get();
+    }
+
+    /**
+     * Invoked after the first bitmap update has been decoded into the canvas.
+     */
     public void setOnFirstFrame(Consumer<Void> callback) {
         this.onFirstFrame = callback;
     }

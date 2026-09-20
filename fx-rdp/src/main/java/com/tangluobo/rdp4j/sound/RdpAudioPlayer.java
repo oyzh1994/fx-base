@@ -11,37 +11,43 @@ import javax.sound.sampled.SourceDataLine;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * RDP远程音频播放器。
- *
+ * <p>
  * 独立播放线程 + 有界队列，避免阻塞RDP接收主线程（图形/输入保持响应）：
  * - 通道线程收到音频块后仅入队（队列满时丢弃当前块，防止延迟无限累积）；
  * - 播放线程按块顺序写SourceDataLine（阻塞写即天然限流）；
  * - 格式号变化时重开Line（服务器中途切换采样率等）。
- *
+ * <p>
  * 仅支持PCM（RDP服务器必然提供PCM格式，Windows默认通告22050/44100Hz 16bit）。
  */
 public class RdpAudioPlayer {
 
-    private static final Logger logger = Logger.getLogger(RdpAudioPlayer.class.getName());
-
-    /** 播放队列容量（音频块数，典型块为40ms音频） */
+    /**
+     * 播放队列容量（音频块数，典型块为40ms音频）
+     */
     private static final int QUEUE_CAPACITY = 24;
 
-    /** 播放线程 */
+    /**
+     * 播放线程
+     */
     private Thread thread;
     private volatile boolean running;
-    /** 队列：播放线程消费，通道线程生产 */
+    /**
+     * 队列：播放线程消费，通道线程生产
+     */
     private final BlockingQueue<Chunk> queue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
 
-    /** 当前打开的Line及其对应格式号 */
+    /**
+     * 当前打开的Line及其对应格式号
+     */
     private SourceDataLine line;
     private int lineFormatNo = -1;
 
-    /** 待播放的音频块 */
+    /**
+     * 待播放的音频块
+     */
     private static class Chunk {
         final int formatNo;
         final AudioFormat format;
@@ -77,7 +83,7 @@ public class RdpAudioPlayer {
             return;
         }
         if (!queue.offer(new Chunk(formatNo, format, data))) {
-            logger.fine("音频队列已满，丢弃音频块(" + data.length + "字节)");
+            JulLog.trace("音频队列已满，丢弃音频块(" + data.length + "字节)");
         }
     }
 
@@ -101,7 +107,7 @@ public class RdpAudioPlayer {
                 }
             }
         } catch (Exception e) {
-            logger.log(Level.FINE, "设置音量失败: " + e.getMessage());
+            JulLog.error("设置音量失败: " + e.getMessage());
         }
     }
 
@@ -137,7 +143,7 @@ public class RdpAudioPlayer {
                     line.write(chunk.data, 0, chunk.data.length);
                 }
             } catch (Exception e) {
-                logger.log(Level.WARNING, "音频播放失败: " + e.getMessage());
+                JulLog.error("音频播放失败: " + e.getMessage());
                 closeLine();
             }
         }
@@ -167,7 +173,7 @@ public class RdpAudioPlayer {
             lineFormatNo = formatNo;
             JulLog.info("音频设备已打开: " + format + " (formatNo=" + formatNo + ")");
         } catch (LineUnavailableException e) {
-            logger.log(Level.WARNING, "打开音频设备失败: " + e.getMessage());
+            JulLog.error("打开音频设备失败: " + e.getMessage());
             line = null;
             lineFormatNo = -1;
         }
@@ -180,7 +186,7 @@ public class RdpAudioPlayer {
                 line.stop();
                 line.close();
             } catch (Exception e) {
-                logger.log(Level.FINE, "关闭音频设备出错: " + e.getMessage());
+                JulLog.error("关闭音频设备出错: " + e.getMessage());
             }
             line = null;
         }

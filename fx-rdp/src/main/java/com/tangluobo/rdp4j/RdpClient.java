@@ -16,38 +16,17 @@ import javax.swing.*;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.security.cert.X509Certificate;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 /**
  * RDP客户端封装类，基于com.sshtools:rdp库
  * 提供连接、断开、状态查询等功能，支持NLA认证和多会话
  */
 public class RdpClient {
-
-    private static final Logger logger = Logger.getLogger(RdpClient.class.getName());
-
-    static {
-        try {
-            // RDP图形和音频都是高频数据，诊断日志必须限量滚动，不能让
-            // 同步文件I/O反过来阻塞协议接收线程。
-            String pattern = Paths.get("rdp-debug-%g.log").toAbsolutePath().toString();
-            FileHandler handler = new FileHandler(pattern, 16 * 1024 * 1024, 3, true);
-            handler.setFormatter(new SimpleFormatter());
-            handler.setLevel(Level.INFO);
-            Logger.getLogger("").addHandler(handler);
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "无法初始化 RDP 诊断日志", e);
-        }
-    }
 
     private volatile boolean connected = false;
     private volatile Rdp rdpLayer;
@@ -102,10 +81,10 @@ public class RdpClient {
         @Override
         public void error(Exception e, boolean sysexit) {
             if (sysexit && !isCurrentAttempt()) {
-                logger.fine("忽略已被替换的RDP连接错误, attempt=" + attemptId);
+                JulLog.error("忽略已被替换的RDP连接错误, attempt=" + attemptId);
                 return;
             }
-            logger.log(Level.SEVERE, "RDP错误: " + e.getMessage(), e);
+            JulLog.error("RDP错误: " + e.getMessage(), e);
             if (sysexit) {
                 notifyDisconnected("连接错误: " + describeException(e));
             }
@@ -141,7 +120,7 @@ public class RdpClient {
         @Override
         public void ready(ReadyType readyType) {
             if (!isCurrentAttempt()) {
-                logger.fine("忽略已被替换的RDP连接ready回调, attempt=" + attemptId);
+                JulLog.error("忽略已被替换的RDP连接ready回调, attempt=" + attemptId);
                 return;
             }
             JulLog.info("RDP ready回调: " + readyType);
@@ -207,16 +186,6 @@ public class RdpClient {
         retireCurrentAttempt();
         this.mapClipboard = mapClipboard;
         this.soundEnabled = enableSound;
-
-        // 生产连接只记录状态和错误；FINE/HexDump会在RDP收包线程同步生成
-        // 巨量文本，造成图形和音频包分钟级积压。
-        Logger sshtools = Logger.getLogger("com.tangluobo.rdp4j");
-        sshtools.setLevel(Level.INFO);
-        Logger root = Logger.getLogger("");
-        for (java.util.logging.Handler h : root.getHandlers()) {
-            h.setLevel(Level.INFO);
-        }
-
         // 创建配置
         options = new Options();
         options.setWidth(width);
@@ -254,9 +223,11 @@ public class RdpClient {
             @Override
             public void checkClientTrusted(X509Certificate[] chain, String authType) {
             }
+
             @Override
             public void checkServerTrusted(X509Certificate[] chain, String authType) {
             }
+
             @Override
             public X509Certificate[] getAcceptedIssuers() {
                 return new X509Certificate[0];
@@ -269,9 +240,12 @@ public class RdpClient {
 
         // 创建凭证
         com.tangluobo.rdp4j.DefaultCredentialsProvider dcp = new com.tangluobo.rdp4j.DefaultCredentialsProvider();
-        if (username != null) dcp.setUsername(username);
-        if (password != null) dcp.setPassword(password.toCharArray());
-        if (domain != null && !domain.isEmpty()) dcp.setDomain(domain);
+        if (username != null)
+            dcp.setUsername(username);
+        if (password != null)
+            dcp.setPassword(password.toCharArray());
+        if (domain != null && !domain.isEmpty())
+            dcp.setDomain(domain);
 
         // 创建状态（使用RdpState阻止processGeneralCaps错误禁用RDP5）
         RdpState rdpState = new RdpState(options);
@@ -300,7 +274,7 @@ public class RdpClient {
                 JulLog.warn("未找到键盘映射文件: " + keyMapPath + mapFile + "，使用默认映射");
             }
         } catch (Exception e) {
-            logger.log(Level.WARNING, "加载键盘映射失败: " + e.getMessage());
+            JulLog.error("加载键盘映射失败: " + e.getMessage());
         }
 
         // 创建虚拟通道（FixedVChannels修复库分片重组NPE：大消息分片即断连）
@@ -368,7 +342,7 @@ public class RdpClient {
                 JulLog.info("RDP连接断开: " + e.getMessage());
                 notifyDisconnected(describeDisconnect(e));
             } catch (RdesktopLicenseException e) {
-                logger.log(Level.SEVERE, "RDP许可证错误: " + e.getMessage());
+                JulLog.error("RDP许可证错误: " + e.getMessage());
                 notifyDisconnected("许可证错误: " + e.getMessage());
             } catch (com.tangluobo.rdp4j.RdesktopException e) {
                 // SSL协商失败且当前使用SSL时，自动回退到STANDARD重试
@@ -377,17 +351,17 @@ public class RdpClient {
                     retryWithStandardSecurity(host, port, dcp);
                     return;
                 }
-                logger.log(Level.SEVERE, "RDP异常: " + e.getMessage(), e);
+                JulLog.error("RDP异常: " + e.getMessage(), e);
                 notifyDisconnected("连接异常: " + e.getMessage());
             } catch (java.net.UnknownHostException e) {
-                logger.log(Level.SEVERE, "无法解析主机: " + host);
+                JulLog.error("无法解析主机: " + host);
                 notifyDisconnected("无法解析主机: " + host);
             } catch (java.net.ConnectException e) {
-                logger.log(Level.SEVERE, "连接被拒绝: " + e.getMessage());
+                JulLog.error("连接被拒绝: " + e.getMessage());
                 notifyDisconnected("连接被拒绝: " + host + ":" + port + " - " + e.getMessage());
             } catch (java.net.SocketException e) {
                 if (connected) {
-                    logger.log(Level.WARNING, "连接中断: " + e.getMessage());
+                    JulLog.error("连接中断: " + e.getMessage());
                     notifyDisconnected("连接中断: " + e.getMessage());
                 }
             } catch (java.io.IOException e) {
@@ -410,10 +384,10 @@ public class RdpClient {
                     return;
                 }
                 String detail = describeException(e);
-                logger.log(Level.SEVERE, "IO错误: " + detail, e);
+                JulLog.error("IO错误: " + detail, e);
                 notifyDisconnected("IO错误: " + detail);
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "RDP连接错误: " + e.getMessage(), e);
+                JulLog.error("RDP连接错误: " + e.getMessage(), e);
                 notifyDisconnected("连接错误: " + e.getMessage());
             } finally {
                 connected = false;
@@ -465,7 +439,7 @@ public class RdpClient {
             }
             JulLog.info("剪贴板同步通道已注册");
         } catch (com.tangluobo.rdp4j.RdesktopException e) {
-            logger.log(Level.WARNING, "注册剪贴板通道失败: " + e.getMessage());
+            JulLog.error("注册剪贴板通道失败: " + e.getMessage());
         }
     }
 
@@ -481,7 +455,7 @@ public class RdpClient {
             channels.register(new com.tangluobo.rdp4j.RdpdrChannel());
             JulLog.info("设备重定向声明通道(rdpdr)已注册");
         } catch (com.tangluobo.rdp4j.RdesktopException e) {
-            logger.log(Level.WARNING, "注册rdpdr通道失败: " + e.getMessage());
+            JulLog.error("注册rdpdr通道失败: " + e.getMessage());
         }
     }
 
@@ -502,21 +476,25 @@ public class RdpClient {
             channels.register(rdpsndChannel);
             JulLog.info("音频重定向通道(rdpsnd)已注册");
         } catch (com.tangluobo.rdp4j.RdesktopException e) {
-            logger.log(Level.WARNING, "注册音频通道失败: " + e.getMessage());
+            JulLog.error("注册音频通道失败: " + e.getMessage());
         }
     }
 
-    /** Registers MS-RDPEDYC for the graphics pipeline and high-resolution cursors. */
+    /**
+     * Registers MS-RDPEDYC for the graphics pipeline and high-resolution cursors.
+     */
     private void registerGraphicsChannel(VChannels channels, long attemptId) {
         try {
             channels.register(new com.tangluobo.rdp4j.DrdynvcChannel(() -> notifyFirstFrame(attemptId)));
             JulLog.info("动态图形通道(drdynvc/rdpgfx)已注册");
         } catch (com.tangluobo.rdp4j.RdesktopException e) {
-            logger.log(Level.WARNING, "注册动态图形通道失败: " + e.getMessage());
+            JulLog.error("注册动态图形通道失败: " + e.getMessage());
         }
     }
 
-    /** 停止音频通道播放并释放资源（断开/重连时调用） */
+    /**
+     * 停止音频通道播放并释放资源（断开/重连时调用）
+     */
     private void shutdownSoundChannel() {
         RdpsndChannel ch = rdpsndChannel;
         rdpsndChannel = null;
@@ -563,7 +541,8 @@ public class RdpClient {
      */
     public void disconnect() {
         shutdownSoundChannel();
-        if (!connected && (rdpLayer == null || !rdpLayer.isConnected())) return;
+        if (!connected && (rdpLayer == null || !rdpLayer.isConnected()))
+            return;
         disconnectNotified.set(true);
         retireCurrentAttempt();
         connected = false;
@@ -573,7 +552,7 @@ public class RdpClient {
                 JulLog.info("RDP已断开");
             }
         } catch (Exception e) {
-            logger.log(Level.WARNING, "断开RDP连接时出错: " + e.getMessage());
+            JulLog.error("断开RDP连接时出错: " + e.getMessage());
         }
     }
 
@@ -585,7 +564,10 @@ public class RdpClient {
         try {
             // 断开之前的连接
             if (rdpLayer != null && rdpLayer.isConnected()) {
-                try { rdpLayer.disconnect(); } catch (Exception ignored) {}
+                try {
+                    rdpLayer.disconnect();
+                } catch (Exception ignored) {
+                }
             }
 
             // 重新配置：仅STANDARD安全类型
@@ -634,7 +616,7 @@ public class RdpClient {
             JulLog.info("RDP连接断开: " + e.getMessage());
             notifyDisconnected(describeDisconnect(e));
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Standard RDP Security重连也失败: " + e.getMessage(), e);
+            JulLog.error("Standard RDP Security重连也失败: " + e.getMessage(), e);
             notifyDisconnected("连接失败（SSL和Standard均不可用）: " + e.getMessage());
         } finally {
             connected = false;
@@ -649,7 +631,10 @@ public class RdpClient {
         try {
             // 断开之前的连接
             if (rdpLayer != null && rdpLayer.isConnected()) {
-                try { rdpLayer.disconnect(); } catch (Exception ignored) {}
+                try {
+                    rdpLayer.disconnect();
+                } catch (Exception ignored) {
+                }
             }
 
             // 重新配置：STANDARD在前，SSL在末尾（State构造函数取最后一个元素作为初始securityType）
@@ -706,7 +691,7 @@ public class RdpClient {
                 retryWithHybridSecurity(host, port, dcp);
                 return;
             }
-            logger.log(Level.SEVERE, "SSL/TLS重连也失败: " + e.getMessage(), e);
+            JulLog.error("SSL/TLS重连也失败: " + e.getMessage(), e);
             notifyDisconnected("连接失败（Standard和SSL均不可用）: " + e.getMessage());
         } finally {
             connected = false;
@@ -757,67 +742,67 @@ public class RdpClient {
 
                 RdpRedirectionException redirectException = pendingRedirection;
                 pendingRedirection = null;
-                    // The redirect PDU terminates this transport. Invalidate its
-                    // callbacks immediately, before parsing credentials or opening
-                    // the replacement connection, so queued AWT input cannot report
-                    // the old TLS stream as a new disconnect.
-                    retireCurrentAttempt();
-                    com.tangluobo.rdp4j.RdpRedirectionInfo redirect = redirectException.getRedirection();
-                    if (++redirectCount > 6) {
-                        throw new com.tangluobo.rdp4j.RdesktopException("服务端重定向次数过多（超过6次）");
+                // The redirect PDU terminates this transport. Invalidate its
+                // callbacks immediately, before parsing credentials or opening
+                // the replacement connection, so queued AWT input cannot report
+                // the old TLS stream as a new disconnect.
+                retireCurrentAttempt();
+                com.tangluobo.rdp4j.RdpRedirectionInfo redirect = redirectException.getRedirection();
+                if (++redirectCount > 6) {
+                    throw new com.tangluobo.rdp4j.RdesktopException("服务端重定向次数过多（超过6次）");
+                }
+
+                if (redirect.isPasswordPkEncrypted()) {
+                    if (!redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_USERNAME)
+                            || !redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_PASSWORD)
+                            || !redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_REDIRECTION_GUID)) {
+                        throw new com.tangluobo.rdp4j.RdesktopException(
+                                "RDSTLS重定向缺少一次性用户名、加密密码或Redirection GUID");
                     }
 
-                    if (redirect.isPasswordPkEncrypted()) {
-                        if (!redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_USERNAME)
-                                || !redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_PASSWORD)
-                                || !redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_REDIRECTION_GUID)) {
-                            throw new com.tangluobo.rdp4j.RdesktopException(
-                                    "RDSTLS重定向缺少一次性用户名、加密密码或Redirection GUID");
-                        }
-
-                        // Keep the encrypted password opaque. The source GNOME
-                        // service produced it for the destination certificate;
-                        // RDSTLS replays it together with the redirection GUID.
-                        com.tangluobo.rdp4j.RdstlsCredentials rdstlsCredentials = new com.tangluobo.rdp4j.RdstlsCredentials(
-                                redirect.getDomain(), redirect.getUsername(),
-                                redirect.getRedirectionGuid(), redirect.getPassword());
-                        currentHost = redirect.selectTargetHost(currentHost);
-                        options.setRoutingToken(redirect.getLoadBalanceInfo());
-                        JulLog.info("跟随RDSTLS服务端重定向: target=" + currentHost + ":" + currentPort
-                                + ", routingToken="
-                                + (redirect.getLoadBalanceInfo() == null
-                                        ? 0 : redirect.getLoadBalanceInfo().length)
-                                + " bytes, hop=" + redirectCount);
-                        connectRdstlsAttempt(currentHost, currentPort, rdstlsCredentials);
-                        continue;
-                    } else {
-                        if (!redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_USERNAME)
-                                || !redirect.hasFlag(RdpRedirectionInfo.LB_PASSWORD)) {
-                            throw new RdesktopException("Server Redirection缺少一次性用户名或密码");
-                        }
-
-                        char[] redirectPassword = redirect.getClearTextPassword();
-                        com.tangluobo.rdp4j.DefaultCredentialsProvider redirectedCredentials =
-                                new com.tangluobo.rdp4j.DefaultCredentialsProvider(
-                                        redirect.getDomain(), redirect.getUsername(), redirectPassword);
-                        currentHost = redirect.selectTargetHost(currentHost);
-                        currentCredentials = redirectedCredentials;
-                        options.setRoutingToken(redirect.getLoadBalanceInfo());
-                        JulLog.info("跟随RDP服务端重定向: target=" + currentHost + ":" + currentPort
-                                + ", routingToken="
-                                + (redirect.getLoadBalanceInfo() == null
-                                        ? 0 : redirect.getLoadBalanceInfo().length)
-                                + " bytes, hop=" + redirectCount);
+                    // Keep the encrypted password opaque. The source GNOME
+                    // service produced it for the destination certificate;
+                    // RDSTLS replays it together with the redirection GUID.
+                    com.tangluobo.rdp4j.RdstlsCredentials rdstlsCredentials = new com.tangluobo.rdp4j.RdstlsCredentials(
+                            redirect.getDomain(), redirect.getUsername(),
+                            redirect.getRedirectionGuid(), redirect.getPassword());
+                    currentHost = redirect.selectTargetHost(currentHost);
+                    options.setRoutingToken(redirect.getLoadBalanceInfo());
+                    JulLog.info("跟随RDSTLS服务端重定向: target=" + currentHost + ":" + currentPort
+                            + ", routingToken="
+                            + (redirect.getLoadBalanceInfo() == null
+                            ? 0 : redirect.getLoadBalanceInfo().length)
+                            + " bytes, hop=" + redirectCount);
+                    connectRdstlsAttempt(currentHost, currentPort, rdstlsCredentials);
+                    continue;
+                } else {
+                    if (!redirect.hasFlag(com.tangluobo.rdp4j.RdpRedirectionInfo.LB_USERNAME)
+                            || !redirect.hasFlag(RdpRedirectionInfo.LB_PASSWORD)) {
+                        throw new RdesktopException("Server Redirection缺少一次性用户名或密码");
                     }
 
-                    rawNtlmFailure = connectHybridWithTokenFallback(
-                            currentHost, currentPort, currentCredentials);
+                    char[] redirectPassword = redirect.getClearTextPassword();
+                    com.tangluobo.rdp4j.DefaultCredentialsProvider redirectedCredentials =
+                            new com.tangluobo.rdp4j.DefaultCredentialsProvider(
+                                    redirect.getDomain(), redirect.getUsername(), redirectPassword);
+                    currentHost = redirect.selectTargetHost(currentHost);
+                    currentCredentials = redirectedCredentials;
+                    options.setRoutingToken(redirect.getLoadBalanceInfo());
+                    JulLog.info("跟随RDP服务端重定向: target=" + currentHost + ":" + currentPort
+                            + ", routingToken="
+                            + (redirect.getLoadBalanceInfo() == null
+                            ? 0 : redirect.getLoadBalanceInfo().length)
+                            + " bytes, hop=" + redirectCount);
+                }
+
+                rawNtlmFailure = connectHybridWithTokenFallback(
+                        currentHost, currentPort, currentCredentials);
             }
         } catch (com.tangluobo.rdp4j.RdesktopDisconnectException e) {
             JulLog.info("RDP连接断开: " + e.getMessage());
             notifyDisconnected(describeDisconnect(e));
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "RDP安全会话重定向/重连失败: " + e.getMessage(), e);
+            JulLog.error("RDP安全会话重定向/重连失败: " + e.getMessage(), e);
             String detail;
             if (options.getRdstlsCredentials() != null) {
                 // Do not mislabel a second-hop RDSTLS protocol failure as an
@@ -844,7 +829,7 @@ public class RdpClient {
      * other wrapper only for an actual token-format failure.
      */
     private Exception connectHybridWithTokenFallback(String host, int port,
-                                                      CredentialProvider credentials)
+                                                     CredentialProvider credentials)
             throws Exception {
         com.tangluobo.rdp4j.CredSspTokenMode primaryMode = Boolean.getBoolean("tomata.rdp.preferSpnego")
                 ? com.tangluobo.rdp4j.CredSspTokenMode.SPNEGO_NTLM
@@ -859,7 +844,7 @@ public class RdpClient {
             if (!isCredSspTokenFormatFailure(primaryFailure)) {
                 throw primaryFailure;
             }
-            logger.log(Level.WARNING,
+            JulLog.error(
                     "HYBRID " + primaryMode + "被服务器拒绝，使用全新连接回退到"
                             + fallbackMode + ": " + primaryFailure.getMessage());
             try {
@@ -879,7 +864,10 @@ public class RdpClient {
     private void connectHybridAttempt(String host, int port, CredentialProvider dcp,
                                       CredSspTokenMode tokenMode) throws Exception {
         if (rdpLayer != null) {
-            try { rdpLayer.disconnect(); } catch (Exception ignored) {}
+            try {
+                rdpLayer.disconnect();
+            } catch (Exception ignored) {
+            }
         }
 
         options.setCredSspTokenMode(tokenMode);
@@ -916,11 +904,16 @@ public class RdpClient {
                 dcp, options.getCommand(), options.getDirectory());
     }
 
-    /** Creates a fresh redirected connection and performs native RDSTLS v1. */
+    /**
+     * Creates a fresh redirected connection and performs native RDSTLS v1.
+     */
     private void connectRdstlsAttempt(String host, int port,
                                       RdstlsCredentials credentials) throws Exception {
         if (rdpLayer != null) {
-            try { rdpLayer.disconnect(); } catch (Exception ignored) {}
+            try {
+                rdpLayer.disconnect();
+            } catch (Exception ignored) {
+            }
         }
 
         options.setRdstlsCredentials(credentials);
@@ -960,13 +953,15 @@ public class RdpClient {
         JulLog.info("重定向连接: " + host + ":" + port
                 + " securityType=RDSTLS, account="
                 + (credentials.getDomain().isBlank()
-                        ? credentials.getUsername()
-                        : credentials.getDomain() + "\\" + credentials.getUsername()));
+                ? credentials.getUsername()
+                : credentials.getDomain() + "\\" + credentials.getUsername()));
         rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
                 redirectedIdentity, options.getCommand(), options.getDirectory());
     }
 
-    /** 只对令牌格式/封装不兼容进行第二次认证，避免密码错误时重复尝试。 */
+    /**
+     * 只对令牌格式/封装不兼容进行第二次认证，避免密码错误时重复尝试。
+     */
     private boolean isCredSspTokenFormatFailure(Throwable error) {
         Throwable current = error;
         for (int depth = 0; current != null && depth < 12; depth++) {
@@ -1033,7 +1028,9 @@ public class RdpClient {
         return null;
     }
 
-    /** 将无原因码的断开补充为服务端关闭，并保留底层网络异常。 */
+    /**
+     * 将无原因码的断开补充为服务端关闭，并保留底层网络异常。
+     */
     private String describeDisconnect(com.tangluobo.rdp4j.RdesktopDisconnectException error) {
         if (error.getReason() == com.tangluobo.rdp4j.RdesktopDisconnectException.exDiscReasonAPIInitiatedDisconnect) {
             return "服务端在NLA认证和RDP激活完成后主动终止桌面会话（错误码0x0001）；"
@@ -1056,7 +1053,9 @@ public class RdpClient {
         return describeException(error);
     }
 
-    /** 返回可复制、不会退化成null的异常摘要，并保留最底层异常类型。 */
+    /**
+     * 返回可复制、不会退化成null的异常摘要，并保留最底层异常类型。
+     */
     private String describeException(Throwable error) {
         if (error == null) {
             return "未知错误";
@@ -1083,7 +1082,9 @@ public class RdpClient {
         return connected && rdpLayer != null && rdpLayer.isConnected();
     }
 
-    /** SwingNode跨窗口前主动复位远端修饰键，弥补偶发缺失的AWT失焦事件。 */
+    /**
+     * SwingNode跨窗口前主动复位远端修饰键，弥补偶发缺失的AWT失焦事件。
+     */
     public void releaseRemoteModifierKeys() {
         RdesktopCanvas currentCanvas = canvas;
         if (currentCanvas != null) {
@@ -1105,7 +1106,9 @@ public class RdpClient {
         this.onConnected = callback;
     }
 
-    /** Sets a callback that runs only after the first desktop bitmap is rendered. */
+    /**
+     * Sets a callback that runs only after the first desktop bitmap is rendered.
+     */
     public void setOnFirstFrame(Consumer<Void> callback) {
         this.onFirstFrame = callback;
     }
@@ -1171,7 +1174,9 @@ public class RdpClient {
         return true;
     }
 
-    /** Re-send the host toggle-key state after the desktop/focus is usable. */
+    /**
+     * Re-send the host toggle-key state after the desktop/focus is usable.
+     */
     public void synchronizeKeyboardState() {
         if (!connected) {
             return;
@@ -1188,7 +1193,9 @@ public class RdpClient {
         frontend.executeOnUiThread(synchronize);
     }
 
-    /** Re-advertises local clipboard contents after the RDP view regains focus. */
+    /**
+     * Re-advertises local clipboard contents after the RDP view regains focus.
+     */
     public void synchronizeClipboard() {
         FixedClipChannel current = clipboardChannel;
         if (connected && mapClipboard && current != null) {

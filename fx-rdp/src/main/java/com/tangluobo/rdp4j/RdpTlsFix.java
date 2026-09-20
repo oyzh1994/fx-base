@@ -43,8 +43,6 @@ import java.util.logging.Logger;
  */
 public class RdpTlsFix {
 
-    private static final Logger logger = Logger.getLogger(RdpTlsFix.class.getName());
-
     private static volatile boolean applied = false;
 
     /**
@@ -127,7 +125,7 @@ public class RdpTlsFix {
         public void sendPacket(com.tangluobo.rdp4j.Packet buffer) throws IOException {
             int count = sendPktCount.incrementAndGet();
             int savePos = buffer.getPosition();
-            if (logger.isLoggable(Level.FINEST)) {
+            if (JulLog.isTraceEnabled()) {
                 int avail = buffer.getEnd() - savePos;
                 int dumpLen = Math.min(avail, 8);
                 StringBuilder hexSb = new StringBuilder("[SEND #" + count + "] len=" + buffer.getEnd() + " hex:");
@@ -135,7 +133,7 @@ public class RdpTlsFix {
                     hexSb.append(String.format(" %02x", buffer.get8()));
                 }
                 buffer.setPosition(savePos);
-                logger.finest(hexSb.toString());
+                JulLog.trace(hexSb.toString());
             }
             buffer.setPosition(savePos);
 
@@ -185,7 +183,7 @@ public class RdpTlsFix {
             }
 
             super.sendPacket(buffer);
-            logger.finest("[SEND #" + count + "] flushed");
+           JulLog.trace("[SEND #" + count + "] flushed");
         }
 
         @Override
@@ -193,7 +191,7 @@ public class RdpTlsFix {
             com.tangluobo.rdp4j.Packet result = super.receivePacket(p, length);
             int count = recvPktCount.incrementAndGet();
             // 诊断：记录Transport层收到的原始数据（前8字节用于判断是否为RDP5 fast-path）
-            if (result != null && logger.isLoggable(Level.FINEST)) {
+            if (result != null && JulLog.isTraceEnabled()) {
                 int savePos = result.getPosition();
                 int avail = result.getEnd() - savePos;
                 int dumpLen = Math.min(avail, 8);
@@ -207,7 +205,7 @@ public class RdpTlsFix {
                 result.setPosition(savePos);
                 boolean isFastPath = (firstByte & 0x03) == 0;
                 hexSb.append(String.format(" firstByte=0x%02x fastPath=%b", firstByte, isFastPath));
-                logger.finest(hexSb.toString());
+                JulLog.trace(hexSb.toString());
             }
             return result;
         }
@@ -452,7 +450,7 @@ public class RdpTlsFix {
             applied = true;
             JulLog.info("RDP TLS兼容性修复已应用");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "RDP TLS修复失败: " + e.getMessage(), e);
+            JulLog.error( "RDP TLS修复失败: " + e.getMessage(), e);
         }
     }
 
@@ -498,13 +496,13 @@ public class RdpTlsFix {
 
             JulLog.info("已替换Transport为RdpTransport（强制TLS 1.2协议, SNI=" + hostname + "）");
         } catch (NoSuchFieldException e) {
-            logger.log(Level.WARNING, "反射替换Transport失败（字段不存在）: " + e.getMessage()
+            JulLog.error( "反射替换Transport失败（字段不存在）: " + e.getMessage()
                     + "，将依赖系统属性限制TLS 1.2");
         } catch (IllegalAccessException e) {
-            logger.log(Level.WARNING, "反射替换Transport失败（访问被拒）: " + e.getMessage()
+            JulLog.error( "反射替换Transport失败（访问被拒）: " + e.getMessage()
                     + "，将依赖系统属性限制TLS 1.2");
         } catch (Exception e) {
-            logger.log(Level.WARNING, "反射替换Transport失败: " + e.getMessage()
+            JulLog.error( "反射替换Transport失败: " + e.getMessage()
                     + "，将依赖系统属性限制TLS 1.2");
         }
     }
@@ -547,9 +545,9 @@ public class RdpTlsFix {
 
             JulLog.info("已修改Transport.CIPHERS(原地): " + Math.min(filtered.size(), ciphers.length)
                     + "个TLS 1.2密码套件");
-            logger.fine("密码套件: " + Arrays.toString(ciphers));
+           JulLog.trace("密码套件: " + Arrays.toString(ciphers));
         } catch (Exception e) {
-            logger.log(Level.WARNING, "修改Transport.CIPHERS失败: " + e.getMessage(), e);
+            JulLog.error( "修改Transport.CIPHERS失败: " + e.getMessage(), e);
         }
     }
 
@@ -563,7 +561,7 @@ public class RdpTlsFix {
             SSLContext.setDefault(ctx);
             JulLog.info("已设置默认SSLContext（TLS + 宽松TrustManager）");
         } catch (Exception e) {
-            logger.log(Level.WARNING, "设置默认SSLContext失败: " + e.getMessage());
+            JulLog.error( "设置默认SSLContext失败: " + e.getMessage());
         }
     }
 
@@ -589,12 +587,12 @@ public class RdpTlsFix {
                     if (trimmed.isEmpty()) continue;
                     // 移除DHE相关限制
                     if (trimmed.startsWith("DH ") || trimmed.equals("DHE_DSS") || trimmed.equals("DHE_RSA")) {
-                        logger.fine("移除TLS禁用项: " + trimmed);
+                       JulLog.trace("移除TLS禁用项: " + trimmed);
                         continue;
                     }
                     // 移除TLSv1/TLSv1.1限制（旧版Windows RDP服务器需要）
                     if (trimmed.equals("TLSv1") || trimmed.equals("TLSv1.1")) {
-                        logger.fine("移除TLS禁用项: " + trimmed);
+                       JulLog.trace("移除TLS禁用项: " + trimmed);
                         continue;
                     }
                     if (sb.length() > 0) sb.append(", ");
@@ -604,7 +602,7 @@ public class RdpTlsFix {
                 JulLog.info("已调整TLS禁用算法以兼容RDP协议: " + sb);
             }
         } catch (Exception e) {
-            logger.log(Level.WARNING, "调整TLS安全属性失败: " + e.getMessage());
+            JulLog.error( "调整TLS安全属性失败: " + e.getMessage());
         }
     }
 }

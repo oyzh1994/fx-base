@@ -1,5 +1,6 @@
 package com.tangluobo.rdp4j.clipboard;
 
+import cn.oyzh.common.log.JulLog;
 import com.tangluobo.rdp4j.Packet;
 import com.tangluobo.rdp4j.RdesktopException;
 import com.tangluobo.rdp4j.rdp5.cliprdr.ClipInterface;
@@ -9,24 +10,22 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 修复版 CF_UNICODETEXT 剪贴板格式处理器。
- *
+ * <p>
  * 库内 UnicodeHandler 存在严重编码bug：
  * fromTransferable 将 String.getBytes()（平台默认编码，中文Windows为GBK）的
  * 每个字节直接作为UTF-16码元发送，中文"你"(GBK=0xC4,0xE3)会被编码为
  * U+00C4 U+00E3（"Äã"）导致远程粘贴乱码（英文因单字节值相同而碰巧正常）。
- *
+ * <p>
  * 本类按MS-RDPECLIP规范使用UTF-16LE编解码，正确支持中文等多字节字符。
  */
 public class FixedUnicodeHandler extends TypeHandler {
 
-    private static final Logger logger = Logger.getLogger(FixedUnicodeHandler.class.getName());
-
-    /** CF_UNICODETEXT 标准格式ID */
+    /**
+     * CF_UNICODETEXT 标准格式ID
+     */
     private static final int CF_UNICODETEXT = 13;
 
     @Override
@@ -81,7 +80,7 @@ public class FixedUnicodeHandler extends TypeHandler {
         try {
             clip.copyToClipboard(new StringSelection(sb.toString()));
         } catch (Exception e) {
-            logger.log(Level.WARNING, "写入本地剪贴板失败: " + e.getMessage(), e);
+            JulLog.error("写入本地剪贴板失败: " + e.getMessage(), e);
         }
     }
 
@@ -95,7 +94,7 @@ public class FixedUnicodeHandler extends TypeHandler {
                 return (String) data;
             }
         } catch (Exception e) {
-            logger.log(Level.WARNING, "读取本地剪贴板文本失败: " + e.getMessage(), e);
+            JulLog.error("读取本地剪贴板文本失败: " + e.getMessage(), e);
         }
         return null;
     }
