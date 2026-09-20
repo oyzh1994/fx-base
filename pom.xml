@@ -48,6 +48,7 @@
         <module>fx-tty</module>
         <module>fx-vnc</module>
         <module>fx-db</module>
+        <module>fx-rdp</module>
     </modules>
 
     <properties>
@@ -64,7 +65,6 @@
         <atlantafx.version>2.1.0</atlantafx.version>
         <tm4javafx.version>0.1.0</tm4javafx.version>
         <richtextfx.version>0.11.6</richtextfx.version>
-        <commons-net.version>3.13.0</commons-net.version>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <maven.compiler.release>25</maven.compiler.release>
