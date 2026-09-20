@@ -39,13 +39,13 @@ public class RdpView extends FXPane {
         if (nextView == null) {
             return;
         }
-        if (nextView instanceof Pane parent) {
-            parent.prefWidthProperty().bind(this.widthProperty());
-            parent.prefHeightProperty().bind(this.heightProperty());
-        }
         FxRdpDisplay display = this.frontend.getDisplay();
         if (display != null) {
             display.setScaleToFit(true);
+        }
+        if (nextView instanceof Pane parent) {
+            parent.prefWidthProperty().bind(this.widthProperty());
+            parent.prefHeightProperty().bind(this.heightProperty());
         }
         this.addChild(nextView);
         this.requestFocus();

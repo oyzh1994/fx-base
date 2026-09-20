@@ -3,7 +3,6 @@ package cn.oyzh.fx.rdp.test.rdp4j;
 import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
 import cn.oyzh.fx.plus.ext.FXApplication;
 import com.tangluobo.rdp4j.RdpClient;
-import com.tangluobo.rdp4j.RdpPane;
 import com.tangluobo.rdp4j.frontend.FxRdpFrontend;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -26,19 +25,19 @@ public class Rdp4jTest extends FXApplication {
         this.test2(primaryStage);
     }
 
-    private void test1(Stage primaryStage) {
-        RdpPane rdpPane = new RdpPane();
-        primaryStage.setScene(new Scene(rdpPane));
-        primaryStage.show();
-
-        rdpPane.connect("192.168.22.149",
-                3389,
-                "oyzh",
-                "123456",
-                null,
-                1920,
-                1080, 32, true, false, false);
-    }
+//    private void test1(Stage primaryStage) {
+//        RdpPane rdpPane = new RdpPane();
+//        primaryStage.setScene(new Scene(rdpPane));
+//        primaryStage.show();
+//
+//        rdpPane.connect("192.168.22.149",
+//                3389,
+//                "oyzh",
+//                "123456",
+//                null,
+//                1920,
+//                1080, 32, true, false, false);
+//    }
 
     private void test2(Stage primaryStage) {
         RdpView view = new RdpView();
