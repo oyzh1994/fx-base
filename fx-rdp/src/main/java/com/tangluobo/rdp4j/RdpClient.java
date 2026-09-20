@@ -34,9 +34,9 @@ public class RdpClient {
     private com.tangluobo.rdp4j.State state;
     private Options options;
     private Consumer<String> onDisconnected;
-    private Consumer<Void> onConnected;
-    private Consumer<Void> onFirstFrame;
-    private Thread rdpThread;
+    private Runnable onConnected;
+    private Runnable onFirstFrame;
+    //    private Thread rdpThread;
     private volatile boolean mapClipboard = true;
     private volatile boolean soundEnabled = true;
     private volatile com.tangluobo.rdp4j.RdpsndChannel rdpsndChannel;
@@ -138,7 +138,7 @@ public class RdpClient {
                 connected = true;
                 JulLog.info("RDP桌面就绪，触发onConnected回调, rdp5=" + attemptState.isRDP5());
                 if (onConnected != null) {
-                    onConnected.accept(null);
+                    onConnected.run();
                 }
             }
         }
@@ -194,7 +194,7 @@ public class RdpClient {
         // rejects a client that advertises the Graphics Pipeline with a lower
         // colour depth. The legacy setting remains an input compatibility
         // option; the wire session is promoted to 32 bpp.
-        options.setBpp(32);
+        options.setBpp(bpp);
         options.setRdp5(true);
         options.setPacketEncryption(true);
         options.setBitmapCaching(true);
@@ -317,84 +317,84 @@ public class RdpClient {
         RdpIsoFix.injectRdpIso(rdpLayer);
 
         // 在新线程中执行RDP连接（connect+mainLoop是阻塞调用）
-        rdpThread = new Thread(() -> {
-            try {
-                JulLog.info("开始RDP连接: " + host + ":" + port + " useSsl=" + useSsl);
-                rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
-                        dcp, options.getCommand(), options.getDirectory());
-                // TLS/HYBRID仍会在Demand Active之前通过Basic Security Header
-                // 发送服务器许可PDU。必须由Licence.process()在收到有效许可
-                // 结果后更新licenceIssued，不能在connect()返回时提前跳过。
-                JulLog.info("RDP协议握手完成，进入主循环: " + host + ":" + port);
-                rdpLayer.mainLoop();
-                JulLog.info("RDP主循环正常退出");
-                notifyDisconnected("服务器已关闭连接");
-            } catch (com.tangluobo.rdp4j.RdpRedirectionException e) {
-                // HYBRID is now negotiated on the first transport, so GNOME's
-                // RDSTLS handover can arrive here instead of in the historical
-                // HYBRID fallback method. Continue with the same bounded
-                // redirection state machine rather than exposing this internal
-                // control-flow packet as a connection error.
-                JulLog.info("首次HYBRID连接收到服务端会话重定向，进入重定向兼容流程: "
-                        + e.getMessage());
-                retryWithHybridSecurity(host, port, dcp, e);
-            } catch (com.tangluobo.rdp4j.RdesktopDisconnectException e) {
-                JulLog.info("RDP连接断开: " + e.getMessage());
-                notifyDisconnected(describeDisconnect(e));
-            } catch (RdesktopLicenseException e) {
-                JulLog.error("RDP许可证错误: " + e.getMessage());
-                notifyDisconnected("许可证错误: " + e.getMessage());
-            } catch (com.tangluobo.rdp4j.RdesktopException e) {
-                // SSL协商失败且当前使用SSL时，自动回退到STANDARD重试
-                if (useSsl && e.getMessage() != null && e.getMessage().contains("SSL negotiation failed")) {
-                    JulLog.warn("SSL协商失败，尝试回退到Standard RDP Security（无TLS）重连...");
-                    retryWithStandardSecurity(host, port, dcp);
-                    return;
-                }
-                JulLog.error("RDP异常: " + e.getMessage(), e);
-                notifyDisconnected("连接异常: " + e.getMessage());
-            } catch (java.net.UnknownHostException e) {
-                JulLog.error("无法解析主机: " + host);
-                notifyDisconnected("无法解析主机: " + host);
-            } catch (java.net.ConnectException e) {
-                JulLog.error("连接被拒绝: " + e.getMessage());
-                notifyDisconnected("连接被拒绝: " + host + ":" + port + " - " + e.getMessage());
-            } catch (java.net.SocketException e) {
-                if (connected) {
-                    JulLog.error("连接中断: " + e.getMessage());
-                    notifyDisconnected("连接中断: " + e.getMessage());
-                }
-            } catch (java.io.IOException e) {
-                String msg = e.getMessage();
-                // SSL_NOT_ALLOWED_BY_SERVER错误：服务器不支持SSL，回退到Standard RDP Security
-                if (useSsl && msg != null && msg.contains("SSL_NOT_ALLOWED_BY_SERVER")) {
-                    JulLog.warn("服务器不支持SSL，回退到Standard RDP Security重连...");
-                    retryWithStandardSecurity(host, port, dcp);
-                    return;
-                }
-                if (useSsl && msg != null && msg.contains("HYBRID_REQUIRED_BY_SERVER")) {
-                    JulLog.warn("服务器强制NLA，使用HYBRID（CredSSP）重连...");
-                    retryWithHybridSecurity(host, port, dcp);
-                    return;
-                }
-                // SSL_REQUIRED_BY_SERVER错误：服务器要求SSL/TLS，回退到SSL/TLS加密重连
-                if (!useSsl && msg != null && msg.contains("SSL_REQUIRED_BY_SERVER")) {
-                    JulLog.warn("服务器要求Enhanced RDP Security（TLS），回退到SSL/TLS加密重连...");
-                    retryWithSslSecurity(host, port, dcp);
-                    return;
-                }
-                String detail = describeException(e);
-                JulLog.error("IO错误: " + detail, e);
-                notifyDisconnected("IO错误: " + detail);
-            } catch (Exception e) {
-                JulLog.error("RDP连接错误: " + e.getMessage(), e);
-                notifyDisconnected("连接错误: " + e.getMessage());
-            } finally {
-                connected = false;
+        //        rdpThread = new Thread(() -> {
+        try {
+            JulLog.info("开始RDP连接: " + host + ":" + port + " useSsl=" + useSsl);
+            rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
+                    dcp, options.getCommand(), options.getDirectory());
+            // TLS/HYBRID仍会在Demand Active之前通过Basic Security Header
+            // 发送服务器许可PDU。必须由Licence.process()在收到有效许可
+            // 结果后更新licenceIssued，不能在connect()返回时提前跳过。
+            JulLog.info("RDP协议握手完成，进入主循环: " + host + ":" + port);
+            rdpLayer.mainLoop();
+            JulLog.info("RDP主循环正常退出");
+            notifyDisconnected("服务器已关闭连接");
+        } catch (com.tangluobo.rdp4j.RdpRedirectionException e) {
+            // HYBRID is now negotiated on the first transport, so GNOME's
+            // RDSTLS handover can arrive here instead of in the historical
+            // HYBRID fallback method. Continue with the same bounded
+            // redirection state machine rather than exposing this internal
+            // control-flow packet as a connection error.
+            JulLog.info("首次HYBRID连接收到服务端会话重定向，进入重定向兼容流程: "
+                    + e.getMessage());
+            retryWithHybridSecurity(host, port, dcp, e);
+        } catch (com.tangluobo.rdp4j.RdesktopDisconnectException e) {
+            JulLog.info("RDP连接断开: " + e.getMessage());
+            notifyDisconnected(describeDisconnect(e));
+        } catch (RdesktopLicenseException e) {
+            JulLog.error("RDP许可证错误: " + e.getMessage());
+            notifyDisconnected("许可证错误: " + e.getMessage());
+        } catch (com.tangluobo.rdp4j.RdesktopException e) {
+            // SSL协商失败且当前使用SSL时，自动回退到STANDARD重试
+            if (useSsl && e.getMessage() != null && e.getMessage().contains("SSL negotiation failed")) {
+                JulLog.warn("SSL协商失败，尝试回退到Standard RDP Security（无TLS）重连...");
+                retryWithStandardSecurity(host, port, dcp);
+                return;
             }
-        }, "RDP-" + host);
-        rdpThread.setDaemon(true);
-        rdpThread.start();
+            JulLog.error("RDP异常: " + e.getMessage(), e);
+            notifyDisconnected("连接异常: " + e.getMessage());
+        } catch (java.net.UnknownHostException e) {
+            JulLog.error("无法解析主机: " + host);
+            notifyDisconnected("无法解析主机: " + host);
+        } catch (java.net.ConnectException e) {
+            JulLog.error("连接被拒绝: " + e.getMessage());
+            notifyDisconnected("连接被拒绝: " + host + ":" + port + " - " + e.getMessage());
+        } catch (java.net.SocketException e) {
+            if (connected) {
+                JulLog.error("连接中断: " + e.getMessage());
+                notifyDisconnected("连接中断: " + e.getMessage());
+            }
+        } catch (java.io.IOException e) {
+            String msg = e.getMessage();
+            // SSL_NOT_ALLOWED_BY_SERVER错误：服务器不支持SSL，回退到Standard RDP Security
+            if (useSsl && msg != null && msg.contains("SSL_NOT_ALLOWED_BY_SERVER")) {
+                JulLog.warn("服务器不支持SSL，回退到Standard RDP Security重连...");
+                retryWithStandardSecurity(host, port, dcp);
+                return;
+            }
+            if (useSsl && msg != null && msg.contains("HYBRID_REQUIRED_BY_SERVER")) {
+                JulLog.warn("服务器强制NLA，使用HYBRID（CredSSP）重连...");
+                retryWithHybridSecurity(host, port, dcp);
+                return;
+            }
+            // SSL_REQUIRED_BY_SERVER错误：服务器要求SSL/TLS，回退到SSL/TLS加密重连
+            if (!useSsl && msg != null && msg.contains("SSL_REQUIRED_BY_SERVER")) {
+                JulLog.warn("服务器要求Enhanced RDP Security（TLS），回退到SSL/TLS加密重连...");
+                retryWithSslSecurity(host, port, dcp);
+                return;
+            }
+            String detail = describeException(e);
+            JulLog.error("IO错误: " + detail, e);
+            notifyDisconnected("IO错误: " + detail);
+        } catch (Exception e) {
+            JulLog.error("RDP连接错误: " + e.getMessage(), e);
+            notifyDisconnected("连接错误: " + e.getMessage());
+        } finally {
+            connected = false;
+        }
+        //        }, "RDP-" + host);
+        //        rdpThread.setDaemon(true);
+        //        rdpThread.start();
 
         if (RdpPatch.isDiagnosticsEnabled()) {
             // 诊断：定期报告RDP状态（持续30秒，每5秒一次）
@@ -404,7 +404,7 @@ public class RdpClient {
                 @Override
                 public void run() {
                     count[0]++;
-                    if (count[0] > 6 || rdpThread == null || !rdpThread.isAlive()) {
+                    if (count[0] > 6 || !connected) {
                         cancel();
                         return;
                     }
@@ -1102,14 +1102,14 @@ public class RdpClient {
     /**
      * 设置连接就绪回调
      */
-    public void setOnConnected(Consumer<Void> callback) {
+    public void setOnConnected(Runnable callback) {
         this.onConnected = callback;
     }
 
     /**
      * Sets a callback that runs only after the first desktop bitmap is rendered.
      */
-    public void setOnFirstFrame(Consumer<Void> callback) {
+    public void setOnFirstFrame(Runnable callback) {
         this.onFirstFrame = callback;
     }
 
@@ -1129,9 +1129,8 @@ public class RdpClient {
                 || attemptId != currentAttemptId) {
             return;
         }
-        Consumer<Void> callback = onFirstFrame;
-        if (callback != null) {
-            callback.accept(null);
+        if (this.onFirstFrame != null) {
+            this.onFirstFrame.run();
         }
     }
 

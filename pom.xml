@@ -155,6 +155,12 @@
                 <artifactId>fx-vnc</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
+            <!-- 自定义类库，rdp相关 -->
+            <dependency>
+                <groupId>io.github.oyzh1994</groupId>
+                <artifactId>fx-rdp</artifactId>
+                <version>${fx-base.version}</version>
+            </dependency>
             <!-- 自定义类库，数据库相关 -->
             <dependency>
                 <groupId>io.github.oyzh1994</groupId>

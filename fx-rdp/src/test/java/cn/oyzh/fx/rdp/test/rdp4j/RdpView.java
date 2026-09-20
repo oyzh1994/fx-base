@@ -27,11 +27,10 @@ public class RdpView extends FXPane {
     //    private int bestServerRemoteEdgeBand = Integer.MAX_VALUE;
     //    private int bestRobotEdgeBand = Integer.MAX_VALUE;
 
-
     public void steup(RdpClient rdpClient, FxRdpFrontend frontend) {
         this.frontend = frontend;
-        rdpClient.setOnConnected(ignored -> JulLog.info("RDP显示通道已就绪，等待首帧"));
-        rdpClient.setOnFirstFrame(ignored -> FXUtil.runLater(this::attachDesktopAfterFirstFrame));
+        rdpClient.setOnConnected(() -> JulLog.info("RDP显示通道已就绪，等待首帧"));
+        rdpClient.setOnFirstFrame(() -> FXUtil.runLater(this::attachDesktopAfterFirstFrame));
     }
 
     private void attachDesktopAfterFirstFrame() {

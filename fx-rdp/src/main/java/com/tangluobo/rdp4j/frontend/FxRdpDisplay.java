@@ -89,7 +89,6 @@ public final class FxRdpDisplay implements Display {
 
     public FxRdpDisplay(int width, int height,
                         BiConsumer<Integer, Integer> serverPointerMovedListener) {
-        requireFxThread();
         this.serverPointerMovedListener = serverPointerMovedListener == null
                 ? (x, y) -> { } : serverPointerMovedListener;
         bufferedImage = createImage(width, height);
@@ -112,7 +111,6 @@ public final class FxRdpDisplay implements Display {
     }
 
     public void setScaleToFit(boolean scaleToFit) {
-        requireFxThread();
         if (scaleToFit) {
             view.setMinSize(0, 0);
             view.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -395,7 +393,6 @@ public final class FxRdpDisplay implements Display {
     }
 
     void recordLocalPointerPosition(int x, int y) {
-        requireFxThread();
         int previousX = lastLocalPointerX;
         int previousY = lastLocalPointerY;
         lastLocalPointerX = clamp(x, 0, getDisplayWidth() - 1);
@@ -424,7 +421,6 @@ public final class FxRdpDisplay implements Display {
     }
 
     void recordLocalPointerButtonPosition(int x, int y) {
-        requireFxThread();
         lastLocalPointerX = clamp(x, 0, getDisplayWidth() - 1);
         lastLocalPointerY = clamp(y, 0, getDisplayHeight() - 1);
         resetMovementCorrelation();
@@ -474,7 +470,6 @@ public final class FxRdpDisplay implements Display {
     }
 
     private void evaluateMovementCorrelation() {
-        requireFxThread();
         if (!softwareCursorProbeEligible || !"custom".equals(serverCursorMode)
                 || pointerPositionSuppressed
                 || movementProbes.isEmpty()) {
@@ -707,7 +702,6 @@ public final class FxRdpDisplay implements Display {
     }
 
     private void installImage(BufferedImage image) {
-        requireFxThread();
         int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         PixelBuffer<IntBuffer> replacement = new PixelBuffer<>(image.getWidth(), image.getHeight(),
                 IntBuffer.wrap(pixels), PixelFormat.getIntArgbPreInstance());
@@ -825,11 +819,4 @@ public final class FxRdpDisplay implements Display {
             Platform.runLater(action);
         }
     }
-
-    private static void requireFxThread() {
-        if (!Platform.isFxApplicationThread()) {
-            throw new IllegalStateException("JavaFX display must be created on the JavaFX application thread");
-        }
-    }
-
 }
