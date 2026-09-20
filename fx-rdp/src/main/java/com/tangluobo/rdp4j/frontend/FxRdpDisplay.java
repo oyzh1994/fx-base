@@ -22,6 +22,7 @@ import javafx.scene.robot.Robot;
 
 import java.nio.IntBuffer;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
@@ -32,11 +33,21 @@ public final class FxRdpDisplay implements Display {
     private static final String HIDDEN_CURSOR_NAME = "hidden";
     private static final int REMOTE_ECHO_TOLERANCE = 2;
     private static final double MIN_SCREEN_WARP_DISTANCE = 4.0;
+    /** How long a server pointer-position recapture may hide the cursor unrenewed. */
+    private static final long POINTER_POSITION_SUPPRESSION_NANOS = 2_000_000_000L;
     private static final int LEGACY_VM_CURSOR_MAX_SIZE = 24;
     private static final int MOVEMENT_PROBE_RADIUS = 24;
     private static final int MOVEMENT_EVIDENCE_THRESHOLD = 3;
     private static final long MOVEMENT_PROBE_INTERVAL_NANOS = 40_000_000L;
     private static final long MOVEMENT_PROBE_TIMEOUT_NANOS = 400_000_000L;
+    /** Smallest frame change that can be a relocated pointer rather than noise. */
+    private static final int CURSOR_CHANGE_MIN_PIXELS = 6;
+    /**
+     * Slack around the pointer rectangle when classifying a frame change. An
+     * app repaint under the pointer (a menu item highlight, a hover effect, a
+     * selection band) spans the widget, not the pointer, so it exceeds this.
+     */
+    private static final int CURSOR_SHAPE_MARGIN = 8;
 
     private final Object imageLock = new Object();
     private final Object refreshLock = new Object();
@@ -50,7 +61,10 @@ public final class FxRdpDisplay implements Display {
         @Override
         public void handle(long now) {
             expireMovementProbes(now);
-            if (movementProbes.isEmpty()) {
+            decayMovementEvidence(now);
+            // Keep ticking while evidence is outstanding: decays have to run
+            // even when no probe is left to expire.
+            if (movementProbes.isEmpty() && movementEvidence <= 0) {
                 stop();
             }
         }
@@ -80,7 +94,13 @@ public final class FxRdpDisplay implements Display {
     private boolean softwareCursorProbeEligible;
     private boolean frameCursorSuppressed;
     private boolean pointerPositionSuppressed;
+    private long pointerPositionSuppressedNanos;
+    private int remoteCursorWidth;
+    private int remoteCursorHeight;
+    /** Raster identity of the last visible pointer, to tell a new shape from a re-send. */
+    private long lastVisibleCursorSignature;
     private int movementEvidence;
+    private long lastEvidenceNanos;
     private int lastProbePointerX = Integer.MIN_VALUE;
     private int lastProbePointerY = Integer.MIN_VALUE;
     private long lastMovementProbeNanos;
@@ -292,10 +312,7 @@ public final class FxRdpDisplay implements Display {
             if (cursor == null || cursor.getPixels() == null) {
                 serverCursorMode = "default";
                 lastVisibleFxCursor = Cursor.DEFAULT;
-                softwareCursorProbeEligible = false;
-                frameCursorSuppressed = false;
-                pointerPositionSuppressed = false;
-                resetMovementCorrelation();
+                clearCursorSuppression();
                 view.setCursor(Cursor.DEFAULT);
                 logCursorMode("default");
                 return;
@@ -308,10 +325,7 @@ public final class FxRdpDisplay implements Display {
                 // fully transparent VM cursor mean the native cursor is hidden.
                 hasSeenHiddenCursor = true;
                 serverCursorMode = "hidden";
-                softwareCursorProbeEligible = false;
-                frameCursorSuppressed = false;
-                pointerPositionSuppressed = false;
-                resetMovementCorrelation();
+                clearCursorSuppression();
                 view.setCursor(Cursor.NONE);
                 logCursorMode(HIDDEN_CURSOR_NAME.equals(cursor.getName())
                         ? "hidden-system" : "hidden-transparent");
@@ -333,19 +347,26 @@ public final class FxRdpDisplay implements Display {
             double x = Math.max(0, Math.min(cursor.getHotspotX(), sourceWidth - 1));
             double y = Math.max(0, Math.min(cursor.getHotspotY(), sourceHeight - 1));
             Cursor fxCursor = new ImageCursor(image, x, y);
+            long signature = cursorSignature(cursor);
+            boolean pointerShapeChanged = signature != lastVisibleCursorSignature;
+            lastVisibleCursorSignature = signature;
+            remoteCursorWidth = sourceWidth;
+            remoteCursorHeight = sourceHeight;
             serverCursorMode = "custom";
             lastVisibleFxCursor = fxCursor;
             softwareCursorProbeEligible = isLegacyVmSoftwareCursorCandidate(
                     sourceWidth, sourceHeight);
             pointerPositionSuppressed = false;
             if (!softwareCursorProbeEligible) {
-                // The observed nested Linux console uses a legacy 24-pixel
-                // software pointer. Normal Windows cursors in this stream are
-                // 32-pixel protocol cursors; frame-change inference on those
-                // mistakes file highlights and context menus for a second
-                // cursor and hides the only visible pointer.
-                frameCursorSuppressed = false;
-                resetMovementCorrelation();
+                // Frame-change inference is only plausible for the small legacy
+                // pointer of a nested console. Drop any suppression an earlier
+                // pointer accumulated.
+                forgetCursorEvidence();
+            } else if (pointerShapeChanged) {
+                // A pointer the server just redefined is authoritative: never
+                // keep suppressing it. Frame evidence re-arms itself within a
+                // few moves if the guest really does paint its own pointer.
+                forgetCursorEvidence();
             }
             if (softwareCursorProbeEligible && frameCursorSuppressed
                     && movementEvidence >= MOVEMENT_EVIDENCE_THRESHOLD) {
@@ -399,6 +420,7 @@ public final class FxRdpDisplay implements Display {
                     // motion, otherwise the restored outer RDP arrow remains on
                     // top of the guest's software cursor after re-entry.
                     pointerPositionSuppressed = true;
+                    pointerPositionSuppressedNanos = System.nanoTime();
                     frameCursorSuppressed = false;
                     view.setCursor(Cursor.NONE);
                     logCursorMode("hidden-recapture-position");
@@ -448,6 +470,7 @@ public final class FxRdpDisplay implements Display {
         lastLocalPointerX = clamp(x, 0, getDisplayWidth() - 1);
         lastLocalPointerY = clamp(y, 0, getDisplayHeight() - 1);
         long now = System.nanoTime();
+        expirePointerPositionSuppression(now);
         if (!softwareCursorProbeEligible || !"custom".equals(serverCursorMode)
                 || pointerPositionSuppressed
                 || previousX == Integer.MIN_VALUE || previousY == Integer.MIN_VALUE
@@ -474,13 +497,18 @@ public final class FxRdpDisplay implements Display {
     void recordLocalPointerButtonPosition(int x, int y) {
         lastLocalPointerX = clamp(x, 0, getDisplayWidth() - 1);
         lastLocalPointerY = clamp(y, 0, getDisplayHeight() - 1);
-        resetMovementCorrelation();
-        if (frameCursorSuppressed && "custom".equals(serverCursorMode)
-                && !pointerPositionSuppressed) {
-            frameCursorSuppressed = false;
+        // A click proves the user is driving this pointer, so it must never stay
+        // hidden by an earlier inference. Frame evidence decides again from
+        // scratch afterwards.
+        if ("custom".equals(serverCursorMode)
+                && (frameCursorSuppressed || pointerPositionSuppressed)) {
+            forgetCursorEvidence();
+            pointerPositionSuppressed = false;
             view.setCursor(lastVisibleFxCursor);
             logCursorMode("custom-pointer-button");
+            return;
         }
+        resetMovementCorrelation();
     }
 
     public static boolean isLegacyVmSoftwareCursorCandidate(int width, int height) {
@@ -527,10 +555,12 @@ public final class FxRdpDisplay implements Display {
             return;
         }
         Frame current = frame;
+        int cursorWidth = Math.max(1, remoteCursorWidth);
+        int cursorHeight = Math.max(1, remoteCursorHeight);
         MovementProbe matched = null;
         for (var iterator = movementProbes.descendingIterator(); iterator.hasNext();) {
             MovementProbe candidate = iterator.next();
-            if (candidate.matches(current)) {
+            if (candidate.matches(current, cursorWidth, cursorHeight)) {
                 matched = candidate;
                 break;
             }
@@ -544,6 +574,7 @@ public final class FxRdpDisplay implements Display {
                 break;
             }
         }
+        lastEvidenceNanos = System.nanoTime();
         movementEvidence = Math.min(MOVEMENT_EVIDENCE_THRESHOLD + 2, movementEvidence + 1);
         if (movementEvidence >= MOVEMENT_EVIDENCE_THRESHOLD && !frameCursorSuppressed) {
             frameCursorSuppressed = true;
@@ -553,17 +584,30 @@ public final class FxRdpDisplay implements Display {
     }
 
     private void expireMovementProbes(long now) {
-        int misses = 0;
         while (!movementProbes.isEmpty()
                 && now - movementProbes.peekFirst().createdNanos() >= MOVEMENT_PROBE_TIMEOUT_NANOS) {
             movementProbes.removeFirst();
-            misses++;
         }
-        if (misses == 0) {
+    }
+
+    /**
+     * Decay accumulated evidence once no fresh match has arrived for a timeout
+     * window. Decaying on the timer rather than on probe expiry matters: a match
+     * consumes every queued probe, which used to stop the animation timer with
+     * the evidence still above the threshold, leaving the pointer hidden until
+     * the next move happened to produce non-matching probes.
+     */
+    private void decayMovementEvidence(long now) {
+        if (movementEvidence <= 0) {
             return;
         }
-        movementEvidence = Math.max(0, movementEvidence - misses);
-        if (frameCursorSuppressed && movementEvidence == 0
+        long steps = (now - lastEvidenceNanos) / MOVEMENT_PROBE_TIMEOUT_NANOS;
+        if (steps <= 0) {
+            return;
+        }
+        movementEvidence -= (int) Math.min(movementEvidence, steps);
+        lastEvidenceNanos = now;
+        if (movementEvidence == 0 && frameCursorSuppressed
                 && "custom".equals(serverCursorMode) && !pointerPositionSuppressed) {
             frameCursorSuppressed = false;
             view.setCursor(lastVisibleFxCursor);
@@ -575,9 +619,57 @@ public final class FxRdpDisplay implements Display {
         movementProbes.clear();
         movementProbeTimer.stop();
         movementEvidence = 0;
+        lastEvidenceNanos = 0;
         lastProbePointerX = Integer.MIN_VALUE;
         lastProbePointerY = Integer.MIN_VALUE;
         lastMovementProbeNanos = 0;
+    }
+
+    /**
+     * Release a recapture suppression that the server stopped renewing.
+     *
+     * <p>A pointer-position PDU is treated as a nested console recapturing the
+     * pointer, which hides the client cursor. A desktop guest can send one for
+     * an unrelated reason (a popup that warps the pointer onto itself), and the
+     * server is under no obligation to send a further cursor update afterwards,
+     * so without this the pointer could stay invisible for the rest of the
+     * session. A real recapture keeps arriving and re-arms it, so the expiry is
+     * only reached once the recapture is over.
+     */
+    private void expirePointerPositionSuppression(long now) {
+        if (!pointerPositionSuppressed
+                || now - pointerPositionSuppressedNanos < POINTER_POSITION_SUPPRESSION_NANOS) {
+            return;
+        }
+        pointerPositionSuppressed = false;
+        if ("custom".equals(serverCursorMode)) {
+            view.setCursor(lastVisibleFxCursor);
+            logCursorMode("custom-position-timeout");
+        }
+    }
+
+    /** Forget the frame evidence but keep the server-driven cursor state. */
+    private void forgetCursorEvidence() {
+        frameCursorSuppressed = false;
+        resetMovementCorrelation();
+    }
+
+    /** Drop every client-side guess about a guest-painted pointer. */
+    private void clearCursorSuppression() {
+        softwareCursorProbeEligible = false;
+        frameCursorSuppressed = false;
+        pointerPositionSuppressed = false;
+        pointerPositionSuppressedNanos = 0;
+        remoteCursorWidth = 0;
+        remoteCursorHeight = 0;
+        resetMovementCorrelation();
+    }
+
+    /** Raster identity of a decoded pointer, used to detect a redefined shape. */
+    private static long cursorSignature(RdpCursor cursor) {
+        return ((long) cursor.getWidth() << 48)
+                ^ ((long) cursor.getHeight() << 32)
+                ^ (Integer.toUnsignedLong(Arrays.hashCode(cursor.getPixels())));
     }
 
     private static long squaredDistance(int firstX, int firstY, int secondX, int secondY) {
@@ -589,22 +681,43 @@ public final class FxRdpDisplay implements Display {
         return deltaX * deltaX + deltaY * deltaY;
     }
 
-    public static boolean resemblesSoftwareCursorMovement(int oldChanged, int oldPixels,
-                                                           int newChanged, int newPixels) {
-        return isCursorSizedChange(oldChanged, oldPixels)
-                && isCursorSizedChange(newChanged, newPixels);
-    }
-
-    private static boolean isCursorSizedChange(int changed, int pixels) {
-        return pixels > 0 && changed >= 6 && changed <= Math.max(24, pixels * 45 / 100);
+    /**
+     * Decide whether a changed region can be a relocated pointer sprite.
+     *
+     * <p>A guest-painted pointer erases its old sprite and blits the same shape
+     * at the new position, so both changes stay inside the pointer rectangle.
+     * Counting changed pixels alone is not enough: a menu item highlight, a
+     * hover effect or a selection band that happens to sit under the pointer
+     * changes hundreds of pixels too, which is what used to hide a perfectly
+     * healthy hardware cursor on desktops whose theme uses small pointers. The
+     * bounding box is the discriminator, because those repaints span a widget
+     * rather than a pointer.
+     *
+     * @param changed      number of pixels that differ
+     * @param boxWidth     width of the changed region, 0 when nothing changed
+     * @param boxHeight    height of the changed region, 0 when nothing changed
+     * @param cursorWidth  width of the remote pointer
+     * @param cursorHeight height of the remote pointer
+     * @return true when the change is shaped like a pointer
+     */
+    public static boolean isCursorShapedChange(int changed, int boxWidth, int boxHeight,
+                                               int cursorWidth, int cursorHeight) {
+        if (changed < CURSOR_CHANGE_MIN_PIXELS) {
+            return false;
+        }
+        // Allow for antialiasing, a shadow and a theme pointer that is larger
+        // than the transmitted raster, but not for a widget-sized repaint.
+        int budget = Math.max(CURSOR_CHANGE_MIN_PIXELS,
+                Math.max(cursorWidth, 1) * Math.max(cursorHeight, 1) * 2);
+        return changed <= budget
+                && boxWidth <= cursorWidth + CURSOR_SHAPE_MARGIN
+                && boxHeight <= cursorHeight + CURSOR_SHAPE_MARGIN;
     }
 
     private record MovementProbe(long createdNanos, FramePatch oldPosition, FramePatch newPosition) {
-        boolean matches(Frame frame) {
-            int oldChanged = oldPosition.changedPixels(frame);
-            int newChanged = newPosition.changedPixels(frame);
-            return resemblesSoftwareCursorMovement(oldChanged, oldPosition.pixelCount(),
-                    newChanged, newPosition.pixelCount());
+        boolean matches(Frame frame, int cursorWidth, int cursorHeight) {
+            return oldPosition.looksLikeCursorShape(frame, cursorWidth, cursorHeight)
+                    && newPosition.looksLikeCursorShape(frame, cursorWidth, cursorHeight);
         }
     }
 
@@ -625,24 +738,40 @@ public final class FxRdpDisplay implements Display {
             return new FramePatch(x, y, width, height, patch);
         }
 
-        int pixelCount() {
-            return pixels.length;
-        }
-
-        int changedPixels(Frame frame) {
+        /** True when this region now looks like a pointer sprite was erased or drawn. */
+        boolean looksLikeCursorShape(Frame frame, int cursorWidth, int cursorHeight) {
             int stride = frame.width();
             int[] source = frame.pixels();
             int changed = 0;
+            int left = Integer.MAX_VALUE;
+            int top = Integer.MAX_VALUE;
+            int right = -1;
+            int bottom = -1;
             int index = 0;
             for (int row = 0; row < height; row++) {
                 int base = (y + row) * stride + x;
                 for (int column = 0; column < width; column++) {
                     if ((pixels[index++] & 0x00ffffff) != (source[base + column] & 0x00ffffff)) {
                         changed++;
+                        if (column < left) {
+                            left = column;
+                        }
+                        if (column > right) {
+                            right = column;
+                        }
+                        if (row < top) {
+                            top = row;
+                        }
+                        if (row > bottom) {
+                            bottom = row;
+                        }
                     }
                 }
             }
-            return changed;
+            return isCursorShapedChange(changed,
+                    right < left ? 0 : right - left + 1,
+                    bottom < top ? 0 : bottom - top + 1,
+                    cursorWidth, cursorHeight);
         }
     }
 
