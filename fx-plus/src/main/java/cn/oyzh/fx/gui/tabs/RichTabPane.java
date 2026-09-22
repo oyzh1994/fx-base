@@ -29,7 +29,7 @@ public class RichTabPane extends FXTabPane {
 //            if (pos >= -h & pos <= h) {
 //                Tab tab = this.getSelectedItem();
 ////                if (tab instanceof MenuItemAdapter adapter) {
-////                    this.showContextMenu(adapter.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+////                    this.showContextMenu(adapter.getMenuItems(), e.getScreenX() , e.getScreenY());
 ////                }
 //
 //                e.consume();
