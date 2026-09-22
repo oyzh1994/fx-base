@@ -128,9 +128,11 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
         }
         this.getItems().clear();
         if (this.targetRef != null) {
-            ContextMenuManager.clearContextMenu(this.targetRef.get());
-            this.targetRef.clear();
-            this.targetRef = null;
+            synchronized (this) {
+                ContextMenuManager.clearContextMenu(this.targetRef.get());
+                this.targetRef.clear();
+                this.targetRef = null;
+            }
         }
     }
 }
