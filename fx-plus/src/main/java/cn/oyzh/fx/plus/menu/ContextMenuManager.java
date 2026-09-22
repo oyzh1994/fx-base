@@ -8,6 +8,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.PickResult;
 
 import java.util.List;
 
@@ -88,6 +89,16 @@ public class ContextMenuManager {
      * @param object 对象
      */
     public static void clearContextMenu(Object object) {
+        clearContextMenu(object, false);
+    }
+
+    /**
+     * 清除操作面板
+     *
+     * @param object   对象
+     * @param hideMenu 隐藏菜单
+     */
+    public static void clearContextMenu(Object object, boolean hideMenu) {
         ContextMenu menu = null;
         if (object instanceof Control control) {
             menu = control.getContextMenu();
@@ -102,7 +113,9 @@ public class ContextMenuManager {
         }
         if (menu != null) {
             // 先关闭菜单，断开与 Scene 的关联
-            menu.hide();
+            if (hideMenu) {
+                menu.hide();
+            }
             // 清理菜单项
             for (MenuItem item : menu.getItems()) {
                 if (item instanceof FXMenuItem menuItem) {
@@ -117,22 +130,6 @@ public class ContextMenuManager {
                 }
             }
             menu.getItems().clear();
-            //            // 清理 ContextMenu 自身的事件处理器，断开与 TabSkin 的引用链
-            //            menu.setOnShowing(null);
-            //            menu.setOnShown(null);
-            //            menu.setOnHiding(null);
-            //            menu.setOnHidden(null);
-            //            menu.setOnAction(null);
-            //            menu.setOnCloseRequest(null);
-            //            menu.setId(null);
-            //            menu.setStyle(null);
-            //            menu.setUserData(null);
-            //            // 销毁皮肤，彻底断开与 Scene graph 的关联
-            //            final javafx.scene.control.Skin<?> skin = menu.getSkin();
-            //            if (skin != null) {
-            //                menu.setSkin(null);
-            //                skin.dispose();
-            //            }
         }
     }
 
@@ -156,6 +153,24 @@ public class ContextMenuManager {
      */
     public static void showContextMenu(ContextMenu contextMenu, Node node, ContextMenuEvent event) {
         contextMenu.show(node, event.getScreenX(), event.getScreenY());
+    }
+
+    /**
+     * 转换为上下文轻轻事件
+     *
+     * @param e 事件
+     * @return 结果
+     */
+    public static ContextMenuEvent contextMenuRequestedEvent(MouseEvent e) {
+        return new ContextMenuEvent(
+                ContextMenuEvent.CONTEXT_MENU_REQUESTED,
+                e.getX(),
+                e.getY(),
+                e.getScreenX(),
+                e.getScreenY(),
+                false,
+                new PickResult(e.getTarget(), e.getSceneX(), e.getSceneY())
+        );
     }
 
 }

@@ -400,7 +400,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             this.requestFocus();
             // TODO: 隐藏右键菜单
             if (this.popup != null && e.getButton() == MouseButton.PRIMARY) {
-                //                this.popup.hide();
+                this.popup.hide();
                 //                this.popup = null;
             }
             Point2D point = createPoint(e);
@@ -445,16 +445,22 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             } else if (e.getButton() == MouseButton.SECONDARY) {
                 HyperlinkStyle contextHyperlink = findHyperlink(point);
                 TerminalActionProvider provider = getTerminalActionProvider(contextHyperlink != null ? contextHyperlink.getLinkInfo() : null, e);
-                ContextMenu popup = createPopupMenu(provider);
                 // 上下文事件
-                if (this.canvas.getOnContextMenuRequested() == null) {
-                    this.canvas.setOnContextMenuRequested(event -> {
-                        ContextMenuManager.showContextMenu(popup, (Node) event.getSource(), event);
-                    });
-                    ContextMenuManager.showContextMenu(popup, (Node) e.getSource(), e);
+                if (this.popup == null) {
+                    this.createPopupMenu(provider);
+                    this.canvas.fireEvent(ContextMenuManager.contextMenuRequestedEvent(e));
+                } else {
+                    this.createPopupMenu(provider);
                 }
             }
             repaint();
+        });
+
+        // 上下文事件
+        this.canvas.setOnContextMenuRequested(event -> {
+            if (this.popup != null) {
+                ContextMenuManager.showContextMenu(this.popup, (Node) event.getSource(), event);
+            }
         });
 
         this.widthProperty().addListener((ov) -> {
@@ -1876,12 +1882,13 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             //                item.setOnAction(null);
             //            }
             //            this.popup.getItems().clear();
+            ContextMenuManager.clearContextMenu(this.popup, false);
             menu = this.popup;
         } else {
             menu = ContextMenuManager.createNewContextMenu(Collections.emptyList());
             this.popup = menu;
-            FXTerminalAction.fillMenu(menu, actionProvider);
         }
+        FXTerminalAction.fillMenu(menu, actionProvider);
         return menu;
     }
 
