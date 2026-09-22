@@ -144,7 +144,7 @@ public class ContextMenuManager {
      * @param event       事件
      */
     public static void showContextMenu(ContextMenu contextMenu, Node node, MouseEvent event) {
-        contextMenu.show(node, event.getScreenX() - 10, event.getScreenY() - 10);
+        contextMenu.show(node, event.getScreenX(), event.getScreenY());
     }
 
     /**
@@ -155,7 +155,7 @@ public class ContextMenuManager {
      * @param event       事件
      */
     public static void showContextMenu(ContextMenu contextMenu, Node node, ContextMenuEvent event) {
-        contextMenu.show(node, event.getScreenX() - 10, event.getScreenY() - 10);
+        contextMenu.show(node, event.getScreenX(), event.getScreenY());
     }
 
 }

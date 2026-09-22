@@ -77,8 +77,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.InputMethodRequests;
 import javafx.scene.input.InputMethodTextRun;
@@ -400,8 +400,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             this.requestFocus();
             // TODO: 隐藏右键菜单
             if (this.popup != null && e.getButton() == MouseButton.PRIMARY) {
-                this.popup.hide();
-                this.popup = null;
+                //                this.popup.hide();
+                //                this.popup = null;
             }
             Point2D point = createPoint(e);
             HyperlinkStyle hyperlink = isFollowLinkEvent(e) ? findHyperlink(point) : null;
@@ -446,7 +446,13 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                 HyperlinkStyle contextHyperlink = findHyperlink(point);
                 TerminalActionProvider provider = getTerminalActionProvider(contextHyperlink != null ? contextHyperlink.getLinkInfo() : null, e);
                 ContextMenu popup = createPopupMenu(provider);
-                popup.show((Node) e.getSource(), e.getScreenX(), e.getScreenY());
+                // 上下文事件
+                if (this.canvas.getOnContextMenuRequested() == null) {
+                    this.canvas.setOnContextMenuRequested(event -> {
+                        ContextMenuManager.showContextMenu(popup, (Node) event.getSource(), event);
+                    });
+                    ContextMenuManager.showContextMenu(popup, (Node) e.getSource(), e);
+                }
             }
             repaint();
         });
@@ -1865,17 +1871,17 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         ContextMenu menu;
         // TODO: 对旧的菜单隐藏
         if (this.popup != null) {
-            this.popup.hide();
-            for (MenuItem item : this.popup.getItems()) {
-                item.setOnAction(null);
-            }
-            this.popup.getItems().clear();
+            //            this.popup.hide();
+            //            for (MenuItem item : this.popup.getItems()) {
+            //                item.setOnAction(null);
+            //            }
+            //            this.popup.getItems().clear();
             menu = this.popup;
         } else {
-            menu = ContextMenuManager.createContextMenu(this, Collections.emptyList());
+            menu = ContextMenuManager.createNewContextMenu(Collections.emptyList());
             this.popup = menu;
+            FXTerminalAction.fillMenu(menu, actionProvider);
         }
-        FXTerminalAction.fillMenu(menu, actionProvider);
         return menu;
     }
 
@@ -2561,6 +2567,10 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             this.selectedText.set(this.getSelectionText());
         }
         this.updateSelectedText = true;
+    }
+
+    private Point2D createPoint(ContextMenuEvent e) {
+        return new Point2D(e.getX(), e.getY());
     }
 
     private Point2D createPoint(MouseEvent e) {
