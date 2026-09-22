@@ -449,6 +449,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                 if (this.popup == null) {
                     this.createPopupMenu(provider);
                     this.canvas.fireEvent(ContextMenuManager.contextMenuRequestedEvent(e));
+                    this.popup.requestFocus();
                 } else {
                     this.createPopupMenu(provider);
                 }
