@@ -446,21 +446,20 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                 HyperlinkStyle contextHyperlink = findHyperlink(point);
                 TerminalActionProvider provider = getTerminalActionProvider(contextHyperlink != null ? contextHyperlink.getLinkInfo() : null, e);
                 // 上下文事件
-                if (this.popup == null) {
-                    this.createPopupMenu(provider);
-                    this.canvas.fireEvent(ContextMenuManager.contextMenuRequestedEvent(e));
-                } else {
-                    this.createPopupMenu(provider);
-                }
+                this.createPopupMenu(provider);
             }
             repaint();
         });
 
         // 上下文事件
         this.canvas.setOnContextMenuRequested(event -> {
-            if (this.popup != null) {
-                ContextMenuManager.showContextMenu(this.popup, (Node) event.getSource(), event);
+            if (this.popup == null) {
+                Point2D point = createPoint(event);
+                HyperlinkStyle contextHyperlink = findHyperlink(point);
+                TerminalActionProvider provider = getTerminalActionProvider(contextHyperlink != null ? contextHyperlink.getLinkInfo() : null, null);
+                this.createPopupMenu(provider);
             }
+            ContextMenuManager.showContextMenu(this.popup, (Node) event.getSource(), event);
         });
 
         this.widthProperty().addListener((ov) -> {
@@ -1892,9 +1891,9 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         return menu;
     }
 
-    private @NotNull TerminalActionProvider getTerminalActionProvider(@Nullable LinkInfo linkInfo, @NotNull MouseEvent e) {
+    private @NotNull TerminalActionProvider getTerminalActionProvider(@Nullable LinkInfo linkInfo, MouseEvent e) {
         FXLinkInfoEx.PopupMenuGroupProvider popupMenuGroupProvider = FXLinkInfoEx.getPopupMenuGroupProvider(linkInfo);
-        if (popupMenuGroupProvider != null) {
+        if (popupMenuGroupProvider != null && e != null) {
             return new TerminalActionProvider() {
                 @Override
                 public List<TerminalAction> getActions() {
