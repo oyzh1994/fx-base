@@ -62,7 +62,7 @@
         <!-- <javafx.version>25.0.3</javafx.version> -->
         <jspecify.version>1.0.0</jspecify.version>
         <snakeyaml.version>2.5</snakeyaml.version>
-        <atlantafx.version>2.1.0</atlantafx.version>
+        <atlantafx.version>3.0.0</atlantafx.version>
         <tm4javafx.version>0.1.0</tm4javafx.version>
         <richtextfx.version>0.11.6</richtextfx.version>
         <maven.compiler.source>25</maven.compiler.source>
