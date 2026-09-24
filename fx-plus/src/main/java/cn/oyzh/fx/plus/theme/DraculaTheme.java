@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class DraculaTheme implements Theme, ThemeStyle {
+public class DraculaTheme implements ThemeStyle {
 
     private static final Dracula THEME = new Dracula();
 

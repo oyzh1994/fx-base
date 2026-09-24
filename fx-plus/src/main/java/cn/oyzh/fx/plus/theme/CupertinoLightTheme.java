@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class CupertinoLightTheme implements Theme, ThemeStyle {
+public class CupertinoLightTheme implements ThemeStyle {
 
     private static final CupertinoLight THEME = new CupertinoLight();
 

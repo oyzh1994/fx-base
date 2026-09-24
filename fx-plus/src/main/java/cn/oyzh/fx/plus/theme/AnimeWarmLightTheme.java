@@ -12,7 +12,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2026/6/27
  */
-public class AnimeWarmLightTheme implements Theme, ThemeStyle {
+public class AnimeWarmLightTheme implements ThemeStyle {
 
     private static final Theme THEME = Theme.of("Anime Warm Light", "/fx-plus/css/theme/anime-warm-light.css", false);
 

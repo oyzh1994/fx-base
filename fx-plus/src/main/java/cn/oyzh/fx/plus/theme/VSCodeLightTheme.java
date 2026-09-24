@@ -11,7 +11,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2026/6/27
  */
-public class VSCodeLightTheme implements Theme, ThemeStyle {
+public class VSCodeLightTheme implements ThemeStyle {
 
     private static final Theme THEME = Theme.of("VS Code Light", "/fx-plus/css/theme/vscode-light.css", false);
 

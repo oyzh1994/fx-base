@@ -25,7 +25,7 @@ public class TableTestApp2 extends FXApplication {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         super.start(primaryStage);
 
         ThemeManager.apply(ThemeManager.defaultTheme);

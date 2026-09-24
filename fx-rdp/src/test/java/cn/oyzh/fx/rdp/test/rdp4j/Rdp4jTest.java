@@ -19,7 +19,7 @@ public class Rdp4jTest extends FXApplication {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         super.start(primaryStage);
         //        this.test1(primaryStage);
         this.test2(primaryStage);

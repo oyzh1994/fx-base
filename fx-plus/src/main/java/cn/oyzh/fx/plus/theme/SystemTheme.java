@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.theme;
 
-import atlantafx.base.theme.Theme;
 import cn.oyzh.common.file.FileUtil;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -18,7 +17,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class SystemTheme implements Theme, ThemeStyle {
+public class SystemTheme implements ThemeStyle {
 
     /**
      * 颜色监听器
@@ -162,6 +161,6 @@ public class SystemTheme implements Theme, ThemeStyle {
         FXUtil.runLater(() -> {
             this.updateThemeCss();
             ThemeManager.apply(this);
-        }, 1000);
+        }, 100);
     }
 }
