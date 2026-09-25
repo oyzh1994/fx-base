@@ -110,6 +110,7 @@ public class MessageBox {
                 FXButton button2 = new FXButton(I18nHelper.cancel());
                 AlertStage stage = new AlertStage(Alert.AlertType.CONFIRMATION, finalContent, List.of(button1, button2));
                 stage.title(title);
+                stage.initOwner(owner);
                 result.set(button1.equals(stage.getResult()));
             } else {
                 ButtonType button1 = new ButtonType(I18nHelper.ok());
@@ -344,6 +345,7 @@ public class MessageBox {
 //            if (FXUtil.isEnablePreview()) {
                 InputStage stage = new InputStage(finalInitText);
                 stage.title(finalTitle);
+                stage.initOwner(StageManager.getFrontWindow());
                 ref.set(stage.getResult());
             } else {
                 TextInputDialog dialog = new TextInputDialog(finalInitText);

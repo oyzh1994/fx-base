@@ -76,9 +76,9 @@ public class AlertStage extends Stage implements StageAdapter {
 
     public AlertStage(Alert.AlertType type, String content, List<Button> buttons) {
         this.type = type;
+        this.setMaximized(false);
         this.initModality(Modality.APPLICATION_MODAL);
         this.initStyle(FXStageStyle.EXTENDED.toStageStyle());
-        this.setMaximized(false);
         this.buttons = buttons;
         if (type == Alert.AlertType.CONFIRMATION) {
             this.graphic = new QuestionSVGGlyph();
