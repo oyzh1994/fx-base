@@ -345,7 +345,6 @@ public class MessageBox {
 //            if (FXUtil.isEnablePreview()) {
                 InputStage stage = new InputStage(finalInitText);
                 stage.title(finalTitle);
-                stage.initOwner(StageManager.getFrontWindow());
                 ref.set(stage.getResult());
             } else {
                 TextInputDialog dialog = new TextInputDialog(finalInitText);
