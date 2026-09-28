@@ -1449,7 +1449,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      *
      * @return 编辑器字体
      */
-    protected Font getEditorFont() {
+    public Font getEditorFont() {
         return this.editorFont;
     }
 
@@ -1458,7 +1458,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      *
      * @param editorFont 编辑器字体
      */
-    protected void setEditorFont(Font editorFont) {
+    public void setEditorFont(Font editorFont) {
         this.editorFont = editorFont;
         this.changeFont(editorFont);
     }

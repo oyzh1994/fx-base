@@ -45,6 +45,6 @@ public abstract class DBQueryEditor extends Editor {
     protected void doComment() {
     }
 
-    @Override
-    protected abstract Font getEditorFont();
+//    @Override
+//    protected abstract Font getEditorFont();
 }
