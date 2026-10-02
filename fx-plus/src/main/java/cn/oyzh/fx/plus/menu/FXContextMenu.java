@@ -21,11 +21,10 @@ import java.util.Collection;
  */
 public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapter, LayoutAdapter, ThemeAdapter {
 
-    private final ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
+//    private final ListChangeListener<MenuItem> itemsListener = c -> this.calcWidth();
 
     {
         NodeManager.init(this);
-        ObjectWatcherManager.watch(this);
     }
 
     private WeakReference<Object> targetRef;
@@ -45,28 +44,28 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
         this.targetRef = new WeakReference<>(target);
     }
 
-    private double width;
+//    private double width;
 
-    /**
-     * 计算菜单宽度
-     */
-    protected void calcWidth() {
-        ObservableList<MenuItem> items = this.getItems();
-        if (CollectionUtil.isNotEmpty(items)) {
-            double width = 0.d;
-            for (MenuItem item : items) {
-                double w = FXMenuItem.getWidth(item);
-                if (w > width) {
-                    width = w;
-                }
-            }
-            // 设置宽度
-            this.setWidth(width);
-            this.width = width;
-        } else {
-            this.width = Double.NaN;
-        }
-    }
+//    /**
+//     * 计算菜单宽度
+//     */
+//    protected void calcWidth() {
+//        ObservableList<MenuItem> items = this.getItems();
+//        if (CollectionUtil.isNotEmpty(items)) {
+//            double width = 0.d;
+//            for (MenuItem item : items) {
+//                double w = FXMenuItem.getWidth(item);
+//                if (w > width) {
+//                    width = w;
+//                }
+//            }
+//            // 设置宽度
+//            this.setWidth(width);
+//            this.width = width;
+//        } else {
+//            this.width = Double.NaN;
+//        }
+//    }
 
     public void addItem(MenuItem item) {
         if (item != null) {
@@ -96,29 +95,30 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
 
     @Override
     public void initNode() {
+        ObjectWatcherManager.watch(this);
         this.sizeToScene();
         this.setStyle("-fx-padding: 0 0 0 0;");
-        this.getItems().addListener(this.itemsListener);
+//        this.getItems().addListener(this.itemsListener);
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                this.calcWidth();
-            } else {
+            if (!newValue) {
+//                this.calcWidth();
+//            } else {
                 this.destroy();
             }
         });
-        this.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
-            if (!Double.isNaN(this.width) && newValue.doubleValue() != this.width) {
-                this.getScene().getWindow().setWidth(this.width);
-                this.setPrefWidth(this.width);
-            }
-        });
+//        this.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
+//            if (!Double.isNaN(this.width) && newValue.doubleValue() != this.width) {
+//                this.getScene().getWindow().setWidth(this.width);
+//                this.setPrefWidth(this.width);
+//            }
+//        });
         NodeAdapter.super.initNode();
     }
 
     @Override
     public void destroy() {
         for (MenuItem item : this.getItems()) {
-            if (item instanceof FXMenuItem menuItem) {
+            if (item instanceof Destroyable menuItem) {
                 menuItem.destroy();
             } else {
                 item.setText(null);
