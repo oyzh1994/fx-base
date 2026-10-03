@@ -10,6 +10,11 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public interface TtyTerminalSizeable {
 
+    /**
+     * 获取终端大小
+     *
+     * @return 结果
+     */
     default TermSize getTermSize() {
         if (this.terminalSizeProperty() == null) {
             return null;
@@ -17,6 +22,11 @@ public interface TtyTerminalSizeable {
         return this.terminalSizeProperty().get();
     }
 
+    /**
+     * 获取终端大小属性
+     *
+     * @return 结果
+     */
     SimpleObjectProperty<TermSize> terminalSizeProperty();
 
 }
