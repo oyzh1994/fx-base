@@ -18,7 +18,7 @@ import java.util.List;
  * @author oyzh
  * @since 2025-03-04
  */
-public class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTerminalSizeable, TtyStreamable, TtyCharsetble {
+public abstract class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTerminalSizeable, TtyStreamable, TtyCharsetble {
 
     /**
      * 字符集
@@ -109,22 +109,17 @@ public class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTe
     }
 
     @Override
-    public String getName() {
-        return "javafx-tty";
-    }
-
-    @Override
     public Charset charset() {
         return this.charset;
     }
 
     @Override
     public InputStream input() {
-        return null;
+        return this.getProcess().getInputStream();
     }
 
     @Override
     public OutputStream output() {
-        return null;
+        return this.getProcess().getOutputStream();
     }
 }
