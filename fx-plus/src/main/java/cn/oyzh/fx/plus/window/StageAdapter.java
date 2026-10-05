@@ -1,7 +1,6 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.ArrayUtil;
 import cn.oyzh.common.util.ReflectUtil;
 import cn.oyzh.common.util.StringUtil;
@@ -269,7 +268,6 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
      * @return 结果
      */
     default boolean isExtendedHeader() {
-//        return BooleanUtil.isTrue(this.getProp("extended:header"));
         return this.stage().getStyle() == StageStyle.EXTENDED;
     }
 
@@ -293,6 +291,9 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
 //        }
         // 舞台
         Stage stage = this.stage();
+        if (stage == null) {
+            throw new NullPointerException("stage");
+        }
         // 初始化场景
         Scene scene = new Scene(root);
         //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要

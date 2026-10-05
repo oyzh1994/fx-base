@@ -11,7 +11,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2026/6/27
  */
-public class IntelliJLightTheme implements Theme, ThemeStyle {
+public class IntelliJLightTheme implements ThemeStyle {
 
     private static final Theme THEME = Theme.of("IntelliJ Light", "/fx-plus/css/theme/intellij-light.css", false);
 

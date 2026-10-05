@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.test;
 import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.controls.text.field.FXTextField;
 import cn.oyzh.fx.plus.information.MessageBox;
-import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
@@ -25,19 +26,20 @@ import javafx.stage.Stage;
 public class AppTestMain extends Application {
 
     public static void main(String[] args) {
-        FXUtil.enablePreview();
+        //        FXUtil.enablePreview();
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
         // 应用主题
-//        ThemeManager.apply(Themes.DRACULA);
+        //        ThemeManager.apply(Themes.DRACULA);
         // test1(stage);
         // test2(stage);
-//        test3(stage);
-//        test4(stage);
-        test5(stage);
+        //        test3(stage);
+        //        test4(stage);
+        //        test5(stage);
+        test6(stage);
         SystemUtil.gcInterval(3000);
     }
 
@@ -125,7 +127,8 @@ public class AppTestMain extends Application {
             MessageBox.exception(ex);
         }
         MessageBox.none("测试4");
-        FXUtil.disablePreview();
+        //        FXUtil.disablePreview();
+        MessageBox.enableNewStyle = false;
         MessageBox.info("测试1");
         MessageBox.warn("测试2");
         MessageBox.error("测试3");
@@ -149,14 +152,30 @@ public class AppTestMain extends Application {
     private void test5(Stage stage) {
         VBox vBox = new VBox();
         for (int i = 0; i < 20; i++) {
-            HBox hBox=new HBox();
+            HBox hBox = new HBox();
             for (int j = 0; j < 10; j++) {
-                hBox.getChildren().add(new Label("Hello World" + (i + 1)+ (j + 1)));
+                hBox.getChildren().add(new Label("Hello World" + (i + 1) + (j + 1)));
             }
             vBox.getChildren().add(hBox);
         }
         ScrollPane scrollPane = new ScrollPane(vBox);
         stage.setScene(new Scene(scrollPane));
+        stage.setWidth(800);
+        stage.setHeight(600);
+        stage.show();
+        stage.setTitle("Hello Javafx");
+    }
+
+    private void test6(Stage stage) {
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().add(new Menu("test1"));
+        menuBar.getMenus().add(new Menu("test2"));
+        menuBar.setUseSystemMenuBar(true);
+
+        VBox vBox = new VBox(menuBar);
+        vBox.getChildren().add(new Button("aa"));
+        vBox.getChildren().add(new Button("aa1"));
+        stage.setScene(new Scene(vBox));
         stage.setWidth(800);
         stage.setHeight(600);
         stage.show();

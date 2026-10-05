@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class NordDarkTheme implements Theme, ThemeStyle {
+public class NordDarkTheme implements ThemeStyle {
 
     private static final NordDark THEME = new NordDark();
 

@@ -20,10 +20,13 @@ public class BinaryTextFiled extends ChooseFileTextField {
 
     @Override
     public void formatValue() {
-        this.setText(format(super.getValue(), this.scale));
+        this.setText(format(super.value(), this.scale));
     }
 
     public static String format(Object o, Integer scale) {
+        if (o == null) {
+            return null;
+        }
         if (o instanceof byte[] bytes) {
             return "(BLOB)" + " " + NumberUtil.formatSize(bytes.length, scale);
         }

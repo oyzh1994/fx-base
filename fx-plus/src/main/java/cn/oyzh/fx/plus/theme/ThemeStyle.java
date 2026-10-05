@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.theme;
 
+import atlantafx.base.theme.Theme;
 import cn.oyzh.fx.plus.FXStyle;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -17,14 +18,14 @@ import java.util.Objects;
  * @author oyzh
  * @since 2024/4/3
  */
-public interface ThemeStyle {
+public interface ThemeStyle extends Theme {
 
-    /**
-     * 获取名称
-     *
-     * @return 主题名称
-     */
-    String getName();
+//    /**
+//     * 获取名称
+//     *
+//     * @return 主题名称
+//     */
+//    String getName();
 
     /**
      * 获取描述
@@ -91,12 +92,12 @@ public interface ThemeStyle {
         return FXColorUtil.getColorHex(this.getBackgroundColor());
     }
 
-    /**
-     * 获取样式文件
-     *
-     * @return 样式文件
-     */
-    String getUserAgentStylesheet();
+//    /**
+//     * 获取样式文件
+//     *
+//     * @return 样式文件
+//     */
+//    String getUserAgentStylesheet();
     //
     //    /**
     //     * 获取压缩样式文件

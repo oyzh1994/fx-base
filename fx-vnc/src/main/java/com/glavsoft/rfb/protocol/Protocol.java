@@ -203,7 +203,7 @@ public class Protocol implements IChangeSettingsListener, Destroyable {
                 case COMPRESS_LEVEL_0:
                     final int compressionLevel = settings.getCompressionLevel();
                     if (compressionLevel > 0 && compressionLevel < 10) {
-                        encodings.add(EncodingType.byId(EncodingType.COMPRESS_LEVEL_0.getId() + compressionLevel));
+                        encodings.add(EncodingType.ofId(EncodingType.COMPRESS_LEVEL_0.getId() + compressionLevel));
                     }
                     break;
                 case JPEG_QUALITY_LEVEL_0:
@@ -212,7 +212,7 @@ public class Protocol implements IChangeSettingsListener, Destroyable {
                     if (jpegQuality > 0 && jpegQuality < 10 &&
                             (colorDepth == ProtocolSettings.COLOR_DEPTH_24 ||
                                     colorDepth == ProtocolSettings.COLOR_DEPTH_SERVER_SETTINGS)) {
-                        encodings.add(EncodingType.byId(EncodingType.JPEG_QUALITY_LEVEL_0.getId() + jpegQuality));
+                        encodings.add(EncodingType.ofId(EncodingType.JPEG_QUALITY_LEVEL_0.getId() + jpegQuality));
                     }
                     break;
                 case COPY_RECT:
@@ -422,7 +422,7 @@ public class Protocol implements IChangeSettingsListener, Destroyable {
 
     public void registerEncoding(RfbCapabilityInfo capInfo) {
         try {
-            final EncodingType encodingType = EncodingType.byId(capInfo.getCode());
+            final EncodingType encodingType = EncodingType.ofId(capInfo.getCode());
             if (!decoders.containsKey(encodingType)) {
                 final Decoder decoder = encodingType.klass.newInstance();
                 if (decoder != null) {

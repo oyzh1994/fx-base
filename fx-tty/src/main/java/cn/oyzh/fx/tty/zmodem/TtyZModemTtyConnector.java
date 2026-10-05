@@ -1,7 +1,7 @@
 package cn.oyzh.fx.tty.zmodem;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.fx.tty.TtyProcessTtyConnector;
+import cn.oyzh.fx.tty.TtyStreamable;
 import com.jediterm.core.util.TermSize;
 import com.jediterm.terminal.Terminal;
 import com.jediterm.terminal.TtyConnector;
@@ -36,18 +36,18 @@ public class TtyZModemTtyConnector implements TtyConnector {
     /**
      * tty连接器
      */
-    private TtyProcessTtyConnector connector;
+    private TtyStreamable connector;
 
     /**
      * ZModem处理器
      */
     private volatile TtyZModemProcessor processor;
 
-    public TtyProcessTtyConnector getConnector() {
+    public TtyStreamable getConnector() {
         return connector;
     }
 
-    public TtyZModemTtyConnector(Terminal terminal, TtyProcessTtyConnector connector) {
+    public TtyZModemTtyConnector(Terminal terminal, TtyStreamable connector) {
         this.terminal = terminal;
         this.connector = connector;
     }

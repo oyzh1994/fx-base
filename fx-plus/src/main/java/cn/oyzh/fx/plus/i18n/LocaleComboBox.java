@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nLocales;
 import cn.oyzh.i18n.I18nManager;
+import cn.oyzh.i18n.I18nUtil;
 
 import java.util.Locale;
 
@@ -16,31 +17,21 @@ import java.util.Locale;
  */
 public class LocaleComboBox extends FXComboBox<Locale> {
 
-    {
-        this.addItems(I18nLocales.locales());
-        this.setTipText(I18nResourceBundle.i18nString("base.localeTip"));
-        this.setConverter(new SimpleStringConverter<>() {
-            @Override
-            public String toString(Locale o) {
-                return I18nLocales.getLocaleDesc(o);
-            }
-        });
-    }
-
     /**
      * 选择区域
      *
      * @param localeName 区域名称
      */
     public void select(String localeName) {
-        if (StringUtil.isEmpty(localeName)) {
-            this.select(I18nManager.defaultLocale);
+        if (StringUtil.isBlank(localeName)) {
+            Locale l = I18nManager.defaultLocale;
+            this.select(I18nUtil.corrLocale(l));
         } else {
             try {
                 super.select(I18nLocales.getLocale(localeName));
             } catch (Exception ex) {
                 ex.printStackTrace();
-                this.select(0);
+                this.selectFirst();
             }
         }
     }
@@ -52,5 +43,18 @@ public class LocaleComboBox extends FXComboBox<Locale> {
      */
     public String name() {
         return I18nLocales.getLocaleName(this.getValue());
+    }
+
+    @Override
+    public void initNode() {
+        this.addItems(I18nLocales.locales());
+        this.setTipText(I18nResourceBundle.i18nString("base.localeTip"));
+        this.setConverter(new SimpleStringConverter<>() {
+            @Override
+            public String toString(Locale o) {
+                return I18nLocales.getLocaleDesc(o);
+            }
+        });
+        super.initNode();
     }
 }

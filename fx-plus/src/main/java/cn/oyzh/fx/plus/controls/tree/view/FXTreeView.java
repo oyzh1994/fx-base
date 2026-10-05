@@ -65,7 +65,7 @@ public class FXTreeView extends TreeView implements FlexAdapter, Destroyable, No
         this.setOnContextMenuRequested(e -> {
             FXTreeItem<?> item = this.getSelectedItem();
             if (item != null) {
-                this.showContextMenu(item.getMenuItems(), e.getScreenX() - 10, e.getScreenY() - 10);
+                this.showContextMenu(item.getMenuItems(), e.getScreenX() , e.getScreenY());
             } else {
                 this.clearContextMenu();
             }

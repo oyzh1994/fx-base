@@ -18,10 +18,16 @@ import java.util.List;
  * @author oyzh
  * @since 2025-03-04
  */
-public class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTerminalSizeable {
+public abstract class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTerminalSizeable, TtyStreamable, TtyCharsetble {
+
+    /**
+     * 字符集
+     */
+    private final Charset charset;
 
     public TtyProcessTtyConnector(PtyProcess process, Charset charset, List<String> commandLines) {
         super(process, charset, commandLines);
+        this.charset = charset;
     }
 
     @Override
@@ -38,10 +44,6 @@ public class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTe
             JulLog.debug("shell read: {}", new String(buf));
         }
         return len;
-    }
-
-    public void writeLine(String str) throws IOException {
-        this.write(str + "\r");
     }
 
     @Override
@@ -107,25 +109,17 @@ public class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTe
     }
 
     @Override
-    public String getName() {
-        return "javafx-tty";
+    public Charset charset() {
+        return this.charset;
     }
 
-    /**
-     * 获取真实的输入流
-     *
-     * @return 输入流
-     */
+    @Override
     public InputStream input() {
-        return null;
+        return this.getProcess().getInputStream();
     }
 
-    /**
-     * 获取真实的输出流
-     *
-     * @return 输出流
-     */
+    @Override
     public OutputStream output() {
-        return null;
+        return this.getProcess().getOutputStream();
     }
 }

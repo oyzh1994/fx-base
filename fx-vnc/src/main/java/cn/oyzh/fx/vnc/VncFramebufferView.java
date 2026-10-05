@@ -271,10 +271,12 @@ public class VncFramebufferView extends FXPane implements IRepaintController, De
 
     @Override
     public void destroy() {
-        this.cursor.destroy();
-        this.renderer.destroy();
-        this.cursorImageView.destroy();
-        this.framebufferImageView.destroy();
+        if (this.cursor != null) {
+            this.cursor.destroy();
+            this.renderer.destroy();
+            this.cursorImageView.destroy();
+            this.framebufferImageView.destroy();
+        }
         NodeDestroyUtil.destroyObject(this);
     }
 }

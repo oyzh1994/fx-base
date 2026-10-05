@@ -12,7 +12,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2026/6/27
  */
-public class LiquidGlassLightTheme implements Theme, ThemeStyle {
+public class LiquidGlassLightTheme implements ThemeStyle {
 
     private static final Theme THEME = Theme.of("Liquid Glass Light", "/fx-plus/css/theme/liquid-glass-light.css", false);
 

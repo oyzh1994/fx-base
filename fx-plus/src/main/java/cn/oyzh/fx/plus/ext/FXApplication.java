@@ -44,7 +44,7 @@ public abstract class FXApplication extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         try {
             // 设置主stage
             StageManager.setPrimaryStage(primaryStage);

@@ -47,6 +47,14 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
         super();
     }
 
+    public FXMenuItem(String text) {
+        this(null, text, null);
+    }
+
+    public FXMenuItem(String text, Runnable action) {
+        this(null, text, action);
+    }
+
     public FXMenuItem(Node graphic, String text, Runnable action) {
         if (text != null) {
             super.setText(text);

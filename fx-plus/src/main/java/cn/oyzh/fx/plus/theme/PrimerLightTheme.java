@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class PrimerLightTheme implements Theme, ThemeStyle {
+public class PrimerLightTheme implements ThemeStyle {
 
     private static final PrimerLight THEME = new PrimerLight();
 

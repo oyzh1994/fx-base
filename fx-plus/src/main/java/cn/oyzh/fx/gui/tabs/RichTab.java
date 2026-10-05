@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.tabs;
 
+import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.menu.MenuItemHelper;
 import cn.oyzh.fx.plus.FXStyle;
@@ -235,6 +236,8 @@ public abstract class RichTab extends FXTab {
     public void initNode() {
         // 加载内容
         this.loadContent();
+        // 监听tab
+        ObjectWatcherManager.watch(this);
         super.initNode();
     }
 

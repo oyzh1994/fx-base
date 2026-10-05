@@ -19,6 +19,6 @@ public class MongodbSVGGlyph extends ScalingSVGGlyph {
 
     @Override
     public double widthScaling() {
-        return 0.6;
+        return 0.7;
     }
 }

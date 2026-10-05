@@ -11,12 +11,12 @@ import cn.oyzh.fx.plus.menu.ContextMenuManager;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.tty.TtyTerminalCanvas;
+import cn.oyzh.fx.tty.TtyAscii;
+import cn.oyzh.fx.tty.TtyFontMetrics;
 import cn.oyzh.fx.tty.TtyKeyListener;
 import cn.oyzh.fx.tty.TtyScrollBarUtils;
-import cn.oyzh.fx.tty.TtyFontMetrics;
-import cn.oyzh.fx.tty.TtyAscii;
 import cn.oyzh.fx.tty.TtyTermSettingsProvider;
+import cn.oyzh.fx.tty.TtyTerminalCanvas;
 import cn.oyzh.fx.tty.TtyTerminalCopyPasteHandler;
 import com.jediterm.core.TerminalCoordinates;
 import com.jediterm.core.typeahead.TerminalTypeAheadManager;
@@ -77,8 +77,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.InputMethodRequests;
 import javafx.scene.input.InputMethodTextRun;
@@ -132,7 +132,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     //private boolean scrollBarThumbVisible = true;
 
-//    private final HBox pane = new HBox(canvasPane, scrollBar);
+    //    private final HBox pane = new HBox(canvasPane, scrollBar);
 
     private ContextMenu popup;
 
@@ -166,7 +166,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     protected Dimension2D myCharSize;
 
-//    private boolean myMonospaced;
+    //    private boolean myMonospaced;
 
     private TermSize myTermSize;
 
@@ -193,7 +193,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     private final FXBlinkingTextTracker myTextBlinkingTracker = new FXBlinkingTextTracker();
 
-    ////we scroll a window [0, terminal_height] in the range [-history_lines_count, terminal_height]
+    /// /we scroll a window [0, terminal_height] in the range [-history_lines_count, terminal_height]
     //private final BoundedRangeModel myBoundedRangeModel = new DefaultBoundedRangeModel(0, 80, 0, 80);
 
     private boolean myScrollingEnabled = false;
@@ -401,7 +401,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             // TODO: 隐藏右键菜单
             if (this.popup != null && e.getButton() == MouseButton.PRIMARY) {
                 this.popup.hide();
-                this.popup = null;
+                //                this.popup = null;
             }
             Point2D point = createPoint(e);
             HyperlinkStyle hyperlink = isFollowLinkEvent(e) ? findHyperlink(point) : null;
@@ -445,10 +445,21 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             } else if (e.getButton() == MouseButton.SECONDARY) {
                 HyperlinkStyle contextHyperlink = findHyperlink(point);
                 TerminalActionProvider provider = getTerminalActionProvider(contextHyperlink != null ? contextHyperlink.getLinkInfo() : null, e);
-                ContextMenu popup = createPopupMenu(provider);
-                popup.show((Node) e.getSource(), e.getScreenX(), e.getScreenY());
+                // 上下文事件
+                this.createPopupMenu(provider);
             }
             repaint();
+        });
+
+        // 上下文事件
+        this.canvas.setOnContextMenuRequested(event -> {
+            if (this.popup == null) {
+                Point2D point = createPoint(event);
+                HyperlinkStyle contextHyperlink = findHyperlink(point);
+                TerminalActionProvider provider = getTerminalActionProvider(contextHyperlink != null ? contextHyperlink.getLinkInfo() : null, null);
+                this.createPopupMenu(provider);
+            }
+            ContextMenuManager.showContextMenu(this.popup, (Node) event.getSource(), event);
         });
 
         this.widthProperty().addListener((ov) -> {
@@ -488,7 +499,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         }
         // TODO: 修复可能出现超链接无法点击事件
         return e.getClickCount() == 1 && e.getButton() == MouseButton.PRIMARY;
-//        return myCursorType == Cursor.HAND && e.getButton() == MouseButton.PRIMARY;
+        //        return myCursorType == Cursor.HAND && e.getButton() == MouseButton.PRIMARY;
     }
 
     protected void handleMouseWheelEvent(@NotNull ScrollEvent e, @NotNull ScrollBar scrollBar) {
@@ -689,9 +700,9 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                     }
                 }
             } else if (e.getSource() instanceof Timeline timeline) { // terminalPanel was garbage collected
-//                Timeline timeline = (Timeline) e.getSource();
+                //                Timeline timeline = (Timeline) e.getSource();
                 // TODO???
-//                timeline.removeActionListener(this);
+                //                timeline.removeActionListener(this);
                 timeline.stop();
                 timeline.getKeyFrames().clear();
             }
@@ -867,8 +878,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     @Override
     public void onResize(@NotNull TermSize newTermSize, @NotNull RequestOrigin origin) {
         myTermSize = newTermSize;
-//        this.canvas.setPrefWidth(getPixelHeight());
-//        this.canvas.setPrefHeight(getPixelWidth());
+        //        this.canvas.setPrefWidth(getPixelHeight());
+        //        this.canvas.setPrefHeight(getPixelWidth());
         Platform.runLater(() -> updateScrolling(true));
     }
 
@@ -890,11 +901,11 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                         ", descent=" + oldDescent + "->" + myDescent);
             }
         }
-// TODO
-//    var myMonospaced = isMonospaced(fo);
-//    if (!myMonospaced) {
-//      JulLog.info("WARNING: Font " + myNormalFont.getName() + " is non-monospaced");
-//    }
+        // TODO
+        //    var myMonospaced = isMonospaced(fo);
+        //    if (!myMonospaced) {
+        //      JulLog.info("WARNING: Font " + myNormalFont.getName() + " is non-monospaced");
+        //    }
     }
 
     private float getLineSpacing() {
@@ -904,27 +915,27 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         return mySettingsProvider.getLineSpacing();
     }
 
-//  private static boolean isMonospaced(FontMetrics fontMetrics) {
-//    boolean isMonospaced = true;
-//    int charWidth = -1;
-//    for (int codePoint = 0; codePoint < 128; codePoint++) {
-//      if (Character.isValidCodePoint(codePoint)) {
-//        char character = (char) codePoint;
-//        if (isWordCharacter(character)) {
-//          int w = fontMetrics.charWidth(character);
-//          if (charWidth != -1) {
-//            if (w != charWidth) {
-//              isMonospaced = false;
-//              break;
-//            }
-//          } else {
-//            charWidth = w;
-//          }
-//        }
-//      }
-//    }
-//    return isMonospaced;
-//  }
+    //  private static boolean isMonospaced(FontMetrics fontMetrics) {
+    //    boolean isMonospaced = true;
+    //    int charWidth = -1;
+    //    for (int codePoint = 0; codePoint < 128; codePoint++) {
+    //      if (Character.isValidCodePoint(codePoint)) {
+    //        char character = (char) codePoint;
+    //        if (isWordCharacter(character)) {
+    //          int w = fontMetrics.charWidth(character);
+    //          if (charWidth != -1) {
+    //            if (w != charWidth) {
+    //              isMonospaced = false;
+    //              break;
+    //            }
+    //          } else {
+    //            charWidth = w;
+    //          }
+    //        }
+    //      }
+    //    }
+    //    return isMonospaced;
+    //  }
 
     private static boolean isWordCharacter(char character) {
         return Character.isLetterOrDigit(character);
@@ -1815,7 +1826,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         return new Rectangle2D(x, y, myCharSize.getWidth() * cellInterval.getCellCount(), myCharSize.getHeight());
     }
 
-    ///**
+    /// **
     // * @deprecated use {@link #getVerticalScrollModel()} instead
     // */
     //@Deprecated
@@ -1826,7 +1837,6 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     //public @NotNull BoundedRangeModel getVerticalScrollModel() {
     //    return myBoundedRangeModel;
     //}
-
     public TerminalTextBuffer getTerminalTextBuffer() {
         return myTerminalTextBuffer;
     }
@@ -1866,23 +1876,24 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         ContextMenu menu;
         // TODO: 对旧的菜单隐藏
         if (this.popup != null) {
-            this.popup.hide();
-            for (MenuItem item : this.popup.getItems()) {
-                item.setOnAction(null);
-            }
-            this.popup.getItems().clear();
+            //            this.popup.hide();
+            //            for (MenuItem item : this.popup.getItems()) {
+            //                item.setOnAction(null);
+            //            }
+            //            this.popup.getItems().clear();
+            ContextMenuManager.clearContextMenu(this.popup, false);
             menu = this.popup;
         } else {
-            menu = ContextMenuManager.createContextMenu(this, Collections.emptyList());
+            menu = ContextMenuManager.createNewContextMenu(Collections.emptyList());
             this.popup = menu;
         }
         FXTerminalAction.fillMenu(menu, actionProvider);
         return menu;
     }
 
-    private @NotNull TerminalActionProvider getTerminalActionProvider(@Nullable LinkInfo linkInfo, @NotNull MouseEvent e) {
+    private @NotNull TerminalActionProvider getTerminalActionProvider(@Nullable LinkInfo linkInfo, MouseEvent e) {
         FXLinkInfoEx.PopupMenuGroupProvider popupMenuGroupProvider = FXLinkInfoEx.getPopupMenuGroupProvider(linkInfo);
-        if (popupMenuGroupProvider != null) {
+        if (popupMenuGroupProvider != null && e != null) {
             return new TerminalActionProvider() {
                 @Override
                 public List<TerminalAction> getActions() {
@@ -1931,44 +1942,133 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     @Override
     public List<TerminalAction> getActions() {
-        List<TerminalAction> list = List.of(
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getOpenUrlActionPresentation(), input -> {
-                    return openSelectionAsURL();
-                }).withEnabledSupplier(this::selectionTextIsUrl),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getCopyActionPresentation(), this::handleCopy) {
-                    @Override
-                    public boolean isEnabled(@Nullable KeyEvent e) {
-                        return e != null || mySelection.get() != null;
-                    }
-                }.withMnemonicKey(KeyCode.C),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getPasteActionPresentation(), input -> {
-                    handlePaste();
-                    return true;
-                }).withMnemonicKey(KeyCode.P).withEnabledSupplier(() -> getClipboardString() != null),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getSelectAllActionPresentation(), input -> {
-                    selectAll();
-                    return true;
-                }),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getClearBufferActionPresentation(), input -> {
-                    clearBuffer();
-                    return true;
-                }).withMnemonicKey(KeyCode.K).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getPageUpActionPresentation(), input -> {
-                    pageUp();
-                    return true;
-                }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getPageDownActionPresentation(), input -> {
-                    pageDown();
-                    return true;
-                }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getLineUpActionPresentation(), input -> {
-                    scrollUp();
-                    return true;
-                }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true),
-                new FXTerminalAction((FXTerminalActionPresentation) mySettingsProvider.getLineDownActionPresentation(), input -> {
-                    scrollDown();
-                    return true;
-                }));
+        List<TerminalAction> list = new ArrayList<>();
+        TerminalAction openUrlActionPresentation;
+        if (this.mySettingsProvider.getOpenUrlActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            openUrlActionPresentation = new FXTerminalAction(presentation, input -> openSelectionAsURL());
+            openUrlActionPresentation.withEnabledSupplier(this::selectionTextIsUrl);
+        } else {
+            openUrlActionPresentation = new TerminalAction(this.mySettingsProvider.getOpenUrlActionPresentation(), input -> openSelectionAsURL());
+            openUrlActionPresentation.withEnabledSupplier(this::selectionTextIsUrl);
+        }
+        list.add(openUrlActionPresentation);
+
+        TerminalAction copyActionPresentation;
+        if (this.mySettingsProvider.getCopyActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            copyActionPresentation = new FXTerminalAction(presentation, this::handleCopy) {
+                @Override
+                public boolean isEnabled(@Nullable KeyEvent e) {
+                    return e != null || mySelection.get() != null;
+                }
+            }.withMnemonicKey(KeyCode.C);
+        } else {
+            copyActionPresentation = new TerminalAction(this.mySettingsProvider.getCopyActionPresentation(), this::handleCopy) {
+                @Override
+                public boolean isEnabled(@Nullable java.awt.event.KeyEvent e) {
+                    return e != null || mySelection.get() != null;
+                }
+            }.withMnemonicKey(KeyCode.C.getCode());
+        }
+        list.add(copyActionPresentation);
+
+        TerminalAction pasteActionPresentation;
+        if (this.mySettingsProvider.getPasteActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            pasteActionPresentation = new FXTerminalAction(presentation, input -> {
+                handlePaste();
+                return true;
+            }).withMnemonicKey(KeyCode.P).withEnabledSupplier(() -> getClipboardString() != null);
+        } else {
+            pasteActionPresentation = new TerminalAction(mySettingsProvider.getPasteActionPresentation(), input -> {
+                handlePaste();
+                return true;
+            }).withMnemonicKey(KeyCode.P.getCode()).withEnabledSupplier(() -> getClipboardString() != null);
+        }
+        list.add(pasteActionPresentation);
+
+        TerminalAction selectAllActionPresentation;
+        if (this.mySettingsProvider.getSelectAllActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            selectAllActionPresentation = new FXTerminalAction(presentation, input -> {
+                selectAll();
+                return true;
+            });
+        } else {
+            selectAllActionPresentation = new TerminalAction(this.mySettingsProvider.getSelectAllActionPresentation(), input -> {
+                selectAll();
+                return true;
+            });
+        }
+        list.add(selectAllActionPresentation);
+
+        TerminalAction clearBufferActionPresentation;
+        if (this.mySettingsProvider.getClearBufferActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            clearBufferActionPresentation = new FXTerminalAction(presentation, input -> {
+                clearBuffer();
+                return true;
+            }).withMnemonicKey(KeyCode.K).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true);
+        } else {
+            clearBufferActionPresentation = new TerminalAction(this.mySettingsProvider.getClearBufferActionPresentation(), input -> {
+                clearBuffer();
+                return true;
+            }).withMnemonicKey(KeyCode.K.getCode()).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true);
+        }
+        list.add(clearBufferActionPresentation);
+
+        TerminalAction pageUpActionPresentation;
+        if (this.mySettingsProvider.getPageUpActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            pageUpActionPresentation = new FXTerminalAction(presentation, input -> {
+                pageUp();
+                return true;
+            }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true);
+        } else {
+            pageUpActionPresentation = new TerminalAction(this.mySettingsProvider.getPageUpActionPresentation(), input -> {
+                pageUp();
+                return true;
+            }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true);
+        }
+        list.add(pageUpActionPresentation);
+
+        TerminalAction pageDownActionPresentation;
+        if (this.mySettingsProvider.getPageDownActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            pageDownActionPresentation = new FXTerminalAction(presentation, input -> {
+                pageDown();
+                return true;
+            }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer());
+        } else {
+            pageDownActionPresentation = new TerminalAction(this.mySettingsProvider.getPageDownActionPresentation(), input -> {
+                pageDown();
+                return true;
+            }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer());
+        }
+        list.add(pageDownActionPresentation);
+
+        TerminalAction lineUpActionPresentation;
+        if (this.mySettingsProvider.getLineUpActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            lineUpActionPresentation = new FXTerminalAction(presentation, input -> {
+                scrollUp();
+                return true;
+            }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true);
+        } else {
+            lineUpActionPresentation = new TerminalAction(this.mySettingsProvider.getLineUpActionPresentation(), input -> {
+                scrollUp();
+                return true;
+            }).withEnabledSupplier(() -> !myTerminalTextBuffer.isUsingAlternateBuffer()).separatorBefore(true);
+        }
+        list.add(lineUpActionPresentation);
+
+        TerminalAction lineDownActionPresentation;
+        if (this.mySettingsProvider.getLineDownActionPresentation() instanceof FXTerminalActionPresentation presentation) {
+            lineDownActionPresentation = new FXTerminalAction(presentation, input -> {
+                scrollDown();
+                return true;
+            });
+        } else {
+            lineDownActionPresentation = new TerminalAction(this.mySettingsProvider.getLineDownActionPresentation(), input -> {
+                scrollDown();
+                return true;
+            });
+        }
+        list.add(lineDownActionPresentation);
+
         // 扩展功能
         if (mySettingsProvider instanceof TtyTermSettingsProvider provider) {
             list = new ArrayList<>(list);
@@ -2176,8 +2276,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             if (e.isControlDown() && !e.isMetaDown() && !e.isShiftDown() && !e.isAltDown() && this.handleCtrlKeyPressed(keycode, keychar)) {
                 return true;
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             JulLog.error("Error sending pressed key to emulator", ex);
         }
         return false;
@@ -2247,8 +2346,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         if (!Character.isISOControl(character.codePointAt(0))) {// keys filtered out here will be processed in processTerminalKeyPressed
             try {
                 return processCharacter(e, character.charAt(0));
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 JulLog.error("Error sending typed key to emulator", ex);
             }
         }
@@ -2317,6 +2415,20 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     private boolean handleCopy(@Nullable KeyEvent e) {
         boolean ctrlC = e != null && e.getCode() == KeyCode.C && e.isControlDown() && !e.isAltDown() && !e.isMetaDown() && !e.isShiftDown();
+        boolean sendCtrlC = ctrlC && mySelection.get() == null;
+        handleCopy(ctrlC, false);
+        return !sendCtrlC;
+    }
+
+    private boolean handleCopy(java.awt.event.KeyEvent e) {
+        boolean ctrlC = e != null
+                && e.getID() == java.awt.event.KeyEvent.KEY_PRESSED          // AWT 需要区分事件类型
+                && e.getKeyCode() == java.awt.event.KeyEvent.VK_C
+                && e.isControlDown()
+                && !e.isAltDown()
+                && !e.isMetaDown()
+                && !e.isShiftDown();
+
         boolean sendCtrlC = ctrlC && mySelection.get() == null;
         handleCopy(ctrlC, false);
         return !sendCtrlC;
@@ -2461,6 +2573,10 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             this.selectedText.set(this.getSelectionText());
         }
         this.updateSelectedText = true;
+    }
+
+    private Point2D createPoint(ContextMenuEvent e) {
+        return new Point2D(e.getX(), e.getY());
     }
 
     private Point2D createPoint(MouseEvent e) {

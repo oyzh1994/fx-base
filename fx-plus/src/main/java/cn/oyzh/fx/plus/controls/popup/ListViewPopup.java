@@ -210,7 +210,7 @@ public class ListViewPopup<E> extends FXPopup {
      * @param ownerNode 父节点
      * @param event     鼠标事件
      */
-    public void show( Node ownerNode,  MouseEvent event) {
+    public void show(Node ownerNode, MouseEvent event) {
         this.show(ownerNode, event.getScreenX(), event.getScreenY());
     }
 

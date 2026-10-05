@@ -1,14 +1,22 @@
 package cn.oyzh.fx.plus.test;
 
+import cn.oyzh.fx.gui.svg.glyph.AddSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.MessageSVGGlyph;
 import cn.oyzh.fx.plus.controls.FXHeaderBar;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
-import cn.oyzh.fx.plus.theme.ThemeManager;
-import cn.oyzh.fx.plus.theme.Themes;
+import cn.oyzh.fx.plus.information.MessageBox;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -54,12 +62,27 @@ public class CustomTitleBarTest1 extends Application {
         hBox.addChild(button7);
         hBox.addChild(button8);
         hBox.addChild(button9);
+        MenuBar menuBar = new MenuBar();
+
+        Menu menu1 = new Menu("功能");
+        menu1.getItems().add(new MenuItem("消息",new MessageSVGGlyph()));
+        menu1.getItems().add(new MenuItem("工具"));
+        menu1.getItems().add(new MenuItem("密钥"));
+        Menu menu2 = new Menu("帮助");
+        menu2.getItems().add(new MenuItem("关于"));
+        menu2.getItems().add(new MenuItem("退出"));
+        menuBar.getMenus().add(menu1);
+        menuBar.getMenus().add(menu2);
+        menuBar.setUseSystemMenuBar(true);
+
+        hBox.addChild(menuBar);
+
         headerBar.setContent(hBox);
         headerBar.setTitle("测试标题");
         headerBar.setStyle("-fx-background-color: red;-fx-text-fill: red;-fx-fill: red");
 
         System.out.println(headerBar.getStyle());
-        Set<Node> nodes= headerBar.lookupAll("*");
+        Set<Node> nodes = headerBar.lookupAll("*");
         for (Node node : nodes) {
             System.out.println(node);
         }

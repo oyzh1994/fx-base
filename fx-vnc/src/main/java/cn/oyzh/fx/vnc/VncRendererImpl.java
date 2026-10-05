@@ -33,10 +33,7 @@ import com.glavsoft.transport.Transport;
 import javafx.scene.image.PixelBuffer;
 import javafx.scene.image.WritableImage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.IntBuffer;
 
 /**
@@ -86,43 +83,83 @@ public class VncRendererImpl extends Renderer implements Destroyable {
 
     /**
      * Draw JPEG image data into the framebuffer.
-     * Uses ImageIO for synchronous JPEG decoding (does not require AWT event thread).
+     * Uses JavaFX {@link javafx.scene.image.Image} for synchronous JPEG decoding.
      */
     @Override
     public void drawJpegImage(byte[] bytes, int offset, int jpegBufferLength,
                               FramebufferUpdateRectangle rect) {
+        // JavaFX Image 解码失败不会抛异常，而是设置 isError 标志
+        javafx.scene.image.Image jpegImage = new javafx.scene.image.Image(
+                new ByteArrayInputStream(bytes, offset, jpegBufferLength));
+        if (jpegImage.isError() || jpegImage.getWidth() <= 0 || jpegImage.getHeight() <= 0) {
+            return;
+        }
+
+        int imgWidth = (int) jpegImage.getWidth();
+        int imgHeight = (int) jpegImage.getHeight();
+
+        // 以与 pixels 缓冲一致的预乘 ARGB 格式读取像素
+        int[] rgbArray = new int[imgWidth * imgHeight];
+        jpegImage.getPixelReader().getPixels(0, 0, imgWidth, imgHeight,
+                javafx.scene.image.PixelFormat.getIntArgbPreInstance(),
+                rgbArray, 0, imgWidth);
+
+        // Copy into the framebuffer pixels at the specified rectangle
+        lock.lock();
         try {
-            BufferedImage jpegImage = ImageIO.read(
-                    new ByteArrayInputStream(bytes, offset, jpegBufferLength));
-            if (jpegImage == null) return;
+            // Determine actual copy dimensions (min of JPEG size and rect size)
+            int copyWidth = Math.min(imgWidth, rect.width);
+            int copyHeight = Math.min(imgHeight, rect.height);
 
-            int imgWidth = jpegImage.getWidth();
-            int imgHeight = jpegImage.getHeight();
-
-            // Read ARGB pixels from the decoded JPEG
-            int[] rgbArray = new int[imgWidth * imgHeight];
-            jpegImage.getRGB(0, 0, imgWidth, imgHeight, rgbArray, 0, imgWidth);
-
-            // Copy into the framebuffer pixels at the specified rectangle
-            lock.lock();
-            try {
-                // Determine actual copy dimensions (min of JPEG size and rect size)
-                int copyWidth = Math.min(imgWidth, rect.width);
-                int copyHeight = Math.min(imgHeight, rect.height);
-
-                for (int row = 0; row < copyHeight; row++) {
-                    int srcPos = row * imgWidth;
-                    int dstPos = (rect.y + row) * width + rect.x;
-                    System.arraycopy(rgbArray, srcPos, pixels, dstPos, copyWidth);
-                }
-            } finally {
-                lock.unlock();
+            for (int row = 0; row < copyHeight; row++) {
+                int srcPos = row * imgWidth;
+                int dstPos = (rect.y + row) * width + rect.x;
+                System.arraycopy(rgbArray, srcPos, pixels, dstPos, copyWidth);
             }
-        } catch (IOException e) {
-            // JPEG decode failed — the data may be corrupted
-            // Ignore and let the next framebuffer update overwrite
+        } finally {
+            lock.unlock();
         }
     }
+
+    ///**
+    // * Draw JPEG image data into the framebuffer.
+    // * Uses ImageIO for synchronous JPEG decoding (does not require AWT event thread).
+    // */
+    //@Override
+    //public void drawJpegImage(byte[] bytes, int offset, int jpegBufferLength,
+    //                          FramebufferUpdateRectangle rect) {
+    //    try {
+    //        BufferedImage jpegImage = ImageIO.read(
+    //                new ByteArrayInputStream(bytes, offset, jpegBufferLength));
+    //        if (jpegImage == null) return;
+    //
+    //        int imgWidth = jpegImage.getWidth();
+    //        int imgHeight = jpegImage.getHeight();
+    //
+    //        // Read ARGB pixels from the decoded JPEG
+    //        int[] rgbArray = new int[imgWidth * imgHeight];
+    //        jpegImage.getRGB(0, 0, imgWidth, imgHeight, rgbArray, 0, imgWidth);
+    //
+    //        // Copy into the framebuffer pixels at the specified rectangle
+    //        lock.lock();
+    //        try {
+    //            // Determine actual copy dimensions (min of JPEG size and rect size)
+    //            int copyWidth = Math.min(imgWidth, rect.width);
+    //            int copyHeight = Math.min(imgHeight, rect.height);
+    //
+    //            for (int row = 0; row < copyHeight; row++) {
+    //                int srcPos = row * imgWidth;
+    //                int dstPos = (rect.y + row) * width + rect.x;
+    //                System.arraycopy(rgbArray, srcPos, pixels, dstPos, copyWidth);
+    //            }
+    //        } finally {
+    //            lock.unlock();
+    //        }
+    //    } catch (IOException e) {
+    //        // JPEG decode failed — the data may be corrupted
+    //        // Ignore and let the next framebuffer update overwrite
+    //    }
+    //}
 
     public VncSoftCursorImpl getCursor() {
         return (VncSoftCursorImpl) cursor;

@@ -12,7 +12,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2026/6/27
  */
-public class BusinessDarkTheme implements Theme, ThemeStyle {
+public class BusinessDarkTheme implements ThemeStyle {
 
     private static final Theme THEME = Theme.of("Business Dark", "/fx-plus/css/theme/business-dark.css", true);
 

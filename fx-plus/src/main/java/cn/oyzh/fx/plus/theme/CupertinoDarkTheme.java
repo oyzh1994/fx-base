@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class CupertinoDarkTheme implements Theme, ThemeStyle {
+public class CupertinoDarkTheme implements ThemeStyle {
 
     private static final CupertinoDark THEME = new CupertinoDark();
 

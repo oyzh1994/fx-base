@@ -11,7 +11,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2026/6/27
  */
-public class CyberpunkDarkTheme implements Theme, ThemeStyle {
+public class CyberpunkDarkTheme implements ThemeStyle {
 
     private static final Theme THEME = Theme.of("Cyberpunk Dark", "/fx-plus/css/theme/cyberpunk-dark.css", true);
 

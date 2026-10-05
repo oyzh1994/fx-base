@@ -115,20 +115,21 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
     }
 
     @Override
-    public void destroy() {
-        this.clearItems();
-        this.setContextMenu(null);
-        if (this.getSkin() != null) {
-            this.getSkin().dispose();
-        }
-        NodeDestroyUtil.destroyObject(this);
-    }
-
-    @Override
     public void setTipText(String tipText) {
         TipAdapter.super.setTipText(tipText);
         if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
             this.setPromptText(tipText);
         }
+    }
+
+    @Override
+    public void destroy() {
+        //        this.clearItems();
+        //        this.setContextMenu(null);
+        //        if (this.getSkin() != null) {
+        //            this.getSkin().dispose();
+        //        }
+        NodeDestroyUtil.destroyNode(this);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

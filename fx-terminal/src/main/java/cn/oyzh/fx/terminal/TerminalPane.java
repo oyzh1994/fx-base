@@ -2,6 +2,7 @@ package cn.oyzh.fx.terminal;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
@@ -508,6 +509,16 @@ public abstract class TerminalPane extends Editor implements Terminal {
     @Override
     public void flushCaret() {
         this.caretPosition(this.getNOP());
+    }
+
+    /**
+     * 刷新光标并移动到尾部
+     */
+    public void flushAndMoveCaretEnd() {
+        ExecutorUtil.start(() -> {
+            this.flushCaret();
+            this.moveCaretEnd();
+        }, 50);
     }
 
     @Override

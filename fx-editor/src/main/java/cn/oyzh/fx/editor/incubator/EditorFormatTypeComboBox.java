@@ -20,21 +20,6 @@ public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> imple
 
     {
         NodeManager.init(this);
-        this.setTipText(I18nHelper.format());
-        this.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(EditorFormatType formatType) {
-                if (formatType == null) {
-                    return "";
-                }
-                return formatType.getName();
-            }
-
-            @Override
-            public EditorFormatType fromString(String s) {
-                return null;
-            }
-        });
     }
 
     /**
@@ -63,5 +48,25 @@ public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> imple
             this.addItem(formatType);
         }
         return this.getItems();
+    }
+
+    @Override
+    public void initNode() {
+        this.setTipText(I18nHelper.format());
+        this.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(EditorFormatType formatType) {
+                if (formatType == null) {
+                    return "";
+                }
+                return formatType.getName();
+            }
+
+            @Override
+            public EditorFormatType fromString(String s) {
+                return null;
+            }
+        });
+        super.initNode();
     }
 }

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.tty;
 
+import cn.oyzh.fx.tty.zmodem.TtyZModemTtyConnector;
 import com.jediterm.core.Color;
 
 /**
@@ -40,5 +41,16 @@ public class TtyTerminalUtil {
         int blue = (int) (color1.getBlue() * 255);
         int opacity = (int) (color1.getOpacity() * 255);
         return new Color(red, green, blue, opacity);
+    }
+
+    /**
+     * 创建zModem协议的tty连接器
+     *
+     * @param widget    tty组件
+     * @param connector tty连接器
+     * @return ShellZModemTtyConnector
+     */
+    public static TtyZModemTtyConnector createZModemTtyConnector(TtyTermWidget widget, TtyStreamable connector) {
+        return new TtyZModemTtyConnector(widget.getTerminal(), connector);
     }
 }

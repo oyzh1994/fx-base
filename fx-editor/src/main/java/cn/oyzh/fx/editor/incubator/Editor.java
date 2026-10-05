@@ -119,8 +119,13 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 成对符号映射 (开始 → 结束)
      */
     private static final Map<String, String> PAIR_MAP = Map.of(
-            "{", "}", "(", ")", "[", "]",
-            "\"", "\"", "'", "'", "`", "`"
+            "{", "}",
+            "(", ")",
+            "[", "]",
+            "\"", "\"",
+            "'", "'",
+            "`", "`",
+            "<", ">"
     );
 
     /**
@@ -211,12 +216,12 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 初始化编辑器
      */
     private void initEditor() {
-        // 监听父节点
-        this.parentProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                this.destroy();
-            }
-        });
+        //        // 监听父节点
+        //        this.parentProperty().addListener((observable, oldValue, newValue) -> {
+        //            if (newValue == null) {
+        //                this.destroy();
+        //            }
+        //        });
         //        // 处理输入法不支持中文的问题
         //        EditorUtil.setupIMESupport(this);
         // 默认自动换行
@@ -257,7 +262,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
             if (CollectionUtil.isNotEmpty(items)) {
-                this.showContextMenu(items, e.getScreenX() - 10, e.getScreenY() - 10);
+                this.showContextMenu(items, e.getScreenX() , e.getScreenY());
             } else {
                 this.clearContextMenu();
             }
@@ -440,7 +445,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * @param text 内容
      */
     public void text(String text) {
-        FXUtil.runWait(() -> super.setText(text));
+        if (StringUtil.notEquals(this.getText(), text)) {
+            FXUtil.runWait(() -> super.setText(text));
+        }
     }
 
     /**
@@ -1442,7 +1449,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      *
      * @return 编辑器字体
      */
-    protected Font getEditorFont() {
+    public Font getEditorFont() {
         return this.editorFont;
     }
 
@@ -1451,7 +1458,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      *
      * @param editorFont 编辑器字体
      */
-    protected void setEditorFont(Font editorFont) {
+    public void setEditorFont(Font editorFont) {
         this.editorFont = editorFont;
         this.changeFont(editorFont);
     }
@@ -1462,11 +1469,18 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         Font editorFont = this.getEditorFont();
         if (editorFont != null) {
             font1 = editorFont;
-        } else {
+        } else if (font != null) {
             font1 = font;
+        } else {
+            font1 = super.getFont();
         }
         // 我也不知道为啥这样写才能生效
-        FXUtil.runPulse(() -> this.setFont(font1));
+        Runnable func = () -> {
+            this.setFont(font1);
+            this.applyCss();
+            this.layout();
+        };
+        FXUtil.runWait(func);
     }
 
     @Override
@@ -1603,13 +1617,14 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         if (closeChar == null) {
             return;
         }
-        e.consume();
+//        e.consume();
 
         SelectionSegment segment = this.getSelection();
         if (segment != null && !segment.isCollapsed()) {
             // 有选区 — 包裹选区
             IndexRange range = this.getSelectionRange();
             if (range != null) {
+                e.consume();
                 String selText = this.getSelectedText();
                 this.replaceText(range.getStart(), range.getEnd(), ch + selText + closeChar);
                 this.selectRange(range.getStart() + 1, range.getStart() + 1 + selText.length());
@@ -1619,9 +1634,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             int caretPos = this.caretPosition();
             String text = this.getText();
             if (caretPos < text.length() && String.valueOf(text.charAt(caretPos)).equals(closeChar)) {
+                e.consume();
                 // 光标右边已是结束符，直接跳过
                 this.positionCaret(caretPos + 1);
             } else {
+                e.consume();
                 // 插入成对符号，光标居中
                 this.replaceText(caretPos, caretPos, ch + closeChar);
                 this.positionCaret(caretPos + 1);

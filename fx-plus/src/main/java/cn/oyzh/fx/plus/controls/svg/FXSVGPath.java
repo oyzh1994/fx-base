@@ -1,13 +1,15 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.PropAdapter;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 
 /**
  * @author oyzh
  * @since 2025/01/07
  */
-public class FXSVGPath extends SVGPath implements PropAdapter {
+public class FXSVGPath extends SVGPath implements PropAdapter, Destroyable {
 
     public FXSVGPath() {
         super();
@@ -16,6 +18,16 @@ public class FXSVGPath extends SVGPath implements PropAdapter {
     public FXSVGPath(String content) {
         super();
         super.setContent(content);
+    }
+
+    /**
+     * 设置颜色
+     *
+     * @param color 颜色
+     */
+    public void setColor(Paint color) {
+        this.setFill(color);
+        this.setStroke(color);
     }
 
     // public WritableImage snapshot() {
@@ -30,4 +42,11 @@ public class FXSVGPath extends SVGPath implements PropAdapter {
     //     FXUtil.runWait(()-> this.snapshot(new SnapshotParameters(), writableImage));
     //     return writableImage;
     // }
+
+    @Override
+    public void destroy() {
+        this.fillProperty().unbind();
+        this.fillRuleProperty().unbind();
+        this.contentProperty().unbind();
+    }
 }

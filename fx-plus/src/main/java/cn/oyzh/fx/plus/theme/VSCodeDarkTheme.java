@@ -11,7 +11,7 @@ import java.util.Locale;
  * @author oyzh
  * @since 2026/6/27
  */
-public class VSCodeDarkTheme implements Theme, ThemeStyle {
+public class VSCodeDarkTheme implements ThemeStyle {
 
     private static final Theme THEME = Theme.of("VS Code Dark", "/fx-plus/css/theme/vscode-dark.css", true);
 

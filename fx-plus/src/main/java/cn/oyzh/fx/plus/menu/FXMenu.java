@@ -1,8 +1,10 @@
 package cn.oyzh.fx.plus.menu;
 
+import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
@@ -15,7 +17,7 @@ import javafx.scene.control.Menu;
  * @author oyzh
  * @since 2025/07/24
  */
-public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdapter {
+public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdapter, Destroyable {
 
     {
         NodeManager.init(this);
@@ -32,6 +34,14 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdap
 
     public FXMenu() {
         super();
+    }
+
+    public FXMenu(String text) {
+        this(null, text, null);
+    }
+
+    public FXMenu(String text, Runnable action) {
+        this(null, text, action);
     }
 
     public FXMenu(Node graphic, String text, Runnable action) {
@@ -59,5 +69,13 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdap
             w += NodeUtil.getWidth(graphic);
         }
         return w;
+    }
+
+    @Override
+    public void destroy() {
+        this.setText(null);
+        this.setGraphic(null);
+        this.setOnAction(null);
+        NodeDestroyUtil.destroyObject(this);
     }
 }

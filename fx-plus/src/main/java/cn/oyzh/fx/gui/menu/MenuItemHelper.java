@@ -630,6 +630,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSnippet(), new DeleteSVGGlyph(), action);
     }
 
+    public static FXMenuItem deleteSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSchema(), new DeleteSVGGlyph(), action);
+    }
+
     public static FXMenuItem deleteBucket(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteBucket(), new DeleteSVGGlyph(), action);
     }
@@ -744,6 +748,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem reloadDatabase(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadDatabase(), new RefreshSVGGlyph(), action);
+    }
+
+    public static FXMenuItem reloadSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.reloadSchema(), new RefreshSVGGlyph(), action);
     }
 
     public static FXMenuItem serverInfo(Runnable action) {
@@ -1046,6 +1054,10 @@ public class MenuItemHelper {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addDatabase(), new AddSVGGlyph(), action);
     }
 
+    public static FXMenuItem addSchema(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addSchema(), new AddSVGGlyph(), action);
+    }
+
     public static FXMenuItem closeAllTab(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nResourceBundle.i18nString("base.closeAllTab"), action);
     }
@@ -1068,6 +1080,10 @@ public class MenuItemHelper {
 
     public static FXMenuItem closeOtherConnectTab(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nResourceBundle.i18nString("base.closeOtherConnectTab"), action);
+    }
+
+    public static FXMenuItem cancel(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cancel(), new CancelSVGGlyph(), action);
     }
 
     public static FXMenuItem cancelConnect(Runnable action) {

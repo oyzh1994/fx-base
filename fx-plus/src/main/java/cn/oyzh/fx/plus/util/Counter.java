@@ -54,6 +54,19 @@ public class Counter {
     /**
      * 递增成功数量
      *
+     */
+    public void incr(int count) {
+        if (count == 0) {
+        } else if (count > 0) {
+            this.incrSuccess(count);
+        } else {
+            this.incrFail(count);
+        }
+    }
+
+    /**
+     * 递增成功数量
+     *
      * @param successCount 成功数量
      */
     public void incrSuccess(int successCount) {
@@ -157,7 +170,7 @@ public class Counter {
      * @param tpl 模板
      * @return 结果
      */
-    public String format( String tpl) {
+    public String format(String tpl) {
         if (this.sum != null) {
             tpl = tpl.replace("$sum", String.valueOf(this.sum));
         }

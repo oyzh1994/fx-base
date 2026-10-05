@@ -3,9 +3,6 @@ package cn.oyzh.fx.editor.incubator.control;
 
 import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.fx.gui.text.field.LimitTextField;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import javafx.scene.control.Skin;
 
 /**
  * @author oyzh
@@ -14,13 +11,13 @@ import javafx.scene.control.Skin;
 public class JsonTextFiled extends LimitTextField {
 
     @Override
-    public JsonTextFiledSkin skin() {
-        return (JsonTextFiledSkin) super.skin();
+    public LongTextFiledSkin skin() {
+        return (LongTextFiledSkin) super.skin();
     }
 
     @Override
-    protected JsonTextFiledSkin createDefaultSkin() {
-        return new JsonTextFiledSkin(this);
+    protected LongTextFiledSkin createDefaultSkin() {
+        return new LongTextFiledSkin(this);
     }
 
     public void setEnlargeWidth(double width) {
@@ -52,12 +49,12 @@ public class JsonTextFiled extends LimitTextField {
     @Override
     public Object getValue() {
         String text = this.getText();
-        return this.isArray() ? JSONArray.parseArray(text) : JSONObject.parseObject(text);
+        return this.isArray() ? JSONUtil.parseArray(text) : JSONUtil.parseObject(text);
     }
 
     @Override
     public void formatValue() {
-        this.setText(format(super.getValue()));
+        this.setText(format(super.value()));
     }
 
     public static String format(Object val) {

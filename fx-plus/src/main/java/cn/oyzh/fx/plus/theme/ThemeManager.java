@@ -30,6 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ThemeManager {
 
     static {
+        // 清除缓存文件
         clearThemeTmp();
     }
 

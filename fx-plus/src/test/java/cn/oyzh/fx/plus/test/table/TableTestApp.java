@@ -15,7 +15,7 @@ public class TableTestApp extends FXApplication {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         super.start(primaryStage);
         // 显示主页面
         // StageManager.showStage(TableTestController.class);
