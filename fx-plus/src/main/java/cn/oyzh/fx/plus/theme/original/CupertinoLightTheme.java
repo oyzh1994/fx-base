@@ -20,11 +20,6 @@ public class CupertinoLightTheme implements ThemeStyle {
     }
 
     @Override
-    public String getDesc(Locale locale) {
-        return THEME.getName();
-    }
-
-    @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
     }

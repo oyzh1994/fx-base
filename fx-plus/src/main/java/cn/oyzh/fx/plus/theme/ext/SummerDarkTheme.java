@@ -1,34 +1,30 @@
-package cn.oyzh.fx.plus.theme.original;
+package cn.oyzh.fx.plus.theme.ext;
 
-import atlantafx.base.theme.NordDark;
+import com.dlsc.atlantafx.themes.SummerDark;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
 
 /**
+ * Summer Dark 扩展主题
+ *
  * @author oyzh
- * @since 2024/4/3
+ * @since 2026/10/6
  */
-public class NordDarkTheme implements ThemeStyle {
+public class SummerDarkTheme implements ThemeStyle {
 
-    private static final NordDark THEME = new NordDark();
+    private static final SummerDark THEME = new SummerDark();
 
     @Override
     public String getName() {
         return THEME.getName();
     }
 
-
     @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
     }
-
-//    @Override
-//    public String getCompressedUserAgentStylesheet() {
-//        return FXStyle.ATLANTA_FX_NORD_DARK;
-//    }
 
     @Override
     public String getUserAgentStylesheetBSS() {
@@ -42,16 +38,16 @@ public class NordDarkTheme implements ThemeStyle {
 
     @Override
     public Color getAccentColor() {
-        return Color.valueOf("#98aeca");
+        return Color.valueOf("#d48800");
     }
 
     @Override
     public Color getForegroundColor() {
-        return Color.valueOf("#ECEFF4");
+        return Color.valueOf("#d0e8ff");
     }
 
     @Override
     public Color getBackgroundColor() {
-        return Color.valueOf("#2E3440");
+        return Color.valueOf("#081430");
     }
 }

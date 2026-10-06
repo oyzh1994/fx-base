@@ -20,12 +20,6 @@ public class NordLightTheme implements ThemeStyle {
     }
 
     @Override
-    public String getDesc(Locale locale) {
-        return THEME.getName();
-        // return I18nHelper.themeNordLight();
-    }
-
-    @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
     }

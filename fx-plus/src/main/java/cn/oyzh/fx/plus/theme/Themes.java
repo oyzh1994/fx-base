@@ -16,6 +16,31 @@ import cn.oyzh.fx.plus.theme.custom.LiquidGlassLightTheme;
 import cn.oyzh.fx.plus.theme.custom.SystemTheme;
 import cn.oyzh.fx.plus.theme.custom.VSCodeDarkTheme;
 import cn.oyzh.fx.plus.theme.custom.VSCodeLightTheme;
+import cn.oyzh.fx.plus.theme.ext.ArmyDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.ArmyLightTheme;
+import cn.oyzh.fx.plus.theme.ext.AutumnTheme;
+import cn.oyzh.fx.plus.theme.ext.BlackyTheme;
+import cn.oyzh.fx.plus.theme.ext.BlueDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.BlueLightTheme;
+import cn.oyzh.fx.plus.theme.ext.BrownyTheme;
+import cn.oyzh.fx.plus.theme.ext.FallDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.FallLightTheme;
+import cn.oyzh.fx.plus.theme.ext.GithubDarkColorblindTheme;
+import cn.oyzh.fx.plus.theme.ext.GithubDarkTritanopiaTheme;
+import cn.oyzh.fx.plus.theme.ext.GithubLightColorblindTheme;
+import cn.oyzh.fx.plus.theme.ext.GithubLightDefaultTheme;
+import cn.oyzh.fx.plus.theme.ext.GithubLightTritanopiaTheme;
+import cn.oyzh.fx.plus.theme.ext.GithubSoftDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.NavyDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.NavyLightTheme;
+import cn.oyzh.fx.plus.theme.ext.NewsTheme;
+import cn.oyzh.fx.plus.theme.ext.SpringDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.SpringLightTheme;
+import cn.oyzh.fx.plus.theme.ext.SummerDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.SummerLightTheme;
+import cn.oyzh.fx.plus.theme.ext.WinterDarkTheme;
+import cn.oyzh.fx.plus.theme.ext.WinterLightTheme;
+import cn.oyzh.fx.plus.theme.ext.YachtTheme;
 import cn.oyzh.fx.plus.theme.original.DraculaTheme;
 import cn.oyzh.fx.plus.theme.original.NordDarkTheme;
 import cn.oyzh.fx.plus.theme.original.NordLightTheme;
@@ -73,6 +98,56 @@ public class Themes {
 
     public static final BusinessDarkTheme BUSINESS_DARK = new BusinessDarkTheme();
 
+    public static final ArmyLightTheme ARMY_LIGHT = new ArmyLightTheme();
+
+    public static final ArmyDarkTheme ARMY_DARK = new ArmyDarkTheme();
+
+    public static final BlueLightTheme BLUE_LIGHT = new BlueLightTheme();
+
+    public static final BlueDarkTheme BLUE_DARK = new BlueDarkTheme();
+
+    public static final FallLightTheme FALL_LIGHT = new FallLightTheme();
+
+    public static final FallDarkTheme FALL_DARK = new FallDarkTheme();
+
+    public static final NavyLightTheme NAVY_LIGHT = new NavyLightTheme();
+
+    public static final NavyDarkTheme NAVY_DARK = new NavyDarkTheme();
+
+    public static final SpringLightTheme SPRING_LIGHT = new SpringLightTheme();
+
+    public static final SpringDarkTheme SPRING_DARK = new SpringDarkTheme();
+
+    public static final SummerLightTheme SUMMER_LIGHT = new SummerLightTheme();
+
+    public static final SummerDarkTheme SUMMER_DARK = new SummerDarkTheme();
+
+    public static final WinterLightTheme WINTER_LIGHT = new WinterLightTheme();
+
+    public static final WinterDarkTheme WINTER_DARK = new WinterDarkTheme();
+
+    public static final GithubLightDefaultTheme GITHUB_LIGHT_DEFAULT = new GithubLightDefaultTheme();
+
+    public static final GithubSoftDarkTheme GITHUB_SOFT_DARK = new GithubSoftDarkTheme();
+
+    public static final GithubLightColorblindTheme GITHUB_LIGHT_COLORBLIND = new GithubLightColorblindTheme();
+
+    public static final GithubDarkColorblindTheme GITHUB_DARK_COLORBLIND = new GithubDarkColorblindTheme();
+
+    public static final GithubLightTritanopiaTheme GITHUB_LIGHT_TRITANOPIA = new GithubLightTritanopiaTheme();
+
+    public static final GithubDarkTritanopiaTheme GITHUB_DARK_TRITANOPIA = new GithubDarkTritanopiaTheme();
+
+    public static final AutumnTheme AUTUMN = new AutumnTheme();
+
+    public static final BlackyTheme BLACKY = new BlackyTheme();
+
+    public static final BrownyTheme BROWNY = new BrownyTheme();
+
+    public static final NewsTheme NEWS = new NewsTheme();
+
+    public static final YachtTheme YACHT = new YachtTheme();
+
     public static final BusinessLightTheme BUSINESS_LIGHT = new BusinessLightTheme();
 
     //public static final BlackOnWhiteTheme BLACK_ON_WHITE = new BlackOnWhiteTheme();
@@ -102,7 +177,7 @@ public class Themes {
      * @return 主题列表
      */
     public static List<ThemeStyle> themes() {
-        List<ThemeStyle> themes = new ArrayList<>(12);
+        List<ThemeStyle> themes = new ArrayList<>(44);
         themes.add(PRIMER_LIGHT);
         themes.add(PRIMER_DARK);
         themes.add(NORD_LIGHT);
@@ -122,6 +197,31 @@ public class Themes {
         themes.add(ANIME_WARM_DARK);
         themes.add(BUSINESS_LIGHT);
         themes.add(BUSINESS_DARK);
+        themes.add(ARMY_LIGHT);
+        themes.add(ARMY_DARK);
+        themes.add(BLUE_LIGHT);
+        themes.add(BLUE_DARK);
+        themes.add(FALL_LIGHT);
+        themes.add(FALL_DARK);
+        themes.add(NAVY_LIGHT);
+        themes.add(NAVY_DARK);
+        themes.add(SPRING_LIGHT);
+        themes.add(SPRING_DARK);
+        themes.add(SUMMER_LIGHT);
+        themes.add(SUMMER_DARK);
+        themes.add(WINTER_LIGHT);
+        themes.add(WINTER_DARK);
+        themes.add(GITHUB_LIGHT_DEFAULT);
+        themes.add(GITHUB_SOFT_DARK);
+        themes.add(GITHUB_LIGHT_COLORBLIND);
+        themes.add(GITHUB_DARK_COLORBLIND);
+        themes.add(GITHUB_LIGHT_TRITANOPIA);
+        themes.add(GITHUB_DARK_TRITANOPIA);
+        themes.add(AUTUMN);
+        themes.add(BLACKY);
+        themes.add(BROWNY);
+        themes.add(NEWS);
+        themes.add(YACHT);
         //themes.add(WHITE_ON_BLACK);
         //themes.add(BLACK_ON_WHITE);
         //themes.add(YELLOW_ON_BLACK);
@@ -169,6 +269,31 @@ public class Themes {
             case "ANIME WARM DARK", "ANIME_WARM_DARK" -> ANIME_WARM_DARK;
             case "BUSINESS LIGHT", "BUSINESS_LIGHT" -> BUSINESS_LIGHT;
             case "BUSINESS DARK", "BUSINESS_DARK" -> BUSINESS_DARK;
+            case "ARMY LIGHT", "ARMY_LIGHT" -> ARMY_LIGHT;
+            case "ARMY DARK", "ARMY_DARK" -> ARMY_DARK;
+            case "BLUE LIGHT", "BLUE_LIGHT" -> BLUE_LIGHT;
+            case "BLUE DARK", "BLUE_DARK" -> BLUE_DARK;
+            case "FALL LIGHT", "FALL_LIGHT" -> FALL_LIGHT;
+            case "FALL DARK", "FALL_DARK" -> FALL_DARK;
+            case "NAVY LIGHT", "NAVY_LIGHT" -> NAVY_LIGHT;
+            case "NAVY DARK", "NAVY_DARK" -> NAVY_DARK;
+            case "SPRING LIGHT", "SPRING_LIGHT" -> SPRING_LIGHT;
+            case "SPRING DARK", "SPRING_DARK" -> SPRING_DARK;
+            case "SUMMER LIGHT", "SUMMER_LIGHT" -> SUMMER_LIGHT;
+            case "SUMMER DARK", "SUMMER_DARK" -> SUMMER_DARK;
+            case "WINTER LIGHT", "WINTER_LIGHT" -> WINTER_LIGHT;
+            case "WINTER DARK", "WINTER_DARK" -> WINTER_DARK;
+            case "GITHUB LIGHT DEFAULT", "GITHUB_LIGHT_DEFAULT" -> GITHUB_LIGHT_DEFAULT;
+            case "GITHUB SOFT DARK", "GITHUB_SOFT_DARK" -> GITHUB_SOFT_DARK;
+            case "GITHUB LIGHT COLORBLIND", "GITHUB_LIGHT_COLORBLIND" -> GITHUB_LIGHT_COLORBLIND;
+            case "GITHUB DARK COLORBLIND", "GITHUB_DARK_COLORBLIND" -> GITHUB_DARK_COLORBLIND;
+            case "GITHUB LIGHT TRITANOPIA", "GITHUB_LIGHT_TRITANOPIA" -> GITHUB_LIGHT_TRITANOPIA;
+            case "GITHUB DARK TRITANOPIA", "GITHUB_DARK_TRITANOPIA" -> GITHUB_DARK_TRITANOPIA;
+            case "AUTUMN" -> AUTUMN;
+            case "BLACKY" -> BLACKY;
+            case "BROWNY" -> BROWNY;
+            case "NEWS" -> NEWS;
+            case "YACHT" -> YACHT;
             //case "WHITE ON BLACK", "WHITE_ON_BLACK" -> WHITE_ON_BLACK;
             //case "BLACK ON WHITE", "BLACK_ON_WHITE" -> BLACK_ON_WHITE;
             //case "YELLOW ON BLACK", "YELLOW_ON_BLACK" -> YELLOW_ON_BLACK;

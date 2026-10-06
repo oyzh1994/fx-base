@@ -96,6 +96,20 @@
             </exclusions>
         </dependency>
 
+        <!-- fx美化库扩展 -->
+        <!-- Source: https://mvnrepository.com/artifact/com.dlsc.atlantafx/themes -->
+        <dependency>
+            <groupId>com.dlsc.atlantafx</groupId>
+            <artifactId>themes</artifactId>
+            <version>1.9.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.mkpaz</groupId>
+                    <artifactId>atlantafx-base</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- fx美化库 -->
         <dependency>
             <groupId>io.github.mkpaz</groupId>

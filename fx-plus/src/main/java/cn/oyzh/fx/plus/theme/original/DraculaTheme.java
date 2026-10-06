@@ -20,12 +20,6 @@ public class DraculaTheme implements ThemeStyle {
     }
 
     @Override
-    public String getDesc(Locale locale) {
-        return THEME.getName();
-        // return I18nHelper.themeDracula();
-    }
-
-    @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
     }
