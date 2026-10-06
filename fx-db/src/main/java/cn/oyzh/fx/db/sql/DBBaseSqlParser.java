@@ -25,40 +25,30 @@ public class DBBaseSqlParser extends DBSqlParser {
     }
 
     @Override
-    public String removeComment() {
-        return SqlUtil.removeComments(this.sqlContent, this.database);
+    public String removeComment(String sql) {
+        return SqlUtil.removeComments(sql, this.database);
     }
-
-    private Boolean single;
-
-    private Boolean select;
 
     private List<String> sqlList;
 
     @Override
     public boolean isSingle() {
-        if (this.single != null) {
-            return this.single;
-        }
         return this.sqlList != null && this.sqlList.size() == 1;
     }
 
     @Override
-    public boolean isSelect() {
-        if (this.select != null) {
-            return this.select;
-        }
-        return SqlUtil.isQuery(this.sqlContent, this.database);
+    public boolean isSelect(String sql) {
+        return SqlUtil.isQuery(sql, this.database);
     }
 
     @Override
-    public boolean isFullColumn() {
-        return SqlUtil.isAllFieldQuery(this.sqlContent, this.database);
+    public boolean isFullColumn(String sql) {
+        return SqlUtil.isAllFieldQuery(sql, this.database);
     }
 
     @Override
     public List<String> parseSql() {
-        String sqlContent = this.removeComment();
+        String sqlContent = this.removeComment(this.sqlContent);
         List<String> sqlList = new ArrayList<>();
         boolean success = false;
         try {
@@ -67,8 +57,6 @@ public class DBBaseSqlParser extends DBSqlParser {
                 sql = sql.replace("\n", " ");
                 sqlList.add(sql);
             }
-            this.single = null;
-            this.select = null;
             success = true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -81,7 +69,7 @@ public class DBBaseSqlParser extends DBSqlParser {
 
     @Override
     public String parseSingleSql() {
-        String sqlContent = this.removeComment();
+        String sqlContent = this.removeComment(this.sqlContent);
         String sql = SqlUtil.singleStatement(sqlContent, this.database);
         if (sql != null) {
             sql = sql.replace("\n", " ");
@@ -92,17 +80,22 @@ public class DBBaseSqlParser extends DBSqlParser {
     }
 
     @Override
-    public String prettySql() {
+    public String prettySql(String sql) {
         try {
-            return SqlUtil.format(this.sqlContent, this.database);
+            return SqlUtil.format(sql, this.database);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return this.sqlContent;
+        return sql;
     }
 
     @Override
-    public String compressSql() throws Exception {
-        return SqlUtil.compressSql(this.sqlContent, this.database);
+    public String compressSql(String sql) {
+        try {
+            return SqlUtil.compressSql(sql, this.database);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return sql;
     }
 }

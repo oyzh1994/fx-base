@@ -456,31 +456,31 @@ public class DBUtil {
         return builder.toString();
     }
 
-    /**
-     * 是否查询全部字段
-     *
-     * @param sql sql
-     * @return 结果
-     */
-    public static boolean isFullColumn(DBDialect dialect, String sql) {
-        //        try {
-        //            sql = removeComment(sql);
-        //            DbType dbType = dialect.dbType();
-        //            List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, dbType, SQLParserFeature.SkipComments);
-        //            SQLStatement statement = sqlStatements.getFirst();
-        //            SchemaStatVisitor visitor = new SchemaStatVisitor(dbType);
-        //            statement.accept(visitor);
-        //            Collection<TableStat.Column> columns = visitor.getColumns();
-        //            if (CollectionUtil.isNotEmpty(columns)) {
-        //                for (TableStat.Column column : columns) {
-        //                    if (StringUtil.equals("*", column.getName())) {
-        //                        return true;
-        //                    }
-        //                }
-        //            }
-        //        } catch (Exception ex) {
-        //            ex.printStackTrace();
-        //        }
-        return DBSqlParser.getParser(sql, dialect).isFullColumn();
-    }
+//    /**
+//     * 是否查询全部字段
+//     *
+//     * @param sql sql
+//     * @return 结果
+//     */
+//    public static boolean isFullColumn(DBDialect dialect, String sql) {
+//        //        try {
+//        //            sql = removeComment(sql);
+//        //            DbType dbType = dialect.dbType();
+//        //            List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, dbType, SQLParserFeature.SkipComments);
+//        //            SQLStatement statement = sqlStatements.getFirst();
+//        //            SchemaStatVisitor visitor = new SchemaStatVisitor(dbType);
+//        //            statement.accept(visitor);
+//        //            Collection<TableStat.Column> columns = visitor.getColumns();
+//        //            if (CollectionUtil.isNotEmpty(columns)) {
+//        //                for (TableStat.Column column : columns) {
+//        //                    if (StringUtil.equals("*", column.getName())) {
+//        //                        return true;
+//        //                    }
+//        //                }
+//        //            }
+//        //        } catch (Exception ex) {
+//        //            ex.printStackTrace();
+//        //        }
+//        return DBSqlParser.getParser(sql, dialect).isFullColumn();
+//    }
 }

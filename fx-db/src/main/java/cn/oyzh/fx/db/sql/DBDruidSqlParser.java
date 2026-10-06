@@ -1,9 +1,9 @@
 package cn.oyzh.fx.db.sql;
 
+import cn.oyzh.common.db.SqlUtil;
 import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.db.DBDialect;
-import cn.oyzh.fx.db.util.DBUtil;
 import com.alibaba.druid.DbType;
 import com.alibaba.druid.sql.SQLUtils;
 import com.alibaba.druid.sql.ast.SQLStatement;
@@ -34,31 +34,37 @@ public class DBDruidSqlParser extends DBSqlParser {
     }
 
     @Override
-    public String removeComment() {
-        return DBUtil.removeComment(this.sqlContent);
+    public String removeComment(String sql) {
+        SQLStatement statement = SQLUtils.parseSingleStatement(sql, this.dbType, false);
+        return SqlUtil.removeComments(statement.toString());
     }
-
-    private Boolean single;
-
-    private Boolean select;
 
     private List<SQLStatement> sqlStatements;
 
     @Override
     public boolean isSingle() {
-        if (this.single != null) {
-            return this.single;
+        // druid无法解析这些语句，直接返回
+        if (this.dbType == DbType.mysql && StringUtil.startWithAnyIgnoreCase(sqlContent,
+                "SHOW VARIABLES LIKE",
+                "SHOW CREATE EVENT"
+        )) {
+            return true;
         }
         return this.sqlStatements != null && this.sqlStatements.size() == 1;
     }
 
     @Override
-    public boolean isSelect() {
-        if (this.select != null) {
-            return this.select;
+    public boolean isSelect(String sql) {
+        // druid无法解析这些语句，直接返回
+        if (this.dbType == DbType.mysql && StringUtil.startWithAnyIgnoreCase(sqlContent,
+                "SHOW VARIABLES LIKE",
+                "SHOW CREATE EVENT"
+        )) {
+            return true;
         }
-        if (CollectionUtil.isNotEmpty(this.sqlStatements)) {
-            SQLStatement statement = this.sqlStatements.getFirst();
+        List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, this.dbType, SQLParserFeature.SkipComments);
+        if (CollectionUtil.isNotEmpty(sqlStatements)) {
+            SQLStatement statement = sqlStatements.getFirst();
             SchemaStatVisitor visitor = new SchemaStatVisitor(this.dbType);
             statement.accept(visitor);
             Map<TableStat.Name, TableStat> tables = visitor.getTables();
@@ -71,9 +77,10 @@ public class DBDruidSqlParser extends DBSqlParser {
     }
 
     @Override
-    public boolean isFullColumn() {
-        if (CollectionUtil.isNotEmpty(this.sqlStatements)) {
-            SQLStatement statement = this.sqlStatements.getFirst();
+    public boolean isFullColumn(String sql) {
+        List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, this.dbType, SQLParserFeature.SkipComments);
+        if (CollectionUtil.isNotEmpty(sqlStatements)) {
+            SQLStatement statement = sqlStatements.getFirst();
             SchemaStatVisitor visitor = new SchemaStatVisitor(this.dbType);
             statement.accept(visitor);
             Collection<TableStat.Column> columns = visitor.getColumns();
@@ -90,18 +97,8 @@ public class DBDruidSqlParser extends DBSqlParser {
 
     @Override
     public List<String> parseSql() {
-        String sqlContent = this.removeComment();
+        String sqlContent = this.removeComment(this.sqlContent);
         List<String> sqlList = new ArrayList<>();
-        // druid无法解析这些语句，直接返回
-        if (this.dbType == DbType.mysql && StringUtil.startWithAnyIgnoreCase(sqlContent,
-                "SHOW VARIABLES LIKE",
-                "SHOW CREATE EVENT"
-        )) {
-            sqlList.add(sqlContent);
-            this.single = true;
-            this.select = true;
-            return sqlList;
-        }
         try {
             this.sqlStatements = SQLUtils.parseStatements(sqlContent, this.dbType, SQLParserFeature.SkipComments);
             for (SQLStatement sqlStatement : this.sqlStatements) {
@@ -109,8 +106,6 @@ public class DBDruidSqlParser extends DBSqlParser {
                 sql = sql.replace("\n", " ");
                 sqlList.add(sql);
             }
-            this.single = null;
-            this.select = null;
         } catch (Exception ex) {
             ex.printStackTrace();
             sqlList.add(sqlContent);
@@ -119,36 +114,48 @@ public class DBDruidSqlParser extends DBSqlParser {
     }
 
     @Override
-    public String parseSingleSql() throws Exception {
-        String sqlContent = this.removeComment();
-        SQLStatement statement = SQLUtils.parseSingleStatement(sqlContent, this.dbType, false);
-        this.sqlStatements = new ArrayList<>();
-        this.sqlStatements.add(statement);
-        String sql = statement.toString();
+    public String parseSingleSql() {
+        String sqlContent = this.removeComment(this.sqlContent);
+        String sql = null;
+        try {
+
+            SQLStatement statement = SQLUtils.parseSingleStatement(sqlContent, this.dbType, false);
+            this.sqlStatements = new ArrayList<>();
+            this.sqlStatements.add(statement);
+            sql = statement.toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            sql = sqlContent;
+        }
         sql = sql.replace("\n", " ");
         return sql;
     }
 
     @Override
-    public String prettySql() {
-        SQLParserFeature[] features = new SQLParserFeature[]{
-                SQLParserFeature.KeepComments,
-                SQLParserFeature.KeepSelectListOriginalString
-        };
-        return SQLUtils.format(this.sqlContent, this.dbType, null, null, features);
+    public String prettySql(String sql) {
+        try {
+            SQLParserFeature[] features = new SQLParserFeature[]{
+                    SQLParserFeature.KeepComments,
+                    SQLParserFeature.KeepSelectListOriginalString
+            };
+            return SQLUtils.format(sql, this.dbType, null, null, features);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return sql;
     }
 
     @Override
-    public String compressSql() {
+    public String compressSql(String sql) {
         try {
             // 压缩sql
             SQLUtils.FormatOption formatOption = new SQLUtils.FormatOption();
             formatOption.setUppCase(true);
             formatOption.setPrettyFormat(false);
-            return SQLUtils.format(this.sqlContent, this.dbType, formatOption);
+            return SQLUtils.format(sql, this.dbType, formatOption);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return this.sqlContent;
+        return sql;
     }
 }

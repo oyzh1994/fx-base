@@ -23,30 +23,81 @@ public abstract class DBSqlParser {
         this.dialect = dialect;
     }
 
-    public abstract String removeComment();
-
-    // public abstract DBSqlNodes parseNode() throws Exception;
-
+    /**
+     * 是否单语句
+     *
+     * @return 结果
+     */
     public abstract boolean isSingle();
 
-    public abstract boolean isSelect();
+    /**
+     * 解析sql
+     *
+     * @return 结果
+     */
+    public abstract List<String> parseSql();
 
-    public abstract boolean isFullColumn();
+    /**
+     * 解析sql为单行
+     *
+     * @return 结果
+     */
+    public abstract String parseSingleSql();
 
-    public abstract List<String> parseSql() throws Exception;
+    /**
+     * 是否查询语句
+     *
+     * @param sql sql语句
+     * @return 结果
+     */
+    public abstract boolean isSelect(String sql);
 
-    public abstract String parseSingleSql() throws Exception;
+    /**
+     * 美化sql语句
+     *
+     * @param sql sql语句
+     * @return 结果
+     */
+    public abstract String prettySql(String sql);
 
-    public abstract String prettySql() throws Exception;
+    /**
+     * 压缩sql语句
+     *
+     * @param sql sql语句
+     * @return 结果
+     */
+    public abstract String compressSql(String sql);
 
-    public abstract String compressSql() throws Exception;
+    /**
+     * 移除注释
+     *
+     * @param sql sql语句
+     * @return 结果
+     */
+    public abstract String removeComment(String sql);
 
-    public static String prettySql(String sql, DBDialect dialect) throws Exception {
-        return getParser(sql, dialect).prettySql();
+    /**
+     * 是否查询全字段
+     *
+     * @param sql sql语句
+     * @return 结果
+     */
+    public abstract boolean isFullColumn(String sql);
+
+    public static String prettySql(String sql, DBDialect dialect) {
+        return getParser(sql, dialect).prettySql(sql);
     }
 
-    public static List<String> parseSql(String sql, DBDialect dialect) throws Exception {
+    public static String compressSql(String sql, DBDialect dialect) {
+        return getParser(sql, dialect).compressSql(sql);
+    }
+
+    public static List<String> parseSql(String sql, DBDialect dialect) {
         return getParser(sql, dialect).parseSql();
+    }
+
+    public static String parseSingleSql(String sql, DBDialect dialect) {
+        return getParser(sql, dialect).parseSingleSql();
     }
 
     /**
