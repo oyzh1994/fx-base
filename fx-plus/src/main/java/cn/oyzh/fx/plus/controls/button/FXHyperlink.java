@@ -35,7 +35,6 @@ public class FXHyperlink extends Hyperlink implements LayoutAdapter, MouseAdapte
 
     @Override
     public void initNode() {
-        NodeAdapter.super.initNode();
         this.setCursor(Cursor.HAND);
         this.setPickOnBounds(true);
         this.setPadding(Insets.EMPTY);
@@ -47,5 +46,6 @@ public class FXHyperlink extends Hyperlink implements LayoutAdapter, MouseAdapte
                 FXUtil.showDocument(url);
             }
         });
+        NodeAdapter.super.initNode();
     }
 }
