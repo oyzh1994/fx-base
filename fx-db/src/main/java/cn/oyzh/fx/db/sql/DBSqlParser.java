@@ -1,6 +1,7 @@
 package cn.oyzh.fx.db.sql;
 
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.db.DBDialect;
 
 import java.util.List;
@@ -38,6 +39,8 @@ public abstract class DBSqlParser {
 
     public abstract String prettySql() throws Exception;
 
+    public abstract String compressSql() throws Exception;
+
     public static String prettySql(String sql, DBDialect dialect) throws Exception {
         return getParser(sql, dialect).prettySql();
     }
@@ -46,7 +49,22 @@ public abstract class DBSqlParser {
         return getParser(sql, dialect).parseSql();
     }
 
-    public static DBSqlParser getParser(String sql, DBDialect dialect) throws Exception {
-        return new DBDruidSqlParser(sql, dialect);
+    /**
+     * sql解析器类型
+     */
+    public static String sqlParserType = "base";
+
+    public static void setSqlParserType(String sqlParserType) {
+        DBSqlParser.sqlParserType = sqlParserType;
+    }
+
+    public static DBSqlParser getParser(String sql, DBDialect dialect) {
+        DBSqlParser sqlParser;
+        if (StringUtil.equalsIgnoreCase("durid", sqlParserType)) {
+            sqlParser = new DBDruidSqlParser(sql, dialect);
+        } else {
+            sqlParser = new DBBaseSqlParser(sql, dialect);
+        }
+        return sqlParser;
     }
 }

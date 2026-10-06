@@ -26,7 +26,11 @@ public class DBDruidSqlParser extends DBSqlParser {
 
     public DBDruidSqlParser(String sqlContent, DBDialect dialect) {
         super(sqlContent, dialect);
-        this.dbType = dialect.dbType();
+        this.dbType = switch (dialect) {
+            case MYSQL -> DbType.mysql;
+            case DAMENG -> DbType.dm;
+            default -> null;
+        };
     }
 
     @Override
@@ -132,5 +136,19 @@ public class DBDruidSqlParser extends DBSqlParser {
                 SQLParserFeature.KeepSelectListOriginalString
         };
         return SQLUtils.format(this.sqlContent, this.dbType, null, null, features);
+    }
+
+    @Override
+    public String compressSql() {
+        try {
+            // 压缩sql
+            SQLUtils.FormatOption formatOption = new SQLUtils.FormatOption();
+            formatOption.setUppCase(true);
+            formatOption.setPrettyFormat(false);
+            return SQLUtils.format(this.sqlContent, this.dbType, formatOption);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return this.sqlContent;
     }
 }

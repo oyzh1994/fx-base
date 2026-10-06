@@ -1,20 +1,14 @@
 package cn.oyzh.fx.db.util;
 
 import cn.oyzh.common.log.JulLog;
-import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.db.DBColumn;
 import cn.oyzh.fx.db.DBDialect;
 import cn.oyzh.fx.db.DBRecordData;
+import cn.oyzh.fx.db.sql.DBSqlParser;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.font.FontUtil;
-import com.alibaba.druid.DbType;
-import com.alibaba.druid.sql.SQLUtils;
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.parser.SQLParserFeature;
-import com.alibaba.druid.sql.visitor.SchemaStatVisitor;
-import com.alibaba.druid.stat.TableStat;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,8 +21,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -471,24 +463,24 @@ public class DBUtil {
      * @return 结果
      */
     public static boolean isFullColumn(DBDialect dialect, String sql) {
-        try {
-            sql = removeComment(sql);
-            DbType dbType = dialect.dbType();
-            List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, dbType, SQLParserFeature.SkipComments);
-            SQLStatement statement = sqlStatements.getFirst();
-            SchemaStatVisitor visitor = new SchemaStatVisitor(dbType);
-            statement.accept(visitor);
-            Collection<TableStat.Column> columns = visitor.getColumns();
-            if (CollectionUtil.isNotEmpty(columns)) {
-                for (TableStat.Column column : columns) {
-                    if (StringUtil.equals("*", column.getName())) {
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        //        try {
+        //            sql = removeComment(sql);
+        //            DbType dbType = dialect.dbType();
+        //            List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, dbType, SQLParserFeature.SkipComments);
+        //            SQLStatement statement = sqlStatements.getFirst();
+        //            SchemaStatVisitor visitor = new SchemaStatVisitor(dbType);
+        //            statement.accept(visitor);
+        //            Collection<TableStat.Column> columns = visitor.getColumns();
+        //            if (CollectionUtil.isNotEmpty(columns)) {
+        //                for (TableStat.Column column : columns) {
+        //                    if (StringUtil.equals("*", column.getName())) {
+        //                        return true;
+        //                    }
+        //                }
+        //            }
+        //        } catch (Exception ex) {
+        //            ex.printStackTrace();
+        //        }
+        return DBSqlParser.getParser(sql, dialect).isFullColumn();
     }
 }

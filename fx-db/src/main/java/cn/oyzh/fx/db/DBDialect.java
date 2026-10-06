@@ -1,8 +1,6 @@
 package cn.oyzh.fx.db;
 
 
-import com.alibaba.druid.DbType;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,17 +16,6 @@ public enum DBDialect {
     MONGODB,
     DAMENG,
     ;
-
-    public DbType dbType() {
-        switch (this) {
-            case MYSQL:
-                return DbType.mysql;
-            case DAMENG:
-                return DbType.dm;
-            default:
-                return null;
-        }
-    }
 
     public static List<DBDialect> valueList() {
         List<DBDialect> list = new ArrayList<>();

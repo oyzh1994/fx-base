@@ -40,6 +40,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Apache POI -->
