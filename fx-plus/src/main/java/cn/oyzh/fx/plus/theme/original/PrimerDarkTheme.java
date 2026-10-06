@@ -1,7 +1,7 @@
-package cn.oyzh.fx.plus.theme;
+package cn.oyzh.fx.plus.theme.original;
 
-import atlantafx.base.theme.PrimerLight;
-import atlantafx.base.theme.Theme;
+import atlantafx.base.theme.PrimerDark;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -10,9 +10,9 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class PrimerLightTheme implements ThemeStyle {
+public class PrimerDarkTheme implements ThemeStyle {
 
-    private static final PrimerLight THEME = new PrimerLight();
+    private static final PrimerDark THEME = new PrimerDark();
 
     @Override
     public String getName() {
@@ -22,7 +22,7 @@ public class PrimerLightTheme implements ThemeStyle {
     @Override
     public String getDesc(Locale locale) {
         return THEME.getName();
-        // return I18nHelper.themePrimerLight();
+        // return I18nHelper.themePrimerDark();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class PrimerLightTheme implements ThemeStyle {
 
 //    @Override
 //    public String getCompressedUserAgentStylesheet() {
-//        return FXStyle.ATLANTA_FX_PRIMER_LIGHT;
+//        return FXStyle.ATLANTA_FX_PRIMER_DARK;
 //    }
 
     @Override
@@ -47,16 +47,16 @@ public class PrimerLightTheme implements ThemeStyle {
 
     @Override
     public Color getAccentColor() {
-        return Color.valueOf("#0969da");
+        return Color.valueOf("#58a6ff");
     }
 
     @Override
     public Color getForegroundColor() {
-        return Color.valueOf("#24292f");
+        return Color.valueOf("#c9d1d9");
     }
 
     @Override
     public Color getBackgroundColor() {
-        return Color.valueOf("#ffffff");
+        return Color.valueOf("#0d1117");
     }
 }

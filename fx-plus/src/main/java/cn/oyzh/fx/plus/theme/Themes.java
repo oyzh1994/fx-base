@@ -1,5 +1,27 @@
 package cn.oyzh.fx.plus.theme;
 
+import cn.oyzh.fx.plus.theme.custom.AnimeWarmDarkTheme;
+import cn.oyzh.fx.plus.theme.custom.AnimeWarmLightTheme;
+import cn.oyzh.fx.plus.theme.custom.BusinessDarkTheme;
+import cn.oyzh.fx.plus.theme.custom.BusinessLightTheme;
+import cn.oyzh.fx.plus.theme.original.CupertinoDarkTheme;
+import cn.oyzh.fx.plus.theme.original.CupertinoLightTheme;
+import cn.oyzh.fx.plus.theme.custom.CustomTheme;
+import cn.oyzh.fx.plus.theme.custom.CyberpunkDarkTheme;
+import cn.oyzh.fx.plus.theme.custom.CyberpunkLightTheme;
+import cn.oyzh.fx.plus.theme.custom.IntelliJDarkTheme;
+import cn.oyzh.fx.plus.theme.custom.IntelliJLightTheme;
+import cn.oyzh.fx.plus.theme.custom.LiquidGlassDarkTheme;
+import cn.oyzh.fx.plus.theme.custom.LiquidGlassLightTheme;
+import cn.oyzh.fx.plus.theme.custom.SystemTheme;
+import cn.oyzh.fx.plus.theme.custom.VSCodeDarkTheme;
+import cn.oyzh.fx.plus.theme.custom.VSCodeLightTheme;
+import cn.oyzh.fx.plus.theme.original.DraculaTheme;
+import cn.oyzh.fx.plus.theme.original.NordDarkTheme;
+import cn.oyzh.fx.plus.theme.original.NordLightTheme;
+import cn.oyzh.fx.plus.theme.original.PrimerDarkTheme;
+import cn.oyzh.fx.plus.theme.original.PrimerLightTheme;
+
 import java.util.ArrayList;
 import java.util.List;
 

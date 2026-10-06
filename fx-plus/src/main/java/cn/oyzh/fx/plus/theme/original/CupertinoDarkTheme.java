@@ -1,7 +1,7 @@
-package cn.oyzh.fx.plus.theme;
+package cn.oyzh.fx.plus.theme.original;
 
-import atlantafx.base.theme.NordLight;
-import atlantafx.base.theme.Theme;
+import atlantafx.base.theme.CupertinoDark;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
@@ -10,9 +10,9 @@ import java.util.Locale;
  * @author oyzh
  * @since 2024/4/3
  */
-public class NordLightTheme implements ThemeStyle {
+public class CupertinoDarkTheme implements ThemeStyle {
 
-    private static final NordLight THEME = new NordLight();
+    private static final CupertinoDark THEME = new CupertinoDark();
 
     @Override
     public String getName() {
@@ -22,18 +22,12 @@ public class NordLightTheme implements ThemeStyle {
     @Override
     public String getDesc(Locale locale) {
         return THEME.getName();
-        // return I18nHelper.themeNordLight();
     }
 
     @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
     }
-
-//    @Override
-//    public String getCompressedUserAgentStylesheet() {
-//        return FXStyle.ATLANTA_FX_NORD_LIGHT;
-//    }
 
     @Override
     public String getUserAgentStylesheetBSS() {
@@ -47,16 +41,16 @@ public class NordLightTheme implements ThemeStyle {
 
     @Override
     public Color getAccentColor() {
-        return Color.valueOf("#537297");
+        return Color.valueOf("#2f96ff");
     }
 
     @Override
     public Color getForegroundColor() {
-        return Color.valueOf("#2E3440");
+        return Color.rgb(255, 255, 255);
     }
 
     @Override
     public Color getBackgroundColor() {
-        return Color.valueOf("#fafafc");
+        return Color.rgb(28, 28, 30);
     }
 }

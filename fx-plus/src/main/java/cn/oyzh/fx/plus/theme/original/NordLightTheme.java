@@ -1,19 +1,18 @@
-package cn.oyzh.fx.plus.theme;
+package cn.oyzh.fx.plus.theme.original;
 
-import atlantafx.base.theme.Theme;
+import atlantafx.base.theme.NordLight;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
 
 /**
- * VS Code Light+ 主题
- *
  * @author oyzh
- * @since 2026/6/27
+ * @since 2024/4/3
  */
-public class VSCodeLightTheme implements ThemeStyle {
+public class NordLightTheme implements ThemeStyle {
 
-    private static final Theme THEME = Theme.of("VS Code Light", "/fx-plus/css/theme/vscode-light.css", false);
+    private static final NordLight THEME = new NordLight();
 
     @Override
     public String getName() {
@@ -23,12 +22,18 @@ public class VSCodeLightTheme implements ThemeStyle {
     @Override
     public String getDesc(Locale locale) {
         return THEME.getName();
+        // return I18nHelper.themeNordLight();
     }
 
     @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
     }
+
+//    @Override
+//    public String getCompressedUserAgentStylesheet() {
+//        return FXStyle.ATLANTA_FX_NORD_LIGHT;
+//    }
 
     @Override
     public String getUserAgentStylesheetBSS() {
@@ -42,16 +47,16 @@ public class VSCodeLightTheme implements ThemeStyle {
 
     @Override
     public Color getAccentColor() {
-        return Color.valueOf("#0078d4");
+        return Color.valueOf("#537297");
     }
 
     @Override
     public Color getForegroundColor() {
-        return Color.valueOf("#333333");
+        return Color.valueOf("#2E3440");
     }
 
     @Override
     public Color getBackgroundColor() {
-        return Color.valueOf("#ffffff");
+        return Color.valueOf("#fafafc");
     }
 }

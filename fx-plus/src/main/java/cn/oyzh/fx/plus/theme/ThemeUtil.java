@@ -6,6 +6,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ResourceUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.UUIDUtil;
+import cn.oyzh.fx.plus.theme.custom.SystemTheme;
 import javafx.scene.paint.Color;
 
 import java.net.URL;

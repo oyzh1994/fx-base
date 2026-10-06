@@ -1,9 +1,7 @@
-package cn.oyzh.fx.plus.theme;
+package cn.oyzh.fx.plus.theme.custom;
 
-import atlantafx.base.theme.Theme;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.paint.Color;
-
-import java.util.Locale;
 
 /**
  * 商务亮色主题
@@ -14,31 +12,19 @@ import java.util.Locale;
  */
 public class BusinessLightTheme implements ThemeStyle {
 
-    private static final Theme THEME = Theme.of("Business Light", "/fx-plus/css/theme/business-light.css", false);
-
     @Override
     public String getName() {
-        return THEME.getName();
-    }
-
-    @Override
-    public String getDesc(Locale locale) {
-        return THEME.getName();
+        return "Business Light";
     }
 
     @Override
     public String getUserAgentStylesheet() {
-        return THEME.getUserAgentStylesheet();
-    }
-
-    @Override
-    public String getUserAgentStylesheetBSS() {
-        return THEME.getUserAgentStylesheetBSS();
+        return "/fx-plus/css/theme/business-light.css";
     }
 
     @Override
     public boolean isDarkMode() {
-        return THEME.isDarkMode();
+        return false;
     }
 
     @Override

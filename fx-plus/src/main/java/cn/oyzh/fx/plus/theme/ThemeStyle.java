@@ -20,12 +20,12 @@ import java.util.Objects;
  */
 public interface ThemeStyle extends Theme {
 
-//    /**
-//     * 获取名称
-//     *
-//     * @return 主题名称
-//     */
-//    String getName();
+    //    /**
+    //     * 获取名称
+    //     *
+    //     * @return 主题名称
+    //     */
+    //    String getName();
 
     /**
      * 获取描述
@@ -33,7 +33,9 @@ public interface ThemeStyle extends Theme {
      * @param locale 地区
      * @return 主题描述
      */
-    String getDesc(Locale locale);
+    default String getDesc(Locale locale) {
+        return this.getName();
+    }
 
     /**
      * 是否暗黑模式
@@ -92,12 +94,12 @@ public interface ThemeStyle extends Theme {
         return FXColorUtil.getColorHex(this.getBackgroundColor());
     }
 
-//    /**
-//     * 获取样式文件
-//     *
-//     * @return 样式文件
-//     */
-//    String getUserAgentStylesheet();
+    //    /**
+    //     * 获取样式文件
+    //     *
+    //     * @return 样式文件
+    //     */
+    //    String getUserAgentStylesheet();
     //
     //    /**
     //     * 获取压缩样式文件
@@ -206,5 +208,11 @@ public interface ThemeStyle extends Theme {
     //    default String getBuiltInName() {
     //        return null;
     //    }
+
+    @Override
+    default String getUserAgentStylesheetBSS() {
+        return null;
+    }
+
 
 }

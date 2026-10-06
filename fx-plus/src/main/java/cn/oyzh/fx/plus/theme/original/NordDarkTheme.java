@@ -1,20 +1,18 @@
-package cn.oyzh.fx.plus.theme;
+package cn.oyzh.fx.plus.theme.original;
 
-import atlantafx.base.theme.Theme;
+import atlantafx.base.theme.NordDark;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import javafx.scene.paint.Color;
 
 import java.util.Locale;
 
 /**
- * 动漫温暖暗色主题
- * 特性：暖棕色调、柔和圆角、温馨氛围
- *
  * @author oyzh
- * @since 2026/6/27
+ * @since 2024/4/3
  */
-public class AnimeWarmDarkTheme implements ThemeStyle {
+public class NordDarkTheme implements ThemeStyle {
 
-    private static final Theme THEME = Theme.of("Anime Warm Dark", "/fx-plus/css/theme/anime-warm-dark.css", true);
+    private static final NordDark THEME = new NordDark();
 
     @Override
     public String getName() {
@@ -24,12 +22,18 @@ public class AnimeWarmDarkTheme implements ThemeStyle {
     @Override
     public String getDesc(Locale locale) {
         return THEME.getName();
+        // return I18nHelper.themeNordDark();
     }
 
     @Override
     public String getUserAgentStylesheet() {
         return THEME.getUserAgentStylesheet();
     }
+
+//    @Override
+//    public String getCompressedUserAgentStylesheet() {
+//        return FXStyle.ATLANTA_FX_NORD_DARK;
+//    }
 
     @Override
     public String getUserAgentStylesheetBSS() {
@@ -43,16 +47,16 @@ public class AnimeWarmDarkTheme implements ThemeStyle {
 
     @Override
     public Color getAccentColor() {
-        return Color.valueOf("#ff8848");
+        return Color.valueOf("#98aeca");
     }
 
     @Override
     public Color getForegroundColor() {
-        return Color.valueOf("#f0d8cc");
+        return Color.valueOf("#ECEFF4");
     }
 
     @Override
     public Color getBackgroundColor() {
-        return Color.valueOf("#1c100c");
+        return Color.valueOf("#2E3440");
     }
 }
