@@ -33,7 +33,7 @@ import javafx.scene.paint.Paint;
  * svg图像
  *
  * @author oyzh
- * @since 2022/5/31
+ * @since 2022-05-31
  */
 public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, Destroyable {
 

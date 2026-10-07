@@ -17,7 +17,7 @@ import java.util.Collection;
  * 折线图控件，继承自 LineChart，支持主题、字体、提示等适配
  *
  * @author oyzh
- * @since 2023/8/2
+ * @since 2023-08-02
  */
 public class FXLineChart<X, Y> extends LineChart<X, Y> implements FlexAdapter, TipAdapter, FontAdapter, ThemeAdapter {
 

@@ -9,7 +9,7 @@ import javafx.scene.text.FontWeight;
  * 字体粗细下拉框
  *
  * @author oyzh
- * @since 2024/04/05
+ * @since 2024-04-05
  */
 public class FontWeightComboBox extends FXComboBox<FontWeight> {
 

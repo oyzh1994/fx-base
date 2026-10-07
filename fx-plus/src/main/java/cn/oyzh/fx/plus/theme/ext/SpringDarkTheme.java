@@ -10,7 +10,7 @@ import java.util.Locale;
  * Spring Dark 扩展主题
  *
  * @author oyzh
- * @since 2026/10/6
+ * @since 2026-10-06
  */
 public class SpringDarkTheme implements ThemeStyle {
 

@@ -11,7 +11,7 @@ import javafx.fxml.JavaFXBuilderFactory;
  * fxml加载器扩展
  *
  * @author oyzh
- * @since 2023/1/3
+ * @since 2023-01-03
  */
 public class FXMLLoaderExt extends FXMLLoader {
 

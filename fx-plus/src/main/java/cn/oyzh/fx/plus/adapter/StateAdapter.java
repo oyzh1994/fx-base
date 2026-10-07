@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * 状态适配器
  *
  * @author oyzh
- * @since 2023/3/15
+ * @since 2023-03-15
  */
 public interface StateAdapter extends PropAdapter {
 

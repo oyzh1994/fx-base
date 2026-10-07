@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
  * 带右侧操作按钮的文本输入框皮肤基类
  *
  * @author oyzh
- * @since 2023/10/25
+ * @since 2023-10-25
  */
 public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
 

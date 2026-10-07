@@ -8,7 +8,7 @@ import javafx.scene.paint.Paint;
  * 缩放svg图像
  *
  * @author oyzh
- * @since 2026/5/29
+ * @since 2026-05-29
  */
 public class ScalingSVGGlyph extends SVGGlyph {
 

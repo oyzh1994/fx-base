@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 日期 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/07/21
+ * @since 2024-07-21
  */
 public class DateSVGGlyph extends SVGGlyph {
 

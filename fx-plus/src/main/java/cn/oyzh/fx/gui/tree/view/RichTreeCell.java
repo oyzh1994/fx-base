@@ -14,7 +14,7 @@ import javafx.scene.control.TreeItem;
  * 富功能树单元格
  *
  * @author oyzh
- * @since 2023/11/10
+ * @since 2023-11-10
  */
 public class RichTreeCell<T extends RichTreeItemValue> extends FXTreeCell<T> {
 

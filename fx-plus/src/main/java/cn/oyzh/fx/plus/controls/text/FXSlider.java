@@ -11,7 +11,7 @@ import javafx.scene.control.Slider;
  * 滑块控件
  *
  * @author oyzh
- * @since 2024/4/20
+ * @since 2024-04-20
  */
 public class FXSlider extends Slider implements FlexAdapter, ThemeAdapter, TipAdapter {
 

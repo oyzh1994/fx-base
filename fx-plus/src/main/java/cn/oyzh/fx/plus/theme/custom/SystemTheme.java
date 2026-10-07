@@ -18,7 +18,7 @@ import java.util.Locale;
  * 系统主题风格
  *
  * @author oyzh
- * @since 2024/4/3
+ * @since 2024-04-03
  */
 public class SystemTheme implements ThemeStyle {
 

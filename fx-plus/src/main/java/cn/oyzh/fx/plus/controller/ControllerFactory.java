@@ -6,7 +6,7 @@ import javafx.util.Callback;
  * fx Controller 工厂
  *
  * @author oyzh
- * @since 2020/10/16
+ * @since 2020-10-16
  */
 public class ControllerFactory implements Callback<Class<?>, Object> {
 

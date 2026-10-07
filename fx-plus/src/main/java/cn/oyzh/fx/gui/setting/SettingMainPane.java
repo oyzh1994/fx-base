@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
  * 设置主面板，左右分栏布局
  *
  * @author oyzh
- * @since 2024/12/29
+ * @since 2024-12-29
  */
 public class SettingMainPane extends FXHBox implements Destroyable {
 

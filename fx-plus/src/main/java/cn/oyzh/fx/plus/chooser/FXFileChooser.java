@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * 文件选择器
  *
  * @author oyzh
- * @since 2024/8/28
+ * @since 2024-08-28
  */
 public class FXFileChooser {
 

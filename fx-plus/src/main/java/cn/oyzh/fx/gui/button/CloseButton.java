@@ -7,7 +7,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 关闭按钮
  *
  * @author oyzh
- * @since 2024/04/09
+ * @since 2024-04-09
  */
 public class CloseButton extends CancelButton {
 

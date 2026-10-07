@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 运行脚本文件按钮
  *
  * @author oyzh
- * @since 2024/08/29
+ * @since 2024-08-29
  */
 public class RunScriptFileButton extends IconButton {
 

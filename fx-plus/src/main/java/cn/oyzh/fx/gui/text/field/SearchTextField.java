@@ -11,7 +11,7 @@ import javafx.scene.control.Skin;
  * 搜索文本域
  *
  * @author oyzh
- * @since 2023/10/24
+ * @since 2023-10-24
  */
 public class SearchTextField extends LimitTextField {
 
@@ -109,7 +109,7 @@ public class SearchTextField extends LimitTextField {
      * 搜索事件
      *
      * @author oyzh
-     * @since 2023/10/23
+     * @since 2023-10-23
      */
     public static class SearchEvent extends Event {
 

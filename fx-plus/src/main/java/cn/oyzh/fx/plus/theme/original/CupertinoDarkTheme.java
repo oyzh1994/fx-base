@@ -10,7 +10,7 @@ import java.util.Locale;
  * 库比蒂诺暗色主题
  *
  * @author oyzh
- * @since 2024/4/3
+ * @since 2024-04-03
  */
 public class CupertinoDarkTheme implements ThemeStyle {
 

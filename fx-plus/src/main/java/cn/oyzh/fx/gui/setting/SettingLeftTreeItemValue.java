@@ -6,7 +6,7 @@ import cn.oyzh.fx.gui.tree.view.RichTreeItemValue;
  * 设置左侧树节点值
  *
  * @author oyzh
- * @since 2024/12/29
+ * @since 2024-12-29
  */
 public class SettingLeftTreeItemValue extends RichTreeItemValue {
 

@@ -36,7 +36,7 @@ import java.util.List;
  * 单行表格视图
  *
  * @author oyzh
- * @since 2022/1/18
+ * @since 2022-01-18
  */
 public class SingleRowTableView<S> extends FXTableView<S>  {
 

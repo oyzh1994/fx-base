@@ -9,7 +9,7 @@ import cn.oyzh.event.EventSubscribe;
  * 事件监听器测试，验证多种事件订阅方法的触发
  *
  * @author oyzh
- * @since 2024/3/29
+ * @since 2024-03-29
  */
 public class TestEventListener implements EventListener {
 

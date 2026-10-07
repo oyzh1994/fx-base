@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * 富功能树节点
  *
  * @author oyzh
- * @since 2023/11/10
+ * @since 2023-11-10
  */
 public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 

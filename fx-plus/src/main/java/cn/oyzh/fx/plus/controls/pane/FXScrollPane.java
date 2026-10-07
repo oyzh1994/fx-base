@@ -12,7 +12,7 @@ import javafx.scene.control.ScrollPane;
  * 滚动面板控件
  *
  * @author oyzh
- * @since 2023/12/6
+ * @since 2023-12-06
  */
 public class FXScrollPane extends ScrollPane implements FlexAdapter, ThemeAdapter {
 

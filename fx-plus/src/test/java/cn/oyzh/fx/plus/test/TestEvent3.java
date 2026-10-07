@@ -7,7 +7,7 @@ import cn.oyzh.event.EventFormatter;
  * 实现事件格式化接口的自定义事件测试类型
  *
  * @author oyzh
- * @since 2024/3/29
+ * @since 2024-03-29
  */
 public class TestEvent3 extends Event<String> implements EventFormatter {
 

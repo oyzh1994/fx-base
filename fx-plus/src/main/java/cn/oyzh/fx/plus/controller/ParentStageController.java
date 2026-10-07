@@ -12,7 +12,7 @@ import java.util.List;
  * 父窗口控制器
  *
  * @author oyzh
- * @since 2023/10/12
+ * @since 2023-10-12
  */
 public class ParentStageController extends StageController {
 

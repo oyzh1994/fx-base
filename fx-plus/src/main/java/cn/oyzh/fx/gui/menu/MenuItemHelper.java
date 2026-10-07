@@ -74,7 +74,7 @@ import javafx.scene.control.SeparatorMenuItem;
  * 菜单工具类
  *
  * @author oyzh
- * @since 2024/6/28
+ * @since 2024-06-28
  */
 public class MenuItemHelper {
 

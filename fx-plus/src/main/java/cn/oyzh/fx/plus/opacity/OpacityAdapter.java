@@ -10,7 +10,7 @@ import javafx.stage.Window;
  * 透明度适配器，为窗口等对象提供透明度配置的启用与变更能力
  *
  * @author oyzh
- * @since 2024/4/19
+ * @since 2024-04-19
  */
 public interface OpacityAdapter extends PropAdapter {
 

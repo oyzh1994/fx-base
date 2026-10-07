@@ -17,7 +17,7 @@ import java.util.List;
  * 节点分组工具，用于在节点树中查找分组并统一执行启用、禁用、显示、隐藏等操作
  *
  * @author oyzh
- * @since 2024/06/08
+ * @since 2024-06-08
  */
 public class NodeGroupUtil {
 

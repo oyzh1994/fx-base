@@ -10,7 +10,7 @@ import java.util.List;
  * 数据库数据导入处理器抽象基类，负责从指定文件类型导入数据
  *
  * @author oyzh
- * @since 2024/08/27
+ * @since 2024-08-27
  */
 public abstract class DBDataImportHandler<D> extends DataImportHandler implements DataBatchInsertable<D> {
 

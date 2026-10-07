@@ -11,7 +11,7 @@ import java.io.Serializable;
  * app分组
  *
  * @author oyzh
- * @since 2023/6/16
+ * @since 2023-06-16
  */
 public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Serializable {
 

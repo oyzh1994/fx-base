@@ -9,7 +9,7 @@ import javafx.stage.Window;
  * 主舞台
  *
  * @author oyzh
- * @since 2023/10/12
+ * @since 2023-10-12
  */
 public class PrimaryStage implements StageAdapter, OpacityAdapter {
 

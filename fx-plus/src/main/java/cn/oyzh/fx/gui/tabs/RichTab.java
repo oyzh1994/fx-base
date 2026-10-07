@@ -24,7 +24,7 @@ import java.util.List;
  * 动态标签页
  *
  * @author oyzh
- * @since 2023/11/03
+ * @since 2023-11-03
  */
 public abstract class RichTab extends FXTab {
 

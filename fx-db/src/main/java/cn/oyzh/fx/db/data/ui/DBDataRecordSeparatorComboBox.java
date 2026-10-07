@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
  * 数据库数据记录分隔符下拉框，提供 CRLF、LF、CR 等换行符
  *
  * @author oyzh
- * @since 2024/09/04
+ * @since 2024-09-04
  */
 public class DBDataRecordSeparatorComboBox extends FXComboBox<String> {
 

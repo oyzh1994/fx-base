@@ -45,7 +45,7 @@ import java.util.List;
  * Canvas 渲染 + 垂直滚动条 + 大文件窗口缓存 + 拖动区域选择。
  *
  * @author oyzh
- * @since 2026/06/20
+ * @since 2026-06-20
  */
 public class HexView extends FXVBox implements Destroyable {
 

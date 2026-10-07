@@ -7,7 +7,7 @@ import java.util.Locale;
  * 国际化下拉项适配器，按地区提供可选项列表
  *
  * @author oyzh
- * @since 2024/4/11
+ * @since 2024-04-11
  */
 public interface I18nSelectAdapter<V> {
 

@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 数据库工具类，提供 SQL 语句与数据的打印、参数设置、数据包装、名称包装等通用方法
  *
  * @author oyzh
- * @since 2023/12/27
+ * @since 2023-12-27
  */
 public class DBUtil {
 

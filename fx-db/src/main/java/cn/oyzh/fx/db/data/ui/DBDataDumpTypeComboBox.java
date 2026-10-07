@@ -7,7 +7,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 数据库数据转储类型下拉框，用于选择转储数据与结构或仅转储结构
  *
  * @author oyzh
- * @since 2024/08/22
+ * @since 2024-08-22
  */
 public class DBDataDumpTypeComboBox extends FXComboBox<String> {
 

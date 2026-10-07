@@ -18,7 +18,7 @@
 //
 ///**
 // * @author oyzh
-// * @since 2023/9/15
+// * @since 2023-09-15
 // */
 //@Deprecated
 //public class BaseRichTextField extends InlineCssTextField implements FlexAdapter, NodeAdapter, ThemeAdapter, TextAdapter, TipAdapter, StateAdapter {

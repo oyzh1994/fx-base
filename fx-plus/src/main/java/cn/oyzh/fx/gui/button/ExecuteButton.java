@@ -10,7 +10,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 执行按钮，点击后隐藏当前窗口
  *
  * @author oyzh
- * @since 2020/10/29
+ * @since 2020-10-29
  */
 public class ExecuteButton extends IconButton {
 

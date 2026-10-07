@@ -11,7 +11,7 @@ import java.util.List;
  * 数据库字段选择框，用于展示并选择数据库字段
  *
  * @author oyzh
- * @since 2024/01/16
+ * @since 2024-01-16
  */
 public class DBColumnComboBox extends FXComboBox<DBColumn> {
 

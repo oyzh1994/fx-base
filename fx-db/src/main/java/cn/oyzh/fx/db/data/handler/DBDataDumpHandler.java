@@ -10,7 +10,7 @@ import java.io.IOException;
  * 数据库数据转储处理器抽象基类，负责将库或表的数据和结构转储到文件
  *
  * @author oyzh
- * @since 2024/08/22
+ * @since 2024-08-22
  */
 public abstract class DBDataDumpHandler extends DataDumpHandler {
 

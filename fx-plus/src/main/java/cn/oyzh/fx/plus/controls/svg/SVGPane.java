@@ -10,7 +10,7 @@ import javafx.scene.Node;
  * svg面板
  *
  * @author oyzh
- * @since 2025/01/07
+ * @since 2025-01-07
  */
 public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
 

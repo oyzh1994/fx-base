@@ -9,7 +9,7 @@ import javafx.scene.text.Font;
  * SQL 查询编辑器基类，负责按键交互、注释操作与查询提示弹窗的联动
  *
  * @author oyzh
- * @since 2025/01/21
+ * @since 2025-01-21
  */
 public abstract class DBQueryEditor extends Editor {
 

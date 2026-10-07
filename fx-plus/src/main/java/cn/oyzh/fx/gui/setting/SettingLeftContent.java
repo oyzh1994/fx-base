@@ -7,7 +7,7 @@ import javafx.scene.Node;
  * 设置左侧内容容器
  *
  * @author oyzh
- * @since 2024/12/29
+ * @since 2024-12-29
  */
 public class SettingLeftContent extends FXVBox {
 

@@ -15,7 +15,7 @@ import java.util.List;
  * 表格行
  *
  * @author oyzh
- * @since 2024/07/25
+ * @since 2024-07-25
  */
 public class FXTableRow<T> extends TableRow<T> implements NodeAdapter, ContextMenuAdapter, MenuItemAdapter {
 

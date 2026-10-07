@@ -8,7 +8,7 @@ import javafx.scene.paint.Paint;
  * svg标签控件
  *
  * @author oyzh
- * @since 2022/12/16
+ * @since 2022-12-16
  */
 public class SVGLabel extends FXLabel {
 

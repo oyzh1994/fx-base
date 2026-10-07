@@ -8,7 +8,7 @@ import javafx.scene.Node;
  * 系统标签，文字颜色跟随当前主题前景色
  *
  * @author oyzh
- * @since 2024/04/08
+ * @since 2024-04-08
  */
 public class SystemLabel extends FXLabel {
 

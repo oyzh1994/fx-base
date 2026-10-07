@@ -12,7 +12,7 @@ import java.util.Locale;
  * 组件控制器
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public abstract class Controller implements Destroyable, I18nAdapter, WindowListener {
 

@@ -25,7 +25,7 @@ import java.util.List;
  * tab行控件
  *
  * @author oyzh
- * @since 2022/1/20
+ * @since 2022-01-20
  */
 public class FXTabLine extends TabLine implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, Destroyable {
 

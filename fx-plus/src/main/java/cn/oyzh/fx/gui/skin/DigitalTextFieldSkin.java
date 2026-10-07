@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
  * 数字输入框皮肤，带增减按钮
  *
  * @author oyzh
- * @since 2023/10/9
+ * @since 2023-10-09
  */
 public class DigitalTextFieldSkin extends FXTextFieldSkin {
 
@@ -216,10 +216,10 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
     }
 
     /**
-     * 将增加按钮设为可用（原实现未禁用，仅将其设为可用）
+     * 将增加按钮设为可用
      */
     public void disableIncrButton() {
-        this.incrButton.setDisable(false);
+        this.incrButton.setDisable(true);
     }
 
     /**

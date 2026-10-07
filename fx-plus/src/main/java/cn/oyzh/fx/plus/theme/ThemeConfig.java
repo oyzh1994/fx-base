@@ -8,7 +8,7 @@ import cn.oyzh.common.util.StringUtil;
  * 主题配置
  *
  * @author oyzh
- * @since 2024/04/04
+ * @since 2024-04-04
  */
 public class ThemeConfig {
 

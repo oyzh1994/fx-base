@@ -7,7 +7,7 @@ import javafx.util.converter.FormatStringConverter;
  * 数字格式化转换器
  *
  * @author oyzh
- * @since 2024/5/15
+ * @since 2024-05-15
  */
 public class DigitalConverter extends FormatStringConverter<String> {
 

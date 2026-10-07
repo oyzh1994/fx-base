@@ -181,7 +181,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 图标工具类
  *
  * @author oyzh
- * @since 2023/4/4
+ * @since 2023-04-04
  */
 public class IconUtil {
 

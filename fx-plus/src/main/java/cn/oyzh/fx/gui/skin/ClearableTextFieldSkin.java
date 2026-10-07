@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
  * 可清除文本输入框皮肤
  *
  * @author oyzh
- * @since 2023/10/9
+ * @since 2023-10-09
  */
 public class ClearableTextFieldSkin extends ActionTextFieldSkin {
 

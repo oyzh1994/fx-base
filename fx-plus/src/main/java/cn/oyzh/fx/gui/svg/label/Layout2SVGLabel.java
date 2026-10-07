@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 布局2标签
  *
  * @author oyzh
- * @since 2024/4/10
+ * @since 2024-04-10
  */
 public class Layout2SVGLabel extends SVGLabel {
 

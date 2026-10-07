@@ -7,7 +7,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 数据库数据字段分隔符下拉框，提供分号、逗号、空格等分隔符
  *
  * @author oyzh
- * @since 2024/09/04
+ * @since 2024-09-04
  */
 public class DBDataFieldSeparatorComboBox extends FXComboBox<String> {
 

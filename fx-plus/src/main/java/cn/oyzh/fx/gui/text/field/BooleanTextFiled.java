@@ -6,7 +6,7 @@ import cn.oyzh.common.util.BooleanUtil;
  * 布尔文本输入框
  *
  * @author oyzh
- * @since 2024/7/10
+ * @since 2024-07-10
  */
 public class BooleanTextFiled extends SelectTextFiled<String> {
 

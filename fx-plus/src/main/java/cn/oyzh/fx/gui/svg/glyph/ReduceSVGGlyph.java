@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 缩小 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/07/15
+ * @since 2024-07-15
  */
 public class ReduceSVGGlyph extends SVGGlyph {
 

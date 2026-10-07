@@ -7,7 +7,7 @@ import java.sql.ResultSet;
  * 查询结果基类，封装查询内容、耗时、变更数量与执行状态等信息
  *
  * @author oyzh
- * @since 2024/08/19
+ * @since 2024-08-19
  */
 public abstract class DBQueryResult {
 

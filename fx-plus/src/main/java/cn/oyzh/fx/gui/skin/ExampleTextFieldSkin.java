@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
  * 示例文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/04
+ * @since 2024-07-04
  */
 public class ExampleTextFieldSkin extends ActionTextFieldSkin {
 
@@ -36,12 +36,8 @@ public class ExampleTextFieldSkin extends ActionTextFieldSkin {
      */
     protected String exampleText;
 
-    /**
-     * 按钮点击时将示例文本填入输入框
-     *
-     * @param e 鼠标事件
-     */
-    protected void onButtonClicked(MouseEvent e) {
+    @Override
+    protected void onButtonClick(MouseEvent e) {
         if (this.exampleText != null) {
             this.setText(this.exampleText);
         }

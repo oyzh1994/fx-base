@@ -17,7 +17,7 @@ import javafx.scene.input.MouseEvent;
  * 搜索文本输入框皮肤
  *
  * @author oyzh
- * @since 2023/10/9
+ * @since 2023-10-09
  */
 public class SearchTextFieldSkin extends ClearableTextFieldSkin {
 

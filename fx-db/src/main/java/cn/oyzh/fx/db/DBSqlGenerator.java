@@ -7,7 +7,7 @@ import java.util.List;
  * SQL生成器基类，负责收集与拼接SQL语句
  *
  * @author oyzh
- * @since 2024/09/11
+ * @since 2024-09-11
  */
 public class DBSqlGenerator {
 

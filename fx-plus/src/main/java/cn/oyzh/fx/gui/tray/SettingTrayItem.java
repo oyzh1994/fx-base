@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 设置托盘菜单项
  *
  * @author oyzh
- * @since 2023/3/2
+ * @since 2023-03-02
  */
 public class SettingTrayItem extends TrayItem {
 

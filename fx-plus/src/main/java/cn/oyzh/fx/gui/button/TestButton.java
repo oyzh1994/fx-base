@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 测试按钮
  *
  * @author oyzh
- * @since 2024/04/10
+ * @since 2024-04-10
  */
 public class TestButton extends IconButton {
 

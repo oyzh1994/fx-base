@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 计数器，用于统计任务的失败、成功、忽略数量以及耗时等信息
  *
  * @author oyzh
- * @since 2023/2/22
+ * @since 2023-02-22
  */
 public class Counter {
 

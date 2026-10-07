@@ -16,7 +16,7 @@ import java.util.Objects;
  * 主题风格
  *
  * @author oyzh
- * @since 2024/4/3
+ * @since 2024-04-03
  */
 public interface ThemeStyle extends Theme {
 

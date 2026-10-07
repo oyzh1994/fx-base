@@ -8,7 +8,7 @@
 // * fx富控件工具类
 // *
 // * @author oyzh
-// * @since 2023/11/20
+// * @since 2023-11-20
 // */
 //@Deprecated
 //public class RichControlUtil {

@@ -18,7 +18,7 @@ import java.util.List;
  * 查询提示列表，以列表形式展示并选择查询提示项
  *
  * @author oyzh
- * @since 2024/02/21
+ * @since 2024-02-21
  */
 public abstract class DBQueryPromptListView<E extends DBQueryPromptItem> extends FXListView<FXHBox> {
 

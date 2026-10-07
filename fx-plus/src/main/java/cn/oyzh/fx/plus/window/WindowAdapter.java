@@ -11,7 +11,7 @@ import javafx.scene.Scene;
  * 窗口适配器
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public interface WindowAdapter extends StateAdapter, ThemeAdapter {
 

@@ -8,7 +8,7 @@ import cn.oyzh.fx.plus.controls.button.IconButton;
  * 生成按钮
  *
  * @author oyzh
- * @since 2024/04/10
+ * @since 2024-04-10
  */
 public class GenerateButton extends IconButton {
 

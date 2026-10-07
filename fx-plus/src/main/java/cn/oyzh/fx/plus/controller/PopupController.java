@@ -9,7 +9,7 @@ import javafx.stage.WindowEvent;
  * 弹窗组件控制器
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public class PopupController extends Controller implements PopupListener {
 

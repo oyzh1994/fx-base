@@ -12,7 +12,7 @@ import javafx.scene.input.ClipboardContent;
  * 粘贴板工具类
  *
  * @author oyzh
- * @since 2023/11/22
+ * @since 2023-11-22
  */
 public class ClipboardUtil {
 
@@ -39,22 +39,11 @@ public class ClipboardUtil {
      * @return 结果
      */
     public static boolean paste(Object node) {
-        return paste(node, null);
-    }
-
-    /**
-     * 粘贴到组件
-     *
-     * @param node    组件
-     * @param content 内容
-     * @return 结果
-     */
-    public static boolean paste(Object node, Object content) {
         try {
             if (node instanceof TextInputControl control) {
                 control.paste();
+                return true;
             }
-            return false;
         } catch (Exception ex) {
             ex.printStackTrace();
         }

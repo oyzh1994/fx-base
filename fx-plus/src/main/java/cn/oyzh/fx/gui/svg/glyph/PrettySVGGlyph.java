@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 格式化 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/08/13
+ * @since 2024-08-13
  */
 public class PrettySVGGlyph extends SVGGlyph {
 

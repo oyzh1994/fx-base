@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.controls.svg.ScalingSVGGlyph;
  * 新增文档 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/4/11
+ * @since 2024-04-11
  */
 public class AddDocumentSVGGlyph extends ScalingSVGGlyph {
 

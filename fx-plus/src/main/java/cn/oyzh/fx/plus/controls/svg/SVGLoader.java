@@ -16,7 +16,7 @@ import java.util.Iterator;
  * svg加载器
  *
  * @author oyzh
- * @since 2022/5/30
+ * @since 2022-05-30
  */
 public class SVGLoader {
 

@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 主题切换标签
  *
  * @author oyzh
- * @since 2026/06/19
+ * @since 2026-06-19
  */
 public class ThemeSVGLabel extends SVGLabel {
 

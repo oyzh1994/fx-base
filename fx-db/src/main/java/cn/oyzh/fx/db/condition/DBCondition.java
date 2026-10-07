@@ -5,7 +5,7 @@ package cn.oyzh.fx.db.condition;
  * 数据库条件基类，封装条件的名称、值及是否为必需条件
  *
  * @author oyzh
- * @since 2024/06/26
+ * @since 2024-06-26
  */
 public abstract class DBCondition {
 

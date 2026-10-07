@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
  * 垂直布局容器，继承自 VBox，支持主题、字体、状态、布局等适配
  *
  * @author oyzh
- * @since 2022/06/03
+ * @since 2022-06-03
  */
 public class FXVBox extends VBox implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, StateAdapter, LayoutAdapter {
 

@@ -13,7 +13,7 @@ import java.util.List;
  * 数据传输对象列表视图，以复选框形式展示数据传输对象并支持勾选
  *
  * @author oyzh
- * @since 2024/09/05
+ * @since 2024-09-05
  */
 public class DBDataTransportObjectListView extends FXListView<FXCheckBox> {
 

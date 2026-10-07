@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 运行 SQL 文件按钮
  *
  * @author oyzh
- * @since 2024/08/29
+ * @since 2024-08-29
  */
 public class RunSqlFileButton extends IconButton {
 

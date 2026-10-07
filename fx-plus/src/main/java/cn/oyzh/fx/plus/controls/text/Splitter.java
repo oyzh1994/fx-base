@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 分割器
  *
  * @author oyzh
- * @since 2022/8/25
+ * @since 2022-08-25
  */
 public class Splitter extends FXText {
 

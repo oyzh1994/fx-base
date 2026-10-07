@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * 搜索历史弹窗
  *
  * @author oyzh
- * @since 2023/10/23
+ * @since 2023-10-23
  */
 public class SearchHistoryPopup extends FXPopup {
 

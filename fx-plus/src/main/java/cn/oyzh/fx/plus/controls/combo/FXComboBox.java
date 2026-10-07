@@ -25,7 +25,7 @@ import java.util.Collection;
  * 下拉框控件
  *
  * @author oyzh
- * @since 2023/12/25
+ * @since 2023-12-25
  */
 public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup, ThemeAdapter, Verifiable, SelectAdapter<T>, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, Destroyable {
 

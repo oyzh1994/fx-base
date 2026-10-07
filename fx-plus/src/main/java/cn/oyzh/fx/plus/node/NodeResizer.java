@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * 组件拉伸器
  *
  * @author oyzh
- * @since 2023/05/15
+ * @since 2023-05-15
  */
 @Deprecated
 public abstract class NodeResizer implements Destroyable {

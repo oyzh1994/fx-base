@@ -8,7 +8,7 @@ import javafx.stage.Window;
  * fx鼠标相关操作
  *
  * @author oyzh
- * @since 2022/3/8
+ * @since 2022-03-08
  */
 public class CursorUtil {
 

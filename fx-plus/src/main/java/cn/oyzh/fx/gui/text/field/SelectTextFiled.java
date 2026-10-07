@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * 可选择文本输入框
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public class SelectTextFiled<T> extends LimitTextField {
 

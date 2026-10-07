@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * 可选择文本输入框皮肤，带下拉候选列表
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
 

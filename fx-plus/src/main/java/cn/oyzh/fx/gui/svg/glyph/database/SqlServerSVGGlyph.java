@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * SQL Server 数据库 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/09/05
+ * @since 2024-09-05
  */
 public class SqlServerSVGGlyph extends SVGGlyph {
 

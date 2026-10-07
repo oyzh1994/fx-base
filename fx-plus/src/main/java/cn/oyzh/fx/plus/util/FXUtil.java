@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  * fx工具类
  *
  * @author oyzh
- * @since 2021/8/19
+ * @since 2021-08-19
  */
 public class FXUtil {
 

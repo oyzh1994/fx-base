@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * 组件高度拉伸器
  *
  * @author oyzh
- * @since 2025/03/22
+ * @since 2025-03-22
  */
 @Deprecated
 public class NodeHeightResizer extends NodeResizer {

@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 更新日志按钮
  *
  * @author oyzh
- * @since 2024/04/08
+ * @since 2024-04-08
  */
 public class ChangelogButton extends IconButton {
 

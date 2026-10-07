@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
  * 数据库数据导出配置，用于控制导出时的日期格式、字段与记录分割符、文本识别符及字符集等参数。
  *
  * @author oyzh
- * @since 2024/09/02
+ * @since 2024-09-02
  */
 public class DBDataExportConfig {
 

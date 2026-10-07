@@ -9,7 +9,7 @@ import java.util.UUID;
  * 数据库对象状态监听器抽象基类，维护监听器键值并在销毁时自动从管理器中移除
  *
  * @author oyzh
- * @since 2024/7/23
+ * @since 2024-07-23
  */
 public abstract class DBStatusListener implements ChangeListener<Object>, Destroyable {
 
@@ -22,7 +22,7 @@ public abstract class DBStatusListener implements ChangeListener<Object>, Destro
      * 无参构造器，使用随机 UUID 作为监听器键值。
      */
     public DBStatusListener() {
-        this(UUID.randomUUID().toString()) ;
+        this(UUID.randomUUID().toString());
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class DBStatusListener implements ChangeListener<Object>, Destro
      * @param tableName 表名
      */
     public DBStatusListener(String dbName, String tableName) {
-        this(dbName + ":" + ":" + tableName);
+        this(dbName + ":" + tableName);
     }
 
     /**
@@ -56,11 +56,11 @@ public abstract class DBStatusListener implements ChangeListener<Object>, Destro
         this(dbName + ":" + schema + ":" + tableName);
     }
 
-//    @Override
-//    protected void finalize() throws Throwable {
-//        super.finalize();
-//        DBStatusListenerManager.removeListener(this);
-//    }
+    //    @Override
+    //    protected void finalize() throws Throwable {
+    //        super.finalize();
+    //        DBStatusListenerManager.removeListener(this);
+    //    }
 
     @Override
     public void destroy() {

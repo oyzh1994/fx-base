@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 字符集选择输入框
  *
  * @author oyzh
- * @since 2025/12/11
+ * @since 2025-12-11
  */
 public class CharsetTextField extends SelectTextFiled<String> {
 

@@ -4,7 +4,7 @@ package cn.oyzh.fx.plus.window;
  * 舞台监听接口
  *
  * @author oyzh
- * @since 2023/10/12
+ * @since 2023-10-12
  */
 public interface StageListener extends WindowListener {
 

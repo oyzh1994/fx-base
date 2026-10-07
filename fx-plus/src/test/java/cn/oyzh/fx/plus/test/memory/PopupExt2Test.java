@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  * 窗口扩展测试，演示通过控制器解析并显示窗口
  *
  * @author oyzh
- * @since 2022/5/18
+ * @since 2022-05-18
  */
 public class PopupExt2Test extends Application {
 

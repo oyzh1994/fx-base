@@ -7,7 +7,7 @@ import cn.oyzh.event.Event;
  * 更新日志事件
  *
  * @author oyzh
- * @since 2024/04/07
+ * @since 2024-04-07
  */
 public class ChangelogEvent extends Event<Changelog> {
 

@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 编辑表 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/09/05
+ * @since 2024-09-05
  */
 public class EditTableSVGGlyph extends SVGGlyph {
 

@@ -27,7 +27,7 @@
 //
 ///**
 // * @author oyzh
-// * @since 2024/08/16
+// * @since 2024-08-16
 // */
 //public class FlexRichTextArea extends RichTextArea implements ThemeAdapter, FlexAdapter, AreaAdapter, TipAdapter {
 //

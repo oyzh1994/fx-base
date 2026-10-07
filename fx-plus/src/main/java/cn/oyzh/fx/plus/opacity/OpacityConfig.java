@@ -7,7 +7,7 @@ package cn.oyzh.fx.plus.opacity;
  * 透明度配置，包含窗口透明度与标题栏透明度
  *
  * @author oyzh
- * @since 2024/12/30
+ * @since 2024-12-30
  */
 public class OpacityConfig {
 

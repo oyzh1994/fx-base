@@ -9,7 +9,7 @@ import javafx.scene.shape.SVGPath;
  * svg路径控件
  *
  * @author oyzh
- * @since 2025/01/07
+ * @since 2025-01-07
  */
 public class FXSVGPath extends SVGPath implements PropAdapter, Destroyable {
 

@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * 基于Swing的文件选择器
  *
  * @author oyzh
- * @since 2025/03/28
+ * @since 2025-03-28
  */
 public class SwingFileChooser extends JFileChooser {
 

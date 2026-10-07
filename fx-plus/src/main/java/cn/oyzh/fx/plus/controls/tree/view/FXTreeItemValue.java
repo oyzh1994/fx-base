@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference;
  * 富功能树节点值
  *
  * @author oyzh
- * @since 2023/11/10
+ * @since 2023-11-10
  */
 public class FXTreeItemValue implements Destroyable {
 

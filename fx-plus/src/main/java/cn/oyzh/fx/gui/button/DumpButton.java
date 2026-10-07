@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 转储按钮
  *
  * @author oyzh
- * @since 2024/08/28
+ * @since 2024-08-28
  */
 public class DumpButton extends IconButton {
 

@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 退出标签
  *
  * @author oyzh
- * @since 2024/4/10
+ * @since 2024-04-10
  */
 public class QuitSVGLabel extends SVGLabel {
 

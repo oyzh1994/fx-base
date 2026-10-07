@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 运行文件 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/08/29
+ * @since 2024-08-29
  */
 public class RunFileSVGGlyph extends SVGGlyph {
 

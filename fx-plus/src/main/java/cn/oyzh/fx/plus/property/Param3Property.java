@@ -5,7 +5,7 @@ package cn.oyzh.fx.plus.property;
  * 包含三个参数的属性对象
  *
  * @author oyzh
- * @since 2025/01/21
+ * @since 2025-01-21
  */
 public class Param3Property<P1, P2, P3> {
 

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 数据库对象列表基类，支持按新增、变更、删除状态筛选对象
  *
  * @author oyzh
- * @since 2024/07/13
+ * @since 2024-07-13
  */
 public abstract class DBObjectList<S extends DBObject> extends ArrayList<S> {
 

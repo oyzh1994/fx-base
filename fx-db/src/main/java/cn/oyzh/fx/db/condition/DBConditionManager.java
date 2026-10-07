@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 数据库条件管理器，负责按数据库方言注册、初始化并获取条件
  *
  * @author oyzh
- * @since 2024/6/26
+ * @since 2024-06-26
  */
 public class DBConditionManager {
 

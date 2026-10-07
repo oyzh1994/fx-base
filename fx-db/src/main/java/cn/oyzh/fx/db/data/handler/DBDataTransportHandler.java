@@ -10,7 +10,7 @@ import java.util.List;
  * 数据库数据传输处理器抽象基类，负责在来源库与目标库之间传输数据
  *
  * @author oyzh
- * @since 2024/09/06
+ * @since 2024-09-06
  */
 public abstract class DBDataTransportHandler<D> extends DataTransportHandler implements DataBatchInsertable<D> {
 

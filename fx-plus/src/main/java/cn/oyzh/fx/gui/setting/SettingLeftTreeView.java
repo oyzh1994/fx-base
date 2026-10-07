@@ -15,7 +15,7 @@ import java.util.List;
  * 设置左侧树视图
  *
  * @author oyzh
- * @since 2024/12/29
+ * @since 2024-12-29
  */
 public class SettingLeftTreeView extends RichTreeView {
 

@@ -22,7 +22,7 @@ import java.util.List;
  * 富文本流式布局控件，支持按关键字高亮显示文本
  *
  * @author oyzh
- * @since 2025/01/22
+ * @since 2025-01-22
  */
 public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, ThemeAdapter, FontAdapter {
 

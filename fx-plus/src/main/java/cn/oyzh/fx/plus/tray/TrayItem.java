@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
  * 托盘菜单项
  *
  * @author oyzh
- * @since 2023/3/2
+ * @since 2023-03-02
  */
 public class TrayItem extends FXLabel implements BaseTrayItem {
 

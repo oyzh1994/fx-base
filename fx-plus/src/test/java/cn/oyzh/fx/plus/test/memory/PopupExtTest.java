@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * 弹窗扩展测试，演示 PopupExt 的显示与自动隐藏
  *
  * @author oyzh
- * @since 2022/5/18
+ * @since 2022-05-18
  */
 public class PopupExtTest extends Application {
 

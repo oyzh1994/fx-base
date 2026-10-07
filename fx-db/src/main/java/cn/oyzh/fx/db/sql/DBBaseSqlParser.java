@@ -11,7 +11,7 @@ import java.util.List;
  * 默认 SQL 解析器，基于通用 SqlUtil 实现 SQL 的解析、美化、压缩及注释移除
  *
  * @author oyzh
- * @since 2026/10/06
+ * @since 2026-10-06
  */
 public class DBBaseSqlParser extends DBSqlParser {
 

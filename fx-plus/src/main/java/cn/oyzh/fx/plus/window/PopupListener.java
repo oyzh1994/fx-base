@@ -4,7 +4,7 @@ package cn.oyzh.fx.plus.window;
  * 弹窗监听接口
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public interface PopupListener extends WindowListener {
 

@@ -12,7 +12,7 @@ import javafx.stage.Modality;
  * 树形控件测试界面控制器，演示根节点与子节点操作
  *
  * @author oyzh
- * @since 2023/11/21
+ * @since 2023-11-21
  */
 @StageAttribute(
         title = "treeView测试",

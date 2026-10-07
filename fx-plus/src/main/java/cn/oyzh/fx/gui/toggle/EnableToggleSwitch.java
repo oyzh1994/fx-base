@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
  * 启用切换开关
  *
  * @author oyzh
- * @since 2024/04/10
+ * @since 2024-04-10
  */
 public class EnableToggleSwitch extends FXToggleSwitch {
 

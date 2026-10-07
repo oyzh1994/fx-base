@@ -15,7 +15,7 @@ import java.util.List;
  * 富功能树
  *
  * @author oyzh
- * @since 2023/11/10
+ * @since 2023-11-10
  */
 public class RichTreeView extends FXTreeView implements FontAdapter {
 

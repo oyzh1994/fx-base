@@ -10,7 +10,7 @@ import javafx.scene.control.DatePicker;
  * 日期选择器控件
  *
  * @author oyzh
- * @since 2024/04/04
+ * @since 2024-04-04
  */
 public class FXDatePicker extends DatePicker implements ThemeAdapter, FlexAdapter, TipAdapter {
 

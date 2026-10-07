@@ -7,7 +7,7 @@ import javafx.event.EventType;
  * 分页事件
  *
  * @author oyzh
- * @since 2024/8/6
+ * @since 2024-08-06
  */
 public class PageEvent extends Event {
 

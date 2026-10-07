@@ -6,7 +6,7 @@ import javafx.stage.WindowEvent;
  * 窗口监听接口
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public interface WindowListener {
 

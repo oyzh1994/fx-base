@@ -11,7 +11,7 @@ import java.util.Objects;
  * 数字格式化器，支持按指定小数位数格式化数字，并去除千分位分隔符
  *
  * @author oyzh
- * @since 2024/5/15
+ * @since 2024-05-15
  */
 public class DigitalFormat extends DecimalFormat {
 

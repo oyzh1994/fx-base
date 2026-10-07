@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
  * 托盘图标
  *
  * @author oyzh
- * @since 2023/3/2
+ * @since 2023-03-02
  */
 public class TrayImage extends TrayIcon {
 

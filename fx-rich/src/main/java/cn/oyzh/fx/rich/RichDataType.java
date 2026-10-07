@@ -4,7 +4,7 @@
 // * 富文本数据类型
 // *
 // * @author oyzh
-// * @since 2024/5/17
+// * @since 2024-05-17
 // */
 //@Deprecated
 //public enum RichDataType {

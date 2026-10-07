@@ -10,7 +10,7 @@ import java.util.List;
  * 颜色工具类
  *
  * @author oyzh
- * @since 2024/08/17
+ * @since 2024-08-17
  */
 public class FXColorUtil {
 

@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  * 列表弹出框控件
  *
  * @author oyzh
- * @since 2023/12/22
+ * @since 2023-12-22
  */
 public class ListViewPopup<E> extends FXPopup {
 

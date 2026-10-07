@@ -21,7 +21,7 @@ import java.util.function.Predicate;
  * JavaFX 覆盖检查器，用于检查 Tab、页面、弹窗等组件能否正常实例化
  *
  * @author oyzh
- * @since 2026/09/06
+ * @since 2026-09-06
  */
 public class FXCoverChecker {
 

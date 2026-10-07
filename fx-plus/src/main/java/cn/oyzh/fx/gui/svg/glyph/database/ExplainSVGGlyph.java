@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 执行计划 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/08/16
+ * @since 2024-08-16
  */
 public class ExplainSVGGlyph extends SVGGlyph {
 

@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 设置按钮
  *
  * @author oyzh
- * @since 2024/07/11
+ * @since 2024-07-11
  */
 public class SettingButton extends IconButton {
 

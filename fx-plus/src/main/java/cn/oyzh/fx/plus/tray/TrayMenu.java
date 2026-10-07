@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
  * 托盘菜单
  *
  * @author oyzh
- * @since 2023/3/2
+ * @since 2023-03-02
  */
 public class TrayMenu extends FXVBox {
 

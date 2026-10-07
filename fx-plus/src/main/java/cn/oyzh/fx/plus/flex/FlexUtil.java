@@ -6,7 +6,7 @@ import cn.oyzh.common.util.StringUtil;
  * 流式布局工具类
  *
  * @author oyzh
- * @since 2022/12/31
+ * @since 2022-12-31
  */
 
 public class FlexUtil {

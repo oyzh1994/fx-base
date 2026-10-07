@@ -13,7 +13,7 @@ import java.util.Objects;
  * 鼠标事件处理器
  *
  * @author oyzh
- * @since 2023/10/10
+ * @since 2023-10-10
  */
 public class MouseEventHandler implements EventHandler<MouseEvent> {
 

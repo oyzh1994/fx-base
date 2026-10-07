@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
  * 选择输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/04
+ * @since 2024-07-04
  */
 public class ChooseTextFieldSkin extends ActionTextFieldSkin {
 

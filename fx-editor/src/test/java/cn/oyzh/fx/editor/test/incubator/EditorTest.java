@@ -53,7 +53,7 @@ import java.util.Set;
  * incubator 模块编辑器综合测试，演示 Editor 的文本编辑、样式设置、字体调整与主题切换等操作。
  *
  * @author oyzh
- * @since 2022/5/18
+ * @since 2022-05-18
  */
 public class EditorTest extends Application {
 

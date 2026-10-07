@@ -21,7 +21,7 @@
 //
 ///**
 // * @author oyzh
-// * @since 2024/5/17
+// * @since 2024-05-17
 // */
 //@Deprecated
 //public abstract class RichTextAreaPane<E extends BaseRichTextArea> extends FXVirtualizedScrollPane<E> implements TipAdapter, FontAdapter, ThemeAdapter {

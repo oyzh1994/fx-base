@@ -7,7 +7,7 @@ import javafx.event.EventTarget;
  * 布局适配器
  *
  * @author oyzh
- * @since 2023/4/11
+ * @since 2023-04-11
  */
 public interface LayoutAdapter extends EventTarget {
 

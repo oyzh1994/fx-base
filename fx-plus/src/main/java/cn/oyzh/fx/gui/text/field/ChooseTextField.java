@@ -6,7 +6,7 @@ import cn.oyzh.fx.gui.skin.ChooseTextFieldSkin;
  * 选择输入框
  *
  * @author oyzh
- * @since 2024/07/04
+ * @since 2024-07-04
  */
 public class ChooseTextField extends LimitTextField {
 

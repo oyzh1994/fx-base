@@ -3,7 +3,7 @@ package cn.oyzh.fx.gui.svg.glyph.file.c;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 
 /**
- * CSV 文件 SVG 图标控件
+ * C 源文件 SVG 图标控件
  *
  * @author oyzh
  * @since 2025-03-05

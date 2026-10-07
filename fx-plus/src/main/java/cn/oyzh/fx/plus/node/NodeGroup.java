@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.adapter.PropAdapter;
  * 节点分组，通过分组id对节点进行归组，分组id支持以逗号分隔的多个值
  *
  * @author oyzh
- * @since 2024/06/08
+ * @since 2024-06-08
  */
 public interface NodeGroup extends PropAdapter {
 

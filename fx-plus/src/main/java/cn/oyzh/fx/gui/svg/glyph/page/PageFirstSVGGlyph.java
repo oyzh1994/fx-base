@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 首页 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/08/06
+ * @since 2024-08-06
  */
 public class PageFirstSVGGlyph extends SVGGlyph {
 

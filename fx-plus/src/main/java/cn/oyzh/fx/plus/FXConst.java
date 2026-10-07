@@ -8,7 +8,7 @@ import javafx.application.HostServices;
  * FX 常量类，定义资源路径、全局属性键及应用实例等公共常量
  *
  * @author oyzh
- * @since 2022/12/26
+ * @since 2022-12-26
  */
 public class FXConst {
 

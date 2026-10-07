@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 截断 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/07/26
+ * @since 2024-07-26
  */
 public class TruncateSVGGlyph extends SVGGlyph {
 

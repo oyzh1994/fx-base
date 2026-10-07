@@ -5,7 +5,7 @@ package cn.oyzh.fx.plus.property;
  * 键值对属性
  *
  * @author oyzh
- * @since 2025/01/20
+ * @since 2025-01-20
  */
 public class KeyValueProperty<K, V> {
 

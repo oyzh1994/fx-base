@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
  * 颜色选择器控件
  *
  * @author oyzh
- * @since 2024/04/04
+ * @since 2024-04-04
  */
 public class FXColorPicker extends ColorPicker implements FlexAdapter, TipAdapter, FontAdapter, ThemeAdapter {
 

@@ -8,7 +8,7 @@ import java.util.List;
  * 菜单项适配器，用于提供右键菜单项列表
  *
  * @author oyzh
- * @since 2024/07/25
+ * @since 2024-07-25
  */
 public interface MenuItemAdapter {
 

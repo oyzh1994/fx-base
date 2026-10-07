@@ -20,7 +20,7 @@ import java.util.Map;
  * 基于 Druid 的 SQL 解析器，借助 Druid 解析 SQL 并识别查询语句、全字段查询等
  *
  * @author oyzh
- * @since 2024/2/26
+ * @since 2024-02-26
  */
 public class DBDruidSqlParser extends DBSqlParser {
 

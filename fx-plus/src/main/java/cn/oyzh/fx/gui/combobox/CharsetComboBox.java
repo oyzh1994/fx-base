@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
  * 字符集选择框
  *
  * @author oyzh
- * @since 2022/12/2
+ * @since 2022-12-02
  */
 public class CharsetComboBox extends FXComboBox<String> {
 

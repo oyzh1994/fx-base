@@ -7,7 +7,7 @@ import javafx.scene.control.ToggleGroup;
  * 单选框组控件
  *
  * @author oyzh
- * @since 2023/1/17
+ * @since 2023-01-17
  */
 public class FXToggleGroup extends ToggleGroup {
 

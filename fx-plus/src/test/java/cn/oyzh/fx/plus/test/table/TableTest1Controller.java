@@ -13,7 +13,7 @@ import javafx.stage.Modality;
  * 表格测试界面控制器，验证标签页关闭后的内存回收
  *
  * @author oyzh
- * @since 2023/11/21
+ * @since 2023-11-21
  */
 @StageAttribute(
         title = "table测试",

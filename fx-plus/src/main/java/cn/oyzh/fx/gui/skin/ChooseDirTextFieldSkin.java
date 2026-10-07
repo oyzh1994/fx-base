@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  * 目录文本输入框皮肤
  *
  * @author oyzh
- * @since 2026/01/04
+ * @since 2026-01-04
  */
 public class ChooseDirTextFieldSkin extends ChooseTextFieldSkin {
 

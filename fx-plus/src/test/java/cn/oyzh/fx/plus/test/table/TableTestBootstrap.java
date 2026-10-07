@@ -4,7 +4,7 @@ package cn.oyzh.fx.plus.test.table;
  * 程序启动器
  *
  * @author oyzh
- * @since 2023/01/28
+ * @since 2023-01-28
  */
 public class TableTestBootstrap {
 

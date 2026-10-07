@@ -26,7 +26,7 @@
 // * 模拟拉伸的TableColumn，解决部分场景下拉伸失效问题
 // *
 // * @author oyzh
-// * @since 2026/05/30
+// * @since 2026-05-30
 // */
 //public class FakerResizeTableColumn<S, T> extends FXTableColumn<S, T> {
 //

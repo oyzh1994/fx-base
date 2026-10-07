@@ -11,7 +11,7 @@ import javafx.util.Duration;
  * 弹窗扩展
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public class PopupExt extends Popover implements PopupAdapter {
 

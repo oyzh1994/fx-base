@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * 目录选择框
  *
  * @author oyzh
- * @since 2026/01/04
+ * @since 2026-01-04
  */
 public class ChooseDirTextField extends FXTextField {
 

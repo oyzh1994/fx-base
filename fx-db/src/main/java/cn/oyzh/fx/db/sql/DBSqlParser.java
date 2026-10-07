@@ -10,7 +10,7 @@ import java.util.List;
  * SQL 解析器抽象基类，定义 SQL 的解析、美化、压缩及注释移除等通用能力
  *
  * @author oyzh
- * @since 2024/1/26
+ * @since 2024-01-26
  */
 public abstract class DBSqlParser {
 

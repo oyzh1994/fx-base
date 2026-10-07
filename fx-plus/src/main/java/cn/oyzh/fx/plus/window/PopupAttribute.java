@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * 弹窗属性
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

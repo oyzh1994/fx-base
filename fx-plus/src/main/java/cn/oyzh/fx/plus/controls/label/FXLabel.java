@@ -21,7 +21,7 @@ import javafx.scene.control.Label;
  * 标签控件
  *
  * @author oyzh
- * @since 2020/10/29
+ * @since 2020-10-29
  */
 public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapter, MouseAdapter, TextAdapter, TipAdapter, StateAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
 

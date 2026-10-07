@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  * 动态标签页控制器
  *
  * @author oyzh
- * @since 2023/11/3
+ * @since 2023-11-03
  */
 public abstract class RichTabController implements EventListener, I18nAdapter, Initializable, Destroyable {
 

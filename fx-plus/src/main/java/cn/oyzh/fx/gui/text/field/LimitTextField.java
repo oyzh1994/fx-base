@@ -10,7 +10,7 @@ import javafx.scene.control.TextFormatter;
  * 限制文本输入框
  *
  * @author oyzh
- * @since 2023/08/29
+ * @since 2023-08-29
  */
 public class LimitTextField extends FXTextField implements LimitLenControl {
 

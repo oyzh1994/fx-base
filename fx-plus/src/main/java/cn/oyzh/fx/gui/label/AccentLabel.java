@@ -7,7 +7,7 @@ import javafx.scene.Node;
  * 强调色标签
  *
  * @author oyzh
- * @since 2024/04/08
+ * @since 2024-04-08
  */
 public class AccentLabel extends FXLabel {
 

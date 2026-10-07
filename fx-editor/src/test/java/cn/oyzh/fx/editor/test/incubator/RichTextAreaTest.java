@@ -15,7 +15,7 @@ import jfx.incubator.scene.control.richtext.RichTextArea;
  * incubator 模块 RichTextArea 测试，演示在新窗口中创建富文本区域并验证关闭后的资源释放。
  *
  * @author oyzh
- * @since 2022/5/18
+ * @since 2022-05-18
  */
 public class RichTextAreaTest extends Application {
 

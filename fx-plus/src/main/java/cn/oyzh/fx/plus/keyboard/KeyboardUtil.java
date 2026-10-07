@@ -14,7 +14,7 @@ import java.util.List;
  * 键盘快捷键工具类，定义并判断各平台下的常用快捷键
  *
  * @author oyzh
- * @since 2024/07/02
+ * @since 2024-07-02
  */
 public class KeyboardUtil {
 

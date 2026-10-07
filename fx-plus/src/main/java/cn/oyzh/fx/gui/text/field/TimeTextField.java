@@ -12,7 +12,7 @@ import java.util.Date;
  * 时间文本输入框
  *
  * @author oyzh
- * @since 2024/07/21
+ * @since 2024-07-21
  */
 public class TimeTextField extends LimitTextField {
 

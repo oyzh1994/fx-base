@@ -19,7 +19,7 @@ import javafx.scene.layout.HBox;
  * 展开文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/09
+ * @since 2024-07-09
  */
 public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
 

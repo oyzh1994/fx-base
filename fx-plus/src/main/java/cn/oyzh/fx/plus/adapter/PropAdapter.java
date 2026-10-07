@@ -9,7 +9,7 @@ import javafx.event.EventTarget;
  * 属性适配器
  *
  * @author oyzh
- * @since 2023/4/11
+ * @since 2023-04-11
  */
 public interface PropAdapter {
 

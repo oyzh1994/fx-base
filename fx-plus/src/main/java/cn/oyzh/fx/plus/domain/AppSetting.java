@@ -17,7 +17,7 @@ import java.io.Serializable;
  * app设置
  *
  * @author oyzh
- * @since 2022/8/26
+ * @since 2022-08-26
  */
 public class AppSetting implements Serializable, ObjectCopier<Object> {
 

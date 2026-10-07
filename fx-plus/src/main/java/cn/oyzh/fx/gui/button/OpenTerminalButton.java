@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 打开终端按钮
  *
  * @author oyzh
- * @since 2024/04/08
+ * @since 2024-04-08
  */
 public class OpenTerminalButton extends IconButton {
 

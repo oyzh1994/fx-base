@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * 文件文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/04
+ * @since 2024-07-04
  */
 public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
 

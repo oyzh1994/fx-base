@@ -6,7 +6,7 @@ import javafx.scene.text.FontWeight;
  * 信息标签，加粗显示
  *
  * @author oyzh
- * @since 2024/04/08
+ * @since 2024-04-08
  */
 public class InfoLabel extends AccentLabel {
 

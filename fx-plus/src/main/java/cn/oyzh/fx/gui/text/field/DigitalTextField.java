@@ -12,7 +12,7 @@ import java.util.function.UnaryOperator;
  * 数字文本输入框
  *
  * @author oyzh
- * @since 2023/12/27
+ * @since 2023-12-27
  */
 public abstract class DigitalTextField extends LimitTextField {
 

@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  * 键盘按键监听器，负责在场景或节点上注册、移除按键事件处理器
  *
  * @author oyzh
- * @since 2023/1/16
+ * @since 2023-01-16
  */
 public class KeyListener {
 
@@ -36,7 +36,7 @@ public class KeyListener {
      * @param keyHandler 按键处理器
      */
     public static void unListen(Object target, KeyHandler keyHandler) {
-        addHandler(target, keyHandler);
+        removeHandler(target, keyHandler);
     }
 
     /**
@@ -115,7 +115,7 @@ public class KeyListener {
      * @param target     事件目标
      * @param keyHandler 按键处理器
      */
-    public static void removeHandler(EventTarget target, KeyHandler keyHandler) {
+    public static void removeHandler(Object target, KeyHandler keyHandler) {
         KeyEventHandler eventHandler = getEventHandler(target);
         if (eventHandler != null) {
             eventHandler.removeHandler(keyHandler.getKeyCode(), keyHandler.getKeyType());

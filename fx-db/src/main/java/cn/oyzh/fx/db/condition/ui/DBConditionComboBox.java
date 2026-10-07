@@ -10,7 +10,7 @@ import cn.oyzh.fx.plus.converter.SimpleStringConverter;
  * 数据库条件下拉框，用于选择指定数据库方言下的查询条件
  *
  * @author oyzh
- * @since 2024/06/26
+ * @since 2024-06-26
  */
 public class DBConditionComboBox extends FXComboBox<DBCondition> {
 

@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 放大 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/7/9
+ * @since 2024-07-09
  */
 public class EnlargeSVGGlyph extends SVGGlyph {
 

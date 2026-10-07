@@ -30,7 +30,7 @@ import javafx.scene.paint.Color;
  * 高亮文本输入框皮肤
  *
  * @author oyzh
- * @since 2026/05/14
+ * @since 2026-05-14
  */
 public class HighlightTextFieldSkin extends FXTextFieldSkin {
 

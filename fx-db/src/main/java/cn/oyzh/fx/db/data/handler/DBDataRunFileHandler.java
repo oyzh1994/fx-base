@@ -11,7 +11,7 @@ import java.util.List;
  * 数据库文件运行处理器抽象基类，负责执行 SQL 文件等
  *
  * @author oyzh
- * @since 2024/08/29
+ * @since 2024-08-29
  */
 public abstract class DBDataRunFileHandler<D> extends DataRunFileHandler implements DataBatchInsertable<D> {
 

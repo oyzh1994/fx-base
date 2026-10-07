@@ -9,7 +9,7 @@ import java.util.function.UnaryOperator;
  * 位文本输入框
  *
  * @author oyzh
- * @since 2023/12/22
+ * @since 2023-12-22
  */
 public class BitTextField extends LimitTextField {
 

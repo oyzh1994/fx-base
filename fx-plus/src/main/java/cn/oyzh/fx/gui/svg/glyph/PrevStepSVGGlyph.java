@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 上一步 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/08/26
+ * @since 2024-08-26
  */
 public class PrevStepSVGGlyph extends SVGGlyph {
 

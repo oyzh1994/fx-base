@@ -8,7 +8,7 @@ import javafx.scene.control.Tab;
  * 动态标签页面板
  *
  * @author oyzh
- * @since 2023/11/03
+ * @since 2023-11-03
  */
 public class RichTabPane extends FXTabPane {
 

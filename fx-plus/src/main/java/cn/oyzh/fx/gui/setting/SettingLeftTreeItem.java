@@ -8,7 +8,7 @@ import javafx.scene.control.TreeItem;
  * 设置左侧树节点
  *
  * @author oyzh
- * @since 2024/12/29
+ * @since 2024-12-29
  */
 public class SettingLeftTreeItem extends RichTreeItem<SettingLeftTreeItemValue> {
 

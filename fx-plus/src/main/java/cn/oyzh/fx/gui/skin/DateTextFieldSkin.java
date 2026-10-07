@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
  * 日期输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/19
+ * @since 2024-07-19
  */
 public class DateTextFieldSkin extends ActionTextFieldSkin {
 

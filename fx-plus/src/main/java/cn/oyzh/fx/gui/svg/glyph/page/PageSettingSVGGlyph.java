@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 分页设置 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/08/06
+ * @since 2024-08-06
  */
 public class PageSettingSVGGlyph extends SVGGlyph {
 

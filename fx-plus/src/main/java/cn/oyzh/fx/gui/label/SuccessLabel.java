@@ -7,7 +7,7 @@ import javafx.scene.Node;
  * 成功标签
  *
  * @author oyzh
- * @since 2024/04/09
+ * @since 2024-04-09
  */
 public class SuccessLabel extends FXLabel {
 

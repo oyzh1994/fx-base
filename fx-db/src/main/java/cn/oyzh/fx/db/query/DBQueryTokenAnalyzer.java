@@ -7,7 +7,7 @@ import java.util.List;
  * 查询词元解析器，负责解析当前词元并生成候选提示
  *
  * @author oyzh
- * @since 2025/01/21
+ * @since 2025-01-21
  */
 public abstract class DBQueryTokenAnalyzer<E extends DBQueryPromptItem, T extends DBQueryToken> {
 

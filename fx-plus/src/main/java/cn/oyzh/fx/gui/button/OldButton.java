@@ -8,7 +8,7 @@ import cn.oyzh.fx.plus.controls.button.IconButton;
  * 旧版按钮
  *
  * @author oyzh
- * @since 2024/08/26
+ * @since 2024-08-26
  */
 public class OldButton extends IconButton {
 

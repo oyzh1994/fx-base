@@ -25,7 +25,7 @@ import java.util.Objects;
  * 分页面板组件
  *
  * @author oyzh
- * @since 2022/12/22
+ * @since 2022-12-22
  */
 public class PageBox<T> extends FXHBox {
 

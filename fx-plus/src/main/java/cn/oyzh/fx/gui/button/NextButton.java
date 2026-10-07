@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 下一个按钮
  *
  * @author oyzh
- * @since 2024/08/09
+ * @since 2024-08-09
  */
 public class NextButton extends IconButton {
 

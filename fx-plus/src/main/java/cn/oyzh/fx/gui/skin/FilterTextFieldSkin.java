@@ -28,7 +28,7 @@ import javafx.scene.paint.Color;
  * 过滤文本输入框皮肤
  *
  * @author oyzh
- * @since 2026/05/14
+ * @since 2026-05-14
  */
 public class FilterTextFieldSkin extends FXTextFieldSkin {
 

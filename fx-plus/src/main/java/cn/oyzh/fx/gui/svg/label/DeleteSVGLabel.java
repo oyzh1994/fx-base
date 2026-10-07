@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 删除标签
  *
  * @author oyzh
- * @since 2024/4/11
+ * @since 2024-04-11
  */
 public class DeleteSVGLabel extends SVGLabel {
 

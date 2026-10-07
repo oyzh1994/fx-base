@@ -9,7 +9,7 @@ import java.util.Locale;
  * 国际化适配器
  *
  * @author oyzh
- * @since 2024/4/7
+ * @since 2024-04-07
  */
 public interface I18nAdapter extends PropAdapter {
 

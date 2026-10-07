@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
  * fx控件工具类
  *
  * @author oyzh
- * @since 2022/1/19
+ * @since 2022-01-19
  */
 public class ControlUtil {
 

@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * 匹配大小写输入框皮肤
  *
  * @author oyzh
- * @since 2025/10/13
+ * @since 2025-10-13
  */
 public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
 

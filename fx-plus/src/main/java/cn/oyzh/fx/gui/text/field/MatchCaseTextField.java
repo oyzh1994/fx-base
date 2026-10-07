@@ -8,7 +8,7 @@ import javafx.scene.control.Skin;
  * 匹配大小写输入框
  *
  * @author oyzh
- * @since 2025/10/13
+ * @since 2025-10-13
  */
 public class MatchCaseTextField extends LimitTextField {
 

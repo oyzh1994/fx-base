@@ -7,7 +7,7 @@ import javafx.scene.control.TextFormatter;
  * 文本行数限制控件接口，为控件提供统一的文本行数校验能力
  *
  * @author oyzh
- * @since 2024/06/21
+ * @since 2024-06-21
  */
 public interface LimitLineControl {
 

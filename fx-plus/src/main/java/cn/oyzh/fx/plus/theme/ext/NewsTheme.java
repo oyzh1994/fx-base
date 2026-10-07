@@ -10,7 +10,7 @@ import java.util.Locale;
  * News 扩展主题
  *
  * @author oyzh
- * @since 2026/10/6
+ * @since 2026-10-06
  */
 public class NewsTheme implements ThemeStyle {
 

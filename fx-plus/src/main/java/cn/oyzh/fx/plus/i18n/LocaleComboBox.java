@@ -13,7 +13,7 @@ import java.util.Locale;
  * 区域下拉框
  *
  * @author oyzh
- * @since 2024/04/07
+ * @since 2024-04-07
  */
 public class LocaleComboBox extends FXComboBox<Locale> {
 

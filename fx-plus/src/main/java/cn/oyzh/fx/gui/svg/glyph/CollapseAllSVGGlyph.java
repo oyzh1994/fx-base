@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 全部折叠 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/4/12
+ * @since 2024-04-12
  */
 public class CollapseAllSVGGlyph extends SVGGlyph {
 

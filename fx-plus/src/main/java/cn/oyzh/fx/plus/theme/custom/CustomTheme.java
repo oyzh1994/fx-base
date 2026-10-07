@@ -15,7 +15,7 @@ import java.util.Locale;
  * 自定义主题
  *
  * @author oyzh
- * @since 2024/4/4
+ * @since 2024-04-04
  */
 public class CustomTheme implements ThemeStyle {
 

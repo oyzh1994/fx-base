@@ -15,7 +15,7 @@ import javafx.scene.control.Menu;
  * 自定义菜单，支持状态、主题与字体适配
  *
  * @author oyzh
- * @since 2025/07/24
+ * @since 2025-07-24
  */
 public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdapter, Destroyable {
 

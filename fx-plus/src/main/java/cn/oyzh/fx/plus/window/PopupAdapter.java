@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * 弹窗适配器
  *
  * @author oyzh
- * @since 2024/07/12
+ * @since 2024-07-12
  */
 public interface PopupAdapter extends WindowAdapter {
 

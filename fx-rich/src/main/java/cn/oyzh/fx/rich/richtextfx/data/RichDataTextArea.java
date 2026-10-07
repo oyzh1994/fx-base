@@ -19,7 +19,7 @@
 // * 富文本数据文本域
 // *
 // * @author oyzh
-// * @since 2024/04/17
+// * @since 2024-04-17
 // */
 //@Deprecated
 //public class RichDataTextArea extends BaseRichTextArea {

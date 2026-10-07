@@ -13,7 +13,7 @@ import javafx.stage.WindowEvent;
  * 窗口控制器
  *
  * @author oyzh
- * @since 2023/10/12
+ * @since 2023-10-12
  */
 public class StageController extends Controller implements StageListener, EventListener {
 

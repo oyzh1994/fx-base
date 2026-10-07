@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 选择 SVG 图标控件
  *
  * @author oyzh
- * @since 2024/07/04
+ * @since 2024-07-04
  */
 public class ChooseSVGGlyph extends SVGGlyph {
 

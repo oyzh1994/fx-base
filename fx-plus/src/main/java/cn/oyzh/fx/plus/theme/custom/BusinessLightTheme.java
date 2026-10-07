@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 特性：清晰专业、简洁明快、企业质感
  *
  * @author oyzh
- * @since 2026/6/27
+ * @since 2026-06-27
  */
 public class BusinessLightTheme implements ThemeStyle {
 

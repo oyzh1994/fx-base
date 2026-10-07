@@ -32,7 +32,7 @@ import java.util.List;
  * tab面板控件
  *
  * @author oyzh
- * @since 2022/1/20
+ * @since 2022-01-20
  */
 public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, ContextMenuAdapter, SelectAdapter<Tab>, Destroyable {
 

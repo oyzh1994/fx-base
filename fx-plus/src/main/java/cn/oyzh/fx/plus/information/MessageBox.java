@@ -38,7 +38,7 @@ import java.util.function.Function;
  * 消息盒子
  *
  * @author oyzh
- * @since 2023/10/24
+ * @since 2023-10-24
  */
 public class MessageBox {
 
@@ -103,7 +103,7 @@ public class MessageBox {
         String finalContent = content == null ? "" : content;
         AtomicReference<Boolean> result = new AtomicReference<>();
         FXUtil.runWait(() -> {
-//            if (FXUtil.isEnablePreview()) {
+            //            if (FXUtil.isEnablePreview()) {
             if (enableNewStyle) {
                 FXButton button1 = new FXButton(I18nHelper.ok());
                 button1.addClass("accent");
@@ -248,7 +248,7 @@ public class MessageBox {
         if (FXUtil.isInitialized()) {
             FXUtil.runWait(() -> {
                 if (enableNewStyle) {
-//                if (FXUtil.isEnablePreview()) {
+                    //                if (FXUtil.isEnablePreview()) {
                     AlertStage stage = new AlertStage(type, content);
                     stage.title(title);
                     stage.initOwner(owner);
@@ -323,6 +323,7 @@ public class MessageBox {
      * 输入窗口
      *
      * @param title 标题
+     * @return 结果
      */
     public static String prompt(String title) {
         return prompt(title, null);
@@ -333,6 +334,7 @@ public class MessageBox {
      *
      * @param title    标题
      * @param initText 初始值
+     * @return 结果
      */
     public static String prompt(String title, String initText) {
         title = title == null ? I18nHelper.tips() : title;
@@ -342,7 +344,7 @@ public class MessageBox {
         AtomicReference<String> ref = new AtomicReference<>();
         FXUtil.runWait(() -> {
             if (enableNewStyle) {
-//            if (FXUtil.isEnablePreview()) {
+                //            if (FXUtil.isEnablePreview()) {
                 InputStage stage = new InputStage(finalInitText);
                 stage.title(finalTitle);
                 ref.set(stage.getResult());

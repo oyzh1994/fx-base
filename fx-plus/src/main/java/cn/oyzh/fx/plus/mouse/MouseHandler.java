@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
  * 鼠标按键处理器
  *
  * @author oyzh
- * @since 2023/10/10
+ * @since 2023-10-10
  */
 public class MouseHandler {
 
