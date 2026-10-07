@@ -17,6 +17,7 @@ import javafx.scene.layout.Region;
 import java.util.List;
 
 /**
+ * 分割面板控件
  *
  * @author oyzh
  * @since 2025-11-27
@@ -48,15 +49,29 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         }
     }
 
+    /**
+     * 获取第一个分割条位置
+     *
+     * @return 第一个分割条位置，未记录时返回 null
+     */
     public Double getPosition0() {
         return this.getProp("position_0");
     }
 
+    /**
+     * 获取第一个分割条位置，未记录时返回默认值
+     *
+     * @param defaultVal 默认值
+     * @return 第一个分割条位置
+     */
     public double getPosition0(double defaultVal) {
         Double v1 = this.getPosition0();
         return v1 == null ? defaultVal : v1;
     }
 
+    /**
+     * 记录第一个分割条位置
+     */
     public void recordPosition0() {
         double[] positions = this.getDividerPositions();
         if (positions != null && positions.length >= 1) {
@@ -66,12 +81,15 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         }
     }
 
+    /**
+     * 是否显示分割条
+     */
     private boolean showDivider = true;
 
     /**
-     * 显示分割条
+     * 设置是否显示分割条
      *
-     * @param showDivider 结果
+     * @param showDivider 是否显示
      */
     public void setShowDivider(boolean showDivider) {
         this.showDivider = showDivider;
@@ -83,6 +101,11 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         }
     }
 
+    /**
+     * 是否显示分割条
+     *
+     * @return 是否显示
+     */
     public boolean isShowDivider() {
         return showDivider;
     }

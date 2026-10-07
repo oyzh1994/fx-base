@@ -4,6 +4,7 @@ import cn.oyzh.fx.tty.zmodem.TtyZModemTtyConnector;
 import com.jediterm.core.Color;
 
 /**
+ * 终端工具类。
  *
  * @author oyzh
  * @since 2025-10-16
@@ -30,10 +31,10 @@ public class TtyTerminalUtil {
     }
 
     /**
-     * 从fx颜色生成
+     * 从 JavaFX 颜色转换生成终端颜色
      *
-     * @param color1 颜色
-     * @return 结果
+     * @param color1 JavaFX 颜色
+     * @return 终端颜色
      */
     public static Color fromFXColor(javafx.scene.paint.Color color1) {
         int red = (int) (color1.getRed() * 255);
@@ -48,7 +49,7 @@ public class TtyTerminalUtil {
      *
      * @param widget    tty组件
      * @param connector tty连接器
-     * @return ShellZModemTtyConnector
+     * @return zModem 连接器
      */
     public static TtyZModemTtyConnector createZModemTtyConnector(TtyTermWidget widget, TtyStreamable connector) {
         return new TtyZModemTtyConnector(widget.getTerminal(), connector);

@@ -40,30 +40,65 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
      */
     private Consumer<File> onSelectedFile;
 
+    /**
+     * 获取选中文件。
+     *
+     * @return 选中文件
+     */
     public Consumer<File> getOnSelectedFile() {
         return onSelectedFile;
     }
 
+    /**
+     * 设置选中文件。
+     *
+     * @param onSelectedFile 选中文件
+     */
     public void setOnSelectedFile(Consumer<File> onSelectedFile) {
         this.onSelectedFile = onSelectedFile;
     }
 
+    /**
+     * 获取过滤器集合。
+     *
+     * @return 过滤器集合
+     */
     public List<FileExtensionFilter> getFilters() {
         return filters;
     }
 
+    /**
+     * 设置过滤器集合。
+     *
+     * @param filters 过滤器集合
+     */
     public void setFilters(List<FileExtensionFilter> filters) {
         this.filters = filters;
     }
 
+    /**
+     * 是否总是显示。
+     *
+     * @return 总是显示
+     */
     public boolean isAlwaysShowGraphic() {
         return alwaysShowGraphic;
     }
 
+    /**
+     * 获取文件。
+     *
+     * @return 文件
+     */
     public File getFile() {
         return file;
     }
 
+    /**
+     * 设置文件。
+     *
+     * @param file 文件
+     */
     public void setFile(File file) {
         this.file = file;
     }
@@ -86,6 +121,11 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
         }
     }
 
+    /**
+     * 构造选择文件文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public ChooseFileTextFieldSkin(TextField textField) {
         super(textField);
     }
@@ -104,6 +144,11 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
         }
     }
 
+    /**
+     * 设置是否一直显示图标
+     *
+     * @param alwaysShowGraphic 是否一直显示图标
+     */
     public void setAlwaysShowGraphic(boolean alwaysShowGraphic) {
         this.alwaysShowGraphic = alwaysShowGraphic;
         this.updateButtonVisibility();

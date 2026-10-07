@@ -9,6 +9,8 @@ import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * 目录选择器
+ *
  * @author oyzh
  * @since 2024/8/28
  */
@@ -19,6 +21,11 @@ public class FXDirChooser {
      */
     private String title;
 
+    /**
+     * 设置标题
+     *
+     * @param title 标题
+     */
     public void setTitle(String title) {
         this.title = title;
     }
@@ -32,7 +39,7 @@ public class FXDirChooser {
      * 设置初始化目录
      *
      * @param initDir 初始化目录
-     * @return 文件选择器
+     * @return 目录选择器
      */
     public FXDirChooser initDir(String initDir) {
         this.initDir(new File(initDir));
@@ -43,7 +50,7 @@ public class FXDirChooser {
      * 设置初始化目录
      *
      * @param initDir 初始化目录
-     * @return 文件选择器
+     * @return 目录选择器
      */
     public FXDirChooser initDir(File initDir) {
         if (!FileUtil.exists(initDir)) {
@@ -56,6 +63,11 @@ public class FXDirChooser {
         return this;
     }
 
+    /**
+     * 构建目录选择器
+     *
+     * @return 目录选择器
+     */
     public DirectoryChooser chooser() {
         DirectoryChooser chooser = new DirectoryChooser();
         if (this.title != null) {
@@ -69,6 +81,12 @@ public class FXDirChooser {
         return chooser;
     }
 
+    /**
+     * 显示目录选择对话框
+     *
+     * @param owner 父窗口
+     * @return 选中的目录，未选择时返回 null
+     */
     public File showDialog(Window owner) {
         AtomicReference<File> file = new AtomicReference<>();
         FXUtil.runWait(() -> file.set(this.chooser().showDialog(owner)));

@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 /**
- * 文本域皮肤扩展
+ * 带右侧操作按钮的文本输入框皮肤基类
  *
  * @author oyzh
  * @since 2023/10/25
@@ -18,14 +18,24 @@ import javafx.scene.input.MouseEvent;
 public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
 
     /**
-     * 操作
+     * 按钮触发的操作
      */
     private Runnable action;
 
+    /**
+     * 获取按钮触发的操作
+     *
+     * @return 操作
+     */
     public Runnable getAction() {
         return action;
     }
 
+    /**
+     * 设置按钮触发的操作
+     *
+     * @param action 操作
+     */
     public void setAction(Runnable action) {
         this.action = action;
     }
@@ -35,6 +45,11 @@ public abstract class ActionTextFieldSkin extends FXTextFieldSkin {
      */
     protected SVGGlyph button;
 
+    /**
+     * 构造动作文本字段皮肤对象。
+     *
+     * @param control 控件
+     */
     public ActionTextFieldSkin(TextField control) {
         super(control);
         // this.button = button;

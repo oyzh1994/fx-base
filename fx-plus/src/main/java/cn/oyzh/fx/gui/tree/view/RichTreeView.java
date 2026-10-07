@@ -29,26 +29,56 @@ public class RichTreeView extends FXTreeView implements FontAdapter {
      */
     protected boolean highlightMatchCase;
 
+    /**
+     * 获取节点过滤器
+     *
+     * @return 节点过滤器
+     */
     public RichTreeItemFilter getItemFilter() {
         return itemFilter;
     }
 
+    /**
+     * 设置节点过滤器
+     *
+     * @param itemFilter 节点过滤器
+     */
     public void setItemFilter(RichTreeItemFilter itemFilter) {
         this.itemFilter = itemFilter;
     }
 
+    /**
+     * 高亮是否匹配大小写
+     *
+     * @return 高亮是否匹配大小写
+     */
     public boolean isHighlightMatchCase() {
         return highlightMatchCase;
     }
 
+    /**
+     * 设置高亮是否匹配大小写
+     *
+     * @param highlightMatchCase 高亮是否匹配大小写
+     */
     public void setHighlightMatchCase(boolean highlightMatchCase) {
         this.highlightMatchCase = highlightMatchCase;
     }
 
+    /**
+     * 获取高亮文本
+     *
+     * @return 高亮文本
+     */
     public String getHighlight() {
         return highlight;
     }
 
+    /**
+     * 设置高亮文本
+     *
+     * @param highlight 高亮文本
+     */
     public void setHighlight(String highlight) {
         this.highlight = highlight;
     }
@@ -111,10 +141,20 @@ public class RichTreeView extends FXTreeView implements FontAdapter {
         this.refresh();
     }
 
+    /**
+     * 获取根节点
+     *
+     * @return 根节点
+     */
     public RichTreeItem<?> root() {
         return (RichTreeItem<?>) super.getRoot();
     }
 
+    /**
+     * 设置根节点
+     *
+     * @param root 根节点
+     */
     public void root(TreeItem<?> root) {
         if (root instanceof RichTreeItem<?> item) {
             FXUtil.runWait(() -> super.setRoot(root));
@@ -146,6 +186,11 @@ public class RichTreeView extends FXTreeView implements FontAdapter {
         this.refresh();
     }
 
+    /**
+     * 监听选中节点变化
+     *
+     * @param listener 变更监听器
+     */
     public void selectedItemChanged(ChangeListener<?> listener) {
         this.getSelectionModel().selectedItemProperty().addListener(listener);
     }

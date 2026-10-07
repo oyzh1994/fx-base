@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 
 /**
+ * 弹窗测试用窗口控制器，用于触发并显示子弹窗
  *
  * @author oyzh
  * @since 2026-05-15

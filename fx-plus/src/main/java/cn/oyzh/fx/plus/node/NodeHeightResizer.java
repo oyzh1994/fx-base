@@ -19,6 +19,13 @@ import java.util.function.Consumer;
 @Deprecated
 public class NodeHeightResizer extends NodeResizer {
 
+    /**
+     * 构造节点高度调整器对象。
+     *
+     * @param eventNode 事件节点
+     * @param originalCursor 原始光标
+     * @param resizeTriggered 是否触发调整
+     */
     public NodeHeightResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
         super(eventNode, originalCursor, resizeTriggered);
     }
@@ -95,10 +102,10 @@ public class NodeHeightResizer extends NodeResizer {
     }
 
     /**
-     * 计算节点宽
+     * 计算节点高度
      *
      * @param event 事件
-     * @return 节点宽
+     * @return 节点高度
      */
     public float calcNodeHeight(MouseEvent event) {
         // 计算距离

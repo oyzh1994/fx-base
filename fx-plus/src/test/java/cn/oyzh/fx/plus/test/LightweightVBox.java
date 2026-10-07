@@ -7,6 +7,12 @@ import javafx.scene.Node;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+/**
+ * 轻量级垂直布局容器，仅对受管子节点进行布局计算
+ *
+ * @author oyzh
+ * @since 2025-06-12
+ */
 public class LightweightVBox extends javafx.scene.layout.Region {
     private final ObservableList<Node> children = FXCollections.observableArrayList();
     private double spacing = 0;

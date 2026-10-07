@@ -6,6 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * 标签列表（LabelList）使用示例
+ *
+ * @author oyzh
+ * @since 2023-12-06
+ */
 public class LabelListExample extends Application
 {
     private int counter = 0;

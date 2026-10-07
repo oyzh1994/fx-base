@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 渲染服务，单进程
+ * 渲染服务，使用单线程串行执行渲染任务
  *
  * @author oyzh
  * @since 2023/11/28
@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 public class RenderService {
 
     /**
-     * 渲染服务
+     * 单线程渲染服务
      */
     private static final ExecutorService RENDER_SERVICE = Executors.newSingleThreadScheduledExecutor();
 

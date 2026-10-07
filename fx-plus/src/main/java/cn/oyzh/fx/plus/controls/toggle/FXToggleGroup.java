@@ -4,6 +4,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
 /**
+ * 单选框组控件
+ *
  * @author oyzh
  * @since 2023/1/17
  */
@@ -12,7 +14,7 @@ public class FXToggleGroup extends ToggleGroup {
     /**
      * 获取选中节点的用户数据
      *
-     * @param <T> 泛型
+     * @param <T> 用户数据类型
      * @return 选中节点的用户数据
      */
     public <T> T selectedUserData() {
@@ -25,7 +27,7 @@ public class FXToggleGroup extends ToggleGroup {
     /**
      * 获取选中节点
      *
-     * @param <T> 泛型
+     * @param <T> 节点类型
      * @return 选中节点
      */
     public <T extends RadioButton> T selectedToggle() {

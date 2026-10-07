@@ -7,11 +7,14 @@ import javafx.scene.paint.Color;
 import java.util.Locale;
 
 /**
+ * 库比蒂诺暗色主题
+ *
  * @author oyzh
  * @since 2024/4/3
  */
 public class CupertinoDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final CupertinoDark THEME = new CupertinoDark();
 
     @Override

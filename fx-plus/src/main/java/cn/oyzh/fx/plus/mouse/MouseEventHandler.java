@@ -23,11 +23,12 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
     private final List<MouseHandler> handlers = new ArrayList<>(12);
 
     /**
-     * 获取按键处理器
+     * 获取鼠标按键处理器
      *
+     * @param type       事件类型
      * @param button     鼠标按钮
      * @param clickCount 点击次数
-     * @return KeyHandler 按键处理器
+     * @return 鼠标按键处理器
      */
     public MouseHandler getMouseHandler( EventType<MouseEvent> type, MouseButton button, Integer clickCount) {
         for (MouseHandler handler : this.handlers) {
@@ -40,6 +41,8 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
 
     /**
      * 添加鼠标按键处理器
+     *
+     * @param mouseHandler 鼠标按键处理器
      */
     public void addHandler( MouseHandler mouseHandler) {
         this.removeHandler(mouseHandler);

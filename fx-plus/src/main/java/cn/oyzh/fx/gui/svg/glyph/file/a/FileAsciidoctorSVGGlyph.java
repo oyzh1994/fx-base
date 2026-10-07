@@ -3,15 +3,25 @@ package cn.oyzh.fx.gui.svg.glyph.file.a;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 
 /**
+ * AsciiDoc 文档 SVG 图标控件
+ *
  * @author oyzh
  * @since 2025-03-05
  */
 public class FileAsciidoctorSVGGlyph extends SVGGlyph {
 
+    /**
+     * 构造器，加载默认尺寸的图标。
+     */
     public FileAsciidoctorSVGGlyph() {
         super("/fx-svg/file/a/file-asciidoctor.svg");
     }
 
+    /**
+     * 构造器，加载指定尺寸的图标。
+     *
+     * @param size 图标尺寸
+     */
     public FileAsciidoctorSVGGlyph(String size) {
         this();
         this.setSizeStr(size);

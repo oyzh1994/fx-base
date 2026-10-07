@@ -31,6 +31,8 @@
 //
 //
 // /**
+//  * RSyntaxTextArea 编辑器综合测试（已注释），演示 EditorPane 的多格式展示及字体、主题、高亮等交互。
+//  *
 //  * @author oyzh
 //  * @since 2022/5/18
 //  */

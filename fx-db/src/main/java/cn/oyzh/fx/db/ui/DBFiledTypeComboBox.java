@@ -12,13 +12,26 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
  */
 public class DBFiledTypeComboBox extends FXComboBox<String> {
 
+    /**
+     * 数据库方言
+     */
     private DBDialect dialect;
 
+    /**
+     * 设置数据库方言并加载对应方言的字段类型
+     *
+     * @param dialect 数据库方言
+     */
     public void setDialect(DBDialect dialect) {
         this.dialect = dialect;
         this.setItem(DBColumnFieldManager.fieldNames(dialect));
     }
 
+    /**
+     * 获取数据库方言
+     *
+     * @return 数据库方言
+     */
     public DBDialect getDialect() {
         return dialect;
     }

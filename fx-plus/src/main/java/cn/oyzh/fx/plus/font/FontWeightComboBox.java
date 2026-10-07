@@ -13,6 +13,11 @@ import javafx.scene.text.FontWeight;
  */
 public class FontWeightComboBox extends FXComboBox<FontWeight> {
 
+    /**
+     * 获取默认字体粗细
+     *
+     * @return 默认字体粗细
+     */
     public FontWeight getDefault() {
         return FontUtil.getWeight(FontManager.defaultFont.getStyle());
     }
@@ -26,6 +31,11 @@ public class FontWeightComboBox extends FXComboBox<FontWeight> {
         }
     }
 
+    /**
+     * 选择字体粗细
+     *
+     * @param fontWeight 字体粗细值
+     */
     public void selectWeight(Integer fontWeight) {
         if (fontWeight == null) {
             this.select(null);
@@ -34,6 +44,11 @@ public class FontWeightComboBox extends FXComboBox<FontWeight> {
         }
     }
 
+    /**
+     * 获取当前选中字体粗细值
+     *
+     * @return 字体粗细值
+     */
     public short getWeight() {
         return (short) this.getSelectedItem().getWeight();
     }

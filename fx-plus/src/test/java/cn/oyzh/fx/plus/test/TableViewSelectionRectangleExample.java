@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 表格拖拽框选示例，用矩形框选中多行数据
+ *
+ * @author oyzh
+ * @since 2025-03-06
+ */
 public class TableViewSelectionRectangleExample extends Application {
 
     private double startX, startY;

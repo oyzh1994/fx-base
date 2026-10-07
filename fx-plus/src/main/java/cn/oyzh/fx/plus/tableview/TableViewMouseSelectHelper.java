@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * 鼠标辅助选择
+ * 表格鼠标框选辅助器，按住鼠标左键拖动可框选多行
  *
  * @author oyzh
  * @since 2025-03-06
@@ -27,10 +27,15 @@ public class TableViewMouseSelectHelper {
     //private static final String SELECTION_ID = "table_view_selection_rect";
 
     /**
-     * tableview
+     * 表格弱引用
      */
     private final WeakReference<TableView<?>> tableViewRef;
 
+    /**
+     * 构造表查看鼠标选取助手对象。
+     *
+     * @param tableView 表查看
+     */
     public TableViewMouseSelectHelper(TableView<?> tableView) {
         this.tableViewRef = new WeakReference<>(tableView);
         this.initEvent();
@@ -102,7 +107,7 @@ public class TableViewMouseSelectHelper {
     }
 
     /**
-     * 寻找矩形
+     * 获取当前矩形
      *
      * @return 矩形
      */

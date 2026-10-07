@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
  */
 public class CharsetTextField extends SelectTextFiled<String> {
 
+    /**
+     * 获取全部可用字符集名称
+     *
+     * @return 字符集名称列表
+     */
     private List<String> charsets(){
         List<String> list = new ArrayList<>();
         for (Charset value : Charset.availableCharsets().values()) {
@@ -25,6 +30,11 @@ public class CharsetTextField extends SelectTextFiled<String> {
         return list;
     }
 
+    /**
+     * 设置初始化默认值：为真时选中系统默认字符集，否则清空选择。
+     *
+     * @param initDefault 是否初始化默认值
+     */
     public void setInitDefault(boolean initDefault) {
         if (initDefault) {
             this.select(Charset.defaultCharset());
@@ -35,6 +45,11 @@ public class CharsetTextField extends SelectTextFiled<String> {
         }
     }
 
+    /**
+     * 是否已初始化默认值
+     *
+     * @return 始终返回 false
+     */
     public boolean isInitDefault() {
         return false;
     }
@@ -71,6 +86,11 @@ public class CharsetTextField extends SelectTextFiled<String> {
         this.setIgnoreChanged(false);
     }
 
+    /**
+     * 按字符集选中
+     *
+     * @param charset 字符集
+     */
     public void select(Charset charset) {
         this.selectItem(charset.displayName());
     }

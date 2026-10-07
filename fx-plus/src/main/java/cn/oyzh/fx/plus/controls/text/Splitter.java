@@ -30,18 +30,38 @@ public class Splitter extends FXText {
      */
     private String splitText = "-";
 
+    /**
+     * 获取标题文本。
+     *
+     * @return 标题文本
+     */
     public String getTitleText() {
         return titleText;
     }
 
+    /**
+     * 设置标题文本。
+     *
+     * @param titleText 标题文本
+     */
     public void setTitleText(String titleText) {
         this.titleText = titleText;
     }
 
+    /**
+     * 获取分隔文本。
+     *
+     * @return 分隔文本
+     */
     public String getSplitText() {
         return splitText;
     }
 
+    /**
+     * 设置分隔文本。
+     *
+     * @param splitText 分隔文本
+     */
     public void setSplitText(String splitText) {
         this.splitText = splitText;
     }

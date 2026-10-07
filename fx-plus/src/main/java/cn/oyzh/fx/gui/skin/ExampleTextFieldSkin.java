@@ -13,10 +13,20 @@ import javafx.scene.input.MouseEvent;
  */
 public class ExampleTextFieldSkin extends ActionTextFieldSkin {
 
+    /**
+     * 获取示例文本
+     *
+     * @return 示例文本
+     */
     public String getExampleText() {
         return exampleText;
     }
 
+    /**
+     * 设置示例文本
+     *
+     * @param exampleText 示例文本
+     */
     public void setExampleText(String exampleText) {
         this.exampleText = exampleText;
     }
@@ -26,12 +36,22 @@ public class ExampleTextFieldSkin extends ActionTextFieldSkin {
      */
     protected String exampleText;
 
+    /**
+     * 按钮点击时将示例文本填入输入框
+     *
+     * @param e 鼠标事件
+     */
     protected void onButtonClicked(MouseEvent e) {
         if (this.exampleText != null) {
             this.setText(this.exampleText);
         }
     }
 
+    /**
+     * 构造示例文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public ExampleTextFieldSkin(TextField textField) {
         super(textField);
     }

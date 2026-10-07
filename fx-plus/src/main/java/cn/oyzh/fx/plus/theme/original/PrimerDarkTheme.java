@@ -7,11 +7,14 @@ import javafx.scene.paint.Color;
 import java.util.Locale;
 
 /**
+ * 基础暗色主题
+ *
  * @author oyzh
  * @since 2024/4/3
  */
 public class PrimerDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final PrimerDark THEME = new PrimerDark();
 
     @Override

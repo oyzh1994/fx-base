@@ -10,6 +10,8 @@ import javafx.scene.Node;
 import javafx.stage.Popup;
 
 /**
+ * 弹出框控件
+ *
  * @author oyzh
  * @since 2023/12/22
  */
@@ -19,10 +21,20 @@ public class FXPopup extends Popup implements NodeAdapter, ThemeAdapter {
         NodeManager.init(this);
     }
 
+    /**
+     * 设置弹出框内容
+     *
+     * @param content 内容节点
+     */
     public void content(Node content) {
         this.getContent().setAll(content);
     }
 
+    /**
+     * 获取弹出框内容
+     *
+     * @return 内容节点，无内容时返回 null
+     */
     public Node content() {
         if (this.getContent().isEmpty()) {
             return null;
@@ -43,9 +55,11 @@ public class FXPopup extends Popup implements NodeAdapter, ThemeAdapter {
     }
 
     /**
-     * 显示组件
+     * 以固定偏移显示组件
      *
      * @param ownerNode 父节点
+     * @param fixedX    水平方向固定偏移量
+     * @param fixedY    垂直方向固定偏移量
      */
     public void showFixed(Node ownerNode, double fixedX, double fixedY) {
         Point2D point2D = ownerNode.localToScreen(ownerNode.getScaleX(), ownerNode.getScaleY());

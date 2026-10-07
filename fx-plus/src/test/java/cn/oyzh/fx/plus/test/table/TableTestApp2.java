@@ -15,6 +15,8 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 /**
+ * 表格与标签页测试应用，演示嵌套标签页及表格列
+ *
  * @author oyzh
  * @since 2023/11/21
  */

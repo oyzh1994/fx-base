@@ -5,7 +5,7 @@ package cn.oyzh.fx.terminal.execute;
  * 终端执行结果
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public class TerminalExecuteResult {
 
@@ -24,30 +24,65 @@ public class TerminalExecuteResult {
      */
     private Exception exception;
 
+    /**
+     * 是否忽略输出。
+     *
+     * @return 忽略输出
+     */
     public boolean isIgnoreOutput() {
         return ignoreOutput;
     }
 
+    /**
+     * 设置忽略输出。
+     *
+     * @param ignoreOutput 忽略输出
+     */
     public void setIgnoreOutput(boolean ignoreOutput) {
         this.ignoreOutput = ignoreOutput;
     }
 
+    /**
+     * 获取异常。
+     *
+     * @return 异常
+     */
     public Exception getException() {
         return exception;
     }
 
+    /**
+     * 设置异常。
+     *
+     * @param exception 异常
+     */
     public void setException(Exception exception) {
         this.exception = exception;
     }
 
+    /**
+     * 设置错误消息。
+     *
+     * @param errMsg 错误消息
+     */
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
     }
 
+    /**
+     * 获取结果。
+     *
+     * @return 结果
+     */
     public Object getResult() {
         return result;
     }
 
+    /**
+     * 设置结果。
+     *
+     * @param result 结果
+     */
     public void setResult(Object result) {
         this.result = result;
     }
@@ -111,9 +146,9 @@ public class TerminalExecuteResult {
 //    }
 
     /**
-     * 执行ok
+     * 执行成功
      *
-     * @return TerminalExecuteResult
+     * @return 执行结果
      */
     public static TerminalExecuteResult ok() {
         return new TerminalExecuteResult();
@@ -123,7 +158,7 @@ public class TerminalExecuteResult {
      * 执行失败
      *
      * @param exception 异常信息
-     * @return TerminalExecuteResult
+     * @return 执行结果
      */
     public static TerminalExecuteResult fail(Exception exception) {
         TerminalExecuteResult result = new TerminalExecuteResult();
@@ -131,6 +166,11 @@ public class TerminalExecuteResult {
         return result;
     }
 
+    /**
+     * 获取结果
+     *
+     * @return 结果
+     */
     public String result() {
         return this.result == null ? "" : this.result.toString();
     }

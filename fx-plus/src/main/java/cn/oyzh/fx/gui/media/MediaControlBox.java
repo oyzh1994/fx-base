@@ -23,6 +23,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
+ * 媒体播放控制面板，提供进度、播放/暂停/停止与音量控制
+ *
  * @author oyzh
  * @since 2025-07-17
  */
@@ -211,12 +213,18 @@ public class MediaControlBox extends FXVBox implements Destroyable {
         }
     }
 
+    /**
+     * 音量变化监听器，用于同步播放器音量到滑块
+     */
     private ChangeListener<? super Number> volumeListener = (observableValue, number, t1) -> {
         if (!this.userVoluming.get()) {
             this.volume.setValue(t1.doubleValue());
         }
     };
 
+    /**
+     * 播放进度监听器，用于同步进度条与时间标签
+     */
     private ChangeListener<? super Duration> currentTimeListener = (observableValue, aBoolean, t1) -> {
         if (!this.userSeeking.get()) {
             Duration total = this.player.getTotalDuration();

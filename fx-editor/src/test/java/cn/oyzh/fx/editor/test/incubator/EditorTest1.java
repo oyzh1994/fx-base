@@ -13,6 +13,8 @@ import jfx.incubator.scene.control.richtext.CodeArea;
 
 
 /**
+ * incubator 模块编辑器窗口关闭测试，演示关闭新窗口后的场景解绑与对象回收。
+ *
  * @author oyzh
  * @since 2022/5/18
  */

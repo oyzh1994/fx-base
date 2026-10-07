@@ -5,6 +5,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * 带最大条数限制的标签列表控件，超出上限时自动移除旧标签
+ *
+ * @author oyzh
+ * @since 2023-12-06
+ */
 public class LabelList
 {
     private ScrollPane scrollPane;

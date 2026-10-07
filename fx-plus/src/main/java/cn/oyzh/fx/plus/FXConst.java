@@ -5,7 +5,7 @@ import javafx.application.Application;
 import javafx.application.HostServices;
 
 /**
- * fx常量
+ * FX 常量类，定义资源路径、全局属性键及应用实例等公共常量
  *
  * @author oyzh
  * @since 2022/12/26

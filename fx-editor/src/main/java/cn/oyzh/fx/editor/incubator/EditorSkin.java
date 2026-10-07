@@ -12,17 +12,31 @@ import javafx.scene.shape.Path;
 import jfx.incubator.scene.control.richtext.skin.CodeAreaSkin;
 
 /**
+ * 编辑器皮肤
+ *
  * @author oyzh
  * @since 2025-08-14
  */
 public class EditorSkin extends CodeAreaSkin {
 
+    /**
+     * 光标路径
+     */
     private Path path1;
 
+    /**
+     * 光标行高亮路径
+     */
     private Path path2;
 
+    /**
+     * 选区高亮路径
+     */
     private Path path3;
 
+    /**
+     * 光标颜色监听器
+     */
     private ChangeListener<? super Paint> path1Listener = (observableValue, paint, t1) -> {
         Color color = this.caretColor;
         if (color != null && t1 != color) {
@@ -30,6 +44,9 @@ public class EditorSkin extends CodeAreaSkin {
         }
     };
 
+    /**
+     * 光标行颜色监听器
+     */
     private ChangeListener<? super Paint> path2Listener = (observableValue, paint, t1) -> {
         Color color = this.caretLineColor;
         if (color != null && t1 != color) {
@@ -37,6 +54,9 @@ public class EditorSkin extends CodeAreaSkin {
         }
     };
 
+    /**
+     * 选区颜色监听器
+     */
     private ChangeListener<? super Paint> path3Listener = (observableValue, paint, t1) -> {
         Color color = this.selectionColor;
         if (color != null && t1 != color) {
@@ -44,6 +64,11 @@ public class EditorSkin extends CodeAreaSkin {
         }
     };
 
+    /**
+     * 构造编辑器皮肤
+     *
+     * @param control 编辑器
+     */
     public EditorSkin(Editor control) {
         super(control);
         this.setCaretColor(ThemeManager.currentForegroundColor());
@@ -60,6 +85,9 @@ public class EditorSkin extends CodeAreaSkin {
         this.path3.fillProperty().addListener(this.path3Listener);
     }
 
+    /**
+     * VFlow对象
+     */
     private VFlow vFlow;
 
     /**

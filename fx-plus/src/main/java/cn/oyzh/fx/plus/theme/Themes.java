@@ -58,96 +58,234 @@ import java.util.List;
  */
 public class Themes {
 
+    /**
+     * 系统主题
+     */
     public static final SystemTheme SYSTEM = new SystemTheme();
 
+    /**
+     * 自定义主题
+     */
     public static final CustomTheme CUSTOM = new CustomTheme();
 
+    /**
+     * 德古拉暗色主题
+     */
     public static final DraculaTheme DRACULA = new DraculaTheme();
 
+    /**
+     * 北欧暗色主题
+     */
     public static final NordDarkTheme NORD_DARK = new NordDarkTheme();
 
+    /**
+     * 北欧亮色主题
+     */
     public static final NordLightTheme NORD_LIGHT = new NordLightTheme();
 
+    /**
+     * 基础暗色主题
+     */
     public static final PrimerDarkTheme PRIMER_DARK = new PrimerDarkTheme();
 
+    /**
+     * 基础亮色主题
+     */
     public static final PrimerLightTheme PRIMER_LIGHT = new PrimerLightTheme();
 
+    /**
+     * 库比蒂诺暗色主题
+     */
     public static final CupertinoDarkTheme CUPERTINO_DARK = new CupertinoDarkTheme();
 
+    /**
+     * 库比蒂诺亮色主题
+     */
     public static final CupertinoLightTheme CUPERTINO_LIGHT = new CupertinoLightTheme();
 
+    /**
+     * IntelliJ IDEA 暗色主题
+     */
     public static final IntelliJDarkTheme INTELLIJ_DARK = new IntelliJDarkTheme();
 
+    /**
+     * IntelliJ IDEA 亮色主题
+     */
     public static final IntelliJLightTheme INTELLIJ_LIGHT = new IntelliJLightTheme();
 
+    /**
+     * VS Code 暗色主题
+     */
     public static final VSCodeDarkTheme VSCODE_DARK = new VSCodeDarkTheme();
 
+    /**
+     * VS Code 亮色主题
+     */
     public static final VSCodeLightTheme VSCODE_LIGHT = new VSCodeLightTheme();
 
+    /**
+     * 赛博朋克暗色主题
+     */
     public static final CyberpunkDarkTheme CYBERPUNK_DARK = new CyberpunkDarkTheme();
 
+    /**
+     * 赛博朋克亮色主题
+     */
     public static final CyberpunkLightTheme CYBERPUNK_LIGHT = new CyberpunkLightTheme();
 
+    /**
+     * 液态玻璃暗色主题
+     */
     public static final LiquidGlassDarkTheme LIQUID_GLASS_DARK = new LiquidGlassDarkTheme();
 
+    /**
+     * 液态玻璃亮色主题
+     */
     public static final LiquidGlassLightTheme LIQUID_GLASS_LIGHT = new LiquidGlassLightTheme();
 
+    /**
+     * 动漫温暖暗色主题
+     */
     public static final AnimeWarmDarkTheme ANIME_WARM_DARK = new AnimeWarmDarkTheme();
 
+    /**
+     * 动漫温暖亮色主题
+     */
     public static final AnimeWarmLightTheme ANIME_WARM_LIGHT = new AnimeWarmLightTheme();
 
+    /**
+     * 商务暗色主题
+     */
     public static final BusinessDarkTheme BUSINESS_DARK = new BusinessDarkTheme();
 
+    /**
+     * 军旅亮色主题
+     */
     public static final ArmyLightTheme ARMY_LIGHT = new ArmyLightTheme();
 
+    /**
+     * 军旅暗色主题
+     */
     public static final ArmyDarkTheme ARMY_DARK = new ArmyDarkTheme();
 
+    /**
+     * 蓝色亮色主题
+     */
     public static final BlueLightTheme BLUE_LIGHT = new BlueLightTheme();
 
+    /**
+     * 蓝色暗色主题
+     */
     public static final BlueDarkTheme BLUE_DARK = new BlueDarkTheme();
 
+    /**
+     * 秋季亮色主题
+     */
     public static final FallLightTheme FALL_LIGHT = new FallLightTheme();
 
+    /**
+     * 秋季暗色主题
+     */
     public static final FallDarkTheme FALL_DARK = new FallDarkTheme();
 
+    /**
+     * 海军蓝亮色主题
+     */
     public static final NavyLightTheme NAVY_LIGHT = new NavyLightTheme();
 
+    /**
+     * 海军蓝暗色主题
+     */
     public static final NavyDarkTheme NAVY_DARK = new NavyDarkTheme();
 
+    /**
+     * 春季亮色主题
+     */
     public static final SpringLightTheme SPRING_LIGHT = new SpringLightTheme();
 
+    /**
+     * 春季暗色主题
+     */
     public static final SpringDarkTheme SPRING_DARK = new SpringDarkTheme();
 
+    /**
+     * 夏季亮色主题
+     */
     public static final SummerLightTheme SUMMER_LIGHT = new SummerLightTheme();
 
+    /**
+     * 夏季暗色主题
+     */
     public static final SummerDarkTheme SUMMER_DARK = new SummerDarkTheme();
 
+    /**
+     * 冬季亮色主题
+     */
     public static final WinterLightTheme WINTER_LIGHT = new WinterLightTheme();
 
+    /**
+     * 冬季暗色主题
+     */
     public static final WinterDarkTheme WINTER_DARK = new WinterDarkTheme();
 
+    /**
+     * GitHub 默认亮色主题
+     */
     public static final GithubLightDefaultTheme GITHUB_LIGHT_DEFAULT = new GithubLightDefaultTheme();
 
+    /**
+     * GitHub 柔和暗色主题
+     */
     public static final GithubSoftDarkTheme GITHUB_SOFT_DARK = new GithubSoftDarkTheme();
 
+    /**
+     * GitHub 亮色色盲友好主题
+     */
     public static final GithubLightColorblindTheme GITHUB_LIGHT_COLORBLIND = new GithubLightColorblindTheme();
 
+    /**
+     * GitHub 暗色色盲友好主题
+     */
     public static final GithubDarkColorblindTheme GITHUB_DARK_COLORBLIND = new GithubDarkColorblindTheme();
 
+    /**
+     * GitHub 亮色蓝色盲友好主题
+     */
     public static final GithubLightTritanopiaTheme GITHUB_LIGHT_TRITANOPIA = new GithubLightTritanopiaTheme();
 
+    /**
+     * GitHub 暗色蓝色盲友好主题
+     */
     public static final GithubDarkTritanopiaTheme GITHUB_DARK_TRITANOPIA = new GithubDarkTritanopiaTheme();
 
+    /**
+     * Autumn 扩展主题
+     */
     public static final AutumnTheme AUTUMN = new AutumnTheme();
 
+    /**
+     * Blacky 扩展主题
+     */
     public static final BlackyTheme BLACKY = new BlackyTheme();
 
+    /**
+     * Browny 扩展主题
+     */
     public static final BrownyTheme BROWNY = new BrownyTheme();
 
+    /**
+     * News 扩展主题
+     */
     public static final NewsTheme NEWS = new NewsTheme();
 
+    /**
+     * Yacht 扩展主题
+     */
     public static final YachtTheme YACHT = new YachtTheme();
 
+    /**
+     * 商务亮色主题
+     */
     public static final BusinessLightTheme BUSINESS_LIGHT = new BusinessLightTheme();
 
     //public static final BlackOnWhiteTheme BLACK_ON_WHITE = new BlackOnWhiteTheme();
@@ -172,9 +310,9 @@ public class Themes {
     //}
 
     /**
-     * 获取主题
+     * 获取内置主题列表
      *
-     * @return 主题列表
+     * @return 内置主题列表
      */
     public static List<ThemeStyle> themes() {
         List<ThemeStyle> themes = new ArrayList<>(44);
@@ -229,9 +367,9 @@ public class Themes {
     }
 
     /**
-     * 获取全部主题
+     * 获取全部主题列表
      *
-     * @return 主题
+     * @return 全部主题列表（含系统主题）
      */
     public static List<ThemeStyle> allThemes() {
         List<ThemeStyle> themes = themes();
@@ -240,10 +378,10 @@ public class Themes {
     }
 
     /**
-     * 获取主题
+     * 根据名称获取主题
      *
-     * @param name 主题名称
-     * @return 主题
+     * @param name 主题名称，支持空格或下划线分隔，不区分大小写
+     * @return 匹配的主题风格，未匹配时返回基础亮色主题
      */
     public static ThemeStyle getTheme(String name) {
         if (name == null) {

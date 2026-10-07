@@ -8,11 +8,18 @@ import cn.oyzh.fx.db.data.dto.DBDataTransportObject;
 import java.util.List;
 
 /**
+ * 数据传输名称列表视图，用于展示并勾选待传输的名称集合
+ *
  * @author oyzh
  * @since 2024/09/05
  */
 public class DBDataTransportNameListView extends DBDataTransportObjectListView {
 
+    /**
+     * 根据名称集合初始化列表
+     *
+     * @param names 名称集合
+     */
     public void of(List<? extends DBName> names) {
         List<DBDataTransportObject> list = CollectionUtil.newArrayList();
         for (DBName name : names) {

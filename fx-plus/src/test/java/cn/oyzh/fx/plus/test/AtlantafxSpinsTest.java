@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
+ * AtlantaFX 加载动画（Spin）示例，演示多种加载指示器控件
  *
  * @author oyzh
  * @since 2026-09-24

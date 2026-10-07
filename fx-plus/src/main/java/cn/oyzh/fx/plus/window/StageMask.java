@@ -18,6 +18,8 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 /**
+ * 舞台遮罩
+ *
  * @author oyzh
  * @since 2025-03-12
  */
@@ -38,14 +40,32 @@ public class StageMask extends Stage implements StageAdapter {
 //     */
 //    private final Future<?> future;
 
+    /**
+     * x坐标变化监听
+     */
     private ChangeListener<? super Number> xFunc;
 
+    /**
+     * y坐标变化监听
+     */
     private ChangeListener<? super Number> yFunc;
 
+    /**
+     * 宽度变化监听
+     */
     private ChangeListener<? super Number> wFunc;
 
+    /**
+     * 高度变化监听
+     */
     private ChangeListener<? super Number> hFunc;
 
+    /**
+     * 构造舞台遮罩
+     *
+     * @param target   目标窗口
+     * @param callback 回调
+     */
     public StageMask(Window target, Runnable callback) {
         this.target = target;
         this.callback = callback;

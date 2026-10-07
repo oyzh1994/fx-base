@@ -8,7 +8,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TreeTableRow;
 
 /**
- * 树列
+ * 树形表格行
  *
  * @author oyzh
  * @since 2023/03/31
@@ -27,12 +27,6 @@ public abstract class FXTreeTableRow<T> extends TreeTableRow<T> implements State
      */
     public abstract Node initGraphic();
 
-    /**
-     * 更新节点信息
-     *
-     * @param item  节点
-     * @param empty 是否为空
-     */
     @Override
     protected void updateItem(T item, boolean empty) {
         super.updateItem(item, empty);

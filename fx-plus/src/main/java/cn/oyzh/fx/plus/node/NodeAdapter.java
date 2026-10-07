@@ -22,7 +22,7 @@ import java.util.List;
 
 
 /**
- * 节点适配器
+ * 节点适配器，为节点及相关类型提供父子关系、布局尺寸、样式、窗口等通用操作
  *
  * @author oyzh
  * @since 2023/5/15
@@ -160,9 +160,9 @@ public interface NodeAdapter extends EventTarget {
     }
 
     /**
-     * 获取首个节点
+     * 获取首个子节点
      *
-     * @return 节点
+     * @return 子节点
      */
     default Node firstChild() {
         switch (this) {
@@ -536,6 +536,11 @@ public interface NodeAdapter extends EventTarget {
         }
     }
 
+    /**
+     * 设置不透明度，启用时完全不透明，禁用时半透明
+     *
+     * @param opaque 是否不透明
+     */
     default void setOpaque(boolean opaque) {
         if (this instanceof Node node) {
             if (opaque) {

@@ -24,18 +24,37 @@ public class LimitTextField extends FXTextField implements LimitLenControl {
         return maxLen;
     }
 
+    /**
+     * 构造限制文本输入框
+     */
     public LimitTextField() {
         super.setText("");
     }
 
+    /**
+     * 构造限制文本输入框
+     *
+     * @param text 文本
+     */
     public LimitTextField(String text) {
         super.setText(text);
     }
 
+    /**
+     * 构造限制文本输入框
+     *
+     * @param maxLen 最大长度
+     */
     public LimitTextField(Long maxLen) {
         this.setMaxLen(maxLen);
     }
 
+    /**
+     * 构造限制文本输入框
+     *
+     * @param text   文本
+     * @param maxLen 最大长度
+     */
     public LimitTextField(String text, Long maxLen) {
         super.setText(text);
         this.setMaxLen(maxLen);

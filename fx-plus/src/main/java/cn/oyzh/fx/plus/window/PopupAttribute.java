@@ -34,14 +34,16 @@ public @interface PopupAttribute {
     String[] cssUrls() default {};
 
     /**
-     * 箭头位置
-     * @return 箭头位置
+     * 弹窗箭头位置
+     *
+     * @return 弹窗箭头位置
      */
     Popover.ArrowLocation arrowLocation() default Popover.ArrowLocation.TOP_LEFT;
 
     /**
-     * 弹窗位置
-     * @return 弹窗位置
+     * 弹窗锚点位置
+     *
+     * @return 弹窗锚点位置
      */
     PopupWindow.AnchorLocation anchorLocation() default PopupWindow.AnchorLocation.WINDOW_TOP_LEFT;
 }

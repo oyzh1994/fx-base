@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
+ * 自定义标题栏测试，演示原生 HeaderBar 与窗口样式
+ *
  * @author oyzh
  * @since 2025-08-18
  */

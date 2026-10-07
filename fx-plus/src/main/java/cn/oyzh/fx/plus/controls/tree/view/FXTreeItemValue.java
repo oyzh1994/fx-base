@@ -16,25 +16,54 @@ import java.lang.ref.WeakReference;
  */
 public class FXTreeItemValue implements Destroyable {
 
+    /**
+     * 图形引用
+     */
     private WeakReference<SVGGlyph> graphic;
 
+    /**
+     * 获取图形
+     *
+     * @return 图形
+     */
     public SVGGlyph graphic() {
         return graphic == null ? null : graphic.get();
     }
 
+    /**
+     * 设置图形
+     *
+     * @param graphic 图形
+     */
     public void graphic(SVGGlyph graphic) {
         this.graphic = new WeakReference<>(graphic);
     }
 
+    /**
+     * 节点引用
+     */
     private WeakReference<FXTreeItem<?>> item;
 
+    /**
+     * 获取节点
+     *
+     * @return 节点
+     */
     public FXTreeItem<?> item() {
         return this.item == null ? null : this.item.get();
     }
 
+    /**
+     * 构造树项值对象。
+     */
     public FXTreeItemValue() {
     }
 
+    /**
+     * 构造树项值对象。
+     *
+     * @param item 项
+     */
     public FXTreeItemValue(FXTreeItem<?> item) {
         this.item = new WeakReference<>(item);
     }

@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
- * 键盘按键事件
+ * 鼠标按键监听器，负责在场景或节点上注册、移除鼠标事件处理器
  *
  * @author oyzh
  * @since 2023/1/16
@@ -20,20 +20,20 @@ import javafx.stage.Stage;
 public class MouseListener {
 
     /**
-     * 监听按键
+     * 监听鼠标事件
      *
      * @param target       事件目标
-     * @param mouseHandler 按键处理器
+     * @param mouseHandler 鼠标按键处理器
      */
     public static void listen(Object target, MouseHandler mouseHandler) {
         addHandler(target, mouseHandler);
     }
 
     /**
-     * 取消监听按键
+     * 取消监听鼠标事件
      *
      * @param target       事件目标
-     * @param mouseHandler 按键处理器
+     * @param mouseHandler 鼠标按键处理器
      */
     public static void unListen(EventTarget target, MouseHandler mouseHandler) {
         removeHandler(target, mouseHandler);
@@ -43,7 +43,7 @@ public class MouseListener {
      * 添加事件处理器
      *
      * @param target       事件目标
-     * @param mouseHandler 按键处理器
+     * @param mouseHandler 鼠标按键处理器
      */
     private static void addHandler(Object target, MouseHandler mouseHandler) {
         if (target instanceof StageAdapter view) {
@@ -99,7 +99,7 @@ public class MouseListener {
      * 移除事件处理器
      *
      * @param target       事件目标
-     * @param mouseHandler 按键处理器
+     * @param mouseHandler 鼠标按键处理器
      */
     private static void removeHandler(EventTarget target, MouseHandler mouseHandler) {
         MouseEventHandler eventHandler = getEventHandler(target);

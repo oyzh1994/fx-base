@@ -28,19 +28,32 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * 表格工具类
+ * 表格工具类，提供行移动、单元格数据获取、表头获取等常用操作
  *
  * @author oyzh
  * @since 2023/8/11
  */
 public class TableViewUtil {
 
+    /**
+     * 创建单元格
+     *
+     * @param lineHeight 行高
+     * @return 单元格
+     */
     public <S, T> FXTableCell<S, T> newCell(double lineHeight) {
         FXTableCell<S, T> cell = new FXTableCell<>();
         cell.setLineHeight(lineHeight);
         return cell;
     }
 
+    /**
+     * 创建带对齐方式的单元格
+     *
+     * @param lineHeight 行高
+     * @param pos        对齐方式
+     * @return 单元格
+     */
     public <S, T> FXTableCell<S, T> newCell(double lineHeight, Pos pos) {
         FXTableCell<S, T> cell = new FXTableCell<>();
         cell.setAlignment(pos);
@@ -125,6 +138,12 @@ public class TableViewUtil {
         return null;
     }
 
+    /**
+     * 从节点向上查找所属的表格行
+     *
+     * @param node 节点
+     * @return 表格行，未找到返回 null
+     */
     public static TableRow<?> findTableRow(Node node) {
         if (node != null) {
             if (node instanceof TableRow<?>) {
@@ -187,6 +206,11 @@ public class TableViewUtil {
         }
     }
 
+    /**
+     * ctrl+s 按键处理
+     *
+     * @param event 键盘事件
+     */
     private static void _rowOnCtrlS(KeyEvent event) {
         if (KeyboardUtil.isCtrlS(event)) {
             TableRow<?> tableRow = findTableRow((Node) event.getSource());
@@ -196,6 +220,12 @@ public class TableViewUtil {
         }
     }
 
+    /**
+     * 获取行高
+     *
+     * @param tableView 表格
+     * @return 行高，无法获取时返回 -1
+     */
     public static double getRowHeight(TableView<?> tableView) {
         Set<Node> rows = tableView.lookupAll(".table-row-cell");
         for (Node row : rows) {
@@ -252,10 +282,10 @@ public class TableViewUtil {
     }
 
     /**
-     * 获取表头组件
+     * 获取表头标签集合
      *
      * @param tableView 组件
-     * @return 表头列组件
+     * @return 表头标签集合
      */
     public static Set<Label> getHeaderLabel(TableView<?> tableView) {
         NestedTableColumnHeader header = getHeaderColumn(tableView);
@@ -281,6 +311,12 @@ public class TableViewUtil {
         return 0;
     }
 
+    /**
+     * 获取行间距
+     *
+     * @param tableView 表格
+     * @return 行间距
+     */
     public static double getRowSpacing(TableView<?> tableView) {
         Set<Node> rows = tableView.lookupAll(".table-row-cell");
         // 获取前两行的 TableRow

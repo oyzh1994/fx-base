@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class WinterDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final WinterDark THEME = new WinterDark();
 
     @Override

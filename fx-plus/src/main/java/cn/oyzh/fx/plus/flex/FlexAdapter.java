@@ -163,6 +163,8 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
 
     /**
      * 获取计算宽度值
+     *
+     * @return 计算宽度值
      */
     default Double computeWidth() {
         return this.getProp("compute_w");
@@ -170,6 +172,8 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
 
     /**
      * 获取计算高度值
+     *
+     * @return 计算高度值
      */
     default Double computeHeight() {
         return this.getProp("compute_h");
@@ -245,9 +249,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
     }
 
     /**
-     * 计算 X
+     * 计算流式 X 坐标
      *
-     * @return X
+     * @return X 坐标值
      */
     default double computeX() {
         double parentWidth = this.parentWidth();
@@ -258,9 +262,9 @@ public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
     }
 
     /**
-     * 计算 Y
+     * 计算流式 Y 坐标
      *
-     * @return Y
+     * @return Y 坐标值
      */
     private double computeY() {
         double parentHeight = this.parentHeight();

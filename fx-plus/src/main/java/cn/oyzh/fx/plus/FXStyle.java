@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus;
 
 /**
- * fx样式文件常量对象
+ * FX 样式文件常量类，定义内置样式资源的路径
  *
  * @author oyzh
  * @since 2023/4/4

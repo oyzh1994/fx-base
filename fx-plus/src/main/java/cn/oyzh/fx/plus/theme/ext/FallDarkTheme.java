@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class FallDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final FallDark THEME = new FallDark();
 
     @Override

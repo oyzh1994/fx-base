@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class GithubLightColorblindTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final GithubLightColorblind THEME = new GithubLightColorblind();
 
     @Override

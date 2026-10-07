@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
+ * 列表弹出框控件
+ *
  * @author oyzh
  * @since 2023/12/22
  */
@@ -33,7 +35,7 @@ public class ListViewPopup<E> extends FXPopup {
     }
 
     /**
-     * 模式选中事件
+     * 元素选中事件
      */
     protected Consumer<E> onItemSelected;
 
@@ -43,7 +45,7 @@ public class ListViewPopup<E> extends FXPopup {
     protected Consumer<Integer> onIndexSelected;
 
     /**
-     * 选中的模式
+     * 选中的项
      */
     private E selectedItem;
 
@@ -123,6 +125,11 @@ public class ListViewPopup<E> extends FXPopup {
         this.setItems(this.getItems());
     }
 
+    /**
+     * 初始化列表组件
+     *
+     * @param listView 列表组件
+     */
     protected void initListView(FXListView<E> listView) {
         listView.setFontSize(11);
         listView.setCursor(Cursor.HAND);
@@ -138,18 +145,18 @@ public class ListViewPopup<E> extends FXPopup {
     }
 
     /**
-     * 获取搜索历史
+     * 获取列表数据
      *
-     * @return 搜索历史
+     * @return 数据列表
      */
     public List<E> getItems() {
         return List.of();
     }
 
     /**
-     * 设置搜索历史
+     * 设置列表数据
      *
-     * @param items 搜索历史
+     * @param items 数据列表
      */
     public void setItems(List<E> items) {
         if (items != null && this.listView() != null) {
@@ -158,7 +165,7 @@ public class ListViewPopup<E> extends FXPopup {
     }
 
     /**
-     * 清除搜索历史
+     * 清除列表数据
      */
     public void clearItems() {
         if (this.listView() != null) {
@@ -214,42 +221,92 @@ public class ListViewPopup<E> extends FXPopup {
         this.show(ownerNode, event.getScreenX(), event.getScreenY());
     }
 
+    /**
+     * 获取项选中。
+     *
+     * @return 项选中
+     */
     public Consumer<E> getOnItemSelected() {
         return onItemSelected;
     }
 
+    /**
+     * 设置项选中。
+     *
+     * @param onItemSelected 项选中回调
+     */
     public void setOnItemSelected(Consumer<E> onItemSelected) {
         this.onItemSelected = onItemSelected;
     }
 
+    /**
+     * 获取索引选中。
+     *
+     * @return 索引选中
+     */
     public Consumer<Integer> getOnIndexSelected() {
         return onIndexSelected;
     }
 
+    /**
+     * 设置索引选中。
+     *
+     * @param onIndexSelected 索引选中
+     */
     public void setOnIndexSelected(Consumer<Integer> onIndexSelected) {
         this.onIndexSelected = onIndexSelected;
     }
 
+    /**
+     * 获取选中项。
+     *
+     * @return 选中项
+     */
     public E getSelectedItem() {
         return selectedItem;
     }
 
+    /**
+     * 设置选中项。
+     *
+     * @param selectedItem 选中项
+     */
     public void setSelectedItem(E selectedItem) {
         this.selectedItem = selectedItem;
     }
 
+    /**
+     * 获取选中索引。
+     *
+     * @return 选中索引
+     */
     public Integer getSelectedIndex() {
         return selectedIndex;
     }
 
+    /**
+     * 设置选中索引。
+     *
+     * @param selectedIndex 选中索引
+     */
     public void setSelectedIndex(Integer selectedIndex) {
         this.selectedIndex = selectedIndex;
     }
 
+    /**
+     * 获取单元格行高度。
+     *
+     * @return 单元格行高度
+     */
     public double getCellLineHeight() {
         return cellLineHeight;
     }
 
+    /**
+     * 设置单元格行高度。
+     *
+     * @param cellLineHeight 单元格行高度
+     */
     public void setCellLineHeight(double cellLineHeight) {
         this.cellLineHeight = cellLineHeight;
     }

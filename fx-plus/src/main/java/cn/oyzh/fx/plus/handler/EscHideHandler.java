@@ -16,10 +16,15 @@ import java.lang.ref.WeakReference;
 public class EscHideHandler {
 
     /**
-     * 根节点
+     * 窗口弱引用
      */
     private WeakReference<Window> windowRef;
 
+    /**
+     * 构造Esc隐藏处理器对象。
+     *
+     * @param window 窗口
+     */
     public EscHideHandler(Window window) {
         this.windowRef = new WeakReference<>(window);
         this.init();
@@ -45,7 +50,7 @@ public class EscHideHandler {
     }
 
     /**
-     * 跳转到下一个节点
+     * 处理 esc 按键事件，隐藏窗口
      *
      * @param event 事件
      */
@@ -60,10 +65,20 @@ public class EscHideHandler {
         }
     }
 
+    /**
+     * 是否已失效
+     *
+     * @return 是否已失效
+     */
     protected boolean isInvalid() {
         return this.windowRef == null || this.windowRef.get() == null;
     }
 
+    /**
+     * 获取窗口
+     *
+     * @return 窗口
+     */
     protected Window window() {
         return this.windowRef == null ? null : this.windowRef.get();
     }

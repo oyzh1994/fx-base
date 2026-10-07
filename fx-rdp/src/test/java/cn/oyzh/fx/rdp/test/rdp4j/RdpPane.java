@@ -50,7 +50,12 @@
 //import javafx.stage.Window;
 //import javafx.util.Duration;
 //
-///** Pure JavaFX RDP container. Swing remains available through SwingRdpFrontend. */
+///**
+// * 纯 JavaFX 的 RDP 容器（已注释），Swing 支持仍可通过 SwingRdpFrontend 使用。
+// *
+// * @author oyzh
+// * @since 2026-09-20
+// */
 //public class RdpPane extends BorderPane {
 //
 //    private static final Logger logger = Logger.getLogger(RdpPane.class.getName());

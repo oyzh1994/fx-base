@@ -18,6 +18,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.ListView;
 
 /**
+ * 列表控件
+ *
  * @author oyzh
  * @since 2023/4/24
  */
@@ -52,6 +54,11 @@ public class FXListView<T> extends ListView<T> implements MenuItemAdapter, Conte
         });
     }
 
+    /**
+     * 选中指定索引项
+     *
+     * @param index 索引
+     */
     public void selectIndex(int index) {
         this.getSelectionModel().select(index);
     }

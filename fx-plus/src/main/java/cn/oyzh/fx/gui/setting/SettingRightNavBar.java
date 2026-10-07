@@ -3,6 +3,8 @@ package cn.oyzh.fx.gui.setting;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 
 /**
+ * 设置右侧导航栏
+ *
  * @author oyzh
  * @since 2024/12/29
  */

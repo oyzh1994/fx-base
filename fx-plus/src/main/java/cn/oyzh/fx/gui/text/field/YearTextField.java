@@ -13,6 +13,9 @@ import java.util.Date;
  */
 public class YearTextField extends NumberTextField {
 
+    /**
+     * 构造年份文本输入框
+     */
     public YearTextField() {
         super(null);
     }
@@ -31,6 +34,12 @@ public class YearTextField extends NumberTextField {
         }
     }
 
+    /**
+     * 将值格式化为年份字符串
+     *
+     * @param value 值
+     * @return 年份字符串
+     */
     public static String format(Object value) {
         if (value == null) {
             return null;

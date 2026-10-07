@@ -22,7 +22,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * 日期输入框皮肤
+ * 时间输入框皮肤
  *
  * @author oyzh
  * @since 2024/07/21
@@ -30,14 +30,24 @@ import java.time.format.DateTimeFormatter;
 public class TimeTextFieldSkin extends ActionTextFieldSkin {
 
     /**
-     * 日期格式化器
+     * 时间格式化器
      */
     private DateTimeFormatter formatter;
 
+    /**
+     * 获取时间格式化器
+     *
+     * @return 时间格式化器
+     */
     public DateTimeFormatter getFormatter() {
         return formatter;
     }
 
+    /**
+     * 设置时间格式化器
+     *
+     * @param formatter 时间格式化器
+     */
     public void setFormatter(DateTimeFormatter formatter) {
         this.formatter = formatter;
     }
@@ -47,6 +57,11 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
      */
     private PopupExt popup;
 
+    /**
+     * 获取格式化器，未设置时使用默认格式 HH:mm:ss
+     *
+     * @return 时间格式化器
+     */
     protected DateTimeFormatter formatter() {
         if (this.formatter == null) {
             this.formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -146,6 +161,11 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
         this.popup.showPopup(this.getSkinnable());
     }
 
+    /**
+     * 解析当前文本为时间
+     *
+     * @return 时间，解析失败返回 null
+     */
     protected LocalTime getLocalTime() {
         String text = this.getText();
         if (StringUtil.isNotBlank(text)) {
@@ -158,12 +178,20 @@ public class TimeTextFieldSkin extends ActionTextFieldSkin {
         return null;
     }
 
+    /**
+     * 隐藏弹窗并恢复控件状态
+     */
     protected void handleHide() {
         this.popup.hide();
         this.getSkinnable().setDisable(false);
         this.resetButtonColor();
     }
 
+    /**
+     * 构造时间文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public TimeTextFieldSkin(TextField textField) {
         super(textField);
     }

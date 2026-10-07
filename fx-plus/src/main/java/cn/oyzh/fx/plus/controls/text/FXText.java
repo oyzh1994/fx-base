@@ -15,6 +15,8 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.text.Text;
 
 /**
+ * 文本控件
+ *
  * @author oyzh
  * @since 2023/04/25
  */
@@ -25,10 +27,18 @@ public class FXText extends Text implements FlexAdapter, StateAdapter, TipAdapte
         this.applyTheme();
     }
 
+    /**
+     * 构造文本对象。
+     */
     public FXText() {
         super();
     }
 
+    /**
+     * 构造文本对象。
+     *
+     * @param text 文本
+     */
     public FXText(String text) {
         super(text);
     }
@@ -51,10 +61,18 @@ public class FXText extends Text implements FlexAdapter, StateAdapter, TipAdapte
         }
     }
 
+    /**
+     * 设置文本
+     *
+     * @param text 文本内容
+     */
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }
 
+    /**
+     * 清空文本
+     */
     public void clear() {
         this.setText("");
     }

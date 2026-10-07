@@ -21,6 +21,11 @@ public class ChooseTextFieldSkin extends ActionTextFieldSkin {
         return this.button;
     }
 
+    /**
+     * 构造选择文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public ChooseTextFieldSkin(TextField textField) {
         super(textField);
         // super(textField, new ChooseSVGGlyph());

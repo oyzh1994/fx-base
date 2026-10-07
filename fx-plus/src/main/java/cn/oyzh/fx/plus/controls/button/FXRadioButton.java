@@ -12,6 +12,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.RadioButton;
 
 /**
+ * 单选按钮控件，继承自 RadioButton，支持主题、字体、状态、布局等适配
+ *
  * @author oyzh
  * @since 2022/1/20
  */

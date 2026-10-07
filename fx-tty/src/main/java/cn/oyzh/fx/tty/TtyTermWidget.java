@@ -10,23 +10,47 @@ import com.jediterm.terminal.ui.settings.SettingsProvider;
 import java.io.IOException;
 
 /**
+ * 终端组件抽象类，在 {@link FXJediTermWidget} 基础上封装会话打开、终端尺寸获取
+ * 以及退格码与 Alt 修饰符等设置项的控制。
+ *
  * @author oyzh
  * @since 2025-03-04
  */
 public abstract class TtyTermWidget extends FXJediTermWidget {
 
+    /**
+     * 构造终端组件。
+     *
+     * @param provider 设置提供者
+     */
     public TtyTermWidget(SettingsProvider provider) {
         super(provider);
     }
 
+    /**
+     * 创建终端连接器。
+     *
+     * @return 终端连接器
+     * @throws IOException IO 异常
+     */
     public abstract TtyConnector createTtyConnector() throws IOException;
 
+    /**
+     * 打开终端会话，连接器由子类创建。
+     *
+     * @throws IOException IO 异常
+     */
     public void openSession() throws IOException {
         if (this.canOpenSession()) {
             this.openSession(this.createTtyConnector());
         }
     }
 
+    /**
+     * 使用指定连接器打开终端会话。
+     *
+     * @param ttyConnector 终端连接器
+     */
     public void openSession(TtyConnector ttyConnector) {
         if (this.canOpenSession()) {
             FXJediTermWidget session = this.createTerminalSessionFX(ttyConnector);
@@ -42,6 +66,11 @@ public abstract class TtyTermWidget extends FXJediTermWidget {
         return super.getTtyConnector();
     }
 
+    /**
+     * 获取当前终端尺寸。
+     *
+     * @return 终端尺寸，连接器不支持时返回 null
+     */
     public TermSize getTermSize() {
         if (this.getTtyConnector() instanceof TtyTerminalSizeable size) {
             return size.getTermSize();

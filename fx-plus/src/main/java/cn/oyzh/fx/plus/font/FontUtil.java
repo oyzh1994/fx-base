@@ -19,12 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 字符工具类
+ * 字体工具类
  *
  * @author oyzh
- * @since 2023048/24
+ * @since 2023-10-09
  */
-
 public class FontUtil {
 
     /**
@@ -234,7 +233,8 @@ public class FontUtil {
         return fontMetrics.stringWidth(str);
     }
 
-    /* 计算字体高度
+    /**
+     * 计算字体高度
      *
      * @param fontSize 字体大小
      * @return 字体高度
@@ -244,7 +244,8 @@ public class FontUtil {
         return fontMetrics.getHeight();
     }
 
-    /* 计算字体高度
+    /**
+     * 计算字体高度
      *
      * @param fontName 字体名称
      * @param fontSize 字体大小
@@ -255,7 +256,8 @@ public class FontUtil {
         return fontMetrics.getHeight();
     }
 
-    /* 计算字体高度
+    /**
+     * 计算字体高度
      *
      * @param font 字体
      * @return 字体高度

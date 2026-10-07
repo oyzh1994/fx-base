@@ -1,7 +1,7 @@
 package cn.oyzh.fx.db;
 
 /**
- * 字段域
+ * 数据库字段定义，用于描述某数据类型支持的特性与取值范围
  *
  * @author oyzh
  * @since 2025-11-13
@@ -94,7 +94,7 @@ public class DBColumnField {
     public boolean supportString;
 
     /**
-     * 是否支持boolean
+     * 是否支持布尔
      */
     public boolean supportBoolean;
 
@@ -129,7 +129,7 @@ public class DBColumnField {
     public boolean supportZeroFill;
 
     /**
-     * 是否支持集合
+     * 是否支持几何
      */
     public boolean supportGeometry;
 
@@ -148,10 +148,20 @@ public class DBColumnField {
      */
     public boolean supportAutoIncrement;
 
+    /**
+     * 构造字段定义
+     *
+     * @param name 名称
+     */
     public DBColumnField(String name) {
         this.name = name;
     }
 
+    /**
+     * 获取名称。
+     *
+     * @return 名称
+     */
     public String getName() {
         return this.name;
     }

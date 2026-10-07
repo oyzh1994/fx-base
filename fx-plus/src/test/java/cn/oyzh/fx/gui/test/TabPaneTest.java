@@ -14,6 +14,12 @@ import javafx.stage.Stage;
 
 import java.net.URISyntaxException;
 
+/**
+ * 富标签页内存回收测试，验证关闭标签页后对象可被回收
+ *
+ * @author oyzh
+ * @since 2025-12-05
+ */
 public class TabPaneTest extends Application {
 
     @Override

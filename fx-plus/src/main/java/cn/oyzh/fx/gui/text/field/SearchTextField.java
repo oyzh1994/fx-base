@@ -43,18 +43,38 @@ public class SearchTextField extends LimitTextField {
         return this.skin().getPopup();
     }
 
+    /**
+     * 获取搜索触发事件处理器
+     *
+     * @return 搜索触发事件处理器
+     */
     public EventHandler<SearchEvent> getOnSearch() {
         return onSearch;
     }
 
+    /**
+     * 设置搜索触发事件处理器
+     *
+     * @param onSearch 搜索触发事件处理器
+     */
     public void setOnSearch(EventHandler<SearchEvent> onSearch) {
         this.onSearch = onSearch;
     }
 
+    /**
+     * 获取搜索历史选中事件处理器
+     *
+     * @return 搜索历史选中事件处理器
+     */
     public EventHandler<SearchEvent> getOnHistorySelected() {
         return onHistorySelected;
     }
 
+    /**
+     * 设置搜索历史选中事件处理器
+     *
+     * @param onHistorySelected 搜索历史选中事件处理器
+     */
     public void setOnHistorySelected(EventHandler<SearchEvent> onHistorySelected) {
         this.onHistorySelected = onHistorySelected;
     }
@@ -103,8 +123,17 @@ public class SearchTextField extends LimitTextField {
          */
         public static final EventType<SearchEvent> SEARCH_HISTORY_SELECTED_EVENT = new EventType<>("SEARCH_HISTORY_SELECTED_EVENT");
 
+        /**
+         * 搜索设置事件
+         */
         public static final EventType<SearchEvent> SEARCH_SETTING_EVENT = new EventType<>("SEARCH_SETTING_EVENT");
 
+        /**
+         * 构造搜索事件
+         *
+         * @param text 事件源文本
+         * @param type 事件类型
+         */
         public SearchEvent(String text, EventType<SearchEvent> type) {
             super(text, null, type);
         }
@@ -134,6 +163,12 @@ public class SearchTextField extends LimitTextField {
             return new SearchEvent(history, SEARCH_HISTORY_SELECTED_EVENT);
         }
 
+        /**
+         * 搜索设置事件
+         *
+         * @param type 设置类型
+         * @return SearchEvent
+         */
         public static SearchEvent searchSetting(String type) {
             return new SearchEvent(type, SEARCH_SETTING_EVENT);
         }

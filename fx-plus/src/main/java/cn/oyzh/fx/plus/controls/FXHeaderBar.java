@@ -12,6 +12,8 @@ import javafx.scene.layout.HeaderBar;
 import javafx.scene.text.FontWeight;
 
 /**
+ * 标题栏控件，继承自 HeaderBar，由左侧内容、中间标题、右侧操作区组成，支持主题适配
+ *
  * @author oyzh
  * @since 2025-08-19
  */

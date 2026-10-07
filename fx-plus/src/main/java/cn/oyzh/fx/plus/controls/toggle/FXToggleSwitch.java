@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 
 /**
- * 切换开关组件
+ * 开关控件
  *
  * @author oyzh
  * @since 2023/12/19
@@ -74,10 +74,20 @@ public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutA
      */
     private String unselectedText;
 
+    /**
+     * 获取选中文本。
+     *
+     * @return 选中文本
+     */
     public String getSelectedText() {
         return selectedText;
     }
 
+    /**
+     * 获取未选中文本。
+     *
+     * @return 未选中文本
+     */
     public String getUnselectedText() {
         return unselectedText;
     }

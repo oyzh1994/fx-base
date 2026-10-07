@@ -33,6 +33,8 @@ import javafx.scene.text.FontWeight;
 import java.util.List;
 
 /**
+ * 单行表格视图
+ *
  * @author oyzh
  * @since 2022/1/18
  */

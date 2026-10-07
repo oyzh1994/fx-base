@@ -80,7 +80,7 @@ public class DragFileHandler {
     }
 
     /**
-     * 拖动完成事件，离开
+     * 拖动完成事件，内部
      *
      * @param event 事件
      */
@@ -118,5 +118,8 @@ public class DragFileHandler {
         PropertiesUtil.remove(scene, DRAG_FILE_HANDLER_KEY, this);
     }
 
+    /**
+     * 文件拖动处理器属性键
+     */
     public static final String DRAG_FILE_HANDLER_KEY="_dragFileHandler";
 }

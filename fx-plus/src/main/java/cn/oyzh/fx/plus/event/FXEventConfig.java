@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.event;
 import cn.oyzh.event.EventConfig;
 
 /**
+ * fx 事件配置，在基础事件配置之上增加是否在 fx 线程执行的标识
+ *
  * @author oyzh
  * @since 2024/3/29
  */
@@ -13,10 +15,20 @@ public class FXEventConfig extends EventConfig {
      */
     private Boolean fxThread;
 
+    /**
+     * 设置是否在 fx 线程执行
+     *
+     * @param fxThread 是否在 fx 线程执行
+     */
     public void setFxThread(Boolean fxThread) {
         this.fxThread = fxThread;
     }
 
+    /**
+     * 是否在 fx 线程执行
+     *
+     * @return 是否在 fx 线程执行
+     */
     public boolean isFxThread() {
         return fxThread != null && fxThread;
     }

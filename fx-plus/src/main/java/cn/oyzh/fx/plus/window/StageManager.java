@@ -35,7 +35,7 @@ public class StageManager {
     /**
      * 获取主舞台
      *
-     * @return Stage 主舞台
+     * @return 主舞台
      */
     public static Stage getPrimaryStage() {
         return primaryStage;
@@ -86,7 +86,7 @@ public class StageManager {
     }
 
     /**
-     * 获取所有stage
+     * 获取所有舞台适配器
      */
     public static List<StageAdapter> allStages() {
         List<StageAdapter> list = new ArrayList<>();
@@ -109,7 +109,7 @@ public class StageManager {
      * 获取舞台
      *
      * @param controllerClass controller类
-     * @return StageAdapter
+     * @return 舞台适配器
      */
     public static StageAdapter getStage(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
@@ -124,7 +124,7 @@ public class StageManager {
     }
 
     /**
-     * 是否stage适配器
+     * 是否为舞台适配器
      *
      * @param window 窗口
      * @return 结果
@@ -298,7 +298,7 @@ public class StageManager {
     /**
      * 获取任务栏舞台
      *
-     * @return Stage
+     * @return 任务栏舞台
      */
     public static Stage getTaskbarStage() {
         // 新建一个stage

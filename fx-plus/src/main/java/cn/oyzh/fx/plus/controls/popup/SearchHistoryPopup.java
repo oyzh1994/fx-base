@@ -102,18 +102,38 @@ public class SearchHistoryPopup extends FXPopup {
         return (FXListView<String>) CollectionUtil.getFirst(this.getContent());
     }
 
+    /**
+     * 获取历史选中。
+     *
+     * @return 历史选中
+     */
     public Consumer<String> getOnHistorySelected() {
         return onHistorySelected;
     }
 
+    /**
+     * 设置历史选中。
+     *
+     * @param onHistorySelected 历史选中
+     */
     public void setOnHistorySelected(Consumer<String> onHistorySelected) {
         this.onHistorySelected = onHistorySelected;
     }
 
+    /**
+     * 获取单元格数据高度。
+     *
+     * @return 单元格数据高度
+     */
     public double getCellDataHeight() {
         return cellDataHeight;
     }
 
+    /**
+     * 设置单元格数据高度。
+     *
+     * @param cellDataHeight 单元格数据高度
+     */
     public void setCellDataHeight(double cellDataHeight) {
         this.cellDataHeight = cellDataHeight;
     }

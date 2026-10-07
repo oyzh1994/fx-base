@@ -75,6 +75,12 @@ public class PopupController extends Controller implements PopupListener {
         }
     }
 
+    /**
+     * 提交数据
+     *
+     * @param obj 数据
+     * @param <T> 数据类型
+     */
     protected <T> void submit(T obj) {
         this.window.submit(obj);
     }

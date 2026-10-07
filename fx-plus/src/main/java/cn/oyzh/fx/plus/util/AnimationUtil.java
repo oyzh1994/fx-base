@@ -95,7 +95,7 @@ public class AnimationUtil {
         }
         endX = Math.abs(endX);
         endY = Math.abs(endY);
-        // 添加的目标阶段
+        // 将节点添加到根容器
         pane.getChildren().add(node);
         node.setLayoutX(startX);
         node.setLayoutY(startY);

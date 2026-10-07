@@ -15,6 +15,11 @@ import java.util.Locale;
  */
 public class FontSizeComboBox extends FXComboBox<Integer> implements I18nSelectAdapter<Integer> {
 
+    /**
+     * 选择字体大小
+     *
+     * @param size 字体大小
+     */
     public void selectSize(Byte size) {
         if (size == null) {
             this.clearSelection();
@@ -23,6 +28,11 @@ public class FontSizeComboBox extends FXComboBox<Integer> implements I18nSelectA
         }
     }
 
+    /**
+     * 获取字节类型的字体大小
+     *
+     * @return 字节类型的字体大小
+     */
     public Byte byteValue() {
         return this.getValue() == null ? null : this.getValue().byteValue();
     }

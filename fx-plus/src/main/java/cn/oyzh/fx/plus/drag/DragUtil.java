@@ -31,9 +31,8 @@ public class DragUtil {
         if (o instanceof DragNodeItem dragItem) {
             return dragItem;
         }
-        // Walk up the ancestor chain to find a TreeCell or DragNodeItem.
-        // event.getTarget() may return a child node (Text, SVGGlyph, etc.)
-        // inside a TreeCell rather than the TreeCell itself.
+        // 沿祖先链向上查找 TreeCell 或 DragNodeItem。
+        // event.getTarget() 可能返回 TreeCell 内的子节点（如 Text、SVGGlyph 等），而不是 TreeCell 本身。
         if (o instanceof Node node) {
             Node parent = node.getParent();
             while (parent != null) {

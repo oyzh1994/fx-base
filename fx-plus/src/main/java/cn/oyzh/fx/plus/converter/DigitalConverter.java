@@ -4,15 +4,25 @@ import cn.oyzh.fx.plus.format.DigitalFormat;
 import javafx.util.converter.FormatStringConverter;
 
 /**
+ * 数字格式化转换器
+ *
  * @author oyzh
  * @since 2024/5/15
  */
 public class DigitalConverter extends FormatStringConverter<String> {
 
+    /**
+     * 构建数字格式化转换器
+     */
     public DigitalConverter() {
         this(new DigitalFormat());
     }
 
+    /**
+     * 构建数字格式化转换器
+     *
+     * @param format 数字格式
+     */
     public DigitalConverter( DigitalFormat format) {
         super(format);
     }

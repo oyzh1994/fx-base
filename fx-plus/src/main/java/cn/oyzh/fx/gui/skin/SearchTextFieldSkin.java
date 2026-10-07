@@ -31,6 +31,11 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
      */
     protected SearchHistoryPopup popup;
 
+    /**
+     * 获取搜索历史弹窗
+     *
+     * @return 搜索历史弹窗
+     */
     public SearchHistoryPopup getPopup() {
         return popup;
     }
@@ -88,6 +93,9 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         this.closePopup();
     }
 
+    /**
+     * 按键事件处理器：回车搜索、上下方向键切换历史
+     */
     private EventHandler<? super KeyEvent> onKeyPressed = event -> {
         if (event.getCode() == KeyCode.ENTER) {
             this.onSearch(this.getText());
@@ -113,10 +121,18 @@ public class SearchTextFieldSkin extends ClearableTextFieldSkin {
         this.closePopup();
     };
 
+    /**
+     * 鼠标按下事件处理器：关闭历史弹窗
+     */
     private EventHandler<? super MouseEvent> onMousePressed = event -> {
         this.closePopup();
     };
 
+    /**
+     * 构造搜索文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public SearchTextFieldSkin(TextField textField) {
         super(textField);
 //         // 初始化历史按钮

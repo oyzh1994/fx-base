@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 富文本流式布局控件，支持按关键字高亮显示文本
+ *
  * @author oyzh
  * @since 2025/01/22
  */
@@ -28,15 +30,30 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         NodeManager.init(this);
     }
 
+    /**
+     * 构造富文本流对象。
+     */
     public RichTextFlow() {
         super();
     }
 
+    /**
+     * 构造富文本流控件，并设置文本内容
+     *
+     * @param text 文本内容
+     */
     public RichTextFlow(String text) {
         super();
         this.setText(text);
     }
 
+    /**
+     * 构造富文本流控件，并设置文本内容、高亮关键字及是否区分大小写
+     *
+     * @param text               文本内容
+     * @param highlight          高亮关键字
+     * @param highlightMatchCase 高亮是否区分大小写
+     */
     public RichTextFlow(String text, String highlight, boolean highlightMatchCase) {
         super();
         this.setText(text);
@@ -44,18 +61,36 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         this.setHighlightMatchCase(highlightMatchCase);
     }
 
+    /**
+     * 设置文本内容
+     *
+     * @param text 文本内容
+     */
     public void setText(String text) {
         this.setProp("_text", text);
     }
 
+    /**
+     * 获取文本内容
+     *
+     * @return 文本内容
+     */
     public String getText() {
         return this.getProp("_text");
     }
 
+    /**
+     * 根据当前文本内容初始化文本流
+     */
     public void initTextFlow() {
         this.initTextFlow(this.getText());
     }
 
+    /**
+     * 根据文本内容初始化文本流，命中高亮关键字的部分单独着色
+     *
+     * @param text 文本内容
+     */
     protected void initTextFlow(String text) {
         String highlight = this.getHighlight();
         if (StringUtil.isNotBlank(highlight)) {
@@ -86,35 +121,75 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
         }
     }
 
+    /**
+     * 使用文本节点初始化文本流
+     *
+     * @param texts 文本节点
+     */
     protected void initTextFlow(FXText... texts) {
         this.getChildren().setAll(texts);
     }
 
+    /**
+     * 使用文本节点列表初始化文本流
+     *
+     * @param texts 文本节点列表
+     */
     protected void initTextFlow(List<FXText> texts) {
         this.getChildren().setAll(texts);
     }
 
+    /**
+     * 设置高亮关键字
+     *
+     * @param highlight 高亮关键字
+     */
     public void setHighlight(String highlight) {
         this.setProp("_highlight", highlight);
     }
 
+    /**
+     * 获取高亮关键字
+     *
+     * @return 高亮关键字
+     */
     public String getHighlight() {
         return this.getProp("_highlight");
     }
 
+    /**
+     * 设置高亮是否区分大小写
+     *
+     * @param highlightMatchCase 高亮是否区分大小写
+     */
     public void setHighlightMatchCase(boolean highlightMatchCase) {
         this.setProp("_highlightMatchCase", highlightMatchCase);
     }
 
+    /**
+     * 判断高亮是否区分大小写
+     *
+     * @return 高亮是否区分大小写
+     */
     public boolean isHighlightMatchCase() {
         Object obj = this.getProp("_highlightMatchCase");
         return obj != null && Boolean.parseBoolean(obj.toString());
     }
 
+    /**
+     * 设置高亮颜色
+     *
+     * @param color 高亮颜色
+     */
     public void setHighlightColor(Color color) {
         this.setProp("_highlightColor", color);
     }
 
+    /**
+     * 获取高亮颜色，未设置时返回默认色
+     *
+     * @return 高亮颜色
+     */
     public Color getHighlightColor() {
         Color color = this.getProp("_highlightColor");
         if (color == null) {

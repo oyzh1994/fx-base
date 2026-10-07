@@ -3,10 +3,10 @@ package cn.oyzh.fx.editor.incubator;
 import cn.oyzh.common.util.StringUtil;
 
 /**
- * 富文本数据类型
+ * 编辑器格式类型
  *
  * @author oyzh
- * @since 2024/5/17
+ * @since 2024-05-17
  */
 public enum EditorFormatType {
     // 原始格式
@@ -131,20 +131,44 @@ public enum EditorFormatType {
     SSHD_CONFIG("SSHD CONFIG", "sshd_config"),
     ;
 
+    /**
+     * 类型名称
+     */
     private final String name;
 
+    /**
+     * 文件扩展名，多个以英文逗号分隔
+     */
     private final String extension;
 
+    /**
+     * textmate类型
+     */
     private String textMateType = "json";
 
+    /**
+     * 获取类型名称
+     *
+     * @return 类型名称
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 获取文件扩展名
+     *
+     * @return 文件扩展名
+     */
     public String getExtension() {
         return this.extension;
     }
 
+    /**
+     * 获取首个文件扩展名
+     *
+     * @return 首个文件扩展名
+     */
     public String getFirstExtension() {
         if (this.extension.contains(",")) {
             return this.extension.split(",")[0];
@@ -152,6 +176,11 @@ public enum EditorFormatType {
         return this.extension;
     }
 
+    /**
+     * 获取textmate类型
+     *
+     * @return textmate类型
+     */
     public String getTextMateType() {
         return this.textMateType;
     }
@@ -187,11 +216,24 @@ public enum EditorFormatType {
         return name;
     }
 
+    /**
+     * 构造编辑器格式类型对象。
+     *
+     * @param name 名称
+     * @param extension 扩展名
+     */
     EditorFormatType(String name, String extension) {
         this.name = name;
         this.extension = extension;
     }
 
+    /**
+     * 构造编辑器格式类型对象。
+     *
+     * @param name 名称
+     * @param extension 扩展名
+     * @param textMateType 文本Mate类型
+     */
     EditorFormatType(String name, String extension, String textMateType) {
         this.name = name;
         this.extension = extension;

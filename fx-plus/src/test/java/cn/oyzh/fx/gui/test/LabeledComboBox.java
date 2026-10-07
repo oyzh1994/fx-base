@@ -13,6 +13,12 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
+/**
+ * 带标签的组合框轻量封装，标签叠放在组合框边框上
+ *
+ * @author oyzh
+ * @since 2026-01-17
+ */
 public class LabeledComboBox extends VBox {
     private String key;
     private String textColor = "#838186";

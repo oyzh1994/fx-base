@@ -15,6 +15,12 @@ import javafx.stage.Stage;
 
 import java.net.URISyntaxException;
 
+/**
+ * 遮罩层示例，通过形状相减在遮罩上挖出高亮区域
+ *
+ * @author oyzh
+ * @since 2025-03-12
+ */
 public class MaskDemo extends Application {
 
     @Override

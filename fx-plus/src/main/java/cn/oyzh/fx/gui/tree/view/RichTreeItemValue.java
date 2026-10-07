@@ -16,18 +16,36 @@ public class RichTreeItemValue extends FXTreeItemValue {
      */
     private boolean richMode;
 
+    /**
+     * 是否富文本模式
+     *
+     * @return 是否富文本模式
+     */
     public boolean isRichMode() {
         return richMode;
     }
 
+    /**
+     * 设置富文本模式
+     *
+     * @param richMode 是否富文本模式
+     */
     public void setRichMode(boolean richMode) {
         this.richMode = richMode;
     }
 
+    /**
+     * 构造富功能树节点值
+     */
     public RichTreeItemValue() {
         super();
     }
 
+    /**
+     * 构造富功能树节点值
+     *
+     * @param item 所属树节点
+     */
     public RichTreeItemValue(RichTreeItem<?> item) {
         super(item);
     }

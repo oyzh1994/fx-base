@@ -63,25 +63,25 @@ public interface ThemeStyle extends Theme {
     }
 
     /**
-     * 获取背景色
+     * 获取前景色
      *
-     * @return 背景色
+     * @return 前景色
      */
     Color getForegroundColor();
 
     /**
-     * 获取背景色16进制值
+     * 获取前景色16进制值
      *
-     * @return 背景色16进制值
+     * @return 前景色16进制值
      */
     default String getForegroundColorHex() {
         return FXColorUtil.getColorHex(this.getForegroundColor());
     }
 
     /**
-     * 获取前景色
+     * 获取背景色
      *
-     * @return 前景色
+     * @return 背景色
      */
     Color getBackgroundColor();
 

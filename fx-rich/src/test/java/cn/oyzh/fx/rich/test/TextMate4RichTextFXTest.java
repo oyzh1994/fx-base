@@ -13,6 +13,7 @@
 //import java.nio.charset.Charset;
 //
 ///**
+// * TextMate 与 RichTextFX 集成测试（已注释），在 CodeArea 中加载 TextMate 语法文件并展示示例代码。
 // *
 // * @author oyzh
 // * @since 2025-09-24

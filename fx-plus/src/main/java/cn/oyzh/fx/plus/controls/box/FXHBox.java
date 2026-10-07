@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 
 /**
+ * 水平布局容器，继承自 HBox，支持主题、字体、状态、布局等适配
+ *
  * @author oyzh
  * @since 2022/1/19
  */
@@ -20,10 +22,18 @@ public class FXHBox extends HBox implements FlexAdapter, NodeGroup, ThemeAdapter
         NodeManager.init(this);
     }
 
+    /**
+     * 构造面板对象。
+     */
     public FXHBox() {
         super();
     }
 
+    /**
+     * 构造面板对象。
+     *
+     * @param children 子节点集合
+     */
     public FXHBox(Node... children) {
         super(children);
     }

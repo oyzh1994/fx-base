@@ -7,6 +7,12 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
+/**
+ * 轻量级水平布局容器，仅对受管子节点进行布局计算
+ *
+ * @author oyzh
+ * @since 2025-06-12
+ */
 public class LightweightHBox extends javafx.scene.layout.Region {
     private final ObservableList<Node> children = FXCollections.observableArrayList();
     private double spacing = 0;

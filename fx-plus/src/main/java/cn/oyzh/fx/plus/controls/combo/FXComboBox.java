@@ -22,6 +22,8 @@ import javafx.scene.control.ComboBox;
 import java.util.Collection;
 
 /**
+ * 下拉框控件
+ *
  * @author oyzh
  * @since 2023/12/25
  */
@@ -36,10 +38,20 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
      */
     private boolean require;
 
+    /**
+     * 是否必填。
+     *
+     * @return 必填
+     */
     public boolean isRequire() {
         return require;
     }
 
+    /**
+     * 设置必填。
+     *
+     * @param require 是否必填
+     */
     public void setRequire(boolean require) {
         this.require = require;
     }

@@ -81,11 +81,21 @@ public class TabSwitchHandler {
      */
     private WeakReference<Parent> rootRef;
 
+    /**
+     * 以根节点构造处理器
+     *
+     * @param root 根节点
+     */
     public TabSwitchHandler(Parent root) {
         this.rootRef = new WeakReference<>(root);
         this.init();
     }
 
+    /**
+     * 以窗口构造处理器
+     *
+     * @param window 窗口
+     */
     public TabSwitchHandler(Window window) {
         if (window.getScene() == null || window.getScene().getRoot() == null) {
             throw new RuntimeException("stage.getScene().getRoot() is null!");
@@ -183,10 +193,20 @@ public class TabSwitchHandler {
         }
     }
 
+    /**
+     * 是否已失效
+     *
+     * @return 结果
+     */
     protected boolean isInvalid() {
         return this.rootRef == null || this.rootRef.get() == null;
     }
 
+    /**
+     * 获取根节点
+     *
+     * @return 根节点
+     */
     protected Parent root() {
         return this.rootRef == null ? null : this.rootRef.get();
     }

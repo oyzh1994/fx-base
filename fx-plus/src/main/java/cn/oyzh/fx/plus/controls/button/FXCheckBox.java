@@ -13,6 +13,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.CheckBox;
 
 /**
+ * 复选框控件，继承自 CheckBox，支持主题、字体、状态、提示等适配
+ *
  * @author oyzh
  * @since 2020/10/29
  */
@@ -22,19 +24,38 @@ public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, Them
         NodeManager.init(this);
     }
 
+    /**
+     * 构造检查面板对象。
+     */
     public FXCheckBox() {
         super();
     }
 
+    /**
+     * 构造检查面板对象。
+     *
+     * @param selected 是否选中
+     */
     public FXCheckBox(boolean selected) {
         super();
         this.setSelected(selected);
     }
 
+    /**
+     * 构造检查面板对象。
+     *
+     * @param text 文本
+     */
     public FXCheckBox(String text) {
         super(text);
     }
 
+    /**
+     * 构造检查面板对象。
+     *
+     * @param text 文本
+     * @param selected 是否选中
+     */
     public FXCheckBox(String text, boolean selected) {
         super(text);
         this.setSelected(selected);

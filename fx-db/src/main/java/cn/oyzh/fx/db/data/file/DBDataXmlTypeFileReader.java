@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * XML 类型文件读取器，基于 StAX 事件流将 XML 文件内容解析为数据对象。
+ *
  * @author oyzh
  * @since 2024-09-03
  */
@@ -30,6 +32,13 @@ public class DBDataXmlTypeFileReader extends DBDataTypeFileReader {
      */
     private DBDataImportConfig config;
 
+    /**
+     * 构造方法
+     *
+     * @param file   待读取的文件
+     * @param config 导入配置
+     * @throws Exception 异常
+     */
     public DBDataXmlTypeFileReader(File file, DBDataImportConfig config) throws Exception {
         super(file);
         this.config = config;

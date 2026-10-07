@@ -16,7 +16,7 @@ import javafx.scene.Scene;
 public interface WindowAdapter extends StateAdapter, ThemeAdapter {
 
     /**
-     * 关闭事件
+     * 窗口关闭事件，释放esc隐藏与tab切换处理器
      */
     default void onWindowClosed() {
         try {
@@ -30,17 +30,17 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
     }
 
     /**
-     * hand鼠标样式
+     * 设置鼠标为手型样式
      */
     void handCursor();
 
     /**
-     * wait鼠标样式
+     * 设置鼠标为等待样式
      */
     void waitCursor();
 
     /**
-     * 默认鼠标样式
+     * 设置鼠标为默认样式
      */
     void defaultCursor();
 
@@ -69,7 +69,7 @@ public interface WindowAdapter extends StateAdapter, ThemeAdapter {
     void hideOnEscape();
 
     /**
-     * 取消按下eac时隐藏窗口
+     * 取消按下esc时隐藏窗口
      */
     default void unHideOnEscape(){
         EscHideHandler escHideHandler = this.removeProp("escHideHandler");

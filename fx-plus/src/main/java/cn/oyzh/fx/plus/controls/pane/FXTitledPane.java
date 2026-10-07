@@ -15,6 +15,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.TitledPane;
 
 /**
+ * 可折叠标题面板控件
+ *
  * @author oyzh
  * @since 2023/11/21
  */
@@ -82,6 +84,11 @@ public class FXTitledPane extends TitledPane implements FlexAdapter, NodeGroup, 
     //     }
     // }
 
+    /**
+     * 追加标题文本
+     *
+     * @param appendText 追加文本
+     */
     public void setAppendText(String appendText) {
         if (StringUtil.isEmpty(appendText)) {
             return;
@@ -101,6 +108,11 @@ public class FXTitledPane extends TitledPane implements FlexAdapter, NodeGroup, 
         this.setProp("appendText", appendText);
     }
 
+    /**
+     * 获取追加文本
+     *
+     * @return 追加文本
+     */
     public String getAppendText() {
         return this.getProp("appendText");
     }

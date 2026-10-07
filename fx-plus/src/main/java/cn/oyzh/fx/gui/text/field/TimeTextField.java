@@ -9,19 +9,37 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
+ * 时间文本输入框
+ *
  * @author oyzh
  * @since 2024/07/21
  */
 public class TimeTextField extends LimitTextField {
 
+    /**
+     * 默认时间格式
+     */
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
 
+    /**
+     * 自定义时间格式
+     */
     private SimpleDateFormat dateFormat;
 
+    /**
+     * 获取自定义时间格式
+     *
+     * @return 自定义时间格式
+     */
     public SimpleDateFormat getDateFormat() {
         return dateFormat;
     }
 
+    /**
+     * 设置自定义时间格式
+     *
+     * @param dateFormat 自定义时间格式
+     */
     public void setDateFormat(SimpleDateFormat dateFormat) {
         this.dateFormat = dateFormat;
         if (dateFormat != null) {
@@ -70,6 +88,12 @@ public class TimeTextField extends LimitTextField {
         return new TimeTextFieldSkin(this);
     }
 
+    /**
+     * 将值格式化为时间字符串
+     *
+     * @param value 值
+     * @return 时间字符串
+     */
     public static String format(Object value) {
         if (value == null) {
             return null;

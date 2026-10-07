@@ -13,6 +13,12 @@ import javafx.util.Duration;
 
 import java.net.URISyntaxException;
 
+/**
+ * JavaFX 动画示例，矩形从起点平移并缩小到终点的关键帧动画
+ *
+ * @author oyzh
+ * @since 2025-03-22
+ */
 public class AnimationExample1 extends Application {
 
     @Override

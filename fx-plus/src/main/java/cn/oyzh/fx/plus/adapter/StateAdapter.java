@@ -61,6 +61,8 @@ public interface StateAdapter extends PropAdapter {
 
     /**
      * 是否managed属性绑定visible属性
+     *
+     * @return 结果
      */
     default boolean isManagedBindVisible() {
         return this.getProp("_managed_bind_visible");

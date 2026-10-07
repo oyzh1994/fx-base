@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * 可流式访问的终端连接器接口，在 {@link TtyConnector} 基础上暴露底层的输入流与输出流。
  *
  * @author oyzh
  * @since 2026-10-03

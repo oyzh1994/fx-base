@@ -18,6 +18,12 @@ import javafx.util.Callback;
 
 import java.net.URISyntaxException;
 
+/**
+ * 表格鼠标框选测试，演示 TableViewMouseSelectHelper 的使用
+ *
+ * @author oyzh
+ * @since 2025-03-06
+ */
 public class TableViewSelectionTest2 extends Application {
 
     private double startX, startY;

@@ -32,6 +32,8 @@ import javafx.scene.text.FontWeight;
 import java.util.List;
 
 /**
+ * 表格视图控件
+ *
  * @author oyzh
  * @since 2022/1/18
  */
@@ -78,36 +80,75 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FlexAdapter.super.initNode();
     }
 
+    /**
+     * 是否可重排列
+     */
     private boolean reorderable;
 
+    /**
+     * 设置是否可重排列
+     *
+     * @param reorderable 是否可重排列
+     */
     public void setReorderable(boolean reorderable) {
         this.reorderable = reorderable;
     }
 
+    /**
+     * 是否可重排列
+     *
+     * @return 结果
+     */
     public boolean isReorderable() {
         return reorderable;
     }
 
+    /**
+     * Ctrl+S 动作
+     */
     private Runnable ctrlSAction;
 
+    /**
+     * 获取 Ctrl+S 动作
+     *
+     * @return Ctrl+S 动作
+     */
     public Runnable getCtrlSAction() {
         return ctrlSAction;
     }
 
+    /**
+     * 设置 Ctrl+S 动作
+     *
+     * @param ctrlSAction Ctrl+S 动作
+     */
     public void setCtrlSAction(Runnable ctrlSAction) {
         this.ctrlSAction = ctrlSAction;
     }
 
+    /**
+     * 触发 Ctrl+S 动作
+     */
     public void onCtrl_S() {
         if (this.ctrlSAction != null) {
             this.ctrlSAction.run();
         }
     }
 
+    /**
+     * 获取数据列表
+     *
+     * @return 数据列表
+     */
     public ObservableList<S> itemList() {
         return this.itemsProperty().get();
     }
 
+    /**
+     * 设置双击单元格是否复制数据
+     *
+     * @param copyCellDataOnDoubleClicked 是否复制数据
+     */
     public void setCopyCellDataOnDoubleClicked(boolean copyCellDataOnDoubleClicked) {
         if (copyCellDataOnDoubleClicked) {
             EventHandler<MouseEvent> handler = TableViewUtil.copyCellDataOnDoubleClicked(this);
@@ -120,10 +161,20 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         }
     }
 
+    /**
+     * 双击单元格是否复制数据
+     *
+     * @return 结果
+     */
     public boolean isCopyCellDataOnDoubleClicked() {
         return this.hasProp("_copyCellDataOnDoubleClicked");
     }
 
+    /**
+     * 监听选中项变更
+     *
+     * @param listener 监听器
+     */
     public void selectedItemChanged(ChangeListener<S> listener) {
         this.getSelectionModel().selectedItemProperty().addListener(listener);
         //        this.getSelectionModel().selectedItemProperty().addListener(new WeakChangeListener<>(listener));
@@ -192,22 +243,43 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         FXUtil.runLater(super::refresh);
     }
 
+    /**
+     * 添加列
+     *
+     * @param column 列
+     */
     public <T extends TableColumn<S, ?>> void addColumn(T column) {
         FXUtil.runWait(() -> super.getColumns().add(column));
     }
 
+    /**
+     * 添加多列
+     *
+     * @param columns 列列表
+     */
     public void addColumn(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().addAll(columns));
     }
 
+    /**
+     * 设置列
+     *
+     * @param columns 列列表
+     */
     public void setColumn(List<? extends TableColumn<S, ?>> columns) {
         FXUtil.runWait(() -> super.getColumns().setAll(columns));
     }
 
+    /**
+     * 清空列
+     */
     public void clearColumn() {
         FXUtil.runWait(() -> super.getColumns().clear());
     }
 
+    /**
+     * 字体
+     */
     private Font font;
 
     @Override

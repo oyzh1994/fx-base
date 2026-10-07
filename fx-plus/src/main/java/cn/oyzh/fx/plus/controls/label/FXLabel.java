@@ -18,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 
 /**
+ * 标签控件
+ *
  * @author oyzh
  * @since 2020/10/29
  */
@@ -27,30 +29,62 @@ public class FXLabel extends Label implements FlexAdapter, NodeGroup, ThemeAdapt
         NodeManager.init(this);
     }
 
+    /**
+     * 构造标签对象。
+     */
     public FXLabel() {
         super("");
     }
 
+    /**
+     * 构造标签对象。
+     *
+     * @param graphic 图形
+     */
     public FXLabel(Node graphic) {
         super("", graphic);
     }
 
+    /**
+     * 构造标签对象。
+     *
+     * @param text 文本
+     */
     public FXLabel(String text) {
         super(text);
     }
 
+    /**
+     * 构造标签对象。
+     *
+     * @param text 文本
+     * @param graphic 图形
+     */
     public FXLabel(String text, Node graphic) {
         super(text, graphic);
     }
 
+    /**
+     * 文本是否为空
+     *
+     * @return 是否为空
+     */
     public boolean isEmpty() {
         return StringUtil.isEmpty(this.getText());
     }
 
+    /**
+     * 清空文本
+     */
     public void clear() {
         this.text("");
     }
 
+    /**
+     * 设置文本内容（在 JavaFX 线程中执行）
+     *
+     * @param text 文本内容
+     */
     public void text(String text) {
         if (text != null) {
             FXUtil.runWait(() -> super.setText(text));

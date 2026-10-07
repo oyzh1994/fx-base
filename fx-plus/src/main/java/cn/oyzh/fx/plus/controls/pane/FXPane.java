@@ -10,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 /**
+ * 面板容器控件
+ *
  * @author oyzh
  * @since 2022/1/18
  */
@@ -19,10 +21,18 @@ public class FXPane extends Pane implements FlexAdapter, LayoutAdapter, NodeAdap
         NodeManager.init(this);
     }
 
+    /**
+     * 构造面板对象。
+     */
     public FXPane() {
         super();
     }
 
+    /**
+     * 构造面板对象。
+     *
+     * @param Node...nodes 节点节点集合
+     */
     public FXPane(Node...nodes) {
         super(nodes);
     }

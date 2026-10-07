@@ -23,12 +23,28 @@ public class TrayItem extends FXLabel implements BaseTrayItem {
         this.setCursor(Cursor.HAND);
     }
 
+    /**
+     * 菜单业务
+     */
     private final Runnable action;
 
+    /**
+     * 构造托盘菜单项
+     *
+     * @param label  菜单名称
+     * @param action 菜单业务
+     */
     public TrayItem(String label, Runnable action) {
         this(label, null, action);
     }
 
+    /**
+     * 构造托盘菜单项
+     *
+     * @param label  菜单名称
+     * @param icon   菜单图标
+     * @param action 菜单业务
+     */
     public TrayItem(String label, Node icon, Runnable action) {
         super(label);
         if (icon != null) {

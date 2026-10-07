@@ -8,13 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 默认 SQL 解析器，基于通用 SqlUtil 实现 SQL 的解析、美化、压缩及注释移除
+ *
  * @author oyzh
- * @since 2026/10026
+ * @since 2026/10/06
  */
 public class DBBaseSqlParser extends DBSqlParser {
 
+    /**
+     * 数据库类型
+     */
     private final SqlDatabase database;
 
+    /**
+     * 构造数据库基础SQL解析器对象。
+     *
+     * @param sqlContent SQL内容
+     * @param dialect 方言
+     */
     public DBBaseSqlParser(String sqlContent, DBDialect dialect) {
         super(sqlContent, dialect);
         this.database = switch (dialect) {
@@ -29,6 +40,9 @@ public class DBBaseSqlParser extends DBSqlParser {
         return SqlUtil.removeComments(sql, this.database);
     }
 
+    /**
+     * 解析后的sql列表
+     */
     private List<String> sqlList;
 
     @Override

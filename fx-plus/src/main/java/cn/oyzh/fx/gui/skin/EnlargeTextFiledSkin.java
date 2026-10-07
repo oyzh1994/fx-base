@@ -28,18 +28,38 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
      */
     protected double enlargeWidth = 350;
 
+    /**
+     * 获取展开宽。
+     *
+     * @return 展开宽
+     */
     public double getEnlargeWidth() {
         return enlargeWidth;
     }
 
+    /**
+     * 设置展开宽。
+     *
+     * @param enlargeWidth 展开宽
+     */
     public void setEnlargeWidth(double enlargeWidth) {
         this.enlargeWidth = enlargeWidth;
     }
 
+    /**
+     * 获取展开高。
+     *
+     * @return 展开高
+     */
     public double getEnlargeHeight() {
         return enlargeHeight;
     }
 
+    /**
+     * 设置展开高。
+     *
+     * @param enlargeHeight 展开高
+     */
     public void setEnlargeHeight(double enlargeHeight) {
         this.enlargeHeight = enlargeHeight;
     }
@@ -84,6 +104,9 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         this.popup.showPopup(textField);
     }
 
+    /**
+     * 隐藏弹窗并恢复控件状态
+     */
     protected void handleHide() {
         this.popup.hide();
         this.getSkinnable().setDisable(false);
@@ -100,6 +123,11 @@ public class EnlargeTextFiledSkin extends ActionTextFieldSkin {
         this.handleHide();
     }
 
+    /**
+     * 以指定文本输入框构造展开文本输入框皮肤。
+     *
+     * @param textField 文本输入框
+     */
     public EnlargeTextFiledSkin(TextField textField) {
         super(textField);
     }

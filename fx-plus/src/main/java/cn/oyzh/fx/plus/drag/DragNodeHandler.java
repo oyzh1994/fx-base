@@ -71,7 +71,7 @@ public class DragNodeHandler {
     }
 
     /**
-     * 初始化来源拖动特效
+     * 初始化目标投放特效
      *
      * @param target 节点
      */
@@ -91,9 +91,8 @@ public class DragNodeHandler {
             //if (this.source != null && this.target != null) {
             //    this.target.onDropNode(this.source);
             //}
-            // Resolve source and target from the event at drop time,
-            // not from cached DRAG_ENTERED values which may be stale
-            // if the event target was a child node inside a TreeCell.
+            // 在投放时从事件中解析来源和目标，而不是使用缓存的 DRAG_ENTERED 值，
+            // 因为当事件目标是 TreeCell 内的子节点时，缓存值可能已失效
             DragNodeItem source = DragUtil.getDragItem(event.getGestureSource());
             DragNodeItem target = DragUtil.getDragItem(event.getTarget());
             if (source != null && target != null && target.allowDropNode(source)) {
@@ -295,18 +294,38 @@ public class DragNodeHandler {
     //     }
     // }
 
+    /**
+     * 获取来源节点
+     *
+     * @return 来源节点
+     */
     public synchronized DragNodeItem getSource() {
         return source;
     }
 
+    /**
+     * 设置来源节点
+     *
+     * @param source 来源节点
+     */
     public synchronized void setSource(DragNodeItem source) {
         this.source = source;
     }
 
+    /**
+     * 获取目标节点
+     *
+     * @return 目标节点
+     */
     public DragNodeItem getTarget() {
         return target;
     }
 
+    /**
+     * 设置目标节点
+     *
+     * @param target 目标节点
+     */
     public void setTarget(DragNodeItem target) {
         this.target = target;
     }

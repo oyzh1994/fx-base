@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class NavyDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final NavyDark THEME = new NavyDark();
 
     @Override

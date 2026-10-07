@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * 展开文本输入框皮肤
+ * 可选择文本输入框皮肤，带下拉候选列表
  *
  * @author oyzh
  * @since 2024/07/12
@@ -56,26 +56,56 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      */
     protected Consumer<T> selectItemChanged;
 
+    /**
+     * 获取转换器
+     *
+     * @return 转换器
+     */
     public StringConverter<T> getConverter() {
         return converter;
     }
 
+    /**
+     * 设置转换器
+     *
+     * @param converter 转换器
+     */
     public void setConverter(StringConverter<T> converter) {
         this.converter = converter;
     }
 
+    /**
+     * 获取行高
+     *
+     * @return 行高
+     */
     public double getLineHeight() {
         return lineHeight;
     }
 
+    /**
+     * 设置行高
+     *
+     * @param lineHeight 行高
+     */
     public void setLineHeight(double lineHeight) {
         this.lineHeight = lineHeight;
     }
 
+    /**
+     * 获取选中项变更回调
+     *
+     * @return 选中项变更回调
+     */
     public Consumer<T> selectItemChanged() {
         return selectItemChanged;
     }
 
+    /**
+     * 设置选中项变更回调
+     *
+     * @param selectItemChanged 选中项变更回调
+     */
     public void selectItemChanged(Consumer<T> selectItemChanged) {
         this.selectItemChanged = selectItemChanged;
     }
@@ -243,6 +273,11 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         this.popup.content(scrollPane);
     }
 
+    /**
+     * 构造选取文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public SelectTextFiledSkin(TextField textField) {
         super(textField);
     }
@@ -397,7 +432,9 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
         return this.popup != null && this.popup.isShowing();
     }
 
-    /*
+    /**
+     * 弹窗隐藏事件
+     *
      * @param event 事件
      */
     protected void onPopupHide(WindowEvent event) {

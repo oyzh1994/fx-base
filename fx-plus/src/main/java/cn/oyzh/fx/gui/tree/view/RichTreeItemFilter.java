@@ -25,26 +25,56 @@ public abstract class RichTreeItemFilter implements Predicate<RichTreeItem<?>> {
      */
     private boolean wholeWord;
 
+    /**
+     * 获取关键字。
+     *
+     * @return 关键字
+     */
     public String getKw() {
         return kw;
     }
 
+    /**
+     * 设置关键字。
+     *
+     * @param kw 关键字
+     */
     public void setKw(String kw) {
         this.kw = kw;
     }
 
+    /**
+     * 是否匹配大小写。
+     *
+     * @return 匹配大小写
+     */
     public boolean isMatchCase() {
         return matchCase;
     }
 
+    /**
+     * 设置匹配大小写。
+     *
+     * @param matchCase 匹配大小写
+     */
     public void setMatchCase(boolean matchCase) {
         this.matchCase = matchCase;
     }
 
+    /**
+     * 是否全词。
+     *
+     * @return 全词
+     */
     public boolean isWholeWord() {
         return wholeWord;
     }
 
+    /**
+     * 设置全词。
+     *
+     * @param wholeWord 全词
+     */
     public void setWholeWord(boolean wholeWord) {
         this.wholeWord = wholeWord;
     }

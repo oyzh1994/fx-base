@@ -17,10 +17,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 /**
- * json文本输入框皮肤
+ * 长文本输入框皮肤
  *
  * @author oyzh
- * @since 2024/07/21
+ * @since 2024-07-09
  */
 public class LongTextFiledSkin extends ActionTextFieldSkin {
 
@@ -76,6 +76,9 @@ public class LongTextFiledSkin extends ActionTextFieldSkin {
         this.popup.showPopup(textField);
     }
 
+    /**
+     * 处理隐藏
+     */
     protected void handleHide() {
         this.popup.hide();
         this.getSkinnable().setDisable(false);
@@ -94,6 +97,11 @@ public class LongTextFiledSkin extends ActionTextFieldSkin {
         this.handleHide();
     }
 
+    /**
+     * 构造长文本输入框皮肤
+     *
+     * @param textField 文本输入框
+     */
     public LongTextFiledSkin(TextField textField) {
         super(textField);
     }
@@ -116,30 +124,65 @@ public class LongTextFiledSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
+    /**
+     * 获取放大宽度。
+     *
+     * @return 放大宽度
+     */
     public double getEnlargeWidth() {
         return enlargeWidth;
     }
 
+    /**
+     * 设置放大宽度。
+     *
+     * @param enlargeWidth 放大宽度
+     */
     public void setEnlargeWidth(double enlargeWidth) {
         this.enlargeWidth = enlargeWidth;
     }
 
+    /**
+     * 获取放大高度。
+     *
+     * @return 放大高度
+     */
     public double getEnlargeHeight() {
         return enlargeHeight;
     }
 
+    /**
+     * 设置放大高度。
+     *
+     * @param enlargeHeight 放大高度
+     */
     public void setEnlargeHeight(double enlargeHeight) {
         this.enlargeHeight = enlargeHeight;
     }
 
+    /**
+     * 获取弹窗。
+     *
+     * @return 弹窗
+     */
     public PopupExt getPopup() {
         return popup;
     }
 
+    /**
+     * 设置弹窗。
+     *
+     * @param popup 弹窗
+     */
     public void setPopup(PopupExt popup) {
         this.popup = popup;
     }
 
+    /**
+     * 获取格式类型
+     *
+     * @return 格式类型
+     */
     protected EditorFormatType getFormatType() {
         return EditorFormatType.JSON;
     }

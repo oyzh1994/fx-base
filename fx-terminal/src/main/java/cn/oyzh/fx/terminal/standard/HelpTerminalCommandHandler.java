@@ -16,8 +16,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * 帮助终端命令处理器
+ *
  * @author oyzh
- * @since 2023/7/22
+ * @since 2023-10-09
  */
 public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<TerminalCommand, Terminal> {
 

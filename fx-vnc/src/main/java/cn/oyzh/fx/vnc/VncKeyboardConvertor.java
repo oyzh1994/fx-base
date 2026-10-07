@@ -30,12 +30,15 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * JavaFX-aware keyboard convertor.
- * Replaces the AWT KeyboardConvertor.java. Uses a configurable keyboard layout
- * parameter instead of platform-specific scancode parsing.
+ * 面向 JavaFX 的键盘字符转换器，替代原基于 AWT 的实现。
+ * 通过可配置的键盘布局参数进行字符转换，而非解析平台相关的扫描码。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class VncKeyboardConvertor {
 
+    /** 键码到基础/Shift 字符对的映射，键码值采用 AWT 键码 */
     private static final Map<Integer, CodePair> KEY_MAP = new HashMap<>();
 
     static {
@@ -95,29 +98,54 @@ public class VncKeyboardConvertor {
         KEY_MAP.put(60 /* Less */, new CodePair('<', '>'));
     }
 
+    /** 键盘布局语言标识 */
     private final String keyboardLayout;
+
+    /** 大写锁定是否开启 */
     private boolean capsLockOn;
 
+    /**
+     * 使用系统默认区域设置构造转换器。
+     */
     public VncKeyboardConvertor() {
         this(Locale.getDefault());
     }
 
+    /**
+     * 使用指定区域设置构造转换器。
+     *
+     * @param locale 区域设置，为空时按英文布局处理
+     */
     public VncKeyboardConvertor(Locale locale) {
         this.keyboardLayout = locale != null ? locale.getLanguage().toLowerCase() : "en";
         this.capsLockOn = false;
     }
 
+    /**
+     * 设置大写锁定状态。
+     *
+     * @param capsLockOn 大写锁定是否开启
+     */
     public void setCapsLockOn(boolean capsLockOn) {
         this.capsLockOn = capsLockOn;
     }
 
+    /**
+     * 获取大写锁定状态。
+     *
+     * @return 大写锁定是否开启
+     */
     public boolean isCapsLockOn() {
         return capsLockOn;
     }
 
     /**
-     * Convert key character using the keyboard layout.
-     * Handles the German QWERTZ Y/Z swap when locale is "de".
+     * 依据键盘布局转换按键字符，当区域设置为德语时处理 QWERTZ 布局的 Y/Z 互换。
+     *
+     * @param keyChar   原始字符
+     * @param keyCode   按键的 AWT 键码
+     * @param shiftDown 是否按下 Shift 键
+     * @return 转换后的字符
      */
     public int convert(int keyChar, int keyCode, boolean shiftDown) {
         // Handle German QWERTZ Y/Z swap
@@ -141,8 +169,11 @@ public class VncKeyboardConvertor {
     }
 
     /**
-     * Map a JavaFX KeyCode to its approximate AWT key code value.
-     * This is needed because the key map uses AWT key code values.
+     * 将 JavaFX KeyCode 映射为近似的 AWT 键码值。
+     * 由于键映射表使用 AWT 键码值，故需要此转换。
+     *
+     * @param code 按键编码
+     * @return 对应的 AWT 键码值，无法映射时返回 0
      */
     public static int keyCodeToAwtCode(KeyCode code) {
         if (code == null) return 0;
@@ -181,10 +212,23 @@ public class VncKeyboardConvertor {
         }
     }
 
+    /**
+     * 键码对应的基础字符与 Shift 字符对。
+     */
     private static class CodePair {
+
+        /** 未按 Shift 时的字符 */
         final int code;
+
+        /** 按下 Shift 时的字符 */
         final int codeShifted;
 
+        /**
+         * 构造字符对。
+         *
+         * @param code        未按 Shift 时的字符
+         * @param codeShifted 按下 Shift 时的字符
+         */
         CodePair(int code, int codeShifted) {
             this.code = code;
             this.codeShifted = codeShifted;

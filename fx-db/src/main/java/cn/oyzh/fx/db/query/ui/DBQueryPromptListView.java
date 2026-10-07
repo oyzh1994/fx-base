@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 查询提示列表
+ * 查询提示列表，以列表形式展示并选择查询提示项
  *
  * @author oyzh
  * @since 2024/02/21
@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class DBQueryPromptListView<E extends DBQueryPromptItem> extends FXListView<FXHBox> {
 
     /**
-     * 选中项坐标
+     * 当前选中项索引，-1 表示未选中
      */
     protected volatile int currentPickIndex = -1;
 
@@ -182,10 +182,20 @@ public abstract class DBQueryPromptListView<E extends DBQueryPromptItem> extends
         });
     }
 
+    /**
+     * 获取项选取。
+     *
+     * @return 项选取
+     */
     public Runnable getOnItemPicked() {
         return onItemPicked;
     }
 
+    /**
+     * 设置项选取。
+     *
+     * @param onItemPicked 项选取
+     */
     public void setOnItemPicked(Runnable onItemPicked) {
         this.onItemPicked = onItemPicked;
     }

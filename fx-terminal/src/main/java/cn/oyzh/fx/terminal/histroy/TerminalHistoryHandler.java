@@ -6,8 +6,10 @@ import cn.oyzh.fx.terminal.Terminal;
 import java.util.List;
 
 /**
+ * 命令历史处理器
+ *
  * @author oyzh
- * @since 2023/08/28
+ * @since 2023-10-09
  */
 public interface TerminalHistoryHandler {
 

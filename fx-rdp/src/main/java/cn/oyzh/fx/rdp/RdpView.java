@@ -9,15 +9,22 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 /**
- * rdp视图
+ * RDP 远程桌面视图，负责在首帧到达后挂载远端桌面画面，并处理缩放与焦点。
  *
  * @author oyzh
- * @since 2026/09/20
+ * @since 2026-09-20
  */
 public class RdpView extends FXPane {
 
+    /** RDP 前端对象 */
     private FxRdpFrontend frontend;
 
+    /**
+     * 初始化视图，绑定 RDP 客户端与前端，并在首帧到达后挂载桌面。
+     *
+     * @param rdpClient RDP 客户端
+     * @param frontend  RDP 前端
+     */
     public void steup(RdpClient rdpClient, FxRdpFrontend frontend) {
         this.frontend = frontend;
         rdpClient.setOnFirstFrame(this::attachDesktopAfterFirstFrame);

@@ -62,7 +62,13 @@ public class FXColorUtil {
         return styleColor;
     }
 
-    // 计算两个颜色之间的欧几里得距离
+    /**
+     * 计算两个颜色之间的欧几里得距离
+     *
+     * @param c1 颜色1
+     * @param c2 颜色2
+     * @return 颜色距离
+     */
     public static double colorDistance(Color c1, Color c2) {
         double rDiff = c1.getRed() - c2.getRed();
         double gDiff = c1.getGreen() - c2.getGreen();
@@ -70,7 +76,13 @@ public class FXColorUtil {
         return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
     }
 
-    // 在颜色列表中找到与目标颜色最接近的颜色
+    /**
+     * 在颜色列表中查找与目标颜色最接近的颜色
+     *
+     * @param target    目标颜色
+     * @param colorList 颜色列表
+     * @return 最接近的颜色，若均超过距离阈值则返回 null
+     */
     public static Color findClosestColor(Color target, List<Color> colorList) {
         Color closest = null;
         double minDistance = 0.35;

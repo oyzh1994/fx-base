@@ -24,15 +24,28 @@ public class DecimalTextField extends DigitalTextField {
      */
     protected Integer scaleLen;
 
+    /**
+     * 获取小数位数
+     *
+     * @return 小数位数
+     */
     public Integer getScaleLen() {
         return scaleLen;
     }
 
+    /**
+     * 设置小数位数
+     *
+     * @param scaleLen 小数位数
+     */
     public void setScaleLen(Integer scaleLen) {
         this.scaleLen = scaleLen;
         this.format();
     }
 
+    /**
+     * 构造小数文本域
+     */
     public DecimalTextField() {
         super(null);
     }
@@ -41,10 +54,23 @@ public class DecimalTextField extends DigitalTextField {
     //        super(unsigned, null);
     //    }
 
+    /**
+     * 构造小数文本域
+     *
+     * @param maxLen 最大长度
+     */
     public DecimalTextField(Long maxLen) {
         super(maxLen);
     }
 
+    /**
+     * 构造小数文本域
+     *
+     * @param maxLen   最大长度
+     * @param minVal   最小值
+     * @param maxVal   最大值
+     * @param scaleLen 小数位数
+     */
     public DecimalTextField(Long maxLen, Long minVal, Long maxVal, Integer scaleLen) {
         super(maxLen);
         super.setMinVal(minVal);
@@ -52,11 +78,20 @@ public class DecimalTextField extends DigitalTextField {
         this.setScaleLen(scaleLen);
     }
 
+    /**
+     * 构造小数文本域
+     *
+     * @param maxLen   最大长度
+     * @param scaleLen 小数位数
+     */
     public DecimalTextField(Long maxLen, Integer scaleLen) {
         super(maxLen);
         this.setScaleLen(scaleLen);
     }
 
+    /**
+     * 数字转换器
+     */
     private DigitalConverter converter;
 
     @Override
@@ -147,8 +182,16 @@ public class DecimalTextField extends DigitalTextField {
         return super.value();
     }
 
+    /**
+     * 数字格式化器
+     */
     private DigitalFormat format;
 
+    /**
+     * 获取数字格式化器，并按当前小数位数同步配置。
+     *
+     * @return 数字格式化器
+     */
     private DigitalFormat format() {
         if (this.format == null) {
             this.format = new DigitalFormat(this.scaleLen);
@@ -158,6 +201,12 @@ public class DecimalTextField extends DigitalTextField {
         return this.format;
     }
 
+    /**
+     * 将值格式化为小数字符串
+     *
+     * @param val 值
+     * @return 小数字符串
+     */
     public static String format(Object val) {
         if (val instanceof CharSequence sequence) {
             return sequence.toString();
@@ -168,18 +217,38 @@ public class DecimalTextField extends DigitalTextField {
         return null;
     }
 
+    /**
+     * 设置最小值
+     *
+     * @param minVal 最小值
+     */
     public void setMin(Double minVal) {
         this.minVal = minVal;
     }
 
+    /**
+     * 获取最小值
+     *
+     * @return 最小值
+     */
     public Double getMin() {
         return this.minVal == null ? null : this.minVal.doubleValue();
     }
 
+    /**
+     * 设置最大值
+     *
+     * @param maxVal 最大值
+     */
     public void setMax(Double maxVal) {
         this.maxVal = maxVal;
     }
 
+    /**
+     * 获取最大值
+     *
+     * @return 最大值
+     */
     public Double getMax() {
         return this.maxVal == null ? null : this.maxVal.doubleValue();
     }

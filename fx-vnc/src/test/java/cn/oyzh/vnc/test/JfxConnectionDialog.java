@@ -44,8 +44,11 @@ import javafx.stage.Window;
 import java.net.Proxy;
 
 /**
- * Connection dialog for entering VNC server connection parameters.
- * Replaces VNCHostOptionsPane.kt from the Termora plugin.
+ * VNC 服务器连接对话框，用于输入主机、端口、密码、编码及代理等连接参数。
+ * 替代 Termora 插件的 VNCHostOptionsPane.kt。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class JfxConnectionDialog {
 

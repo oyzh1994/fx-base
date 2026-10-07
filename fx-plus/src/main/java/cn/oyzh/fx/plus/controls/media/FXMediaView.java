@@ -13,6 +13,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
 /**
+ * 媒体视图控件
+ *
  * @author oyzh
  * @since 2025-07-17
  */
@@ -22,28 +24,56 @@ public class FXMediaView extends MediaView implements FlexAdapter, NodeAdapter, 
         NodeManager.init(this);
     }
 
+    /**
+     * 构造媒体查看对象。
+     */
     public FXMediaView() {
         super();
     }
 
+    /**
+     * 构造媒体查看对象。
+     *
+     * @param player player
+     */
     public FXMediaView(MediaPlayer player) {
         super(player);
     }
 
+    /**
+     * 构造媒体查看对象。
+     *
+     * @param media 媒体
+     */
     public FXMediaView(Media media) {
         this(new MediaPlayer(media));
     }
 
+    /**
+     * 构造媒体查看对象。
+     *
+     * @param url 地址
+     */
     public FXMediaView(String url) {
         this.setUrl(url);
     }
 
+    /**
+     * 设置媒体地址
+     *
+     * @param url 媒体地址
+     */
     public void setUrl(String url) {
         this.setProp("url", url);
         MediaPlayer player = new MediaPlayer(FXUtil.getMedia(url));
         super.setMediaPlayer(player);
     }
 
+    /**
+     * 获取媒体地址
+     *
+     * @return 媒体地址
+     */
     public String getUrl() {
         return this.getProp("url");
     }

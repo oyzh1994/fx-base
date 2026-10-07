@@ -4,6 +4,8 @@ package cn.oyzh.fx.db.data.ui;
 import cn.oyzh.fx.gui.text.field.SelectTextFiled;
 
 /**
+ * 数据库数据日期格式输入框，提供常用日期时间格式的可选项
+ *
  * @author oyzh
  * @since 2024/9/2
  */

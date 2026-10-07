@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * 树形结构
+ * 树形视图控件
  *
  * @author oyzh
  * @since 2022/1/19
@@ -40,6 +40,11 @@ public class FXTreeView extends TreeView implements FlexAdapter, Destroyable, No
      */
     protected String dragContent = "tree_view_drag";
 
+    /**
+     * 获取拖拽内容。
+     *
+     * @return 拖拽内容
+     */
     public String getDragContent() {
         return dragContent;
     }

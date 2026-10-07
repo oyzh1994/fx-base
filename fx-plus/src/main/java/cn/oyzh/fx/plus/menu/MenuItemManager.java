@@ -9,6 +9,8 @@ import javafx.scene.control.SeparatorMenuItem;
 import java.util.List;
 
 /**
+ * 菜单项工厂，用于创建菜单、菜单项、分割项及选择菜单项
+ *
  * @author oyzh
  * @since 2025-06-25
  */

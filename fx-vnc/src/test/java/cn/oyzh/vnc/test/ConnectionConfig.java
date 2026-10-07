@@ -26,8 +26,10 @@ package cn.oyzh.vnc.test;
 import java.net.Proxy;
 
 /**
- * Connection configuration parameters.
- * Replaces the Kotlin data class Host from the Termora plugin.
+ * VNC 连接配置参数，替代 Termora 插件的 Kotlin 数据类 Host。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class ConnectionConfig {
 

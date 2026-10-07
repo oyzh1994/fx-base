@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 
 /**
- * fx控件工具类
+ * 树组件工具类
  *
  * @author oyzh
  * @since 2023/05/09
@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class TreeViewUtil {
 
     /**
-     * 展开全部
+     * 展开指定节点及其全部父节点
      *
      * @param item 节点
      */
@@ -47,11 +47,11 @@ public class TreeViewUtil {
     }
 
     /**
-     * 获取树节点全部节点
+     * 收集树节点及其子节点
      *
      * @param item   树节点
-     * @param filter 过滤器
      * @param items  全部节点列表
+     * @param filter 过滤器
      */
     private static void getAllItem(TreeItem<?> item, List<TreeItem<?>> items, Function<TreeItem<?>, Boolean> filter) {
         if (item != null) {
@@ -68,7 +68,7 @@ public class TreeViewUtil {
     }
 
     /**
-     * 获取树组件的全部节点
+     * 遍历树组件节点
      *
      * @param treeView 树组件
      * @param filter   过滤器
@@ -79,7 +79,7 @@ public class TreeViewUtil {
     }
 
     /**
-     * 获取树节点全部节点
+     * 遍历树节点及其子节点
      *
      * @param item   树节点
      * @param filter 过滤器
@@ -127,6 +127,7 @@ public class TreeViewUtil {
      *
      * @param treeView 树组件
      * @param item     节点
+     * @return 结果
      */
     public static boolean isVisible(TreeView<?> treeView, TreeItem<?> item) {
         if (treeView == null || item == null) {

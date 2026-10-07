@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class NewsTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final News THEME = new News();
 
     @Override

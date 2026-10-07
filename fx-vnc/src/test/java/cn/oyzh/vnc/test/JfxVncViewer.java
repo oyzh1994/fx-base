@@ -28,8 +28,10 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
- * Main entry point for the JavaFX VNC Viewer application.
- * Shows the connection dialog and creates a viewer stage on successful connect.
+ * JavaFX VNC 查看器应用程序入口，展示连接对话框并在连接成功后创建查看器窗口。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class JfxVncViewer extends Application {
 

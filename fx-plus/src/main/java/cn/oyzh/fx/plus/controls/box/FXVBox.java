@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 /**
+ * 垂直布局容器，继承自 VBox，支持主题、字体、状态、布局等适配
+ *
  * @author oyzh
  * @since 2022/06/03
  */
@@ -20,10 +22,18 @@ public class FXVBox extends VBox implements FlexAdapter, NodeGroup, ThemeAdapter
         NodeManager.init(this);
     }
 
+    /**
+     * 构造面板对象。
+     */
     public FXVBox() {
         super();
     }
 
+    /**
+     * 构造面板对象。
+     *
+     * @param children 子节点集合
+     */
     public FXVBox(Node... children) {
         super(children);
     }

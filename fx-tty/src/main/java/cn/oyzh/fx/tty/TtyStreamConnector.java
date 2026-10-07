@@ -12,6 +12,8 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
 /**
+ * 基于输入输出流的终端连接器抽象类，提供读写、终端尺寸与字符集等通用实现。
+ *
  * @author oyzh
  * @since 2025-03-04
  */
@@ -32,10 +34,18 @@ public abstract class TtyStreamConnector implements TtyTerminalSizeable, TtyStre
      */
     protected OutputStreamWriter writer;
 
+    /**
+     * 使用系统默认字符集构造连接器。
+     */
     public TtyStreamConnector() {
         this(Charset.defaultCharset());
     }
 
+    /**
+     * 构造连接器。
+     *
+     * @param charset 字符集
+     */
     public TtyStreamConnector(Charset charset) {
         this.charset = charset;
     }
@@ -52,6 +62,15 @@ public abstract class TtyStreamConnector implements TtyTerminalSizeable, TtyStre
         return len;
     }
 
+    /**
+     * 读取后的处理钩子，子类可覆写以处理读取到的数据。
+     *
+     * @param buf    数据缓冲区
+     * @param offset 数据起始偏移
+     * @param length 数据长度
+     * @return 处理后的长度
+     * @throws IOException IO 异常
+     */
     protected int doRead(char[] buf, int offset, int length) throws IOException {
         if (JulLog.isDebugEnabled()) {
             JulLog.debug("shell read: {}", new String(buf));
@@ -105,6 +124,7 @@ public abstract class TtyStreamConnector implements TtyTerminalSizeable, TtyStre
         this.writer = null;
     }
 
+    /** 终端尺寸属性 */
     private SimpleObjectProperty<TermSize> terminalSizeProperty;
 
     @Override

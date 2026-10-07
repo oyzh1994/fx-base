@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.button.IconButton;
 import cn.oyzh.i18n.I18nHelper;
 
 /**
- * 分组按钮
+ * 新建文件夹按钮
  *
  * @author oyzh
  * @since 2024/04/08

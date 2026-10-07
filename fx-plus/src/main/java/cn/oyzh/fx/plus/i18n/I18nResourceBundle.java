@@ -37,6 +37,9 @@ public class I18nResourceBundle extends ResourceBundle {
      */
     private final Map<Locale, ResourceBundle> i18n_resources = new HashMap<>();
 
+    /**
+     * 构造I18n资源资源包对象。
+     */
     private I18nResourceBundle() {
 
     }
@@ -116,7 +119,7 @@ public class I18nResourceBundle extends ResourceBundle {
     }
 
     /**
-     * 获取基础的国际化资源，对象
+     * 获取基础的国际化资源，字符串
      *
      * @param keys 键
      * @return 值
@@ -165,10 +168,10 @@ public class I18nResourceBundle extends ResourceBundle {
     }
 
     /**
-     * 是否存在值
+     * 是否存在指定国际化键
      *
      * @param key 键
-     * @return 值
+     * @return 是否存在
      */
     public static boolean containsI18nKey(String key) {
         return INSTANCE.containsKey(key);

@@ -33,6 +33,7 @@ public interface PropAdapter {
      * 获取属性
      *
      * @param key 键
+     * @param <T> 值类型
      * @return 值
      */
     default <T> T getProp(String key) {
@@ -68,7 +69,7 @@ public interface PropAdapter {
     }
 
     /**
-     * 移除值
+     * 移除属性
      *
      * @param key 键
      * @param <T> 值类型

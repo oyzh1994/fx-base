@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * 只读日志消息文本域，支持逐行拼接文本、限制最大行数并按策略裁剪超出行数
  *
  * @author oyzh
  * @since 2026-03-13
@@ -45,18 +46,38 @@ public class RichMsgTextArea extends Editor {
      */
     private byte limitPolicy = 1;
 
+    /**
+     * 获取行限制。
+     *
+     * @return 行限制
+     */
     public int getLineLimit() {
         return lineLimit;
     }
 
+    /**
+     * 设置行限制。
+     *
+     * @param lineLimit 行限制
+     */
     public void setLineLimit(int lineLimit) {
         this.lineLimit = lineLimit;
     }
 
+    /**
+     * 获取限制策略。
+     *
+     * @return 限制策略
+     */
     public byte getLimitPolicy() {
         return limitPolicy;
     }
 
+    /**
+     * 设置限制策略。
+     *
+     * @param limitPolicy 限制策略
+     */
     public void setLimitPolicy(byte limitPolicy) {
         this.limitPolicy = limitPolicy;
     }
@@ -71,6 +92,11 @@ public class RichMsgTextArea extends Editor {
      */
     private final AtomicBoolean appending = new AtomicBoolean(false);
 
+    /**
+     * 批量追加文本行，自动补全换行符并截断超长行
+     *
+     * @param lines 待追加的文本行集合
+     */
     public void appendLines(Collection<String> lines) {
         if (CollectionUtil.isNotEmpty(lines)) {
             StringBuilder builder = new StringBuilder();
@@ -124,7 +150,9 @@ public class RichMsgTextArea extends Editor {
     }
 
     /**
-     * 执行拼接
+     * 将文本加入消息队列并异步、批量地执行拼接，减少界面刷新次数
+     *
+     * @param text 待拼接的文本内容
      */
     protected void doAppend(String text) {
         this.queue.add(text);

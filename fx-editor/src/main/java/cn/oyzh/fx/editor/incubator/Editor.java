@@ -79,7 +79,7 @@ import java.util.Set;
  * 编辑器
  *
  * @author oyzh
- * @since 2025/07/30
+ * @since 2025-08-14
  */
 public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter, ContextMenuAdapter, MenuItemAdapter, FlexAdapter, FontAdapter, ThemeAdapter, TipAdapter, NodeGroup, Destroyable {
 
@@ -153,6 +153,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private static final Insets DEFAULT_PADDING = new Insets(5);
 
+    /**
+     * 格式类型监听器
+     */
     private final ChangeListener<? super EditorFormatType> formatTypeListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setFormatType(t1);
         if (!this.ignoreChange) {
@@ -160,11 +163,17 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         }
     };
 
+    /**
+     * 提示词监听器
+     */
     private final ChangeListener<? super Set<String>> promptsListener = (observableValue, formatType, t1) -> {
         this.syntaxDecorator.setPrompts(t1);
         this.initTextStyle();
     };
 
+    /**
+     * 高亮监听器
+     */
     private final ChangeListener<? super String> highlightListener = (observableValue, formatType, t1) -> {
         ThreadUtil.start(() -> {
             // 获取滚动条值
@@ -179,6 +188,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
 
     };
 
+    /**
+     * 高亮正则监听器
+     */
     private final ChangeListener<? super Boolean> highlightRegexListener = (observableValue, formatType, t1) -> {
         ThreadUtil.start(() -> {
             this.syntaxDecorator.setHighlightRegex(t1);
@@ -186,6 +198,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         });
     };
 
+    /**
+     * 高亮全字匹配监听器
+     */
     private final ChangeListener<? super Boolean> highlightWholeWordListener = (observableValue, formatType, t1) -> {
         ThreadUtil.start(() -> {
             this.syntaxDecorator.setHighlightWholeWord(t1);
@@ -193,6 +208,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         });
     };
 
+    /**
+     * 高亮大小写匹配监听器
+     */
     private final ChangeListener<? super Boolean> highlightMacthCaseListener = (observableValue, formatType, t1) -> {
         ThreadUtil.start(() -> {
             this.syntaxDecorator.setHighlightMatchCase(t1);
@@ -200,6 +218,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         });
     };
 
+    /**
+     * 字体监听器
+     */
     private final ChangeListener<? super Font> fontListener = (observable, oldValue, newValue) -> {
         Font editorFont = this.getEditorFont();
         if (editorFont != null && !FontUtil.isSameFont(editorFont, newValue)) {
@@ -339,6 +360,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         }
     };
 
+    /**
+     * 获取文本属性
+     *
+     * @return 文本属性
+     */
     public StringProperty textProperty() {
         if (this.textProperty == null) {
             String text = this.getText();
@@ -381,14 +407,29 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private ObjectProperty<EditorFormatType> formatTypeProperty;
 
+    /**
+     * 获取格式类型
+     *
+     * @return 格式类型
+     */
     public EditorFormatType getFormatType() {
         return this.formatTypeProperty == null ? EditorFormatType.RAW : this.formatTypeProperty.get();
     }
 
+    /**
+     * 设置格式类型
+     *
+     * @param formatType 格式类型
+     */
     public void setFormatType(EditorFormatType formatType) {
         this.formatTypeProperty().set(formatType);
     }
 
+    /**
+     * 获取格式类型属性
+     *
+     * @return 格式类型属性
+     */
     public ObjectProperty<EditorFormatType> formatTypeProperty() {
         if (this.formatTypeProperty == null) {
             this.formatTypeProperty = new SimpleObjectProperty<>(EditorFormatType.RAW);
@@ -454,7 +495,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 显示检测后的数据
      *
      * @param rawData 显示数据
-     * @return EditorFormatType
+     * @return 格式类型
      */
     public EditorFormatType showDetectData(Object rawData) {
         // 检测类型
@@ -485,6 +526,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private ObjectProperty<Set<String>> promptsProperty;
 
+    /**
+     * 获取提示词属性
+     *
+     * @return 提示词属性
+     */
     public ObjectProperty<Set<String>> promptsProperty() {
         if (this.promptsProperty == null) {
             this.promptsProperty = new SimpleObjectProperty<>();
@@ -533,6 +579,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private StringProperty highlightProperty;
 
+    /**
+     * 获取高亮
+     *
+     * @return 高亮
+     */
     public String getHighlight() {
         return this.highlightProperty == null ? null : this.highlightProperty.get();
     }
@@ -546,6 +597,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         this.highlightProperty().set(highlight);
     }
 
+    /**
+     * 获取高亮属性
+     *
+     * @return 高亮属性
+     */
     public StringProperty highlightProperty() {
         if (this.highlightProperty == null) {
             this.highlightProperty = new SimpleStringProperty();
@@ -558,6 +614,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private BooleanProperty highlightRegexProperty;
 
+    /**
+     * 是否高亮正则
+     *
+     * @return 结果
+     */
     public boolean isHighlightRegex() {
         return this.highlightRegexProperty != null && this.highlightRegexProperty.get();
     }
@@ -571,6 +632,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         this.highlightRegexProperty().set(highlightRegex);
     }
 
+    /**
+     * 获取高亮正则属性
+     *
+     * @return 高亮正则属性
+     */
     public BooleanProperty highlightRegexProperty() {
         if (this.highlightRegexProperty == null) {
             this.highlightRegexProperty = new SimpleBooleanProperty();
@@ -583,6 +649,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private BooleanProperty highlightMacthCaseProperty;
 
+    /**
+     * 是否高亮匹配大小写
+     *
+     * @return 结果
+     */
     public boolean isHighlightMacthCase() {
         return this.highlightMacthCaseProperty != null && this.highlightMacthCaseProperty.get();
     }
@@ -596,6 +667,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         this.highlightMacthCaseProperty().set(highlightMacthCase);
     }
 
+    /**
+     * 获取高亮匹配大小写属性
+     *
+     * @return 高亮匹配大小写属性
+     */
     public BooleanProperty highlightMacthCaseProperty() {
         if (this.highlightMacthCaseProperty == null) {
             this.highlightMacthCaseProperty = new SimpleBooleanProperty();
@@ -608,14 +684,29 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private BooleanProperty highlightWholeWordProperty;
 
+    /**
+     * 是否高亮全字匹配
+     *
+     * @return 结果
+     */
     public boolean isHighlightWholeWord() {
         return this.highlightWholeWordProperty != null && this.highlightWholeWordProperty.get();
     }
 
+    /**
+     * 设置高亮全字匹配
+     *
+     * @param highlightWholeWord 全字匹配
+     */
     public void setHighlightWholeWord(boolean highlightWholeWord) {
         this.highlightWholeWordProperty().set(highlightWholeWord);
     }
 
+    /**
+     * 获取高亮全字匹配属性
+     *
+     * @return 高亮全字匹配属性
+     */
     public BooleanProperty highlightWholeWordProperty() {
         if (this.highlightWholeWordProperty == null) {
             this.highlightWholeWordProperty = new SimpleBooleanProperty();
@@ -628,14 +719,29 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private BooleanProperty autoPairEnabledProperty;
 
+    /**
+     * 是否开启自动补全成对符号
+     *
+     * @return 结果
+     */
     public boolean isAutoPairEnabled() {
         return this.autoPairEnabledProperty == null || this.autoPairEnabledProperty.get();
     }
 
+    /**
+     * 设置自动补全成对符号开关
+     *
+     * @param enabled 开关
+     */
     public void setAutoPairEnabled(boolean enabled) {
         this.autoPairEnabledProperty().set(enabled);
     }
 
+    /**
+     * 获取自动补全成对符号属性
+     *
+     * @return 自动补全成对符号属性
+     */
     public BooleanProperty autoPairEnabledProperty() {
         if (this.autoPairEnabledProperty == null) {
             this.autoPairEnabledProperty = new SimpleBooleanProperty(true);

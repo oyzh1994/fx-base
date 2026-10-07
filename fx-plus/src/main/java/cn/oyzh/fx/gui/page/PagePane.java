@@ -33,12 +33,12 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     private boolean showPageText = true;
 
     /**
-     * 是否显示首页组件
+     * 是否显示尾页组件
      */
     private boolean showLast;
 
     /**
-     * 是否显示尾页组件
+     * 是否显示首页组件
      */
     private boolean showFirst;
 
@@ -83,12 +83,12 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     private boolean hideIfLessPage = true;
 
     /**
-     * 上一页点击事件
+     * 下一页点击事件
      */
     private EventHandler<MouseEvent> onNextClicked;
 
     /**
-     * 下一页点击事件
+     * 上一页点击事件
      */
     private EventHandler<MouseEvent> onPrevClicked;
 
@@ -224,9 +224,9 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     }
 
     /**
-     * 设置首行点击时间
+     * 设置首页点击事件
      *
-     * @param onFirstClicked 首行点击时间
+     * @param onFirstClicked 首页点击事件
      */
     public void setOnFirstClicked(EventHandler<MouseEvent> onFirstClicked) {
         this.onFirstClicked = onFirstClicked;
@@ -249,9 +249,9 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
     }
 
     /**
-     * 设置尾行点击时间
+     * 设置尾页点击事件
      *
-     * @param onLastClicked 尾行点击时间
+     * @param onLastClicked 尾页点击事件
      */
     public void setOnLastClicked(EventHandler<MouseEvent> onLastClicked) {
         this.onLastClicked = onLastClicked;
@@ -287,78 +287,173 @@ public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
 //    public void setRealHeight(double height) {
 //        LayoutAdapter.super.realHeight(height);
 
+    /**
+     * 获取分页文本。
+     *
+     * @return 分页文本
+     */
     public FXText getPageText() {
         return pageText;
     }
 
+    /**
+     * 是否显示分页文本。
+     *
+     * @return 显示分页文本
+     */
     public boolean isShowPageText() {
         return showPageText;
     }
 
+    /**
+     * 是否显示末页。
+     *
+     * @return 显示末页
+     */
     public boolean isShowLast() {
         return showLast;
     }
 
+    /**
+     * 是否显示首页。
+     *
+     * @return 显示首页
+     */
     public boolean isShowFirst() {
         return showFirst;
     }
 
+    /**
+     * 获取首页。
+     *
+     * @return 首页
+     */
     public SVGGlyph getFirstSVG() {
         return firstSVG;
     }
 
+    /**
+     * 获取末页。
+     *
+     * @return 末页
+     */
     public SVGGlyph getLastSVG() {
         return lastSVG;
     }
 
+    /**
+     * 获取上一页。
+     *
+     * @return 上一页
+     */
     public SVGGlyph getPrevSVG() {
         return prevSVG;
     }
 
+    /**
+     * 获取下一页。
+     *
+     * @return 下一页
+     */
     public SVGGlyph getNextSVG() {
         return nextSVG;
     }
 
+    /**
+     * 获取分页文本模板。
+     *
+     * @return 分页文本模板
+     */
     public String getPageTextTpl() {
         return pageTextTpl;
     }
 
+    /**
+     * 设置分页文本模板。
+     *
+     * @param pageTextTpl 分页文本模板
+     */
     public void setPageTextTpl(String pageTextTpl) {
         this.pageTextTpl = pageTextTpl;
     }
 
+    /**
+     * 获取分页。
+     *
+     * @return 分页
+     */
     public Paging<T> getPaging() {
         return paging;
     }
 
+    /**
+     * 获取图标大小。
+     *
+     * @return 图标大小
+     */
     public String getIconSize() {
         return iconSize;
     }
 
+    /**
+     * 是否隐藏如果少于分页。
+     *
+     * @return 隐藏如果少于分页
+     */
     public boolean isHideIfLessPage() {
         return hideIfLessPage;
     }
 
+    /**
+     * 获取下一页点击。
+     *
+     * @return 下一页点击
+     */
     public EventHandler<MouseEvent> getOnNextClicked() {
         return onNextClicked;
     }
 
+    /**
+     * 设置下一页点击。
+     *
+     * @param onNextClicked 下一页点击回调
+     */
     public void setOnNextClicked(EventHandler<MouseEvent> onNextClicked) {
         this.onNextClicked = onNextClicked;
     }
 
+    /**
+     * 获取上一页点击。
+     *
+     * @return 上一页点击
+     */
     public EventHandler<MouseEvent> getOnPrevClicked() {
         return onPrevClicked;
     }
 
+    /**
+     * 设置上一页点击。
+     *
+     * @param onPrevClicked 上一页点击回调
+     */
     public void setOnPrevClicked(EventHandler<MouseEvent> onPrevClicked) {
         this.onPrevClicked = onPrevClicked;
     }
 
+    /**
+     * 获取首页点击。
+     *
+     * @return 首页点击
+     */
     public EventHandler<MouseEvent> getOnFirstClicked() {
         return onFirstClicked;
     }
 
+    /**
+     * 获取末页点击。
+     *
+     * @return 末页点击
+     */
     public EventHandler<MouseEvent> getOnLastClicked() {
         return onLastClicked;
     }

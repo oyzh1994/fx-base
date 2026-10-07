@@ -16,6 +16,8 @@ import javafx.scene.image.WritableImage;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * 图片控件
+ *
  * @author oyzh
  * @since 2020/10/29
  */
@@ -25,41 +27,83 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
         NodeManager.init(this);
     }
 
+    /**
+     * 构造镜像查看对象。
+     */
     public FXImageView() {
         super();
     }
 
+    /**
+     * 构造镜像查看对象。
+     *
+     * @param image 镜像
+     */
     public FXImageView(Image image) {
         super(image);
     }
 
+    /**
+     * 构造镜像查看对象。
+     *
+     * @param url 地址
+     */
     public FXImageView(String url) {
         this.setUrl(url);
     }
 
+    /**
+     * 构造镜像查看对象。
+     *
+     * @param url 地址
+     * @param size 大小
+     */
     public FXImageView(String url, double size) {
         this.setUrl(url);
         this.setFitWidth(size);
         this.setFitHeight(size);
     }
 
+    /**
+     * 构造镜像查看对象。
+     *
+     * @param image 镜像
+     * @param size 大小
+     */
     public FXImageView(Image image, double size) {
         this.setImage(image);
         this.setFitWidth(size);
         this.setFitHeight(size);
     }
 
+    /**
+     * 构造镜像查看对象。
+     *
+     * @param image 镜像
+     * @param w w
+     * @param h h
+     */
     public FXImageView(Image image, double w, double h) {
         this.setImage(image);
         this.setFitWidth(w);
         this.setFitHeight(h);
     }
 
+    /**
+     * 设置图片地址
+     *
+     * @param url 图片地址
+     */
     public void setUrl(String url) {
         this.setProp("url", url);
         super.setImage(FXUtil.getImage(url));
     }
 
+    /**
+     * 获取图片地址
+     *
+     * @return 图片地址
+     */
     public String getUrl() {
         return this.getProp("url");
     }
@@ -79,6 +123,11 @@ public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, 
         this.resizeNode();
     }
 
+    /**
+     * 截取当前图片的快照
+     *
+     * @return 快照图片
+     */
     public WritableImage snapshot() {
         return this.snapshot(null, null);
     }

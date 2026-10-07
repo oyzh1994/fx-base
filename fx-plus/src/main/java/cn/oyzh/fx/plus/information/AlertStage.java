@@ -31,6 +31,7 @@ import java.util.List;
 
 
 /**
+ * 提示框舞台，用于展示确认、警告、错误、信息等类型的消息，并处理用户选择的按钮
  *
  * @author oyzh
  * @since 2026-01-30
@@ -62,18 +63,42 @@ public class AlertStage extends Stage implements StageAdapter {
      */
     private Alert.AlertType type;
 
+    /**
+     * 内容默认外边距
+     */
     private static final Insets DEFAULT_MARGIN = new Insets(10, 0, 0, 10);
 
+    /**
+     * 按钮默认外边距
+     */
     private static final Insets BUTTON_DEFAULT_MARGIN = new Insets(30, 10, 0, 0);
 
+    /**
+     * 构造提示框舞台
+     *
+     * @param type 提示类型
+     */
     public AlertStage(Alert.AlertType type) {
         this(type, "");
     }
 
+    /**
+     * 构造提示框舞台
+     *
+     * @param type    提示类型
+     * @param content 内容
+     */
     public AlertStage(Alert.AlertType type, String content) {
         this(type, content, new ArrayList<>());
     }
 
+    /**
+     * 构造提示框舞台
+     *
+     * @param type    提示类型
+     * @param content 内容
+     * @param buttons 按钮列表
+     */
     public AlertStage(Alert.AlertType type, String content, List<Button> buttons) {
         this.type = type;
         this.setMaximized(false);
@@ -179,17 +204,32 @@ public class AlertStage extends Stage implements StageAdapter {
         }
     }
 
+    /**
+     * 显示窗口并等待关闭，返回用户点击的按钮
+     *
+     * @return 用户点击的按钮，未选择时返回 null
+     */
     public Button getResult() {
         this.showAndWait();
         return this.result;
     }
 
+    /**
+     * 设置内容文本
+     *
+     * @param text 内容文本
+     */
     public void setContent(String text) {
         if (this.content != null) {
             this.content.setText(text);
         }
     }
 
+    /**
+     * 获取内容文本
+     *
+     * @return 内容文本
+     */
     public String getContent() {
         if (this.content != null) {
             return this.content.getText();

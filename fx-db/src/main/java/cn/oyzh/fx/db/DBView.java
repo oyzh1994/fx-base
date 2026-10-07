@@ -3,6 +3,7 @@ package cn.oyzh.fx.db;
 import cn.oyzh.common.util.StringUtil;
 
 /**
+ * 视图接口，提供视图注释及可更新属性的读写能力
  *
  * @author oyzh
  * @since 2026-08-21

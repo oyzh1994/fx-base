@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 键盘按键事件
+ * 键盘快捷键工具类，定义并判断各平台下的常用快捷键
  *
  * @author oyzh
  * @since 2024/07/02
@@ -29,12 +29,12 @@ public class KeyboardUtil {
     public static KeyCombination selectAll_keyCombination;
 
     /**
-     * 撤销快捷键
+     * 重做快捷键
      */
     public static KeyCombination redo_keyCombination;
 
     /**
-     * 重做快捷键
+     * 撤销快捷键
      */
     public static KeyCombination undo_keyCombination;
 

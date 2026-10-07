@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 
 /**
+ * incubator 模块编辑器舞台测试，演示通过 StageAdapter 打开自定义编辑器窗口。
+ *
  * @author oyzh
  * @since 2022/5/18
  */

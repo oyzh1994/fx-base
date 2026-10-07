@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * tab行控件
+ *
  * @author oyzh
  * @since 2022/1/20
  */
@@ -259,6 +261,12 @@ public class FXTabLine extends TabLine implements FlexAdapter, NodeGroup, ThemeA
         }
     }
 
+    /**
+     * 是否选中指定tab
+     *
+     * @param tabId tabId
+     * @return 结果
+     */
     public boolean isSelectedTab(String tabId) {
         if (tabId == null) {
             return false;
@@ -267,10 +275,20 @@ public class FXTabLine extends TabLine implements FlexAdapter, NodeGroup, ThemeA
         return tab != null && StringUtil.equals(tabId, tab.getId());
     }
 
+    /**
+     * 获取tab数量
+     *
+     * @return tab数量
+     */
     public int tabSize() {
         return this.getTabs().size();
     }
 
+    /**
+     * 获取选中tab的id
+     *
+     * @return tabId，未选中时返回 null
+     */
     public String getSelectTabId() {
         Tab tab = this.getSelectedItem();
         return tab == null ? null : tab.getId();

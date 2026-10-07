@@ -21,6 +21,8 @@ import javafx.scene.control.Tab;
 import java.util.List;
 
 /**
+ * tab页签控件
+ *
  * @author oyzh
  * @since 2022/1/21
  */
@@ -30,14 +32,28 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         NodeManager.init(this);
     }
 
+    /**
+     * 构造 tab 页签控件。
+     */
     public FXTab() {
         super();
     }
 
+    /**
+     * 以指定文本构造 tab 页签控件。
+     *
+     * @param text 文本
+     */
     public FXTab(String text) {
         super(text);
     }
 
+    /**
+     * 以指定文本和内容构造 tab 页签控件。
+     *
+     * @param text    文本
+     * @param content 内容
+     */
     public FXTab(String text, Node content) {
         super(text, content);
     }
@@ -151,10 +167,20 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
     protected void onTabClosed(Event event) {
     }
 
+    /**
+     * tab关闭请求事件
+     *
+     * @param event 事件
+     */
     protected void onTabCloseRequest(Event event) {
 
     }
 
+    /**
+     * 追加文本
+     *
+     * @param appendText 追加文本
+     */
     public void setAppendText(String appendText) {
         if (StringUtil.isEmpty(appendText)) {
             return;
@@ -174,6 +200,11 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
         this.setProp("appendText", appendText);
     }
 
+    /**
+     * 获取追加文本。
+     *
+     * @return 追加文本
+     */
     public String getAppendText() {
         return this.getProp("appendText");
     }

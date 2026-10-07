@@ -65,10 +65,20 @@ public class IconButton extends FXButton {
         this.initGlyph();
     }
 
+    /**
+     * 设置图标地址。
+     *
+     * @param url 地址
+     */
     public void setIconUrl(String url) {
         this.init(url);
     }
 
+    /**
+     * 获取图标地址。
+     *
+     * @return 图标地址
+     */
     public String getIconUrl() {
         if (this.getGraphic() instanceof SVGGlyph glyph) {
             return glyph.getUrl();
@@ -77,7 +87,7 @@ public class IconButton extends FXButton {
     }
 
     /**
-     * 初始化图标
+     * 初始化图标相关监听器，用于在字体、图标、文字颜色、背景变化时重新初始化图标
      */
     protected void initListener() {
         this.fontProperty().addListener((observable, o, n) -> this.initGlyph());

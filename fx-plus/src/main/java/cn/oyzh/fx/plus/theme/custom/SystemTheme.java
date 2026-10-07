@@ -28,7 +28,7 @@ public class SystemTheme implements ThemeStyle {
     private final ChangeListener<Color> colorListener = (observable, oldValue, newValue) -> this.changeTheme();
 
     /**
-     * 主题监听器
+     * 配色方案变更监听器
      */
     private final ChangeListener<ColorScheme> colorSchemeChangeListener = (observable, oldValue, newValue) -> this.changeTheme();
 
@@ -47,6 +47,9 @@ public class SystemTheme implements ThemeStyle {
      */
     private ThemeStyle baseTheme;
 
+    /**
+     * 获取基本主题
+     */
     public ThemeStyle getBaseTheme() {
         return baseTheme;
     }

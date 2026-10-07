@@ -12,7 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
- * 键盘按键事件
+ * 键盘按键监听器，负责在场景或节点上注册、移除按键事件处理器
  *
  * @author oyzh
  * @since 2023/1/16

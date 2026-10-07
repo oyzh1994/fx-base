@@ -28,6 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 编辑器语法装饰器，负责语法着色、提示词与搜索高亮
+ *
  * @author oyzh
  * @since 2025-08-14
  */
@@ -63,10 +65,18 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private volatile EditorFormatType formatType = EditorFormatType.RAW;
 
+    /**
+     * 构造语法装饰器
+     */
     public EditorSyntaxDecorator() {
         this(null);
     }
 
+    /**
+     * 构造语法装饰器
+     *
+     * @param styleProvider 样式提供者
+     */
     public EditorSyntaxDecorator(@Nullable StyleProvider styleProvider) {
         super(styleProvider);
     }
@@ -90,44 +100,90 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         return t;
     });
 
+    /**
+     * 高亮匹配模式
+     */
     private Pattern highlightPattern;
 
+    /**
+     * 设置高亮。
+     *
+     * @param highlight 高亮
+     */
     public void setHighlight(String highlight) {
         this.highlight = highlight;
         this.initHighlightPattern();
     }
 
+    /**
+     * 获取高亮。
+     *
+     * @return 高亮
+     */
     public String getHighlight() {
         return highlight;
     }
 
+    /**
+     * 设置高亮正则。
+     *
+     * @param highlightRegex 高亮正则
+     */
     public void setHighlightRegex(boolean highlightRegex) {
         this.highlightRegex = highlightRegex;
         this.initHighlightPattern();
     }
 
+    /**
+     * 是否高亮正则。
+     *
+     * @return 高亮正则
+     */
     public boolean isHighlightRegex() {
         return highlightRegex;
     }
 
+    /**
+     * 设置高亮全词。
+     *
+     * @param highlightWholeWord 高亮全词
+     */
     public void setHighlightWholeWord(boolean highlightWholeWord) {
         this.highlightWholeWord = highlightWholeWord;
         this.initHighlightPattern();
     }
 
+    /**
+     * 是否高亮全词。
+     *
+     * @return 高亮全词
+     */
     public boolean isHighlightWholeWord() {
         return highlightWholeWord;
     }
 
+    /**
+     * 设置高亮匹配大小写。
+     *
+     * @param highlightMatchCase 高亮匹配大小写
+     */
     public void setHighlightMatchCase(boolean highlightMatchCase) {
         this.highlightMatchCase = highlightMatchCase;
         this.initHighlightPattern();
     }
 
+    /**
+     * 是否高亮匹配大小写。
+     *
+     * @return 高亮匹配大小写
+     */
     public boolean isHighlightMatchCase() {
         return highlightMatchCase;
     }
 
+    /**
+     * 初始化高亮匹配模式
+     */
     private void initHighlightPattern() {
         if (StringUtil.isNotEmpty(this.highlight)) {
             try {
@@ -142,12 +198,25 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         }
     }
 
+    /**
+     * 获取提示。
+     *
+     * @return 提示
+     */
     public Set<String> getPrompts() {
         return prompts;
     }
 
+    /**
+     * 提示词匹配模式
+     */
     private Pattern promptsPattern;
 
+    /**
+     * 设置提示词
+     *
+     * @param prompts 提示词集合
+     */
     public void setPrompts(Set<String> prompts) {
         this.prompts = prompts;
         if (CollectionUtil.isNotEmpty(prompts)) {
@@ -161,10 +230,20 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         }
     }
 
+    /**
+     * 获取格式类型。
+     *
+     * @return 格式类型
+     */
     public EditorFormatType getFormatType() {
         return formatType;
     }
 
+    /**
+     * 设置格式类型。
+     *
+     * @param formatType 格式类型
+     */
     public void setFormatType(EditorFormatType formatType) {
         this.formatType = formatType;
     }
@@ -174,10 +253,20 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private volatile Color highlightColor = Editor.DEFAULT_HIGHLIGHT_COLOR;
 
+    /**
+     * 获取高亮颜色。
+     *
+     * @return 高亮颜色
+     */
     public Color getHighlightColor() {
         return highlightColor;
     }
 
+    /**
+     * 设置高亮颜色。
+     *
+     * @param highlightColor 高亮颜色
+     */
     public void setHighlightColor(Color highlightColor) {
         this.highlightColor = highlightColor;
     }
@@ -199,11 +288,21 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private volatile Color promptsColor = Editor.DEFAULT_PROMPTS_COLOR;
 
+    /**
+     * 设置提示颜色。
+     *
+     * @param promptsColor 提示颜色
+     */
     public void setPromptsColor(Color promptsColor) {
         this.promptsColor = promptsColor;
         this.promptsStyle = null;
     }
 
+    /**
+     * 获取提示颜色。
+     *
+     * @return 提示颜色
+     */
     public Color getPromptsColor() {
         return promptsColor;
     }
@@ -213,6 +312,11 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private StyleAttributeMap promptsStyle;
 
+    /**
+     * 获取提示词样式
+     *
+     * @return 提示词样式
+     */
     public StyleAttributeMap promptsStyle() {
         if (this.promptsStyle == null) {
             this.promptsStyle = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, promptsColor);
@@ -225,10 +329,20 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private EditorSyntaxStrategy syntaxStrategy = EditorSyntaxStrategy.AUTO;
 
+    /**
+     * 获取语法策略。
+     *
+     * @return 语法策略
+     */
     public EditorSyntaxStrategy getSyntaxStrategy() {
         return syntaxStrategy;
     }
 
+    /**
+     * 设置语法策略。
+     *
+     * @param syntaxStrategy 语法策略
+     */
     public void setSyntaxStrategy(EditorSyntaxStrategy syntaxStrategy) {
         this.syntaxStrategy = syntaxStrategy;
     }
@@ -238,10 +352,20 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private EditorSyntaxAsyncStrategy syntaxAsyncStrategy = EditorSyntaxAsyncStrategy.AUTO;
 
+    /**
+     * 获取语法异步策略。
+     *
+     * @return 语法异步策略
+     */
     public EditorSyntaxAsyncStrategy getSyntaxAsyncStrategy() {
         return syntaxAsyncStrategy;
     }
 
+    /**
+     * 设置语法异步策略。
+     *
+     * @param syntaxAsyncStrategy 语法异步策略
+     */
     public void setSyntaxAsyncStrategy(EditorSyntaxAsyncStrategy syntaxAsyncStrategy) {
         this.syntaxAsyncStrategy = syntaxAsyncStrategy;
     }
@@ -251,10 +375,20 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private int syntaxAsyncMinThreshold = 500;
 
+    /**
+     * 获取语法异步最小阈值。
+     *
+     * @return 语法异步最小阈值
+     */
     public int getSyntaxAsyncMinThreshold() {
         return syntaxAsyncMinThreshold;
     }
 
+    /**
+     * 设置语法异步最小阈值。
+     *
+     * @param syntaxAsyncMinThreshold 语法异步最小阈值
+     */
     public void setSyntaxAsyncMinThreshold(int syntaxAsyncMinThreshold) {
         this.syntaxAsyncMinThreshold = syntaxAsyncMinThreshold;
     }
@@ -264,10 +398,20 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private int syntaxAsyncAutoThreshold = 50_000;
 
+    /**
+     * 获取语法异步自动阈值。
+     *
+     * @return 语法异步自动阈值
+     */
     public int getSyntaxAsyncAutoThreshold() {
         return syntaxAsyncAutoThreshold;
     }
 
+    /**
+     * 设置语法异步自动阈值。
+     *
+     * @param syntaxAsyncAutoThreshold 语法异步自动阈值
+     */
     public void setSyntaxAsyncAutoThreshold(int syntaxAsyncAutoThreshold) {
         this.syntaxAsyncAutoThreshold = syntaxAsyncAutoThreshold;
     }
@@ -277,10 +421,20 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     private int syntaxMaxThreshold = 500_000;
 
+    /**
+     * 获取语法最大阈值。
+     *
+     * @return 语法最大阈值
+     */
     public int getSyntaxMaxThreshold() {
         return syntaxMaxThreshold;
     }
 
+    /**
+     * 设置语法最大阈值。
+     *
+     * @param syntaxMaxThreshold 语法最大阈值
+     */
     public void setSyntaxMaxThreshold(int syntaxMaxThreshold) {
         this.syntaxMaxThreshold = syntaxMaxThreshold;
     }

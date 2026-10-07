@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * rdp4j 远程桌面测试，通过 RdpClient 连接远程主机并展示远程桌面画面。
  *
  * @author oyzh
  * @since 2026-09-20

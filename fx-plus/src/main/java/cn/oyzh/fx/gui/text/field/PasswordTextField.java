@@ -32,18 +32,36 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
      */
     private boolean require;
 
+    /**
+     * 是否必须
+     *
+     * @return 是否必须
+     */
     public boolean isRequire() {
         return require;
     }
 
+    /**
+     * 设置是否必须
+     *
+     * @param require 是否必须
+     */
     public void setRequire(boolean require) {
         this.require = require;
     }
 
+    /**
+     * 构造密码文本域
+     */
     public PasswordTextField() {
         super.setText("");
     }
 
+    /**
+     * 构造密码文本域
+     *
+     * @param text 文本
+     */
     public PasswordTextField(String text) {
         super.setText(text);
     }
@@ -90,6 +108,12 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
         this.setText(format(val));
     }
 
+    /**
+     * 将值格式化为字符串
+     *
+     * @param val 值
+     * @return 字符串
+     */
     public static String format(Object val) {
         if (val instanceof CharSequence sequence) {
             return sequence.toString();
@@ -110,6 +134,11 @@ public class PasswordTextField extends atlantafx.base.controls.PasswordTextField
         this.resizeNode();
     }
 
+    /**
+     * 设置文本
+     *
+     * @param text 文本
+     */
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }

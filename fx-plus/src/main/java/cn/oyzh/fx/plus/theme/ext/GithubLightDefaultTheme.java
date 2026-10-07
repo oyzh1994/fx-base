@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class GithubLightDefaultTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final GithubLightDefault THEME = new GithubLightDefault();
 
     @Override

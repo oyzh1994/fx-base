@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.util;
 import javafx.stage.Screen;
 
 /**
+ * 屏幕工具类
+ *
  * @author oyzh
  * @since 2025-08-20
  */

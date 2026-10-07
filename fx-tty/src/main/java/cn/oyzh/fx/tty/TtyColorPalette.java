@@ -11,11 +11,15 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 
 /**
+ * 终端颜色调色板。基础前景色与背景色取自当前主题，其余颜色取自系统调色板，
+ * 并缓存转换结果以提升性能。
+ *
  * @author oyzh
  * @since 2025-03-26
  */
 public class TtyColorPalette extends ColorPalette {
 
+    /** 单例实例 */
     public static final TtyColorPalette INSTANCE = new TtyColorPalette();
 
     @Override
@@ -44,7 +48,7 @@ public class TtyColorPalette extends ColorPalette {
     private Method lastFGMethod = null;
 
     /**
-     * 缓存的前景色方法
+     * 缓存的背景色方法
      */
     private Method lastBGMethod = null;
 
@@ -63,7 +67,7 @@ public class TtyColorPalette extends ColorPalette {
      *
      * @param foreground 是否前景色
      * @param colorIndex 颜色索引
-     * @return 结果
+     * @return 颜色
      */
     private Color getPaletteColor(boolean foreground, int colorIndex) {
         Color color;

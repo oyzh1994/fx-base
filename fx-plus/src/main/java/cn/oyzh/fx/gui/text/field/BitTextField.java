@@ -6,7 +6,7 @@ import javafx.scene.control.TextFormatter;
 import java.util.function.UnaryOperator;
 
 /**
- * bit文本输入框
+ * 位文本输入框
  *
  * @author oyzh
  * @since 2023/12/22
@@ -18,10 +18,18 @@ public class BitTextField extends LimitTextField {
      */
     protected final TextFormatter<Number> textFormatter;
 
+    /**
+     * 构造位文本输入框
+     */
     public BitTextField() {
         this(null);
     }
 
+    /**
+     * 构造位文本输入框
+     *
+     * @param maxLen 最大长度
+     */
     public BitTextField(Long maxLen) {
         // 长度
         this.setMaxLen(maxLen);
@@ -31,6 +39,11 @@ public class BitTextField extends LimitTextField {
         this.setTextFormatter(this.textFormatter);
     }
 
+    /**
+     * 创建过滤器，仅允许输入由 0、1 组成的文本。
+     *
+     * @return 文本变更过滤器
+     */
     protected UnaryOperator<TextFormatter.Change> createFilter() {
         return change -> {
             if (change.isAdded() || change.isReplaced() || change.isContentChange()) {
@@ -68,6 +81,12 @@ public class BitTextField extends LimitTextField {
         this.setText(format(super.value()));
     }
 
+    /**
+     * 将字节数据格式化为二进制字符串
+     *
+     * @param val 值
+     * @return 二进制字符串
+     */
     public static String format(Object val) {
         if (val instanceof byte[] bytes) {
             return TextUtil.byteToBitStr(bytes);

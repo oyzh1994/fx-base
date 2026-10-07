@@ -5,7 +5,7 @@ import javafx.scene.control.MenuItem;
 import java.util.List;
 
 /**
- * 操作按钮适配器
+ * 菜单项适配器，用于提供右键菜单项列表
  *
  * @author oyzh
  * @since 2024/07/25

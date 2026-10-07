@@ -16,6 +16,11 @@ import java.nio.charset.Charset;
  */
 public class CharsetComboBox extends FXComboBox<String> {
 
+    /**
+     * 设置初始化默认值：为真时选中系统默认字符集，否则清空选择。
+     *
+     * @param initDefault 是否初始化默认值
+     */
     public void setInitDefault(boolean initDefault) {
         if (initDefault) {
             this.select(Charset.defaultCharset());
@@ -26,6 +31,11 @@ public class CharsetComboBox extends FXComboBox<String> {
         }
     }
 
+    /**
+     * 是否已初始化默认值
+     *
+     * @return 始终返回 false
+     */
     public boolean isInitDefault() {
         return false;
     }
@@ -62,6 +72,11 @@ public class CharsetComboBox extends FXComboBox<String> {
         this.setIgnoreChanged(false);
     }
 
+    /**
+     * 按字符集选中
+     *
+     * @param charset 字符集
+     */
     public void select(Charset charset) {
         this.select(charset.displayName());
     }

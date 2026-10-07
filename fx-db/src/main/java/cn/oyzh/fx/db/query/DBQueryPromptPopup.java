@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 /**
- * 查询提示弹窗
+ * 查询提示弹窗基类，负责展示并选择 SQL 查询的提示项
  *
  * @author oyzh
  * @since 2024/02/21
@@ -311,10 +311,20 @@ public abstract class DBQueryPromptPopup<E extends DBQueryPromptItem, T extends 
         return false;
     }
 
+    /**
+     * 获取项选中。
+     *
+     * @return 项选中
+     */
     public Consumer<E> getOnItemSelected() {
         return onItemSelected;
     }
 
+    /**
+     * 设置项选中。
+     *
+     * @param onItemSelected 项选中回调
+     */
     public void setOnItemSelected(Consumer<E> onItemSelected) {
         this.onItemSelected = onItemSelected;
     }

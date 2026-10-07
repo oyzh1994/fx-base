@@ -17,6 +17,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 /**
+ * 数字输入框皮肤，带增减按钮
+ *
  * @author oyzh
  * @since 2023/10/9
  */
@@ -73,6 +75,13 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
         this.incrButton.setVisible(shouldBeVisible);
     }
 
+    /**
+     * 构造数字输入框皮肤
+     *
+     * @param textField 关联的文本框
+     * @param onIncr    增加回调
+     * @param onDecr    减少回调
+     */
     public DigitalTextFieldSkin(TextField textField, Runnable onIncr, Runnable onDecr) {
         super(textField);
         // double h = textField.getHeight() / 2.d - 1;
@@ -193,28 +202,28 @@ public class DigitalTextFieldSkin extends FXTextFieldSkin {
     // }
 
     /**
-     * 禁用减少值按钮
+     * 禁用减少按钮
      */
     public void disableDecrButton() {
         this.decrButton.setDisable(true);
     }
 
     /**
-     * 启用减少值按钮
+     * 启用减少按钮
      */
     public void enableDecrButton() {
         this.decrButton.setDisable(false);
     }
 
     /**
-     * 禁用增加值按钮
+     * 将增加按钮设为可用（原实现未禁用，仅将其设为可用）
      */
     public void disableIncrButton() {
         this.incrButton.setDisable(false);
     }
 
     /**
-     * 启用增加值按钮
+     * 启用增加按钮
      */
     public void enableIncrButton() {
         this.incrButton.setDisable(false);

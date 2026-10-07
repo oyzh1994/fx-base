@@ -6,15 +6,25 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
 
 /**
+ * svg路径控件
+ *
  * @author oyzh
  * @since 2025/01/07
  */
 public class FXSVGPath extends SVGPath implements PropAdapter, Destroyable {
 
+    /**
+     * 构造 svg 路径控件。
+     */
     public FXSVGPath() {
         super();
     }
 
+    /**
+     * 以指定路径内容构造 svg 路径控件。
+     *
+     * @param content 路径内容
+     */
     public FXSVGPath(String content) {
         super();
         super.setContent(content);

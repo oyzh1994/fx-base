@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * 父窗口控制器
+ * 父标签页控制器，负责管理子控制器
  *
  * @author oyzh
  * @since 2023/10/12

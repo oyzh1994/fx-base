@@ -5,8 +5,10 @@ import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
 
 /**
+ * 基础终端帮助实现
+ *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public class BaseTerminalHelpHandler<T extends Terminal> implements TerminalHelpHandler<T> {
 

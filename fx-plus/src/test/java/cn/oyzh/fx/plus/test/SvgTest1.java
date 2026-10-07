@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * SVG 图标控件测试，加载并显示 SVG 资源
+ *
  * @author oyzh
  * @since 2024-11-15
  */

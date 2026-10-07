@@ -27,18 +27,33 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * ZModem处理器
+ * ZModem处理器，负责接收（sz）或发送（rz）文件，并在终端上刷新传输进度。
  *
  * @author oyzh
- * @since 2025/06/24
+ * @since 2025-06-24
  */
 public class TtyZModemProcessor implements CopyStreamListener {
-    // 如果为 true 表示是接收（sz）文件
+
+    /** 如果为 true 表示是接收（sz）文件 */
     private final boolean sz;
+
+    /** ZModem 协议对象 */
     private final ZModem zmodem;
+
+    /** 上次刷新进度的时间戳 */
     private long lastRefreshTime;
+
+    /** 终端对象，用于输出进度 */
     private final Terminal terminal;
 
+    /**
+     * 构造 ZModem 处理器，根据帧数据判断本次为接收还是发送。
+     *
+     * @param frame     ZModem 帧数据
+     * @param input     输入流
+     * @param output    输出流
+     * @param terminal  终端对象
+     */
     public TtyZModemProcessor(char[] frame, InputStream input, OutputStream output, Terminal terminal) {
         // sz: * * 0x18 B 0 0
         // rz: * * 0x18 B 0 1
@@ -49,7 +64,7 @@ public class TtyZModemProcessor implements CopyStreamListener {
     }
 
     /**
-     * 处理
+     * 处理文件传输，接收模式下接收文件，否则发送文件。
      */
     public void process() {
         try {
@@ -65,9 +80,9 @@ public class TtyZModemProcessor implements CopyStreamListener {
     }
 
     /**
-     * 接收
+     * 接收文件，由用户选择保存目录。
      *
-     * @throws IOException 异常
+     * @throws IOException IO 异常
      */
     private void receive() throws IOException {
         this.zmodem.receive(() -> {
@@ -80,7 +95,7 @@ public class TtyZModemProcessor implements CopyStreamListener {
     }
 
     /**
-     * 发送
+     * 发送文件，由用户选择待发送的文件。
      *
      * @throws Exception 异常
      */
@@ -101,10 +116,10 @@ public class TtyZModemProcessor implements CopyStreamListener {
     private int curIndex = -1;
 
     /**
-     * 刷新进度
+     * 在终端上刷新文件传输进度。
      *
-     * @param event 事件
-     * @throws IOException 异常
+     * @param event 文件传输事件
+     * @throws IOException IO 异常
      */
     private void refreshProgress(FileCopyStreamEvent event) throws IOException {
         // 文件索引变化，则换行
@@ -164,9 +179,9 @@ public class TtyZModemProcessor implements CopyStreamListener {
     }
 
     /**
-     * 文件选择器
+     * 弹出文件选择器，选择待发送的文件。
      *
-     * @return 文件
+     * @return 选中的文件列表
      */
     private List<File> openFileDialog() {
         CompletableFuture<List<File>> future = new CompletableFuture<>();
@@ -185,9 +200,9 @@ public class TtyZModemProcessor implements CopyStreamListener {
     }
 
     /**
-     * 文件夹选择器
+     * 弹出目录选择器，选择接收文件的保存目录。
      *
-     * @return 文件夹
+     * @return 选中的目录
      */
     private File openDirDialog() {
         CompletableFuture<File> future = new CompletableFuture<>();
@@ -216,6 +231,11 @@ public class TtyZModemProcessor implements CopyStreamListener {
     public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize) {
     }
 
+    /**
+     * 取消文件传输。
+     *
+     * @throws IOException IO 异常
+     */
     public void cancel() throws IOException {
         this.zmodem.cancel();
     }

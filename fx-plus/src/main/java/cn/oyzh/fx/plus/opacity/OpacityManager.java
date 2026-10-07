@@ -70,7 +70,7 @@ public class OpacityManager {
     }
 
     /**
-     * 应用透明度
+     * 将透明度配置应用到所有窗口
      *
      * @param opacity 透明度配置
      */

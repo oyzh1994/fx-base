@@ -4,6 +4,8 @@ import cn.oyzh.event.Event;
 import cn.oyzh.event.EventFormatter;
 
 /**
+ * 实现事件格式化接口的自定义事件测试类型
+ *
  * @author oyzh
  * @since 2024/3/29
  */

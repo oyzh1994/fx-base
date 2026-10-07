@@ -8,13 +8,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 /**
- * 文本域皮肤扩展
+ * 密码输入框皮肤，带明文显示切换按钮
  *
  * @author oyzh
  * @since 2023/10/25
  */
 public class PasswordTextFieldSkin extends ActionTextFieldSkin {
 
+    /**
+     * 构造密码输入框皮肤
+     *
+     * @param textField 关联的密码输入框
+     */
     public PasswordTextFieldSkin(PasswordTextField textField) {
         super(textField);
     }

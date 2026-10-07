@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 /**
+ * 提示组件工具类，用于为节点或页签设置、获取和卸载提示
+ *
  * @author oyzh
  * @since 2024-09-19
  */
@@ -78,7 +80,7 @@ public class TooltipUtil {
     }
 
     /**
-     * 设置提示标题
+     * 设置提示文本
      *
      * @param target 组件
      * @param text   提示文本
@@ -135,7 +137,7 @@ public class TooltipUtil {
     /**
      * 卸载提示
      *
-     * @param target 提示
+     * @param target 组件
      */
     public static void uninstall(EventTarget target) {
         if (target instanceof Node node) {

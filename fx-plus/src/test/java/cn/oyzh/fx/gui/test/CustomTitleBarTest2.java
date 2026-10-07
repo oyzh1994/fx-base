@@ -26,6 +26,8 @@ import javafx.util.Callback;
 import java.util.Set;
 
 /**
+ * 自定义标题栏测试，演示 HeaderBar 与富树控件的组合使用
+ *
  * @author oyzh
  * @since 2025-08-18
  */

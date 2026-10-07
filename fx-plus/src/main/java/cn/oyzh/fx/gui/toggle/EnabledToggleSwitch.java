@@ -4,6 +4,7 @@ import cn.oyzh.fx.plus.controls.toggle.FXToggleSwitch;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 
 /**
+ * 已启用切换开关
  *
  * @author oyzh
  * @since 2024/04/10

@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
+ * 编辑器内存泄漏测试，通过弱引用监控窗口关闭后对象是否被回收。
+ *
  * @author oyzh
  * @since 2022/5/18
  */

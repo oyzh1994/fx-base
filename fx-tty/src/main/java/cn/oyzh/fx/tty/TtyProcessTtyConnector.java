@@ -15,6 +15,9 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
+ * 基于进程的终端连接器抽象类，在 {@link ProcessTtyConnector} 基础上提供终端尺寸、
+ * 字符集以及底层输入输出流访问能力。
+ *
  * @author oyzh
  * @since 2025-03-04
  */
@@ -25,6 +28,13 @@ public abstract class TtyProcessTtyConnector extends ProcessTtyConnector impleme
      */
     private final Charset charset;
 
+    /**
+     * 构造基于进程的终端连接器。
+     *
+     * @param process      终端进程
+     * @param charset      字符集
+     * @param commandLines 启动命令
+     */
     public TtyProcessTtyConnector(PtyProcess process, Charset charset, List<String> commandLines) {
         super(process, charset, commandLines);
         this.charset = charset;
@@ -39,6 +49,15 @@ public abstract class TtyProcessTtyConnector extends ProcessTtyConnector impleme
         return len;
     }
 
+    /**
+     * 读取后的处理钩子，子类可覆写以处理读取到的数据。
+     *
+     * @param buf    数据缓冲区
+     * @param offset 数据起始偏移
+     * @param len    数据长度
+     * @return 处理后的长度
+     * @throws IOException IO 异常
+     */
     protected int doRead(char[] buf, int offset, int len) throws IOException {
         if (JulLog.isDebugEnabled()) {
             JulLog.debug("shell read: {}", new String(buf));
@@ -84,6 +103,7 @@ public abstract class TtyProcessTtyConnector extends ProcessTtyConnector impleme
         return this.terminalSizeProperty != null ? this.terminalSizeProperty.get() : null;
     }
 
+    /** 终端尺寸属性 */
     private SimpleObjectProperty<TermSize> terminalSizeProperty;
 
     @Override
@@ -94,6 +114,11 @@ public abstract class TtyProcessTtyConnector extends ProcessTtyConnector impleme
         return this.terminalSizeProperty;
     }
 
+    /**
+     * 获取终端进程窗口尺寸。
+     *
+     * @return 窗口尺寸，获取失败时返回 null
+     */
     public WinSize getWinSize() {
         try {
             return this.getProcess().getWinSize();

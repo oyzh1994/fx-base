@@ -55,9 +55,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Main VNC viewer window.
- * Replaces VNCViewer.kt from the Termora plugin.
- * Manages the connection lifecycle, framebuffer display, and toolbar.
+ * VNC 查看器主窗口，替代 Termora 插件的 VNCViewer.kt，
+ * 负责连接生命周期、帧缓冲显示与工具栏管理。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class JfxVncViewerStage implements IRfbSessionListener {
 

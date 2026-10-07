@@ -24,6 +24,8 @@
 // import java.io.InputStream;
 //
 // /**
+//  * Swing 版 RSyntaxTextArea 编辑器测试（已注释），通过 SwingNode 嵌入 JavaFX 并演示多种格式数据加载与主题切换。
+//  *
 //  * @author oyzh
 //  * @since 2025-08-04
 //  */

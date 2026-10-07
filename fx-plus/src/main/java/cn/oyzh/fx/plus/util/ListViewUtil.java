@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import java.util.Collections;
 
 /**
+ * 列表视图工具类，用于列表行的移动、高亮、选中以及查找所属列表等操作
+ *
  * @author oyzh
  * @since 2024/7/12
  */
@@ -68,6 +70,12 @@ public class ListViewUtil {
         }
     }
 
+    /**
+     * 查找节点所属的列表视图
+     *
+     * @param node 组件
+     * @return 列表视图，未找到则返回 null
+     */
     public static ListView<?> findListView(Node node) {
         if (node != null) {
             if (node instanceof ListView<?>) {

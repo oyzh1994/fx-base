@@ -15,6 +15,9 @@ import javafx.util.Duration;
  */
 public class PopupExt extends Popover implements PopupAdapter {
 
+    /**
+     * 构造弹窗扩展对象。
+     */
     public PopupExt() {
         // 初始化默认属性
         this.initDefault();
@@ -22,6 +25,11 @@ public class PopupExt extends Popover implements PopupAdapter {
         ObjectWatcherManager.watch(this);
     }
 
+    /**
+     * 构造弹窗扩展对象。
+     *
+     * @param attribute attribute
+     */
     public PopupExt(PopupAttribute attribute) {
         // 初始化默认属性
         this.initDefault();

@@ -15,10 +15,17 @@ import java.util.List;
  * 基础补全实现
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public class BaseTerminalCompleteHandler<T extends Terminal> implements TerminalCompleteHandler<T> {
 
+    /**
+     * 查找命令处理器
+     *
+     * @param terminal 终端
+     * @param line     行
+     * @return 命令处理器列表
+     */
     protected List<TerminalCommandHandler<?, ?>> findCommandHandlers(T terminal, String line) {
         List<TerminalCommandHandler<?, ?>> handlers;
         if (line.contains(" ")) {

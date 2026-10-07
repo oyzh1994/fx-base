@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * ZModem协议tty连接器
+ * ZModem协议tty连接器，读取数据时检测 ZModem 帧并交由处理器执行文件传输。
  *
  * @author oyzh
- * @since 2025/06/24
+ * @since 2025-06-24
  */
 public class TtyZModemTtyConnector implements TtyConnector {
 
@@ -43,10 +43,21 @@ public class TtyZModemTtyConnector implements TtyConnector {
      */
     private volatile TtyZModemProcessor processor;
 
+    /**
+     * 获取被包装的真实连接器。
+     *
+     * @return 真实连接器
+     */
     public TtyStreamable getConnector() {
         return connector;
     }
 
+    /**
+     * 构造 ZModem 连接器。
+     *
+     * @param terminal  终端对象
+     * @param connector 被包装的连接器
+     */
     public TtyZModemTtyConnector(Terminal terminal, TtyStreamable connector) {
         this.terminal = terminal;
         this.connector = connector;
@@ -131,8 +142,8 @@ public class TtyZModemTtyConnector implements TtyConnector {
     /**
      * 获取ZModem协议前缀位置
      *
-     * @param a 数组
-     * @return 结果
+     * @param a 字符数组
+     * @return 前缀起始位置，未找到时返回 -1
      */
     private static int indexOfZModem(char[] a) {
         if (a.length >= ZMODEM_PREFIX.length) {

@@ -12,6 +12,8 @@
 // import javax.swing.SwingUtilities;
 //
 // /**
+//  * JavaFX 内嵌 Swing 编辑器测试（已注释），通过 SwingNode 在 JavaFX 中显示 TextEditorPane。
+//  *
 //  * @author oyzh
 //  * @since 2025-08-04
 //  */

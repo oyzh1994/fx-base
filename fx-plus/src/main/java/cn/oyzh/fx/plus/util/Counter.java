@@ -5,7 +5,7 @@ import cn.oyzh.i18n.I18nHelper;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 计数器
+ * 计数器，用于统计任务的失败、成功、忽略数量以及耗时等信息
  *
  * @author oyzh
  * @since 2023/2/22
@@ -52,8 +52,9 @@ public class Counter {
     }
 
     /**
-     * 递增成功数量
+     * 递增数量，正数计为成功、负数计为失败、0 则忽略
      *
+     * @param count 数量
      */
     public void incr(int count) {
         if (count == 0) {
@@ -222,26 +223,56 @@ public class Counter {
         return this.format(builder.toString());
     }
 
+    /**
+     * 获取总和。
+     *
+     * @return 总和
+     */
     public Integer getSum() {
         return sum;
     }
 
+    /**
+     * 设置总和。
+     *
+     * @param sum 总和
+     */
     public void setSum(Integer sum) {
         this.sum = sum;
     }
 
+    /**
+     * 获取开始时间。
+     *
+     * @return 开始时间
+     */
     public Long getStartTime() {
         return startTime;
     }
 
+    /**
+     * 设置开始时间。
+     *
+     * @param startTime 开始时间
+     */
     public void setStartTime(Long startTime) {
         this.startTime = startTime;
     }
 
+    /**
+     * 获取额外消息。
+     *
+     * @return 额外消息
+     */
     public String getExtraMsg() {
         return extraMsg;
     }
 
+    /**
+     * 设置额外消息。
+     *
+     * @param extraMsg 额外消息
+     */
     public void setExtraMsg(String extraMsg) {
         this.extraMsg = extraMsg;
     }

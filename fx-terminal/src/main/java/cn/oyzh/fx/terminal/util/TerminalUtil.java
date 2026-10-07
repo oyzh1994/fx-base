@@ -6,7 +6,7 @@ import cn.oyzh.common.util.StringUtil;
  * 终端工具类
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public class TerminalUtil {
 

@@ -4,6 +4,8 @@ import cn.oyzh.event.EventListener;
 import cn.oyzh.fx.plus.node.NodeLifeCycle;
 
 /**
+ * fx 事件监听器，绑定节点生命周期，在节点初始化时注册、节点销毁时注销
+ *
  * @author oyzh
  * @since 2024-11-18
  */

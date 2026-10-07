@@ -15,6 +15,9 @@ import java.util.function.UnaryOperator;
  */
 public class NumberTextField extends DigitalTextField {
 
+    /**
+     * 构造整数文本域
+     */
     public NumberTextField() {
         super(null);
     }
@@ -23,16 +26,31 @@ public class NumberTextField extends DigitalTextField {
     //        super(unsigned, null);
     //    }
 
+    /**
+     * 构造整数文本域
+     *
+     * @param maxLen 最大长度
+     */
     public NumberTextField(Long maxLen) {
         super(maxLen);
     }
 
+    /**
+     * 构造整数文本域
+     *
+     * @param maxLen 最大长度
+     * @param minVal 最小值
+     * @param maxVal 最大值
+     */
     public NumberTextField(Long maxLen, Long minVal, Long maxVal) {
         super(maxLen);
         super.setMinVal(minVal);
         super.setMaxVal(maxVal);
     }
 
+    /**
+     * 数字转换器
+     */
     private DigitalConverter converter;
 
     @Override
@@ -117,6 +135,12 @@ public class NumberTextField extends DigitalTextField {
         return super.value();
     }
 
+    /**
+     * 将值格式化为整数字符串
+     *
+     * @param val 值
+     * @return 整数字符串
+     */
     public static String format(Object val) {
         if (val instanceof CharSequence sequence) {
             return sequence.toString();
@@ -136,18 +160,38 @@ public class NumberTextField extends DigitalTextField {
     //        super.value(value);
     //    }
 
+    /**
+     * 设置最小值
+     *
+     * @param minVal 最小值
+     */
     public void setMin(Long minVal) {
         this.minVal = minVal;
     }
 
+    /**
+     * 获取最小值
+     *
+     * @return 最小值
+     */
     public Long getMin() {
         return this.minVal == null ? null : this.minVal.longValue();
     }
 
+    /**
+     * 设置最大值
+     *
+     * @param maxVal 最大值
+     */
     public void setMax(Long maxVal) {
         this.maxVal = maxVal;
     }
 
+    /**
+     * 获取最大值
+     *
+     * @return 最大值
+     */
     public Long getMax() {
         return this.maxVal == null ? null : this.maxVal.longValue();
     }

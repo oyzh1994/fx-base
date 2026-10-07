@@ -14,16 +14,25 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 /**
+ * 可放大的编辑器输入框皮肤
  *
  * @author oyzh
  * @since 2026-07-23
  */
 public class EditorEnlargeTextFiledSkin extends EnlargeTextFiledSkin {
 
+    /**
+     * 构造可放大的编辑器输入框皮肤
+     *
+     * @param textField 文本输入框
+     */
     public EditorEnlargeTextFiledSkin(TextField textField) {
         super(textField);
     }
 
+    /**
+     * 编辑器
+     */
     private Editor editor;
 
     @Override
@@ -58,6 +67,11 @@ public class EditorEnlargeTextFiledSkin extends EnlargeTextFiledSkin {
         this.popup.showPopup(textField);
     }
 
+    /**
+     * 设置格式类型
+     *
+     * @param formatType 格式类型
+     */
     public void setFormatType(EditorFormatType formatType) {
         if (this.editor == null) {
             this.editor = new Editor();

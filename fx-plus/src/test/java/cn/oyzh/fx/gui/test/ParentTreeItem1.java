@@ -4,6 +4,8 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import javafx.scene.control.TreeItem;
 
 /**
+ * 树拖拽测试中的父节点（基于原生 TreeItem）
+ *
  * @author oyzh
  * @since 2025-08-29
  */

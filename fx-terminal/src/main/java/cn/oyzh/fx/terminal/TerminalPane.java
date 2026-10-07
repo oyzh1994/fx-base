@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 命令行组件
  *
  * @author oyzh
- * @since 2025/08/08
+ * @since 2025-02-19
  */
 public abstract class TerminalPane extends Editor implements Terminal {
 
@@ -316,6 +316,12 @@ public abstract class TerminalPane extends Editor implements Terminal {
         }
     }
 
+    /**
+     * 输出行
+     *
+     * @param output  输出内容
+     * @param endLine 是否换行
+     */
     public void outputLine(String output, boolean endLine) {
         if (output != null) {
             this.appendLine(output, endLine);
@@ -501,6 +507,7 @@ public abstract class TerminalPane extends Editor implements Terminal {
      * 寻找处理器
      *
      * @param input 输入
+     * @return 命令处理器
      */
     protected TerminalCommandHandler findHandler(String input) {
         return TerminalManager.findHandler(this.terminalName(), input);

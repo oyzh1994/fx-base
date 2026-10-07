@@ -44,33 +44,75 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
 /**
- * JavaFX replacement for Surface.java.
- * Displays the VNC framebuffer via a WritableImage-backed ImageView,
- * with a cursor overlay and input event handling.
- * Uses Pane (not StackPane) to avoid auto-centering/sizing behavior.
+ * VNC 帧缓冲视图，负责渲染远端桌面画面并处理鼠标、键盘等输入事件。
+ * 通过 WritableImage 支撑的图像控件显示帧缓冲，并叠加光标图层；
+ * 使用 Pane 而非 StackPane，以避免自动居中与尺寸约束行为。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class VncFramebufferView extends FXPane implements IRepaintController, Destroyable {
 
+    /** 帧缓冲宽度 */
     private int fbWidth;
+
+    /** 帧缓冲高度 */
     private int fbHeight;
+
+    /** 帧缓冲渲染器 */
     private volatile VncRendererImpl renderer;
+
+    /** 远端光标 */
     private VncSoftCursorImpl cursor;
+
+    /** 鼠标事件处理器 */
     private VncMouseEventHandler mouseEventHandler;
+
+    /** 键盘事件处理器 */
     private VncKeyEventHandler keyEventHandler;
+
+    /** 是否显示远端光标 */
     private boolean showCursor;
+
+    /** 是否已启用用户输入 */
     private boolean isUserInputEnabled;
+
+    /** VNC 协议对象 */
     private Protocol protocol;
+
+    /** 视图缩放比例 */
     private double scaleFactor;
+
+    /** 帧缓冲图像控件 */
     private FXImageView framebufferImageView;
+
+    /** 光标图像控件 */
     private FXImageView cursorImageView;
 
+    /**
+     * 构造Vnc帧缓冲查看对象。
+     */
     public VncFramebufferView() {
     }
 
+    /**
+     * 构造帧缓冲视图。
+     *
+     * @param protocol         VNC 协议对象
+     * @param scaleFactor      视图缩放比例
+     * @param mouseCursorShape 本地鼠标光标形状
+     */
     public VncFramebufferView(Protocol protocol, double scaleFactor, LocalMouseCursorShape mouseCursorShape) {
         this.init(protocol, scaleFactor, mouseCursorShape);
     }
 
+    /**
+     * 初始化帧缓冲视图，创建图像控件并设置初始输入与光标状态。
+     *
+     * @param protocol         VNC 协议对象
+     * @param scaleFactor      视图缩放比例
+     * @param mouseCursorShape 本地鼠标光标形状
+     */
     public void init(Protocol protocol, double scaleFactor, LocalMouseCursorShape mouseCursorShape) {
         this.protocol = protocol;
         this.scaleFactor = scaleFactor;
@@ -105,6 +147,12 @@ public class VncFramebufferView extends FXPane implements IRepaintController, De
         updateImageViewSize();
     }
 
+    /**
+     * 启用或禁用用户输入，按需注册或移除鼠标、键盘事件过滤器。
+     *
+     * @param enable        是否启用用户输入
+     * @param convertToAscii 是否将按键转换为 ASCII
+     */
     public void setUserInputEnabled(boolean enable, boolean convertToAscii) {
         if (enable == isUserInputEnabled) {
             return;
@@ -231,6 +279,11 @@ public class VncFramebufferView extends FXPane implements IRepaintController, De
         }
     }
 
+    /**
+     * 设置本地鼠标光标形状。
+     *
+     * @param cursorShape 光标形状
+     */
     public void setLocalCursorShape(LocalMouseCursorShape cursorShape) {
         if (LocalMouseCursorShape.SYSTEM_DEFAULT == cursorShape) {
             setCursor(Cursor.DEFAULT);
@@ -239,6 +292,9 @@ public class VncFramebufferView extends FXPane implements IRepaintController, De
         }
     }
 
+    /**
+     * 根据帧缓冲尺寸与缩放比例更新图像控件及视图的尺寸。
+     */
     private void updateImageViewSize() {
         double scaledW = fbWidth * scaleFactor;
         double scaledH = fbHeight * scaleFactor;
@@ -253,18 +309,38 @@ public class VncFramebufferView extends FXPane implements IRepaintController, De
         setMaxHeight(scaledH);
     }
 
+    /**
+     * 获取缩放比例。
+     *
+     * @return 缩放比例
+     */
     public double getScaleFactor() {
         return scaleFactor;
     }
 
+    /**
+     * 获取帧缓冲宽度。
+     *
+     * @return 帧缓冲宽度
+     */
     public int getFbWidth() {
         return fbWidth;
     }
 
+    /**
+     * 获取帧缓冲高度。
+     *
+     * @return 帧缓冲高度
+     */
     public int getFbHeight() {
         return fbHeight;
     }
 
+    /**
+     * 获取协议。
+     *
+     * @return 协议
+     */
     public Protocol getProtocol() {
         return protocol;
     }

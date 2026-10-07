@@ -3,6 +3,8 @@ package cn.oyzh.fx.editor.incubator;
 import tm4javafx.richtext.StyledToken;
 
 /**
+ * 编辑器匹配token，记录匹配的起始位置、结束位置及样式token
+ *
  * @author oyzh
  * @since 2025-08-15
  */
@@ -44,6 +46,11 @@ public record EditorMachToken(int start, int end, StyledToken token) {
 //        this.token = token;
 //    }
 
+    /**
+     * 获取匹配长度
+     *
+     * @return 匹配长度
+     */
     public int length() {
         return end - start;
     }

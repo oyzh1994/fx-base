@@ -18,6 +18,8 @@ public class WindowManager {
 
     /**
      * 获取所有窗口
+     *
+     * @return 窗口列表
      */
     public static List<Window> allWindows() {
         return new ArrayList<>(Window.getWindows());
@@ -41,7 +43,7 @@ public class WindowManager {
     /**
      * 获取活跃窗口
      *
-     * @return Window
+     * @return 活跃窗口
      */
     public static Window getActiveWindow() {
         for (Window window : Window.getWindows()) {

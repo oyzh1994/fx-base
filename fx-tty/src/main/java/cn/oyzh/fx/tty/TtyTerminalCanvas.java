@@ -11,10 +11,13 @@ import javafx.scene.canvas.GraphicsContext;
  * 终端渲染组件
  *
  * @author oyzh
- * @since 2025/04/24
+ * @since 2025-04-24
  */
 public class TtyTerminalCanvas extends FXPane implements Destroyable {
 
+    /**
+     * 构造终端渲染组件，创建并绑定内部画布。
+     */
     public TtyTerminalCanvas() {
         Canvas canvas = new Canvas();
         canvas.widthProperty().bind(this.widthProperty());
@@ -22,10 +25,20 @@ public class TtyTerminalCanvas extends FXPane implements Destroyable {
         this.addChild(canvas);
     }
 
+    /**
+     * 获取内部画布。
+     *
+     * @return 画布
+     */
     public Canvas getCanvas() {
         return (Canvas) this.getFirstChild();
     }
 
+    /**
+     * 获取画布的 2D 图形上下文。
+     *
+     * @return 2D 图形上下文
+     */
     public GraphicsContext getGraphicsContext2D() {
         return this.getCanvas().getGraphicsContext2D();
     }

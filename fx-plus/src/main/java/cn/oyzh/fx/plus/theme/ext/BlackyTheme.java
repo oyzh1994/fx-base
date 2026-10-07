@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class BlackyTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final Blacky THEME = new Blacky();
 
     @Override

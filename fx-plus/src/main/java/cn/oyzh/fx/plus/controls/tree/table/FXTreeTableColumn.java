@@ -11,6 +11,8 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.control.TreeTableColumn;
 
 /**
+ * 树形表格列
+ *
  * @author oyzh
  * @since 2024-11-21
  */
@@ -20,10 +22,18 @@ public class FXTreeTableColumn<S, T> extends TreeTableColumn<S, T> implements Fl
         NodeManager.init(this);
     }
 
+    /**
+     * 构造树表列对象。
+     */
     public FXTreeTableColumn() {
         super();
     }
 
+    /**
+     * 构造树表列对象。
+     *
+     * @param text 文本
+     */
     public FXTreeTableColumn(String text) {
         super(text);
     }

@@ -7,6 +7,8 @@
 //import java.lang.reflect.InvocationTargetException;
 //
 ///**
+// * Swing 编辑器基础测试（已注释），在 JFrame 中展示 RSyntaxTextArea 的 TextEditorPane。
+// *
 // * @author oyzh
 // * @since 2025-08-11
 // */

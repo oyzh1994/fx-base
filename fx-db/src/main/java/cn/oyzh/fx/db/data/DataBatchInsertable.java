@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * 数据批量插入接口，支持按批次限制拆分并以并行或串行方式执行批量插入。
  *
  * @author oyzh
  * @since 2026-06-30
@@ -67,6 +68,8 @@ public interface DataBatchInsertable<D> {
 
     /**
      * 执行批量插入
+     *
+     * @throws Exception 异常
      */
     default void doBatchInsert() throws Exception {
         if (CollectionUtil.isNotEmpty(this.getInsertList())) {
@@ -128,7 +131,9 @@ public interface DataBatchInsertable<D> {
     void doBatchInsert(List<D> list, boolean parallel) throws Exception;
 
     /**
-     * 启用异步
+     * 是否启用并行批量插入
+     *
+     * @return 结果
      */
     default boolean enableParallel() {
         return true;

@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 
 /**
+ * SVG 图标缩放测试，验证图标按容器尺寸缩放
+ *
  * @author oyzh
  * @since 2024-11-15
  */

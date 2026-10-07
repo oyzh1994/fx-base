@@ -5,6 +5,8 @@ import cn.oyzh.event.EventConfig;
 import cn.oyzh.fx.plus.util.FXUtil;
 
 /**
+ * fx 事件总线，在基础事件总线之上支持延迟、异步以及 fx 线程调度
+ *
  * @author oyzh
  * @since 2024-11-14
  */

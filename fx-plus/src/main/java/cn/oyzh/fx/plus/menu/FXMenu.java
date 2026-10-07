@@ -12,7 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Menu;
 
 /**
- * 菜单
+ * 自定义菜单，支持状态、主题与字体适配
  *
  * @author oyzh
  * @since 2025/07/24
@@ -32,18 +32,39 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdap
         });
     }
 
+    /**
+     * 构造菜单对象。
+     */
     public FXMenu() {
         super();
     }
 
+    /**
+     * 构造菜单对象。
+     *
+     * @param text 文本
+     */
     public FXMenu(String text) {
         this(null, text, null);
     }
 
+    /**
+     * 构造菜单对象。
+     *
+     * @param text 文本
+     * @param action 执行动作
+     */
     public FXMenu(String text, Runnable action) {
         this(null, text, action);
     }
 
+    /**
+     * 构造菜单对象。
+     *
+     * @param graphic 图形
+     * @param text 文本
+     * @param action 执行动作
+     */
     public FXMenu(Node graphic, String text, Runnable action) {
         if (text != null) {
             super.setText(text);

@@ -5,6 +5,8 @@ import cn.oyzh.fx.plus.controls.button.IconButton;
 import cn.oyzh.i18n.I18nHelper;
 
 /**
+ * 运行 SQL 文件按钮
+ *
  * @author oyzh
  * @since 2024/08/29
  */

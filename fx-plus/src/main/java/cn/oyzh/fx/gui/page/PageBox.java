@@ -154,10 +154,18 @@ public class PageBox<T> extends FXHBox {
         return "Total #count, Limit #limit, Page #currentPage/#countPage";
     }
 
+    /**
+     * 构造分页面板对象。
+     */
     public PageBox() {
         this(null);
     }
 
+    /**
+     * 构造分页面板对象。
+     *
+     * @param bthSize 按钮大小
+     */
     public PageBox(String bthSize) {
         this.bthSize = bthSize;
         this.init();
@@ -169,126 +177,281 @@ public class PageBox<T> extends FXHBox {
     //
     //    private static final Insets DEFAULT_MARGIN2 = new Insets(-1.5, 0, 0, 5);
 
+    /**
+     * 是否显示文本。
+     *
+     * @return 显示文本
+     */
     public boolean isShowText() {
         return showText;
     }
 
+    /**
+     * 是否显示跳转。
+     *
+     * @return 显示跳转
+     */
     public boolean isShowJump() {
         return showJump;
     }
 
+    /**
+     * 获取跳转。
+     *
+     * @return 跳转
+     */
     public NumberTextField getJump() {
         return jump;
     }
 
+    /**
+     * 设置跳转。
+     *
+     * @param jump 跳转
+     */
     public void setJump(NumberTextField jump) {
         this.jump = jump;
     }
 
+    /**
+     * 获取跳转触发。
+     *
+     * @return 跳转触发
+     */
     public EventHandler<PageEvent.PageJumpEvent> getOnJumpFired() {
         return onJumpFired;
     }
 
+    /**
+     * 是否显示首页。
+     *
+     * @return 显示首页
+     */
     public boolean isShowFirst() {
         return showFirst;
     }
 
+    /**
+     * 获取首页按钮。
+     *
+     * @return 首页按钮
+     */
     public PageFirstSVGGlyph getFirstBtn() {
         return firstBtn;
     }
 
+    /**
+     * 设置首页按钮。
+     *
+     * @param firstBtn 首页按钮
+     */
     public void setFirstBtn(PageFirstSVGGlyph firstBtn) {
         this.firstBtn = firstBtn;
     }
 
+    /**
+     * 获取首页点击。
+     *
+     * @return 首页点击
+     */
     public EventHandler<MouseEvent> getOnFirstClicked() {
         return onFirstClicked;
     }
 
+    /**
+     * 是否显示末页。
+     *
+     * @return 显示末页
+     */
     public boolean isShowLast() {
         return showLast;
     }
 
+    /**
+     * 获取末页按钮。
+     *
+     * @return 末页按钮
+     */
     public PageLastSVGGlyph getLastBtn() {
         return lastBtn;
     }
 
+    /**
+     * 设置末页按钮。
+     *
+     * @param lastBtn 末页按钮
+     */
     public void setLastBtn(PageLastSVGGlyph lastBtn) {
         this.lastBtn = lastBtn;
     }
 
+    /**
+     * 获取末页点击。
+     *
+     * @return 末页点击
+     */
     public EventHandler<MouseEvent> getOnLastClicked() {
         return onLastClicked;
     }
 
+    /**
+     * 获取上一页按钮。
+     *
+     * @return 上一页按钮
+     */
     public PagePrevSVGGlyph getPrevBtn() {
         return prevBtn;
     }
 
+    /**
+     * 设置上一页按钮。
+     *
+     * @param prevBtn 上一页按钮
+     */
     public void setPrevBtn(PagePrevSVGGlyph prevBtn) {
         this.prevBtn = prevBtn;
     }
 
+    /**
+     * 获取上一页点击。
+     *
+     * @return 上一页点击
+     */
     public EventHandler<MouseEvent> getOnPrevClicked() {
         return onPrevClicked;
     }
 
+    /**
+     * 设置上一页点击。
+     *
+     * @param onPrevClicked 上一页点击回调
+     */
     public void setOnPrevClicked(EventHandler<MouseEvent> onPrevClicked) {
         this.onPrevClicked = onPrevClicked;
     }
 
+    /**
+     * 获取下一页按钮。
+     *
+     * @return 下一页按钮
+     */
     public PageNextSVGGlyph getNextBtn() {
         return nextBtn;
     }
 
+    /**
+     * 设置下一页按钮。
+     *
+     * @param nextBtn 下一页按钮
+     */
     public void setNextBtn(PageNextSVGGlyph nextBtn) {
         this.nextBtn = nextBtn;
     }
 
+    /**
+     * 获取下一页点击。
+     *
+     * @return 下一页点击
+     */
     public EventHandler<MouseEvent> getOnNextClicked() {
         return onNextClicked;
     }
 
+    /**
+     * 设置下一页点击。
+     *
+     * @param onNextClicked 下一页点击回调
+     */
     public void setOnNextClicked(EventHandler<MouseEvent> onNextClicked) {
         this.onNextClicked = onNextClicked;
     }
 
+    /**
+     * 是否显示设置。
+     *
+     * @return 显示设置
+     */
     public boolean isShowSetting() {
         return showSetting;
     }
 
+    /**
+     * 获取设置按钮。
+     *
+     * @return 设置按钮
+     */
     public PageSettingSVGGlyph getSettingBtn() {
         return settingBtn;
     }
 
+    /**
+     * 设置设置按钮。
+     *
+     * @param settingBtn 设置按钮
+     */
     public void setSettingBtn(PageSettingSVGGlyph settingBtn) {
         this.settingBtn = settingBtn;
     }
 
+    /**
+     * 获取按钮大小。
+     *
+     * @return 按钮大小
+     */
     public String getBthSize() {
         return bthSize;
     }
 
+    /**
+     * 设置按钮大小。
+     *
+     * @param bthSize 按钮大小
+     */
     public void setBthSize(String bthSize) {
         this.bthSize = bthSize;
     }
 
+    /**
+     * 获取分页。
+     *
+     * @return 分页
+     */
     public Paging<T> getPaging() {
         return paging;
     }
 
+    /**
+     * 是否隐藏如果少于分页。
+     *
+     * @return 隐藏如果少于分页
+     */
     public boolean isHideIfLessPage() {
         return hideIfLessPage;
     }
 
+    /**
+     * 获取设置点击。
+     *
+     * @return 设置点击
+     */
     public EventHandler<MouseEvent> getOnSettingClicked() {
         return onSettingClicked;
     }
 
+    /**
+     * 获取分页文本模板。
+     *
+     * @return 分页文本模板
+     */
     public String getPageTextTpl() {
         return pageTextTpl;
     }
 
+    /**
+     * 设置分页文本模板。
+     *
+     * @param pageTextTpl 分页文本模板
+     */
     public void setPageTextTpl(String pageTextTpl) {
         this.pageTextTpl = pageTextTpl;
     }

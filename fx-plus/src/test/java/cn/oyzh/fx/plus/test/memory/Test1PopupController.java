@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.window.PopupAttribute;
 import javafx.stage.PopupWindow;
 
 /**
+ * 弹窗测试用弹窗控制器
  *
  * @author oyzh
  * @since 2026-05-20

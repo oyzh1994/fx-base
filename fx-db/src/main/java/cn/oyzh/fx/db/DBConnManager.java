@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * 连接管理器
+ * 数据库连接管理器，负责维护与获取各类数据库连接
  *
  * @author oyzh
  * @since 2024/01/28
@@ -41,7 +41,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * 添加函数连接
      *
      * @param dbName     数据库
-     * @param connection 数据库
+     * @param connection 连接
      */
     public void addFunctionConnection(String dbName, Connection connection) {
         this.connections.put("function_connection_" + dbName, connection);
@@ -51,7 +51,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * 添加过程连接
      *
      * @param dbName     数据库
-     * @param connection 数据库
+     * @param connection 连接
      */
     public void addProcedureConnection(String dbName, Connection connection) {
         this.connections.put("procedure_connection_" + dbName, connection);
@@ -182,8 +182,7 @@ public abstract class DBConnManager implements AutoCloseable {
      *
      * @param dbName 数据库
      * @return 结果
-     * @throws SQLException           异常
-     * @throws ClassNotFoundException 异常
+     * @throws Exception 异常
      */
     public Connection functionConnection(String dbName) throws Exception {
         Connection connection = this.getFunctionConnection(dbName);
@@ -200,8 +199,7 @@ public abstract class DBConnManager implements AutoCloseable {
      *
      * @param name 名称
      * @return 结果
-     * @throws SQLException           异常
-     * @throws ClassNotFoundException 异常
+     * @throws Exception 异常
      */
     public Connection procedureConnection(String name) throws Exception {
         Connection connection = this.getProcedureConnection(name);
@@ -218,8 +216,7 @@ public abstract class DBConnManager implements AutoCloseable {
      *
      * @param name 名称
      * @return 结果
-     * @throws SQLException           异常
-     * @throws ClassNotFoundException 异常
+     * @throws Exception 异常
      */
     public Connection newConnection(String name) throws Exception {
         Connection connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
@@ -234,8 +231,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * @param user     用户名
      * @param password 密码
      * @return 结果
-     * @throws SQLException           异常
-     * @throws ClassNotFoundException 异常
+     * @throws Exception 异常
      */
     public abstract Connection initConnection(String name, String user, String password) throws Exception;
 
@@ -246,18 +242,38 @@ public abstract class DBConnManager implements AutoCloseable {
      */
     public abstract String getConnectionString();
 
+    /**
+     * 获取配置。
+     *
+     * @return 配置
+     */
     public DBConnConfig getConfig() {
         return config;
     }
 
+    /**
+     * 设置配置。
+     *
+     * @param config 配置
+     */
     public void setConfig(DBConnConfig config) {
         this.config = config;
     }
 
+    /**
+     * 获取连接超时。
+     *
+     * @return 连接超时
+     */
     public int getConnectTimeout() {
         return this.config.getConnectTimeout();
     }
 
+    /**
+     * 设置连接超时。
+     *
+     * @param connectTimeout 连接超时
+     */
     public void setConnectTimeout(int connectTimeout) {
         this.config.setConnectTimeout(connectTimeout);
     }

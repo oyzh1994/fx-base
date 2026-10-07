@@ -19,6 +19,13 @@ import java.util.function.Consumer;
 @Deprecated
 public class NodeWidthResizer extends NodeResizer {
 
+    /**
+     * 构造节点宽度调整器对象。
+     *
+     * @param eventNode 事件节点
+     * @param originalCursor 原始光标
+     * @param resizeTriggered 是否触发调整
+     */
     public NodeWidthResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
         super(eventNode, originalCursor, resizeTriggered);
     }

@@ -14,14 +14,29 @@ import javafx.scene.input.MouseEvent;
  */
 public class MouseUtil {
 
+    /**
+     * 获取鼠标的x坐标
+     *
+     * @return 鼠标x坐标
+     */
     public static double getMouseX() {
         return FXUtil.getRobot().getMouseX();
     }
 
+    /**
+     * 获取鼠标的y坐标
+     *
+     * @return 鼠标y坐标
+     */
     public static double getMouseY() {
         return FXUtil.getRobot().getMouseY();
     }
 
+    /**
+     * 获取鼠标坐标
+     *
+     * @return 鼠标坐标数组，下标0为x坐标，下标1为y坐标
+     */
     public static double[] getMousePosition() {
         double[] position = new double[2];
         FXUtil.runWait(() -> {
@@ -31,6 +46,11 @@ public class MouseUtil {
         return position;
     }
 
+    /**
+     * 获取鼠标坐标点
+     *
+     * @return 鼠标坐标点
+     */
     public static Point2D getMousePoint() {
         return new Point2D(getMouseX(), getMouseY());
     }

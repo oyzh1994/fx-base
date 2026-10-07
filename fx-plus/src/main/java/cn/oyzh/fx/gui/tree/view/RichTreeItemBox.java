@@ -12,20 +12,39 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 /**
+ * 富功能树节点内容盒，展示图标、名称与额外信息
+ *
  * @author oyzh
  * @since 2025-01-22
  */
 public class RichTreeItemBox extends FXPane {
 
+    /**
+     * 构造富功能树节点内容盒
+     */
     public RichTreeItemBox() {
         super();
     }
 
+    /**
+     * 构造富功能树节点内容盒
+     *
+     * @param value             节点值
+     * @param highlight         高亮文本
+     * @param highlightMatchCase 高亮是否匹配大小写
+     */
     public RichTreeItemBox(RichTreeItemValue value, String highlight, boolean highlightMatchCase) {
         super();
         this.init(value, highlight, highlightMatchCase);
     }
 
+    /**
+     * 初始化内容盒，构建或更新图标、名称与额外信息节点。
+     *
+     * @param value             节点值
+     * @param highlight         高亮文本
+     * @param highlightMatchCase 高亮是否匹配大小写
+     */
     public void init(RichTreeItemValue value, String highlight, boolean highlightMatchCase) {
         String name = value.name();
         String extra = value.extra();
@@ -111,6 +130,11 @@ public class RichTreeItemBox extends FXPane {
         }
     }
 
+    /**
+     * 获取图标节点
+     *
+     * @return 图标节点
+     */
     public SVGGlyph getGraphic() {
         Node node = this.getFirstChild();
         if (node instanceof SVGGlyph) {
@@ -123,6 +147,11 @@ public class RichTreeItemBox extends FXPane {
         return null;
     }
 
+    /**
+     * 设置图标节点
+     *
+     * @param glyph 图标
+     */
     public void setGraphic(SVGGlyph glyph) {
         glyph.setId("graphic");
         if (this.getFirstChild() instanceof SVGGlyph) {
@@ -132,6 +161,11 @@ public class RichTreeItemBox extends FXPane {
         }
     }
 
+    /**
+     * 获取名称节点
+     *
+     * @return 名称节点
+     */
     public RichTextFlow getName() {
         Node node = this.getChild(1);
         if (node instanceof RichTextFlow) {
@@ -144,6 +178,11 @@ public class RichTreeItemBox extends FXPane {
         return null;
     }
 
+    /**
+     * 设置名称节点
+     *
+     * @param name 名称节点
+     */
     public void setName(RichTextFlow name) {
         name.setId("name");
         if (this.getChild(1) instanceof RichTextFlow) {
@@ -153,6 +192,11 @@ public class RichTreeItemBox extends FXPane {
         }
     }
 
+    /**
+     * 获取额外信息节点
+     *
+     * @return 额外信息节点
+     */
     public FXLabel getExtra() {
         Node node = this.getChild(2);
         if (node instanceof FXLabel) {
@@ -165,6 +209,11 @@ public class RichTreeItemBox extends FXPane {
         return null;
     }
 
+    /**
+     * 设置额外信息节点
+     *
+     * @param extra 额外信息文本
+     */
     public void setExtra(Text extra) {
         extra.setId("extra");
         if (this.getChild(2) instanceof Text) {

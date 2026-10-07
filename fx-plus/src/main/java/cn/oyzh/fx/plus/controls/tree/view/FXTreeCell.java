@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.TreeCell;
 
 /**
- * 树列
+ * 树形单元格
  *
  * @author oyzh
  * @since 2023/03/31

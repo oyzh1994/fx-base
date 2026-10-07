@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
+ * 浮动提示（Toast）测试，验证消息提示显示
+ *
  * @author oyzh
  * @since 2024-11-15
  */

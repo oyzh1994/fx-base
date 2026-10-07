@@ -50,6 +50,11 @@ public class TrayImage extends TrayIcon {
     //     }
     // }
 
+    /**
+     * 构造托盘图标
+     *
+     * @param image 图标
+     */
     public TrayImage(Image image) {
         super(image);
         // ThreadUtil.start(() -> {

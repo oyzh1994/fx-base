@@ -18,15 +18,15 @@ public class FontFamilyComboBox extends FXComboBox<String> {
         this.setTipText(I18nHelper.fontNameTip());
     }
 
+    /**
+     * 获取默认字体名称
+     *
+     * @return 默认字体名称
+     */
     public String getDefault() {
         return FontManager.defaultFont.getFamily();
     }
 
-    /**
-     * 选择字体
-     *
-     * @param fontFamily 字体名称
-     */
     @Override
     public void select(String fontFamily) {
         if (StringUtil.isEmpty(fontFamily)) {

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
+ * 文件选择器
+ *
  * @author oyzh
  * @since 2024/8/28
  */
@@ -22,6 +24,11 @@ public class FXFileChooser {
      */
     private String title;
 
+    /**
+     * 设置标题
+     *
+     * @param title 标题
+     */
     public void setTitle(String title) {
         this.title = title;
     }
@@ -36,6 +43,11 @@ public class FXFileChooser {
      */
     private String initialFileName;
 
+    /**
+     * 设置初始文件名称
+     *
+     * @param initialFileName 初始文件名称
+     */
     public void setInitialFileName(String initialFileName) {
         this.initialFileName = initialFileName;
     }
@@ -45,10 +57,21 @@ public class FXFileChooser {
      */
     private List<FileExtensionFilter> filters;
 
+    /**
+     * 设置过滤器
+     *
+     * @param filters 过滤器
+     */
     public void filters(List<FileExtensionFilter> filters) {
         this.filters = filters;
     }
 
+    /**
+     * 添加过滤器
+     *
+     * @param filter 过滤器
+     * @return 文件选择器
+     */
     public FXFileChooser addFilter(FileExtensionFilter filter) {
         if (this.filters == null) {
             this.filters = new ArrayList<>();
@@ -57,6 +80,13 @@ public class FXFileChooser {
         return this;
     }
 
+    /**
+     * 添加过滤器
+     *
+     * @param desc      描述
+     * @param extension 扩展名
+     * @return 文件选择器
+     */
     public FXFileChooser addFilter(String desc, String extension) {
         FileExtensionFilter filter = new FileExtensionFilter();
         filter.setDesc(desc);
@@ -65,6 +95,12 @@ public class FXFileChooser {
         return this;
     }
 
+    /**
+     * 批量添加过滤器
+     *
+     * @param filters 过滤器
+     * @return 文件选择器
+     */
     public FXFileChooser addFilters(List<FileExtensionFilter> filters) {
         if (CollectionUtil.isNotEmpty(filters)) {
             for (FileExtensionFilter filter : filters) {
@@ -102,6 +138,11 @@ public class FXFileChooser {
         return this;
     }
 
+    /**
+     * 构建文件选择器
+     *
+     * @return 文件选择器
+     */
     public FileChooser chooser() {
         FileChooser fileChooser = new FileChooser();
         if (this.initialFileName != null) {
@@ -121,6 +162,12 @@ public class FXFileChooser {
         return fileChooser;
     }
 
+    /**
+     * 显示保存文件对话框
+     *
+     * @param owner 父窗口
+     * @return 选中的文件，未选择时返回 null
+     */
     public File showSaveDialog(Window owner) {
 //        if (owner == null) {
 //            owner = WindowManager.getActiveWindow();
@@ -132,6 +179,12 @@ public class FXFileChooser {
         return file.get();
     }
 
+    /**
+     * 显示打开文件对话框
+     *
+     * @param owner 父窗口
+     * @return 选中的文件，未选择时返回 null
+     */
     public File showOpenDialog(Window owner) {
 //        if (owner == null) {
 //            owner = WindowManager.getActiveWindow();
@@ -143,6 +196,12 @@ public class FXFileChooser {
         return file.get();
     }
 
+    /**
+     * 显示打开多个文件对话框
+     *
+     * @param owner 父窗口
+     * @return 选中的文件列表，未选择时返回空列表
+     */
     public List<File> showOpenMultipleDialog(Window owner) {
 //        if (owner == null) {
 //            owner = WindowManager.getActiveWindow();

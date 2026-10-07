@@ -45,22 +45,47 @@ public class ChooseFileTextField extends FXTextField {
         }
     }
 
+    /**
+     * 设置单个文件扩展名过滤器
+     *
+     * @param filter 文件扩展名过滤器
+     */
     public void setFilter(FileExtensionFilter filter) {
         this.setFilters(List.of(filter));
     }
 
+    /**
+     * 设置文件扩展名过滤器列表
+     *
+     * @param filter 文件扩展名过滤器列表
+     */
     public void setFilters(List<FileExtensionFilter> filter) {
         this.skin().setFilters(filter);
     }
 
+    /**
+     * 是否一直显示图标
+     *
+     * @return 是否一直显示图标
+     */
     public boolean isAlwaysShowGraphic() {
         return this.skin().isAlwaysShowGraphic();
     }
 
+    /**
+     * 设置是否一直显示图标
+     *
+     * @param alwaysShowGraphic 是否一直显示图标
+     */
     public void setAlwaysShowGraphic(boolean alwaysShowGraphic) {
         this.skin().setAlwaysShowGraphic(alwaysShowGraphic);
     }
 
+    /**
+     * 获取已选文件
+     *
+     * @return 已选文件
+     */
     public File getFile() {
         return this.skin().getFile();
     }
@@ -75,6 +100,11 @@ public class ChooseFileTextField extends FXTextField {
         return new ChooseFileTextFieldSkin(this);
     }
 
+    /**
+     * 设置文件选中回调
+     *
+     * @param onSelectedFile 文件选中回调
+     */
     public void setOnSelectedFile(Consumer<File> onSelectedFile) {
         this.skin().setOnSelectedFile(onSelectedFile);
     }

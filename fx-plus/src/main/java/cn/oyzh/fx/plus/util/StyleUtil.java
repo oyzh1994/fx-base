@@ -21,10 +21,10 @@ import java.util.Objects;
 public class StyleUtil {
 
     /**
-     * 连接样式文件
+     * 连接样式字符串
      *
      * @param cssList 样式列表
-     * @return 连接后的样式地址
+     * @return 连接后的样式字符串
      */
     public static String join(String... cssList) {
         if (ArrayUtil.isNotEmpty(cssList)) {
@@ -38,7 +38,7 @@ public class StyleUtil {
     }
 
     /**
-     * 分割样式文件
+     * 分割样式字符串
      *
      * @param cssList 样式列表
      * @return 分割后的样式列表

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * fx 支持Spring启动的主入口
+ * fx 应用启动主入口，封装应用初始化、启动与停止流程
  *
  * @author oyzh
  * @since 2021/8/19

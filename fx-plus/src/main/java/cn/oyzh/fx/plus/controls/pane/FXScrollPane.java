@@ -9,6 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 
 /**
+ * 滚动面板控件
+ *
  * @author oyzh
  * @since 2023/12/6
  */
@@ -18,10 +20,18 @@ public class FXScrollPane extends ScrollPane implements FlexAdapter, ThemeAdapte
         NodeManager.init(this);
     }
 
+    /**
+     * 构造滚动面板对象。
+     *
+     * @param content 内容
+     */
     public FXScrollPane(Node content) {
         super(content);
     }
 
+    /**
+     * 构造滚动面板对象。
+     */
     public FXScrollPane() {
     }
 

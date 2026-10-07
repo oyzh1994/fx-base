@@ -33,10 +33,20 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
      */
     private DateTimeFormatter formatter;
 
+    /**
+     * 获取日期格式化器
+     *
+     * @return 日期格式化器
+     */
     public DateTimeFormatter getFormatter() {
         return formatter;
     }
 
+    /**
+     * 设置日期格式化器
+     *
+     * @param formatter 日期格式化器
+     */
     public void setFormatter(DateTimeFormatter formatter) {
         this.formatter = formatter;
     }
@@ -46,6 +56,11 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
      */
     private PopupExt popup;
 
+    /**
+     * 获取格式化器，未设置时使用默认格式 yy-MM-dd
+     *
+     * @return 日期格式化器
+     */
     protected DateTimeFormatter formatter() {
         if (this.formatter == null) {
             this.formatter = DateTimeFormatter.ofPattern("yyy-MM-dd");
@@ -110,6 +125,11 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
         this.popup.showPopup(this.getSkinnable());
     }
 
+    /**
+     * 解析当前文本为日期时间
+     *
+     * @return 日期时间，解析失败返回 null
+     */
     protected LocalDateTime getLocalDateTime() {
         if (StringUtil.isNotBlank(this.getText())) {
             try {
@@ -121,12 +141,20 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
         return null;
     }
 
+    /**
+     * 隐藏弹窗并恢复控件状态
+     */
     protected void handleHide() {
         this.popup.hide();
         this.getSkinnable().setDisable(false);
         this.resetButtonColor();
     }
 
+    /**
+     * 构造日期文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public DateTextFieldSkin(TextField textField) {
         super(textField);
     }

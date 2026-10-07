@@ -20,6 +20,8 @@
 // import java.io.StringReader;
 //
 // /**
+//  * 文本类型识别测试（已注释），使用 Tika 与 jmimemagic 探测多种资源文件的 MIME 类型。
+//  *
 //  * @author oyzh
 //  * @since 2025-08-01
 //  */

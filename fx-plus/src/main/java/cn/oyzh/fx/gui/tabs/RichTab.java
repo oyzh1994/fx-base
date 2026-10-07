@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 动态tab
+ * 动态标签页
  *
  * @author oyzh
  * @since 2023/11/03
@@ -48,6 +48,11 @@ public abstract class RichTab extends FXTab {
         }
     }
 
+    /**
+     * 获取内容控制器
+     *
+     * @return 标签页控制器
+     */
     protected RichTabController controller() {
         return this.getProp("_controller");
     }
@@ -210,6 +215,11 @@ public abstract class RichTab extends FXTab {
         super.flushTitle();
     }
 
+    /**
+     * 获取标签页标题（子类可覆盖）
+     *
+     * @return 标签页标题
+     */
     protected String getTabTitle() {
         return null;
     }

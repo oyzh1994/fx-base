@@ -7,6 +7,8 @@ import cn.oyzh.fx.plus.controls.button.IconButton;
 import cn.oyzh.i18n.I18nHelper;
 
 /**
+ * 执行按钮，点击后隐藏当前窗口
+ *
  * @author oyzh
  * @since 2020/10/29
  */

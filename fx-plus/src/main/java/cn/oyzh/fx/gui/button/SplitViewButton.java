@@ -5,6 +5,8 @@ import cn.oyzh.fx.gui.svg.glyph.SplitViewSVGGlyph;
 import cn.oyzh.fx.plus.controls.button.IconButton;
 
 /**
+ * 分屏按钮
+ *
  * @author oyzh
  * @since 2020/10/29
  */

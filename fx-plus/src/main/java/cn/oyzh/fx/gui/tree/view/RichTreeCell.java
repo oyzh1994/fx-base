@@ -11,7 +11,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TreeItem;
 
 /**
- * 富功能树节点工厂
+ * 富功能树单元格
  *
  * @author oyzh
  * @since 2023/11/10

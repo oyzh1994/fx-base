@@ -4,6 +4,7 @@ import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.editor.incubator.EditorFormatType;
 
 /**
+ * JSON编辑器
  *
  * @author oyzh
  * @since 2026-06-11

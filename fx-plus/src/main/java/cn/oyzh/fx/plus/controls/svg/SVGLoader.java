@@ -21,7 +21,7 @@ import java.util.Iterator;
 public class SVGLoader {
 
     /**
-     * 当前实例
+     * 单例实例
      */
     public final static SVGLoader INSTANCE = new SVGLoader();
 
@@ -147,6 +147,12 @@ public class SVGLoader {
         return path;
     }
 
+    /**
+     * 解析rgb颜色字符串
+     *
+     * @param rgb rgb颜色字符串，如 rgb(255,255,255)
+     * @return rgb颜色数组，解析失败时返回 null
+     */
     private int[] parseRgb(String rgb) {
         try {
             String[] arr = rgb.substring(rgb.indexOf("(") + 1, rgb.indexOf(")")).split(",");

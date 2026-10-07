@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 设置左侧树视图
+ *
  * @author oyzh
  * @since 2024/12/29
  */
@@ -27,6 +29,12 @@ public class SettingLeftTreeView extends RichTreeView {
 //        return (SettingLeftTreeItem) super.getRoot();
 //    }
 
+    /**
+     * 向根节点添加子节点
+     *
+     * @param item 节点值
+     * @return 新增的树节点
+     */
     public SettingLeftTreeItem addItem(SettingLeftTreeItemValue item) {
         return this.root().addItem(item);
     }
@@ -45,10 +53,21 @@ public class SettingLeftTreeView extends RichTreeView {
         this.setId("left-tree-view");
     }
 
+    /**
+     * 按节点标识递归查找节点值
+     *
+     * @param itemId 节点标识
+     * @return 匹配的节点值，未找到返回 null
+     */
     protected SettingLeftTreeItemValue findItem(String itemId) {
         return this.root().findItem(itemId);
     }
 
+    /**
+     * 按节点标识选中节点
+     *
+     * @param itemId 节点标识
+     */
     public void selectItem(String itemId) {
         SettingLeftTreeItemValue item = this.findItem(itemId);
         if (item != null) {
@@ -58,6 +77,11 @@ public class SettingLeftTreeView extends RichTreeView {
         }
     }
 
+    /**
+     * 执行节点选中，构建面包屑并更新右侧内容。
+     *
+     * @param itemId 节点标识
+     */
     protected void doSelect(String itemId) {
         SettingMainPane mainPane = this.getSettingMainPane();
         if (mainPane != null && itemId != null) {
@@ -82,6 +106,11 @@ public class SettingLeftTreeView extends RichTreeView {
         }
     }
 
+    /**
+     * 向上查找所属的设置主面板
+     *
+     * @return 设置主面板，未找到返回 null
+     */
     public SettingMainPane getSettingMainPane() {
         Node node = this.parent();
         while (node != null) {

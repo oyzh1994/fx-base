@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
 public class ControlUtil {
 
     /**
-     * 边框长度-0.5
+     * 边框宽度-0.5
      */
     public static BorderWidths BW_HALF = new BorderWidths(0.5);
 
@@ -296,7 +296,7 @@ public class ControlUtil {
     /***
      * 生成较大宽度的边框
      * @param stroke 颜色
-     * @return 中等宽度边框
+     * @return 较大宽度边框
      */
     public static Border strokeOfThick(Paint stroke) {
         return new Border(new BorderStroke(stroke, BorderStrokeStyle.SOLID, null, BorderStroke.THICK));
@@ -386,6 +386,7 @@ public class ControlUtil {
      * 是否选中
      *
      * @param control 组件
+     * @return 是否选中
      */
     public static boolean isSelect(TextInputControl control) {
         IndexRange range = control.getSelection();
@@ -437,6 +438,7 @@ public class ControlUtil {
      * 获取 ScrollPane 垂直滚动条的宽度
      *
      * @param scrollPane 滚动面板
+     * @return 垂直滚动条宽度
      */
     public static double getVBarWidth(ScrollPane scrollPane) {
         Skin<?> skin = scrollPane.getSkin();
@@ -459,19 +461,20 @@ public class ControlUtil {
      * 获取 ScrollPane 水平滚动条的高度
      *
      * @param scrollPane 滚动面板
+     * @return 水平滚动条高度
      */
     public static double getHBarHeight(ScrollPane scrollPane) {
         Skin<?> skin = scrollPane.getSkin();
         if (skin == null) {
             return 0;
         }
-        // 通过反射获取垂直滚动条
+        // 通过反射获取水平滚动条
         ScrollBar scrollBar = ReflectUtil.getFieldValue(skin, "hsb");
         // 确保滚动条可见并已布局
         if (scrollBar == null) {
             return 0;
         }
-        // 强制布局并获取宽度
+        // 强制布局并获取高度
         scrollBar.applyCss();
         scrollBar.layout();
         return NodeUtil.getHeight(scrollBar);

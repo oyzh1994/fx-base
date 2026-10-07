@@ -5,7 +5,7 @@ import javafx.scene.Cursor;
 import javafx.scene.paint.Paint;
 
 /**
- * svg label
+ * svg标签控件
  *
  * @author oyzh
  * @since 2022/12/16
@@ -16,14 +16,28 @@ public class SVGLabel extends FXLabel {
         this.setCursor(Cursor.HAND);
     }
 
+    /**
+     * 构造标签对象。
+     */
     public SVGLabel() {
         super("");
     }
 
+    /**
+     * 构造标签对象。
+     *
+     * @param text 文本
+     */
     public SVGLabel(String text) {
         super(text);
     }
 
+    /**
+     * 构造标签对象。
+     *
+     * @param text 文本
+     * @param graphic 图形
+     */
     public SVGLabel(String text, SVGGlyph graphic) {
         super(text, graphic);
     }
@@ -72,9 +86,9 @@ public class SVGLabel extends FXLabel {
     }
 
     /**
-     * 获取尺寸的大小
+     * 获取尺寸
      *
-     * @return 尺寸的大小，如果图形对象为空则返回null。
+     * @return 尺寸大小，图形对象为空时返回 0
      */
     public double getSize() {
         if (this.graphic() != null) {
@@ -95,9 +109,9 @@ public class SVGLabel extends FXLabel {
     }
 
     /**
-     * 获取尺寸的大小
+     * 获取尺寸字符串
      *
-     * @return 尺寸的大小，如果图形对象为空则返回null。
+     * @return 尺寸字符串，图形对象为空时返回 null
      */
     public String getSizeStr() {
         if (this.graphic() != null) {

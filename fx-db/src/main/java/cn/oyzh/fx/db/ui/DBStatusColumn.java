@@ -6,11 +6,16 @@ import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
+ * 状态列，以图标形式展示数据库对象的状态
+ *
  * @author oyzh
  * @since 2024/7/22
  */
 public class DBStatusColumn<S extends DBObject> extends FXTableColumn<S, Object> {
 
+    /**
+     * 构造数据库状态列对象。
+     */
     public DBStatusColumn() {
         this.setCellValueFactory(new PropertyValueFactory<>("status"));
         this.setMaxWidth(25);

@@ -13,6 +13,8 @@ import javafx.scene.input.PickResult;
 import java.util.List;
 
 /**
+ * 上下文菜单管理器，负责全局上下文菜单的创建、获取、显示与清理
+ *
  * @author oyzh
  * @since 2025-06-25
  */
@@ -26,7 +28,8 @@ public class ContextMenuManager {
     /**
      * 创建上下文菜单，全局唯一
      *
-     * @param items 列表项
+     * @param object 目标对象
+     * @param items  列表项
      * @return 菜单
      */
     public static FXContextMenu createContextMenu(Object object, List<? extends MenuItem> items) {
@@ -156,10 +159,10 @@ public class ContextMenuManager {
     }
 
     /**
-     * 转换为上下文轻轻事件
+     * 将鼠标事件转换为上下文菜单请求事件
      *
-     * @param e 事件
-     * @return 结果
+     * @param e 鼠标事件
+     * @return 上下文菜单请求事件
      */
     public static ContextMenuEvent contextMenuRequestedEvent(MouseEvent e) {
         return new ContextMenuEvent(

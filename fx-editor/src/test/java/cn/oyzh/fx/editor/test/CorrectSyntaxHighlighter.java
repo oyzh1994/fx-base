@@ -15,6 +15,12 @@
 // import java.util.concurrent.*;
 // import java.util.regex.Pattern;
 //
+///**
+// * RichtextFX 语法高亮器（已注释），基于正则表达式为 JSON 文本计算并应用样式。
+// *
+// * @author oyzh
+// * @since 2025-08-01
+// */
 // public class CorrectSyntaxHighlighter {
 //     private final VirtualizedScrollPane<InlineCssTextArea> virtualScrollPane;
 //     private final InlineCssTextArea textArea;

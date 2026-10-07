@@ -18,19 +18,32 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * javafx的覆盖管理器
+ * JavaFX 覆盖检查器，用于检查 Tab、页面、弹窗等组件能否正常实例化
  *
  * @author oyzh
  * @since 2026/09/06
  */
 public class FXCoverChecker {
 
+    /**
+     * 项目路径
+     */
     private String projectPath;
 
+    /**
+     * 获取项目路径。
+     *
+     * @return 项目路径
+     */
     public String getProjectPath() {
         return projectPath;
     }
 
+    /**
+     * 设置项目路径。
+     *
+     * @param projectPath 项目路径
+     */
     public void setProjectPath(String projectPath) {
         this.projectPath = projectPath;
     }

@@ -16,7 +16,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.text.Font;
 
 /**
- * 菜单项
+ * 自定义菜单项，支持字体、节点、状态与主题适配
  *
  * @author oyzh
  * @since 2023/3/3
@@ -27,6 +27,9 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
         NodeManager.init(this);
     }
 
+    /**
+     * 禁用状态监听，同步禁用图标
+     */
     private final ChangeListener<Boolean> disableListener = (observable, oldValue, newValue) -> {
         if (this.getGraphic() != null) {
             this.getGraphic().setDisable(newValue);
@@ -43,18 +46,39 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
         //        });
     }
 
+    /**
+     * 构造菜单项对象。
+     */
     public FXMenuItem() {
         super();
     }
 
+    /**
+     * 构造菜单项对象。
+     *
+     * @param text 文本
+     */
     public FXMenuItem(String text) {
         this(null, text, null);
     }
 
+    /**
+     * 构造菜单项对象。
+     *
+     * @param text 文本
+     * @param action 执行动作
+     */
     public FXMenuItem(String text, Runnable action) {
         this(null, text, action);
     }
 
+    /**
+     * 构造菜单项对象。
+     *
+     * @param graphic 图形
+     * @param text 文本
+     * @param action 执行动作
+     */
     public FXMenuItem(Node graphic, String text, Runnable action) {
         if (text != null) {
             super.setText(text);

@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 
 
 /**
+ * 富文本流控件测试，验证文本高亮显示
+ *
  * @author oyzh
  * @since 2024-11-15
  */

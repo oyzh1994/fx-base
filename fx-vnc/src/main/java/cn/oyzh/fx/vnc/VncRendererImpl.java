@@ -37,15 +37,29 @@ import java.io.ByteArrayInputStream;
 import java.nio.IntBuffer;
 
 /**
- * JavaFX implementation of Renderer.
- * Uses PixelBuffer&lt;IntBuffer&gt; wrapping the same int[] pixels array for
- * zero-copy rendering to a JavaFX WritableImage.
+ * 渲染器的 JavaFX 实现。
+ * 使用包装同一 int[] 像素数组的 PixelBuffer&lt;IntBuffer&gt;，
+ * 以零拷贝方式渲染到 JavaFX 的 WritableImage。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class VncRendererImpl extends Renderer implements Destroyable {
 
+    /** 离屏帧缓冲图像 */
     private final WritableImage offscreenImage;
+
+    /** 像素缓冲，用于将像素变化同步到图像 */
     private final PixelBuffer<IntBuffer> pixelBuffer;
 
+    /**
+     * 构造渲染器并初始化像素缓冲与离屏图像。
+     *
+     * @param transport   传输通道
+     * @param width       帧缓冲宽度
+     * @param height      帧缓冲高度
+     * @param pixelFormat 像素格式
+     */
     public VncRendererImpl(Transport transport, int width, int height, PixelFormat pixelFormat) {
         if (0 == width) width = 1;
         if (0 == height) height = 1;
@@ -60,31 +74,31 @@ public class VncRendererImpl extends Renderer implements Destroyable {
     }
 
     /**
-     * Returns the WritableImage that backs this renderer.
-     * The image is updated in-place via the PixelBuffer whenever pixels[] changes.
+     * 获取支撑本渲染器的可写图像。
+     * 当 pixels[] 发生变化时，图像会通过 PixelBuffer 就地更新。
+     *
+     * @return 离屏帧缓冲图像
      */
     public WritableImage getOffscreenImage() {
         return offscreenImage;
     }
 
     /**
-     * Mark a region of the pixel buffer as dirty so JavaFX re-renders it.
+     * 将像素缓冲的指定区域标记为脏，以触发 JavaFX 重绘。
+     *
+     * @param rect 需要更新的区域
      */
     public void updateBuffer(FramebufferUpdateRectangle rect) {
         FXUtil.runLater(() -> pixelBuffer.updateBuffer(b -> null));
     }
 
     /**
-     * Mark the entire pixel buffer as dirty.
+     * 将整个像素缓冲标记为脏，以触发 JavaFX 重绘。
      */
     public void updateBuffer() {
         FXUtil.runLater(() -> pixelBuffer.updateBuffer(b -> null));
     }
 
-    /**
-     * Draw JPEG image data into the framebuffer.
-     * Uses JavaFX {@link javafx.scene.image.Image} for synchronous JPEG decoding.
-     */
     @Override
     public void drawJpegImage(byte[] bytes, int offset, int jpegBufferLength,
                               FramebufferUpdateRectangle rect) {
@@ -161,6 +175,11 @@ public class VncRendererImpl extends Renderer implements Destroyable {
     //    }
     //}
 
+    /**
+     * 获取远端光标。
+     *
+     * @return 远端光标
+     */
     public VncSoftCursorImpl getCursor() {
         return (VncSoftCursorImpl) cursor;
     }

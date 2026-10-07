@@ -83,7 +83,7 @@ public class NodeDestroyUtil {
     /**
      * 销毁对象
      *
-     * @param object 节点
+     * @param object 对象
      */
     public static void destroyObject(Object object) {
         if (object == null) {

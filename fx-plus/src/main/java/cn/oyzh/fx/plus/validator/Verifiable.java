@@ -26,7 +26,7 @@ public interface Verifiable {
     /**
      * 执行校验
      *
-     * @return 规则
+     * @return 是否通过校验
      */
     default boolean validate() {
 //        return this.getValidator() != null && this.getValidator().doVerify();

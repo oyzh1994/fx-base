@@ -22,6 +22,11 @@ public class StageController extends Controller implements StageListener, EventL
      */
     protected StageAdapter stage;
 
+    /**
+     * 获取舞台
+     *
+     * @return 舞台
+     */
     public StageAdapter getStage() {
         return stage;
     }
@@ -107,30 +112,59 @@ public class StageController extends Controller implements StageListener, EventL
         }
     }
 
+    /**
+     * 获取视图标题
+     *
+     * @return 视图标题
+     */
     public String getViewTitle() {
         return null;
     }
 
+    /**
+     * 禁用窗口
+     */
     protected void disable() {
         this.stage.disable();
     }
 
+    /**
+     * 启用窗口
+     */
     protected void enable() {
         this.stage.enable();
     }
 
+    /**
+     * 恢复标题
+     */
     protected void restoreTitle() {
         this.stage.restoreTitle();
     }
 
+    /**
+     * 追加标题
+     *
+     * @param title 标题
+     */
     protected void appendTitle(String title) {
         this.stage.appendTitle(title);
     }
 
+    /**
+     * 设置标题
+     *
+     * @param title 标题
+     */
     protected void setTitle(String title) {
         this.stage.title(title);
     }
 
+    /**
+     * 获取标题
+     *
+     * @return 标题
+     */
     protected String getTitle() {
         return this.stage.title();
     }

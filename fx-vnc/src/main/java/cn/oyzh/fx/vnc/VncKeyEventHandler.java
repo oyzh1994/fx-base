@@ -35,26 +35,32 @@ import java.util.Map;
 import static com.glavsoft.utils.Keymap.*;
 
 /**
- * JavaFX replacement for KeyEventListener.java.
- * Translates JavaFX KeyEvent to RFB KeyEventMessage using X11 keysyms from Keymap.
+ * VNC 键盘事件处理器，将 JavaFX 按键事件转换为 RFB KeyEventMessage。
  *
- * Critical difference from AWT: In JavaFX, KEY_PRESSED events do NOT carry
- * character data (getCharacter() returns ""). Characters must be derived
- * from the KeyCode and modifier state.
+ * <p>与 AWT 的关键差异：JavaFX 的 KEY_PRESSED 事件不携带字符数据
+ * （getCharacter() 返回空串），字符需根据 KeyCode 与修饰键状态推导。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class VncKeyEventHandler {
 
+    /** VNC 协议对象 */
     private final Protocol protocol;
+
+    /** 是否将按键转换为 ASCII */
     private boolean convertToAscii;
+
+    /** 键盘布局转换器 */
     private VncKeyboardConvertor convertor;
 
-    /** Maps JavaFX KeyCode to X11 keysym for action/non-character keys */
+    /** 动作键/非字符键的 JavaFX KeyCode 到 X11 keysym 的映射 */
     private static final Map<KeyCode, Integer> KEYCODE_TO_KEYSYM = new HashMap<>();
 
-    /** Maps JavaFX KeyCode to X11 keysym for numpad keys */
+    /** 小键盘按键的 JavaFX KeyCode 到 X11 keysym 的映射 */
     private static final Map<KeyCode, Integer> NUMPAD_TO_KEYSYM = new HashMap<>();
 
-    /** Maps JavaFX KeyCode to US keyboard base character (unshifted) */
+    /** JavaFX KeyCode 到美式键盘基础字符（未按 Shift）的映射 */
     private static final Map<KeyCode, Integer> KEYCODE_TO_CHAR = new HashMap<>();
 
     static {
@@ -161,11 +167,21 @@ public class VncKeyEventHandler {
         KEYCODE_TO_CHAR.put(KeyCode.ADD, (int) '+');
     }
 
+    /**
+     * 构造键盘事件处理器。
+     *
+     * @param protocol VNC 协议对象
+     */
     public VncKeyEventHandler(Protocol protocol) {
         this.protocol = protocol;
         this.convertToAscii = false;
     }
 
+    /**
+     * 设置是否将按键转换为 ASCII，启用时按需创建键盘布局转换器。
+     *
+     * @param convertToAscii 是否将按键转换为 ASCII
+     */
     public void setConvertToAscii(boolean convertToAscii) {
         this.convertToAscii = convertToAscii;
         if (convertToAscii && convertor == null) {
@@ -173,20 +189,41 @@ public class VncKeyEventHandler {
         }
     }
 
+    /**
+     * 处理按键按下事件。
+     *
+     * @param event 按键事件
+     */
     public void handleKeyPressed(KeyEvent event) {
         processKeyEvent(event, true);
         event.consume();
     }
 
+    /**
+     * 处理按键释放事件。
+     *
+     * @param event 按键事件
+     */
     public void handleKeyReleased(KeyEvent event) {
         processKeyEvent(event, false);
         event.consume();
     }
 
+    /**
+     * 处理字符输入事件，消耗事件以避免重复处理。
+     *
+     * @param event 按键事件
+     */
     public void handleKeyTyped(KeyEvent event) {
         event.consume();
     }
 
+    /**
+     * 将按键事件解析为 keysym 并发送给远端。
+     *
+     * @param event   按键事件
+     * @param pressed 是否为按下状态
+     */
     private void processKeyEvent(KeyEvent event, boolean pressed) {
         KeyCode keyCode = event.getCode();
 
@@ -236,9 +273,13 @@ public class VncKeyEventHandler {
     }
 
     /**
-     * Derive the US keyboard character from a KeyCode and shift state.
-     * In JavaFX, KEY_PRESSED events don't carry character data (unlike AWT),
-     * so we must compute it from the physical key and modifier state.
+     * 根据 KeyCode 与 Shift 状态推导美式键盘字符。
+     * JavaFX 的 KEY_PRESSED 事件不像 AWT 那样携带字符数据，
+     * 因此需要根据物理按键与修饰键状态计算。
+     *
+     * @param code     按键编码
+     * @param shiftDown 是否按下 Shift 键
+     * @return 推导出的字符编码，无法推导时返回 0
      */
     private static int keyCodeToChar(KeyCode code, boolean shiftDown) {
         if (code == null) {
@@ -310,7 +351,11 @@ public class VncKeyEventHandler {
     }
 
     /**
-     * Process modifier keys: Ctrl, Shift, Alt, Meta, Windows, Context Menu.
+     * 处理修饰键：Ctrl、Shift、Alt、Meta、Windows、上下文菜单键。
+     *
+     * @param event   按键事件
+     * @param pressed 是否为按下状态
+     * @return 是否为修饰键并已处理
      */
     private boolean processModifierKeys(KeyEvent event, boolean pressed) {
         Integer keysym = KEYCODE_TO_KEYSYM.get(event.getCode());
@@ -333,7 +378,11 @@ public class VncKeyEventHandler {
     }
 
     /**
-     * Process special keys: AltGr, numpad keys.
+     * 处理特殊按键：AltGr 与小键盘按键。
+     *
+     * @param event   按键事件
+     * @param pressed 是否为按下状态
+     * @return 是否为特殊键并已处理
      */
     private boolean processSpecialKeys(KeyEvent event, boolean pressed) {
         KeyCode keyCode = event.getCode();
@@ -354,7 +403,11 @@ public class VncKeyEventHandler {
     }
 
     /**
-     * Process action keys: F1-F12, Home, End, arrows, Insert, Delete, Escape, Enter, Tab, Backspace.
+     * 处理动作键：F1-F12、Home、End、方向键、Insert、Delete、Escape、Enter、Tab、Backspace。
+     *
+     * @param event   按键事件
+     * @param pressed 是否为按下状态
+     * @return 是否为动作键并已处理
      */
     private boolean processActionKey(KeyEvent event, boolean pressed) {
         KeyCode keyCode = event.getCode();
@@ -381,6 +434,12 @@ public class VncKeyEventHandler {
         return true;
     }
 
+    /**
+     * 向远端发送按键事件消息。
+     *
+     * @param keyChar 键值（keysym）
+     * @param pressed 是否为按下状态
+     */
     private void sendKeyEvent(int keyChar, boolean pressed) {
         protocol.sendMessage(new KeyEventMessage(keyChar, pressed));
     }

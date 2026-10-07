@@ -13,6 +13,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 
 /**
+ * 按钮控件，继承自 Button，支持主题、字体、状态、提示等适配
+ *
  * @author oyzh
  * @since 2020/10/29
  */
@@ -31,10 +33,18 @@ public class FXButton extends Button implements FlexAdapter, NodeGroup, ThemeAda
 //        this.setFocusTraversable(false);
     }
 
+    /**
+     * 构造按钮对象。
+     */
     public FXButton() {
         super();
     }
 
+    /**
+     * 构造按钮对象。
+     *
+     * @param text 文本
+     */
     public FXButton(String text) {
         super(text);
     }

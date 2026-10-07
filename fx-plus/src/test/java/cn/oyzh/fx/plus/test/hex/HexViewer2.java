@@ -34,6 +34,9 @@ import java.io.IOException;
  * <p>
  * 快捷键: Ctrl+O 打开 | Ctrl+G 跳转 | Ctrl+F 搜索 | Ctrl+C 复制
  * | F2 切换列数 | ESC 清除选区 | Ctrl+A 全选
+ *
+ * @author oyzh
+ * @since 2026-07-12
  */
 public class HexViewer2 extends Application {
 

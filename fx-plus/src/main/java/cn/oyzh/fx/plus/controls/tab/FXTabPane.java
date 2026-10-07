@@ -29,6 +29,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * tab面板控件
+ *
  * @author oyzh
  * @since 2022/1/20
  */
@@ -288,6 +290,12 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         FXUtil.runLater(() -> this.getTabs().forEach(t -> t.setDisable(false)));
     }
 
+    /**
+     * 是否选中指定tab
+     *
+     * @param tabId tabId
+     * @return 结果
+     */
     public boolean isSelectedTab(String tabId) {
         if (tabId == null) {
             return false;
@@ -296,15 +304,30 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
         return tab != null && StringUtil.equals(tabId, tab.getId());
     }
 
+    /**
+     * 设置tab高度
+     *
+     * @param height 高度
+     */
     public void setTabHeight(double height) {
         this.setTabMaxHeight(height);
         this.setTabMinHeight(height);
     }
 
+    /**
+     * 获取tab数量
+     *
+     * @return tab数量
+     */
     public int tabSize() {
         return this.getTabs().size();
     }
 
+    /**
+     * 获取选中tab的id
+     *
+     * @return tabId，未选中时返回 null
+     */
     public String getSelectTabId() {
         Tab tab = this.getSelectedItem();
         return tab == null ? null : tab.getId();
@@ -436,11 +459,21 @@ public class FXTabPane extends TabPane implements FlexAdapter, NodeGroup, ThemeA
     //     this.getSelectionModel().selectedItemProperty().removeListener(this::selectCountListener);
     // }
 
+    /**
+     * 设置tab实际高度
+     *
+     * @param tabHeight tab高度
+     */
     public void setTabRealHeight(double tabHeight) {
         super.setTabMaxHeight(tabHeight);
         super.setTabMinHeight(tabHeight);
     }
 
+    /**
+     * 获取tab实际高度
+     *
+     * @return tab高度
+     */
     public double getTabRealHeight() {
         return Math.max(this.getTabMaxHeight(), this.getTabMinHeight());
     }

@@ -12,6 +12,8 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
 
 /**
+ * 颜色选择器控件
+ *
  * @author oyzh
  * @since 2024/04/04
  */
@@ -28,6 +30,11 @@ public class FXColorPicker extends ColorPicker implements FlexAdapter, TipAdapte
         this.resizeNode();
     }
 
+    /**
+     * 设置颜色
+     *
+     * @param color 颜色值，如 #FFFFFF
+     */
     public void setColor(String color) {
         if (StringUtil.isNotEmpty(color)) {
             try {
@@ -38,6 +45,11 @@ public class FXColorPicker extends ColorPicker implements FlexAdapter, TipAdapte
         }
     }
 
+    /**
+     * 获取颜色
+     *
+     * @return 颜色十六进制值，获取失败时返回 null
+     */
     public String getColor() {
         try {
             return FXColorUtil.getColorHex(this.getValue());

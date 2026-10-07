@@ -5,6 +5,8 @@ import cn.oyzh.fx.plus.window.StageManager;
 import javafx.stage.Stage;
 
 /**
+ * 表格测试应用入口，加载表格测试界面
+ *
  * @author oyzh
  * @since 2023/11/21
  */

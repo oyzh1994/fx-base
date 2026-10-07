@@ -38,26 +38,56 @@ public abstract class DigitalTextField extends LimitTextField {
     //    @Deprecated
     //    private boolean unsigned;
 
+    /**
+     * 获取最大值。
+     *
+     * @return 最大值
+     */
     public Number getMaxVal() {
         return maxVal;
     }
 
+    /**
+     * 设置最大值。
+     *
+     * @param maxVal 最大值
+     */
     public void setMaxVal(Number maxVal) {
         this.maxVal = maxVal;
     }
 
+    /**
+     * 获取最小值。
+     *
+     * @return 最小值
+     */
     public Number getMinVal() {
         return minVal;
     }
 
+    /**
+     * 设置最小值。
+     *
+     * @param minVal 最小值
+     */
     public void setMinVal(Number minVal) {
         this.minVal = minVal;
     }
 
+    /**
+     * 获取步进。
+     *
+     * @return 步进
+     */
     public Number getStep() {
         return step;
     }
 
+    /**
+     * 设置步进。
+     *
+     * @param step 步进
+     */
     public void setStep(Number step) {
         this.step = step;
     }
@@ -72,6 +102,11 @@ public abstract class DigitalTextField extends LimitTextField {
     //        this.unsigned = unsigned;
     //    }
 
+    /**
+     * 获取文本格式器
+     *
+     * @return 文本格式器
+     */
     public TextFormatter<String> textFormatter() {
         return textFormatter;
     }
@@ -81,6 +116,11 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected final TextFormatter<String> textFormatter;
 
+    /**
+     * 构造数字文本输入框
+     *
+     * @param maxLen 最大长度
+     */
     public DigitalTextField(Long maxLen) {
         // 创建文本格式化器
         this.textFormatter = new TextFormatter<>(this.getConverter(), null, this.createFilter());
@@ -92,6 +132,11 @@ public abstract class DigitalTextField extends LimitTextField {
         //        this.setUnsigned(unsigned);
     }
 
+    /**
+     * 获取数字转换器
+     *
+     * @return 数字转换器
+     */
     protected abstract DigitalConverter getConverter();
 
     /**

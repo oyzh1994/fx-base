@@ -7,11 +7,14 @@ import javafx.scene.paint.Color;
 import java.util.Locale;
 
 /**
+ * 基础亮色主题
+ *
  * @author oyzh
  * @since 2024/4/3
  */
 public class PrimerLightTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final PrimerLight THEME = new PrimerLight();
 
     @Override

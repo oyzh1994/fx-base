@@ -24,7 +24,7 @@ import javafx.scene.control.TextFormatter;
 import java.util.Collection;
 
 /**
- * 文本域
+ * 多行文本输入框控件
  *
  * @author oyzh
  * @since 2022/1/20
@@ -60,10 +60,20 @@ public class FXTextArea extends TextArea implements Destroyable, FlexAdapter, Li
         return maxLine;
     }
 
+    /**
+     * 是否必填。
+     *
+     * @return 必填
+     */
     public boolean isRequire() {
         return require;
     }
 
+    /**
+     * 设置必填。
+     *
+     * @param require 是否必填
+     */
     public void setRequire(boolean require) {
         this.require = require;
     }
@@ -155,6 +165,9 @@ public class FXTextArea extends TextArea implements Destroyable, FlexAdapter, Li
         ExecutorUtil.start(this::_scrollToEnd, 150);
     }
 
+    /**
+     * 执行滚动到尾部
+     */
     public void _scrollToEnd() {
         int len = this.getLength() - 1;
         if (len > 0) {
@@ -217,6 +230,11 @@ public class FXTextArea extends TextArea implements Destroyable, FlexAdapter, Li
         TaskManager.startDelay(() -> FXUtil.runWait(super::requestFocus), 1);
     }
 
+    /**
+     * 获取文本行数
+     *
+     * @return 文本行数
+     */
     public long lineCount() {
         return this.getText().lines().count();
     }

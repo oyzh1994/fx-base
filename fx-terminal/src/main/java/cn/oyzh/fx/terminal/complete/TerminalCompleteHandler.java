@@ -6,7 +6,7 @@ import cn.oyzh.fx.terminal.Terminal;
  * 补全处理器
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public interface TerminalCompleteHandler<T extends Terminal> {
 

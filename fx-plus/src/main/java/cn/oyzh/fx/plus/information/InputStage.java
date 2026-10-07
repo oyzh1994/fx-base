@@ -23,14 +23,21 @@ import javafx.stage.Stage;
 
 
 /**
+ * 输入框舞台，用于弹出单行文本输入窗口并获取用户输入内容
  *
  * @author oyzh
  * @since 2026-01-30
  */
 public class InputStage extends Stage implements StageAdapter {
 
+    /**
+     * 内容默认外边距
+     */
     private static final Insets DEFAULT_MARGIN = new Insets(15, 0, 0, 5);
 
+    /**
+     * 确定按钮默认外边距
+     */
     private static final Insets OK_DEFAULT_MARGIN = new Insets(0, 10, 0, 10);
 
     /**
@@ -43,10 +50,18 @@ public class InputStage extends Stage implements StageAdapter {
      */
     private String result;
 
+    /**
+     * 构造输入框舞台
+     */
     public InputStage() {
         this("");
     }
 
+    /**
+     * 构造输入框舞台
+     *
+     * @param initText 输入框初始文本
+     */
     public InputStage(String initText) {
         this.initModality(Modality.APPLICATION_MODAL);
         this.initStyle(FXStageStyle.EXTENDED.toStageStyle());
@@ -99,11 +114,17 @@ public class InputStage extends Stage implements StageAdapter {
         ObjectWatcherManager.watch(this);
     }
 
+    /**
+     * 取消输入，清空结果并关闭窗口
+     */
     public void cancel() {
         this.result = null;
         this.close();
     }
 
+    /**
+     * 确认输入，保存输入框内容并关闭窗口
+     */
     public void ok() {
         this.result = this.textField.getText();
         this.close();
@@ -121,17 +142,32 @@ public class InputStage extends Stage implements StageAdapter {
         this.setScene(null);
     }
 
+    /**
+     * 显示窗口并等待关闭，返回用户输入的内容
+     *
+     * @return 用户输入的内容，取消时返回 null
+     */
     public String getResult() {
         this.showAndWait();
         return this.result;
     }
 
+    /**
+     * 设置输入框文本
+     *
+     * @param text 文本
+     */
     public void setText(String text) {
         if (this.textField != null) {
             this.textField.setText(text);
         }
     }
 
+    /**
+     * 获取输入框文本
+     *
+     * @return 输入框文本
+     */
     public String getText() {
         if (this.textField != null) {
             return this.textField.getText();
@@ -139,12 +175,22 @@ public class InputStage extends Stage implements StageAdapter {
         return null;
     }
 
+    /**
+     * 设置输入框提示文本
+     *
+     * @param promptText 提示文本
+     */
     public void setPromptText(String promptText) {
         if (this.textField != null) {
             this.textField.setPromptText(promptText);
         }
     }
 
+    /**
+     * 获取输入框提示文本
+     *
+     * @return 提示文本
+     */
     public String getPromptText() {
         if (this.textField != null) {
             return this.textField.getPromptText();

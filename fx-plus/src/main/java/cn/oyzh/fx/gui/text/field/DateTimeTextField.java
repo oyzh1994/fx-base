@@ -13,25 +13,52 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
+ * 日期时间文本输入框
+ *
  * @author oyzh
  * @since 2024/07/19
  */
 public class DateTimeTextField extends LimitTextField {
 
+    /**
+     * 默认日期时间格式
+     */
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    /**
+     * 日期时间格式（不含秒）
+     */
     public static final SimpleDateFormat FORMAT_1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+    /**
+     * ISO 日期时间格式
+     */
     public static final SimpleDateFormat FORMAT_T = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
+    /**
+     * ISO 日期时间格式（不含秒）
+     */
     public static final SimpleDateFormat FORMAT_T_1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
+    /**
+     * 自定义日期格式
+     */
     private SimpleDateFormat dateFormat;
 
+    /**
+     * 获取自定义日期格式
+     *
+     * @return 自定义日期格式
+     */
     public SimpleDateFormat getDateFormat() {
         return dateFormat;
     }
 
+    /**
+     * 设置自定义日期格式
+     *
+     * @param dateFormat 自定义日期格式
+     */
     public void setDateFormat(SimpleDateFormat dateFormat) {
         this.dateFormat = dateFormat;
         if (dateFormat != null) {
@@ -41,6 +68,12 @@ public class DateTimeTextField extends LimitTextField {
         }
     }
 
+    /**
+     * 获取时间戳
+     *
+     * @return 时间戳，内容为空返回 null
+     * @throws ParseException 文本解析失败时抛出
+     */
     public Timestamp getTimestamp() throws ParseException {
         if (!this.isEmpty()) {
             String text = this.getText();
@@ -113,6 +146,12 @@ public class DateTimeTextField extends LimitTextField {
         return new DateTimeTextFieldSkin(this);
     }
 
+    /**
+     * 根据值的形态选择合适的日期时间格式
+     *
+     * @param value 值
+     * @return 日期时间格式
+     */
     private static SimpleDateFormat getFormat(Object value) {
         if (value == null) {
             return null;
@@ -127,6 +166,12 @@ public class DateTimeTextField extends LimitTextField {
         return format;
     }
 
+    /**
+     * 将值格式化为日期时间字符串
+     *
+     * @param value 值
+     * @return 日期时间字符串
+     */
     public static String format(Object value) {
         if (value == null) {
             return null;

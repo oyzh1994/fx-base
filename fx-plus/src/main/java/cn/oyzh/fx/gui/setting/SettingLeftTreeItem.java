@@ -5,11 +5,19 @@ import cn.oyzh.fx.gui.tree.view.RichTreeItem;
 import javafx.scene.control.TreeItem;
 
 /**
+ * 设置左侧树节点
+ *
  * @author oyzh
  * @since 2024/12/29
  */
 public class SettingLeftTreeItem extends RichTreeItem<SettingLeftTreeItemValue> {
 
+    /**
+     * 构建设置左侧树节点
+     *
+     * @param treeView 所属树视图
+     * @param value    节点值
+     */
     public SettingLeftTreeItem(SettingLeftTreeView treeView, SettingLeftTreeItemValue value) {
         super(treeView);
         this.setValue(value);
@@ -20,6 +28,12 @@ public class SettingLeftTreeItem extends RichTreeItem<SettingLeftTreeItemValue> 
         return (SettingLeftTreeView) super.getTreeView();
     }
 
+    /**
+     * 添加子节点
+     *
+     * @param item 节点值
+     * @return 新增的树节点
+     */
     public SettingLeftTreeItem addItem(SettingLeftTreeItemValue item) {
         item.setParentId(this.getItemId());
         SettingLeftTreeItem treeItem = new SettingLeftTreeItem(this.getTreeView(), item);
@@ -27,6 +41,12 @@ public class SettingLeftTreeItem extends RichTreeItem<SettingLeftTreeItemValue> 
         return treeItem;
     }
 
+    /**
+     * 按节点标识递归查找节点值
+     *
+     * @param itemId 节点标识
+     * @return 匹配的节点值，未找到返回 null
+     */
     public SettingLeftTreeItemValue findItem(String itemId) {
         if (StringUtil.isNotBlank(itemId)) {
             for (TreeItem<?> item : this.unfilteredChildren()) {
@@ -44,6 +64,11 @@ public class SettingLeftTreeItem extends RichTreeItem<SettingLeftTreeItemValue> 
         return null;
     }
 
+    /**
+     * 获取节点标识
+     *
+     * @return 节点标识
+     */
     public String getItemId() {
         SettingLeftTreeItemValue value = this.getValue();
         return value == null ? null : value.getId();

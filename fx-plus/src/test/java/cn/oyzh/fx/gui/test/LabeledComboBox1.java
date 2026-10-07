@@ -9,6 +9,12 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * 带标签的组合框轻量封装（基于普通 VBox 实现）
+ *
+ * @author oyzh
+ * @since 2026-01-17
+ */
 public class LabeledComboBox1 extends VBox {
     private String key;
     private String textColor = "#838186";

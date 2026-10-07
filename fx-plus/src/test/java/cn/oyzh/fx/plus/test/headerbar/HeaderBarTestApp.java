@@ -5,6 +5,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
+ * HeaderBar 测试应用入口，加载标题栏测试界面
+ *
  * @author oyzh
  * @since 2023/11/21
  */

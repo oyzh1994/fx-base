@@ -35,6 +35,11 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
     protected void updateButtonVisibility() {
     }
 
+    /**
+     * 以指定文本输入框构造文本域皮肤。
+     *
+     * @param textField 文本输入框
+     */
     public FXTextFieldSkin(TextField textField) {
         super(textField);
         // 初始化监听器
@@ -171,7 +176,7 @@ public class FXTextFieldSkin extends CustomTextFieldSkin {
     /**
      * 获取组件所属窗口
      *
-     * @return 组件
+     * @return 窗口
      */
     protected Window getWindow() {
         return this.getSkinnable().getScene().getWindow();

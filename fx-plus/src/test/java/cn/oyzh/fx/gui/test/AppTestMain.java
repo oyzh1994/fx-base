@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 
 /**
+ * GUI 基础控件综合示例，演示文本输入框、菜单栏、折叠面板、分页、滑块等控件
+ *
  * @author oyzh
  * @since 2025-06-12
  */

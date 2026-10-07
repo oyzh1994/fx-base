@@ -74,6 +74,11 @@ public class Toast {
      */
     protected Stage window;
 
+    /**
+     * 构造消息提示
+     *
+     * @param msg 消息
+     */
     public Toast(String msg) {
         this.msg = msg;
     }
@@ -237,62 +242,137 @@ public class Toast {
         }
     }
 
+    /**
+     * 获取消息。
+     *
+     * @return 消息
+     */
     public String getMsg() {
         return msg;
     }
 
+    /**
+     * 设置消息。
+     *
+     * @param msg 消息
+     */
     public void setMsg(String msg) {
         this.msg = msg;
     }
 
+    /**
+     * 获取时长。
+     *
+     * @return 时长
+     */
     public int getDuration() {
         return duration;
     }
 
+    /**
+     * 设置时长。
+     *
+     * @param duration 时长
+     */
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
+    /**
+     * 获取字体。
+     *
+     * @return 字体
+     */
     public Font getFont() {
         return font;
     }
 
+    /**
+     * 设置字体。
+     *
+     * @param font 字体
+     */
     public void setFont(Font font) {
         this.font = font;
     }
 
+    /**
+     * 获取图标。
+     *
+     * @return 图标
+     */
     public SVGGlyph getIcon() {
         return icon;
     }
 
+    /**
+     * 设置图标。
+     *
+     * @param icon 图标
+     */
     public void setIcon(SVGGlyph icon) {
         this.icon = icon;
     }
 
+    /**
+     * 获取边框。
+     *
+     * @return 边框
+     */
     public Border getBorder() {
         return border;
     }
 
+    /**
+     * 设置边框。
+     *
+     * @param border 边框
+     */
     public void setBorder(Border border) {
         this.border = border;
     }
 
+    /**
+     * 获取文本填充。
+     *
+     * @return 文本填充
+     */
     public Paint getTextFill() {
         return textFill;
     }
 
+    /**
+     * 设置文本填充。
+     *
+     * @param textFill 文本填充
+     */
     public void setTextFill(Paint textFill) {
         this.textFill = textFill;
     }
 
+    /**
+     * 获取背景。
+     *
+     * @return 背景
+     */
     public Background getBackground() {
         return background;
     }
 
+    /**
+     * 设置背景。
+     *
+     * @param background 背景
+     */
     public void setBackground(Background background) {
         this.background = background;
     }
 
+    /**
+     * 获取窗口。
+     *
+     * @return 窗口
+     */
     public Window getWindow() {
         return window;
     }

@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controls.tab;
 
 /**
+ * 固定tab页签，不可关闭
+ *
  * @author oyzh
  * @since 2022/1/21
  */

@@ -16,6 +16,8 @@ import java.awt.Component;
 import java.awt.Font;
 
 /**
+ * Swing 工具类，提供 AWT 与 JavaFX 之间的字体、颜色转换及主题样式适配（已废弃）
+ *
  * @author oyzh
  * @since 2025-08-04
  */
@@ -134,7 +136,7 @@ public class SwingUtil {
      * @return awt字体样式
      */
     public static int fromFxStyle(String fxStyle) {
-        // 3. 转换字体样式（粗体、斜体）
+        // 转换字体样式（粗体、斜体）
         int style = Font.PLAIN; // 默认样式
         if (fxStyle.contains("bold")) {
             style |= Font.BOLD; // 叠加粗体样式
@@ -172,7 +174,7 @@ public class SwingUtil {
                 break;
             case EXTRA_BOLD:
             case BOLD:
-                // 半粗体：尝试使用带"BOLD"后缀的字体变体
+                // 粗体：尝试使用带"BOLD"后缀的字体变体
                 adjustedFamily = family + " BOLD";
                 break;
             case BLACK:
@@ -186,10 +188,10 @@ public class SwingUtil {
     }
 
     /**
-     * 从fx颜色转换
+     * 将 JavaFX 颜色转换为 AWT 颜色
      *
-     * @param color fx颜色
-     * @return awt颜色
+     * @param color JavaFX 颜色
+     * @return AWT 颜色
      */
     public static Color fromFxColor(javafx.scene.paint.Color color) {
         return color == null ? null : new Color(

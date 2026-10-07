@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class SummerDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final SummerDark THEME = new SummerDark();
 
     @Override

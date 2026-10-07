@@ -20,7 +20,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.TextField;
 
 /**
- * 基础文本域
+ * 单行文本输入框控件
  *
  * @author oyzh
  * @since 2023/08/15
@@ -50,10 +50,20 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
      */
     private boolean require;
 
+    /**
+     * 是否必填。
+     *
+     * @return 必填
+     */
     public boolean isRequire() {
         return require;
     }
 
+    /**
+     * 设置必填。
+     *
+     * @param require 是否必填
+     */
     public void setRequire(boolean require) {
         this.require = require;
     }
@@ -63,18 +73,36 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
      */
     private boolean notEmpty;
 
+    /**
+     * 是否非空。
+     *
+     * @return 非空
+     */
     public boolean isNotEmpty() {
         return notEmpty;
     }
 
+    /**
+     * 设置非空。
+     *
+     * @param notEmpty 非空
+     */
     public void setNotEmpty(boolean notEmpty) {
         this.notEmpty = notEmpty;
     }
 
+    /**
+     * 构造文本字段对象。
+     */
     public FXTextField() {
         super.setText("");
     }
 
+    /**
+     * 构造文本字段对象。
+     *
+     * @param text 文本
+     */
     public FXTextField(String text) {
         super.setText(text);
     }
@@ -169,6 +197,12 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
         this.setText(format(value));
     }
 
+    /**
+     * 格式化值为字符串
+     *
+     * @param val 值
+     * @return 格式化后的字符串
+     */
     public static String format(Object val) {
         if (val instanceof CharSequence sequence) {
             return sequence.toString();
@@ -189,6 +223,11 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
         this.resizeNode();
     }
 
+    /**
+     * 设置文本
+     *
+     * @param text 文本内容
+     */
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }

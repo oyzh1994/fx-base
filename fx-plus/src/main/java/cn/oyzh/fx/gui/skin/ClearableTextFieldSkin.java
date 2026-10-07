@@ -24,6 +24,11 @@ public class ClearableTextFieldSkin extends ActionTextFieldSkin {
         this.button.setVisible(shouldBeVisible);
     }
 
+    /**
+     * 构造可清空文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public ClearableTextFieldSkin(TextField textField) {
         super(textField);
         // super(textField, new CloseSVGGlyph());

@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * AtlantaFX 第三方控件示例，演示文本框、面包屑、日历、卡片、模态框等组件
  *
  * @author oyzh
  * @since 2025-11-14

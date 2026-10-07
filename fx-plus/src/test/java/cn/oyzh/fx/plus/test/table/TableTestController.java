@@ -15,6 +15,8 @@ import javafx.scene.control.Pagination;
 import javafx.stage.Modality;
 
 /**
+ * 表格测试界面控制器，演示列显隐与主题切换
+ *
  * @author oyzh
  * @since 2023/11/21
  */
@@ -26,7 +28,7 @@ import javafx.stage.Modality;
 public class TableTestController extends StageController {
 
     /**
-     * 分数列
+     * 名称列
      */
     @FXML
     private FXTableColumn<String, String> value;
@@ -41,13 +43,13 @@ public class TableTestController extends StageController {
     private FXTableColumn<String, Double> score;
 
     /**
-     * 分数列
+     * 经度列
      */
     @FXML
     private FXTableColumn<String, Double> longitude;
 
     /**
-     * 分数列
+     * 纬度列
      */
     @FXML
     private FXTableColumn<String, Double> latitude;

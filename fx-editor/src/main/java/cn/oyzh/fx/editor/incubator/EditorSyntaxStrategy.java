@@ -4,7 +4,7 @@ package cn.oyzh.fx.editor.incubator;
  * 编辑器着色策略
  *
  * @author oyzh
- * @since 2026/5/27
+ * @since 2026-05-27
  */
 public enum EditorSyntaxStrategy {
 

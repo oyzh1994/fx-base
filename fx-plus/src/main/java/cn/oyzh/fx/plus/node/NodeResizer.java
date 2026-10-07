@@ -70,7 +70,7 @@ public abstract class NodeResizer implements Destroyable {
     protected EventHandler<MouseEvent> mouseReleased;
 
     /**
-     * 鼠标拖动事件
+     * 拉伸触发回调
      */
     protected Consumer<Float> resizeTriggered;
 
@@ -84,22 +84,49 @@ public abstract class NodeResizer implements Destroyable {
      */
     protected Float maxValue;
 
+    /**
+     * 获取事件节点。
+     *
+     * @return 事件节点
+     */
     public Node getEventNode() {
         return eventNode;
     }
 
+    /**
+     * 获取原始光标。
+     *
+     * @return 原始光标
+     */
     public Cursor getOriginalCursor() {
         return originalCursor;
     }
 
+    /**
+     * 获取触发阈值。
+     *
+     * @return 触发阈值
+     */
     public Byte getTriggerThreshold() {
         return triggerThreshold;
     }
 
+    /**
+     * 设置触发阈值。
+     *
+     * @param triggerThreshold 触发阈值
+     */
     public void setTriggerThreshold(Byte triggerThreshold) {
         this.triggerThreshold = triggerThreshold;
     }
 
+    /**
+     * 构造节点调整器对象。
+     *
+     * @param eventNode 事件节点
+     * @param originalCursor 原始光标
+     * @param resizeTriggered 是否触发调整
+     */
     public NodeResizer(Node eventNode, Cursor originalCursor, Consumer<Float> resizeTriggered) {
         this.eventNode = eventNode;
         this.originalCursor = originalCursor;
@@ -107,7 +134,7 @@ public abstract class NodeResizer implements Destroyable {
     }
 
     /**
-     * 限制值
+     * 设置最小值与最大值限制
      *
      * @param minValue 最小值
      * @param maxValue 最大值
@@ -189,7 +216,7 @@ public abstract class NodeResizer implements Destroyable {
     /**
      * 获取鼠标拖动事件
      *
-     * @return 鼠标动事件
+     * @return 鼠标拖动事件
      */
     public EventHandler<MouseEvent> mouseDragged() {
         if (this.mouseDragged == null) {

@@ -7,6 +7,8 @@ import cn.oyzh.fx.plus.drag.DragNodeItem;
 import java.util.Objects;
 
 /**
+ * 树拖拽测试中的可拖拽子节点
+ *
  * @author oyzh
  * @since 2025-08-29
  */

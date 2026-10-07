@@ -294,7 +294,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     /**
      * 获取透明度配置
      *
-     * @return 主题配置
+     * @return 透明度配置
      */
     public OpacityConfig opacityConfig() {
         if (this.opacity == null && this.titleBarOpacity == null) {
@@ -401,88 +401,193 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         return config;
     }
 
+    /**
+     * 获取透明度，下限为 50
+     *
+     * @return 透明度
+     */
     public float getOpacity() {
         return opacity == null ? 100 : Math.max(50, opacity);
     }
 
+    /**
+     * 设置窗口透明度。
+     *
+     * @param opacity 窗口透明度
+     */
     public void setOpacity(Float opacity) {
         this.opacity = opacity;
     }
 
+    /**
+     * 获取标题栏透明度。
+     *
+     * @return 标题栏透明度
+     */
     @Deprecated
     public Float getTitleBarOpacity() {
         return titleBarOpacity;
     }
 
+    /**
+     * 设置标题栏透明度。
+     *
+     * @param titleBarOpacity 标题栏透明度
+     */
     @Deprecated
     public void setTitleBarOpacity(Float titleBarOpacity) {
         this.titleBarOpacity = titleBarOpacity;
     }
 
+    /**
+     * 获取主题。
+     *
+     * @return 主题
+     */
     public String getTheme() {
         return theme;
     }
 
+    /**
+     * 设置主题。
+     *
+     * @param theme 主题
+     */
     public void setTheme(String theme) {
         this.theme = theme;
     }
 
+    /**
+     * 获取自定义前景色。
+     *
+     * @return 自定义前景色
+     */
     public String getFgColor() {
         return fgColor;
     }
 
+    /**
+     * 设置自定义前景色。
+     *
+     * @param fgColor 自定义前景色
+     */
     public void setFgColor(String fgColor) {
         this.fgColor = fgColor;
     }
 
+    /**
+     * 获取自定义背景色。
+     *
+     * @return 自定义背景色
+     */
     public String getBgColor() {
         return bgColor;
     }
 
+    /**
+     * 设置自定义背景色。
+     *
+     * @param bgColor 自定义背景色
+     */
     public void setBgColor(String bgColor) {
         this.bgColor = bgColor;
     }
 
+    /**
+     * 获取自定义强调色。
+     *
+     * @return 自定义强调色
+     */
     public String getAccentColor() {
         return accentColor;
     }
 
+    /**
+     * 设置自定义强调色。
+     *
+     * @param accentColor 自定义强调色
+     */
     public void setAccentColor(String accentColor) {
         this.accentColor = accentColor;
     }
 
+    /**
+     * 设置字体大小。
+     *
+     * @param fontSize 字体大小
+     */
     public void setFontSize(Byte fontSize) {
         this.fontSize = fontSize;
     }
 
+    /**
+     * 设置字体名称。
+     *
+     * @param fontFamily 字体名称
+     */
     public void setFontFamily(String fontFamily) {
         this.fontFamily = fontFamily;
     }
 
+    /**
+     * 设置字体粗细。
+     *
+     * @param fontWeight 字体粗细
+     */
     public void setFontWeight(Short fontWeight) {
         this.fontWeight = fontWeight;
     }
 
+    /**
+     * 设置编辑器字体大小。
+     *
+     * @param editorFontSize 编辑器字体大小
+     */
     public void setEditorFontSize(Byte editorFontSize) {
         this.editorFontSize = editorFontSize;
     }
 
+    /**
+     * 设置编辑器字体名称。
+     *
+     * @param editorFontFamily 编辑器字体名称
+     */
     public void setEditorFontFamily(String editorFontFamily) {
         this.editorFontFamily = editorFontFamily;
     }
 
+    /**
+     * 设置编辑器字体粗细。
+     *
+     * @param editorFontWeight 编辑器字体粗细
+     */
     public void setEditorFontWeight(Short editorFontWeight) {
         this.editorFontWeight = editorFontWeight;
     }
 
+    /**
+     * 设置终端字体大小。
+     *
+     * @param terminalFontSize 终端字体大小
+     */
     public void setTerminalFontSize(Byte terminalFontSize) {
         this.terminalFontSize = terminalFontSize;
     }
 
+    /**
+     * 设置终端字体名称。
+     *
+     * @param terminalFontFamily 终端字体名称
+     */
     public void setTerminalFontFamily(String terminalFontFamily) {
         this.terminalFontFamily = terminalFontFamily;
     }
 
+    /**
+     * 设置终端字体粗细。
+     *
+     * @param terminalFontWeight 终端字体粗细
+     */
     public void setTerminalFontWeight(Short terminalFontWeight) {
         this.terminalFontWeight = terminalFontWeight;
     }
@@ -527,18 +632,38 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     //        return config;
     //    }
 
+    /**
+     * 获取区域。
+     *
+     * @return 区域
+     */
     public String getLocale() {
         return locale;
     }
 
+    /**
+     * 设置区域。
+     *
+     * @param locale 区域
+     */
     public void setLocale(String locale) {
         this.locale = locale;
     }
 
+    /**
+     * 获取应用退出模式。
+     *
+     * @return 应用退出模式
+     */
     public Byte getExitMode() {
         return exitMode;
     }
 
+    /**
+     * 设置应用退出模式。
+     *
+     * @param exitMode 应用退出模式
+     */
     public void setExitMode(Byte exitMode) {
         this.exitMode = exitMode;
     }
@@ -556,48 +681,103 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     //        return rememberPageSize;
     //    }
 
+    /**
+     * 设置是否记住页面大小。
+     *
+     * @param rememberPageSize 是否记住页面大小
+     */
     public void setRememberPageSize(Byte rememberPageSize) {
         this.rememberPageSize = rememberPageSize;
     }
 
+    /**
+     * 获取是否记住页面拉伸。
+     *
+     * @return 是否记住页面拉伸
+     */
     @Deprecated
     public Byte getRememberPageResize() {
         return rememberPageResize;
     }
 
+    /**
+     * 设置是否记住页面拉伸。
+     *
+     * @param rememberPageResize 是否记住页面拉伸
+     */
     @Deprecated
     public void setRememberPageResize(Byte rememberPageResize) {
         this.rememberPageResize = rememberPageResize;
     }
 
+    /**
+     * 获取是否记住页面位置。
+     *
+     * @return 是否记住页面位置
+     */
     public Byte getRememberPageLocation() {
         return rememberPageLocation;
     }
 
+    /**
+     * 设置是否记住页面位置。
+     *
+     * @param rememberPageLocation 是否记住页面位置
+     */
     public void setRememberPageLocation(Byte rememberPageLocation) {
         this.rememberPageLocation = rememberPageLocation;
     }
 
+    /**
+     * 设置页面宽。
+     *
+     * @param pageWidth 页面宽
+     */
     public void setPageWidth(Double pageWidth) {
         this.pageWidth = pageWidth;
     }
 
+    /**
+     * 设置页面高。
+     *
+     * @param pageHeight 页面高
+     */
     public void setPageHeight(Double pageHeight) {
         this.pageHeight = pageHeight;
     }
 
+    /**
+     * 获取屏幕 x 坐标。
+     *
+     * @return 屏幕 x 坐标
+     */
     public Double getPageScreenX() {
         return pageScreenX;
     }
 
+    /**
+     * 设置屏幕 x 坐标。
+     *
+     * @param pageScreenX 屏幕 x 坐标
+     */
     public void setPageScreenX(Double pageScreenX) {
         this.pageScreenX = pageScreenX;
     }
 
+    /**
+     * 获取屏幕 y 坐标。
+     *
+     * @return 屏幕 y 坐标
+     */
     public Double getPageScreenY() {
         return pageScreenY;
     }
 
+    /**
+     * 设置屏幕 y 坐标。
+     *
+     * @param pageScreenY 屏幕 y 坐标
+     */
     public void setPageScreenY(Double pageScreenY) {
         this.pageScreenY = pageScreenY;
     }
@@ -606,10 +786,20 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
     //        return pageMaximized;
     //    }
 
+    /**
+     * 设置是否最大化。
+     *
+     * @param pageMaximized 是否最大化
+     */
     public void setPageMaximized(Boolean pageMaximized) {
         this.pageMaximized = pageMaximized;
     }
 
+    /**
+     * 设置主页左侧宽。
+     *
+     * @param pageLeftWidth 主页左侧宽
+     */
     @Deprecated
     public void setPageLeftWidth(Float pageLeftWidth) {
         this.pageLeftWidth = pageLeftWidth;
@@ -656,70 +846,155 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         }
     }
 
+    /**
+     * 获取字体大小
+     *
+     * @return 字体大小
+     */
     public byte getFontSize() {
         return this.fontSize == null ? defaultFontSize() : this.fontSize;
     }
 
+    /**
+     * 获取字体名称
+     *
+     * @return 字体名称
+     */
     public String getFontFamily() {
         return this.fontFamily == null ? defaultFontFamily() : this.fontFamily;
     }
 
+    /**
+     * 获取字体粗细
+     *
+     * @return 字体粗细
+     */
     public int getFontWeight() {
         return this.fontWeight == null ? defaultFontWeight() : this.fontWeight;
     }
 
+    /**
+     * 获取默认字体大小
+     *
+     * @return 默认字体大小
+     */
     public static byte defaultFontSize() {
         return 12;
     }
 
+    /**
+     * 获取默认字体名称
+     *
+     * @return 默认字体名称
+     */
     public static String defaultFontFamily() {
         return Font.getDefault().getFamily();
     }
 
+    /**
+     * 获取默认字体粗细
+     *
+     * @return 默认字体粗细
+     */
     public static int defaultFontWeight() {
         return FontWeight.NORMAL.getWeight();
     }
 
+    /**
+     * 获取编辑器字体大小
+     *
+     * @return 编辑器字体大小
+     */
     public Byte getEditorFontSize() {
         return this.editorFontSize == null ? defaultEditorFontSize() : this.editorFontSize;
     }
 
+    /**
+     * 获取编辑器字体名称
+     *
+     * @return 编辑器字体名称
+     */
     public String getEditorFontFamily() {
         return StringUtil.isBlank(this.editorFontFamily) ? defaultEditorFontFamily() : this.editorFontFamily;
     }
 
+    /**
+     * 获取编辑器字体粗细
+     *
+     * @return 编辑器字体粗细
+     */
     public int getEditorFontWeight() {
         return this.editorFontWeight == null ? defaultEditorFontWeight() : this.editorFontWeight;
     }
 
+    /**
+     * 获取默认编辑器字体大小
+     *
+     * @return 默认编辑器字体大小
+     */
     public static byte defaultEditorFontSize() {
         return 14;
     }
 
+    /**
+     * 获取默认编辑器字体名称
+     *
+     * @return 默认编辑器字体名称
+     */
     public static String defaultEditorFontFamily() {
         return Font.getDefault().getFamily();
     }
 
+    /**
+     * 获取默认编辑器字体粗细
+     *
+     * @return 默认编辑器字体粗细
+     */
     public static int defaultEditorFontWeight() {
         return FontWeight.NORMAL.getWeight();
     }
 
+    /**
+     * 获取终端字体大小
+     *
+     * @return 终端字体大小
+     */
     public Byte getTerminalFontSize() {
         return this.terminalFontSize == null ? defaultTerminalFontSize() : this.terminalFontSize;
     }
 
+    /**
+     * 获取终端字体粗细
+     *
+     * @return 终端字体粗细
+     */
     public int getTerminalFontWeight() {
         return this.terminalFontWeight == null ? defaultTerminalFontWeight() : this.terminalFontWeight;
     }
 
+    /**
+     * 获取终端字体名称
+     *
+     * @return 终端字体名称
+     */
     public String getTerminalFontFamily() {
         return StringUtil.isBlank(this.terminalFontFamily) ? defaultTerminalFontFamily() : this.terminalFontFamily;
     }
 
+    /**
+     * 获取默认终端字体大小
+     *
+     * @return 默认终端字体大小
+     */
     public static byte defaultTerminalFontSize() {
         return 14;
     }
 
+    /**
+     * 获取默认终端字体名称
+     *
+     * @return 默认终端字体名称
+     */
     public static String defaultTerminalFontFamily() {
         if (OSUtil.isWindows()) {
             return "Consolas";
@@ -730,6 +1005,11 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
         return "Monospace";
     }
 
+    /**
+     * 获取默认终端字体粗细
+     *
+     * @return 默认终端字体粗细
+     */
     public static int defaultTerminalFontWeight() {
         return FontWeight.NORMAL.getWeight();
     }

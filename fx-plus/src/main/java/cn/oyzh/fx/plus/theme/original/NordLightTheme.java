@@ -7,11 +7,14 @@ import javafx.scene.paint.Color;
 import java.util.Locale;
 
 /**
+ * 北欧亮色主题
+ *
  * @author oyzh
  * @since 2024/4/3
  */
 public class NordLightTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final NordLight THEME = new NordLight();
 
     @Override

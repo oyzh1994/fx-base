@@ -210,25 +210,51 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         }
     }
 
+    /**
+     * 构造图标对象。
+     */
     public SVGGlyph() {
         this.setSize(FontManager.currentFontSize());
     }
 
+    /**
+     * 构造图标对象。
+     *
+     * @param url 地址
+     */
     public SVGGlyph(String url) {
         this(url, FontManager.currentFontSize());
     }
 
+    /**
+     * 构造图标对象。
+     *
+     * @param url 地址
+     * @param color 颜色
+     */
     public SVGGlyph(String url, Paint color) {
         this(url, FontManager.currentFontSize());
         this.setColor(color);
     }
 
+    /**
+     * 构造图标对象。
+     *
+     * @param url 地址
+     * @param size 大小
+     */
     public SVGGlyph(String url, String size) {
         this();
         this.setUrl(url);
         this.setSizeStr(size);
     }
 
+    /**
+     * 构造图标对象。
+     *
+     * @param url 地址
+     * @param size 大小
+     */
     public SVGGlyph(String url, double size) {
         this();
         this.setUrl(url);
@@ -273,6 +299,11 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         }
     }
 
+    /**
+     * 获取颜色。
+     *
+     * @return 颜色
+     */
     public Paint getColor() {
         return color;
     }
@@ -329,7 +360,7 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
     }
 
     /**
-     * 设置大小，符串形式
+     * 设置大小，字符串形式
      *
      * @param size 大小字符串形式
      */
@@ -368,8 +399,16 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         return new double[]{w, h};
     }
 
+    /**
+     * 内容更新监听器
+     */
     private InvalidationListener contentFunc;
 
+    /**
+     * 获取内容更新监听器（延迟创建）
+     *
+     * @return 内容更新监听器
+     */
     private InvalidationListener contentFunc() {
         if (this.contentFunc == null) {
             this.contentFunc = (observable) -> this.updateContent();
@@ -427,49 +466,105 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         return glyph;
     }
 
+    /**
+     * 禁用等待动画
+     */
     public void disableWaiting() {
         this.enableWaiting = false;
     }
 
+    /**
+     * 获取地址。
+     *
+     * @return 地址
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * 获取活跃颜色。
+     *
+     * @return 活跃颜色
+     */
     public Color getActiveColor() {
         return activeColor;
     }
 
+    /**
+     * 设置活跃颜色。
+     *
+     * @param activeColor 活跃颜色
+     */
     public void setActiveColor(Color activeColor) {
         this.activeColor = activeColor;
         this.setActive(activeColor != null);
     }
 
+    /**
+     * 获取等待。
+     *
+     * @return 等待
+     */
     public Boolean getWaiting() {
         return waiting;
     }
 
+    /**
+     * 设置等待。
+     *
+     * @param waiting 等待
+     */
     public void setWaiting(Boolean waiting) {
         this.waiting = waiting;
     }
 
+    /**
+     * 是否启用等待。
+     *
+     * @return 启用等待
+     */
     public boolean isEnableWaiting() {
         return enableWaiting;
     }
 
+    /**
+     * 设置启用等待。
+     *
+     * @param enableWaiting 启用等待
+     */
     public void setEnableWaiting(boolean enableWaiting) {
         this.enableWaiting = enableWaiting;
     }
 
+    /**
+     * 获取原始。
+     *
+     * @return 原始
+     */
     public FXSVGPath getOriginal() {
         return original;
     }
 
+    /**
+     * 设置原始。
+     *
+     * @param original 原始
+     */
     public void setOriginal(FXSVGPath original) {
         this.original = original;
     }
 
+    /**
+     * 激活状态属性
+     */
     private BooleanProperty activeProperty;
 
+    /**
+     * 获取活跃属性。
+     *
+     * @return 活跃属性
+     */
     public BooleanProperty activeProperty() {
         if (this.activeProperty == null) {
             this.activeProperty = new SimpleBooleanProperty(false);

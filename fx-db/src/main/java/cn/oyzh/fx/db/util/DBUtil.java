@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * db工具类
+ * 数据库工具类，提供 SQL 语句与数据的打印、参数设置、数据包装、名称包装等通用方法
  *
  * @author oyzh
  * @since 2023/12/27
@@ -111,10 +111,12 @@ public class DBUtil {
     }
 
     /**
-     * 设置值
+     * 设置预处理语句参数值
      *
-     * @param val   值
-     * @param index 索引
+     * @param statement 预处理语句
+     * @param val       值
+     * @param index     索引
+     * @throws SQLException 异常
      */
     public static void setVal(PreparedStatement statement, Object val, int index) throws SQLException {
         if (val == null) {
@@ -153,10 +155,11 @@ public class DBUtil {
     }
 
     /**
-     * 是否相同值
+     * 判断两个值是否相同
      *
      * @param val  值
      * @param nVal 新值
+     * @return 结果
      */
     public static boolean isSameVal(Object val, Object nVal) {
         if (val == nVal) {
@@ -415,7 +418,7 @@ public class DBUtil {
     /**
      * 生成克隆名称
      *
-     * @return 复制名称
+     * @return 克隆名称
      */
     public static String genCloneName() {
         return "_clone_" + UUIDUtil.uuidSimple().substring(0, 5);

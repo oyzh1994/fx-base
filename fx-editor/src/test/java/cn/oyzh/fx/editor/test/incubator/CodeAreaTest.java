@@ -12,6 +12,8 @@ import jfx.incubator.scene.control.richtext.RichTextArea;
 
 
 /**
+ * incubator 模块 CodeArea 测试，演示在新窗口中创建代码区域并监听对象回收。
+ *
  * @author oyzh
  * @since 2022/5/18
  */

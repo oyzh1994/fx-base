@@ -3,6 +3,7 @@ package cn.oyzh.fx.db;
 import cn.oyzh.common.util.StringUtil;
 
 /**
+ * 数据库列接口，提供列的名称、类型、长度等读写及类型能力判断
  *
  * @author oyzh
  * @since 2026-08-21
@@ -155,7 +156,7 @@ public interface DBColumn extends DBName{
     }
 
     /**
-     * 是否支持填充零
+     * 是否支持bit类型
      *
      * @return 结果
      */

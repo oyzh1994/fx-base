@@ -7,8 +7,10 @@ import cn.oyzh.fx.terminal.execute.TerminalExecuteResult;
 import cn.oyzh.i18n.I18nHelper;
 
 /**
+ * 清除终端命令处理器
+ *
  * @author oyzh
- * @since 2023/7/22
+ * @since 2023-10-09
  */
 public class ClearTerminalCommandHandler extends BaseTerminalCommandHandler<ClearTerminalCommand, Terminal> {
 

@@ -183,18 +183,38 @@ public class ThemeManager {
         }
     }
 
+    /**
+     * 获取当前主题强调色
+     *
+     * @return 强调色
+     */
     public static Color currentAccentColor() {
         return currentTheme().getAccentColor();
     }
 
+    /**
+     * 获取当前主题前景色
+     *
+     * @return 前景色
+     */
     public static Color currentForegroundColor() {
         return currentTheme().getForegroundColor();
     }
 
+    /**
+     * 获取当前主题背景色
+     *
+     * @return 背景色
+     */
     public static Color currentBackgroundColor() {
         return currentTheme().getBackgroundColor();
     }
 
+    /**
+     * 获取当前主题样式文件
+     *
+     * @return 样式文件路径
+     */
     public static String currentUserAgentStylesheet() {
         return currentTheme().getUserAgentStylesheet();
     }

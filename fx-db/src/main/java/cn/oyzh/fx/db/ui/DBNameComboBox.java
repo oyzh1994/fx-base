@@ -5,6 +5,8 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 
 /**
+ * 数据库名称选择框，用于展示并选择数据库对象名称
+ *
  * @author oyzh
  * @since 2024/8/27
  */

@@ -45,7 +45,12 @@ public class CustomTheme implements ThemeStyle {
     private String themePath;
 
     /**
-     * 更新主题样
+     * 更新主题样式
+     *
+     * @param themeName   主题名称
+     * @param bgColor     背景色
+     * @param fgColor     前景色
+     * @param accentColor 强调色
      */
     public void updateTheme(String themeName, String bgColor, String fgColor, String accentColor) {
         this.theme = Themes.getTheme(themeName);
@@ -119,6 +124,9 @@ public class CustomTheme implements ThemeStyle {
         return this.theme.isDarkMode();
     }
 
+    /**
+     * 获取主题风格
+     */
     public ThemeStyle getTheme() {
         return theme;
     }
@@ -138,6 +146,9 @@ public class CustomTheme implements ThemeStyle {
         return foregroundColor;
     }
 
+    /**
+     * 获取主题文件路径
+     */
     public String getThemePath() {
         return themePath;
     }

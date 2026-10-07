@@ -33,6 +33,11 @@ public class Tray extends BaseTray {
      */
     private TrayMouseListener trayMouseListener;
 
+    /**
+     * 构造系统托盘
+     *
+     * @param iconUrl 图标地址
+     */
     public Tray(String iconUrl) {
         super(iconUrl);
     }

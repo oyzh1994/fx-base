@@ -13,41 +13,80 @@ import java.io.File;
 import java.util.function.Consumer;
 
 /**
- * 文件文本输入框皮肤
+ * 保存文件输入框皮肤
  *
  * @author oyzh
  * @since 2024/07/04
  */
 public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
 
+    /**
+     * 初始文件名
+     */
     private String initFileName;
 
+    /**
+     * 文件扩展名过滤器
+     */
     private FileExtensionFilter extension;
 
+    /**
+     * 获取文件选中回调
+     *
+     * @return 文件选中回调
+     */
     public Consumer<File> getOnFileSelected() {
         return onFileSelected;
     }
 
+    /**
+     * 设置文件选中回调
+     *
+     * @param onFileSelected 文件选中回调
+     */
     public void setOnFileSelected(Consumer<File> onFileSelected) {
         this.onFileSelected = onFileSelected;
     }
 
+    /**
+     * 获取文件扩展名过滤器
+     *
+     * @return 文件扩展名过滤器
+     */
     public FileExtensionFilter getExtension() {
         return extension;
     }
 
+    /**
+     * 设置文件扩展名过滤器
+     *
+     * @param extension 文件扩展名过滤器
+     */
     public void setExtension(FileExtensionFilter extension) {
         this.extension = extension;
     }
 
+    /**
+     * 获取初始文件名
+     *
+     * @return 初始文件名
+     */
     public String getInitFileName() {
         return initFileName;
     }
 
+    /**
+     * 设置初始文件名
+     *
+     * @param initFileName 初始文件名
+     */
     public void setInitFileName(String initFileName) {
         this.initFileName = initFileName;
     }
 
+    /**
+     * 文件选中回调
+     */
     private Consumer<File> onFileSelected;
 
     @Override
@@ -66,6 +105,11 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
         }
     }
 
+    /**
+     * 以指定文本输入框构造保存文件输入框皮肤。
+     *
+     * @param textField 文本输入框
+     */
     public SaveFileTextFieldSkin(TextField textField) {
         super(textField);
         // super(textField, new ChooseSVGGlyph());

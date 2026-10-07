@@ -9,7 +9,7 @@ import cn.oyzh.fx.terminal.execute.TerminalExecuteHandler;
  * 终端命令实现
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public interface TerminalCommandHandler<C extends TerminalCommand, T extends Terminal> extends TerminalCompleteHandler<T>, TerminalExecuteHandler<C, T> {
 

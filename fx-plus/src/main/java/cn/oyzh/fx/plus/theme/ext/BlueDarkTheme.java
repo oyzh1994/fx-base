@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class BlueDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final BlueDark THEME = new BlueDark();
 
     @Override

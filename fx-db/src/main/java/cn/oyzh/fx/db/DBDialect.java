@@ -17,6 +17,11 @@ public enum DBDialect {
     DAMENG,
     ;
 
+    /**
+     * 获取所有方言列表
+     *
+     * @return 方言列表
+     */
     public static List<DBDialect> valueList() {
         List<DBDialect> list = new ArrayList<>();
         Collections.addAll(list, values());

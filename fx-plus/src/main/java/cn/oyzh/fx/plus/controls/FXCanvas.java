@@ -13,6 +13,8 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.canvas.Canvas;
 
 /**
+ * 画布控件，继承自 Canvas，支持主题、字体、状态、鼠标、提示等适配
+ *
  * @author oyzh
  * @since 2025-03-08
  */

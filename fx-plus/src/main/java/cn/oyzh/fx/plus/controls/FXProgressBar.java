@@ -14,6 +14,8 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.ProgressBar;
 
 /**
+ * 进度条控件，继承自 ProgressBar，支持主题、字体、状态、布局等适配
+ *
  * @author oyzh
  * @since 2025-03-07
  */
@@ -30,6 +32,11 @@ public class FXProgressBar extends ProgressBar implements FlexAdapter, NodeGroup
         this.resizeNode();
     }
 
+    /**
+     * 设置进度值（在 FX 线程中执行）
+     *
+     * @param progress 进度值
+     */
     public void progress(double progress) {
         FXUtil.runWait(() -> super.setProgress(progress));
     }

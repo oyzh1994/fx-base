@@ -24,6 +24,8 @@ import java.util.function.Consumer;
 
 
 /**
+ * 表格列
+ *
  * @author oyzh
  * @since 2022/1/18
  */
@@ -33,18 +35,26 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         NodeManager.init(this);
     }
 
+    /**
+     * 构造表列对象。
+     */
     public FXTableColumn() {
         super();
     }
 
+    /**
+     * 构造表列对象。
+     *
+     * @param text 文本
+     */
     public FXTableColumn(String text) {
         super(text);
     }
 
     /**
-     * 获取cell工厂
+     * 获取单元格工厂
      *
-     * @return 结果
+     * @return 单元格工厂
      */
     protected Callback<TableColumn<S, T>, TableCell<S, T>> cellFactory() {
         return param -> new FXTableCell<>();
@@ -61,12 +71,19 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
     }
 
     /**
-     * 设置列处理器
+     * 获取列处理器
+     *
+     * @return 列处理器
      */
     public TableCell<S, T> getCell() {
         return (TableCell<S, T>) PropertiesUtil.get(this.getTableView(), "cell");
     }
 
+    /**
+     * 设置行高
+     *
+     * @param lineHeight 行高
+     */
     public void setLineHeight(double lineHeight) {
         FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
         if (cell == null) {
@@ -76,6 +93,11 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         cell.setLineHeight(lineHeight);
     }
 
+    /**
+     * 获取行高
+     *
+     * @return 行高
+     */
     public double getLineHeight() {
         FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
         if (cell != null) {
@@ -84,6 +106,11 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         return Double.NaN;
     }
 
+    /**
+     * 设置对齐方式
+     *
+     * @param pos 对齐方式
+     */
     public void setAlignment(Pos pos) {
         FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
         if (cell == null) {
@@ -93,6 +120,11 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         cell.setAlignment(pos);
     }
 
+    /**
+     * 获取对齐方式
+     *
+     * @return 对齐方式
+     */
     public Pos getAlignment() {
         FXTableCell<S, T> cell = (FXTableCell<S, T>) this.getCell();
         if (cell != null) {
@@ -101,8 +133,16 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         return null;
     }
 
+    /**
+     * 值名称属性键
+     */
     public static final String VALUE_NAME_PROP = "value_name";
 
+    /**
+     * 设置值名称
+     *
+     * @param valueName 值名称
+     */
     public void setValueName(String valueName) {
         try {
             this.setCellValueFactory(new PropertyValueFactory<>(valueName));
@@ -112,10 +152,20 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
         }
     }
 
+    /**
+     * 获取值名称
+     *
+     * @return 值名称
+     */
     public String getValueName() {
         return this.getProp(VALUE_NAME_PROP);
     }
 
+    /**
+     * 设置文本
+     *
+     * @param text 文本
+     */
     public void text(String text) {
         FXUtil.runWait(() -> super.setText(text));
     }

@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class ArmyDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final ArmyDark THEME = new ArmyDark();
 
     @Override

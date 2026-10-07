@@ -13,6 +13,12 @@
 //import java.util.List;
 //// ... 其他必要的import
 //
+///**
+// * TextMate 语法高亮器示例（已注释），基于 tm4java 语法为 RichTextFX 编辑器计算并应用语法高亮样式。
+// *
+// * @author oyzh
+// * @since 2025-09-24
+// */
 //public class TextMateSyntaxHighlighter {
 //
 //    private CodeArea codeArea;

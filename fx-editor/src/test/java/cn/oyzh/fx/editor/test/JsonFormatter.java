@@ -1,5 +1,11 @@
 package cn.oyzh.fx.editor.test;
 
+/**
+ * JSON 去格式化工具，去除 JSON 文本中字符串之外的空白字符以压缩体积。
+ *
+ * @author oyzh
+ * @since 2025-10-16
+ */
 public class JsonFormatter {
     
     public static String removeJsonFormatting(String jsonString) {

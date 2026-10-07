@@ -5,6 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 
 /**
+ * 扩展标题栏工具类，用于获取扩展标题栏及标题栏图标
+ *
  * @author oyzh
  * @since 2025-08-19
  */

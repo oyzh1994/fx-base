@@ -7,6 +7,8 @@ import javafx.scene.control.TextFormatter;
 import java.util.function.UnaryOperator;
 
 /**
+ * 文本输入限制操作器，依据所在控件对输入变更进行行数与长度限制校验
+ *
  * @author oyzh
  * @since 2024/6/21
  */

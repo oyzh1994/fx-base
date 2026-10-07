@@ -19,6 +19,11 @@ import javafx.util.Callback;
  */
 public class FontFamilyTextFieldSkin extends SelectTextFiledSkin<String> {
 
+    /**
+     * 构造字体族输入框皮肤
+     *
+     * @param textField 关联的文本框
+     */
     public FontFamilyTextFieldSkin(TextField textField) {
         super(textField);
     }

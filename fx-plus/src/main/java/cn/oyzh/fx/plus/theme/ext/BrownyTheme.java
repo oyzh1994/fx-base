@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class BrownyTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final Browny THEME = new Browny();
 
     @Override

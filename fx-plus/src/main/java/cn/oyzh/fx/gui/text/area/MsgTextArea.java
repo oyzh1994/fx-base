@@ -44,18 +44,38 @@ public class MsgTextArea extends FXTextArea {
      */
     private byte limitPolicy = 1;
 
+    /**
+     * 获取行限制。
+     *
+     * @return 行限制
+     */
     public int getLineLimit() {
         return lineLimit;
     }
 
+    /**
+     * 设置行限制。
+     *
+     * @param lineLimit 行限制
+     */
     public void setLineLimit(int lineLimit) {
         this.lineLimit = lineLimit;
     }
 
+    /**
+     * 获取限制策略。
+     *
+     * @return 限制策略
+     */
     public byte getLimitPolicy() {
         return limitPolicy;
     }
 
+    /**
+     * 设置限制策略。
+     *
+     * @param limitPolicy 限制策略
+     */
     public void setLimitPolicy(byte limitPolicy) {
         this.limitPolicy = limitPolicy;
     }

@@ -16,6 +16,12 @@ import javafx.stage.Stage;
 
 import java.net.URISyntaxException;
 
+/**
+ * 富标签页内存测试，验证嵌套标签页关闭后的内存回收
+ *
+ * @author oyzh
+ * @since 2025-11-03
+ */
 public class TabPaneTest extends Application {
 
     @Override

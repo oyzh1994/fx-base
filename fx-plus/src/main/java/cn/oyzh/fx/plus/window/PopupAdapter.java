@@ -211,7 +211,7 @@ public interface PopupAdapter extends WindowAdapter {
     }
 
     /**
-     * 获取节点
+     * 获取父节点
      *
      * @return 父节点
      */
@@ -237,10 +237,18 @@ public interface PopupAdapter extends WindowAdapter {
         return this.popup().isShowing();
     }
 
+    /**
+     * 在指定节点处显示弹窗
+     *
+     * @param node 父节点
+     */
     default void show(Node node) {
         this.popup().show(node, 0, 0);
     }
 
+    /**
+     * 隐藏弹窗
+     */
     default void hide() {
         this.popup().hide();
     }

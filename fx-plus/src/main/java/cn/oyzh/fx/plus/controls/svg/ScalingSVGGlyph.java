@@ -12,18 +12,41 @@ import javafx.scene.paint.Paint;
  */
 public class ScalingSVGGlyph extends SVGGlyph {
 
+    /**
+     * 构造缩放图标对象。
+     *
+     * @param url 地址
+     */
     public ScalingSVGGlyph(String url) {
         super(url);
     }
 
+    /**
+     * 构造缩放图标对象。
+     *
+     * @param url 地址
+     * @param color 颜色
+     */
     public ScalingSVGGlyph(String url, Paint color) {
         super(url, color);
     }
 
+    /**
+     * 构造缩放图标对象。
+     *
+     * @param url 地址
+     * @param size 大小
+     */
     public ScalingSVGGlyph(String url, String size) {
         super(url, size);
     }
 
+    /**
+     * 构造缩放图标对象。
+     *
+     * @param url 地址
+     * @param size 大小
+     */
     public ScalingSVGGlyph(String url, double size) {
         super(url, size);
     }

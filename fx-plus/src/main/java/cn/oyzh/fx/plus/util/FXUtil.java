@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 public class FXUtil {
 
     /**
-     * 当前机器对象
+     * 机器人对象，用于模拟鼠标与键盘操作
      */
     private static Robot robot;
 
@@ -475,7 +475,7 @@ public class FXUtil {
      * 获取垂直滚动条
      *
      * @param parent 节点
-     * @return 水平滚动条
+     * @return 垂直滚动条
      */
     public static ScrollBar getVScrollBar(Parent parent) {
         return getScrollBars(parent).stream()

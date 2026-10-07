@@ -124,74 +124,164 @@ public class TrayMouseListener extends MouseAdapter {
         }
     }
 
+    /**
+     * 获取鼠标监听器。
+     *
+     * @return 鼠标监听器
+     */
     public MouseListener getMouseListener() {
         return mouseListener;
     }
 
+    /**
+     * 设置鼠标监听器。
+     *
+     * @param mouseListener 鼠标监听器
+     */
     public void setMouseListener(MouseListener mouseListener) {
         this.mouseListener = mouseListener;
     }
 
+    /**
+     * 获取鼠标移动。
+     *
+     * @return 鼠标移动
+     */
     public Consumer<MouseEvent> getMouseMoved() {
         return mouseMoved;
     }
 
+    /**
+     * 设置鼠标移动。
+     *
+     * @param mouseMoved 鼠标移动
+     */
     public void setMouseMoved(Consumer<MouseEvent> mouseMoved) {
         this.mouseMoved = mouseMoved;
     }
 
+    /**
+     * 获取鼠标移出。
+     *
+     * @return 鼠标移出
+     */
     public Consumer<MouseEvent> getMouseExited() {
         return mouseExited;
     }
 
+    /**
+     * 设置鼠标移出。
+     *
+     * @param mouseExited 鼠标移出
+     */
     public void setMouseExited(Consumer<MouseEvent> mouseExited) {
         this.mouseExited = mouseExited;
     }
 
+    /**
+     * 获取鼠标点击。
+     *
+     * @return 鼠标点击
+     */
     public Consumer<MouseEvent> getMouseClicked() {
         return mouseClicked;
     }
 
+    /**
+     * 设置鼠标点击。
+     *
+     * @param mouseClicked 鼠标点击
+     */
     public void setMouseClicked(Consumer<MouseEvent> mouseClicked) {
         this.mouseClicked = mouseClicked;
     }
 
+    /**
+     * 获取鼠标拖拽。
+     *
+     * @return 鼠标拖拽
+     */
     public Consumer<MouseEvent> getMouseDragged() {
         return mouseDragged;
     }
 
+    /**
+     * 设置鼠标拖拽。
+     *
+     * @param mouseDragged 鼠标拖拽
+     */
     public void setMouseDragged(Consumer<MouseEvent> mouseDragged) {
         this.mouseDragged = mouseDragged;
     }
 
+    /**
+     * 获取鼠标进入。
+     *
+     * @return 鼠标进入
+     */
     public Consumer<MouseEvent> getMouseEntered() {
         return mouseEntered;
     }
 
+    /**
+     * 设置鼠标进入。
+     *
+     * @param mouseEntered 鼠标进入
+     */
     public void setMouseEntered(Consumer<MouseEvent> mouseEntered) {
         this.mouseEntered = mouseEntered;
     }
 
+    /**
+     * 获取鼠标按下。
+     *
+     * @return 鼠标按下
+     */
     public Consumer<MouseEvent> getMousePressed() {
         return mousePressed;
     }
 
+    /**
+     * 设置鼠标按下。
+     *
+     * @param mousePressed 鼠标按下
+     */
     public void setMousePressed(Consumer<MouseEvent> mousePressed) {
         this.mousePressed = mousePressed;
     }
 
+    /**
+     * 获取鼠标释放。
+     *
+     * @return 鼠标释放
+     */
     public Consumer<MouseEvent> getMouseReleased() {
         return mouseReleased;
     }
 
+    /**
+     * 设置鼠标释放。
+     *
+     * @param mouseReleased 鼠标释放
+     */
     public void setMouseReleased(Consumer<MouseEvent> mouseReleased) {
         this.mouseReleased = mouseReleased;
     }
 
+    /**
+     * 获取鼠标滚轮移动。
+     *
+     * @return 鼠标滚轮移动
+     */
     public Consumer<MouseWheelEvent> getMouseWheelMoved() {
         return mouseWheelMoved;
     }
 
+    /**
+     * 设置鼠标滚轮移动。
+     *
+     * @param mouseWheelMoved 鼠标滚轮移动
+     */
     public void setMouseWheelMoved(Consumer<MouseWheelEvent> mouseWheelMoved) {
         this.mouseWheelMoved = mouseWheelMoved;
     }

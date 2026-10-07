@@ -269,10 +269,19 @@ public interface FontAdapter extends PropAdapter {
         return FontUtil.getFontWeight(this);
     }
 
+    /**
+     * 启用字体属性键
+     */
     String ENABLE_FONT_KEY = "enable:font";
 
+    /**
+     * 启用字体大小属性键
+     */
     String ENABLE_FONT_SIZE_KEY = "enable:font:size";
 
+    /**
+     * 启用字体粗细属性键
+     */
     String ENABLE_FONT_WEIGHT_KEY = "enable:font:weight";
 
     /**

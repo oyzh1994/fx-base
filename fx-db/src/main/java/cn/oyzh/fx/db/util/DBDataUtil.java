@@ -8,6 +8,7 @@ import cn.oyzh.fx.db.DBDialect;
 import java.util.Objects;
 
 /**
+ * 数据库数据工具类，负责数据值的转义及 SQL 参数化处理
  *
  * @author oyzh
  * @since 2026-09-06
@@ -15,7 +16,7 @@ import java.util.Objects;
 public class DBDataUtil {
 
     /**
-     * 转义符号
+     * 转义引号，兼容 MySQL、达梦等方言
      *
      * @param str     内容
      * @param dialect 方言

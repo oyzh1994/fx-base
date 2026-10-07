@@ -3,6 +3,8 @@ package cn.oyzh.fx.gui.text.field;
 import cn.oyzh.common.util.BooleanUtil;
 
 /**
+ * 布尔文本输入框
+ *
  * @author oyzh
  * @since 2024/7/10
  */
@@ -30,6 +32,12 @@ public class BooleanTextFiled extends SelectTextFiled<String> {
         super.initNode();
     }
 
+    /**
+     * 将任意值格式化为 "true" 或 "false"
+     *
+     * @param o 值
+     * @return 格式化结果
+     */
     public static String format(Object o) {
         if (o instanceof CharSequence s) {
             if (s.equals("1") || s.toString().equalsIgnoreCase("true")) {

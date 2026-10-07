@@ -1,7 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 /**
- * 窗口监听接口
+ * 弹窗监听接口
  *
  * @author oyzh
  * @since 2024/07/12
@@ -9,9 +9,9 @@ package cn.oyzh.fx.plus.window;
 public interface PopupListener extends WindowListener {
 
     /**
-     * 窗口初始化事件
+     * 弹窗初始化事件
      *
-     * @param window 窗口扩展
+     * @param window 弹窗适配器
      */
     void onPopupInitialize(PopupAdapter window);
 }

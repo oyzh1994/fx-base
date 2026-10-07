@@ -24,18 +24,39 @@ import java.util.function.Consumer;
  */
 public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
 
+    /**
+     * 匹配大小写属性
+     */
     private BooleanProperty matchCaseProperty = new SimpleBooleanProperty();
 
+    /**
+     * 是否匹配大小写
+     *
+     * @return 是否匹配大小写
+     */
     public boolean isMatchCase() {
         return this.matchCaseProperty.get();
     }
 
+    /**
+     * 设置是否匹配大小写
+     *
+     * @param matchCase 是否匹配大小写
+     */
     public void setMatchCase(boolean matchCase) {
         this.matchCaseProperty.set(matchCase);
     }
 
+    /**
+     * 匹配大小写只读属性包装
+     */
     private ReadOnlyBooleanWrapper matchCasePropertyWrapper;
 
+    /**
+     * 获取匹配大小写只读属性
+     *
+     * @return 匹配大小写只读属性
+     */
     public ReadOnlyBooleanProperty matchCasePropery() {
         if (this.matchCasePropertyWrapper == null) {
             this.matchCasePropertyWrapper = new ReadOnlyBooleanWrapper();
@@ -68,8 +89,16 @@ public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
         }
     }
 
+    /**
+     * 激活态背景
+     */
     private Background activeBackground;
 
+    /**
+     * 获取激活态背景
+     *
+     * @return 激活态背景
+     */
     private Background activeBackground() {
         if (this.activeBackground == null) {
             Insets insets = new Insets(-3, -3, -3, -3);
@@ -80,8 +109,16 @@ public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
         return this.activeBackground;
     }
 
+    /**
+     * 悬停态背景
+     */
     private Background focusBackground;
 
+    /**
+     * 获取悬停态背景
+     *
+     * @return 悬停态背景
+     */
     private Background focusBackground() {
         if (this.focusBackground == null) {
             Insets insets = new Insets(-3, -3, -3, -3);
@@ -92,6 +129,11 @@ public class MatchCaseTextFieldSkin extends ActionTextFieldSkin {
         return this.focusBackground;
     }
 
+    /**
+     * 构造匹配大小写文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public MatchCaseTextFieldSkin(TextField textField) {
         super(textField);
     }

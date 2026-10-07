@@ -24,26 +24,56 @@ public class FontConfig {
      */
     private Integer weight;
 
+    /**
+     * 获取大小。
+     *
+     * @return 大小
+     */
     public Integer getSize() {
         return size;
     }
 
+    /**
+     * 设置大小。
+     *
+     * @param size 大小
+     */
     public void setSize(Integer size) {
         this.size = size;
     }
 
+    /**
+     * 获取族。
+     *
+     * @return 族
+     */
     public String getFamily() {
         return family;
     }
 
+    /**
+     * 设置族。
+     *
+     * @param family 族
+     */
     public void setFamily(String family) {
         this.family = family;
     }
 
+    /**
+     * 获取粗细。
+     *
+     * @return 粗细
+     */
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * 设置粗细。
+     *
+     * @param weight 粗细
+     */
     public void setWeight(Integer weight) {
         this.weight = weight;
     }

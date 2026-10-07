@@ -20,6 +20,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
+ * JavaFX 控件综合示例，演示工具栏、轻量级布局、消息框、滚动面板等
+ *
  * @author oyzh
  * @since 2025-06-12
  */

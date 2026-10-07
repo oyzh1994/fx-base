@@ -9,6 +9,8 @@ import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 
 /**
+ * 文件选择器工具类，提供常用文件类型过滤器及常用目录的获取
+ *
  * @author oyzh
  * @since 2025-03-07
  */
@@ -59,70 +61,156 @@ public class FXChooser {
         return allExtensionFilter();
     }
 
+    /**
+     * 获取js类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter jsExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.jsType(), "*.js");
     }
 
+    /**
+     * 获取sql类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter sqlExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.sqlType(), "*.sql");
     }
 
+    /**
+     * 获取txt类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter txtExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.txtType(), "*.txt");
     }
 
+    /**
+     * 获取xml类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter xmlExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.xmlType(), "*.xml");
     }
 
+    /**
+     * 获取csv类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter csvExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.csvType(), "*.csv");
     }
 
+    /**
+     * 获取html类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter htmlExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.htmlType(), "*.html");
     }
 
+    /**
+     * 获取xls类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter xlsExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.xlsType(), "*.xls");
     }
 
+    /**
+     * 获取xlsx类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter xlsxExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.xlsxType(), "*.xlsx");
     }
 
+    /**
+     * 获取excel类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter excelExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.excelType(), "*.xls", "*.xlsx");
     }
 
+    /**
+     * 获取word类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter wordExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.wordType(), "*.doc", "*.docx");
     }
 
+    /**
+     * 获取全部类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter allExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.allType(), "*.*");
     }
 
+    /**
+     * 获取json类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter jsonExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.jsonType(), "*.json");
     }
 
+    /**
+     * 获取png类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter pngExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.pngType(), "*.png");
     }
 
+    /**
+     * 获取jpg类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter jpgExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.jpgType(), "*.jpg");
     }
 
+    /**
+     * 获取jpeg类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter jpegExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.jpegType(), "*.jpeg");
     }
 
+    /**
+     * 获取gif类型过滤器
+     *
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter gifExtensionFilter() {
         return new FileExtensionFilter(I18nHelper.gifType(), "*.gif");
     }
 
+    /**
+     * 创建指定类型的文件过滤器
+     *
+     * @param type 类型
+     * @return 类型过滤器
+     */
     public static FileExtensionFilter newExtensionFilter(String type) {
         return new FileExtensionFilter(type, "*." + type);
     }

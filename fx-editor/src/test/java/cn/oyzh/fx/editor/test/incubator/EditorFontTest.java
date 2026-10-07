@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 
 /**
+ * incubator 模块编辑器字体测试，对比自定义字体与默认字体的显示效果。
+ *
  * @author oyzh
  * @since 2022/5/18
  */

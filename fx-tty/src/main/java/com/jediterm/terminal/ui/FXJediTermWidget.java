@@ -4,6 +4,7 @@ import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.pane.FXStackPane;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.tty.TtyKeyListener;
 import com.jediterm.core.typeahead.TerminalTypeAheadManager;
 import com.jediterm.core.typeahead.TypeAheadTerminalModel;
@@ -262,7 +263,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
 
     @Override
     public void requestFocus() {
-        myTerminalPanel.requestFocus();
+        FXUtil.runWait(myTerminalPanel::requestFocus);
     }
 
     public boolean canOpenSession() {

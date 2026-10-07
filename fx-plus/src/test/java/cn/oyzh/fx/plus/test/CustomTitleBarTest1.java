@@ -26,6 +26,8 @@ import javafx.stage.StageStyle;
 import java.util.Set;
 
 /**
+ * 自定义标题栏测试，演示 FXHeaderBar 与菜单栏的组合
+ *
  * @author oyzh
  * @since 2025-08-18
  */

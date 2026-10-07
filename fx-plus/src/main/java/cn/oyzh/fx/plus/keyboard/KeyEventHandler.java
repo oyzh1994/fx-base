@@ -60,6 +60,8 @@ public class KeyEventHandler implements EventHandler<KeyEvent> {
 
     /**
      * 添加按键处理器
+     *
+     * @param keyHandler 按键处理器
      */
     public void addHandler( KeyHandler keyHandler) {
         this.removeHandler(keyHandler.getKeyCode(), keyHandler.getKeyType());

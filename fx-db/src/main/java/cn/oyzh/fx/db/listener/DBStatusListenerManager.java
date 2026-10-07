@@ -9,25 +9,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 数据库对象状态监听器管理器，负责监听器的注册、移除、查找及节点绑定
+ *
  * @author oyzh
  * @since 2024/7/23
  */
 public class DBStatusListenerManager {
 
+    /**
+     * 监听器缓存
+     */
     private static final Map<String, DBStatusListener> LISTENERS = new HashMap<>();
 
+    /**
+     * 注册监听器
+     *
+     * @param listener 监听器
+     */
     public static void addListener(DBStatusListener listener) {
         if (listener != null) {
             LISTENERS.put(listener.getKey(), listener);
         }
     }
 
+    /**
+     * 移除监听器
+     *
+     * @param listener 监听器
+     */
     public static void removeListener(DBStatusListener listener) {
         if (listener != null) {
             LISTENERS.remove(listener.getKey());
         }
     }
 
+    /**
+     * 根据键值获取监听器
+     *
+     * @param key 监听器键值
+     * @return 监听器
+     */
     public static DBStatusListener getListener(String key) {
         return LISTENERS.get(key);
     }

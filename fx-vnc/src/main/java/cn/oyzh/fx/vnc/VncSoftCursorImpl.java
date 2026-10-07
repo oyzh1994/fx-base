@@ -31,17 +31,33 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
 /**
- * JavaFX implementation of SoftCursor.
- * Creates a WritableImage from cursor pixel data for overlay rendering.
+ * 软光标的 JavaFX 实现，根据光标像素数据生成用于叠加绘制的可写图像。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class VncSoftCursorImpl extends SoftCursor implements Destroyable {
 
+    /** 光标图像 */
     private WritableImage cursorImage;
 
+    /**
+     * 构造软光标。
+     *
+     * @param hotX   热点横坐标
+     * @param hotY   热点纵坐标
+     * @param width  光标宽度
+     * @param height 光标高度
+     */
     public VncSoftCursorImpl(int hotX, int hotY, int width, int height) {
         super(hotX, hotY, width, height);
     }
 
+    /**
+     * 获取光标图像。
+     *
+     * @return 光标图像
+     */
     public WritableImage getImage() {
         return cursorImage;
     }

@@ -1,6 +1,8 @@
 package cn.oyzh.fx.db.data.handler;
 
 /**
+ * 数据传输处理器抽象基类，定义传输执行入口
+ *
  * @author oyzh
  * @since 2024/08/27
  */

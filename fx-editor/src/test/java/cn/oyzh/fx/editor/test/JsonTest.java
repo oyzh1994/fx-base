@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import org.junit.Test;
 
 /**
+ * JSON 字符串空白字符处理测试，验证去除换行、回车、制表符后的结果。
  *
  * @author oyzh
  * @since 2025-10-16

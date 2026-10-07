@@ -5,7 +5,7 @@ import cn.oyzh.fx.gui.svg.glyph.UnLockSVGGlyph;
 import cn.oyzh.fx.plus.controls.button.IconButton;
 
 /**
- * 取消按钮
+ * 解锁按钮
  *
  * @author oyzh
  * @since 2020/10/29

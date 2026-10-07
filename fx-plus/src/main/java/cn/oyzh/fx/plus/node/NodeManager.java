@@ -13,7 +13,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.Region;
 
 /**
- * 节点管理器
+ * 节点管理器，负责节点初始化及透明度、字体、国际化、生命周期等适配处理
  *
  * @author oyzh
  * @since 2024/04/05

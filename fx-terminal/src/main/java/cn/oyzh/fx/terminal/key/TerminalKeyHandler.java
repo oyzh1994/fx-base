@@ -5,14 +5,17 @@ import cn.oyzh.fx.terminal.help.TerminalHelpHandler;
 import cn.oyzh.fx.terminal.util.TerminalUtil;
 
 /**
+ * 终端键盘按键处理器
+ *
  * @author oyzh
- * @since 2023/08/28
+ * @since 2023-10-09
  */
 public interface TerminalKeyHandler<T extends Terminal> {
 
     /**
      * tab按键处理
      *
+     * @param terminal 终端
      * @return 结果
      * @throws Exception 异常
      */

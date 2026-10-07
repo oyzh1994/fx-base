@@ -44,9 +44,11 @@ package cn.oyzh.vnc.test; //// Copyright (C) 2010 - 2014 GlavSoft LLC.
 //import java.io.InputStream;
 //
 ///**
-// * Auto-hiding floating toolbar overlay.
-// * Replaces the MyToolbar inner class from VNCViewer.kt.
-// * Collapses to a thin bar when the mouse is away, expands on hover.
+// * 自动隐藏的浮动工具栏覆盖层（已注释），替代 VNCViewer.kt 中的 MyToolbar 内部类。
+// * 鼠标离开时折叠为细条，悬停时展开。
+// *
+// * @author oyzh
+// * @since 2026-07-18
 // */
 //public class JfxToolbarOverlay extends HBox {
 //

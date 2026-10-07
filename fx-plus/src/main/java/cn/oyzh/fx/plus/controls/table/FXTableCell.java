@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 
 /**
- * 表单列
+ * 表格单元格
  *
  * @author oyzh
  * @since 2022/12/21
@@ -24,18 +24,28 @@ public class FXTableCell<S, T> extends TableCell<S, T> implements NodeAdapter, T
      */
     protected double lineHeight;
 
+    /**
+     * 获取行高。
+     *
+     * @return 行高
+     */
     public double getLineHeight() {
         return lineHeight;
     }
 
+    /**
+     * 设置行高。
+     *
+     * @param lineHeight 行高
+     */
     public void setLineHeight(double lineHeight) {
         this.lineHeight = lineHeight;
     }
 
     /**
-     * 获取表单内容
+     * 获取表格行数据
      *
-     * @return 内容
+     * @return 表格行数据
      */
     public S getTableItem() {
         return this.getTableRow() == null ? null : this.getTableRow().getItem();

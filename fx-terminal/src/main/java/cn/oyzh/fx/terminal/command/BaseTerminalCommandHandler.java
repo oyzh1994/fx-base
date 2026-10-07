@@ -8,7 +8,7 @@ import cn.oyzh.fx.terminal.util.TerminalUtil;
  * 基础终端命令处理实现
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public abstract class BaseTerminalCommandHandler<C extends TerminalCommand, T extends Terminal> implements TerminalCommandHandler<C, T> {
 
@@ -26,6 +26,13 @@ public abstract class BaseTerminalCommandHandler<C extends TerminalCommand, T ex
         return false;
     }
 
+    /**
+     * 检查参数
+     *
+     * @param words 词组
+     * @return 是否合法
+     * @throws RuntimeException 异常
+     */
     protected boolean checkArgs(String[] words) throws RuntimeException {
         return words != null && words.length >= 1;
     }

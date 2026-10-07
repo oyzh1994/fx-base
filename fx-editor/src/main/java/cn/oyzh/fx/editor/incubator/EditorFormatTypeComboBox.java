@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * redis格式下拉框
+ * 编辑器格式类型下拉框
  *
  * @author oyzh
- * @since 2023/8/14
+ * @since 2024-12-13
  */
 public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> implements I18nSelectAdapter<EditorFormatType> {
 

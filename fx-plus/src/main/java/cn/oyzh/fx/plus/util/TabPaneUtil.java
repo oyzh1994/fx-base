@@ -39,7 +39,7 @@ public class TabPaneUtil {
     /**
      * 窗口就绪事件
      *
-     * @param tab      tab
+     * @param tab      标签
      * @param callback 回调
      */
     public static void onWindowReady(Tab tab, Consumer<Window> callback) {

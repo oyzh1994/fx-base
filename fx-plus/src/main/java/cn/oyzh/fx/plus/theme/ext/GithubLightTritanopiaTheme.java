@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class GithubLightTritanopiaTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final GithubLightTritanopia THEME = new GithubLightTritanopia();
 
     @Override

@@ -40,22 +40,47 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * JavaFX replacement for ClipboardControllerImpl.java.
- * Uses javafx.scene.input.Clipboard instead of java.awt.datatransfer.Clipboard.
+ * VNC 剪贴板控制器，负责本地系统剪贴板与远端剪贴板之间的文本同步。
+ * 使用 JavaFX 剪贴板实现，替代原 TightVNC 中基于 AWT 的实现。
+ *
+ * @author oyzh
+ * @since 2026-07-18
  */
 public class VncClipboardHandler implements ClipboardController, Destroyable {
 
+    /** 标准字符集，多字节字符集不支持时回退使用 */
     private static final String STANDARD_CHARSET = "ISO-8859-1";
+
+    /** 剪贴板内容变化轮询检查间隔（毫秒） */
     private static final long CLIPBOARD_UPDATE_CHECK_INTERVAL_MILLIS = 1000L;
 
+    /** 上一次读取到的剪贴板文本 */
     private String clipboardText;
+
+    /** 轮询任务是否处于运行状态 */
     private volatile boolean isRunning;
+
+    /** 是否启用剪贴板同步 */
     private boolean isEnabled;
+
+    /** VNC 协议对象，用于向远端发送剪贴板消息 */
     private final Protocol protocol;
+
+    /** 文本编解码字符集 */
     private Charset charset;
+
+    /** 剪贴板轮询调度线程池 */
     private ScheduledExecutorService scheduler;
+
+    /** 剪贴板轮询任务句柄 */
     private ScheduledFuture<?> pollingTask;
 
+    /**
+     * 构造剪贴板控制器。
+     *
+     * @param protocol    VNC 协议对象
+     * @param charsetName 字符集名称，为空时使用系统默认字符集
+     */
     public VncClipboardHandler(Protocol protocol, String charsetName) {
         this.protocol = protocol;
         this.clipboardText = null;
@@ -97,6 +122,9 @@ public class VncClipboardHandler implements ClipboardController, Destroyable {
         return null;
     }
 
+    /**
+     * 更新本地缓存的剪贴板内容，读取动作实际由轮询任务在 JavaFX 线程中完成。
+     */
     private void updateSavedClipboardContent() {
         try {
             // Must run on JavaFX thread for clipboard access
@@ -119,6 +147,9 @@ public class VncClipboardHandler implements ClipboardController, Destroyable {
         isEnabled = enable;
     }
 
+    /**
+     * 启动剪贴板变化轮询任务，检测到变化时向远端发送剪贴板消息。
+     */
     private void startPolling() {
         if (scheduler == null || scheduler.isShutdown()) {
             scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
@@ -150,6 +181,9 @@ public class VncClipboardHandler implements ClipboardController, Destroyable {
         }, 0, CLIPBOARD_UPDATE_CHECK_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * 取消轮询任务并关闭调度线程池。
+     */
     private void stopPolling() {
         if (pollingTask != null) {
             pollingTask.cancel(false);

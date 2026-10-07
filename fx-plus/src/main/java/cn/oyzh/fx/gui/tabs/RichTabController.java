@@ -19,13 +19,16 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * 动态tab controller
+ * 动态标签页控制器
  *
  * @author oyzh
  * @since 2023/11/3
  */
 public abstract class RichTabController implements EventListener, I18nAdapter, Initializable, Destroyable {
 
+    /**
+     * 标签页弱引用
+     */
     private WeakReference<FXTab> tabRef;
 
     /**
@@ -75,6 +78,9 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         return scene == null ? null : scene.getWindow();
     }
 
+    /**
+     * 关闭标签页
+     */
     public void closeTab() {
         FXTab tab = this.getTab();
         if (tab != null) {
@@ -82,6 +88,9 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         }
     }
 
+    /**
+     * 禁用标签页
+     */
     public void disableTab() {
         FXTab tab = this.getTab();
         if (tab != null) {
@@ -89,6 +98,9 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         }
     }
 
+    /**
+     * 启用标签页
+     */
     public void enableTab() {
         FXTab tab = this.getTab();
         if (tab != null) {
@@ -96,6 +108,9 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         }
     }
 
+    /**
+     * 刷新标签页
+     */
     public void flushTab() {
         FXTab tab = this.getTab();
         if (tab != null) {
@@ -103,6 +118,9 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         }
     }
 
+    /**
+     * 刷新标签页图标
+     */
     public void flushTabGraphic() {
         FXTab tab = this.getTab();
         if (tab != null) {
@@ -110,6 +128,9 @@ public abstract class RichTabController implements EventListener, I18nAdapter, I
         }
     }
 
+    /**
+     * 刷新标签页图标颜色
+     */
     public void flushTabGraphicColor() {
         FXTab tab = this.getTab();
         if (tab != null) {

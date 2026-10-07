@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class GithubSoftDarkTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final GithubSoftDark THEME = new GithubSoftDark();
 
     @Override

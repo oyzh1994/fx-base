@@ -164,7 +164,7 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     /**
      * 设置asr排序
      *
-     * @param sortAsc asr排序
+     * @param sortAsc 是否升序
      */
     public void setSortAsc(boolean sortAsc) {
         this.bitValue().set(6, sortAsc);
@@ -188,6 +188,11 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
         return !this.isSortAsc();
     }
 
+    /**
+     * 构造富功能树节点
+     *
+     * @param treeView 所属树视图
+     */
     public RichTreeItem(RichTreeView treeView) {
         super(treeView);
     }
@@ -199,6 +204,11 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
 
     }
 
+    /**
+     * 获取所属树视图
+     *
+     * @return 富功能树视图
+     */
     public RichTreeView getTreeView() {
         return (RichTreeView) super.getTreeView();
     }

@@ -4,6 +4,8 @@ import cn.oyzh.common.util.NumberUtil;
 import javafx.scene.control.TextFormatter;
 
 /**
+ * 文本长度限制控件接口，为控件提供统一的文本长度校验能力
+ *
  * @author oyzh
  * @since 2024/1/31
  */
@@ -36,7 +38,17 @@ public interface LimitLenControl {
         return true;
     }
 
+    /**
+     * 获取最大允许长度
+     *
+     * @return 最大允许长度
+     */
     Long getMaxLen();
 
+    /**
+     * 设置最大允许长度
+     *
+     * @param maxLen 最大允许长度
+     */
     void setMaxLen(Long maxLen);
 }

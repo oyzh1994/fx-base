@@ -10,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 
 /**
+ * 堆叠面板控件
+ *
  * @author oyzh
  * @since 2025-04-18
  */

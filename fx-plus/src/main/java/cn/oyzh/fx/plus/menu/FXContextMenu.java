@@ -16,6 +16,8 @@ import java.lang.ref.WeakReference;
 import java.util.Collection;
 
 /**
+ * 自定义上下文菜单，支持销毁、节点、布局与主题适配
+ *
  * @author oyzh
  * @since 2023/3/7
  */
@@ -27,12 +29,23 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
         NodeManager.init(this);
     }
 
+    /**
+     * 目标对象的弱引用
+     */
     private WeakReference<Object> targetRef;
 
+    /**
+     * 构造上下文菜单
+     */
     public FXContextMenu() {
         this(null);
     }
 
+    /**
+     * 构造上下文菜单
+     *
+     * @param target 目标对象
+     */
     public FXContextMenu(Object target) {
         super();
         if (target != null) {
@@ -40,6 +53,11 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
         }
     }
 
+    /**
+     * 设置目标对象
+     *
+     * @param target 目标对象
+     */
     public void setTarget(Object target) {
         this.targetRef = new WeakReference<>(target);
     }
@@ -67,18 +85,33 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
 //        }
 //    }
 
+    /**
+     * 添加菜单项
+     *
+     * @param item 菜单项
+     */
     public void addItem(MenuItem item) {
         if (item != null) {
             this.getItems().add(item);
         }
     }
 
+    /**
+     * 设置菜单项
+     *
+     * @param item 菜单项
+     */
     public void setItem(MenuItem item) {
         if (item != null) {
             this.getItems().setAll(item);
         }
     }
 
+    /**
+     * 设置菜单项
+     *
+     * @param items 菜单项数组
+     */
     public void setItem(MenuItem... items) {
         if (items != null) {
             //            DestroyUtil.destroy(this.getItems());
@@ -86,6 +119,11 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
         }
     }
 
+    /**
+     * 设置菜单项
+     *
+     * @param items 菜单项集合
+     */
     public void setItem(Collection<? extends MenuItem> items) {
         if (items != null) {
             //            DestroyUtil.destroy(this.getItems());

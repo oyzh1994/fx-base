@@ -815,9 +815,10 @@ public class NodeUtil {
     }
 
     /**
-     * ctrl+s事件
+     * 为组件绑定Ctrl+S快捷键事件
      *
      * @param target 组件
+     * @param action 触发时执行的动作
      */
     public static void nodeOnCtrlS(Object target, Runnable action) {
         if (target != null) {
@@ -845,7 +846,7 @@ public class NodeUtil {
     /**
      * 取消焦点
      *
-     * @param node
+     * @param node 节点
      */
     public static void unFocus(Node node) {
         if (node != null && node.getParent() != null) {

@@ -14,12 +14,25 @@ import javafx.scene.Node;
  */
 public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
 
+    /**
+     * 尺寸，格式为“宽”或“宽,高”
+     */
     protected String size;
 
+    /**
+     * 获取尺寸字符串
+     *
+     * @return 尺寸字符串
+     */
     public String getSize() {
         return size;
     }
 
+    /**
+     * 设置尺寸并同步到子节点
+     *
+     * @param size 尺寸字符串，格式为“宽”或“宽,高”
+     */
     public void setSize(String size) {
         this.size = size;
 
@@ -31,6 +44,11 @@ public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
         }
     }
 
+    /**
+     * 获取尺寸的宽
+     *
+     * @return 宽，未设置尺寸时返回 NaN
+     */
     public double getSizeWidth() {
         if (this.size == null) {
             return Double.NaN;
@@ -41,6 +59,11 @@ public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
         return Double.parseDouble(this.size);
     }
 
+    /**
+     * 获取尺寸的高
+     *
+     * @return 高，未设置尺寸时返回 NaN
+     */
     public double getSizeHeight() {
         if (this.size == null) {
             return Double.NaN;

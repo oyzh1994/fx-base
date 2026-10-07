@@ -5,6 +5,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
+ * 数据处理基类，提供中断控制、消息通知与进度处理等通用能力
+ *
  * @author oyzh
  * @since 2024/08/29
  */
@@ -102,7 +104,9 @@ public class DataHandler {
     }
 
     /**
-     * 忽略进度
+     * 忽略进度，当跳过值不小于 0 时更新进度
+     *
+     * @param skip 跳过值
      */
     protected void processedSkip(int skip) {
         if (skip >= 0) {
@@ -119,6 +123,8 @@ public class DataHandler {
 
     /**
      * 递增进度
+     *
+     * @param incr 递增数量，取绝对值
      */
     protected void processedIncr(int incr) {
         if (incr < 0) {
@@ -136,6 +142,8 @@ public class DataHandler {
 
     /**
      * 递减进度
+     *
+     * @param decr 递减数量
      */
     protected void processedDecr(int decr) {
         if (decr > 0) {
@@ -145,27 +153,58 @@ public class DataHandler {
         }
     }
 
+    /**
+     * 获取中断。
+     *
+     * @return 中断
+     */
     public AtomicBoolean getInterrupt() {
         return interrupt;
     }
 
+    /**
+     * 设置中断。
+     *
+     * @param interrupt 中断
+     */
     public void setInterrupt(AtomicBoolean interrupt) {
         this.interrupt = interrupt;
     }
 
+    /**
+     * 获取消息处理器。
+     *
+     * @return 消息处理器
+     */
     public Consumer<String> getMessageHandler() {
         return messageHandler;
     }
 
+    /**
+     * 设置消息处理器。
+     *
+     * @param messageHandler 消息处理器
+     * @return 消息处理器
+     */
     public DataHandler setMessageHandler(Consumer<String> messageHandler) {
         this.messageHandler = messageHandler;
         return this;
     }
 
+    /**
+     * 获取处理完成处理器。
+     *
+     * @return 处理完成处理器
+     */
     public Consumer<Integer> getProcessedHandler() {
         return processedHandler;
     }
 
+    /**
+     * 设置处理完成处理器。
+     *
+     * @param processedHandler 处理完成处理器
+     */
     public void setProcessedHandler(Consumer<Integer> processedHandler) {
         this.processedHandler = processedHandler;
     }

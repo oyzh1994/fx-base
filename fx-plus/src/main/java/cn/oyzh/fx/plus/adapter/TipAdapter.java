@@ -74,7 +74,9 @@ public interface TipAdapter extends EventTarget, PropAdapter {
     }
 
     /**
-     * 获取追加提示标题
+     * 获取追加提示标题（已废弃，固定返回null）
+     *
+     * @return 结果
      */
     @Deprecated
     default String getAppendTipText() {
@@ -95,6 +97,8 @@ public interface TipAdapter extends EventTarget, PropAdapter {
 
     /**
      * 获取提示快捷键
+     *
+     * @return 提示快捷键
      */
     default KeyCombination getTipKeyCombination() {
         return this.getProp("keyCombination");

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 查询工具类
+ * SQL 查询编辑器的按键工具类，维护触发提示与触发更新的按键集合
  *
  * @author oyzh
  * @since 2025/01/21
@@ -14,12 +14,12 @@ import java.util.List;
 public class DBQueryUtil {
 
     /**
-     * 提示字符
+     * 触发提示的按键集合
      */
     public final static List<KeyCode> PROMPT_CODES = new ArrayList<>();
 
     /**
-     * 更新字符
+     * 触发内容更新的按键集合
      */
     public final static List<KeyCode> UPDATE_CODES = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class DBQueryUtil {
         PROMPT_CODES.add(KeyCode.NUMPAD7);
         PROMPT_CODES.add(KeyCode.NUMPAD8);
         PROMPT_CODES.add(KeyCode.NUMPAD9);
-        // 软盘数字
+        // 软键盘数字
         PROMPT_CODES.add(KeyCode.SOFTKEY_0);
         PROMPT_CODES.add(KeyCode.SOFTKEY_1);
         PROMPT_CODES.add(KeyCode.SOFTKEY_2);

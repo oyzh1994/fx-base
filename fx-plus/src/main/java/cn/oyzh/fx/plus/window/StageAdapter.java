@@ -397,7 +397,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     }
 
     /**
-     * 修改页面大小
+     * 修改舞台尺寸
      *
      * @param width  宽
      * @param height 高
@@ -603,46 +603,91 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         dragFileHandler.initEvent(this.scene());
     }
 
+    /**
+     * 是否显示中
+     *
+     * @return 结果
+     */
     default boolean isShowing() {
         return this.stage().isShowing();
     }
 
+    /**
+     * 设置最小化
+     *
+     * @param iconified 是否最小化
+     */
     default void setIconified(boolean iconified) {
         this.stage().setIconified(iconified);
     }
 
+    /**
+     * 是否最小化
+     *
+     * @return 结果
+     */
     default boolean isIconified() {
         return this.stage().isIconified();
     }
 
+    /**
+     * 是否获得焦点
+     *
+     * @return 结果
+     */
     default boolean isFocused() {
         return this.stage().isFocused();
     }
 
+    /**
+     * 请求焦点
+     */
     default void requestFocus() {
         this.stage().requestFocus();
     }
 
+    /**
+     * 获取透明度
+     *
+     * @return 透明度
+     */
     default double getOpacity() {
         return this.stage().getOpacity();
     }
 
+    /**
+     * 设置透明度
+     *
+     * @param opacity 透明度
+     */
     default void setOpacity(double opacity) {
         this.stage().setOpacity(opacity);
     }
 
+    /**
+     * 隐藏舞台
+     */
     default void hide() {
         this.stage().hide();
     }
 
+    /**
+     * 关闭舞台
+     */
     default void close() {
         FXUtil.runWait(() -> this.stage().close());
     }
 
+    /**
+     * 显示舞台
+     */
     default void show() {
         FXUtil.runWait(() -> this.stage().show());
     }
 
+    /**
+     * 显示舞台并等待
+     */
     default void showAndWait() {
         this.stage().showAndWait();
     }

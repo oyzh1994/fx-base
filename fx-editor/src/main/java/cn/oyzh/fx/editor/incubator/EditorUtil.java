@@ -5,6 +5,7 @@ import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.gui.text.field.HighlightTextField;
 
 /**
+ * 编辑器工具类
  *
  * @author oyzh
  * @since 2025-09-24
@@ -172,8 +173,9 @@ public class EditorUtil {
     /**
      * 搜索高亮
      *
-     * @param text  文本
-     * @param field 高亮文本组件
+     * @param text        文本
+     * @param field       高亮文本组件
+     * @param searchIndex 搜索起始索引
      * @return 匹配文本
      */
     private static TextUtil.MatchText searchHighlight(String text, HighlightTextField field, int searchIndex) {

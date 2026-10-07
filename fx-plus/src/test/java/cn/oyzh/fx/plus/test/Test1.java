@@ -10,6 +10,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 /**
+ * 数值工具（NumberUtil）与事件工具的测试用例
+ *
  * @author oyzh
  * @since 2023/11/22
  */

@@ -9,16 +9,28 @@ import javafx.geometry.Insets;
 import java.lang.ref.WeakReference;
 
 /**
+ * 十六进制视图状态标签控件
  *
  * @author oyzh
  * @since 2026-07-13
  */
 public class HexStatusLabel extends FXLabel implements Destroyable {
 
+    /**
+     * 状态刷新定时器
+     */
     private AnimationTimer statusTimer;
 
+    /**
+     * 十六进制视图弱引用
+     */
     private WeakReference<HexView> reference;
 
+    /**
+     * 初始化状态标签
+     *
+     * @param hexView 十六进制视图
+     */
     public void init(HexView hexView) {
         this.reference = new WeakReference<>(hexView);
         this.statusTimer = new AnimationTimer() {
@@ -31,6 +43,9 @@ public class HexStatusLabel extends FXLabel implements Destroyable {
         this.setPadding(new Insets(0, 0, 0, 10));
     }
 
+    /**
+     * 停止状态刷新并清空文本
+     */
     public void stop() {
         this.clear();
         if (this.statusTimer != null) {
@@ -38,6 +53,9 @@ public class HexStatusLabel extends FXLabel implements Destroyable {
         }
     }
 
+    /**
+     * 更新状态信息文本
+     */
     private void updateStatus() {
         HexView hexView = this.reference.get();
         if (hexView == null) {

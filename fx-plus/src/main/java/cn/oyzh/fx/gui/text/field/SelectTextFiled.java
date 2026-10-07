@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
+ * 可选择文本输入框
+ *
  * @author oyzh
  * @since 2024/07/12
  */
@@ -23,6 +25,11 @@ public class SelectTextFiled<T> extends LimitTextField {
         return new SelectTextFiledSkin<>(this);
     }
 
+    /**
+     * 添加候选项
+     *
+     * @param item 候选项
+     */
     public void addItem(T item) {
         if (this.getItemList() == null) {
             this.setItemList(new ArrayList<>());
@@ -30,30 +37,63 @@ public class SelectTextFiled<T> extends LimitTextField {
         this.getItemList().add(item);
     }
 
+    /**
+     * 设置候选项列表
+     *
+     * @param itemList 候选项列表
+     */
     public void setItemList(List<T> itemList) {
         this.skin().setItemList(itemList);
     }
 
+    /**
+     * 获取候选项列表
+     *
+     * @return 候选项列表
+     */
     public List<T> getItemList() {
         return this.skin().getItemList();
     }
 
+    /**
+     * 清空候选项列表
+     */
     public void clearItemList() {
         this.skin().clearItemList();
     }
 
+    /**
+     * 获取候选项数量
+     *
+     * @return 候选项数量
+     */
     public int getItemSize() {
         return this.skin().getItemSize();
     }
 
+    /**
+     * 设置行高
+     *
+     * @param lineHeight 行高
+     */
     public void setLineHeight(double lineHeight) {
         this.skin().setLineHeight(lineHeight);
     }
 
+    /**
+     * 获取行高
+     *
+     * @return 行高
+     */
     public double getLineHeight() {
         return this.skin().getLineHeight();
     }
 
+    /**
+     * 选中候选项
+     *
+     * @param item 候选项
+     */
     public void selectItem(T item) {
         this.skin().selectItem(item);
         this.skin().setTexting();
@@ -66,14 +106,29 @@ public class SelectTextFiled<T> extends LimitTextField {
 //        this.skin().clearTexting();
     }
 
+    /**
+     * 按下标选中候选项
+     *
+     * @param index 下标
+     */
     public void selectIndex(int index) {
         this.skin().selectIndex(index);
     }
 
+    /**
+     * 获取选中项
+     *
+     * @return 选中项
+     */
     public T getSelectedItem() {
         return this.skin().getSelectedItem();
     }
 
+    /**
+     * 设置选中项变更监听
+     *
+     * @param listener 选中项变更监听
+     */
     public void selectedItemChanged(Consumer<T> listener) {
         this.skin().selectItemChanged(listener);
     }

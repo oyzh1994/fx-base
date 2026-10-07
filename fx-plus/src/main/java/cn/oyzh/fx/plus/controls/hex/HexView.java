@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Hex 查看器核心组件 — 三列布局（偏移 | 十六进制 | 原始文本）
+ * 十六进制视图控件 — 三列布局（偏移 | 十六进制 | 原始文本）
  * Canvas 渲染 + 垂直滚动条 + 大文件窗口缓存 + 拖动区域选择。
  *
  * @author oyzh
@@ -50,71 +50,213 @@ import java.util.List;
 public class HexView extends FXVBox implements Destroyable {
 
     // ====== 暗色主题 ======
+    /**
+     * 暗色-背景色
+     */
     private static final Color D_BG = Color.web("#1e1e1e");
+    /**
+     * 暗色-偏移列文字颜色
+     */
     private static final Color D_OFFSET = Color.web("#808080");
+    /**
+     * 暗色-十六进制文字颜色
+     */
     private static final Color D_HEX = Color.web("#d4d4d4");
+    /**
+     * 暗色-十六进制悬停文字颜色
+     */
     private static final Color D_HEX_HOVER = Color.web("#4fc1ff");
+    /**
+     * 暗色-原始文本可打印字符颜色
+     */
     private static final Color D_TEXT = Color.web("#d4d4d4");
+    /**
+     * 暗色-原始文本不可打印占位符颜色
+     */
     private static final Color D_TEXT_DOT = Color.web("#555555");
+    /**
+     * 暗色-选区背景色
+     */
     private static final Color D_SEL = Color.web("#264f78");
+    /**
+     * 暗色-选区边界线颜色
+     */
     private static final Color D_SEL_EDGE = Color.web("#3a7fca");
+    /**
+     * 暗色-当前行背景色
+     */
     private static final Color D_LINE_BG = Color.web("#2a2d2e");
+    /**
+     * 暗色-分隔线颜色
+     */
     private static final Color D_DIV = Color.web("#4a4a4a");
+    /**
+     * 暗色-焦点虚线框颜色
+     */
     private static final Color D_FOCUS = Color.web("#4fc1ff");
     // ====== 亮色主题 ======
+    /**
+     * 亮色-背景色
+     */
     private static final Color L_BG = Color.web("#ffffff");
+    /**
+     * 亮色-偏移列文字颜色
+     */
     private static final Color L_OFFSET = Color.web("#888888");
+    /**
+     * 亮色-十六进制文字颜色
+     */
     private static final Color L_HEX = Color.web("#333333");
+    /**
+     * 亮色-十六进制悬停文字颜色
+     */
     private static final Color L_HEX_HOVER = Color.web("#0066cc");
+    /**
+     * 亮色-原始文本可打印字符颜色
+     */
     private static final Color L_TEXT = Color.web("#333333");
+    /**
+     * 亮色-原始文本不可打印占位符颜色
+     */
     private static final Color L_TEXT_DOT = Color.web("#cccccc");
+    /**
+     * 亮色-选区背景色
+     */
     private static final Color L_SEL = Color.web("#b4d5ff");
+    /**
+     * 亮色-选区边界线颜色
+     */
     private static final Color L_SEL_EDGE = Color.web("#3388ee");
+    /**
+     * 亮色-当前行背景色
+     */
     private static final Color L_LINE_BG = Color.web("#f0f0f0");
+    /**
+     * 亮色-分隔线颜色
+     */
     private static final Color L_DIV = Color.web("#cccccc");
+    /**
+     * 亮色-焦点虚线框颜色
+     */
     private static final Color L_FOCUS = Color.web("#0066cc");
 
+    /**
+     * 每行显示的字节数
+     */
     private int bytesPerRow = 32; // 可切换: 8 / 16 / 32
+    /**
+     * 每行字节数可选值
+     */
     private static final int[] bytesPerRow_OPTIONS = {8, 16, 32};
+    /**
+     * 左右与顶部内边距
+     */
     private static final int PAD_LEFT = 10, PAD_TOP = 4;
+    /**
+     * 文件读取缓存大小（字节）
+     */
     private static final int CACHE_SIZE = 65536;
 
+    /**
+     * 渲染字体
+     */
     private Font font;
+    /**
+     * 单个字符宽度、单行高度
+     */
     private double charW, lineH;
+    /**
+     * 十六进制列起始 X、分组间隔、分隔线 X、原始文本列起始 X
+     */
     private double hexX, hexGapX, divX, textX;
+    /**
+     * 偏移列起始 X 坐标
+     */
     private static final double OFFSET_X = PAD_LEFT;
 
     // ====== 多区域选择 ======
-    private final List<long[]> selections = new ArrayList<>(); // 每个区域 {lo, hi}
-    // 拖动起始字节
+    /**
+     * 已固定的选区列表，每个区域为 {lo, hi}
+     */
+    private final List<long[]> selections = new ArrayList<>();
+    /**
+     * 拖动起始字节
+     */
     private long dragAnchor = -1;
-    // 拖动当前字节（-1=无拖拽）
+    /**
+     * 拖动当前字节（-1=无拖拽）
+     */
     private long dragCurrent = -1;
-    // 键盘焦点
+    /**
+     * 键盘焦点字节
+     */
     private long focusByte = -1;
+    /**
+     * 鼠标悬停字节
+     */
     private long hoverByte = -1;
-    // 0=offset, 1=hex, 2=text
+    /**
+     * 悬停区域：0=偏移，1=十六进制，2=文本
+     */
     private int hoverRegion = -1;
-    // 上次单击时间（双击检测用）
+    /**
+     * 上次单击时间（双击检测用）
+     */
     private long clickTime;
-    // 上次单击的字节
+    /**
+     * 上次单击的字节
+     */
     private long clickOff = -1;
-    // 拖动刚结束，跳过 onClicked 处理
+    /**
+     * 拖动刚结束，跳过 onClicked 处理
+     */
     private boolean dragFinished;
 
-    // 内存数据源（优先于文件）
+    /**
+     * 内存数据源（优先于文件）
+     */
     private byte[] dataBytes;
+    /**
+     * 文件通道
+     */
     private FileChannel fileChannel;
+    /**
+     * 随机访问文件
+     */
     private RandomAccessFile raf;
+    /**
+     * 文件（数据）总字节数
+     */
     private long fileSize;
+    /**
+     * 文件读取缓存缓冲区
+     */
     private ByteBuffer cacheBuf;
+    /**
+     * 缓存起始偏移
+     */
     private long cacheStart = -1;
 
+    /**
+     * 绘制画布
+     */
     private FXCanvas canvas;
+    /**
+     * 垂直滚动条
+     */
     private FXScrollBar scrollBar;
+    /**
+     * 每页可视行数
+     */
     private long rowsPerPage;
+    /**
+     * 滚动偏移行
+     */
     private long scrollPos;
 
+    /**
+     * 构造十六进制视图，初始化字体、画布、滚动条与事件绑定
+     */
     public HexView() {
         this.initFont();
 
@@ -166,6 +308,9 @@ public class HexView extends FXVBox implements Destroyable {
         applyThemeColors();
     }
 
+    /**
+     * 重新计算各列布局坐标
+     */
     private void recalcLayout() {
         hexX = OFFSET_X + 8 * charW + 12;
         hexGapX = charW * 1.5;
@@ -191,18 +336,38 @@ public class HexView extends FXVBox implements Destroyable {
     }
 
     // ====== 状态信息 API ======
+    /**
+     * 获取每行显示的字节数
+     *
+     * @return 每行字节数
+     */
     public int getBytesPerRow() {
         return bytesPerRow;
     }
 
+    /**
+     * 获取数据总字节数
+     *
+     * @return 总字节数
+     */
     public long getFileSize() {
         return fileSize;
     }
 
+    /**
+     * 获取焦点字节偏移
+     *
+     * @return 焦点字节偏移
+     */
     public long getFocusByte() {
         return focusByte;
     }
 
+    /**
+     * 获取选中字节总数
+     *
+     * @return 选中字节总数
+     */
     public long getSelectionSize() {
         long total = 0;
         for (long[] s : selections) {
@@ -214,6 +379,11 @@ public class HexView extends FXVBox implements Destroyable {
         return total;
     }
 
+    /**
+     * 获取选中区域的十六进制字符串
+     *
+     * @return 十六进制字符串
+     */
     public String getSelectionHex() {
         StringBuilder sb = new StringBuilder();
         for (long[] s : selections) {
@@ -235,6 +405,12 @@ public class HexView extends FXVBox implements Destroyable {
     //        return sb.toString();
     //    }
 
+    /**
+     * 读取指定偏移的单个字节
+     *
+     * @param off 偏移
+     * @return 该偏移处的字节，越界时返回 0
+     */
     private byte readByte(long off) {
         byte[] d = readBytes(off, 1);
         return d.length > 0 ? d[0] : 0;
@@ -244,6 +420,8 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 跳转到指定偏移
+     *
+     * @param off 目标偏移
      */
     public void gotoOffset(long off) {
         if (fileSize == 0) {
@@ -315,14 +493,27 @@ public class HexView extends FXVBox implements Destroyable {
     //        return search(pattern, startOff);
     //    }
 
+    /**
+     * 获取状态栏背景色
+     *
+     * @return 状态栏背景色
+     */
     public Color getStatusBg() {
         return ThemeManager.isDarkMode() ? Color.web("#252525") : Color.web("#e0e0e0");
     }
 
+    /**
+     * 获取状态栏前景色
+     *
+     * @return 状态栏前景色
+     */
     public Color getStatusFg() {
         return ThemeManager.isDarkMode() ? Color.web("#808080") : Color.web("#555555");
     }
 
+    /**
+     * 应用主题背景色
+     */
     private void applyThemeColors() {
         Color bg = ThemeManager.isDarkMode() ? D_BG : L_BG;
         Background background = ControlUtil.background(bg);
@@ -330,46 +521,101 @@ public class HexView extends FXVBox implements Destroyable {
     }
 
     // ====== 颜色快捷方法 ======
+    /**
+     * 获取背景色
+     *
+     * @return 背景色
+     */
     private Color bg() {
         return ThemeManager.isDarkMode() ? D_BG : L_BG;
     }
 
+    /**
+     * 获取偏移列文字颜色
+     *
+     * @return 偏移列文字颜色
+     */
     private Color offC() {
         return ThemeManager.isDarkMode() ? D_OFFSET : L_OFFSET;
     }
 
+    /**
+     * 获取十六进制文字颜色
+     *
+     * @return 十六进制文字颜色
+     */
     private Color hexC() {
         return ThemeManager.isDarkMode() ? D_HEX : L_HEX;
     }
 
+    /**
+     * 获取十六进制悬停文字颜色
+     *
+     * @return 十六进制悬停文字颜色
+     */
     private Color hexHC() {
         return ThemeManager.isDarkMode() ? D_HEX_HOVER : L_HEX_HOVER;
     }
 
+    /**
+     * 获取原始文本可打印字符颜色
+     *
+     * @return 原始文本可打印字符颜色
+     */
     private Color txtC() {
         return ThemeManager.isDarkMode() ? D_TEXT : L_TEXT;
     }
 
+    /**
+     * 获取原始文本不可打印占位符颜色
+     *
+     * @return 原始文本不可打印占位符颜色
+     */
     private Color dotC() {
         return ThemeManager.isDarkMode() ? D_TEXT_DOT : L_TEXT_DOT;
     }
 
+    /**
+     * 获取选区背景色
+     *
+     * @return 选区背景色
+     */
     private Color selBg() {
         return ThemeManager.isDarkMode() ? D_SEL : L_SEL;
     }
 
+    /**
+     * 获取选区边界线颜色
+     *
+     * @return 选区边界线颜色
+     */
     private Color selEdge() {
         return ThemeManager.isDarkMode() ? D_SEL_EDGE : L_SEL_EDGE;
     }
 
+    /**
+     * 获取当前行背景色
+     *
+     * @return 当前行背景色
+     */
     private Color lnBg() {
         return ThemeManager.isDarkMode() ? D_LINE_BG : L_LINE_BG;
     }
 
+    /**
+     * 获取分隔线颜色
+     *
+     * @return 分隔线颜色
+     */
     private Color divC() {
         return ThemeManager.isDarkMode() ? D_DIV : L_DIV;
     }
 
+    /**
+     * 获取焦点虚线框颜色
+     *
+     * @return 焦点虚线框颜色
+     */
     private Color focC() {
         return ThemeManager.isDarkMode() ? D_FOCUS : L_FOCUS;
     }
@@ -380,6 +626,9 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 判断 offset 是否在任意选中区域内（包括当前拖动中的区域）
+     *
+     * @param off 偏移
+     * @return 是否在选中区域内
      */
     private boolean inSelection(long off) {
         // 检查当前拖动
@@ -399,6 +648,9 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 查找 offset 所属的已固定选中区域索引，没有则返回 -1
+     *
+     * @param off 偏移
+     * @return 选区索引，未找到返回 -1
      */
     private int findSelection(long off) {
         for (int i = 0; i < selections.size(); i++) {
@@ -430,6 +682,8 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 查看 byte[] 数组
+     *
+     * @param bytes 字节数组
      */
     public void openBytes(byte[] bytes) {
         close();
@@ -446,6 +700,8 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 查看 ByteBuffer（复制内部数据）
+     *
+     * @param buf 字节缓冲区
      */
     public void openBytes(ByteBuffer buf) {
         byte[] bytes = new byte[buf.remaining()];
@@ -455,6 +711,9 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 查看 InputStream（读取全部字节）
+     *
+     * @param in 输入流
+     * @throws IOException 读取异常
      */
     public void openStream(InputStream in) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -468,6 +727,9 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 查看文件
+     *
+     * @param file 文件
+     * @throws IOException 打开文件异常
      */
     public void openFile(File file) throws IOException {
         close();
@@ -484,6 +746,9 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
+    /**
+     * 关闭当前数据源并释放相关资源
+     */
     public void close() {
         try {
             if (fileChannel != null) {
@@ -506,6 +771,13 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
+    /**
+     * 读取指定范围字节（优先内存数据源，其次文件数据源并使用窗口缓存）
+     *
+     * @param offset 起始偏移
+     * @param len 读取长度
+     * @return 读取到的字节数组，不足部分补 0
+     */
     private byte[] readBytes(long offset, int len) {
         // 内存数据源
         if (dataBytes != null) {
@@ -545,10 +817,16 @@ public class HexView extends FXVBox implements Destroyable {
         }
     }
 
+    /**
+     * 计算每页可显示的行数
+     */
     private void computeRows() {
         rowsPerPage = Math.max(1, (int) ((canvas.getHeight() - PAD_TOP * 2) / lineH));
     }
 
+    /**
+     * 更新滚动条范围、可见量与可见性
+     */
     private void updateScrollBar() {
         if (fileSize == 0) {
             scrollBar.setMax(0);
@@ -575,6 +853,10 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 根据鼠标坐标解析字节偏移
+     *
+     * @param mx 鼠标 X 坐标
+     * @param my 鼠标 Y 坐标
+     * @return 字节偏移，越界或无效时返回 -1
      */
     private long resolveByteAt(double mx, double my) {
         int row = (int) ((my - PAD_TOP) / lineH);
@@ -608,6 +890,10 @@ public class HexView extends FXVBox implements Destroyable {
     }
 
     // ====== 绘制 ======
+
+    /**
+     * 重绘画布内容
+     */
     private void repaint() {
         if (canvas == null) {
             return;
@@ -673,6 +959,8 @@ public class HexView extends FXVBox implements Destroyable {
 
     /**
      * 绘制所有选中区域的边界线
+     *
+     * @param g 图形上下文
      */
     private void drawSelectionEdges(GraphicsContext g) {
         // 绘制当前拖动
@@ -687,6 +975,13 @@ public class HexView extends FXVBox implements Destroyable {
         }
     }
 
+    /**
+     * 绘制单个选区左右两侧的边界线
+     *
+     * @param g 图形上下文
+     * @param lo 选区起始偏移
+     * @param hi 选区结束偏移
+     */
     private void drawSingleEdge(GraphicsContext g, long lo, long hi) {
         double cw = charW * 2.5;
         // 起始边界
@@ -711,6 +1006,13 @@ public class HexView extends FXVBox implements Destroyable {
         }
     }
 
+    /**
+     * 绘制偏移列
+     *
+     * @param g 图形上下文
+     * @param off 行起始偏移
+     * @param y 绘制纵坐标
+     */
     private void drawOffset(GraphicsContext g, long off, double y) {
         // 任意列悬停到该行任意字节时，偏移列同步高亮
         boolean rowHovered = (hoverByte >= off && hoverByte < off + bytesPerRow);
@@ -730,6 +1032,14 @@ public class HexView extends FXVBox implements Destroyable {
         g.fillText(String.format("%08X", off), OFFSET_X, y);
     }
 
+    /**
+     * 绘制十六进制列
+     *
+     * @param g 图形上下文
+     * @param data 该行字节数据
+     * @param lineOff 行起始偏移
+     * @param y 绘制纵坐标
+     */
     private void drawHex(GraphicsContext g, byte[] data, long lineOff, double y) {
         double cx = hexX;
         for (int i = 0; i < data.length; i++) {
@@ -750,6 +1060,14 @@ public class HexView extends FXVBox implements Destroyable {
         }
     }
 
+    /**
+     * 绘制原始文本列
+     *
+     * @param g 图形上下文
+     * @param data 该行字节数据
+     * @param lineOff 行起始偏移
+     * @param y 绘制纵坐标
+     */
     private void drawText(GraphicsContext g, byte[] data, long lineOff, double y) {
         double cx = textX;
         for (int i = 0; i < bytesPerRow; i++) {
@@ -769,6 +1087,11 @@ public class HexView extends FXVBox implements Destroyable {
     }
 
     // ====== 鼠标 ======
+    /**
+     * 鼠标移动：更新悬停字节并重绘
+     *
+     * @param e 鼠标事件
+     */
     private void onMouseMoved(MouseEvent e) {
         if (fileSize == 0) {
             return;
@@ -777,6 +1100,11 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
+    /**
+     * 鼠标按下：请求焦点并设置焦点字节、拖动起始点
+     *
+     * @param e 鼠标事件
+     */
     private void onMousePressed(MouseEvent e) {
         this.requestFocus();
         // TabPane 等父容器可能在事件冒泡阶段把焦点抢走，
@@ -795,6 +1123,11 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
+    /**
+     * 鼠标拖动：更新拖动当前字节与焦点字节
+     *
+     * @param e 鼠标事件
+     */
     private void onMouseDragged(MouseEvent e) {
         if (dragAnchor < 0 || e.getButton() != MouseButton.PRIMARY) {
             return;
@@ -808,6 +1141,11 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
+    /**
+     * 鼠标释放：结束拖动并落地选区
+     *
+     * @param e 鼠标事件
+     */
     private void onMouseReleased(MouseEvent e) {
         if (dragAnchor < 0) {
             return;
@@ -830,6 +1168,11 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
+    /**
+     * 鼠标单击：处理单击取消选区与双击选中整行
+     *
+     * @param e 鼠标事件
+     */
     private void onMouseClicked(MouseEvent e) {
         if (e.getButton() != MouseButton.PRIMARY || hoverByte < 0) {
             return;
@@ -863,6 +1206,11 @@ public class HexView extends FXVBox implements Destroyable {
         repaint();
     }
 
+    /**
+     * 鼠标滚轮：滚动视图
+     *
+     * @param e 滚动事件
+     */
     private void onScrollWheel(ScrollEvent e) {
         double units = e.getDeltaY() / (lineH * 2);
         scrollPos = (int) Math.max(0, Math.min(scrollBar.getMax(), scrollPos - units));
@@ -886,6 +1234,11 @@ public class HexView extends FXVBox implements Destroyable {
     //    }
 
     // ====== 键盘 ======
+    /**
+     * 键盘按下：处理复制、全选、切换列数、清空选区及方向键导航
+     *
+     * @param e 键盘事件
+     */
     private void onKeyPressed(KeyEvent e) {
         if (fileSize == 0) {
             return;

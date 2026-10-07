@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class YachtTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final Yacht THEME = new Yacht();
 
     @Override

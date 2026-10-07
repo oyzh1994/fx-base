@@ -3,8 +3,10 @@ package cn.oyzh.fx.terminal.mouse;
 import cn.oyzh.fx.terminal.Terminal;
 
 /**
+ * 终端鼠标按键处理器
+ *
  * @author oyzh
- * @since 2023/08/28
+ * @since 2023-10-09
  */
 public interface TerminalMouseHandler<T extends Terminal> {
 

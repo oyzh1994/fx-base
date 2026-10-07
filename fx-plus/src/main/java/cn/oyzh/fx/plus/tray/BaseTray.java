@@ -15,6 +15,11 @@ import java.util.function.Consumer;
  */
 public abstract class BaseTray {
 
+    /**
+     * 构造基础托盘对象。
+     *
+     * @param iconUrl 图标地址
+     */
     public BaseTray(String iconUrl) {
         this.initIcon(iconUrl);
     }

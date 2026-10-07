@@ -21,6 +21,11 @@ public class NodeMutexes implements Destroyable {
      */
     private List<Node> nodes;
 
+    /**
+     * 获取节点集合。
+     *
+     * @return 节点集合
+     */
     public List<Node> getNodes() {
         return nodes;
     }
@@ -94,7 +99,7 @@ public class NodeMutexes implements Destroyable {
     }
 
     /**
-     * 设置节点可见
+     * 显示指定节点并隐藏其余节点
      *
      * @param node 节点
      */

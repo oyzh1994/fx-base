@@ -10,6 +10,7 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.control.Accordion;
 
 /**
+ * 手风琴控件，继承自 Accordion，支持主题、字体、状态等适配
  *
  * @author oyzh
  * @since 2025-11-17

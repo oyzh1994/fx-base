@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * 终端管理类
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 @Deprecated
 public class TerminalManager2 {
@@ -68,10 +68,20 @@ public class TerminalManager2 {
      */
     private static Runnable loadHandlerAction;
 
+    /**
+     * 设置加载处理器动作。
+     *
+     * @param loadHandlerAction 加载处理器动作
+     */
     public static void setLoadHandlerAction(Runnable loadHandlerAction) {
         TerminalManager2.loadHandlerAction = loadHandlerAction;
     }
 
+    /**
+     * 获取加载处理器动作。
+     *
+     * @return 加载处理器动作
+     */
     public static Runnable getLoadHandlerAction() {
         return loadHandlerAction;
     }
@@ -108,7 +118,7 @@ public class TerminalManager2 {
     }
 
     /**
-     * 列表命令处理器
+     * 注册命令处理器
      *
      * @param commandHandlerClass 处理器类
      */
@@ -133,7 +143,7 @@ public class TerminalManager2 {
     }
 
     /**
-     * 列举命令处理器
+     * 注册命令处理器
      *
      * @param commandHandler 处理器
      */
@@ -175,7 +185,7 @@ public class TerminalManager2 {
      * 寻找命令处理器
      *
      * @param commandText 命令内容
-     * @param matchType   匹配类型 1: 命令开头匹配内容 2: 命令匹配内容 3: 命令开头匹配内容或者内容开庭匹配命令
+     * @param matchType   匹配类型 1: 命令开头匹配内容 2: 命令匹配内容 3: 命令开头匹配内容或者内容开头匹配命令
      * @return 命令处理器列表
      */
     public static List<TerminalCommandHandler<?, ?>> findHandlers(String commandText, int matchType) {

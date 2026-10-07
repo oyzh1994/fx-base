@@ -17,13 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Excel 类型文件读取器，基于 POI 工作簿将 Excel 文件内容解析为数据对象。
+ *
  * @author oyzh
  * @since 2024-09-03
  */
 public class DBDataExcelTypeFileReader extends DBDataTypeFileReader {
 
     /**
-     * xml读取器
+     * Excel 工作簿
      */
     private Workbook workbook;
 
@@ -42,6 +44,13 @@ public class DBDataExcelTypeFileReader extends DBDataTypeFileReader {
      */
     private Integer currentRowIndex;
 
+    /**
+     * 构造方法
+     *
+     * @param file   待读取的文件
+     * @param config 导入配置
+     * @throws Exception 异常
+     */
     public DBDataExcelTypeFileReader(File file, DBDataImportConfig config) throws Exception {
         super(file);
         this.config = config;

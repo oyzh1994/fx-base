@@ -8,10 +8,10 @@ import cn.oyzh.fx.terminal.key.TerminalKeyHandler;
 import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 
 /**
- * 命令行文本域
+ * 终端接口
  *
  * @author oyzh
- * @since 2023/05/28
+ * @since 2023-10-09
  */
 public interface Terminal {
 
@@ -108,7 +108,7 @@ public interface Terminal {
     void enableInput();
 
     /**
-     * 仅有输入
+     * 禁用输入
      */
     void disableInput();
 
@@ -116,7 +116,7 @@ public interface Terminal {
      * 收到指令事件
      *
      * @param input 输入
-     * @throws RuntimeException 异常
+     * @throws Exception 异常
      */
     void onCommand(String input) throws Exception;
 
@@ -222,6 +222,8 @@ public interface Terminal {
 
     /**
      * 获取光标位置
+     *
+     * @return 光标位置
      */
     int caretPosition();
 

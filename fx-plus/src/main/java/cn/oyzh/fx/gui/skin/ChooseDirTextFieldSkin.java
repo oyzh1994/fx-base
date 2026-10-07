@@ -37,30 +37,65 @@ public class ChooseDirTextFieldSkin extends ChooseTextFieldSkin {
      */
     private Consumer<File> onSelectedDir;
 
+    /**
+     * 获取选中目录。
+     *
+     * @return 选中目录
+     */
     public Consumer<File> getOnSelectedDir() {
         return onSelectedDir;
     }
 
+    /**
+     * 设置选中目录。
+     *
+     * @param onSelectedDir 选中目录
+     */
     public void setOnSelectedDir(Consumer<File> onSelectedDir) {
         this.onSelectedDir = onSelectedDir;
     }
 
+    /**
+     * 获取初始目录。
+     *
+     * @return 初始目录
+     */
     public String getInitDir() {
         return initDir;
     }
 
+    /**
+     * 设置初始目录。
+     *
+     * @param initDir 初始目录
+     */
     public void setInitDir(String initDir) {
         this.initDir = initDir;
     }
 
+    /**
+     * 是否总是显示。
+     *
+     * @return 总是显示
+     */
     public boolean isAlwaysShowGraphic() {
         return alwaysShowGraphic;
     }
 
+    /**
+     * 获取目录。
+     *
+     * @return 目录
+     */
     public File getDir() {
         return dir;
     }
 
+    /**
+     * 设置目录。
+     *
+     * @param dir 目录
+     */
     public void setDir(File dir) {
         this.dir = dir;
     }
@@ -79,6 +114,11 @@ public class ChooseDirTextFieldSkin extends ChooseTextFieldSkin {
         }
     }
 
+    /**
+     * 构造选择目录文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public ChooseDirTextFieldSkin(TextField textField) {
         super(textField);
     }
@@ -92,6 +132,11 @@ public class ChooseDirTextFieldSkin extends ChooseTextFieldSkin {
         }
     }
 
+    /**
+     * 设置是否一直显示图标
+     *
+     * @param alwaysShowGraphic 是否一直显示图标
+     */
     public void setAlwaysShowGraphic(boolean alwaysShowGraphic) {
         this.alwaysShowGraphic = alwaysShowGraphic;
         this.updateButtonVisibility();

@@ -26,7 +26,7 @@ public class ThemeUtil {
      *
      * @param color1 颜色1
      * @param color2 颜色2
-     * @return 相关度（欧几里得距离，越小越相似）
+     * @return 相关度（相似度，越大越相似；颜色为空时返回-1）
      */
     public static double calcCorr(Color color1, Color color2) {
         if (color1 == null || color2 == null) {

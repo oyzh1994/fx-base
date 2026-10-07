@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 背景服务，多进程
+ * 背景服务，基于缓存线程池提供异步任务的提交与执行
  *
  * @author oyzh
  * @since 2023/12/01
@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 public class BackgroundService {
 
     /**
-     * 渲染服务
+     * 背景线程池
      */
     private static final ExecutorService BACKGROUND_SERVICE = Executors.newCachedThreadPool();
     // private static final ExecutorService BACKGROUND_SERVICE = Executors.newFixedThreadPool(RuntimeUtil.getProcessorCount() * 2);

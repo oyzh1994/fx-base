@@ -10,17 +10,25 @@ import javafx.scene.image.ImageView;
 import java.util.function.BiFunction;
 
 /**
- * 图标表单列
+ * 图标表格单元格
  *
  * @author oyzh
  * @since 2022/12/21
  */
 public class IconTableCell<S, T> extends FXTableCell<S, T> {
 
+    /**
+     * 构造图标表单元格对象。
+     */
     public IconTableCell() {
         super();
     }
 
+    /**
+     * 构造图标表单元格对象。
+     *
+     * @param iconFunc 图标函数
+     */
     public IconTableCell(BiFunction<S, T, Object> iconFunc) {
         super();
         this.iconFunc = iconFunc;
@@ -36,10 +44,20 @@ public class IconTableCell<S, T> extends FXTableCell<S, T> {
      */
     private BiFunction<S, T, Object> iconFunc;
 
+    /**
+     * 获取图标函数。
+     *
+     * @return 图标函数
+     */
     public BiFunction<S, T, Object> getIconFunc() {
         return iconFunc;
     }
 
+    /**
+     * 设置图标函数。
+     *
+     * @param iconFunc 图标函数
+     */
     public void setIconFunc(BiFunction<S, T, Object> iconFunc) {
         this.iconFunc = iconFunc;
     }

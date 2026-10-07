@@ -11,6 +11,8 @@ import javafx.scene.layout.HeaderBar;
 import javafx.stage.Modality;
 
 /**
+ * HeaderBar 测试界面控制器
+ *
  * @author oyzh
  * @since 2023/11/21
  */

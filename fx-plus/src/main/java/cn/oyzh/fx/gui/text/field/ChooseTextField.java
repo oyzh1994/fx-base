@@ -10,6 +10,11 @@ import cn.oyzh.fx.gui.skin.ChooseTextFieldSkin;
  */
 public class ChooseTextField extends LimitTextField {
 
+    /**
+     * 设置按钮触发的操作
+     *
+     * @param action 操作
+     */
     public void setAction(Runnable action) {
         this.skin().setAction(action);
     }

@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 
 /**
+ * 窗口扩展测试，演示通过控制器解析并显示窗口
+ *
  * @author oyzh
  * @since 2022/5/18
  */

@@ -11,6 +11,7 @@ import javafx.stage.Modality;
 import jfx.incubator.scene.control.richtext.RichTextArea;
 
 /**
+ * 编辑器测试窗口控制器，承载 RichTextArea 内容并处理保存、运行等交互。
  *
  * @author oyzh
  * @since 2026-05-15

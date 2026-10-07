@@ -5,7 +5,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.control.Tab;
 
 /**
- * 动态tab面板
+ * 动态标签页面板
  *
  * @author oyzh
  * @since 2023/11/03

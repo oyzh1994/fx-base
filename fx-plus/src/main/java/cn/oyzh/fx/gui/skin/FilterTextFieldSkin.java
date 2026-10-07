@@ -32,28 +32,63 @@ import javafx.scene.paint.Color;
  */
 public class FilterTextFieldSkin extends FXTextFieldSkin {
 
+    /**
+     * 构造过滤文本字段皮肤对象。
+     *
+     * @param textField 文本框
+     */
     public FilterTextFieldSkin(TextField textField) {
         super(textField);
     }
 
+    /**
+     * 清除按钮
+     */
     private CloseSVGGlyph clear;
 
+    /**
+     * 全词匹配按钮
+     */
     private WholeWordSVGGlyph wholeWord;
 
+    /**
+     * 匹配大小写按钮
+     */
     private MatchCaseSVGGlyph matchCase;
 
+    /**
+     * 全词匹配属性
+     */
     private final BooleanProperty wholeWordProperty = new SimpleBooleanProperty();
 
+    /**
+     * 是否全词匹配
+     *
+     * @return 是否全词匹配
+     */
     public boolean isWholeWord() {
         return this.wholeWordProperty.get();
     }
 
+    /**
+     * 设置是否全词匹配
+     *
+     * @param wholeWord 是否全词匹配
+     */
     public void setWholeWord(boolean wholeWord) {
         this.wholeWordProperty.set(wholeWord);
     }
 
+    /**
+     * 全词匹配只读属性包装
+     */
     private ReadOnlyBooleanWrapper wholeWordPropertyWrapper;
 
+    /**
+     * 获取全词匹配只读属性
+     *
+     * @return 全词匹配只读属性
+     */
     public ReadOnlyBooleanProperty wholeWordPropery() {
         if (this.wholeWordPropertyWrapper == null) {
             this.wholeWordPropertyWrapper = new ReadOnlyBooleanWrapper();
@@ -62,18 +97,39 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
         return this.wholeWordPropertyWrapper;
     }
 
+    /**
+     * 匹配大小写属性
+     */
     private final BooleanProperty matchCaseProperty = new SimpleBooleanProperty();
 
+    /**
+     * 是否匹配大小写
+     *
+     * @return 是否匹配大小写
+     */
     public boolean isMatchCase() {
         return this.matchCaseProperty.get();
     }
 
+    /**
+     * 设置是否匹配大小写
+     *
+     * @param matchCase 是否匹配大小写
+     */
     public void setMatchCase(boolean matchCase) {
         this.matchCaseProperty.set(matchCase);
     }
 
+    /**
+     * 匹配大小写只读属性包装
+     */
     private ReadOnlyBooleanWrapper matchCasePropertyWrapper;
 
+    /**
+     * 获取匹配大小写只读属性
+     *
+     * @return 匹配大小写只读属性
+     */
     public ReadOnlyBooleanProperty matchCasePropery() {
         if (this.matchCasePropertyWrapper == null) {
             this.matchCasePropertyWrapper = new ReadOnlyBooleanWrapper();
@@ -82,20 +138,44 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
         return this.matchCasePropertyWrapper;
     }
 
+    /**
+     * 全词匹配按钮鼠标离开处理器
+     */
     private EventHandler<? super MouseEvent> wholeWordMouseExitHandler;
 
+    /**
+     * 全词匹配按钮鼠标进入处理器
+     */
     private EventHandler<? super MouseEvent> wholeWordMouseEnterHandler;
 
+    /**
+     * 全词匹配按钮鼠标点击处理器
+     */
     private EventHandler<? super MouseEvent> wholeWordMouseClickHandler;
 
+    /**
+     * 匹配大小写按钮鼠标离开处理器
+     */
     private EventHandler<? super MouseEvent> matchCaseMouseExitHandler;
 
+    /**
+     * 匹配大小写按钮鼠标进入处理器
+     */
     private EventHandler<? super MouseEvent> matchCaseMouseEnterHandler;
 
+    /**
+     * 匹配大小写按钮鼠标点击处理器
+     */
     private EventHandler<? super MouseEvent> matchCaseMouseClickHandler;
 
+    /**
+     * 控件高度变化监听器，用于调整按钮边距
+     */
     private ChangeListener<? super Number> heightListener;
 
+    /**
+     * 更新清除按钮的显示状态
+     */
     private void updateClearStatus() {
         if (this.getSkinnable().isFocused() && StringUtil.isNotEmpty(this.getText())) {
             this.clear.display();
@@ -104,6 +184,9 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
         }
     }
 
+    /**
+     * 初始化监听器与按钮事件处理器
+     */
     private void doInit() {
         this.getSkinnable().textProperty().addListener((observable, oldValue, newValue) -> {
             this.updateClearStatus();
@@ -195,8 +278,16 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
         return super.rightProperty();
     }
 
+    /**
+     * 激活态背景
+     */
     private Background activeBackground;
 
+    /**
+     * 获取激活态背景
+     *
+     * @return 激活态背景
+     */
     private Background activeBackground() {
         if (this.activeBackground == null) {
             Insets insets = new Insets(-3, -3, -4.5, -3);
@@ -207,8 +298,16 @@ public class FilterTextFieldSkin extends FXTextFieldSkin {
         return this.activeBackground;
     }
 
+    /**
+     * 悬停态背景
+     */
     private Background focusBackground;
 
+    /**
+     * 获取悬停态背景
+     *
+     * @return 悬停态背景
+     */
     private Background focusBackground() {
         if (this.focusBackground == null) {
             Insets insets = new Insets(-3, -3, -4.5, -3);

@@ -5,6 +5,7 @@ import cn.oyzh.fx.db.util.DBUtil;
 import org.junit.Test;
 
 /**
+ * 数据库方言数据包装工具（DBUtil）测试
  *
  * @author oyzh
  * @since 2026-09-07

@@ -49,7 +49,7 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
     }
 
     /**
-     * 是否展开分租
+     * 是否展开分组
      *
      * @return 结果
      */
@@ -57,6 +57,9 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
         return BooleanUtil.isTrue(expand);
     }
 
+    /**
+     * 构造应用分组对象。
+     */
     public AppGroup() {
     }
 
@@ -69,36 +72,78 @@ public class AppGroup implements ObjectCopier<Object>, Comparable<AppGroup>, Ser
         }
     }
 
+    /**
+     * 构造应用分组对象。
+     *
+     * @param gid GID
+     * @param name 名称
+     * @param expand 是否展开
+     */
     public AppGroup(String gid, String name, Boolean expand) {
         this.gid = gid;
         this.name = name;
         this.expand = expand;
     }
 
+    /**
+     * 获取GID。
+     *
+     * @return GID
+     */
     public String getGid() {
         return gid;
     }
 
+    /**
+     * 设置GID。
+     *
+     * @param gid GID
+     */
     public void setGid(String gid) {
         this.gid = gid;
     }
 
+    /**
+     * 获取名称。
+     *
+     * @return 名称
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 设置名称。
+     *
+     * @param name 名称
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 设置展开。
+     *
+     * @param expand 是否展开
+     */
     public void setExpand(boolean expand) {
         this.expand = expand;
     }
 
+    /**
+     * 获取PID。
+     *
+     * @return PID
+     */
     public String getPid() {
         return pid;
     }
 
+    /**
+     * 设置PID。
+     *
+     * @param pid PID
+     */
     public void setPid(String pid) {
         this.pid = pid;
     }

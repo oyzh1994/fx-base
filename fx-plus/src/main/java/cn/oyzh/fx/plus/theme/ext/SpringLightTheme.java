@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class SpringLightTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final SpringLight THEME = new SpringLight();
 
     @Override

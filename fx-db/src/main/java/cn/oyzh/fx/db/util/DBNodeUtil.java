@@ -27,6 +27,7 @@ import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.CodeArea;
 
 /**
+ * 数据库节点工具类，负责按字段类型创建节点、读写节点值及计算节点背景色
  *
  * @author oyzh
  * @since 2026-09-06

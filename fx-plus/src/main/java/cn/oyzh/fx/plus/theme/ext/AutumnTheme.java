@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class AutumnTheme implements ThemeStyle {
 
+    /** 底层主题实例 */
     private static final Autumn THEME = new Autumn();
 
     @Override

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * 终端管理类
  *
  * @author oyzh
- * @since 2023/7/21
+ * @since 2023-10-09
  */
 public class TerminalManager {
 
@@ -98,7 +98,7 @@ public class TerminalManager {
     }
 
     /**
-     * 列表命令处理器
+     * 注册命令处理器
      *
      * @param name                终端名称
      * @param commandHandlerClass 处理器类
@@ -123,7 +123,7 @@ public class TerminalManager {
     }
 
     /**
-     * 列举命令处理器
+     * 注册命令处理器
      *
      * @param name           终端名称
      * @param commandHandler 处理器

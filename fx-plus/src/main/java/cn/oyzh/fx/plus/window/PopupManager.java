@@ -18,10 +18,10 @@ public class PopupManager {
     public static final String REF_ATTR = "_popup_window_reference";
 
     /**
-     * 获取弹窗
+     * 获取已存在的弹窗
      *
      * @param controllerClass controller类
-     * @return PopupWrapper
+     * @return 弹窗适配器
      */
     public static PopupAdapter getPopup(Class<?> controllerClass) {
         for (Window window : Window.getWindows()) {
@@ -53,7 +53,7 @@ public class PopupManager {
      * 解析弹窗
      *
      * @param clazz 弹窗类
-     * @return PopupAdapter
+     * @return 弹窗适配器
      */
     public static PopupAdapter parsePopup(Class<?> clazz) {
         PopupAttribute attribute = clazz.getAnnotation(PopupAttribute.class);

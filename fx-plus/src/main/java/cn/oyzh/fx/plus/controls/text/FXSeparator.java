@@ -6,6 +6,8 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.control.Separator;
 
 /**
+ * 分割线控件
+ *
  * @author oyzh
  * @since 2023/4/4
  */

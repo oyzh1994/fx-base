@@ -12,6 +12,8 @@ import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import javafx.scene.layout.FlowPane;
 
 /**
+ * 流式布局面板控件
+ *
  * @author oyzh
  * @since 2023/12/25
  */

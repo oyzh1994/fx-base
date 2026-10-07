@@ -3,6 +3,7 @@ package cn.oyzh.fx.db;
 import cn.oyzh.common.util.StringUtil;
 
 /**
+ * 命名接口，提供名称的读写及新对象判断能力
  *
  * @author oyzh
  * @since 2026-09-07

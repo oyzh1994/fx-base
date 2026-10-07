@@ -8,6 +8,8 @@ import javafx.scene.control.TableColumnBase;
 import javafx.stage.Window;
 
 /**
+ * 属性工具类
+ *
  * @author oyzh
  * @since 2025-08-20
  */

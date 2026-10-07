@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * CSV 类型文件读取器，按导入配置将 CSV 文件内容解析为数据对象。
+ *
  * @author oyzh
  * @since 2024-09-03
  */
@@ -32,6 +34,13 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
      */
     private SkipAbleFileReader reader;
 
+    /**
+     * 构造方法
+     *
+     * @param file   待读取的文件
+     * @param config 导入配置
+     * @throws IOException IO异常
+     */
     public DBDataCsvTypeFileReader(File file, DBDataImportConfig config) throws IOException {
         super(file);
         this.config = config;

@@ -11,6 +11,8 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
+ * JSON 类型文件读取器，基于 fastjson2 将 JSON 文件内容解析为数据对象。
+ *
  * @author oyzh
  * @since 2024-09-03
  */
@@ -26,6 +28,13 @@ public class DBDataJsonTypeFileReader extends DBDataTypeFileReader {
      */
     private DBDataImportConfig config;
 
+    /**
+     * 构造方法
+     *
+     * @param file   待读取的文件
+     * @param config 导入配置
+     * @throws FileNotFoundException 文件未找到异常
+     */
     public DBDataJsonTypeFileReader(File file, DBDataImportConfig config) throws FileNotFoundException {
         super(file);
         this.config = config;

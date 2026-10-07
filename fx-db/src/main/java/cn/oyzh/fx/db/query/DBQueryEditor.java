@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
 import javafx.scene.text.Font;
 
 /**
- * 查询编辑器
+ * SQL 查询编辑器基类，负责按键交互、注释操作与查询提示弹窗的联动
  *
  * @author oyzh
  * @since 2025/01/21

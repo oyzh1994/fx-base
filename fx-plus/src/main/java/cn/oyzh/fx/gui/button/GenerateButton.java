@@ -5,7 +5,7 @@ import cn.oyzh.fx.gui.svg.glyph.GenerateSVGGlyph;
 import cn.oyzh.fx.plus.controls.button.IconButton;
 
 /**
- * 生成密钥按钮
+ * 生成按钮
  *
  * @author oyzh
  * @since 2024/04/10

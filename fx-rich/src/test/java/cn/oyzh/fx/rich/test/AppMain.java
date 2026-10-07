@@ -9,6 +9,8 @@ import org.fxmisc.richtext.CodeArea;
 
 
 /**
+ * 富文本编辑器综合测试主程序，演示富文本区域控件的文本编辑、样式设置与主题切换等操作。
+ *
  * @author oyzh
  * @since 2022/5/18
  */

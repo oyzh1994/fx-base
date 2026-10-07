@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * TXT 类型文件读取器，按导入配置将定界文本文件内容解析为数据对象。
+ *
  * @author oyzh
  * @since 2024-09-04
  */
@@ -33,6 +35,13 @@ public class DBDataTxtTypeFileReader extends DBDataTypeFileReader {
      */
     private SkipAbleFileReader reader;
 
+    /**
+     * 构造方法
+     *
+     * @param file   待读取的文件
+     * @param config 导入配置
+     * @throws IOException IO异常
+     */
     public DBDataTxtTypeFileReader(File file, DBDataImportConfig config) throws IOException {
          super(file);
         this.config = config;

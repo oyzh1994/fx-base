@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 数据库数据导入处理器抽象基类，负责从指定文件类型导入数据
+ *
  * @author oyzh
  * @since 2024/08/27
  */
@@ -41,6 +43,11 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
      */
     protected int batchLimit = 50;
 
+    /**
+     * 构造数据库数据导入处理器
+     *
+     * @param name 名称
+     */
     public DBDataImportHandler(String name) {
         this.name = name;
     }
@@ -73,7 +80,7 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
     }
 
     /**
-     * 是否xls类型
+     * 是否excel类型
      *
      * @return 结果
      */
@@ -112,26 +119,56 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
         return this.insertList;
     }
 
+    /**
+     * 获取名称。
+     *
+     * @return 名称
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 设置名称。
+     *
+     * @param name 名称
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 获取文件类型。
+     *
+     * @return 文件类型
+     */
     public String getFileType() {
         return fileType;
     }
 
+    /**
+     * 设置文件类型。
+     *
+     * @param fileType 文件类型
+     */
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
 
+    /**
+     * 获取读取限制。
+     *
+     * @return 读取限制
+     */
     public int getReadLimit() {
         return readLimit;
     }
 
+    /**
+     * 设置读取限制。
+     *
+     * @param readLimit 读取限制
+     */
     public void setReadLimit(int readLimit) {
         this.readLimit = readLimit;
     }
@@ -141,6 +178,11 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
         return batchLimit;
     }
 
+    /**
+     * 设置批量限制。
+     *
+     * @param batchLimit 批量限制
+     */
     public void setBatchLimit(int batchLimit) {
         this.batchLimit = batchLimit;
     }
@@ -150,6 +192,11 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
         return insertLimit;
     }
 
+    /**
+     * 设置插入限制。
+     *
+     * @param insertLimit 插入限制
+     */
     public void setInsertLimit(int insertLimit) {
         this.insertLimit = insertLimit;
     }

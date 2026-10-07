@@ -9,22 +9,42 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 /**
+ * Swing 滚动条外观实现，按明暗主题设置轨道与滑块颜色并隐藏两端按钮（已废弃）
+ *
  * @author oyzh
  * @since 2025-08-05
  */
 @Deprecated
 public class SwingScrollBarUI extends BasicScrollBarUI {
 
+    /**
+     * 暗色主题轨道颜色
+     */
     public static final Color TRACK_COLOR_DARK = new Color(80, 80, 80);
 
+    /**
+     * 暗色主题滑块颜色
+     */
     public static final Color THUMB_COLOR_DARK = new Color(120, 120, 120);
 
+    /**
+     * 暗色主题轨道高亮颜色
+     */
     public static final Color TRACK_HIGHLIGHT_COLOR_DARK = new Color(160, 160, 160);
 
+    /**
+     * 亮色主题轨道颜色
+     */
     public static final Color TRACK_COLOR_LIGHT = new Color(240, 240, 240);
 
+    /**
+     * 亮色主题滑块颜色
+     */
     public static final Color THUMB_COLOR_LIGHT = new Color(180, 180, 180);
 
+    /**
+     * 亮色主题轨道高亮颜色
+     */
     public static final Color TRACK_HIGHLIGHT_COLOR_LIGHT = new Color(120, 120, 120);
 
     @Override
@@ -51,6 +71,11 @@ public class SwingScrollBarUI extends BasicScrollBarUI {
         return this.createEmptyButton();
     }
 
+    /**
+     * 创建零尺寸的隐藏按钮
+     *
+     * @return 空按钮
+     */
     private JButton createEmptyButton() {
         JButton button = new JButton();
         button.setPreferredSize(new Dimension(0, 0));

@@ -30,16 +30,34 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
         NodeManager.init(this);
     }
 
+    /**
+     * 所属树形视图
+     */
     private FXTreeView treeView;
 
+    /**
+     * 构造树项对象。
+     *
+     * @param treeView 树视图
+     */
     public FXTreeItem(FXTreeView treeView) {
         this.setTreeView(treeView);
     }
 
+    /**
+     * 设置树查看。
+     *
+     * @param treeView 树视图
+     */
     public void setTreeView(FXTreeView treeView) {
         this.treeView = treeView;
     }
 
+    /**
+     * 获取树查看。
+     *
+     * @return 树查看
+     */
     public FXTreeView getTreeView() {
         return treeView;
     }
@@ -54,7 +72,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     }
 
     /**
-     * 开始等待
+     * 停止等待
      */
     public void stopWaiting() {
         if (this.itemGraphic() instanceof SVGGlyph glyph) {
@@ -260,7 +278,7 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
     }
 
     /**
-     * 设置多个子节点
+     * 添加多个子节点
      *
      * @param items 节点列表
      */
@@ -424,6 +442,11 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
         return this.getTreeView().window();
     }
 
+    /**
+     * 节点是否选中
+     *
+     * @return 结果
+     */
     public boolean isSelected() {
         return this.getTreeView().isSelected(this);
     }

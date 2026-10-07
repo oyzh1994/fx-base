@@ -17,13 +17,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 基于 Druid 的 SQL 解析器，借助 Druid 解析 SQL 并识别查询语句、全字段查询等
+ *
  * @author oyzh
  * @since 2024/2/26
  */
 public class DBDruidSqlParser extends DBSqlParser {
 
+    /**
+     * druid数据库类型
+     */
     private final DbType dbType;
 
+    /**
+     * 构造数据库DruidSQL解析器对象。
+     *
+     * @param sqlContent SQL内容
+     * @param dialect 方言
+     */
     public DBDruidSqlParser(String sqlContent, DBDialect dialect) {
         super(sqlContent, dialect);
         this.dbType = switch (dialect) {
@@ -39,6 +50,9 @@ public class DBDruidSqlParser extends DBSqlParser {
         return SqlUtil.removeComments(statement.toString());
     }
 
+    /**
+     * 解析后的语句集合
+     */
     private List<SQLStatement> sqlStatements;
 
     @Override
