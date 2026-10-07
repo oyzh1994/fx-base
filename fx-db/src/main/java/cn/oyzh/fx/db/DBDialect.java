@@ -9,7 +9,7 @@ import java.util.List;
  * 数据库类型(方言)
  *
  * @author oyzh
- * @since 2024-02-20
+ * @since 2026-09-01
  */
 public enum DBDialect {
     MYSQL,

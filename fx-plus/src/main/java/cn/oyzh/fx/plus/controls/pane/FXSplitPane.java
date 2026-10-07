@@ -20,7 +20,7 @@ import java.util.List;
  * 分割面板控件
  *
  * @author oyzh
- * @since 2025-11-27
+ * @since 2023-10-09
  */
 public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, NodeGroup, TipAdapter, StateAdapter, FontAdapter, ThemeAdapter {
 

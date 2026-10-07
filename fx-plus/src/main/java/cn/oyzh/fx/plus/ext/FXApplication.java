@@ -21,7 +21,7 @@ import java.util.Properties;
  * fx 应用启动主入口，封装应用初始化、启动与停止流程
  *
  * @author oyzh
- * @since 2021-08-19
+ * @since 2023-10-09
  */
 public abstract class FXApplication extends Application {
 

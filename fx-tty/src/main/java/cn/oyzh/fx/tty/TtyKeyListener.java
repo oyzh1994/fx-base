@@ -6,7 +6,7 @@ import javafx.scene.input.KeyEvent;
  * 终端按键监听器，用于接收字符输入、按键按下与释放事件。
  *
  * @author oyzh
- * @since 2025-07-29
+ * @since 2026-07-06
  */
 public interface TtyKeyListener {
 

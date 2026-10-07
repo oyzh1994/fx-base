@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 取消按钮，点击后隐藏当前窗口
  *
  * @author oyzh
- * @since 2020-10-29
+ * @since 2023-10-09
  */
 public class CancelButton extends IconButton {
 

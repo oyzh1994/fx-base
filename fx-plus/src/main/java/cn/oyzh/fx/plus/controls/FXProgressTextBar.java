@@ -8,7 +8,7 @@ import javafx.geometry.Pos;
  * 带文本的进度条控件，继承自 FXHBox，由进度条与文本标签组合而成，用于展示进度及其百分比文本
  *
  * @author oyzh
- * @since 2025-03-07
+ * @since 2025-03-21
  */
 public class FXProgressTextBar extends FXHBox {
 

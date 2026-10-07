@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.font.FontAdapter;
  * 文本域适配器
  *
  * @author oyzh
- * @since 2023-01-29
+ * @since 2023-10-09
  */
 public interface AreaAdapter extends TextAdapter, FontAdapter {
 

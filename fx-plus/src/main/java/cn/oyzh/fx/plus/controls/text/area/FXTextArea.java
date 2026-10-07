@@ -27,7 +27,7 @@ import java.util.Collection;
  * 多行文本输入框控件
  *
  * @author oyzh
- * @since 2022-01-20
+ * @since 2023-10-09
  */
 public class FXTextArea extends TextArea implements Destroyable, FlexAdapter, LimitLineControl, LimitLenControl, NodeGroup, NodeAdapter, ThemeAdapter, AreaAdapter, Verifiable, TipAdapter, StateAdapter {
 

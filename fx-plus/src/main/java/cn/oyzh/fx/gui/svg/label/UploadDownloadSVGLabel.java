@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGLabel;
  * 上传下载标签
  *
  * @author oyzh
- * @since 2024-04-10
+ * @since 2025-12-25
  */
 public class UploadDownloadSVGLabel extends SVGLabel {
 

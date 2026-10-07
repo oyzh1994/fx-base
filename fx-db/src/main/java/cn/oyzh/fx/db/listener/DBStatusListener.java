@@ -9,7 +9,7 @@ import java.util.UUID;
  * 数据库对象状态监听器抽象基类，维护监听器键值并在销毁时自动从管理器中移除
  *
  * @author oyzh
- * @since 2024-07-23
+ * @since 2026-09-01
  */
 public abstract class DBStatusListener implements ChangeListener<Object>, Destroyable {
 

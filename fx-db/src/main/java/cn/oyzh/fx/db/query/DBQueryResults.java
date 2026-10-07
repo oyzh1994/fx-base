@@ -10,7 +10,7 @@ import java.util.List;
  * 查询结果集合，聚合同一次执行的多个查询结果及错误信息
  *
  * @author oyzh
- * @since 2024-02-19
+ * @since 2026-09-02
  */
 public class DBQueryResults<R extends DBQueryResult> {
 

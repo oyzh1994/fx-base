@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * 数据批量插入接口，支持按批次限制拆分并以并行或串行方式执行批量插入。
  *
  * @author oyzh
- * @since 2026-06-30
+ * @since 2026-09-01
  */
 public interface DataBatchInsertable<D> {
 

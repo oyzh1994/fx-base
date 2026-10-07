@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.font.FontManager;
  * 分组 SVG 图标控件
  *
  * @author oyzh
- * @since 2024-04-10
+ * @since 2024-04-11
  */
 public class GroupSVGGlyph extends SVGGlyph {
 

@@ -7,7 +7,7 @@
 //
 ///**
 // * @author oyzh
-// * @since 2024-04-03
+// * @since 2023-12-25
 // */
 //@Deprecated
 //public class BlackOnWhiteTheme implements Theme, ThemeStyle {

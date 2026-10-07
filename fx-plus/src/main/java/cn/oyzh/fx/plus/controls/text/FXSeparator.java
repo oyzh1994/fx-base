@@ -9,7 +9,7 @@ import javafx.scene.control.Separator;
  * 分割线控件
  *
  * @author oyzh
- * @since 2023-04-04
+ * @since 2023-10-09
  */
 public class FXSeparator extends Separator implements FlexAdapter, ThemeAdapter {
 

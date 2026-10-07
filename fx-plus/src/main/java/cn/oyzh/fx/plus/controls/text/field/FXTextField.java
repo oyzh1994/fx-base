@@ -23,7 +23,7 @@ import javafx.scene.control.TextField;
  * 单行文本输入框控件
  *
  * @author oyzh
- * @since 2023-08-15
+ * @since 2023-11-12
  */
 public class FXTextField extends TextField implements Destroyable, FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 

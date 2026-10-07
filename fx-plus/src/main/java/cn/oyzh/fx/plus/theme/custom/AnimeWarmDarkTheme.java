@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 特性：暖棕色调、柔和圆角、温馨氛围
  *
  * @author oyzh
- * @since 2026-06-27
+ * @since 2023-12-25
  */
 public class AnimeWarmDarkTheme implements ThemeStyle {
 

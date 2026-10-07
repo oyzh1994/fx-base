@@ -13,7 +13,7 @@ import javafx.scene.layout.StackPane;
  * 堆叠面板控件
  *
  * @author oyzh
- * @since 2025-04-18
+ * @since 2023-10-09
  */
 public class FXStackPane extends StackPane implements FlexAdapter, LayoutAdapter, NodeAdapter, ThemeAdapter, FontAdapter {
 

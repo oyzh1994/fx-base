@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 带状态管理的表格视图，负责维护表格数据项的状态监听及已删除数据项
  *
  * @author oyzh
- * @since 2024-07-22
+ * @since 2026-09-02
  */
 public class DBStatusTableView<S extends DBObject> extends FXTableView<S> {
 

@@ -21,7 +21,7 @@ import javafx.scene.text.Font;
  * 开关控件
  *
  * @author oyzh
- * @since 2023-12-19
+ * @since 2023-10-09
  */
 public class FXToggleSwitch extends ToggleSwitch implements NodeAdapter, LayoutAdapter, NodeGroup, TipAdapter, StateAdapter, FontAdapter {
 

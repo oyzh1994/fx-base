@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * 图片控件
  *
  * @author oyzh
- * @since 2020-10-29
+ * @since 2024-12-16
  */
 public class FXImageView extends ImageView implements FlexAdapter, NodeAdapter, PropAdapter, TipAdapter, Destroyable {
 

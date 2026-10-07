@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 消息文本域
  *
  * @author oyzh
- * @since 2023-04-08
+ * @since 2023-10-09
  */
 public class MsgTextArea extends FXTextArea {
 

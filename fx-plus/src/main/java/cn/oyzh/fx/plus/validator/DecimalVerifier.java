@@ -8,7 +8,7 @@
 // * 数字检验机
 // *
 // * @author oyzh
-// * @since 2023-01-29
+// * @since 2023-10-09
 // */
 //public class DecimalVerifier extends BaseVerifier {
 //

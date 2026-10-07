@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 迁移标签
  *
  * @author oyzh
- * @since 2024-04-10
+ * @since 2024-11-25
  */
 public class MigrationSVGLabel extends SVGLabel {
 

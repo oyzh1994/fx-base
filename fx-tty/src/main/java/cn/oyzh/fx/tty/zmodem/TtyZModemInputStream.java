@@ -9,7 +9,7 @@ import java.util.List;
  * ZModem输入流，在底层输入流之前追加已预读的字节数据。
  *
  * @author oyzh
- * @since 2025-06-24
+ * @since 2026-07-06
  */
 public class TtyZModemInputStream extends InputStream {
 

@@ -20,7 +20,7 @@ import java.util.Map;
  * Excel 类型文件读取器，基于 POI 工作簿将 Excel 文件内容解析为数据对象。
  *
  * @author oyzh
- * @since 2024-09-03
+ * @since 2026-09-07
  */
 public class DBDataExcelTypeFileReader extends DBDataTypeFileReader {
 

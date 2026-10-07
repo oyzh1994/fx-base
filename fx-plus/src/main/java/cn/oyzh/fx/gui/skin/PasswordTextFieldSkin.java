@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
  * 密码输入框皮肤，带明文显示切换按钮
  *
  * @author oyzh
- * @since 2023-10-25
+ * @since 2025-04-02
  */
 public class PasswordTextFieldSkin extends ActionTextFieldSkin {
 

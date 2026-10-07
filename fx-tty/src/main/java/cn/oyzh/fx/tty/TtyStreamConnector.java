@@ -15,7 +15,7 @@ import java.nio.charset.Charset;
  * 基于输入输出流的终端连接器抽象类，提供读写、终端尺寸与字符集等通用实现。
  *
  * @author oyzh
- * @since 2025-03-04
+ * @since 2026-10-03
  */
 public abstract class TtyStreamConnector implements TtyTerminalSizeable, TtyStreamable, TtyCharsetble {
 

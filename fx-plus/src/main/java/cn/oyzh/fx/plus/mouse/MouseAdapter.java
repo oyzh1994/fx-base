@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
  * 鼠标事件适配器，为节点提供主、次按钮点击事件的读写
  *
  * @author oyzh
- * @since 2022-05-12
+ * @since 2023-10-09
  */
 public interface MouseAdapter extends PropAdapter {
 

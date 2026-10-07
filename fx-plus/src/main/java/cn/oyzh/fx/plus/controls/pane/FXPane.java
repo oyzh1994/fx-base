@@ -13,7 +13,7 @@ import javafx.scene.layout.Pane;
  * 面板容器控件
  *
  * @author oyzh
- * @since 2022-01-18
+ * @since 2023-10-09
  */
 public class FXPane extends Pane implements FlexAdapter, LayoutAdapter, NodeAdapter, ThemeAdapter, FontAdapter {
 

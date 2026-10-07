@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
  * 数据库数据记录标签下拉框，用于选择记录标签的根形式
  *
  * @author oyzh
- * @since 2024-08-27
+ * @since 2026-09-01
  */
 public class DBDataRecordLabelComboBox extends FXComboBox<String> {
 

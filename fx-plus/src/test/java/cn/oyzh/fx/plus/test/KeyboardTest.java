@@ -8,7 +8,7 @@ import java.awt.*;
  * 键盘按键模拟测试，通过 Robot 模拟快捷键操作
  *
  * @author oyzh
- * @since 2026-04-16
+ * @since 2026-04-17
  */
 public class KeyboardTest {
 

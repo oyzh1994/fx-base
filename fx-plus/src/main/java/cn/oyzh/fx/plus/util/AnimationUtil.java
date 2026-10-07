@@ -19,7 +19,7 @@ import javafx.util.Duration;
  * 动画工具类
  *
  * @author oyzh
- * @since 2023-03-13
+ * @since 2023-10-09
  */
 public class AnimationUtil {
 

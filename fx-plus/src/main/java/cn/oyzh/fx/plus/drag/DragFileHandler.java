@@ -11,7 +11,7 @@ import javafx.scene.input.TransferMode;
  * 文件拖动处理
  *
  * @author oyzh
- * @since 2023-05-14
+ * @since 2023-10-09
  */
 public class DragFileHandler {
 

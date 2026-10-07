@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 警告 SVG 图标控件
  *
  * @author oyzh
- * @since 2025-02-14
+ * @since 2025-11-06
  */
 public class WarningSVGGlyph extends SVGGlyph {
 

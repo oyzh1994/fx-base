@@ -11,7 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
  * 终端渲染组件
  *
  * @author oyzh
- * @since 2025-04-24
+ * @since 2026-07-06
  */
 public class TtyTerminalCanvas extends FXPane implements Destroyable {
 

@@ -18,7 +18,7 @@ import javafx.scene.control.TitledPane;
  * 可折叠标题面板控件
  *
  * @author oyzh
- * @since 2023-11-21
+ * @since 2023-10-09
  */
 public class FXTitledPane extends TitledPane implements FlexAdapter, NodeGroup, NodeAdapter, TipAdapter, StateAdapter, FontAdapter, ThemeAdapter {
 

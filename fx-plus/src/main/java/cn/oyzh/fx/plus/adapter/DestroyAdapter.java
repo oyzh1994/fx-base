@@ -8,7 +8,7 @@
 // * 可销毁适配器
 // *
 // * @author oyzh
-// * @since 2023-01-29
+// * @since 2024-10-15
 // */
 //public interface DestroyAdapter extends Destroyable {
 //

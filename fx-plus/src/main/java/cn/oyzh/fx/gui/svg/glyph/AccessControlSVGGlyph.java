@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 访问控制 SVG 图标控件
  *
  * @author oyzh
- * @since 2024-04-11
+ * @since 2024-10-12
  */
 public class AccessControlSVGGlyph extends SVGGlyph {
 

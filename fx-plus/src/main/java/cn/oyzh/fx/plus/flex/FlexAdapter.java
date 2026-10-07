@@ -9,7 +9,7 @@ import cn.oyzh.fx.plus.node.NodeAdapter;
  * 流式节点
  *
  * @author oyzh
- * @since 2022-01-18
+ * @since 2023-10-09
  */
 public interface FlexAdapter extends NodeAdapter, StateAdapter, LayoutAdapter {
 

@@ -11,7 +11,7 @@ import java.util.List;
  * 数据传输名称列表视图，用于展示并勾选待传输的名称集合
  *
  * @author oyzh
- * @since 2024-09-05
+ * @since 2026-09-07
  */
 public class DBDataTransportNameListView extends DBDataTransportObjectListView {
 

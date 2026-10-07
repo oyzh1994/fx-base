@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
  * VS Code Dark+ 主题
  *
  * @author oyzh
- * @since 2026-06-27
+ * @since 2023-12-25
  */
 public class VSCodeDarkTheme implements ThemeStyle {
 

@@ -8,7 +8,7 @@ import cn.oyzh.fx.plus.converter.SimpleStringConverter;
  * 数据库名称选择框，用于展示并选择数据库对象名称
  *
  * @author oyzh
- * @since 2024-08-27
+ * @since 2026-09-07
  */
 public class DBNameComboBox extends FXComboBox<DBName> {
 

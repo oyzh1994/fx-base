@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * incubator 模块编辑器字体测试，对比自定义字体与默认字体的显示效果。
  *
  * @author oyzh
- * @since 2022-05-18
+ * @since 2026-09-28
  */
 public class EditorFontTest extends Application {
 

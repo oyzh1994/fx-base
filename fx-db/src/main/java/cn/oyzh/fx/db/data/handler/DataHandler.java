@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * 数据处理基类，提供中断控制、消息通知与进度处理等通用能力
  *
  * @author oyzh
- * @since 2024-08-29
+ * @since 2026-09-01
  */
 public class DataHandler {
 

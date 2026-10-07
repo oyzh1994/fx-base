@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 数据库连接管理器，负责维护与获取各类数据库连接
  *
  * @author oyzh
- * @since 2024-01-28
+ * @since 2026-09-01
  */
 public abstract class DBConnManager implements AutoCloseable {
 

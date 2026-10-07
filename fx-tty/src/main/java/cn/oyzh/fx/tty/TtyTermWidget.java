@@ -14,7 +14,7 @@ import java.io.IOException;
  * 以及退格码与 Alt 修饰符等设置项的控制。
  *
  * @author oyzh
- * @since 2025-03-04
+ * @since 2026-07-07
  */
 public abstract class TtyTermWidget extends FXJediTermWidget {
 

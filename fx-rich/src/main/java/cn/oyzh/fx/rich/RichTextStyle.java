@@ -4,7 +4,7 @@
 //
 ///**
 // * @author oyzh
-// * @since 2023-10-08
+// * @since 2023-10-09
 // */
 //@Deprecated
 //public class RichTextStyle {

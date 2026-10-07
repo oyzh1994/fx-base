@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * Properties 配置文件 SVG 图标控件
  *
  * @author oyzh
- * @since 2025-03-05
+ * @since 2026-06-16
  */
 public class FilePropertiesSVGGlyph extends SVGGlyph {
 

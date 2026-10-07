@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.controls.svg.ScalingSVGGlyph;
  * 选择 SVG 图标控件
  *
  * @author oyzh
- * @since 2024-04-10
+ * @since 2024-07-12
  */
 public class SelectSVGGlyph extends ScalingSVGGlyph {
 

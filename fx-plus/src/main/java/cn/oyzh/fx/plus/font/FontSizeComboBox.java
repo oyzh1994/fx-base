@@ -11,7 +11,7 @@ import java.util.Locale;
  * 字体大小下拉框
  *
  * @author oyzh
- * @since 2024-04-05
+ * @since 2024-04-06
  */
 public class FontSizeComboBox extends FXComboBox<Integer> implements I18nSelectAdapter<Integer> {
 

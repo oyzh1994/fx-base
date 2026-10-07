@@ -10,7 +10,7 @@ import javafx.scene.text.Font;
  * 布局切换图标面板
  *
  * @author oyzh
- * @since 2024-12-09
+ * @since 2025-04-02
  */
 public class LayoutSVGPane extends SVGPane {
 

@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
  * IntelliJ IDEA Light 主题
  *
  * @author oyzh
- * @since 2026-06-27
+ * @since 2023-12-25
  */
 public class IntelliJLightTheme implements ThemeStyle {
 

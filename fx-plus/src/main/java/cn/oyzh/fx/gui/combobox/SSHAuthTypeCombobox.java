@@ -7,7 +7,7 @@ import cn.oyzh.i18n.I18nHelper;
  * SSH 认证类型选择框
  *
  * @author oyzh
- * @since 2025-03-18
+ * @since 2025-03-25
  */
 public class SSHAuthTypeCombobox extends FXComboBox<String> {
 

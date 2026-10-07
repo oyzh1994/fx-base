@@ -15,7 +15,7 @@ import java.util.List;
  * 主题适配器
  *
  * @author oyzh
- * @since 2023-05-11
+ * @since 2023-10-09
  */
 public interface ThemeAdapter extends PropAdapter {
 

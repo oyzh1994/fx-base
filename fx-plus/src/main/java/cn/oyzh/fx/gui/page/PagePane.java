@@ -18,7 +18,7 @@ import java.util.Objects;
  * 分页面板组件
  *
  * @author oyzh
- * @since 2022-12-22
+ * @since 2023-10-09
  */
 public class PagePane<T> extends Region implements LayoutAdapter, ThemeAdapter {
 

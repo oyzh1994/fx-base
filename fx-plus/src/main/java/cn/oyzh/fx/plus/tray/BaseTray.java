@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * 基础系统托盘
  *
  * @author oyzh
- * @since 2025-00-19
+ * @since 2023-10-09
  */
 public abstract class BaseTray {
 

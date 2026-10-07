@@ -13,7 +13,7 @@ import java.util.Objects;
  * 数据库对象基类，维护对象的变更、新增、删除状态及原始数据
  *
  * @author oyzh
- * @since 2024-07-13
+ * @since 2026-09-01
  */
 public class DBObject implements Destroyable {
 

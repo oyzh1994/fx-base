@@ -9,7 +9,7 @@ import javafx.scene.text.FontWeight;
  * 字体组件适配器
  *
  * @author oyzh
- * @since 2023-04-14
+ * @since 2023-10-09
  */
 public interface FontAdapter extends PropAdapter {
 

@@ -7,7 +7,7 @@ import cn.oyzh.common.util.StringUtil;
  * 查询词元，记录编辑器中当前光标处的文本片段及其起止位置
  *
  * @author oyzh
- * @since 2024-08-15
+ * @since 2026-09-02
  */
 public class DBQueryToken {
 

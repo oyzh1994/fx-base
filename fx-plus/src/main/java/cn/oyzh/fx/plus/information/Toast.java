@@ -30,7 +30,7 @@ import java.awt.*;
  * 消息提示
  *
  * @author oyzh
- * @since 2020-10-19
+ * @since 2023-10-25
  */
 public class Toast {
 

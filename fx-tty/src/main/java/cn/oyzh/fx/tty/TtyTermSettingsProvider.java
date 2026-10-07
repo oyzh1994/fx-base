@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  * 终端设置提供者
  *
  * @author oyzh
- * @since 2025-06-28
+ * @since 2026-07-06
  */
 public interface TtyTermSettingsProvider {
 

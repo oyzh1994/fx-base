@@ -18,7 +18,7 @@ import java.util.Map;
  * XML 类型文件读取器，基于 StAX 事件流将 XML 文件内容解析为数据对象。
  *
  * @author oyzh
- * @since 2024-09-03
+ * @since 2026-09-07
  */
 public class DBDataXmlTypeFileReader extends DBDataTypeFileReader {
 

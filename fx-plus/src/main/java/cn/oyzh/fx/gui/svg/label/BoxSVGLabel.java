@@ -7,7 +7,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGLabel;
  * 盒状标签
  *
  * @author oyzh
- * @since 2024-04-10
+ * @since 2025-04-28
  */
 public class BoxSVGLabel extends SVGLabel {
 

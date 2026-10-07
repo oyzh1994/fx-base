@@ -60,7 +60,7 @@
 //
 ///**
 // * @author oyzh
-// * @since 2023-09-28
+// * @since 2023-10-09
 // */
 //@Deprecated
 //public class BaseRichTextArea extends InlineCssTextArea implements FlexAdapter, AreaAdapter, I18nAdapter, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {

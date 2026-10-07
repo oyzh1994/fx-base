@@ -11,7 +11,7 @@ import javafx.scene.control.TreeTableRow;
  * 树形表格行
  *
  * @author oyzh
- * @since 2023-03-31
+ * @since 2023-10-09
  */
 public abstract class FXTreeTableRow<T> extends TreeTableRow<T> implements StateAdapter, ThemeAdapter {
 

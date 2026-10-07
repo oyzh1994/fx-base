@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
  * 文本适配器
  *
  * @author oyzh
- * @since 2023-01-29
+ * @since 2023-10-09
  */
 public interface TextAdapter extends PropAdapter{
 

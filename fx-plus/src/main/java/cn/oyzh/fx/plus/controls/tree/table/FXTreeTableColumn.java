@@ -14,7 +14,7 @@ import javafx.scene.control.TreeTableColumn;
  * 树形表格列
  *
  * @author oyzh
- * @since 2024-11-21
+ * @since 2023-10-09
  */
 public class FXTreeTableColumn<S, T> extends TreeTableColumn<S, T> implements FlexAdapter, ThemeAdapter, FontAdapter, TipAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
 

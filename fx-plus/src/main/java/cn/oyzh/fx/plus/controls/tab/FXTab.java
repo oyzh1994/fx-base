@@ -24,7 +24,7 @@ import java.util.List;
  * tab页签控件
  *
  * @author oyzh
- * @since 2022-01-21
+ * @since 2023-10-09
  */
 public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGroup, NodeAdapter, ThemeAdapter, StateAdapter, TipAdapter, Destroyable {
 

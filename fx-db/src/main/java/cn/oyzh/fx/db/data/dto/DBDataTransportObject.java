@@ -4,7 +4,7 @@ package cn.oyzh.fx.db.data.dto;
  * 数据传输对象，用于表示一个可勾选的数据传输项。
  *
  * @author oyzh
- * @since 2024-09-06
+ * @since 2026-09-01
  */
 public class DBDataTransportObject {
 

@@ -16,7 +16,7 @@ import javafx.scene.control.CheckBox;
  * 复选框控件，继承自 CheckBox，支持主题、字体、状态、提示等适配
  *
  * @author oyzh
- * @since 2020-10-29
+ * @since 2023-10-09
  */
 public class FXCheckBox extends CheckBox implements NodeGroup, NodeAdapter, ThemeAdapter, TipAdapter, StateAdapter, FontAdapter {
 

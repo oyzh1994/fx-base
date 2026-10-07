@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 特性：专业沉稳、精确利落、低调内敛
  *
  * @author oyzh
- * @since 2026-06-27
+ * @since 2023-12-25
  */
 public class BusinessDarkTheme implements ThemeStyle {
 

@@ -19,7 +19,7 @@ import javafx.scene.text.Font;
  * 自定义菜单项，支持字体、节点、状态与主题适配
  *
  * @author oyzh
- * @since 2023-03-03
+ * @since 2023-10-09
  */
 public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, StateAdapter, ThemeAdapter, Destroyable {
 

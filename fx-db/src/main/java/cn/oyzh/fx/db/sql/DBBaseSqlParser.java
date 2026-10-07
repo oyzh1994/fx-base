@@ -57,7 +57,7 @@ public class DBBaseSqlParser extends DBSqlParser {
 
     @Override
     public boolean isFullColumn(String sql) {
-        return SqlUtil.isAllFieldQuery(sql, this.database);
+        return SqlUtil.isAllFieldsQuery(sql, this.database);
     }
 
     @Override

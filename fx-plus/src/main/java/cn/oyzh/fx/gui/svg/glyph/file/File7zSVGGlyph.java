@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 7Z 压缩文件 SVG 图标控件
  *
  * @author oyzh
- * @since 2025-03-05
+ * @since 2026-06-16
  */
 public class File7zSVGGlyph extends SVGGlyph {
 

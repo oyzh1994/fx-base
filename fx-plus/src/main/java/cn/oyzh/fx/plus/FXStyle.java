@@ -4,7 +4,7 @@ package cn.oyzh.fx.plus;
  * FX 样式文件常量类，定义内置样式资源的路径
  *
  * @author oyzh
- * @since 2023-04-04
+ * @since 2023-10-09
  */
 public class FXStyle {
 

@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 特性：清澈磨砂、通透光影、优雅圆角
  *
  * @author oyzh
- * @since 2026-06-27
+ * @since 2023-12-25
  */
 public class LiquidGlassLightTheme implements ThemeStyle {
 

@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 图标按钮
  *
  * @author oyzh
- * @since 2023-01-13
+ * @since 2023-10-09
  */
 public class IconButton extends FXButton {
 

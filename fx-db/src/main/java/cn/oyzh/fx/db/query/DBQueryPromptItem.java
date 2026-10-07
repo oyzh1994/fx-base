@@ -5,7 +5,7 @@ package cn.oyzh.fx.db.query;
  * 查询提示项，封装提示类型、内容、相关度及扩展内容
  *
  * @author oyzh
- * @since 2024-02-21
+ * @since 2026-09-02
  */
 public class DBQueryPromptItem {
 

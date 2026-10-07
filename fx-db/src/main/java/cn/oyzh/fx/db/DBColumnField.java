@@ -4,7 +4,7 @@ package cn.oyzh.fx.db;
  * 数据库字段定义，用于描述某数据类型支持的特性与取值范围
  *
  * @author oyzh
- * @since 2025-11-13
+ * @since 2026-09-01
  */
 public class DBColumnField {
 

@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * APK 安装包 SVG 图标控件
  *
  * @author oyzh
- * @since 2025-03-05
+ * @since 2026-06-16
  */
 public class FileApkSVGGlyph extends SVGGlyph {
 

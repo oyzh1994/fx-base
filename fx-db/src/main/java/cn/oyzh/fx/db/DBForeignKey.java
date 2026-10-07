@@ -7,7 +7,7 @@ import cn.oyzh.common.util.StringUtil;
  * 外键接口，用于校验外键名称是否有效
  *
  * @author oyzh
- * @since 2024-01-30
+ * @since 2026-09-02
  */
 public interface DBForeignKey extends DBName {
 

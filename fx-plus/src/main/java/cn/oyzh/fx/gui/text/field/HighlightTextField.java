@@ -8,7 +8,7 @@ import javafx.scene.control.Skin;
  * 高亮文本输入框
  *
  * @author oyzh
- * @since 2026-05-14
+ * @since 2025-10-13
  */
 public class HighlightTextField extends LimitTextField {
 

@@ -20,7 +20,7 @@
 //  * 基础文本域
 //  *
 //  * @author oyzh
-//  * @since 2023-08-15
+//  * @since 2025-11-14
 //  */
 // public class FXCustomTextField extends CustomTextField implements FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 //

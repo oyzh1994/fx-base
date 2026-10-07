@@ -4,7 +4,7 @@ package cn.oyzh.fx.db;
  * 数据库连接配置，保存连接所需的地址、认证及代理等信息
  *
  * @author oyzh
- * @since 2024-09-06
+ * @since 2026-09-01
  */
 public class DBConnConfig {
 

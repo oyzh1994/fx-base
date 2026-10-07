@@ -16,7 +16,7 @@ import java.util.Objects;
  * 样式工具类
  *
  * @author oyzh
- * @since 2023-04-04
+ * @since 2023-10-09
  */
 public class StyleUtil {
 

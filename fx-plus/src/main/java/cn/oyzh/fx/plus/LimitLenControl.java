@@ -7,7 +7,7 @@ import javafx.scene.control.TextFormatter;
  * 文本长度限制控件接口，为控件提供统一的文本长度校验能力
  *
  * @author oyzh
- * @since 2024-01-31
+ * @since 2024-06-21
  */
 public interface LimitLenControl {
 

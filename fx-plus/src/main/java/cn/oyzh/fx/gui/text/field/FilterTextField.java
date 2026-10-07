@@ -9,7 +9,7 @@ import javafx.scene.control.Skin;
  * 过滤文本输入框
  *
  * @author oyzh
- * @since 2026-05-14
+ * @since 2025-10-13
  */
 public class FilterTextField extends LimitTextField {
 

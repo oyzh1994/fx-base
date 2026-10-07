@@ -38,7 +38,7 @@ import java.util.function.Function;
  * 消息盒子
  *
  * @author oyzh
- * @since 2023-10-24
+ * @since 2023-10-25
  */
 public class MessageBox {
 

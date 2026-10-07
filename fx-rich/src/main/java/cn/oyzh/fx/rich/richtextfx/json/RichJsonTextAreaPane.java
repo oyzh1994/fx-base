@@ -16,7 +16,7 @@
 //
 ///**
 // * @author oyzh
-// * @since 2024-05-17
+// * @since 2024-07-05
 // */
 //@Deprecated
 //public class RichJsonTextAreaPane extends RichTextAreaPane<RichJsonTextArea> {

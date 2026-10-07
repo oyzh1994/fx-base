@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  * 富文本流控件测试，验证文本高亮显示
  *
  * @author oyzh
- * @since 2024-11-15
+ * @since 2025-01-22
  */
 public class RichTextFlowTest extends Application {
 

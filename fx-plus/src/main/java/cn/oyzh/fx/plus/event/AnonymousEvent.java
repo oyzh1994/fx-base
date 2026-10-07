@@ -7,7 +7,7 @@ import javafx.event.EventType;
  * 匿名事件，用于携带任意类型数据源的通用事件
  *
  * @author oyzh
- * @since 2024-10-10
+ * @since 2024-10-11
  */
 public class AnonymousEvent<E> extends Event {
 

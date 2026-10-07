@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 设置 SVG 图标控件
  *
  * @author oyzh
- * @since 2024-04-11
+ * @since 2024-04-10
  */
 public class SettingSVGGlyph extends SVGGlyph {
 

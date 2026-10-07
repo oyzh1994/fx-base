@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCombination;
  * 提示适配器
  *
  * @author oyzh
- * @since 2023-03-15
+ * @since 2023-10-09
  */
 public interface TipAdapter extends EventTarget, PropAdapter {
 

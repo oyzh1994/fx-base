@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.text.field.FXTextField;
  * 只读文本控件
  *
  * @author oyzh
- * @since 2022-12-20
+ * @since 2023-10-09
  */
 public class ReadOnlyTextField extends FXTextField {
 

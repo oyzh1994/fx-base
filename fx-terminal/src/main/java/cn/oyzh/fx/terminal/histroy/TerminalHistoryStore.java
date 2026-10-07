@@ -15,7 +15,7 @@
 //  * shell命令历史存储
 //  *
 //  * @author oyzh
-//  * @since 2023-05-29
+//  * @since 2023-10-09
 //  */
 // @Deprecated
 // public abstract class TerminalHistoryStore extends ArrayFileStore<TerminalHistory> {

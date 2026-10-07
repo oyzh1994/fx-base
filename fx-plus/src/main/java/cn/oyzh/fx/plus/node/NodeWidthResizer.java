@@ -14,7 +14,7 @@ import java.util.function.Consumer;
  * 组件宽度拉伸器
  *
  * @author oyzh
- * @since 2023-05-15
+ * @since 2023-10-09
  */
 @Deprecated
 public class NodeWidthResizer extends NodeResizer {

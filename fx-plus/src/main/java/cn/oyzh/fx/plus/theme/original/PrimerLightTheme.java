@@ -10,7 +10,7 @@ import java.util.Locale;
  * 基础亮色主题
  *
  * @author oyzh
- * @since 2024-04-03
+ * @since 2023-12-25
  */
 public class PrimerLightTheme implements ThemeStyle {
 

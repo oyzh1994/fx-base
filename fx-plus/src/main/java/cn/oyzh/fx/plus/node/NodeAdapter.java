@@ -25,7 +25,7 @@ import java.util.List;
  * 节点适配器，为节点及相关类型提供父子关系、布局尺寸、样式、窗口等通用操作
  *
  * @author oyzh
- * @since 2023-05-15
+ * @since 2023-10-09
  */
 public interface NodeAdapter extends EventTarget {
 

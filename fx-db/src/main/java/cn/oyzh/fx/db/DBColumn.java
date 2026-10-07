@@ -6,7 +6,7 @@ import cn.oyzh.common.util.StringUtil;
  * 数据库列接口，提供列的名称、类型、长度等读写及类型能力判断
  *
  * @author oyzh
- * @since 2026-08-21
+ * @since 2026-09-01
  */
 public interface DBColumn extends DBName{
 

@@ -18,7 +18,7 @@ import javafx.scene.text.Text;
  * 文本控件
  *
  * @author oyzh
- * @since 2023-04-25
+ * @since 2023-10-09
  */
 public class FXText extends Text implements FlexAdapter, StateAdapter, TipAdapter, ThemeAdapter, TextAdapter, FontAdapter, LayoutAdapter, NodeAdapter {
 

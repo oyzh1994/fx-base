@@ -7,7 +7,7 @@ import cn.oyzh.common.util.StringUtil;
  * 存储过程/函数模式接口，用于校验名称是否有效
  *
  * @author oyzh
- * @since 2024-01-30
+ * @since 2026-09-02
  */
 public interface DBRoutineSchema extends DBName{
 

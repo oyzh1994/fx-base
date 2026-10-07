@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 数据库字段定义管理器，按方言维护字段定义并提供类型能力查询
  *
  * @author oyzh
- * @since 2026-08-26
+ * @since 2026-09-01
  */
 public class DBColumnFieldManager {
 

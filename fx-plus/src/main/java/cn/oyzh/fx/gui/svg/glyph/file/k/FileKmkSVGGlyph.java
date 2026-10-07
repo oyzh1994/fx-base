@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * 内核模块构建文件 SVG 图标控件
  *
  * @author oyzh
- * @since 2025-03-05
+ * @since 2026-06-16
  */
 public class FileKmkSVGGlyph extends SVGGlyph {
 

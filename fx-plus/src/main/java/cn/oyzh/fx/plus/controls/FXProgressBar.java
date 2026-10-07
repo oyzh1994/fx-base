@@ -17,7 +17,7 @@ import javafx.scene.control.ProgressBar;
  * 进度条控件，继承自 ProgressBar，支持主题、字体、状态、布局等适配
  *
  * @author oyzh
- * @since 2025-03-07
+ * @since 2023-10-09
  */
 public class FXProgressBar extends ProgressBar implements FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, MouseAdapter, TipAdapter, StateAdapter, LayoutAdapter, FontAdapter {
 

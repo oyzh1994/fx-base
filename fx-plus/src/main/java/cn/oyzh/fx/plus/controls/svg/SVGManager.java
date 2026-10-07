@@ -4,7 +4,7 @@ package cn.oyzh.fx.plus.controls.svg;
  * svg管理器
  *
  * @author oyzh
- * @since 2023-09-15
+ * @since 2023-10-09
  */
 
 public class SVGManager {

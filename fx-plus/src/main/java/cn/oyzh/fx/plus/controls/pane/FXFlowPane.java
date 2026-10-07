@@ -15,7 +15,7 @@ import javafx.scene.layout.FlowPane;
  * 流式布局面板控件
  *
  * @author oyzh
- * @since 2023-12-25
+ * @since 2023-10-09
  */
 public class FXFlowPane extends FlowPane implements FlexAdapter, NodeGroup, ThemeAdapter, FontAdapter, TipAdapter, StateAdapter, NodeAdapter, LayoutAdapter {
 

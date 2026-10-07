@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 提示标签，灰色文字
  *
  * @author oyzh
- * @since 2024-04-08
+ * @since 2025-02-14
  */
 public class TipsLabel extends FXLabel {
 

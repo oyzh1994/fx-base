@@ -33,7 +33,7 @@
 //  * 命令行文本域
 //  *
 //  * @author oyzh
-//  * @since 2023-05-28
+//  * @since 2025-02-19
 //  */
 // @Deprecated
 // public class TerminalTextAreaPane extends RichTextAreaPane<TerminalTextArea> implements Terminal {

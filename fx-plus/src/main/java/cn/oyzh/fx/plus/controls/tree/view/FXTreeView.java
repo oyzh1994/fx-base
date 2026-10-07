@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * 树形视图控件
  *
  * @author oyzh
- * @since 2022-01-19
+ * @since 2023-10-09
  */
 public class FXTreeView extends TreeView implements FlexAdapter, Destroyable, NodeAdapter, ThemeAdapter, ContextMenuAdapter, MouseAdapter, SelectAdapter<TreeItem<?>>, StateAdapter {
 

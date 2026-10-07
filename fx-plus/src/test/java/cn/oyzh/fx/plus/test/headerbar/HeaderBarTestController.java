@@ -14,7 +14,7 @@ import javafx.stage.Modality;
  * HeaderBar 测试界面控制器
  *
  * @author oyzh
- * @since 2023-11-21
+ * @since 2025-08-19
  */
 @StageAttribute(
         title = "HeaderBar测试",

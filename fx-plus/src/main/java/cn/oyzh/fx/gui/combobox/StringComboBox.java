@@ -8,7 +8,7 @@ import java.util.List;
  * 字符串选择框
  *
  * @author oyzh
- * @since 2022-02-07
+ * @since 2024-07-04
  */
 public class StringComboBox extends FXComboBox<String> {
 

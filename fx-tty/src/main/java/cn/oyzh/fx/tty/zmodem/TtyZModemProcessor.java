@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
  * ZModem处理器，负责接收（sz）或发送（rz）文件，并在终端上刷新传输进度。
  *
  * @author oyzh
- * @since 2025-06-24
+ * @since 2026-07-06
  */
 public class TtyZModemProcessor implements CopyStreamListener {
 

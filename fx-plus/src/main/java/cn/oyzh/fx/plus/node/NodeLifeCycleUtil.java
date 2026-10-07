@@ -9,7 +9,7 @@ import javafx.stage.Stage;
  * 节点生命周期工具类，用于在节点树销毁时递归通知节点生命周期回调
  *
  * @author oyzh
- * @since 2024-11-18
+ * @since 2024-12-27
  */
 public class NodeLifeCycleUtil {
 

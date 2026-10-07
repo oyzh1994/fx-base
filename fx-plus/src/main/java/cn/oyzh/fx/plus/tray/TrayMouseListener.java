@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * 系统托盘鼠标监听器
  *
  * @author oyzh
- * @since 2022-08-24
+ * @since 2023-10-09
  */
 public class TrayMouseListener extends MouseAdapter {
 

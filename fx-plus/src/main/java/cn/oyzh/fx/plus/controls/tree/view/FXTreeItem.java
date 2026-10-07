@@ -22,7 +22,7 @@ import java.util.List;
  * 富功能树节点
  *
  * @author oyzh
- * @since 2023-11-10
+ * @since 2024-11-23
  */
 public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> implements MenuItemAdapter, DragNodeItem, Comparable<Object>, Destroyable {
 

@@ -19,7 +19,7 @@
 // * TODO: 在windows和linux上会导致弹窗异常，废弃
 // *
 // * @author oyzh
-// * @since 2026-04-15
+// * @since 2025-03-12
 // */
 //@Deprecated
 //public class PopupMask extends Popup implements PopupAdapter {

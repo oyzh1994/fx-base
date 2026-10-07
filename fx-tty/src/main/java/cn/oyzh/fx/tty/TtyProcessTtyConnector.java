@@ -19,7 +19,7 @@ import java.util.List;
  * 字符集以及底层输入输出流访问能力。
  *
  * @author oyzh
- * @since 2025-03-04
+ * @since 2026-07-06
  */
 public abstract class TtyProcessTtyConnector extends ProcessTtyConnector implements TtyTerminalSizeable, TtyStreamable, TtyCharsetble {
 

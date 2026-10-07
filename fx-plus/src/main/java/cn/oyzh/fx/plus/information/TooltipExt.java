@@ -12,7 +12,7 @@ import javafx.scene.control.Tooltip;
  * 提示条扩展
  *
  * @author oyzh
- * @since 2023-10-24
+ * @since 2023-10-25
  */
 public class TooltipExt extends Tooltip implements PropAdapter {
 

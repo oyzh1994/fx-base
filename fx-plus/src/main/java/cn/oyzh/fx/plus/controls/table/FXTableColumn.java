@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * 表格列
  *
  * @author oyzh
- * @since 2022-01-18
+ * @since 2023-10-09
  */
 public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapter, ThemeAdapter, Destroyable {
 

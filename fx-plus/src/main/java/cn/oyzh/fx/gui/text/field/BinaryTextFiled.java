@@ -6,7 +6,7 @@ import cn.oyzh.common.util.NumberUtil;
  * 二进制文本输入框，用于展示 BLOB 数据
  *
  * @author oyzh
- * @since 2024-07-10
+ * @since 2026-06-05
  */
 public class BinaryTextFiled extends ChooseFileTextField {
 

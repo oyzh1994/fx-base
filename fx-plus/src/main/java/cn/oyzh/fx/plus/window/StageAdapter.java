@@ -44,7 +44,7 @@ import java.util.function.Consumer;
  * 舞台适配器
  *
  * @author oyzh
- * @since 2023-10-11
+ * @since 2023-10-12
  */
 public interface StageAdapter extends WindowAdapter, ThemeAdapter {
 

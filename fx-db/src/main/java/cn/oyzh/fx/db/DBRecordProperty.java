@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
  * 数据库表记录属性，绑定记录值的编辑控件并跟踪变更状态
  *
  * @author oyzh
- * @since 2024-01-31
+ * @since 2026-09-01
  */
 public class DBRecordProperty extends SimpleObjectProperty<Object> implements Destroyable {
 

@@ -9,7 +9,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 提交按钮
  *
  * @author oyzh
- * @since 2020-10-29
+ * @since 2023-10-09
  */
 public class SubmitButton extends IconButton {
 

@@ -4,7 +4,7 @@ package cn.oyzh.fx.db;
  * 数据库特性枚举
  *
  * @author oyzh
- * @since 2024-09-11
+ * @since 2026-09-01
  */
 public enum DBFeature {
 

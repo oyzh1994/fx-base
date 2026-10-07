@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  * 查询提示弹窗基类，负责展示并选择 SQL 查询的提示项
  *
  * @author oyzh
- * @since 2024-02-21
+ * @since 2026-09-02
  */
 public abstract class DBQueryPromptPopup<E extends DBQueryPromptItem, T extends DBQueryToken> extends FXPopup {
 

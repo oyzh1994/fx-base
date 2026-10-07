@@ -12,7 +12,7 @@ import javafx.stage.Window;
  * 舞台扩展
  *
  * @author oyzh
- * @since 2023-10-12
+ * @since 2023-10-10
  */
 public class StageExt extends Stage implements StageAdapter, OpacityAdapter, ThemeAdapter {
 

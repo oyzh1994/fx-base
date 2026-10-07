@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 只读日志消息文本域，支持逐行拼接文本、限制最大行数并按策略裁剪超出行数
  *
  * @author oyzh
- * @since 2026-03-13
+ * @since 2023-10-09
  */
 public class RichMsgTextArea extends Editor {
 

@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
  * ShaderLab 着色器文件 SVG 图标控件
  *
  * @author oyzh
- * @since 2025-03-05
+ * @since 2026-06-16
  */
 public class FileShaderlabSVGGlyph extends SVGGlyph {
 

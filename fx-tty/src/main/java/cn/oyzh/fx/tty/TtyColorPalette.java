@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * 并缓存转换结果以提升性能。
  *
  * @author oyzh
- * @since 2025-03-26
+ * @since 2026-07-06
  */
 public class TtyColorPalette extends ColorPalette {
 

@@ -7,7 +7,7 @@ import com.jediterm.core.Color;
  * 终端工具类。
  *
  * @author oyzh
- * @since 2025-10-16
+ * @since 2026-07-06
  */
 public class TtyTerminalUtil {
 

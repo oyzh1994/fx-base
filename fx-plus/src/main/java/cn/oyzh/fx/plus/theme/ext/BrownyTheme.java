@@ -10,7 +10,7 @@ import java.util.Locale;
  * Browny 扩展主题
  *
  * @author oyzh
- * @since 2026-10-06
+ * @since 2023-12-25
  */
 public class BrownyTheme implements ThemeStyle {
 

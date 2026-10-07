@@ -7,7 +7,7 @@ import javafx.util.StringConverter;
  * 字符串转换简单实现
  *
  * @author oyzh
- * @since 2022-08-23
+ * @since 2023-10-09
  */
 public class SimpleStringConverter<T> extends StringConverter<T> {
 

@@ -7,7 +7,7 @@ import javafx.scene.effect.Effect;
  * 拖动节点接口
  *
  * @author oyzh
- * @since 2023-09-12
+ * @since 2023-10-09
  */
 public interface DragNodeItem {
 

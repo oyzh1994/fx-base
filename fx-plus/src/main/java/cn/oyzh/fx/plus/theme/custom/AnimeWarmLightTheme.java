@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  * 特性：柔和暖白、奶油色调、温馨治愈
  *
  * @author oyzh
- * @since 2026-06-27
+ * @since 2023-12-25
  */
 public class AnimeWarmLightTheme implements ThemeStyle {
 

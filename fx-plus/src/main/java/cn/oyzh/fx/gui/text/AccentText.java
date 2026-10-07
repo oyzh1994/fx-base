@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.text.FXText;
  * 强调色文本
  *
  * @author oyzh
- * @since 2024-04-08
+ * @since 2024-12-06
  */
 public class AccentText extends FXText {
 

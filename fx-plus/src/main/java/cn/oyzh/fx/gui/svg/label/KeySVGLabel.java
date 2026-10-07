@@ -8,7 +8,7 @@ import cn.oyzh.i18n.I18nHelper;
  * 密钥标签
  *
  * @author oyzh
- * @since 2024-04-10
+ * @since 2024-04-11
  */
 public class KeySVGLabel extends SVGLabel {
 

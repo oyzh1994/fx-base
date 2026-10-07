@@ -4,7 +4,7 @@ package cn.oyzh.fx.tty;
  * 终端 ASCII 控制字符常量定义。
  *
  * @author oyzh
- * @since 2026-01-05
+ * @since 2026-07-06
  */
 public class TtyAscii {
 

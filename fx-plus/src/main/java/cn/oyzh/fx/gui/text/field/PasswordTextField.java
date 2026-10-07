@@ -19,7 +19,7 @@ import cn.oyzh.fx.plus.validator.Verifiable;
  * 密码文本域
  *
  * @author oyzh
- * @since 2025-04-02
+ * @since 2023-11-12
  */
 public class PasswordTextField extends atlantafx.base.controls.PasswordTextField implements FlexAdapter, Verifiable, NodeGroup, NodeAdapter, ThemeAdapter, FontAdapter, TextAdapter, TipAdapter, StateAdapter {
 

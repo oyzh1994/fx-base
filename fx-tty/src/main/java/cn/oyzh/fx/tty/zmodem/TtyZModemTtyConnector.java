@@ -15,7 +15,7 @@ import java.util.Arrays;
  * ZModem协议tty连接器，读取数据时检测 ZModem 帧并交由处理器执行文件传输。
  *
  * @author oyzh
- * @since 2025-06-24
+ * @since 2026-07-06
  */
 public class TtyZModemTtyConnector implements TtyConnector {
 

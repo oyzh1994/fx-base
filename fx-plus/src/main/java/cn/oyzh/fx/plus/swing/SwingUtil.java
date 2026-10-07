@@ -19,7 +19,7 @@ import java.awt.Font;
  * Swing 工具类，提供 AWT 与 JavaFX 之间的字体、颜色转换及主题样式适配（已废弃）
  *
  * @author oyzh
- * @since 2025-08-04
+ * @since 2025-08-05
  */
 @Deprecated
 public class SwingUtil {

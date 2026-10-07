@@ -6,7 +6,7 @@ import cn.oyzh.fx.plus.controls.text.area.FXTextArea;
  * 只读文本域
  *
  * @author oyzh
- * @since 2022-01-20
+ * @since 2023-10-09
  */
 public class ReadOnlyTextArea extends FXTextArea {
 

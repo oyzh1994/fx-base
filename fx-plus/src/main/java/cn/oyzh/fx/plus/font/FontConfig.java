@@ -5,7 +5,7 @@ package cn.oyzh.fx.plus.font;
  * 字体配置
  *
  * @author oyzh
- * @since 2024-04-05
+ * @since 2024-04-06
  */
 public class FontConfig {
 

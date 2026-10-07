@@ -5,7 +5,7 @@ package cn.oyzh.fx.gui.tabs;
  * 子标签页控制器
  *
  * @author oyzh
- * @since 2023-10-12
+ * @since 2024-09-18
  */
 public class SubTabController extends RichTabController {
 

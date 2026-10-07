@@ -9,7 +9,7 @@ import java.util.List;
  * SQL 查询编辑器的按键工具类，维护触发提示与触发更新的按键集合
  *
  * @author oyzh
- * @since 2025-01-21
+ * @since 2026-09-02
  */
 public class DBQueryUtil {
 

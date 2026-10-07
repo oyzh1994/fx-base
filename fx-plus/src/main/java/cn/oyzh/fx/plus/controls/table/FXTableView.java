@@ -35,7 +35,7 @@ import java.util.List;
  * 表格视图控件
  *
  * @author oyzh
- * @since 2022-01-18
+ * @since 2024-07-11
  */
 public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, MenuItemAdapter, FlexAdapter, NodeGroup, NodeAdapter, ThemeAdapter, SelectAdapter<S>, Destroyable, FontAdapter {
 
