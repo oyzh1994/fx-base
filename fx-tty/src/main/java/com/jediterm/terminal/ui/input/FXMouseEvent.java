@@ -9,14 +9,30 @@ import org.jetbrains.annotations.NotNull;
 public final class FXMouseEvent extends MouseEvent {
     private final javafx.scene.input.MouseEvent myFxMouseEvent;
 
-    public FXMouseEvent(@NotNull javafx.scene.input.MouseEvent fxMouseEvent) {
-        super(createButtonCode(fxMouseEvent), getModifierKeys(fxMouseEvent));
-        myFxMouseEvent = fxMouseEvent;
+    public FXMouseEvent(@NotNull javafx.scene.input.MouseEvent e) {
+        super(createButtonType(e), createButtonCode(e), getModifierKeys(e));
+        myFxMouseEvent = e;
     }
 
     @Override
     public String toString() {
         return myFxMouseEvent.toString();
+    }
+
+    static Type createButtonType(@NotNull javafx.scene.input.MouseEvent fxMouseEvent) {
+        if (fxMouseEvent.getEventType() == javafx.scene.input.MouseEvent.MOUSE_MOVED) {
+            return Type.MOVED;
+        }
+        if (fxMouseEvent.getEventType() == javafx.scene.input.MouseEvent.MOUSE_DRAGGED) {
+            return Type.DRAGGED;
+        }
+        if (fxMouseEvent.getEventType() == javafx.scene.input.MouseEvent.MOUSE_PRESSED) {
+            return Type.PRESSED;
+        }
+        if (fxMouseEvent.getEventType() == javafx.scene.input.MouseEvent.MOUSE_RELEASED) {
+            return Type.RELEASED;
+        }
+        return Type.WHEEL;
     }
 
     static int createButtonCode(@NotNull javafx.scene.input.MouseEvent fxMouseEvent) {

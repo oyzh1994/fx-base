@@ -19,6 +19,7 @@ import cn.oyzh.fx.tty.TtyTermSettingsProvider;
 import cn.oyzh.fx.tty.TtyTerminalCanvas;
 import cn.oyzh.fx.tty.TtyTerminalCopyPasteHandler;
 import com.jediterm.core.TerminalCoordinates;
+import com.jediterm.core.input.KeyInputEvent;
 import com.jediterm.core.typeahead.TerminalTypeAheadManager;
 import com.jediterm.core.util.TermSize;
 import com.jediterm.terminal.CursorShape;
@@ -34,6 +35,10 @@ import com.jediterm.terminal.TerminalStarter;
 import com.jediterm.terminal.TextStyle;
 import com.jediterm.terminal.emulator.ColorPalette;
 import com.jediterm.terminal.emulator.charset.CharacterSets;
+import com.jediterm.terminal.emulator.keyboard.KeyEventProcessingResult;
+import com.jediterm.terminal.emulator.keyboard.KeyEventProcessingSettings;
+import com.jediterm.terminal.emulator.keyboard.TerminalKeyEventProcessor;
+import com.jediterm.terminal.emulator.mouse.MouseEventProcessingSettings;
 import com.jediterm.terminal.emulator.mouse.MouseFormat;
 import com.jediterm.terminal.emulator.mouse.MouseMode;
 import com.jediterm.terminal.emulator.mouse.TerminalMouseListener;
@@ -52,6 +57,7 @@ import com.jediterm.terminal.model.TerminalTextBuffer;
 import com.jediterm.terminal.model.hyperlinks.LinkInfo;
 import com.jediterm.terminal.model.hyperlinks.TextProcessing;
 import com.jediterm.terminal.ui.hyperlinks.FXLinkInfoEx;
+import com.jediterm.terminal.ui.input.AwtMouseWheelEvent;
 import com.jediterm.terminal.ui.input.FXMouseEvent;
 import com.jediterm.terminal.ui.input.FXMouseWheelEvent;
 import com.jediterm.terminal.ui.settings.FXDefaultSettingsProvider;
@@ -104,7 +110,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
 import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.text.AttributedCharacterIterator;
@@ -153,37 +158,25 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     /*font related*/
     private Font myNormalFont;
-
     private Font myItalicFont;
-
     private Font myBoldFont;
-
     private Font myBoldItalicFont;
-
     private double myDescent = 0;
-
     private double mySpaceBetweenLines = 0;
-
     protected Dimension2D myCharSize;
-
     //    private boolean myMonospaced;
-
     private TermSize myTermSize;
-
     private boolean myInitialSizeSyncDone = false;
 
     private TerminalStarter myTerminalStarter = null;
 
     private MouseMode myMouseMode = MouseMode.MOUSE_REPORTING_NONE;
-
     private com.jediterm.core.compatibility.Point mySelectionStartPoint = null;
-
     private final ObjectProperty<TerminalSelection> mySelection = new SimpleObjectProperty<>();
 
     private final TerminalCopyPasteHandler myCopyPasteHandler;
 
     private final SettingsProvider mySettingsProvider;
-
     private final TerminalTextBuffer myTerminalTextBuffer;
 
     final private StyleState myStyleState;
@@ -503,7 +496,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     protected void handleMouseWheelEvent(@NotNull ScrollEvent e, @NotNull ScrollBar scrollBar) {
-        double unitsToScroll = this.getUnitsToScroll(e);
+        double unitsToScroll = getUnitsToScroll(e);
         if (e.isShiftDown() || unitsToScroll == 0 || Math.abs(e.getDeltaY()) < 0.01) {
             return;
         }
@@ -528,7 +521,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         myLinkHoverConsumer = linkHoverConsumer;
         if (linkStyle != null && linkStyle.getHighlightMode() != HyperlinkStyle.HighlightMode.NEVER) {
             updateHoveredHyperlink(linkStyle.getLinkInfo());
-        } else {
+        }
+        else {
             updateHoveredHyperlink(null);
         }
     }
@@ -646,7 +640,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             updateSelection(selection);
             if (mySelection.get().getStart().y < getTerminalTextBuffer().getHeight() / 2) {
                 this.scrollBar.setValue(mySelection.get().getStart().y - getTerminalTextBuffer().getHeight() / 2);
-            } else {
+            }
+            else {
                 this.scrollBar.setValue(scrollBar.getMin());
             }
             // TODO: 设置选中结果，解决选区可能异常问题
@@ -715,8 +710,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     @Override
-    public void setMouseFormat(@NotNull MouseFormat mouseFormat) {
-    }
+    public void setMouseFormat(@NotNull MouseFormat mouseFormat) {}
 
     private boolean isMouseReporting() {
         return myMouseMode != MouseMode.MOUSE_REPORTING_NONE;
@@ -937,9 +931,9 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     //    return isMonospaced;
     //  }
 
-    private static boolean isWordCharacter(char character) {
-        return Character.isLetterOrDigit(character);
-    }
+//    private static boolean isWordCharacter(char character) {
+//        return Character.isLetterOrDigit(character);
+//    }
 
     protected void setupAntialiasing(GraphicsContext gfx) {
         if (this.mySettingsProvider.useAntialiasing()) {
@@ -1038,7 +1032,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                 TextStyle cursorStyle;
                 if (inSelection(cursorX, cursorY)) {
                     cursorStyle = getSelectionStyle(normalStyle);
-                } else {
+                }
+                else {
                     cursorStyle = normalStyle;
                 }
                 myCursor.drawCursor(cursorChar, gfx, cursorStyle);
@@ -1164,10 +1159,6 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         updateSelection(mySelection.get());
     }
 
-    private void updateSelection(@Nullable TerminalSelection selection) {
-        this.updateSelection(selection, true);
-    }
-
     private void updateSelection(@Nullable TerminalSelection selection, boolean updateSelectedText) {
         try {
             this.mySelection.set(selection);
@@ -1262,61 +1253,38 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     public void addTerminalMouseListener(final TerminalMouseListener listener) {
         this.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
-            if (mySettingsProvider.enableMouseReporting() && isRemoteMouseAction(e)) {
-                com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
-                listener.mousePressed(p.x, p.y, new FXMouseEvent(e));
-            }
+            com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
+            listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
+
         });
 
         this.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-            if (mySettingsProvider.enableMouseReporting() && isRemoteMouseAction(e)) {
-                com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
-                listener.mouseReleased(p.x, p.y, new FXMouseEvent(e));
-            }
+            com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
+            listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
         });
 
         this.addEventFilter(ScrollEvent.SCROLL, e -> {
-            if (mySettingsProvider.enableMouseReporting() && isRemoteMouseAction(e)) {
-                updateSelection(null);
-                com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
-                listener.mouseWheelMoved(p.x, p.y, new FXMouseWheelEvent(e));
-            } else if (myTerminalTextBuffer.isUsingAlternateBuffer() &&
-                    mySettingsProvider.simulateMouseScrollWithArrowKeysInAlternativeScreen() &&
-                    !e.isShiftDown() /* skip horizontal scrolls */
-            ) {
-                // Send Arrow keys instead
-                Integer key;
-                if (e.getDeltaY() > 0) {
-                    key = java.awt.event.KeyEvent.VK_UP;
-                } else if (e.getDeltaY() < 0) {
-                    key = java.awt.event.KeyEvent.VK_DOWN;
-                } else {
-                    key = null;
-                }
-                if (key != null) {
-                    byte[] arrowKeys = myTerminalStarter.getTerminal().getCodeForKey(key, 0);
-                    double unitsToScroll = getUnitsToScroll(e);
-                    for (int i = 0; i < Math.abs(unitsToScroll); i++) {
-                        myTerminalStarter.sendBytes(arrowKeys, false);
-                    }
-                    e.consume();
-                }
-            }
+            com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
+            if(listener.onMouseEvent(p.x, p.y, new FXMouseWheelEvent(e), createMouseEventProcessingSettings(null))) e.consume();
+            if (mySettingsProvider.enableMouseReporting() && isRemoteMouseAction(e)) updateSelection(null);
         });
 
         this.addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
-            if (mySettingsProvider.enableMouseReporting() && isRemoteMouseAction(e)) {
-                com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
-                listener.mouseMoved(p.x, p.y, new FXMouseEvent(e));
-            }
+            com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
+            listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
         });
 
         this.addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
-            if (mySettingsProvider.enableMouseReporting() && isRemoteMouseAction(e)) {
-                com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
-                listener.mouseDragged(p.x, p.y, new FXMouseEvent(e));
-            }
+            com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
+            listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
         });
+    }
+    private MouseEventProcessingSettings createMouseEventProcessingSettings(MouseEvent e) {
+        return new MouseEventProcessingSettings(
+                mySettingsProvider.enableMouseReporting(),
+                myTerminalTextBuffer.isUsingAlternateBuffer(),
+                mySettingsProvider.simulateMouseScrollWithArrowKeysInAlternativeScreen()
+        );
     }
 
     @NotNull
@@ -2177,7 +2145,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                         myCursor.setY(1);
                         myTerminalTextBuffer.addLine(lastLine);
                     }
-                } else {
+                }
+                else {
                     myTerminalTextBuffer.clearScreenBuffer();
                     myCoordsAccessor.setX(0);
                     myCoordsAccessor.setY(1);
@@ -2203,156 +2172,6 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         myNextActionProvider = provider;
     }
 
-    private static final byte ASCII_NUL = 0;
-    //private static final byte ASCII_ESC = 27;
-
-    private boolean processTerminalKeyPressed(KeyEvent e) {
-        if (hasUncommittedChars()) {
-            return false;
-        }
-
-        try {
-            final KeyCode keycode = e.getCode();
-            final char keychar = KeyboardUtil.getKeyChar(e);
-
-            // numLock does not change the code sent by keypad VK_DELETE
-            // although it send the char '.'
-            if (keycode == KeyCode.DELETE && keychar == '.') {
-                myTerminalStarter.sendBytes(new byte[]{'.'}, true);
-                return true;
-            }
-            // CTRL + Space is not handled in KeyEvent; handle it manually
-            if (keychar == ' ' && e.isControlDown()) {
-                myTerminalStarter.sendBytes(new byte[]{ASCII_NUL}, true);
-                return true;
-            }
-
-            // Shift+Enter handling as Esc+CR.
-            if (mySettingsProvider.shiftEnterSendsEscCR() && keycode == KeyCode.ENTER && isShiftPressedOnly(e)) {
-                myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_ESC, '\r'}, true);
-                return true;
-            }
-
-            //// TODO: 补充
-            //// ESCAPE is not handled in KeyEvent; handle it manually
-            //if (keycode == KeyCode.ESCAPE) {
-            //    this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_ESC}, true);
-            //    return true;
-            //}
-
-            // 退格处理
-            if (keycode == KeyCode.BACK_SPACE) {
-                if (this.mySettingsProvider instanceof TtyTermSettingsProvider provider && provider.getBackspaceCode() != null) {
-                    Object code = provider.getBackspaceCode();
-                    if (code instanceof String s) {
-                        this.myTerminalStarter.sendString(s, true);
-                    } else if (code instanceof byte[] bytes) {
-                        this.myTerminalStarter.sendBytes(bytes, true);
-                    }
-                    return true;
-                }
-            }
-
-            final byte[] code = myTerminalStarter.getTerminal().getCodeForKey(keycode.getCode(), getModifiersEx(e));
-            if (code != null) {
-                myTerminalStarter.sendBytes(code, true);
-                if (mySettingsProvider.scrollToBottomOnTyping() && isCodeThatScrolls(keycode)) {
-                    scrollToBottom();
-                }
-                return true;
-            }
-            if (isAltPressedOnly(e) && Character.isDefined(keychar) && mySettingsProvider.altSendsEscape()) {
-                // Cannot use e.getKeyChar() on macOS:
-                //  Option+f produces e.getKeyChar()='ƒ' (402), but 'f' (102) is needed.
-                //  Option+b produces e.getKeyChar()='∫' (8747), but 'b' (98) is needed.
-                myTerminalStarter.sendString(new String(new char[]{TtyAscii.ASCII_ESC, simpleMapKeyCodeToChar(e)}), true);
-                return true;
-            }
-            if (Character.isISOControl(keychar)) {// keys filtered out here will be processed in processTerminalKeyTyped
-                return processCharacter(e, keychar);
-            }
-
-            // 兜底处理
-            if (e.isControlDown() && !e.isMetaDown() && !e.isShiftDown() && !e.isAltDown() && this.handleCtrlKeyPressed(keycode, keychar)) {
-                return true;
-            }
-        } catch (Exception ex) {
-            JulLog.error("Error sending pressed key to emulator", ex);
-        }
-        return false;
-    }
-
-    private static char simpleMapKeyCodeToChar(@NotNull KeyEvent e) {
-        // zsh requires proper case of letter
-        if (e.isShiftDown()) {
-            return Character.toUpperCase(e.getText().charAt(0));
-        }
-        return Character.toLowerCase(e.getText().charAt(0));
-    }
-
-    private static boolean isAltPressedOnly(@NotNull KeyEvent e) {
-        return e.isAltDown() && !e.isControlDown() && !e.isShiftDown();
-    }
-
-    private static boolean isShiftPressedOnly(@NotNull KeyEvent e) {
-        return !e.isAltDown() && !e.isControlDown() && e.isShiftDown();
-    }
-
-    private boolean processCharacter(@NotNull KeyEvent e, char keyChar) {
-        if (isAltPressedOnly(e) && mySettingsProvider.altSendsEscape()) {
-            return false;
-        }
-
-        final char[] obuffer;
-        obuffer = new char[]{keyChar};
-
-        if (keyChar == '`' && e.isMetaDown()) {
-            // Command + backtick is a short-cut on Mac OSX, so we shouldn't type anything
-            return false;
-        }
-
-        myTerminalStarter.sendString(new String(obuffer), true);
-
-        if (mySettingsProvider.scrollToBottomOnTyping()) {
-            scrollToBottom();
-        }
-        return true;
-    }
-
-    private static boolean isCodeThatScrolls(KeyCode keycode) {
-        return keycode == KeyCode.UP
-                || keycode == KeyCode.DOWN
-                || keycode == KeyCode.LEFT
-                || keycode == KeyCode.RIGHT
-                || keycode == KeyCode.BACK_SPACE
-                || keycode == KeyCode.INSERT
-                || keycode == KeyCode.DELETE
-                || keycode == KeyCode.ENTER
-                || keycode == KeyCode.HOME
-                || keycode == KeyCode.END
-                || keycode == KeyCode.PAGE_UP
-                || keycode == KeyCode.PAGE_DOWN;
-    }
-
-    private boolean processTerminalKeyTyped(KeyEvent e) {
-        if (hasUncommittedChars()) {
-            return false;
-        }
-        String character = e.getCharacter();
-        if (character == null || character.isEmpty()) {
-            return false;
-        }
-
-        if (!Character.isISOControl(character.codePointAt(0))) {// keys filtered out here will be processed in processTerminalKeyPressed
-            try {
-                return processCharacter(e, character.charAt(0));
-            } catch (Exception ex) {
-                JulLog.error("Error sending typed key to emulator", ex);
-            }
-        }
-        return false;
-    }
-
     private class TerminalKeyHandler implements TtyKeyListener {
 
         private boolean myIgnoreNextKeyTypedEvent;
@@ -2366,9 +2185,9 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                 return;
             }
             myIgnoreNextKeyTypedEvent = false;
-            if (FXTerminalAction.processEvent(FXTerminalPanel.this, e) || processTerminalKeyPressed(e)) {
-                e.consume();
+            if (FXTerminalAction.processEvent(FXTerminalPanel.this, e) || processTerminalKeyEvent(e)) {
                 myIgnoreNextKeyTypedEvent = true;
+                e.consume();
             }
         }
 
@@ -2382,10 +2201,55 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             if (e.isConsumed()) {
                 return;
             }
-            if (myIgnoreNextKeyTypedEvent || processTerminalKeyTyped(e)) {
+            if (myIgnoreNextKeyTypedEvent || processTerminalKeyEvent(e)) {
                 e.consume();
             }
         }
+    }
+
+    private boolean processTerminalKeyEvent(KeyEvent e) {
+        if (hasUncommittedChars()) {
+            return false;
+        }
+        KeyInputEvent.Type type;
+        if (e.getEventType() == KeyEvent.KEY_PRESSED) {
+            type = KeyInputEvent.Type.PRESSED;
+        } else if (e.getEventType() == KeyEvent.KEY_TYPED) {
+            type = KeyInputEvent.Type.TYPED;
+        } else {
+            return false;
+        }
+
+        KeyInputEvent event = new KeyInputEvent(type, e.getCode().getCode(), KeyboardUtil.getKeyChar(e), KeyboardUtil.getModifiersEx(e));
+        KeyEventProcessingSettings settings = new KeyEventProcessingSettings(
+                mySettingsProvider.shiftEnterSendsEscCR(),
+                mySettingsProvider.scrollToBottomOnTyping(),
+                mySettingsProvider.altSendsEscape()
+        );
+        try {
+            return processKeyProcessorResult(TerminalKeyEventProcessor.processKey(event, myTerminalStarter.getTerminal(), settings));
+        }
+        catch (Exception ex) {
+            JulLog.error("Error processing terminal key event", ex);
+            return false;
+        }
+    }
+
+    private boolean processKeyProcessorResult(KeyEventProcessingResult result) {
+        boolean isConsumed = false;
+        if (result instanceof KeyEventProcessingResult.Unhandled) return false;
+        if (result instanceof KeyEventProcessingResult.StringResult) {
+            String command = ((KeyEventProcessingResult.StringResult) result).getString();
+            myTerminalStarter.sendString(command, true);
+            isConsumed = true;
+        }
+        if (result instanceof KeyEventProcessingResult.BytesResult) {
+            byte[] bytes = ((KeyEventProcessingResult.BytesResult) result).getBytes();
+            myTerminalStarter.sendBytes(bytes, true);
+            isConsumed = true;
+        }
+        if (result.getShouldScrollToBottom()) scrollToBottom();
+        return isConsumed;
     }
 
     private void handlePaste() {
@@ -2551,23 +2415,6 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         this.myInputMethodUncommittedChars = null;
     }
 
-    private static int getModifiersEx(KeyEvent event) {
-        int modifiers = 0;
-        if (event.isShiftDown()) {
-            modifiers |= InputEvent.SHIFT_DOWN_MASK;
-        }
-        if (event.isControlDown()) {
-            modifiers |= InputEvent.CTRL_DOWN_MASK;
-        }
-        if (event.isAltDown()) {
-            modifiers |= InputEvent.ALT_DOWN_MASK;
-        }
-        if (event.isMetaDown()) {
-            modifiers |= InputEvent.META_DOWN_MASK;
-        }
-        return modifiers;
-    }
-
     private void updateSelectedText() {
         if (this.updateSelectedText || this.mySelection.get() == null) {
             this.selectedText.set(this.getSelectionText());
@@ -2593,7 +2440,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         this.canvas.requestFocus();
     }
 
-    private double getUnitsToScroll(ScrollEvent event) {
+    public static double getUnitsToScroll(ScrollEvent event) {
         // Assume that each scroll unit corresponds to 40.0 pixels, which is a typical value.
         double unitsToScroll = Math.round(event.getDeltaY() / 40.0);
         return unitsToScroll * -1;
@@ -2708,289 +2555,293 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         return fontMetricsCache.computeIfAbsent(font, f -> TtyFontMetrics.create(f, "W"));
     }
 
-    /**
-     * ctrl按键处理
-     *
-     * @param keycode 按键编码
-     * @param keychar 按键字符
-     * @return 结果
-     */
-    private boolean handleCtrlKeyPressed(KeyCode keycode, char keychar) {
-
-        // TODO: 补充
-        // CTRL + A is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.A) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_A}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + B is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.B) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_B}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + C is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.C) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_C}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + D is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.D) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_D}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + E is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.E) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_E}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + F is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.F) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_F}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + G is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.G) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_G}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + H is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.H) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_H}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + I is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.I) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_I}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + J is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.J) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_J}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + K is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.K) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_K}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + L is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.L) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_L}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + M is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.M) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_M}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + N is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.N) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_N}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + O is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.O) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_O}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + P is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.P) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_P}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + Q is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.Q) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_Q}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + R is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.R) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_R}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + S is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.S) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_S}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + T is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.T) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_T}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + U is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.U) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_U}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + V is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.V) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_V}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + W is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.W) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_W}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + X is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.X) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_X}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + X is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.Y) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_Y}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + X is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.Z) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_Z}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 0 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT0 || keycode == KeyCode.NUMPAD0 || keycode == KeyCode.SOFTKEY_0) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_NUL}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 1 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT1 || keycode == KeyCode.NUMPAD1 || keycode == KeyCode.SOFTKEY_1) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_A}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 2 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT2 || keycode == KeyCode.NUMPAD2 || keycode == KeyCode.SOFTKEY_2) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_B}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 3 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT3 || keycode == KeyCode.NUMPAD3 || keycode == KeyCode.SOFTKEY_3) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_C}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 4 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT4 || keycode == KeyCode.NUMPAD4 || keycode == KeyCode.SOFTKEY_4) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_D}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 5 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT5 || keycode == KeyCode.NUMPAD5 || keycode == KeyCode.SOFTKEY_5) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_E}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 6 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT6 || keycode == KeyCode.NUMPAD6 || keycode == KeyCode.SOFTKEY_6) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_F}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 7 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT7 || keycode == KeyCode.NUMPAD7 || keycode == KeyCode.SOFTKEY_7) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_G}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 8 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT8 || keycode == KeyCode.NUMPAD8 || keycode == KeyCode.SOFTKEY_8) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_H}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + 9 is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.DIGIT9 || keycode == KeyCode.NUMPAD9 || keycode == KeyCode.SOFTKEY_9) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_I}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + / is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.SLASH) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_SLASH}, true);
-            return true;
-        }
-
-        // TODO: 补充
-        // CTRL + \ is not handled in KeyEvent; handle it manually
-        if (keycode == KeyCode.BACK_SLASH) {
-            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_BACK_SLASH}, true);
-            return true;
-        }
-
-        // CTRL + Space is not handled in KeyEvent; handle it manually
-        if (keychar == ' ') {
-            myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_NUL}, true);
-            return true;
-        }
-
-        return false;
+    private void updateSelection(@Nullable TerminalSelection selection) {
+        this.updateSelection(selection, true);
     }
+
+//    /**
+//     * ctrl按键处理
+//     *
+//     * @param keycode 按键编码
+//     * @param keychar 按键字符
+//     * @return 结果
+//     */
+//    private boolean handleCtrlKeyPressed(KeyCode keycode, char keychar) {
+//
+//        // TODO: 补充
+//        // CTRL + A is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.A) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_A}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + B is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.B) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_B}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + C is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.C) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_C}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + D is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.D) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_D}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + E is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.E) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_E}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + F is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.F) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_F}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + G is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.G) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_G}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + H is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.H) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_H}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + I is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.I) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_I}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + J is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.J) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_J}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + K is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.K) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_K}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + L is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.L) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_L}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + M is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.M) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_M}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + N is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.N) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_N}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + O is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.O) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_O}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + P is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.P) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_P}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + Q is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.Q) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_Q}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + R is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.R) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_R}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + S is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.S) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_S}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + T is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.T) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_T}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + U is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.U) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_U}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + V is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.V) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_V}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + W is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.W) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_W}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + X is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.X) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_X}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + X is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.Y) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_Y}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + X is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.Z) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_Z}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 0 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT0 || keycode == KeyCode.NUMPAD0 || keycode == KeyCode.SOFTKEY_0) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_NUL}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 1 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT1 || keycode == KeyCode.NUMPAD1 || keycode == KeyCode.SOFTKEY_1) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_A}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 2 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT2 || keycode == KeyCode.NUMPAD2 || keycode == KeyCode.SOFTKEY_2) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_B}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 3 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT3 || keycode == KeyCode.NUMPAD3 || keycode == KeyCode.SOFTKEY_3) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_C}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 4 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT4 || keycode == KeyCode.NUMPAD4 || keycode == KeyCode.SOFTKEY_4) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_D}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 5 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT5 || keycode == KeyCode.NUMPAD5 || keycode == KeyCode.SOFTKEY_5) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_E}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 6 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT6 || keycode == KeyCode.NUMPAD6 || keycode == KeyCode.SOFTKEY_6) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_F}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 7 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT7 || keycode == KeyCode.NUMPAD7 || keycode == KeyCode.SOFTKEY_7) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_G}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 8 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT8 || keycode == KeyCode.NUMPAD8 || keycode == KeyCode.SOFTKEY_8) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_H}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + 9 is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.DIGIT9 || keycode == KeyCode.NUMPAD9 || keycode == KeyCode.SOFTKEY_9) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_I}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + / is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.SLASH) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_SLASH}, true);
+//            return true;
+//        }
+//
+//        // TODO: 补充
+//        // CTRL + \ is not handled in KeyEvent; handle it manually
+//        if (keycode == KeyCode.BACK_SLASH) {
+//            this.myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_CTRL_BACK_SLASH}, true);
+//            return true;
+//        }
+//
+//        // CTRL + Space is not handled in KeyEvent; handle it manually
+//        if (keychar == ' ') {
+//            myTerminalStarter.sendBytes(new byte[]{TtyAscii.ASCII_NUL}, true);
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
     /**
      * 终端字体

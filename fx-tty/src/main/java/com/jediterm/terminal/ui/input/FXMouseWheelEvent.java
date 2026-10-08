@@ -3,15 +3,16 @@ package com.jediterm.terminal.ui.input;
 import com.jediterm.core.input.MouseWheelEvent;
 import com.jediterm.terminal.emulator.mouse.MouseButtonCodes;
 import com.jediterm.terminal.emulator.mouse.MouseButtonModifierFlags;
+import com.jediterm.terminal.ui.FXTerminalPanel;
 import javafx.scene.input.ScrollEvent;
 import org.jetbrains.annotations.NotNull;
 
 public final class FXMouseWheelEvent extends MouseWheelEvent {
     private final ScrollEvent myFxMouseWheelEvent;
 
-    public FXMouseWheelEvent(@NotNull ScrollEvent fxMouseWheelEvent) {
-        super(createButtonCode(fxMouseWheelEvent), getModifierKeys(fxMouseWheelEvent));
-        myFxMouseWheelEvent = fxMouseWheelEvent;
+    public FXMouseWheelEvent(@NotNull ScrollEvent e) {
+        super(createButtonCode(e), getModifierKeys(e), (int) FXTerminalPanel.getUnitsToScroll(e));
+        myFxMouseWheelEvent = e;
     }
 
     @Override
@@ -27,7 +28,7 @@ public final class FXMouseWheelEvent extends MouseWheelEvent {
         // }
         if (fxMouseEvent.getDeltaY() < 0) {
             return MouseButtonCodes.SCROLLUP;
-        } else if (fxMouseEvent.getDeltaY() > 0){
+        } else if (fxMouseEvent.getDeltaY() > 0) {
             return MouseButtonCodes.SCROLLDOWN;
         } else {
             return MouseButtonCodes.NONE;

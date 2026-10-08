@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 
 /**
  * 鼠标工具类
@@ -139,6 +140,30 @@ public class MouseUtil {
             // Windows/Linux 用 Ctrl 键
             return event.isControlDown();
         }
+    }
+
+    /**
+     * 转换为鼠标事件
+     * @param se 滚轮事件
+     * @return 结果
+     */
+    public static MouseEvent toMouseEvent(ScrollEvent se) {
+        return new MouseEvent(
+                MouseEvent.MOUSE_MOVED,   // 事件类型（JavaFX 没有 MOUSE_WHEEL，选一个合适的）
+                se.getX(), se.getY(),                 // 场景内坐标
+                se.getScreenX(), se.getScreenY(),     // 屏幕坐标
+                MouseButton.NONE,                     // 滚轮没有按下任何键
+                0,                                    // clickCount
+                se.isShiftDown(),
+                se.isControlDown(),
+                se.isAltDown(),
+                se.isMetaDown(),
+                false, false, false,                  // primary/middle/secondary 都没有按下
+                true,                                 // synthesized = true（合成事件）
+                false,                                // popupTrigger
+                false,                                // stillSincePress
+                se.getPickResult()                    // 复用 pick result，便于拿到目标节点
+        );
     }
 
 }

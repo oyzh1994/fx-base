@@ -2,11 +2,13 @@ package cn.oyzh.fx.plus.keyboard;
 
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.common.util.StringUtil;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
+import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -379,21 +381,21 @@ public class KeyboardUtil {
         return codes;
     }
 
-    /**
-     * 获取按键字符
-     *
-     * @param e 事件
-     * @return 按键字符
-     */
-    public static char getKeyChar(KeyEvent e) {
-        char keyChar;
-        if (!e.getText().isEmpty()) {
-            keyChar = e.getText().charAt(0);
-        } else {
-            keyChar = '\uffff';
-        }
-        return keyChar;
-    }
+    //    /**
+    //     * 获取按键字符
+    //     *
+    //     * @param e 事件
+    //     * @return 按键字符
+    //     */
+    //    public static char getKeyChar(KeyEvent e) {
+    //        char keyChar;
+    //        if (!e.getText().isEmpty()) {
+    //            keyChar = e.getText().charAt(0);
+    //        } else {
+    //            keyChar = '\uffff';
+    //        }
+    //        return keyChar;
+    //    }
 
     /**
      * 获取按键的数字
@@ -452,5 +454,47 @@ public class KeyboardUtil {
             // Windows/Linux 用 Ctrl 键
             return event.isControlDown();
         }
+    }
+
+    /**
+     * 获取按键字符
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static Character getKeyChar(KeyEvent event) {
+        if (event == null) {
+            return null;
+        }
+        if (StringUtil.isNotEmpty(event.getText())) {
+            return event.getText().charAt(0);
+        }
+        if (StringUtil.isNotEmpty(event.getCharacter())) {
+            return event.getCharacter().charAt(0);
+        }
+        return null;
+    }
+
+    /**
+     * 获取按键修饰
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static int getModifiersEx(KeyEvent event) {
+        int modifiers = 0;
+        if (event.isShiftDown()) {
+            modifiers |= InputEvent.SHIFT_DOWN_MASK;
+        }
+        if (event.isControlDown()) {
+            modifiers |= InputEvent.CTRL_DOWN_MASK;
+        }
+        if (event.isAltDown()) {
+            modifiers |= InputEvent.ALT_DOWN_MASK;
+        }
+        if (event.isMetaDown()) {
+            modifiers |= InputEvent.META_DOWN_MASK;
+        }
+        return modifiers;
     }
 }
