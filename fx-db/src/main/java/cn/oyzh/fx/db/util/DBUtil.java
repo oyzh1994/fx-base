@@ -236,7 +236,7 @@ public class DBUtil {
      */
     public static String wrap(String name, DBDialect dialect) {
         StringBuilder builder = new StringBuilder();
-        if (dialect == DBDialect.MYSQL) {
+        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB) {
             if (!name.startsWith("`") && !name.endsWith("`")) {
                 builder.append("`");
                 builder.append(name);
@@ -289,7 +289,7 @@ public class DBUtil {
         if (val == null) {
             return null;
         }
-        if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
+        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB || dialect == DBDialect.DAMENG) {
             if (val instanceof CharSequence v) {
                 String v1 = DBDataUtil.escapeQuotes(v.toString(), dialect);
                 if (v1.isEmpty()) {
@@ -325,7 +325,7 @@ public class DBUtil {
         if (val == null) {
             return null;
         }
-        if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
+        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB || dialect == DBDialect.DAMENG) {
             if (val instanceof CharSequence v) {
                 String v1 = v.toString();
                 if (v1.isEmpty()) {

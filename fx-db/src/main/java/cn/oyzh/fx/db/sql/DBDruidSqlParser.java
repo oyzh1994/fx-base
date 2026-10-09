@@ -39,6 +39,7 @@ public class DBDruidSqlParser extends DBSqlParser {
         super(sqlContent, dialect);
         this.dbType = switch (dialect) {
             case MYSQL -> DbType.mysql;
+            case MARIADB -> DbType.mariadb;
             case DAMENG -> DbType.dm;
             default -> null;
         };
@@ -58,7 +59,8 @@ public class DBDruidSqlParser extends DBSqlParser {
     @Override
     public boolean isSingle() {
         // druid无法解析这些语句，直接返回
-        if (this.dbType == DbType.mysql && StringUtil.startWithAnyIgnoreCase(sqlContent,
+        if ((this.dbType == DbType.mysql || this.dbType == DbType.mariadb)
+                && StringUtil.startWithAnyIgnoreCase(sqlContent,
                 "SHOW VARIABLES LIKE",
                 "SHOW CREATE EVENT"
         )) {
@@ -70,7 +72,8 @@ public class DBDruidSqlParser extends DBSqlParser {
     @Override
     public boolean isSelect(String sql) {
         // druid无法解析这些语句，直接返回
-        if (this.dbType == DbType.mysql && StringUtil.startWithAnyIgnoreCase(sqlContent,
+        if ((this.dbType == DbType.mysql || this.dbType == DbType.mariadb)
+                && StringUtil.startWithAnyIgnoreCase(sqlContent,
                 "SHOW VARIABLES LIKE",
                 "SHOW CREATE EVENT"
         )) {

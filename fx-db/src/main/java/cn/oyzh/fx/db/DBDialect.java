@@ -13,6 +13,7 @@ import java.util.List;
  */
 public enum DBDialect {
     MYSQL,
+    MARIADB,
     MONGODB,
     DAMENG,
     ;

@@ -30,6 +30,7 @@ public class DBBaseSqlParser extends DBSqlParser {
         super(sqlContent, dialect);
         this.database = switch (dialect) {
             case MYSQL -> SqlDatabase.MYSQL;
+            case MARIADB -> SqlDatabase.MARIADB;
             case DAMENG -> SqlDatabase.DM;
             default -> SqlDatabase.ANSI;
         };

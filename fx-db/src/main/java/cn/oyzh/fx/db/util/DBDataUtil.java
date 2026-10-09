@@ -16,14 +16,14 @@ import java.util.Objects;
 public class DBDataUtil {
 
     /**
-     * 转义引号，兼容 MySQL、达梦等方言
+     * 转义引号，兼容 MySQL、MariaDB、达梦等方言
      *
      * @param str     内容
      * @param dialect 方言
      * @return 转义后的内容
      */
     public static String escapeQuotes(String str, DBDialect dialect) {
-        if (dialect == DBDialect.MYSQL || dialect == DBDialect.DAMENG) {
+        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB || dialect == DBDialect.DAMENG) {
             boolean f1 = str.startsWith("'") && str.endsWith("'");
             if (f1) {
                 str = str.substring(1, str.length() - 1);

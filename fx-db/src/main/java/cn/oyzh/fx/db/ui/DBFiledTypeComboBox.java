@@ -42,7 +42,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportSize() {
-        return DBColumnFieldManager.supportSize(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.supportSize(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -51,7 +51,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportDigits() {
-        return DBColumnFieldManager.supportDigits(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.supportDigits(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -60,7 +60,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportAutoIncrement() {
-        return DBColumnFieldManager.supportAutoIncrement(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.supportAutoIncrement(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -69,7 +69,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportDefaultValue() {
-        return DBColumnFieldManager.supportDefaultValue(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.supportDefaultValue(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -78,7 +78,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportTimestamp() {
-        return DBColumnFieldManager.supportTimestamp(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.supportTimestamp(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -87,7 +87,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportJson() {
-        return DBColumnFieldManager.supportJson(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.supportJson(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -96,7 +96,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportValue() {
-        return DBColumnFieldManager.supportValue(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.supportValue(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -105,7 +105,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 结果
      */
     public boolean supportCharset() {
-        return DBColumnFieldManager.supportCharset(DBDialect.MYSQL, this.getSelectedItem());
+        return DBColumnFieldManager.supportCharset(this.dialect, this.getSelectedItem());
     }
 
     /**
@@ -114,7 +114,7 @@ public class DBFiledTypeComboBox extends FXComboBox<String> {
      * @return 示例值
      */
     public Object exampleValue() {
-        return DBColumnFieldManager.exampleValue(DBDialect.DAMENG, this.getSelectedItem());
+        return DBColumnFieldManager.exampleValue(this.dialect, this.getSelectedItem());
     }
 
     @Override
