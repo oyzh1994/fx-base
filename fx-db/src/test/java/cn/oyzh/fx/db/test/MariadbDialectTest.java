@@ -28,7 +28,7 @@ public class MariadbDialectTest {
     }
 
     @Test
-    public void testMysqlCompatibleBusinessRules() {
+    public void testMariadbBusinessRules() {
         assertEquals("`order`", DBUtil.wrap("order", DBDialect.MARIADB));
         assertEquals("a''b", DBDataUtil.escapeQuotes("a'b", DBDialect.MARIADB));
         assertEquals("'a''b'", DBUtil.wrapData("a'b", DBDialect.MARIADB));
