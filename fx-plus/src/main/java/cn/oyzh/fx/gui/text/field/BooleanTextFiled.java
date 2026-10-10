@@ -1,6 +1,7 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.util.BooleanUtil;
+import cn.oyzh.common.util.StringUtil;
 
 /**
  * 布尔文本输入框
@@ -13,7 +14,7 @@ public class BooleanTextFiled extends SelectTextFiled<String> {
     @Override
     public Boolean getValue() {
         String text = this.getSelectedItem();
-        return text.equals("true");
+        return StringUtil.equalsIgnoreCase(text, "true");
     }
 
     @Override
