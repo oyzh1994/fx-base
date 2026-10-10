@@ -1,6 +1,7 @@
 package cn.oyzh.fx.db;
 
 import cn.oyzh.fx.db.ui.DBJoinSymbolComboBox;
+import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.button.FXCheckBox;
 import cn.oyzh.fx.plus.tableview.TableViewUtil;
 
@@ -155,4 +156,27 @@ public class DBRecordFilter {
     public void setColumns(List<? extends DBColumn> columns) {
         this.columns = columns;
     }
+
+    /**
+     * 值组件
+     */
+    protected FXHBox valueBox;
+
+    /**
+     * 更新值组件
+     */
+    protected void updateValueControl() {
+
+    }
+
+    /**
+     * 获取值
+     *
+     * @return 值
+     * @throws Exception 异常
+     */
+    public Object value() throws Exception {
+        return null;
+    }
 }
+
