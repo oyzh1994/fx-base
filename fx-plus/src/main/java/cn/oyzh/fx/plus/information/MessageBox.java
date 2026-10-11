@@ -1,5 +1,6 @@
 package cn.oyzh.fx.plus.information;
 
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.thread.ExecutorUtil;
 import cn.oyzh.fx.plus.controls.button.FXButton;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
@@ -175,6 +176,7 @@ public class MessageBox {
      */
     public static void exception(Throwable ex) {
         ex.printStackTrace();
+        JulLog.error("exception", ex);
         exception(ex, null);
     }
 
