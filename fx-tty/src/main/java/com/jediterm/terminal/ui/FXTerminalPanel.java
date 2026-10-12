@@ -11,7 +11,6 @@ import cn.oyzh.fx.plus.menu.ContextMenuManager;
 import cn.oyzh.fx.plus.mouse.MouseUtil;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.tty.TtyAscii;
 import cn.oyzh.fx.tty.TtyFontMetrics;
 import cn.oyzh.fx.tty.TtyKeyListener;
 import cn.oyzh.fx.tty.TtyScrollBarUtils;
@@ -57,7 +56,6 @@ import com.jediterm.terminal.model.TerminalTextBuffer;
 import com.jediterm.terminal.model.hyperlinks.LinkInfo;
 import com.jediterm.terminal.model.hyperlinks.TextProcessing;
 import com.jediterm.terminal.ui.hyperlinks.FXLinkInfoEx;
-import com.jediterm.terminal.ui.input.AwtMouseWheelEvent;
 import com.jediterm.terminal.ui.input.FXMouseEvent;
 import com.jediterm.terminal.ui.input.FXMouseWheelEvent;
 import com.jediterm.terminal.ui.settings.FXDefaultSettingsProvider;
@@ -109,7 +107,8 @@ import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.text.AttributedCharacterIterator;
@@ -2220,7 +2219,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             return false;
         }
 
-        KeyInputEvent event = new KeyInputEvent(type, e.getCode().getCode(), KeyboardUtil.getKeyChar(e), KeyboardUtil.getModifiersEx(e));
+        KeyInputEvent event = new KeyInputEvent(type, e.getCode().getCode(),  KeyboardUtil.getKeyChar(e), KeyboardUtil.getModifiersEx(e));
         KeyEventProcessingSettings settings = new KeyEventProcessingSettings(
                 mySettingsProvider.shiftEnterSendsEscCR(),
                 mySettingsProvider.scrollToBottomOnTyping(),
