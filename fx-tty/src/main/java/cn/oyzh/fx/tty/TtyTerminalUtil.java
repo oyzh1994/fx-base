@@ -117,6 +117,16 @@ public class TtyTerminalUtil {
         if (value >= KeyCode.A.getCode() && value <= KeyCode.Z.getCode()) {
             return (char) (value - KeyCode.A.getCode() + 1);
         }
+        // Ctrl+0 ~ Ctrl+9 -> 0x00 ~ 0x09 (number row, keypad and soft keys)
+        if (value >= KeyCode.DIGIT0.getCode() && value <= KeyCode.DIGIT9.getCode()) {
+            return (char) (value - KeyCode.DIGIT0.getCode());
+        }
+        if (value >= KeyCode.NUMPAD0.getCode() && value <= KeyCode.NUMPAD9.getCode()) {
+            return (char) (value - KeyCode.NUMPAD0.getCode());
+        }
+        if (value >= KeyCode.SOFTKEY_0.getCode() && value <= KeyCode.SOFTKEY_9.getCode()) {
+            return (char) (value - KeyCode.SOFTKEY_0.getCode());
+        }
         return switch (code) {
             case SPACE -> (char) 0x00;
             case OPEN_BRACKET -> (char) 0x1B;
