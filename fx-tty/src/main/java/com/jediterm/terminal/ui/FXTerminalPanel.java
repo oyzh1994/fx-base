@@ -1551,8 +1551,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         int endOffset;
         int startOffset = 0;
         double charWidth = myCharSize.getWidth();
-        double yCoord = y * myCharSize.getHeight() + mySpaceBetweenLines / 2.0;
-        double yCoord1 = Math.round(yCoord);
+        //double yCoord = y * myCharSize.getHeight() + mySpaceBetweenLines / 2.0;
+        //double yCoord1 = Math.round(yCoord);
         while ((endOffset = iterator.next()) != BreakIterator.DONE) {
             endOffset = extendEndOffset(text, iterator, startOffset, endOffset);
             int effectiveEndOffset = shiftDwcToEnd(text, startOffset, endOffset);
@@ -1569,14 +1569,25 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             double xCoord = (x + startOffset) * charWidth + getInsetX();
             gfx.save();
             gfx.beginPath();
-            gfx.rect(Math.round(xCoord), yCoord1, Math.round(this.getTermWidth() - xCoord), Math.round(this.getTermHeight() - yCoord));
+            //gfx.rect(Math.round(xCoord), yCoord1, Math.round(this.getTermWidth() - xCoord), Math.round(this.getTermHeight() - yCoord));
+            // TODO: 解决中文被裁剪的问题
+            // Clip the left edge only: a glyph must not bleed into the cell on its left.
+            // The top edge must NOT be the cell top: glyphs rendered through font fallback (CJK, emoji)
+            // have ink that rises above the line box of the primary font (measured ~0.5-0.9px on Windows
+            // with Consolas + the Chinese fallback), and clipping at the cell top cuts their top strokes off.
+            gfx.rect(Math.round(xCoord), 0, Math.round(this.getTermWidth() - xCoord), Math.round(this.getTermHeight()));
             gfx.closePath();
             gfx.clip();
 
             int emptyCells = endOffset - startOffset;
             if (emptyCells >= 2) {
                 String str = new String(text, startOffset, effectiveEndOffset - startOffset);
-                double drawnWidth = str.isEmpty() ? myCharSize.getWidth() : fm.getWidth();
+                //double drawnWidth = str.isEmpty() ? myCharSize.getWidth() : fm.getWidth();
+                // TODO: 解决中文被裁剪的问题
+                // Measure the characters actually drawn. Using the font's "W" advance here (upstream used
+                // the real chars width) makes a double-width glyph look much narrower than its cells, so
+                // the centering below would push it ~half a cell to the right, overflowing its own cell.
+                double drawnWidth = str.isEmpty() ? myCharSize.getWidth() : getStringWidth(font, str);
                 double emptySpace = Math.max(0, emptyCells * charWidth - drawnWidth);
                 // paint a Unicode symbol closer to the center
                 xCoord += emptySpace / 2;
@@ -2550,6 +2561,15 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     // }
 
     private final Map<Font, TtyFontMetrics> fontMetricsCache = new HashMap<>();
+
+    // TODO: 解决中文被裁剪的问题
+    /** Advance width of a drawn string, cached per font because measuring allocates a text node. */
+    private final Map<Font, Map<String, Double>> stringWidthCache = new HashMap<>();
+
+    private double getStringWidth(@NotNull Font font, @NotNull String str) {
+        return this.stringWidthCache.computeIfAbsent(font, f -> new HashMap<>())
+                .computeIfAbsent(str, s -> TtyFontMetrics.create(font, s).getWidth());
+    }
 
     private TtyFontMetrics getFontMetrics(Font font) {
         return fontMetricsCache.computeIfAbsent(font, f -> TtyFontMetrics.create(f, "W"));
