@@ -122,6 +122,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -877,29 +878,60 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         Platform.runLater(() -> updateScrolling(true));
     }
 
+    // TODO: 优化版字体度量
     private void establishFontMetrics() {
-        TtyFontMetrics fontMetrics = TtyFontMetrics.create(myNormalFont, "W");
         final float lineSpacing = getLineSpacing();
-        double fontMetricsHeight = fontMetrics.getHeight();
+        com.sun.javafx.tk.FontMetrics fontMetrics = getFXFontMetrics(myNormalFont);
+        // Deliberately ascent + descent and not getLineHeight(): the line height also contains the font's
+        // leading (Consolas has leading = 2.4px at size 14, line height 16.4 vs 14.0), which would make every
+        // row ~3px taller and cost roughly 18% of the rows. For most fonts leading is 0 and both are equal.
+        double fontMetricsHeight = fontMetrics.getAscent() + fontMetrics.getDescent();
 
-        myCharSize = new Dimension2D(Math.round(fontMetrics.getWidth()), Math.round(Math.ceil(fontMetricsHeight * lineSpacing)));
+        myCharSize = new Dimension2D(Math.round(fontMetrics.getCharWidth('W')), Math.round(Math.ceil(fontMetricsHeight * lineSpacing)));
         mySpaceBetweenLines = Math.max(0, (int) Math.round(((myCharSize.getHeight() - fontMetricsHeight) / 2) * 2));
         myDescent = fontMetrics.getDescent();
         if (JulLog.isDebugEnabled()) {
-            // The magic +2 here is to give lines a tiny bit of extra height to avoid clipping when rendering some Apple
-            // emoji, which are slightly higher than the font metrics reported character height :(
-            double oldCharHeight = fontMetricsHeight + (int) (lineSpacing * 2) + 2;
-            double oldDescent = fontMetrics.getDescent() + (int) lineSpacing;
-            if (JulLog.isDebugEnabled()) {
-                JulLog.debug("charHeight=" + oldCharHeight + "->" + myCharSize.getHeight() +
-                        ", descent=" + oldDescent + "->" + myDescent);
-            }
+            JulLog.debug("font=" + myNormalFont.getName()
+                    + ", ascent=" + fontMetrics.getAscent()
+                    + ", descent=" + fontMetrics.getDescent()
+                    + ", leading=" + fontMetrics.getLeading()
+                    + ", lineHeight=" + fontMetrics.getLineHeight()
+                    + " -> charSize=" + myCharSize.getWidth() + "x" + myCharSize.getHeight()
+                    + ", spaceBetweenLines=" + mySpaceBetweenLines);
         }
-        // TODO
-        //    var myMonospaced = isMonospaced(fo);
-        //    if (!myMonospaced) {
-        //      JulLog.info("WARNING: Font " + myNormalFont.getName() + " is non-monospaced");
-        //    }
+    }
+
+    //private void establishFontMetrics() {
+    //    TtyFontMetrics fontMetrics = TtyFontMetrics.create(myNormalFont, "W");
+    //    final float lineSpacing = getLineSpacing();
+    //    double fontMetricsHeight = fontMetrics.getHeight();
+    //
+    //    myCharSize = new Dimension2D(Math.round(fontMetrics.getWidth()), Math.round(Math.ceil(fontMetricsHeight * lineSpacing)));
+    //    mySpaceBetweenLines = Math.max(0, (int) Math.round(((myCharSize.getHeight() - fontMetricsHeight) / 2) * 2));
+    //    myDescent = fontMetrics.getDescent();
+    //    if (JulLog.isDebugEnabled()) {
+    //        // The magic +2 here is to give lines a tiny bit of extra height to avoid clipping when rendering some Apple
+    //        // emoji, which are slightly higher than the font metrics reported character height :(
+    //        double oldCharHeight = fontMetricsHeight + (int) (lineSpacing * 2) + 2;
+    //        double oldDescent = fontMetrics.getDescent() + (int) lineSpacing;
+    //        if (JulLog.isDebugEnabled()) {
+    //            JulLog.debug("charHeight=" + oldCharHeight + "->" + myCharSize.getHeight() +
+    //                    ", descent=" + oldDescent + "->" + myDescent);
+    //        }
+    //    }
+    //    // TODO
+    //    //    var myMonospaced = isMonospaced(fo);
+    //    //    if (!myMonospaced) {
+    //    //      JulLog.info("WARNING: Font " + myNormalFont.getName() + " is non-monospaced");
+    //    //    }
+    //}
+
+    /**
+     * JavaFX 的字体度量（ascent/descent/leading/lineHeight/charWidth），直接取自平台字体，
+     * 而不是用 Text 节点反推。
+     */
+    private static com.sun.javafx.tk.FontMetrics getFXFontMetrics(@NotNull Font font) {
+        return com.sun.javafx.tk.Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
     }
 
     private float getLineSpacing() {
@@ -1562,7 +1594,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             }
             Font font = getFontToDisplay(text, startOffset, effectiveEndOffset, style);
             gfx.setFont(font);
-            TtyFontMetrics fm = getFontMetrics(font);
+            com.sun.javafx.tk.FontMetrics fm = getFontMetrics(font);
             double descent = fm.getDescent();
             double baseLine = (y + 1) * myCharSize.getHeight() - mySpaceBetweenLines / 2.0 - descent;
             double baseLine1 = Math.round(baseLine);
@@ -2545,6 +2577,12 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             float fontSize = this.mySettingsProvider.getTerminalFontSize();
             this.setTermFontSize(fontSize);
         }
+        if (this.fontMetricsCache != null) {
+            this.fontMetricsCache.clear();
+        }
+        if (this.stringWidthCache != null) {
+            this.stringWidthCache.clear();
+        }
     }
 
     // /**
@@ -2560,19 +2598,34 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     //     return alwaysShowThumbs;
     // }
 
-    private final Map<Font, TtyFontMetrics> fontMetricsCache = new HashMap<>();
+    // TODO: 字体度量优化
+    private Map<Font, com.sun.javafx.tk.FontMetrics> fontMetricsCache;
 
     // TODO: 解决中文被裁剪的问题
     /** Advance width of a drawn string, cached per font because measuring allocates a text node. */
-    private final Map<Font, Map<String, Double>> stringWidthCache = new HashMap<>();
+    private Map<Font, Map<String, Double>> stringWidthCache;
 
     private double getStringWidth(@NotNull Font font, @NotNull String str) {
+        if (this.stringWidthCache == null) {
+            synchronized (this) {
+                this.stringWidthCache = new ConcurrentHashMap<>();
+            }
+        }
         return this.stringWidthCache.computeIfAbsent(font, f -> new HashMap<>())
                 .computeIfAbsent(str, s -> TtyFontMetrics.create(font, s).getWidth());
     }
 
-    private TtyFontMetrics getFontMetrics(Font font) {
-        return fontMetricsCache.computeIfAbsent(font, f -> TtyFontMetrics.create(f, "W"));
+    //private TtyFontMetrics getFontMetrics(Font font) {
+    //    return fontMetricsCache.computeIfAbsent(font, f -> TtyFontMetrics.create(f, "W"));
+    //}
+
+    private com.sun.javafx.tk.FontMetrics getFontMetrics(Font font) {
+        if (this.fontMetricsCache == null) {
+            synchronized (this) {
+                this.fontMetricsCache = new ConcurrentHashMap<>();
+            }
+        }
+        return this.fontMetricsCache.computeIfAbsent(font, FXTerminalPanel::getFXFontMetrics);
     }
 
     private void updateSelection(@Nullable TerminalSelection selection) {
@@ -2922,6 +2975,12 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     @Override
     public void destroy() {
         this.canvas.destroy();
+        if (this.fontMetricsCache != null) {
+            this.fontMetricsCache.clear();
+        }
+        if (this.stringWidthCache != null) {
+            this.stringWidthCache.clear();
+        }
         NodeDestroyUtil.destroyObject(this);
     }
 }
