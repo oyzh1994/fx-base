@@ -2,7 +2,6 @@ package cn.oyzh.fx.plus.keyboard;
 
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.CollectionUtil;
-import cn.oyzh.common.util.StringUtil;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -456,24 +455,24 @@ public class KeyboardUtil {
         }
     }
 
-    /**
-     * 获取按键字符
-     *
-     * @param event 事件
-     * @return 结果
-     */
-    public static Character getKeyChar(KeyEvent event) {
-        if (event == null) {
-            return null;
-        }
-        if (StringUtil.isNotEmpty(event.getText())) {
-            return event.getText().charAt(0);
-        }
-        if (StringUtil.isNotEmpty(event.getCharacter())) {
-            return event.getCharacter().charAt(0);
-        }
-        return null;
-    }
+    ///**
+    // * 获取按键字符
+    // *
+    // * @param event 事件
+    // * @return 结果
+    // */
+    //public static Character getKeyChar(KeyEvent event) {
+    //    if (event == null) {
+    //        return null;
+    //    }
+    //    if (StringUtil.isNotEmpty(event.getText())) {
+    //        return event.getText().charAt(0);
+    //    }
+    //    if (StringUtil.isNotEmpty(event.getCharacter())) {
+    //        return event.getCharacter().charAt(0);
+    //    }
+    //    return null;
+    //}
 
     /**
      * 获取按键修饰

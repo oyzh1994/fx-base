@@ -17,6 +17,7 @@ import cn.oyzh.fx.tty.TtyScrollBarUtils;
 import cn.oyzh.fx.tty.TtyTermSettingsProvider;
 import cn.oyzh.fx.tty.TtyTerminalCanvas;
 import cn.oyzh.fx.tty.TtyTerminalCopyPasteHandler;
+import cn.oyzh.fx.tty.TtyTerminalUtil;
 import com.jediterm.core.TerminalCoordinates;
 import com.jediterm.core.input.KeyInputEvent;
 import com.jediterm.core.typeahead.TerminalTypeAheadManager;
@@ -2219,7 +2220,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
             return false;
         }
 
-        KeyInputEvent event = new KeyInputEvent(type, e.getCode().getCode(),  KeyboardUtil.getKeyChar(e), KeyboardUtil.getModifiersEx(e));
+        KeyInputEvent event = new KeyInputEvent(type, e.getCode().getCode(),  TtyTerminalUtil.getKeyChar(e), KeyboardUtil.getModifiersEx(e));
         KeyEventProcessingSettings settings = new KeyEventProcessingSettings(
                 mySettingsProvider.shiftEnterSendsEscCR(),
                 mySettingsProvider.scrollToBottomOnTyping(),

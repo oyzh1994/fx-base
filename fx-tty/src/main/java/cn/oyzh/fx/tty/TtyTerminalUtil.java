@@ -1,7 +1,10 @@
 package cn.oyzh.fx.tty;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.tty.zmodem.TtyZModemTtyConnector;
 import com.jediterm.core.Color;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * 终端工具类。
@@ -53,5 +56,91 @@ public class TtyTerminalUtil {
      */
     public static TtyZModemTtyConnector createZModemTtyConnector(TtyTermWidget widget, TtyStreamable connector) {
         return new TtyZModemTtyConnector(widget.getTerminal(), connector);
+    }
+
+    /**
+     * 获取按键字符
+     *
+     * @param event 事件
+     * @return 结果
+     */
+    public static char getKeyChar(KeyEvent event) {
+        if (event == null) {
+            return '\uffff';
+        }
+        KeyCode code = event.getCode();
+        // Only Ctrl held: derive the control character from the key code. On Windows/Linux a
+        // JavaFX KEY_PRESSED event never carries it, while jediterm recognizes Ctrl combinations
+        // solely by testing whether keyChar is an ISO control character, so Ctrl+A / Ctrl+E
+        // used to send nothing there.
+        if (event.isControlDown() && !event.isShiftDown() && !event.isAltDown() && !event.isMetaDown()) {
+            Character ctrlChar = getCtrlChar(code);
+            if (ctrlChar != null) {
+                return ctrlChar;
+            }
+        }
+        // Esc: Windows/Linux never carry the ESC character in the event (macOS does), add it here.
+        if (code == KeyCode.ESCAPE && !event.isControlDown() && !event.isAltDown() && !event.isMetaDown()) {
+            return (char) 0x1B;
+        }
+        // Only Alt held: Windows/Linux put no character in the event either, derive it from the
+        // key code so that jediterm's altSendsEscape() check keeps working.
+        if (event.isAltDown() && !event.isControlDown() && !event.isShiftDown() && !event.isMetaDown()) {
+            Character altChar = getPrintableChar(code);
+            if (altChar != null) {
+                return altChar;
+            }
+        }
+        // Windows/Linux fill getText() with a NUL placeholder for keys that produce no character
+        // (modifiers, lock keys, ...). Ignore it, otherwise NUL (^@) would be written to the terminal.
+        if (StringUtil.isNotEmpty(event.getText()) && event.getText().charAt(0) != 0) {
+            return event.getText().charAt(0);
+        }
+        if (StringUtil.isNotEmpty(event.getCharacter()) && event.getCharacter().charAt(0) != 0) {
+            return event.getCharacter().charAt(0);
+        }
+        return '\uffff';
+    }
+
+    /**
+     * Derives the control character produced by a key when only Ctrl is held.
+     *
+     * @param code the key code
+     * @return the control character, or null when there is none
+     */
+    private static Character getCtrlChar(KeyCode code) {
+        if (code == null) {
+            return null;
+        }
+        int value = code.getCode();
+        // Ctrl+A ~ Ctrl+Z -> 0x01 ~ 0x1A
+        if (value >= KeyCode.A.getCode() && value <= KeyCode.Z.getCode()) {
+            return (char) (value - KeyCode.A.getCode() + 1);
+        }
+        return switch (code) {
+            case SPACE -> (char) 0x00;
+            case OPEN_BRACKET -> (char) 0x1B;
+            case BACK_SLASH -> (char) 0x1C;
+            case CLOSE_BRACKET -> (char) 0x1D;
+            case SLASH -> (char) 0x1F;
+            default -> null;
+        };
+    }
+
+    /**
+     * Derives the printable character of a letter or digit key.
+     *
+     * @param code the key code
+     * @return the character, or null when the key is neither a letter nor a digit
+     */
+    private static Character getPrintableChar(KeyCode code) {
+        if (code == null || !(code.isLetterKey() || code.isDigitKey())) {
+            return null;
+        }
+        String ch = code.getChar();
+        if (ch == null || ch.isEmpty()) {
+            return null;
+        }
+        return Character.toLowerCase(ch.charAt(0));
     }
 }
