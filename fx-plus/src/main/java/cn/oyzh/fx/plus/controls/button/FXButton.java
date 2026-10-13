@@ -9,6 +9,7 @@ import cn.oyzh.fx.plus.mouse.MouseAdapter;
 import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 
@@ -58,6 +59,10 @@ public class FXButton extends Button implements FlexAdapter, NodeGroup, ThemeAda
 //    public void setEnableTheme(boolean enableTheme) {
 //        ThemeAdapter.super.setEnableTheme(enableTheme);
 //    }
+
+    public void text(String text) {
+        FXUtil.runWait(() -> super.setText(text));
+    }
 
     @Override
     public void resize(double width, double height) {
