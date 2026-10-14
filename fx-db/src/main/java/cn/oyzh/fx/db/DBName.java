@@ -2,6 +2,9 @@ package cn.oyzh.fx.db;
 
 import cn.oyzh.common.util.StringUtil;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * 命名接口，提供名称的读写及新对象判断能力
  *
@@ -31,5 +34,16 @@ public interface DBName {
      */
     default boolean isNew() {
         return StringUtil.isBlank(this.getName());
+    }
+
+    /**
+     * 对内容进行排序
+     *
+     * @param list 内容
+     */
+    static void sortItems(List<? extends DBName> list) {
+        if (list != null) {
+            list.sort(Comparator.comparing(DBName::getName));
+        }
     }
 }

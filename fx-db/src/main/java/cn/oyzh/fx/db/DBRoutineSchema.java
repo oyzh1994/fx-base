@@ -9,7 +9,7 @@ import cn.oyzh.common.util.StringUtil;
  * @author oyzh
  * @since 2026-09-02
  */
-public interface DBRoutineSchema extends DBName{
+public interface DBRoutineSchema extends DBName {
 
     /**
      * 是否无效

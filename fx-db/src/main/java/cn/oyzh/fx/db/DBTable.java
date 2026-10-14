@@ -8,7 +8,7 @@ import cn.oyzh.common.util.StringUtil;
  * @author oyzh
  * @since 2026-09-02
  */
-public interface DBTable extends DBName{
+public interface DBTable extends DBName {
 
     /**
      * 设置注释
@@ -41,5 +41,4 @@ public interface DBTable extends DBName{
     default boolean isInvalid() {
         return StringUtil.isBlank(this.getName());
     }
-
 }
