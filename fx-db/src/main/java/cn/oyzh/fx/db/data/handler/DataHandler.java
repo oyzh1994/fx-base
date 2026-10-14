@@ -67,10 +67,9 @@ public class DataHandler {
         if (ex instanceof InterruptedException) {
             throw ex;
         }
+        ex.printStackTrace();
         if (this.messageHandler != null) {
             this.messageHandler.accept(ex.getMessage());
-        } else {
-            ex.printStackTrace();
         }
     }
 
