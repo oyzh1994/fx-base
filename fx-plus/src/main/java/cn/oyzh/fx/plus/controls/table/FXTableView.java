@@ -234,7 +234,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
             header.setMaxHeight(height);
             header.setPrefHeight(height);
         } else {
-            FXUtil.runPulse(() -> setHeaderHeight(height));
+            FXUtil.runPulse(() -> this.setHeaderHeight(height));
         }
     }
 

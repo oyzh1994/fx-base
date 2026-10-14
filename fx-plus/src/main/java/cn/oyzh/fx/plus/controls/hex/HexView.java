@@ -15,7 +15,6 @@ import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
