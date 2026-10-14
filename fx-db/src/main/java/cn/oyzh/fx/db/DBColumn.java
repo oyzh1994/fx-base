@@ -8,7 +8,7 @@ import cn.oyzh.common.util.StringUtil;
  * @author oyzh
  * @since 2026-09-01
  */
-public interface DBColumn extends DBName{
+public interface DBColumn extends DBName {
 
     /**
      * 获取类型
@@ -297,6 +297,37 @@ public interface DBColumn extends DBName{
      */
     default Integer getDigits() {
         return null;
+    }
+
+    /**
+     * 获取默认值
+     *
+     * @return 结果
+     */
+    default Object getDefaultValue() {
+        return null;
+    }
+
+    /**
+     * 默认值是否序列
+     *
+     * @return 结果
+     */
+    default boolean isDefaultValueSequence() {
+        return this.getDefaultValue() instanceof String s && StringUtil.endsWithIgnoreCase(s, ".NEXTVAL");
+    }
+
+    /**
+     * 获取序列名称
+     *
+     * @return 结果
+     */
+    default String getSequenceName() {
+        if (!isDefaultValueSequence()) {
+            return null;
+        }
+        String def = this.getDefaultValue().toString();
+        return def.substring(0, def.lastIndexOf("."));
     }
 
     /**

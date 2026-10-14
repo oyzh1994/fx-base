@@ -128,4 +128,18 @@ public class DBRecordData extends HashMap<DBColumn, Object> {
         }
         return dbColumn.supportGeometry();
     }
+
+    /**
+     * 默认值是否序列
+     *
+     * @param column 列名称
+     * @return 结果
+     */
+    public boolean isDefaultValueSequence(String column) {
+        DBColumn dbColumn = this.column(column);
+        if (dbColumn == null) {
+            return false;
+        }
+        return dbColumn.isDefaultValueSequence();
+    }
 }
