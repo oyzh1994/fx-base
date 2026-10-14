@@ -97,6 +97,7 @@ public abstract class DBDataTypeFileReader implements Closeable {
         List<String> list = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         boolean txtStart = false;
+        Character lastChar = null;
         try (StringReader reader = new StringReader(line)) {
             while (reader.ready()) {
                 int i = reader.read();
@@ -104,19 +105,27 @@ public abstract class DBDataTypeFileReader implements Closeable {
                     break;
                 }
                 char c = (char) i;
-                if (txtStart && c == fieldSeparator) {
-                    txtStart = false;
-                    continue;
-                }
-                if (c == txtIdentifier) {
-                    if (txtStart) {
-                        list.add(sb.toString());
-                        sb.delete(0, sb.length());
-                    } else {
-                        txtStart = true;
+                try {
+                    if (txtStart && c == fieldSeparator) {
+                        txtStart = false;
+                        continue;
                     }
-                } else if (txtStart) {
-                    sb.append(c);
+                    if (c == txtIdentifier) {
+                        if (lastChar != null && lastChar == '\\') {
+                            sb.append(c);
+                            continue;
+                        }
+                        if (txtStart) {
+                            list.add(sb.toString());
+                            sb.delete(0, sb.length());
+                        } else {
+                            txtStart = true;
+                        }
+                    } else if (txtStart) {
+                        sb.append(c);
+                    }
+                } finally {
+                    lastChar = c;
                 }
             }
         }
