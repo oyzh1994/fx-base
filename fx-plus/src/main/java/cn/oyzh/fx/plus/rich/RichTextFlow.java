@@ -104,6 +104,9 @@ public class RichTextFlow extends TextFlow implements PropAdapter, FlexAdapter, 
                 }
                 Color highlightColor = this.getHighlightColor();
                 for (String s : arr) {
+                    if (StringUtil.isEmpty(s)) {
+                        continue;
+                    }
                     FXText text1 = new FXText(s);
                     texts.add(text1);
                     if ((this.isHighlightMatchCase() && s.equals(highlight)) || s.equalsIgnoreCase(highlight)) {
