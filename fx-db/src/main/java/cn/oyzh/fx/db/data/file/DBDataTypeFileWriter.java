@@ -75,6 +75,7 @@ public abstract class DBDataTypeFileWriter implements Closeable {
         for (Object object : objects) {
             list.add(Objects.requireNonNullElse(object, ""));
         }
+        //        List<?> list = CollectionUtil.of(objects);
         return this.formatLine(list, fieldSeparator, txtIdentifier, recordSeparator);
     }
 
@@ -88,15 +89,12 @@ public abstract class DBDataTypeFileWriter implements Closeable {
      * @return 格式化后的行
      */
     protected String formatLine(List<?> list, String fieldSeparator, String txtIdentifier, String recordSeparator) {
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
         for (Object val : list) {
-            sb.append(fieldSeparator)
-                    .append(txtIdentifier)
-                    .append(val)
-                    .append(txtIdentifier);
+            sb.append(fieldSeparator).append(txtIdentifier).append(val).append(txtIdentifier);
         }
         sb.append(recordSeparator);
         return sb.substring(1);
