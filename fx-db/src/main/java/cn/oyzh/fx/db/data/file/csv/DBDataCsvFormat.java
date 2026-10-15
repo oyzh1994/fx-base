@@ -12,9 +12,9 @@ import org.apache.commons.csv.QuoteMode;
 public final class DBDataCsvFormat {
 
     /**
-     * CSV 字段分隔符
+     * CSV 默认字段分隔符
      */
-    private static final char DELIMITER = ',';
+    private static final String DEFAULT_DELIMITER = ",";
 
     /**
      * 私有构造函数
@@ -30,8 +30,20 @@ public final class DBDataCsvFormat {
      * @return CSV 格式
      */
     public static CSVFormat create(String txtIdentifier, String recordSeparator) {
+        return create(DEFAULT_DELIMITER, txtIdentifier, recordSeparator);
+    }
+
+    /**
+     * 构造定界文本格式。
+     *
+     * @param fieldSeparator  字段分隔符
+     * @param txtIdentifier   文本识别符，为空时不使用引号
+     * @param recordSeparator 记录分隔符
+     * @return 定界文本格式
+     */
+    public static CSVFormat create(String fieldSeparator, String txtIdentifier, String recordSeparator) {
         Character quoteCharacter = quoteCharacter(txtIdentifier);
-        CSVFormat.Builder builder = CSVFormat.DEFAULT.builder().setDelimiter(DELIMITER).setIgnoreEmptyLines(false).setIgnoreSurroundingSpaces(false).setQuote(quoteCharacter).setRecordSeparator(recordSeparator).setTrim(false);
+        CSVFormat.Builder builder = CSVFormat.DEFAULT.builder().setDelimiter(delimiter(fieldSeparator)).setIgnoreEmptyLines(false).setIgnoreSurroundingSpaces(false).setQuote(quoteCharacter).setRecordSeparator(recordSeparator).setTrim(false);
         if (quoteCharacter == null) {
             builder.setQuoteMode(QuoteMode.NONE);
         } else {
@@ -39,6 +51,19 @@ public final class DBDataCsvFormat {
             builder.setQuoteMode(QuoteMode.ALL);
         }
         return builder.get();
+    }
+
+    /**
+     * 校验字段分隔符。
+     *
+     * @param fieldSeparator 字段分隔符
+     * @return 字段分隔符
+     */
+    private static String delimiter(String fieldSeparator) {
+        if (fieldSeparator == null || fieldSeparator.isEmpty()) {
+            throw new IllegalArgumentException("字段分隔符不能为空");
+        }
+        return fieldSeparator;
     }
 
     /**

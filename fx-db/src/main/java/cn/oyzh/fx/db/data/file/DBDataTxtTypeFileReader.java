@@ -13,45 +13,58 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * TXT 类型文件读取器，按导入配置将定界文本文件内容解析为数据对象。
+ * TXT 定界文本类型文件读取器。
+ *
+ * <p>TXT 与 CSV 都是定界文本，仅字段分隔符和文件扩展名不同，因此直接复用 CSV 读取实现。</p>
  *
  * @author oyzh
  * @since 2026-09-07
  */
-public class DBDataTxtTypeFileReader extends DBDataTypeFileReader {
+public class DBDataTxtTypeFileReader extends DBDataCsvTypeFileReader {
 
     /**
-     * 字段列表
-     */
-    private List<String> columns;
-
-    /**
-     * 导入配置
-     */
-    private DBDataImportConfig config;
-
-    /**
-     * 文件读取器
-     */
-    private SkipAbleFileReader reader;
-
-    /**
-     * 构造方法
+     * 构造 TXT 类型文件读取器。
      *
-     * @param file   待读取的文件
+     * @param file   待读取文件
      * @param config 导入配置
-     * @throws IOException IO异常
+     * @throws IOException IO 异常
      */
     public DBDataTxtTypeFileReader(File file, DBDataImportConfig config) throws IOException {
-         super(file);
-        this.config = config;
-        this.reader = new SkipAbleFileReader(file, Charset.forName(config.getCharset()));
-        // 设置换行符
-        if (!Objects.equals(config.getRecordSeparator(), System.lineSeparator())) {
-            this.reader.lineBreak(config.getRecordSeparator());
-        }
-        this.init();
+        super(file, config, config.getFieldSeparator());
     }
+//
+//    /**
+//     * 字段列表
+//     */
+//    private List<String> columns;
+//
+//    /**
+//     * 导入配置
+//     */
+//    private DBDataImportConfig config;
+//
+//    /**
+//     * 文件读取器
+//     */
+//    private SkipAbleFileReader reader;
+//
+//    /**
+//     * 构造方法
+//     *
+//     * @param file   待读取的文件
+//     * @param config 导入配置
+//     * @throws IOException IO异常
+//     */
+//    public DBDataTxtTypeFileReader(File file, DBDataImportConfig config) throws IOException {
+//        super(file);
+//        this.config = config;
+//        this.reader = new SkipAbleFileReader(file, Charset.forName(config.getCharset()));
+//        // 设置换行符
+//        if (!Objects.equals(config.getRecordSeparator(), System.lineSeparator())) {
+//            this.reader.lineBreak(config.getRecordSeparator());
+//        }
+//        this.init();
+//    }
 
     // private List<String> parseLine(String line) throws IOException {
     //     List<String> list = new ArrayList<>();
@@ -86,37 +99,37 @@ public class DBDataTxtTypeFileReader extends DBDataTypeFileReader {
     //     return list;
     // }
 
-    @Override
-    protected void init() throws IOException {
-        this.reader.jumpLine(this.config.getColumnIndex());
-        this.columns = new ArrayList<>();
-        String line = this.reader.readLine();
-        this.columns.addAll(this.parseLine(line, this.config.txtIdentifierChar(), this.config.fieldSeparatorChar()));
-        this.reader.jumpLine(this.config.getDataStartIndex());
-    }
-
-    @Override
-    public Map<String, Object> readObject() throws IOException {
-        String line = this.reader.readLine();
-        if (line != null) {
-            List<String> arr = this.parseLine(line, this.config.txtIdentifierChar(), this.config.fieldSeparatorChar());
-            Map<String, Object> map = new HashMap<>();
-            for (int i = 0; i < arr.size(); i++) {
-                map.put(this.columns.get(i), arr.get(i));
-            }
-            return map;
-        }
-        return null;
-    }
-
-    @Override
-    public void close() throws IOException {
-        if (this.reader != null) {
-            this.reader.close();
-            this.reader = null;
-            this.config = null;
-            this.columns.clear();
-            this.columns = null;
-        }
-    }
+//    @Override
+//    protected void init() throws IOException {
+//        this.reader.jumpLine(this.config.getColumnIndex());
+//        this.columns = new ArrayList<>();
+//        String line = this.reader.readLine();
+//        this.columns.addAll(this.parseLine(line, this.config.txtIdentifierChar(), this.config.fieldSeparatorChar()));
+//        this.reader.jumpLine(this.config.getDataStartIndex());
+//    }
+//
+//    @Override
+//    public Map<String, Object> readObject() throws IOException {
+//        String line = this.reader.readLine();
+//        if (line != null) {
+//            List<String> arr = this.parseLine(line, this.config.txtIdentifierChar(), this.config.fieldSeparatorChar());
+//            Map<String, Object> map = new HashMap<>();
+//            for (int i = 0; i < arr.size(); i++) {
+//                map.put(this.columns.get(i), arr.get(i));
+//            }
+//            return map;
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public void close() throws IOException {
+//        if (this.reader != null) {
+//            this.reader.close();
+//            this.reader = null;
+//            this.config = null;
+//            this.columns.clear();
+//            this.columns = null;
+//        }
+//    }
 }

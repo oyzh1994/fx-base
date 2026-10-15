@@ -31,9 +31,21 @@ public class DBDataCsvFileWriter implements AutoCloseable {
      * @throws IOException IO 异常
      */
     public DBDataCsvFileWriter(String filePath, DBDataExportConfig config) throws IOException {
+        this(filePath, config, ",");
+    }
+
+    /**
+     * 构造定界文本文件写入器。
+     *
+     * @param filePath       文件路径
+     * @param config         导出配置
+     * @param fieldSeparator 字段分隔符
+     * @throws IOException IO 异常
+     */
+    public DBDataCsvFileWriter(String filePath, DBDataExportConfig config, String fieldSeparator) throws IOException {
         File file = new File(filePath);
         Charset charset = Charset.forName(config.getCharset());
-        this.printer = DBDataCsvFormat.create(config.getTxtIdentifier(), config.getRecordSeparator())
+        this.printer = DBDataCsvFormat.create(fieldSeparator, config.getTxtIdentifier(), config.getRecordSeparator())
                 .print(file, charset);
     }
 

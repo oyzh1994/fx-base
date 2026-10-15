@@ -55,13 +55,25 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
      * @throws IOException IO 异常
      */
     public DBDataCsvTypeFileReader(File file, DBDataImportConfig config) throws IOException {
+        this(file, config, ",");
+    }
+
+    /**
+     * 构造定界文本文件读取器。
+     *
+     * @param file           待读取文件
+     * @param config         导入配置
+     * @param fieldSeparator 字段分隔符
+     * @throws IOException IO 异常
+     */
+    protected DBDataCsvTypeFileReader(File file, DBDataImportConfig config, String fieldSeparator) throws IOException {
         super(file);
         Charset charset = Charset.forName(config.getCharset());
         Reader reader = Files.newBufferedReader(file.toPath(), charset);
         boolean initialized = false;
         CSVParser csvParser = null;
         try {
-            csvParser = DBDataCsvFormat.create(config.getTxtIdentifier(), config.getRecordSeparator()).parse(reader);
+            csvParser = DBDataCsvFormat.create(fieldSeparator, config.getTxtIdentifier(), config.getRecordSeparator()).parse(reader);
             this.parser = csvParser;
             this.records = csvParser.iterator();
             this.init(config);
