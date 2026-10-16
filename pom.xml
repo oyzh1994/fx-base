@@ -49,6 +49,7 @@
         <module>fx-vnc</module>
         <module>fx-db</module>
         <module>fx-rdp</module>
+        <module>fx-xserver</module>
     </modules>
 
     <properties>

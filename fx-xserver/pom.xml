@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.oyzh1994</groupId>
+        <artifactId>fx-base</artifactId>
+        <version>1.3.7</version>
+    </parent>
+
+    <name>fx-xserver</name>
+    <artifactId>fx-xserver</artifactId>
+
+    <packaging>jar</packaging>
+    <description>A modern X11 display server written in Java, rendered with JavaFX</description>
+
+    <properties>
+        <x11.version>0.22.0</x11.version>
+        <slf4j.version>2.0.16</slf4j.version>
+    </properties>
+
+    <dependencies>
+        <!-- X11 protocol codecs generated from the xcb protocol descriptions.
+             These give us read<Request>/read<Event>/read<Reply> plus the matching write methods
+             for every request, reply, event and error of the X11 protocol. -->
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-core</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-xproto</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-bigreq</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-xcmisc</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-render</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-shape</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-xtest</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-shm</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-xfixes</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-randr</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-xkb</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-screensaver</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-dpms</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-xinerama</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-res</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-damage</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-composite</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-sync</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.moaxcp.x11.x11-protocol</groupId>
+            <artifactId>x11-protocol-present</artifactId>
+            <version>${x11.version}</version>
+        </dependency>
+
+        <!-- Rendering -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.6.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
