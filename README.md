@@ -1,37 +1,49 @@
 # fx-base
 
-这是一个JavaFX的集成库，支持终端仿真、SVG渲染、打包、富文本编辑、TTY、VNC、数据库、托盘、主题、各种UI组件和FX相关解决方案。
+[English](README_EN.md) | 简体中文
 
----
+`fx-base` 是一个 JavaFX 集成库，提供 UI 增强、数据库组件、富文本编辑、终端仿真、TTY、VNC、RDP、X11/XServer 以及其他 JavaFX 桌面应用基础能力。
 
-## 依赖说明
+## 环境要求
 
-1. **base** 工程  
-   https://github.com/oyzh1994/base
-2. **JDK 版本**：要求 25
+- JDK 25
+- Maven 3.9 或更高版本
+- [`base`](https://gitee.com/oyzh1994/base) 基础工程
 
----
+## 模块结构
 
-## 结构说明
-
-| 模块          | 说明                                        |
-|---------------|---------------------------------------------|
-| `fx-db`       | JavaFX 数据库实现，各类数据库基础组件和封装 |
-| `fx-editor`   | JavaFX 编辑器实现，语法高亮编辑器           |
-| `fx-plus`     | JavaFX 增强和扩展，以及 GUI 相关组件集合    |
-| `fx-rich`     | JavaFX 富文本实现                           |
-| `fx-terminal` | JavaFX 模拟终端实现                         |
-| `fx-tty`      | JavaFX 仿真终端实现（基于 PTY）             |
-| `fx-vnc`      | JavaFX VNC 客户端实现                       |
-
----
+| 模块 | 说明 |
+|---|---|
+| `fx-db` | JavaFX 数据库组件，提供数据访问、查询、导入导出和数据库 UI 基础能力 |
+| `fx-editor` | JavaFX 编辑器和语法高亮能力 |
+| `fx-plus` | JavaFX 控件、主题、窗口、字体、校验和通用 UI 增强 |
+| `fx-rdp` | JavaFX RDP 远程桌面客户端集成 |
+| `fx-rich` | JavaFX 富文本编辑能力 |
+| `fx-terminal` | JavaFX 终端界面和终端管理能力 |
+| `fx-tty` | 基于 PTY 和 JediTerm 的终端仿真能力 |
+| `fx-vnc` | JavaFX VNC 远程桌面客户端 |
+| `fx-xserver` | Java 实现并渲染到 JavaFX 的 X11/XServer，可为真实 X11 客户端提供显示服务 |
 
 ## Maven
 
-### 安装
+安装全部模块：
+
 ```bash
-mvn -X clean install -DskipTests
+mvn clean install -DskipTests
 ```
 
-### 注意
-- 检查 cmd 里面 `java -version` 的版本号和项目版本号是否一致，否则可能出现无效的目标版本号 25 之类的问题
+运行测试：
+
+```bash
+mvn test
+```
+
+## 注意事项
+
+- 请确保终端中的 `java -version` 与项目要求一致，否则可能出现 `invalid target release: 25`。
+- `fx-base` 依赖 [`base`](https://gitee.com/oyzh1994/base)，请先构建并安装 `base`，或直接从本地多工程环境解析依赖。
+- `fx-xserver` 的详细运行参数和 X11/VNC 后端说明见 [`fx-xserver/README.md`](fx-xserver/README.md)。
+
+## 许可证
+
+项目包含 `APACHE-LICENSE-2.0.txt` 和 `MIT-LICENSE.txt`，使用前请查看相应许可条款。

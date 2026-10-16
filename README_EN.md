@@ -1,37 +1,49 @@
 # fx-base
 
-This is a JavaFX integration library that supports terminal emulation, SVG rendering, packaging, rich text editing, TTY for JavaFX, VNC for JavaFX, an FX version of the system tray implementation, themes, various UI components, and FX-related solutions.
+English | [简体中文](README.md)
 
----
+`fx-base` is a JavaFX integration library providing UI enhancements, database components, rich-text editing, terminal emulation, TTY, VNC, RDP, X11/XServer, and other foundations for JavaFX desktop applications.
 
-## Dependencies
+## Requirements
 
-1. **base** project
-   https://github.com/oyzh1994/base
-2. **JDK version**: requires 25
-
----
+- JDK 25
+- Maven 3.9 or newer
+- The [`base`](https://gitee.com/oyzh1994/base) project
 
 ## Module Structure
 
-| Module | Description                                                                   |
-|--------|-------------------------------------------------------------------------------|
-| `fx-db`       | JavaFX database implementation, various database base components and wrappers |
-| `fx-editor`   | JavaFX editor implementation, syntax-highlighted editor                       |
-| `fx-plus`     | JavaFX enhancements and extensions, as well as GUI component collections      |
-| `fx-rich`     | JavaFX rich text implementation                                               |
-| `fx-terminal` | JavaFX simulated terminal implementation                                      |
-| `fx-tty`      | JavaFX pseudo-terminal implementation (PTY-based)                             |
-| `fx-vnc`      | JavaFX VNC client implementation                                              |
-
----
+| Module | Description |
+|---|---|
+| `fx-db` | JavaFX database components for data access, queries, import/export, and database UI |
+| `fx-editor` | JavaFX editor and syntax-highlighting support |
+| `fx-plus` | JavaFX controls, themes, windows, fonts, validation, and general UI enhancements |
+| `fx-rdp` | JavaFX RDP remote-desktop client integration |
+| `fx-rich` | JavaFX rich-text editing |
+| `fx-terminal` | JavaFX terminal UI and terminal management |
+| `fx-tty` | PTY- and JediTerm-based terminal emulation |
+| `fx-vnc` | JavaFX VNC remote-desktop client |
+| `fx-xserver` | An X11/XServer implemented in Java and rendered through JavaFX for real X11 clients |
 
 ## Maven
 
-### Install
+Install all modules:
+
 ```bash
-mvn -X clean install -DskipTests
+mvn clean install -DskipTests
 ```
 
-### Notes
-- Make sure the `java -version` output matches the project version; otherwise you may encounter errors such as "invalid target release 25"
+Run tests:
+
+```bash
+mvn test
+```
+
+## Notes
+
+- Make sure `java -version` matches the project requirement; otherwise Maven may report `invalid target release: 25`.
+- `fx-base` depends on [`base`](https://gitee.com/oyzh1994/base). Build and install `base` first, or resolve both projects from a local multi-project environment.
+- See [`fx-xserver/README.md`](fx-xserver/README.md) for X11/VNC backends and runtime options.
+
+## License
+
+The project includes `APACHE-LICENSE-2.0.txt` and `MIT-LICENSE.txt`. Review the applicable terms before use.
