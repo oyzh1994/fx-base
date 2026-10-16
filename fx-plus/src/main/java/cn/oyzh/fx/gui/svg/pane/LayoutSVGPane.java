@@ -12,6 +12,7 @@ import javafx.scene.text.Font;
  * @author oyzh
  * @since 2025-04-02
  */
+@Deprecated
 public class LayoutSVGPane extends SVGPane {
 
     /**

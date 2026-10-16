@@ -49,12 +49,12 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
     /**
      * 图标地址
      */
-    private String url;
+    protected String url;
 
     /**
      * 图标颜色
      */
-    private Paint color;
+    protected Paint color;
 
     // /**
     //  * 是否激活态
@@ -80,7 +80,7 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
     /**
      * 原始svg组件
      */
-    private FXSVGPath original;
+    protected FXSVGPath original;
 
     /**
      * 是否激活状态
@@ -115,7 +115,7 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
     /**
      * 更新内容
      */
-    private void updateContent() {
+    protected void updateContent() {
         // 获取图标
         Node child = this.getChild(0);
         // 无内容
@@ -553,6 +553,8 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
      */
     public void setOriginal(FXSVGPath original) {
         this.original = original;
+        this.setChild(original);
+        this.updateContent();
     }
 
     /**
