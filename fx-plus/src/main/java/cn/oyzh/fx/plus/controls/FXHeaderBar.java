@@ -1,14 +1,18 @@
 package cn.oyzh.fx.plus.controls;
 
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ScreenUtil;
+import cn.oyzh.fx.plus.window.StageAdapter;
+import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.ColorScheme;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -285,6 +289,18 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         this.setMinHeight(30);
         this.setPrefHeight(30);
         this.setId("headerBar");
+        if (OSUtil.isLinux()) {
+            this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                if (event.getClickCount() == 2) {
+                    Stage stage = this.stage();
+                    stage.setMaximized(!stage.isMaximized());
+                    StageAdapter adapter = StageManager.getAdapter(stage);
+                    if (adapter != null) {
+                        adapter.updateContentLater();
+                    }
+                }
+            });
+        }
         NodeAdapter.super.initNode();
     }
 }
