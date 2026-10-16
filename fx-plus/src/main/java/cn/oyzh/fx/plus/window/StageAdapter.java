@@ -29,7 +29,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -296,10 +295,10 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
         }
         // 初始化场景
         Scene scene = new Scene(root);
-        //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
-        if ((this.isExtendedHeader() && ThemeManager.isDarkMode()) || attribute.sceneTransparent()) {
-            scene.setFill(Color.TRANSPARENT);
-        }
+        ////TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
+        //if ((this.isExtendedHeader() && ThemeManager.isDarkMode()) || attribute.sceneTransparent()) {
+        //    scene.setFill(Color.TRANSPARENT);
+        //}
         // 设置scene
         FXUtil.runWait(() -> stage.setScene(scene));
         // 设置controller
@@ -694,18 +693,22 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
 
     @Override
     default void changeTheme(ThemeStyle style) {
-        //TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
-        if (this.isExtendedHeader()) {
-            if (style.isDarkMode()) {
-                this.scene().setFill(Color.TRANSPARENT);
-            } else {
-                this.scene().setFill(ThemeManager.currentBackgroundColor());
-            }
-        }
+        ////TODO 针对扩展标题栏，暗黑模式需要背景透明，但是明亮模式不需要
+        //if (this.isExtendedHeader()) {
+        //    if (style.isDarkMode()) {
+        //        this.scene().setFill(Color.TRANSPARENT);
+        //    } else {
+        //        this.scene().setFill(ThemeManager.currentBackgroundColor());
+        //    }
+        //}
         ////TODO 针对扩展标题栏，需要设置scene颜色
         //if (this.isExtendedHeader()) {
         //    this.scene().setFill(ThemeManager.currentBackgroundColor());
         //}
+        FXHeaderBar bar = this.getHeaderBar();
+        if (bar != null) {
+            bar.changeTheme(style);
+        }
         WindowAdapter.super.changeTheme(style);
     }
 }

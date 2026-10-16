@@ -6,10 +6,12 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ScreenUtil;
+import javafx.application.ColorScheme;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.HeaderBar;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 /**
  * 标题栏控件，继承自 HeaderBar，由左侧内容、中间标题、右侧操作区组成，支持主题适配
@@ -21,10 +23,6 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
 
     {
         NodeManager.init(this);
-        this.setMaxHeight(30);
-        this.setMinHeight(30);
-        this.setPrefHeight(30);
-        this.setId("headerBar");
     }
 
     /**
@@ -260,7 +258,15 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
 
     @Override
     public void changeTheme(ThemeStyle style) {
-        ThemeAdapter.super.changeTheme(style);
+        Stage stage = this.stage();
+        if (stage != null) {
+            HeaderBar.setSystemButtonHeight(stage, this.getHeight());
+            if (style.isDarkMode()) {
+                HeaderBar.setSystemColorScheme(stage, ColorScheme.DARK);
+            } else {
+                HeaderBar.setSystemColorScheme(stage, ColorScheme.LIGHT);
+            }
+        }
         if (this.getLeft() instanceof ThemeAdapter adapter) {
             adapter.changeTheme(style);
         }
@@ -270,5 +276,15 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         if (this.getCenter() instanceof ThemeAdapter adapter) {
             adapter.changeTheme(style);
         }
+        ThemeAdapter.super.changeTheme(style);
+    }
+
+    @Override
+    public void initNode() {
+        this.setMaxHeight(30);
+        this.setMinHeight(30);
+        this.setPrefHeight(30);
+        this.setId("headerBar");
+        NodeAdapter.super.initNode();
     }
 }
