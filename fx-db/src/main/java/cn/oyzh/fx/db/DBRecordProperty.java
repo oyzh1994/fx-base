@@ -20,6 +20,11 @@ import javafx.scene.control.TextField;
 public class DBRecordProperty extends SimpleObjectProperty<Object> implements Destroyable {
 
     /**
+     * 字段
+     */
+    protected DBColumn column;
+
+    /**
      * 节点
      */
     protected Node node;
@@ -185,6 +190,15 @@ public class DBRecordProperty extends SimpleObjectProperty<Object> implements De
             textField.setPromptText("");
             NodeUtil.unFocus(this.node);
         }
+    }
+
+    /**
+     * 获取字段
+     *
+     * @return 结果
+     */
+    public DBColumn getColumn() {
+        return this.column;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.db;
 
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 
 import java.util.HashMap;
@@ -141,5 +142,14 @@ public class DBRecordData extends HashMap<DBColumn, Object> {
             return false;
         }
         return dbColumn.isDefaultValueSequence();
+    }
+
+    /**
+     * 字段是否为空
+     *
+     * @return 结果
+     */
+    public boolean isColumnsEmpty() {
+        return CollectionUtil.isEmpty(this.columns());
     }
 }

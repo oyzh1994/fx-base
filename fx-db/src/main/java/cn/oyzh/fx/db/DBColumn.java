@@ -39,6 +39,15 @@ public interface DBColumn extends DBName {
     void setType(String type);
 
     /**
+     * 是否自动递增
+     *
+     * @return 结果
+     */
+    default boolean isAutoIncrement() {
+        return false;
+    }
+
+    /**
      * 是否支持长度
      *
      * @return 结果
@@ -210,6 +219,24 @@ public interface DBColumn extends DBName {
     }
 
     /**
+     * 是否主键
+     *
+     * @return 是否主键
+     */
+    default boolean isPrimaryKey() {
+        return false;
+    }
+
+    /**
+     * 设置是否主键
+     *
+     * @param primaryKey 是否主键
+     */
+    default void setPrimaryKey(boolean primaryKey) {
+
+    }
+
+    /**
      * 是否支持二进制
      *
      * @return 结果
@@ -337,5 +364,32 @@ public interface DBColumn extends DBName {
      */
     default boolean isInvalid() {
         return StringUtil.isBlank(this.getName()) || StringUtil.isBlank(this.getType());
+    }
+
+    /**
+     * 获取架构
+     *
+     * @return 结果
+     */
+    default String getSchema() {
+        return null;
+    }
+
+    /**
+     * 获取数据库名称
+     *
+     * @return 结果
+     */
+    default String getDbName() {
+        return null;
+    }
+
+    /**
+     * 获取表名称
+     *
+     * @return 结果
+     */
+    default String getTableName() {
+        return null;
     }
 }
