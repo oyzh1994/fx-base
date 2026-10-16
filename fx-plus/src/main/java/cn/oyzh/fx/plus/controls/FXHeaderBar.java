@@ -298,6 +298,7 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
                     if (adapter != null) {
                         adapter.updateContentLater();
                     }
+                    event.consume();
                 }
             });
         }
